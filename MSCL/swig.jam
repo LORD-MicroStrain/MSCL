@@ -1,0 +1,16 @@
+import type ;
+import generators ;
+import toolset ;
+import feature ;
+
+#Define swig_i as a file type
+type.register SWIGI : swig_i ;
+
+generators.register-standard swig.swig : SWIGI : CPP ;
+
+feature.feature swig-options : : free ;
+toolset.flags swig.swig OPTIONS <swig-options> ;
+actions swig
+{
+	swig -c++ $(OPTIONS) -o $(<) $(>)
+}

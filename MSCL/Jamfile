@@ -1,0 +1,123 @@
+import swig ;
+import python ;
+import cast ;
+import path ;
+import common ;
+
+#Setup path variables
+path-constant SWIG_PYTHON : $(BUILD_DIR)/swig-python ;
+
+#Define the project
+project
+	: usage-requirements <include>source
+	;
+
+#Define libraries that exist on the system
+lib boost_system ;
+lib boost_filesystem ;
+lib boost_chrono ;
+lib boost_date_time ;
+lib pthread ;
+
+#cpp-pch stdafx : source/stdafx.h ; #TODO: Trying to get Precompiled Headers to work
+
+#On Windows (non-gcc), these are empty aliases
+alias unixsocket_cpp ;
+alias boostLibs ;
+alias boostStaticLibs ;
+
+#On Linux (gcc), define these aliases
+alias unixsocket_cpp : source/mscl/Communication/UnixSocketConnection.cpp : <toolset>gcc ;
+alias boostLibs : boost_system boost_filesystem boost_date_time boost_chrono pthread : <toolset>gcc ;
+alias boostStaticLibs : boost_system/<link>static boost_date_time/<link>static boost_chrono/<link>static : <toolset>gcc ;
+
+alias msclSrcs 
+:   [ glob source/*.cpp ]
+	[ glob source/mscl/*.cpp ]
+	[ glob source/mscl/Communication/*.cpp : source/mscl/Communication/UnixSocketConnection.cpp ]
+	[ glob source/mscl/MicroStrain/*.cpp ]
+	[ glob source/mscl/MicroStrain/Inertial/*.cpp ]
+	[ glob source/mscl/MicroStrain/Inertial/Commands/*.cpp ]
+	[ glob source/mscl/MicroStrain/Inertial/Packets/*.cpp ]
+	[ glob source/mscl/MicroStrain/Wireless/*.cpp ]
+	[ glob source/mscl/MicroStrain/Wireless/Commands/*.cpp ]
+	[ glob source/mscl/MicroStrain/Wireless/Configuration/*.cpp ]
+	[ glob source/mscl/MicroStrain/Wireless/Features/*.cpp ]
+	[ glob source/mscl/MicroStrain/Wireless/Packets/*.cpp ]
+	unixsocket_cpp
+;
+
+#Define how we build the C++ library
+lib mscl 
+:	msclSrcs
+	boostLibs
+:	<include>source
+	<toolset>gcc:<define>UNIX_SOCKETS
+    ;
+
+#Ensure that the python output folder exists
+make $(SWIG_PYTHON) : : @common.mkdir ;
+
+#Setup dependencies for the mscl python project
+DEPENDS _mscl : $(SWIG_PYTHON) ;
+DEPENDS _mscl-dynamic : $(SWIG_PYTHON) ;
+
+alias MSCL_Main_Interface.cpp : [ cast _ swigi : source/mscl/Wrapper/MSCL_Main_Interface.i ] ;   #Reference the .i file as a swig_i file
+
+#Define the python mscl build
+python-extension _mscl
+:	MSCL_Main_Interface.cpp
+	msclSrcs                                                        #Include the MSCL Source
+	boostLibs
+:	<include>source/mscl/Wrapper/
+	<swig-options>-python
+	<swig-options>"-outdir $(SWIG_PYTHON)"
+	<toolset>gcc:<swig-options>-DUNIX_SOCKETS
+	<toolset>gcc:<define>UNIX_SOCKETS
+;
+
+#Define the python mscl build
+python-extension _mscl-dynamic
+:	MSCL_Main_Interface.cpp
+	mscl                                                        #Include the MSCL Source
+	boostLibs
+:	<include>source/mscl/Wrapper/
+	<swig-options>-python
+	<swig-options>"-outdir $(SWIG_PYTHON)"
+	<toolset>gcc:<swig-options>-DUNIX_SOCKETS
+	<toolset>gcc:<define>UNIX_SOCKETS
+;
+
+#Copy all the header files and put them in an output directory
+install stage_headers
+	: [ glob-tree *.h : .svn stdafx.h ]
+	: <location>$(STAGING_DIR)/include <install-source-root>source
+;
+explicit stage_headers ;
+
+#Copy the lib directory
+install stage_c++
+	: mscl
+    : <variant>release:<location>$(STAGING_DIR)/C++/Release
+	  <variant>debug:<location>$(STAGING_DIR)/C++/Debug
+;
+explicit stage_c++ ;
+
+#Copy the python directory
+install stage_python
+	: _mscl [ path.glob-tree $(SWIG_PYTHON) : *.py ]
+	: <location>$(STAGING_DIR)/Python
+;
+explicit stage_python ;
+
+install stage_python_dynamic
+:	_mscl-dynamic [ path.glob-tree $(SWIG_PYTHON) : *.py ]
+:	<location>$(STAGING_DIR)/Python
+;
+explicit stage_python_dynamic ;
+
+#Make an alias for all of the copying
+alias stage_all
+	: stage_c++ stage_python #stage_headers 
+;
+explicit stage_all ;

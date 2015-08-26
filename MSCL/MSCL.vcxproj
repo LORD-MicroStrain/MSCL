@@ -1,0 +1,1047 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug (.NET)|Win32">
+      <Configuration>Debug (.NET)</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug (.NET)|x64">
+      <Configuration>Debug (.NET)</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug (C++)|Win32">
+      <Configuration>Debug (C++)</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug (C++)|x64">
+      <Configuration>Debug (C++)</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release (.NET)|Win32">
+      <Configuration>Release (.NET)</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release (.NET)|x64">
+      <Configuration>Release (.NET)</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release (C++)|Win32">
+      <Configuration>Release (C++)</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release (C++)|x64">
+      <Configuration>Release (C++)</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release x64 (.NET)|Win32">
+      <Configuration>Release x64 (.NET)</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release x64 (.NET)|x64">
+      <Configuration>Release x64 (.NET)</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release(Python)|Win32">
+      <Configuration>Release(Python)</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release(Python)|x64">
+      <Configuration>Release(Python)</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}</ProjectGuid>
+    <RootNamespace>LassoLibrary</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release(Python)|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release(Python)|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release(Python)|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release(Python)|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release(Python)|Win32'">
+    <OutDir>build\$(Configuration)\</OutDir>
+    <IntDir>build\$(Configuration)\</IntDir>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+    <LinkIncremental>false</LinkIncremental>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib32-msvc-12.0;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release(Python)|x64'">
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+    <LinkIncremental>false</LinkIncremental>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib64-msvc-12.0;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'">
+    <OutDir>..\Output\C++\Release\</OutDir>
+    <IntDir>build\$(Configuration)\</IntDir>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib32-msvc-12.0;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib64-msvc-12.0;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|Win32'">
+    <OutDir>..\Output\DotNet\x86\</OutDir>
+    <IntDir>build\$(Configuration)\</IntDir>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib32-msvc-12.0;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|x64'">
+    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib64-msvc-12.0;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'">
+    <OutDir>..\Output\C++\Debug\</OutDir>
+    <IntDir>build\$(Configuration)\</IntDir>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib32-msvc-12.0;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'">
+    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib64-msvc-12.0;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'">
+    <OutDir>..\Output\DotNet\x86\</OutDir>
+    <IntDir>build\$(Configuration)\</IntDir>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib32-msvc-12.0;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'">
+    <OutDir>..\Output\DotNet\</OutDir>
+    <IntDir>build\$(Configuration)\</IntDir>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'">
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib64-msvc-12.0;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'">
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib64-msvc-12.0;$(LibraryPath)</LibraryPath>
+    <OutDir>..\Output\DotNet\x64\</OutDir>
+    <IntDir>build\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release(Python)|Win32'">
+    <PreBuildEvent>
+      <Command />
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NOMINMAX;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4290;4127;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <OutputFile>$(OutDir)$(ProjectName).dll</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <NoEntryPoint>false</NoEntryPoint>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Message>SWIG: Python Interface</Message>
+      <Command>mkdir "..\Output\Python"
+"swig.exe" -Wall -c++ -python -outdir "..\Output\Python" "..\MSCL\source\mscl\Wrapper\MSCL_Main_Interface.i"
+"python.exe" "..\MSCL\source\mscl\Wrapper\setup.py" build_ext --build-lib "..\Output\Python"
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release(Python)|x64'">
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NOMINMAX;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4290;4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <OutputFile>$(OutDir)$(ProjectName).dll</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <NoEntryPoint>false</NoEntryPoint>
+    </Link>
+    <PostBuildEvent>
+      <Message>SWIG: Python Interface</Message>
+      <Command>mkdir "..\Output\Python"
+"swig.exe" -Wall -c++ -python -outdir "..\Output\Python" "..\MSCL\source\mscl\Wrapper\MSCL_Main_Interface.i"
+"python.exe" "..\MSCL\source\mscl\Wrapper\setup.py" build_ext --build-lib "..\Output\Python"
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'">
+    <PreBuildEvent>
+      <Message>Build Interface Files</Message>
+      <Command />
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NOMINMAX;_WIN32_WINNT=0x0501;BOOST_ALL_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4290;4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ProgramDataBaseFileName>..\Output\C++\Release\$(ProjectName).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command />
+    </PostBuildEvent>
+    <Lib>
+      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
+    </Lib>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">
+    <PreBuildEvent>
+      <Message>Build Interface Files</Message>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NOMINMAX;_WIN32_WINNT=0x0501;BOOST_ALL_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4290;4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <Lib>
+      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|Win32'">
+    <PreBuildEvent>
+      <Message>SWIG: CSharp Interface</Message>
+      <Command>"C:\Dev\Lib\swig\swigwin-3.0.6\swig.exe" -Wall -c++ -csharp -namespace mscl -outdir "..\MSCL_Managed\mscl" -o "..\MSCL\source\mscl\Wrapper\MSCL_Wrap.cpp" "..\MSCL\source\mscl\Wrapper\MSCL_Main_Interface.i"</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;NOMINMAX;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DisableSpecificWarnings>4290;4127;4100%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <OptimizeReferences>false</OptimizeReferences>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PostBuildEvent>
+      <Command />
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|x64'">
+    <PreBuildEvent>
+      <Message>SWIG: CSharp Interface</Message>
+      <Command>"swig.exe" -Wall -c++ -csharp -namespace mscl -outdir "..\MSCL_Managed\mscl" -o "..\MSCL\source\mscl\Wrapper\MSCL_Wrap.cpp" "..\MSCL\source\mscl\Wrapper\MSCL_Main_Interface.i"</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;NOMINMAX;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4290;4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <OptimizeReferences>false</OptimizeReferences>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'">
+    <PreBuildEvent>
+      <Message>Building Interface Files via SWIG</Message>
+      <Command />
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;NOMINMAX;_WIN32_WINNT=0x0501;BOOST_ALL_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DisableSpecificWarnings>4290;4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+      <ProgramDataBaseFileName>..\Output\C++\Debug\$(ProjectName).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command />
+    </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'">
+    <PreBuildEvent>
+      <Message>Building Interface Files via SWIG</Message>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;NOMINMAX;_WIN32_WINNT=0x0501;BOOST_ALL_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
+      <WarningLevel>Level1</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4290;4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ForcedIncludeFiles>
+      </ForcedIncludeFiles>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'">
+    <PreBuildEvent>
+      <Message>SWIG: CSharp Interface</Message>
+      <Command>"swig.exe" -Wall -c++ -csharp -namespace mscl -outdir "..\MSCL_Managed\mscl" -o "..\MSCL\source\mscl\Wrapper\MSCL_Wrap.cpp" "..\MSCL\source\mscl\Wrapper\MSCL_Main_Interface.i"</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NOMINMAX;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4290;4127;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <OutputFile>..\Output\DotNet\x86\$(ProjectName).dll</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <NoEntryPoint>false</NoEntryPoint>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Command />
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'">
+    <PreBuildEvent>
+      <Message>SWIG: CSharp Interface</Message>
+      <Command>"swig.exe" -Wall -c++ -csharp -namespace mscl -outdir "..\MSCL_Managed\mscl" -o "..\MSCL\source\mscl\Wrapper\MSCL_Wrap.cpp" "..\MSCL\source\mscl\Wrapper\MSCL_Main_Interface.i"</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NOMINMAX;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4290;4127;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <OutputFile>..\Output\DotNet\$(ProjectName).dll</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <NoEntryPoint>false</NoEntryPoint>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'">
+    <PreBuildEvent>
+      <Message>SWIG: CSharp Interface</Message>
+      <Command>"swig.exe" -Wall -c++ -csharp -namespace mscl -outdir "..\MSCL_Managed\mscl" -o "..\MSCL\source\mscl\Wrapper\MSCL_Wrap.cpp" "..\MSCL\source\mscl\Wrapper\MSCL_Main_Interface.i"</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NOMINMAX;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4290;4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <OutputFile>..\Output\DotNet\$(ProjectName).dll</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <NoEntryPoint>false</NoEntryPoint>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'">
+    <PreBuildEvent>
+      <Message>SWIG: CSharp Interface</Message>
+      <Command>"swig.exe" -Wall -c++ -csharp -namespace mscl -outdir "..\MSCL_Managed\mscl" -o "..\MSCL\source\mscl\Wrapper\MSCL_Wrap.cpp" "..\MSCL\source\mscl\Wrapper\MSCL_Main_Interface.i"</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NOMINMAX;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4290;4127;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <OutputFile>..\Output\DotNet\x64\$(ProjectName).dll</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <NoEntryPoint>false</NoEntryPoint>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="source\mscl\Communication\BoostCommunication.h" />
+    <ClInclude Include="source\mscl\Communication\Connection.h" />
+    <ClInclude Include="source\mscl\Communication\Connection_Impl.h" />
+    <ClInclude Include="source\mscl\Communication\Devices.h" />
+    <ClInclude Include="source\mscl\Communication\NativeSerialPort.h" />
+    <ClInclude Include="source\mscl\Communication\NativeSerialPort_linux.h" />
+    <ClInclude Include="source\mscl\Communication\NativeSerialPort_Win32.h" />
+    <ClInclude Include="source\mscl\Communication\OperatingSystemErrorCodes.h" />
+    <ClInclude Include="source\mscl\Communication\SerialConnection.h" />
+    <ClInclude Include="source\mscl\Communication\TcpIpConnection.h" />
+    <ClInclude Include="source\mscl\Communication\UnixSocketConnection.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release(Python)|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release(Python)|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="source\mscl\Endianness.h" />
+    <ClInclude Include="source\mscl\HighResClock.h" />
+    <ClInclude Include="source\mscl\Histogram.h" />
+    <ClInclude Include="source\mscl\LibVersion.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\ContinuousDataStream.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\EstFilter_Commands.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GenericInertialCommand.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceDescriptorSets.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceInfo.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GPS_Commands.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\InertialCmdResponse.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_Commands.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_SetToIdle.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Ping.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Resume.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Sensor_Commands.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\System_Commands.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialChannel.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialDataField.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialModels.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialNodeInfo.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialNode_Impl.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialTypes.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialDataPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialDataPoint.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_EstFilter.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GPS.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialNode.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Sensor.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacketBuilder.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacketCollector.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialParser.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\ArmedDataloggingNetwork.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStationAnalogPair.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStationButton.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStationInfo.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStation_Impl.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\ChannelMask.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ArmForDatalogging.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\AutoCal.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\Erase.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\PageDownload.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom_v2.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\SetToIdle.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\SetToIdleStatus.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\Sleep.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\StartNonSyncSampling.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\StartSyncSampling.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\TriggerArmedDatalogging.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\WriteEeprom.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\WriteEeprom_v2.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\BaseStationConfig.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\BaseStationEeprom.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\BaseStationEepromHelper.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\BaseStationEepromMap.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\ConfigIssue.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\Eeprom.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\EepromLocation.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\FatigueOptions.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\HardwareGain.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\HistogramOptions.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\NodeEeprom.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\NodeEepromHelper.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\NodeEepromMap.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\SyncNodeConfig.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\WirelessNodeConfig.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\DatalogDownloader.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\AvailableSampleRates.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_analog.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_rs232.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_usb.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_wsda.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\ChannelGroup.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_dvrtlink.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_envlinkMini.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_envlinkPro.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink2External.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink2Internal.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_iepeLink.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink8ch.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkoem.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkoemHermetic.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkoemNoXR.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkrgd.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink2.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink1ch.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink3ch.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink6ch.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink_legacy.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeInfo.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\LinearEquation.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\LoggedDataSweep.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\NodeDiscovery.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\NodeMemory.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\AsyncDigitalAnalogPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\AsyncDigitalPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStation.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\BufferedLdcPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\BufferedLdcPacket_16ch.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_Ping.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_ReadEeprom.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_SetBeacon.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_WriteEeprom.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\LongPing.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ShortPing.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\DataSweep.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\DeliveryStopFlags.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\HclSmartBearing_RawPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket_16ch.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket_v2.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket_v3.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\ShmPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket_16ch.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\RadioFeatures.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\StructuralHealth.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\SyncNetworkInfo.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\SyncSamplingFormulas.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\SyncSamplingNetwork.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\WirelessChannel.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\WirelessDataPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\WirelessDataPoint.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\WirelessModels.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\WirelessNode.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\WirelessPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\WirelessPacketCollector.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\WirelessPacketUtils.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\WirelessNode_Impl.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\WirelessParser.h" />
+    <ClInclude Include="source\mscl\Exceptions.h" />
+    <ClInclude Include="source\mscl\MicroStrain\ByteStream.h" />
+    <ClInclude Include="source\mscl\MicroStrain\ChecksumBuilder.h" />
+    <ClInclude Include="source\mscl\MicroStrain\DataBuffer.h" />
+    <ClInclude Include="source\mscl\MicroStrain\DataPoint.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Matrix.h" />
+    <ClInclude Include="source\mscl\MicroStrain\ResponseCollector.h" />
+    <ClInclude Include="source\mscl\MicroStrain\ResponsePattern.h" />
+    <ClInclude Include="source\mscl\MicroStrain\SampleRate.h" />
+    <ClInclude Include="source\mscl\MicroStrain\SampleUtils.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Vector.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\WirelessTypes.h" />
+    <ClInclude Include="source\mscl\simple_any.h" />
+    <ClInclude Include="source\mscl\Utils_Win32.h" />
+    <ClInclude Include="source\mscl\Value.h" />
+    <ClInclude Include="source\mscl\Version.h" />
+    <ClInclude Include="source\mscl\WMI_Helper.h" />
+    <ClInclude Include="source\stdafx.h" />
+    <ClInclude Include="source\mscl\TimedCondition.h" />
+    <ClInclude Include="source\mscl\TimeSpan.h" />
+    <ClInclude Include="source\mscl\Timestamp.h" />
+    <ClInclude Include="source\mscl\Types.h" />
+    <ClInclude Include="source\mscl\Utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\mscl\Communication\Connection.cpp" />
+    <ClCompile Include="source\mscl\Communication\Devices.cpp" />
+    <ClCompile Include="source\mscl\Communication\SerialConnection.cpp" />
+    <ClCompile Include="source\mscl\Communication\TcpIpConnection.cpp" />
+    <ClCompile Include="source\mscl\Communication\UnixSocketConnection.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release(Python)|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release(Python)|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="source\mscl\HighResClock.cpp" />
+    <ClCompile Include="source\mscl\Histogram.cpp" />
+    <ClCompile Include="source\mscl\LibVersion.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\ContinuousDataStream.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\EstFilter_Commands.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GenericInertialCommand.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceDescriptorSets.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceInfo.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GPS_Commands.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\InertialCmdResponse.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_Commands.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_SetToIdle.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Ping.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Resume.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Sensor_Commands.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\System_Commands.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialChannel.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialDataField.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialModels.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialNodeInfo.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialNode_Impl.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialTypes.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialDataPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialDataPoint.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_EstFilter.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GPS.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialNode.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Sensor.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacketBuilder.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacketCollector.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialParser.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\ArmedDataloggingNetwork.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStationAnalogPair.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStationButton.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStationInfo.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStation_Impl.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\ChannelMask.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ArmForDatalogging.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\AutoCal.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\Erase.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\PageDownload.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom_v2.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\SetToIdle.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\SetToIdleStatus.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\Sleep.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\StartNonSyncSampling.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\StartSyncSampling.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\TriggerArmedDatalogging.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\WriteEeprom.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\WriteEeprom_v2.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\BaseStationConfig.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\BaseStationEeprom.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\BaseStationEepromHelper.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\BaseStationEepromMap.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\ConfigIssue.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\Eeprom.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\EepromLocation.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\FatigueOptions.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\HardwareGain.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\HistogramOptions.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\NodeEeprom.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\NodeEepromHelper.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\NodeEepromMap.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\SyncNodeConfig.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\WirelessNodeConfig.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\DatalogDownloader.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\AvailableSampleRates.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_analog.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_rs232.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_usb.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_wsda.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\ChannelGroup.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_dvrtlink.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_envlinkMini.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_envlinkPro.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink2External.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink2Internal.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_iepeLink.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink8ch.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkoem.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkoemHermetic.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkoemNoXR.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkrgd.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink2.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink1ch.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink3ch.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink6ch.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink_legacy.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeInfo.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\LinearEquation.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\LoggedDataSweep.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\NodeDiscovery.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\NodeMemory.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\AsyncDigitalAnalogPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\AsyncDigitalPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStation.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\BufferedLdcPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\BufferedLdcPacket_16ch.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_Ping.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_ReadEeprom.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_SetBeacon.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_WriteEeprom.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\LongPing.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ShortPing.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\DataSweep.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\DeliveryStopFlags.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\HclSmartBearing_RawPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket_16ch.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket_v2.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket_v3.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\ShmPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket_16ch.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\RadioFeatures.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\StructuralHealth.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\SyncNetworkInfo.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\SyncSamplingFormulas.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\SyncSamplingNetwork.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\WirelessChannel.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\WirelessDataPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\WirelessDataPoint.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\WirelessModels.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\WirelessNode.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\WirelessPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\WirelessPacketCollector.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\WirelessPacketUtils.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\WirelessNode_Impl.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\WirelessParser.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\ChecksumBuilder.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\DataBuffer.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\DataPoint.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Matrix.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\ResponseCollector.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\ResponsePattern.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\SampleRate.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\SampleUtils.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Vector.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\WirelessTypes.cpp" />
+    <ClCompile Include="source\mscl\TimedCondition.cpp" />
+    <ClCompile Include="source\mscl\Value.cpp" />
+    <ClCompile Include="source\mscl\Version.cpp" />
+    <ClCompile Include="source\mscl\WMI_Helper.cpp" />
+    <ClCompile Include="source\mscl\Wrapper\MSCL_Wrap.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|x64'">
+      </PrecompiledHeader>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|Win32'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|x64'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'">true</ExcludedFromBuild>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'">
+      </PrecompiledHeader>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'">
+      </PrecompiledHeader>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">true</ExcludedFromBuild>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">
+      </PrecompiledHeader>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release(Python)|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release(Python)|x64'">
+      </PrecompiledHeader>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release(Python)|Win32'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release(Python)|x64'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ClCompile Include="source\stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release(Python)|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release(Python)|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="source\mscl\TimeSpan.cpp" />
+    <ClCompile Include="source\mscl\Timestamp.cpp" />
+    <ClCompile Include="source\mscl\Utils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\mscl\Wrapper\MSCL_Exceptions.i" />
+    <None Include="source\mscl\Wrapper\MSCL_Main_Interface.i" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

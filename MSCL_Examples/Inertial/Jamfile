@@ -1,0 +1,8 @@
+project
+    : usage-requirements
+    ;
+    
+exe MSCL_Example_Inertial_CPP
+    : [ glob C++/MSCL_Example_Project_C++/MSCL_Example_Project_C++/*.cpp ] /mscl-lib//mscl
+    : <include>.
+    ;

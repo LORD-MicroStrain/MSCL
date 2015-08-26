@@ -1,0 +1,930 @@
+# MSCL Change Log
+All notable changes to this project will be documented in this file.
+
+-------------------------------------------------------------------------
+1.0.0 - 2015-08-26
+- official release of MSCL 1.0
+
+-------------------------------------------------------------------------
+0.42.0 - 2015-08-26
+- support for the new wireless firmware version scheme (Major.SvnRevision).
+
+-------------------------------------------------------------------------
+0.41.4 - 2015-08-26
+- support for changes to the HCL Smart Bearing - Raw Base Board packet.
+
+-------------------------------------------------------------------------
+0.41.3 - 2015-08-25
+- changed types of rssi values from "int" to "int16".
+
+-------------------------------------------------------------------------
+0.41.2 - 2015-08-24
+- fix for v-link hardware gain to bits function not rounding correctly.
+
+-------------------------------------------------------------------------
+0.41.1 - 2015-08-24
+- Structural Health channel names now include the angle.
+- added decimal point to the supported SensorCloud characters.
+- made DataPoint constructor public.
+
+-------------------------------------------------------------------------
+0.41.0 - 2015-08-17
+- full parsing of AutoCal command for the SHM-Link.
+
+-------------------------------------------------------------------------
+0.40.1 - 2015-08-17
+- changed support for HCL Smart Bearing - Raw Base Board data parsing to be individual channels.
+
+-------------------------------------------------------------------------
+0.40.0 - 2015-08-17
+- using the real SHM-Link2 model number.
+- added support for the legacy V-Link (12-bit).
+
+-------------------------------------------------------------------------
+0.39.0 - 2015-08-14
+- changed Bin class to have a uint32 for the count value.
+- support for parsing Raw Base Board data.
+
+-------------------------------------------------------------------------
+0.38.5 - 2015-08-14
+- fix for SetToIdle desctructor throwing exceptions.
+- added some buffer time to the SetToIdleStatus cancel operation.
+
+-------------------------------------------------------------------------
+0.38.4 - 2015-08-12
+- added NodeFeatures.supportsAutoCal command.
+- now throwing exception if the Node doesn't support autocal when trying to perform the operation.
+
+-------------------------------------------------------------------------
+0.38.3 - 2015-08-12
+- added the start of the AutoCal_shmLink command (not yet tested, documented, etc.).
+- removed as_Histogram function as it was no longer being used.
+- changed HistogramOptions "bin" function names to "bins" (binStart -> binsStart).
+
+-------------------------------------------------------------------------
+0.38.2 - 2015-08-11
+- fix for previous commit breaking parsing of some command responses (most notably page download).
+
+-------------------------------------------------------------------------
+0.38.1 - 2015-08-11
+- fix for Wireless parser not resetting read position when looking for responses withing "not enough data" bytes.
+
+-------------------------------------------------------------------------
+0.38.0 - 2015-08-07
+- added peak/valley threshold configuration to FatigueOptions object.
+
+-------------------------------------------------------------------------
+0.37.1 - 2015-08-07
+- changed HistogramOptions transmit rate to a WirelessSampleRate enum from a SampleRate object.
+
+-------------------------------------------------------------------------
+0.37.0 - 2015-08-06
+- added WirelessNode clearHistogram command.
+- changed SHM-Link 1 to only have 1/30seconds in list of histogram tx rates.
+
+-------------------------------------------------------------------------
+0.36.1 - 2015-08-06
+- converting FatigueOptions angles to within 0-360.
+
+-------------------------------------------------------------------------
+0.36.0 - 2015-08-06
+- added support for parsing the SHM-Link v2 Data Packet.
+
+-------------------------------------------------------------------------
+0.35.0 - 2015-08-05
+- added support for SHM-Link 2 NodeFeatures (currently using temporary model number).
+
+-------------------------------------------------------------------------
+0.34.0 - 2015-08-04
+- added support for enabling/disabling FatigeeOptions rawMode.
+
+-------------------------------------------------------------------------
+0.33.0 - 2015-08-04
+- added support for getting/setting HistogramOptions configuration.
+- changed WirelessNode.channelMask() to WirelessNode.activeChannels().
+- changed DataSweep.tick to a uint32 instead of a uint16.
+
+-------------------------------------------------------------------------
+0.32.6 - 2015-08-03
+- converting original ShmPacket's angles from radians to degrees.
+
+-------------------------------------------------------------------------
+0.32.5 - 2015-07-31
+- start of support for FatigueOptions.
+
+-------------------------------------------------------------------------
+0.32.4 - 2015-07-30
+- supporting both the incorrect and correct read/write eeprom v3 packets.
+
+-------------------------------------------------------------------------
+0.32.3 - 2015-07-30
+- fix for cal coefficient channel groups having funky channelGroup names.
+
+-------------------------------------------------------------------------
+0.32.2 - 2015-07-29
+- fix for channelGroup settings incorrectly searching for eeprom locations.
+- start of support for FatigueOptions.
+
+-------------------------------------------------------------------------
+0.32.1 - 2015-07-29
+- fix for .NET library having Null Ref issues with ChannelMask and Version classes.
+
+-------------------------------------------------------------------------
+0.32.0 - 2015-07-24
+- support for the "Micro-USB Base Station" in listBasestations function.
+
+-------------------------------------------------------------------------
+0.31.0 - 2015-07-21
+- added InertialNode lastCommunicationTime command.
+
+-------------------------------------------------------------------------
+0.30.0 - 2015-07-21
+- added BaseStation lastCommunicationTime command.
+- added WirelessNode lastCommunicationTime command.
+
+-------------------------------------------------------------------------
+0.29.2 - 2015-07-20
+- added new version of the Write EEPROM command.
+
+-------------------------------------------------------------------------
+0.29.1 - 2015-07-20
+- added new version of the Read EEPROM command, including function to determine the read/write version.
+
+-------------------------------------------------------------------------
+0.29.0 - 2015-07-16
+- completion of moving all Wireless Channel configuration to Wireless Node.
+- removed ChannelInfo class.
+
+-------------------------------------------------------------------------
+0.28.5 - 2015-07-16
+- moved LinearEquation, unit, and equation type to node side.
+- removed WirelessChannelConfig class.
+
+-------------------------------------------------------------------------
+0.28.4 - 2015-07-15
+- removed classes and functions that are no longer used since the move away from Wireless Channels.
+
+-------------------------------------------------------------------------
+0.28.3 - 2015-07-15
+- moved thermocouple type over to node side.
+
+-------------------------------------------------------------------------
+0.28.2 - 2015-07-15
+- moved filter settling time over to node side.
+
+-------------------------------------------------------------------------
+0.28.1 - 2015-07-13
+- moved hardware gain over to node side (start of removing channel config layer).
+
+-------------------------------------------------------------------------
+0.28.0 - 2015-07-08
+- support for Node Discovery Packet v3.
+
+-------------------------------------------------------------------------
+0.27.0 - 2015-07-08
+- support for Node Discovery Packet v2.
+
+-------------------------------------------------------------------------
+0.26.0 - 2015-07-06
+- added support for 3 part Wireless firmware versions (Node and BaseStation).
+
+-------------------------------------------------------------------------
+0.25.12 - 2015-07-06
+- fix for allowing get/set time between bursts when burst mode not supported by the Node.
+- added ability to clear the eeprom cache for WirelessNode and BaseStation objects.
+
+-------------------------------------------------------------------------
+0.25.11 - 2015-07-06
+- fix for WirelessNodeConfig checking the number of sweeps when unlimited duration is set.
+
+-------------------------------------------------------------------------
+0.25.10 - 2015-07-02
+- fix for the Sync Sampling Network allowing a single node with 100.09% bandwidth.
+
+-------------------------------------------------------------------------
+0.25.9 - 2015-07-02
+- added 50ms sleep between each Node's Start Sync Sampling command (attempt to improve start success).
+
+-------------------------------------------------------------------------
+0.25.8 - 2015-07-01
+- fix for verifyConfig failing with filter settling time and sample rate conflict incorrectly.
+
+-------------------------------------------------------------------------
+0.25.7 - 2015-06-29
+- adding issue for 0 active channels in verifyConfig (fix for divide by zero error).
+
+-------------------------------------------------------------------------
+0.25.6 - 2015-06-29
+- changed order of sample rates in mscl so that they go from fastest to slowest.
+
+-------------------------------------------------------------------------
+0.25.5 - 2015-06-25
+- added checks for transmit power before applying to the Node/BaseStation.
+
+-------------------------------------------------------------------------
+0.25.4 - 2015-06-25
+- updated WirelessNode::features() and BaseStation::features() functions to throw exceptions for unsupported devices.
+
+-------------------------------------------------------------------------
+0.25.3 - 2015-06-22
+- changed changeFrequency on BaseStation and Node to reset the radio instead of cycling power (faster).
+
+-------------------------------------------------------------------------
+0.25.2 - 2015-06-16
+- previous regex change didn't solve compatibility issues. reverting back to std::regex.
+
+-------------------------------------------------------------------------
+0.25.1 - 2015-06-15
+- changed std::regex to boost::regex for better backwards compatibility (compilation on older build systems).
+
+-------------------------------------------------------------------------
+0.25.0 - 2015-06-08
+- added NodeFeatures::transmitPowers() function.
+- added BaseStationFeatures::transmitPowers() function.
+- transmitPowers functions use the region code in their logic.
+
+-------------------------------------------------------------------------
+0.24.0 - 2015-06-05
+- renamed BootMode and BootModes to DefaultMode and DefaultModes respectively.
+
+-------------------------------------------------------------------------
+0.23.0 - 2015-06-05
+- renamed stop() to setToIdle() for the WirelessNode class.
+- renamed StopNodeStatus to SetToIdleStatus.
+
+-------------------------------------------------------------------------
+0.22.7 - 2015-06-02
+- fix for throwing away non-ASPP responses when waiting on more than 1 response at a time.
+
+-------------------------------------------------------------------------
+0.22.6 - 2015-05-18
+- fix for single bytes (0xAA, 0x21) left in the buffer causing issues with parsing non-ASPP packets.
+  - this caused behavior where reading the model from a Node that was off would timeout,
+    but then a successive read of the Base Station's model would fail to be parsed because of a leftover 0xAA or 0x21.
+
+-------------------------------------------------------------------------
+0.22.5 - 2015-04-24
+- removed Error_InvalidResponse exception.
+- removed Error_InvalidChecksum exception.
+
+-------------------------------------------------------------------------
+0.22.4 - 2015-04-23
+- moved thermocouple type to Wireless Channel (get/set).
+- made "mask" functions return an empty mask when the feature isn't supported, instead of throwing an exception.
+
+-------------------------------------------------------------------------
+0.22.3 - 2015-04-23
+- updated to new method of adding ChannelGroupOption features to nodes.
+
+-------------------------------------------------------------------------
+0.22.2 - 2015-04-21
+- updated "valid" flag for GPS Correlation Timestamp in FieldParser_GpsCorrelationTimestamp.
+
+-------------------------------------------------------------------------
+0.22.1 - 2015-04-21
+- moved filter settling time functionality from WirelessNode to WirelessChannel.
+
+-------------------------------------------------------------------------
+0.22.0 - 2015-04-20
+- renamed ActiveChannels class to ChannelMask.
+
+-------------------------------------------------------------------------
+0.21.11 - 2015-04-20
+- added checks for channel # of 0 to ActiveChannels class.
+- added lastChEnabled() function to ActiveChannels class, and using it in packet parsing.
+
+-------------------------------------------------------------------------
+0.21.10 - 2015-04-17
+- removed shared hardware gain functionality.
+- updated NodeEepromHelper's hardware gain functions to get the eeprom locations using the NodeFeatures class.
+
+-------------------------------------------------------------------------
+0.21.9 - 2015-04-16
+- added hardwareGainMask() function to ChannelFeatures class.
+
+-------------------------------------------------------------------------
+0.21.8 - 2015-04-16
+- starting to move Hardware Gain to the new method of setting and getting.
+  - added a vector of Hardware Gains to the NodeFeatures class.
+  - each NodeFeatures subclass initializes its own Hardware Gains vector.
+  - added ability to get the hardwareGainMask for a channel from the NodeFeatures class.
+- added ChannelGroupOption class (internal).
+- added ChannelInfo class (internal).
+- moved NodeInfo class to the Features directory.
+
+-------------------------------------------------------------------------
+0.21.7 - 2015-04-10
+- changed Sensor Measurement Range behavior to Shared Hardware Gain behavior.
+- removed WirelessTypes::SensorMeasurementRange enum.
+
+-------------------------------------------------------------------------
+0.21.6 - 2015-04-09
+- added bootModes() to NodeFeatures class.
+- added supportsBootModes() to NodeFeatures class.
+- checking for supported boot modes in the WirelessNodeConfig class.
+
+-------------------------------------------------------------------------
+0.21.5 - 2015-04-09
+- added getLostBeaconTimeout() to WirelessNode class. (getter)
+- added lostBeaconTime() to the WirelessNodeConfig class. (setter)
+- added minLostBeaconTimeout() and maxLostBeaconTimeout() to the NodeFeatures class.
+- fix for BaseStation reset() function trapping all MSCL errors, when should only trap Error_Communication.
+- changed the behavior of as_bool() in the Value class to accept converting from other types to bool values.
+
+-------------------------------------------------------------------------
+0.21.4 - 2015-04-08
+- added minHardwareGain() and maxHardwareGain() to the ChannelFeatures class.
+- changed NodeFeatures minHardwareGain() to minSharedHardwareGain()
+- changed NodeFeatures maxHardwareGain() to maxSharedHardwareGain()
+- changed NodeFeatures normalizeHardwareGain() to normalizeSharedHardwareGain()
+- moved some of the Hardware Gain logic from the NodeFeatures classes to the HardwareGain class.
+- NodeEepromHelper no longer verifies features are supported. Functions now assume this has been validated already.
+- Functions that were using NodeEepromHelper have been updated to verify feature support before calling NodeEepromHelper.
+
+-------------------------------------------------------------------------
+0.21.3 - 2015-04-06
+- added channelNumber() function to WirelessDataPoint.
+- changed channel() to channelId() in WirelessDataPoint.
+
+-------------------------------------------------------------------------
+0.21.2 - 2015-04-06
+- changed maxSweeps, maxSweepsPerBurst, and minTimeBetweenBursts functions 
+  to take an ActiveChannels object instead of channel count.
+
+-------------------------------------------------------------------------
+0.21.1 - 2015-04-06
+- added Check Radio Interval configuration for WirelessNode.
+- added min and max Check Radio Interval functions.
+
+-------------------------------------------------------------------------
+0.21.0 - 2015-03-31
+- added WirelessChannelConfig class for setting configuration on WirelessChannels.
+- removed "setters" from WirelessChannel class.
+- changed "verifyConfig" functions to be part of the WirelessNode and BaseStation classes
+  instead of being directly in the WirelessNodeConfig and BaseStationConfig class.
+
+-------------------------------------------------------------------------
+0.20.19 - 2015-03-30
+- changed WirelessChannels over to a map of channel# to WirelessChannel pointers.
+
+-------------------------------------------------------------------------
+0.20.18 - 2015-03-30
+- fix for SyncNetworkInfo's copy constructor being broken (not compiling when trying to use).
+
+-------------------------------------------------------------------------
+0.20.17 - 2015-03-27
+- big commit on tackling CPU performance.
+  - changed serial port read timeouts on Windows to be 1 ms between bytes or 8ms total timeout.
+  - optimized ByteStream "append" functions.
+  - changed some DataBuffer constants to static constants.
+  - optimized WirelessPacket.payload() setter.
+- fix for the BoostCommunication class using a standard mutex instead of a recursive mutex.
+- updated some functions to take const refs instead of plain refs.
+
+-------------------------------------------------------------------------
+0.20.16 - 2015-03-25
+- added support for setting/getting Shared Hardware Gain.
+
+-------------------------------------------------------------------------
+0.20.15 - 2015-03-24
+- fix for SG-Link-RGD hardware gain formulas.
+
+-------------------------------------------------------------------------
+0.20.14 - 2015-03-18
+- utilizing the new generic eeprom read/write functions in the BaseStationEepromHelper class.
+- removed readEeprom_float and writeEeprom_float from the BaseStation class.
+
+-------------------------------------------------------------------------
+0.20.13 - 2015-03-18
+- added generic readEeprom and writeEeprom functions to Eeprom class which determine which
+  type of eeprom read/write to perform (uint16, float, uint32, etc.) based on the inputs.
+- utilizing the new generic eeprom read/write functions in the NodeEepromHelper class.
+- moved hardware gain bitsToGain and gainToBits functions to the HardwareGain class instead of Features.
+- removed readEeprom_float and writeEeprom_float from the WirelessNode class.
+
+-------------------------------------------------------------------------
+0.20.12 - 2015-03-12
+- added full support for configuration of BaseStation Analog Pairing options.
+
+-------------------------------------------------------------------------
+0.20.11 - 2015-03-10
+- added some Analog configuration options to BaseStation and BaseStationConfig.
+
+-------------------------------------------------------------------------
+0.20.10 - 2015-03-09
+- changed BaseStationAnalogPair's "floatData" functions to "expectFloatData".
+
+-------------------------------------------------------------------------
+0.20.9 - 2015-03-09
+- added BaseStationAnalogPair class (not currently used).
+
+-------------------------------------------------------------------------
+0.20.8 - 2015-03-09
+- added totalButtons() function to BaseStationFeatures.
+- added check to BaseStationConfig.verify() to check that the specific button is supported.
+
+-------------------------------------------------------------------------
+0.20.7 - 2015-03-06
+- fix for BaseStationConfig not verifying before applying the config.
+
+-------------------------------------------------------------------------
+0.20.6 - 2015-03-06
+- added support for setting and getting button configurations on BaseStations.
+- fix for the BaseStation.cyclePower() function not working correctly.
+
+-------------------------------------------------------------------------
+0.20.5 - 2015-03-05
+- added start of BaseStationConfig class.
+
+-------------------------------------------------------------------------
+0.20.4 - 2015-03-04
+- bug fix for missing Error_UnknownSampleRate exception in .NET
+
+-------------------------------------------------------------------------
+0.20.3 - 2015-03-03
+- support for ENV-Link Mini nodes.
+
+-------------------------------------------------------------------------
+0.20.2 - 2015-03-03
+- added support for getting and setting Thermocouple Type, Sensor Measurement Range, and Filter Settling Time for supported nodes.
+
+-------------------------------------------------------------------------
+0.20.1 - 2015-02-24
+- added "get" functions for all sampling commands that were previously in SamplingConfig.
+
+-------------------------------------------------------------------------
+0.20.0 - 2015-02-24
+- fix for certain connection errors not throwing exceptions (specifically TCP/IP connection being closed).
+- removed SamplingConfig class.
+- removed all "set" functions from WirelessNode class.
+- added WirelessNodeConfig class which is now used for all configuration options on a WirelessNode.
+
+-------------------------------------------------------------------------
+0.19.16 - 2015-02-18
+- configured tcp/ip keep-alive on Windows for a timeout of 30sec and an interval of 1sec.
+- fix for disconnecting and reconnecting causing crashes.
+
+-------------------------------------------------------------------------
+0.19.15 - 2015-02-06
+- added BaseStation.features() function to get the BaseStationFeatures, similar to WirelessNode.
+
+-------------------------------------------------------------------------
+0.19.14 - 2015-02-06
+- removed BaseStation's read eeprom version "1", as this command does not provide access to upper eeproms, so cannot be used.
+  This command is a legacy command from a long time ago (fw < 2.29). MSCL cannot support BaseStations before this firmware.
+
+-------------------------------------------------------------------------
+0.19.13 - 2015-02-05
+- added support for finding the Inertial GX4's in the listPorts() and listInertialDevices() functions.
+
+-------------------------------------------------------------------------
+0.19.12 - 2015-02-03
+- added ChannelFeatures class to get the features of a WirelessChannel.
+- added WirelessChannel.features() function for the above functionality.
+
+-------------------------------------------------------------------------
+0.19.11 - 2015-02-02
+- moved unit and equation functionality from WirelessNode to WirelessChannel.
+- enabled keep-alive for tcp/ip connections.
+- changed default timeouts from 2 seconds to 1 seconds across the board (WirelessNode, BaseStation, InertialNode).
+
+-------------------------------------------------------------------------
+0.19.10 - 2015-01-30
+- fix for Connect.reconnect() not knowing about correct exceptions in C# and Python.
+
+-------------------------------------------------------------------------
+0.19.9 - 2015-01-30
+- moved slope and offset (LinearEquation) functionality from WirelessNode to WirelessChannel.
+- added LinearEquation class.
+
+-------------------------------------------------------------------------
+0.19.8 - 2015-01-29
+- fix for InertialNode.name() function returning a name that was not supported by SensorCloud.
+
+-------------------------------------------------------------------------
+0.19.7 - 2015-01-26
+- changed WirelessNode.channels() to return a map instead of a vector, allowing easier channel lookup.
+
+-------------------------------------------------------------------------
+0.19.6 - 2015-01-23
+- added WirelessNode.channels() function which returns a vector of WirelessChannels.
+- added WirelessChannel set and get hardware gain (moved functionality from Node).
+
+-------------------------------------------------------------------------
+0.19.5 - 2015-01-22
+- fixed bug where page download responses containing 0xAA for certain reads would be parsed incorrectly.
+
+-------------------------------------------------------------------------
+0.19.4 - 2015-01-20
+- removed sleep between serial port reads
+
+-------------------------------------------------------------------------
+0.19.3 - 2015-01-20
+- fixed bug where connection errors wouldn't get thrown by getData() functions if a connection was lost (base unplugged).
+
+-------------------------------------------------------------------------
+0.19.2 - 2015-01-19
+- fixed major bug where Wireless page download command was not parsing the correct response.
+- added get/set hardware gain to WirelessNode class.
+
+-------------------------------------------------------------------------
+0.19.1 - 2015-01-15
+- moved some functionality that WirelessNode_Impl was doing itself into NodeEepromHelper.
+
+-------------------------------------------------------------------------
+0.19.0 - 2015-01-15
+- removed individual Device files. Will be using different approach in the future for "custom" options.
+- refactored NodeEepromHelper and BaseStationEepromHelper classes so that NodeInfo is lazy loaded, preventing unnecessary eeprom reads.
+- changed HardwareGain to have functions for channel hardware gain vs. node hardware gain (not currently used).
+
+-------------------------------------------------------------------------
+0.18.6 - 2015-01-14
+- fix for WirelessParser throwing away parts of non-ASPP responses if the bytes comes in across multiple reads.
+
+-------------------------------------------------------------------------
+0.18.5 - 2015-01-12
+- changing from the current way of serial port read timeouts to the MAXDWORD way in an attempt to fix large data reads being timestamped incorrectly.
+
+-------------------------------------------------------------------------
+0.18.4 - 2015-01-09
+- fixed same serial port bug as in 0.18.2, but this time it was only affecting the first serial port read.
+
+-------------------------------------------------------------------------
+0.18.3 - 2015-01-07
+- fixed a bug in the DatalogDownloader which would cause extra garbage data to be downloaded in some scenarios.
+
+-------------------------------------------------------------------------
+0.18.2 - 2015-01-06
+- fixed major bug where reading bytes from the serial port would hang on Windows.
+- fixed a bug where InertialNode.getDataPackets() would return with no data when data was available.
+
+-------------------------------------------------------------------------
+0.18.1 - 2015-01-05
+- backend changes to remove a lot of unnecessary shared_ptrs.
+
+-------------------------------------------------------------------------
+0.18.0 - 2014-12-16
+- Added BaseStation getTransmitPower and setTransmitPower functions.
+
+-------------------------------------------------------------------------
+0.17.10 - 2014-12-10
+- Added maxSampleRate rule for all nodes (4096Hz only supports 1 channel).
+- Reduced the sample rates available for GLink2 nodes (max of 10kHz instead of 60 kHz).
+- Removed maxSampleRate rule for GLink2 nodes.
+- Changed maxSampleRate function to return an enum instead of a SampleRate object.
+
+-------------------------------------------------------------------------
+0.17.9 - 2014-12-09
+- Added support for the following MIP data fields:
+    (8017) - Scaled Ambient Pressure
+    (810E) - DGPS Info
+    (810F) - DGPS Channel Status
+    (8207) - Accel Bias
+    (820C) - Accel Bias Uncertainty
+    (8216) - Gyro Scale Factor
+    (8217) - Accel Scale Factor
+    (8218) - Gyro Scale Factor Uncertainty
+    (8219) - Accel Scale Factor Uncertainty
+    (821C) - Compensated Accel
+    (8220) - Standard Atmosphere Model
+    (8221) - Pressure Altitude
+    (8230) - GPS Antenna Correction
+    (8231) - GPS Antenna Correction Uncertainty
+
+-------------------------------------------------------------------------
+0.17.8 - 2014-12-09
+- fix for InertialDataPackets being a shared_ptr to a vector when it should just be a vector.
+
+-------------------------------------------------------------------------
+0.17.7 - 2014-12-08
+- added Error_InvalidNodeConfig exception that includes the node address of the WirelessNode.
+
+-------------------------------------------------------------------------
+0.17.6 - 2014-12-05
+- Added InertilaNodeInfo model() function to get the model type as an enum.
+- Throwing out LDC packets if the channel mask indicates there are 0 active channels.
+
+-------------------------------------------------------------------------
+0.17.5 - 2014-11-26
+- Changed InertialNodeInfo's firmwareVersion from a uint16 to a Version object.
+
+-------------------------------------------------------------------------
+0.17.4 - 2014-11-21
+- Fixed listBaseStations and listInertialDevices functions to correctly identify that a 
+  device has been unplugged even when mscl has a connection open for it.
+
+-------------------------------------------------------------------------
+0.17.3 - 2014-11-20
+- Removed InertialFieldId class.
+- Separated the InertialFieldId into commands and data.
+
+-------------------------------------------------------------------------
+0.17.2 - 2014-11-14
+- Fix for typeinfo not working on Linux.
+- including <sstream> in Types.h
+- added virtual destructor to SamplingConfig class.
+- Fix for gmtime_s not working on Linux.
+
+-------------------------------------------------------------------------
+0.17.1 - 2014-10-30
+- Fix for destroying BaseStation before StopNodeStatus accessing null memory.
+
+-------------------------------------------------------------------------
+0.17.0 - 2014-10-20
+- Added InertialNode resume() function.
+
+-------------------------------------------------------------------------
+0.16.2 - 2014-10-16
+- Changed InertialNode's supportSampleRates function to take an InertialCategory instead of an InertialChannel.
+- Max hardware gain for SG-Link nodes fixed.
+
+-------------------------------------------------------------------------
+0.16.1 - 2014-10-15
+- Fix for DatalogDownloader incorrectly parsing a Version 1.0 datalogging session header.
+ 
+-------------------------------------------------------------------------
+0.16.0 - 2014-10-15
+- Added DatalogDownloader and LoggedDataSweep classes used to download logged data from a WirelessNode.
+- Standardized exception names to all be in the form: Error_MyCustomError.
+- Switched SampleRate type enums to match SensorCloud (Hertz = 1, Seconds = 0).
+- Changed CONFIG_DATA_COLLECTION_MODE to CONFIG_DATA_COLLECTION_METHOD.
+
+-------------------------------------------------------------------------
+0.15.8 - 2014-10-09
+- SyncSamplingNetwork addNode function can now take a pending SamplingConfig to use for network calculations.
+- Added retries to opening the serial port connection in the case of access denied, in case it is being closed.
+
+-------------------------------------------------------------------------
+0.15.7 - 2014-10-03
+- Added WirelessNode erase() function to erase datalogged data from a Node.
+- Added an extra check to the packet parsing integrity check functions, as a problem packet was discovered that should be thrown away but was accepted.
+
+-------------------------------------------------------------------------
+0.15.6 - 2014-10-03
+- StopNode cancel() now waits up to the baseCommandsTimeout for the canceled response. This is also the case in the destructor.
+- Fix for StopNode cancel() leaving bytes in the buffer than are then parsed when repeating a StopNode command.
+
+-------------------------------------------------------------------------
+0.15.5 - 2014-10-02
+- Added InertialNodeInfo supportedChannelFields() function to get the list of supported channel fields.
+- Added InertialNodeInfo supportsCategory() function to check whether an InertialCategory is supported.
+
+-------------------------------------------------------------------------
+0.15.4 - 2014-10-02
+- Added WirelessNode name() function to get the name that should be used for uploading to SensorCloud.
+- Added InertialNode name() function to get the name that should be used for uploading to SensorCloud.
+- Added BaseStation serial(), model(), and firmwareVersion() function.
+
+-------------------------------------------------------------------------
+0.15.3 - 2014-10-01
+- WirelessDataPoint now has a channelName() function to get the name that should be used for uploading to SensorCloud.
+- Removed WirelessChannel str() function. channelName() replaces this.
+
+-------------------------------------------------------------------------
+0.15.2 - 2014-10-01
+- InertialDataPoint now has a name() function to get the name that should be used for uploading to SensorCloud.
+- InertialNode's setCommunicationMode() no longer checks to validate that it is supported.
+
+-------------------------------------------------------------------------
+0.15.1 - 2014-09-29
+- Removed SamplingConfigTemplate pure virtual base class.
+- WirelessNode's getSamplingConfig() function no longer takes a reference to a config template, but instead returns a SamplingConfig object.
+
+-------------------------------------------------------------------------
+0.15.0 - 2014-09-29
+- Added ArmedDataloggingNetwork class used to create and trigger a wireless armed datalogging network.
+
+-------------------------------------------------------------------------
+0.14.1 - 2014-09-23
+- Changed style of static consts back to original (pre-0.13.13).
+
+-------------------------------------------------------------------------
+0.14.0 - 2014-09-22
+- Added InertialNode setToIdle() function.
+
+-------------------------------------------------------------------------
+0.13.13 - 2014-09-22
+- Changed style of static consts.
+
+-------------------------------------------------------------------------
+0.13.12 - 2014-09-17
+- Fix for StopNode canceling automatically when it shouldn't be.
+
+-------------------------------------------------------------------------
+0.13.11 - 2014-09-16
+- Added InertialNode enableDataStream command.
+- Changed InertialNode ping() function to just return a bool instead of an object.
+
+-------------------------------------------------------------------------
+0.13.10 - 2014-09-15
+- Now allow calling startSampling functions of the SyncSamplingNetwork repeatedly and it will only start nodes that haven't previously been started.
+
+-------------------------------------------------------------------------
+0.13.9 - 2014-09-15
+- Canceling the Stop Node operation when the StopNodeStatus object is destroyed (if not completed).
+- C++ output has boost static libraries linked in so they are no longer needed to be installed by the user.
+
+-------------------------------------------------------------------------
+0.13.8 - 2014-09-10
+- SamplingConfig.verify() now verifies the number of sweeps and the time between bursts.
+- Changed from distutils to bjam for building python extension.
+- Changed a lot of the boost functionality to C++11 functionality.
+- Improved resolution of getCurrentSystemTime (possibly system dependent), which is also used for stamping data without timestamps.
+- WirelessNode and BaseStation serial() functions now returns a string with '0' padding when necessary.
+- Fixed connection objects not always calling disconnect when destroying, causing crashes in rare scenarios.
+
+-------------------------------------------------------------------------
+0.13.7 - 2014-08-25
+- No longer attempting to ping a node when adding to the SyncNetwork object.
+- Nodes must have the same parent BaseStation as the SyncNetwork's master BaseStation, or an exception is thrown when added to the network.
+
+-------------------------------------------------------------------------
+0.13.6 - 2014-08-18
+- got rid of EepromValue class, eeproms stored as uint16s
+
+-------------------------------------------------------------------------
+0.13.5 - 2014-08-18
+- Added sleep() command for WirelessNode object.
+
+-------------------------------------------------------------------------
+0.13.4 - 2014-08-17
+- Added Error_Connection exception which is used in many places where Error_Communication was previously used, but makes more sense.
+
+-------------------------------------------------------------------------
+0.13.3 - 2014-08-16
+- BaseStation Eeprom reading and writing now using its own class similar to Node.
+
+-------------------------------------------------------------------------
+0.13.2 - 2014-08-16
+- Updated simple_any to use Jon's latest version with C-style function pointers.
+
+-------------------------------------------------------------------------
+0.13.1 - 2014-08-15
+- Support for starting Non-Sync Sampling mode.
+- Node EEprom reading and writing is now done within its own class.
+
+-------------------------------------------------------------------------
+0.13.0 - 2014-08-13
+- Changed how SyncSamplingNetwork class works:
+  - Creating a network now involves giving a BaseStation, not a frequency.
+  - adding a node to the network changes its parent BaseStation to the network BaseStation and
+    attempts to ping the node. If it fails, the node's parent BaseStation is set back to the original.
+  - Starting a network no longer requires sending the master BaseStation, as it is set in the constructor.
+  - Overall, this means Nodes will not automatically have their frequency changed, nor will they communicate
+    with their old parent BaseStations while in the network and applying settings.
+- Checking min time between bursts when setting SamplingConfig.
+- Ability for user to get the min time between bursts for a current configuration.
+- Allow user to create a SyncNetworkInfo default constructed object.
+- Converting legacy model numbers to new model numbers no longer throw exceptions if not recognized (now just return a cast of the value).
+- Renamed references to dataCollectionMode to dataCollectionMethod to be consistent.
+- Fix for boot mode not returning bootMode_normal when the value in EEPROM is out of range.
+
+-------------------------------------------------------------------------
+0.12.1 - 2014-08-12
+- Changed anyType to simple_any.
+
+-------------------------------------------------------------------------
+0.12.0 - 2014-08-11
+- Added Disconnect function to Connection objects.
+- Added Reconnect function to Connection objects.
+
+-------------------------------------------------------------------------
+0.11.7 - 2014-08-11
+- Changed all of the timeouts in the BaseStation / InertialNode classes to work with direct milliseconds (uint64) instead of a TimeSpan object, which seemed unnecessary.
+- Verifying that the sampling mode is one of the Sync sampling modes when adding a node to the SyncSamplingNetwork and when calling setPendingConfig on that network.
+
+-------------------------------------------------------------------------
+0.11.6 - 2014-08-08
+- Support for verifying the maximum sample rate for the number of active channels.
+- Fix for Armed Datalogging sample rates not using the correct (different) eeprom values for some sample rates.
+- not counting IEPE-Link Temperature channel in Sync Sampling calculations now (as they only transmit once per burst)
+
+-------------------------------------------------------------------------
+0.11.5 - 2014-08-05
+- Support for verifying sampling configuration options.
+- Changed how SHM packets are parsed - now create 1 StructuralHealthMonitor channel.
+- Updated to SWIG 3.0.2
+
+-------------------------------------------------------------------------
+0.11.4 - 2014-07-29
+- Fix for timeout not working on the getData function.
+- Fix for packets sending bad RSSI values instead of UNKNOWN_RSSI when not in packet.
+
+-------------------------------------------------------------------------
+0.11.3 - 2014-07-25
+- InertialDataPoint now has field() and qualifier() functions.
+- Split most inertial data points that were being stored as Vectors to be broken apart (ie. 3 floats).
+- Renamed at_float and like functions to as_floatAt functions
+- Renamed getMessageFormat and setMessageFormat to getActiveChannelFields and setActiveChannelFields.
+- Removed InertialDataPointId.
+
+-------------------------------------------------------------------------
+0.11.2 - 2014-07-23
+- Added writeStr function for writing a string of raw bytes to a Connection object.
+- Added getRawBytesStr function for getting a string of raw bytes from "raw byte mode".
+- getRawBytes and getRawBytesStr functions now take an optional timeout and an option maxBytes as parameters.
+- Basic Feature support for more Wireless Nodes: Env-Link-Mini, Env-Link-Pro, RTD-Link, TC-Link 1Ch, TC-Link 3Ch, TC-Link 6Ch.
+- WirelessNode's constructor now takes a BaseStation by constant reference.
+- Support for MSCL working on XP.
+
+-------------------------------------------------------------------------
+0.11.1 - 2014-07-22
+- Fix for crashing on destruction of connection when reading incoming data (threading/mutex issue).
+
+-------------------------------------------------------------------------
+0.11.0 - 2014-07-21
+- InertialChannel object now has a SampleRate instead of a rate decimator, which would require the user
+  to get the rate base and determine the decimator they wanted themselves. Now this is abstracted.
+- Added supportedSampleRates function to get a list of all sample rates for a specific Inertial Channel Id.
+- Changed WirelessNode's setBaseStation function to take a constant BaseStation ref.
+
+-------------------------------------------------------------------------
+0.10.3 - 2014-07-17 
+- Support for Ch4 on IEPE-Link.
+- Nodes with legacy serial numbers are identified correctly, instead of pulling from the new serial number location.
+
+-------------------------------------------------------------------------
+0.10.2 - 2014-07-16
+- Removed ReadEepromResponse, WriteEepromResponse, and BaseStation_ReadEepromResponse classes (internal).
+
+-------------------------------------------------------------------------
+0.10.1 - 2014-07-14
+- Changed "getData" functions of BaseStation and InertialNode classes to take a timeout parameter.
+
+-------------------------------------------------------------------------
+0.10.0 - 2014-07-11
+- Support for TCP/IP Connection.
+
+-------------------------------------------------------------------------
+0.9.0 - 2014-07-09
+- Support for SHM Packet.
+- Changed as_Bytes to return an actual vector of Bytes, instead of a mscl::Vector object.
+
+-------------------------------------------------------------------------
+0.8.1 - 2014-07-02
+- Removed the InertialCommunicationType enum as it wasn't correct (each device uses different values).
+- Fixed issue where using the Communication object to create a BaseStation or InertialNode would 
+  immediately set the Raw Byte Mode parsing function to that device's parsing function.
+
+-------------------------------------------------------------------------
+0.8.0 - 2014-07-02
+- Added Raw Bytes Mode for the Connection object.
+
+-------------------------------------------------------------------------
+0.7.2 - 2014-06-29
+- The BaseStation getData function now returns a shared_ptr to a vector of DataSweep objects.
+- The InertialNode getDataPackets function now returns a shared_ptr to a vector of InertialDataPacket objects.
+- The getData and getNextData functions on the BaseStation, and the getDataPackets and getNextDataPacket object are more efficient (less copying).
+- When creating a BaseStation, the frequency is no longer immediately read.
+  This means that there is no communication necessary at instantiation, however data that is collected.
+  before the frequency is known on the base station will be stamped with an unknown frequency.
+
+-------------------------------------------------------------------------
+0.7.1 - 2014-06-26
+- Support for 1 sample per 24 hours Wireless Sample Rate.
+- To fix the Connection bug below, the Connection objects now listen for data as soon as they are created. 
+  If no parsing function has been set for them (no BaseStation created), all incoming bytes will be thrown out.
+- Added LibVersion class that can be used to get the version of MSCL, including #defines and various helper functions.
+- Removed The .version() and .date() commands that were previously used to get the MSCL version.
+- Fixed Bug where reusing a Connection would fail, even after destroying the 1st BaseStation it was attached to.
+
+-------------------------------------------------------------------------
+0.7.0 - 2014-05-07
+- Added methods to get some available settings information for some node types.
+- Support for new Wireless device model numbers.
+
+-------------------------------------------------------------------------
+0.6.0 - 2014-03-25
+- Stop Node functionality
+- Changed how WirelessNode configuration is performed (moved more directly into WirelessNode class).
+- Some individual node classes to handle unique node commands (such as hardware gain).
+- "Pending Configuration" functionality to the SyncSamplingNetwork class.
+
+-------------------------------------------------------------------------
+0.5.0 2014-02-14
+- Using write eeprom cache now (if same value as was previously read, doesn't write to node or base).
+- Can disable/enable the cache per device.
+- Can read/write configuration for Node, Channel, and Sampling for "generic" nodes (no node specific functionality yet).
+- Using "pimpl idiom" for some classes so that smart pointers are no longer exposed to the user.
+
+-------------------------------------------------------------------------
+0.4.1 2013-12-31
+- Finished support for the SyncSamplingNetwork.
+- Allowing user to get detailed information about each node in the SyncSamplingNetwork.
+- Fix for some bugs in the SyncSamplingNetwork class.
+
+-------------------------------------------------------------------------
+0.4.0 2013-12-17
+- Switched from boost::any to my own customer any class (similar to boost::spirit::hold_any) to improve performance [internal].
+- Beginning of support for the SyncSamplingNetwork for creating and starting a Synchronized Sampling network.
+- Support for GetDeviceInfo and GetDeviceDescriptorSets for Inertial nodes [internal].
+- Added InertialNode.info() to get information about the InertialNode.
+
+-------------------------------------------------------------------------
+0.3.0 2013-09-26
+- Support for getting all or some data from the InertialNode object (getDataPackets(maxPackets)).
+
+-------------------------------------------------------------------------
+0.2.1 2013-09-26
+- Fix for all floating point data being incorrect endianness.
+- Support for getting all or some data from the BaseStation object (getData(maxSweeps)).

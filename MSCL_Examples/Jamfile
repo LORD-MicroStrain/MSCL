@@ -1,0 +1,4 @@
+use-project /mscl-lib : ../MSCL ;
+
+build-project Wireless ;
+build-project Inertial ;
