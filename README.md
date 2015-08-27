@@ -1,11 +1,16 @@
-# MSCL
-MicroStrain Communication Library
+To quickly get started, [download the latest pre-built binaries (1.0.0)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v1.0.0/MSCL_1.0.0.zip). 
 
-MSCL is a library to make it simple to interact with wireless and wired sensors developed by <a href="www.microstrain.com">LORD MicroStrain Sensing Systems</a>.
+### What is MSCL?
+MSCL is the MicroStrain Communication Library, developed by [LORD Microstrain Sensing Systems](http://microstrain.com) in Williston, VT. It was created to make it simple to interact with our [wireless](http://www.microstrain.com/wireless/sensors) and [wired](http://www.microstrain.com/inertial) sensors.
 
-MSCL has language bindings in C++, .NET (C#, VB, LabView, MATLAB), and Python!
+### Programming Languages
+MSCL is written in C++, but by using [SWIG](http://swig.org/) we are able to wrap it into a variety of languages.
+The library is currently available in:
+* C++
+* Python
+* .NET (C#, VB, MATLAB, LabView)
 
-# Documentation
+### Documentation
 [Quick Start Guide](http://lord-microstrain.github.io/MSCL/Documentation/Getting%20Started/index.html)
 
 [Public Documentation](http://lord-microstrain.github.io/MSCL/Documentation/MSCL_Public_Documentation/index.html) - Documentation for all of the public functionality of MSCL.
@@ -14,7 +19,7 @@ MSCL has language bindings in C++, .NET (C#, VB, LabView, MATLAB), and Python!
 
 [Example Code](https://github.com/LORD-MicroStrain/MSCL/tree/master/MSCL_Examples)
 
-# License
+#### License
 GPL 3.0 licensed
 
 Copyright (C) 2015 LORD Corporation. All Rights Reserved.
