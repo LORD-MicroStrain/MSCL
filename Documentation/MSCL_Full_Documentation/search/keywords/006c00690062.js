@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("lib",["Class"],[["LibVersion",,[[,,,,0,"File:LibVersion.h:LibVersion","CClass:LibVersion"]]]]);

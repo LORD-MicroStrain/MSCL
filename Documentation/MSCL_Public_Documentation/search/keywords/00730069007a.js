@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("siz",["Function"],[["size",,[["Vector",,,,0,"File:MicroStrain/Vector.h:Vector.size","CClass:Vector:size"]]]]);

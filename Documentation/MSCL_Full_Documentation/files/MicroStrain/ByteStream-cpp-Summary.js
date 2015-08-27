@@ -1,0 +1,1 @@
+NDFramePage.OnPageTitleLoaded("File:MicroStrain/ByteStream.cpp","ByteStream.cpp");NDSummary.OnSummaryLoaded("File:MicroStrain/ByteStream.cpp",[["C/C++","C"]],[["Functions","Function"],["Groups","Group"]],[[3612,0,1,"Functions","Functions"],[3613,0,0,"calculateSimpleChecksum","calculateSimpleChecksum"],[3614,0,0,"calculateFletcherChecksum","calculateFletcherChecksum"]]);

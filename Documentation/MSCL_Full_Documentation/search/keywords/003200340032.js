@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("242",["Constant"],[["2428",,[["WirelessModels","node_vLink_legacy&nbsp; = 2428",,"node_vlink_legacy=2428",0,"File:MicroStrain/Wireless/WirelessModels.h:WirelessModels.node_vLink_legacy=2428","CClass:WirelessModels:node_vLink_legacy=2428"]]]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("16",["Constant"],[["16",,[["ChannelMask","MAX_CHANNELS = 16",,"max_channels=16",0,"File:MicroStrain/Wireless/ChannelMask.h:ChannelMask.MAX_CHANNELS=16","CClass:ChannelMask:MAX_CHANNELS=16"]]]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("vdo",["Constant"],[["VDOP_FLAG",,[["FieldParser_DOP",,,,0,"File:MicroStrain/Inertial/Packets/InertialFieldParser_GPS.h:FieldParser_DOP.VDOP_FLAG","CClass:FieldParser_DOP:VDOP_FLAG"]]]]);

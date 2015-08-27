@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("ok",["Function"],[["ok",,[["SyncSamplingNetwork",,,,0,"File:MicroStrain/Wireless/SyncSamplingNetwork.h:SyncSamplingNetwork.ok","CClass:SyncSamplingNetwork:ok"]]]]);

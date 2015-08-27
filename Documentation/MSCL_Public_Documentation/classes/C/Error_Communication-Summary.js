@@ -1,0 +1,1 @@
+NDFramePage.OnPageTitleLoaded("CClass:Error_Communication","Error_Communication");NDSummary.OnSummaryLoaded("CClass:Error_Communication",[["C/C++","C"]],[["Classes","Class"],["Functions","Function"]],[[1262,0,0,"Error_Communication"],[1263,0,1,"Error_NodeCommunication","Error_NodeCommunication"],[1264,0,1,"Error_Communication","Error_Communication"]]);

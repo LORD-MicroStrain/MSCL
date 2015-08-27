@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("~bo",["Function"],[["~BoostCommunication",,[["BoostCommunication",,,,0,"File:Communication/BoostCommunication.h:BoostCommunication.~BoostCommunication","CClass:BoostCommunication:~BoostCommunication"]]]]);

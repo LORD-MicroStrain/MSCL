@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("gro",["Function"],[["groupSize",,[["SyncNetworkInfo",,,,0,"File:MicroStrain/Wireless/SyncNetworkInfo.h:SyncNetworkInfo.groupSize","CClass:SyncNetworkInfo:groupSize"]]]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("gai",["Function"],[["gainToBits",,[["HardwareGain",,,,0,"File:MicroStrain/Wireless/Configuration/HardwareGain.h:HardwareGain.gainToBits","CClass:HardwareGain:gainToBits"]]]]);

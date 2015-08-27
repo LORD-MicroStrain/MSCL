@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("pag",["Constant","Class"],[["PAGE_SIZE",,[["NodeMemory",,,,0,"File:MicroStrain/Wireless/NodeMemory.h:NodeMemory.PAGE_SIZE","CClass:NodeMemory:PAGE_SIZE"]]],["PageDownload",,[[,,,,1,"File:MicroStrain/Wireless/Commands/PageDownload.h:PageDownload(2)","CClass:PageDownload"]]]]);

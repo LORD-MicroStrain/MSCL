@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("raw",["Function"],[["rawByteMode",,[["Connection",,,,0,"File:Communication/Connection.h:Connection.rawByteMode","CClass:Connection:rawByteMode"]]],["rawMode",,[["FatigueOptions",,,,0,"File:MicroStrain/Wireless/Configuration/FatigueOptions.h:FatigueOptions.rawMode","CClass:FatigueOptions:rawMode"]]]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("tdm",["Function"],[["tdmaAddress",,[["SyncNetworkInfo",,,,0,"File:MicroStrain/Wireless/SyncNetworkInfo.h:SyncNetworkInfo.tdmaAddress","CClass:SyncNetworkInfo:tdmaAddress"],["SyncNodeConfig",,,,0,"File:MicroStrain/Wireless/Configuration/SyncNodeConfig.h:SyncNodeConfig.tdmaAddress","CClass:SyncNodeConfig:tdmaAddress"]]]]);

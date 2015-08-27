@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("id",["Function"],[["id",,[["ConfigIssue",,,,0,"File:MicroStrain/Wireless/Configuration/ConfigIssue.h:ConfigIssue.id","CClass:ConfigIssue:id"],["WirelessChannel",,,,0,"File:MicroStrain/Wireless/WirelessChannel.h:WirelessChannel.id","CClass:WirelessChannel:id"]]]]);

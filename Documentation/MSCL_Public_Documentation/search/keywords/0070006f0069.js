@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("poi",["Function"],[["poissonsRatio",,[["FatigueOptions",,,,0,"File:MicroStrain/Wireless/Configuration/FatigueOptions.h:FatigueOptions.poissonsRatio","CClass:FatigueOptions:poissonsRatio"]]]]);

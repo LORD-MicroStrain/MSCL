@@ -1,0 +1,1 @@
+NDFramePage.OnPageTitleLoaded("CClass:SetToIdle","SetToIdle");NDSummary.OnSummaryLoaded("CClass:SetToIdle",[["C/C++","C"]],[["Classes","Class"],["Functions","Function"],["Groups","Group"]],[[1210,0,0,"SetToIdle"],[1211,0,2,"Functions","Functions"],[1212,0,1,"buildCommand","buildCommand"]]);

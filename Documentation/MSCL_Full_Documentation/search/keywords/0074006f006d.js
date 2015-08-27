@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("tom",["Function"],[["toMask",,[["ChannelMask",,,,0,"File:MicroStrain/Wireless/ChannelMask.h:ChannelMask.toMask","CClass:ChannelMask:toMask"]]]]);

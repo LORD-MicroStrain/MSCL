@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("hor",["Constant"],[["HORIZ_ACCUR_FLAG",,[["FieldParser_LLHPosition",,,,0,"File:MicroStrain/Inertial/Packets/InertialFieldParser_GPS.h:FieldParser_LLHPosition.HORIZ_ACCUR_FLAG","CClass:FieldParser_LLHPosition:HORIZ_ACCUR_FLAG"]]]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("hdo",["Constant"],[["HDOP_FLAG",,[["FieldParser_DOP",,,,0,"File:MicroStrain/Inertial/Packets/InertialFieldParser_GPS.h:FieldParser_DOP.HDOP_FLAG","CClass:FieldParser_DOP:HDOP_FLAG"]]]]);

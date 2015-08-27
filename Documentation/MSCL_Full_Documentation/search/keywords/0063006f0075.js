@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("cou",["Function"],[["count",,[["Bin",,,,0,"File:Histogram.h:Bin.count","CClass:Bin:count"],["ChannelMask",,,,0,"File:MicroStrain/Wireless/ChannelMask.h:ChannelMask.count","CClass:ChannelMask:count"]]]]);

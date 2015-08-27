@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("azi",["Constant"],[["AZIMUTH_VALID",,[["FieldParser_SpaceVehicleInfo",,,,0,"File:MicroStrain/Inertial/Packets/InertialFieldParser_GPS.h:FieldParser_SpaceVehicleInfo.AZIMUTH_VALID","CClass:FieldParser_SpaceVehicleInfo:AZIMUTH_VALID"]]]]);

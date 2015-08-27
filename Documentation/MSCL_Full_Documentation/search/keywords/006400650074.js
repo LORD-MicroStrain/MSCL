@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("det",["Function"],[["determineReadWriteVersion",,[["NodeEeprom",,,,0,"File:MicroStrain/Wireless/Configuration/NodeEeprom.h:NodeEeprom.determineReadWriteVersion","CClass:NodeEeprom:determineReadWriteVersion"]]]]);

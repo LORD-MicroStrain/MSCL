@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("era",["Function"],[["erase",,[["WirelessNode",,,,0,"File:MicroStrain/Wireless/WirelessNode.h:WirelessNode.erase","CClass:WirelessNode:erase"]]]]);

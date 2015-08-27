@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("m",["Function"],[["m",,[["SnCurveSegment",,,,0,"File:MicroStrain/Wireless/Configuration/FatigueOptions.h:SnCurveSegment.m","CClass:SnCurveSegment:m"]]]]);

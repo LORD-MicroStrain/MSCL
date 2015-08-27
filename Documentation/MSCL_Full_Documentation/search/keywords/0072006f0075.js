@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("rou",["Function"],[["round",,[["Utils",,,,0,"File:Utils.h:Utils.round","CClass:Utils:round"]]],["roundDownToNearestBase2",,[["Utils",,,,0,"File:Utils.h:Utils.roundDownToNearestBase2","CClass:Utils:roundDownToNearestBase2"]]],["roundUpToNearestBase2",,[["Utils",,,,0,"File:Utils.h:Utils.roundUpToNearestBase2","CClass:Utils:roundUpToNearestBase2"]]]]);

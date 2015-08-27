@@ -1,0 +1,1 @@
+NDContentPage.OnToolTipsLoaded({45:"<div class=\"NDToolTip TClass LC\"><div class=\"NDClassPrototype\" id=\"NDClassPrototype45\"><div class=\"CPEntry TClass Current\"><div class=\"CPName\">InertialDataPacket</div></div></div><div class=\"TTSummary\">An Inertial Data Packet that contains both valid and invalid data from an Inertial Device.</div></div>"});

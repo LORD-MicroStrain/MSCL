@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("nat",["Section"],[["NativeSerialPort_linux",,[[,,,,0,"File:Communication/NativeSerialPort_linux.h:NativeSerialPort_linux"]]],["NativeSerialPort_Win32",,[[,,,,0,"File:Communication/NativeSerialPort_Win32.h:NativeSerialPort_Win32"]]]]);

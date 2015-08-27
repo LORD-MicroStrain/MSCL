@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("mat",["Class"],[["Matrix",,[[,,,,0,"File:MicroStrain/Matrix.h:Matrix","CClass:Matrix"]]]]);

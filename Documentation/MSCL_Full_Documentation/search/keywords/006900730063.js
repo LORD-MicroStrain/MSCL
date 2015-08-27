@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("isc",["Function"],[["isChannelGroupIssue",,[["ConfigIssue",,,,0,"File:MicroStrain/Wireless/Configuration/ConfigIssue.h:ConfigIssue.isChannelGroupIssue","CClass:ConfigIssue:isChannelGroupIssue"]]]]);

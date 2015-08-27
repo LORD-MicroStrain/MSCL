@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("isa",["Function"],[["isAnySet",,[["WirelessNodeConfig",,,,0,"File:MicroStrain/Wireless/Configuration/WirelessNodeConfig.h:WirelessNodeConfig.isAnySet","CClass:WirelessNodeConfig:isAnySet"]]]]);

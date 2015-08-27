@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("cod",["Function"],[["code",,[["Error_Connection",,,,0,"File:Exceptions.h:Error_Connection.code","CClass:Error_Connection:code"],["Error_InertialCmdFailed",,,,0,"File:Exceptions.h:Error_InertialCmdFailed.code","CClass:Error_InertialCmdFailed:code"]]]]);

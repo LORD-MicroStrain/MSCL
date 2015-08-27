@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("arm",["Class"],[["ArmedDataloggingNetwork",,[[,,,,0,"File:MicroStrain/Wireless/ArmedDataloggingNetwork.h:ArmedDataloggingNetwork","CClass:ArmedDataloggingNetwork"]]]]);

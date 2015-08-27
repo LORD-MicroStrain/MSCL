@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("maj",["Function"],[["major",,[["LibVersion",,,,0,"File:LibVersion.h:LibVersion.major","CClass:LibVersion:major"]]],["majorPart",,[["Version",,,,0,"File:Version.h:Version.majorPart","CClass:Version:majorPart"]]]]);

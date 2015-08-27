@@ -1,0 +1,1 @@
+NDSummary.OnToolTipsLoaded("File:MicroStrain/Wireless/BaseStation_Impl.cpp",{3231:"<div class=\"NDToolTip TFunction LC\"><div id=\"NDPrototype3231\" class=\"NDPrototype NoParameterForm\"><span class=\"SHKeyword\">bool</span> BaseStation_Impl::ping()</div><div class=\"TTSummary\">pings the base station</div></div>"});

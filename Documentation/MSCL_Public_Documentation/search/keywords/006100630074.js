@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("act",["Function"],[["activeChannels",,[["WirelessNodeConfig",,,,0,"File:MicroStrain/Wireless/Configuration/WirelessNodeConfig.h:WirelessNodeConfig.activeChannels","CClass:WirelessNodeConfig:activeChannels"]]]]);

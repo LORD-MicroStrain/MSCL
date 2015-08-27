@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("ass",["Function"],[["asString",,[["LibVersion",,,,0,"File:LibVersion.h:LibVersion.asString","CClass:LibVersion:asString"]]]]);

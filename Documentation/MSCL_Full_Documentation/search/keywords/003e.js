@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded(">",["Operator"],[["&gt;",">",[["ChannelMask",,,">",0,"File:MicroStrain/Wireless/ChannelMask.h:ChannelMask.>","CClass:ChannelMask:>"]]]]);

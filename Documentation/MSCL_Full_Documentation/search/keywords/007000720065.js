@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("pre",["Function"],[["prettyStr",,[["SampleRate",,,,0,"File:MicroStrain/SampleRate.h:SampleRate.prettyStr","CClass:SampleRate:prettyStr"]]]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("sto",["Function"],[["storedAs",,[["Value",,,,0,"File:Value.h:Value.storedAs","CClass:Value:storedAs"]]]]);

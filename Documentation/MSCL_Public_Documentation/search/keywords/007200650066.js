@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("ref",["Function"],[["refresh",,[["SyncSamplingNetwork",,,,0,"File:MicroStrain/Wireless/SyncSamplingNetwork.h:SyncSamplingNetwork.refresh","CClass:SyncSamplingNetwork:refresh"]]]]);

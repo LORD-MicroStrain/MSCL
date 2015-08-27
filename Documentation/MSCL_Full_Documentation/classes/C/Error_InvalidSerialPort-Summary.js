@@ -1,0 +1,1 @@
+NDFramePage.OnPageTitleLoaded("CClass:Error_InvalidSerialPort","Error_InvalidSerialPort");NDSummary.OnSummaryLoaded("CClass:Error_InvalidSerialPort",[["C/C++","C"]],[["Classes","Class"],["Functions","Function"],["Groups","Group"]],[[3932,0,0,"Error_InvalidSerialPort"],[3933,0,2,"Functions","Functions"],[3934,0,1,"Error_InvalidSerialPort","Error_InvalidSerialPort"]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("suc",["Function"],[["success",,[["InertialCmdResponse",,,,0,"File:MicroStrain/Inertial/Commands/InertialCmdResponse.h:InertialCmdResponse.success","CClass:InertialCmdResponse:success"],["PingResponse",,,,0,"File:MicroStrain/Wireless/Commands/LongPing.h:PingResponse.success","CClass:PingResponse:success"]]]]);

@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("dis",["Function"],[["disableBeacon",,[["BaseStation",,,,0,"File:MicroStrain/Wireless/BaseStation.h:BaseStation.disableBeacon","CClass:BaseStation:disableBeacon"]]],["disconnect",,[["Connection",,,,0,"File:Communication/Connection.h:Connection.disconnect","CClass:Connection:disconnect"]]]]);

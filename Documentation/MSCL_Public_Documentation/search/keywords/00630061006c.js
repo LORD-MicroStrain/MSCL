@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("cal",["Enumeration"],[["CalCoef_EquationType",,[["WirelessTypes",,,,0,"File:MicroStrain/Wireless/WirelessTypes.h:WirelessTypes.CalCoef_EquationType","CClass:WirelessTypes:CalCoef_EquationType"]]],["CalCoef_Unit",,[["WirelessTypes",,,,0,"File:MicroStrain/Wireless/WirelessTypes.h:WirelessTypes.CalCoef_Unit","CClass:WirelessTypes:CalCoef_Unit"]]]]);

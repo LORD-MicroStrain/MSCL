@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("per",["Function"],[["percentBandwidth",,[["SyncNetworkInfo",,,,0,"File:MicroStrain/Wireless/SyncNetworkInfo.h:SyncNetworkInfo.percentBandwidth","CClass:SyncNetworkInfo:percentBandwidth"],["SyncSamplingNetwork",,,,0,"File:MicroStrain/Wireless/SyncSamplingNetwork.h:SyncSamplingNetwork.percentBandwidth","CClass:SyncSamplingNetwork:percentBandwidth"]]]]);

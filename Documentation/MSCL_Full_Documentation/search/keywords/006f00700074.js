@@ -1,0 +1,1 @@
+NDSearch.OnPrefixDataLoaded("opt",["Function"],[["optimizeBandwidth",,[["SyncSamplingNetwork",,,,0,"File:MicroStrain/Wireless/SyncSamplingNetwork.h:SyncSamplingNetwork.optimizeBandwidth","CClass:SyncSamplingNetwork:optimizeBandwidth"]]]]);
