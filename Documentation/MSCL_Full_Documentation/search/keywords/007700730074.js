@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("wst",["Function"],[["wstring_to_string",,[["Utils_Win32",,,,0,"File:Utils_Win32.h:Utils_Win32.wstring_to_string","CClass:Utils_Win32:wstring_to_string"]]]]);

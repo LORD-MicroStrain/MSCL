@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("2",["Constant"],[["2",,[["SyncNetworkInfo","status_DoesNotFit&nbsp; = 2",,"status_doesnotfit=2",0,"File:MicroStrain/Wireless/SyncNetworkInfo.h:SyncNetworkInfo.status_DoesNotFit=2","CClass:SyncNetworkInfo:status_DoesNotFit=2"]]]]);

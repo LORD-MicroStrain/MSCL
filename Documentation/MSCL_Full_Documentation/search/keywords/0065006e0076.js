@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("env",["Constant"],[["ENV-Link",,[["AvailableSampleRates","ENV-Link SampleRates",,,0,"File:MicroStrain/Wireless/Features/AvailableSampleRates.h:AvailableSampleRates.ENV-Link_SampleRates","CClass:AvailableSampleRates:ENV-Link_SampleRates"]]]]);

@@ -1,1 +1,0 @@
-NDSummary.OnToolTipsLoaded("CClass:FieldParser_EstimatedAngularRate",{630:"<div class=\"NDToolTip TClass LC\"><div class=\"NDClassPrototype\" id=\"NDClassPrototype630\"><div class=\"CPEntry TClass Current\"><div class=\"CPName\">FieldParser_EstimatedAngularRate</div></div></div><div class=\"TTSummary\">The field parser for Estimated Angular Rate data</div></div>"});

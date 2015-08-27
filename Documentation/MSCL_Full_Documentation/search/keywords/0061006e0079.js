@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("any",["Function","Type"],[["anyChannelGroupSupports",,[["NodeFeatures",,,,0,"File:MicroStrain/Wireless/Features/NodeFeatures.h:NodeFeatures.anyChannelGroupSupports","CClass:NodeFeatures:anyChannelGroupSupports"]]],["anyType",,[[,,,,1,"File:Types.h:anyType"]]]]);

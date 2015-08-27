@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("ele",["Constant"],[["ELEVATION_VALID",,[["FieldParser_SpaceVehicleInfo",,,,0,"File:MicroStrain/Inertial/Packets/InertialFieldParser_GPS.h:FieldParser_SpaceVehicleInfo.ELEVATION_VALID","CClass:FieldParser_SpaceVehicleInfo:ELEVATION_VALID"]]]]);

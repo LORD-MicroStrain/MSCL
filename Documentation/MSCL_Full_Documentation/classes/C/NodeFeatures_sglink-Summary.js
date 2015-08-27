@@ -1,1 +1,0 @@
-NDFramePage.OnPageTitleLoaded("CClass:NodeFeatures_sglink","NodeFeatures_sglink");NDSummary.OnSummaryLoaded("CClass:NodeFeatures_sglink",[["C/C++","C"]],[["Classes","Class"],["Functions","Function"],["Groups","Group"]],[[1901,0,0,"NodeFeatures_sglink"],[1902,0,2,"Functions","Functions"],[1903,0,1,"NodeFeatures_sglink","NodeFeatures_sglink"]]);

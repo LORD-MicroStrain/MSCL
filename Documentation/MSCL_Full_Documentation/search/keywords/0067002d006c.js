@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("g-l",["Constant"],[["G-Link-2",,[["AvailableSampleRates","G-Link-2 Sample Rates",,,0,"File:MicroStrain/Wireless/Features/AvailableSampleRates.h:AvailableSampleRates.G-Link-2_Sample_Rates","CClass:AvailableSampleRates:G-Link-2_Sample_Rates"]]]]);

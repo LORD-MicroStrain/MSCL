@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("sho",["Class"],[["ShortPing",,[[,,,,0,"File:MicroStrain/Wireless/Commands/ShortPing.h:ShortPing","CClass:ShortPing"]]]]);

@@ -1,1 +1,0 @@
-NDSummary.OnToolTipsLoaded("CClass:InertialPacketInfo",{412:"<div class=\"NDToolTip TStruct LC\"><div class=\"TTSummary\">Contains constants representing information on Inertial MIP Packets</div></div>"});

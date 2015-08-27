@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("ava",["Class"],[["AvailableSampleRates",,[[,,,,0,"File:MicroStrain/Wireless/Features/AvailableSampleRates.h:AvailableSampleRates","CClass:AvailableSampleRates"]]]]);

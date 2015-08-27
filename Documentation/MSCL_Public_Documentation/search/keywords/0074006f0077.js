@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("tow",["Function"],[["toWirelessSampleRate",,[["SampleRate",,,,0,"File:MicroStrain/SampleRate.h:SampleRate.toWirelessSampleRate","CClass:SampleRate:toWirelessSampleRate"]]]]);

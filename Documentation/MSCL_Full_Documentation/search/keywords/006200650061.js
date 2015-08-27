@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("bea",["Function"],[["beaconStartTime",,[["Response",,,,0,"File:MicroStrain/Wireless/Commands/BaseStation_SetBeacon.h:Response.beaconStartTime","CClass:Response:beaconStartTime"]]]]);

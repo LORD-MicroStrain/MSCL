@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("dri",["Constant"],[["DRIFT_VALID",,[["FieldParser_ClockInfo",,,,0,"File:MicroStrain/Inertial/Packets/InertialFieldParser_GPS.h:FieldParser_ClockInfo.DRIFT_VALID","CClass:FieldParser_ClockInfo:DRIFT_VALID"]]]]);

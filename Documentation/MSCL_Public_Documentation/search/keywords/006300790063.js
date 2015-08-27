@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("cyc",["Function"],[["cyclePower",,[["BaseStation",,,,0,"File:MicroStrain/Wireless/BaseStation.h:BaseStation.cyclePower","CClass:BaseStation:cyclePower"],["WirelessNode",,,,0,"File:MicroStrain/Wireless/WirelessNode.h:WirelessNode.cyclePower","CClass:WirelessNode:cyclePower"]]]]);

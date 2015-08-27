@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("pc",["Variable"],[["pc",,[["DeliveryStopFlags",,,,0,"File:MicroStrain/Wireless/DeliveryStopFlags.h:DeliveryStopFlags.pc","CClass:DeliveryStopFlags:pc"]]]]);

@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("emp",["Function"],[["empty",,[["ByteStream",,,,0,"File:MicroStrain/ByteStream.h:ByteStream.empty","CClass:ByteStream:empty"]]]]);

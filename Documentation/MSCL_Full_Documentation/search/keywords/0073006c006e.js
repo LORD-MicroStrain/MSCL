@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("sln",["Constant"],[["SLN_FLAG",,[["FieldParser_MagneticModelSolution",,,,0,"File:MicroStrain/Inertial/Packets/InertialFieldParser_EstFilter.h:FieldParser_MagneticModelSolution.SLN_FLAG","CClass:FieldParser_MagneticModelSolution:SLN_FLAG"]]]]);

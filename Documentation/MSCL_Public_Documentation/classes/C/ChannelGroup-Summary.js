@@ -1,1 +1,0 @@
-NDFramePage.OnPageTitleLoaded("CClass:ChannelGroup","ChannelGroup");NDSummary.OnSummaryLoaded("CClass:ChannelGroup",[["C/C++","C"]],[["Classes","Class"],["Functions","Function"],["Types","Type"]],[[493,0,0,"ChannelGroup"],[494,0,1,"channels","channels"],[495,0,1,"name","name"],[496,0,1,"settings","settings"],[497,0,2,"ChannelGroups","ChannelGroups"]]);

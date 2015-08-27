@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("tic",["Function"],[["tick",,[["DataSweep",,,,0,"File:MicroStrain/Wireless/DataSweep.h:DataSweep.tick","CClass:DataSweep:tick"],["LoggedDataSweep",,,,0,"File:MicroStrain/Wireless/LoggedDataSweep.h:LoggedDataSweep.tick","CClass:LoggedDataSweep:tick"]]]]);

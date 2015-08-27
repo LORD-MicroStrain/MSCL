@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("~ba",["Function"],[["~BaseStation",,[["BaseStation",,,,0,"File:MicroStrain/Wireless/BaseStation.h:BaseStation.~BaseStation","CClass:BaseStation:~BaseStation"]]],["~BaseStation_Impl",,[["BaseStation_Impl",,,,0,"File:MicroStrain/Wireless/BaseStation_Impl.h:BaseStation_Impl.~BaseStation_Impl","CClass:BaseStation_Impl:~BaseStation_Impl"]]]]);

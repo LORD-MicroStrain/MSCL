@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("gyr",["Constant"],[["GYRO_FLAG",,[["FieldParser_EstimatedGyroBias",,,,0,"File:MicroStrain/Inertial/Packets/InertialFieldParser_EstFilter.h:FieldParser_EstimatedGyroBias.GYRO_FLAG","CClass:FieldParser_EstimatedGyroBias:GYRO_FLAG"]]]]);

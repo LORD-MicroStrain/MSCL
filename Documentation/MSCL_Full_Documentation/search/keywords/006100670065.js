@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("age",["Constant"],[["AGE_VALID",,[["FieldParser_DGPSChannelStatus",,,,0,"File:MicroStrain/Inertial/Packets/InertialFieldParser_GPS.h:FieldParser_DGPSChannelStatus.AGE_VALID","CClass:FieldParser_DGPSChannelStatus:AGE_VALID"]]]]);

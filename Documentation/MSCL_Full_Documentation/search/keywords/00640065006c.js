@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("del",["Class","Function"],[["DeliveryStopFlags",,[[,,,,0,"File:MicroStrain/Wireless/DeliveryStopFlags.h:DeliveryStopFlags","CClass:DeliveryStopFlags"],["WirelessPacket","deliveryStopFlags",,,1,"File:MicroStrain/Wireless/Packets/WirelessPacket.h:WirelessPacket.deliveryStopFlags","CClass:WirelessPacket:deliveryStopFlags"]]]]);

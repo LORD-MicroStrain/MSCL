@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("hig",["Function","Class"],[["highCapacity",,[["SyncSamplingNetwork",,,,0,"File:MicroStrain/Wireless/SyncSamplingNetwork.h:SyncSamplingNetwork.highCapacity","CClass:SyncSamplingNetwork:highCapacity"]]],["HighResClock",,[[,,,,1,"File:HighResClock.h:HighResClock","CClass:HighResClock"]]]]);

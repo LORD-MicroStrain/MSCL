@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("vec",["Class"],[["Vector",,[[,,,,0,"File:MicroStrain/Vector.h:Vector","CClass:Vector"]]]]);

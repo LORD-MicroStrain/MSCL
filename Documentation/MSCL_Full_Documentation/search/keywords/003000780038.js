@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("0x8",["Constant"],[["0x82",,[["GetDeviceDescriptorSets","FIELD_DATA_BYTE&nbsp; = 0x82",,"field_data_byte=0x82",0,"File:MicroStrain/Inertial/Commands/GetDeviceDescriptorSets.h:GetDeviceDescriptorSets.FIELD_DATA_BYTE=0x82","CClass:GetDeviceDescriptorSets:FIELD_DATA_BYTE=0x82"]]]]);

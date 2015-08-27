@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("mem",["Constant"],[["Memory",,[["NodeMemory","Node Memory Constants",,,0,"File:MicroStrain/Wireless/NodeMemory.h:NodeMemory.Node_Memory_Constants","CClass:NodeMemory:Node_Memory_Constants"]]]]);

@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("~by",["Function"],[["~ByteStream",,[["ByteStream",,,,0,"File:MicroStrain/ByteStream.h:ByteStream.~ByteStream","CClass:ByteStream:~ByteStream"]]]]);

@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("bia",["Constant"],[["BIAS_VALID",,[["FieldParser_ClockInfo",,,,0,"File:MicroStrain/Inertial/Packets/InertialFieldParser_GPS.h:FieldParser_ClockInfo.BIAS_VALID","CClass:FieldParser_ClockInfo:BIAS_VALID"]]]]);

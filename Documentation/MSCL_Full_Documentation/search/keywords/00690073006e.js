@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("isn",["Function"],[["isNaN",,[["Utils",,,,0,"File:Utils.h:Utils.isNaN","CClass:Utils:isNaN"]]]]);

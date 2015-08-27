@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("pat",["Function"],[["patch",,[["LibVersion",,,,0,"File:LibVersion.h:LibVersion.patch","CClass:LibVersion:patch"]]],["patchPart",,[["Version",,,,0,"File:Version.h:Version.patchPart","CClass:Version:patchPart"]]]]);

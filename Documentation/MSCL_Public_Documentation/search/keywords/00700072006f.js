@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("pro",["Function"],[["processingRate",,[["StructuralHealth",,,,0,"File:MicroStrain/Wireless/StructuralHealth.h:StructuralHealth.processingRate","CClass:StructuralHealth:processingRate"]]]]);

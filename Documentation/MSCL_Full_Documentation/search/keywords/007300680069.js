@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("shi",["Function"],[["shiftExtraToStart",,[["DataBuffer",,,,0,"File:MicroStrain/DataBuffer.h:DataBuffer.shiftExtraToStart","CClass:DataBuffer:shiftExtraToStart"]]]]);

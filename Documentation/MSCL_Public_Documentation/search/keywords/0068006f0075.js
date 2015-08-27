@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("hou",["Function"],[["Hours",,[["TimeSpan",,,,0,"File:TimeSpan.h:TimeSpan.Hours","CClass:TimeSpan:Hours"]]]]);

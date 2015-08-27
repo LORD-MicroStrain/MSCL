@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("bro",["Constant"],[["BROADCAST_NODE_ADDRESS",,[["BaseStation",,,,0,"File:MicroStrain/Wireless/BaseStation.h:BaseStation.BROADCAST_NODE_ADDRESS","CClass:BaseStation:BROADCAST_NODE_ADDRESS"]]]]);

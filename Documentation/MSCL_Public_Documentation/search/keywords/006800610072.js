@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("har",["Function"],[["hardwareGain",,[["WirelessNodeConfig",,,,0,"File:MicroStrain/Wireless/Configuration/WirelessNodeConfig.h:WirelessNodeConfig.hardwareGain","CClass:WirelessNodeConfig:hardwareGain"]]]]);

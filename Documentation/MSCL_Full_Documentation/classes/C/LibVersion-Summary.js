@@ -1,1 +1,0 @@
-NDFramePage.OnPageTitleLoaded("CClass:LibVersion","LibVersion");NDSummary.OnSummaryLoaded("CClass:LibVersion",[["C/C++","C"]],[["Classes","Class"],["Functions","Function"],["Groups","Group"]],[[3839,0,0,"LibVersion"],[3840,0,2,"Functions","Functions"],[3841,0,1,"major","major"],[3842,0,1,"minor","minor"],[3843,0,1,"patch","patch"],[3844,0,1,"asString","asString"]]);

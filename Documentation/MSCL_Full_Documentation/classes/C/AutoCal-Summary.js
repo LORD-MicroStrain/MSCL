@@ -1,1 +1,0 @@
-NDFramePage.OnPageTitleLoaded("CClass:AutoCal","AutoCal");NDSummary.OnSummaryLoaded("CClass:AutoCal",[["C/C++","C"]],[["Classes","Class"],["Functions","Function"],["Groups","Group"]],[[1396,0,0,"AutoCal"],[1397,0,2,"Functions","Functions"],[1398,0,1,"buildCommand_shmLink","buildCommand_shmLink"]]);

@@ -1,1 +1,0 @@
-NDSearch.OnPrefixDataLoaded("slo",["Function"],[["slope",,[["LinearEquation",,,,0,"File:MicroStrain/Wireless/LinearEquation.h:LinearEquation.slope","CClass:LinearEquation:slope"]]]]);
