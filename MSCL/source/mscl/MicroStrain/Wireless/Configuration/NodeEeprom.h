@@ -15,6 +15,7 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 
 #include "Eeprom.h"
 #include "mscl/MicroStrain/Wireless/BaseStation.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -36,8 +37,9 @@ namespace mscl
 		//Parameters:
 		//	nodeAddress - The address of the Node to access the Eeprom of.
 		//	base - The <BaseStation> to use for communicating with the Node.
+		//	protocol - The <WirelessProtocol> that is supported by the Node.
 		//	useCache - Whether or not to use the eeprom cache.
-		NodeEeprom(NodeAddress nodeAddress, const BaseStation& base, bool useCache = true);
+		NodeEeprom(NodeAddress nodeAddress, const BaseStation& base, const WirelessProtocol& protocol, bool useCache = true);
 
 		virtual ~NodeEeprom() {};
 
@@ -46,22 +48,15 @@ namespace mscl
 		//	The address of the <WirelessNode> to access the eeprom of.
 		NodeAddress m_nodeAddress;
 
-		//Variable: m_readWriteVersion
-		//	Gets the version of the read write eeprom commands to use for the Node.
-		uint8 m_readWriteVersion;
-
 		//Variable: m_baseStation
 		//	The <BaseStation> to use for communication with the Node.
 		BaseStation m_baseStation;
 
-	protected:
-		//Function: determineReadWriteVersion
-		//	Determines the read/write eeprom command version that this Node supports, updating m_readWriteVersion accordingly.
-		//
-		//Returns:
-		//	true if the read/write version was updated successfully, false if it failed to be found (comm error).
-		bool determineReadWriteVersion();
+		//Variable: m_protocol
+		//	The <WirelessProtocol> that is supported by the Node.
+		const WirelessProtocol* m_protocol;
 
+	protected:
 		//Function: updateCacheFromDevice
 		//	Attempts to update the cache by reading the value from the Node with the nodeAddress given at initialization.
 		//	Any values that are read from the Node will be updated in the cache.

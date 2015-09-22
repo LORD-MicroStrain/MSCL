@@ -20,70 +20,12 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 
 namespace mscl
 {
-	NodeEeprom::NodeEeprom(NodeAddress nodeAddress, const BaseStation& base, bool useCache) : //useCache=true
+	NodeEeprom::NodeEeprom(NodeAddress nodeAddress, const BaseStation& base, const WirelessProtocol& protocol, bool useCache): //useCache=true
 		Eeprom(useCache),
 		m_nodeAddress(nodeAddress),
-		m_readWriteVersion(0),
-		m_baseStation(base)
+		m_baseStation(base),
+		m_protocol(&protocol)
 	{ }
-
-	bool NodeEeprom::determineReadWriteVersion()
-	{
-		uint8 originalVersion = m_readWriteVersion;
-
-		uint16 fwVersionEeprom = NodeEepromMap::FIRMWARE_VER.location();
-		uint16 fwValue = 0;
-
-		//check if the value is already in the cache
-		if(m_eepromCache.find(fwVersionEeprom) == m_eepromCache.end())
-		{
-			//value was not found in the cache
-
-			//set the version to 2
-			m_readWriteVersion = 2;
-
-			//try to read using v2
-			if(!updateCacheFromDevice(fwVersionEeprom))
-			{
-				//failed to read with version 2
-
-				//set the version to 1
-				m_readWriteVersion = 1;
-
-				//try to read using v1
-				if(!updateCacheFromDevice(fwVersionEeprom, false))
-				{
-					//failed to read with version 1
-
-					//set the read/write version back to its original value
-					m_readWriteVersion = originalVersion;
-
-					return false;
-				}
-			}
-		}
-
-		//if we got here, we successfully got the firmware version somewhere
-
-		//value was updated in the cache successfully, now read it out
-		readCache(fwVersionEeprom, fwValue);
-
-		//build the fw version currently found on the node
-		Version fwVersion(Utils::msb(fwValue), Utils::lsb(fwValue));
-
-		static const Version MIN_FW_EEPROM2(8, 21);
-
-		if(fwVersion >= MIN_FW_EEPROM2)
-		{
-			m_readWriteVersion = 2;
-		}
-		else
-		{
-			m_readWriteVersion = 1;
-		}
-
-		return true;
-	}
 
 	bool NodeEeprom::updateCacheFromDevice(uint16 location, bool canUseGroupDownload)
 	{
@@ -108,7 +50,7 @@ namespace mscl
 
 				//attempt to download the page from the Node
 				ByteStream downloadResult;
-				if(m_baseStation.node_pageDownload(m_nodeAddress, pageIndex, downloadResult))
+				if(m_baseStation.node_pageDownload(*m_protocol, m_nodeAddress, pageIndex, downloadResult))
 				{
 					//parse the info out of the eeprom page, which updates the map values
 					parseEepromPage(downloadResult, pageIndex);
@@ -122,20 +64,8 @@ namespace mscl
 		//if we got here, we need to read the eeprom value individually	from the node
 		uint16 eepromVal;
 
-		//if the read/write version is unknown
-		if(m_readWriteVersion == 0)
-		{
-			//try to determine the version of the read/write eeprom cmd
-			if(!determineReadWriteVersion())
-			{
-				//failed to get the read/write version
-
-				return false;
-			}
-		}
-
 		//attempt to read the individual eeprom from the node
-		if(m_baseStation.node_readEeprom(m_readWriteVersion, m_nodeAddress, location, eepromVal))
+		if(m_baseStation.node_readEeprom(*m_protocol, m_nodeAddress, location, eepromVal))
 		{
 			//update the map value with the value we read from eeprom
 			updateCache(location, eepromVal);
@@ -224,19 +154,8 @@ namespace mscl
 
 		//if we made it here, we want to actually write to the device
 
-		//if the read/write version is unknown
-		if(m_readWriteVersion == 0)
-		{
-			//try to determine the version of the read/write eeprom cmd
-			if(!determineReadWriteVersion())
-			{
-				//failed to get the read/write version
-				throw Error_NodeCommunication(m_nodeAddress, "Failed to write EEPROM " + Utils::toStr(location) + " to Node " + Utils::toStr(m_nodeAddress));
-			}
-		}
-
 		//attempt to write the value to the Node
-		if(m_baseStation.node_writeEeprom(m_readWriteVersion, m_nodeAddress, location, value))
+		if(m_baseStation.node_writeEeprom(*m_protocol, m_nodeAddress, location, value))
 		{
 			//successfully wrote to the Node, update the cache
 			updateCache(location, value);

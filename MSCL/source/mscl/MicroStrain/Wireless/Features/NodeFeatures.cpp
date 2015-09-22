@@ -288,6 +288,26 @@ namespace mscl
 		return false;
 	}
 
+	bool NodeFeatures::anyChannelGroupSupports(WirelessTypes::ChannelGroupSetting setting, uint8 channelNumber) const
+	{
+		//loop over all of the groups
+		for(const auto& group : m_channelGroups)
+		{
+			//loop over every setting in the group
+			for(const auto& chSetting : group.settings())
+			{
+				//check if the setting matches the one we are looking for
+				//and that the channels in the group have the requested channel in it
+				if(chSetting == setting && group.channels().enabled(channelNumber))
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	const WirelessChannels& NodeFeatures::channels() const
 	{
 		return m_channels;
@@ -361,6 +381,11 @@ namespace mscl
 	}
 
 	bool NodeFeatures::supportsAutoCal() const
+	{
+		return false;
+	}
+
+	bool NodeFeatures::supportsAutoBalance(uint8 channelNumber) const
 	{
 		return false;
 	}

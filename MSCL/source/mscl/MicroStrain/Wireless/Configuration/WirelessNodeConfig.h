@@ -112,6 +112,10 @@ namespace mscl
 		//	The map of <ChannelMask> to hardware gains to set.
 		std::map<ChannelMask, double> m_hardwareGains;
 
+		//Variable: m_hardwareOffsets
+		//	The map of <ChannelMask> to hardware offsets to set.
+		std::map<ChannelMask, uint16> m_hardwareOffsets;
+
 		//Variable: m_settlingTimes
 		//	The map of <ChannelMask> to <WirelessTypes::SettlingTime> to set.
 		std::map<ChannelMask, WirelessTypes::SettlingTime> m_settlingTimes;
@@ -507,6 +511,20 @@ namespace mscl
 		//	Sets the hardware gain for the given <ChannelMask> in the Config.
 		//	Note: This value should be normalized before it is set, using <NodeFeatures::normalizeHardwareGain>.
 		void hardwareGain(const ChannelMask& mask, double gain);
+
+		//API Function: hardwareOffset
+		//	Gets the hardware offset for the given <ChannelMask> in the Config, if set.
+		//
+		//Parameters:
+		//	mask - The <ChannelMask> to set the hardware offset for.
+		//
+		//Exceptions:
+		//	<Error_NoData> - The requested value has not been set.
+		uint16 hardwareOffset(const ChannelMask& mask) const;
+
+		//API Function: hardwareOffset
+		//	Sets the hardware offset for the given <ChannelMask> in the Config.
+		void hardwareOffset(const ChannelMask& mask, uint16 offset);
 
 		//API Function: linearEquation
 		//	Gets the <LinearEquation> for the given <ChannelMask> in the Config, if set.

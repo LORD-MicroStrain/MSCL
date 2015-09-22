@@ -30,5 +30,7 @@ namespace mscl
 		//Constructor: NodeFeatures_sglinkoemNoXR
 		//	Creates a NodeFeatures_sglinkoemNoXR object.
 		NodeFeatures_sglinkoemNoXR(const NodeInfo& info);
+
+		virtual bool supportsAutoBalance(uint8 channelNumber) const final;
 	};
 }

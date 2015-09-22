@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_readEepromuint16_pageDownload)
 	data.append_uint16(1);	//eeprom 10
 
 	//force the page download to take our bytestream
-	MOCK_EXPECT(impl->node_pageDownload).once().with(mock::any, mock::any, mock::assign(data)).returns(true);
+	MOCK_EXPECT(impl->node_pageDownload).with(mock::any, mock::any, mock::any, mock::assign(data)).returns(true);
 
 	uint16 result = node.readEeprom(6);
 
@@ -203,7 +203,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_writeEepromuint16)
 
 BOOST_AUTO_TEST_CASE(WirelessNode_info)
 {
-	std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl());
+	std::shared_ptr<mock_WirelessNodeImpl_Basic> impl(new mock_WirelessNodeImpl_Basic());
 	BaseStation b = makeBaseStationWithMockImpl();
 	WirelessNode node(123, b);
 	node.setImpl(impl);
@@ -224,7 +224,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_info)
 
 BOOST_AUTO_TEST_CASE(WirelessNode_info_withSvn)
 {
-	std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl());
+	std::shared_ptr<mock_WirelessNodeImpl_Basic> impl(new mock_WirelessNodeImpl_Basic());
 	BaseStation b = makeBaseStationWithMockImpl();
 	WirelessNode node(123, b);
 	node.setImpl(impl);
@@ -306,8 +306,8 @@ BOOST_AUTO_TEST_CASE(WirelessNode_frequency)
 	//check the frequency is what we set in the create function
 	BOOST_CHECK_EQUAL(node.frequency(), WirelessTypes::freq_16);
 
-	MOCK_EXPECT(impl->node_writeEeprom).once().with(1, 123, 90, mock::any).returns(true);	//change frequency write
-	MOCK_EXPECT(impl->node_writeEeprom).once().with(1, 123, 250, mock::any).returns(true);	//cycle power
+	MOCK_EXPECT(impl->node_writeEeprom).once().with(mock::any, 123, 90, mock::any).returns(true);	//change frequency write
+	MOCK_EXPECT(impl->node_writeEeprom).once().with(mock::any, 123, 250, mock::any).returns(true);	//cycle power
 
 	//call the changeFrequency function
 	node.changeFrequency(WirelessTypes::freq_18);
@@ -315,7 +315,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_frequency)
 	BOOST_CHECK_EQUAL(node.frequency(), WirelessTypes::freq_18);
 
 	//try to change again, but fail
-	MOCK_EXPECT(impl->node_writeEeprom).once().with(1, 123, 90, mock::any).returns(false);	//change frequency write
+	MOCK_EXPECT(impl->node_writeEeprom).once().with(mock::any, 123, 90, mock::any).returns(false);	//change frequency write
 	BOOST_CHECK_THROW(node.changeFrequency(WirelessTypes::freq_12), Error_NodeCommunication);
 	
 	//check that nothing has changed
@@ -449,6 +449,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setBootMode)
 	expectNodeFeatures(features, impl);
 	
 	expectWrite(impl, NodeEepromMap::DEFAULT_MODE, Value::UINT16(6));
+	expectResetRadio(impl);
 
 	WirelessNodeConfig c;
 	c.defaultMode(WirelessTypes::defaultMode_sync);
@@ -482,6 +483,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setInactivityTimeout)
 	expectNodeFeatures(features, impl);
 	
 	expectWrite(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(5));	//min of 5
+	expectResetRadio(impl);
 
 	uint16 timeout = 2;
 	Utils::checkBounds_min(timeout, features->minInactivityTimeout());
@@ -492,6 +494,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setInactivityTimeout)
 	BOOST_CHECK_NO_THROW(node.applyConfig(c));
 
 	expectWrite(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(400));
+	expectResetRadio(impl);
 
 	c.inactivityTimeout(400);
 
@@ -539,6 +542,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setTransmitPower)
 	expectNodeFeatures(features, impl);
 
 	expectWrite(impl, NodeEepromMap::TX_POWER_LEVEL, Value::UINT16(25619));
+	expectResetRadio(impl);
 
 	WirelessNodeConfig c;
 	c.transmitPower(WirelessTypes::power_16dBm);

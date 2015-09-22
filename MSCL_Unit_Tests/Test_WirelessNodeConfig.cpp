@@ -86,6 +86,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_setSingleValue)
 
 	//expect the single eeprom write
 	expectWrite(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(4500));
+	expectResetRadio(impl);
 
 	BOOST_CHECK_NO_THROW(node.applyConfig(c));
 }
@@ -111,6 +112,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_setMultipleValues)
 	//expect the eeprom writes
 	expectWrite(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(200));
 	expectWrite(impl, NodeEepromMap::TX_POWER_LEVEL, Value::UINT16(WirelessTypes::power_16dBm));
+	expectResetRadio(impl);
 
 	BOOST_CHECK_NO_THROW(node.applyConfig(c));
 }
@@ -468,6 +470,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_checkRadioInterval)
 	BOOST_CHECK_THROW(node.applyConfig(c), Error_InvalidNodeConfig);
 
 	expectWrite(impl, NodeEepromMap::SLEEP_INTERVAL, Value::UINT16(284));
+	expectResetRadio(impl);
 	c.checkRadioInterval(27);
 	BOOST_CHECK_NO_THROW(node.applyConfig(c));
 }
@@ -491,6 +494,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_lostBeaconTimeout)
 	//check the beacon timeout success
 	c.lostBeaconTimeout(45);
 	expectWrite(impl, NodeEepromMap::LOST_BEACON_TIMEOUT, Value::UINT16(45));
+	expectResetRadio(impl);
 	BOOST_CHECK_NO_THROW(node.applyConfig(c));
 
 	//check the beacon timeout maximum failing
@@ -518,6 +522,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_bootMode)
 	expectNodeFeatures(features, impl, WirelessModels::node_gLink_10g);
 
 	expectWrite(impl, NodeEepromMap::DEFAULT_MODE, Value::UINT16(WirelessTypes::defaultMode_ldc));
+	expectResetRadio(impl);
 	BOOST_CHECK_NO_THROW(node.applyConfig(c));
 }
 
@@ -599,6 +604,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_filterSettlingTime)
 
 		//expect the single eeprom write
 		expectWrite(impl, NodeEepromMap::FILTER_1, Value::UINT16(3));
+		expectResetRadio(impl);
 
 		//check the settling time succeeds to apply
 		BOOST_CHECK_NO_THROW(node.applyConfig(c));
@@ -650,6 +656,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_thermocoupleType)
 
 		//expect the single eeprom write
 		expectWrite(impl, NodeEepromMap::THERMOCPL_TYPE, Value::UINT16(2));
+		expectResetRadio(impl);
 
 		//check the settling time succeeds to apply
 		BOOST_CHECK_NO_THROW(node.applyConfig(c));
@@ -679,6 +686,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_linearEquation)
 	//expect the single eeprom write
 	expectWrite(impl, NodeEepromMap::CH_ACTION_SLOPE_4, Value::FLOAT(64.78f));
 	expectWrite(impl, NodeEepromMap::CH_ACTION_OFFSET_4, Value::FLOAT(142.23f));
+	expectResetRadio(impl);
 
 	BOOST_CHECK_NO_THROW(node.applyConfig(c));
 

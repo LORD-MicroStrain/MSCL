@@ -36,6 +36,10 @@ namespace mscl
 		//Channel Groups
 		static const ChannelMask DIFFERENTIAL_1(BOOST_BINARY(00000011));	//ch1 + 2
 		static const ChannelMask DIFFERENTIAL_2(BOOST_BINARY(00001100));	//ch3 + 4
+		static const ChannelMask DIFF_CH1(BOOST_BINARY(00000001));	//ch1
+		static const ChannelMask DIFF_CH2(BOOST_BINARY(00000010));	//ch2
+		static const ChannelMask DIFF_CH3(BOOST_BINARY(00000100));	//ch3
+		static const ChannelMask DIFF_CH4(BOOST_BINARY(00001000));	//ch4
 
 		m_channelGroups.emplace_back(DIFFERENTIAL_1, "Differential Group 1",
 									 ChannelGroup::SettingsMap{
@@ -45,6 +49,26 @@ namespace mscl
 		m_channelGroups.emplace_back(DIFFERENTIAL_2, "Differential Group 2",
 									 ChannelGroup::SettingsMap{
 										 {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_2}}
+		);
+
+		m_channelGroups.emplace_back(DIFF_CH1, "Differential Channel 1",
+									 ChannelGroup::SettingsMap{
+										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1}}
+		);
+
+		m_channelGroups.emplace_back(DIFF_CH2, "Differential Channel 2",
+									 ChannelGroup::SettingsMap{
+										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_2}}
+		);
+
+		m_channelGroups.emplace_back(DIFF_CH3, "Differential Channel 3",
+									 ChannelGroup::SettingsMap{
+										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_3}}
+		);
+
+		m_channelGroups.emplace_back(DIFF_CH4, "Differential Channel 4",
+									 ChannelGroup::SettingsMap{
+										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_4}}
 		);
 
 		addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
@@ -75,5 +99,10 @@ namespace mscl
 		default:
 			throw Error("Invalid SamplingMode");
 		}
+	}
+
+	bool NodeFeatures_vlink_legacy::supportsAutoBalance(uint8 channelNumber) const
+	{
+		return anyChannelGroupSupports(WirelessTypes::chSetting_hardwareOffset, channelNumber);
 	}
 }

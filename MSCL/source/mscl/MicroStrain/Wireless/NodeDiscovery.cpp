@@ -133,7 +133,7 @@ namespace mscl
 
 		m_firmwareVersion = Version(Utils::msb(fwVersion1), svnRevision);
 
-		//unknown info we don't get in this packet
+		//Default Mode
 		m_defaultMode = static_cast<WirelessTypes::DefaultMode>(payload.read_uint16(Info::PAYLOAD_OFFSET_DEFAULT_MODE));
 	}
 

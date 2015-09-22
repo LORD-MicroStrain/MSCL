@@ -184,6 +184,8 @@ namespace mscl
 		//	EVENT_VAL1_8			-Event Driven Sampling: Value 1 for Event 8
 		//	EVENT_VAL2_8			-Event Driven Sampling: Value 2 for Event 8
 		//	CHANNEL_FILTER			-The channel filter for all channels
+		//	MIN_SOFT_VER_MAJOR		-The minimum software version for support of this device (major)
+		//	MIN_SOFT_VER_MINOR		-The minimum software version for support of this device (minor)
 		//
 		//	THERMOCPL_TYPE			-The thermocouple type for nodes with thermocouple capabilities (ie. TC-Link)
 		//	FILTER_1				-The first filter value for nodes with filter capabilities (ie. TC-Link)
@@ -308,6 +310,8 @@ namespace mscl
 		static const EepromLocation EVENT_VAL1_8;			//Event Driven Sampling: Value 1 for Event 8
 		static const EepromLocation EVENT_VAL2_8;			//Event Driven Sampling: Value 2 for Event 8
 		static const EepromLocation CHANNEL_FILTER;			//The channel filter for all channels
+		static const EepromLocation MIN_SOFT_VER_MAJOR;		//The minimum software version for support of this device (major).
+		static const EepromLocation MIN_SOFT_VER_MINOR;		//The minimum software version for support of this device (minor).
 		
 		static const EepromLocation THERMOCPL_TYPE;			//The thermocouple type for nodes with thermocouple capabilities (ie. TC-Link)
 		static const EepromLocation FILTER_1;				//The first filter value for nodes with filter capabilities (ie. TC-Link)

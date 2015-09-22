@@ -49,6 +49,7 @@ namespace mscl
 		//	CONFIG_LINEAR_EQUATION			- 18 - Linear Equation
 		//	CONFIG_FATIGUE					- 19 - Fatigue Options
 		//	CONFIG_HISTOGRAM				- 20 - Histogram Options
+		//	CONFIG_HARDWARE_OFFSET			- 21 - Hardware Offset
 		enum ConfigOption
 		{
 			CONFIG_SAMPLING_MODE			= 0,
@@ -71,7 +72,8 @@ namespace mscl
 			CONFIG_TRANSMIT_POWER			= 17,
 			CONFIG_LINEAR_EQUATION			= 18,
 			CONFIG_FATIGUE					= 19,
-			CONFIG_HISTOGRAM				= 20
+			CONFIG_HISTOGRAM				= 20,
+			CONFIG_HARDWARE_OFFSET			= 21
 		};
 
 		ConfigIssue();	//default constructor

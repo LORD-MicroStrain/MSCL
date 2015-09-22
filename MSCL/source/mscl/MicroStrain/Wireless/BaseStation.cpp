@@ -16,6 +16,7 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 #include "BaseStation.h"
 #include "BaseStation_Impl.h"
 #include "mscl/MicroStrain/ByteStream.h"
+#include "mscl/MicroStrain/ResponsePattern.h"
 #include "Configuration/BaseStationEepromHelper.h"
 #include "Configuration/BaseStationConfig.h"
 #include "Features/BaseStationFeatures.h"
@@ -37,6 +38,11 @@ namespace mscl
 	BaseStationEepromHelper& BaseStation::eepromHelper() const
 	{
 		return m_impl->eeHelper();
+	}
+
+	bool BaseStation::doCommand(ResponsePattern& response, const ByteStream& cmdBytes, uint64 timeout)
+	{
+		return m_impl->doCommand(response, cmdBytes, timeout);
 	}
 
 	bool BaseStation::operator==(const BaseStation& src) const
@@ -187,6 +193,11 @@ namespace mscl
 		m_impl->disableBeacon();
 	}
 
+	BeaconStatus BaseStation::beaconStatus()
+	{
+		return m_impl->beaconStatus();
+	}
+
 	void BaseStation::cyclePower()
 	{ 
 		m_impl->cyclePower();
@@ -281,19 +292,19 @@ namespace mscl
 		return m_impl->node_setToIdle(nodeAddress, *this);
 	}
 
-	bool BaseStation::node_readEeprom(uint8 readVersion, NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
+	bool BaseStation::node_readEeprom(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
 	{ 
-		return m_impl->node_readEeprom(readVersion, nodeAddress, eepromAddress, eepromValue);
+		return m_impl->node_readEeprom(protocol, nodeAddress, eepromAddress, eepromValue);
 	}
 
-	bool BaseStation::node_writeEeprom(uint8 writeVersion, NodeAddress nodeAddress, uint16 eepromAddress, uint16 value)
+	bool BaseStation::node_writeEeprom(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint16 eepromAddress, uint16 value)
 	{ 
-		return m_impl->node_writeEeprom(writeVersion, nodeAddress, eepromAddress, value);
+		return m_impl->node_writeEeprom(protocol, nodeAddress, eepromAddress, value);
 	}
 
-	bool BaseStation::node_pageDownload(NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data)
+	bool BaseStation::node_pageDownload(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data)
 	{ 
-		return m_impl->node_pageDownload(nodeAddress, pageIndex, data);
+		return m_impl->node_pageDownload(protocol, nodeAddress, pageIndex, data);
 	}
 
 	bool BaseStation::node_startSyncSampling(NodeAddress nodeAddress)
@@ -319,6 +330,11 @@ namespace mscl
 	bool BaseStation::node_erase(NodeAddress nodeAddress)
 	{
 		return m_impl->node_erase(nodeAddress);
+	}
+
+	void BaseStation::node_autoBalance(NodeAddress nodeAddress, uint8 channelNumber, uint16 targetVal)
+	{
+		m_impl->node_autoBalance(nodeAddress, channelNumber, targetVal);
 	}
 
 	bool BaseStation::node_autocal(NodeAddress nodeAddress, WirelessModels::NodeModel model, const Version& fwVersion, AutoCalResult& result)

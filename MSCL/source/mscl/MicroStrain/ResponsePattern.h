@@ -28,7 +28,15 @@ namespace mscl
 	class ResponseCollector;
 
 	//Class: ResponsePattern
-	//	A pattern matching the expected response from a wireless command (Base Class)
+	//	A pattern matching the expected response from a device command (Base Class).
+	//
+	//Creating your own command/response:
+	//	- Create a custom "Response" class that inherits from this class.
+	//	- Create a custom version of one of the "match" functions that applies to your command.
+	//	- In the match function, if the bytes match the expected response, return true.
+	//	- Set m_success to whether the command succeeded (match a success response), or false (matched a fail response).
+	//	- Set m_fullyMatched to true when all packets/bytes have been matched. Set it to false if the packet was matched
+	//	  but there are still more packets/bytes remaining (the case when 1 command has multiple responses before it is complete).
 	class ResponsePattern
 	{
 	public:
@@ -50,6 +58,11 @@ namespace mscl
 		};
 
 	public:
+		//Default Constructor: ResponsePattern
+		//	Creates a default constructor ResponsePattern.
+		//	Note: You will need to use the <setResponseCollector> function before being used.
+		ResponsePattern();
+
 		//Constructor: ResponsePattern
 		//	Creates a ResponsePattern attached to a collector.
 		//
@@ -61,8 +74,14 @@ namespace mscl
 		//	Destroys the ResponsePattern and unregisters this response from its <ResponseCollector>
 		virtual ~ResponsePattern();
 
+		//Function: setResponseCollector
+		//	Sets the <ResponseCollector> for this pattern, and registers this pattern with the collector.
+		//
+		//Parameters:
+		//	collector - The <ResponseCollector> to assign this pattern to.
+		void setResponseCollector(std::weak_ptr<ResponseCollector> collector);
+
 	private:
-		ResponsePattern();										//default constructor disabled
 		ResponsePattern(const ResponsePattern&);				//copy constructor disabled
 		ResponsePattern& operator=(const ResponsePattern&);		//assignement operator disabled
 

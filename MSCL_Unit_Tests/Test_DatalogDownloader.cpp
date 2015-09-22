@@ -53,6 +53,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v1_0)
 	expectNodeFeatures(features, impl);
 
 	uint16 page = 0, offset = 44;
+	MOCK_EXPECT(impl->firmwareVersion).returns(Version(8, 0));
 	MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::CURRENT_LOG_PAGE).returns(Value::UINT16(page));//log page
 	MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::CURRENT_PAGE_OFFSET).returns(Value::UINT16(offset));//page offset
 
@@ -85,7 +86,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v1_0)
 	data.append_uint16(9212);	//data
 
 	//force the page download to take our bytestream
-	MOCK_EXPECT(baseImpl->node_pageDownload).once().with(mock::any, mock::any, mock::assign(data)).returns(true);
+	MOCK_EXPECT(baseImpl->node_pageDownload).once().with(mock::any, mock::any, mock::any, mock::assign(data)).returns(true);
 
 	LoggedDataSweep sweep = dl.getNextData();
 
@@ -128,6 +129,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_0)
 	expectNodeFeatures(features, impl);
 
 	uint16 page = 0, offset = 46;
+	MOCK_EXPECT(impl->firmwareVersion).returns(Version(8, 0));
 	MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::CURRENT_LOG_PAGE).returns(Value::UINT16(page));//log page
 	MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::CURRENT_PAGE_OFFSET).returns(Value::UINT16(offset));//page offset
 
@@ -162,7 +164,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_0)
 	data.append_uint16(9212);	//data
 
 	//force the page download to take our bytestream
-	MOCK_EXPECT(baseImpl->node_pageDownload).once().with(mock::any, mock::any, mock::assign(data)).returns(true);
+	MOCK_EXPECT(baseImpl->node_pageDownload).once().with(mock::any, mock::any, mock::any, mock::assign(data)).returns(true);
 
 	LoggedDataSweep sweep = dl.getNextData();
 
@@ -205,6 +207,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_1)
 	expectNodeFeatures(features, impl);
 
 	uint16 page = 0, offset = 46;
+	MOCK_EXPECT(impl->firmwareVersion).returns(Version(8, 0));
 	MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::CURRENT_LOG_PAGE).returns(Value::UINT16(page));//log page
 	MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::CURRENT_PAGE_OFFSET).returns(Value::UINT16(offset));//page offset
 
@@ -239,7 +242,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_1)
 	data.append_uint16(9212);	//data
 
 	//force the page download to take our bytestream
-	MOCK_EXPECT(baseImpl->node_pageDownload).once().with(mock::any, mock::any, mock::assign(data)).returns(true);
+	MOCK_EXPECT(baseImpl->node_pageDownload).once().with(mock::any, mock::any, mock::any, mock::assign(data)).returns(true);
 
 	LoggedDataSweep sweep = dl.getNextData();
 

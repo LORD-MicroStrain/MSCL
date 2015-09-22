@@ -105,6 +105,9 @@ namespace mscl
 			case WirelessPacket::packetType_reply:
 			case WirelessPacket::packetType_errorReply:
 			case WirelessPacket::packetType_NodeReceived:
+			case WirelessPacket::packetType_baseCommand:
+			case WirelessPacket::packetType_baseReply:
+			case WirelessPacket::packetType_baseErrorReply:
 				return true;
 
 			//This packet is not supported by MSCL

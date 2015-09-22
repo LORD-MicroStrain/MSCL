@@ -20,8 +20,8 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 #ifndef SWIG
 //update with each release
 #define MSCL_MAJOR 1
-#define MSCL_MINOR 0
-#define MSCL_PATCH 0
+#define MSCL_MINOR 5
+#define MSCL_PATCH 1
 #endif
 
 namespace mscl

@@ -31,9 +31,9 @@ namespace mscl
 	//forward declarations
 	class WirelessNode_Impl;
 	class NodeFeatures;
-	class NodeEeprom;
 	class NodeEepromHelper;
 	class WirelessNodeConfig;
+	class WirelessProtocol;
 
 	//API Class: WirelessNode
 	//	A class representing a MicroStrain wireless node
@@ -71,6 +71,9 @@ namespace mscl
 
 		//gets a reference to the NodeEepromHelper for the Node.
 		NodeEepromHelper& eepromHelper() const;	
+
+		//gets a reference to the WirelessProtocol for the Node.
+		const WirelessProtocol& protocol() const;
 #endif
 
 		//API Function: deviceName
@@ -335,6 +338,22 @@ namespace mscl
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void clearHistogram();
 
+		//API Function: autoBalance
+		//	Performs an Auto Balance command on a specified channel on the Node.
+		//	This adjusts the sensor offset for differential channels to affect range.
+		//	
+		//	See Also: <getHardwareOffset>, <WirelessNodeConfig::hardwareOffset>
+		//
+		//Parameters:
+		//	channelNumber - The channel number (ch1 = 1, ch8 = 8) to balance.
+		//	option - The <WirelessTypes::AutoBalanceOption> to use (low, midscale, high).
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Autobalance is not supported by the Node or channel specified.
+		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		void autoBalance(uint8 channelNumber, WirelessTypes::AutoBalanceOption option);
+
 		//API Function: autoCal_shmLink
 		//	Performs automatic calibration for the SHM-Link Wireless Node.
 		//	See Also: <NodeFeatures::supportsAutoCal>
@@ -593,6 +612,22 @@ namespace mscl
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		double getHardwareGain(const ChannelMask& mask) const;
+
+		//API Function: getHardwareOffset
+		//	Reads the hardware offset of the specified <ChannelMask> currently set on the Node.
+		//	See Also: <NodeFeatures::channelGroups>
+		//
+		//Parameters:
+		//	mask - The <ChannelMask> of the hardware offset to read.
+		//
+		//Returns:
+		//	The hardware offset currently set on the Node for the <ChannelMask>.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Hardware offset is not supported for the provided <ChannelMask>.
+		//	- <Error_NodeCommunication>: Failed to read from the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		uint16 getHardwareOffset(const ChannelMask& mask) const;
 
 		//API Function: getLinearEquation
 		//	Gets the linear equation of the specified <ChannelMask> currently set on the Node.

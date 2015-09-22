@@ -17,6 +17,7 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 
 #include "WirelessParser.h"
 #include "WirelessModels.h"
+#include "Commands/BaseStation_BeaconStatus.h"
 #include "Commands/LongPing.h"
 #include "Commands/SetToIdleStatus.h"
 #include "Configuration/BaseStationEeprom.h"
@@ -34,11 +35,15 @@ namespace mscl
 	class BaseStationFeatures;
 	class BaseStationConfig;
 	class AutoCalResult;
+	class WirelessProtocol;
+	class ResponsePattern;
 
 	//Class: BaseStation_Impl
 	//	Contains the implementation for a <BaseStation> object.
 	class BaseStation_Impl
 	{ 
+		friend class WirelessProtocol;
+
 	public:
 		//Constructor: BaseStation_Impl
 		//  Creates a BaseStation_Impl object.
@@ -105,6 +110,10 @@ namespace mscl
 		//	The <BaseStationFeatures> containing the features for this BaseStation.
 		mutable std::unique_ptr<BaseStationFeatures> m_features;
 
+		//Variable: m_protocol
+		//	The <WirelessProtocol> containing all of the protocol commands and info for this BaseStation.
+		std::unique_ptr<WirelessProtocol> m_protocol;
+
 		//Variable: m_lastCommTime
 		//	A <Timestamp> representing the last time communication was achieved with the BaseStation.
 		Timestamp m_lastCommTime;
@@ -128,6 +137,13 @@ namespace mscl
 		//	data - The <DataBuffer> containing all the data to be parsed
 		void parseData(DataBuffer& data);
 
+		//Function: determineProtocol
+		//	Determines the <WirelessProtocol> to use based on the BaseStation's firmware version.
+		//
+		//Returns:
+		//	A unique_ptr containing the <WirelessProtocol> to use.
+		std::unique_ptr<WirelessProtocol> determineProtocol();
+
 	public:
 		//Function: eeHelper
 		//	Gets a reference to the <BaseStationEepromHelper> for this BaseStation.
@@ -135,6 +151,18 @@ namespace mscl
 		//Returns:
 		//	A reference to the <BaseStationEepromHelper>.
 		BaseStationEepromHelper& eeHelper() const;
+
+		//Function: doCommand
+		//	Performs a custom command and waits for the response.
+		//
+		//Parameters:
+		//	response - A reference to a custom class that was inherited from the <ResponsePattern> base class.
+		//	cmdBytes - The <ByteStream> containing the command bytes to send.
+		//	timeout - The maximum timeout to use for waiting for the response.
+		//
+		//Returns:
+		//	true if the command was successful (response.success() is true), false otherwise.
+		bool doCommand(ResponsePattern& response, const ByteStream& cmdBytes, uint64 timeout);
 
 		//Function: features
 		//	Gets a reference to the <BaseStationFeatures> for this BaseStation.
@@ -147,6 +175,16 @@ namespace mscl
 		//	- <Error_Communication>: Failed to communicate with the BaseStation.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		virtual const BaseStationFeatures& features() const;
+
+		//Function: protocol
+		//	Gets a reference to the <WirelessProtocol> for this BaseStation.
+		//	Note: This requires communicating to the BaseStation if
+		//		  creating the protocol for the first time.
+		//
+		//Exceptions:
+		//	- <Error_Communication>: Failed to communicate with the BaseStation.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		virtual const WirelessProtocol& protocol();
 
 		//Function: lastCommunicationTime
 		//	Gets the <Timestamp> for the last time we communicated with the BaseStation.
@@ -431,6 +469,14 @@ namespace mscl
 		//	- <Error_Communication>: The disable beacon command has failed.
 		virtual void disableBeacon();
 
+		//Function: beaconStatus
+		//	Gets the <BeaconStatus> of the beacon on the BaseStation.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
+		//	- <Error_Communication>: The beacon status command has failed.
+		virtual BeaconStatus beaconStatus();
+
 		//Function: cyclePower
 		//	Cycles the power on the base station.
 		//
@@ -567,6 +613,197 @@ namespace mscl
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		BaseStationAnalogPair getAnalogPair(uint8 portNumber) const;
 
+	private:
+		//Function: ping_v1
+		//	Performs version 1 of the Ping BaseStation command.
+		//
+		//Returns:
+		//	true if successfully pinged the base station, false otherwise.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
+		bool ping_v1();
+
+		//Function: ping_v2
+		//	Performs version 2 of the Ping BaseStation command.
+		//
+		//Returns:
+		//	true if successfully pinged the base station, false otherwise.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
+		bool ping_v2();
+
+		//Function: read_v1
+		//	Performs version 1 of the Read BaseStation EEPROM command.
+		//
+		//Parameters:
+		//	eepromAddress - The Eeprom address to get the value for.
+		//	result - The value that was read from Eeprom if successful.
+		//
+		//Returns:
+		//	true if the read was successful, false otherwise.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
+		bool read_v1(uint16 eepromAddress, uint16& result);
+
+		//Function: read_v2
+		//	Performs version 2 of the Read BaseStation EEPROM command.
+		//
+		//Parameters:
+		//	eepromAddress - The Eeprom address to get the value for.
+		//	result - The value that was read from Eeprom if successful.
+		//
+		//Returns:
+		//	true if the read was successful, false otherwise.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
+		bool read_v2(uint16 eepromAddress, uint16& result);
+
+		//Function: write_v1
+		//	Performs version 1 of the Write BaseStation EEPROM command.
+		//
+		//Parameters:
+		//	eepromAddress - The Eeprom address to set the value for.
+		//	value - The value to write to the Eeprom.
+		//
+		//Returns:
+		//	true if the write was successful, false otherwise.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
+		bool write_v1(uint16 eepromAddress, uint16 value);
+
+		//Function: write_v2
+		//	Performs version 2 of the Write BaseStation EEPROM command.
+		//
+		//Parameters:
+		//	eepromAddress - The Eeprom address to set the value for.
+		//	value - The value to write to the Eeprom.
+		//
+		//Returns:
+		//	true if the write was successful, false otherwise.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
+		bool write_v2(uint16 eepromAddress, uint16 value);
+
+		//Function: enableBeacon_v1
+		//	Performs version 1 of the Enable Beacon command.
+		//
+		//Parameters:
+		//	utcTime - The start time for the beacon in UTC seconds from the Unix Epoch (01/01/1970).
+		//
+		//Returns:
+		//	A <Timestamp> representing the initial time that was sent to start the beacon.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation
+		//	- <Error_Communication>: The enable beacon command has failed.
+		Timestamp enableBeacon_v1(uint32 utcTime);
+
+		//Function: enableBeacon_v2
+		//	Performs version 2 of the Enable Beacon command.
+		//
+		//Parameters:
+		//	utcTime - The start time for the beacon in UTC seconds from the Unix Epoch (01/01/1970).
+		//
+		//Returns:
+		//	A <Timestamp> representing the initial time that was sent to start the beacon.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation
+		//	- <Error_Communication>: The enable beacon command has failed.
+		Timestamp enableBeacon_v2(uint32 utcTime);
+
+		//Function: beaconStatus_v1
+		//	Performs version 1 of the Beacon Status command.
+		//
+		//Returns:
+		//	A <BeaconStatus> object containing status information of the beacon.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation
+		//	- <Error_Communication>: The beacon status command has failed.
+		BeaconStatus beaconStatus_v1();
+
+		//Function: node_pageDownload_v1
+		//	Performs Version 1 of the Node Page Download command.
+		//
+		//Parameters:
+		//	nodeAddress - The node address of the Node to download data from
+		//	pageIndex - The page index to download from the Node
+		//	data - Output parameter that contains the resulting data downloaded from the Node, if any
+		//
+		//Returns:
+		//	true if the page download command succeeded, false otherwise
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation
+		bool node_pageDownload_v1(NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data);
+
+		//Function: node_readEeprom_v1
+		//	Performs Version 1 of the Node Read Eeprom command.
+		//
+		//Parameters:
+		//	nodeAddress - the node address of the node to read from.
+		//	eepromAddress - the EEPROM address to read the value from.
+		//	eepromValue - holds the result value read from EEPROM if successful.
+		//
+		//Returns:
+		//	true if the command was successful, false otherwise.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation
+		bool node_readEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue);
+
+		//Function: node_readEeprom_v2
+		//	Performs Version 2 of the Node Read Eeprom command.
+		//
+		//Parameters:
+		//	nodeAddress - the node address of the node to read from.
+		//	eepromAddress - the EEPROM address to read the value from.
+		//	eepromValue - holds the result value read from EEPROM if successful.
+		//
+		//Returns:
+		//	true if the command was successful, false otherwise.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation
+		bool node_readEeprom_v2(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue);
+
+		//Function: node_writeEeprom_v1
+		//	Performs Version 1 of the Node Write Eeprom command.
+		//
+		//Parameters:
+		//	nodeAddress - the node address of the node to write to.
+		//	eepromAddress - the EEPROM address to write the value to.
+		//	value - the value to write to EEPROM.
+		//
+		//Returns:
+		//	true if the write eeprom command succeeded, false otherwise.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation
+		bool node_writeEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16 value);
+
+		//Function: node_writeEeprom_v2
+		//	Performs Version 2 of the Node Write Eeprom command.
+		//
+		//Parameters:
+		//	nodeAddress - the node address of the node to write to.
+		//	eepromAddress - the EEPROM address to write the value to.
+		//	value - the value to write to EEPROM.
+		//
+		//Returns:
+		//	true if the write eeprom command succeeded, false otherwise.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation
+		bool node_writeEeprom_v2(NodeAddress nodeAddress, uint16 eepromAddress, uint16 value);
+
 	public:
 		//Function: node_lastCommunicationTime
 		//	Gets the <Timestamp> for the last time MSCL communicated with the given node address.
@@ -633,8 +870,8 @@ namespace mscl
 		//	Reads a value from EEPROM on the specified Node.
 		//
 		//Parameters:
-		//	readVersion - the EEPROM read version to use.
-		//	nodeAddress - the node address of the node to read from.
+		//	nodeProtocol - the <WirelessProtocol> for the Node.
+		//	nodeAddress - the node address of the Node to read from.
 		//	eepromAddress - the EEPROM address to read the value from.
 		//	eepromValue - holds the result value read from EEPROM if successful.
 		//
@@ -643,13 +880,13 @@ namespace mscl
 		//
 		//Exceptions:
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation
-		virtual bool node_readEeprom(uint8 readVersion, NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue);
+		virtual bool node_readEeprom(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue);
 
 		//Function: node_writeEeprom
 		//	Writes a value to EEPROM on the specified Node.
 		//
 		//Parameters:
-		//	writeVersion - the EEPROM write version to use.
+		//	nodeProtocol - the <WirelessProtocol> for the Node.
 		//	nodeAddress - the node address of the node to write to.
 		//	eepromAddress - the EEPROM address to write the value to.
 		//	value - the value to write to EEPROM.
@@ -659,12 +896,13 @@ namespace mscl
 		//
 		//Exceptions:
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation
-		virtual bool node_writeEeprom(uint8 writeVersion, NodeAddress nodeAddress, uint16 eepromAddress, uint16 value);
+		virtual bool node_writeEeprom(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint16 eepromAddress, uint16 value);
 
 		//Function: node_pageDownload
 		//	Download a page of logged data from the Node
 		//
 		//Parameters:
+		//	nodeProtocol - The <WirelessProtocol> for the Node.
 		//	nodeAddress - The node address of the Node to download data from
 		//	pageIndex - The page index to download from the Node
 		//	data - Output parameter that contains the resulting data downloaded from the Node, if any
@@ -674,7 +912,7 @@ namespace mscl
 		//
 		//Exceptions:
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation
-		virtual bool node_pageDownload(NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data);
+		virtual bool node_pageDownload(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data);
 
 		//Function: node_startSyncSampling
 		//	Sends the Start Synchronized Sampling command to a Node.
@@ -713,7 +951,7 @@ namespace mscl
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		virtual bool node_armForDatalogging(NodeAddress nodeAddress, const std::string& message);
 
-		//Function:node_triggerArmedDatalogging
+		//Function: node_triggerArmedDatalogging
 		//	Sends the Trigger Armed Datalogging command to a Node.
 		//
 		//Parameters:
@@ -723,7 +961,7 @@ namespace mscl
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		virtual void node_triggerArmedDatalogging(NodeAddress nodeAddress);
 
-		//Function:node_erase
+		//Function: node_erase
 		//	Sends the Erase command to a Node.
 		//
 		//Parameters:
@@ -732,6 +970,18 @@ namespace mscl
 		//Exceptions:
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		virtual bool node_erase(NodeAddress nodeAddress);
+
+		//Function: node_autoBalance
+		//	Sends the AutoBalance command to a Node.
+		//
+		//Parameters:
+		//	nodeAddress - The node address of the Node to send the command to.
+		//	channelNumber - The channel number (ch1 = 1, ch8 = 8) to balance.
+		//	targetVal - The target value to balance to.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
+		virtual void node_autoBalance(NodeAddress nodeAddress, uint8 channelNumber, uint16 targetVal);
 
 		//Function: node_autocal
 		//	Performs automatic calibration for a Wireless Node.

@@ -1,4 +1,5 @@
-BuildScripts
+BuildScripts\updateLicense
+BuildScripts\_testPythonBuild.cmd
 GettingStartedGuide
 *.user
 *.suo

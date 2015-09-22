@@ -565,14 +565,25 @@ namespace mscl
 		//	chSetting_linearEquation		- 3	- Linear Equation
 		//	chSetting_unit					- 4 - Unit
 		//	chSetting_equationType			- 5 - Equation Type
+		//	chSetting_hardwareOffset		- 6 - Hardware Offset
 		enum ChannelGroupSetting
 		{
-			chSetting_hardwareGain = 0,
-			chSetting_filterSettlingTime = 1,
-			chSetting_thermocoupleType = 2,
-			chSetting_linearEquation = 3,
-			chSetting_unit = 4,
-			chSetting_equationType = 5
+			chSetting_hardwareGain			= 0,
+			chSetting_filterSettlingTime	= 1,
+			chSetting_thermocoupleType		= 2,
+			chSetting_linearEquation		= 3,
+			chSetting_unit					= 4,
+			chSetting_equationType			= 5,
+			chSetting_hardwareOffset		= 6
+		};
+
+		//API Enum: AutoBalanceOption
+		//	The options available to balance to for the Auto Balance Node command.
+		enum AutoBalanceOption
+		{
+			autoBalance_low			= 0,
+			autoBalance_midscale	= 1,
+			autoBalance_high		= 2
 		};
 
 		//API Enum: AutoCalCompletionFlag

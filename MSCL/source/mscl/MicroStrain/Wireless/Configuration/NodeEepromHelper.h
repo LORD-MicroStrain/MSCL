@@ -745,6 +745,21 @@ namespace mscl
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		double read_hardwareGain(const ChannelMask& mask) const;
 
+		//Function: read_hardwareOffset
+		//	Reads the hardware offset for the specified <ChannelMask> from the Node.
+		//
+		//Parameters:
+		//	mask - The <ChannelMask> to read the hardware offset for.
+		//
+		//Returns:
+		//	The hardware offset for the given <ChannelMask>.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Hardware offset is not supported for the given <ChannelMask> or Node.
+		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		uint16 read_hardwareOffset(const ChannelMask& mask) const;
+
 		//Function: write_hardwareGain
 		//	Writes the hardware gain value for the specified <ChannelMask> to the Node.
 		//
@@ -757,6 +772,19 @@ namespace mscl
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_hardwareGain(const ChannelMask& mask, double gain);
+
+		//Function: write_hardwareOffset
+		//	Writes the hardware offset value for the specified <ChannelMask> to the Node.
+		//
+		//Parameters:
+		//	mask - The <ChannelMask> to write the hardware offset for.
+		//	gain - The hardware offset value to write to the Node.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Hardware offset is not supported for the given <ChannelMask> or Node.
+		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		void write_hardwareOffset(const ChannelMask& mask, uint16 offset);
 
 		//Function: read_thermoType
 		//	Reads the <WirelessTypes::ThermocoupleType> from the Node.

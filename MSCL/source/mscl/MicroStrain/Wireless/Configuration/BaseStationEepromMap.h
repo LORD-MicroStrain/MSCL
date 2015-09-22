@@ -125,6 +125,8 @@ namespace mscl
 		//	ANALOG_EXCEED_MAX		-The maximum value for the Analog Exceedance setting
 		//	ANALOG_EXCEED_MIN		-The minimum value for the Analog Exceedance setting
 		//	ANALOG_EXCEED_ENABLE	-Enable/Disable analog exceedance
+		//	MIN_SOFT_VER_MAJOR		-The minimum software version for support of this device (major)
+		//	MIN_SOFT_VER_MINOR		-The minimum software version for support of this device (minor)
 		//=======================================================================================================================
 		static const EepromLocation SERIAL_ID;				//-The serial ID for the base station. Combine with the model number for the full serial number
 		static const EepromLocation BEACON_CONFIG;			//-Configuration of the beacon
@@ -190,5 +192,7 @@ namespace mscl
 		static const EepromLocation ANALOG_EXCEED_MAX;		//-The maximum value for the Analog Exceedance setting
 		static const EepromLocation ANALOG_EXCEED_MIN;		//-The minimum value for the Analog Exceedance setting
 		static const EepromLocation ANALOG_EXCEED_ENABLE;	//-Enable/Disable analog exceedance
+		static const EepromLocation MIN_SOFT_VER_MAJOR;		//The minimum software version for support of this device (major).
+		static const EepromLocation MIN_SOFT_VER_MINOR;		//The minimum software version for support of this device (minor).
 	};
 }

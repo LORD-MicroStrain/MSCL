@@ -39,5 +39,7 @@ namespace mscl
 		//Function: maxSampleRate
 		//	Gets the maximum <SampleRate> value that is supported by this Node with the given <SamplingMode> and <ChannelMask>.
 		virtual WirelessTypes::WirelessSampleRate maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels) const override;
+
+		virtual bool supportsAutoBalance(uint8 channelNumber) const final;
 	};
 }

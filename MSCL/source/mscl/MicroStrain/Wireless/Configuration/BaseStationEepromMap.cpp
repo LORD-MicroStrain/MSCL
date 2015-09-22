@@ -83,6 +83,8 @@ namespace mscl
 	const EepromLocation BaseStationEepromMap::ANALOG_EXCEED_MAX		(348, valueType_float);
 	const EepromLocation BaseStationEepromMap::ANALOG_EXCEED_MIN		(352, valueType_float);
 	const EepromLocation BaseStationEepromMap::ANALOG_EXCEED_ENABLE		(356, valueType_uint16);
+	const EepromLocation BaseStationEepromMap::MIN_SOFT_VER_MAJOR		(480, valueType_uint16);
+	const EepromLocation BaseStationEepromMap::MIN_SOFT_VER_MINOR		(482, valueType_uint16);
 
 	bool BaseStationEepromMap::canUseCache_read(uint16 eepromLocation)
 	{

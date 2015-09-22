@@ -38,6 +38,8 @@ namespace mscl
 
 		virtual const WirelessTypes::DataFormats dataFormats() const final;
 
+		virtual const WirelessTypes::SamplingModes samplingModes() const final;
+
 		virtual bool supportsFatigueConfig() const final;
 
 		virtual bool supportsYoungsModConfig() const final;

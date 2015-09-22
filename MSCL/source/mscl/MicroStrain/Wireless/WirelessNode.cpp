@@ -19,7 +19,6 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 #include "mscl/Utils.h"
 #include "Features/NodeInfo.h"
 #include "Features/NodeFeatures.h"
-#include "Configuration/NodeEeprom.h"
 #include "Configuration/NodeEepromHelper.h"
 #include "Configuration/WirelessNodeConfig.h"
 
@@ -38,6 +37,11 @@ namespace mscl
 	NodeEepromHelper& WirelessNode::eepromHelper() const
 	{
 		return m_impl->eeHelper();
+	}
+
+	const WirelessProtocol& WirelessNode::protocol() const
+	{
+		return m_impl->protocol();
 	}
 
 	std::string WirelessNode::deviceName(uint16 nodeAddress)
@@ -138,6 +142,11 @@ namespace mscl
 	void WirelessNode::clearHistogram()
 	{
 		m_impl->clearHistogram();
+	}
+
+	void WirelessNode::autoBalance(uint8 channelNumber, WirelessTypes::AutoBalanceOption option)
+	{
+		m_impl->autoBalance(channelNumber, option);
 	}
 
 	AutoCalResult_shmLink WirelessNode::autoCal_shmLink()
@@ -273,6 +282,11 @@ namespace mscl
 	double WirelessNode::getHardwareGain(const ChannelMask& mask) const
 	{
 		return m_impl->getHardwareGain(mask);
+	}
+
+	uint16 WirelessNode::getHardwareOffset(const ChannelMask& mask) const
+	{
+		return m_impl->getHardwareOffset(mask);
 	}
 
 	LinearEquation WirelessNode::getLinearEquation(const ChannelMask& mask) const

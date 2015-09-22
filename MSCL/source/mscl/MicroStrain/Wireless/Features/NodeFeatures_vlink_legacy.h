@@ -35,5 +35,7 @@ namespace mscl
 		//Function: sampleRates
 		//	Gets a list of the <WirelessTypes::WirelessSampleRate>s that are supported by this Node for the given sampling mode.
 		virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode) const override;
+
+		virtual bool supportsAutoBalance(uint8 channelNumber) const final;
 	};
 }

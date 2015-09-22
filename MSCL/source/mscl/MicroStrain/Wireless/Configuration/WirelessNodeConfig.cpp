@@ -296,6 +296,16 @@ namespace mscl
 			}
 		}
 
+		//Hardware Offsets(s)
+		for(const auto& offset : m_hardwareOffsets)
+		{
+			//verify hardware offset is supported for the channel mask
+			if(!features.supportsChannelSetting(WirelessTypes::chSetting_hardwareOffset, offset.first))
+			{
+				outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_HARDWARE_OFFSET, "Hardware Offset is not supported for the provided Channel Mask.", offset.first));
+			}
+		}
+
 		//Linear Equation(s)
 		for(const auto& eq : m_linearEquations)
 		{
@@ -540,6 +550,12 @@ namespace mscl
 			eeprom.write_hardwareGain(gain.first, gain.second);
 		}
 
+		//write Hardware Offset(s)
+		for(const auto& offset : m_hardwareOffsets)
+		{
+			eeprom.write_hardwareOffset(offset.first, offset.second);
+		}
+
 		//write Linear Equation(s)
 		for(const auto& eq : m_linearEquations)
 		{
@@ -722,6 +738,16 @@ namespace mscl
 	void WirelessNodeConfig::hardwareGain(const ChannelMask& mask, double gain)
 	{
 		setChannelMapVal(m_hardwareGains, mask, gain);
+	}
+
+	uint16 WirelessNodeConfig::hardwareOffset(const ChannelMask& mask) const
+	{
+		return getChannelMapVal(m_hardwareOffsets, mask, "Hardware Offset");
+	}
+
+	void WirelessNodeConfig::hardwareOffset(const ChannelMask& mask, uint16 offset)
+	{
+		setChannelMapVal(m_hardwareOffsets, mask, offset);
 	}
 
 	const LinearEquation& WirelessNodeConfig::linearEquation(const ChannelMask& mask) const

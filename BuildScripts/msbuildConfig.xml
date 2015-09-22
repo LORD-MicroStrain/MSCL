@@ -1,0 +1,158 @@
+<Project DefaultTargets="BuildAll" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <ConfigurationDotNet>Release (.NET)</ConfigurationDotNet>
+    <ConfigurationCPP>Release (C++)</ConfigurationCPP>
+    <ConfigurationCPPDebug>Debug (C++)</ConfigurationCPPDebug>
+    <ConfigurationDotNet64>Release x64 (.NET)</ConfigurationDotNet64>
+  </PropertyGroup>
+
+  <!--Include all the project files that we want to build into the "CoreProjectsToBuild" item-->
+  <ItemGroup>
+    <CoreProjectsToBuild Include="..\MSCL\MSCL.vcxproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ManagedProjectsToBuild Include="..\MSCL\MSCL.vcxproj" />
+    <ManagedProjectsToBuild Include="..\MSCL_Managed\MSCL_Managed.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UnitTestingProjectsToBuild Include="..\MSCL_Unit_Tests\MSCL_Unit_Tests.vcxproj" />
+  </ItemGroup>
+
+  <!--create the BuildAll Target which calls everything we want to do-->
+  <PropertyGroup>
+    <FullBuildTask>
+    
+      <!--Clean and build the core project in Release build-->
+      CleanCore;                  
+      BuildCore;
+      
+      <!--Clean and build the core project in Debug build-->
+      CleanCoreDebug;
+      BuildCoreDebug;
+      
+      <!--Clean and build the managed .NET project in Release build-->
+      CleanManaged;
+      BuildManaged;
+      
+      <!--Clean and build the managed .NET 64-bit project in Release x64 build-->
+      CleanManaged64;
+      BuildManaged64;
+      
+       <!--Clean and build the unit testing project in Release build, then run the generated unit test executable-->
+      CleanUnitTesting;
+      BuildUnitTesting;
+      RunUnitTesting;
+      
+    </FullBuildTask>
+  </PropertyGroup>
+  <Target Name="BuildAll" DependsOnTargets="$(FullBuildTask)"/>
+
+
+  <!--CLEAN CORE C++ PROJECT (Static Lib)-->
+  <Target Name="CleanCore">
+    <Message Text="=====================Cleaning the Core Project (Release)====================="/>
+    <MSBuild Projects="@(CoreProjectsToBuild)"
+             Targets="Clean"
+             Properties="Configuration=$(ConfigurationCPP)">
+    </MSBuild>
+  </Target>
+  
+  <!--CLEAN CORE C++ PROJECT in DEBUG (Static Lib)-->
+  <Target Name="CleanCoreDebug">
+    <Message Text="=====================Cleaning the Core Project (Debug)====================="/>
+    <MSBuild Projects="@(CoreProjectsToBuild)"
+             Targets="Clean"
+             Properties="Configuration=$(ConfigurationCPPDebug)">
+    </MSBuild>
+  </Target>
+
+  <!--CLEAN MANAGED .NET PROJECT-->
+  <Target Name="CleanManaged">
+    <Message Text="=====================Cleaning the Managed Project (Release x86)====================="/>
+    <MSBuild Projects="@(ManagedProjectsToBuild)"
+             Targets="Clean"
+             Properties="Configuration=$(ConfigurationDotNet)">
+    </MSBuild>
+  </Target>
+  
+  <!--CLEAN MANAGED .NET x64 PROJECT-->
+  <Target Name="CleanManaged64">
+    <Message Text="=====================Cleaning the Managed Project (Release x64)====================="/>
+    <MSBuild Projects="@(ManagedProjectsToBuild)"
+             Targets="Clean"
+             Properties="Configuration=$(ConfigurationDotNet64);Platform=x64">
+    </MSBuild>
+  </Target>
+  
+  <!--CLEAN UNIT TESTING PROJECT-->
+  <Target Name="CleanUnitTesting">
+    <Message Text="=====================Cleaning the Unit Testing Projects====================="/>
+    <MSBuild Projects="@(UnitTestingProjectsToBuild)"
+             Targets="Clean"
+             Properties="Configuration=$(ConfigurationCPP)">
+    </MSBuild>
+  </Target>
+  
+  
+  
+  <!--BUILD CORE C++ PROJECT (Static Lib)-->
+  <Target Name="BuildCore">
+    <Message Text="=====================Building the Core Project (Release)====================="/>
+    <MSBuild Projects="@(CoreProjectsToBuild)"
+             ContinueOnError="false"
+             Properties="Configuration=$(ConfigurationCPP)">
+      <Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
+    </MSBuild>
+  </Target>
+  
+  <!--BUILD CORE C++ PROJECT in Debug (Static Lib)-->
+  <Target Name="BuildCoreDebug">
+    <Message Text="=====================Building the Core Project (Debug)====================="/>
+    <MSBuild Projects="@(CoreProjectsToBuild)"
+             ContinueOnError="false"
+             Properties="Configuration=$(ConfigurationCPPDebug)">
+      <Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
+    </MSBuild>
+  </Target>
+
+  <!--BUILD MANAGED .NET PROJECT-->
+  <Target Name="BuildManaged">
+    <Message Text="=====================Building the Managed Project (Release x86)====================="/>
+    <MSBuild Projects="@(ManagedProjectsToBuild)"
+             ContinueOnError="false"
+             Properties="Configuration=$(ConfigurationDotNet)">
+      <Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
+    </MSBuild>
+  </Target>
+  
+  <!--BUILD MANAGED .NET 64-bit PROJECT-->
+  <Target Name="BuildManaged64">
+    <Message Text="=====================Building the Managed Project (Release x64)====================="/>
+    <MSBuild Projects="@(ManagedProjectsToBuild)"
+             ContinueOnError="false"
+             Properties="Configuration=$(ConfigurationDotNet64);Platform=x64">
+      <Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
+    </MSBuild>
+  </Target>
+  
+  <!--BUILD UNIT TESTING PROJECT-->
+  <Target Name="BuildUnitTesting">
+    <Message Text="=====================Building the Unit Testing Project====================="/>
+    <MSBuild Projects="@(UnitTestingProjectsToBuild)"
+             ContinueOnError="false"
+             Properties="Configuration=$(ConfigurationCPP)">
+      <Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
+    </MSBuild>
+  </Target>
+  
+  
+  <!--RUN UNIT TESTING EXE-->
+  <Target Name="RunUnitTesting">
+    <Message Text="Running Unit Tests"/>
+    <Exec Command='"..\MSCL_Unit_Tests\build\Release (C++)\MSCL_Unit_Tests.exe" --output_format=XML --log_level=all --report_level=no 1>"..\MSCL_Unit_Tests\unitTestResults.xml"'/>
+  </Target>
+  
+</Project>

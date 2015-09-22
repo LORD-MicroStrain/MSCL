@@ -48,7 +48,8 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 #include <typeinfo>
 #include <algorithm>
 
-#ifdef _WIN32
+#ifdef _MSC_VER
+//MSVC defines type_info outside of the std namespace for some reason
 typedef type_info TypeInfo;
 #else
 typedef std::type_info TypeInfo;
@@ -64,7 +65,7 @@ typedef bool_<false> false_;
 typedef bool_<true> true_;
 
 /**
- * Contained by a default constructed simple_any
+ * Contained by a default constructed simple_any_MSC_VER
  */
 struct empty {};
 

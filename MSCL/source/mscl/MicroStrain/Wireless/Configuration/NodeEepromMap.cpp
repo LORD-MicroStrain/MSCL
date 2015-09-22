@@ -133,6 +133,8 @@ namespace mscl
 	const EepromLocation NodeEepromMap::EVENT_VAL1_8			(396, valueType_uint16);
 	const EepromLocation NodeEepromMap::EVENT_VAL2_8			(398, valueType_uint16);
 	const EepromLocation NodeEepromMap::CHANNEL_FILTER			(440, valueType_uint16);
+	const EepromLocation NodeEepromMap::MIN_SOFT_VER_MAJOR		(480, valueType_uint16);
+	const EepromLocation NodeEepromMap::MIN_SOFT_VER_MINOR		(482, valueType_uint16);
 	const EepromLocation NodeEepromMap::HW_OFFSET_5				(504, valueType_uint16);
 	const EepromLocation NodeEepromMap::HW_OFFSET_6				(506, valueType_uint16);
 	const EepromLocation NodeEepromMap::HW_OFFSET_7				(508, valueType_uint16);

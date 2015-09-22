@@ -18,6 +18,7 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 #include "BaseStationFeatures_rs232.h"
 #include "BaseStationFeatures_usb.h"
 #include "BaseStationFeatures_wsda.h"
+#include "BaseStationFeatures_oem.h"
 #include "mscl/MicroStrain/Wireless/WirelessModels.h"
 
 namespace mscl
@@ -39,6 +40,9 @@ namespace mscl
 
 			case WirelessModels::base_wsdaBase_102_rs232:
 				return std::unique_ptr<BaseStationFeatures>(new BaseStationFeatures_rs232(info));
+
+			case WirelessModels::base_wsdaBase_oem:
+				return std::unique_ptr<BaseStationFeatures>(new BaseStationFeatures_oem(info));
 
 			case WirelessModels::base_wsda_1000:
 			case WirelessModels::base_wsda_1500:
@@ -68,6 +72,13 @@ namespace mscl
 	bool BaseStationFeatures::supportsAnalogPairing() const
 	{
 		return (analogPortCount() > 0);
+	}
+
+	bool BaseStationFeatures::supportsBeaconStatus() const
+	{
+		static const Version MIN_BEACON_STATUS_FW(4, 0);
+
+		return (m_baseInfo.firmwareVersion >= MIN_BEACON_STATUS_FW);
 	}
 
 	uint8 BaseStationFeatures::analogPortCount() const

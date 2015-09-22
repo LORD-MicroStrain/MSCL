@@ -139,6 +139,18 @@ namespace mscl
 		//	true if at least 1 channel group supports the setting, false otherwise.
 		bool anyChannelGroupSupports(WirelessTypes::ChannelGroupSetting setting) const;
 
+	protected:
+		//Function: anyChannelGroupSupports
+		//	Checks if any channel group, with the specified channel number, supports the given <WirelessTypes::ChannelGroupSetting>.
+		//
+		//Parameters:
+		//	setting - The <WirelessTypes::ChannelGroupSetting> to check if any channel group supports.
+		//	channelNumber - The channel number (ch1 = 1, ch8 = 8) to check if it is in the mask for the found setting.
+		//
+		//Returns:
+		//	true if at least 1 channel group, containing the specified channel number, supports the setting, false otherwise.
+		bool anyChannelGroupSupports(WirelessTypes::ChannelGroupSetting setting, uint8 channelNumber) const;
+
 	public:
 		//API Function: channels
 		//	Gets a reference to the <WirelessChannels> of this Node.
@@ -227,6 +239,16 @@ namespace mscl
 		//Returns:
 		//	true if the Node supports Histogram transmit rate configuration, false otherwise.
 		virtual bool supportsHistogramRateConfig() const;
+
+		//API Function: supportsAutoBalance
+		//	Checks if the Node supports the AutoBalance command for a specified channel.
+		//
+		//Parameters:
+		//	channelNumber - The channel number (ch1 = 1, ch8 = 8) to check if autobalance is supported.
+		//
+		//Returns:
+		//	true if the Node supports autobalance of the specified channel, false otherwise.
+		virtual bool supportsAutoBalance(uint8 channelNumber) const;
 
 		//API Function: supportsAutoCal
 		//	Checks if the Node supports the AutoCal commands.

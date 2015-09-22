@@ -59,6 +59,13 @@ namespace mscl
 		//	Clears the entire eeprom cache.
 		void clearCache();
 
+		//Function: clearCacheLocation
+		//	Clears a specific location from the eeprom cache, if it exists.
+		//
+		//Parameters:
+		//	location - The location to clear from the cache.
+		void clearCacheLocation(uint16 location);
+
 	protected:
 		//Function: readCache
 		//	Attempts to read a value from the eeprom cache.
@@ -78,13 +85,6 @@ namespace mscl
 		//	location - The location to store the value for in the cache.
 		//	value - The eeprom value to store in the cache.
 		void updateCache(uint16 location, uint16 value);
-
-		//Function: clearCacheLocation
-		//	Clears a specific location from the eeprom cache, if it exists.
-		//
-		//Parameters:
-		//	location - The location to clear from the cache.
-		void clearCacheLocation(uint16 location);
 
 		//Function: updateCacheFromDevice
 		//	Attempts to update the cache by reading the value from a device.

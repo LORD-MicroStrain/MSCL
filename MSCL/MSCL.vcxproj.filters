@@ -554,6 +554,30 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\HclSmartBearing_RawPacket.h">
       <Filter>MicroStrain\Wireless\Packets</Filter>
     </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\AutoBalance.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\WirelessProtocol.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_Ping_v2.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_ReadEeprom_v2.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_WriteEeprom_v2.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_SetBeacon_v2.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_oem.h">
+      <Filter>MicroStrain\Wireless\Features\BaseStations</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_BeaconStatus.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp">
@@ -1036,6 +1060,30 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\HclSmartBearing_RawPacket.cpp">
       <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\AutoBalance.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\WirelessProtocol.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_Ping_v2.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_ReadEeprom_v2.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_WriteEeprom_v2.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_SetBeacon_v2.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_oem.cpp">
+      <Filter>MicroStrain\Wireless\Features\BaseStations</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_BeaconStatus.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

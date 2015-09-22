@@ -79,6 +79,9 @@ namespace mscl
 		//	packetType_SyncSampling_16ch			- 0x1A	- Synchronized Sampling Packet with 16 channel support
 		//	packetType_BufferedLDC_16ch				- 0x1D	- Buffered LDC Packet with 16 channel support
 		//	packetType_NodeReceived					- 0x20	- Node Received the command
+		//	packetType_baseCommand					- 0x30	- Base Station Command Packet
+		//	packetType_baseReply					- 0x31	- Base Station Command Reply Packet
+		//	packetType_baseErrorReply				- 0x32	- Base Station Command Error Reply Packet
 		//	packetType_SHM							- 0xA0	- Structural Health Monitoring Packet
 		//	packetType_HclSmartBearing_Calibrated	- 0xA1	- HclSmartBearing Calibrated data packet
 		//	packetType_HclSmartBearing_Raw			- 0xA2	- HclSmartBearing Raw data packet
@@ -103,6 +106,9 @@ namespace mscl
 			packetType_SyncSampling_16ch			= 0x1A,
 			packetType_BufferedLDC_16ch				= 0x1D,
 			packetType_NodeReceived					= 0x20,
+			packetType_baseCommand					= 0x30,
+			packetType_baseReply					= 0x31,
+			packetType_baseErrorReply				= 0x32,
 			packetType_SHM							= 0xA0,
 			packetType_HclSmartBearing_Calibrated	= 0xA1,
 			packetType_HclSmartBearing_Raw			= 0xA2

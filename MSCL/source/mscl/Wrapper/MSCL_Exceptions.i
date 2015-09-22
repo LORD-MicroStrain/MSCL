@@ -897,6 +897,7 @@
 %catches(mscl::Error_NodeCommunication, mscl::Error_Connection)																mscl::WirelessNode::erase();
 %catches(mscl::Error_InvalidNodeConfig, mscl::Error_Connection)																mscl::WirelessNode::startNonSyncSampling();
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)									mscl::WirelessNode::clearHistogram();
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)									mscl::WirelessNode::autoBalance(uint8 channelNumber, WirelessTypes::AutoBalanceOption option);
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)									mscl::WirelessNode::autoCal_shmLink();
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)									mscl::WirelessNode::verifyConfig(const WirelessNodeConfig& config, ConfigIssues& outIssues) const;
 %catches(mscl::Error_NotSupported, mscl::Error_InvalidNodeConfig, mscl::Error_NodeCommunication, mscl::Error_Connection)	mscl::WirelessNode::applyConfig(const WirelessNodeConfig& config);
@@ -915,6 +916,7 @@
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)									mscl::WirelessNode::getTimeBetweenBursts() const;
 %catches(mscl::Error_NodeCommunication, mscl::Error_Connection)																mscl::WirelessNode::getLostBeaconTimeout() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)									mscl::WirelessNode::getHardwareGain(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)									mscl::WirelessNode::getHardwareOffset(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)									mscl::WirelessNode::getFilterSettlingTime(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)									mscl::WirelessNode::getThermocoupleType(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)									mscl::WirelessNode::getLinearEquation(const ChannelMask& mask) const;

@@ -41,7 +41,7 @@ namespace mscl
 
 	const WirelessTypes::DefaultModes NodeFeatures_shmlink2::defaultModes() const
 	{
-		//build and return the boot modes that are supported (all for generic)
+		//build and return the boot modes that are supported
 		WirelessTypes::DefaultModes result;
 
 		result.push_back(WirelessTypes::defaultMode_idle);
@@ -64,6 +64,16 @@ namespace mscl
 		//build and return the data formats that are supported
 		WirelessTypes::DataFormats result;
 		result.push_back(WirelessTypes::dataFormat_4byte_float);
+		return result;
+	}
+
+	const WirelessTypes::SamplingModes NodeFeatures_shmlink2::samplingModes() const
+	{
+		//build and return the sampling modes that are supported
+		WirelessTypes::SamplingModes result;
+
+		result.push_back(WirelessTypes::samplingMode_nonSync);
+
 		return result;
 	}
 

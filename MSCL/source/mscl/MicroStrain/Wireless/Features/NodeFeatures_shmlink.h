@@ -32,6 +32,8 @@ namespace mscl
 		NodeFeatures_shmlink(const NodeInfo& info);
 
 	public:
+		virtual bool supportsAutoBalance(uint8 channelNumber) const final;
+
 		virtual bool supportsFatigueConfig() const final;
 
 		virtual bool supportsYoungsModConfig() const final;

@@ -34,7 +34,7 @@ namespace mscl
 		m_nodeAddress		= packet.nodeAddress();
 		m_deliveryStopFlags = packet.deliveryStopFlags();
 		m_type				= packet.type();
-		m_nodeRSSI			= packet.nodeRSSI();
+		m_nodeRSSI			= WirelessTypes::UNKNOWN_RSSI;
 		m_baseRSSI			= packet.baseRSSI();
 		m_frequency			= packet.frequency();
 		m_payload			= packet.payload();

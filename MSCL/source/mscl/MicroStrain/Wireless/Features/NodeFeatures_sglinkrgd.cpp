@@ -21,6 +21,37 @@ namespace mscl
 	NodeFeatures_sglinkrgd::NodeFeatures_sglinkrgd(const NodeInfo& info):
 		NodeFeatures(info)
 	{
+		static const ChannelMask DIFFERENTIAL_CHS(BOOST_BINARY(00001111));	//ch1-ch4
+		static const ChannelMask DIFF_CH1(BOOST_BINARY(00000001));	//ch1
+		static const ChannelMask DIFF_CH2(BOOST_BINARY(00000010));	//ch2
+		static const ChannelMask DIFF_CH3(BOOST_BINARY(00000100));	//ch3
+		static const ChannelMask DIFF_CH4(BOOST_BINARY(00001000));	//ch4
+
+		m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential Channels",
+									 ChannelGroup::SettingsMap{
+										 {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_1}}
+		);
+
+		m_channelGroups.emplace_back(DIFF_CH1, "Differential Channel 1",
+									 ChannelGroup::SettingsMap{
+										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1}}
+		);
+
+		m_channelGroups.emplace_back(DIFF_CH2, "Differential Channel 2",
+									 ChannelGroup::SettingsMap{
+										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_2}}
+		);
+
+		m_channelGroups.emplace_back(DIFF_CH3, "Differential Channel 3",
+									 ChannelGroup::SettingsMap{
+										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_3}}
+		);
+
+		m_channelGroups.emplace_back(DIFF_CH4, "Differential Channel 4",
+									 ChannelGroup::SettingsMap{
+										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_4}}
+		);
+
 		addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
 		addCalCoeffChannelGroup(2, NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
 		addCalCoeffChannelGroup(3, NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);
@@ -29,13 +60,6 @@ namespace mscl
 		addCalCoeffChannelGroup(6, NodeEepromMap::CH_ACTION_SLOPE_6, NodeEepromMap::CH_ACTION_ID_6);
 		addCalCoeffChannelGroup(7, NodeEepromMap::CH_ACTION_SLOPE_7, NodeEepromMap::CH_ACTION_ID_7);
 		addCalCoeffChannelGroup(8, NodeEepromMap::CH_ACTION_SLOPE_8, NodeEepromMap::CH_ACTION_ID_8);
-
-		static const ChannelMask DIFFERENTIAL_CHS(BOOST_BINARY(00001111));	//ch1-ch4
-
-		m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential Channels",
-									 ChannelGroup::SettingsMap{
-										 {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_1}}
-		);
 
 		//Channels
 		m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential);	//full diff
@@ -46,7 +70,10 @@ namespace mscl
 		m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_acceleration);		//accel y
 		m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration);		//accel z
 		m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_temperature);		//temp
+	}
 
-		
+	bool NodeFeatures_sglinkrgd::supportsAutoBalance(uint8 channelNumber) const
+	{
+		return anyChannelGroupSupports(WirelessTypes::chSetting_hardwareOffset, channelNumber);
 	}
 }

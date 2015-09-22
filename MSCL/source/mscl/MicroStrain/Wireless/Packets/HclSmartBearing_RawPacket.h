@@ -61,21 +61,42 @@ namespace mscl
 		explicit HclSmartBearing_RawPacket(const WirelessPacket& packet);
 
 	private:
+		//Variable: m_magConversionVal
+		//	The conversion value for magnetometer data from the raw base board packet.
 		float m_magConversionVal;
 
 	private:
 		HclSmartBearing_RawPacket();	//default constructor disabled
 
 		//Function: parseSweeps
-		//	Parses the passed in WirelessPacket for all the sweep information and adds a sweep to the sweeps container
+		//	Parses the packet for all the sweep information and adds a sweep to the sweeps container
 		//
 		//Exceptions:
 		//	- <Error_UnknownSampleRate>: failed to find the sample rate in the list
 		void parseSweeps();
 
+		//Function: parseSweeps_baseBoard
+		//	Parses the packet for Raw Base Board data.
 		void parseSweeps_baseBoard();
 
-		anyType getMagChValue(uint16 packetVal);
+		//Function: parseSweeps_strainBoard
+		//	Parses the packet for Raw Strain Board data.
+		void parseSweeps_strainBoard();
+
+		//Function: parseSweeps_inertialBoard
+		//	Parses the packet for Raw Inertial Board data.
+		void parseSweeps_inertialBoard();
+
+		//Function: getMagChValue
+		//	Gets the magnetometer data for a channel from the raw base board packet,
+		//	taking into account the mag conversion val.
+		//
+		//Parameters:
+		//	packetVal - The raw channel value received from the packet.
+		//
+		//Returns:
+		//	An <anyType> containing the value to store with the data.
+		anyType getMagChValue(int16 packetVal);
 
 		//Function: integrityCheck_baseBoard
 		//	Verifies that the packet is a well formed HclSmartBearing_RawPacket Base Board packet.
@@ -86,6 +107,26 @@ namespace mscl
 		//Returns:
 		//	true if the packet is a well formed HclSmartBearing_RawPacket Base Board packet, false otherwise.
 		static bool integrityCheck_baseBoard(const WirelessPacket::Payload& payload);
+
+		//Function: integrityCheck_strainBoard
+		//	Verifies that the packet is a well formed HclSmartBearing_RawPacket Strain Board packet.
+		//
+		//Parameters:
+		//	packet - The fully formed Wireless Packet to check the integrity of.
+		//
+		//Returns:
+		//	true if the packet is a well formed HclSmartBearing_RawPacket Strain Board packet, false otherwise.
+		static bool integrityCheck_strainBoard(const WirelessPacket::Payload& payload);
+
+		//Function: integrityCheck_inertialBoard
+		//	Verifies that the packet is a well formed HclSmartBearing_RawPacket Inertial Board packet.
+		//
+		//Parameters:
+		//	packet - The fully formed Wireless Packet to check the integrity of.
+		//
+		//Returns:
+		//	true if the packet is a well formed HclSmartBearing_RawPacket Inertial Board packet, false otherwise.
+		static bool integrityCheck_inertialBoard(const WirelessPacket::Payload& payload);
 
 	public:
 		//Function: integrityCheck

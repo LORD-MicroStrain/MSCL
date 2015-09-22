@@ -21,6 +21,7 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 #include "mscl/MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/Commands/AutoCal.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 #include <vector>
 
 
@@ -55,19 +56,13 @@ BOOST_AUTO_TEST_SUITE(BaseStation_Test)
 
 BOOST_AUTO_TEST_CASE(BaseStation_frequency)
 {
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
+	std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl());
+	BaseStation b(baseImpl);
 
-	//build the response bytes that need to be read on creation of a BaseStation
-	std::vector<ByteStream> responses;
-	responses.push_back(loadBaseInfoResponse());
-	connImpl->setResponseBytes(responses);
-
-	//create a base station
-	BaseStation base(conn);
+	expectRead(baseImpl, BaseStationEepromMap::FREQUENCY, Value::UINT16(13));
 
 	//check the frequency is what we expect
-	BOOST_CHECK_EQUAL(base.frequency(), 13);
+	BOOST_CHECK_EQUAL(b.frequency(), 13); 
 }
 
 BOOST_AUTO_TEST_CASE(BaseStation_firmwareVersion)
@@ -75,10 +70,10 @@ BOOST_AUTO_TEST_CASE(BaseStation_firmwareVersion)
 	std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl());
 	BaseStation b(baseImpl);
 
-	expectRead(baseImpl, BaseStationEepromMap::FIRMWARE_VER, Value::UINT16(0x050D));
+	expectRead(baseImpl, BaseStationEepromMap::FIRMWARE_VER, Value::UINT16(0x030D));
 
 	//check that the response is successful
-	BOOST_CHECK_EQUAL(b.firmwareVersion().str(), "5.13.0");
+	BOOST_CHECK_EQUAL(b.firmwareVersion().str(), "3.13.0");
 }
 
 BOOST_AUTO_TEST_CASE(BaseStation_firmwareVersion_withSvn)
@@ -287,252 +282,6 @@ BOOST_AUTO_TEST_CASE(BaseStation_GetNodeDiscoveries_Empty)
 	BOOST_CHECK_EQUAL(nds.size(), 0);
 }
 
-BOOST_AUTO_TEST_CASE(BaseStation_Ping_Success)
-{
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
-
-	//create the base station (loads the info)
-	BaseStation base(conn);
-	base.baseCommandsTimeout(10);
-
-	//build the data to send
-	ByteStream data;
-	data.append_uint8(0x01);
-	connImpl->setResponseBytes(data);
-
-	//check that the ping response is successful
-	BOOST_CHECK_EQUAL(base.ping(), true);
-}
-
-BOOST_AUTO_TEST_CASE(BaseStation_Ping_Fail)
-{
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
-
-	//create the base station (loads the info)
-	BaseStation base(conn);
-	base.baseCommandsTimeout(10);
-
-	//build the data to send
-	ByteStream data;
-	data.append_uint8(0x45);	//incorrect response
-	connImpl->setResponseBytes(data);
-
-	//check that the ping response failed
-	BOOST_CHECK_EQUAL(base.ping(), false);
-}
-
-BOOST_AUTO_TEST_CASE(BaseStation_ReadEEPROM_Success)
-{
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
-
-	ByteStream data;
-	data.append_uint8(0x73);
-	data.append_uint16(32);
-	data.append_uint16(32);
-
-	//build the response bytes that need to be read on creation of a BaseStation
-	std::vector<ByteStream> responses;
-	responses.push_back(data);
-	connImpl->setResponseBytes(responses);
-
-	//create the base station (loads the info)
-	BaseStation base(conn);
-
-	//now get the actual readEEprom response
-	uint16 result = base.readEeprom(56);
-
-	//check that the response was a success and has correct values
-	BOOST_CHECK_EQUAL(result, 32);
-}
-
-BOOST_AUTO_TEST_CASE(BaseStation_ReadEEPROM_Fail)
-{
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
-
-	//create the base station (loads the info)
-	BaseStation base(conn);
-	base.baseCommandsTimeout(10);
-
-	//build the data to send
-	ByteStream data;
-	data.append_uint8(0x73);
-	data.append_uint16(32);
-	data.append_uint16(31);	//invalid checksum
-	connImpl->setResponseBytes(data);
-
-	BOOST_CHECK_THROW(base.readEeprom(56), Error_Communication);
-}
-
-BOOST_AUTO_TEST_CASE(BaseStation_ReadEEPROM_withEnum_Success)
-{
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
-
-	ByteStream data;
-	data.append_uint8(0x73);
-	data.append_uint16(32);
-	data.append_uint16(32);
-	connImpl->setResponseBytes(data);
-
-	//build the response bytes that need to be read on creation of a BaseStation
-	std::vector<ByteStream> responses;
-	responses.push_back(data);
-	connImpl->setResponseBytes(responses);
-
-	//create the base station (loads the info)
-	BaseStation base(conn);
-
-	//now get the actual readEEprom response
-	uint16 result = base.readEeprom(BaseStationEepromMap::BEACON_CONFIG.location());
-
-	//check that the response was a success and has correct values
-	BOOST_CHECK_EQUAL(result, 32);
-}
-
-BOOST_AUTO_TEST_CASE(BaseStation_WriteEEPROM_Success)
-{
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
-
-	//create the base station (loads the info)
-	BaseStation base(conn);
-
-	//build the response to send
-	ByteStream data;
-	data.append_uint8(0x78);
-	data.append_uint16(0);
-	data.append_uint16(0);//checksum
-
-	std::vector<ByteStream> responses;
-	responses.push_back(data);
-	connImpl->setResponseBytes(responses);
-
-	//check that the command doesn't throw an exception (succeeded)
-	BOOST_CHECK_NO_THROW(base.writeEeprom(112, 0));
-}
-
-BOOST_AUTO_TEST_CASE(BaseStation_WriteEEPROM_Fail)
-{
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
-
-	//build the data to send
-	ByteStream data;
-	data.append_uint8(0x78);
-	data.append_uint16(112);
-	data.append_uint16(0);
-	data.append_uint16(31);	//invalid checksum
-
-	//build the response bytes that need to be read on creation of a BaseStation
-	std::vector<ByteStream> responses;
-	responses.push_back(data);
-	connImpl->setResponseBytes(responses);
-
-	//create the base station (loads the info)
-	BaseStation base(conn);
-	base.baseCommandsTimeout(10);
-
-	//check that the command throws an exception (fails)
-	BOOST_CHECK_THROW(base.writeEeprom(112, 0), Error);
-}
-
-BOOST_AUTO_TEST_CASE(BaseStation_WriteEEPROM_withEnum_Success)
-{
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
-
-	//create the base station (loads the info)
-	BaseStation base(conn);
-
-	//build the response to send
-	ByteStream data;
-	data.append_uint8(0x78);
-	data.append_uint16(15);
-	data.append_uint16(15);//checksum
-
-	//build the response bytes that need to be read on creation of a BaseStation
-	std::vector<ByteStream> responses;
-	responses.push_back(data);
-	connImpl->setResponseBytes(responses);
-
-	//check that the command doesn't throw an exception (succeeded)
-	BOOST_CHECK_NO_THROW(base.writeEeprom(BaseStationEepromMap::FREQUENCY.location(), 15));
-}
-
-BOOST_AUTO_TEST_CASE(BaseStation_EnableBeacon_WithTime_Success)
-{
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
-
-	//create the base station (loads the info)
-	BaseStation base(conn);
-
-	//build the data to send
-	ByteStream data;
-	data.append_uint16(0xBEAC);
-	connImpl->setResponseBytes(data);
-
-	const uint32 BEACON_TIME = 1358201247;
-	BOOST_CHECK_NO_THROW(base.enableBeacon(BEACON_TIME));
-}
-
-BOOST_AUTO_TEST_CASE(BaseStation_EnableBeacon_Fail_Timeout)
-{
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
-
-	//create the base station (loads the info)
-	BaseStation base(conn);
-	base.baseCommandsTimeout(10);
-
-	//build the data to send
-	ByteStream data;
-	data.append_uint16(0xACBE);//incorrect response
-	connImpl->setResponseBytes(data);
-
-	//check that the command throws an exception (failed)
-	BOOST_CHECK_THROW(base.enableBeacon(), Error);
-}
-
-BOOST_AUTO_TEST_CASE(BaseStation_DisableBeacon_Success)
-{
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
-
-	//create the base station (loads the info)
-	BaseStation base(conn);
-
-	//build the data to send
-	ByteStream data;
-	data.append_uint16(0xBEAC);
-	connImpl->setResponseBytes(data);
-
-	//check that the command succeeded
-	BOOST_CHECK_NO_THROW(base.disableBeacon());
-}
-
-BOOST_AUTO_TEST_CASE(BaseStation_DisableBeacon_Fail_Timeout)
-{
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
-
-	//create the base station (loads the info)
-	BaseStation base(conn);
-	base.baseCommandsTimeout(10);
-
-	//build the data to send
-	ByteStream data;
-	data.append_uint16(0xABCD);
-	connImpl->setResponseBytes(data);
-
-	//check that the command succeeded
-	BOOST_CHECK_THROW(base.disableBeacon(), Error);
-}
-
 BOOST_AUTO_TEST_CASE(BaseStation_cyclePower)
 {
 	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
@@ -548,62 +297,15 @@ BOOST_AUTO_TEST_CASE(BaseStation_cyclePower)
 
 BOOST_AUTO_TEST_CASE(BaseStation_changeFrequency_success)
 {
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
+	std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl());
+	BaseStation base(baseImpl);
 
-	//create the base station (loads the info)
-	BaseStation base(conn);
-
-	//build the Change Frequency response
-	ByteStream data;
-	data.append_uint8(0x78);
-	data.append_uint16(14);
-	data.append_uint16(14);//checksum
-
-	//build the cycle power response
-	ByteStream resetData;
-	resetData.append_uint8(0x78);
-	resetData.append_uint16(0x02);
-	resetData.append_uint16(0x02);//checksum
-
-	std::vector<ByteStream> dataResponses;
-	dataResponses.push_back(data);
-	dataResponses.push_back(resetData);
-	connImpl->setResponseBytes(dataResponses);
+	expectWrite(baseImpl, BaseStationEepromMap::FREQUENCY, Value::UINT16(14));
+	expectWrite(baseImpl, BaseStationEepromMap::CYCLE_POWER, Value::UINT16(2));
 
 	//check that the command doesn't throw an exception (succeeded)
 	BOOST_CHECK_NO_THROW(base.changeFrequency(WirelessTypes::freq_14));
 	BOOST_CHECK_EQUAL(base.frequency(), WirelessTypes::freq_14);
-}
-
-BOOST_AUTO_TEST_CASE(BaseStation_changeFrequency_success_outOfRange)
-{
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
-
-	//create the base station (loads the info)
-	BaseStation base(conn);
-
-	//build the Change Frequency response
-	ByteStream data;
-	data.append_uint8(0x78);
-	data.append_uint16(11);
-	data.append_uint16(11);//checksum
-	
-	//build the cycle power responsere
-	ByteStream resetData;
-	resetData.append_uint8(0x78);
-	resetData.append_uint16(0x02);
-	resetData.append_uint16(0x02);//checksum
-
-	std::vector<ByteStream> dataResponses;
-	dataResponses.push_back(data);
-	dataResponses.push_back(resetData);
-	connImpl->setResponseBytes(dataResponses);
-
-	//check that the command doesn't throw an exception (succeeded)
-	BOOST_CHECK_NO_THROW(base.changeFrequency(static_cast<WirelessTypes::Frequency>(5)));
-	BOOST_CHECK_EQUAL(base.frequency(), WirelessTypes::freq_11);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStation_changeFrequency_fail)
@@ -731,7 +433,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeEepromRead_Success)
 	connImpl->setResponseBytes(data);
 
 	uint16 eepromValue;
-	bool success = base.node_readEeprom(1, 327, 112, eepromValue);
+	bool success = base.node_readEeprom(*(WirelessProtocol::v1_0().get()), 327, 112, eepromValue);
 
 	BOOST_CHECK_EQUAL(success, true);
 	BOOST_CHECK_EQUAL(eepromValue, 2423);
@@ -747,7 +449,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeEepromRead_Fail_Timeout)
 	base.nodeCommandsTimeout(10);
 
 	uint16 eepromValue = 0;
-	bool result = base.node_readEeprom(1, 327, 112, eepromValue);
+	bool result = base.node_readEeprom(*(WirelessProtocol::v1_0().get()), 327, 112, eepromValue);
 
 	BOOST_CHECK_EQUAL(result, false);
 	BOOST_CHECK_EQUAL(eepromValue, 0);
@@ -779,7 +481,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeEepromWrite_Success)
 	data.append_uint16(data.calculateSimpleChecksum(1, 7));	//checksum
 	connImpl->setResponseBytes(data);
 
-	bool result = base.node_writeEeprom(1, 327, 112, 456);
+	bool result = base.node_writeEeprom(*(WirelessProtocol::v1_0().get()), 327, 112, 456);
 
 	BOOST_CHECK_EQUAL(result, true);
 }
@@ -799,7 +501,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeEepromWrite_Fail_Timeout)
 	data.append_uint8(0xAA);
 	connImpl->setResponseBytes(data);
 
-	bool result = base.node_writeEeprom(1, 327, 112, 456);
+	bool result = base.node_writeEeprom(*(WirelessProtocol::v1_0().get()), 327, 112, 456);
 
 	BOOST_CHECK_EQUAL(result, false);
 }
@@ -824,7 +526,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodePageDownload_Success)
 
 
 	ByteStream resultData;
-	bool result = base.node_pageDownload(123, 0, resultData);
+	bool result = base.node_pageDownload(*(WirelessProtocol::v1_0().get()), 123, 0, resultData);
 
 	BOOST_CHECK_EQUAL(result, true);
 	BOOST_CHECK_EQUAL(resultData.size(), 264);
@@ -847,7 +549,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodePageDownload_FailResponse)
 	connImpl->setResponseBytes(data);
 
 	ByteStream resultData;
-	bool result = base.node_pageDownload(123, 0, resultData);
+	bool result = base.node_pageDownload(*(WirelessProtocol::v1_0().get()), 123, 0, resultData);
 
 	BOOST_CHECK_EQUAL(result, false);
 	BOOST_CHECK_EQUAL(resultData.size(), 0);

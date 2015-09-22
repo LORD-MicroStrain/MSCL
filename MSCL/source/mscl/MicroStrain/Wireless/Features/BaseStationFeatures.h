@@ -85,6 +85,13 @@ namespace mscl
 		//	true if the BaseStation supports Analog Pairing, false otherwise.
 		bool supportsAnalogPairing() const;
 
+		//API Function: supportsBeaconStatus
+		//	Checks if the BaseStation support the beaconStatus command.
+		//
+		//Returns:
+		//	true if the BaseStation supports the beacon status command, false otherwise.
+		bool supportsBeaconStatus() const;
+
 		//API Function: buttonCount
 		//	Gets the total number of buttons that are supported.
 		//

@@ -19,18 +19,27 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 #include "Configuration/BaseStationEepromMap.h"
 #include "Configuration/BaseStationConfig.h"
 #include "Features/BaseStationFeatures.h"
+#include "mscl/MicroStrain/ResponsePattern.h"
 #include "mscl/Utils.h"
+#include "mscl/Version.h"
 #include "BaseStationInfo.h"
 #include "BaseStation.h"
 
 //Base Station commands
+#include "Commands/WirelessProtocol.h"
+#include "Commands/BaseStation_BeaconStatus.h"
 #include "Commands/BaseStation_Ping.h"
+#include "Commands/BaseStation_Ping_v2.h"
 #include "Commands/BaseStation_ReadEeprom.h"
+#include "Commands/BaseStation_ReadEeprom_v2.h"
 #include "Commands/BaseStation_WriteEeprom.h"
+#include "Commands/BaseStation_WriteEeprom_v2.h"
 #include "Commands/BaseStation_SetBeacon.h"
+#include "Commands/BaseStation_SetBeacon_v2.h"
 
 //Node commands
 #include "Commands/ArmForDatalogging.h"
+#include "Commands/AutoBalance.h"
 #include "Commands/AutoCal.h"
 #include "Commands/ShortPing.h"
 #include "Commands/LongPing.h"
@@ -72,9 +81,62 @@ namespace mscl
 		m_connection.unregisterParser();
 	}
 
+	std::unique_ptr<WirelessProtocol> BaseStation_Impl::determineProtocol()
+	{
+		Version fwVersion;
+
+		//=========================================================================
+		// Determine the firmware version by attempting to use multiple protocols
+		try
+		{
+			//try reading with protocol v1.1
+			m_protocol = WirelessProtocol::v1_1();
+
+			fwVersion = firmwareVersion();
+		}
+		catch(Error_Communication&)
+		{
+			//try reading with protocol v1.0
+			m_protocol = WirelessProtocol::v1_0();
+
+			fwVersion = firmwareVersion();
+
+			//Note: don't need another try catch here as its the last try
+			//		so if we get an exception, it should just be passed along
+		}
+		//=========================================================================
+
+		//the BaseStation min fw version to support protocol 1.1
+		static const Version FW_PROTOCOL_1_1(4, 0);
+
+		if(fwVersion >= FW_PROTOCOL_1_1)
+		{
+			return WirelessProtocol::v1_1();
+		}
+		else
+		{
+			return WirelessProtocol::v1_0();
+		}
+	}
+
 	BaseStationEepromHelper& BaseStation_Impl::eeHelper() const
 	{
 		return *(m_eepromHelper.get());
+	}
+
+	bool BaseStation_Impl::doCommand(ResponsePattern& response, const ByteStream& cmdBytes, uint64 timeout)
+	{
+		//set the response collector of the ResponsePattern (registers response as well)
+		response.setResponseCollector(m_responseCollector);
+
+		//send the command to the base station
+		m_connection.write(cmdBytes);
+
+		//wait for the response or a timeout
+		response.wait(timeout);
+
+		//return the result of the command/response
+		return response.success();
 	}
 
 	const BaseStationFeatures& BaseStation_Impl::features() const
@@ -90,6 +152,18 @@ namespace mscl
 		}
 
 		return *(m_features.get());
+	}
+
+	const WirelessProtocol& BaseStation_Impl::protocol()
+	{
+		//if the protocol variable hasn't been set yet
+		if(m_protocol == NULL)
+		{
+			//determine and assign the protocol for this BaseStation
+			m_protocol = determineProtocol();
+		}
+
+		return *(m_protocol.get());
 	}
 
 	const Timestamp& BaseStation_Impl::lastCommunicationTime() const
@@ -142,14 +216,14 @@ namespace mscl
 
 		uint8 major = Utils::msb(fwValue1);
 
-		//firmware versions < 10 use the scheme [Major].[Minor]
-		if(major < 10)
+		//firmware versions < 4 use the scheme [Major].[Minor]
+		if(major < 4)
 		{
 			uint8 minor = Utils::lsb(fwValue1);
 
 			return Version(major, minor);
 		}
-		//firmware versions >= 10 use the scheme [Major].[svnRevision]
+		//firmware versions >= 4 use the scheme [Major].[svnRevision]
 		else
 		{
 			uint16 fwValue2 = readEeprom(BaseStationEepromMap::FIRMWARE_VER2).as_uint16();
@@ -278,7 +352,7 @@ namespace mscl
 		{
 			//get the current system time again
 			timeNow = Utils::getCurrentSystemTime();
-			
+
 			//get the current milliseconds of the time again
 			currentMilli = (timeNow % TimeSpan::NANOSECONDS_PER_SECOND) / TimeSpan::NANOSECONDS_PER_MILLISECOND;
 
@@ -329,9 +403,58 @@ namespace mscl
 	//									BASE STATION COMMANDS
 	//================================================================================================
 
-	//Function: ping
-	//	pings the base station
 	bool BaseStation_Impl::ping()
+	{
+		return protocol().m_pingBase(this);
+	}
+
+	bool BaseStation_Impl::read(uint16 eepromAddress, uint16& result)
+	{
+		return protocol().m_readBaseEeprom(this, eepromAddress, result);
+	}
+
+	bool BaseStation_Impl::write(uint16 eepromAddress, uint16 value)
+	{
+		return protocol().m_writeBaseEeprom(this, eepromAddress, value);
+	}
+
+	Timestamp BaseStation_Impl::enableBeacon()
+	{
+		//return the result of the enableBeacon function given the current system time as the start time
+		return protocol().m_enableBeacon(this, getTimeForBeacon());
+	}
+
+	Timestamp BaseStation_Impl::enableBeacon(uint32 utcTime)
+	{
+		return protocol().m_enableBeacon(this, utcTime);
+	}
+
+	void BaseStation_Impl::disableBeacon()
+	{
+		try
+		{
+			//call the enableBeacon command with 0xFFFFFFFF for the timestamp to disable it
+			protocol().m_enableBeacon(this, 0xFFFFFFFF);
+		}
+		catch(Error_Communication&)
+		{
+			//want to rethrow the same exception with different text
+			throw Error_Communication("The Disable Beacon command has failed");
+		}
+	}
+
+	BeaconStatus BaseStation_Impl::beaconStatus()
+	{
+		//verify the basestation support beacon status
+		if(!features().supportsBeaconStatus())
+		{
+			throw Error_NotSupported("The Beacon Status command is not supported by this BaseStation.");
+		}
+
+		return protocol().m_beaconStatus(this);
+	}
+
+	bool BaseStation_Impl::ping_v1()
 	{
 		//create the response for the BaseStation_Ping command
 		BaseStation_Ping::Response response(m_responseCollector);
@@ -342,8 +465,8 @@ namespace mscl
 		//wait for the response or a timeout
 		response.wait(m_baseCommandsTimeout);
 
-		if(response.success()) 
-		{ 
+		if(response.success())
+		{
 			//update basestation last comm time
 			m_lastCommTime.setTimeNow();
 		}
@@ -352,7 +475,28 @@ namespace mscl
 		return response.success();
 	}
 
-	bool BaseStation_Impl::read(uint16 eepromAddress, uint16& result)
+	bool BaseStation_Impl::ping_v2()
+	{
+		//create the response for the BaseStation_Ping command
+		BaseStation_Ping_v2::Response response(m_responseCollector);
+
+		//send the ping command to the base station
+		m_connection.write(BaseStation_Ping_v2::buildCommand());
+
+		//wait for the response or a timeout
+		response.wait(m_baseCommandsTimeout);
+
+		if(response.success())
+		{
+			//update basestation last comm time
+			m_lastCommTime.setTimeNow();
+		}
+
+		//return the result of the response
+		return response.success();
+	}
+
+	bool BaseStation_Impl::read_v1(uint16 eepromAddress, uint16& result)
 	{
 		//create the response for the BaseStation_ReadEeprom command
 		BaseStation_ReadEeprom::Response response(m_responseCollector);
@@ -375,13 +519,36 @@ namespace mscl
 			return true;
 		}
 
-		//the read eeprom command failed
 		return false;
 	}
 
-	//writeEeprom
-	//	Writes the base station EEPROM address
-	bool BaseStation_Impl::write(uint16 eepromAddress, uint16 value)
+	bool BaseStation_Impl::read_v2(uint16 eepromAddress, uint16& result)
+	{
+		//create the response for the BaseStation_ReadEeprom command
+		BaseStation_ReadEeprom_v2::Response response(eepromAddress, m_responseCollector);
+
+		//send the command to the base station
+		m_connection.write(BaseStation_ReadEeprom_v2::buildCommand(eepromAddress));
+
+		//wait for the response or a timeout
+		response.wait(m_baseCommandsTimeout);
+
+		//if the command was a success
+		if(response.success())
+		{
+			//get the eeprom value that we read
+			result = response.result();
+
+			//update basestation last comm time
+			m_lastCommTime.setTimeNow();
+
+			return true;
+		}
+
+		return false;
+	}
+
+	bool BaseStation_Impl::write_v1(uint16 eepromAddress, uint16 value)
 	{
 		//create the response for the BaseStation_WriteEeprom command
 		BaseStation_WriteEeprom::Response response(value, m_responseCollector);
@@ -393,44 +560,41 @@ namespace mscl
 		response.wait(m_baseCommandsTimeout);
 
 		//if the write command failed
-		if(!response.success())
+		if(response.success())
 		{
-			return false;
+			//update basestation last comm time
+			m_lastCommTime.setTimeNow();
+
+			return true;
 		}
 
-		//update basestation last comm time
-		m_lastCommTime.setTimeNow();
-
-		return true;
+		return false;
 	}
 
-	Value BaseStation_Impl::readEeprom(const EepromLocation& location) const
+	bool BaseStation_Impl::write_v2(uint16 eepromAddress, uint16 value)
 	{
-		return m_eeprom->readEeprom(location);
+		//create the response for the BaseStation_WriteEeprom command
+		BaseStation_WriteEeprom_v2::Response response(value, eepromAddress, m_responseCollector);
+
+		//send the command to the base station
+		m_connection.write(BaseStation_WriteEeprom_v2::buildCommand(eepromAddress, value));
+
+		//wait for the response or a timeout
+		response.wait(m_baseCommandsTimeout);
+
+		//if the write command failed
+		if(response.success())
+		{
+			//update basestation last comm time
+			m_lastCommTime.setTimeNow();
+
+			return true;
+		}
+
+		return false;
 	}
 
-	void BaseStation_Impl::writeEeprom(const EepromLocation& location, const Value& val)
-	{
-		m_eeprom->writeEeprom(location, val);
-	}
-
-	uint16 BaseStation_Impl::readEeprom(uint16 eepromAddress) const
-	{
-		return m_eeprom->readEeprom(eepromAddress);
-	}
-
-	void BaseStation_Impl::writeEeprom(uint16 eepromAddress, uint16 value)
-	{
-		m_eeprom->writeEeprom(eepromAddress, value);
-	}
-
-	Timestamp BaseStation_Impl::enableBeacon()
-	{
-		//return the result of the enableBeacon function given the current system time as the start time
-		return enableBeacon(getTimeForBeacon());
-	}
-
-	Timestamp BaseStation_Impl::enableBeacon(uint32 utcTime)
+	Timestamp BaseStation_Impl::enableBeacon_v1(uint32 utcTime)
 	{
 		//create the response for the BaseStation_SetBeacon command
 		BaseStation_SetBeacon::Response response(utcTime, m_responseCollector);
@@ -454,24 +618,232 @@ namespace mscl
 		return response.beaconStartTime();
 	}
 
-	void BaseStation_Impl::disableBeacon()
+	Timestamp BaseStation_Impl::enableBeacon_v2(uint32 utcTime)
 	{
-		try
-		{
-			//call the enableBeacon command with 0xFFFFFFFF for the timestamp
-			enableBeacon(0xFFFFFFFF);
-		}
-		catch(Error_Connection&)
-		{
-			//rethrow the exception
-			throw;
-		}
-		//catch the exception that could be thrown from the enableBeacon command (so we can throw a custom one from here)
-		catch(Error&)
+		//create the response for the BaseStation_SetBeacon command
+		BaseStation_SetBeacon_v2::Response response(utcTime, m_responseCollector);
+
+		//send the command to the base station
+		m_connection.write(BaseStation_SetBeacon_v2::buildCommand(utcTime));
+
+		//wait for the response or a timeout
+		response.wait(m_baseCommandsTimeout);
+
+		//if the enable beacon command failed
+		if(!response.success())
 		{
 			//throw an exception so that the user cannot ignore a failure
-			throw Error_Communication("The Disable Beacon command has failed");
+			throw Error_Communication("The Enable Beacon command has failed");
 		}
+
+		//update basestation last comm time
+		m_lastCommTime.setTimeNow();
+
+		return response.beaconStartTime();
+	}
+
+	BeaconStatus BaseStation_Impl::beaconStatus_v1()
+	{
+		//create the response for the command
+		BaseStation_BeaconStatus::Response response(m_responseCollector);
+
+		//send the long ping command to the base station
+		m_connection.write(BaseStation_BeaconStatus::buildCommand());
+
+		//wait for the response or timeout
+		response.wait(m_baseCommandsTimeout);
+
+		//if the beacon status command failed
+		if(!response.success())
+		{
+			//throw an exception so that the user cannot ignore a failure
+			throw Error_Communication("The Beacon Status command has failed");
+		}
+
+		//update basestation last comm time
+		m_lastCommTime.setTimeNow();
+
+		//return the result of the response
+		return response.result();
+	}
+
+	bool BaseStation_Impl::node_pageDownload_v1(NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data)
+	{
+		//create the response for the PageDownload command
+		PageDownload::Response response(m_responseCollector);
+
+		//build the command to send
+		ByteStream pageDownloadCommand = PageDownload::buildCommand(nodeAddress, pageIndex);
+
+		//send the command to the base station
+		m_connection.write(pageDownloadCommand);
+
+		//wait for the response
+		response.wait(m_nodeCommandsTimeout);
+
+		//if the page download was a success
+		if(response.success())
+		{
+			//get the data points and store them in the data parameter
+			data = response.dataPoints();
+
+			//update basestation last comm time
+			m_lastCommTime.setTimeNow();
+
+			//update node last comm time
+			m_nodesLastCommTime[nodeAddress].setTimeNow();
+
+			return true;
+		}
+
+		//page download command failed
+		return false;
+	}
+
+	bool BaseStation_Impl::node_readEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
+	{
+		bool success = false;
+
+		//create the response for the ReadEeprom command
+		ReadEeprom::Response response(nodeAddress, m_responseCollector);
+
+		//build the command to send
+		ByteStream readCommand = ReadEeprom::buildCommand(nodeAddress, eepromAddress);
+
+		//send the command to the base station
+		m_connection.write(readCommand);
+
+		//wait for the response
+		response.wait(m_nodeCommandsTimeout);
+
+		success = response.success();
+		if(success)
+		{
+			//set the eeprom value to the result
+			eepromValue = response.eepromValue();
+
+			//update basestation last comm time
+			m_lastCommTime.setTimeNow();
+
+			//update node last comm time
+			m_nodesLastCommTime[nodeAddress].setTimeNow();
+		}
+
+		return success;
+	}
+
+	bool BaseStation_Impl::node_readEeprom_v2(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
+	{
+		bool success = false;
+
+		//create the response for the ReadEeprom command
+		ReadEeprom_v2::Response response(nodeAddress, eepromAddress, m_responseCollector);
+
+		//build the command to send
+		ByteStream readCommand = ReadEeprom_v2::buildCommand(nodeAddress, eepromAddress);
+
+		//send the command to the base station
+		m_connection.write(readCommand);
+
+		//wait for the response
+		response.wait(m_nodeCommandsTimeout);
+
+		success = response.success();
+		if(success)
+		{
+			//set the eeprom value to the result
+			eepromValue = response.eepromValue();
+
+			//update basestation last comm time
+			m_lastCommTime.setTimeNow();
+
+			//update node last comm time
+			m_nodesLastCommTime[nodeAddress].setTimeNow();
+		}
+
+		return success;
+	}
+
+	bool BaseStation_Impl::node_writeEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16 value)
+	{
+		bool success = false;
+
+		//create the response for the WriteEeprom command
+		WriteEeprom::Response response(nodeAddress, m_responseCollector);
+
+		//build the command to send
+		ByteStream writeCommand = WriteEeprom::buildCommand(nodeAddress, eepromAddress, value);
+
+		//send the command to the base station
+		m_connection.write(writeCommand);
+
+		//wait for the response
+		response.wait(m_nodeCommandsTimeout);
+
+		//return the result of the response
+		success = response.success();
+
+		if(success)
+		{
+			//update basestation last comm time
+			m_lastCommTime.setTimeNow();
+
+			//update node last comm time
+			m_nodesLastCommTime[nodeAddress].setTimeNow();
+		}
+
+		return success;
+	}
+
+	bool BaseStation_Impl::node_writeEeprom_v2(NodeAddress nodeAddress, uint16 eepromAddress, uint16 value)
+	{
+		bool success = false;
+
+		//create the response for the WriteEeprom_v2 command
+		WriteEeprom_v2::Response response(nodeAddress, eepromAddress, value, m_responseCollector);
+
+		//build the command to send
+		ByteStream writeCommand = WriteEeprom_v2::buildCommand(nodeAddress, eepromAddress, value);
+
+		//send the command to the base station
+		m_connection.write(writeCommand);
+
+		//wait for the response
+		response.wait(m_nodeCommandsTimeout);
+
+		//return the result of the response
+		success = response.success();
+
+		if(success)
+		{
+			//update basestation last comm time
+			m_lastCommTime.setTimeNow();
+
+			//update node last comm time
+			m_nodesLastCommTime[nodeAddress].setTimeNow();
+		}
+
+		return success;
+	}
+
+	Value BaseStation_Impl::readEeprom(const EepromLocation& location) const
+	{
+		return m_eeprom->readEeprom(location);
+	}
+
+	void BaseStation_Impl::writeEeprom(const EepromLocation& location, const Value& val)
+	{
+		m_eeprom->writeEeprom(location, val);
+	}
+
+	uint16 BaseStation_Impl::readEeprom(uint16 eepromAddress) const
+	{
+		return m_eeprom->readEeprom(eepromAddress);
+	}
+
+	void BaseStation_Impl::writeEeprom(uint16 eepromAddress, uint16 value)
+	{
+		m_eeprom->writeEeprom(eepromAddress, value);
 	}
 
 	void BaseStation_Impl::cyclePower()
@@ -665,147 +1037,19 @@ namespace mscl
 		return status;
 	}
 
-	bool BaseStation_Impl::node_readEeprom(uint8 readVersion, NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
+	bool BaseStation_Impl::node_readEeprom(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
 	{
-		bool success = false;
-
-		if(readVersion == 2)
-		{
-			//create the response for the ReadEeprom command
-			ReadEeprom_v2::Response response(nodeAddress, eepromAddress, m_responseCollector);
-
-			//build the command to send
-			ByteStream readCommand = ReadEeprom_v2::buildCommand(nodeAddress, eepromAddress);
-
-			//send the command to the base station
-			m_connection.write(readCommand);
-
-			//wait for the response
-			response.wait(m_nodeCommandsTimeout);
-
-			success = response.success();
-			if(success)
-			{
-				//set the eeprom value to the result
-				eepromValue = response.eepromValue();
-			}
-		}
-		else if(readVersion == 1)
-		{
-			//create the response for the ReadEeprom command
-			ReadEeprom::Response response(nodeAddress, m_responseCollector);
-
-			//build the command to send
-			ByteStream readCommand = ReadEeprom::buildCommand(nodeAddress, eepromAddress);
-
-			//send the command to the base station
-			m_connection.write(readCommand);
-
-			//wait for the response
-			response.wait(m_nodeCommandsTimeout);
-
-			success = response.success();
-			if(success)
-			{
-				//set the eeprom value to the result
-				eepromValue = response.eepromValue();
-			}
-		}
-
-		if(success)
-		{
-			//update basestation last comm time
-			m_lastCommTime.setTimeNow();
-
-			//update node last comm time
-			m_nodesLastCommTime[nodeAddress].setTimeNow();
-		}
-
-		return success;
+		return nodeProtocol.m_readNodeEeprom(this, nodeAddress, eepromAddress, eepromValue);
 	}
 
-	bool BaseStation_Impl::node_writeEeprom(uint8 writeVersion, NodeAddress nodeAddress, uint16 eepromAddress, uint16 value)
+	bool BaseStation_Impl::node_writeEeprom(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint16 eepromAddress, uint16 value)
 	{
-		bool success = false;
-
-		if(writeVersion == 2)
-		{
-			//create the response for the WriteEeprom_v2 command
-			WriteEeprom_v2::Response response(nodeAddress, eepromAddress, value, m_responseCollector);
-
-			//build the command to send
-			ByteStream writeCommand = WriteEeprom_v2::buildCommand(nodeAddress, eepromAddress, value);
-
-			//send the command to the base station
-			m_connection.write(writeCommand);
-
-			//wait for the response
-			response.wait(m_nodeCommandsTimeout);
-
-			//return the result of the response
-			success = response.success();
-		}
-		else if(writeVersion == 1)
-		{
-			//create the response for the WriteEeprom command
-			WriteEeprom::Response response(nodeAddress, m_responseCollector);
-
-			//build the command to send
-			ByteStream writeCommand = WriteEeprom::buildCommand(nodeAddress, eepromAddress, value);
-
-			//send the command to the base station
-			m_connection.write(writeCommand);
-
-			//wait for the response
-			response.wait(m_nodeCommandsTimeout);
-
-			//return the result of the response
-			success = response.success();
-		}
-
-		if(success)
-		{
-			//update basestation last comm time
-			m_lastCommTime.setTimeNow();
-
-			//update node last comm time
-			m_nodesLastCommTime[nodeAddress].setTimeNow();
-		}
-
-		return success;
+		return nodeProtocol.m_writeNodeEeprom(this, nodeAddress, eepromAddress, value);
 	}
 
-	bool BaseStation_Impl::node_pageDownload(NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data)
+	bool BaseStation_Impl::node_pageDownload(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data)
 	{
-		//create the response for the PageDownload command
-		PageDownload::Response response(m_responseCollector);
-
-		//build the command to send
-		ByteStream pageDownloadCommand = PageDownload::buildCommand(nodeAddress, pageIndex);
-
-		//send the command to the base station
-		m_connection.write(pageDownloadCommand);
-
-		//wait for the response
-		response.wait(m_nodeCommandsTimeout);
-
-		//if the page download was a success
-		if(response.success())
-		{
-			//get the data points and store them in the data parameter
-			data = response.dataPoints();
-
-			//update basestation last comm time
-			m_lastCommTime.setTimeNow();
-
-			//update node last comm time
-			m_nodesLastCommTime[nodeAddress].setTimeNow();
-
-			return true;
-		}
-
-		//page download command failed
-		return false;
+		return nodeProtocol.m_pageDownload(this, nodeAddress, pageIndex, data);
 	}
 
 	bool BaseStation_Impl::node_startSyncSampling(NodeAddress nodeAddress)
@@ -906,6 +1150,17 @@ namespace mscl
 
 		//return the result of the response
 		return response.success();
+	}
+
+	void BaseStation_Impl::node_autoBalance(NodeAddress nodeAddress, uint8 channelNumber, uint16 targetVal)
+	{
+		//build the command to send
+		ByteStream command = AutoBalance::buildCommand(nodeAddress, channelNumber, targetVal);
+
+		//send the command to the base station
+		m_connection.write(command);
+
+		//no response for this command
 	}
 
 	bool BaseStation_Impl::node_autocal(NodeAddress nodeAddress, WirelessModels::NodeModel model, const Version& fwVersion, AutoCalResult& result)

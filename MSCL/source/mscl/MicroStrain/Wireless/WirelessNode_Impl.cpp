@@ -17,9 +17,10 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 
 #include "mscl/Utils.h"
 #include "WirelessNode_Impl.h"
-#include "Configuration/NodeEeprom.h"
 #include "Features/NodeInfo.h"
 #include "Features/NodeFeatures.h"
+#include "Commands/WirelessProtocol.h"
+#include "Configuration/NodeEeprom.h"
 #include "Configuration/NodeEepromMap.h"
 #include "Configuration/WirelessNodeConfig.h"
 
@@ -29,9 +30,77 @@ namespace mscl
 		m_address(checked_cast<NodeAddress>(nodeAddress, "Node Address")),
 		m_baseStation(basestation),
 		m_frequency(nodeFrequency),
-		m_eeprom(new NodeEeprom(nodeAddress, basestation)),
 		m_eepromHelper(new NodeEepromHelper(this))
 	{
+	}
+
+	std::unique_ptr<WirelessProtocol> WirelessNode_Impl::determineProtocol() const
+	{
+		Version fwVersion;
+
+		//=========================================================================
+		// Determine the firmware version by attempting to use multiple protocols
+		try
+		{
+			//try reading with protocol v1.1
+			m_protocol = WirelessProtocol::v1_1();
+
+			//set the NodeEeprom with the temporary protocol
+			m_eeprom.reset(new NodeEeprom(m_address, m_baseStation, *(m_protocol.get())));
+
+			fwVersion = firmwareVersion();
+		}
+		catch(Error_Communication&)
+		{
+			//Failed reading with protocol v1.1 - Now try v1.0
+
+			try
+			{
+				//try reading with protocol v1.0
+				m_protocol = WirelessProtocol::v1_0();
+
+				//set the NodeEeprom with the temporary protocol
+				m_eeprom.reset(new NodeEeprom(m_address, m_baseStation, *(m_protocol.get())));
+
+				fwVersion = firmwareVersion();
+			}
+			catch(...)
+			{
+				//we failed to determine the procol
+				//need to clear out the protocol and eeprom variables
+				m_protocol.reset();
+				m_eeprom.reset();
+
+				//rethrow the exception
+				throw;
+			}
+		}
+		//=========================================================================
+
+		//the Node min fw version to support protocol 1.1
+		static const Version FW_PROTOCOL_1_1(8, 21);
+
+		if(fwVersion >= FW_PROTOCOL_1_1)
+		{
+			return WirelessProtocol::v1_1();
+		}
+		else
+		{
+			return WirelessProtocol::v1_0();
+		}
+	}
+
+	NodeEeprom& WirelessNode_Impl::eeprom() const
+	{
+		//if the eeprom variable hasn't been set yet
+		if(m_eeprom == NULL)
+		{
+			//create the eeprom variable
+			//Note that this requires communicating with the Node via the protocol() function
+			m_eeprom.reset(new NodeEeprom(m_address, m_baseStation, protocol()));
+		}
+
+		return *(m_eeprom.get());
 	}
 
 	NodeEepromHelper& WirelessNode_Impl::eeHelper() const
@@ -54,6 +123,18 @@ namespace mscl
 		return *(m_features.get());
 	}
 
+	const WirelessProtocol& WirelessNode_Impl::protocol() const
+	{
+		//if the protocol variable hasn't been set yet
+		if(m_protocol == NULL)
+		{
+			//determine and assign the protocol for this BaseStation
+			m_protocol = determineProtocol();
+		}
+
+		return *(m_protocol.get());
+	}
+
 	const Timestamp& WirelessNode_Impl::lastCommunicationTime() const
 	{
 		return m_baseStation.node_lastCommunicationTime(m_address);
@@ -71,8 +152,11 @@ namespace mscl
 		//update this Node's base station
 		m_baseStation = basestation;
 
-		//update the base station in the eeprom object
-		m_eeprom->setBaseStation(m_baseStation);
+		if(m_eeprom != NULL)
+		{
+			//update the base station in the eeprom object
+			eeprom().setBaseStation(m_baseStation);
+		}
 	}
 
 	BaseStation& WirelessNode_Impl::getBaseStation()
@@ -87,12 +171,12 @@ namespace mscl
 
 	void WirelessNode_Impl::useEepromCache(bool useCache)
 	{
-		m_eeprom->useCache(useCache);
+		eeprom().useCache(useCache);
 	}
 
 	void WirelessNode_Impl::clearEepromCache()
 	{
-		m_eeprom->clearCache();
+		eeprom().clearCache();
 	}
 
 	uint16 WirelessNode_Impl::nodeAddress() const
@@ -155,6 +239,10 @@ namespace mscl
 	void WirelessNode_Impl::applyConfig(const WirelessNodeConfig& config)
 	{
 		config.apply(features(), eeHelper());
+
+		//if the apply succeeded, we need to reset the radio
+		//for some eeproms to actually take the changes
+		resetRadio();
 	}
 
 	uint16 WirelessNode_Impl::getNumDatalogSessions() const
@@ -236,6 +324,11 @@ namespace mscl
 	double WirelessNode_Impl::getHardwareGain(const ChannelMask& mask) const
 	{
 		return m_eepromHelper->read_hardwareGain(mask);
+	}
+
+	uint16 WirelessNode_Impl::getHardwareOffset(const ChannelMask& mask) const
+	{
+		return m_eepromHelper->read_hardwareOffset(mask);
 	}
 
 	LinearEquation WirelessNode_Impl::getLinearEquation(const ChannelMask& mask) const
@@ -394,6 +487,44 @@ namespace mscl
 		cyclePower();
 	}
 
+	void WirelessNode_Impl::autoBalance(uint8 channelNumber, WirelessTypes::AutoBalanceOption option)
+	{
+		//verify the node supports autobalance for any channels
+		if(!features().supportsAutoBalance(channelNumber))
+		{
+			throw Error_NotSupported("AutoBalance is not supported by channel " + Utils::toStr(channelNumber) + ".");
+		}
+
+		//determine the target value based on the option provided
+		uint16 targetValue = 0;
+		switch(option)
+		{
+			case WirelessTypes::autoBalance_low:
+				targetValue = 1024;
+				break;
+
+			case WirelessTypes::autoBalance_midscale:
+				targetValue = 2048;
+				break;
+
+			case WirelessTypes::autoBalance_high:
+				targetValue = 3072;
+				break;
+
+			default:
+				throw Error_NotSupported("The AutoBalanceOption provided is not supported.");
+		}
+
+		//perform the autobalance command with the parent base station
+		m_baseStation.node_autoBalance(m_address, channelNumber, targetValue);
+
+		//clear the eeprom cache for the hardware offset location that was affected
+		ChannelMask mask;
+		mask.enable(channelNumber);
+		const EepromLocation& eepromLoc = features().findEeprom(WirelessTypes::chSetting_hardwareOffset, mask);
+		eeprom().clearCacheLocation(eepromLoc.location());
+	}
+
 	AutoCalResult_shmLink WirelessNode_Impl::autoCal_shmLink()
 	{
 		WirelessModels::NodeModel model = features().m_nodeInfo.model;
@@ -425,21 +556,21 @@ namespace mscl
 
 	Value WirelessNode_Impl::readEeprom(const EepromLocation& location) const
 	{
-		return m_eeprom->readEeprom(location);
+		return eeprom().readEeprom(location);
 	}
 
 	void WirelessNode_Impl::writeEeprom(const EepromLocation& location, const Value& val)
 	{
-		m_eeprom->writeEeprom(location, val);
+		eeprom().writeEeprom(location, val);
 	}
 
 	uint16 WirelessNode_Impl::readEeprom(uint16 location) const
 	{
-		return m_eeprom->readEeprom(location);
+		return eeprom().readEeprom(location);
 	}
 
 	void WirelessNode_Impl::writeEeprom(uint16 location, uint16 value)
 	{
-		m_eeprom->writeEeprom(location, value);
+		eeprom().writeEeprom(location, value);
 	}
 }

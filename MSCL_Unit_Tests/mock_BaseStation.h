@@ -47,7 +47,7 @@ MOCK_BASE_CLASS(mock_baseStationImpl, BaseStation_Impl)
 	MOCK_METHOD(features, 0);
 
 	MOCK_METHOD(node_ping, 1);
-	MOCK_METHOD(node_pageDownload, 3);
+	MOCK_METHOD(node_pageDownload, 4);
 	MOCK_METHOD(node_readEeprom, 4);
 	MOCK_METHOD(node_writeEeprom, 4);
 	MOCK_METHOD(node_startSyncSampling, 1);

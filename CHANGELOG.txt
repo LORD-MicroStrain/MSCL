@@ -2,6 +2,52 @@
 All notable changes to this project will be documented in this file.
 
 -------------------------------------------------------------------------
+1.5.1 - 2015-09-21
+- using WirelessProtocol class for WirelessNode read/write eeprom and page download commands.
+
+-------------------------------------------------------------------------
+1.5.0 - 2015-09-15
+- added BaseStation::doCommand function for making custom commands/responses (C++ only).
+
+-------------------------------------------------------------------------
+1.4.1 - 2015-09-11
+- fix for gcc on Windows not finding type_info
+
+-------------------------------------------------------------------------
+1.4.0 - 2015-09-11
+- support for the Beacon Status command.
+
+-------------------------------------------------------------------------
+1.3.0 - 2015-09-09
+- support for v2 Ping Base Station command.
+- support for v2 Read Base Eeprom command.
+- support for v2 Write Base Eeprom command.
+- support for the "WSDA-Base OEM" BaseStation.
+
+-------------------------------------------------------------------------
+1.2.1 - 2015-09-08
+- added BaseProtocol class to use for future ASPP protocol updates.
+
+-------------------------------------------------------------------------
+1.2.0 - 2015-09-04
+- support for Wireless Node AutoBalance functionality.
+- support for Wireless Node Hardware Offset configuration.
+- restricting sampling modes in features for SHM-Link 2.
+- fix for the HCL Raw packets being thrown out when should be accepted.
+
+-------------------------------------------------------------------------
+1.1.0 - 2015-08-31
+- support for HCL Smart Bearing Raw Inertial and Raw Sensor Board packets.
+
+-------------------------------------------------------------------------
+1.0.2 - 2015-08-27
+- fix for parsing mag values as uint16 when should be int16 in HCL Smart Bearing packet.
+
+-------------------------------------------------------------------------
+1.0.1 - 2015-08-27
+- fix for invalid node rssi being transmitted in SHM Packet.
+
+-------------------------------------------------------------------------
 1.0.0 - 2015-08-26
 - official release of MSCL 1.0
 

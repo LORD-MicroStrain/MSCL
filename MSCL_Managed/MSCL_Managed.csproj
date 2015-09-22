@@ -94,6 +94,7 @@
     <Compile Include="mscl\BaseStationButton.cs" />
     <Compile Include="mscl\BaseStationConfig.cs" />
     <Compile Include="mscl\BaseStationFeatures.cs" />
+    <Compile Include="mscl\BeaconStatus.cs" />
     <Compile Include="mscl\Bin.cs" />
     <Compile Include="mscl\Bins.cs" />
     <Compile Include="mscl\Bytes.cs" />

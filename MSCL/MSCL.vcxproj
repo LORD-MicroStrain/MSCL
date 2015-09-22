@@ -679,7 +679,13 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStation_Impl.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\ChannelMask.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ArmForDatalogging.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\AutoBalance.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\AutoCal.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_BeaconStatus.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_Ping_v2.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_ReadEeprom_v2.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_SetBeacon_v2.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_WriteEeprom_v2.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\Erase.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\PageDownload.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom.h" />
@@ -690,6 +696,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\StartNonSyncSampling.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\StartSyncSampling.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\TriggerArmedDatalogging.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\WirelessProtocol.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\WriteEeprom.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\WriteEeprom_v2.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\BaseStationConfig.h" />
@@ -711,6 +718,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\AvailableSampleRates.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_analog.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_oem.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_rs232.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_usb.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_wsda.h" />
@@ -862,7 +870,13 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStation_Impl.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\ChannelMask.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ArmForDatalogging.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\AutoBalance.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\AutoCal.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_BeaconStatus.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_Ping_v2.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_ReadEeprom_v2.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_SetBeacon_v2.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_WriteEeprom_v2.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\Erase.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\PageDownload.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom.cpp" />
@@ -873,6 +887,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\StartNonSyncSampling.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\StartSyncSampling.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\TriggerArmedDatalogging.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\WirelessProtocol.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\WriteEeprom.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\WriteEeprom_v2.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\BaseStationConfig.cpp" />
@@ -894,6 +909,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\AvailableSampleRates.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_analog.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_oem.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_rs232.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_usb.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_wsda.cpp" />

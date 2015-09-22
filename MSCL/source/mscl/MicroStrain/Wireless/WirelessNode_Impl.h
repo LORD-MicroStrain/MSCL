@@ -19,6 +19,7 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 #include "RadioFeatures.h"
 #include "mscl/Version.h"
 #include "Commands/AutoCal.h"
+#include "Commands/WirelessProtocol.h"
 #include "Configuration/ConfigIssue.h"
 #include "Configuration/FatigueOptions.h"
 #include "Configuration/HistogramOptions.h"
@@ -37,6 +38,8 @@ namespace mscl
 	//	Most WirelessNode commands call these commands.
 	class WirelessNode_Impl
 	{
+		friend class WirelessProtocol;
+
 	private:
 		WirelessNode_Impl();										//default constructor disabled
 		WirelessNode_Impl(const WirelessNode_Impl&);				//copy constructor disabled
@@ -65,6 +68,10 @@ namespace mscl
 		//	The <WirelessTypes::Frequency> that this Node is believed to be on.
 		mutable WirelessTypes::Frequency m_frequency;
 
+		//Variable: m_protocol
+		//	The <WirelessProtocol> containing all of the protocol commands and info for this Node.
+		mutable std::unique_ptr<WirelessProtocol> m_protocol;
+
 		//Variable: m_eeprom
 		//	The <NodeEeprom> that handles reading and writing eeprom values with the Node and eeprom cache.
 		mutable std::unique_ptr<NodeEeprom> m_eeprom;
@@ -76,6 +83,18 @@ namespace mscl
 		//Variable: m_features
 		//	The <NodeFeatures> containing the features for this Node.
 		mutable std::unique_ptr<NodeFeatures> m_features;
+
+	private:
+		//Function: determineProtocol
+		//	Determines the <WirelessProtocol> to use based on the Node's firmware version.
+		//
+		//Returns:
+		//	A unique_ptr containing the <WirelessProtocol> to use.
+		std::unique_ptr<WirelessProtocol> determineProtocol() const;
+
+		//Function: eeprom
+		//	Gets a reference to the <NodeEeprom> for this Node.
+		NodeEeprom& eeprom() const;
 
 	public:
 		//Function: eeHelper
@@ -90,6 +109,16 @@ namespace mscl
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		virtual const NodeFeatures& features() const;
+
+		//Function: protocol
+		//	Gets a reference to the <WirelessProtocol> for this Node.
+		//	Note: This requires communicating to the Node if
+		//		  creating the protocol for the first time.
+		//
+		//Exceptions:
+		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		virtual const WirelessProtocol& protocol() const;
 
 		//Function: lastCommunicationTime
 		//	Gets the <Timestamp> for the last time MSCL communicated with the Node.
@@ -149,7 +178,7 @@ namespace mscl
 		//Exceptions:
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
-		Version firmwareVersion() const;
+		virtual Version firmwareVersion() const;
 
 		//Function: model
 		//	Gets the <WirelessModels::NodeModel> of the Node.
@@ -355,6 +384,22 @@ namespace mscl
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		double getHardwareGain(const ChannelMask& mask) const;
 
+		//Function: getHardwareOffset
+		//	Reads the hardware offset of the specified <ChannelMask> currently set on the Node.
+		//	See Also: <NodeFeatures::channelGroups>
+		//
+		//Parameters:
+		//	mask - The <ChannelMask> of the hardware offset to read.
+		//
+		//Returns:
+		//	The hardware offset currently set on the Node for the <ChannelMask>.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Hardware offset is not supported for the provided <ChannelMask>.
+		//	- <Error_NodeCommunication>: Failed to read from the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		uint16 getHardwareOffset(const ChannelMask& mask) const;
+
 		//Function: getLinearEquation
 		//	Gets the linear equation of the specified <ChannelMask> currently set on the Node.
 		//
@@ -511,6 +556,19 @@ namespace mscl
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void clearHistogram();
+
+		//Function: autoBalance
+		//	Performs an Auto Balance command on a specified channel on the Node.
+		//
+		//Parameters:
+		//	channelNumber - The channel number (ch1 = 1, ch8 = 8) to balance.
+		//	option - The <WirelessTypes::AutoBalanceOption> to use (low, midscale, high).
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Autobalance is not supported by the Node or channel specified.
+		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		void autoBalance(uint8 channelNumber, WirelessTypes::AutoBalanceOption option);
 
 		//Function: autoCal_shmLink
 		//	Performs automatic calibration for the SHM-Link Wireless Node.

@@ -17,6 +17,7 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 #include "mscl/Communication/Connection.h"
 #include "mscl/MicroStrain/Wireless/DataSweep.h"
 #include "mscl/MicroStrain/Wireless/NodeDiscovery.h"
+#include "Commands/BaseStation_BeaconStatus.h"
 #include "Commands/LongPing.h"
 #include "Commands/SetToIdleStatus.h"
 #include "Configuration/ConfigIssue.h"
@@ -29,12 +30,14 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 namespace mscl
 {
 	//forward declarations
+	class AutoCalResult;
 	class BaseStation_Impl;
 	class BaseStationFeatures;
 	class BaseStationEeprom;
 	class BaseStationEepromHelper;
 	class BaseStationConfig;
-	class AutoCalResult;
+	class ResponsePattern;
+	class WirelessProtocol;
 
 	//API Class: BaseStation
 	//	Represents a MicroStrain Base Station object
@@ -70,7 +73,23 @@ namespace mscl
 #ifndef SWIG
 		BaseStation(std::shared_ptr<BaseStation_Impl> impl); //constructor with direct underlying implementation for this class.
 
-		BaseStationEepromHelper& eepromHelper() const;	//gets the ref to the BaseStationEepromHelper
+		//Function: eepromHelper
+		//	Gets a reference to the <BaseStationEepromHelper> for this BaseStation.
+		BaseStationEepromHelper& eepromHelper() const;
+
+		//Function: doCommand
+		//	Performs a custom command and waits for the response.
+		//	When completed, the <ResponsePattern> parameter will contain any result information.
+		//	For a full explanation, see the <ResponsePattern> class.
+		//
+		//Parameters:
+		//	response - A reference to a custom class that was inherited from the <ResponsePattern> base class.
+		//	cmdBytes - The <ByteStream> containing the command bytes to send.
+		//	timeout - The maximum timeout to use for waiting for the response.
+		//
+		//Returns:
+		//	true if the command was successful (response.success() is true), false otherwise.
+		bool doCommand(ResponsePattern& response, const ByteStream& cmdBytes, uint64 timeout);
 
 		//Operator: ==
 		//	Checks that two BaseStation objects are equal.
@@ -342,7 +361,7 @@ namespace mscl
 		//
 		//Example Use:
 		//	(start code)
-		//		BaseStation baseStation(&connection);
+		//		BaseStation baseStation(connection);
 		//		baseStation.enableBeacon();
 		//	(end code)
 		Timestamp enableBeacon();
@@ -362,7 +381,7 @@ namespace mscl
 		//
 		//Example Use:
 		//	(start code)
-		//		BaseStation baseStation(&connection);
+		//		BaseStation baseStation(connection);
 		//		baseStation.enableBeacon(1357846020);
 		//	(end code)
 		Timestamp enableBeacon(uint32 utcTime);
@@ -372,14 +391,25 @@ namespace mscl
 		//
 		//Exceptions:
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation
-		//	- <Error>: The disable beacon command has failed.
+		//	- <Error_Communication>: The disable beacon command has failed.
 		//
 		//Example Use:
 		//	(start code)
-		//		BaseStation baseStation(&connection);
+		//		BaseStation baseStation(connection);
 		//		baseStation.disableBeacon();
 		//	(end code)
 		void disableBeacon();
+
+		//API Function: beaconStatus
+		//	Gets the <BeaconStatus> of the beacon on the base station.
+		//
+		//Returns:
+		//	A <BeaconStatus> object containing status information of the beacon.
+		//
+		//Exceptions:
+		//	- <Error_Communication>: Failed to get the beacon status.
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
+		BeaconStatus beaconStatus();
 
 		//API Function: cyclePower
 		//	Cycles the power on the base station.
@@ -614,11 +644,11 @@ namespace mscl
 		SetToIdleStatus node_setToIdle(NodeAddress nodeAddress);
 
 		//Function: node_readEeprom
-		//	Reads a value from EEPROM on the specified Node
+		//	Reads a value from EEPROM on the specified Node.
 		//
 		//Parameters:
-		//	readVersion - The EEPROM read version to use.
-		//	nodeAddress - the node address of the node to read from.
+		//	protocol - the <WirelessProtocol> for the Node.
+		//	nodeAddress - the node address of the Node to read from.
 		//	eepromAddress - the EEPROM address to read the value from.
 		//	eepromValue - holds the result value read from EEPROM if successful.
 		//
@@ -627,13 +657,13 @@ namespace mscl
 		//
 		//Exceptions:
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
-		bool node_readEeprom(uint8 readVersion, NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue);
+		bool node_readEeprom(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue);
 
 		//Function: node_writeEeprom
 		//	Writes a value to EEPROM on the specified Node.
 		//
 		//Parameters:
-		//	writeVersion - the EEPROM write version to use.
+		//	protocol - the <WirelessProtocol> for the Node.
 		//	nodeAddress - the node address of the node to write to.
 		//	eepromAddress - the EEPROM address to write the value to.
 		//	value - the value to write to EEPROM.
@@ -643,22 +673,23 @@ namespace mscl
 		//
 		//Exceptions:
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
-		bool node_writeEeprom(uint8 writeVersion, NodeAddress nodeAddress, uint16 eepromAddress, uint16 value);
+		bool node_writeEeprom(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint16 eepromAddress, uint16 value);
 
 		//Function: node_pageDownload
-		//	Download a page of logged data from the Node
+		//	Downloads a page of logged data from the Node.
 		//
 		//Parameters:
-		//	nodeAddress - The node address of the Node to download data from
-		//	pageIndex - The page index to download from the Node
-		//	data - Output parameter that contains the resulting data downloaded from the Node, if any
+		//	protocol - The <WirelessProtocol> for the Node.
+		//	nodeAddress - The node address of the Node to download data from.
+		//	pageIndex - The page index to download from the Node.
+		//	data - Output parameter that contains the resulting data downloaded from the Node, if any.
 		//
 		//Returns:
 		//	true if the page download command succeded, false otherwise
 		//
 		//Exceptions:
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation
-		bool node_pageDownload(NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data);
+		bool node_pageDownload(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data);
 
 		//Function: node_startSyncSampling
 		//	Sends the Start Synchronized Sampling command to a Node.
@@ -713,6 +744,18 @@ namespace mscl
 		//Exceptions:
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		bool node_erase(NodeAddress nodeAddress);
+
+		//Function: node_autoBalance
+		//	Sends the AutoBalance command to a Node.
+		//
+		//Parameters:
+		//	nodeAddress - The node address of the Node to send the command to.
+		//	channelNumber - The channel number (ch1 = 1, ch8 = 8) to balance.
+		//	targetVal - The target value to balance to.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
+		void node_autoBalance(NodeAddress nodeAddress, uint8 channelNumber, uint16 targetVal);
 
 		//Function: node_autocal
 		//	Performs automatic calibration for a Wireless Node.

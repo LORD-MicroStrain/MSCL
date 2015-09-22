@@ -710,6 +710,15 @@ namespace mscl
 		return HardwareGain::bitsToGain(bitsVal, m_node->model());
 	}
 
+	uint16 NodeEepromHelper::read_hardwareOffset(const ChannelMask& mask) const
+	{
+		//find the eeprom location
+		const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_hardwareOffset, mask);
+
+		//return the result read from eeprom
+		return read(eeprom).as_uint16();
+	}
+
 	void NodeEepromHelper::write_hardwareGain(const ChannelMask& mask, double gain)
 	{
 		//find the eeprom location
@@ -719,7 +728,16 @@ namespace mscl
 		uint16 bitsVal = HardwareGain::gainToBits(gain, m_node->model());
 
 		//write the hardware gain (in bits) to eeprom
-		write(eeprom, Value(valueType_uint16, bitsVal));
+		write(eeprom, Value::UINT16(bitsVal));
+	}
+
+	void NodeEepromHelper::write_hardwareOffset(const ChannelMask& mask, uint16 offset)
+	{
+		//find the eeprom location
+		const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_hardwareOffset, mask);
+
+		//write the hardware gain (in bits) to eeprom
+		write(eeprom, Value::UINT16(offset));
 	}
 
 	WirelessTypes::ThermocoupleType NodeEepromHelper::read_thermoType(const ChannelMask& mask) const

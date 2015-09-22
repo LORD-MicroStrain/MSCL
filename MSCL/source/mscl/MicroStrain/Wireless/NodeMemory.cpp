@@ -72,7 +72,7 @@ namespace mscl
 
 		//request the current page data
 		ByteStream tempData;
-		if(!m_node.getBaseStation().node_pageDownload(m_node.nodeAddress(), page, tempData))
+		if(!m_node.getBaseStation().node_pageDownload(m_node.protocol(), m_node.nodeAddress(), page, tempData))
 		{
 			//the page download failed, throw an exception
 			throw Error_NodeCommunication(m_node.nodeAddress(), "Failed to download data from the Node.");

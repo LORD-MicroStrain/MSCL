@@ -31,6 +31,19 @@ namespace mscl
 		m_eepromCache.clear();
 	}
 
+	void Eeprom::clearCacheLocation(uint16 location)
+	{
+		//try to find the value in the map to verify it exists
+		EepromMap::iterator itr = m_eepromCache.find(location);
+
+		//if the location does exist in the map
+		if(itr != m_eepromCache.end())
+		{
+			//remove the value from the map
+			m_eepromCache.erase(itr);
+		}
+	}
+
 	bool Eeprom::readCache(uint16 location, uint16& result)
 	{
 		EepromMap::iterator itr;
@@ -67,19 +80,6 @@ namespace mscl
 		{
 			//update the value in the map
 			itr->second = value;
-		}
-	}
-
-	void Eeprom::clearCacheLocation(uint16 location)
-	{
-		//try to find the value in the map to verify it exists
-		EepromMap::iterator itr = m_eepromCache.find(location);
-
-		//if the location does exist in the map
-		if(itr != m_eepromCache.end())
-		{
-			//remove the value from the map
-			m_eepromCache.erase(itr);
 		}
 	}
 
@@ -148,7 +148,7 @@ namespace mscl
 		Utils::split_uint16(lsw, b3, b4);
 
 		//convert the values into a float and return
-		return Utils::make_float_little_endian(b1, b2, b3, b4);
+		return Utils::make_float_little_endian(b1, b2, b3, b4);	//note that this just swapped endianness by passing the msb as the lsb
 	}
 
 	uint32 Eeprom::readEeprom_uint32(uint16 location)
