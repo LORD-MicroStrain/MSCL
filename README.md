@@ -1,5 +1,7 @@
 To quickly get started, [download the latest pre-built binaries (1.0.0)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v1.0.0/MSCL_1.0.0.zip). 
 
+If you want to build MSCL from source, see the [Build ReadMe](BuildScripts/buildReadme.md).
+
 ### What is MSCL?
 MSCL is the MicroStrain Communication Library, developed by [LORD Microstrain Sensing Systems](http://microstrain.com) in Williston, VT. It was created to make it simple to interact with our [wireless](http://www.microstrain.com/wireless/sensors) and [wired](http://www.microstrain.com/inertial) sensors.
 
