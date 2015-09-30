@@ -24,4 +24,6 @@ The library is currently available in:
 #### License
 GPL 3.0 licensed
 
+Other Licenses are available. Please contact richard.stoneback@lord.com for License information.
+
 Copyright (C) 2015 LORD Corporation. All Rights Reserved.
