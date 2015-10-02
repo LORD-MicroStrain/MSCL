@@ -71,7 +71,7 @@ python-extension _mscl
 	boostLibs
 :	<include>source/mscl/Wrapper/
 	<swig-options>-python
-	<swig-options>"-outdir $(SWIG_PYTHON)"
+	<swig-options>"-outdir \"$(SWIG_PYTHON)\""
 	<toolset>gcc:<swig-options>-DUNIX_SOCKETS
 	<toolset>gcc:<define>UNIX_SOCKETS
 ;
@@ -83,7 +83,7 @@ python-extension _mscl-dynamic
 	boostLibs
 :	<include>source/mscl/Wrapper/
 	<swig-options>-python
-	<swig-options>"-outdir $(SWIG_PYTHON)"
+	<swig-options>"-outdir \"$(SWIG_PYTHON)\""
 	<toolset>gcc:<swig-options>-DUNIX_SOCKETS
 	<toolset>gcc:<define>UNIX_SOCKETS
 ;

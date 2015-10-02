@@ -12,5 +12,5 @@ feature.feature swig-options : : free ;
 toolset.flags swig.swig OPTIONS <swig-options> ;
 actions swig
 {
-	swig -c++ $(OPTIONS) -o $(<) $(>)
+	swig -c++ $(OPTIONS) -o "$(<)" "$(>)"
 }
