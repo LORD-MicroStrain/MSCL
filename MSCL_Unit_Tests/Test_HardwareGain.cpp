@@ -103,4 +103,28 @@ BOOST_AUTO_TEST_CASE(HardwareGain_tcLink)
 	BOOST_CHECK_CLOSE(HardwareGain::normalizeGain(5.0, tcLink), 4.0, 0.001);
 }
 
+BOOST_AUTO_TEST_CASE(HardwareGain_mvpervLink)
+{
+	WirelessModels::NodeModel model = WirelessModels::node_mvPerVLink;
+
+	BOOST_CHECK_CLOSE(HardwareGain::bitsToGain(0, model), 20.0, 0.001);
+	BOOST_CHECK_CLOSE(HardwareGain::bitsToGain(1, model), 40.0, 0.001);
+	BOOST_CHECK_CLOSE(HardwareGain::bitsToGain(2, model), 80.0, 0.001);
+	BOOST_CHECK_CLOSE(HardwareGain::bitsToGain(7, model), 2560.0, 0.001);
+
+	BOOST_CHECK_EQUAL(HardwareGain::gainToBits(20.0, model), 0);
+	BOOST_CHECK_EQUAL(HardwareGain::gainToBits(40.0, model), 1);
+	BOOST_CHECK_EQUAL(HardwareGain::gainToBits(80.0, model), 2);
+	BOOST_CHECK_EQUAL(HardwareGain::gainToBits(2560.0, model), 7);
+
+	BOOST_CHECK_CLOSE(HardwareGain::minGain(model), 20.0, 0.001);
+	BOOST_CHECK_CLOSE(HardwareGain::maxGain(model), 2560.0, 0.001);
+
+	BOOST_CHECK_CLOSE(HardwareGain::normalizeGain(20.7, model), 20.0, 0.001);
+	BOOST_CHECK_CLOSE(HardwareGain::normalizeGain(34.0, model), 40.0, 0.001);
+	BOOST_CHECK_CLOSE(HardwareGain::normalizeGain(26.843, model), 20.0, 0.001);
+	BOOST_CHECK_CLOSE(HardwareGain::normalizeGain(0.0, model), 20.0, 0.001);
+	BOOST_CHECK_CLOSE(HardwareGain::normalizeGain(64234.1234, model), 2560.0, 0.001);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #pragma once
 
 #include "mscl/MicroStrain/Wireless/WirelessModels.h"
@@ -26,6 +18,7 @@ namespace mscl
 		static const uint16 MAX_BITS = 255;
 		static const uint16 MAX_BITS_SGLINKOEM = 7;
 		static const uint16 MAX_BITS_TCLINK = 7;
+		static const uint16 MAX_BITS_MVPERVLINK = 7;
 
 		//The following functions contain the different formulas for converting
 		//bits to gain and gain to bits for various products.
@@ -35,12 +28,15 @@ namespace mscl
 		static double bitsToGain_shmLink(uint16 bits);
 		static double bitsToGain_vLink(uint16 bits);
 		static double bitsToGain_tcLink(uint16 bits);
+		static double bitsToGain_mvpervLink(uint16 bits);
 		static uint16 gainToBits_sgLink(double gain);
 		static uint16 gainToBits_sgLinkOem(double gain);
 		static uint16 gainToBits_sgLinkRgd(double gain);
 		static uint16 gainToBits_shmLink(double gain);
 		static uint16 gainToBits_vLink(double gain);
 		static uint16 gainToBits_tcLink(double gain);
+		static uint16 gainToBits_mvpervLink(double gain);
+
 
 	public:
 		//Function: bitsToGain

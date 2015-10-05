@@ -2,6 +2,47 @@
 All notable changes to this project will be documented in this file.
 
 -------------------------------------------------------------------------
+1.9.0 - 2015-10-02
+- added support for the mV/V-Link Wireless Node.
+
+-------------------------------------------------------------------------
+1.8.1 - 2015-10-01
+- fix for the swig.jam file not having quotes around the paths, causing failures when spaces are in the path.
+
+-------------------------------------------------------------------------
+1.8.0 - 2015-09-29
+- parsing of BaseStation Read/Write eeprom failure error codes.
+- any BaseStation function that reads from eeprom can potentially now throw an Error_NotSupported exception.
+- any BaseStation function that writes to eeprom can potentially now throw an Error_NotSupported exception.
+
+-------------------------------------------------------------------------
+1.7.3 - 2015-09-29
+- parsing of Node Write Eeprom failure packet.
+- any Node function that writes to eeprom can potentially now throw an Error_NotSupported exception.
+
+-------------------------------------------------------------------------
+1.7.2 - 2015-09-29
+- parsing of Node Read Eeprom failure packet.
+- any Node function that reads from eeprom can potentially now throw an Error_NotSupported exception.
+
+-------------------------------------------------------------------------
+1.7.1 - 2015-09-28
+- fix for AutoCal_shmLink using new App Data Type.
+
+-------------------------------------------------------------------------
+1.7.0 - 2015-09-28
+- added WirelessNode::readWriteRetries for configuring automatic retries of Node eeprom reads and writes.
+- added BaseStation::readWriteRetries for configuring automatic retries of BaseStation eeprom reads and writes.
+
+-------------------------------------------------------------------------
+1.6.1 - 2015-09-25
+- fix for AutoCal_shmLink command returning when it should still be waiting for a second response.
+
+-------------------------------------------------------------------------
+1.6.0 - 2015-09-24
+- added WirelessNode::useGroupRead to allow disabling of group eeprom read commands.
+
+-------------------------------------------------------------------------
 1.5.1 - 2015-09-21
 - using WirelessProtocol class for WirelessNode read/write eeprom and page download commands.
 

@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #include "stdafx.h"
 #include "BaseStation_Impl.h"
 
@@ -85,26 +77,53 @@ namespace mscl
 	{
 		Version fwVersion;
 
-		//=========================================================================
-		// Determine the firmware version by attempting to use multiple protocols
-		try
+		uint8 origRetries = m_eeprom->getNumRetries();
+		m_eeprom->setNumRetries(0);
+
+		bool success = false;
+		uint8 retryCount = 0;
+
+		do
 		{
-			//try reading with protocol v1.1
-			m_protocol = WirelessProtocol::v1_1();
 
-			fwVersion = firmwareVersion();
+			//=========================================================================
+			// Determine the firmware version by attempting to use multiple protocols
+			try
+			{
+				//try reading with protocol v1.1
+				m_protocol = WirelessProtocol::v1_1();
+
+				fwVersion = firmwareVersion();
+				success = true;
+			}
+			catch(Error_Communication&)
+			{
+				try
+				{
+					//try reading with protocol v1.0
+					m_protocol = WirelessProtocol::v1_0();
+
+					fwVersion = firmwareVersion();
+					success = true;
+				}
+				catch(Error_Communication&)
+				{
+					//if this was the last retry
+					if(retryCount >= origRetries)
+					{
+						//we failed to determine the protocol
+
+						//rethrow the exception
+						throw;
+					}
+				}
+			}
+			//=========================================================================
 		}
-		catch(Error_Communication&)
-		{
-			//try reading with protocol v1.0
-			m_protocol = WirelessProtocol::v1_0();
+		while(!success && (retryCount++ < origRetries));
 
-			fwVersion = firmwareVersion();
-
-			//Note: don't need another try catch here as its the last try
-			//		so if we get an exception, it should just be passed along
-		}
-		//=========================================================================
+		//reset the eeprom retry counter back to what it was
+		m_eeprom->setNumRetries(origRetries);
 
 		//the BaseStation min fw version to support protocol 1.1
 		static const Version FW_PROTOCOL_1_1(4, 0);
@@ -183,6 +202,11 @@ namespace mscl
 	void BaseStation_Impl::useEepromCache(bool useCache)
 	{
 		m_eeprom->useCache(useCache);
+	}
+
+	void BaseStation_Impl::readWriteRetries(uint8 numRetries)
+	{
+		m_eeprom->setNumRetries(numRetries);
 	}
 
 	void BaseStation_Impl::clearEepromCache()
@@ -544,6 +568,11 @@ namespace mscl
 
 			return true;
 		}
+		else
+		{
+			//throw an exception if we need to
+			WirelessPacket::throwResponseError(response.errorCode());
+		}
 
 		return false;
 	}
@@ -589,6 +618,11 @@ namespace mscl
 			m_lastCommTime.setTimeNow();
 
 			return true;
+		}
+		else
+		{
+			//throw an exception if we need to
+			WirelessPacket::throwResponseError(response.errorCode());
 		}
 
 		return false;
@@ -760,6 +794,11 @@ namespace mscl
 			//update node last comm time
 			m_nodesLastCommTime[nodeAddress].setTimeNow();
 		}
+		else
+		{
+			//throw an exception if we need to
+			WirelessPacket::throwResponseError(response.errorCode());
+		}
 
 		return success;
 	}
@@ -821,6 +860,11 @@ namespace mscl
 
 			//update node last comm time
 			m_nodesLastCommTime[nodeAddress].setTimeNow();
+		}
+		else
+		{
+			//throw an exception if we need to
+			WirelessPacket::throwResponseError(response.errorCode());
 		}
 
 		return success;

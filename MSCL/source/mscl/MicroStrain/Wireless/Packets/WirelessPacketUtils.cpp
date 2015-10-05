@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #include "stdafx.h"
 
 #include "WirelessPacketUtils.h"
@@ -36,7 +28,7 @@ namespace mscl
 		const WirelessPacket::Payload& payload = packet.payload();
 
 		//The command packet type is erroneously used in many packets
-		if(packetType == WirelessPacket::packetType_command)
+		if(packetType == WirelessPacket::packetType_nodeCommand)
 		{
 			//CHECK IF NODE DISCOVERY PACKET
 			{
@@ -101,12 +93,12 @@ namespace mscl
 			case WirelessPacket::packetType_SHM:					return ShmPacket::integrityCheck(packet);
 			case WirelessPacket::packetType_HclSmartBearing_Raw:	return HclSmartBearing_RawPacket::integrityCheck(packet);
 
-			case WirelessPacket::packetType_command:
-			case WirelessPacket::packetType_reply:
-			case WirelessPacket::packetType_errorReply:
-			case WirelessPacket::packetType_NodeReceived:
+			case WirelessPacket::packetType_nodeCommand:
+			case WirelessPacket::packetType_nodeSuccessReply:
+			case WirelessPacket::packetType_nodeErrorReply:
+			case WirelessPacket::packetType_nodeReceived:
 			case WirelessPacket::packetType_baseCommand:
-			case WirelessPacket::packetType_baseReply:
+			case WirelessPacket::packetType_baseSuccessReply:
 			case WirelessPacket::packetType_baseErrorReply:
 				return true;
 

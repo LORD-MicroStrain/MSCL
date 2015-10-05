@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #include "stdafx.h"
 #include "NodeEeprom.h"
 #include "mscl/MicroStrain/Wireless/BaseStation.h"
@@ -20,17 +12,18 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 
 namespace mscl
 {
-	NodeEeprom::NodeEeprom(NodeAddress nodeAddress, const BaseStation& base, const WirelessProtocol& protocol, bool useCache): //useCache=true
-		Eeprom(useCache),
+	NodeEeprom::NodeEeprom(NodeAddress nodeAddress, const BaseStation& base, const WirelessProtocol& protocol, const NodeEepromSettings& settings):
+		Eeprom(settings.useEepromCache, settings.numRetries),
 		m_nodeAddress(nodeAddress),
 		m_baseStation(base),
+		m_useGroupRead(settings.useGroupRead),
 		m_protocol(&protocol)
 	{ }
 
-	bool NodeEeprom::updateCacheFromDevice(uint16 location, bool canUseGroupDownload)
+	bool NodeEeprom::updateCacheFromDevice(uint16 location)
 	{
 		//if we can use the page download command
-		if(canUseGroupDownload)
+		if(m_useGroupRead)
 		{
 			//if the location is able to be read via a page download command
 			if(location <= PAGE_1_MAX_EEPROM)
@@ -64,14 +57,20 @@ namespace mscl
 		//if we got here, we need to read the eeprom value individually	from the node
 		uint16 eepromVal;
 
-		//attempt to read the individual eeprom from the node
-		if(m_baseStation.node_readEeprom(*m_protocol, m_nodeAddress, location, eepromVal))
-		{
-			//update the map value with the value we read from eeprom
-			updateCache(location, eepromVal);
+		uint8 retryCount = 0;
 
-			return true;
+		do
+		{
+			//attempt to read the individual eeprom from the node
+			if(m_baseStation.node_readEeprom(*m_protocol, m_nodeAddress, location, eepromVal))
+			{
+				//update the map value with the value we read from eeprom
+				updateCache(location, eepromVal);
+
+				return true;
+			}
 		}
+		while(retryCount++ < m_numRetries);
 
 		//all the attempts to read the eeprom failed
 		return false;
@@ -95,6 +94,14 @@ namespace mscl
 			//update the cache value
 			updateCache(mapLocation, eepromVal);
 		}
+	}
+
+	void NodeEeprom::updateSettings(const NodeEepromSettings& settings)
+	{
+		//update all of the provided settings
+		m_useGroupRead = settings.useGroupRead;
+		setNumRetries(settings.numRetries);
+		useCache(settings.useEepromCache);
 	}
 
 	void NodeEeprom::setBaseStation(const BaseStation& base)
@@ -122,7 +129,7 @@ namespace mscl
 		//we didn't get a value from the cache
 
 		//attempt to read the value from the device 
-		if(updateCacheFromDevice(location, canCacheEeprom))
+		if(updateCacheFromDevice(location))
 		{
 			//successfully read from the device, the cache has been updated so read from it
 			readCache(location, result);
@@ -153,20 +160,26 @@ namespace mscl
 		}
 
 		//if we made it here, we want to actually write to the device
-
-		//attempt to write the value to the Node
-		if(m_baseStation.node_writeEeprom(*m_protocol, m_nodeAddress, location, value))
-		{
-			//successfully wrote to the Node, update the cache
-			updateCache(location, value);
-
-			return;
-		}
-
-		//we failed to write the value to the Node
-
+		
 		//clear the eeprom cache for this location if we have one, just to be safe
 		clearCacheLocation(location);
+
+		uint8 retryCount = 0;
+
+		do
+		{
+			//attempt to write the value to the Node
+			if(m_baseStation.node_writeEeprom(*m_protocol, m_nodeAddress, location, value))
+			{
+				//successfully wrote to the Node, update the cache
+				updateCache(location, value);
+
+				return;
+			}
+		}
+		while(retryCount++ < m_numRetries);
+
+		//we failed to write the value to the Node
 
 		throw Error_NodeCommunication(m_nodeAddress, "Failed to write EEPROM " + Utils::toStr(location) + " to Node " + Utils::toStr(m_nodeAddress));
 	}

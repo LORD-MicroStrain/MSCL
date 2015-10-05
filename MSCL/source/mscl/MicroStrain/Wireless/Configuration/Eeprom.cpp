@@ -1,24 +1,17 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #include "stdafx.h"
 #include "Eeprom.h"
 #include "mscl/Utils.h"
 
 namespace mscl
 {
-	Eeprom::Eeprom(bool useCache) :
-		m_useCache(useCache)
+	Eeprom::Eeprom(bool useCache, uint8 numRetries) :
+		m_useCache(useCache),
+		m_numRetries(numRetries)
 	{ }
 
 	void Eeprom::useCache(bool enable)
@@ -42,6 +35,16 @@ namespace mscl
 			//remove the value from the map
 			m_eepromCache.erase(itr);
 		}
+	}
+
+	void Eeprom::setNumRetries(uint8 retries)
+	{
+		m_numRetries = retries;
+	}
+
+	uint8 Eeprom::getNumRetries()
+	{
+		return m_numRetries;
 	}
 
 	bool Eeprom::readCache(uint16 location, uint16& result)

@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 //PUBLIC_HEADER
 #pragma once
 
@@ -146,6 +138,16 @@ namespace mscl
 		//	A <Timestamp> representing the last time MSCL communicated with the BaseStation. This will be a Timestamp of 0 if never communicated with.
 		const Timestamp& lastCommunicationTime() const;
 
+		//API Function: readWriteRetries
+		//	Sets the number of retry attempts for reading and writing with the BaseStation.
+		//	By default, the number of retries is 0.
+		//	Note:	The timeout that is set per command will be per read and write attempt, meaning
+		//			this retry number is multiplied by the timeout for your overall timeout.
+		//
+		//Parameters:
+		//	numRetries - The number of retries to set for all reading and writing with the BaseStation.
+		void readWriteRetries(uint8 numRetries);
+
 		//API Function: useEepromCache
 		//	Sets whether or not to utilize the eeprom cache when configuring this BaseStation (enabled by default). This can be enabled/disabled at any time.
 		//	It is highly recommended to have eeprom caching be enabled.
@@ -170,6 +172,7 @@ namespace mscl
 		//	The <WirelessTypes::Frequency> that this BaseStation is on.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_Communication>: Failed to read the value from the BaseStation.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		WirelessTypes::Frequency frequency() const;
@@ -181,6 +184,7 @@ namespace mscl
 		//	A <Version> representing the firmware version of the BaseStation.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_Communication>: Failed to read the value from the BaseStation.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		Version firmwareVersion() const;
@@ -192,6 +196,7 @@ namespace mscl
 		//	A <WirelessModels::BaseModel> representing the model of the BaseStation.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_Communication>: Failed to read the value from the BaseStation.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessModels::BaseModel model() const;
@@ -203,6 +208,7 @@ namespace mscl
 		//	A string representing the serial number of the BaseStation.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_Communication>: Failed to read the value from the BaseStation.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		std::string serial() const;
@@ -215,6 +221,7 @@ namespace mscl
 		//	The universal basestation name.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_Communication>: Failed to read the value from the BaseStation.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		std::string name() const;
@@ -226,6 +233,7 @@ namespace mscl
 		//	A <WirelessTypes::MicroControllerType> representing the microcontroller of the BaseStation.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_Communication>: Failed to read the value from the BaseStation.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::MicroControllerType microcontroller() const;
@@ -332,6 +340,7 @@ namespace mscl
 		//	The uint16 value read from the specified EEPROM location.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_Communication>: Failed to read the value from the BaseStation.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		uint16 readEeprom(uint16 eepromAddress) const;
@@ -345,6 +354,7 @@ namespace mscl
 		//	value - The value to write to the EEPROM address.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location or value.
 		//	- <Error_Communication>: Failed to write the value to the BaseStation.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		void writeEeprom(uint16 eepromAddress, uint16 value);
@@ -415,6 +425,7 @@ namespace mscl
 		//	Cycles the power on the base station.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to write an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		//	- <Error_Communication>: Failed to cycle the power.
 		void cyclePower();
@@ -423,6 +434,7 @@ namespace mscl
 		//	Resets the radio on the base station.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to write an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		//	- <Error_Communication>: Failed to cycle the power.
 		void resetRadio();
@@ -434,6 +446,7 @@ namespace mscl
 		//	frequency - The <WirelessTypes::Frequency> to change the base station to.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to write an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation
 		//	- <Error_Communication>: Failed to change the frequency.
 		void changeFrequency(WirelessTypes::Frequency frequency);
@@ -451,7 +464,7 @@ namespace mscl
 		//	true if the configuration is valid. false if the configuration is invalid and outIssues should be checked for more information.
 		//
 		//Exceptions:
-		//	- <Error_NotSupported>: The BaseStation model is not supported by MSCL.
+		//	- <Error_NotSupported>: The BaseStation model, or firmware version, is not supported by MSCL.
 		//	- <Error_Communication>: Failed to communicate with the BaseStation.
 		//	- <Error_Connection>: A connection error has occurred.
 		bool verifyConfig(const BaseStationConfig& config, ConfigIssues& outIssues) const;
@@ -466,7 +479,7 @@ namespace mscl
 		//	config - The <BaseStationConfig> to apply to the Node.
 		//
 		//Exceptions:
-		//	- <Error_NotSupported>: The BaseStation model is not supported by MSCL.
+		//	- <Error_NotSupported>: The BaseStation model, or firmware version, is not supported by MSCL.
 		//	- <Error_InvalidConfig>: Invalid Configuration. Check the exception for specific details.
 		//	- <Error_Communication>: Failed to write to the BaseStation.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
@@ -479,6 +492,7 @@ namespace mscl
 		//	The <WirelessTypes::TransmitPower> that is currently set on the BaseStation.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_Communication>: Failed to read from the BaseStation.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		WirelessTypes::TransmitPower getTransmitPower() const;
@@ -656,6 +670,7 @@ namespace mscl
 		//	true if the command was successful, false otherwise.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		bool node_readEeprom(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue);
 
@@ -672,6 +687,7 @@ namespace mscl
 		//	true if the write eeprom command succeeded, false otherwise.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location or value.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		bool node_writeEeprom(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint16 eepromAddress, uint16 value);
 

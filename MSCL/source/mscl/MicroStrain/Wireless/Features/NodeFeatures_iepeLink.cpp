@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #include "stdafx.h"
 #include "NodeFeatures_iepeLink.h"
 
@@ -32,21 +24,6 @@ namespace mscl
 		//		  Instead, it is sent once every burst, with a provided sample rate of once every 24 hours.
 		m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_acceleration);	//accel
 		m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_temperature);	//temp	
-	}
-
-	const WirelessTypes::DefaultModes NodeFeatures_iepeLink::defaultModes() const
-	{
-		//build and return the boot modes that are supported (all for generic)
-		WirelessTypes::DefaultModes result;
-
-		result.push_back(WirelessTypes::defaultMode_idle);
-		result.push_back(WirelessTypes::defaultMode_sleep);
-		result.push_back(WirelessTypes::defaultMode_sync);
-
-		//no support for LDC
-		//no support for Armed Datalogging
-
-		return result;
 	}
 
 	const WirelessTypes::SamplingModes NodeFeatures_iepeLink::samplingModes() const

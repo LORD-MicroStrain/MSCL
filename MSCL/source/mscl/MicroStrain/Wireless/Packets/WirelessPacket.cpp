@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #include "stdafx.h"
 #include "WirelessPacket.h"
 
@@ -28,6 +20,26 @@ namespace mscl
 		m_baseRSSI(WirelessTypes::UNKNOWN_RSSI),
 		m_frequency(WirelessTypes::freq_unknown)
 	{}
+
+	void WirelessPacket::throwResponseError(ResponseErrorCode errorCode)
+	{
+		switch(errorCode)
+		{
+			case ResponseErrorCode::error_unknownEeprom:
+				throw Error_NotSupported("An unsupported EEPROM location was attempted to be accessed.");
+
+			case ResponseErrorCode::error_outOfBounds:
+				throw Error_NotSupported("The value is out of bounds.");
+
+			case ResponseErrorCode::error_readOnly:
+				throw Error_NotSupported("Attempted to write to a read-only EEPROM location.");
+
+			case ResponseErrorCode::error_hardwareError:	//for now, not turning hardware error into an exception
+			case ResponseErrorCode::error_none:
+			default:
+				return;
+		}
+	}
 
 	bool WirelessPacket::isDataPacket() const
 	{

@@ -1,21 +1,12 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #include "stdafx.h"
 
 #include "BaseStation_ReadEeprom_v2.h"
 #include "WirelessProtocol.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/MicroStrain/ChecksumBuilder.h"
 
 namespace mscl
@@ -41,7 +32,8 @@ namespace mscl
 
 	BaseStation_ReadEeprom_v2::Response::Response(uint16 eepromAddress, std::weak_ptr<ResponseCollector> collector):
 		ResponsePattern(collector),
-		m_eepromAddress(eepromAddress)
+		m_eepromAddress(eepromAddress),
+		m_errorCode(WirelessPacket::error_none)
 	{
 	}
 
@@ -51,7 +43,7 @@ namespace mscl
 
 		//check the main bytes of the packet
 		if(packet.deliveryStopFlags().toByte() != 0x07 ||						//delivery stop flag
-		   packet.type() != WirelessPacket::packetType_baseReply ||				//app data type
+		   packet.type() != WirelessPacket::packetType_baseSuccessReply ||		//app data type
 		   packet.nodeAddress() != WirelessProtocol::BASE_STATION_ADDRESS ||	//node address
 		   payload.size() != 0x06 ||											//payload length
 		   payload.read_uint16(0) != 0x0073 ||									//command ID
@@ -64,6 +56,7 @@ namespace mscl
 
 		//get the eeprom value
 		m_result = payload.read_uint16(4);
+		m_errorCode = WirelessPacket::error_none;
 
 		//set the result to success
 		m_success = true;
@@ -88,8 +81,8 @@ namespace mscl
 			return false;
 		}
 
-		//Not doing anything with the error code as of now
-		//uint8 errorCode = payload.read_uint8(4);
+		//read the error code from the response
+		m_errorCode = static_cast<WirelessPacket::ResponseErrorCode>(payload.read_uint8(4));
 
 		//set the result to failure
 		m_success = false;
@@ -130,5 +123,10 @@ namespace mscl
 		throwIfFailed("Read BaseStation EEPROM");
 
 		return m_result;
+	}
+
+	WirelessPacket::ResponseErrorCode BaseStation_ReadEeprom_v2::Response::errorCode() const
+	{
+		return m_errorCode;
 	}
 }

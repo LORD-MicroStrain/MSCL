@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #pragma once
 
 #include "EepromLocation.h"
@@ -62,9 +54,9 @@ namespace mscl
 		//Constants: Eeprom Locations
 		//
 		//	SERIAL_ID				-The serial ID for the base station. Combine with the model number for the full serial number
+		//	BEACON_CONFIG			-Configuration of the beacon
 		//	MODEL_NUMBER			-The model number of the base station
 		//	MODEL_OPTION			-The model option of the base station
-		//	BEACON_CONFIG			-Configuration of the beacon
 		//	FREQUENCY				-The radio frequency channel
 		//	TX_POWER_LEVEL			-The transmit output power of the radio
 		//	BEACON_SOURCE			-The source of the beacon
@@ -78,35 +70,35 @@ namespace mscl
 		//	ANALOG_1_NODE_ADDRESS	-The Node Address to Pair to Analog Port 1
 		//	ANALOG_1_NODE_CHANNEL	-The Node Channel to Pair to Analog Port 1
 		//	ANALOG_1_FLOAT_MAX		-The Maximum Float value (3V output) for Analog Port 1
-		//	ANALOG_1_FLOAT_MIN		-The Minimum Float value (3V output) for Analog Port 1
+		//	ANALOG_1_FLOAT_MIN		-The Minimum Float value (0V output) for Analog Port 1
 		//	ANALOG_2_NODE_ADDRESS	-The Node Address to Pair to Analog Port 2
 		//	ANALOG_2_NODE_CHANNEL	-The Node Channel to Pair to Analog Port 2
 		//	ANALOG_2_FLOAT_MAX		-The Maximum Float value (3V output) for Analog Port 2
-		//	ANALOG_2_FLOAT_MIN		-The Minimum Float value (3V output) for Analog Port 2
+		//	ANALOG_2_FLOAT_MIN		-The Minimum Float value (0V output) for Analog Port 2
 		//	ANALOG_3_NODE_ADDRESS	-The Node Address to Pair to Analog Port 3
 		//	ANALOG_3_NODE_CHANNEL	-The Node Channel to Pair to Analog Port 3
 		//	ANALOG_3_FLOAT_MAX		-The Maximum Float value (3V output) for Analog Port 3
-		//	ANALOG_3_FLOAT_MIN		-The Minimum Float value (3V output) for Analog Port 3
+		//	ANALOG_3_FLOAT_MIN		-The Minimum Float value (0V output) for Analog Port 3
 		//	ANALOG_4_NODE_ADDRESS	-The Node Address to Pair to Analog Port 4
 		//	ANALOG_4_NODE_CHANNEL	-The Node Channel to Pair to Analog Port 4
 		//	ANALOG_4_FLOAT_MAX		-The Maximum Float value (3V output) for Analog Port 4
-		//	ANALOG_4_FLOAT_MIN		-The Minimum Float value (3V output) for Analog Port 4
+		//	ANALOG_4_FLOAT_MIN		-The Minimum Float value (0V output) for Analog Port 4
 		//	ANALOG_5_NODE_ADDRESS	-The Node Address to Pair to Analog Port 5
 		//	ANALOG_5_NODE_CHANNEL	-The Node Channel to Pair to Analog Port 5
 		//	ANALOG_5_FLOAT_MAX		-The Maximum Float value (3V output) for Analog Port 5
-		//	ANALOG_5_FLOAT_MIN		-The Minimum Float value (3V output) for Analog Port 5
+		//	ANALOG_5_FLOAT_MIN		-The Minimum Float value (0V output) for Analog Port 5
 		//	ANALOG_6_NODE_ADDRESS	-The Node Address to Pair to Analog Port 6
 		//	ANALOG_6_NODE_CHANNEL	-The Node Channel to Pair to Analog Port 6
 		//	ANALOG_6_FLOAT_MAX		-The Maximum Float value (3V output) for Analog Port 6
-		//	ANALOG_6_FLOAT_MIN		-The Minimum Float value (3V output) for Analog Port 6
+		//	ANALOG_6_FLOAT_MIN		-The Minimum Float value (0V output) for Analog Port 6
 		//	ANALOG_7_NODE_ADDRESS	-The Node Address to Pair to Analog Port 7
 		//	ANALOG_7_NODE_CHANNEL	-The Node Channel to Pair to Analog Port 7
 		//	ANALOG_7_FLOAT_MAX		-The Maximum Float value (3V output) for Analog Port 7
-		//	ANALOG_7_FLOAT_MIN		-The Minimum Float value (3V output) for Analog Port 7
+		//	ANALOG_7_FLOAT_MIN		-The Minimum Float value (0V output) for Analog Port 7
 		//	ANALOG_8_NODE_ADDRESS	-The Node Address to Pair to Analog Port 8
 		//	ANALOG_8_NODE_CHANNEL	-The Node Channel to Pair to Analog Port 8
 		//	ANALOG_8_FLOAT_MAX		-The Maximum Float value (3V output) for Analog Port 8
-		//	ANALOG_8_FLOAT_MIN		-The Minimum Float value (3V output) for Analog Port 8
+		//	ANALOG_8_FLOAT_MIN		-The Minimum Float value (0V output) for Analog Port 8
 		//	ANALOG_PAIRING_ENABLE	-Enable/Disable analog pairing on an analog base station
 		//	ANALOG_TIMEOUT_TIME		-The time (seconds) for the analog timeout on an analog base station
 		//	ANALOG_TIMEOUT_VOLTAGE	-The voltage to time out for on an analog base station

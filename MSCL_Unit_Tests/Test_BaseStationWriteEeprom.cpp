@@ -12,6 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
 LICENSE.txt file for a copy of the full GNU General Public License.
 *****************************************************************************/
 #include "mscl/MicroStrain/Wireless/Commands/BaseStation_WriteEeprom.h"
+#include "mscl/MicroStrain/Wireless/Commands/BaseStation_WriteEeprom_v2.h"
 #include "mscl/Utils.h"
 #include "mscl/MicroStrain/ChecksumBuilder.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
@@ -21,16 +22,7 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 
 using namespace mscl;
 
-Bytes buildBaseWriteEepromResponseV1()
-{
-	//build success response
-	Bytes bytes;
-	bytes.push_back(0x77);	
-
-	return bytes;
-}
-
-Bytes buildBaseWriteEepromResponseV2(uint16 valueWritten)
+Bytes buildBaseWriteEepromResponseV1(uint16 valueWritten)
 {
 	ChecksumBuilder checksum;
 	checksum.append_uint16(valueWritten);
@@ -44,6 +36,41 @@ Bytes buildBaseWriteEepromResponseV2(uint16 valueWritten)
 	bytes.push_back(Utils::lsb(checksum.simpleChecksum()));
 
 	return bytes;
+}
+
+WirelessPacket buildBaseWriteEepromResponseV2(uint16 eepromLocation, uint16 valueWritten)
+{
+	ByteStream bs;
+	bs.append_uint16(0x0078);			//command id
+	bs.append_uint16(eepromLocation);	//eeprom address
+	bs.append_uint16(valueWritten);		//eeprom value
+
+	//build a WirelessPacket
+	WirelessPacket packet;
+	packet.nodeAddress(0x1234);
+	packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+	packet.type(WirelessPacket::packetType_baseSuccessReply);
+	packet.payload(bs.data());	//give the packet the payload bytes we created
+
+	return packet;
+}
+
+WirelessPacket buildBaseWriteEepromFailureV2(uint16 eepromLocation, uint16 valueWritten)
+{
+	ByteStream bs;
+	bs.append_uint16(0x0078);			//command id
+	bs.append_uint16(eepromLocation);	//eeprom address
+	bs.append_uint16(valueWritten);		//eeprom value
+	bs.append_uint8(WirelessPacket::error_readOnly);	//error code
+
+	//build a WirelessPacket
+	WirelessPacket packet;
+	packet.nodeAddress(0x1234);
+	packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+	packet.type(WirelessPacket::packetType_baseErrorReply);
+	packet.payload(bs.data());	//give the packet the payload bytes we created
+
+	return packet;
 }
 
 BOOST_AUTO_TEST_SUITE(BaseStationWriteEeprom_Test)
@@ -65,7 +92,7 @@ BOOST_AUTO_TEST_CASE(BaseStationWriteEeprom_MatchSuccessResponse_Success)
 	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
 	BaseStation_WriteEeprom::Response response(123, rc);
 
-	DataBuffer buffer(buildBaseWriteEepromResponseV2(123));
+	DataBuffer buffer(buildBaseWriteEepromResponseV1(123));
 
 	//check that match returns true
 	BOOST_CHECK_EQUAL(response.match(buffer), true);
@@ -74,12 +101,30 @@ BOOST_AUTO_TEST_CASE(BaseStationWriteEeprom_MatchSuccessResponse_Success)
 	BOOST_CHECK_EQUAL(response.success(), true);
 }
 
+BOOST_AUTO_TEST_CASE(BaseStationWriteEeprom_v2_MatchSuccessResponse_Success)
+{
+	uint16 eepromAddress = 140;
+	uint16 eepromVal = 12347;
+
+	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+	BaseStation_WriteEeprom_v2::Response response(eepromVal, eepromAddress, rc);
+
+	WirelessPacket packet = buildBaseWriteEepromResponseV2(eepromAddress, eepromVal);
+
+	//check that match returns true
+	BOOST_CHECK_EQUAL(response.match(packet), true);
+
+	//check that the result of the command is successful
+	BOOST_CHECK_EQUAL(response.success(), true);
+	BOOST_CHECK_EQUAL(response.errorCode(), 0);
+}
+
 BOOST_AUTO_TEST_CASE(BaseStationWriteEeprom_MatchSuccessResponse_IncorrectEepromValue)
 {
 	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
 	BaseStation_WriteEeprom::Response response(123, rc);
 
-	DataBuffer buffer(buildBaseWriteEepromResponseV2(456));//build with incorrect eeprom value
+	DataBuffer buffer(buildBaseWriteEepromResponseV1(456));//build with incorrect eeprom value
 
 	//check that match returns false
 	BOOST_CHECK_EQUAL(response.match(buffer), false);
@@ -107,7 +152,7 @@ BOOST_AUTO_TEST_CASE(BaseStationWriteEeprom_MatchSuccessResponse_FailByteMatch)
 	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
 	BaseStation_WriteEeprom::Response response(23, rc);
 
-	Bytes b = buildBaseWriteEepromResponseV2(23);
+	Bytes b = buildBaseWriteEepromResponseV1(23);
 	b[0] = 0x01;	//incorrect command byte
 
 	DataBuffer buffer(b);
@@ -124,7 +169,7 @@ BOOST_AUTO_TEST_CASE(BaseStationWriteEeprom_MatchSuccessResponse_FailChecksum)
 	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
 	BaseStation_WriteEeprom::Response response(0, rc);
 
-	Bytes b = buildBaseWriteEepromResponseV2(0);
+	Bytes b = buildBaseWriteEepromResponseV1(0);
 	b[3] = 0x99;	//incorrect checksum
 
 	DataBuffer buffer(b);
@@ -151,6 +196,23 @@ BOOST_AUTO_TEST_CASE(BaseStationWriteEeprom_MatchFailResponse_Success)
 
 	//check that the result of the command is failure
 	BOOST_CHECK_EQUAL(response.success(), false);
+}
+
+BOOST_AUTO_TEST_CASE(BaseStationWriteEeprom_v2_MatchFailResponse_Success)
+{
+	uint16 eepromAddress = 140;
+
+	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+	BaseStation_WriteEeprom_v2::Response response(123, eepromAddress, rc);
+
+	WirelessPacket packet = buildBaseWriteEepromFailureV2(eepromAddress, 123);
+
+	//check that match returns true
+	BOOST_CHECK_EQUAL(response.match(packet), true);
+
+	//check that the result of the command is successful
+	BOOST_CHECK_EQUAL(response.success(), false);
+	BOOST_CHECK_EQUAL(response.errorCode(), WirelessPacket::error_readOnly);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStationWriteEeprom_MatchFailResponse_FailNumBytes)

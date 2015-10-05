@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #pragma once
 
 #include "mscl/Types.h"
@@ -34,7 +26,8 @@ namespace mscl
 		//
 		//Parameters:
 		//	useCache - Whether or not to use the eeprom cache.
-		explicit Eeprom(bool useCache);
+		//	numRetries - The number of retries to use for reads and writes.
+		explicit Eeprom(bool useCache, uint8 numRetries);
 
 		virtual ~Eeprom() {};
 
@@ -46,6 +39,10 @@ namespace mscl
 		//Variable: m_useCache
 		//	Whether or not the cache should be used.
 		bool m_useCache;
+
+		//Variable: m_numRetries
+		//	The number of retries to use when reading and writing eeproms.
+		uint8 m_numRetries;
 
 	public:
 		//Function: useCache
@@ -65,6 +62,21 @@ namespace mscl
 		//Parameters:
 		//	location - The location to clear from the cache.
 		void clearCacheLocation(uint16 location);
+
+		//Function: setNumRetries
+		//	Sets the number of retries to use when reading and writing eeproms.
+		//	By default, this configuration is set to 0, meaning no retries are performed.
+		//
+		//Parameters:
+		//	retries - The number of retries to use.
+		void setNumRetries(uint8 retries);
+
+		//Function: getNumRetries
+		//	Gets the number of retries currently set for reading and writing eeproms.
+		//
+		//Returns:
+		//	The number of retries currently set.
+		uint8 getNumRetries();
 
 	protected:
 		//Function: readCache
@@ -92,11 +104,10 @@ namespace mscl
 		//
 		//Parameters:
 		//	location - The eeprom location to read from the device and update in the cache.
-		//	canUseGroupDownload - Whether or not the devices can download a group of eeproms when available. If this is false, a single eeprom read will be used.
 		//
 		//Returns:
 		//	true if the value was read from the device and the cache has been updated, false otherwise.
-		virtual bool updateCacheFromDevice(uint16 location, bool canUseGroupDownload = true) = 0;
+		virtual bool updateCacheFromDevice(uint16 location) = 0;
 
 	public:
 		//Function: readEeprom
@@ -111,6 +122,8 @@ namespace mscl
 		//	The eeprom value for the requested location.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
+		//	- <Error_Communication>: Failed to read the value from the BaseStation.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		virtual uint16 readEeprom(uint16 location) = 0;
@@ -142,6 +155,8 @@ namespace mscl
 		//	A <Value> object containing the eeprom value for the requested location.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
+		//	- <Error_Communication>: Failed to read the value from the BaseStation.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation. 
 		Value readEeprom(const EepromLocation& location);
@@ -173,6 +188,8 @@ namespace mscl
 		//	The eeprom value for the requested location.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
+		//	- <Error_Communication>: Failed to read the value from the BaseStation.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		virtual float readEeprom_float(uint16 location);
@@ -189,6 +206,8 @@ namespace mscl
 		//	The eeprom value for the requested location.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
+		//	- <Error_Communication>: Failed to read the value from the BaseStation.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		virtual uint32 readEeprom_uint32(uint16 location);
@@ -205,6 +224,8 @@ namespace mscl
 		//	The eeprom value for the requested location.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
+		//	- <Error_Communication>: Failed to read the value from the BaseStation.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		virtual uint16 readEeprom_uint16(EepromLocation location);
@@ -221,6 +242,8 @@ namespace mscl
 		//	The eeprom value for the requested location.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
+		//	- <Error_Communication>: Failed to read the value from the BaseStation.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		virtual float readEeprom_float(EepromLocation location);
@@ -237,6 +260,8 @@ namespace mscl
 		//	The eeprom value for the requested location.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
+		//	- <Error_Communication>: Failed to read the value from the BaseStation.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		virtual uint32 readEeprom_uint32(EepromLocation location);

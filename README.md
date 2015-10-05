@@ -22,8 +22,6 @@ The library is currently available in:
 [Example Code](https://github.com/LORD-MicroStrain/MSCL/tree/master/MSCL_Examples)
 
 #### License
-GPL 3.0 licensed
-
-Other Licenses are available. Please contact richard.stoneback@lord.com for License information.
+MIT License - see the LICENSE.txt file in the source distribution.
 
 Copyright (C) 2015 LORD Corporation. All Rights Reserved.

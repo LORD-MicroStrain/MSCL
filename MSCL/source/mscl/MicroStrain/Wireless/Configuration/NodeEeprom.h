@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #pragma once
 
 #include "Eeprom.h"
@@ -19,7 +11,33 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 
 namespace mscl
 {
+	//Title: NodeEeprom
+
 	class ByteStream;
+
+	//Struct: NodeEepromSettings
+	//	The settings for the <NodeEeprom> object.
+	struct NodeEepromSettings
+	{
+		//Variable: useGroupRead
+		//	Whether to use group eeprom read or not.
+		bool useGroupRead;
+
+		//Variable: numRetries
+		//	The number of retries to use for reading and writing.
+		uint8 numRetries;
+
+		//Variable: useEepromCache
+		//	Whether to use the eeprom cache for reads and writes.
+		bool useEepromCache;
+
+		NodeEepromSettings():
+			useGroupRead(true),
+			numRetries(0),
+			useEepromCache(true)
+		{
+		}
+	};
 
 	//Class: NodeEeprom
 	//	Used to read and write to Wireless Nodes' eeproms and provide caching functionality.
@@ -38,8 +56,8 @@ namespace mscl
 		//	nodeAddress - The address of the Node to access the Eeprom of.
 		//	base - The <BaseStation> to use for communicating with the Node.
 		//	protocol - The <WirelessProtocol> that is supported by the Node.
-		//	useCache - Whether or not to use the eeprom cache.
-		NodeEeprom(NodeAddress nodeAddress, const BaseStation& base, const WirelessProtocol& protocol, bool useCache = true);
+		//	setttings - The <NodeEepromSettings> to use.
+		NodeEeprom(NodeAddress nodeAddress, const BaseStation& base, const WirelessProtocol& protocol, const NodeEepromSettings& settings);
 
 		virtual ~NodeEeprom() {};
 
@@ -52,6 +70,10 @@ namespace mscl
 		//	The <BaseStation> to use for communication with the Node.
 		BaseStation m_baseStation;
 
+		//Variable: m_useGroupRead
+		//	Whether we can use a group eeprom read when reading from eeprom.
+		bool m_useGroupRead;
+
 		//Variable: m_protocol
 		//	The <WirelessProtocol> that is supported by the Node.
 		const WirelessProtocol* m_protocol;
@@ -63,11 +85,13 @@ namespace mscl
 		//
 		//Parameters:
 		//	location - The eeprom location to read from the device and update in the cache.
-		//	canUseGroupDownload - Whether or not the devices can download a group of eeproms when available. If this is false, a single eeprom read will be used.
 		//
 		//Returns:
 		//	true if the value was read from the device and the cache has been updated, false otherwise.
-		virtual bool updateCacheFromDevice(uint16 location, bool canUseGroupDownload = true) final;
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
+		virtual bool updateCacheFromDevice(uint16 location) final;
 
 	private:
 		//Function: parseEepromPage
@@ -82,6 +106,10 @@ namespace mscl
 	public:
 		using Eeprom::readEeprom;
 		using Eeprom::writeEeprom;
+
+		//Function: updateSettings
+		//	Changes the settings for this eeprom object.
+		void updateSettings(const NodeEepromSettings& settings);
 
 		//Function: setBaseStation
 		//	Updates the BaseStation object that is set for use in communicating with the Node.
@@ -99,6 +127,7 @@ namespace mscl
 		//	The eeprom value for the requested location.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		virtual uint16 readEeprom(uint16 location) override;

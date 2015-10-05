@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #include "stdafx.h"
 #include "HardwareGain.h"
 
@@ -48,6 +40,11 @@ namespace mscl
 		return std::pow(2.0, bits);
 	}
 
+	double HardwareGain::bitsToGain_mvpervLink(uint16 bits)
+	{
+		return std::pow(2.0, bits) * 20.0;
+	}
+
 	uint16 HardwareGain::gainToBits_sgLink(double gain)
 	{
 		return static_cast<uint16>( ((0.1377 * gain) - 0.255) + 0.5 );
@@ -76,6 +73,11 @@ namespace mscl
 	uint16 HardwareGain::gainToBits_tcLink(double gain)
 	{
 		return static_cast<uint16>(Utils::logBase2(gain) + 0.5);
+	}
+
+	uint16 HardwareGain::gainToBits_mvpervLink(double gain)
+	{
+		return static_cast<uint16>(Utils::logBase2(gain / 20.0) + 0.5);
 	}
 
 	double HardwareGain::bitsToGain(uint16 bits, WirelessModels::NodeModel nodeType)
@@ -113,6 +115,9 @@ namespace mscl
 			case WirelessModels::node_vLink:
 			case WirelessModels::node_vLink_legacy:
 				return bitsToGain_vLink(bits);
+
+			case WirelessModels::node_mvPerVLink:
+				return bitsToGain_mvpervLink(bits);
 
 			default:
 				break;
@@ -157,6 +162,9 @@ namespace mscl
 			case WirelessModels::node_vLink_legacy:
 				return gainToBits_vLink(gain);
 
+			case WirelessModels::node_mvPerVLink:
+				return gainToBits_mvpervLink(gain);
+
 			default:
 				break;
 		}
@@ -195,6 +203,10 @@ namespace mscl
 			case WirelessModels::node_envLink_pro:
 			case WirelessModels::node_rtdLink:
 				maxBits = MAX_BITS_TCLINK;
+				break;
+
+			case WirelessModels::node_mvPerVLink:
+				maxBits = MAX_BITS_MVPERVLINK;
 				break;
 
 			default:

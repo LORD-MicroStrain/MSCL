@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #include "stdafx.h"
 #include "TimedCondition.h"
 #include "Types.h"
@@ -39,9 +31,15 @@ namespace mscl
 			return true;
 		}
 
-		//perform a timed_wait with the given timeout and return the result
+		//perform a timed_wait with the given timeout
 		//	this unlocks the lock/mutex that we pass to it
-		return (m_condition.wait_for(lock, std::chrono::milliseconds(timeout)) == std::cv_status::no_timeout);
+		bool result = (m_condition.wait_for(lock, std::chrono::milliseconds(timeout)) == std::cv_status::no_timeout);
+
+		//set the notified flag to false so that wait can be called again
+		m_isNotified = false;
+
+		//return the result of the 
+		return result;
 	}
 
 	void TimedCondition::notify()

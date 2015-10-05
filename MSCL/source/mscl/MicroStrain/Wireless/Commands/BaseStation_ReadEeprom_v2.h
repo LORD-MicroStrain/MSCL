@@ -1,18 +1,11 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #pragma once
 
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/ResponsePattern.h"
 #include "mscl/Types.h"
@@ -64,6 +57,10 @@ namespace mscl
 			//	The result value of the read eeprom command.
 			uint16 m_result;
 
+			//Variable: m_errorCode
+			//	The <WirelessPacket::ResponseErrorCode> from the response.
+			WirelessPacket::ResponseErrorCode m_errorCode;
+
 		public:
 			//Function: match
 			//	Checks if the packet passed in matches either the success or failure response.
@@ -84,6 +81,13 @@ namespace mscl
 			//Exceptions:
 			//	- <Error>: failed to read the base station's eeprom.
 			uint16 result() const;
+
+			//Function: errorCode
+			//	Gets the <WirelessPacket::ResponseErrorCode> from the response packet.
+			//
+			//Returns:
+			//	The error code from the response.
+			WirelessPacket::ResponseErrorCode errorCode() const;
 
 		private:
 			//Function: matchSuccessResponse

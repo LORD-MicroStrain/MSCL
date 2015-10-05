@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #pragma once
 
 #include "Eeprom.h"
@@ -32,7 +24,7 @@ namespace mscl
 		//	nodeAddress - The address of the Node to access the Eeprom of.
 		//	base - The <BaseStation_Impl> to use for communication. This reference must stay alive for the life of this object.
 		//	useCache - Whether or not to use the eeprom cache.
-		explicit BaseStationEeprom(BaseStation_Impl* base, bool useCache = true);
+		explicit BaseStationEeprom(BaseStation_Impl* base);
 
 		virtual ~BaseStationEeprom() {};
 
@@ -53,11 +45,10 @@ namespace mscl
 		//
 		//Parameters:
 		//	location - The eeprom location to read from the device and update in the cache.
-		//	canUseGroupDownload - Whether or not the devices can download a group of eeproms when available. If this is false, a single eeprom read will be used.
 		//
 		//Returns:
 		//	true if the value was read from the device and the cache has been updated, false otherwise.
-		virtual bool updateCacheFromDevice(uint16 location, bool canUseGroupDownload = true) override;
+		virtual bool updateCacheFromDevice(uint16 location) override;
 
 	public:
 		using Eeprom::readEeprom;

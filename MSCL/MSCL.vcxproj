@@ -375,7 +375,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|Win32'">
     <PreBuildEvent>
       <Message>SWIG: CSharp Interface</Message>
-      <Command>"C:\Dev\Lib\swig\swigwin-3.0.6\swig.exe" -Wall -c++ -csharp -namespace mscl -outdir "..\MSCL_Managed\mscl" -o "..\MSCL\source\mscl\Wrapper\MSCL_Wrap.cpp" "..\MSCL\source\mscl\Wrapper\MSCL_Main_Interface.i"</Command>
+      <Command>"swig.exe" -Wall -c++ -csharp -namespace mscl -outdir "..\MSCL_Managed\mscl" -o "..\MSCL\source\mscl\Wrapper\MSCL_Wrap.cpp" "..\MSCL\source\mscl\Wrapper\MSCL_Main_Interface.i"</Command>
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -731,6 +731,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink2External.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink2Internal.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_iepeLink.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_mvpervlink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink8ch.h" />
@@ -922,6 +923,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink2External.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink2Internal.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_iepeLink.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_mvpervlink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink8ch.cpp" />

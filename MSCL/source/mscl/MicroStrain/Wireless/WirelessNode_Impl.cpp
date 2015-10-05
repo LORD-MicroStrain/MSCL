@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #include "stdafx.h"
 
 #include <iomanip>
@@ -38,44 +30,63 @@ namespace mscl
 	{
 		Version fwVersion;
 
-		//=========================================================================
-		// Determine the firmware version by attempting to use multiple protocols
-		try
+		NodeEepromSettings tempSettings = m_eepromSettings;
+		tempSettings.numRetries = 0;
+
+		bool success = false;
+		uint8 retryCount = 0;
+
+		do
 		{
-			//try reading with protocol v1.1
-			m_protocol = WirelessProtocol::v1_1();
-
-			//set the NodeEeprom with the temporary protocol
-			m_eeprom.reset(new NodeEeprom(m_address, m_baseStation, *(m_protocol.get())));
-
-			fwVersion = firmwareVersion();
-		}
-		catch(Error_Communication&)
-		{
-			//Failed reading with protocol v1.1 - Now try v1.0
-
+			//=========================================================================
+			// Determine the firmware version by attempting to use multiple protocols
 			try
 			{
-				//try reading with protocol v1.0
-				m_protocol = WirelessProtocol::v1_0();
+				//try reading with protocol v1.1
+				m_protocol = WirelessProtocol::v1_1();
 
 				//set the NodeEeprom with the temporary protocol
-				m_eeprom.reset(new NodeEeprom(m_address, m_baseStation, *(m_protocol.get())));
+				m_eeprom.reset(new NodeEeprom(m_address, m_baseStation, *(m_protocol.get()), tempSettings));
 
 				fwVersion = firmwareVersion();
+				success = true;
 			}
-			catch(...)
+			catch(Error_Communication&)
 			{
-				//we failed to determine the procol
-				//need to clear out the protocol and eeprom variables
-				m_protocol.reset();
-				m_eeprom.reset();
+				//Failed reading with protocol v1.1 - Now try v1.0
 
-				//rethrow the exception
-				throw;
+				//we know this uses the same group read (page download) as the previous protocol, so skip it
+				tempSettings.useGroupRead = false;
+
+				try
+				{
+					//try reading with protocol v1.0
+					m_protocol = WirelessProtocol::v1_0();
+
+					//set the NodeEeprom with the temporary protocol
+					m_eeprom.reset(new NodeEeprom(m_address, m_baseStation, *(m_protocol.get()), tempSettings));
+
+					fwVersion = firmwareVersion();
+					success = true;
+				}
+				catch(Error_Communication&)
+				{
+					//if this was the last retry
+					if(retryCount >= m_eepromSettings.numRetries)
+					{
+						//we failed to determine the protocol
+						//need to clear out the protocol and eeprom variables
+						m_protocol.reset();
+						m_eeprom.reset();
+
+						//rethrow the exception
+						throw;
+					}
+				}
 			}
+			//=========================================================================
 		}
-		//=========================================================================
+		while(!success && (retryCount++ < m_eepromSettings.numRetries));
 
 		//the Node min fw version to support protocol 1.1
 		static const Version FW_PROTOCOL_1_1(8, 21);
@@ -97,7 +108,7 @@ namespace mscl
 		{
 			//create the eeprom variable
 			//Note that this requires communicating with the Node via the protocol() function
-			m_eeprom.reset(new NodeEeprom(m_address, m_baseStation, protocol()));
+			m_eeprom.reset(new NodeEeprom(m_address, m_baseStation, protocol(), m_eepromSettings));
 		}
 
 		return *(m_eeprom.get());
@@ -169,14 +180,46 @@ namespace mscl
 		return (basestation == m_baseStation);
 	}
 
+	void WirelessNode_Impl::useGroupRead(bool useGroup)
+	{
+		//will be cached for later in case m_eeprom is null
+		m_eepromSettings.useGroupRead = useGroup;
+
+		if(m_eeprom != NULL)
+		{
+			eeprom().updateSettings(m_eepromSettings);
+		}
+	}
+
+	void WirelessNode_Impl::readWriteRetries(uint8 numRetries)
+	{
+		//will be cached for later in case m_eeprom is null
+		m_eepromSettings.numRetries = numRetries;
+
+		if(m_eeprom != NULL)
+		{
+			eeprom().updateSettings(m_eepromSettings);
+		}
+	}
+
 	void WirelessNode_Impl::useEepromCache(bool useCache)
 	{
-		eeprom().useCache(useCache);
+		//will be cached for later in case m_eeprom is null
+		m_eepromSettings.useEepromCache = useCache;
+
+		if(m_eeprom != NULL)
+		{
+			eeprom().updateSettings(m_eepromSettings);
+		}
 	}
 
 	void WirelessNode_Impl::clearEepromCache()
 	{
-		eeprom().clearCache();
+		//don't need to clear anything if it doesn't exist
+		if(m_eeprom != NULL)
+		{
+			eeprom().clearCache();
+		}
 	}
 
 	uint16 WirelessNode_Impl::nodeAddress() const

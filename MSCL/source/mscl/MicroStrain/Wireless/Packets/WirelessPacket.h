@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #pragma once
 
 #include "mscl/MicroStrain/ByteStream.h"
@@ -62,10 +54,9 @@ namespace mscl
 
 		//=====================================================================================================
 		//Enums: PacketType
-		//	packetType_unknown						- -1	- Unknown Packet Type	
-		//	packetType_command						- 0x00	- Command Packet
-		//	packetType_reply						- 0x01	- Command Reply Packet
-		//	packetType_errorReply					- 0x02	- Error Reply Packet
+		//	packetType_unknown						- -1	- Unknown Packet Type
+		//	packetType_nodeCommand					- 0x00	- Node Command Packet
+		//	packetType_nodeErrorReply				- 0x02	- Node Command Error Reply Packet
 		//	packetType_LDC							- 0x04	- Standard Low Duty Cycle Packet
 		//	packetType_nodeDiscovery				- 0x07	- Node Discovery Packet (version 1)
 		//	packetType_TCLinkLDC					- 0x09	- TC-Link Low Duty Cycle packet
@@ -79,20 +70,20 @@ namespace mscl
 		//	packetType_SyncSampling_16ch			- 0x1A	- Synchronized Sampling Packet with 16 channel support
 		//	packetType_BufferedLDC_16ch				- 0x1D	- Buffered LDC Packet with 16 channel support
 		//	packetType_NodeReceived					- 0x20	- Node Received the command
+		//	packetType_nodeSuccessReply				- 0x22	- Node Command Success Reply Packet
 		//	packetType_baseCommand					- 0x30	- Base Station Command Packet
-		//	packetType_baseReply					- 0x31	- Base Station Command Reply Packet
+		//	packetType_baseSuccessReply				- 0x31	- Base Station Command Reply Packet
 		//	packetType_baseErrorReply				- 0x32	- Base Station Command Error Reply Packet
 		//	packetType_SHM							- 0xA0	- Structural Health Monitoring Packet
-		//	packetType_HclSmartBearing_Calibrated	- 0xA1	- HclSmartBearing Calibrated data packet
-		//	packetType_HclSmartBearing_Raw			- 0xA2	- HclSmartBearing Raw data packet
+		//	packetType_HclSmartBearing_Calibrated	- 0xA1	- HclSmartBearing Calibrated data Packet
+		//	packetType_HclSmartBearing_Raw			- 0xA2	- HclSmartBearing Raw data Packet
 		//=====================================================================================================
 		enum PacketType
 		{
 			packetType_unknown						= -1,
 			
-			packetType_command						= 0x00,
-			packetType_reply						= 0x01,
-			packetType_errorReply					= 0x02,
+			packetType_nodeCommand					= 0x00,
+			packetType_nodeErrorReply				= 0x02,
 			packetType_LDC							= 0x04,
 			packetType_nodeDiscovery				= 0x07,
 			packetType_TCLinkLDC					= 0x09,
@@ -105,13 +96,33 @@ namespace mscl
 			packetType_nodeDiscovery_v3				= 0x18,
 			packetType_SyncSampling_16ch			= 0x1A,
 			packetType_BufferedLDC_16ch				= 0x1D,
-			packetType_NodeReceived					= 0x20,
+			packetType_nodeReceived					= 0x20,
+			packetType_nodeSuccessReply				= 0x22,
 			packetType_baseCommand					= 0x30,
-			packetType_baseReply					= 0x31,
+			packetType_baseSuccessReply				= 0x31,
 			packetType_baseErrorReply				= 0x32,
 			packetType_SHM							= 0xA0,
 			packetType_HclSmartBearing_Calibrated	= 0xA1,
 			packetType_HclSmartBearing_Raw			= 0xA2
+		};
+
+		//===================================================
+		//Enums: ResponseErrorCode
+		//	Possible error codes from response packets.
+		//
+		//	error_none			- 0x00 - No Error.
+		//	error_unknownEeprom - 0x01 - An Unknown/Unsupported Eeprom was attempted to be accessed.
+		//	error_outOfBounds	- 0x02 - An out of bounds value was attempted to be used.
+		//	error_readOnly		- 0x03 - Attempted to write to a read only Eeprom location.
+		//	error_hardwareError - 0x04 - A hardware error has occurred.
+		//===================================================
+		enum ResponseErrorCode
+		{
+			error_none			= 0x00,
+			error_unknownEeprom = 0x01,
+			error_outOfBounds	= 0x02,
+			error_readOnly		= 0x03,
+			error_hardwareError = 0x04
 		};
 
 	public:
@@ -120,6 +131,17 @@ namespace mscl
 		WirelessPacket();
 
 		virtual ~WirelessPacket() {};
+
+		//Function: throwResponseError
+		//	Throws an exception based on a <ResponseErrorCode>.
+		//	Not all error codes will cause an exception.
+		//
+		//Parameters:
+		//	errorCode - The <ResponseErrorCode> to use for potentially throwing an exception.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported> - invalid eeprom location, value out of bounds, or read only eeprom location.
+		static void throwResponseError(ResponseErrorCode errorCode);
 
 	protected:
 		//Variable: m_deliveryStopFlags

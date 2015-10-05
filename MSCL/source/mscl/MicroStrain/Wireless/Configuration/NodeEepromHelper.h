@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #pragma once
 
 #include <memory>
@@ -71,7 +63,22 @@ namespace mscl
 		WirelessNode_Impl* m_node;
 
 	private:
+		//Function: read
+		//	Reads an <EepromLocation> from the Node and returns a <Value> with the result.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
+		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		Value read(const EepromLocation& location) const;
+
+		//Function: write
+		//	Writes a <Value> to a given <EepromLocation> on the Node.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location, or value.
+		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write(const EepromLocation& location, const Value& val);
 
 	public:
@@ -89,6 +96,7 @@ namespace mscl
 		//	The <WirelessTypes::Frequency> of the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::Frequency read_frequency() const;
@@ -100,6 +108,7 @@ namespace mscl
 		//	The <WirelessTypes::RegionCode> set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::RegionCode read_regionCode() const;
@@ -111,6 +120,7 @@ namespace mscl
 		//	A <Version> representing the firmware version of the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		Version read_fwVersion() const;
@@ -122,6 +132,7 @@ namespace mscl
 		//	A <WirelessModels::NodeModel> representing the model of the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessModels::NodeModel read_model() const;
@@ -133,6 +144,7 @@ namespace mscl
 		//	A string representing the serial number of the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		std::string read_serial() const;
@@ -144,6 +156,7 @@ namespace mscl
 		//	A <WirelessTypes::MicroControllerType> representing the microcontroller of the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::MicroControllerType read_microcontroller() const;
@@ -155,6 +168,7 @@ namespace mscl
 		//	The <RadioFeatures> of the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		RadioFeatures read_radioFeatures() const;
@@ -167,6 +181,7 @@ namespace mscl
 		//	The total number of bytes available for data storage on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint64 read_dataStorageSize() const;
@@ -188,6 +203,7 @@ namespace mscl
 		//	channels - The <ChannelMask> representing which channels are active and which are not.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_channelMask(const ChannelMask& channels);
@@ -211,6 +227,7 @@ namespace mscl
 		//	sweeps - The number of sweeps to write to the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_numSweeps(uint32 sweeps);
@@ -222,6 +239,7 @@ namespace mscl
 		//	The number of sweeps currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint32 read_numSweeps() const;
@@ -234,6 +252,7 @@ namespace mscl
 		//	samplingMode - The <WirelessTypes::SamplingMode> to set unlimited duration for.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_unlimitedDuration(bool unlimitedDuration, WirelessTypes::SamplingMode samplingMode);
@@ -248,6 +267,7 @@ namespace mscl
 		//	true if the Node is set to unlimited duration, false otherwise
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		bool read_unlimitedDuration(WirelessTypes::SamplingMode samplingMode) const;
@@ -260,6 +280,7 @@ namespace mscl
 		//	samplingMode - The <WirelessTypes::SamplingMode> to set unlimited duration for.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_sampleRate(WirelessTypes::WirelessSampleRate rate, WirelessTypes::SamplingMode samplingMode);
@@ -274,6 +295,7 @@ namespace mscl
 		//	A <WirelessTypes::WirelessSampleRate> representing the sample rate that is currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::WirelessSampleRate read_sampleRate(WirelessTypes::SamplingMode samplingMode) const;
@@ -285,6 +307,7 @@ namespace mscl
 		//	dataFormat - The <WirelessTypes::DataFormat> to set.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_dataFormat(WirelessTypes::DataFormat dataFormat);
@@ -296,6 +319,7 @@ namespace mscl
 		//	The <WirelessTypes::DataFormat> that is currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::DataFormat read_dataFormat() const;
@@ -307,6 +331,7 @@ namespace mscl
 		//	collectionMode - The <WirelessTypes::DataCollectionMethod> to set.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_collectionMode(WirelessTypes::DataCollectionMethod collectionMode);
@@ -318,6 +343,7 @@ namespace mscl
 		//	The <WirelessTypes::DataCollectionMethod> that is currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::DataCollectionMethod read_collectionMode() const;
@@ -329,6 +355,7 @@ namespace mscl
 		//	syncMode - The <WirelessTypes::SyncSamplingMode> to set.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_syncSamplingMode(WirelessTypes::SyncSamplingMode syncMode);
@@ -340,6 +367,7 @@ namespace mscl
 		//	The <WirelessTypes::SyncSamplingMode> that is currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::SyncSamplingMode read_syncSamplingMode() const;
@@ -351,6 +379,7 @@ namespace mscl
 		//	delay - The <TimeSpan> representing the sampling delay to write to the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_samplingDelay(TimeSpan delay);
@@ -362,6 +391,7 @@ namespace mscl
 		//	A <TimeSpan> representing the sampling delay that is currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		TimeSpan read_samplingDelay() const;
@@ -373,6 +403,7 @@ namespace mscl
 		//	reTx - The <WirelessTypes::NodeRetransmission> to write to the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_retransmission(WirelessTypes::NodeRetransmission reTx);
@@ -384,6 +415,7 @@ namespace mscl
 		//	The <WirelessTypes::NodeRetransmission> representing the retransmission option that is currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::NodeRetransmission read_retransmission() const;
@@ -424,6 +456,7 @@ namespace mscl
 		//	timespan - The <TimeSpan> representing the time between each burst. This can be in the range of 1 second to 24 hours.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_timeBetweenBursts(const TimeSpan& timespan);
@@ -435,6 +468,7 @@ namespace mscl
 		//	The <TimeSpan> representing the time between each burst.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		TimeSpan read_timeBetweenBursts() const;
@@ -446,6 +480,7 @@ namespace mscl
 		//	samplingMode - The <WirelessTypes::SamplingMode> to write to the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_samplingMode(WirelessTypes::SamplingMode samplingMode);
@@ -457,6 +492,7 @@ namespace mscl
 		//	A <WirelessTypes::SamplingMode> object representing the sampling mode.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::SamplingMode read_samplingMode() const;
@@ -565,6 +601,7 @@ namespace mscl
 		//	The <WirelessTypes::TransmitPower> that is currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::TransmitPower read_transmitPower() const;
@@ -576,6 +613,7 @@ namespace mscl
 		//	power - The <WirelessTypes::TransmitPower> to write to the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to write to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_transmitPower(WirelessTypes::TransmitPower power);
@@ -589,6 +627,7 @@ namespace mscl
 		//	Note: A value of 65535 (0xFFFF) disables the inactivity timeout so that the Node never goes to sleep.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint16 read_inactivityTimeout() const;
@@ -602,6 +641,7 @@ namespace mscl
 		//	Note: A value of 65535 (0xFFFF) disables the inactivity timeout so that the Node never goes to sleep.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to write to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_inactivityTimeout(uint16 timeout);
@@ -614,6 +654,7 @@ namespace mscl
 		//	The interval (in seconds) that is currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint8 read_checkRadioInterval() const;
@@ -627,6 +668,7 @@ namespace mscl
 		//	interval - The check radio interval (in seconds) to write to the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to write to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_checkRadioInterval(uint8 interval);
@@ -638,6 +680,7 @@ namespace mscl
 		//	The default mode that is currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::DefaultMode read_defaultMode() const;
@@ -649,6 +692,7 @@ namespace mscl
 		//	mode - The <WirelessTypes::DefaultMode> to write to the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to write to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_defaultMode(WirelessTypes::DefaultMode mode);
@@ -660,6 +704,7 @@ namespace mscl
 		//	The next flash page that to be used for datalogging.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint16 read_logPage() const;
@@ -671,6 +716,7 @@ namespace mscl
 		//	The byte offset into the log page for the next datalogging session.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint16 read_logPageOffset() const;
@@ -682,6 +728,7 @@ namespace mscl
 		//	The number of datalog sessions that are stored on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint16 read_numDatalogSessions() const;
@@ -693,6 +740,7 @@ namespace mscl
 		//	txPerGroup - The number of transmissions per group to write.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_txPerGroup(uint16 txPerGroup);
@@ -704,6 +752,7 @@ namespace mscl
 		//	groupSize - The group size to write.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_groupSize(uint16 groupSize);
@@ -715,6 +764,7 @@ namespace mscl
 		//	address - The TDMA address to write.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_tdmaAddress(uint16 address);
@@ -726,6 +776,7 @@ namespace mscl
 		//	maxReTxPerBurst - The value to write.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_maxRetransPerBurst(uint16 maxReTxPerBurst);
@@ -810,6 +861,7 @@ namespace mscl
 		//	thermocouple - The <WirelessTypes::ThermocoupleType> to write to the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_thermoType(const ChannelMask& mask, WirelessTypes::ThermocoupleType thermocouple);
@@ -822,6 +874,7 @@ namespace mscl
 		//	result - Will hold the result of the <FatigueOptions> read from the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void read_fatigueOptions(FatigueOptions& result) const;
@@ -834,6 +887,7 @@ namespace mscl
 		//	options - The <FatigueOptions> to write to the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_fatigueOptions(const FatigueOptions& options);
@@ -846,6 +900,7 @@ namespace mscl
 		//	result - Will hold the result of the <HistogramOptions> read from the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void read_histogramOptions(HistogramOptions& result) const;
@@ -858,6 +913,7 @@ namespace mscl
 		//	options - The <HistogramOptions> to write to the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_histogramOptions(const HistogramOptions& options);
@@ -867,6 +923,7 @@ namespace mscl
 		//	This assumes histogram options configuration is supported by the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void clearHistogram();
@@ -879,6 +936,7 @@ namespace mscl
 		//	The lost beacon timeout in minutes.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint16 read_lostBeaconTimeout() const;
@@ -891,6 +949,7 @@ namespace mscl
 		//	minutes - The lost beacon timeout value in minutes.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_lostBeaconTimeout(uint16 minutes);

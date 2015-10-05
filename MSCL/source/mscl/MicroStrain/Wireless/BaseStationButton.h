@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 //PUBLIC_HEADER
 #pragma once
 
@@ -28,7 +20,7 @@ namespace mscl
 		//	Represents the types of commands that a <BaseStationButton> can perform.
 		//
 		//	btn_nodeSleep				- 0	- Puts a Node into sleep mode.
-		//	btn_nodeStop				- 1 - Puts a Node into idel mode by stopping/waking it.
+		//	btn_nodeStop				- 1 - Puts a Node into idle mode by stopping/waking it.
 		//	btn_enableBeacon			- 2 - Enables the Beacon on the BaseStation
 		//	btn_disableBeacon			- 3 - Disable the Beacon on the BaseStation
 		//	btn_nodeNonSyncSampling		- 4 - Starts a Node sampling in Non-Synchronized mode.

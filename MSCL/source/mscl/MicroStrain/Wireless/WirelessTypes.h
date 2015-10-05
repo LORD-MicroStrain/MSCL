@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 //PUBLIC_HEADER
 #pragma once
 
@@ -24,6 +16,23 @@ namespace mscl
 	{
 	public:
 		//=====================================================================================================
+		//API Enums: BeaconSource
+		//	Represents the source of a BaseStation's Beacon.
+		//
+		//	beacon_none				- 0 - No Beacon
+		//	beacon_internalTimer	- 1 - Internal Timer
+		//	beacon_internalPPS		- 2 - Internal PPS
+		//	beacon_externalPPS		- 3 - External PPS
+		//=====================================================================================================
+		enum BeaconSource
+		{
+			beacon_none				= 0,
+			beacon_internalTimer	= 1,
+			beacon_internalPPS		= 2,
+			beacon_externalPPS		= 3
+		};
+
+		//=====================================================================================================
 		//API Enums: MicroControllerType
 		//	Represents the types of microcontrollers possible on the Wireless Devices.
 		//
@@ -35,11 +44,11 @@ namespace mscl
 		//=====================================================================================================
 		enum MicroControllerType
 		{
-			microcontroller_18F452		= 31,
-			microcontroller_18F4620		= 32,
-			microcontroller_18F46K20	= 33,
-			microcontroller_18F67K90	= 34,
-			microcontroller_EFM32WG990F256 = 35,
+			microcontroller_18F452			= 31,
+			microcontroller_18F4620			= 32,
+			microcontroller_18F46K20		= 33,
+			microcontroller_18F67K90		= 34,
+			microcontroller_EFM32WG990F256	= 35,
 		};
 
 		//=====================================================================================================

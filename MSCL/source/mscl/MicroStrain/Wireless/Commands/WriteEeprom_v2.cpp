@@ -1,20 +1,11 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #include "stdafx.h"
 #include "WriteEeprom_v2.h"
 #include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
@@ -43,21 +34,22 @@ namespace mscl
 		ResponsePattern(collector),
 		m_nodeAddress(nodeAddress),
 		m_eepromAddress(eepromAddress),
-		m_eepromValue(valueWritten)
+		m_eepromValue(valueWritten),
+		m_errorCode(WirelessPacket::error_none)
 	{
 	}
 
-	bool WriteEeprom_v2::Response::match(const WirelessPacket& packet)
+	bool WriteEeprom_v2::Response::matchSuccessResponse(const WirelessPacket& packet)
 	{
 		WirelessPacket::Payload payload = packet.payload();
 
 		uint8 dsf = packet.deliveryStopFlags().toByte();
 
 		//check the main bytes of the packet
-		if( packet.type() != 0x00 ||						//app data type
-			packet.nodeAddress() != m_nodeAddress ||		//node address
-			payload.size() != 0x06							//payload length
-			)			
+		if(packet.type() != 0x00 ||						//app data type
+		   packet.nodeAddress() != m_nodeAddress ||		//node address
+		   payload.size() != 0x06						//payload length
+		   )
 		{
 			//failed to match some of the bytes
 			return false;
@@ -106,5 +98,64 @@ namespace mscl
 		m_matchCondition.notify();
 
 		return true;
+	}
+
+	bool WriteEeprom_v2::Response::matchFailResponse(const WirelessPacket& packet)
+	{
+		WirelessPacket::Payload payload = packet.payload();
+
+		//check the main bytes of the packet
+		if(packet.deliveryStopFlags().toByte() != 0x07 ||					//delivery stop flag
+		   packet.type() != WirelessPacket::packetType_nodeErrorReply ||	//app data type
+		   packet.nodeAddress() != m_nodeAddress ||							//node address
+		   payload.size() != 0x07 ||										//payload length
+		   payload.read_uint16(0) != COMMAND_ID ||							//command ID
+		   payload.read_uint16(2) != m_eepromAddress ||						//eeprom address
+		   payload.read_uint16(4) != m_eepromValue							//eeprom value
+		   )
+		{
+			//failed to match some of the bytes
+			return false;
+		}
+
+		//if we made it here, the packet matches the response pattern
+
+		//get the error code from the response
+		m_success = false;
+		m_errorCode = static_cast<WirelessPacket::ResponseErrorCode>(packet.payload().read_uint8(6));
+
+		return true;
+	}
+
+	bool WriteEeprom_v2::Response::match(const WirelessPacket& packet)
+	{
+		//if the bytes match the success response
+		if(matchSuccessResponse(packet))
+		{
+			//we have fully matched the response
+			m_fullyMatched = true;
+
+			//notify that the response was matched
+			m_matchCondition.notify();
+			return true;
+		}
+		//if the bytes match the fail response
+		else if(matchFailResponse(packet))
+		{
+			//we have fully matched the response
+			m_fullyMatched = true;
+
+			//notify that the response was matched
+			m_matchCondition.notify();
+			return true;
+		}
+
+		//the bytes don't match any response
+		return false;
+	}
+
+	WirelessPacket::ResponseErrorCode WriteEeprom_v2::Response::errorCode() const
+	{
+		return m_errorCode;
 	}
 }

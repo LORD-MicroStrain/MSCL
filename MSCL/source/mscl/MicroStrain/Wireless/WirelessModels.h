@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 //PUBLIC_HEADER
 #pragma once
 
@@ -65,6 +57,7 @@ namespace mscl
 		//node_wattLink_3D480			- 63234200 - Watt-Link 3D480
 		//node_wattLink_3D400			- 63233200 - Watt-Link 3D400
 		//node_wattLink_3D240			- 63232200 - Watt-Link 3D240
+		//node_mvPerVLink				- 63230200 - mV/V-Link
 		//node_envLink_pro				- 60000001 - ENV-Link-Pro
 		//node_sgLink_8ch				- 60000002 - SG-Link-8CH
 		//=========================================================================
@@ -108,6 +101,7 @@ namespace mscl
 			node_wattLink_3D480			= 63234200,	//Watt-Link 3D480
 			node_wattLink_3D400			= 63233200,	//Watt-Link 3D400
 			node_wattLink_3D240			= 63232200,	//Watt-Link 3D240
+			node_mvPerVLink				= 63230200,	//mV/V-Link
 
 			//TODO: the following nodes do not currently have 6XXX level model numbers (NODES NEED TO BE UPDATED!)
 			node_envLink_pro			= 60000001,

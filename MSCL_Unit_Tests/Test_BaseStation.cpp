@@ -686,7 +686,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_node_autocal_success)
 	ByteStream data2;
 	data2.append_uint8(0xAA);
 	data2.append_uint8(0x07);
-	data2.append_uint8(0x01);
+	data2.append_uint8(WirelessPacket::packetType_nodeSuccessReply);
 	data2.append_uint16(327);	//node address
 	data2.append_uint8(22);
 	data2.append_uint16(0x0064);	//cmd id

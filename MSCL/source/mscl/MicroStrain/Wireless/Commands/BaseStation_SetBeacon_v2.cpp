@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #include "stdafx.h"
 
 #include "BaseStation_SetBeacon_v2.h"
@@ -50,7 +42,7 @@ namespace mscl
 
 		//check the main bytes of the packet
 		if(packet.deliveryStopFlags().toByte() != 0x07 ||						//delivery stop flag
-		   packet.type() != WirelessPacket::packetType_baseReply ||				//app data type
+		   packet.type() != WirelessPacket::packetType_baseSuccessReply ||		//app data type
 		   packet.nodeAddress() != WirelessProtocol::BASE_STATION_ADDRESS ||	//node address
 		   payload.size() != 0x06 ||											//payload length
 		   payload.read_uint16(0) != 0xBEAC ||									//command ID

@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #pragma once
 
 #include "BaseStation.h"
@@ -64,6 +56,10 @@ namespace mscl
 		//	The Node's parent BaseStation.
 		BaseStation m_baseStation;
 
+		//Variable: m_eepromSettings
+		//	The eeprom settings to use for the <NodeEeprom> object.
+		NodeEepromSettings m_eepromSettings;
+
 		//Variable: m_frequency
 		//	The <WirelessTypes::Frequency> that this Node is believed to be on.
 		mutable WirelessTypes::Frequency m_frequency;
@@ -116,6 +112,7 @@ namespace mscl
 		//		  creating the protocol for the first time.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		virtual const WirelessProtocol& protocol() const;
@@ -145,6 +142,20 @@ namespace mscl
 		//	true if the basestation is the same as this Node's parent <BaseStation>, false if it is different.
 		bool hasBaseStation(const BaseStation& basestation) const;
 
+		//Function: useGroupRead
+		//	Enables or disables the use of group eeprom read when trying to read a single value (enabled by default).
+		//
+		//Parameters:
+		//	useGroup - Whether the group eeprom read commands can be used (true) or whether to restrict to single eeprom reads (false).
+		void useGroupRead(bool useGroup);
+
+		//Function: readWriteRetries
+		//	Sets the number of retry attempts for reading and writing with the Node.
+		//
+		//Parameters:
+		//	numRetries - The number of retries to set for all reading and writing with the Node.
+		void readWriteRetries(uint8 numRetries);
+
 		//Function: useEepromCache
 		//	Sets whether or not to utilize the eeprom cache when configuring this Node (default of enabled).
 		//
@@ -168,6 +179,7 @@ namespace mscl
 		//	If the frequency is unknown, it will be read from Eeprom.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::Frequency frequency() const;
@@ -176,6 +188,7 @@ namespace mscl
 		//	Gets the firmware <Version> of the Node. 
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		virtual Version firmwareVersion() const;
@@ -184,6 +197,7 @@ namespace mscl
 		//	Gets the <WirelessModels::NodeModel> of the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessModels::NodeModel model() const;
@@ -192,6 +206,7 @@ namespace mscl
 		//	Gets the serial number of the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		std::string serial() const;
@@ -200,6 +215,7 @@ namespace mscl
 		//	Gets the <WirelessTypes::MicroControllerType> of the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::MicroControllerType microcontroller() const;
@@ -208,6 +224,7 @@ namespace mscl
 		//	Gets the <RadioFeatures> of the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		RadioFeatures radioFeatures() const;
@@ -216,6 +233,7 @@ namespace mscl
 		//	Gets the number of bytes available for data storage on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint64 dataStorageSize() const;
@@ -224,6 +242,7 @@ namespace mscl
 		//	Gets the region code currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::RegionCode regionCode() const;
@@ -241,6 +260,7 @@ namespace mscl
 		//	true if the configuration is valid. false if the configuration is invalid and outIssues should be checked for more information.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		bool verifyConfig(const WirelessNodeConfig& config, ConfigIssues& outIssues) const;
@@ -253,6 +273,7 @@ namespace mscl
 		//
 		//Exceptions:
 		//	- <Error_InvalidNodeConfig>: Invalid Configuration. Check the exception for specific details.
+		//	- <Error_NotSupported>: Attempted to write an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to write to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void applyConfig(const WirelessNodeConfig& config);
@@ -261,6 +282,7 @@ namespace mscl
 		//	Reads the number of datalog sessions that are currently stored on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint16 getNumDatalogSessions() const;
@@ -269,6 +291,7 @@ namespace mscl
 		//	Reads the <WirelessTypes::DefaultMode> that is currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::DefaultMode getDefaultMode() const;
@@ -277,6 +300,7 @@ namespace mscl
 		//	Reads the user inactivity timeout (in seconds) that is currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint16 getInactivityTimeout() const;
@@ -285,6 +309,7 @@ namespace mscl
 		//	Reads the check radio interval that is currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint8 getCheckRadioInterval() const;
@@ -293,6 +318,7 @@ namespace mscl
 		//	Reads the <WirelessTypes::TransmitPower> that is currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::TransmitPower getTransmitPower() const;
@@ -301,6 +327,7 @@ namespace mscl
 		//	Gets the <WirelessTypes::SamplingMode> that is currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::SamplingMode getSamplingMode() const;
@@ -309,6 +336,7 @@ namespace mscl
 		//	Gets the <ChannelMask> currently set on the Node, representing which channels are enabled and disabled.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		ChannelMask getActiveChannels() const;
@@ -317,6 +345,7 @@ namespace mscl
 		//	Gets the <WirelessTypes::WirelessSampleRate> currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::WirelessSampleRate getSampleRate() const;
@@ -326,6 +355,7 @@ namespace mscl
 		//	or the duration of each burst if the sampling mode is Sync Sampling Burst.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint32 getNumSweeps() const;
@@ -334,6 +364,7 @@ namespace mscl
 		//	Gets whether or not unlimited sampling duration is enabled on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		bool getUnlimitedDuration() const;
@@ -342,6 +373,7 @@ namespace mscl
 		//	Gets the <WirelessTypes::DataFormat> that is currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::DataFormat getDataFormat() const;
@@ -351,6 +383,7 @@ namespace mscl
 		//	Note: this has no affect if the sampling mode is Armed Datalogging, as this mode only operates in "log only".
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		WirelessTypes::DataCollectionMethod getDataCollectionMethod() const;
@@ -368,6 +401,7 @@ namespace mscl
 		//	Gets the lost beacon timeout, in minutes, currently set on the Node.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint16 getLostBeaconTimeout() const;
@@ -499,6 +533,7 @@ namespace mscl
 		//	Many configuration changes that are applied to the node do not take affect until the power is cycled.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to write an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void cyclePower();
@@ -518,6 +553,7 @@ namespace mscl
 		//	frequency - The <WirelessTypes::Frequency> to change the Node to.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to write an unsupported option. The device firmware is not compatible with this version of MSCL.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		virtual void changeFrequency(WirelessTypes::Frequency frequency);
@@ -593,6 +629,7 @@ namespace mscl
 		//	The uint16 value read from the specified EEPROM location
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		virtual uint16 readEeprom(uint16 location) const;
@@ -608,6 +645,7 @@ namespace mscl
 		//	The value read from the specified EEPROM location as a <Value> object.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported eeprom location.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		virtual Value readEeprom(const EepromLocation& location) const;
@@ -621,6 +659,7 @@ namespace mscl
 		//	value - The uint16 value to write to the eeprom location
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location or value.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		virtual void writeEeprom(uint16 location, uint16 value);
@@ -634,6 +673,7 @@ namespace mscl
 		//	value - The value to write to the eeprom location, as a <Value>.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location or value.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		virtual void writeEeprom(const EepromLocation& location, const Value& val);
