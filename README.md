@@ -1,4 +1,4 @@
-To quickly get started, [download the latest pre-built binaries (1.9.0)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v1.9.0/MSCL_1.9.0.zip). 
+To quickly get started, [download the latest pre-built binaries (1.20.1)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v1.20.1/MSCL_1.20.1.zip). 
 
 If you want to build MSCL from source, see the [Build ReadMe](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme.md).
 
@@ -10,7 +10,7 @@ MSCL is written in C++, but by using [SWIG](http://swig.org/) we are able to wra
 The library is currently available in:
 * C++
 * Python
-* .NET (C#, VB, MATLAB, LabView)
+* .NET (C#, VB, MATLAB, LabVIEW)
 
 ### Documentation
 [Quick Start Guide](http://lord-microstrain.github.io/MSCL/Documentation/Getting%20Started/index.html)
@@ -20,6 +20,7 @@ The library is currently available in:
 [Full Documentation](http://lord-microstrain.github.io/MSCL/Documentation/MSCL_Full_Documentation/index.html) - Full Documentation of everything in MSCL.
 
 [Example Code](https://github.com/LORD-MicroStrain/MSCL/tree/master/MSCL_Examples)
+  * Note: LabVIEW example code is coming soon. Contact us for availability.
 
 #### License
 MIT License - see the LICENSE.txt file in the source distribution.
