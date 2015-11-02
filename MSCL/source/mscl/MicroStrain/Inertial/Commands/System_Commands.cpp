@@ -45,7 +45,7 @@ namespace mscl
 		GenericInertialCommand::Response(collector, true, dataResponse, "Communication Mode")
 	{}
 
-	uint8 CommunicationMode::Response::parseData(const GenericInertialCommandResponse& response) const
+	uint8 CommunicationMode::Response::parseResponse(const GenericInertialCommandResponse& response) const
 	{
 		return Inertial_Commands::parseData_CommunicationMode(response);
 	}

@@ -86,7 +86,7 @@ namespace mscl
 			//	true if the field matches the expected data, false if it does not.
 			virtual bool match_data(const InertialDataField& field) override;
 
-			//Function: parseData
+			//Function: parseResponse
 			//	Parses a successfully matched response for the ContinuousDataStream command.
 			//
 			//Parameters:
@@ -94,7 +94,7 @@ namespace mscl
 			//
 			//Returns:
 			//	true if the data stream is enabled, false if it is disabled.
-			bool parseData(const GenericInertialCommandResponse& response) const;
+			bool parseResponse(const GenericInertialCommandResponse& response) const;
 		};
 	};
 }

@@ -104,6 +104,9 @@ namespace mscl
 			case valueType_uint32:
 				return Value(type, readEeprom_uint32(eepromLoc));
 
+			case valueType_int16:
+				return Value(type, readEeprom_int16(eepromLoc));
+
 			default:
 				assert(false);	//we are trying to read a value with an invalid type? 
 				return Value(type, readEeprom(eepromLoc));	//just default to uint16
@@ -129,6 +132,10 @@ namespace mscl
 
 			case valueType_uint32:
 				writeEeprom_uint32(eepromLoc, val.as_uint32());
+				break;
+
+			case valueType_int16:
+				writeEeprom_int16(eepromLoc, val.as_int16());
 				break;
 
 			default:
@@ -166,19 +173,9 @@ namespace mscl
 		return Utils::make_uint32(msw, lsw);
 	}
 
-	uint16 Eeprom::readEeprom_uint16(EepromLocation location)
+	int16 Eeprom::readEeprom_int16(uint16 location)
 	{
-		return readEeprom(location.location());
-	}
-
-	float Eeprom::readEeprom_float(EepromLocation location)
-	{
-		return readEeprom_float(location.location());
-	}
-
-	uint32 Eeprom::readEeprom_uint32(EepromLocation location)
-	{
-		return readEeprom_uint32(location.location());
+		return static_cast<int16>(readEeprom(location));
 	}
 
 	void Eeprom::writeEeprom_float(uint16 location, float value)
@@ -195,16 +192,6 @@ namespace mscl
 		writeEeprom(location + 2, Utils::make_uint16(b3, b4)); //TODO: possibly throw a custom exception if this throws? We wrote the msw but not the lsw
 	}
 
-	void Eeprom::writeEeprom_uint16(EepromLocation location, uint16 value)
-	{
-		writeEeprom(location.location(), value);
-	}
-
-	void Eeprom::writeEeprom_float(EepromLocation location, float value)
-	{
-		writeEeprom_float(location.location(), value);
-	}
-
 	void Eeprom::writeEeprom_uint32(uint16 location, uint32 value)
 	{
 		uint16 msw = 0;
@@ -218,5 +205,10 @@ namespace mscl
 
 		//try to write the lsw
 		writeEeprom(location + 2, lsw);	//TODO: possibly throw a custom exception if this throws? We wrote the msw but not the lsw
+	}
+
+	void Eeprom::writeEeprom_int16(uint16 location, int16 value)
+	{
+		writeEeprom(location, static_cast<uint16>(value));
 	}
 }

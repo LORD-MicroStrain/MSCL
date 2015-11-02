@@ -9,6 +9,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/Types.h"
 #include "mscl/Communication/SerialConnection.h"
 #include "mscl/MicroStrain/Inertial/Commands/Inertial_Commands.h"
+#include "Features/InertialNodeFeatures.h"
 #include "Packets/InertialPacket.h"
 #include "InertialParser.h"
 #include "InertialNode_Impl.h"
@@ -28,8 +29,15 @@ namespace mscl
 	{
 	}
 
-	//====================================================================================================================================================
-	//The following functions just get pushes through the InertialNode_Impl class containing the implementation of all these functions
+	const InertialNodeInfo& InertialNode::info()
+	{
+		return m_impl->info();
+	}
+
+	const InertialNodeFeatures& InertialNode::features()
+	{
+		return m_impl->features();
+	}
 
 	InertialDataPacket InertialNode::getNextDataPacket(uint32 timeout)						
 	{ 
@@ -72,11 +80,6 @@ namespace mscl
 	void InertialNode::commandsTimeout(uint64 timeout)										
 	{ 
 		m_impl->commandsTimeout(timeout); 
-	}
-
-	const InertialNodeInfo& InertialNode::info()														
-	{ 
-		return m_impl->info(); 
 	}
 
 	std::string InertialNode::name()
@@ -129,5 +132,33 @@ namespace mscl
 		m_impl->enableDataStream(category, enable);
 	}
 
-	//====================================================================================================================================================
+	EulerAngles InertialNode::getSensorToVehicleTransformation()
+	{
+		return m_impl->getSensorToVehicleTransformation();
+	}
+
+	void InertialNode::setSensorToVehicleTransformation(const EulerAngles& angles)
+	{
+		m_impl->setSensorToVehicleTransformation(angles);
+	}
+
+	PositionOffset InertialNode::getSensorToVehicleOffset()
+	{
+		return m_impl->getSensorToVehicleOffset();
+	}
+
+	void InertialNode::setSensorToVehicleOffset(const PositionOffset& offset)
+	{
+		m_impl->setSensorToVehicleOffset(offset);
+	}
+
+	PositionOffset InertialNode::getAntennaOffset()
+	{
+		return m_impl->getAntennaOffset();
+	}
+
+	void InertialNode::setAntennaOffset(const PositionOffset& offset)
+	{
+		m_impl->setAntennaOffset(offset);
+	}
 }

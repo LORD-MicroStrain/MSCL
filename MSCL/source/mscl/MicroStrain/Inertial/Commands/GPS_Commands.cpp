@@ -22,7 +22,7 @@ namespace mscl
 		GenericInertialCommand::Response(collector, true, true, "Get GPS Data Rate Base")
 	{}
 
-	uint16 GetGpsDataRateBase::Response::parseData(const GenericInertialCommandResponse& response) const
+	uint16 GetGpsDataRateBase::Response::parseResponse(const GenericInertialCommandResponse& response) const
 	{
 		return Inertial_Commands::parseData_DataRateBase(response);
 	}
@@ -80,7 +80,7 @@ namespace mscl
 		GenericInertialCommand::Response(collector, true, dataResponse, "GPS Message Format")
 	{}
 
-	InertialChannels GpsMessageFormat::Response::parseData(const GenericInertialCommandResponse& response, uint16 sampleRateBase) const
+	InertialChannels GpsMessageFormat::Response::parseResponse(const GenericInertialCommandResponse& response, uint16 sampleRateBase) const
 	{
 		return Inertial_Commands::parseData_MessageFormat(response, fieldDataByte(), sampleRateBase);
 	}

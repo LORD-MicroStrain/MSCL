@@ -286,7 +286,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_cyclePower)
 	WirelessNode node(123, b);
 	node.setImpl(impl);
 
-	expectWrite(impl, NodeEepromMap::CYCLE_POWER, Value::UINT16(1));
+	expectCyclePower(impl);
 
 	BOOST_CHECK_NO_THROW(node.cyclePower());
 }
@@ -297,13 +297,13 @@ BOOST_AUTO_TEST_CASE(WirelessNode_frequency)
 	BaseStation base(impl);
 
 	//call the create function
-	WirelessNode node(123, base, WirelessTypes::freq_16);
+	WirelessNode node(123, base);
 
 	//force the page download to fail
 	MOCK_EXPECT(impl->node_pageDownload).returns(false);
 	MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 108, mock::assign(1)).returns(true);
+	MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 90, mock::assign(16)).returns(true);
 
-	//check the frequency is what we set in the create function
 	BOOST_CHECK_EQUAL(node.frequency(), WirelessTypes::freq_16);
 
 	MOCK_EXPECT(impl->node_writeEeprom).once().with(mock::any, 123, 90, mock::any).returns(true);	//change frequency write
@@ -317,9 +317,6 @@ BOOST_AUTO_TEST_CASE(WirelessNode_frequency)
 	//try to change again, but fail
 	MOCK_EXPECT(impl->node_writeEeprom).once().with(mock::any, 123, 90, mock::any).returns(false);	//change frequency write
 	BOOST_CHECK_THROW(node.changeFrequency(WirelessTypes::freq_12), Error_NodeCommunication);
-	
-	//check that nothing has changed
-	BOOST_CHECK_EQUAL(node.frequency(), WirelessTypes::freq_18);
 }
 
 BOOST_AUTO_TEST_CASE(WirelessNode_get_and_setBaseStation)
@@ -329,7 +326,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_get_and_setBaseStation)
 	base.baseCommandsTimeout(30000);	//change the timeout to 30 seconds
 
 	//call the create function
-	WirelessNode node(123, base, WirelessTypes::freq_16);
+	WirelessNode node(123, base);
 
 	BOOST_CHECK(node.getBaseStation().baseCommandsTimeout() == 30000);
 
@@ -449,7 +446,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setBootMode)
 	expectNodeFeatures(features, impl);
 	
 	expectWrite(impl, NodeEepromMap::DEFAULT_MODE, Value::UINT16(6));
-	expectResetRadio(impl);
+	expectCyclePower(impl);
 
 	WirelessNodeConfig c;
 	c.defaultMode(WirelessTypes::defaultMode_sync);
@@ -483,7 +480,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setInactivityTimeout)
 	expectNodeFeatures(features, impl);
 	
 	expectWrite(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(5));	//min of 5
-	expectResetRadio(impl);
+	expectCyclePower(impl);
 
 	uint16 timeout = 2;
 	Utils::checkBounds_min(timeout, features->minInactivityTimeout());
@@ -494,7 +491,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setInactivityTimeout)
 	BOOST_CHECK_NO_THROW(node.applyConfig(c));
 
 	expectWrite(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(400));
-	expectResetRadio(impl);
+	expectCyclePower(impl);
 
 	c.inactivityTimeout(400);
 
@@ -541,8 +538,8 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setTransmitPower)
 	std::unique_ptr<NodeFeatures> features;
 	expectNodeFeatures(features, impl);
 
-	expectWrite(impl, NodeEepromMap::TX_POWER_LEVEL, Value::UINT16(25619));
-	expectResetRadio(impl);
+	expectWrite(impl, NodeEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)25619));
+	expectCyclePower(impl);
 
 	WirelessNodeConfig c;
 	c.transmitPower(WirelessTypes::power_16dBm);
@@ -590,73 +587,6 @@ BOOST_AUTO_TEST_CASE(NodeConfig_getLostBeconTimeout)
 		expectRead(impl, NodeEepromMap::LOST_BEACON_TIMEOUT, Value::UINT16(1));
 		BOOST_CHECK_EQUAL(node.getLostBeaconTimeout(), 2);
 	}
-}
-
-BOOST_AUTO_TEST_CASE(WirelessNode_getThermocoupleType)
-{
-	//tests get thermocouple fail (not supported)
-	{
-		std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(100));
-		BaseStation b = makeBaseStationWithMockImpl();
-		WirelessNode node(100, b);
-		node.setImpl(impl);
-
-		NodeInfo info(Version(9, 9), WirelessModels::node_gLink_2g, 0, WirelessTypes::region_usa);
-
-		//make the features() function return the NodeFeatures we want
-		std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-		expectNodeFeatures(features, impl, WirelessModels::node_gLink_2g);
-
-		BOOST_CHECK_THROW(node.getThermocoupleType(ChannelMask(1)), Error_NotSupported);
-	}
-
-	//tests get thermocouple success
-	{
-		std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(100));
-		BaseStation b = makeBaseStationWithMockImpl();
-		WirelessNode node(100, b);
-		node.setImpl(impl);
-
-		std::unique_ptr<NodeFeatures> features;
-		expectNodeFeatures(features, impl, WirelessModels::node_tcLink_3ch);
-
-		expectRead(impl, NodeEepromMap::THERMOCPL_TYPE, Value::UINT16(WirelessTypes::tc_N));
-
-		BOOST_CHECK_EQUAL(node.getThermocoupleType(ChannelMask(BOOST_BINARY(00000111))), WirelessTypes::tc_N);
-		BOOST_CHECK_THROW(node.getThermocoupleType(ChannelMask(BOOST_BINARY(00000101))), Error_NotSupported);
-		BOOST_CHECK_THROW(node.getThermocoupleType(ChannelMask(BOOST_BINARY(00000001))), Error_NotSupported);
-	}
-}
-
-BOOST_AUTO_TEST_CASE(WirelessNode_getLinearEquation)
-{
-	std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(100));
-	BaseStation b = makeBaseStationWithMockImpl();
-	WirelessNode node(100, b);
-	node.setImpl(impl);
-
-	NodeInfo info(Version(9, 9), WirelessModels::node_gLink_2g, 0, WirelessTypes::region_usa);
-
-	//make the features() function return the NodeFeatures we want
-	std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-	expectNodeFeatures(features, impl, WirelessModels::node_gLink_2g);
-
-	//reading channel 1
-	expectRead(impl, NodeEepromMap::CH_ACTION_SLOPE_1, Value::FLOAT(12.789f));		//slope
-	expectRead(impl, NodeEepromMap::CH_ACTION_OFFSET_1, Value::FLOAT(-48.001f));	//offset
-	expectRead(impl, NodeEepromMap::CH_ACTION_SLOPE_3, Value::FLOAT(6.45f));		//slope
-	expectRead(impl, NodeEepromMap::CH_ACTION_OFFSET_3, Value::FLOAT(-0.002f));		//offset
-	expectRead(impl, NodeEepromMap::CH_ACTION_ID_1, Value::UINT16(static_cast<uint16>(0x0407)));	//equation and unit
-
-	LinearEquation eq = node.getLinearEquation(ChannelMask(1));//ch1
-	LinearEquation eq2 = node.getLinearEquation(ChannelMask(4));//ch3
-
-	BOOST_CHECK_CLOSE(eq.slope(), 12.789, 0.1);
-	BOOST_CHECK_CLOSE(eq.offset(), -48.001, 0.1);
-	BOOST_CHECK_CLOSE(eq2.slope(), 6.45, 0.1);
-	BOOST_CHECK_CLOSE(eq2.offset(), -0.002, 0.1);
-	BOOST_CHECK_EQUAL(node.getUnit(ChannelMask(1)), WirelessTypes::unit_volts_millivolts);
-	BOOST_CHECK_EQUAL(node.getEquationType(ChannelMask(1)), WirelessTypes::equation_standard);
 }
 
 BOOST_AUTO_TEST_CASE(WirelessNode_getFatigueOptions_legacy)
@@ -713,13 +643,13 @@ BOOST_AUTO_TEST_CASE(WirelessNode_getFatigueOptions)
 	WirelessNode node(100, b);
 	node.setImpl(impl);
 
-	NodeInfo info(Version(9, 9), WirelessModels::node_shmLink2, 0, WirelessTypes::region_usa);
+	NodeInfo info(Version(10, 9), WirelessModels::node_shmLink2, 0, WirelessTypes::region_usa);
 
 	//make the features() function return the NodeFeatures we want
 	std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
 	expectNodeFeatures(features, impl, WirelessModels::node_shmLink2);
 
-	expectRead(impl, NodeEepromMap::PEAK_VALLEY_THRES, Value::UINT16(64318));			//peak/valley
+	expectRead(impl, NodeEepromMap::PEAK_VALLEY_THRES, Value::UINT16(64318));		//peak/valley
 	expectRead(impl, NodeEepromMap::YOUNGS_MODULUS, Value::FLOAT(123.5f));			//youngs modulus
 	expectRead(impl, NodeEepromMap::POISSONS_RATIO, Value::FLOAT(943.12f));			//poissons ratio
 	expectRead(impl, NodeEepromMap::HISTOGRAM_RAW_FLAG, Value::UINT16(1));			//youngs modulus
@@ -732,6 +662,11 @@ BOOST_AUTO_TEST_CASE(WirelessNode_getFatigueOptions)
 	expectRead(impl, NodeEepromMap::SNCURVE_M_2, Value::FLOAT(0.9f));				//sn curve segment 2 - m
 	expectRead(impl, NodeEepromMap::SNCURVE_LOGA_3, Value::FLOAT(0.7f));			//sn curve segment 3 - loga
 	expectRead(impl, NodeEepromMap::SNCURVE_M_3, Value::FLOAT(0.002f));				//sn curve segment 3 - m
+	expectRead(impl, NodeEepromMap::FATIGUE_MODE, Value::UINT16(1));				//fatigue mode
+	expectRead(impl, NodeEepromMap::DIST_ANGLE_NUM_ANGLES, Value::UINT16(6));		//dist angle mode num angles
+	expectRead(impl, NodeEepromMap::DIST_ANGLE_LOWER_BOUND, Value::FLOAT(2.456f));	//dist angle mode lower bound
+	expectRead(impl, NodeEepromMap::DIST_ANGLE_UPPER_BOUND, Value::FLOAT(10.412f));	//dist angle mode upper bound
+	expectRead(impl, NodeEepromMap::HISTOGRAM_ENABLE, Value::UINT16(1));			//histogram enable
 
 	auto fatigue = node.getFatigueOptions();
 
@@ -749,6 +684,11 @@ BOOST_AUTO_TEST_CASE(WirelessNode_getFatigueOptions)
 	BOOST_CHECK_CLOSE(fatigue.snCurveSegment(1).m(), 0.9, 0.1);
 	BOOST_CHECK_CLOSE(fatigue.snCurveSegment(2).logA(), 0.7, 0.1);
 	BOOST_CHECK_CLOSE(fatigue.snCurveSegment(2).m(), 0.002, 0.1);
+	BOOST_CHECK_EQUAL(fatigue.fatigueMode(), WirelessTypes::fatigueMode_distributedAngle);
+	BOOST_CHECK_EQUAL(fatigue.distributedAngleMode_numAngles(), 6);
+	BOOST_CHECK_CLOSE(fatigue.distributedAngleMode_lowerBound(), 2.456, 0.1);
+	BOOST_CHECK_CLOSE(fatigue.distributedAngleMode_upperBound(), 10.412, 0.1);
+	BOOST_CHECK_EQUAL(fatigue.histogramEnable(), true);
 }
 
 BOOST_AUTO_TEST_CASE(WirelessNode_getHistogramOptions_legacy)
@@ -811,7 +751,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_clearHistogram)
 	std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
 	expectNodeFeatures(features, impl, WirelessModels::node_shmLink2);
 
-	expectWrite(impl, NodeEepromMap::CYCLE_POWER, Value::UINT16(1));
+	expectCyclePower(impl);
 	expectWrite(impl, NodeEepromMap::RESET_BINS, Value::UINT16(1));
 
 	BOOST_CHECK_NO_THROW(node.clearHistogram());

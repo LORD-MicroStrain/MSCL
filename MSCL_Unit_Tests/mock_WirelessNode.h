@@ -25,19 +25,19 @@ using namespace mscl;
 MOCK_BASE_CLASS(mock_WirelessNodeImpl, WirelessNode_Impl)
 {
 	mock_WirelessNodeImpl():
-		WirelessNode_Impl(123, makeBaseStationWithMockImpl(), WirelessTypes::freq_unknown)
+		WirelessNode_Impl(123, makeBaseStationWithMockImpl())
 	{}
 
 	mock_WirelessNodeImpl(BaseStation basestation):
-		WirelessNode_Impl(123, basestation, WirelessTypes::freq_unknown)
+		WirelessNode_Impl(123, basestation)
 	{}
 
 	mock_WirelessNodeImpl(uint16 address):
-		WirelessNode_Impl(address, makeBaseStationWithMockImpl(), WirelessTypes::freq_unknown)
+		WirelessNode_Impl(address, makeBaseStationWithMockImpl())
 	{}
 
 	mock_WirelessNodeImpl(BaseStation basestation, uint16 address) :
-		WirelessNode_Impl(address, basestation, WirelessTypes::freq_unknown)
+		WirelessNode_Impl(address, basestation)
 	{
 	}
 
@@ -54,22 +54,22 @@ MOCK_BASE_CLASS(mock_WirelessNodeImpl, WirelessNode_Impl)
 MOCK_BASE_CLASS(mock_WirelessNodeImpl_Basic, WirelessNode_Impl)
 {
 	mock_WirelessNodeImpl_Basic():
-		WirelessNode_Impl(123, makeBaseStationWithMockImpl(), WirelessTypes::freq_unknown)
+		WirelessNode_Impl(123, makeBaseStationWithMockImpl())
 	{
 	}
 
 	mock_WirelessNodeImpl_Basic(BaseStation basestation):
-		WirelessNode_Impl(123, basestation, WirelessTypes::freq_unknown)
+		WirelessNode_Impl(123, basestation)
 	{
 	}
 
 	mock_WirelessNodeImpl_Basic(uint16 address):
-		WirelessNode_Impl(address, makeBaseStationWithMockImpl(), WirelessTypes::freq_unknown)
+		WirelessNode_Impl(address, makeBaseStationWithMockImpl())
 	{
 	}
 
 	mock_WirelessNodeImpl_Basic(BaseStation basestation, uint16 address):
-		WirelessNode_Impl(address, basestation, WirelessTypes::freq_unknown)
+		WirelessNode_Impl(address, basestation)
 	{
 	}
 
@@ -118,6 +118,12 @@ static void expectNodeFeatures(std::unique_ptr<NodeFeatures>& features, std::sha
 static void expectResetRadio(std::shared_ptr<mock_WirelessNodeImpl> impl)
 {
 	expectWrite(impl, NodeEepromMap::CYCLE_POWER, Value::UINT16(2));
+}
+
+static void expectCyclePower(std::shared_ptr<mock_WirelessNodeImpl> impl)
+{
+	expectWrite(impl, NodeEepromMap::CYCLE_POWER, Value::UINT16(1));
+	expectGoodPing(impl);
 }
 
 static void expectRead(std::shared_ptr<mock_WirelessNodeImpl_Basic> impl, const EepromLocation& loc, const Value& returnVal)

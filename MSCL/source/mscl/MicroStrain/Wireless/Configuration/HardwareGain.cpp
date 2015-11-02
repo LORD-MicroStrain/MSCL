@@ -100,6 +100,7 @@ namespace mscl
 			case WirelessModels::node_sgLink_herm_2600:
 			case WirelessModels::node_sgLink_herm_2700:
 			case WirelessModels::node_sgLink_herm_2800:
+			case WirelessModels::node_sgLink_micro:
 				return bitsToGain_sgLinkOem(bits);
 
 			case WirelessModels::node_tcLink_1ch:
@@ -146,6 +147,7 @@ namespace mscl
 			case WirelessModels::node_sgLink_herm_2600:
 			case WirelessModels::node_sgLink_herm_2700:
 			case WirelessModels::node_sgLink_herm_2800:
+			case WirelessModels::node_sgLink_micro:
 				return gainToBits_sgLinkOem(gain);
 
 			case WirelessModels::node_tcLink_1ch:
@@ -191,6 +193,7 @@ namespace mscl
 			case WirelessModels::node_sgLink_herm_2600:
 			case WirelessModels::node_sgLink_herm_2700:
 			case WirelessModels::node_sgLink_herm_2800:
+			case WirelessModels::node_sgLink_micro:
 				maxBits = MAX_BITS_SGLINKOEM;
 				break;
 

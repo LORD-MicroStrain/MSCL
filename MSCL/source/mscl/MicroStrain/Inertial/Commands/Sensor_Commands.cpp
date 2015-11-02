@@ -24,7 +24,7 @@ namespace mscl
 		GenericInertialCommand::Response(collector, true, true, "Get Sensor Data Rate Base")
 	{}
 
-	uint16 GetSensorDataRateBase::Response::parseData(const GenericInertialCommandResponse& response) const
+	uint16 GetSensorDataRateBase::Response::parseResponse(const GenericInertialCommandResponse& response) const
 	{
 		return Inertial_Commands::parseData_DataRateBase(response);
 	}
@@ -83,7 +83,7 @@ namespace mscl
 		GenericInertialCommand::Response(collector, true, dataResponse, "Sensor Message Format")
 	{}
 
-	InertialChannels SensorMessageFormat::Response::parseData(const GenericInertialCommandResponse& response, uint16 sampleRateBase) const
+	InertialChannels SensorMessageFormat::Response::parseResponse(const GenericInertialCommandResponse& response, uint16 sampleRateBase) const
 	{
 		return Inertial_Commands::parseData_MessageFormat(response, fieldDataByte(), sampleRateBase);
 	}

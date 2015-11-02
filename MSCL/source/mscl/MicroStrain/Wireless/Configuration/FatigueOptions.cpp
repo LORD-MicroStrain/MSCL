@@ -47,7 +47,12 @@ namespace mscl
 		m_youngsModulus(0.2025f),
 		m_poissonsRatio(0.3f),
 		m_peakValleyThreshold(0),
-		m_rawMode(false)
+		m_debugMode(false),
+		m_fatigueMode(WirelessTypes::fatigueMode_angleStrain),
+		m_distMode_numAngles(0),
+		m_distMode_lowerBound(0.0f),
+		m_distMode_upperBound(1.0f),
+		m_histogramEnable(true)
 	{
 	}
 
@@ -81,14 +86,14 @@ namespace mscl
 		m_peakValleyThreshold = val;
 	}
 
-	bool FatigueOptions::rawMode() const
+	bool FatigueOptions::debugMode() const
 	{
-		return m_rawMode;
+		return m_debugMode;
 	}
 
-	void FatigueOptions::rawMode(bool enable)
+	void FatigueOptions::debugMode(bool enable)
 	{
-		m_rawMode = enable;
+		m_debugMode = enable;
 	}
 
 	float FatigueOptions::damageAngle(uint8 angleId) const
@@ -140,5 +145,55 @@ namespace mscl
 	void FatigueOptions::snCurveSegment(uint8 segmentId, const SnCurveSegment& segment)
 	{
 		m_snCurveSegments[segmentId] = segment;
+	}
+
+	WirelessTypes::FatigueMode FatigueOptions::fatigueMode() const
+	{
+		return m_fatigueMode;
+	}
+
+	void FatigueOptions::fatigueMode(WirelessTypes::FatigueMode mode)
+	{
+		m_fatigueMode = mode;
+	}
+
+	uint8 FatigueOptions::distributedAngleMode_numAngles() const
+	{
+		return m_distMode_numAngles;
+	}
+
+	void FatigueOptions::distributedAngleMode_numAngles(uint8 numAngles)
+	{
+		m_distMode_numAngles = numAngles;
+	}
+
+	float FatigueOptions::distributedAngleMode_lowerBound() const
+	{
+		return m_distMode_lowerBound;
+	}
+
+	void FatigueOptions::distributedAngleMode_lowerBound(float angle)
+	{
+		m_distMode_lowerBound = angle;
+	}
+
+	float FatigueOptions::distributedAngleMode_upperBound() const
+	{
+		return m_distMode_upperBound;
+	}
+
+	void FatigueOptions::distributedAngleMode_upperBound(float angle)
+	{
+		m_distMode_upperBound = angle;
+	}
+
+	bool FatigueOptions::histogramEnable() const
+	{
+		return m_histogramEnable;
+	}
+
+	void FatigueOptions::histogramEnable(bool enable)
+	{
+		m_histogramEnable = enable;
 	}
 }

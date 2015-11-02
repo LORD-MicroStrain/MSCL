@@ -86,7 +86,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="mscl\ActivitySense.cs" />
     <Compile Include="mscl\ArmedDataloggingNetwork.cs" />
+    <Compile Include="mscl\AutoBalanceResult.cs" />
     <Compile Include="mscl\AutoCalResult.cs" />
     <Compile Include="mscl\AutoCalResult_shmLink.cs" />
     <Compile Include="mscl\BaseStation.cs" />
@@ -119,9 +121,11 @@
     <Compile Include="mscl\DeviceInfo.cs" />
     <Compile Include="mscl\DeviceList.cs" />
     <Compile Include="mscl\Devices.cs" />
+    <Compile Include="mscl\EulerAngles.cs" />
     <Compile Include="mscl\Exceptions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="mscl\FatigueModes.cs" />
     <Compile Include="mscl\FatigueOptions.cs" />
     <Compile Include="mscl\Histogram.cs" />
     <Compile Include="mscl\HistogramOptions.cs" />
@@ -134,6 +138,7 @@
     <Compile Include="mscl\InertialDataPoints.cs" />
     <Compile Include="mscl\InertialModels.cs" />
     <Compile Include="mscl\InertialNode.cs" />
+    <Compile Include="mscl\InertialNodeFeatures.cs" />
     <Compile Include="mscl\InertialNodeInfo.cs" />
     <Compile Include="mscl\InertialPacket.cs" />
     <Compile Include="mscl\InertialTypes.cs" />
@@ -149,6 +154,7 @@
     <Compile Include="mscl\NodeDiscovery.cs" />
     <Compile Include="mscl\NodeFeatures.cs" />
     <Compile Include="mscl\PingResponse.cs" />
+    <Compile Include="mscl\PositionOffset.cs" />
     <Compile Include="mscl\RadioFeatures.cs" />
     <Compile Include="mscl\SampleRate.cs" />
     <Compile Include="mscl\SampleRates.cs" />

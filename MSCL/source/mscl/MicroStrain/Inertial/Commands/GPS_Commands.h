@@ -55,7 +55,7 @@ namespace mscl
 			//	Creates the Response object
 			Response(std::weak_ptr<ResponseCollector> collector);
 
-			//Function: parseData
+			//Function: parseResponse
 			//	Parses the response, getting the data rate base result
 			//
 			//Parameters:
@@ -63,7 +63,7 @@ namespace mscl
 			//
 			//Returns:
 			//	The data rate base result
-			uint16 parseData(const GenericInertialCommandResponse& response) const;
+			uint16 parseResponse(const GenericInertialCommandResponse& response) const;
 		};
 	};
 
@@ -111,7 +111,7 @@ namespace mscl
 
 		public:
 			Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
-			InertialChannels parseData(const GenericInertialCommandResponse& response, uint16 sampleRateBase) const;
+			InertialChannels parseResponse(const GenericInertialCommandResponse& response, uint16 sampleRateBase) const;
 		};
 	};
 }

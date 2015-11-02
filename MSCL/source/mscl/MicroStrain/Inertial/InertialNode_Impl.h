@@ -16,12 +16,16 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Packets/InertialPacketCollector.h"
 #include "mscl/Communication/Connection.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
+#include "mscl/MicroStrain/Inertial/EulerAngles.h"
+#include "mscl/MicroStrain/Inertial/PositionOffset.h"
 #include "mscl/Timestamp.h"
 
 namespace mscl
 {
-	class InertialParser;	//forward declaration
-	class InertialNodeInfo;	//forward declaration
+	//forward declarations
+	class InertialParser;
+	class InertialNodeInfo;
+	class InertialNodeFeatures;
 
 	//Class: InertialNode_Impl
 	//	 Contains the implementation for an <InertialNode>.
@@ -102,13 +106,17 @@ namespace mscl
 		//	A <Timestamp> representing the last time communication was achieved with the InertialNode.
 		Timestamp m_lastCommTime;
 
+		//Variable: m_features
+		//	The <InertialNodeFeatures> containing the features for this device.
+		std::unique_ptr<InertialNodeFeatures> m_features;
+
 	private:
-		//Function: parseData
+		//Function: parseResponse
 		//	Callback function that parses any bytes that are in the read buffer to find packets or command responses
 		//
 		//Parameters:
 		//	data - The <DataBuffer> containing all the data to be parsed
-		void parseData(DataBuffer& data);
+		void parseResponse(DataBuffer& data);
 
 		//Function: doInertialCmd
 		//	Performs a generic Inertial Command, sending the command bytes and waiting for the response.
@@ -128,6 +136,29 @@ namespace mscl
 		virtual GenericInertialCommandResponse doInertialCmd(GenericInertialCommand::Response& response, const ByteStream& command, InertialTypes::Command commandId, bool verifySupported=true);
 
 	public:
+		//Function: info
+		//	Gets the <InertialNodeInfo> for this Node. 
+		//	The first time this function is called, it will send multiple commands to the device to get all required information.
+		//
+		//Returns:
+		//	A reference to the <InertialNodeInfo> for this Node.
+		//
+		//Exceptions:
+		//	- <Error_Timeout>: There was no response to the command. The command timed out.
+		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+		//	- <Error_Connection>: Information failed to be loaded for this Node.
+		const InertialNodeInfo& info();
+
+		//Function: features
+		//	Gets a reference to the <InertialNodeFeatures> for this device.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: The model is not supported by MSCL.
+		//	- <Error_Timeout>: There was no response to the command. The command timed out.
+		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+		//	- <Error_Connection>: Information failed to be loaded for this Node.
+		virtual const InertialNodeFeatures& features();
+
 		//Function: lastCommunicationTime
 		//	Gets the <Timestamp> for the last time we communicated with the InertialNode.
 		const Timestamp& lastCommunicationTime() const;
@@ -182,19 +213,6 @@ namespace mscl
 		//Parameters:
 		//	timeout - The timeout (in milliseconds) to set for Inertial commands.
 		void commandsTimeout(uint64 timeout);
-
-		//Function: info
-		//	Gets the <InertialNodeInfo> for this Node. 
-		//	The first time this function is called, it will send multiple commands to the device to get all required information.
-		//
-		//Returns:
-		//	A reference to the <InertialNodeInfo> for this Node.
-		//
-		//Exceptions:
-		//	- <Error_Timeout>: There was no response to the command. The command timed out.
-		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
-		//	- <Error_Connection>: Information failed to be loaded for this Node.
-		const InertialNodeInfo& info();
 
 	private:
 		//Function: getDeviceInfo
@@ -338,5 +356,74 @@ namespace mscl
 		//	- <Error_NotSupported>: The command, or <InertialTypes::InertialTypeCategory>, is not supported by this Node.
 		//	- <Error_InertialCmdFailed>: The command has failed.
 		void enableDataStream(InertialTypes::InertialCategory category, bool enable);
+
+		//Function: getSensorToVehicleTransformation
+		//	Gets the sensor to vehicle frame transformation matrix using roll, pitch, and yaw Euler angles (in radians).
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: The command or <InertialTypes::InertialCategory> is not supported by this Node.
+		//	- <Error_Timeout>: There was no response to the command. The command timed out.
+		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+		//	- <Error_Connection>: A connection error has occurred with the InertialNode.
+		EulerAngles getSensorToVehicleTransformation();
+
+		//Function: setSensorToVehicleTransformation
+		//	Sets the sensor to vehicle frame transformation matrix using roll, pitch, and yaw Euler angles (in radians).
+		//
+		//Parameters:
+		//	angles - The <EulerAngles> object containing the roll, pitch, and yaw to set.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: The command is not supported by this Node.
+		//	- <Error_Timeout>: There was no response to the command. The command timed out.
+		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+		//	- <Error_Connection>: A connection error has occurred with the InertialNode.
+		void setSensorToVehicleTransformation(const EulerAngles& angles);
+
+		//Function: getSensorToVehicleOffset
+		//	Gets the sensor to vehicle frame offset, expressed in the sensor frame.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: The command is not supported by this Node.
+		//	- <Error_Timeout>: There was no response to the command. The command timed out.
+		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+		//	- <Error_Connection>: A connection error has occurred with the InertialNode.
+		PositionOffset getSensorToVehicleOffset();
+
+		//Function: setSensorToVehicleTransformation
+		//	Sets the sensor to vehicle frame offset, expressed in the sensor frame.
+		//
+		//Parameters:
+		//	offset - The <PositionOffset> object containing the x, y, and z position (in meters) to set.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: The command is not supported by this Node.
+		//	- <Error_Timeout>: There was no response to the command. The command timed out.
+		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+		//	- <Error_Connection>: A connection error has occurred with the InertialNode.
+		void setSensorToVehicleOffset(const PositionOffset& offset);
+
+		//Function: getAntennaOffset
+		//	Gets the antenna offset, expressed in the sensor frame.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: The command is not supported by this Node.
+		//	- <Error_Timeout>: There was no response to the command. The command timed out.
+		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+		//	- <Error_Connection>: A connection error has occurred with the InertialNode.
+		PositionOffset getAntennaOffset();
+
+		//Function: setAntennaOffset
+		//	Sets the antenna offset, expressed in the sensor frame.
+		//
+		//Parameters:
+		//	offset - The <PositionOffset> object containing the x, y, and z position (in meters) to set.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: The command is not supported by this Node.
+		//	- <Error_Timeout>: There was no response to the command. The command timed out.
+		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+		//	- <Error_Connection>: A connection error has occurred with the InertialNode.
+		void setAntennaOffset(const PositionOffset& offset);
 	};
 }

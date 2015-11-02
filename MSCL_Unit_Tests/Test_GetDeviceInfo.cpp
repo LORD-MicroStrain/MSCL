@@ -205,7 +205,7 @@ BOOST_AUTO_TEST_CASE(GetDeviceInfo_Match_Success)
 	BOOST_CHECK_EQUAL(response.result().success(), true);
 	BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::InertialPacket::MIP_ACK_NACK_ERROR_NONE);
 
-	mscl::InertialDeviceInfo resultInfo = response.parseData(response.result());
+	mscl::InertialDeviceInfo resultInfo = response.parseResponse(response.result());
 
 	BOOST_CHECK_EQUAL(resultInfo.fwVersion.str(), "1.1.17");
 }

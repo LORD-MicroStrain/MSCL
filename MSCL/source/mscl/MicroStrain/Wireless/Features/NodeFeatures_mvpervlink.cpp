@@ -18,11 +18,17 @@ namespace mscl
 		m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential Channels",
 									 ChannelGroup::SettingsMap{
 										 {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_1},
-										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1}}
+										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1},
+										 {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_1}}
 		);
 
 		//Channels
-		m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_none);
+		m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential);
+	}
+
+	bool NodeFeatures_mvpervlink::supportsLimitedDuration() const
+	{
+		return false;
 	}
 
 	const WirelessTypes::DataCollectionMethods NodeFeatures_mvpervlink::dataCollectionMethods() const

@@ -91,6 +91,15 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_create_unknownModel)
 	BOOST_CHECK_THROW(NodeFeatures::create(createInfo(static_cast<WirelessModels::NodeModel>(0))), Error_NotSupported);
 }
 
+BOOST_AUTO_TEST_CASE(NodeFeatures_supportsGaugeFactor)
+{
+	std::shared_ptr<NodeFeatures> sglink = NodeFeatures::create(createInfo(WirelessModels::node_sgLink));
+	BOOST_CHECK_EQUAL(sglink->supportsGaugeFactor(), false);
+
+	std::shared_ptr<NodeFeatures> shmLink2 = NodeFeatures::create(createInfo(WirelessModels::node_shmLink2));
+	BOOST_CHECK_EQUAL(shmLink2->supportsGaugeFactor(), true);
+}
+
 BOOST_AUTO_TEST_CASE(NodeFeatures_supportsDefaultMode)
 {
 	std::shared_ptr<NodeFeatures> glink = NodeFeatures::create(createInfo(WirelessModels::node_gLink_10g));

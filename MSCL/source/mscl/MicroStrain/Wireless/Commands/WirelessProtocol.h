@@ -8,6 +8,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include <functional>
 #include <memory>
 #include "mscl/Timestamp.h"
+#include "AutoBalanceResult.h"
 #include "BaseStation_BeaconStatus.h"
 
 namespace mscl
@@ -47,6 +48,10 @@ namespace mscl
 		//	The function pointer for the Beacon Status protocol command.
 		std::function<BeaconStatus(BaseStation_Impl*)> m_beaconStatus;
 
+		//Variable: m_shortPing
+		//	The function pointer for the Short Ping Node protocol command.
+		std::function<bool(BaseStation_Impl*, NodeAddress)> m_shortPing;
+
 		//Variable: m_readNodeEeprom
 		//	The function pointer for the Read Node Eeprom protocol command.
 		std::function<bool(BaseStation_Impl*, NodeAddress, uint16, uint16&)> m_readNodeEeprom;
@@ -59,10 +64,28 @@ namespace mscl
 		//	The function pointer for the Node Page Download protocol command.
 		std::function<bool(BaseStation_Impl*, NodeAddress, uint16, ByteStream&)> m_pageDownload;
 
+		//Variable: m_autoBalance
+		//	The function pointer for the Node AutoBalance protocol command.
+		std::function<bool(BaseStation_Impl*, NodeAddress, uint8, float, AutoBalanceResult&)> m_autoBalance;
+
 	public:
 		//Constant: BASE_STATION_ADDRESS
 		//	The address of our generic Base Station.
 		static const uint16 BASE_STATION_ADDRESS = 0x1234;
+
+		//Function: chooseBaseStationProtocol
+		//	Returns the correct protocol version based on the Base Station's firmware vesrion.
+		//
+		//Parameters:
+		//	fwVersion - The firmware version of the Base Station.
+		static std::unique_ptr<WirelessProtocol> chooseBaseStationProtocol(const Version& fwVersion);
+
+		//Function: chooseBaseStationProtocol
+		//	Returns the correct protocol version based on the Wireless Node's firmware vesrion.
+		//
+		//Parameters:
+		//	fwVersion - The firmware version of the Node.
+		static std::unique_ptr<WirelessProtocol> chooseNodeProtocol(const Version& fwVersion);
 
 		//Function: v1_0
 		//	Static function to create a WirelessProtocol with version 1.0.
@@ -71,5 +94,9 @@ namespace mscl
 		//Function: v1_1
 		//	Static function to create a WirelessProtocol with version 1.1.
 		static std::unique_ptr<WirelessProtocol> v1_1();
+
+		//Function: v1_2
+		//	Static function to create a WirelessProtocol with version 1.2.
+		static std::unique_ptr<WirelessProtocol> v1_2();
 	};
 }

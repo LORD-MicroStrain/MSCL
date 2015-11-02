@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(GetSensorDataRateBase_parseData)
 	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
 	GetSensorDataRateBase::Response response(rc);
 
-	BOOST_CHECK_EQUAL(response.parseData(GenericInertialCommandResponse::ResponseSuccess("", data)), 4000);
+	BOOST_CHECK_EQUAL(response.parseResponse(GenericInertialCommandResponse::ResponseSuccess("", data)), 4000);
 }
 
 BOOST_AUTO_TEST_CASE(GetSensorDataRateBase_Match_Success)
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(SensorMessageFormat_parseData)
 
 	uint16 sampleRateBase = 50;
 
-	InertialChannels chs = response.parseData(GenericInertialCommandResponse::ResponseSuccess("", data), sampleRateBase);
+	InertialChannels chs = response.parseResponse(GenericInertialCommandResponse::ResponseSuccess("", data), sampleRateBase);
 
 	BOOST_CHECK_EQUAL(chs.size(), 2);
 	BOOST_CHECK_EQUAL(chs.at(0).channelField(), InertialTypes::CH_FIELD_SENSOR_SCALED_MAG_VEC);

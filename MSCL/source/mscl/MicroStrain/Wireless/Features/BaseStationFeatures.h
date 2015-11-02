@@ -17,6 +17,7 @@ namespace mscl
 	class BaseStationFeatures
 	{
 		friend class BaseStationEepromHelper;
+		friend class BaseStation_Impl;
 
 	public:
 		virtual ~BaseStationFeatures() {};
@@ -104,5 +105,14 @@ namespace mscl
 		//Returns:
 		//	A vector of <WirelessTypes::TransmitPowers> that are supported by this BaseStation.
 		virtual const WirelessTypes::TransmitPowers transmitPowers() const;
+
+	protected:
+		//Function: supportsNewTransmitPowers
+		//	Checks if the BaseStation supports the new transmit powers (true), or the old ones (false).
+		virtual bool supportsNewTransmitPowers() const;
+
+		//Function: supportsEepromCommitViaRadioReset
+		//	Checks if eeprom changes can be committed by only cycling the radio, instead of cycling power.
+		virtual bool supportsEepromCommitViaRadioReset() const;
 	};
 }

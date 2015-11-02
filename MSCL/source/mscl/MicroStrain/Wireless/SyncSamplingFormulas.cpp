@@ -132,7 +132,7 @@ namespace SyncSamplingFormulas
 			//if the sample rate is 16hz or slower, or the 32hz or faster and a tclink1ch or rtdlink, or the model is SHM-Link
 			if( (sampleRate <= SampleRate::Hertz(16)) ||
 				(sampleRate >= SampleRate::Hertz(32) && (nodeModel == WirelessModels::node_tcLink_1ch || nodeModel == WirelessModels::node_rtdLink)) ||
-				(nodeModel == WirelessModels::node_shmLink || nodeModel == WirelessModels::node_shmLink2)
+				(nodeModel == WirelessModels::node_shmLink || nodeModel == WirelessModels::node_shmLink2 || nodeModel == WirelessModels::node_shmLink2_cust1)
 			  )
 			{
 				return true;

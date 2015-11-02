@@ -22,6 +22,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
 	//forward declarations
+	class AutoBalanceResult;
 	class AutoCalResult;
 	class BaseStation_Impl;
 	class BaseStationFeatures;
@@ -605,16 +606,16 @@ namespace mscl
 		const Timestamp& node_lastCommunicationTime(NodeAddress nodeAddress) const;
 
 		//Function: node_shortPing
-		//	Pings a specific node
+		//	Pings a specific node.
 		//
 		//Parameters:
-		//	nodeAddress - the node address of the node to ping
+		//	nodeAddress - the node address of the node to ping.
 		//
 		//Returns:
-		//	true if successfully pinged the node, false otherwise
+		//	true if successfully pinged the node, false otherwise.
 		//
 		//Exceptions:
-		//	- <Error_Connection>: A connection error has occurred with the BaseStation
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		bool node_shortPing(NodeAddress nodeAddress);
 
 		//Function: node_ping
@@ -765,13 +766,18 @@ namespace mscl
 		//	Sends the AutoBalance command to a Node.
 		//
 		//Parameters:
+		//	protocol - The <WirelessProtocol> for the Node.
 		//	nodeAddress - The node address of the Node to send the command to.
 		//	channelNumber - The channel number (ch1 = 1, ch8 = 8) to balance.
-		//	targetVal - The target value to balance to.
+		//	targetPercent - The target percentage (0 - 100) to balance to.
+		//	result - The <AutoBalanceResult> of the command.
+		//
+		//Returns:
+		//	true if the command succeeded, false if it failed.
 		//
 		//Exceptions:
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
-		void node_autoBalance(NodeAddress nodeAddress, uint8 channelNumber, uint16 targetVal);
+		bool node_autoBalance(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result);
 
 		//Function: node_autocal
 		//	Performs automatic calibration for a Wireless Node.
@@ -788,6 +794,21 @@ namespace mscl
 		//Exceptions:
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		bool node_autocal(NodeAddress nodeAddress, WirelessModels::NodeModel model, const Version& fwVersion, AutoCalResult& result);
+
+		//Function: node_readSingleSensor
+		//	Reads the bits value for a single channel on a Wireless Node.
+		//
+		//Parameters:
+		//	nodeAddress - The node address of the Node to send the command to.
+		//	channelNumber - The channel number (ch1 = 1, ch8 = 8) to read.
+		//	result - Holds the bits value result from the channel on the Node.
+		//
+		//Returns:
+		//	true if the Read Single Sensor command was successful, false otherwise.
+		//
+		//Exceptions:
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
+		bool node_readSingleSensor(NodeAddress nodeAddress, uint8 channelNumber, uint16& result);
 #endif
 
 	};

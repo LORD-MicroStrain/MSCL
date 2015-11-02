@@ -30,10 +30,12 @@ namespace mscl
 		//node_gLink_rgd_10g			- 63056010 - G-Link-RGD 10G
 		//node_dvrtLink					- 63181000 - DVRT-Link
 		//node_shmLink					- 63086000 - SHM-Link
-		//node_shmLink2					- 63089999 - SHM-Link 2
+		//node_shmLink2					- 63290000 - SHM-Link 2
+		//node_shmLink2_cust1			- 63290100 - SHM-Link 2 - Custom 1
 		//node_sgLink					- 63083000 - SG-Link
 		//node_sgLink_oem_S				- 63081000 - SG-Link 0EM -S (non-xr)
 		//node_sgLink_oem				- 63084000 - SG-Link OEM
+		//node_sgLink_micro				- 63084100 - SG-Link Micro
 		//node_sgLink_rgd				- 63085000 - SG-Link RGD
 		//node_sgLink_herm				- 65010000 - SG-Link-Hermetic (Generic)
 		//node_sgLink_herm_2600			- 65011110 - SG-Link-Hermetic 2600 belt assembly
@@ -57,7 +59,7 @@ namespace mscl
 		//node_wattLink_3D480			- 63234200 - Watt-Link 3D480
 		//node_wattLink_3D400			- 63233200 - Watt-Link 3D400
 		//node_wattLink_3D240			- 63232200 - Watt-Link 3D240
-		//node_mvPerVLink				- 63230200 - mV/V-Link
+		//node_mvPerVLink				- 63250200 - mV/V-Link
 		//node_envLink_pro				- 60000001 - ENV-Link-Pro
 		//node_sgLink_8ch				- 60000002 - SG-Link-8CH
 		//=========================================================================
@@ -75,9 +77,11 @@ namespace mscl
 			node_dvrtLink				= 63181000,	//DVRT-Link
 			node_shmLink				= 63086000,	//SHM-Link
 			node_shmLink2				= 63290000,	//SHM-Link 2
+			node_shmLink2_cust1			= 63290100,	//SHM-Link 2 - Custom 1
 			node_sgLink					= 63083000,	//SG-Link
 			node_sgLink_oem_S			= 63081000,	//SG-Link 0EM -S (non-xr)
 			node_sgLink_oem				= 63084000, //SG-Link OEM
+			node_sgLink_micro			= 63084100,	//SG-Link Micro
 			node_sgLink_rgd				= 63085000,	//SG-Link RGD
 			node_sgLink_herm			= 65010000,	//SG-Link-Hermetic
 			node_sgLink_herm_2600		= 65011110,	//SG-Link-Hermetic 2600 belt assembly
@@ -101,7 +105,7 @@ namespace mscl
 			node_wattLink_3D480			= 63234200,	//Watt-Link 3D480
 			node_wattLink_3D400			= 63233200,	//Watt-Link 3D400
 			node_wattLink_3D240			= 63232200,	//Watt-Link 3D240
-			node_mvPerVLink				= 63230200,	//mV/V-Link
+			node_mvPerVLink				= 63250200,	//mV/V-Link
 
 			//TODO: the following nodes do not currently have 6XXX level model numbers (NODES NEED TO BE UPDATED!)
 			node_envLink_pro			= 60000001,

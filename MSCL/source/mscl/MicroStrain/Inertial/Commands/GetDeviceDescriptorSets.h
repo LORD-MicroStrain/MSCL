@@ -55,7 +55,7 @@ namespace mscl
 			//	true if the field matches the expected data, false if it does not.
 			virtual bool match_data(const InertialDataField& field) override;
 
-			//Function: parseData
+			//Function: parseResponse
 			//	Parses a successfully matched response for the GetDeviceDescriptorSets command.
 			//
 			//Parameters:
@@ -63,7 +63,7 @@ namespace mscl
 			//
 			//Returns:
 			//	The descriptor sets parsed from the response.
-			std::vector<uint16> parseData(const GenericInertialCommandResponse& response) const;
+			std::vector<uint16> parseResponse(const GenericInertialCommandResponse& response) const;
 		};
 	};
 }

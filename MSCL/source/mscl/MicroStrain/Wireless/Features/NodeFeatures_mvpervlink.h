@@ -23,6 +23,8 @@ namespace mscl
 		//	Creates a NodeFeatures_mvpervlink object.
 		NodeFeatures_mvpervlink(const NodeInfo& info);
 
+		virtual bool supportsLimitedDuration() const;
+
 		virtual const WirelessTypes::DataCollectionMethods dataCollectionMethods() const final;
 
 		virtual const WirelessTypes::DataFormats dataFormats() const final;

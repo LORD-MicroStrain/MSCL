@@ -30,17 +30,25 @@ namespace mscl
 
 		virtual const WirelessTypes::SamplingModes samplingModes() const final;
 
+		virtual bool supportsLimitedDuration() const;
+
 		virtual bool supportsFatigueConfig() const final;
 
 		virtual bool supportsYoungsModConfig() const final;
 
 		virtual bool supportsPoissonsRatioConfig() const final;
 
-		virtual bool supportsFatigueRawModeConfig() const final;
+		virtual bool supportsFatigueDebugModeConfig() const final;
+
+		virtual bool supportsFatigueModeConfig() const final;
 
 		virtual bool supportsHistogramConfig() const final;
 
 		virtual bool supportsHistogramRateConfig() const final;
+
+		virtual bool supportsHistogramEnableConfig() const;
+
+		virtual bool supportsActivitySense() const final;
 
 		virtual bool supportsAutoCal() const;
 
@@ -49,5 +57,7 @@ namespace mscl
 		virtual uint8 numSnCurveSegments() const final;
 
 		virtual const WirelessTypes::WirelessSampleRates histogramTransmitRates() const final;
+
+		virtual const WirelessTypes::FatigueModes fatigueModes() const final;
 	};
 }

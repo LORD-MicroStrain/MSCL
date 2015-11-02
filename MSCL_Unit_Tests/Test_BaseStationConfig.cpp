@@ -66,7 +66,8 @@ BOOST_AUTO_TEST_CASE(BaseStationConfig_setSingleValue)
 	c.transmitPower(WirelessTypes::power_10dBm);
 
 	//expect the single eeprom write
-	expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value::UINT16(WirelessTypes::power_10dBm));
+	expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::power_10dBm));
+	expectResetRadio(impl);
 
 	BOOST_CHECK_NO_THROW(b.applyConfig(c));
 }
@@ -93,6 +94,7 @@ BOOST_AUTO_TEST_CASE(BaseStationConfig_buttons)
 	expectWrite(impl, BaseStationEepromMap::BUTTON1_SHORT_NODE, Value::UINT16(9354));
 	expectWrite(impl, BaseStationEepromMap::BUTTON2_LONG_FUNC, Value::UINT16(BaseStationButton::btn_disableBeacon));
 	expectWrite(impl, BaseStationEepromMap::BUTTON2_LONG_NODE, Value::UINT16(9354));
+	expectResetRadio(impl);
 
 	BOOST_CHECK_NO_THROW(b.applyConfig(c));
 }
@@ -171,6 +173,7 @@ BOOST_AUTO_TEST_CASE(BaseStationConfig_analogPairing)
 	expectWrite(impl, BaseStationEepromMap::ANALOG_EXCEED_ENABLE, Value::UINT16(0));
 	expectWrite(impl, BaseStationEepromMap::ANALOG_TIMEOUT_TIME, Value::UINT16(60));
 	expectWrite(impl, BaseStationEepromMap::ANALOG_TIMEOUT_VOLTAGE, Value::FLOAT(45.942f));
+	expectResetRadio(impl);
 
 	BOOST_CHECK_NO_THROW(b.applyConfig(c));
 }
@@ -198,5 +201,29 @@ BOOST_AUTO_TEST_CASE(BaseStationConfig_analogPairing_fail)
 	BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_ANALOG_PAIR);
 }
 
+BOOST_AUTO_TEST_CASE(BaseStationConfig_legacyTransmitPower)
+{
+	//Tests setting a single value in the config and writing it to a BaseStation
+	std::shared_ptr<mock_baseStationImpl> impl(new mock_baseStationImpl());
+	BaseStation b(impl);
+
+	std::unique_ptr<BaseStationFeatures> features;
+	
+	//3.2 fw doesn't support the new transmit power values
+	BaseStationInfo info(Version(3, 2), WirelessModels::base_wsdaBase_104_usb, WirelessTypes::region_usa);
+	features = BaseStationFeatures::create(info);
+	MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+
+	BaseStationConfig c;
+	c.transmitPower(WirelessTypes::power_10dBm);
+
+	//expect the single eeprom write
+	expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::legacyPower_10dBm));
+	expectRead(impl, BaseStationEepromMap::FIRMWARE_VER, Value::UINT16((uint16)(3)));
+	expectRead(impl, BaseStationEepromMap::FIRMWARE_VER2, Value::UINT16((uint16)(2)));
+	expectCyclePower(impl);
+
+	BOOST_CHECK_NO_THROW(b.applyConfig(c));
+}
 
 BOOST_AUTO_TEST_SUITE_END()

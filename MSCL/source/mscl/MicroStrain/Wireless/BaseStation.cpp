@@ -329,13 +329,18 @@ namespace mscl
 		return m_impl->node_erase(nodeAddress);
 	}
 
-	void BaseStation::node_autoBalance(NodeAddress nodeAddress, uint8 channelNumber, uint16 targetVal)
+	bool BaseStation::node_autoBalance(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result)
 	{
-		m_impl->node_autoBalance(nodeAddress, channelNumber, targetVal);
+		return m_impl->node_autoBalance(protocol, nodeAddress, channelNumber, targetPercent, result);
 	}
 
 	bool BaseStation::node_autocal(NodeAddress nodeAddress, WirelessModels::NodeModel model, const Version& fwVersion, AutoCalResult& result)
 	{
 		return m_impl->node_autocal(nodeAddress, model, fwVersion, result);
+	}
+
+	bool BaseStation::node_readSingleSensor(NodeAddress nodeAddress, uint8 channelNumber, uint16& result)
+	{
+		return m_impl->node_readSingleSensor(nodeAddress, channelNumber, result);
 	}
 }

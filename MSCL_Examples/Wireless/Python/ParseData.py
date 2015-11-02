@@ -3,7 +3,7 @@
 #   This example does not start a Node sampling. To receive data, a Node
 #   must be put into a sampling mode (Sync Sampling, Low Duty Cycle, etc.)
 #
-# Updated: 02/26/2015
+# Updated: 11/02/2015
 
 # import the mscl library
 import sys
@@ -22,10 +22,6 @@ try:
 
     # endless loop of reading in data
     while True:
-        # This example uses the "getData()" command. This command gets ALL
-        # of the available DataSweeps in the buffer. If the returned contains is empty, no data exists.
-        # Alternatively, you may use the "getNextData()" command to get a
-        # single DataSweep from the buffer. If no data exists in this case, an exception will be thrown.
 
         # get all of the data sweeps that have been collected by the BaseStation, with a timeout of 500 milliseconds
         sweeps = baseStation.getData(500)

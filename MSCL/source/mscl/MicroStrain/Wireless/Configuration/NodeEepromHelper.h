@@ -19,9 +19,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
 	//forward declarations
-	class WirelessNode_Impl;
+	class ActivitySense;
 	class FatigueOptions;
 	class HistogramOptions;
+	class WirelessNode_Impl;
 
 	//Class: NodeEepromHelper
 	//	A helper class for reading and writing to a Wireless Node's Eeprom.
@@ -837,6 +838,34 @@ namespace mscl
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_hardwareOffset(const ChannelMask& mask, uint16 offset);
 
+		//Function: read_gaugeFactor
+		//	Reads the gauge factor for the specified <ChannelMask> from the Node.
+		//
+		//Parameters:
+		//	mask - The <ChannelMask> to read the gauge factor for.
+		//
+		//Returns:
+		//	The gauge factor for the given <ChannelMask>.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Gauge Factor is not supported for the given <ChannelMask> or Node.
+		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		float read_gaugeFactor(const ChannelMask& mask) const;
+
+		//Function: write_gaugeFactor
+		//	Writes the gauge factor value for the specified <ChannelMask> to the Node.
+		//
+		//Parameters:
+		//	mask - The <ChannelMask> to write the gauge factor for.
+		//	gaugeFactor - The gauge factor value to write to the Node.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Gauge Factor is not supported for the given <ChannelMask> or Node.
+		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		void write_gaugeFactor(const ChannelMask& mask, float gaugeFactor);
+
 		//Function: read_thermoType
 		//	Reads the <WirelessTypes::ThermocoupleType> from the Node.
 		//
@@ -865,6 +894,32 @@ namespace mscl
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		void write_thermoType(const ChannelMask& mask, WirelessTypes::ThermocoupleType thermocouple);
+
+		//Function: read_activitySense
+		//	Reads the <ActivitySense> options from the Node.
+		//	This assumes activity sense configuration is supported by the Node.
+		//
+		//Parameters:
+		//	result - Will hold the result of the <ActivitySense> options read from the Node.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
+		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		void read_activitySense(ActivitySense& result) const;
+
+		//Function: write_activitySense
+		//	Writes the <ActivitySense> options to the Node.
+		//	This assumes fatigue options configuration is supported by the Node.
+		//
+		//Parameters:
+		//	options - The <ActivitySense> to write to the Node.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location.
+		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		void write_activitySense(const ActivitySense& options);
 
 		//Function: read_fatigueOptions
 		//	Reads the <FatigueOptions> from the Node.
@@ -931,6 +986,7 @@ namespace mscl
 		//Function: read_lostBeaconTimeout
 		//	Reads the lost beacon timeout value from the Node.
 		//	A value of 0 means the timeout is disabled.
+		//	This assumes lost beacon timeout is supported by the Node.
 		//
 		//Returns:
 		//	The lost beacon timeout in minutes.

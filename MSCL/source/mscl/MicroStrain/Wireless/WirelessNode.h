@@ -6,8 +6,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 //PUBLIC_HEADER
 #pragma once
 
-#include "Commands/AutoCal.h"
+#include "Commands/AutoCalResult.h"
 #include "Commands/LongPing.h"
+#include "Configuration/ActivitySense.h"
 #include "Configuration/ConfigIssue.h"
 #include "Configuration/FatigueOptions.h"
 #include "Configuration/HistogramOptions.h"
@@ -44,8 +45,7 @@ namespace mscl
 		//Parameters:
 		//	nodeAddress - the node address of the node
 		//	base - the node's parent Base Station
-		//	nodeFrequency - the <WirelessTypes::Frequency> that this node is believed to be on. This parameter is optional. If not used, it will be believed to be on the same frequency as the basestation parameter.
-		WirelessNode(uint16 nodeAddress, const BaseStation& basestation, WirelessTypes::Frequency nodeFrequency = WirelessTypes::freq_unknown);
+		WirelessNode(uint16 nodeAddress, const BaseStation& basestation);
 
 		//Destructor: ~WirelessNode
 		//	Destroys a WirelessNode object
@@ -260,11 +260,35 @@ namespace mscl
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint64 dataStorageSize() const;
 
-		//API Function: ping
-		//	Performs a Long Ping command on the Node to check the communication between the Base Station and the Node
+		//API Function: regionCode
+		//	Gets the region code currently set on the Node.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
+		//	- <Error_NodeCommunication>: Failed to read from the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		WirelessTypes::RegionCode regionCode() const;
+
+		//API Function: quickPing
+		//	Performs a Quick Ping (Short Ping) command on the Node.
+		//	The Base Station itself responds with a quick success/fail on the Node.
+		//	Note: Use the standard <ping> command instead of this if you want to obtain RSSI values.
 		//
 		//Returns:
-		//	A <PingResponse> object that can be queried to get details of the ping command's response
+		//	true if the quick ping was successful, false otherwise.
+		//
+		//Exceptions:
+		//	- <Error_Communication>: Failed to determine the protocol version of the BaseStation.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		bool quickPing();
+
+		//API Function: ping
+		//	Performs a Long Ping command on the Node to check the communication between the Base Station and the Node.
+		//	The response to this command contains the Node and BaseStation RSSI values.
+		//	Note: You may want to use the <quickPing> command instead of this if RSSI values are not of importance.
+		//
+		//Returns:
+		//	A <PingResponse> object that can be queried to get details of the ping command's response, including RSSI values.
 		//
 		//Exceptions:
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation
@@ -367,14 +391,17 @@ namespace mscl
 		//	See Also: <getHardwareOffset>, <WirelessNodeConfig::hardwareOffset>
 		//
 		//Parameters:
-		//	channelNumber - The channel number (ch1 = 1, ch8 = 8) to balance.
-		//	option - The <WirelessTypes::AutoBalanceOption> to use (low, midscale, high).
+		//	mask - The <ChannelMask> to perform the auto balance command on.
+		//	targetPercent - The percentage (0.0 - 100.0) of the range to balance to (low = 25%, midscale = 50%, high = 75%).
+		//
+		//Returns:
+		//	The <AutoBalanceResult> containing information from the auto balance command.
 		//
 		//Exceptions:
-		//	- <Error_NotSupported>: Autobalance is not supported by the Node or channel specified.
+		//	- <Error_NotSupported>: Autobalance is not supported by the Node or channel mask specified.
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
-		void autoBalance(uint8 channelNumber, WirelessTypes::AutoBalanceOption option);
+		AutoBalanceResult autoBalance(const ChannelMask& mask, float targetPercent);
 
 		//API Function: autoCal_shmLink
 		//	Performs automatic calibration for the SHM-Link Wireless Node.
@@ -624,6 +651,7 @@ namespace mscl
 		//	greater than this value, then the node drops into a sleep mode. The Node
 		//	will re-enter sync sampling within 2 minutes of the beacon reappearing.
 		//	Note: A value of 0 means the lost beacon timeout is disabled.
+		//	See Also: <NodeFeatures::supportsLostBeaconTimeout>
 		//
 		//Returns:
 		//	The lost beacon timeout, in minutes, currently set on the Node.
@@ -636,7 +664,7 @@ namespace mscl
 
 		//API Function: getHardwareGain
 		//	Reads the hardware gain of the specified <ChannelMask> currently set on the Node.
-		//	See Also: <NodeFeatures::channelGroups>
+		//	See Also: <NodeFeatures::channelGroups>, <NodeFeatures::supportsHardwareGain>
 		//
 		//Parameters:
 		//	mask - The <ChannelMask> of the hardware gain to read.
@@ -652,7 +680,7 @@ namespace mscl
 
 		//API Function: getHardwareOffset
 		//	Reads the hardware offset of the specified <ChannelMask> currently set on the Node.
-		//	See Also: <NodeFeatures::channelGroups>
+		//	See Also: <NodeFeatures::channelGroups>, <NodeFeatures::supportsHardwareOffset>
 		//
 		//Parameters:
 		//	mask - The <ChannelMask> of the hardware offset to read.
@@ -665,6 +693,22 @@ namespace mscl
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint16 getHardwareOffset(const ChannelMask& mask) const;
+
+		//API Function: getGaugeFactor
+		//	Reads the gauge factor of the specified <ChannelMask> currently set on the Node.
+		//	See Also: <NodeFeatures::channelGroups>, <NodeFeatures::supportsGaugeFactor>
+		//
+		//Parameters:
+		//	mask - The <ChannelMask> of the gauge factor to read.
+		//
+		//Returns:
+		//	The gauge factor currently set on the Node for the <ChannelMask>.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Gauge Factor is not supported for the provided <ChannelMask>.
+		//	- <Error_NodeCommunication>: Failed to read from the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		float getGaugeFactor(const ChannelMask& mask) const;
 
 		//API Function: getLinearEquation
 		//	Gets the linear equation of the specified <ChannelMask> currently set on the Node.
@@ -769,6 +813,19 @@ namespace mscl
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		HistogramOptions getHistogramOptions() const;
+
+		//API Function: getActivitySense
+		//	Reads the <ActivitySense> options currently set on the Node.
+		//	See Also: <NodeFeatures::supportsActivitySense>
+		//
+		//Returns:
+		//	The <ActivitySense> options currently set on the Node.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: ActivitySense configuration is not supported by this Node.
+		//	- <Error_NodeCommunication>: Failed to read from the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		ActivitySense getActivitySense() const;
 	};
 
 }

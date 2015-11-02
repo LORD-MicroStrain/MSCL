@@ -1168,6 +1168,7 @@ namespace mscl
 
 			case WirelessModels::node_shmLink:
 			case WirelessModels::node_shmLink2:
+			case WirelessModels::node_shmLink2_cust1:
 			case WirelessModels::node_sgLink_herm:
 			case WirelessModels::node_sgLink_herm_2600:
 			case WirelessModels::node_sgLink_herm_2700:

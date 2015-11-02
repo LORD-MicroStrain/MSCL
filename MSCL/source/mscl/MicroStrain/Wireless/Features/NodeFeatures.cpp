@@ -25,6 +25,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeFeatures_sglinkoem.h"
 #include "NodeFeatures_sglinkoemHermetic.h"
 #include "NodeFeatures_sglinkoemNoXR.h"
+#include "NodeFeatures_sglinkMicro.h"
 #include "NodeFeatures_sglinkrgd.h"
 #include "NodeFeatures_shmlink.h"
 #include "NodeFeatures_shmlink2.h"
@@ -92,6 +93,9 @@ namespace mscl
 		case WirelessModels::node_sgLink_oem:
 			return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglinkoem(info));
 
+		case WirelessModels::node_sgLink_micro:
+			return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglinkMicro(info));
+
 		case WirelessModels::node_sgLink_herm:
 		case WirelessModels::node_sgLink_herm_2600:
 		case WirelessModels::node_sgLink_herm_2700:
@@ -108,6 +112,7 @@ namespace mscl
 			return std::unique_ptr<NodeFeatures>(new NodeFeatures_shmlink(info));
 
 		case WirelessModels::node_shmLink2:
+		case WirelessModels::node_shmLink2_cust1:
 			return std::unique_ptr<NodeFeatures>(new NodeFeatures_shmlink2(info));
 
 		case WirelessModels::node_tcLink_1ch:
@@ -336,6 +341,23 @@ namespace mscl
 		return anyChannelGroupSupports(WirelessTypes::chSetting_hardwareGain);
 	}
 
+	bool NodeFeatures::supportsHardwareOffset() const
+	{
+		return anyChannelGroupSupports(WirelessTypes::chSetting_hardwareOffset);
+	}
+
+	bool NodeFeatures::supportsGaugeFactor() const
+	{
+		return anyChannelGroupSupports(WirelessTypes::chSetting_gaugeFactor);
+	}
+
+	bool NodeFeatures::supportsLostBeaconTimeout() const
+	{
+		//if the node supports sync sampling, it supports lost beacon timeout
+		return (supportsSamplingMode(WirelessTypes::samplingMode_sync) ||
+				supportsSamplingMode(WirelessTypes::samplingMode_syncBurst));
+	}
+
 	bool NodeFeatures::supportsFilterSettlingTime() const
 	{
 		return anyChannelGroupSupports(WirelessTypes::chSetting_filterSettlingTime);
@@ -361,7 +383,12 @@ namespace mscl
 		return false;
 	}
 
-	bool NodeFeatures::supportsFatigueRawModeConfig() const
+	bool NodeFeatures::supportsFatigueDebugModeConfig() const
+	{
+		return false;
+	}
+
+	bool NodeFeatures::supportsFatigueModeConfig() const
 	{
 		return false;
 	}
@@ -376,14 +403,29 @@ namespace mscl
 		return false;
 	}
 
+	bool NodeFeatures::supportsHistogramEnableConfig() const
+	{
+		return false;
+	}
+
+	bool NodeFeatures::supportsActivitySense() const
+	{
+		return false;
+	}
+
 	bool NodeFeatures::supportsAutoCal() const
 	{
 		return false;
 	}
 
-	bool NodeFeatures::supportsAutoBalance(uint8 channelNumber) const
+	bool NodeFeatures::supportsLimitedDuration() const
 	{
-		return false;
+		return true;
+	}
+
+	bool NodeFeatures::supportsAutoBalance() const
+	{
+		return anyChannelGroupSupports(WirelessTypes::chSetting_autoBalance);
 	}
 
 	bool NodeFeatures::supportsChannel(uint8 channelNumber) const
@@ -463,6 +505,15 @@ namespace mscl
 		return (std::find(supportedPowers.begin(), supportedPowers.end(), power) != supportedPowers.end());
 	}
 
+	bool NodeFeatures::supportsFatigueMode(WirelessTypes::FatigueMode mode) const
+	{
+		//get the supported fatigue modes
+		const WirelessTypes::FatigueModes modes = fatigueModes();
+
+		//result the result of trying to find the mode in the vector
+		return (std::find(modes.begin(), modes.end(), mode) != modes.end());
+	}
+
 	WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels) const
 	{
 		//get all the sample rates supported
@@ -513,11 +564,21 @@ namespace mscl
 
 	uint32 NodeFeatures::minSweeps() const
 	{
+		if(!supportsLimitedDuration())
+		{
+			return 0;
+		}
+
 		return 100;
 	}
 
 	uint32 NodeFeatures::maxSweeps(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const
 	{
+		if(!supportsLimitedDuration())
+		{
+			return 0;
+		}
+
 		//if this is burst mode
 		if(samplingMode == WirelessTypes::samplingMode_syncBurst)
 		{
@@ -533,6 +594,11 @@ namespace mscl
 
 	uint32 NodeFeatures::maxSweeps(WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const
 	{
+		if(!supportsLimitedDuration())
+		{
+			return 0;
+		}
+
 		//get the max number of bytes this node can store to memory
 		uint64 maxBytes = m_nodeInfo.dataStorageSize;
 
@@ -676,6 +742,11 @@ namespace mscl
 		WirelessTypes::TransmitPower maxPower = WirelessTypes::maxTransmitPower(m_nodeInfo.regionCode);
 
 		//add the power levels based on the max power we determined above
+		if(maxPower >= WirelessTypes::power_20dBm && supportsNewTransmitPowers())
+		{
+			result.push_back(WirelessTypes::power_20dBm);
+		}
+
 		if(maxPower >= WirelessTypes::power_16dBm)
 		{
 			result.push_back(WirelessTypes::power_16dBm);
@@ -704,5 +775,33 @@ namespace mscl
 		//empty by default
 		WirelessTypes::WirelessSampleRates result;
 		return result;
+	}
+
+	const WirelessTypes::FatigueModes NodeFeatures::fatigueModes() const
+	{
+		//empty by default
+		WirelessTypes::FatigueModes result;
+		return result;
+	}
+
+	bool NodeFeatures::supportsNewTransmitPowers() const
+	{
+		static const Version MIN_NEW_TX_POWER_FW(10, 0);
+
+		return (m_nodeInfo.firmwareVersion >= MIN_NEW_TX_POWER_FW);
+	}
+
+	bool NodeFeatures::supportsAutoBalance2() const
+	{
+		static const Version MIN_AUTOBALANCE_2_FW(10, 0);
+
+		//if it supports autobalance in general, and has the correct firmware
+		if(supportsAutoBalance() &&
+		   m_nodeInfo.firmwareVersion >= MIN_AUTOBALANCE_2_FW)
+		{
+			return true;
+		}
+
+		return false;
 	}
 }

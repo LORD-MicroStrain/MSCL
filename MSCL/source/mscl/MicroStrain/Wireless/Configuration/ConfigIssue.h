@@ -40,8 +40,16 @@ namespace mscl
 		//	CONFIG_TRANSMIT_POWER			- 17 - Transmit Power
 		//	CONFIG_LINEAR_EQUATION			- 18 - Linear Equation
 		//	CONFIG_FATIGUE					- 19 - Fatigue Options
-		//	CONFIG_HISTOGRAM				- 20 - Histogram Options
-		//	CONFIG_HARDWARE_OFFSET			- 21 - Hardware Offset
+		//	CONFIG_FATIGUE_MODE				- 20 - Fatigue Options - Fatigue Mode
+		//	CONFIG_FATIGUE_ANGLE_ID			- 21 - Fatigue Options - Angle ID
+		//	CONFIG_FATIGUE_SN_CURVE			- 22 - Fatigue Options - SN Curve Segment
+		//	CONFIG_FATIGUE_DIST_NUM_ANGLES	- 23 - Fatigue Options - Number of Distributed Angles
+		//	CONFIG_FATIGUE_DIST_ANGLE		- 24 - Fatigue Options - Low/Upper Distributed Angle
+		//	CONFIG_HISTOGRAM				- 25 - Histogram Options
+		//	CONFIG_HISTOGRAM_TX_RATE		- 26 - Histogram Transmit Rate
+		//	CONFIG_HARDWARE_OFFSET			- 27 - Hardware Offset
+		//	CONFIG_ACTIVITY_SENSE			- 28 - Activity Sense
+		//	CONFIG_GAUGE_FACTOR				- 29 - Gauge Factor
 		enum ConfigOption
 		{
 			CONFIG_SAMPLING_MODE			= 0,
@@ -64,8 +72,16 @@ namespace mscl
 			CONFIG_TRANSMIT_POWER			= 17,
 			CONFIG_LINEAR_EQUATION			= 18,
 			CONFIG_FATIGUE					= 19,
-			CONFIG_HISTOGRAM				= 20,
-			CONFIG_HARDWARE_OFFSET			= 21
+			CONFIG_FATIGUE_MODE				= 20,
+			CONFIG_FATIGUE_ANGLE_ID			= 21,
+			CONFIG_FATIGUE_SN_CURVE			= 22,
+			CONFIG_FATIGUE_DIST_NUM_ANGLES	= 23,
+			CONFIG_FATIGUE_DIST_ANGLE		= 24,
+			CONFIG_HISTOGRAM				= 25,
+			CONFIG_HISTOGRAM_TX_RATE		= 26,
+			CONFIG_HARDWARE_OFFSET			= 27,
+			CONFIG_ACTIVITY_SENSE			= 28,
+			CONFIG_GAUGE_FACTOR				= 29
 		};
 
 		ConfigIssue();	//default constructor

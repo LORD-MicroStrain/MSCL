@@ -11,6 +11,7 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
 LICENSE.txt file for a copy of the full GNU General Public License.
 *****************************************************************************/
+#include "mscl/MicroStrain/Wireless/Commands/AutoCalResult.h"
 #include "mscl/MicroStrain/Wireless/Commands/AutoCal.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/MicroStrain/ResponseCollector.h"

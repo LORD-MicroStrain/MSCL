@@ -16,7 +16,7 @@ namespace mscl
 	const EepromLocation BaseStationEepromMap::MODEL_NUMBER				(46, valueType_uint16);
 	const EepromLocation BaseStationEepromMap::MODEL_OPTION				(48, valueType_uint16);
 	const EepromLocation BaseStationEepromMap::FREQUENCY				(90, valueType_uint16);
-	const EepromLocation BaseStationEepromMap::TX_POWER_LEVEL			(94, valueType_uint16);
+	const EepromLocation BaseStationEepromMap::TX_POWER_LEVEL			(94, valueType_int16);
 	const EepromLocation BaseStationEepromMap::BEACON_SOURCE			(96, valueType_uint16);
 	const EepromLocation BaseStationEepromMap::FIRMWARE_VER				(108, valueType_uint16);
 	const EepromLocation BaseStationEepromMap::FIRMWARE_VER2			(110, valueType_uint16);

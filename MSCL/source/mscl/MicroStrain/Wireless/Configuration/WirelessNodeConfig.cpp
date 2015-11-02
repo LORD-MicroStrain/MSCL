@@ -154,11 +154,26 @@ namespace mscl
 
 		//Number of Sweeps
 		if(isSet(m_numSweeps))
-		{		
+		{	
+			//verify that we supported setting num sweeps
+			if(!features.supportsLimitedDuration())
+			{
+				outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SWEEPS, "Number of Sweeps is not supported by this Node."));
+			}
 			//verify the sweeps are normalized
-			if(*m_numSweeps != features.normalizeNumSweeps(*m_numSweeps))
+			else if(*m_numSweeps != features.normalizeNumSweeps(*m_numSweeps))
 			{
 				outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SWEEPS, "The number of Sweeps needs to be normalized."));
+			}
+		}
+
+		//Unlimited Duration
+		if(isSet(m_unlimitedDuration))
+		{
+			//if the node only supports unlimited duration and the user turned it off
+			if(!features.supportsLimitedDuration() && (*m_unlimitedDuration == false))
+			{
+				outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_UNLIMITED_DURATION, "Unlimited duration cannot be disabled for this Node."));
 			}
 		}
 
@@ -202,10 +217,15 @@ namespace mscl
 		{
 			uint16 val = *m_lostBeaconTimeout;
 
+			//verify lost beacon timeout is supported
+			if(!features.supportsLostBeaconTimeout())
+			{
+				outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_LOST_BEACON_TIMEOUT, "Lost Beacon Timeout is not supported by this Node."));
+			}
 			//verify the timeout is within range
-			if((val < features.minLostBeaconTimeout() && val != NodeEepromHelper::LOST_BEACON_TIMEOUT_DISABLED) ||
-			    val > features.maxLostBeaconTimeout()
-				)
+			else if((val < features.minLostBeaconTimeout() && val != NodeEepromHelper::LOST_BEACON_TIMEOUT_DISABLED) || 
+					val > features.maxLostBeaconTimeout()
+					)
 			{
 				outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_LOST_BEACON_TIMEOUT, "The Lost Beacon Timeout value is out of range."));
 			}
@@ -237,7 +257,7 @@ namespace mscl
 				{
 					if(angle.first > maxAngle)
 					{
-						outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_FATIGUE, "Damage Angle ID " + Utils::toStr(angle.first) + " is not supported by this Node."));
+						outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_FATIGUE_ANGLE_ID, "Damage Angle ID " + Utils::toStr(angle.first) + " is not supported by this Node."));
 					}
 				}
 
@@ -247,7 +267,37 @@ namespace mscl
 				{
 					if(segment.first > maxSegment)
 					{
-						outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_FATIGUE, "SN Curve Segment " + Utils::toStr(segment.first) + " is not supported by this Node."));
+						outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_FATIGUE_SN_CURVE, "SN Curve Segment " + Utils::toStr(segment.first) + " is not supported by this Node."));
+					}
+				}
+
+				//if we plan on writing the fatigue mode
+				if(features.supportsFatigueModeConfig())
+				{
+					//check the fatigue mode is supported
+					if(!features.supportsFatigueMode(m_fatigueOptions->fatigueMode()))
+					{
+						outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_FATIGUE_MODE, "The Fatigue Mode is not supported by this Node."));
+					}
+				}
+
+				//if we plan on writing distributed angle mode settings
+				if(features.supportsFatigueMode(WirelessTypes::fatigueMode_distributedAngle))
+				{
+					//check for distributed angle mode invalid number of angles
+					uint8 numAngles = m_fatigueOptions->distributedAngleMode_numAngles();
+					if(numAngles < 4 || numAngles > 16)
+					{
+						outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_FATIGUE_DIST_NUM_ANGLES, "Number of Distributed Angles is out of range (4-16)."));
+					}
+
+					//check if upper and lower bounds are within 1 degree
+					float diff = std::abs(m_fatigueOptions->distributedAngleMode_upperBound() - m_fatigueOptions->distributedAngleMode_lowerBound());
+					bool lowGreaterThanUpper = m_fatigueOptions->distributedAngleMode_upperBound() < m_fatigueOptions->distributedAngleMode_lowerBound();
+
+					if(diff < 1.0f || (lowGreaterThanUpper && diff > 359.0f))
+					{
+						outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_FATIGUE_DIST_ANGLE, "Lower and Upper Distributed Angle bounds cannot be within 1 degree of each other."));
 					}
 				}
 			}
@@ -268,8 +318,18 @@ namespace mscl
 				//check the tx rate is supported
 				if(std::find(txRates.begin(), txRates.end(), m_histogramOptions->transmitRate()) == txRates.end())
 				{
-					outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_HISTOGRAM, "The Histogram Transmit Rate is not supported by this Node."));
+					outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_HISTOGRAM_TX_RATE, "The Histogram Transmit Rate is not supported by this Node."));
 				}
+			}
+		}
+
+		//Activity Sense
+		if(isSet(m_activitySense))
+		{
+			//check that ActivitySense is supported
+			if(!features.supportsActivitySense())
+			{
+				outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_ACTIVITY_SENSE, "ActivitySense configuration is not supported by this Node."));
 			}
 		}
 
@@ -295,6 +355,16 @@ namespace mscl
 			if(!features.supportsChannelSetting(WirelessTypes::chSetting_hardwareOffset, offset.first))
 			{
 				outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_HARDWARE_OFFSET, "Hardware Offset is not supported for the provided Channel Mask.", offset.first));
+			}
+		}
+
+		//Gauge Factors
+		for(const auto& factor : m_gaugeFactors)
+		{
+			//verify gauge factor is supported for the channel mask
+			if(!features.supportsChannelSetting(WirelessTypes::chSetting_gaugeFactor, factor.first))
+			{
+				outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_GAUGE_FACTOR, "Gauge Factor is not supported for the provided Channel Mask.", factor.first));
 			}
 		}
 
@@ -384,18 +454,21 @@ namespace mscl
 				}
 			}
 
-			if(isSet(m_numSweeps) || isSet(m_samplingMode) || isSet(m_dataFormat) || isSet(m_activeChannels))
+			if(features.supportsLimitedDuration())
 			{
-				bool unlimitedDuration = curUnlimitedDuration(eeprom);
-
-				//don't check if unlimited duration
-				//unless sampling mode is burst, which ignores unlimited duration
-				if(!unlimitedDuration || samplingMode == WirelessTypes::samplingMode_syncBurst)
+				if(isSet(m_numSweeps) || isSet(m_samplingMode) || isSet(m_dataFormat) || isSet(m_activeChannels))
 				{
-					//verify the number of sweeps works with the other sampling settings
-					if(numSweeps > features.maxSweeps(samplingMode, dataFormat, channels))
+					bool unlimitedDuration = curUnlimitedDuration(eeprom);
+
+					//don't check if unlimited duration
+					//unless sampling mode is burst, which ignores unlimited duration
+					if(!unlimitedDuration || samplingMode == WirelessTypes::samplingMode_syncBurst)
 					{
-						outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SWEEPS, "The number of Sweeps exceeds the max for this Configuration."));
+						//verify the number of sweeps works with the other sampling settings
+						if(numSweeps > features.maxSweeps(samplingMode, dataFormat, channels))
+						{
+							outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SWEEPS, "The number of Sweeps exceeds the max for this Configuration."));
+						}
 					}
 				}
 			}
@@ -536,6 +609,9 @@ namespace mscl
 		//write Histogram Options
 		if(isSet(m_histogramOptions)) { eeprom.write_histogramOptions(*m_histogramOptions); }
 
+		//write Activity Sense Options
+		if(isSet(m_activitySense)) { eeprom.write_activitySense(*m_activitySense); }
+
 		//write Hardware Gain(s)
 		for(const auto& gain : m_hardwareGains)
 		{
@@ -546,6 +622,12 @@ namespace mscl
 		for(const auto& offset : m_hardwareOffsets)
 		{
 			eeprom.write_hardwareOffset(offset.first, offset.second);
+		}
+
+		//write Gauge Factor(s)
+		for(const auto& factor : m_gaugeFactors)
+		{
+			eeprom.write_gaugeFactor(factor.first, factor.second);
 		}
 
 		//write Linear Equation(s)
@@ -742,6 +824,16 @@ namespace mscl
 		setChannelMapVal(m_hardwareOffsets, mask, offset);
 	}
 
+	float WirelessNodeConfig::gaugeFactor(const ChannelMask& mask) const
+	{
+		return getChannelMapVal(m_gaugeFactors, mask, "Gauge Factor");
+	}
+
+	void WirelessNodeConfig::gaugeFactor(const ChannelMask& mask, float factor)
+	{
+		setChannelMapVal(m_gaugeFactors, mask, factor);
+	}
+
 	const LinearEquation& WirelessNodeConfig::linearEquation(const ChannelMask& mask) const
 	{
 		return getChannelMapVal(m_linearEquations, mask, "Linear Equation");
@@ -812,5 +904,16 @@ namespace mscl
 	void WirelessNodeConfig::histogramOptions(const HistogramOptions& histogramOpts)
 	{
 		m_histogramOptions = histogramOpts;
+	}
+
+	const ActivitySense& WirelessNodeConfig::activitySense() const
+	{
+		checkValue(m_activitySense, "Activity Sense");
+		return *m_activitySense;
+	}
+
+	void WirelessNodeConfig::activitySense(const ActivitySense& activitySenseOpts)
+	{
+		m_activitySense = activitySenseOpts;
 	}
 }

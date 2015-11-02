@@ -2,7 +2,7 @@
 //	This example shows how to get and set the configuration options for a Wireless Node.
 //	Warning: Running this example will change the configuration on the Wireless Node.
 //
-//Updated: 04/01/2015
+//Updated: 11/02/2015
 
 //Note: If you are having 'PINVOKE' errors, please make sure the following is true:
 //  -'MSCL_Managed' is added as a Refence for the project (add 'MSCL_Managed.dll')
@@ -36,17 +36,36 @@ namespace ConfigureNode
             Console.WriteLine("Total active channels: " + node.getActiveChannels().count());
             Console.WriteLine("# of sweeps: " + node.getNumSweeps());
 
-            //get a list of the supported channels
-            mscl.WirelessChannels supportedChannels = node.channels();
+            //If a configuration function requires a ChannelMask parameter, this indicates that the
+            //option may affect 1 or more channels on the Node. For instance, a hardware gain may
+            //affect ch1 and ch2 with just 1 setting. If you know the mask for your Node, you can just provide
+            //that mask when asking for the configuration. If you want to programatically determine
+            //the mask for each setting, you can ask for the Node's ChannelGroups. See below.
 
-            //loop through all of the channels
-            foreach(var channel in supportedChannels)
-            {
-                //print out some information about the channels
-                Console.WriteLine("Channel #: " + channel.Key);
-                Console.WriteLine("Slope: " + channel.Value.getLinearEquation().slope());
-                Console.WriteLine("Offset: " + channel.Value.getLinearEquation().offset());
-            }
+            mscl.ChannelGroups chGroups = node.features().channelGroups();
+
+            //iterate over each channel group
+	        foreach(var group in chGroups)
+	        {
+		        //get all of the settings for this group (ie. may contain linear equation and hardware gain).
+		        mscl.ChannelGroupSettings groupSettings = group.settings();
+
+		        //iterate over each setting for this group
+		        foreach(var setting in groupSettings)
+		        {
+			        //if the group contains the linear equation setting
+			        if(setting == mscl.WirelessTypes.ChannelGroupSetting.chSetting_linearEquation)
+			        {
+				        //we can now pass the channel mask (group.channels()) for this group to the node.getLinearEquation function.
+				        //Note: once this channel mask is known for a specific node (+ fw version), it should never change
+				        mscl.LinearEquation le = node.getLinearEquation(group.channels());
+
+				        Console.WriteLine("Linear Equation for: " + group.name());
+				        Console.WriteLine("Slope: " + le.slope());
+				        Console.WriteLine("Offset: " + le.offset());
+			        }
+		        }
+	        }
         }
 
         //Function: setCurrentConfig
@@ -63,7 +82,7 @@ namespace ConfigureNode
             mscl.WirelessNodeConfig config = new mscl.WirelessNodeConfig();
 
             //set some of the node's configuration options
-            config.bootMode(mscl.WirelessTypes.BootMode.bootMode_normal);
+            config.defaultMode(mscl.WirelessTypes.DefaultMode.defaultMode_idle);
             config.inactivityTimeout(7200);
 	        config.samplingMode(mscl.WirelessTypes.SamplingMode.samplingMode_sync);
 	        config.sampleRate(mscl.WirelessTypes.WirelessSampleRate.sampleRate_256Hz);

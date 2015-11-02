@@ -91,7 +91,7 @@ namespace mscl
 		return GenericInertialCommand::Response::match_data(field);
 	}
 
-	bool ContinuousDataStream::Response::parseData(const GenericInertialCommandResponse& response) const
+	bool ContinuousDataStream::Response::parseResponse(const GenericInertialCommandResponse& response) const
 	{
 		return Inertial_Commands::parseData_ContinuousDataStream(response);
 	}

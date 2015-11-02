@@ -12,6 +12,10 @@ namespace mscl
 {
 	//Title: EstFilter_Commands
 
+	//forward declarations
+	class EulerAngles;
+	class PositionOffset;
+
 	//Class: GetEstFilterDataRateBase
 	//	Contains the logic for the "Get Estimation Filter Data Rate Base" command
 	class GetEstFilterDataRateBase
@@ -55,7 +59,7 @@ namespace mscl
 			//	Creates the Response object
 			Response(std::weak_ptr<ResponseCollector> collector);
 
-			//Function: parseData
+			//Function: parseResponse
 			//	Parses the response, getting the data rate base result
 			//
 			//Parameters:
@@ -63,7 +67,7 @@ namespace mscl
 			//
 			//Returns:
 			//	The data rate base result
-			uint16 parseData(const GenericInertialCommandResponse& response) const;
+			uint16 parseResponse(const GenericInertialCommandResponse& response) const;
 		};
 	};
 
@@ -111,7 +115,121 @@ namespace mscl
 
 		public:
 			Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
-			InertialChannels parseData(const GenericInertialCommandResponse& response, uint16 sampleRateBase) const;
+			InertialChannels parseResponse(const GenericInertialCommandResponse& response, uint16 sampleRateBase) const;
+		};
+	};
+
+	//Class: SensorToVehicFrameTrans
+	//	Contains the logic for the "Sensor to Vehicle Frame Transformation" command
+	class SensorToVehicFrameTrans
+	{
+	public:
+		//Constants: Packet Bytes
+		//	CMD_ID				- CMD_EF_SENS_VEHIC_FRAME_TRANS	- The <InertialTypes::Command> for this command
+		//  FIELD_DATA_BYTE		- 0x81							- The Data Field Descriptor byte
+		static const InertialTypes::Command CMD_ID = InertialTypes::CMD_EF_SENS_VEHIC_FRAME_TRANS;
+		static const uint8 FIELD_DATA_BYTE = 0x81;
+
+	private:
+		SensorToVehicFrameTrans();	//disabled default constructor
+
+	public:
+		//Function: buildCommand_get
+		//	Builds the bytes for the "get" command.
+		static ByteStream buildCommand_get();
+
+		//Function: buildCommand_set
+		//	Builds the bytes for the "set" command. 
+		//
+		//Parameters:
+		//	angles-  The <EulerAngles> containing the roll, pitch, and yaw (in radians).
+		static ByteStream buildCommand_set(const EulerAngles& angles);
+
+		class Response: public GenericInertialCommand::Response
+		{
+		protected:
+			virtual InertialTypes::Command commandId() const { return CMD_ID; }
+			virtual uint8 fieldDataByte() const { return FIELD_DATA_BYTE; }
+
+		public:
+			Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
+			EulerAngles parseResponse(const GenericInertialCommandResponse& response) const;
+		};
+	};
+
+	//Class: SensorToVehicFrameOffset
+	//	Contains the logic for the "Sensor to Vehicle Frame Offset" command
+	class SensorToVehicFrameOffset
+	{
+	public:
+		//Constants: Packet Bytes
+		//	CMD_ID				- CMD_EF_SENS_VEHIC_FRAME_OFFSET	- The <InertialTypes::Command> for this command
+		//  FIELD_DATA_BYTE		- 0x82								- The Data Field Descriptor byte
+		static const InertialTypes::Command CMD_ID = InertialTypes::CMD_EF_SENS_VEHIC_FRAME_OFFSET;
+		static const uint8 FIELD_DATA_BYTE = 0x82;
+
+	private:
+		SensorToVehicFrameOffset();	//disabled default constructor
+
+	public:
+		//Function: buildCommand_get
+		//	Builds the bytes for the "get" command.
+		static ByteStream buildCommand_get();
+
+		//Function: buildCommand_set
+		//	Builds the bytes for the "set" command. 
+		//
+		//Parameters:
+		//	offset -  The <PositionOffset> in meters.
+		static ByteStream buildCommand_set(const PositionOffset& offset);
+
+		class Response: public GenericInertialCommand::Response
+		{
+		protected:
+			virtual InertialTypes::Command commandId() const { return CMD_ID; }
+			virtual uint8 fieldDataByte() const { return FIELD_DATA_BYTE; }
+
+		public:
+			Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
+			PositionOffset parseResponse(const GenericInertialCommandResponse& response) const;
+		};
+	};
+
+	//Class: AntennaOffset
+	//	Contains the logic for the "Antenna Offset" command
+	class AntennaOffset
+	{
+	public:
+		//Constants: Packet Bytes
+		//	CMD_ID				- CMD_EF_ANTENNA_OFFSET	- The <InertialTypes::Command> for this command
+		//  FIELD_DATA_BYTE		- 0x83								- The Data Field Descriptor byte
+		static const InertialTypes::Command CMD_ID = InertialTypes::CMD_EF_ANTENNA_OFFSET;
+		static const uint8 FIELD_DATA_BYTE = 0x83;
+
+	private:
+		AntennaOffset();	//disabled default constructor
+
+	public:
+		//Function: buildCommand_get
+		//	Builds the bytes for the "get" command.
+		static ByteStream buildCommand_get();
+
+		//Function: buildCommand_set
+		//	Builds the bytes for the "set" command. 
+		//
+		//Parameters:
+		//	offset -  The <PositionOffset> in meters.
+		static ByteStream buildCommand_set(const PositionOffset& offset);
+
+		class Response: public GenericInertialCommand::Response
+		{
+		protected:
+			virtual InertialTypes::Command commandId() const { return CMD_ID; }
+			virtual uint8 fieldDataByte() const { return FIELD_DATA_BYTE; }
+
+		public:
+			Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
+			PositionOffset parseResponse(const GenericInertialCommandResponse& response) const;
 		};
 	};
 }

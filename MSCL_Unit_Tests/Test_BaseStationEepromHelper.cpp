@@ -27,11 +27,34 @@ BOOST_AUTO_TEST_CASE(BaseStationEepromHelper_readTransmitPower)
 	std::shared_ptr<mock_baseStationImpl> impl(new mock_baseStationImpl());
 	BaseStation base(impl);
 
-	expectRead(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value::UINT16(WirelessTypes::power_10dBm));
+	//make the features() function return the BaseStationFeatures we want
+	std::unique_ptr<BaseStationFeatures> features;
+	expectBaseFeatures(features, impl);
+
+	expectRead(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::power_10dBm));
 
 	BaseStationEepromHelper c(base.eepromHelper());
 
 	BOOST_CHECK_EQUAL(c.read_transmitPower(), WirelessTypes::power_10dBm);
+}
+
+BOOST_AUTO_TEST_CASE(BaseStationEepromHelper_readTransmitPower_legacy)
+{
+	std::shared_ptr<mock_baseStationImpl> impl(new mock_baseStationImpl());
+	BaseStation base(impl);
+
+	//make the features() function return the BaseStationFeatures we want
+	std::unique_ptr<BaseStationFeatures> features;
+	//3.2 fw doesn't support the new transmit power values
+	BaseStationInfo info(Version(3, 2), WirelessModels::base_wsdaBase_104_usb, WirelessTypes::region_usa);
+	features = BaseStationFeatures::create(info);
+	MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+
+	expectRead(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::legacyPower_0dBm));
+
+	BaseStationEepromHelper c(base.eepromHelper());
+
+	BOOST_CHECK_EQUAL(c.read_transmitPower(), WirelessTypes::power_0dBm);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStationEepromHelper_writeTransmitPower)
@@ -39,9 +62,30 @@ BOOST_AUTO_TEST_CASE(BaseStationEepromHelper_writeTransmitPower)
 	std::shared_ptr<mock_baseStationImpl> impl(new mock_baseStationImpl());
 	BaseStation base(impl);
 
-	expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value::UINT16(WirelessTypes::power_16dBm));
+	//make the features() function return the BaseStationFeatures we want
+	std::unique_ptr<BaseStationFeatures> features;
+	expectBaseFeatures(features, impl);
+
+	expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::power_16dBm));
 
 	BOOST_CHECK_NO_THROW(base.eepromHelper().write_transmitPower(WirelessTypes::power_16dBm));
+}
+
+BOOST_AUTO_TEST_CASE(BaseStationEepromHelper_writeTransmitPower_legacy)
+{
+	std::shared_ptr<mock_baseStationImpl> impl(new mock_baseStationImpl());
+	BaseStation base(impl);
+
+	//make the features() function return the BaseStationFeatures we want
+	std::unique_ptr<BaseStationFeatures> features;
+	//3.2 fw doesn't support the new transmit power values
+	BaseStationInfo info(Version(3, 2), WirelessModels::base_wsdaBase_104_usb, WirelessTypes::region_usa);
+	features = BaseStationFeatures::create(info);
+	MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+
+	expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::legacyPower_10dBm));
+
+	BOOST_CHECK_NO_THROW(base.eepromHelper().write_transmitPower(WirelessTypes::power_10dBm));
 }
 
 BOOST_AUTO_TEST_CASE(BaseStationEepromHelper_readButton)

@@ -17,6 +17,7 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 #include "mscl/MicroStrain/Wireless/BaseStation_Impl.h"
 #include "mscl/MicroStrain/Wireless/BaseStationInfo.h"
 #include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h"
+#include "mscl/MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
 #include "mscl/Timestamp.h"
 
 #include <turtle/mock.hpp>
@@ -65,6 +66,17 @@ static void expectRead(std::shared_ptr<mock_baseStationImpl> impl, const EepromL
 static void expectWrite(std::shared_ptr<mock_baseStationImpl> impl, const EepromLocation& loc, const Value& val)
 {
 	MOCK_EXPECT(impl->writeEeprom).with(loc, val);
+}
+
+static void expectResetRadio(std::shared_ptr<mock_baseStationImpl> impl)
+{
+	expectWrite(impl, BaseStationEepromMap::CYCLE_POWER, Value::UINT16(2));
+}
+
+static void expectCyclePower(std::shared_ptr<mock_baseStationImpl> impl)
+{
+	expectWrite(impl, BaseStationEepromMap::CYCLE_POWER, Value::UINT16(1));
+	MOCK_EXPECT(impl->ping).returns(true);
 }
 
 

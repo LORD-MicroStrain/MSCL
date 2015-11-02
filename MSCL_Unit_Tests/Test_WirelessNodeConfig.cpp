@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_setSingleValue)
 
 	//expect the single eeprom write
 	expectWrite(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(4500));
-	expectResetRadio(impl);
+	expectCyclePower(impl);
 
 	BOOST_CHECK_NO_THROW(node.applyConfig(c));
 }
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_setMultipleValues)
 	node.setImpl(impl);
 
 	//make the features() function return the NodeFeatures we want
-	NodeInfo info(Version(9, 9), WirelessModels::node_gLink_2g, 200000, WirelessTypes::region_usa);
+	NodeInfo info(Version(99, 9), WirelessModels::node_gLink_2g, 200000, WirelessTypes::region_usa);
 	std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
 	MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -111,8 +111,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_setMultipleValues)
 
 	//expect the eeprom writes
 	expectWrite(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(200));
-	expectWrite(impl, NodeEepromMap::TX_POWER_LEVEL, Value::UINT16(WirelessTypes::power_16dBm));
-	expectResetRadio(impl);
+	expectWrite(impl, NodeEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::power_16dBm));
+	expectCyclePower(impl);
 
 	BOOST_CHECK_NO_THROW(node.applyConfig(c));
 }
@@ -470,7 +470,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_checkRadioInterval)
 	BOOST_CHECK_THROW(node.applyConfig(c), Error_InvalidNodeConfig);
 
 	expectWrite(impl, NodeEepromMap::SLEEP_INTERVAL, Value::UINT16(284));
-	expectResetRadio(impl);
+	expectCyclePower(impl);
 	c.checkRadioInterval(27);
 	BOOST_CHECK_NO_THROW(node.applyConfig(c));
 }
@@ -494,7 +494,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_lostBeaconTimeout)
 	//check the beacon timeout success
 	c.lostBeaconTimeout(45);
 	expectWrite(impl, NodeEepromMap::LOST_BEACON_TIMEOUT, Value::UINT16(45));
-	expectResetRadio(impl);
+	expectCyclePower(impl);
 	BOOST_CHECK_NO_THROW(node.applyConfig(c));
 
 	//check the beacon timeout maximum failing
@@ -522,7 +522,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_bootMode)
 	expectNodeFeatures(features, impl, WirelessModels::node_gLink_10g);
 
 	expectWrite(impl, NodeEepromMap::DEFAULT_MODE, Value::UINT16(WirelessTypes::defaultMode_ldc));
-	expectResetRadio(impl);
+	expectCyclePower(impl);
 	BOOST_CHECK_NO_THROW(node.applyConfig(c));
 }
 
@@ -604,7 +604,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_filterSettlingTime)
 
 		//expect the single eeprom write
 		expectWrite(impl, NodeEepromMap::FILTER_1, Value::UINT16(3));
-		expectResetRadio(impl);
+		expectCyclePower(impl);
 
 		//check the settling time succeeds to apply
 		BOOST_CHECK_NO_THROW(node.applyConfig(c));
@@ -656,7 +656,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_thermocoupleType)
 
 		//expect the single eeprom write
 		expectWrite(impl, NodeEepromMap::THERMOCPL_TYPE, Value::UINT16(2));
-		expectResetRadio(impl);
+		expectCyclePower(impl);
 
 		//check the settling time succeeds to apply
 		BOOST_CHECK_NO_THROW(node.applyConfig(c));
@@ -686,13 +686,72 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_linearEquation)
 	//expect the single eeprom write
 	expectWrite(impl, NodeEepromMap::CH_ACTION_SLOPE_4, Value::FLOAT(64.78f));
 	expectWrite(impl, NodeEepromMap::CH_ACTION_OFFSET_4, Value::FLOAT(142.23f));
-	expectResetRadio(impl);
+	expectCyclePower(impl);
 
 	BOOST_CHECK_NO_THROW(node.applyConfig(c));
 
 	//check that verify succeeds
 	ConfigIssues issues;
 	BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
+}
+
+BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_fatigueDistAngles)
+{
+	std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl());
+	BaseStation b = makeBaseStationWithMockImpl();
+	WirelessNode node(123, b);
+	node.setImpl(impl);
+
+	std::unique_ptr<NodeFeatures> features;
+	expectNodeFeatures(features, impl, WirelessModels::node_shmLink2_cust1);
+
+	//test good angle settings
+	FatigueOptions opts;
+	opts.distributedAngleMode_lowerBound(5.0f);
+	opts.distributedAngleMode_upperBound(320.4513f);
+	opts.distributedAngleMode_numAngles(16);
+
+	WirelessNodeConfig c;
+	c.fatigueOptions(opts);
+
+	ConfigIssues issues;
+	BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
+
+	//test good very large angle
+	opts.distributedAngleMode_lowerBound(0.4f);
+	opts.distributedAngleMode_upperBound(359.5f);
+	c.fatigueOptions(opts);
+	BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
+
+	//test bad wrap around angle (too close)
+	opts.distributedAngleMode_lowerBound(359.5f);
+	opts.distributedAngleMode_upperBound(.3f);
+	c.fatigueOptions(opts);
+	BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+	BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_FATIGUE_DIST_ANGLE);
+	issues.clear();
+
+	//test good wrap around angle
+	opts.distributedAngleMode_lowerBound(350.234f);
+	opts.distributedAngleMode_upperBound(31.0f);
+	c.fatigueOptions(opts);
+	BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
+
+	//test bad standard angles (too close)
+	opts.distributedAngleMode_lowerBound(49.5f);
+	opts.distributedAngleMode_upperBound(50.0f);
+	c.fatigueOptions(opts);
+	BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+	BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_FATIGUE_DIST_ANGLE);
+	issues.clear();
+
+	//test bad number of angles
+	opts.distributedAngleMode_lowerBound(1.0f);
+	opts.distributedAngleMode_upperBound(31.0f);
+	opts.distributedAngleMode_numAngles(3);
+	c.fatigueOptions(opts);
+	BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+	BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_FATIGUE_DIST_NUM_ANGLES);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -90,6 +90,7 @@
 #include "../MicroStrain/Wireless/BaseStation.h"
 #include "../MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
 #include "../MicroStrain/Wireless/Configuration/ConfigIssue.h"
+#include "../MicroStrain/Wireless/Configuration/ActivitySense.h"
 #include "../MicroStrain/Wireless/Configuration/FatigueOptions.h"
 #include "../MicroStrain/Wireless/Configuration/HistogramOptions.h"
 #include "../MicroStrain/Wireless/DatalogDownloader.h"
@@ -108,13 +109,16 @@
 #include "../MicroStrain/Wireless/SyncNetworkInfo.h"
 #include "../MicroStrain/Wireless/SyncSamplingNetwork.h"
 #include "../MicroStrain/Wireless/StructuralHealth.h"
-#include "../MicroStrain/Wireless/Commands/AutoCal.h"
+#include "../MicroStrain/Wireless/Commands/AutoBalanceResult.h"
+#include "../MicroStrain/Wireless/Commands/AutoCalResult.h"
 #include "../MicroStrain/Wireless/Commands/BaseStation_BeaconStatus.h"
 #include "../MicroStrain/Wireless/Commands/LongPing.h"
 #include "../MicroStrain/Wireless/Commands/SetToIdleStatus.h"
 #include "../MicroStrain/Wireless/Features/ChannelGroup.h"
 #include "../MicroStrain/Wireless/Features/NodeFeatures.h"
 #include "../MicroStrain/Wireless/Features/BaseStationFeatures.h"
+#include "../MicroStrain/Inertial/EulerAngles.h"
+#include "../MicroStrain/Inertial/PositionOffset.h"
 #include "../MicroStrain/Inertial/InertialModels.h"
 #include "../MicroStrain/Inertial/InertialTypes.h"
 #include "../MicroStrain/Inertial/InertialChannel.h"
@@ -122,6 +126,7 @@
 #include "../MicroStrain/Inertial/Packets/InertialDataPacket.h"
 #include "../MicroStrain/Inertial/InertialDataPoint.h"
 #include "../MicroStrain/Inertial/InertialNodeInfo.h"
+#include "../MicroStrain/Inertial/Features/InertialNodeFeatures.h"
 #include "../MicroStrain/Inertial/InertialNode.h"
 #include "../MicroStrain/Inertial/Packets/InertialPacket.h"
 %}
@@ -150,6 +155,7 @@
 %include "../MicroStrain/DataPoint.h"
 %include "../MicroStrain/Wireless/ChannelMask.h"
 %include "../MicroStrain/Wireless/Configuration/ConfigIssue.h"
+%include "../MicroStrain/Wireless/Configuration/ActivitySense.h"
 %include "../MicroStrain/Wireless/Configuration/FatigueOptions.h"
 %include "../MicroStrain/Wireless/Configuration/HistogramOptions.h"
 %include "../MicroStrain/Wireless/WirelessModels.h"
@@ -167,7 +173,8 @@
 %include "../MicroStrain/Wireless/LoggedDataSweep.h"
 %include "../MicroStrain/Wireless/RadioFeatures.h"
 %include "../MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
-%include "../MicroStrain/Wireless/Commands/AutoCal.h"
+%include "../MicroStrain/Wireless/Commands/AutoBalanceResult.h"
+%include "../MicroStrain/Wireless/Commands/AutoCalResult.h"
 %include "../MicroStrain/Wireless/Commands/LongPing.h"
 %include "../MicroStrain/Wireless/Commands/SetToIdleStatus.h"
 %include "../MicroStrain/Wireless/WirelessNode.h"
@@ -177,6 +184,8 @@
 %include "../MicroStrain/Wireless/SyncSamplingNetwork.h"
 %include "../MicroStrain/Wireless/Features/NodeFeatures.h"
 %include "../MicroStrain/Wireless/Features/BaseStationFeatures.h"
+%include "../MicroStrain/Inertial/EulerAngles.h"
+%include "../MicroStrain/Inertial/PositionOffset.h"
 %include "../MicroStrain/Inertial/InertialModels.h"
 %include "../MicroStrain/Inertial/InertialTypes.h"
 %include "../MicroStrain/Inertial/InertialChannel.h"
@@ -185,6 +194,7 @@
 %include "../MicroStrain/Inertial/InertialDataPoint.h"
 %include "../MicroStrain/Inertial/Packets/InertialDataPacket.h"
 %include "../MicroStrain/Inertial/InertialNodeInfo.h"
+%include "../MicroStrain/Inertial/Features/InertialNodeFeatures.h"
 %include "../MicroStrain/Inertial/InertialNode.h"
 
 namespace std
@@ -205,6 +215,7 @@ namespace std
 	%template(DefaultModes)				vector<mscl::WirelessTypes::DefaultMode>;
 	%template(TransmitPowers)			vector<mscl::WirelessTypes::TransmitPower>;
 	%template(ChannelGroupSettings)		vector<mscl::WirelessTypes::ChannelGroupSetting>;
+	%template(FatigueModes)				vector<mscl::WirelessTypes::FatigueMode>;
 	%template(SampleRates)				vector<mscl::SampleRate>;
 	%template(ConfigIssues)				vector<mscl::ConfigIssue>;
 	%template(ChannelFields)			vector<mscl::InertialTypes::ChannelField>;
@@ -213,7 +224,6 @@ namespace std
 	%template(WirelessChannels)			vector<mscl::WirelessChannel>;
 	%template(DamageAngles)				map<uint8_t, float>;
 	%template(SnCurveSegments)			map<uint8_t, mscl::SnCurveSegment>;
-
 
 	%ignore vector<mscl::Bin>::vector(size_type);				//no default constructor
 	%ignore vector<mscl::Bin>::resize;							//no default constructor

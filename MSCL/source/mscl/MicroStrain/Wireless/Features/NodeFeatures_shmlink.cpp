@@ -33,17 +33,20 @@ namespace mscl
 
 		m_channelGroups.emplace_back(DIFF_CH1, "Differential Channel 1",
 									 ChannelGroup::SettingsMap{
-										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1}}
+										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1},
+										 {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_1}}
 		);
 
 		m_channelGroups.emplace_back(DIFF_CH2, "Differential Channel 2",
 									 ChannelGroup::SettingsMap{
-										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_2}}
+										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_2},
+										 {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_2}}
 		);
 
 		m_channelGroups.emplace_back(DIFF_CH3, "Differential Channel 3",
 									 ChannelGroup::SettingsMap{
-										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_3}}
+										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_3},
+										 {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_3}}
 		);
 
 		//Channels
@@ -54,11 +57,6 @@ namespace mscl
 		m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_acceleration);		//accel y
 		m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration);		//accel z
 		m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_temperature);		//temp
-	}
-
-	bool NodeFeatures_shmlink::supportsAutoBalance(uint8 channelNumber) const
-	{
-		return anyChannelGroupSupports(WirelessTypes::chSetting_hardwareOffset, channelNumber);
 	}
 
 	bool NodeFeatures_shmlink::supportsFatigueConfig() const
@@ -76,7 +74,7 @@ namespace mscl
 		return false;	//this version of the shm-link has a hard-coded Poisson's Ratio
 	}
 
-	bool NodeFeatures_shmlink::supportsFatigueRawModeConfig() const
+	bool NodeFeatures_shmlink::supportsFatigueDebugModeConfig() const
 	{
 		return false;	//this version of the shm-link does not allow eeprom configuration of raw mode
 	}
@@ -89,6 +87,11 @@ namespace mscl
 	bool NodeFeatures_shmlink::supportsHistogramRateConfig() const
 	{
 		return false;	//this version of the shm-link has a hard-coded Histogram Rate
+	}
+
+	bool NodeFeatures_shmlink::supportsHistogramEnableConfig() const
+	{
+		return false;	//this version of the shm-link does not allow turning the histogram on and off
 	}
 
 	uint8 NodeFeatures_shmlink::numDamageAngles() const
@@ -108,5 +111,14 @@ namespace mscl
 		};
 
 		return HistogramRates;
+	}
+
+	const WirelessTypes::FatigueModes NodeFeatures_shmlink::fatigueModes() const
+	{
+		static const WirelessTypes::FatigueModes modes = {
+			{WirelessTypes::fatigueMode_angleStrain}
+		};
+
+		return modes;
 	}
 }

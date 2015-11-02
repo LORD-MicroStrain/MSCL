@@ -21,6 +21,7 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 #include "mscl/MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/Commands/AutoCal.h"
+#include "mscl/MicroStrain/Wireless/Commands/AutoCalResult.h"
 #include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 #include <vector>
 
@@ -282,19 +283,6 @@ BOOST_AUTO_TEST_CASE(BaseStation_GetNodeDiscoveries_Empty)
 	BOOST_CHECK_EQUAL(nds.size(), 0);
 }
 
-BOOST_AUTO_TEST_CASE(BaseStation_cyclePower)
-{
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
-
-	//create the base station (loads the info)
-	BaseStation base(conn);
-
-	//check that the command doesn't throw an exception (succeeded)
-	//Cycle Power has no response and is an eeprom write, but shouldn't throw an exception
-	BOOST_CHECK_NO_THROW(base.cyclePower());
-}
-
 BOOST_AUTO_TEST_CASE(BaseStation_changeFrequency_success)
 {
 	std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl());
@@ -375,40 +363,6 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeLongPing_Fail_Timeout)
 	BOOST_CHECK_EQUAL(result.success(), false);
 	BOOST_CHECK_EQUAL(result.nodeRssi(), unknownRssi);
 	BOOST_CHECK_EQUAL(result.baseRssi(), unknownRssi);
-}
-
-BOOST_AUTO_TEST_CASE(BaseStation_NodeShortPing_Fail)
-{
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
-
-	//create the base station (loads the info)
-	BaseStation base(conn);
-
-	//build the data to send
-	ByteStream data;
-	data.append_uint8(0x21);
-	connImpl->setResponseBytes(data);
-
-	//check that the short ping returns false
-	BOOST_CHECK_EQUAL(base.node_shortPing(327), false);
-}
-
-BOOST_AUTO_TEST_CASE(BaseStation_NodeShortPing_Success)
-{
-	std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-	Connection conn(connImpl);
-
-	//create the base station (loads the info)
-	BaseStation base(conn);
-
-	//build the data to send
-	ByteStream data;
-	data.append_uint8(0x02);
-	connImpl->setResponseBytes(data);
-
-	//check that the short ping returns true
-	BOOST_CHECK_EQUAL(base.node_shortPing(327), true);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStation_NodeEepromRead_Success)

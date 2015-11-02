@@ -115,4 +115,34 @@ namespace mscl
 		//return true if enabled, false if disabled
 		return (response.data().read_uint8(1) == 1);	//Note: position 0 is the device selector, which can be ignored here.
 	}
+
+	EulerAngles Inertial_Commands::parseData_EulerAngles(const GenericInertialCommandResponse& response)
+	{
+		//use a DataBuffer to make reading nicer
+		DataBuffer db(response.data());
+
+		//read the euler angles and store in the result
+		float roll = db.read_float();
+		float pitch = db.read_float();
+		float yaw = db.read_float();
+
+		EulerAngles result(roll, pitch, yaw);
+
+		return result;
+	}
+
+	PositionOffset Inertial_Commands::parseData_PositionOffset(const GenericInertialCommandResponse& response)
+	{
+		//use a DataBuffer to make reading nicer
+		DataBuffer db(response.data());
+
+		//read the euler angles and store in the result
+		float x = db.read_float();
+		float y = db.read_float();
+		float z = db.read_float();
+
+		PositionOffset result(x, y, z);
+
+		return result;
+	}
 }

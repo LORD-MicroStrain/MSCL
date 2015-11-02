@@ -6,6 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "stdafx.h"
 #include "NodeEepromHelper.h"
 
+#include "ActivitySense.h"
 #include "FatigueOptions.h"
 #include "HardwareGain.h"
 #include "HistogramOptions.h"
@@ -213,7 +214,7 @@ namespace mscl
 	void NodeEepromHelper::write_numSweeps(uint32 sweeps)
 	{
 		//divide by 100 to write to eeprom
-		write( NodeEepromMap::NUM_SWEEPS, Value::UINT16(static_cast<uint16>(sweeps / 100)) );
+		write(NodeEepromMap::NUM_SWEEPS, Value::UINT16(static_cast<uint16>(sweeps / 100)));
 	}
 
 	uint32 NodeEepromHelper::read_numSweeps() const
@@ -235,7 +236,7 @@ namespace mscl
 		}
 
 		//write the value to the correct eeprom location
-		write( unlimitedSamplingLocation, Value::UINT16(static_cast<uint16>(unlimitedDuration)) );
+		write(unlimitedSamplingLocation, Value::UINT16(static_cast<uint16>(unlimitedDuration)));
 	}
 
 	bool NodeEepromHelper::read_unlimitedDuration(WirelessTypes::SamplingMode samplingMode) const
@@ -291,7 +292,7 @@ namespace mscl
 
 	void NodeEepromHelper::write_dataFormat(WirelessTypes::DataFormat dataFormat)
 	{
-		write( NodeEepromMap::DATA_FORMAT, Value::UINT16(static_cast<uint16>(dataFormat)) );
+		write(NodeEepromMap::DATA_FORMAT, Value::UINT16(static_cast<uint16>(dataFormat)));
 	}
 
 	WirelessTypes::DataFormat NodeEepromHelper::read_dataFormat() const
@@ -301,7 +302,7 @@ namespace mscl
 
 	void NodeEepromHelper::write_collectionMode(WirelessTypes::DataCollectionMethod collectionMode)
 	{
-		write( NodeEepromMap::COLLECTION_MODE, Value::UINT16(static_cast<uint16>(collectionMode)) );
+		write(NodeEepromMap::COLLECTION_MODE, Value::UINT16(static_cast<uint16>(collectionMode)));
 	}
 
 	WirelessTypes::DataCollectionMethod NodeEepromHelper::read_collectionMode() const
@@ -331,6 +332,7 @@ namespace mscl
 			//these nodes all store the sampling delay in microseconds
 			case WirelessModels::node_shmLink:
 			case WirelessModels::node_shmLink2:
+			case WirelessModels::node_shmLink2_cust1:
 			case WirelessModels::node_sgLink_herm:
 			case WirelessModels::node_sgLink_herm_2600:
 			case WirelessModels::node_sgLink_herm_2700:
@@ -372,6 +374,7 @@ namespace mscl
 			//these nodes all read the sampling delay in microseconds
 			case WirelessModels::node_shmLink:
 			case WirelessModels::node_shmLink2:
+			case WirelessModels::node_shmLink2_cust1:
 			case WirelessModels::node_sgLink_herm:
 			case WirelessModels::node_sgLink_herm_2600:
 			case WirelessModels::node_sgLink_herm_2700:
@@ -545,7 +548,7 @@ namespace mscl
 
 		//make the action id from the equation (msb) and unit (lsb) values
 		uint16 actionIdVal = Utils::make_uint16(static_cast<uint8>(equation), static_cast<uint8>(unit));
-		
+
 		//write the action id to eeprom
 		write(eepromLocation, Value::UINT16(actionIdVal));
 	}
@@ -576,14 +579,37 @@ namespace mscl
 
 	WirelessTypes::TransmitPower NodeEepromHelper::read_transmitPower() const
 	{
-		//read and return the transmit power level
-		return static_cast<WirelessTypes::TransmitPower>(read(NodeEepromMap::TX_POWER_LEVEL).as_uint16());
+		int16 val = read(NodeEepromMap::TX_POWER_LEVEL).as_int16();
+
+		if(m_node->features().supportsNewTransmitPowers())
+		{
+			return static_cast<WirelessTypes::TransmitPower>(val);
+		}
+		else
+		{
+			//legacy value, convert to current value before returning
+
+			//read and return the transmit power level
+			return WirelessTypes::legacyToTransmitPower(static_cast<WirelessTypes::LegacyTransmitPower>(val));
+		}
 	}
 
 	void NodeEepromHelper::write_transmitPower(WirelessTypes::TransmitPower power)
 	{
+		int16 valToWrite = 0;
+
+		if(m_node->features().supportsNewTransmitPowers())
+		{
+			valToWrite = static_cast<int16>(power);
+		}
+		else
+		{
+			//need to write the legacy value for the device to understand it
+			valToWrite = static_cast<int16>(WirelessTypes::transmitPowerToLegacy(power));
+		}
+
 		//write the transmit power level to the node
-		write(NodeEepromMap::TX_POWER_LEVEL, Value::UINT16(static_cast<uint16>(power)));
+		write(NodeEepromMap::TX_POWER_LEVEL, Value(valueType_int16, valToWrite));
 	}
 
 	uint16 NodeEepromHelper::read_inactivityTimeout() const
@@ -607,7 +633,7 @@ namespace mscl
 		if(eeVal != 0)
 		{
 			seconds = (MAX_SLEEP_INTERVAL_EEVAL / eeVal);
-		}		
+		}
 
 		//if the seconds value is more than 60 seconds
 		if(seconds > 60)
@@ -732,6 +758,24 @@ namespace mscl
 		write(eeprom, Value::UINT16(offset));
 	}
 
+	float NodeEepromHelper::read_gaugeFactor(const ChannelMask& mask) const
+	{
+		//find the eeprom location
+		const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_gaugeFactor, mask);
+
+		//read the gauge factor from eeprom
+		return read(eeprom).as_float();
+	}
+
+	void NodeEepromHelper::write_gaugeFactor(const ChannelMask& mask, float gaugeFactor)
+	{
+		//find the eeprom location
+		const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_gaugeFactor, mask);
+
+		//write the gauge factor to eeprom
+		write(eeprom, Value::FLOAT(gaugeFactor));
+	}
+
 	WirelessTypes::ThermocoupleType NodeEepromHelper::read_thermoType(const ChannelMask& mask) const
 	{
 		//find the eeprom location
@@ -748,6 +792,42 @@ namespace mscl
 
 		//write the thermocouple type to the Node
 		write(eeprom, Value::UINT16(static_cast<uint16>(thermocouple)));
+	}
+
+	void NodeEepromHelper::read_activitySense(ActivitySense& result) const
+	{
+		//Enable/Disable
+		result.enabled(read(NodeEepromMap::ACT_SENSE_ENABLE).as_bool());
+
+		//Activity Threshold
+		result.activityThreshold(read(NodeEepromMap::ACT_SENSE_ACTIVE_THRES).as_float());
+
+		//Inactivity Threshold
+		result.inactivityThreshold(read(NodeEepromMap::ACT_SENSE_INACTIVE_THRES).as_float());
+
+		//Activity Time
+		result.activityTime(read(NodeEepromMap::ACT_SENSE_ACTIVE_TIME).as_float());
+
+		//Inactivity Timeout
+		result.inactivityTimeout(read(NodeEepromMap::ACT_SENSE_INACTIVE_TIMEOUT).as_float());
+	}
+
+	void NodeEepromHelper::write_activitySense(const ActivitySense& options)
+	{
+		//Enable/Disable
+		write(NodeEepromMap::ACT_SENSE_ENABLE, Value::UINT16(static_cast<uint16>(options.enabled())));
+
+		//Activity Threshold
+		write(NodeEepromMap::ACT_SENSE_ACTIVE_THRES, Value::FLOAT(options.activityThreshold()));
+
+		//Inactivity Threshold
+		write(NodeEepromMap::ACT_SENSE_INACTIVE_THRES, Value::FLOAT(options.inactivityThreshold()));
+
+		//Activity Time
+		write(NodeEepromMap::ACT_SENSE_ACTIVE_TIME, Value::FLOAT(options.activityTime()));
+
+		//Inactivity Timeout
+		write(NodeEepromMap::ACT_SENSE_INACTIVE_TIMEOUT, Value::FLOAT(options.inactivityTimeout()));
 	}
 
 	void NodeEepromHelper::read_fatigueOptions(FatigueOptions& result) const
@@ -776,10 +856,10 @@ namespace mscl
 		result.peakValleyThreshold(read(NodeEepromMap::PEAK_VALLEY_THRES).as_uint16());
 
 		//Raw Mode
-		if(features.supportsFatigueRawModeConfig())
+		if(features.supportsFatigueDebugModeConfig())
 		{
-			bool rawModeEnabled = (read(NodeEepromMap::HISTOGRAM_RAW_FLAG).as_uint16() == 1);
-			result.rawMode(rawModeEnabled);
+			bool debugModeEnabled = (read(NodeEepromMap::HISTOGRAM_RAW_FLAG).as_uint16() == 1);
+			result.debugMode(debugModeEnabled);
 		}
 
 		//=============================
@@ -837,6 +917,31 @@ namespace mscl
 			result.snCurveSegment(2, SnCurveSegment(read(NodeEepromMap::SNCURVE_M_3).as_float(), read(NodeEepromMap::SNCURVE_LOGA_3).as_float()));
 		}
 		//=============================
+
+		//=============================
+		//Fatigue Mode / Distributed Angle Settings
+		if(features.supportsFatigueModeConfig())
+		{
+			result.fatigueMode(static_cast<WirelessTypes::FatigueMode>(read(NodeEepromMap::FATIGUE_MODE).as_uint16()));
+		}
+
+		//=============================
+		//Distributed Angle Settings
+		if(features.supportsFatigueMode(WirelessTypes::fatigueMode_distributedAngle))
+		{
+			result.distributedAngleMode_numAngles(read(NodeEepromMap::DIST_ANGLE_NUM_ANGLES).as_uint8());
+
+			result.distributedAngleMode_lowerBound(read(NodeEepromMap::DIST_ANGLE_LOWER_BOUND).as_float());
+
+			result.distributedAngleMode_upperBound(read(NodeEepromMap::DIST_ANGLE_UPPER_BOUND).as_float());
+		}
+		//=============================
+
+		//Histogram Toggle
+		if(features.supportsHistogramEnableConfig())
+		{
+			result.histogramEnable(read(NodeEepromMap::HISTOGRAM_ENABLE).as_bool());
+		}
 	}
 
 	void NodeEepromHelper::write_fatigueOptions(const FatigueOptions& options)
@@ -865,9 +970,9 @@ namespace mscl
 		write(NodeEepromMap::PEAK_VALLEY_THRES, Value::UINT16(options.peakValleyThreshold()));
 
 		//Raw Mode
-		if(features.supportsFatigueRawModeConfig())
+		if(features.supportsFatigueDebugModeConfig())
 		{
-			write(NodeEepromMap::HISTOGRAM_RAW_FLAG, Value::UINT16(static_cast<uint16>(options.rawMode())));
+			write(NodeEepromMap::HISTOGRAM_RAW_FLAG, Value::UINT16(static_cast<uint16>(options.debugMode())));
 		}
 
 		//=============================
@@ -942,6 +1047,31 @@ namespace mscl
 			write(NodeEepromMap::SNCURVE_LOGA_3, Value::FLOAT(segment->second.logA()));
 		}
 		//=============================
+
+		//=============================
+		//Fatigue Mode
+		if(features.supportsFatigueModeConfig())
+		{
+			write(NodeEepromMap::FATIGUE_MODE, Value::UINT16(static_cast<uint16>(options.fatigueMode())));
+		}
+
+		//=============================
+		//Distributed Angle Settings
+		if(features.supportsFatigueMode(WirelessTypes::fatigueMode_distributedAngle))
+		{
+			write(NodeEepromMap::DIST_ANGLE_NUM_ANGLES, Value::UINT16(static_cast<uint16>(options.distributedAngleMode_numAngles())));
+
+			write(NodeEepromMap::DIST_ANGLE_LOWER_BOUND, Value::FLOAT(options.distributedAngleMode_lowerBound()));
+
+			write(NodeEepromMap::DIST_ANGLE_UPPER_BOUND, Value::FLOAT(options.distributedAngleMode_upperBound()));
+		}
+		//=============================
+
+		//Histogram Toggle
+		if(features.supportsHistogramEnableConfig())
+		{
+			write(NodeEepromMap::HISTOGRAM_ENABLE, Value::UINT16(static_cast<uint16>(options.histogramEnable())));
+		}
 	}
 
 	void NodeEepromHelper::read_histogramOptions(HistogramOptions& result) const

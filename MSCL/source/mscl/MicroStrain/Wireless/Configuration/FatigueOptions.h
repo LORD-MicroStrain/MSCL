@@ -7,6 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include <map>
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/Types.h"
 
 namespace mscl
@@ -93,9 +94,9 @@ namespace mscl
 		//	The peak/valley threshold.
 		uint16 m_peakValleyThreshold;
 
-		//Variable: m_rawMode
+		//Variable: m_debugMode
 		//	Whether raw data is enabled or disabled.
-		bool m_rawMode;
+		bool m_debugMode;
 
 		//Variable: m_damageAngles
 		//	The <DamageAngles>.
@@ -104,6 +105,26 @@ namespace mscl
 		//Variable: m_snCurveSegments
 		//	The <SnCurveSegments>.
 		SnCurveSegments m_snCurveSegments;
+
+		//Variable: m_fatigueMode
+		//	Whether distributed angle mode is enabled or disabled.
+		WirelessTypes::FatigueMode m_fatigueMode;
+
+		//Variable: m_distMode_numAngles
+		//	The number of angles (4 - 16) to use in distributed angle mode.
+		uint8 m_distMode_numAngles;
+
+		//Variable: m_distMode_lowerBound
+		//	The lower bound angle when using the distributed angle mode.
+		float m_distMode_lowerBound;
+
+		//Variable: m_distMode_upperBound
+		//	The upper bound angle when using the distributed angle mode.
+		float m_distMode_upperBound;
+
+		//Variable:	m_histogramEnable
+		//	Whether histograms are enabled or disabled.
+		bool m_histogramEnable;
 
 	public:
 		//API Function: youngsModulus
@@ -139,17 +160,18 @@ namespace mscl
 		//	val - The Peak/Valley Threshold to set.
 		void peakValleyThreshold(uint16 val);
 
-		//API Function: rawMode
-		//	Gets the raw mode flag set in this options object.
-		//	This determines whether raw data that builds the Histograms will be sent when sampling.
-		bool rawMode() const;
+		//API Function: debugMode
+		//	Gets the debug mode flag set in this options object.
+		//	This determines whether raw angle data that builds the Histograms will be sent when sampling.
+		bool debugMode() const;
 		
-		//API Function: rawMode
-		//	Sets the raw mode flag in this options object.
+		//API Function: debugMode
+		//	Sets the debug mode flag in this options object.
+		//	This determines whether raw angle data that builds the Histograms will be sent when sampling.
 		//
 		//Parameters:
-		//	enable - Whether to enable (true) or disable (false) raw mode.
-		void rawMode(bool enable);
+		//	enable - Whether to enable (true) or disable (false) debug mode.
+		void debugMode(bool enable);
 
 		//API Function: damageAngle
 		//	Gets the damage angle set in this options object, for the given angle id (0-based).
@@ -195,5 +217,70 @@ namespace mscl
 		//	segmentId - The segment ID to set the segment for.
 		//	segment - The <SnCurveSegment> to set.
 		void snCurveSegment(uint8 segmentId, const SnCurveSegment& segment);
+
+		//API Function: fatigueMode
+		//	The <WirelessTypes::FatigueMode> that is set in this options object.
+		WirelessTypes::FatigueMode fatigueMode() const;
+
+		//API Function: distributedAngleMode_enabled
+		//	Sets whether distributed angle mode is enabled or disabled in this options object.
+		//	Distributed Angle Mode allows the user to enable an even distribution of 4-16 angles.
+		//	When in this mode, the standard <damageAngles> will not be used by the Node.
+		//
+		//Parameters:
+		//	enable - Whether to enable or disable distributed angle mode.
+		void fatigueMode(WirelessTypes::FatigueMode mode);
+
+		//API Function: distributedAngleMode_numAngles
+		//	Gets the current number of angles to use for distributed angle mode in this options object.
+		//	Note: The Node will only use this if the <fatigueMode> is set to distributed angle mode.
+		uint8 distributedAngleMode_numAngles() const;
+
+		//API Function: distributedAngleMode_numAngles
+		//	Sets the current number of angles to use for distributed angle mode in this options object.
+		//	Note: Note: The Node will only use this if the <fatigueMode> is set to distributed angle mode.
+		//
+		//Parameters:
+		//	numAngles - The number of angles to use (4-16).
+		void distributedAngleMode_numAngles(uint8 numAngles);
+
+		//API Function: distributedAngleMode_lowerBound
+		//	Gets the current lower bound angle (in degrees) to use for distributed angle mode in this options object.
+		//	Note: Note: The Node will only use this if the <fatigueMode> is set to distributed angle mode.
+		float distributedAngleMode_lowerBound() const;
+
+		//API Function: distributedAngleMode_lowerBound
+		//	Sets the current lower bound angle to use for distributed angle mode in this options object.
+		//	Note: Note: The Node will only use this if the <fatigueMode> is set to distributed angle mode.
+		//	Note: The lower bound and upper bound angles must be at least 1 degree.
+		//
+		//Parameters:
+		//	angle - The lower bound angle (in degrees) to use.
+		void distributedAngleMode_lowerBound(float angle);
+
+		//API Function: distributedAngleMode_upperBound
+		//	Gets the current upper bound angle (in degrees) to use for distributed angle mode in this options object.
+		//	Note: Note: The Node will only use this if the <fatigueMode> is set to distributed angle mode.
+		float distributedAngleMode_upperBound() const;
+
+		//API Function: distributedAngleMode_upperBound
+		//	Sets the current upper bound angle to use for distributed angle mode in this options object.
+		//	Note: Note: The Node will only use this if the <fatigueMode> is set to distributed angle mode.
+		//	Note: The lower bound and upper bound angles must be at least 1 degree.
+		//
+		//Parameters:
+		//	angle - The upper bound angle (in degrees) to use.
+		void distributedAngleMode_upperBound(float angle);
+
+		//API Function: histogramEnable
+		//	Gets whether sending Histograms is enabled or disabled, in this options object.
+		bool histogramEnable() const;
+
+		//API Function: histogramEnable
+		//	Sets whether sending Histograms is enabled or disabled, in this options object.
+		//	
+		//Parameters:
+		//	enable - Whehter to enable or disable sending Histograms.
+		void histogramEnable(bool enable);
 	};
 }

@@ -91,6 +91,11 @@ namespace mscl
 		WirelessTypes::TransmitPower maxPower = WirelessTypes::maxTransmitPower(m_baseInfo.regionCode);
 
 		//add the power levels based on the max power we determined above
+		if(maxPower >= WirelessTypes::power_20dBm && supportsNewTransmitPowers())
+		{
+			result.push_back(WirelessTypes::power_20dBm);
+		}
+
 		if(maxPower >= WirelessTypes::power_16dBm)
 		{
 			result.push_back(WirelessTypes::power_16dBm);
@@ -112,5 +117,19 @@ namespace mscl
 		}
 
 		return result;
+	}
+
+	bool BaseStationFeatures::supportsNewTransmitPowers() const
+	{
+		static const Version MIN_NEW_TX_POWER_FW(4, 0);
+
+		return (m_baseInfo.firmwareVersion >= MIN_NEW_TX_POWER_FW);
+	}
+
+	bool BaseStationFeatures::supportsEepromCommitViaRadioReset() const
+	{
+		static const Version MIN_EEPROM_COMMIT_RADIO_FW(4, 0);
+
+		return (m_baseInfo.firmwareVersion >= MIN_EEPROM_COMMIT_RADIO_FW);
 	}
 }

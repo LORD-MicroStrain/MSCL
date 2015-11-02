@@ -176,6 +176,7 @@ namespace mscl
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		void writeEeprom(const EepromLocation& location, const Value& val);
 
+	private:
 		//Function: readEeprom_float
 		//	Attempts to read 2 eeprom values from a device and build them into a float.
 		//	If caching is enabled and there is a previously cached value available, this will 
@@ -212,13 +213,13 @@ namespace mscl
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		virtual uint32 readEeprom_uint32(uint16 location);
 
-		//Function: readEeprom
-		//	Attempts to read an eeprom value from a device.
+		//Function: readEeprom_int16
+		//	Attempts to read an eeprom value from a device as a signed int16.
 		//	If caching is enabled and there is a previously cached value available, this will 
 		//	just return the value from the cache and will not communicate with the device.
 		//
 		//Parameters:
-		//	location - The <EepromLocation> to read from the device and update in the cache.
+		//	location - The eeprom location to read from the device and update in the cache.
 		//
 		//Returns:
 		//	The eeprom value for the requested location.
@@ -228,43 +229,7 @@ namespace mscl
 		//	- <Error_Communication>: Failed to read the value from the BaseStation.
 		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
-		virtual uint16 readEeprom_uint16(EepromLocation location);
-
-		//Function: readEeprom_float
-		//	Attempts to read 2 eeprom values from a device and build them into a float.
-		//	If caching is enabled and there is a previously cached value available, this will 
-		//	just return the value from the cache and will not communicate with the device.
-		//
-		//Parameters:
-		//	location - The <EepromLocation> to read from the device and update in the cache.
-		//
-		//Returns:
-		//	The eeprom value for the requested location.
-		//
-		//Exceptions:
-		//	- <Error_NotSupported>: Unsupported eeprom location.
-		//	- <Error_Communication>: Failed to read the value from the BaseStation.
-		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
-		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
-		virtual float readEeprom_float(EepromLocation location);
-
-		//Function: readEeprom_uint32
-		//	Attempts to read 2 eeprom values from a device and build them into a uint32.
-		//	If caching is enabled and there is a previously cached value available, this will 
-		//	just return the value from the cache and will not communicate with the device.
-		//
-		//Parameters:
-		//	location - The <EepromLocation> to read from the device and update in the cache.
-		//
-		//Returns:
-		//	The eeprom value for the requested location.
-		//
-		//Exceptions:
-		//	- <Error_NotSupported>: Unsupported eeprom location.
-		//	- <Error_Communication>: Failed to read the value from the BaseStation.
-		//	- <Error_NodeCommunication>: Failed to read the value from the Node.
-		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
-		virtual uint32 readEeprom_uint32(EepromLocation location);
+		virtual int16 readEeprom_int16(uint16 location);
 
 		//Function: writeEeprom_float
 		//	Attempts to write 2 eeprom values to a device as a float.
@@ -277,41 +242,12 @@ namespace mscl
 		//	value - The value to write to the eeprom on the device and update in the cache.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location or value.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		virtual void writeEeprom_float(uint16 location, float value);
 
-		//Function: writeEeprom
-		//	Attempts to write an eeprom value to a device.
-		//	If successful, the cache will be updated with the changed value as well.
-		//	If caching is enabled and the value in the cache is the same as that attempting to be written,
-		//	nothing will be written to the device and this function will have no affect.
-		//
-		//Parameters:
-		//	location - The <EepromLocation> to write to on the device and update in the cache.
-		//	value - The value to write to the eeprom on the device and update in the cache.
-		//
-		//Exceptions:
-		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
-		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
-		virtual void writeEeprom_uint16(EepromLocation location, uint16 value);
-
-		//Function: writeEeprom_float
-		//	Attempts to write 2 eeprom values to a device as a float.
-		//	If successful, the cache will be updated with the changed value as well.
-		//	If caching is enabled and the value in the cache is the same as that attempting to be written,
-		//	nothing will be written to the device and this function will have no affect.
-		//
-		//Parameters:
-		//	location - The <EepromLocation> to write to on the device and update in the cache.
-		//	value - The value to write to the eeprom on the device and update in the cache.
-		//
-		//Exceptions:
-		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
-		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
-		virtual void writeEeprom_float(EepromLocation location, float value);
-
-		//Function: writeEeprom
+		//Function: writeEeprom_uint32
 		//	Attempts to write 2 eeprom values to a device as a uint32.
 		//	If successful, the cache will be updated with the changed value as well.
 		//	If caching is enabled and the value in the cache is the same as that attempting to be written,
@@ -322,8 +258,25 @@ namespace mscl
 		//	value - The value to write to the eeprom on the device and update in the cache.
 		//
 		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location or value.
 		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
 		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
 		virtual void writeEeprom_uint32(uint16 location, uint32 value);
+
+		//Function: writeEeprom_int16
+		//	Attempts to write an eeprom value to a device from a signed int16.
+		//	If successful, the cache will be updated with the changed value as well.
+		//	If caching is enabled and the value in the cache is the same as that attempting to be written,
+		//	nothing will be written to the device and this function will have no affect.
+		//
+		//Parameters:
+		//	location - The eeprom location to write to on the device and update in the cache.
+		//	value - The value to write to the eeprom on the device and update in the cache.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Unsupported eeprom location or value.
+		//	- <Error_NodeCommunication>: Failed to write the value to the Node.
+		//	- <Error_Connection>: A connection error has occurred with the BaseStation.
+		virtual void writeEeprom_int16(uint16 location, int16 value);
 	};
 }

@@ -16,8 +16,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	WirelessNode::WirelessNode(uint16 nodeAddress, const BaseStation& basestation, WirelessTypes::Frequency nodeFrequency): //nodeFrequency=WirelessTypes::freq_unknown
-		m_impl(std::make_shared<WirelessNode_Impl>(nodeAddress, basestation, nodeFrequency))
+	WirelessNode::WirelessNode(uint16 nodeAddress, const BaseStation& basestation):
+		m_impl(std::make_shared<WirelessNode_Impl>(nodeAddress, basestation))
 	{
 	}
 
@@ -101,6 +101,11 @@ namespace mscl
 		return m_impl->frequency(); 
 	}
 
+	bool WirelessNode::quickPing()
+	{
+		return m_impl->quickPing();
+	}
+
 	PingResponse WirelessNode::ping()														
 	{ 
 		return m_impl->ping(); 
@@ -146,9 +151,9 @@ namespace mscl
 		m_impl->clearHistogram();
 	}
 
-	void WirelessNode::autoBalance(uint8 channelNumber, WirelessTypes::AutoBalanceOption option)
+	AutoBalanceResult WirelessNode::autoBalance(const ChannelMask& mask, float targetPercent)
 	{
-		m_impl->autoBalance(channelNumber, option);
+		return m_impl->autoBalance(mask, targetPercent);
 	}
 
 	AutoCalResult_shmLink WirelessNode::autoCal_shmLink()
@@ -199,6 +204,11 @@ namespace mscl
 	uint64 WirelessNode::dataStorageSize() const
 	{
 		return m_impl->dataStorageSize();
+	}
+
+	WirelessTypes::RegionCode WirelessNode::regionCode() const
+	{
+		return m_impl->regionCode();
 	}
 
 	bool WirelessNode::verifyConfig(const WirelessNodeConfig& config, ConfigIssues& outIssues) const
@@ -291,6 +301,11 @@ namespace mscl
 		return m_impl->getHardwareOffset(mask);
 	}
 
+	float WirelessNode::getGaugeFactor(const ChannelMask& mask) const
+	{
+		return m_impl->getGaugeFactor(mask);
+	}
+
 	LinearEquation WirelessNode::getLinearEquation(const ChannelMask& mask) const
 	{
 		return m_impl->getLinearEquation(mask);
@@ -324,5 +339,10 @@ namespace mscl
 	HistogramOptions WirelessNode::getHistogramOptions() const
 	{
 		return m_impl->getHistogramOptions();
+	}
+
+	ActivitySense WirelessNode::getActivitySense() const
+	{
+		return m_impl->getActivitySense();
 	}
 }

@@ -302,6 +302,7 @@
     <ClCompile Include="Test_BaseStationEepromMap.cpp" />
     <ClCompile Include="Test_BufferedLdc16chPacket.cpp" />
     <ClCompile Include="Test_BufferedLdcPacket.cpp" />
+    <ClCompile Include="Test_ChannelGroup.cpp" />
     <ClCompile Include="Test_ChannelMask.cpp" />
     <ClCompile Include="Test_ConfigIssue.cpp" />
     <ClCompile Include="Test_ContinuousDataStream.cpp" />

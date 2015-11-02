@@ -24,24 +24,26 @@ namespace mscl
 		NodeFeatures_shmlink(const NodeInfo& info);
 
 	public:
-		virtual bool supportsAutoBalance(uint8 channelNumber) const final;
-
 		virtual bool supportsFatigueConfig() const final;
 
 		virtual bool supportsYoungsModConfig() const final;
 
 		virtual bool supportsPoissonsRatioConfig() const final;
 
-		virtual bool supportsFatigueRawModeConfig() const final;
+		virtual bool supportsFatigueDebugModeConfig() const final;
 
 		virtual bool supportsHistogramConfig() const final;
 
 		virtual bool supportsHistogramRateConfig() const final;
+
+		virtual bool supportsHistogramEnableConfig() const final;
 
 		virtual uint8 numDamageAngles() const final;
 
 		virtual uint8 numSnCurveSegments() const final;
 
 		virtual const WirelessTypes::WirelessSampleRates histogramTransmitRates() const final;
+
+		virtual const WirelessTypes::FatigueModes fatigueModes() const final;
 	};
 }

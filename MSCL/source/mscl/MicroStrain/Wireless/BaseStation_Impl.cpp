@@ -12,6 +12,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Configuration/BaseStationConfig.h"
 #include "Features/BaseStationFeatures.h"
 #include "mscl/MicroStrain/ResponsePattern.h"
+#include "mscl/ScopeHelper.h"
 #include "mscl/Utils.h"
 #include "mscl/Version.h"
 #include "BaseStationInfo.h"
@@ -32,20 +33,24 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 //Node commands
 #include "Commands/ArmForDatalogging.h"
 #include "Commands/AutoBalance.h"
+#include "Commands/AutoBalance_v2.h"
 #include "Commands/AutoCal.h"
-#include "Commands/ShortPing.h"
+#include "Commands/AutoCalResult.h"
+#include "Commands/Erase.h"
 #include "Commands/LongPing.h"
+#include "Commands/PageDownload.h"
 #include "Commands/ReadEeprom.h"
 #include "Commands/ReadEeprom_v2.h"
-#include "Commands/WriteEeprom.h"
-#include "Commands/WriteEeprom_v2.h"
-#include "Commands/PageDownload.h"
+#include "Commands/ReadSingleSensor.h"
+#include "Commands/SetToIdle.h"
+#include "Commands/ShortPing.h"
+#include "Commands/ShortPing_v2.h"
+#include "Commands/Sleep.h"
 #include "Commands/StartNonSyncSampling.h"
 #include "Commands/StartSyncSampling.h"
-#include "Commands/SetToIdle.h"
-#include "Commands/Sleep.h"
 #include "Commands/TriggerArmedDatalogging.h"
-#include "Commands/Erase.h"
+#include "Commands/WriteEeprom.h"
+#include "Commands/WriteEeprom_v2.h"
 
 namespace mscl
 {
@@ -78,6 +83,10 @@ namespace mscl
 		Version fwVersion;
 
 		uint8 origRetries = m_eeprom->getNumRetries();
+
+		//when this goes out of scope, the number of retries will be changed back to what it was before
+		ScopeHelper writebackRetries(std::bind(&BaseStationEeprom::setNumRetries, m_eeprom.get(), origRetries));
+
 		m_eeprom->setNumRetries(0);
 
 		bool success = false;
@@ -122,20 +131,8 @@ namespace mscl
 		}
 		while(!success && (retryCount++ < origRetries));
 
-		//reset the eeprom retry counter back to what it was
-		m_eeprom->setNumRetries(origRetries);
-
-		//the BaseStation min fw version to support protocol 1.1
-		static const Version FW_PROTOCOL_1_1(4, 0);
-
-		if(fwVersion >= FW_PROTOCOL_1_1)
-		{
-			return WirelessProtocol::v1_1();
-		}
-		else
-		{
-			return WirelessProtocol::v1_0();
-		}
+		//get the protocol to use for the base station's fw version
+		return WirelessProtocol::chooseBaseStationProtocol(fwVersion);
 	}
 
 	BaseStationEepromHelper& BaseStation_Impl::eeHelper() const
@@ -734,6 +731,54 @@ namespace mscl
 		return false;
 	}
 
+	bool BaseStation_Impl::node_shortPing_v1(NodeAddress nodeAddress)
+	{
+		//create the response for the short ping command
+		ShortPing::Response response(m_responseCollector);
+
+		//send the short ping command to the base station
+		m_connection.write(ShortPing::buildCommand(nodeAddress));
+
+		//wait for the response
+		response.wait(m_nodeCommandsTimeout);
+
+		if(response.success())
+		{
+			//update basestation last comm time
+			m_lastCommTime.setTimeNow();
+
+			//update node last comm time
+			m_nodesLastCommTime[nodeAddress].setTimeNow();
+		}
+
+		//return the result of the response
+		return response.success();
+	}
+
+	bool BaseStation_Impl::node_shortPing_v2(NodeAddress nodeAddress)
+	{
+		//create the response for the short ping command
+		ShortPing_v2::Response response(nodeAddress, m_responseCollector);
+
+		//send the short ping command to the base station
+		m_connection.write(ShortPing_v2::buildCommand(nodeAddress));
+
+		//wait for the response
+		response.wait(m_nodeCommandsTimeout);
+
+		if(response.success())
+		{
+			//update basestation last comm time
+			m_lastCommTime.setTimeNow();
+
+			//update node last comm time
+			m_nodesLastCommTime[nodeAddress].setTimeNow();
+		}
+
+		//return the result of the response
+		return response.success();
+	}
+
 	bool BaseStation_Impl::node_readEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
 	{
 		bool success = false;
@@ -870,6 +915,57 @@ namespace mscl
 		return success;
 	}
 
+	bool BaseStation_Impl::node_autoBalance_v1(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result)
+	{
+		//determine the target value to send to the autobalance command (max bits is always 4096 for this command)
+		uint16 targetVal = static_cast<uint16>(4096 * targetPercent / 100.0f);
+
+		//build the command to send
+		ByteStream command = AutoBalance::buildCommand(nodeAddress, channelNumber, targetVal);
+
+		//send the command to the base station
+		m_connection.write(command);
+
+		//this command doesn't have a response (no info), so set the error code to legacy
+		result.m_errorCode = WirelessTypes::autobalance_legacyNone;
+
+		//don't know the actual status, have to assume success
+		return true;
+	}
+
+	bool BaseStation_Impl::node_autoBalance_v2(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result)
+	{
+		bool success = false;
+
+		//create the response for the AutoBalance_v2 command
+		AutoBalance_v2::Response response(nodeAddress, channelNumber, targetPercent, m_responseCollector);
+
+		//build the command to send
+		ByteStream command = AutoBalance_v2::buildCommand(nodeAddress, channelNumber, targetPercent);
+
+		//send the command to the base station
+		m_connection.write(command);
+
+		//wait for the response
+		response.wait(m_nodeCommandsTimeout);
+
+		//return the result of the response
+		success = response.success();
+
+		if(success)
+		{
+			//update basestation last comm time
+			m_lastCommTime.setTimeNow();
+
+			//update node last comm time
+			m_nodesLastCommTime[nodeAddress].setTimeNow();
+		}
+
+		result = response.result();
+
+		return success;
+	}
+
 	Value BaseStation_Impl::readEeprom(const EepromLocation& location) const
 	{
 		return m_eeprom->readEeprom(location);
@@ -897,6 +993,13 @@ namespace mscl
 		//store the original timeout that is currently set
 		uint64 originalTimeout = baseCommandsTimeout();
 
+		//when this goes out of scope, it will write back the original timeout (need cast for overloaded ambiguity)
+		ScopeHelper writebackTimeout(std::bind(static_cast<void(BaseStation_Impl::*)(uint64)>(&BaseStation_Impl::baseCommandsTimeout), this, originalTimeout));
+
+		//force determining of the protocol if it hasn't been already
+		//Note: this is so that we can set the timeout short and write eeprom without worrying about reading
+		protocol();
+
 		try
 		{
 			//this command doesn't have a response, change to a quick timeout
@@ -910,8 +1013,16 @@ namespace mscl
 			//an exception will be thrown due to no response, just continue on
 		}
 
-		//set the timeout back to what it was
-		baseCommandsTimeout(originalTimeout);
+		Utils::threadSleep(100);
+
+		//attempt to ping the node a few times to see if its back online
+		bool pingSuccess = false;
+		uint8 retries = 0;
+		while(!pingSuccess && retries <= 5)
+		{
+			pingSuccess = ping();
+			retries++;
+		}
 	}
 
 	void BaseStation_Impl::resetRadio()
@@ -920,6 +1031,8 @@ namespace mscl
 
 		//write a 0x02 to the CYCLE_POWER eeprom location on the base station
 		writeEeprom(BaseStationEepromMap::CYCLE_POWER, Value::UINT16(RESET_RADIO));
+
+		Utils::threadSleep(100);
 	}
 
 	void BaseStation_Impl::changeFrequency(WirelessTypes::Frequency frequency)
@@ -946,6 +1059,16 @@ namespace mscl
 	void BaseStation_Impl::applyConfig(const BaseStationConfig& config)
 	{
 		config.apply(features(), eeHelper());
+
+		//if we can just reset the radio to commit the changes
+		if(features().supportsEepromCommitViaRadioReset())
+		{
+			resetRadio();
+		}
+		else
+		{
+			cyclePower();
+		}
 	}
 
 	WirelessTypes::TransmitPower BaseStation_Impl::getTransmitPower() const
@@ -995,30 +1118,6 @@ namespace mscl
 	const Timestamp& BaseStation_Impl::node_lastCommunicationTime(NodeAddress nodeAddress)
 	{
 		return m_nodesLastCommTime[nodeAddress];
-	}
-
-	bool BaseStation_Impl::node_shortPing(NodeAddress nodeAddress)
-	{
-		//create the response for the short ping command
-		ShortPing::Response response(m_responseCollector);
-
-		//send the short ping command to the base station
-		m_connection.write(ShortPing::buildCommand(nodeAddress));
-
-		//wait up to 50 milliseconds for the response
-		response.wait(50);
-
-		if(response.success())
-		{
-			//update basestation last comm time
-			m_lastCommTime.setTimeNow();
-
-			//update node last comm time
-			m_nodesLastCommTime[nodeAddress].setTimeNow();
-		}
-
-		//return the result of the response
-		return response.success();
 	}
 
 	PingResponse BaseStation_Impl::node_ping(NodeAddress nodeAddress)
@@ -1079,6 +1178,12 @@ namespace mscl
 		SetToIdleStatus status(response);
 
 		return status;
+	}
+
+	bool BaseStation_Impl::node_shortPing(NodeAddress nodeAddress)
+	{
+		//this just depends on the protocol of the Base Station, not the Node
+		return protocol().m_shortPing(this, nodeAddress);
 	}
 
 	bool BaseStation_Impl::node_readEeprom(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
@@ -1196,15 +1301,9 @@ namespace mscl
 		return response.success();
 	}
 
-	void BaseStation_Impl::node_autoBalance(NodeAddress nodeAddress, uint8 channelNumber, uint16 targetVal)
+	bool BaseStation_Impl::node_autoBalance(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result)
 	{
-		//build the command to send
-		ByteStream command = AutoBalance::buildCommand(nodeAddress, channelNumber, targetVal);
-
-		//send the command to the base station
-		m_connection.write(command);
-
-		//no response for this command
+		return nodeProtocol.m_autoBalance(this, nodeAddress, channelNumber, targetPercent, result);
 	}
 
 	bool BaseStation_Impl::node_autocal(NodeAddress nodeAddress, WirelessModels::NodeModel model, const Version& fwVersion, AutoCalResult& result)
@@ -1217,6 +1316,7 @@ namespace mscl
 		switch(model)
 		{
 			case WirelessModels::node_shmLink2:
+			case WirelessModels::node_shmLink2_cust1:
 			default:
 				cmd = AutoCal::buildCommand_shmLink(nodeAddress);
 				break;
@@ -1254,6 +1354,32 @@ namespace mscl
 			result.parse(response.infoBytes());
 		}
 
+		return response.success();
+	}
+
+	bool BaseStation_Impl::node_readSingleSensor(NodeAddress nodeAddress, uint8 channelNumber, uint16& result)
+	{
+		//create the response for the Erase command
+		ReadSingleSensor::Response response(m_responseCollector);
+
+		//send the erase command to the base station
+		m_connection.write(ReadSingleSensor::buildCommand(nodeAddress, channelNumber));
+
+		//wait for the response or timeout
+		response.wait(m_nodeCommandsTimeout);
+
+		if(response.success())
+		{
+			result = response.sensorValue();
+
+			//update basestation last comm time
+			m_lastCommTime.setTimeNow();
+
+			//update node last comm time
+			m_nodesLastCommTime[nodeAddress].setTimeNow();
+		}
+
+		//return the result of the response
 		return response.success();
 	}
 }

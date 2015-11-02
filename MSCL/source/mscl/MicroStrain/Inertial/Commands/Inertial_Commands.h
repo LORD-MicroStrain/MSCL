@@ -6,8 +6,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include "GenericInertialCommand.h"
+#include "mscl/MicroStrain/Inertial/EulerAngles.h"
 #include "mscl/MicroStrain/Inertial/InertialChannel.h"
 #include "mscl/MicroStrain/Inertial/InertialTypes.h"
+#include "mscl/MicroStrain/Inertial/PositionOffset.h"
 #include "GetDeviceInfo.h"
 
 namespace mscl
@@ -92,5 +94,25 @@ namespace mscl
 		//Returns:
 		//	true if the data stream is enabled, false if it is disabled.
 		static bool parseData_ContinuousDataStream(const GenericInertialCommandResponse& response);
+
+		//Function: parseData_EulerAngles
+		//	Parses the data from a command response containing just 3 Euler Angles (roll, pitch, yaw).
+		//
+		//Parameters:
+		//	response - The <GenericInertialCommandResponse> that contains the data to be parsed
+		//
+		//Returns:
+		//	The <EulerAngles> containing the result that is parsed.
+		static EulerAngles parseData_EulerAngles(const GenericInertialCommandResponse& response);
+
+		//Function: parseData_PositionOffset
+		//	Parses the data from a command response containing just 3 Position Offset values (x, y, z).
+		//
+		//Parameters:
+		//	response - The <GenericInertialCommandResponse> that contains the data to be parsed
+		//
+		//Returns:
+		//	The <EulerAngles> containing the result that is parsed.
+		static PositionOffset parseData_PositionOffset(const GenericInertialCommandResponse& response);
 	};
 }

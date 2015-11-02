@@ -199,17 +199,19 @@ namespace mscl
 		//API Enums: TransmitPower
 		//	Represents the transmit powers that can be used for Wireless Devices.
 		//
-		//	power_16dBm - 25619	- 16 dBm (39 mw)
-		//	power_10dBm - 25615 - 10 dBm (10 mw)
-		//	power_5dBm	- 25611 - 5 dBm (3 mw)
-		//	power_0dBm	- 25607 - 0 dBm  (1 mw)
+		//	power_20dBm - 20 - 20 dBm (100 mw)
+		//	power_16dBm - 16 - 16 dBm (39 mw)
+		//	power_10dBm - 10 - 10 dBm (10 mw)
+		//	power_5dBm	- 5	 - 5 dBm (3 mw)
+		//	power_0dBm	- 0	 - 0 dBm  (1 mw)
 		//=====================================================================================================
 		enum TransmitPower
 		{
-			power_16dBm = 25619,
-			power_10dBm = 25615,
-			power_5dBm	= 25611,
-			power_0dBm	= 25607
+			power_20dBm = 20,
+			power_16dBm = 16,
+			power_10dBm = 10,
+			power_5dBm	= 5,
+			power_0dBm	= 0
 		};
 
 		//=====================================================================================================
@@ -575,6 +577,8 @@ namespace mscl
 		//	chSetting_unit					- 4 - Unit
 		//	chSetting_equationType			- 5 - Equation Type
 		//	chSetting_hardwareOffset		- 6 - Hardware Offset
+		//	chSetting_autoBalance			- 7 - Autobalance Function
+		//	chSetting_gaugeFactor			- 8 - Gauge Factor
 		enum ChannelGroupSetting
 		{
 			chSetting_hardwareGain			= 0,
@@ -583,16 +587,30 @@ namespace mscl
 			chSetting_linearEquation		= 3,
 			chSetting_unit					= 4,
 			chSetting_equationType			= 5,
-			chSetting_hardwareOffset		= 6
+			chSetting_hardwareOffset		= 6,
+			chSetting_autoBalance			= 7,
+			chSetting_gaugeFactor			= 8
 		};
 
-		//API Enum: AutoBalanceOption
-		//	The options available to balance to for the Auto Balance Node command.
-		enum AutoBalanceOption
+		//API Enum: AutoBalanceErrorFlag
+		//	The possible completion flags for the AutoBalance Wireless Node function.
+		//
+		//	autobalance_success				- 0		- AutoBalance was successful.
+		//	autobalance_maybeInvalid		- 1		- AutoBalance completed, but the values look suspicious.
+		//	autobalance_notSupportedByNode	- 2		- AutoBalance is not supported by the Node.
+		//	autobalance_notSupportedByCh	- 3		- AutoBalance is not supported by the channel.
+		//	autobalance_targetOutOfRange	- 4		- The target balance value is out of range for the channel.
+		//	autobalance_legacyNone			- 998	- The legacy AutoBalance command was used, so no info was returned.
+		//	autobalance_notComplete			- 999	- AutoBalance has not yet completed. 
+		enum AutoBalanceErrorFlag
 		{
-			autoBalance_low			= 0,
-			autoBalance_midscale	= 1,
-			autoBalance_high		= 2
+			autobalance_success				= 0,
+			autobalance_maybeInvalid		= 1,
+			autobalance_notSupportedByNode	= 2,
+			autobalance_notSupportedByCh	= 3,
+			autobalance_targetOutOfRange	= 4,
+			autobalance_legacyNone			= 998,
+			autobalance_notComplete			= 999
 		};
 
 		//API Enum: AutoCalCompletionFlag
@@ -603,9 +621,9 @@ namespace mscl
 		//	autocal_notComplete		- 999	- AutoCal has not yet completed.
 		enum AutoCalCompletionFlag
 		{
-			autocal_success = 0,
-			autocal_maybeInvalid = 1,
-			autocal_notComplete = 999
+			autocal_success			= 0,
+			autocal_maybeInvalid	= 1,
+			autocal_notComplete		= 999
 		};
 
 		//API Enum: AutoCalErrorFlag
@@ -621,6 +639,19 @@ namespace mscl
 			autocalError_sensorShorted	= 2
 		};
 
+		//API Enum: FatigueMode
+		//	The different modes a Fatigue Node can operate in.
+		//
+		//	fatigueMode_angleStrain			- 0		- Standard angle strain mode: can enter specific angles to sample.
+		//	fatigueMode_distributedAngle	- 1		- Distributed angle mode: can enter a low, high, and # of angles (4-16) to sample.
+		//	fatigueMode_rawGaugeStrain		- 2		- Raw Gauge Strain mode: sends the raw strain sensor data.
+		enum FatigueMode
+		{
+			fatigueMode_angleStrain			= 0,
+			fatigueMode_distributedAngle	= 1,
+			fatigueMode_rawGaugeStrain		= 2
+		};
+
 	public:
 		//API Typedefs:
 		//	DataCollectionMethods	- A vector of <DataCollectionMethod> enums.
@@ -629,7 +660,8 @@ namespace mscl
 		//	SamplingModes			- A vector of <SamplingMode> enums.
 		//	DefaultModes			- A vector of <DefaultMode> enums.
 		//	TransmitPowers			- A vector of <TransmitPower> enums.
-		//	ChannelGroupSettings	- A vectof of <ChannelGroupSetting> enums.
+		//	ChannelGroupSettings	- A vector of <ChannelGroupSetting> enums.
+		//	FatigueModes			- A vector of <FatigueMode> enums.
 		typedef std::vector<DataCollectionMethod> DataCollectionMethods;
 		typedef std::vector<DataFormat> DataFormats;
 		typedef std::vector<WirelessSampleRate> WirelessSampleRates;
@@ -637,12 +669,30 @@ namespace mscl
 		typedef std::vector<DefaultMode> DefaultModes;
 		typedef std::vector<TransmitPower> TransmitPowers;
 		typedef std::vector<ChannelGroupSetting> ChannelGroupSettings;
+		typedef std::vector<FatigueMode> FatigueModes;
 
 		//API Constant: UNKNOWN_RSSI = 999
 		//	The value given for an unknown RSSI value.
 		static const int16 UNKNOWN_RSSI = 999;
 
 #ifndef SWIG
+		//=====================================================================================================
+		//Enums: LegacyTransmitPower
+		//	Represents the legacy transmit powers supported by older devices.
+		//
+		//	legacyPower_16dBm	- 25619	- 16 dBm (39 mw)
+		//	legacyPower_10dBm	- 25615 - 10 dBm (10 mw)
+		//	legacyPower_5dBm	- 25611 - 5 dBm (3 mw)
+		//	legacyPower_0dBm	- 25607 - 0 dBm  (1 mw)
+		//=====================================================================================================
+		enum LegacyTransmitPower
+		{
+			legacyPower_16dBm	= 25619,
+			legacyPower_10dBm	= 25615,
+			legacyPower_5dBm	= 25611,
+			legacyPower_0dBm	= 25607
+		};
+
 		//Function: dataTypeSize
 		//	Gets the byte size of the data type passed in
 		//
@@ -712,6 +762,29 @@ namespace mscl
 		//Returns:
 		//	The max <WirelessTypes::TransmitPower>.
 		static WirelessTypes::TransmitPower maxTransmitPower(WirelessTypes::RegionCode region);
+
+		//Function: legacyToTransmitPower
+		//	Converts the given <WirelessTypes::LegacyTransmitPower> to the <WirelessTypes::TransmitPower> equivalent.
+		//
+		//Parameters:
+		//	legacyVal - the <WirelessTypes::LegacyTransmitPower> to convert.
+		//
+		//Returns:
+		//	The <WirelessTypes::TransmitPower> equivalent of the legacy transmit power.
+		static WirelessTypes::TransmitPower legacyToTransmitPower(WirelessTypes::LegacyTransmitPower legacyVal);
+
+		//Function: transmitPowerToLegacy
+		//	Converts the given <WirelessTypes::TransmitPower> to the <WirelessTypes::LegacyTransmitPower> equivalent.
+		//
+		//Parameters:
+		//	power - the <WirelessTypes::TransmitPower> to convert.
+		//
+		//Returns:
+		//	The <WirelessTypes::LegacyTransmitPower> equivalent of the current transmit power.
+		//
+		//Exceptions:
+		//	- <Error>: Invalid transmit power.
+		static WirelessTypes::LegacyTransmitPower transmitPowerToLegacy(WirelessTypes::TransmitPower power);
 #endif
 	};
 }

@@ -161,7 +161,49 @@ namespace mscl
 			case WirelessTypes::region_usa:
 			case WirelessTypes::region_brazil:
 			default:
+				return WirelessTypes::power_20dBm;
+		}
+	}
+
+	WirelessTypes::TransmitPower WirelessTypes::legacyToTransmitPower(WirelessTypes::LegacyTransmitPower legacyVal)
+	{
+		switch(legacyVal)
+		{
+			case WirelessTypes::legacyPower_5dBm:
+				return WirelessTypes::power_5dBm;
+
+			case WirelessTypes::legacyPower_0dBm:
+				return WirelessTypes::power_0dBm;
+
+			case WirelessTypes::legacyPower_10dBm:
+				return WirelessTypes::power_10dBm;
+
+			case WirelessTypes::legacyPower_16dBm:
 				return WirelessTypes::power_16dBm;
+
+			default:
+				return static_cast<WirelessTypes::TransmitPower>(legacyVal);
+		}
+	}
+
+	WirelessTypes::LegacyTransmitPower WirelessTypes::transmitPowerToLegacy(WirelessTypes::TransmitPower power)
+	{
+		switch(power)
+		{
+			case WirelessTypes::power_5dBm:
+				return WirelessTypes::legacyPower_5dBm;
+
+			case WirelessTypes::power_0dBm:
+				return WirelessTypes::legacyPower_0dBm;
+
+			case WirelessTypes::power_10dBm:
+				return WirelessTypes::legacyPower_10dBm;
+
+			case WirelessTypes::power_16dBm:
+				return WirelessTypes::legacyPower_16dBm;
+
+			default:
+				throw Error("Attempting to convert a transmit power (" + Utils::toStr(power) + ") without a legacy equivalent.");
 		}
 	}
 }

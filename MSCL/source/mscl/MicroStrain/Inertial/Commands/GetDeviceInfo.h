@@ -91,7 +91,7 @@ namespace mscl
 			//	true if the field matches the expected data, false if it does not.
 			virtual bool match_data(const InertialDataField& field) override;
 
-			//Function: parseData
+			//Function: parseResponse
 			//	Parses a successfully matched response for the GetDeviceInfo command.
 			//
 			//Parameters:
@@ -99,7 +99,7 @@ namespace mscl
 			//
 			//Returns:
 			//	The GetDeviceInfoResponse parsed from the response.
-			InertialDeviceInfo parseData(const GenericInertialCommandResponse& response) const;
+			InertialDeviceInfo parseResponse(const GenericInertialCommandResponse& response) const;
 		};
 	};
 }

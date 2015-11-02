@@ -22,7 +22,5 @@ namespace mscl
 		//Constructor: NodeFeatures_sglinkoemHermetic
 		//	Creates a NodeFeatures_sglinkoemHermetic object.
 		NodeFeatures_sglinkoemHermetic(const NodeInfo& info);
-
-		virtual bool supportsAutoBalance(uint8 channelNumber) const final;
 	};
 }

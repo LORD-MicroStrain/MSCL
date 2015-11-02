@@ -12,10 +12,14 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Commands/InertialCmdResponse.h"
 #include "Packets/InertialDataPacket.h"
 #include "mscl/Communication/Connection.h"
+#include "mscl/MicroStrain/Inertial/PositionOffset.h"
+#include "mscl/MicroStrain/Inertial/EulerAngles.h"
 
 namespace mscl
 {
+	//forward declarations
 	class InertialNode_Impl;
+	class InertialNodeFeatures;
 
 	//API Class: InertialNode
 	//	A class representing a MicroStrain Inertial Node
@@ -48,6 +52,31 @@ namespace mscl
 		std::shared_ptr<InertialNode_Impl> m_impl;
 
 	public:
+		//API Function: info
+		//	Gets <InertialNodeInfo> for this Node. 
+		//	The first time this function is called, it will send multiple commands to the device to get all required information.
+		//	Note: This will be invalid when the InertialNode is destroyed.
+		//
+		//Returns:
+		//	A reference to the <InertialNodeInfo> for this Node.
+		//
+		//Exceptions:
+		//	- <Error_Timeout>: There was no response to the command. The command timed out.
+		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+		//	- <Error_Connection>: Information failed to be loaded for this Node.
+		const InertialNodeInfo& info();
+
+		//API Function: features
+		//	Gets a reference to the <InertialNodeFeatures> for this device.
+		//	Note: This will be invalid when the InertialNode is destroyed.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: The model is not supported by MSCL.
+		//	- <Error_Timeout>: There was no response to the command. The command timed out.
+		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+		//	- <Error_Connection>: Information failed to be loaded for this Node.
+		const InertialNodeFeatures& features();
+
 		//API Function: deviceName
 		//	Static function for creating the universal sensor name that should be used for SensorCloud.
 		//
@@ -124,19 +153,6 @@ namespace mscl
 		//Parameters:
 		//	timeout - The timeout (in milliseconds) to set for Inertial commands.
 		void commandsTimeout(uint64 timeout);
-
-		//API Function: info
-		//	Gets <InertialNodeInfo> for this Node. 
-		//	The first time this function is called, it will send multiple commands to the device to get all required information.
-		//
-		//Returns:
-		//	A reference to the <InertialNodeInfo> for this Node.
-		//
-		//Exceptions:
-		//	- <Error_Timeout>: There was no response to the command. The command timed out.
-		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
-		//	- <Error_Connection>: Information failed to be loaded for this Node.
-		const InertialNodeInfo& info();
 
 		//API Function: name
 		//	Gets the name of the InertialNode. This is the universal sensor name that should be used for uploading to SensorCloud.
@@ -264,6 +280,86 @@ namespace mscl
 		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
 		//	- <Error_Connection>: A connection error has occurred with the InertialNode.
 		void enableDataStream(InertialTypes::InertialCategory category, bool enable = true);
+
+		//API Function: getSensorToVehicleTransformation
+		//	Gets the sensor to vehicle frame transformation matrix using roll, pitch, and yaw Euler angles.
+		//	These angles define the rotation from the sensor body from to the fixed vehicle frame.
+		//
+		//Returns:
+		//	The <EulerAngles> object containing the roll, pitch, and yaw result (in radians).
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: The command is not supported by this Node.
+		//	- <Error_Timeout>: There was no response to the command. The command timed out.
+		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+		//	- <Error_Connection>: A connection error has occurred with the InertialNode.
+		EulerAngles getSensorToVehicleTransformation();
+
+		//API Function: setSensorToVehicleTransformation
+		//	Sets the sensor to vehicle frame transformation matrix using roll, pitch, and yaw Euler angles (in radians).
+		//	These angles define the rotation from the sensor body from to the fixed vehicle frame.
+		//
+		//Parameters:
+		//	angles - The <EulerAngles> object containing the roll, pitch, and yaw (in radians) to set.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: The command is not supported by this Node.
+		//	- <Error_Timeout>: There was no response to the command. The command timed out.
+		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+		//	- <Error_Connection>: A connection error has occurred with the InertialNode.
+		void setSensorToVehicleTransformation(const EulerAngles& angles);
+
+		//API Function: getSensorToVehicleOffset
+		//	Gets the sensor to vehicle frame offset, expressed in the sensor frame.
+		//
+		//Returns:
+		//	The <PositionOffset> object containing the x, y, and z position (in meters) result.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: The command is not supported by this Node.
+		//	- <Error_Timeout>: There was no response to the command. The command timed out.
+		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+		//	- <Error_Connection>: A connection error has occurred with the InertialNode.
+		PositionOffset getSensorToVehicleOffset();
+
+		//API Function: setSensorToVehicleOffset
+		//	Sets the sensor to vehicle frame offset, expressed in the sensor frame.
+		//
+		//Parameters:
+		//	offset - The <PositionOffset> object containing the x, y, and z position (in meters) to set.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: The command is not supported by this Node.
+		//	- <Error_Timeout>: There was no response to the command. The command timed out.
+		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+		//	- <Error_Connection>: A connection error has occurred with the InertialNode.
+		void setSensorToVehicleOffset(const PositionOffset& offset);
+
+		//API Function: getAntennaOffset
+		//	Gets the antenna offset, expressed in the sensor frame.
+		//
+		//Returns:
+		//	The <PositionOffset> object containing the x, y, and z position (in meters) result.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: The command is not supported by this Node.
+		//	- <Error_Timeout>: There was no response to the command. The command timed out.
+		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+		//	- <Error_Connection>: A connection error has occurred with the InertialNode.
+		PositionOffset getAntennaOffset();
+
+		//API Function: setAntennaOffset
+		//	Sets the antenna offset, expressed in the sensor frame.
+		//
+		//Parameters:
+		//	offset - The <PositionOffset> object containing the x, y, and z position (in meters) to set.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: The command is not supported by this Node.
+		//	- <Error_Timeout>: There was no response to the command. The command timed out.
+		//	- <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+		//	- <Error_Connection>: A connection error has occurred with the InertialNode.
+		void setAntennaOffset(const PositionOffset& offset);
 	};
 
 }

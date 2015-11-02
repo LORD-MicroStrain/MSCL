@@ -47,7 +47,7 @@ namespace mscl
 		return GenericInertialCommand::Response::match_data(field);
 	}
 
-	InertialDeviceInfo GetDeviceInfo::Response::parseData(const GenericInertialCommandResponse& response) const
+	InertialDeviceInfo GetDeviceInfo::Response::parseResponse(const GenericInertialCommandResponse& response) const
 	{
 		InertialDeviceInfo result;
 		Inertial_Commands::parseData_GetDeviceInfo(response, result);

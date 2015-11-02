@@ -48,7 +48,7 @@ namespace mscl
 		m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_voltage);			//voltage
 		m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_voltage);			//voltage
 		m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_temperature);		//internal temp
-		m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_rh);					//% RH
+		m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_rh);				//% RH
 	}
 
 	const WirelessTypes::SamplingModes NodeFeatures_envlinkPro::samplingModes() const

@@ -176,6 +176,27 @@ namespace mscl
 		//	true if the Node supports Hardware Gain for at least one <ChannelGroup>, false otherwise.
 		bool supportsHardwareGain() const;
 
+		//API Function: supportsHardwareOffset
+		//	Checks if the Node supports Hardware Offset for any of its <ChannelGroups>.
+		//	
+		//Returns:
+		//	true if the Node supports Hardware Offset for at least one <ChannelGroup>, false otherwise.
+		bool supportsHardwareOffset() const;
+
+		//API Function: supportsGaugeFactor
+		//	Checks if the Node supports Gauge Factor for any of its <ChannelGroups>.
+		//
+		//Returns:
+		//	true if the Node support Gauge Factor for at least on <ChannelGroup>, false otherwise.
+		bool supportsGaugeFactor() const;
+
+		//API Function: supportsLostBeaconTimeout
+		//	Checks if the Node supports the Lost Beacon Timeout option.
+		//
+		//Returns:
+		//	true if the Node supports Lost Beacon Timeout, false otherwise.
+		virtual bool supportsLostBeaconTimeout() const;
+
 		//API Function: supportsFilterSettlingTime
 		//	Checks if the Node supports Filter Settling Time for any of its <ChannelGroups>.
 		//
@@ -211,12 +232,19 @@ namespace mscl
 		//	true if the Node supports Poisson's Ratio configuration, false otherwise.
 		virtual bool supportsPoissonsRatioConfig() const;
 
-		//API Function: supportsFatigueRawModeConfig
-		//	Checks if the Node supports enabling Raw Mode (part of <FatigueOptions>) configuration.
+		//API Function: supportsFatigueDebugModeConfig
+		//	Checks if the Node supports enabling Debug Mode (part of <FatigueOptions>) configuration.
 		//
 		//Returns:
-		//	true if the Node supports Raw Mode configuration, false otherwise.
-		virtual bool supportsFatigueRawModeConfig() const;
+		//	true if the Node supports Debug Mode configuration, false otherwise.
+		virtual bool supportsFatigueDebugModeConfig() const;
+
+		//API Function: supportsFatigueModeConfig
+		//	Checks if the Node supports Fatigue Mode (part of <FatigueOptions>) configuration.
+		//
+		//Returns:
+		//	true if the Node supports Fatigue Mode configuration, false otherwise.
+		virtual bool supportsFatigueModeConfig() const;
 
 		//API Function: supportsHistogramConfig
 		//	Checks if the Node supports <HistogramOptions> configuration.
@@ -232,15 +260,26 @@ namespace mscl
 		//	true if the Node supports Histogram transmit rate configuration, false otherwise.
 		virtual bool supportsHistogramRateConfig() const;
 
-		//API Function: supportsAutoBalance
-		//	Checks if the Node supports the AutoBalance command for a specified channel.
-		//
-		//Parameters:
-		//	channelNumber - The channel number (ch1 = 1, ch8 = 8) to check if autobalance is supported.
+		//API Function: supportsHistogramEnableConfig
+		//	Checks if the Node supports turning Histograms on and off (part of <FatigueOptions>).
 		//
 		//Returns:
-		//	true if the Node supports autobalance of the specified channel, false otherwise.
-		virtual bool supportsAutoBalance(uint8 channelNumber) const;
+		//	true if the Node supports turning Histograms on and off, false otherwise.
+		virtual bool supportsHistogramEnableConfig() const;
+
+		//API Function: supportsActivitySense
+		//	Checks if the Node supports the <ActivitySense> feature.
+		//
+		//Returns:
+		//	true if the Node supports <ActivitySense> and can be configured for it.
+		virtual bool supportsActivitySense() const;
+
+		//API Function: supportsAutoBalance
+		//	Checks if the Node supports the Auto Balance command for any of its <ChannelGroups>.
+		//
+		//Returns:
+		//	true if the Node supports Auto Balance for at least 1 <ChannelGroup>, false otherwise.
+		virtual bool supportsAutoBalance() const;
 
 		//API Function: supportsAutoCal
 		//	Checks if the Node supports the AutoCal commands.
@@ -248,6 +287,13 @@ namespace mscl
 		//Returns:
 		//	true if the Node supports an AutoCal command, false otherwise.
 		virtual bool supportsAutoCal() const;
+
+		//API Function: supportsLimitedDuration
+		//	Checks if the Node supports setting a limited duration of sampling.
+		//
+		//Returns:
+		//	true if the Node supported limited duration, false if the Node only supports unlimited sampling.
+		virtual bool supportsLimitedDuration() const;
 
 		//API Function: supportsChannel
 		//	Checks if a specific channel is supported (can be enabled) by this Node.
@@ -319,6 +365,16 @@ namespace mscl
 		//Returns:
 		//	true if the transmit power is supported, false otherwise.
 		bool supportsTransmitPower(WirelessTypes::TransmitPower power) const;
+
+		//API Function: supportsFatigueMode
+		//	Checks if a <WirelessTypes::FatigueMode> is supported by this Node.
+		//
+		//Parameters:
+		//	mode - The <WirelessTypes::FatigueMode> to check if supported.
+		//
+		//Returns:
+		//	true if the fatigue mode is supported, false otherwise.
+		bool supportsFatigueMode(WirelessTypes::FatigueMode mode) const;
 
 		//API Function: maxSampleRate
 		//	Gets the maximum <SampleRate> value that is supported by this Node with the given <SamplingMode> and <ChannelMask>.
@@ -530,5 +586,21 @@ namespace mscl
 		//Returns:
 		//	A vector of <WirelessTypes::WirelessSampleRate>s representing the Histogram Transmit Rates that are supported by this Node.
 		virtual const WirelessTypes::WirelessSampleRates histogramTransmitRates() const;
+
+		//API Function: fatigueModes
+		//	Gets a list of the <WirelessTypes::FatigueMode>s that are supported by this Node.
+		//
+		//Returns:
+		//	A vector of <WirelessTypes::FatigueModes> supported by the Node.
+		virtual const WirelessTypes::FatigueModes fatigueModes() const;
+
+	protected:
+		//Function: supportsNewTransmitPowers
+		//	Checks if the Node supports the new transmit powers (true), or the old ones (false).
+		virtual bool supportsNewTransmitPowers() const;
+
+		//Function: supportsAutoBalance2
+		//	Checks if the Node supports the AutoBalance (Version 2) command.
+		virtual bool supportsAutoBalance2() const;
 	};
 }

@@ -38,14 +38,37 @@ namespace mscl
 
 	WirelessTypes::TransmitPower BaseStationEepromHelper::read_transmitPower() const
 	{
-		//read and return the transmit power level
-		return static_cast<WirelessTypes::TransmitPower>(read(BaseStationEepromMap::TX_POWER_LEVEL).as_uint16());
+		int16 val = read(BaseStationEepromMap::TX_POWER_LEVEL).as_int16();
+
+		if(m_baseStation->features().supportsNewTransmitPowers())
+		{
+			return static_cast<WirelessTypes::TransmitPower>(val);
+		}
+		else
+		{
+			//legacy value, convert to current value before returning
+
+			//read and return the transmit power level
+			return WirelessTypes::legacyToTransmitPower(static_cast<WirelessTypes::LegacyTransmitPower>(val));
+		}
 	}
 
 	void BaseStationEepromHelper::write_transmitPower(WirelessTypes::TransmitPower power)
 	{
+		int16 valToWrite = 0;
+
+		if(m_baseStation->features().supportsNewTransmitPowers())
+		{
+			valToWrite = static_cast<int16>(power);
+		}
+		else
+		{
+			//need to write the legacy value for the device to understand it
+			valToWrite = static_cast<int16>(WirelessTypes::transmitPowerToLegacy(power));
+		}
+
 		//write the transmit power level to the node
-		write(BaseStationEepromMap::TX_POWER_LEVEL, Value::UINT16(static_cast<uint16>(power)));
+		write(BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, valToWrite));
 	}
 
 	BaseStationButton BaseStationEepromHelper::read_button(uint8 buttonNumber, BaseStationButton::UserAction action) const
@@ -187,7 +210,15 @@ namespace mscl
 
 		//write all the values to eeprom
 		write(analogEE_nodeAddress, Value::UINT16(pair.nodeAddress()));
-		write(analogEE_nodeChannel, Value::UINT16(static_cast<uint16>(pair.nodeChannel())));
+
+		//a value of 0xFF should disable the channel (actually write a 0xFFFF)
+		uint16 chToWrite = pair.nodeChannel();
+		if(chToWrite == 0xFF)
+		{
+			chToWrite = 0xFFFF;
+		}
+		write(analogEE_nodeChannel, Value::UINT16(chToWrite));
+
 		write(analogEE_maxFloat, Value::FLOAT(pair.outputVal_3V()));
 		write(analogEE_minFloat, Value::FLOAT(pair.outputVal_0V()));
 	}

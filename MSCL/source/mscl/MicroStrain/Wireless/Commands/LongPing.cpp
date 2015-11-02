@@ -106,6 +106,8 @@ namespace mscl
 		//notify that the response was matched
 		m_matchCondition.notify();
 
+		m_success = true;
+
 		return true;
 	}
 

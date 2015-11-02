@@ -255,8 +255,6 @@ namespace mscl
 		WirelessChannel(uint8 chNumber, WirelessChannel::ChannelId id, WirelessTypes::ChannelType type);
 
 	private:
-		
-
 		//Variable: m_chNumber
 		//	The channel number (ch1 = 1) of the channel.
 		uint8 m_chNumber;

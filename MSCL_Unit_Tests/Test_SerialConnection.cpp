@@ -26,7 +26,7 @@ LICENSE.txt file for a copy of the full GNU General Public License.
 
 using namespace mscl;
 
-void parseData(DataBuffer& data)
+void parseResponse(DataBuffer& data)
 {
 }
 

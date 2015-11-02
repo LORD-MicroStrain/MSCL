@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(GetGpsDataRateBase_parseData)
 	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
 	GetGpsDataRateBase::Response response(rc);
 
-	BOOST_CHECK_EQUAL(response.parseData(GenericInertialCommandResponse::ResponseSuccess("", data)), 1000);
+	BOOST_CHECK_EQUAL(response.parseResponse(GenericInertialCommandResponse::ResponseSuccess("", data)), 1000);
 }
 
 BOOST_AUTO_TEST_CASE(GetGpsDataRateBase_Match_Success)
@@ -133,7 +133,7 @@ BOOST_AUTO_TEST_CASE(GpsMessageFormat_parseData)
 
 	uint16 sampleRateBase = 1000;
 
-	InertialChannels chs = response.parseData(GenericInertialCommandResponse::ResponseSuccess("", data), sampleRateBase);
+	InertialChannels chs = response.parseResponse(GenericInertialCommandResponse::ResponseSuccess("", data), sampleRateBase);
 
 	BOOST_CHECK_EQUAL(chs.size(), 1);
 	BOOST_CHECK_EQUAL(chs.at(0).channelField(), InertialTypes::CH_FIELD_GPS_UTC_TIME);

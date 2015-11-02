@@ -2,6 +2,155 @@
 All notable changes to this project will be documented in this file.
 
 -------------------------------------------------------------------------
+1.20.1 - 2015-10-29
+- added histogramEnable to FatigueOptions config.
+- added supportsHistogramEnableConfig to NodeFeatures.
+
+-------------------------------------------------------------------------
+1.20.0 - 2015-10-29
+- added fatigueMode to FatigueOptions config (replaces distributedAngleMode boolean).
+- changed rawMode to debugMode in FatigueOptions.
+- changed supportsFatigueRawModeConfig to supportsFatigueDebugModeConfig.
+- added supportsFatigueModeConfig (replaces supportsFatigueDistributedAngleMode).
+- added fatigueModes function to NodeFeatures for getting a list of supported fatigue modes.
+
+-------------------------------------------------------------------------
+1.19.2 - 2015-10-28
+- changed back to std::regex...again.
+
+-------------------------------------------------------------------------
+1.19.1 - 2015-10-27
+- fix for specific config issue enums not actually being returned.
+
+-------------------------------------------------------------------------
+1.19.0 - 2015-10-27
+- added support for WirelessNode quickPing() command for performing a "Short Ping".
+  - this uses the new ASPP Short Ping if the Base Station supports it.
+- changed from std::regex to boost::regex as the current Ubuntu LTS (14.04) doesn't support it.
+- exposed InertialTypes::channelFieldToStr to SWIG.
+- exposed InertialTypes::channelQualifierToStr to SWIG.
+- exposed InertialTypes::channelName to SWIG.
+
+-------------------------------------------------------------------------
+1.18.3 - 2015-10-27
+- added more specific config issue enums.
+- fix for Gauge Factor config issue incorrectly sending a Hardware Gain issue enum.
+
+-------------------------------------------------------------------------
+1.18.2 - 2015-10-26
+- fix for ActivitySense options not being written in the applyConfig function.
+
+-------------------------------------------------------------------------
+1.18.1 - 2015-10-22
+- added support for the SG-Link-Micro node.
+
+-------------------------------------------------------------------------
+1.18.0 - 2015-10-21
+- added support for the Fatigue distributed angle mode configuration.
+
+-------------------------------------------------------------------------
+1.17.1 - 2015-10-21
+- added support for WirelessNode regionCode() function.
+- removed optional frequency parameter from WirelessNode constructor.
+
+-------------------------------------------------------------------------
+1.17.0 - 2015-10-21
+- added support for Gauge Factor configuration for supported nodes.
+
+-------------------------------------------------------------------------
+1.16.0 - 2015-10-20
+- finalized support for ActivitySense feature.
+
+-------------------------------------------------------------------------
+1.15.1 - 2015-10-20
+- added support for SHM-Link2-cust1 model.
+- starting to add support for ActivitySense feature (not yet working, invalid eeproms).
+
+-------------------------------------------------------------------------
+1.15.0 - 2015-10-19
+- added InertialNode::getAntennaOffset().
+- added InertialNode::setAntennaOffset().
+
+-------------------------------------------------------------------------
+1.14.0 - 2015-10-16
+- added InertialNode::getSensorToVehicleOffset().
+- added InertialNode::setSensorToVehicleOffset().
+- added start of InertialNodeFeatures class (doesn't provide anything right now).
+
+-------------------------------------------------------------------------
+1.13.0 - 2015-10-15
+- added InertialNode::getSensorToVehicleTransformation().
+- added InertialNode::setSensorToVehicleTransformation().
+
+-------------------------------------------------------------------------
+1.12.2 - 2015-10-15
+- removing support for cal coefficients from the SHM-Link 2.
+
+-------------------------------------------------------------------------
+1.12.1 - 2015-10-15
+- updated SHM-Link 2 features to not support limited duration (sweeps).
+
+-------------------------------------------------------------------------
+1.12.0 - 2015-10-15
+- added NodeFeatures::supportsLimitedDuration for checking which Nodes only support unlimited sampling (no sweeps).
+- don't allow a value other than true to be set for unlimited duration if Node doesn't support disabling it.
+- don't allow reading or writing the number of sweeps if the node only supports unlimited sampling.
+- NodeFeatures minSweeps and maxSweeps functions return 0 if the node only supports unlimited sampling.
+- added sleep and up to 5 attempted pings after performing the BaseStation cycle power command.
+- added sleep after performing the BaseStation reset radio command.
+- added sleep and up to 5 attempted pings after performing the WirelessNode cycle power command.
+- added sleep after performing the WirelessNode reset radio command.
+- writing a disabled value of 0xFFFF to the channel value for analog base stations if set to 0xFF.
+
+-------------------------------------------------------------------------
+1.11.4 - 2015-10-14
+- updated to changes made to auto balance 2 packet.
+- changed WirelessNode::autoBalance command to take a float percentage range.
+- changed AutoBalanceResult to have percent achieved instead of the channel sample value.
+- removed resolution from all of the channels as the new autobalance made it unnecessary.
+
+-------------------------------------------------------------------------
+1.11.3 - 2015-10-13
+- updated auto balance 2 command id.
+- fix for cycle power on the base station failing if haven't determined protocol version.
+- resetting the radio or cycling power when writing base eeproms (depending on firmware version).
+- cycling the power on nodes when committing eeproms (instead of resetting radio).
+
+-------------------------------------------------------------------------
+1.11.2 - 2015-10-13
+- made AutoBalanceResult functions const.
+
+-------------------------------------------------------------------------
+1.11.1 - 2015-10-13
+- fix for WirelessNode::autobalance not returning the AutoBalanceResult.
+
+-------------------------------------------------------------------------
+1.11.0 - 2015-10-13
+- support for old and new auto balance commands.
+- old auto balance command now performs a hardware offset eeprom read.
+- old auto balance command now performs a read single sensor to get the channel value.
+- moved AutoCalResult to its own file.
+- moved AutoBalanceResult to its own file.
+
+-------------------------------------------------------------------------
+1.10.1 - 2015-10-12
+- changed WirelessNode's autobalance function to take a ChannelMask instead of a channel number.
+- added method to get the resolution from each WirelessChannel object.
+- adding start of the AutoBalance_v2 command (not fully functional).
+
+-------------------------------------------------------------------------
+1.10.0 - 2015-10-09
+- added supportsLostBeaconTimeout() to the NodeFeatures class.
+
+-------------------------------------------------------------------------
+1.9.2 - 2015-10-06
+- fix for mV/V-Link having incorrect model number.
+
+-------------------------------------------------------------------------
+1.9.1 - 2015-10-05
+- added support for Wireless Nodes and BaseStations supporting new transmit powers.
+
+-------------------------------------------------------------------------
 1.9.0 - 2015-10-02
 - added support for the mV/V-Link Wireless Node.
 
@@ -1002,7 +1151,7 @@ All notable changes to this project will be documented in this file.
 
 -------------------------------------------------------------------------
 0.4.0 2013-12-17
-- Switched from boost::any to my own customer any class (similar to boost::spirit::hold_any) to improve performance [internal].
+- Switched from boost::any to my own custom any class (similar to boost::spirit::hold_any) to improve performance [internal].
 - Beginning of support for the SyncSamplingNetwork for creating and starting a Synchronized Sampling network.
 - Support for GetDeviceInfo and GetDeviceDescriptorSets for Inertial nodes [internal].
 - Added InertialNode.info() to get information about the InertialNode.

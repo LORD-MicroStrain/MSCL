@@ -7,6 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include <iomanip>
 
+#include "mscl/ScopeHelper.h"
 #include "mscl/Utils.h"
 #include "WirelessNode_Impl.h"
 #include "Features/NodeInfo.h"
@@ -18,10 +19,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	WirelessNode_Impl::WirelessNode_Impl(uint16 nodeAddress, const BaseStation& basestation, WirelessTypes::Frequency nodeFrequency):
+	WirelessNode_Impl::WirelessNode_Impl(uint16 nodeAddress, const BaseStation& basestation):
 		m_address(checked_cast<NodeAddress>(nodeAddress, "Node Address")),
 		m_baseStation(basestation),
-		m_frequency(nodeFrequency),
 		m_eepromHelper(new NodeEepromHelper(this))
 	{
 	}
@@ -88,17 +88,8 @@ namespace mscl
 		}
 		while(!success && (retryCount++ < m_eepromSettings.numRetries));
 
-		//the Node min fw version to support protocol 1.1
-		static const Version FW_PROTOCOL_1_1(8, 21);
-
-		if(fwVersion >= FW_PROTOCOL_1_1)
-		{
-			return WirelessProtocol::v1_1();
-		}
-		else
-		{
-			return WirelessProtocol::v1_0();
-		}
+		//get the protocol to use for the node's fw version
+		return WirelessProtocol::chooseNodeProtocol(fwVersion);
 	}
 
 	NodeEeprom& WirelessNode_Impl::eeprom() const
@@ -229,14 +220,7 @@ namespace mscl
 
 	WirelessTypes::Frequency WirelessNode_Impl::frequency() const
 	{
-		//if we don't know the frequency
-		if(m_frequency == WirelessTypes::freq_unknown)
-		{
-			//read the frequency from eeprom
-			m_frequency = m_eepromHelper->read_frequency();
-		}
-
-		return m_frequency;
+		return m_eepromHelper->read_frequency();
 	}
 
 	Version WirelessNode_Impl::firmwareVersion() const
@@ -283,9 +267,9 @@ namespace mscl
 	{
 		config.apply(features(), eeHelper());
 
-		//if the apply succeeded, we need to reset the radio
+		//if the apply succeeded, we need to cycle the power
 		//for some eeproms to actually take the changes
-		resetRadio();
+		cyclePower();
 	}
 
 	uint16 WirelessNode_Impl::getNumDatalogSessions() const
@@ -330,6 +314,12 @@ namespace mscl
 
 	uint32 WirelessNode_Impl::getNumSweeps() const
 	{
+		//if the node doesn't support limited number of sweeps
+		if(!features().supportsLimitedDuration())
+		{
+			throw Error_NotSupported("The Number of Sweeps is not supported by this Ndoe.");
+		}
+
 		return m_eepromHelper->read_numSweeps();
 	}
 
@@ -361,6 +351,12 @@ namespace mscl
 
 	uint16 WirelessNode_Impl::getLostBeaconTimeout() const
 	{
+		//if the node doesn't support lost beacon timeout
+		if(!features().supportsLostBeaconTimeout())
+		{
+			throw Error_NotSupported("Lost Beacon Timeout is not supported by this Node.");
+		}
+
 		return m_eepromHelper->read_lostBeaconTimeout();
 	}
 
@@ -372,6 +368,11 @@ namespace mscl
 	uint16 WirelessNode_Impl::getHardwareOffset(const ChannelMask& mask) const
 	{
 		return m_eepromHelper->read_hardwareOffset(mask);
+	}
+
+	float WirelessNode_Impl::getGaugeFactor(const ChannelMask& mask) const
+	{
+		return m_eepromHelper->read_gaugeFactor(mask);
 	}
 
 	LinearEquation WirelessNode_Impl::getLinearEquation(const ChannelMask& mask) const
@@ -427,6 +428,19 @@ namespace mscl
 		return result;
 	}
 
+	ActivitySense WirelessNode_Impl::getActivitySense() const
+	{
+		//if the node doesn't support activity sense options
+		if(!features().supportsActivitySense())
+		{
+			throw Error_NotSupported("ActivitySense configuration is not supported by this Node.");
+		}
+
+		ActivitySense result;
+		m_eepromHelper->read_activitySense(result);
+		return result;
+	}
+
 
 	/*
 	bool WirelessNode_Impl::shortPing()
@@ -439,6 +453,11 @@ namespace mscl
 		return m_baseStation.node_shortPing(m_address);
 	}
 	*/
+
+	bool WirelessNode_Impl::quickPing()
+	{
+		return m_baseStation.node_shortPing(m_address);
+	}
 
 	PingResponse WirelessNode_Impl::ping()
 	{
@@ -458,14 +477,27 @@ namespace mscl
 
 		//cycle the power on the node by writing a 1 to the CYCLE_POWER location
 		writeEeprom(NodeEepromMap::CYCLE_POWER, Value::UINT16(RESET_NODE));
+
+		Utils::threadSleep(250);
+
+		//attempt to ping the node a few times to see if its back online
+		bool pingSuccess = false;
+		uint8 retries = 0;
+		while(!pingSuccess && retries <= 5)
+		{
+			pingSuccess = ping().success();
+			retries++;
+		}
 	}
 
 	void WirelessNode_Impl::resetRadio()
 	{
 		static const uint16 RESET_RADIO = 0x02;
 
-		//cycle the power on the node by writing a 2 to the CYCLE_POWER location
+		//cycle the radio on the node by writing a 2 to the CYCLE_POWER location
 		writeEeprom(NodeEepromMap::CYCLE_POWER, Value::UINT16(RESET_RADIO));
+
+		Utils::threadSleep(100);
 	}
 
 	void WirelessNode_Impl::changeFrequency(WirelessTypes::Frequency frequency)
@@ -479,9 +511,6 @@ namespace mscl
 
 		//reset the radio on the node to commit the change
 		resetRadio();
-
-		//update the cached frequency
-		m_frequency = frequency;
 	}
 
 	SetToIdleStatus WirelessNode_Impl::setToIdle()
@@ -530,42 +559,102 @@ namespace mscl
 		cyclePower();
 	}
 
-	void WirelessNode_Impl::autoBalance(uint8 channelNumber, WirelessTypes::AutoBalanceOption option)
+	AutoBalanceResult WirelessNode_Impl::autoBalance(const ChannelMask& mask, float targetPercent)
 	{
-		//verify the node supports autobalance for any channels
-		if(!features().supportsAutoBalance(channelNumber))
+		Utils::checkBounds_min(targetPercent, 0.0f);
+		Utils::checkBounds_max(targetPercent, 100.0f);
+
+		//attempt a ping first 
+		//(legacy (v1) autobalance doesn't have a response packet, so need to check communication)
+		if(!ping().success())
 		{
-			throw Error_NotSupported("AutoBalance is not supported by channel " + Utils::toStr(channelNumber) + ".");
+			throw Error_NodeCommunication(nodeAddress());
 		}
 
-		//determine the target value based on the option provided
-		uint16 targetValue = 0;
-		switch(option)
-		{
-			case WirelessTypes::autoBalance_low:
-				targetValue = 1024;
-				break;
+		//find the eeprom location that the autobalance will adjust
+		//Note: this also verifies that it is supported for this mask
+		const EepromLocation& eepromLoc = features().findEeprom(WirelessTypes::chSetting_autoBalance, mask);
 
-			case WirelessTypes::autoBalance_midscale:
-				targetValue = 2048;
-				break;
+		//currently, autobalance is always per channel, so get the channel from the mask
+		uint8 channelNumber = mask.lastChEnabled();
 
-			case WirelessTypes::autoBalance_high:
-				targetValue = 3072;
-				break;
-
-			default:
-				throw Error_NotSupported("The AutoBalanceOption provided is not supported.");
-		}
+		AutoBalanceResult result;
 
 		//perform the autobalance command with the parent base station
-		m_baseStation.node_autoBalance(m_address, channelNumber, targetValue);
+		m_baseStation.node_autoBalance(protocol(), m_address, channelNumber, targetPercent, result);
 
-		//clear the eeprom cache for the hardware offset location that was affected
-		ChannelMask mask;
-		mask.enable(channelNumber);
-		const EepromLocation& eepromLoc = features().findEeprom(WirelessTypes::chSetting_hardwareOffset, mask);
+		//clear the cache of the hardware offset eeprom location we adjusted
 		eeprom().clearCacheLocation(eepromLoc.location());
+
+		Utils::threadSleep(200);
+
+		//if we used the legacy command, we don't get result info, need to do more work to get it
+		if(result.m_errorCode == WirelessTypes::autobalance_legacyNone)
+		{
+			result.m_errorCode = WirelessTypes::autobalance_maybeInvalid;
+
+			//force the read eeprom retries to a minimum of 3
+			uint8 startRetries = m_eepromSettings.numRetries;
+
+			//when this goes out of scope, it will change back the original retries value
+			ScopeHelper writebackRetries(std::bind(&WirelessNode_Impl::readWriteRetries, this, startRetries));
+
+			//if there are less than 3 retries
+			if(startRetries < 3)
+			{
+				//we want to retry at least a few times
+				readWriteRetries(3);
+			}
+			else
+			{
+				//don't need to write back the retries since we didn't make a change
+				writebackRetries.cancel();
+			}
+
+			//read the updated hardware offset from the node
+			result.m_hardwareOffset = readEeprom(eepromLoc).as_uint16();
+
+			bool readSensorSuccess = false;
+
+			uint8 readSensorTry = 0;
+			do
+			{
+				//perform the read single sensor command
+				uint16 sensorVal = 0;
+				readSensorSuccess = m_baseStation.node_readSingleSensor(m_address, channelNumber, sensorVal);
+
+				if(readSensorSuccess)
+				{
+					//find the max bits value of the node
+					uint32 maxBitsVal = 0;
+					switch(model())
+					{
+						case WirelessModels::node_vLink:
+						case WirelessModels::node_sgLink_rgd:
+						case WirelessModels::node_shmLink:
+							maxBitsVal = 65536;
+							break;
+
+						default:
+							maxBitsVal = 4096;
+							break;
+					}
+
+					//calculate and store the percent achieved
+					result.m_percentAchieved = static_cast<float>(sensorVal) / static_cast<float>(maxBitsVal) * 100.0f;
+				}
+
+				readSensorTry++;
+			}
+			while(!readSensorSuccess && readSensorTry <= 3);
+
+			if(readSensorSuccess)
+			{
+				result.m_errorCode = WirelessTypes::autobalance_success;
+			}
+		}
+
+		return result;
 	}
 
 	AutoCalResult_shmLink WirelessNode_Impl::autoCal_shmLink()
@@ -580,7 +669,8 @@ namespace mscl
 		}
 
 		//verify the node is the correct model
-		if(model != WirelessModels::node_shmLink2)
+		if(model != WirelessModels::node_shmLink2 &&
+		   model != WirelessModels::node_shmLink2_cust1)
 		{
 			throw Error_NotSupported("autoCal_shmLink is not supported by this Node's model.");
 		}

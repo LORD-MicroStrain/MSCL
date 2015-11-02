@@ -2,7 +2,7 @@
 #   This example shows how to get and set the configuration options for a Wireless Node.
 #   Warning: Running this example will change the configuration on the Wireless Node.
 #
-# Updated: 04/01/2015
+# Updated: 11/02/2015
 
 # import the mscl library
 import sys
@@ -28,17 +28,33 @@ def getCurrentConfig(node):
     print "User Inactivity Timeout:", node.getInactivityTimeout(), "seconds"
     print "Total active channels:", node.getActiveChannels().count()
     print "# of sweeps:", node.getNumSweeps()
-
-    # get a list of the supported channels
-    supportedChannels = node.channels()
-
-    # loop through all of the channels
-    for channel in supportedChannels:
-        # print out some information about the channels
-        print "Channel #:", channel
-        print "Slope:", supportedChannels[channel].getLinearEquation().slope()
-        print "Offset:", supportedChannels[channel].getLinearEquation().offset()
     
+    # If a configuration function requires a ChannelMask parameter, this indicates that the
+    # option may affect 1 or more channels on the Node. For instance, a hardware gain may
+    # affect ch1 and ch2 with just 1 setting. If you know the mask for your Node, you can just provide
+    # that mask when asking for the configuration. If you want to programatically determine
+    # the mask for each setting, you can ask for the Node's ChannelGroups. See below.
+    
+    chGroups = node.features().channelGroups()
+    
+    # iterate over each channel group
+    for group in chGroups:
+        # get all of the settings for this group (ie. may contain linear equation and hardware gain).
+        groupSettings = group.settings()
+        
+        # iterate over each setting for this group
+        for setting in groupSettings:
+            
+            # if the group contains the linear equation setting
+            if setting == mscl.WirelessTypes.chSetting_linearEquation:
+                # we can now pass the channel mask (group.channels()) for this group to the node.getLinearEquation function.
+                # Note: once this channel mask is known for a specific node (+ fw version), it should never change
+                le = node.getLinearEquation(group.channels())
+
+                print "Linear Equation for: ", group.name()
+                print "Slope: ", le.slope()
+                print "Offset: ", le.offset()
+                
 
 # Function: setCurrentConfig
 #   This function demonstrates how to change the configuration
@@ -53,7 +69,7 @@ def setCurrentConfig(node):
     config = mscl.WirelessNodeConfig()
 
     # set the configuration options that we want to change
-    config.bootMode(mscl.WirelessTypes.bootMode_normal)
+    config.defaultMode(mscl.WirelessTypes.defaultMode_idle)
     config.inactivityTimeout(7200)
     config.samplingMode(mscl.WirelessTypes.samplingMode_sync)
     config.sampleRate(mscl.WirelessTypes.sampleRate_256Hz)

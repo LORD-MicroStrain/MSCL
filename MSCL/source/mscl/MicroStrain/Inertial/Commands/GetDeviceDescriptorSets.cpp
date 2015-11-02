@@ -47,7 +47,7 @@ namespace mscl
 		return GenericInertialCommand::Response::match_data(field);
 	}
 
-	std::vector<uint16> GetDeviceDescriptorSets::Response::parseData(const GenericInertialCommandResponse& response) const
+	std::vector<uint16> GetDeviceDescriptorSets::Response::parseResponse(const GenericInertialCommandResponse& response) const
 	{
 		std::vector<uint16> result;
 		Inertial_Commands::parseData_GetDeviceDescriptorSets(response, result);

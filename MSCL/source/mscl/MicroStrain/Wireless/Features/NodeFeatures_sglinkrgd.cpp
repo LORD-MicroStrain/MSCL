@@ -26,22 +26,26 @@ namespace mscl
 
 		m_channelGroups.emplace_back(DIFF_CH1, "Differential Channel 1",
 									 ChannelGroup::SettingsMap{
-										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1}}
+										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1},
+										 {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_1}}
 		);
 
 		m_channelGroups.emplace_back(DIFF_CH2, "Differential Channel 2",
 									 ChannelGroup::SettingsMap{
-										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_2}}
+										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_2},
+										 {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_2}}
 		);
 
 		m_channelGroups.emplace_back(DIFF_CH3, "Differential Channel 3",
 									 ChannelGroup::SettingsMap{
-										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_3}}
+										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_3},
+										 {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_3}}
 		);
 
 		m_channelGroups.emplace_back(DIFF_CH4, "Differential Channel 4",
 									 ChannelGroup::SettingsMap{
-										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_4}}
+										 {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_4},
+										 {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_4}}
 		);
 
 		addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
@@ -62,10 +66,5 @@ namespace mscl
 		m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_acceleration);		//accel y
 		m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration);		//accel z
 		m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_temperature);		//temp
-	}
-
-	bool NodeFeatures_sglinkrgd::supportsAutoBalance(uint8 channelNumber) const
-	{
-		return anyChannelGroupSupports(WirelessTypes::chSetting_hardwareOffset, channelNumber);
 	}
 }

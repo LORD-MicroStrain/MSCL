@@ -27,7 +27,7 @@ namespace mscl
 		//Parameters:
 		//	nodeAddress - The address of the Node to build the command for.
 		//	channelNumber - The channel number to balance (ch1 = 1, ch8 = 8).
-		//	targetValue - The target sensor output value in bits.
+		//	targetValue - The target sensor output value in bits (0-4096).
 		//
 		//Returns:
 		//	A <ByteStream> containing the command packet.

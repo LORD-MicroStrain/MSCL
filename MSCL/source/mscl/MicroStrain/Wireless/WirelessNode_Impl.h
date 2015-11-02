@@ -10,8 +10,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "WirelessChannel.h"
 #include "RadioFeatures.h"
 #include "mscl/Version.h"
-#include "Commands/AutoCal.h"
+#include "Commands/AutoBalanceResult.h"
+#include "Commands/AutoCalResult.h"
 #include "Commands/WirelessProtocol.h"
+#include "Configuration/ActivitySense.h"
 #include "Configuration/ConfigIssue.h"
 #include "Configuration/FatigueOptions.h"
 #include "Configuration/HistogramOptions.h"
@@ -44,8 +46,7 @@ namespace mscl
 		//Parameters:
 		//	nodeAddress - the node address of the node
 		//	basestation - the node's parent Base Station
-		//	nodeFrequency - the <WirelessTypes::Frequency> that this node is believed to be on.
-		WirelessNode_Impl(uint16 nodeAddress, const BaseStation& basestation, WirelessTypes::Frequency nodeFrequency);
+		WirelessNode_Impl(uint16 nodeAddress, const BaseStation& basestation);
 
 	private:
 		//Variable: m_address
@@ -59,10 +60,6 @@ namespace mscl
 		//Variable: m_eepromSettings
 		//	The eeprom settings to use for the <NodeEeprom> object.
 		NodeEepromSettings m_eepromSettings;
-
-		//Variable: m_frequency
-		//	The <WirelessTypes::Frequency> that this Node is believed to be on.
-		mutable WirelessTypes::Frequency m_frequency;
 
 		//Variable: m_protocol
 		//	The <WirelessProtocol> containing all of the protocol commands and info for this Node.
@@ -420,19 +417,30 @@ namespace mscl
 
 		//Function: getHardwareOffset
 		//	Reads the hardware offset of the specified <ChannelMask> currently set on the Node.
-		//	See Also: <NodeFeatures::channelGroups>
 		//
 		//Parameters:
 		//	mask - The <ChannelMask> of the hardware offset to read.
-		//
-		//Returns:
-		//	The hardware offset currently set on the Node for the <ChannelMask>.
 		//
 		//Exceptions:
 		//	- <Error_NotSupported>: Hardware offset is not supported for the provided <ChannelMask>.
 		//	- <Error_NodeCommunication>: Failed to read from the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		uint16 getHardwareOffset(const ChannelMask& mask) const;
+
+		//Function: getGaugeFactor
+		//	Reads the gauge factor of the specified <ChannelMask> currently set on the Node.
+		//
+		//Parameters:
+		//	mask - The <ChannelMask> of the gauge factor to read.
+		//
+		//Returns:
+		//	The gauge factor currently set on the Node for the <ChannelMask>.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: Gauge Factor is not supported for the provided <ChannelMask>.
+		//	- <Error_NodeCommunication>: Failed to read from the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		float getGaugeFactor(const ChannelMask& mask) const;
 
 		//Function: getLinearEquation
 		//	Gets the linear equation of the specified <ChannelMask> currently set on the Node.
@@ -506,7 +514,23 @@ namespace mscl
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
 		HistogramOptions getHistogramOptions() const;
 
+		//Function: getActivitySense
+		//	Reads the <ActivitySense> options currently set on the Node.
+		//
+		//Exceptions:
+		//	- <Error_NotSupported>: ActivitySense configuration is not supported by this Node.
+		//	- <Error_NodeCommunication>: Failed to read from the Node.
+		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
+		ActivitySense getActivitySense() const;
+
 	public:
+		//Function: quickPing
+		//	Performs a Quick Ping (Short Ping) command on the Node.
+		//
+		//Returns:
+		//	true if the quick ping was successful, false otherwise.
+		bool quickPing();
+
 		//Function: ping
 		//	Performs a Long Ping command on the Node to check the communication between the Base Station and the Node.
 		//
@@ -597,14 +621,17 @@ namespace mscl
 		//	Performs an Auto Balance command on a specified channel on the Node.
 		//
 		//Parameters:
-		//	channelNumber - The channel number (ch1 = 1, ch8 = 8) to balance.
-		//	option - The <WirelessTypes::AutoBalanceOption> to use (low, midscale, high).
+		//	mask - The <ChannelMask> to perform the auto balance command on.
+		//	targetPercent - The percentage (0.0 - 100.0) of the range to balance to.
+		//
+		//Returns:
+		//	The <AutoBalanceResult> containing information from the auto balance command.
 		//
 		//Exceptions:
 		//	- <Error_NotSupported>: Autobalance is not supported by the Node or channel specified.
 		//	- <Error_NodeCommunication>: Failed to communicate with the Node.
 		//	- <Error_Connection>: A connection error has occurred with the parent BaseStation.
-		void autoBalance(uint8 channelNumber, WirelessTypes::AutoBalanceOption option);
+		AutoBalanceResult autoBalance(const ChannelMask& mask, float targetPercent);
 
 		//Function: autoCal_shmLink
 		//	Performs automatic calibration for the SHM-Link Wireless Node.

@@ -4,7 +4,7 @@
 //	idle state so that it can be communicated with. 
 //	Note: Stopping a Node may take up to a maximum of 2 minutes.
 //
-//Updated: 09/15/2014
+//Updated: 11/02/2015
 
 
 //Note: If you are having 'PINVOKE' errors, please make sure the following is true:
@@ -35,40 +35,40 @@ namespace StopNode
                 //create a WirelessNode with the BaseStation we created
                 mscl.WirelessNode node = new mscl.WirelessNode(NODE_ADDRESS, baseStation);
 
-                //call the stop function and get the resulting StopNodeStatus object
-                mscl.StopNodeStatus stopStatus = node.stop();
+                //call the set to idle function and get the resulting SetToIdleStatus object
+                mscl.SetToIdleStatus status = node.setToIdle();
 
-                Console.Write("Stopping Node");
+                Console.Write("Setting Node to Idle");
 
-                //using the StopNodeStatus object, check if the Stop Node operation is complete.
+                //using the SetToIdleStatus object, check if the Set to Idle operation is complete.
                 //	Note: we are specifying a timeout of 300 milliseconds here which is the maximum
-                //		  amount of time that the complete function will block if the Stop Node
+                //		  amount of time that the complete function will block if the Set to Idle
                 //		  operation has not finished. Leaving this blank defaults to a timeout of 10ms.
-                while (!stopStatus.complete(300))
+                while (!status.complete(300))
                 {
-                    //Note: the Stop Node operation can be canceled by calling stopStatus.cancel()
+                    //Note: the Set to Idle operation can be canceled by calling status.cancel()
                     Console.Write(".");
                 }
 
-                //at this point, the Stop Node operation has completed
+                //at this point, the Set to Idle operation has completed
 
-                //check the result of the Stop Node operation
-                switch (stopStatus.result())
+                //check the result of the Set to Idle operation
+                switch (status.result())
                 {
-                    //Stop Node completed successfully
-                    case mscl.StopNodeStatus.StopNodeResult.stopNodeResult_success:
-                        Console.WriteLine("Successfully stopped the Node!");
+                    //completed successfully
+                    case mscl.SetToIdleStatus.SetToIdleResult.setToIdleResult_success:
+                        Console.WriteLine("Successfully set to idle!");
                         break;
 
-                    //Stop Node has been canceled by the user
-                    case mscl.StopNodeStatus.StopNodeResult.stopNodeResult_canceled:
-                        Console.WriteLine("Stop Node was canceled!");
+                    //canceled by the user
+                    case mscl.SetToIdleStatus.SetToIdleResult.setToIdleResult_canceled:
+                        Console.WriteLine("Set to Idle was canceled!");
                         break;
 
-                    //Failed to perform the Stop Node operation
-                    case mscl.StopNodeStatus.StopNodeResult.stopNodeResult_failed:
+                    //Failed to perform the operation
+                    case mscl.SetToIdleStatus.SetToIdleResult.setToIdleResult_failed:
                     default:
-                        Console.WriteLine("Stop Node has failed!");
+                        Console.WriteLine("Set to Idle has failed!");
                         break;
                 }
             }

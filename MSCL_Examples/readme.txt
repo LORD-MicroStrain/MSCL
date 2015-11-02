@@ -5,7 +5,6 @@
 
 Example projects are provided for some use cases for MSCL. This does not encompass all features of MSCL.
 Please refer to the MSCL documentation for more details.
-Example code is given in C++, C#, VB, Python, and Labview.
 
 Open the "Inertial" directory to view example code for LORD's Inertial product line.
 Open the "Wireless" directory to view example code for LORD's Wireless product line.

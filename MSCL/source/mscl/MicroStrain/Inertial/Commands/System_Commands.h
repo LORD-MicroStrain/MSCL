@@ -58,7 +58,7 @@ namespace mscl
 
 		public:
 			Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
-			uint8 parseData(const GenericInertialCommandResponse& response) const;
+			uint8 parseResponse(const GenericInertialCommandResponse& response) const;
 		};
 	};
 }

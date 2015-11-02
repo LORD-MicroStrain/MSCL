@@ -38,6 +38,7 @@ alias msclSrcs
 	[ glob source/mscl/MicroStrain/*.cpp ]
 	[ glob source/mscl/MicroStrain/Inertial/*.cpp ]
 	[ glob source/mscl/MicroStrain/Inertial/Commands/*.cpp ]
+	[ glob source/mscl/MicroStrain/Inertial/Features/*.cpp ]
 	[ glob source/mscl/MicroStrain/Inertial/Packets/*.cpp ]
 	[ glob source/mscl/MicroStrain/Wireless/*.cpp ]
 	[ glob source/mscl/MicroStrain/Wireless/Commands/*.cpp ]

@@ -13,13 +13,24 @@ namespace mscl
 	NodeFeatures_shmlink2::NodeFeatures_shmlink2(const NodeInfo& info):
 		NodeFeatures(info)
 	{
-		addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
-		addCalCoeffChannelGroup(2, NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
-		addCalCoeffChannelGroup(3, NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);
-		addCalCoeffChannelGroup(5, NodeEepromMap::CH_ACTION_SLOPE_5, NodeEepromMap::CH_ACTION_ID_5);
-		addCalCoeffChannelGroup(6, NodeEepromMap::CH_ACTION_SLOPE_6, NodeEepromMap::CH_ACTION_ID_6);
-		addCalCoeffChannelGroup(7, NodeEepromMap::CH_ACTION_SLOPE_7, NodeEepromMap::CH_ACTION_ID_7);
-		addCalCoeffChannelGroup(8, NodeEepromMap::CH_ACTION_SLOPE_8, NodeEepromMap::CH_ACTION_ID_8);
+		static const ChannelMask DIFF_CH1(BOOST_BINARY(00000001));	//ch1
+		static const ChannelMask DIFF_CH2(BOOST_BINARY(00000010));	//ch2
+		static const ChannelMask DIFF_CH3(BOOST_BINARY(00000100));	//ch3
+
+		m_channelGroups.emplace_back(DIFF_CH1, "Differential Channel 1",
+									 ChannelGroup::SettingsMap{
+										 {WirelessTypes::chSetting_gaugeFactor, NodeEepromMap::GAUGE_FACTOR_1}}
+		);
+
+		m_channelGroups.emplace_back(DIFF_CH2, "Differential Channel 2",
+									 ChannelGroup::SettingsMap{
+										 {WirelessTypes::chSetting_gaugeFactor, NodeEepromMap::GAUGE_FACTOR_2}}
+		);
+
+		m_channelGroups.emplace_back(DIFF_CH3, "Differential Channel 3",
+									 ChannelGroup::SettingsMap{
+										 {WirelessTypes::chSetting_gaugeFactor, NodeEepromMap::GAUGE_FACTOR_3}}
+		);
 
 		//Channels
 		m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential);	//full diff
@@ -57,6 +68,11 @@ namespace mscl
 		return result;
 	}
 
+	bool NodeFeatures_shmlink2::supportsLimitedDuration() const
+	{
+		return false;
+	}
+
 	bool NodeFeatures_shmlink2::supportsFatigueConfig() const
 	{
 		return true;
@@ -72,7 +88,12 @@ namespace mscl
 		return true;
 	}
 
-	bool NodeFeatures_shmlink2::supportsFatigueRawModeConfig() const
+	bool NodeFeatures_shmlink2::supportsFatigueDebugModeConfig() const
+	{
+		return true;
+	}
+
+	bool NodeFeatures_shmlink2::supportsFatigueModeConfig() const
 	{
 		return true;
 	}
@@ -83,6 +104,16 @@ namespace mscl
 	}
 
 	bool NodeFeatures_shmlink2::supportsHistogramRateConfig() const
+	{
+		return true;
+	}
+
+	bool NodeFeatures_shmlink2::supportsHistogramEnableConfig() const
+	{
+		return true;
+	}
+
+	bool NodeFeatures_shmlink2::supportsActivitySense() const
 	{
 		return true;
 	}
@@ -118,5 +149,16 @@ namespace mscl
 			{WirelessTypes::sampleRate_60Min}};
 
 		return HistogramRates;
+	}
+
+	const WirelessTypes::FatigueModes NodeFeatures_shmlink2::fatigueModes() const
+	{
+		static const WirelessTypes::FatigueModes modes = {
+			{WirelessTypes::fatigueMode_angleStrain},
+			{WirelessTypes::fatigueMode_distributedAngle},
+			{WirelessTypes::fatigueMode_rawGaugeStrain}
+		};
+
+		return modes;
 	}
 }

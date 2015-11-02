@@ -22,7 +22,5 @@ namespace mscl
 		//Constructor: NodeFeatures_sglink
 		//	Creates a NodeFeatures_sglink object.
 		NodeFeatures_sglink(const NodeInfo& info);
-
-		virtual bool supportsAutoBalance(uint8 channelNumber) const final;
 	};
 }

@@ -15,6 +15,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
 #include "mscl/Exceptions.h"
 #include "mscl/TimeSpan.h"
+#include "ActivitySense.h"
 #include "ConfigIssue.h"
 #include "FatigueOptions.h"
 #include "HistogramOptions.h"
@@ -100,6 +101,10 @@ namespace mscl
 		//	The <HistogramOptions> to set.
 		boost::optional<HistogramOptions> m_histogramOptions;
 
+		//Variable: m_activitySense
+		//	The <ActivitySense> to set.
+		boost::optional<ActivitySense> m_activitySense;
+
 		//Variable: m_hardwareGains
 		//	The map of <ChannelMask> to hardware gains to set.
 		std::map<ChannelMask, double> m_hardwareGains;
@@ -107,6 +112,10 @@ namespace mscl
 		//Variable: m_hardwareOffsets
 		//	The map of <ChannelMask> to hardware offsets to set.
 		std::map<ChannelMask, uint16> m_hardwareOffsets;
+
+		//Variable: m_gaugeFactors
+		//	The map of <ChannelMask> to gauge factors to set.
+		std::map<ChannelMask, float> m_gaugeFactors;
 
 		//Variable: m_settlingTimes
 		//	The map of <ChannelMask> to <WirelessTypes::SettlingTime> to set.
@@ -518,6 +527,20 @@ namespace mscl
 		//	Sets the hardware offset for the given <ChannelMask> in the Config.
 		void hardwareOffset(const ChannelMask& mask, uint16 offset);
 
+		//API Function: gaugeFactor
+		//	Gets the gauge factor for the given <ChannelMask> in the Config, if set.
+		//
+		//Parameters:
+		//	mask - The <ChannelMask> to set the gauge factor for.
+		//
+		//Exceptions:
+		//	<Error_NoData> - The requested value has not been set.
+		float gaugeFactor(const ChannelMask& mask) const;
+
+		//API Function: gaugeFactor
+		//	Sets the gauge Factor for the given <ChannelMask> in the Config.
+		void gaugeFactor(const ChannelMask& mask, float factor);
+
 		//API Function: linearEquation
 		//	Gets the <LinearEquation> for the given <ChannelMask> in the Config, if set.
 		//
@@ -606,8 +629,19 @@ namespace mscl
 		//	<Error_NoData> - The requested value has not been set.
 		const HistogramOptions& histogramOptions() const;
 
-		//Api Function: histogramOptions
+		//API Function: histogramOptions
 		//	Sets the <HistogramOptions> in the Config.
 		void histogramOptions(const HistogramOptions& histogramOpts);
+
+		//API Function: activitySense
+		//	Gets the <ActivitySense> currently set in the Config.
+		//
+		//Exceptions:
+		//	<Error_NoData> - The requested value has not been set.
+		const ActivitySense& activitySense() const;
+
+		//API Function: activitySense
+		//	Sets the <ActivitySense> in the Config.
+		void activitySense(const ActivitySense& activitySenseOpts);
 	};
 }

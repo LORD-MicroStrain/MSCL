@@ -431,41 +431,6 @@ public:
 	//	A typedef for a <ChannelField>, <ChannelQualifier> pair.
 	typedef std::pair<ChannelField, ChannelQualifier> ChannelId;
 
-	//Function: channelFieldToStr
-	//	Gets a string representation of a <ChannelField>.
-	//
-	//Parameters:
-	//	field - The <ChannelField> to get a string for.
-	//
-	//Returns:
-	//	A string representation of the given <ChannelField>.
-	static std::string channelFieldToStr(ChannelField field);
-
-	//Function: channelQualifierToStr
-	//	Gets a string representation of a <ChannelQualifier>.
-	//
-	//Parameters:
-	//	qualifier - The <ChannelQualifier> to get a string for.
-	//
-	//Returns:
-	//	A string representation of the given <ChannelQualifier>.
-	static std::string channelQualifierToStr(ChannelQualifier qualifier);
-
-	//Function: channelName
-	//	Gets the name of the specified <ChannelId>.
-	//	This is the universal channel name that should be used for uploading to SensorCloud.
-	//
-	//Parameters:
-	//	field - The <ChannelField> of the channel.
-	//	qualifier - The <ChannelQualifier> of the channel.
-	//
-	//Returns:
-	//	The universal name of the channel.
-	//
-	//Exceptions:
-	//	- <Error>: Unknown channel.
-	static std::string channelName(ChannelField field, ChannelQualifier qualifier);
-
 	//Function: channelFieldToCategory
 	//	Gets the <InertialCategory> for a <InertialTypes::ChannelField>.
 	//
@@ -481,6 +446,41 @@ public:
 		size_t operator()(InertialTypes::ChannelId channelId) const;
 	};
 #endif
+
+	//API Function: channelFieldToStr
+	//	Gets a string representation of a <ChannelField>.
+	//
+	//Parameters:
+	//	field - The <ChannelField> to get a string for.
+	//
+	//Returns:
+	//	A string representation of the given <ChannelField>.
+	static std::string channelFieldToStr(ChannelField field);
+
+	//API Function: channelQualifierToStr
+	//	Gets a string representation of a <ChannelQualifier>.
+	//
+	//Parameters:
+	//	qualifier - The <ChannelQualifier> to get a string for.
+	//
+	//Returns:
+	//	A string representation of the given <ChannelQualifier>.
+	static std::string channelQualifierToStr(ChannelQualifier qualifier);
+
+	//API Function: channelName
+	//	Gets the name of the specified <ChannelId>.
+	//	This is the universal channel name that should be used for uploading to SensorCloud.
+	//
+	//Parameters:
+	//	field - The <ChannelField> of the channel.
+	//	qualifier - The <ChannelQualifier> of the channel.
+	//
+	//Returns:
+	//	The universal name of the channel.
+	//
+	//Exceptions:
+	//	- <Error>: Unknown channel.
+	static std::string channelName(ChannelField field, ChannelQualifier qualifier);
 
 private:
 	//Const: CHANNEL_NAMES
