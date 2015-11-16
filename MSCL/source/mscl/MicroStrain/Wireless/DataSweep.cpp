@@ -9,110 +9,110 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	DataSweep::DataSweep():
-		m_timestamp(0),
-		m_tick(0),
-		m_sampleRate(SampleRate::rateType_hertz, 1),
-		m_nodeAddress(0),
-		m_samplingMode(samplingType_SyncSampling),
-		m_nodeRssi(0),
-		m_baseRssi(0),
-		m_frequency(WirelessTypes::freq_unknown)
-	{
-	}
+    DataSweep::DataSweep():
+        m_timestamp(0),
+        m_tick(0),
+        m_sampleRate(SampleRate::rateType_hertz, 1),
+        m_nodeAddress(0),
+        m_samplingMode(samplingType_SyncSampling),
+        m_nodeRssi(0),
+        m_baseRssi(0),
+        m_frequency(WirelessTypes::freq_unknown)
+    {
+    }
 
-	Timestamp DataSweep::timestamp() const
-	{
-		return m_timestamp;
-	}
+    Timestamp DataSweep::timestamp() const
+    {
+        return m_timestamp;
+    }
 
-	void DataSweep::timestamp(const Timestamp& time)
-	{
-		m_timestamp = time;
-	}
+    void DataSweep::timestamp(const Timestamp& time)
+    {
+        m_timestamp = time;
+    }
 
-	uint64 DataSweep::nanoseconds() const
-	{
-		return m_timestamp.nanoseconds();
-	}
+    uint64 DataSweep::nanoseconds() const
+    {
+        return m_timestamp.nanoseconds();
+    }
 
-	uint32 DataSweep::tick() const
-	{
-		return m_tick;
-	}
+    uint32 DataSweep::tick() const
+    {
+        return m_tick;
+    }
 
-	void DataSweep::tick(uint32 tick)
-	{
-		m_tick = tick;
-	}
+    void DataSweep::tick(uint32 tick)
+    {
+        m_tick = tick;
+    }
 
-	SampleRate DataSweep::sampleRate() const
-	{
-		return m_sampleRate;
-	}
+    SampleRate DataSweep::sampleRate() const
+    {
+        return m_sampleRate;
+    }
 
-	void DataSweep::sampleRate(SampleRate rate)
-	{
-		m_sampleRate = rate;
-	}
+    void DataSweep::sampleRate(SampleRate rate)
+    {
+        m_sampleRate = rate;
+    }
 
-	NodeAddress DataSweep::nodeAddress() const
-	{
-		return m_nodeAddress;
-	}
+    NodeAddress DataSweep::nodeAddress() const
+    {
+        return m_nodeAddress;
+    }
 
-	void DataSweep::nodeAddress(NodeAddress address)
-	{
-		m_nodeAddress = address;
-	}
+    void DataSweep::nodeAddress(NodeAddress address)
+    {
+        m_nodeAddress = address;
+    }
 
-	const ChannelData& DataSweep::data() const
-	{
-		return m_data;
-	}
+    const ChannelData& DataSweep::data() const
+    {
+        return m_data;
+    }
 
-	void DataSweep::data(ChannelData data)
-	{
-		m_data = data;
-	}
+    void DataSweep::data(ChannelData data)
+    {
+        m_data = data;
+    }
 
-	DataSweep::SamplingType DataSweep::samplingType() const
-	{
-		return m_samplingMode;
-	}
+    DataSweep::SamplingType DataSweep::samplingType() const
+    {
+        return m_samplingMode;
+    }
 
-	void DataSweep::samplingType(DataSweep::SamplingType type)
-	{
-		m_samplingMode = type;
-	}
+    void DataSweep::samplingType(DataSweep::SamplingType type)
+    {
+        m_samplingMode = type;
+    }
 
-	int16 DataSweep::nodeRssi() const
-	{
-		return m_nodeRssi;
-	}
+    int16 DataSweep::nodeRssi() const
+    {
+        return m_nodeRssi;
+    }
 
-	void DataSweep::nodeRssi(int16 rssi)
-	{
-		m_nodeRssi = rssi;
-	}
+    void DataSweep::nodeRssi(int16 rssi)
+    {
+        m_nodeRssi = rssi;
+    }
 
-	int16 DataSweep::baseRssi() const
-	{
-		return m_baseRssi;
-	}
+    int16 DataSweep::baseRssi() const
+    {
+        return m_baseRssi;
+    }
 
-	void DataSweep::baseRssi(int16 rssi)
-	{
-		m_baseRssi = rssi;
-	}
+    void DataSweep::baseRssi(int16 rssi)
+    {
+        m_baseRssi = rssi;
+    }
 
-	WirelessTypes::Frequency DataSweep::frequency() const
-	{
-		return m_frequency;
-	}
+    WirelessTypes::Frequency DataSweep::frequency() const
+    {
+        return m_frequency;
+    }
 
-	void DataSweep::frequency(WirelessTypes::Frequency freq)
-	{
-		m_frequency = freq;
-	}
+    void DataSweep::frequency(WirelessTypes::Frequency freq)
+    {
+        m_frequency = freq;
+    }
 }

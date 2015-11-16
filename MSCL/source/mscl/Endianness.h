@@ -37,7 +37,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
  *
  *  Created on: Jan 18, 2012
  *      Author: j_herbst
- *	 Edited on: Sept 26, 2013 by r_stoneback
+ *     Edited on: Sept 26, 2013 by r_stoneback
  */
 
 #pragma once
@@ -49,71 +49,71 @@ namespace mscl
 {
 
 //Function: BigEndian
-//	Converts a type with a static size to or from big endian
+//    Converts a type with a static size to or from big endian
 //
 //Parameters:
-//	val - the value to convert
+//    val - the value to convert
 //
 //Returns:
-//	The converted value
+//    The converted value
 template<typename StaticType>
 inline StaticType BigEndian(StaticType val);
 
 
 //Function: LittleEndian
-//	Converts a type with a static size to or from little endian
+//    Converts a type with a static size to or from little endian
 //
 //Parameters:
-//	val - the value to convert
+//    val - the value to convert
 //
 //Returns:
-//	The converted value
+//    The converted value
 template<typename StaticType>
 inline StaticType LittleEndian(StaticType val);
 
 //Function: DeviceEndian_To_SystemEndian
-//	Converts the value from Big Endian to System Endian
+//    Converts the value from Big Endian to System Endian
 //
 //Parameters:
-//	val - the value to convert
+//    val - the value to convert
 //
 //Returns:
-//	The value in System Endianess
+//    The value in System Endianess
 template<typename StaticType>
 inline StaticType BigEndian_To_SystemEndian(StaticType val);
 
 
 //Function: SystemEndian_To_BigEndian
-//	Converts the value from System Endian to Big Endian
+//    Converts the value from System Endian to Big Endian
 //
 //Parameters:
-//	val - the value to convert
+//    val - the value to convert
 //
 //Returns:
-//	The value in Big Endian
+//    The value in Big Endian
 template<typename StaticType>
 inline StaticType SystemEndian_To_BigEndian(StaticType val);
 
 //Function: LittleEndian_To_SystemEndian
-//	Converts the value from Little Endian to System Endian
+//    Converts the value from Little Endian to System Endian
 //
 //Parameters:
-//	val - the value to convert
+//    val - the value to convert
 //
 //Returns:
-//	The value in System Endianess
+//    The value in System Endianess
 template<typename StaticType>
 inline StaticType LittleEndian_To_SystemEndian(StaticType val);
 
 
 //Function: SystemEndian_To_LittleEndian
-//	Converts the value from System Endian to Little Endian
+//    Converts the value from System Endian to Little Endian
 //
 //Parameters:
-//	val - the value to convert
+//    val - the value to convert
 //
 //Returns:
-//	The value in Little Endian
+//    The value in Little Endian
 template<typename StaticType>
 inline StaticType SystemEndian_To_LittleEndian(StaticType val);
 
@@ -124,45 +124,45 @@ inline StaticType SystemEndian_To_LittleEndian(StaticType val);
 template<typename StaticType>
 inline StaticType BigEndian(StaticType val)
 {
-	for(int i = 0, j = sizeof(val) - 1; i < j; i++, j--)
-	{
-		std::swap(reinterpret_cast<char*>(&val)[i], reinterpret_cast<char*>(&val)[j]);
-	}
-	return val;
+    for(int i = 0, j = sizeof(val) - 1; i < j; i++, j--)
+    {
+        std::swap(reinterpret_cast<char*>(&val)[i], reinterpret_cast<char*>(&val)[j]);
+    }
+    return val;
 }
 
 template<typename StaticType>
 inline StaticType LittleEndian(StaticType val)
 {
-	return val;
+    return val;
 }
 
 template<typename StaticType>
 inline StaticType BigEndian_To_SystemEndian(StaticType val)
 {
-	//little endian system, so swap from device (big endian) to little endian
-	return BigEndian(val);
+    //little endian system, so swap from device (big endian) to little endian
+    return BigEndian(val);
 }
 
 template<typename StaticType>
 inline StaticType SystemEndian_To_BigEndian(StaticType val)
 {
-	//little endian system, swap to device (big endian)
-	return BigEndian(val);
+    //little endian system, swap to device (big endian)
+    return BigEndian(val);
 }
 
 template<typename StaticType>
 inline StaticType LittleEndian_To_SystemEndian(StaticType val)
 {
-	//little endian system, so keep bytes the same
-	return LittleEndian(val);
+    //little endian system, so keep bytes the same
+    return LittleEndian(val);
 }
 
 template<typename StaticType>
 inline StaticType SystemEndian_To_LittleEndian(StaticType val)
 {
-	//little endian system,so keep bytes the same
-	return LittleEndian(val);
+    //little endian system,so keep bytes the same
+    return LittleEndian(val);
 }
 
 #else
@@ -171,45 +171,45 @@ inline StaticType SystemEndian_To_LittleEndian(StaticType val)
 template<typename StaticType>
 inline StaticType BigEndian(StaticType val)
 {
-	return val;
+    return val;
 }
 
 template<typename StaticType>
 inline StaticType LittleEndian(StaticType val)
 {
-	for(int i = 0, j = sizeof(val) - 1; i < j; i++, j--)
-	{
-		std::swap(reinterpret_cast<char*>(&val)[i], reinterpret_cast<char*>(&val)[j]);
-	}
-	return val;
+    for(int i = 0, j = sizeof(val) - 1; i < j; i++, j--)
+    {
+        std::swap(reinterpret_cast<char*>(&val)[i], reinterpret_cast<char*>(&val)[j]);
+    }
+    return val;
 }
 
 template<typename StaticType>
 inline StaticType BigEndian_To_SystemEndian(StaticType val)
 {
-	//big endian system, do not swap
-	return BigEndian(val);
+    //big endian system, do not swap
+    return BigEndian(val);
 }
 
 template<typename StaticType>
 inline StaticType SystemEndian_To_BigEndian(StaticType val)
 {
-	//big endian system, do not swap (device is big endian)
-	return BigEndian(val);
+    //big endian system, do not swap (device is big endian)
+    return BigEndian(val);
 }
 
 template<typename StaticType>
 inline StaticType LittleEndian_To_SystemEndian(StaticType val)
 {
-	//big endian system, swap bytes to big endian
-	return LittleEndian(val);
+    //big endian system, swap bytes to big endian
+    return LittleEndian(val);
 }
 
 template<typename StaticType>
 inline StaticType SystemEndian_To_LittleEndian(StaticType val)
 {
-	//big endian system, swap bytes to little endian
-	return LittleEndian(val);
+    //big endian system, swap bytes to little endian
+    return LittleEndian(val);
 }
 
 #endif

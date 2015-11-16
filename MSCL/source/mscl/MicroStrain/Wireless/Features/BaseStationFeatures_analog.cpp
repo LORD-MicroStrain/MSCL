@@ -8,18 +8,18 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	BaseStationFeatures_analog::BaseStationFeatures_analog(BaseStationInfo& info):
-		BaseStationFeatures(info)
-	{
-	}
+    BaseStationFeatures_analog::BaseStationFeatures_analog(BaseStationInfo& info):
+        BaseStationFeatures(info)
+    {
+    }
 
-	uint8 BaseStationFeatures_analog::buttonCount() const
-	{
-		return 2;	//supports 2 buttons
-	}
+    uint8 BaseStationFeatures_analog::buttonCount() const
+    {
+        return 2;    //supports 2 buttons
+    }
 
-	uint8 BaseStationFeatures_analog::analogPortCount() const
-	{
-		return 8;	//supports 8 analog out ports
-	}
+    uint8 BaseStationFeatures_analog::analogPortCount() const
+    {
+        return 8;    //supports 8 analog out ports
+    }
 }

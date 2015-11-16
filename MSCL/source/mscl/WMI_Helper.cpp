@@ -18,37 +18,37 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #ifdef _WIN32
 
 WMI_Helper::WMI_Helper(std::string wmi_namespace, std::string wmi_class):
-	m_wmi_namespace(wmi_namespace),
-	m_wmi_class(wmi_class),
-	m_enumerator(nullptr)
+    m_wmi_namespace(wmi_namespace),
+    m_wmi_class(wmi_class),
+    m_enumerator(nullptr)
 {
 }
 
 WMI_Helper::~WMI_Helper()
 {
-	//close down the WMI Service
-	CoUninitialize();
+    //close down the WMI Service
+    CoUninitialize();
 }
 
 void WMI_Helper::connect()
 {
-	HRESULT hres;
-	std::stringstream error;
+    HRESULT hres;
+    std::stringstream error;
 
     // Step 1: --------------------------------------------------
     // Initialize COM. ------------------------------------------
 
     hres =  CoInitializeEx(0, COINIT_MULTITHREADED); 
 
-	//if we failed to intialize COM library
+    //if we failed to intialize COM library
     if (FAILED(hres))
     {
-		//throw an exception, Program has failed.
-		error << "Failed to initialize COM library. Error code = 0x" << std::hex << hres;
-		throw std::exception(error.str().c_str());
+        //throw an exception, Program has failed.
+        error << "Failed to initialize COM library. Error code = 0x" << std::hex << hres;
+        throw std::exception(error.str().c_str());
     }
 
-	// Step 2: --------------------------------------------------
+    // Step 2: --------------------------------------------------
     // Set general COM security levels --------------------------
     // Note: If you are using Windows 2000, you need to specify -
     // the default authentication credentials for a user by using
@@ -68,17 +68,17 @@ void WMI_Helper::connect()
         );
 
               
-	//if we failed to initialize security
+    //if we failed to initialize security
     if (FAILED(hres) && (hres != RPC_E_TOO_LATE))
     {
-		CoUninitialize();
+        CoUninitialize();
 
-		//throw an exception, Program has failed.
+        //throw an exception, Program has failed.
         error << "Failed to initialize security. Error code = 0x" << std::hex << hres;
-		throw std::exception(error.str().c_str());
+        throw std::exception(error.str().c_str());
     }
 
-	// Step 3: ---------------------------------------------------
+    // Step 3: ---------------------------------------------------
     // Obtain the initial locator to WMI -------------------------
 
     IWbemLocator *pLoc = NULL;
@@ -89,17 +89,17 @@ void WMI_Helper::connect()
         CLSCTX_INPROC_SERVER, 
         IID_IWbemLocator, (LPVOID *) &pLoc);
  
-	//if we failed to create the initial locator to WMI
+    //if we failed to create the initial locator to WMI
     if (FAILED(hres))
     {
-		CoUninitialize();
+        CoUninitialize();
 
-		//throw an exception, Program has failed.
+        //throw an exception, Program has failed.
         error << "Failed to create IWbemLocator object. Error code = 0x" << std::hex << hres;
         throw std::exception(error.str().c_str());
     }
 
-	// Step 4: -----------------------------------------------------
+    // Step 4: -----------------------------------------------------
     // Connect to WMI through the IWbemLocator::ConnectServer method
 
     IWbemServices *pSvc = NULL;
@@ -108,27 +108,27 @@ void WMI_Helper::connect()
     // the current user and obtain pointer pSvc
     // to make IWbemServices calls.
     hres = pLoc->ConnectServer(
-		_bstr_t(m_wmi_namespace.c_str()),	// Object path of WMI namespace
-         NULL,								// User name. NULL = current user
-         NULL,								// User password. NULL = current
-         0,									// Locale. NULL indicates current
-         NULL,								// Security flags.
-         0,									// Authority (for example, Kerberos)
-         0,									// Context object 
-         &pSvc								// pointer to IWbemServices proxy
+        _bstr_t(m_wmi_namespace.c_str()),    // Object path of WMI namespace
+         NULL,                                // User name. NULL = current user
+         NULL,                                // User password. NULL = current
+         0,                                    // Locale. NULL indicates current
+         NULL,                                // Security flags.
+         0,                                    // Authority (for example, Kerberos)
+         0,                                    // Context object 
+         &pSvc                                // pointer to IWbemServices proxy
          );
     
     if (FAILED(hres))
     {
-		pLoc->Release();     
+        pLoc->Release();     
         CoUninitialize();
 
-		//throw an exception, program has failed
+        //throw an exception, program has failed
         error << "Could not connect to namespace " << m_wmi_namespace << ". Error code = 0x" << std::hex << hres;
         throw std::exception(error.str().c_str());
     }
 
-	// Step 5: --------------------------------------------------
+    // Step 5: --------------------------------------------------
     // Set security levels on the proxy -------------------------
 
     hres = CoSetProxyBlanket(
@@ -144,43 +144,43 @@ void WMI_Helper::connect()
 
     if (FAILED(hres))
     {
-		pSvc->Release();
+        pSvc->Release();
         pLoc->Release();     
         CoUninitialize();
 
-		//throw an exception, Program has failed.
+        //throw an exception, Program has failed.
         error << "Could not set proxy blanket. Error code = 0x" << std::hex << hres;
-		throw std::exception(error.str().c_str());
+        throw std::exception(error.str().c_str());
     }
 
-	// Step 6: --------------------------------------------------
+    // Step 6: --------------------------------------------------
     // Use the IWbemServices pointer to make requests of WMI ----
 
-	//build the query to send
-	std::stringstream query;
-	query << "SELECT * FROM " << m_wmi_class;
+    //build the query to send
+    std::stringstream query;
+    query << "SELECT * FROM " << m_wmi_class;
 
-	m_enumerator = NULL;
+    m_enumerator = NULL;
 
     hres = pSvc->ExecQuery(
         bstr_t("WQL"), 
         bstr_t(query.str().c_str()),
         WBEM_FLAG_RETURN_IMMEDIATELY, 
         NULL,
-		&m_enumerator);
+        &m_enumerator);
     
     if (FAILED(hres))
     {
-		pSvc->Release();
+        pSvc->Release();
         pLoc->Release();
         CoUninitialize();
 
-		//throw an exception, Program has failed
+        //throw an exception, Program has failed
         error << "Query: '" << query.str() << "' has failed. Error code = 0x" << std::hex << hres;
-		throw std::exception(error.str().c_str());
+        throw std::exception(error.str().c_str());
     }
 
-	// Cleanup
+    // Cleanup
     // ========
     
     pSvc->Release();
@@ -189,18 +189,18 @@ void WMI_Helper::connect()
 
 void WMI_Helper::requestThread(std::vector<std::string> valuesToGet)
 {
-	connect();
+    connect();
 
     IWbemClassObject *pclsObj;
     ULONG uReturn = 0;
 
-	//reset the enumerator back to the start, to allow for multiple requests
-	m_enumerator->Reset();
+    //reset the enumerator back to the start, to allow for multiple requests
+    m_enumerator->Reset();
    
-	//loop through every item that was found
-	while (m_enumerator)
+    //loop through every item that was found
+    while (m_enumerator)
     {
-		//get the next item
+        //get the next item
         HRESULT hr = m_enumerator->Next(WBEM_INFINITE, 1, &pclsObj, &uReturn);
 
         if(uReturn == 0)
@@ -208,33 +208,33 @@ void WMI_Helper::requestThread(std::vector<std::string> valuesToGet)
             break;
         }
        
-		wmiValue valueToAdd;
+        wmiValue valueToAdd;
 
-		//for each value that the user requested
-		for(std::string valueName : valuesToGet)
-		{
-			//convert to a wstring
-			std::wstring stemp = std::wstring(valueName.begin(), valueName.end());
+        //for each value that the user requested
+        for(std::string valueName : valuesToGet)
+        {
+            //convert to a wstring
+            std::wstring stemp = std::wstring(valueName.begin(), valueName.end());
 
-			VARIANT vtProp;
+            VARIANT vtProp;
 
-			// Get the value of the requested property
-			hr = pclsObj->Get(stemp.c_str(), 0, &vtProp, 0, 0);
+            // Get the value of the requested property
+            hr = pclsObj->Get(stemp.c_str(), 0, &vtProp, 0, 0);
 
-			//if this value wasn't found
-			if(FAILED(hr))
-			{
-				std::stringstream error;
-				error << "Failed to find value for " << valueName;
-				throw std::exception(error.str().c_str());
-			}
-			
-			//add to the map
-			valueToAdd[valueName] = vtProp;
-		}
+            //if this value wasn't found
+            if(FAILED(hr))
+            {
+                std::stringstream error;
+                error << "Failed to find value for " << valueName;
+                throw std::exception(error.str().c_str());
+            }
+            
+            //add to the map
+            valueToAdd[valueName] = vtProp;
+        }
 
-		//add the new map of values to the result vector
-		m_values.push_back(valueToAdd);
+        //add the new map of values to the result vector
+        m_values.push_back(valueToAdd);
 
         pclsObj->Release();
     }
@@ -242,11 +242,11 @@ void WMI_Helper::requestThread(std::vector<std::string> valuesToGet)
 
 WMI_Helper::wmiValues WMI_Helper::request(std::vector<std::string> valuesToGet)
 {
-	std::thread t(&WMI_Helper::requestThread, this, valuesToGet);
+    std::thread t(&WMI_Helper::requestThread, this, valuesToGet);
 
-	t.join();
+    t.join();
 
-	return m_values;
+    return m_values;
 }
 
 #endif

@@ -8,33 +8,33 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	LinearEquation::LinearEquation():
-		m_slope(1.0f),
-		m_offset(0.0f)
-	{ }
+    LinearEquation::LinearEquation():
+        m_slope(1.0f),
+        m_offset(0.0f)
+    { }
 
-	LinearEquation::LinearEquation(float slope, float offset):
-		m_slope(slope),
-		m_offset(offset)
-	{ }
+    LinearEquation::LinearEquation(float slope, float offset):
+        m_slope(slope),
+        m_offset(offset)
+    { }
 
-	void LinearEquation::slope(float slope)
-	{
-		m_slope = slope;
-	}
+    void LinearEquation::slope(float slope)
+    {
+        m_slope = slope;
+    }
 
-	float LinearEquation::slope() const
-	{
-		return m_slope;
-	}
+    float LinearEquation::slope() const
+    {
+        return m_slope;
+    }
 
-	void LinearEquation::offset(float offset)
-	{
-		m_offset = offset;
-	}
+    void LinearEquation::offset(float offset)
+    {
+        m_offset = offset;
+    }
 
-	float LinearEquation::offset() const
-	{
-		return m_offset;
-	}
+    float LinearEquation::offset() const
+    {
+        return m_offset;
+    }
 }

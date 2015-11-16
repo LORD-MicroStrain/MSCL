@@ -8,25 +8,25 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	AutoBalanceResult::AutoBalanceResult():
-		m_errorCode(WirelessTypes::autobalance_notComplete),
-		m_percentAchieved(0),
-		m_hardwareOffset(0)
-	{
-	}
+    AutoBalanceResult::AutoBalanceResult():
+        m_errorCode(WirelessTypes::autobalance_notComplete),
+        m_percentAchieved(0),
+        m_hardwareOffset(0)
+    {
+    }
 
-	WirelessTypes::AutoBalanceErrorFlag AutoBalanceResult::errorCode() const
-	{
-		return m_errorCode;
-	}
+    WirelessTypes::AutoBalanceErrorFlag AutoBalanceResult::errorCode() const
+    {
+        return m_errorCode;
+    }
 
-	float AutoBalanceResult::percentAchieved() const
-	{
-		return m_percentAchieved;
-	}
+    float AutoBalanceResult::percentAchieved() const
+    {
+        return m_percentAchieved;
+    }
 
-	uint16 AutoBalanceResult::hardwareOffset() const
-	{
-		return m_hardwareOffset;
-	}
+    uint16 AutoBalanceResult::hardwareOffset() const
+    {
+        return m_hardwareOffset;
+    }
 }

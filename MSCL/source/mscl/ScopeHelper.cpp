@@ -8,22 +8,22 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	ScopeHelper::ScopeHelper(std::function<void()> scopeFunction):
-		m_outOfScopeFunction(scopeFunction),
-		m_canceled(false)
-	{
-	}
+    ScopeHelper::ScopeHelper(std::function<void()> scopeFunction):
+        m_outOfScopeFunction(scopeFunction),
+        m_canceled(false)
+    {
+    }
 
-	ScopeHelper::~ScopeHelper()
-	{
-		if(!m_canceled)
-		{
-			m_outOfScopeFunction();
-		}
-	}
+    ScopeHelper::~ScopeHelper()
+    {
+        if(!m_canceled)
+        {
+            m_outOfScopeFunction();
+        }
+    }
 
-	void ScopeHelper::cancel()
-	{
-		m_canceled = true;
-	}
+    void ScopeHelper::cancel()
+    {
+        m_canceled = true;
+    }
 }

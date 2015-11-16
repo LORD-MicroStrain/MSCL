@@ -10,132 +10,132 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	ByteStream BaseStation_ReadEeprom::buildCommand(uint16 eepromAddress)
-	{
-		//build the command ByteStream
-		ByteStream cmd;
+    ByteStream BaseStation_ReadEeprom::buildCommand(uint16 eepromAddress)
+    {
+        //build the command ByteStream
+        ByteStream cmd;
 
-		cmd.append_uint8(COMMAND_BYTE);
-		cmd.append_uint16(eepromAddress);						//eeprom address to read
-		cmd.append_uint16(cmd.calculateSimpleChecksum(1, 2));	//checksum
-		
-		//return the built command bytes
-		return cmd;
-	}
-
-
-	BaseStation_ReadEeprom::Response::Response(std::weak_ptr<ResponseCollector> collector):
-		ResponsePattern(collector)
-	{
-	}
-
-	bool BaseStation_ReadEeprom::Response::matchSuccessResponse(DataBuffer& data)
-	{
-		const uint16 TOTAL_SUCCESS_BYTES = 5;
-
-		//create a save point with the data
-		ReadBufferSavePoint savePoint(&data);
-
-		//if there aren't enough bytes in the buffer to match the response
-		if(data.bytesRemaining() < TOTAL_SUCCESS_BYTES) 
-		{ 
-			return false; 
-		}
-
-		//if the first byte isn't the command byte
-		if(data.read_uint8() != COMMAND_BYTE) 
-		{ 
-			return false; 
-		}
+        cmd.append_uint8(COMMAND_BYTE);
+        cmd.append_uint16(eepromAddress);                        //eeprom address to read
+        cmd.append_uint16(cmd.calculateSimpleChecksum(1, 2));    //checksum
+        
+        //return the built command bytes
+        return cmd;
+    }
 
 
-		//the next two bytes should be the eeprom value
-		uint16 eepromVal = data.read_uint16();
+    BaseStation_ReadEeprom::Response::Response(std::weak_ptr<ResponseCollector> collector):
+        ResponsePattern(collector)
+    {
+    }
 
-		//build the ChecksumBuilder with the necessary bytes
-		ChecksumBuilder checksum;
-		checksum.append_uint16(eepromVal);	//eeprom value
+    bool BaseStation_ReadEeprom::Response::matchSuccessResponse(DataBuffer& data)
+    {
+        const uint16 TOTAL_SUCCESS_BYTES = 5;
 
-		//if the checksum doesn't match
-		if(data.read_uint16() != checksum.simpleChecksum()) 
-		{ 
-			return false; 
-		}
+        //create a save point with the data
+        ReadBufferSavePoint savePoint(&data);
 
-		//if we made it this far, we successfully matched everything
+        //if there aren't enough bytes in the buffer to match the response
+        if(data.bytesRemaining() < TOTAL_SUCCESS_BYTES) 
+        { 
+            return false; 
+        }
 
-		//commit the current read position
-		savePoint.commit();
+        //if the first byte isn't the command byte
+        if(data.read_uint8() != COMMAND_BYTE) 
+        { 
+            return false; 
+        }
 
-		//set the result to success
-		m_success = true;
-		m_result = eepromVal;
 
-		return true;
-	}
+        //the next two bytes should be the eeprom value
+        uint16 eepromVal = data.read_uint16();
 
-	bool BaseStation_ReadEeprom::Response::matchFailResponse(DataBuffer& data)
-	{
-		const uint16 TOTAL_FAILURE_BYTES = 1;
+        //build the ChecksumBuilder with the necessary bytes
+        ChecksumBuilder checksum;
+        checksum.append_uint16(eepromVal);    //eeprom value
 
-		//create a save point with the data
-		ReadBufferSavePoint savePoint(&data);
+        //if the checksum doesn't match
+        if(data.read_uint16() != checksum.simpleChecksum()) 
+        { 
+            return false; 
+        }
 
-		//if there aren't enough bytes in the buffer to match the response
-		if(data.bytesRemaining() < TOTAL_FAILURE_BYTES) 
-		{
-			return false; 
-		}
+        //if we made it this far, we successfully matched everything
 
-		//if the first byte isn't the fail byte
-		if(data.read_uint8() != FAIL_BYTE) 
-		{ 
-			return false; 
-		}
+        //commit the current read position
+        savePoint.commit();
 
-		//if we made it this far, we successfully matched everything
+        //set the result to success
+        m_success = true;
+        m_result = eepromVal;
 
-		//commit the current read position
-		savePoint.commit();
+        return true;
+    }
 
-		//set the result to a failure
-		m_success = false;
+    bool BaseStation_ReadEeprom::Response::matchFailResponse(DataBuffer& data)
+    {
+        const uint16 TOTAL_FAILURE_BYTES = 1;
 
-		return true;
-	}
+        //create a save point with the data
+        ReadBufferSavePoint savePoint(&data);
 
-	bool BaseStation_ReadEeprom::Response::match(DataBuffer& data)
-	{
-		//if the bytes match the success response
-		if(matchSuccessResponse(data))
-		{
-			//we have fully matched the response
-			m_fullyMatched = true;
+        //if there aren't enough bytes in the buffer to match the response
+        if(data.bytesRemaining() < TOTAL_FAILURE_BYTES) 
+        {
+            return false; 
+        }
 
-			//notify that the response was matched
-			m_matchCondition.notify();
-			return true;
-		}
-		//if the bytes match the fail response
-		else if(matchFailResponse(data))
-		{
-			//we have fully matched the response
-			m_fullyMatched = true;
+        //if the first byte isn't the fail byte
+        if(data.read_uint8() != FAIL_BYTE) 
+        { 
+            return false; 
+        }
 
-			//notify that the response was matched
-			m_matchCondition.notify();
-			return true;
-		}
+        //if we made it this far, we successfully matched everything
 
-		//the bytes don't match any response
-		return false;
-	}
+        //commit the current read position
+        savePoint.commit();
 
-	uint16 BaseStation_ReadEeprom::Response::result() const
-	{
-		//throw an exception if the command failed
-		throwIfFailed("Read BaseStation EEPROM");
+        //set the result to a failure
+        m_success = false;
 
-		return m_result;
-	}
+        return true;
+    }
+
+    bool BaseStation_ReadEeprom::Response::match(DataBuffer& data)
+    {
+        //if the bytes match the success response
+        if(matchSuccessResponse(data))
+        {
+            //we have fully matched the response
+            m_fullyMatched = true;
+
+            //notify that the response was matched
+            m_matchCondition.notify();
+            return true;
+        }
+        //if the bytes match the fail response
+        else if(matchFailResponse(data))
+        {
+            //we have fully matched the response
+            m_fullyMatched = true;
+
+            //notify that the response was matched
+            m_matchCondition.notify();
+            return true;
+        }
+
+        //the bytes don't match any response
+        return false;
+    }
+
+    uint16 BaseStation_ReadEeprom::Response::result() const
+    {
+        //throw an exception if the command failed
+        throwIfFailed("Read BaseStation EEPROM");
+
+        return m_result;
+    }
 }

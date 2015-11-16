@@ -11,26 +11,26 @@ namespace mscl
 {
 
 //Class: HighResClock
-//	Helper class used to obtain the current system time from as high-resolution of a clock as possible.
+//    Helper class used to obtain the current system time from as high-resolution of a clock as possible.
 class HighResClock
 {
 private:
-	//Variable: m_startHighResNanos
-	//	The nanoseconds since epoch for the high-resolution clock.
-	uint64 m_startHighResNanos;
+    //Variable: m_startHighResNanos
+    //    The nanoseconds since epoch for the high-resolution clock.
+    uint64 m_startHighResNanos;
 
-	//Variable: m_startSysTimeNanos
-	//	The nanoseconds since epoch for the system clock.
-	uint64 m_startSysTimeNanos;
+    //Variable: m_startSysTimeNanos
+    //    The nanoseconds since epoch for the system clock.
+    uint64 m_startSysTimeNanos;
 
 public:
-	//Default Constructor: HighResClock
-	//	Creates a HighResClock object, which sets the start clock times.
-	HighResClock();
+    //Default Constructor: HighResClock
+    //    Creates a HighResClock object, which sets the start clock times.
+    HighResClock();
 
-	//Function: getCurrentSystemTime
-	//	Gets the number of nanoseconds since Unix Epoch, using a high-resolution clock.
-	uint64 getCurrentSystemTime() const;
+    //Function: getCurrentSystemTime
+    //    Gets the number of nanoseconds since Unix Epoch, using a high-resolution clock.
+    uint64 getCurrentSystemTime() const;
 };
 
 }

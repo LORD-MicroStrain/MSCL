@@ -8,8 +8,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	InertialNodeFeatures_3dm_gx4_45::InertialNodeFeatures_3dm_gx4_45(const InertialNodeInfo& info):
-		InertialNodeFeatures(info)
-	{
-	}
+    InertialNodeFeatures_3dm_gx4_45::InertialNodeFeatures_3dm_gx4_45(const InertialNodeInfo& info):
+        InertialNodeFeatures(info)
+    {
+    }
 }

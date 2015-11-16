@@ -9,18 +9,18 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	//read the required information from the BaseStation and store in the BaseStationInfo
-	BaseStationInfo::BaseStationInfo(const BaseStation_Impl& base) :
-		firmwareVersion(base.firmwareVersion()),
-		model(base.model()),
-		regionCode(base.regionCode())
-	{
-	}
+    //read the required information from the BaseStation and store in the BaseStationInfo
+    BaseStationInfo::BaseStationInfo(const BaseStation_Impl& base) :
+        firmwareVersion(base.firmwareVersion()),
+        model(base.model()),
+        regionCode(base.regionCode())
+    {
+    }
 
-	BaseStationInfo::BaseStationInfo(Version fw, WirelessModels::BaseModel model, WirelessTypes::RegionCode region):
-		firmwareVersion(fw),
-		model(model),
-		regionCode(region)
-	{
-	}
+    BaseStationInfo::BaseStationInfo(Version fw, WirelessModels::BaseModel model, WirelessTypes::RegionCode region):
+        firmwareVersion(fw),
+        model(model),
+        regionCode(region)
+    {
+    }
 }

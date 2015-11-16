@@ -8,8 +8,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	InertialNodeFeatures_fasA::InertialNodeFeatures_fasA(const InertialNodeInfo& info):
-		InertialNodeFeatures(info)
-	{
-	}
+    InertialNodeFeatures_fasA::InertialNodeFeatures_fasA(const InertialNodeInfo& info):
+        InertialNodeFeatures(info)
+    {
+    }
 }

@@ -13,200 +13,200 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	class Connection_Impl_Base;
-	class DataBuffer;
-	class ByteStream;
+    class Connection_Impl_Base;
+    class DataBuffer;
+    class ByteStream;
 
-	//API Class: Connection
-	//	The Connection object that is used for communication.
-	class Connection
-	{
-		friend class BaseStation_Impl;
-		friend class InertialNode_Impl;
+    //API Class: Connection
+    //    The Connection object that is used for communication.
+    class Connection
+    {
+        friend class BaseStation_Impl;
+        friend class InertialNode_Impl;
 
-	public:
+    public:
 #ifndef SWIG
-		//Constructor: Connection
-		//	Creates a Connection object with the given implementation.
-		//	Note: This constructor should not be used in most cases.
-		//		  Please use the static <Serial>, <TcpIp>, and <UnixSocket> functions.
-		//
-		//Parameters:
-		//	impl - The <Connection_Impl> to use for this Connection.
-		Connection(std::shared_ptr<Connection_Impl_Base> impl);
+        //Constructor: Connection
+        //    Creates a Connection object with the given implementation.
+        //    Note: This constructor should not be used in most cases.
+        //          Please use the static <Serial>, <TcpIp>, and <UnixSocket> functions.
+        //
+        //Parameters:
+        //    impl - The <Connection_Impl> to use for this Connection.
+        Connection(std::shared_ptr<Connection_Impl_Base> impl);
 #endif
 
-		Connection(){};
+        Connection(){};
 
-		//API Function: Serial
-		//	A static function for creating a Connection object with a <SerialConnection> implementation.
-		//	A connection with the specified port will be established.
-		//
-		//Parameters:
-		//	port - The actual string name of the COM port (ex. "COM26")
-		//	baudRate - The baud rate at which to open the COM port (default of 921600)
-		//
-		//Returns:
-		//	A <Connection> object created with a <SerialConnection> implementation.
-		//
-		//Exceptions:
-		//	- <Error_InvalidSerialPort>: the specified com port is invalid
-		//	- <Error_Connection>: failed to get or set com port parameters
-		static Connection Serial(const std::string& port, uint32 baudRate = 921600);
+        //API Function: Serial
+        //    A static function for creating a Connection object with a <SerialConnection> implementation.
+        //    A connection with the specified port will be established.
+        //
+        //Parameters:
+        //    port - The actual string name of the COM port (ex. "COM26")
+        //    baudRate - The baud rate at which to open the COM port (default of 921600)
+        //
+        //Returns:
+        //    A <Connection> object created with a <SerialConnection> implementation.
+        //
+        //Exceptions:
+        //    - <Error_InvalidSerialPort>: the specified com port is invalid
+        //    - <Error_Connection>: failed to get or set com port parameters
+        static Connection Serial(const std::string& port, uint32 baudRate = 921600);
 
-		//API Function: TcpIp
-		//	A static function for creating a Connection object with a <TcpIpConnection> implementation.
-		//	A connection with the specified address/port will be established.
-		//
-		//Parameters:
-		//	serverAddress - The server address (domain name or ip address) to connect to.
-		//	serverPort - The server port to connect to.
-		//
-		//Returns:
-		//	A <Connection> object created with a <TcpIpConnection> implementation.
-		//
-		//Exceptions:
-		//	- <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
-		static Connection TcpIp(const std::string& serverAddress, uint16 serverPort);
-		
+        //API Function: TcpIp
+        //    A static function for creating a Connection object with a <TcpIpConnection> implementation.
+        //    A connection with the specified address/port will be established.
+        //
+        //Parameters:
+        //    serverAddress - The server address (domain name or ip address) to connect to.
+        //    serverPort - The server port to connect to.
+        //
+        //Returns:
+        //    A <Connection> object created with a <TcpIpConnection> implementation.
+        //
+        //Exceptions:
+        //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
+        static Connection TcpIp(const std::string& serverAddress, uint16 serverPort);
+        
 #ifdef UNIX_SOCKETS
-		//API Function: UnixSocket
-		//	A generator function for <Connection> objects with a <UnixSocketConnection> implementation (Unix builds only).
-		//	A connection with the specified path will be established.
-		//
-		//Parameters:
-		//	path - The a path to the unix socket
-		//
-		//Returns:
-		//	The generated <Connection> object.
-		//
-		//Exceptions:
-		//	- <Error_InvalidUnixSocket>: failed to connect to the specified unix socket path.
-		static Connection UnixSocket(const std::string& path);
+        //API Function: UnixSocket
+        //    A generator function for <Connection> objects with a <UnixSocketConnection> implementation (Unix builds only).
+        //    A connection with the specified path will be established.
+        //
+        //Parameters:
+        //    path - The a path to the unix socket
+        //
+        //Returns:
+        //    The generated <Connection> object.
+        //
+        //Exceptions:
+        //    - <Error_InvalidUnixSocket>: failed to connect to the specified unix socket path.
+        static Connection UnixSocket(const std::string& path);
 #endif
 
-	private:
-		//Variable: m_impl
-		//	The <Connection_Impl_Base> that contains all the implementation logic for the Connection class.
-		std::shared_ptr<Connection_Impl_Base> m_impl;
+    private:
+        //Variable: m_impl
+        //    The <Connection_Impl_Base> that contains all the implementation logic for the Connection class.
+        std::shared_ptr<Connection_Impl_Base> m_impl;
 
-	private:
-		//Function: registerParser
-		//	Registers a function to handle the parsing of data when it is read in.
-		//
-		//Parameters:
-		//	parseFunction - The function to call to parse data that is read in.
-		//
-		//Exceptions:
-		//	- <Error_Connection>: The connection is already in use.
-		void registerParser(std::function<void(DataBuffer&)> parseFunction);
+    private:
+        //Function: registerParser
+        //    Registers a function to handle the parsing of data when it is read in.
+        //
+        //Parameters:
+        //    parseFunction - The function to call to parse data that is read in.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: The connection is already in use.
+        void registerParser(std::function<void(DataBuffer&)> parseFunction);
 
-		//Function: unregisterParser
-		//	Unregisters the function to handle the parsing of data when it is read in.
-		void unregisterParser();
+        //Function: unregisterParser
+        //    Unregisters the function to handle the parsing of data when it is read in.
+        void unregisterParser();
 
-		//Function: write
-		//	Writes the specified bytes.
-		//
-		//Parameters:
-		//	data - vector of data to be written
-		void write(const ByteStream& data);
+        //Function: write
+        //    Writes the specified bytes.
+        //
+        //Parameters:
+        //    data - vector of data to be written
+        void write(const ByteStream& data);
 
-		//Function: throwIfError
-		//	Throws an exception if a connection error has occurred.
-		//
-		//Exceptions:
-		//	- <Error_Connection>: a connection error has occurred.
-		void throwIfError();
+        //Function: throwIfError
+        //    Throws an exception if a connection error has occurred.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: a connection error has occurred.
+        void throwIfError();
 
-	public:
-		//API Function: description
-		//	Gets a description of the connection as a string.
-		//
-		//Returns:
-		//	A description of the connection.
-		std::string description();
+    public:
+        //API Function: description
+        //    Gets a description of the connection as a string.
+        //
+        //Returns:
+        //    A description of the connection.
+        std::string description();
 
-		//API Function: disconnect
-		//	Closes the current connection.
-		void disconnect();
+        //API Function: disconnect
+        //    Closes the current connection.
+        void disconnect();
 
-		//API Function: reconnect
-		//	Reopens a connection that has been disconnected.
-		//
-		//Exceptions:
-		//	<Error_InvalidSerialPort> - the specified com port is invalid.
-		//	<Error_InvalidTcpServer> - the specified server address and/or server port is invalid.
-		//	<Error_InvalidUnixSocket> - failed to connect to the specified unix socket path.
-		//	<Error_Connection> - failed to get or set com port parameters
-		void reconnect();
+        //API Function: reconnect
+        //    Reopens a connection that has been disconnected.
+        //
+        //Exceptions:
+        //    <Error_InvalidSerialPort> - the specified com port is invalid.
+        //    <Error_InvalidTcpServer> - the specified server address and/or server port is invalid.
+        //    <Error_InvalidUnixSocket> - failed to connect to the specified unix socket path.
+        //    <Error_Connection> - failed to get or set com port parameters
+        void reconnect();
 
-		//API Function: write
-		//	Writes the given bytes to the connection.
-		//
-		//Parameters:
-		//	bytes - The bytes to write.
-		//
-		//Exceptions:
-		//	- <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-		void write(const Bytes& bytes);
+        //API Function: write
+        //    Writes the given bytes to the connection.
+        //
+        //Parameters:
+        //    bytes - The bytes to write.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
+        void write(const Bytes& bytes);
 
-		//API Function: writeStr
-		//	Writes the given string (containing bytes) to the connection.
-		//
-		//Parameters:
-		//	bytes - The string of bytes to write.
-		//
-		//Exceptions:
-		//	- <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-		void writeStr(const std::string& bytes);
+        //API Function: writeStr
+        //    Writes the given string (containing bytes) to the connection.
+        //
+        //Parameters:
+        //    bytes - The string of bytes to write.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
+        void writeStr(const std::string& bytes);
 
-		//Function: clearBuffer
-		//	Resets the read buffer.
-		void clearBuffer();
+        //Function: clearBuffer
+        //    Resets the read buffer.
+        void clearBuffer();
 
-		//API Function: rawByteMode
-		//	Puts the connection into "Raw Byte Mode." 
-		//	"Raw Byte Mode" stops the data from being sent/parsed from any attached devices (BaseStation, InertialNode, etc.)
-		//	and instead sends all data into a raw circular data buffer that can be accessed by calling <getRawBytes> on this Connection object.
-		//	Disabling this mode will start sending all data back to the previous attached device, if still available.
-		//
-		//Parameters:
-		//	enable - whether to enable raw byte mode (true), or disable raw byte mode (false).
-		//
-		//Exceptions:
-		//	- <Error_Connection>: The connection has been disconnected.
-		void rawByteMode(bool enable);
+        //API Function: rawByteMode
+        //    Puts the connection into "Raw Byte Mode." 
+        //    "Raw Byte Mode" stops the data from being sent/parsed from any attached devices (BaseStation, InertialNode, etc.)
+        //    and instead sends all data into a raw circular data buffer that can be accessed by calling <getRawBytes> on this Connection object.
+        //    Disabling this mode will start sending all data back to the previous attached device, if still available.
+        //
+        //Parameters:
+        //    enable - whether to enable raw byte mode (true), or disable raw byte mode (false).
+        //
+        //Exceptions:
+        //    - <Error_Connection>: The connection has been disconnected.
+        void rawByteMode(bool enable);
 
-		//API Function: getRawBytes
-		//	Gets the raw bytes that are available that have been collected when the Connection is in "Raw Byte Mode."
-		//	If the Connection has not been put into "Raw Byte Mode" by calling <rawByteMode>, no data can be retrieved from this function.
-		//
-		//Parameters:
-		//	timeout - the timeout, in milliseconds, to wait for the data if necessary (default of 0).
-		//	maxBytes - The maximum number of bytes to return. If this is 0 (default), all bytes will be returned.
-		//
-		//Returns:
-		//	A <Bytes> vector containing all of the raw bytes that are available.
-		//
-		//Exceptions:
-		//	- <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-		Bytes getRawBytes(uint32 timeout = 0, uint32 maxBytes = 0);
+        //API Function: getRawBytes
+        //    Gets the raw bytes that are available that have been collected when the Connection is in "Raw Byte Mode."
+        //    If the Connection has not been put into "Raw Byte Mode" by calling <rawByteMode>, no data can be retrieved from this function.
+        //
+        //Parameters:
+        //    timeout - the timeout, in milliseconds, to wait for the data if necessary (default of 0).
+        //    maxBytes - The maximum number of bytes to return. If this is 0 (default), all bytes will be returned.
+        //
+        //Returns:
+        //    A <Bytes> vector containing all of the raw bytes that are available.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
+        Bytes getRawBytes(uint32 timeout = 0, uint32 maxBytes = 0);
 
-		//API Function: getRawBytesStr
-		//	Gets the raw bytes that are available that have been collected when the Connection is in "Raw Byte Mode" as a string.
-		//	If the Connection has not been put into "Raw Byte Mode" by calling <rawByteMode>, no data can be retrieved from this function.
-		//
-		//Parameters:
-		//	timeout - the timeout, in milliseconds, to wait for the data if necessary (default of 0).
-		//	maxBytes - The maximum number of bytes to return. If this is 0 (default), all bytes will be returned.
-		//
-		//Returns:
-		//	A string containing all of the raw bytes that are available.
-		//
-		//Exceptions:
-		//	- <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-		std::string getRawBytesStr(uint32 timeout = 0, uint32 maxBytes = 0);
-	};
+        //API Function: getRawBytesStr
+        //    Gets the raw bytes that are available that have been collected when the Connection is in "Raw Byte Mode" as a string.
+        //    If the Connection has not been put into "Raw Byte Mode" by calling <rawByteMode>, no data can be retrieved from this function.
+        //
+        //Parameters:
+        //    timeout - the timeout, in milliseconds, to wait for the data if necessary (default of 0).
+        //    maxBytes - The maximum number of bytes to return. If this is 0 (default), all bytes will be returned.
+        //
+        //Returns:
+        //    A string containing all of the raw bytes that are available.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
+        std::string getRawBytesStr(uint32 timeout = 0, uint32 maxBytes = 0);
+    };
 
 }

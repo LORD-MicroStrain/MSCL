@@ -8,14 +8,14 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	ByteStream Resume::buildCommand()
-	{
-		//build and return the command bytes
-		return GenericInertialCommand::buildCommand(CMD_ID);
-	}
+    ByteStream Resume::buildCommand()
+    {
+        //build and return the command bytes
+        return GenericInertialCommand::buildCommand(CMD_ID);
+    }
 
-	Resume::Response::Response(std::weak_ptr<ResponseCollector> collector):
-		GenericInertialCommand::Response(collector, true, false, "Resume")
-	{
-	}
+    Resume::Response::Response(std::weak_ptr<ResponseCollector> collector):
+        GenericInertialCommand::Response(collector, true, false, "Resume")
+    {
+    }
 }

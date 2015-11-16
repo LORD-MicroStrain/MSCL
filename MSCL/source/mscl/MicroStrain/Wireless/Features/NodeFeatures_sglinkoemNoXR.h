@@ -9,18 +9,18 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	//Class: NodeFeatures_sglinkoemNoXR
-	//	Contains information on features for the SG-Link-OEM node. Inherits from <NodeFeatures>.
-	class NodeFeatures_sglinkoemNoXR : public NodeFeatures
-	{
-	private:
-		NodeFeatures_sglinkoemNoXR();	//disabled default constructor
+    //Class: NodeFeatures_sglinkoemNoXR
+    //    Contains information on features for the SG-Link-OEM node. Inherits from <NodeFeatures>.
+    class NodeFeatures_sglinkoemNoXR : public NodeFeatures
+    {
+    private:
+        NodeFeatures_sglinkoemNoXR();    //disabled default constructor
 
-	public:
-		virtual ~NodeFeatures_sglinkoemNoXR(){};
+    public:
+        virtual ~NodeFeatures_sglinkoemNoXR(){};
 
-		//Constructor: NodeFeatures_sglinkoemNoXR
-		//	Creates a NodeFeatures_sglinkoemNoXR object.
-		NodeFeatures_sglinkoemNoXR(const NodeInfo& info);
-	};
+        //Constructor: NodeFeatures_sglinkoemNoXR
+        //    Creates a NodeFeatures_sglinkoemNoXR object.
+        NodeFeatures_sglinkoemNoXR(const NodeInfo& info);
+    };
 }

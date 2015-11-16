@@ -2,6 +2,41 @@
 All notable changes to this project will be documented in this file.
 
 -------------------------------------------------------------------------
+1.21.1 - 2015-11-11
+- fixed bugs causing Raw Angle Strain packets to get parsed incorrectly.
+
+-------------------------------------------------------------------------
+1.21.0 - 2015-11-10
+- added support for parsing Beacon Echo packets (base fw v3.32+).
+
+-------------------------------------------------------------------------
+1.20.6 - 2015-11-06
+- fix for angles in distributed version of Raw Angle Strain packets being incorrectly determined.
+
+-------------------------------------------------------------------------
+1.20.5 - 2015-11-05
+- added parsing of Raw Angle Strain Packets.
+- fix for SetToIdleStatus::cancel() failing due to attempting to determine which ping function to use.
+- set complete flag to true on the SetToIdleStatus after a successful cancel operation.
+- restricting SHM-Link2 sample rates to the correct range.
+- added BaseStation connection() function for getting a reference to the underlying Connection.
+
+-------------------------------------------------------------------------
+1.20.4 - 2015-11-03
+- added more detail to read/write eeprom specific failure code messages.
+- changed Windows serial port timeouts to be as fast and efficient as possible.
+  - this fixes an issue with Inertial data coming in so fast that it gets timestamps incorrectly.
+  - Note: there currently seems to be a bug in the SiLabs driver causing CPU spikes with this method.
+
+-------------------------------------------------------------------------
+1.20.3 - 2015-11-02
+- changed Value casting from boost numeric_cast (runtime out of range errors) to static_cast.
+
+-------------------------------------------------------------------------
+1.20.2 - 2015-11-02
+- fix for LDC 16ch packets not being parsed correctly.
+
+-------------------------------------------------------------------------
 1.20.1 - 2015-10-29
 - added histogramEnable to FatigueOptions config.
 - added supportsHistogramEnableConfig to NodeFeatures.

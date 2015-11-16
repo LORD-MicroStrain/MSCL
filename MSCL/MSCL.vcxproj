@@ -52,7 +52,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}</ProjectGuid>
-    <RootNamespace>LassoLibrary</RootNamespace>
+    <RootNamespace>MSCL</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -776,6 +776,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\AsyncDigitalAnalogPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\AsyncDigitalPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStation.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\BeaconEchoPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\BufferedLdcPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\BufferedLdcPacket_16ch.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_Ping.h" />
@@ -792,6 +793,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket_v2.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket_v3.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\RawAngleStrainPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\ShmPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket_16ch.h" />
@@ -991,6 +993,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\AsyncDigitalAnalogPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\AsyncDigitalPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStation.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\BeaconEchoPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\BufferedLdcPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\BufferedLdcPacket_16ch.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_Ping.cpp" />
@@ -1007,6 +1010,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket_v2.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket_v3.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\RawAngleStrainPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\ShmPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket_16ch.cpp" />

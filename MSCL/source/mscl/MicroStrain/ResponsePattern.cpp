@@ -14,100 +14,100 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	ResponsePattern::ResponsePattern():
-		m_fullyMatched(false),
-		m_success(false)
-	{
-	}
+    ResponsePattern::ResponsePattern():
+        m_fullyMatched(false),
+        m_success(false)
+    {
+    }
 
-	ResponsePattern::ResponsePattern(std::weak_ptr<ResponseCollector> collector) :
-		m_collector(collector),
-		m_fullyMatched(false),
-		m_success(false)
-	{
-		//attempt to get the pointer from the weak_ptr
-		std::shared_ptr<ResponseCollector> shCollector(m_collector.lock());
+    ResponsePattern::ResponsePattern(std::weak_ptr<ResponseCollector> collector) :
+        m_collector(collector),
+        m_fullyMatched(false),
+        m_success(false)
+    {
+        //attempt to get the pointer from the weak_ptr
+        std::shared_ptr<ResponseCollector> shCollector(m_collector.lock());
 
-		//if we got the shared_ptr
-		if(shCollector)
-		{
-			//register this response with the collector
-			shCollector->registerResponse(this);
-		}
-	}
+        //if we got the shared_ptr
+        if(shCollector)
+        {
+            //register this response with the collector
+            shCollector->registerResponse(this);
+        }
+    }
 
-	ResponsePattern::~ResponsePattern()
-	{
-		//attempt to get the pointer from the weak_ptr
-		std::shared_ptr<ResponseCollector> shCollector(m_collector.lock());
+    ResponsePattern::~ResponsePattern()
+    {
+        //attempt to get the pointer from the weak_ptr
+        std::shared_ptr<ResponseCollector> shCollector(m_collector.lock());
 
-		//if we got the shared_ptr
-		if(shCollector)
-		{
-			//unregister this response with the collector
-			shCollector->unregisterResponse(this);
-		}
-	}
+        //if we got the shared_ptr
+        if(shCollector)
+        {
+            //unregister this response with the collector
+            shCollector->unregisterResponse(this);
+        }
+    }
 
-	void ResponsePattern::setResponseCollector(std::weak_ptr<ResponseCollector> collector)
-	{
-		//verify we don't already have a collector
-		if(!m_collector.expired())
-		{
-			//not allowing the response collector to get reassigned (shouldn't be needed)
-			assert(false);
-			return;
-		}
+    void ResponsePattern::setResponseCollector(std::weak_ptr<ResponseCollector> collector)
+    {
+        //verify we don't already have a collector
+        if(!m_collector.expired())
+        {
+            //not allowing the response collector to get reassigned (shouldn't be needed)
+            assert(false);
+            return;
+        }
 
-		m_collector = collector;
+        m_collector = collector;
 
-		//attempt to get the pointer from the weak_ptr
-		std::shared_ptr<ResponseCollector> shCollector(m_collector.lock());
+        //attempt to get the pointer from the weak_ptr
+        std::shared_ptr<ResponseCollector> shCollector(m_collector.lock());
 
-		//if we got the shared_ptr
-		if(shCollector)
-		{
-			//register this response with the collector
-			shCollector->registerResponse(this);
-		}
-	}
+        //if we got the shared_ptr
+        if(shCollector)
+        {
+            //register this response with the collector
+            shCollector->registerResponse(this);
+        }
+    }
 
-	bool ResponsePattern::wait(uint64 timeout)
-	{
-		//perform a timedWait on the matchCondition, returning the result
-		return m_matchCondition.timedWait(timeout);
-	}
+    bool ResponsePattern::wait(uint64 timeout)
+    {
+        //perform a timedWait on the matchCondition, returning the result
+        return m_matchCondition.timedWait(timeout);
+    }
 
-	void ResponsePattern::throwIfFailed(const std::string& commandName) const
-	{
-		if(!m_success)
-		{
-			throw Error("The " + commandName + " command has failed.");
-		}
-	}
+    void ResponsePattern::throwIfFailed(const std::string& commandName) const
+    {
+        if(!m_success)
+        {
+            throw Error("The " + commandName + " command has failed.");
+        }
+    }
 
-	bool ResponsePattern::match(DataBuffer& data)
-	{
-		return false;
-	}
+    bool ResponsePattern::match(DataBuffer& data)
+    {
+        return false;
+    }
 
-	bool ResponsePattern::match(const WirelessPacket& packet)
-	{
-		return false;
-	}
+    bool ResponsePattern::match(const WirelessPacket& packet)
+    {
+        return false;
+    }
 
-	bool ResponsePattern::match(const InertialDataField& field)
-	{
-		return false;
-	}
+    bool ResponsePattern::match(const InertialDataField& field)
+    {
+        return false;
+    }
 
-	bool ResponsePattern::fullyMatched() const
-	{
-		return m_fullyMatched;
-	}
+    bool ResponsePattern::fullyMatched() const
+    {
+        return m_fullyMatched;
+    }
 
-	bool ResponsePattern::success() const
-	{
-		return m_success;
-	}
+    bool ResponsePattern::success() const
+    {
+        return m_success;
+    }
 }

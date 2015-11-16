@@ -10,70 +10,70 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
 
-	//Class: BufferedLdcPacket_16ch
-	//	A <WirelessDataPacket> derived class representing a Synchronized Sampling (Buffered LDC) packet
-	class BufferedLdcPacket_16ch : public WirelessDataPacket
-	{
-	private:
-		//=====================================================================================================
-		//Constants: Buffered LDC Packet Information
-		//	PAYLOAD_OFFSET_CHANNEL_MASK				- 0		- The offset into the payload to get the channel mask
-		//	PAYLOAD_OFFSET_SAMPLE_RATE				- 2		- The offset into the payload to get the sample rate
-		//	PAYLOAD_OFFSET_APPID_AND_DATA_TYPE		- 3		- The offset into the payload to get the app id and data type
-		//	PAYLOAD_OFFSET_TICK						- 4		- The offset into the payload to get the tick (2 bytes)
-		//	PAYLOAD_OFFSET_CHANNEL_DATA				- 6		- The offset into the payload where the channel data starts
-		//=====================================================================================================
-		static const uint16 PAYLOAD_OFFSET_CHANNEL_MASK			= 0;
-		static const uint16 PAYLOAD_OFFSET_SAMPLE_RATE			= 2;
-		static const uint16 PAYLOAD_OFFSET_APPID_AND_DATA_TYPE	= 3;
-		static const uint16 PAYLOAD_OFFSET_TICK					= 4;
-		static const uint16 PAYLOAD_OFFSET_CHANNEL_DATA			= 6;
+    //Class: BufferedLdcPacket_16ch
+    //    A <WirelessDataPacket> derived class representing a Synchronized Sampling (Buffered LDC) packet
+    class BufferedLdcPacket_16ch : public WirelessDataPacket
+    {
+    private:
+        //=====================================================================================================
+        //Constants: Buffered LDC Packet Information
+        //    PAYLOAD_OFFSET_CHANNEL_MASK                - 0        - The offset into the payload to get the channel mask
+        //    PAYLOAD_OFFSET_SAMPLE_RATE                - 2        - The offset into the payload to get the sample rate
+        //    PAYLOAD_OFFSET_APPID_AND_DATA_TYPE        - 3        - The offset into the payload to get the app id and data type
+        //    PAYLOAD_OFFSET_TICK                        - 4        - The offset into the payload to get the tick (2 bytes)
+        //    PAYLOAD_OFFSET_CHANNEL_DATA                - 6        - The offset into the payload where the channel data starts
+        //=====================================================================================================
+        static const uint16 PAYLOAD_OFFSET_CHANNEL_MASK            = 0;
+        static const uint16 PAYLOAD_OFFSET_SAMPLE_RATE            = 2;
+        static const uint16 PAYLOAD_OFFSET_APPID_AND_DATA_TYPE    = 3;
+        static const uint16 PAYLOAD_OFFSET_TICK                    = 4;
+        static const uint16 PAYLOAD_OFFSET_CHANNEL_DATA            = 6;
 
-		//=====================================================================================================
-		//Constants: Packet values
-		//	APP_ID_VAL	- 0x02	- The App ID of the Packet
-		//=====================================================================================================
-		static const uint16 APP_ID_VAL	= 0x02;
+        //=====================================================================================================
+        //Constants: Packet values
+        //    APP_ID_VAL    - 0x02    - The App ID of the Packet
+        //=====================================================================================================
+        static const uint16 APP_ID_VAL    = 0x02;
 
-	public:
-		//Constructor: BufferedLdcPacket_16ch
-		//	Creates a BufferedLdcPacket_16ch from the passed in <WirelessPacket>
-		//
-		//Parameters:
-		//	packet - A <WirelessPacket> determined to be a BufferedLdcPacket_16ch
-		explicit BufferedLdcPacket_16ch(const WirelessPacket& packet);
+    public:
+        //Constructor: BufferedLdcPacket_16ch
+        //    Creates a BufferedLdcPacket_16ch from the passed in <WirelessPacket>
+        //
+        //Parameters:
+        //    packet - A <WirelessPacket> determined to be a BufferedLdcPacket_16ch
+        explicit BufferedLdcPacket_16ch(const WirelessPacket& packet);
 
-	private:
-		BufferedLdcPacket_16ch();	//default constructor disabled
+    private:
+        BufferedLdcPacket_16ch();    //default constructor disabled
 
-	private:
-		//Function: parseSweeps
-		//	Parses the passed in WirelessPacket for all the sweep information and adds a sweep to the sweeps container
-		//
-		//Exceptions:
-		//	- <Error_UnknownSampleRate>: failed to find the sample rate in the list
-		void parseSweeps();
+    private:
+        //Function: parseSweeps
+        //    Parses the passed in WirelessPacket for all the sweep information and adds a sweep to the sweeps container
+        //
+        //Exceptions:
+        //    - <Error_UnknownSampleRate>: failed to find the sample rate in the list
+        void parseSweeps();
 
-	public:
-		//Function: integrityCheck
-		//	Verifies that the packet is a well formed Buffered LDC packet
-		//
-		//Parameters:
-		//	packet - The fully formed Wireless Packet to check the integrity of
-		//
-		//Returns:
-		//	true if the packet is a well formed Buffered LDC packet, false otherwise
-		static bool integrityCheck(const WirelessPacket& packet);
+    public:
+        //Function: integrityCheck
+        //    Verifies that the packet is a well formed Buffered LDC packet
+        //
+        //Parameters:
+        //    packet - The fully formed Wireless Packet to check the integrity of
+        //
+        //Returns:
+        //    true if the packet is a well formed Buffered LDC packet, false otherwise
+        static bool integrityCheck(const WirelessPacket& packet);
 
-		//Function: getUniqueId
-		//	Gets the unique Id of the <WirelessPacket> passed in
-		//
-		//Parameters:
-		//	packet - The <WirelessPacket> to get the unique id of
-		//
-		//Returns:
-		//	The <UniqueWirelessPacketId> of the passed in packet
-		static UniqueWirelessPacketId getUniqueId(const WirelessPacket& packet);
-	};
+        //Function: getUniqueId
+        //    Gets the unique Id of the <WirelessPacket> passed in
+        //
+        //Parameters:
+        //    packet - The <WirelessPacket> to get the unique id of
+        //
+        //Returns:
+        //    The <UniqueWirelessPacketId> of the passed in packet
+        static UniqueWirelessPacketId getUniqueId(const WirelessPacket& packet);
+    };
 
 }

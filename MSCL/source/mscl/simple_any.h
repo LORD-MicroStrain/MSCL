@@ -72,39 +72,39 @@ template<typename Small> struct any_fxns;
 template<>
 struct any_fxns<false_>
 {
-	template<typename T>
-	struct type_fxns
-	{
-		inline static const TypeInfo& type()
-		{
-			return typeid(T);
-		}
-		
-		inline static void create(void** dest, const void* src)
-		{
-			*dest = new T(*reinterpret_cast<const T*>(src));
-		}
-		
-		inline static void clone(void** dest, const void* const * src)
-		{
-			*dest = new T(*reinterpret_cast<const T*>(*src));
-		}
+    template<typename T>
+    struct type_fxns
+    {
+        inline static const TypeInfo& type()
+        {
+            return typeid(T);
+        }
+        
+        inline static void create(void** dest, const void* src)
+        {
+            *dest = new T(*reinterpret_cast<const T*>(src));
+        }
+        
+        inline static void clone(void** dest, const void* const * src)
+        {
+            *dest = new T(*reinterpret_cast<const T*>(*src));
+        }
 
-		inline static void destroy(void** object)
-		{
-			delete reinterpret_cast<T*>(*object);
-		}
+        inline static void destroy(void** object)
+        {
+            delete reinterpret_cast<T*>(*object);
+        }
 
-		inline static void* get(void** object)
-		{
-			return *object;
-		}
+        inline static void* get(void** object)
+        {
+            return *object;
+        }
 
-		inline static const void* const_get(const void* const * object)
-		{
-			return *object;
-		}
-	};
+        inline static const void* const_get(const void* const * object)
+        {
+            return *object;
+        }
+    };
 };
 
 /**
@@ -114,39 +114,39 @@ struct any_fxns<false_>
 template<>
 struct any_fxns<true_>
 {
-	template<typename T>
-	struct type_fxns
-	{
-		inline static const TypeInfo& type()
-		{
-			return typeid(T);
-		}
-		
-		inline static void create(void** dest, const void* src)
-		{
-			new(dest) T(*reinterpret_cast<const T*>(src));
-		}
-		
-		inline static void clone(void** dest, const void* const * src)
-		{
-			new(dest) T(*reinterpret_cast<const T*>(src));
-		}
+    template<typename T>
+    struct type_fxns
+    {
+        inline static const TypeInfo& type()
+        {
+            return typeid(T);
+        }
+        
+        inline static void create(void** dest, const void* src)
+        {
+            new(dest) T(*reinterpret_cast<const T*>(src));
+        }
+        
+        inline static void clone(void** dest, const void* const * src)
+        {
+            new(dest) T(*reinterpret_cast<const T*>(src));
+        }
 
-		inline static void destroy(void** object)
-		{
-			reinterpret_cast<T*>(object)->~T();
-		}
+        inline static void destroy(void** object)
+        {
+            reinterpret_cast<T*>(object)->~T();
+        }
 
-		inline static void* get(void** object)
-		{
-			return reinterpret_cast<void*>(object);
-		}
+        inline static void* get(void** object)
+        {
+            return reinterpret_cast<void*>(object);
+        }
 
-		inline static const void* const_get(const void* const * object)
-		{
-			return reinterpret_cast<const void*>(object);
-		}
-	};
+        inline static const void* const_get(const void* const * object)
+        {
+            return reinterpret_cast<const void*>(object);
+        }
+    };
 };
 
 /**
@@ -157,122 +157,122 @@ struct any_fxns<true_>
  */
 struct any_fxn
 {
-	const TypeInfo&(*type)();
-	void(*create)(void**, const void*);
-	void(*clone)(void**, const void* const *);
-	void(*destroy)(void**);
-	void*(*get)(void**);
-	const void*(*const_get)(const void* const *);
+    const TypeInfo&(*type)();
+    void(*create)(void**, const void*);
+    void(*clone)(void**, const void* const *);
+    void(*destroy)(void**);
+    void*(*get)(void**);
+    const void*(*const_get)(const void* const *);
 };
 
 template<typename T>
 any_fxn* get_any_fxn()
 {
-	typedef bool_<sizeof(T) <= sizeof(void*)> is_small;
-	
-	static any_fxn fxns = {
-		any_fxns<is_small>::template type_fxns<T>::type,
-		any_fxns<is_small>::template type_fxns<T>::create,
-		any_fxns<is_small>::template type_fxns<T>::clone,
-		any_fxns<is_small>::template type_fxns<T>::destroy,
-		any_fxns<is_small>::template type_fxns<T>::get,
-		any_fxns<is_small>::template type_fxns<T>::const_get
-	};
-	
-	return &fxns;
+    typedef bool_<sizeof(T) <= sizeof(void*)> is_small;
+    
+    static any_fxn fxns = {
+        any_fxns<is_small>::template type_fxns<T>::type,
+        any_fxns<is_small>::template type_fxns<T>::create,
+        any_fxns<is_small>::template type_fxns<T>::clone,
+        any_fxns<is_small>::template type_fxns<T>::destroy,
+        any_fxns<is_small>::template type_fxns<T>::get,
+        any_fxns<is_small>::template type_fxns<T>::const_get
+    };
+    
+    return &fxns;
 };
 
 }
 
 //Class: simple_any
-//	A class that holds any type of variable in a type safe manner.
+//    A class that holds any type of variable in a type safe manner.
 class simple_any
 {
-	template<typename T>
-	friend const T& any_cast(const simple_any&);
-	
-	template<typename T>
-	friend T& any_cast(simple_any&);
-	
+    template<typename T>
+    friend const T& any_cast(const simple_any&);
+    
+    template<typename T>
+    friend T& any_cast(simple_any&);
+    
 public:
-	simple_any():
-	m_fxns(detail::get_any_fxn<detail::empty>())
-	{
-		detail::empty v;
-		m_fxns->create(&m_object, &v);
-	}
-	
-	template<typename T>
-	simple_any(const T& x) :
-	m_fxns(detail::get_any_fxn<T>())
-	{
-		m_fxns->create(&m_object, &x);
-	}
-	
-	simple_any(const simple_any& other) :
-	m_fxns(other.m_fxns)
-	{
-		m_fxns->clone(&m_object, &other.m_object);
-	}
-	
-	~simple_any()
-	{
-		m_fxns->destroy(&m_object);
-	}
-	
-	simple_any& operator=(const simple_any& other)
-	{
-		m_fxns->destroy(&m_object);
-		m_fxns = other.m_fxns;
-		m_fxns->clone(&m_object, &other.m_object);
-		return *this;
-	}
-	
-	template<typename T>
-	simple_any& operator=(const T& v)
-	{
-		m_fxns->destroy(&m_object);
-		m_fxns = detail::get_any_fxn<T>();
-		m_fxns->create(&m_object, &v);
-		return *this;
-	}
-	
-	simple_any& swap(simple_any& other)
-	{
-		std::swap(m_fxns, other.m_fxns);
-		std::swap(m_object, other.m_object);
-		return *this;
-	}
-	
-	const TypeInfo& type() const
-	{
-		return m_fxns->type();
-	}
-	
+    simple_any():
+    m_fxns(detail::get_any_fxn<detail::empty>())
+    {
+        detail::empty v;
+        m_fxns->create(&m_object, &v);
+    }
+    
+    template<typename T>
+    simple_any(const T& x) :
+    m_fxns(detail::get_any_fxn<T>())
+    {
+        m_fxns->create(&m_object, &x);
+    }
+    
+    simple_any(const simple_any& other) :
+    m_fxns(other.m_fxns)
+    {
+        m_fxns->clone(&m_object, &other.m_object);
+    }
+    
+    ~simple_any()
+    {
+        m_fxns->destroy(&m_object);
+    }
+    
+    simple_any& operator=(const simple_any& other)
+    {
+        m_fxns->destroy(&m_object);
+        m_fxns = other.m_fxns;
+        m_fxns->clone(&m_object, &other.m_object);
+        return *this;
+    }
+    
+    template<typename T>
+    simple_any& operator=(const T& v)
+    {
+        m_fxns->destroy(&m_object);
+        m_fxns = detail::get_any_fxn<T>();
+        m_fxns->create(&m_object, &v);
+        return *this;
+    }
+    
+    simple_any& swap(simple_any& other)
+    {
+        std::swap(m_fxns, other.m_fxns);
+        std::swap(m_object, other.m_object);
+        return *this;
+    }
+    
+    const TypeInfo& type() const
+    {
+        return m_fxns->type();
+    }
+    
 private:
-	detail::any_fxn* m_fxns;
-	void* m_object;
+    detail::any_fxn* m_fxns;
+    void* m_object;
 };
 
 
 template<typename T>
 const T& any_cast(const simple_any& any)
 {
-	if(any.type() != typeid(T))
-	{
-		throw std::bad_cast();
-	}
-	const void* ptr = any.m_fxns->const_get(&any.m_object);
-	return *reinterpret_cast<const T*>(ptr);
+    if(any.type() != typeid(T))
+    {
+        throw std::bad_cast();
+    }
+    const void* ptr = any.m_fxns->const_get(&any.m_object);
+    return *reinterpret_cast<const T*>(ptr);
 }
-	
+    
 template<typename T>
 T& any_cast(simple_any& any)
 {
-	if(any.type() != typeid(T))
-	{
-		throw std::bad_cast();
-	}
-	void* ptr = any.m_fxns->get(&any.m_object);
-	return *reinterpret_cast<T*>(ptr);
+    if(any.type() != typeid(T))
+    {
+        throw std::bad_cast();
+    }
+    void* ptr = any.m_fxns->get(&any.m_object);
+    return *reinterpret_cast<T*>(ptr);
 }

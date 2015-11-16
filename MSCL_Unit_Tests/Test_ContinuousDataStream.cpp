@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #include "mscl/MicroStrain/Inertial/InertialDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/Commands/ContinuousDataStream.h"
@@ -25,118 +17,118 @@ BOOST_AUTO_TEST_SUITE(ContinuousDataStream_Test)
 
 BOOST_AUTO_TEST_CASE(ContinuousDataStream_BuildCommand_Sensor)
 {
-	//create the "get" command
-	ByteStream b = ContinuousDataStream::buildCommand_get(InertialTypes::CATEGORY_GPS);
-	BOOST_CHECK_EQUAL(b.read_uint8(0), 0x75);
-	BOOST_CHECK_EQUAL(b.read_uint8(1), 0x65);
-	BOOST_CHECK_EQUAL(b.read_uint8(2), 0x0C);
-	BOOST_CHECK_EQUAL(b.read_uint8(3), 0x05);
-	BOOST_CHECK_EQUAL(b.read_uint8(4), 0x05);
-	BOOST_CHECK_EQUAL(b.read_uint8(5), 0x11);
-	BOOST_CHECK_EQUAL(b.read_uint8(6), 0x02);
-	BOOST_CHECK_EQUAL(b.read_uint8(7), 0x02);
-	BOOST_CHECK_EQUAL(b.read_uint8(8), 0x00);
-	BOOST_CHECK_EQUAL(b.read_uint8(9), 0x05);
-	BOOST_CHECK_EQUAL(b.read_uint8(10), 0x1e);
+    //create the "get" command
+    ByteStream b = ContinuousDataStream::buildCommand_get(InertialTypes::CATEGORY_GPS);
+    BOOST_CHECK_EQUAL(b.read_uint8(0), 0x75);
+    BOOST_CHECK_EQUAL(b.read_uint8(1), 0x65);
+    BOOST_CHECK_EQUAL(b.read_uint8(2), 0x0C);
+    BOOST_CHECK_EQUAL(b.read_uint8(3), 0x05);
+    BOOST_CHECK_EQUAL(b.read_uint8(4), 0x05);
+    BOOST_CHECK_EQUAL(b.read_uint8(5), 0x11);
+    BOOST_CHECK_EQUAL(b.read_uint8(6), 0x02);
+    BOOST_CHECK_EQUAL(b.read_uint8(7), 0x02);
+    BOOST_CHECK_EQUAL(b.read_uint8(8), 0x00);
+    BOOST_CHECK_EQUAL(b.read_uint8(9), 0x05);
+    BOOST_CHECK_EQUAL(b.read_uint8(10), 0x1e);
 
-	//create the "set" command
-	ByteStream b2 = ContinuousDataStream::buildCommand_set(InertialTypes::CATEGORY_GPS, true);
-	BOOST_CHECK_EQUAL(b2.read_uint8(0), 0x75);
-	BOOST_CHECK_EQUAL(b2.read_uint8(1), 0x65);
-	BOOST_CHECK_EQUAL(b2.read_uint8(2), 0x0C);
-	BOOST_CHECK_EQUAL(b2.read_uint8(3), 0x05);
-	BOOST_CHECK_EQUAL(b2.read_uint8(4), 0x05);
-	BOOST_CHECK_EQUAL(b2.read_uint8(5), 0x11);
-	BOOST_CHECK_EQUAL(b2.read_uint8(6), 0x01);
-	BOOST_CHECK_EQUAL(b2.read_uint8(7), 0x02);
-	BOOST_CHECK_EQUAL(b2.read_uint8(8), 0x01);
-	BOOST_CHECK_EQUAL(b2.read_uint8(9), 0x05);
-	BOOST_CHECK_EQUAL(b2.read_uint8(10), 0x1c);
+    //create the "set" command
+    ByteStream b2 = ContinuousDataStream::buildCommand_set(InertialTypes::CATEGORY_GPS, true);
+    BOOST_CHECK_EQUAL(b2.read_uint8(0), 0x75);
+    BOOST_CHECK_EQUAL(b2.read_uint8(1), 0x65);
+    BOOST_CHECK_EQUAL(b2.read_uint8(2), 0x0C);
+    BOOST_CHECK_EQUAL(b2.read_uint8(3), 0x05);
+    BOOST_CHECK_EQUAL(b2.read_uint8(4), 0x05);
+    BOOST_CHECK_EQUAL(b2.read_uint8(5), 0x11);
+    BOOST_CHECK_EQUAL(b2.read_uint8(6), 0x01);
+    BOOST_CHECK_EQUAL(b2.read_uint8(7), 0x02);
+    BOOST_CHECK_EQUAL(b2.read_uint8(8), 0x01);
+    BOOST_CHECK_EQUAL(b2.read_uint8(9), 0x05);
+    BOOST_CHECK_EQUAL(b2.read_uint8(10), 0x1c);
 }
 
 BOOST_AUTO_TEST_CASE(ContinuousDataStream_get_Match_Success)
 {
-	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-	ContinuousDataStream::Response response(rc, true, InertialTypes::CATEGORY_GPS);
+    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+    ContinuousDataStream::Response response(rc, true, InertialTypes::CATEGORY_GPS);
 
-	Bytes dataField;
-	dataField.push_back(0x02);
-	dataField.push_back(0x01);
-	
-	Bytes ackField;
-	ackField.push_back(0x11);
-	ackField.push_back(0x00);
-	InertialDataField field1(0x0CF1, ackField); //good ack field
+    Bytes dataField;
+    dataField.push_back(0x02);
+    dataField.push_back(0x01);
+    
+    Bytes ackField;
+    ackField.push_back(0x11);
+    ackField.push_back(0x00);
+    InertialDataField field1(0x0CF1, ackField); //good ack field
 
-	//check that the match fails
-	BOOST_CHECK_EQUAL(response.match(field1), true);
-	BOOST_CHECK_EQUAL(response.fullyMatched(), false);	//not yet fully matched
+    //check that the match fails
+    BOOST_CHECK_EQUAL(response.match(field1), true);
+    BOOST_CHECK_EQUAL(response.fullyMatched(), false);    //not yet fully matched
 
-	InertialDataField field2(0x0C85, dataField); //good data field
+    InertialDataField field2(0x0C85, dataField); //good data field
 
-	//check that the match succeeds
-	BOOST_CHECK_EQUAL(response.match(field2), true);
-	BOOST_CHECK_EQUAL(response.fullyMatched(), true);	//we  fully matched because the device info is enough to match
-	BOOST_CHECK_EQUAL(response.result().success(), true);
-	BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::InertialPacket::MIP_ACK_NACK_ERROR_NONE);
-	BOOST_CHECK_EQUAL(response.result().data().read_uint8(0), 2);
-	BOOST_CHECK_EQUAL(response.result().data().read_uint8(1), 1);
+    //check that the match succeeds
+    BOOST_CHECK_EQUAL(response.match(field2), true);
+    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //we  fully matched because the device info is enough to match
+    BOOST_CHECK_EQUAL(response.result().success(), true);
+    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::InertialPacket::MIP_ACK_NACK_ERROR_NONE);
+    BOOST_CHECK_EQUAL(response.result().data().read_uint8(0), 2);
+    BOOST_CHECK_EQUAL(response.result().data().read_uint8(1), 1);
 }
 
 BOOST_AUTO_TEST_CASE(ContinuousDataStream_set_Match_Success)
 {
-	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-	ContinuousDataStream::Response response(rc, false, InertialTypes::CATEGORY_GPS);
+    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+    ContinuousDataStream::Response response(rc, false, InertialTypes::CATEGORY_GPS);
 
-	Bytes ackField;
-	ackField.push_back(0x11);
-	ackField.push_back(0x00);
-	InertialDataField field1(0x0CF1, ackField); //good ack field
+    Bytes ackField;
+    ackField.push_back(0x11);
+    ackField.push_back(0x00);
+    InertialDataField field1(0x0CF1, ackField); //good ack field
 
-	//check that the match fails
-	BOOST_CHECK_EQUAL(response.match(field1), true);
-	BOOST_CHECK_EQUAL(response.fullyMatched(), true);	//fully matched
+    //check that the match fails
+    BOOST_CHECK_EQUAL(response.match(field1), true);
+    BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //fully matched
 }
 
 BOOST_AUTO_TEST_CASE(ContinuousDataStream_get_Match_Success_OnlyData)
 {
-	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-	ContinuousDataStream::Response response(rc, true, InertialTypes::CATEGORY_GPS);
+    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+    ContinuousDataStream::Response response(rc, true, InertialTypes::CATEGORY_GPS);
 
-	Bytes fieldData1;
-	fieldData1.push_back(0x02);
-	fieldData1.push_back(0x01);
-	InertialDataField field1(0x0C85, fieldData1);
+    Bytes fieldData1;
+    fieldData1.push_back(0x02);
+    fieldData1.push_back(0x01);
+    InertialDataField field1(0x0C85, fieldData1);
 
-	//check that the match fails
-	BOOST_CHECK_EQUAL(response.match(field1), true);
+    //check that the match fails
+    BOOST_CHECK_EQUAL(response.match(field1), true);
 }
 
 BOOST_AUTO_TEST_CASE(ContinuousDataStream_get_Match_Fail_WrongDeviceSelector)
 {
-	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-	ContinuousDataStream::Response response(rc, true, InertialTypes::CATEGORY_GPS);
+    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+    ContinuousDataStream::Response response(rc, true, InertialTypes::CATEGORY_GPS);
 
-	Bytes fieldData1;
-	fieldData1.push_back(0x01);	//invalid device selector (device category)
-	fieldData1.push_back(0x01);	
-	InertialDataField field1(0x0C85, fieldData1); 
+    Bytes fieldData1;
+    fieldData1.push_back(0x01);    //invalid device selector (device category)
+    fieldData1.push_back(0x01);    
+    InertialDataField field1(0x0C85, fieldData1); 
 
-	//check that the match fails
-	BOOST_CHECK_EQUAL(response.match(field1), false);
+    //check that the match fails
+    BOOST_CHECK_EQUAL(response.match(field1), false);
 }
 
 BOOST_AUTO_TEST_CASE(ContinuousDataStream_get_Match_Fail_SmallFieldData)
 {
-	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-	ContinuousDataStream::Response response(rc, true, InertialTypes::CATEGORY_GPS);
+    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+    ContinuousDataStream::Response response(rc, true, InertialTypes::CATEGORY_GPS);
 
-	Bytes fieldData1;
-	fieldData1.push_back(0x02);	//missing a byte
-	InertialDataField field1(0x0C85, fieldData1);
+    Bytes fieldData1;
+    fieldData1.push_back(0x02);    //missing a byte
+    InertialDataField field1(0x0C85, fieldData1);
 
-	//check that the match fails
-	BOOST_CHECK_EQUAL(response.match(field1), false);
+    //check that the match fails
+    BOOST_CHECK_EQUAL(response.match(field1), false);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

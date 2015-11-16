@@ -9,20 +9,20 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	//read the required information from the node and store in the NodeInfo
-	NodeInfo::NodeInfo(const WirelessNode_Impl& node):
-		firmwareVersion(node.firmwareVersion()),
-		model(node.model()),
-		dataStorageSize(node.dataStorageSize()),
-		regionCode(node.regionCode())
-	{
-	}
+    //read the required information from the node and store in the NodeInfo
+    NodeInfo::NodeInfo(const WirelessNode_Impl& node):
+        firmwareVersion(node.firmwareVersion()),
+        model(node.model()),
+        dataStorageSize(node.dataStorageSize()),
+        regionCode(node.regionCode())
+    {
+    }
 
-	NodeInfo::NodeInfo(const Version& fw, WirelessModels::NodeModel model, uint64 storageSize, WirelessTypes::RegionCode region):
-		firmwareVersion(fw),
-		model(model),
-		dataStorageSize(storageSize),
-		regionCode(region)
-	{
-	}
+    NodeInfo::NodeInfo(const Version& fw, WirelessModels::NodeModel model, uint64 storageSize, WirelessTypes::RegionCode region):
+        firmwareVersion(fw),
+        model(model),
+        dataStorageSize(storageSize),
+        regionCode(region)
+    {
+    }
 }

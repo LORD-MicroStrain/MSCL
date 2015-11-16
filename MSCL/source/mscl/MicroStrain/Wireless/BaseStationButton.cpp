@@ -8,35 +8,35 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	BaseStationButton::BaseStationButton():
-		m_command(btn_disabled),
-		m_nodeAddress(0)
-	{
-	}
+    BaseStationButton::BaseStationButton():
+        m_command(btn_disabled),
+        m_nodeAddress(0)
+    {
+    }
 
-	BaseStationButton::BaseStationButton(Command cmd, uint16 nodeAddress):
-		m_command(cmd),
-		m_nodeAddress(nodeAddress)
-	{
-	}
+    BaseStationButton::BaseStationButton(Command cmd, uint16 nodeAddress):
+        m_command(cmd),
+        m_nodeAddress(nodeAddress)
+    {
+    }
 
-	BaseStationButton::Command BaseStationButton::command() const
-	{
-		return m_command;
-	}
+    BaseStationButton::Command BaseStationButton::command() const
+    {
+        return m_command;
+    }
 
-	void BaseStationButton::command(Command cmd)
-	{
-		m_command = cmd;
-	}
+    void BaseStationButton::command(Command cmd)
+    {
+        m_command = cmd;
+    }
 
-	uint16 BaseStationButton::nodeAddress() const
-	{
-		return m_nodeAddress;
-	}
+    uint16 BaseStationButton::nodeAddress() const
+    {
+        return m_nodeAddress;
+    }
 
-	void BaseStationButton::nodeAddress(uint16 address)
-	{
-		m_nodeAddress = address;
-	}
+    void BaseStationButton::nodeAddress(uint16 address)
+    {
+        m_nodeAddress = address;
+    }
 }

@@ -9,18 +9,18 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	//Title: NativeSerialPort_linux
+    //Title: NativeSerialPort_linux
 
-	//Function: getNativeSerialPort
-	//	Just returns the string passed in (no special case needed for Linux, but necessary for Windows)
-	//
-	//Parameters:
-	//	portName - the name of the port to be opened ("COM26")
-	//
-	//Returns:
-	//	The port name string passed in
-	std::string getNativeSerialPort(std::string portName)
-	{
-		return portName;
-	}
+    //Function: getNativeSerialPort
+    //    Just returns the string passed in (no special case needed for Linux, but necessary for Windows)
+    //
+    //Parameters:
+    //    portName - the name of the port to be opened ("COM26")
+    //
+    //Returns:
+    //    The port name string passed in
+    std::string getNativeSerialPort(std::string portName)
+    {
+        return portName;
+    }
 }

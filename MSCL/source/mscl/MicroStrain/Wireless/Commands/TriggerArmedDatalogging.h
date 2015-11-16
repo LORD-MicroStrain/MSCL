@@ -13,32 +13,32 @@ namespace mscl
 
 #ifndef SWIG
 
-	//Class: TriggerArmedDatalogging
-	//	Contains logic for the Trigger Armed Datalogging Node command.
-	class TriggerArmedDatalogging
-	{
-	private:
-		TriggerArmedDatalogging();											//disabled default constructor
-		TriggerArmedDatalogging(const TriggerArmedDatalogging&);			//disabled copy constructor
-		TriggerArmedDatalogging& operator=(const TriggerArmedDatalogging&);	//disabled assignment operator
+    //Class: TriggerArmedDatalogging
+    //    Contains logic for the Trigger Armed Datalogging Node command.
+    class TriggerArmedDatalogging
+    {
+    private:
+        TriggerArmedDatalogging();                                            //disabled default constructor
+        TriggerArmedDatalogging(const TriggerArmedDatalogging&);            //disabled copy constructor
+        TriggerArmedDatalogging& operator=(const TriggerArmedDatalogging&);    //disabled assignment operator
 
-	public:
-		//=====================================================================================================
-		//Constants: Packet Information
-		//	COMMAND_ID	- 0x000E		- The Command ID for the TriggerArmedDatalogging command
-		//=====================================================================================================
-		static const uint16 COMMAND_ID = 0x000E;
+    public:
+        //=====================================================================================================
+        //Constants: Packet Information
+        //    COMMAND_ID    - 0x000E        - The Command ID for the TriggerArmedDatalogging command
+        //=====================================================================================================
+        static const uint16 COMMAND_ID = 0x000E;
 
-		//Function: buildCommand
-		//	Builds the TriggerArmedDatalogging command packet.
-		//
-		//Parameters:
-		//	nodeAddress - The address of the Node to build the command for.
-		//
-		//Returns:
-		//	A <ByteStream> containing the command packet.
-		static ByteStream buildCommand(NodeAddress nodeAddress);
-	};
+        //Function: buildCommand
+        //    Builds the TriggerArmedDatalogging command packet.
+        //
+        //Parameters:
+        //    nodeAddress - The address of the Node to build the command for.
+        //
+        //Returns:
+        //    A <ByteStream> containing the command packet.
+        static ByteStream buildCommand(NodeAddress nodeAddress);
+    };
 
 #endif
 

@@ -13,26 +13,26 @@ namespace mscl
 
 #ifndef SWIG
 
-	//Class: Sleep
-	//	Contains logic for the Sleep Node command
-	class Sleep
-	{
-	private:
-		Sleep();						//default constructor disabled
-		Sleep(const Sleep&);			//copy constructor disabled
-		Sleep& operator=(const Sleep&);	//assignment operator disabled
+    //Class: Sleep
+    //    Contains logic for the Sleep Node command
+    class Sleep
+    {
+    private:
+        Sleep();                        //default constructor disabled
+        Sleep(const Sleep&);            //copy constructor disabled
+        Sleep& operator=(const Sleep&);    //assignment operator disabled
 
-	public:
-		//Function: buildCommand
-		//	Builds the Sleep command packet.
-		//
-		//Parameters:
-		//	nodeAddress - The address of the Node to build the command for.
-		//
-		//Returns:
-		//	A <ByteStream> containing the command packet.
-		static ByteStream buildCommand(NodeAddress nodeAddress);
-	};
+    public:
+        //Function: buildCommand
+        //    Builds the Sleep command packet.
+        //
+        //Parameters:
+        //    nodeAddress - The address of the Node to build the command for.
+        //
+        //Returns:
+        //    A <ByteStream> containing the command packet.
+        static ByteStream buildCommand(NodeAddress nodeAddress);
+    };
 
 #endif
 }

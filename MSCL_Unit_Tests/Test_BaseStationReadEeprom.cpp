@@ -1,16 +1,8 @@
-/*****************************************************************************
+/*******************************************************************************
 Copyright(c) 2015 LORD Corporation. All rights reserved.
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the included
-LICENSE.txt file for a copy of the full GNU General Public License.
-*****************************************************************************/
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
 #include "mscl/MicroStrain/Wireless/Commands/BaseStation_ReadEeprom.h"
 #include "mscl/MicroStrain/Wireless/Commands/BaseStation_ReadEeprom_v2.h"
 #include "mscl/Utils.h"
@@ -25,237 +17,237 @@ using namespace mscl;
 
 Bytes buildBaseReadEepromResponseV1(uint16 valueRead)
 {
-	ChecksumBuilder checksum;
-	checksum.append_uint16(valueRead);
+    ChecksumBuilder checksum;
+    checksum.append_uint16(valueRead);
 
-	//build success response
-	Bytes bytes;
-	bytes.push_back(0x73);
-	bytes.push_back(Utils::msb(valueRead));
-	bytes.push_back(Utils::lsb(valueRead));
-	bytes.push_back(Utils::msb(checksum.simpleChecksum()));
-	bytes.push_back(Utils::lsb(checksum.simpleChecksum()));
+    //build success response
+    Bytes bytes;
+    bytes.push_back(0x73);
+    bytes.push_back(Utils::msb(valueRead));
+    bytes.push_back(Utils::lsb(valueRead));
+    bytes.push_back(Utils::msb(checksum.simpleChecksum()));
+    bytes.push_back(Utils::lsb(checksum.simpleChecksum()));
 
-	return bytes;
+    return bytes;
 }
 
 WirelessPacket buildBaseReadEepromResponseV2(uint16 eepromLocation, uint16 valueRead)
 {
-	ByteStream bs;
-	bs.append_uint16(0x0073);			//command id
-	bs.append_uint16(eepromLocation);	//eeprom address
-	bs.append_uint16(valueRead);		//eeprom value
+    ByteStream bs;
+    bs.append_uint16(0x0073);            //command id
+    bs.append_uint16(eepromLocation);    //eeprom address
+    bs.append_uint16(valueRead);        //eeprom value
 
-	//build a WirelessPacket
-	WirelessPacket packet;
-	packet.nodeAddress(0x1234);
-	packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
-	packet.type(WirelessPacket::packetType_baseSuccessReply);
-	packet.payload(bs.data());	//give the packet the payload bytes we created
+    //build a WirelessPacket
+    WirelessPacket packet;
+    packet.nodeAddress(0x1234);
+    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.type(WirelessPacket::packetType_baseSuccessReply);
+    packet.payload(bs.data());    //give the packet the payload bytes we created
 
-	return packet;
+    return packet;
 }
 
 WirelessPacket buildBaseReadEepromFailureV2(uint16 eepromLocation)
 {
-	ByteStream bs;
-	bs.append_uint16(0x0073);			//command id
-	bs.append_uint16(eepromLocation);	//eeprom address
-	bs.append_uint8(WirelessPacket::error_unknownEeprom);	//error code
+    ByteStream bs;
+    bs.append_uint16(0x0073);            //command id
+    bs.append_uint16(eepromLocation);    //eeprom address
+    bs.append_uint8(WirelessPacket::error_unknownEeprom);    //error code
 
-	//build a WirelessPacket
-	WirelessPacket packet;
-	packet.nodeAddress(0x1234);
-	packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
-	packet.type(WirelessPacket::packetType_baseErrorReply);
-	packet.payload(bs.data());	//give the packet the payload bytes we created
+    //build a WirelessPacket
+    WirelessPacket packet;
+    packet.nodeAddress(0x1234);
+    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.type(WirelessPacket::packetType_baseErrorReply);
+    packet.payload(bs.data());    //give the packet the payload bytes we created
 
-	return packet;
+    return packet;
 }
 
 BOOST_AUTO_TEST_SUITE(BaseStationReadEeprom_Test)
 
 BOOST_AUTO_TEST_CASE(BaseStationReadEeprom_BuildCommand)
 {
-	//create a Read EEPROM command
-	ByteStream b = BaseStation_ReadEeprom::buildCommand(46);
+    //create a Read EEPROM command
+    ByteStream b = BaseStation_ReadEeprom::buildCommand(46);
 
-	//check all the bytes in the ByteStream
-	BOOST_CHECK_EQUAL(b.read_uint8(0), 0x73);
-	BOOST_CHECK_EQUAL(b.read_uint16(1), 46);
-	BOOST_CHECK_EQUAL(b.read_uint16(3), 46);	//verify the checksum
+    //check all the bytes in the ByteStream
+    BOOST_CHECK_EQUAL(b.read_uint8(0), 0x73);
+    BOOST_CHECK_EQUAL(b.read_uint16(1), 46);
+    BOOST_CHECK_EQUAL(b.read_uint16(3), 46);    //verify the checksum
 }
 
 BOOST_AUTO_TEST_CASE(BaseStationReadEeprom_MatchSuccessResponse_Success)
 {
-	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-	BaseStation_ReadEeprom::Response response(rc);
+    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+    BaseStation_ReadEeprom::Response response(rc);
 
-	DataBuffer buffer(buildBaseReadEepromResponseV1(123));
+    DataBuffer buffer(buildBaseReadEepromResponseV1(123));
 
-	//check that match returns true
-	BOOST_CHECK_EQUAL(response.match(buffer), true);
+    //check that match returns true
+    BOOST_CHECK_EQUAL(response.match(buffer), true);
 
-	//check that the result of the command is successful
-	BOOST_CHECK_EQUAL(response.success(), true);
+    //check that the result of the command is successful
+    BOOST_CHECK_EQUAL(response.success(), true);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStationReadEeprom_v2_MatchSuccessResponse_Success)
 {
-	uint16 eepromAddress = 140;
-	uint16 eepromVal = 48157;
+    uint16 eepromAddress = 140;
+    uint16 eepromVal = 48157;
 
-	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-	BaseStation_ReadEeprom_v2::Response response(eepromAddress, rc);
+    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+    BaseStation_ReadEeprom_v2::Response response(eepromAddress, rc);
 
-	WirelessPacket packet = buildBaseReadEepromResponseV2(eepromAddress, eepromVal);
+    WirelessPacket packet = buildBaseReadEepromResponseV2(eepromAddress, eepromVal);
 
-	//check that match returns true
-	BOOST_CHECK_EQUAL(response.match(packet), true);
+    //check that match returns true
+    BOOST_CHECK_EQUAL(response.match(packet), true);
 
-	//check that the result of the command is successful
-	BOOST_CHECK_EQUAL(response.success(), true);
-	BOOST_CHECK_EQUAL(response.result(), eepromVal);
-	BOOST_CHECK_EQUAL(response.errorCode(), 0);
+    //check that the result of the command is successful
+    BOOST_CHECK_EQUAL(response.success(), true);
+    BOOST_CHECK_EQUAL(response.result(), eepromVal);
+    BOOST_CHECK_EQUAL(response.errorCode(), 0);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStationReadEeprom_MatchSuccessResponse_FailNumBytes)
 {
-	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-	BaseStation_ReadEeprom::Response response(rc);
+    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+    BaseStation_ReadEeprom::Response response(rc);
 
-	Bytes b;
-	b.push_back(0x04);
+    Bytes b;
+    b.push_back(0x04);
 
-	DataBuffer buffer(b);
+    DataBuffer buffer(b);
 
-	//check that match returns false
-	BOOST_CHECK_EQUAL(response.match(buffer), false);
+    //check that match returns false
+    BOOST_CHECK_EQUAL(response.match(buffer), false);
 
-	//check that the result of the command is failure (throws an exception)
-	BOOST_CHECK_THROW(response.result(), Error);
-	BOOST_CHECK_EQUAL(response.success(), false);
+    //check that the result of the command is failure (throws an exception)
+    BOOST_CHECK_THROW(response.result(), Error);
+    BOOST_CHECK_EQUAL(response.success(), false);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStationReadEeprom_MatchSuccessResponse_FailByteMatch)
 {
-	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-	BaseStation_ReadEeprom::Response response(rc);
+    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+    BaseStation_ReadEeprom::Response response(rc);
 
-	Bytes b = buildBaseReadEepromResponseV1(23);
-	b[0] = 0x01;	//incorrect command byte
+    Bytes b = buildBaseReadEepromResponseV1(23);
+    b[0] = 0x01;    //incorrect command byte
 
-	DataBuffer buffer(b);
+    DataBuffer buffer(b);
 
-	//check that match returns false
-	BOOST_CHECK_EQUAL(response.match(buffer), false);
+    //check that match returns false
+    BOOST_CHECK_EQUAL(response.match(buffer), false);
 
-	//check that the result of the command is failure (throws an exception)
-	BOOST_CHECK_THROW(response.result(), Error);
-	BOOST_CHECK_EQUAL(response.success(), false);
+    //check that the result of the command is failure (throws an exception)
+    BOOST_CHECK_THROW(response.result(), Error);
+    BOOST_CHECK_EQUAL(response.success(), false);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStationReadEeprom_MatchSuccessResponse_FailChecksum)
 {
-	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-	BaseStation_ReadEeprom::Response response(rc);
+    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+    BaseStation_ReadEeprom::Response response(rc);
 
-	Bytes b = buildBaseReadEepromResponseV1(0);
-	b[3] = 0x99;	//incorrect checksum
+    Bytes b = buildBaseReadEepromResponseV1(0);
+    b[3] = 0x99;    //incorrect checksum
 
-	DataBuffer buffer(b);
+    DataBuffer buffer(b);
 
-	//check that match returns false
-	BOOST_CHECK_EQUAL(response.match(buffer), false);
+    //check that match returns false
+    BOOST_CHECK_EQUAL(response.match(buffer), false);
 
-	//check that the result of the command is failure (throws an exception)
-	BOOST_CHECK_THROW(response.result(), Error);
-	BOOST_CHECK_EQUAL(response.success(), false);
+    //check that the result of the command is failure (throws an exception)
+    BOOST_CHECK_THROW(response.result(), Error);
+    BOOST_CHECK_EQUAL(response.success(), false);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStationReadEeprom_MatchFailResponse_Success)
 {
-	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-	BaseStation_ReadEeprom::Response response(rc);
+    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+    BaseStation_ReadEeprom::Response response(rc);
 
-	Bytes b;
-	b.push_back(0x21);
+    Bytes b;
+    b.push_back(0x21);
 
-	DataBuffer buffer(b);
+    DataBuffer buffer(b);
 
-	//check that match returns true
-	BOOST_CHECK_EQUAL(response.match(buffer), true);
+    //check that match returns true
+    BOOST_CHECK_EQUAL(response.match(buffer), true);
 
-	//check that the result of the command is failure
-	BOOST_CHECK_THROW(response.result(), Error);
-	BOOST_CHECK_EQUAL(response.success(), false);
+    //check that the result of the command is failure
+    BOOST_CHECK_THROW(response.result(), Error);
+    BOOST_CHECK_EQUAL(response.success(), false);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStationReadEeprom_v2_MatchFailResponse_Success)
 {
-	uint16 eepromAddress = 140;
+    uint16 eepromAddress = 140;
 
-	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-	BaseStation_ReadEeprom_v2::Response response(eepromAddress, rc);
+    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+    BaseStation_ReadEeprom_v2::Response response(eepromAddress, rc);
 
-	WirelessPacket packet = buildBaseReadEepromFailureV2(eepromAddress);
+    WirelessPacket packet = buildBaseReadEepromFailureV2(eepromAddress);
 
-	//check that match returns true
-	BOOST_CHECK_EQUAL(response.match(packet), true);
+    //check that match returns true
+    BOOST_CHECK_EQUAL(response.match(packet), true);
 
-	//check that the result of the command is successful
-	BOOST_CHECK_EQUAL(response.success(), false);
-	BOOST_CHECK_THROW(response.result(), Error);
-	BOOST_CHECK_EQUAL(response.errorCode(), WirelessPacket::error_unknownEeprom);
+    //check that the result of the command is successful
+    BOOST_CHECK_EQUAL(response.success(), false);
+    BOOST_CHECK_THROW(response.result(), Error);
+    BOOST_CHECK_EQUAL(response.errorCode(), WirelessPacket::error_unknownEeprom);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStationReadEeprom_MatchFailResponse_FailNumBytes)
 {
-	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-	BaseStation_ReadEeprom::Response response(rc);
+    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+    BaseStation_ReadEeprom::Response response(rc);
 
-	Bytes b;//no bytes
+    Bytes b;//no bytes
 
-	DataBuffer buffer(b);
+    DataBuffer buffer(b);
 
-	//check that match returns false
-	BOOST_CHECK_EQUAL(response.match(buffer), false);
+    //check that match returns false
+    BOOST_CHECK_EQUAL(response.match(buffer), false);
 
-	//check that the result of the command is failure (throws an exception)
-	BOOST_CHECK_THROW(response.result(), Error);
-	BOOST_CHECK_EQUAL(response.success(), false);
+    //check that the result of the command is failure (throws an exception)
+    BOOST_CHECK_THROW(response.result(), Error);
+    BOOST_CHECK_EQUAL(response.success(), false);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStationReadEeprom_MatchFailResponse_InvalidByte)
 {
-	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-	BaseStation_ReadEeprom::Response response(rc);
+    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+    BaseStation_ReadEeprom::Response response(rc);
 
-	Bytes b;
-	b.push_back(0x22);
+    Bytes b;
+    b.push_back(0x22);
 
-	DataBuffer buffer(b);
+    DataBuffer buffer(b);
 
-	//check that match returns false
-	BOOST_CHECK_EQUAL(response.match(buffer), false);
+    //check that match returns false
+    BOOST_CHECK_EQUAL(response.match(buffer), false);
 
-	//check that the result of the command is failure (throws an exception)
-	BOOST_CHECK_THROW(response.result(), Error);
-	BOOST_CHECK_EQUAL(response.success(), false);
+    //check that the result of the command is failure (throws an exception)
+    BOOST_CHECK_THROW(response.result(), Error);
+    BOOST_CHECK_EQUAL(response.success(), false);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStationReadEeprom_Wait_Timeout)
 {
-	std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-	//create the response for the BaseStation_ReadEeprom command
-	BaseStation_ReadEeprom::Response response(rc);
+    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
+    //create the response for the BaseStation_ReadEeprom command
+    BaseStation_ReadEeprom::Response response(rc);
 
-	//wait for a quick timeout (no data has been sent/received)
-	response.wait(1);
+    //wait for a quick timeout (no data has been sent/received)
+    response.wait(1);
 
-	//verify the failed result of the response
-	BOOST_CHECK_THROW(response.result(), Error);
-	BOOST_CHECK_EQUAL(response.success(), false);
+    //verify the failed result of the response
+    BOOST_CHECK_THROW(response.result(), Error);
+    BOOST_CHECK_EQUAL(response.success(), false);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

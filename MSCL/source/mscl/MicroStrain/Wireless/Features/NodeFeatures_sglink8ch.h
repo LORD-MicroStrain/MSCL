@@ -9,18 +9,18 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	//Class: NodeFeatures_sglink8ch
-	//	Contains information on features for the SG-Link node. Inherits from <NodeFeatures>.
-	class NodeFeatures_sglink8ch : public NodeFeatures
-	{
-	private:
-		NodeFeatures_sglink8ch();	//disabled default constructor
+    //Class: NodeFeatures_sglink8ch
+    //    Contains information on features for the SG-Link node. Inherits from <NodeFeatures>.
+    class NodeFeatures_sglink8ch : public NodeFeatures
+    {
+    private:
+        NodeFeatures_sglink8ch();    //disabled default constructor
 
-	public:
-		virtual ~NodeFeatures_sglink8ch(){};
+    public:
+        virtual ~NodeFeatures_sglink8ch(){};
 
-		//Constructor: NodeFeatures_sglink8ch
-		//	Creates a NodeFeatures_sglink8ch object.
-		NodeFeatures_sglink8ch(const NodeInfo& info);
-	};
+        //Constructor: NodeFeatures_sglink8ch
+        //    Creates a NodeFeatures_sglink8ch object.
+        NodeFeatures_sglink8ch(const NodeInfo& info);
+    };
 }

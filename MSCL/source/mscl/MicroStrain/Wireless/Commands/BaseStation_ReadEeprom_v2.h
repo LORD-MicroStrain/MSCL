@@ -15,102 +15,102 @@ namespace mscl
 
 #ifndef SWIG
 
-	//Class: BaseStation_ReadEeprom_v2
-	//	Contains logic for the base station read eeprom command (v2).
-	class BaseStation_ReadEeprom_v2
-	{
-	private:
-		BaseStation_ReadEeprom_v2();											//default constructor disabled
-		BaseStation_ReadEeprom_v2(const BaseStation_ReadEeprom_v2&);			//copy constructor disabled
-		BaseStation_ReadEeprom_v2& operator=(const BaseStation_ReadEeprom_v2&);	//assignement operator disabled
+    //Class: BaseStation_ReadEeprom_v2
+    //    Contains logic for the base station read eeprom command (v2).
+    class BaseStation_ReadEeprom_v2
+    {
+    private:
+        BaseStation_ReadEeprom_v2();                                            //default constructor disabled
+        BaseStation_ReadEeprom_v2(const BaseStation_ReadEeprom_v2&);            //copy constructor disabled
+        BaseStation_ReadEeprom_v2& operator=(const BaseStation_ReadEeprom_v2&);    //assignement operator disabled
 
-	public:
-		//Function: buildCommand
-		//	Builds the eeprom read command packet.
-		//
-		//Parameters:
-		//	eepromAddress - The eeprom address to read from the base station.
-		//
-		//Returns:
-		//	A <ByteStream> containing the base station read eeprom command
-		static ByteStream buildCommand(uint16 eepromAddress);
+    public:
+        //Function: buildCommand
+        //    Builds the eeprom read command packet.
+        //
+        //Parameters:
+        //    eepromAddress - The eeprom address to read from the base station.
+        //
+        //Returns:
+        //    A <ByteStream> containing the base station read eeprom command
+        static ByteStream buildCommand(uint16 eepromAddress);
 
-		//Class: Response
-		//	Handles the response to the base station read eeprom command.
-		class Response : public ResponsePattern
-		{
-		public:
-			//Constructor: Response
-			//	Creates a read eeprom Response object.
-			//
-			//Parameters:
-			//	eepromAddress - The eeprom address being read from.
-			//	collector - The <ResponseCollector> used to register and unregister the response.
-			Response(uint16 eepromAddress, std::weak_ptr<ResponseCollector> collector);
+        //Class: Response
+        //    Handles the response to the base station read eeprom command.
+        class Response : public ResponsePattern
+        {
+        public:
+            //Constructor: Response
+            //    Creates a read eeprom Response object.
+            //
+            //Parameters:
+            //    eepromAddress - The eeprom address being read from.
+            //    collector - The <ResponseCollector> used to register and unregister the response.
+            Response(uint16 eepromAddress, std::weak_ptr<ResponseCollector> collector);
 
-		private:
-			//Variable: m_eepromAddress
-			//	The eeprom address to match in the response.
-			uint16 m_eepromAddress;
+        private:
+            //Variable: m_eepromAddress
+            //    The eeprom address to match in the response.
+            uint16 m_eepromAddress;
 
-			//Variable: m_result
-			//	The result value of the read eeprom command.
-			uint16 m_result;
+            //Variable: m_result
+            //    The result value of the read eeprom command.
+            uint16 m_result;
 
-			//Variable: m_errorCode
-			//	The <WirelessPacket::ResponseErrorCode> from the response.
-			WirelessPacket::ResponseErrorCode m_errorCode;
+            //Variable: m_errorCode
+            //    The <WirelessPacket::ResponseErrorCode> from the response.
+            WirelessPacket::ResponseErrorCode m_errorCode;
 
-		public:
-			//Function: match
-			//	Checks if the packet passed in matches either the success or failure response.
-			//
-			//Parameters:
-			//	packet - The <WirelessPacket> to try to match.
-			//
-			//Returns:
-			//	true if the response pattern was found, false otherwise.
-			virtual bool match(const WirelessPacket& packet) override;
+        public:
+            //Function: match
+            //    Checks if the packet passed in matches either the success or failure response.
+            //
+            //Parameters:
+            //    packet - The <WirelessPacket> to try to match.
+            //
+            //Returns:
+            //    true if the response pattern was found, false otherwise.
+            virtual bool match(const WirelessPacket& packet) override;
 
-			//Function: result
-			//	Gets the result value of the response.
-			//
-			//Returns:
-			//	The result value of the response.
-			//
-			//Exceptions:
-			//	- <Error>: failed to read the base station's eeprom.
-			uint16 result() const;
+            //Function: result
+            //    Gets the result value of the response.
+            //
+            //Returns:
+            //    The result value of the response.
+            //
+            //Exceptions:
+            //    - <Error>: failed to read the base station's eeprom.
+            uint16 result() const;
 
-			//Function: errorCode
-			//	Gets the <WirelessPacket::ResponseErrorCode> from the response packet.
-			//
-			//Returns:
-			//	The error code from the response.
-			WirelessPacket::ResponseErrorCode errorCode() const;
+            //Function: errorCode
+            //    Gets the <WirelessPacket::ResponseErrorCode> from the response packet.
+            //
+            //Returns:
+            //    The error code from the response.
+            WirelessPacket::ResponseErrorCode errorCode() const;
 
-		private:
-			//Function: matchSuccessResponse
-			//	Checks if the packet passed in matches the success response.
-			//
-			//Parameters:
-			//	packet - The <WirelessPacket> to try to match.
-			//
-			//Returns:
-			//	true if the success response pattern was found, false otherwise
-			bool matchSuccessResponse(const WirelessPacket& packet);
+        private:
+            //Function: matchSuccessResponse
+            //    Checks if the packet passed in matches the success response.
+            //
+            //Parameters:
+            //    packet - The <WirelessPacket> to try to match.
+            //
+            //Returns:
+            //    true if the success response pattern was found, false otherwise
+            bool matchSuccessResponse(const WirelessPacket& packet);
 
-			//Function: matchFailResponse
-			//	Checks if the packet passed in matches the failure response.
-			//
-			//Parameters:
-			//	packet - The <WirelessPacket> to try to match.
-			//
-			//Returns:
-			//	true if the failure response pattern was found, false otherwise
-			bool matchFailResponse(const WirelessPacket& packet);
-		};
-	};
+            //Function: matchFailResponse
+            //    Checks if the packet passed in matches the failure response.
+            //
+            //Parameters:
+            //    packet - The <WirelessPacket> to try to match.
+            //
+            //Returns:
+            //    true if the failure response pattern was found, false otherwise
+            bool matchFailResponse(const WirelessPacket& packet);
+        };
+    };
 
 #endif
 

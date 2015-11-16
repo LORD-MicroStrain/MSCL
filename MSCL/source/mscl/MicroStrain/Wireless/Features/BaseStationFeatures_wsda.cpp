@@ -8,8 +8,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	BaseStationFeatures_wsda::BaseStationFeatures_wsda(BaseStationInfo& info):
-		BaseStationFeatures(info)
-	{
-	}
+    BaseStationFeatures_wsda::BaseStationFeatures_wsda(BaseStationInfo& info):
+        BaseStationFeatures(info)
+    {
+    }
 }

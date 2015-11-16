@@ -10,131 +10,131 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	ByteStream BaseStation_WriteEeprom::buildCommand(uint16 eepromAddress, uint16 valueToWrite)
-	{
-		//build the command ByteStream
-		ByteStream cmd;
+    ByteStream BaseStation_WriteEeprom::buildCommand(uint16 eepromAddress, uint16 valueToWrite)
+    {
+        //build the command ByteStream
+        ByteStream cmd;
 
-		cmd.append_uint8(COMMAND_BYTE);
-		cmd.append_uint16(eepromAddress);						//eeprom address to write to
-		cmd.append_uint16(valueToWrite);						//value to write to eeprom
-		cmd.append_uint16(cmd.calculateSimpleChecksum(1, 4));	//checksum
+        cmd.append_uint8(COMMAND_BYTE);
+        cmd.append_uint16(eepromAddress);                        //eeprom address to write to
+        cmd.append_uint16(valueToWrite);                        //value to write to eeprom
+        cmd.append_uint16(cmd.calculateSimpleChecksum(1, 4));    //checksum
 
-		return cmd;
-	}
-
-
-	BaseStation_WriteEeprom::Response::Response(uint16 valueToWrite, std::weak_ptr<ResponseCollector> collector):
-		ResponsePattern(collector),
-		m_valueWritten(valueToWrite)
-	{
-	}
-
-	bool BaseStation_WriteEeprom::Response::matchSuccessResponse(DataBuffer& data)
-	{
-		const uint16 TOTAL_SUCCESS_BYTES = 5;
-
-		//create a save point with the data
-		ReadBufferSavePoint savePoint(&data);
-
-		//if there aren't enough bytes in the buffer to match the response
-		if(data.bytesRemaining() < TOTAL_SUCCESS_BYTES) 
-		{ 
-			return false; 
-		}
-
-		//if the first byte isn't the command byte
-		if(data.read_uint8() != COMMAND_BYTE) 
-		{ 
-			return false; 
-		}
-
-		//the next two bytes should be the eeprom value we wrote in the command
-		uint16 eepromVal = data.read_uint16();
-
-		//if the eeprom value isn't the one we tried to write, then this packet is not correct
-		if(eepromVal != m_valueWritten)
-		{
-			return false;
-		}
+        return cmd;
+    }
 
 
-		//build the ChecksumBuilder with the necessary bytes
-		ChecksumBuilder checksum;
-		checksum.append_uint16(eepromVal);	//eeprom value
+    BaseStation_WriteEeprom::Response::Response(uint16 valueToWrite, std::weak_ptr<ResponseCollector> collector):
+        ResponsePattern(collector),
+        m_valueWritten(valueToWrite)
+    {
+    }
 
-		//if the checksum doesn't match
-		if(data.read_uint16() != checksum.simpleChecksum()) 
-		{ 
-			return false; 
-		}
+    bool BaseStation_WriteEeprom::Response::matchSuccessResponse(DataBuffer& data)
+    {
+        const uint16 TOTAL_SUCCESS_BYTES = 5;
+
+        //create a save point with the data
+        ReadBufferSavePoint savePoint(&data);
+
+        //if there aren't enough bytes in the buffer to match the response
+        if(data.bytesRemaining() < TOTAL_SUCCESS_BYTES) 
+        { 
+            return false; 
+        }
+
+        //if the first byte isn't the command byte
+        if(data.read_uint8() != COMMAND_BYTE) 
+        { 
+            return false; 
+        }
+
+        //the next two bytes should be the eeprom value we wrote in the command
+        uint16 eepromVal = data.read_uint16();
+
+        //if the eeprom value isn't the one we tried to write, then this packet is not correct
+        if(eepromVal != m_valueWritten)
+        {
+            return false;
+        }
 
 
-		//if we made it this far, we successfully matched everything
+        //build the ChecksumBuilder with the necessary bytes
+        ChecksumBuilder checksum;
+        checksum.append_uint16(eepromVal);    //eeprom value
 
-		//commit the current read position
-		savePoint.commit();
+        //if the checksum doesn't match
+        if(data.read_uint16() != checksum.simpleChecksum()) 
+        { 
+            return false; 
+        }
 
-		//set the result to success
-		m_success = true;
 
-		return true;
-	}
+        //if we made it this far, we successfully matched everything
 
-	bool BaseStation_WriteEeprom::Response::matchFailResponse(DataBuffer& data)
-	{
-		const uint16 TOTAL_FAILURE_BYTES = 1;
+        //commit the current read position
+        savePoint.commit();
 
-		//create a save point with the data
-		ReadBufferSavePoint savePoint(&data);
+        //set the result to success
+        m_success = true;
 
-		//if there aren't enough bytes in the buffer to match the response
-		if(data.bytesRemaining() < TOTAL_FAILURE_BYTES) 
-		{
-			return false; 
-		}
+        return true;
+    }
 
-		//if the first byte isn't the fail byte
-		if(data.read_uint8() != FAIL_BYTE) 
-		{ 
-			return false; 
-		}
+    bool BaseStation_WriteEeprom::Response::matchFailResponse(DataBuffer& data)
+    {
+        const uint16 TOTAL_FAILURE_BYTES = 1;
 
-		//if we made it this far, we successfully matched everything
+        //create a save point with the data
+        ReadBufferSavePoint savePoint(&data);
 
-		//commit the current read position
-		savePoint.commit();
+        //if there aren't enough bytes in the buffer to match the response
+        if(data.bytesRemaining() < TOTAL_FAILURE_BYTES) 
+        {
+            return false; 
+        }
 
-		//set the result to a failure
-		m_success = false;
+        //if the first byte isn't the fail byte
+        if(data.read_uint8() != FAIL_BYTE) 
+        { 
+            return false; 
+        }
 
-		return true;
-	}
+        //if we made it this far, we successfully matched everything
 
-	bool BaseStation_WriteEeprom::Response::match(DataBuffer& data)
-	{
-		//if the bytes match the success response
-		if(matchSuccessResponse(data))
-		{
-			//we have fully matched the response
-			m_fullyMatched = true;
+        //commit the current read position
+        savePoint.commit();
 
-			//notify that the response was matched
-			m_matchCondition.notify();
-			return true;
-		}
-		//if the bytes match the fail response
-		else if(matchFailResponse(data))
-		{
-			//we have fully matched the response
-			m_fullyMatched = true;
+        //set the result to a failure
+        m_success = false;
 
-			//notify that the response was matched
-			m_matchCondition.notify();
-			return true;
-		}
+        return true;
+    }
 
-		//the bytes don't match any response
-		return false;
-	}
+    bool BaseStation_WriteEeprom::Response::match(DataBuffer& data)
+    {
+        //if the bytes match the success response
+        if(matchSuccessResponse(data))
+        {
+            //we have fully matched the response
+            m_fullyMatched = true;
+
+            //notify that the response was matched
+            m_matchCondition.notify();
+            return true;
+        }
+        //if the bytes match the fail response
+        else if(matchFailResponse(data))
+        {
+            //we have fully matched the response
+            m_fullyMatched = true;
+
+            //notify that the response was matched
+            m_matchCondition.notify();
+            return true;
+        }
+
+        //the bytes don't match any response
+        return false;
+    }
 }

@@ -13,26 +13,26 @@ namespace mscl
 
 #ifndef SWIG
 
-	//Class: StartNonSyncSampling
-	//	Contains logic for the StartNonSyncSampling Node command
-	class StartNonSyncSampling
-	{
-	private:
-		StartNonSyncSampling();											//default constructor disabled
-		StartNonSyncSampling(const StartNonSyncSampling&);				//copy constructor disabled
-		StartNonSyncSampling& operator=(const StartNonSyncSampling&);	//assignment operator disabled
+    //Class: StartNonSyncSampling
+    //    Contains logic for the StartNonSyncSampling Node command
+    class StartNonSyncSampling
+    {
+    private:
+        StartNonSyncSampling();                                            //default constructor disabled
+        StartNonSyncSampling(const StartNonSyncSampling&);                //copy constructor disabled
+        StartNonSyncSampling& operator=(const StartNonSyncSampling&);    //assignment operator disabled
 
-	public:
-		//Function: buildCommand
-		//	Builds the StartNonSyncSampling command packet
-		//
-		//Parameters:
-		//	nodeAddress - the address of the Node to build the command for
-		//
-		//Returns:
-		//	A <ByteStream> containing the command packet
-		static ByteStream buildCommand(NodeAddress nodeAddress);
-	};
+    public:
+        //Function: buildCommand
+        //    Builds the StartNonSyncSampling command packet
+        //
+        //Parameters:
+        //    nodeAddress - the address of the Node to build the command for
+        //
+        //Returns:
+        //    A <ByteStream> containing the command packet
+        static ByteStream buildCommand(NodeAddress nodeAddress);
+    };
 
 #endif
 }

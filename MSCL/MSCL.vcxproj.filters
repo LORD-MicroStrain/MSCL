@@ -653,6 +653,12 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ShortPing_v2.h">
       <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\RawAngleStrainPacket.h">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\BeaconEchoPacket.h">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp">
@@ -1231,6 +1237,12 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ShortPing_v2.cpp">
       <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\RawAngleStrainPacket.cpp">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\BeaconEchoPacket.cpp">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

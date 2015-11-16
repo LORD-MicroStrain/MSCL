@@ -19,146 +19,146 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-	InertialNode::InertialNode(Connection connection): 
-		m_impl(std::make_shared<InertialNode_Impl>(connection))
-	{
-	}
+    InertialNode::InertialNode(Connection connection): 
+        m_impl(std::make_shared<InertialNode_Impl>(connection))
+    {
+    }
 
-	InertialNode::InertialNode(std::shared_ptr<InertialNode_Impl> impl) :
-		m_impl(impl)
-	{
-	}
+    InertialNode::InertialNode(std::shared_ptr<InertialNode_Impl> impl) :
+        m_impl(impl)
+    {
+    }
 
-	const InertialNodeInfo& InertialNode::info()
-	{
-		return m_impl->info();
-	}
+    const InertialNodeInfo& InertialNode::info()
+    {
+        return m_impl->info();
+    }
 
-	const InertialNodeFeatures& InertialNode::features()
-	{
-		return m_impl->features();
-	}
+    const InertialNodeFeatures& InertialNode::features()
+    {
+        return m_impl->features();
+    }
 
-	InertialDataPacket InertialNode::getNextDataPacket(uint32 timeout)						
-	{ 
-		InertialDataPacket packet;
-		m_impl->getNextDataPacket(packet, timeout); 
-		return packet;
-	}
+    InertialDataPacket InertialNode::getNextDataPacket(uint32 timeout)                        
+    { 
+        InertialDataPacket packet;
+        m_impl->getNextDataPacket(packet, timeout); 
+        return packet;
+    }
 
-	InertialDataPackets InertialNode::getDataPackets(uint32 timeout, uint32 maxPackets)						
-	{ 
-		InertialDataPackets packets;
-		m_impl->getDataPackets(packets, timeout, maxPackets); 
-		return packets;
-	}
+    InertialDataPackets InertialNode::getDataPackets(uint32 timeout, uint32 maxPackets)                        
+    { 
+        InertialDataPackets packets;
+        m_impl->getDataPackets(packets, timeout, maxPackets); 
+        return packets;
+    }
 
-	std::string InertialNode::deviceName(const std::string& serial)
-	{
-		//replace any unsupported sensorcloud characters
-		std::string sensorcloudFilteredName = "inertial-" + serial;
-		Utils::filterSensorcloudName(sensorcloudFilteredName);
+    std::string InertialNode::deviceName(const std::string& serial)
+    {
+        //replace any unsupported sensorcloud characters
+        std::string sensorcloudFilteredName = "inertial-" + serial;
+        Utils::filterSensorcloudName(sensorcloudFilteredName);
 
-		return sensorcloudFilteredName;
-	}
+        return sensorcloudFilteredName;
+    }
 
-	const Timestamp& InertialNode::lastCommunicationTime() const
-	{
-		return m_impl->lastCommunicationTime();
-	}
+    const Timestamp& InertialNode::lastCommunicationTime() const
+    {
+        return m_impl->lastCommunicationTime();
+    }
 
-	const SampleRates& InertialNode::supportedSampleRates(InertialTypes::InertialCategory type)
-	{ 
-		return m_impl->supportedSampleRates(type); 
-	}
+    const SampleRates& InertialNode::supportedSampleRates(InertialTypes::InertialCategory type)
+    { 
+        return m_impl->supportedSampleRates(type); 
+    }
 
-	uint32 InertialNode::totalPackets()															
-	{ 
-		return m_impl->totalPackets(); 
-	}
+    uint32 InertialNode::totalPackets()                                                            
+    { 
+        return m_impl->totalPackets(); 
+    }
 
-	void InertialNode::commandsTimeout(uint64 timeout)										
-	{ 
-		m_impl->commandsTimeout(timeout); 
-	}
+    void InertialNode::commandsTimeout(uint64 timeout)                                        
+    { 
+        m_impl->commandsTimeout(timeout); 
+    }
 
-	std::string InertialNode::name()
-	{
-		return deviceName(info().serialNumber());
-	}
+    std::string InertialNode::name()
+    {
+        return deviceName(info().serialNumber());
+    }
 
-	bool InertialNode::ping()														
-	{ 
-		return m_impl->ping(); 
-	}
+    bool InertialNode::ping()                                                        
+    { 
+        return m_impl->ping(); 
+    }
 
-	void InertialNode::setToIdle()
-	{
-		m_impl->setToIdle();
-	}
+    void InertialNode::setToIdle()
+    {
+        m_impl->setToIdle();
+    }
 
-	void InertialNode::resume()
-	{
-		m_impl->resume();
-	}
+    void InertialNode::resume()
+    {
+        m_impl->resume();
+    }
 
-	uint16 InertialNode::getDataRateBase(InertialTypes::InertialCategory category)
-	{ 
-		return m_impl->getDataRateBase(category);
-	}
+    uint16 InertialNode::getDataRateBase(InertialTypes::InertialCategory category)
+    { 
+        return m_impl->getDataRateBase(category);
+    }
 
-	InertialChannels InertialNode::getActiveChannelFields(InertialTypes::InertialCategory category)
-	{ 
-		return m_impl->getMessageFormat(category);
-	}
+    InertialChannels InertialNode::getActiveChannelFields(InertialTypes::InertialCategory category)
+    { 
+        return m_impl->getMessageFormat(category);
+    }
 
-	void InertialNode::setActiveChannelFields(InertialTypes::InertialCategory category, const InertialChannels& channels)
-	{ 
-		m_impl->setMessageFormat(category, channels);
-	}
+    void InertialNode::setActiveChannelFields(InertialTypes::InertialCategory category, const InertialChannels& channels)
+    { 
+        m_impl->setMessageFormat(category, channels);
+    }
 
-	uint8 InertialNode::getCommunicationMode()													
-	{ 
-		return m_impl->getCommunicationMode(); 
-	}
+    uint8 InertialNode::getCommunicationMode()                                                    
+    { 
+        return m_impl->getCommunicationMode(); 
+    }
 
-	void InertialNode::setCommunicationMode(uint8 communicationMode)							
-	{ 
-		m_impl->setCommunicationMode(communicationMode); 
-	}
+    void InertialNode::setCommunicationMode(uint8 communicationMode)                            
+    { 
+        m_impl->setCommunicationMode(communicationMode); 
+    }
 
-	void InertialNode::enableDataStream(InertialTypes::InertialCategory category, bool enable)
-	{
-		m_impl->enableDataStream(category, enable);
-	}
+    void InertialNode::enableDataStream(InertialTypes::InertialCategory category, bool enable)
+    {
+        m_impl->enableDataStream(category, enable);
+    }
 
-	EulerAngles InertialNode::getSensorToVehicleTransformation()
-	{
-		return m_impl->getSensorToVehicleTransformation();
-	}
+    EulerAngles InertialNode::getSensorToVehicleTransformation()
+    {
+        return m_impl->getSensorToVehicleTransformation();
+    }
 
-	void InertialNode::setSensorToVehicleTransformation(const EulerAngles& angles)
-	{
-		m_impl->setSensorToVehicleTransformation(angles);
-	}
+    void InertialNode::setSensorToVehicleTransformation(const EulerAngles& angles)
+    {
+        m_impl->setSensorToVehicleTransformation(angles);
+    }
 
-	PositionOffset InertialNode::getSensorToVehicleOffset()
-	{
-		return m_impl->getSensorToVehicleOffset();
-	}
+    PositionOffset InertialNode::getSensorToVehicleOffset()
+    {
+        return m_impl->getSensorToVehicleOffset();
+    }
 
-	void InertialNode::setSensorToVehicleOffset(const PositionOffset& offset)
-	{
-		m_impl->setSensorToVehicleOffset(offset);
-	}
+    void InertialNode::setSensorToVehicleOffset(const PositionOffset& offset)
+    {
+        m_impl->setSensorToVehicleOffset(offset);
+    }
 
-	PositionOffset InertialNode::getAntennaOffset()
-	{
-		return m_impl->getAntennaOffset();
-	}
+    PositionOffset InertialNode::getAntennaOffset()
+    {
+        return m_impl->getAntennaOffset();
+    }
 
-	void InertialNode::setAntennaOffset(const PositionOffset& offset)
-	{
-		m_impl->setAntennaOffset(offset);
-	}
+    void InertialNode::setAntennaOffset(const PositionOffset& offset)
+    {
+        m_impl->setAntennaOffset(offset);
+    }
 }
