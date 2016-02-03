@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(SetToIdle_Cancel)
 
     MOCK_EXPECT(baseImpl->ping).returns(true);        //expect to ping the base station
 
-    base.baseCommandsTimeout(5);
+    base.timeout(5);
 
     BOOST_CHECK_THROW(response.cancel(), Error_Communication);    //throws an error because we didn't get the final canceled response
 

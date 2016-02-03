@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -52,16 +52,6 @@ namespace mscl
         //Returns:
         //    The <UniqueWirelessPacketId> of the passed in packet
         static UniqueWirelessPacketId getUniqueId(const WirelessPacket& packet);
-
-        //Function: normalizeAngle
-        //    Normalizes an angle value to be between 0 and 360 degrees.
-        //
-        //Parameters:
-        //    angle - The angle to normalize.
-        //
-        //Returns:
-        //  The normalized angle within 0 and 360 degrees.
-        static float normalizeAngle(float angle);
 
         //Function: distributeAngles
         //    Gets a list of angles based on a low, high, and number of angles.

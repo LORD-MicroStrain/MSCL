@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -268,6 +268,9 @@ namespace mscl
                 config.maxRetransPerBurst(nodeInfo.m_maxRetxPerBurst);
             }
 
+            //reset the node to apply changes
+            config.applyEepromChanges();
+
             //flag the node info that this configuration has been applied
             //In this way, successive calls to this function will only write to the nodes that haven't been applied, if any
             nodeInfo.m_configApplied = true;
@@ -402,7 +405,7 @@ namespace mscl
             //get the total number of active channels set on the Node
             uint16 totalChannels = activeChs.count();
 
-            WirelessModels::NodeModel model = getNodeNetworkInfo(nodeAddress).m_model;
+            WirelessModels::NodeModel model = nodeInfo.m_model;
 
             //if this is the iepe-link, and channel 4 (temp) is enabled
             if(activeChs.enabled(4) && model == WirelessModels::node_iepeLink)
@@ -488,7 +491,7 @@ namespace mscl
                 double bytesPerSecond = SyncSamplingFormulas::bytesPerSecond(sampleRate, totalChannels, bytesPerSample);
 
                 //calculate the maximum bytes per packet
-                uint32 maxBytesPerPacket = SyncSamplingFormulas::maxBytesPerPacket(sampleRate, useLossless, optimizeBandwidth);
+                uint32 maxBytesPerPacket = SyncSamplingFormulas::maxBytesPerPacket(sampleRate, useLossless, optimizeBandwidth, nodeInfo.syncSamplingVersion());
 
                 //calculate the group size
                 groupSize = SyncSamplingFormulas::groupSize(bytesPerSecond, maxBytesPerPacket, useHighCapacity);
@@ -700,7 +703,11 @@ namespace mscl
         SampleRate sampleRate = config.sampleRate();
 
         //find out if we need to check the sampling delay before finding a slot
-        bool checkSamplingDelay = SyncSamplingFormulas::checkSamplingDelay(config.syncSamplingMode(), sampleRate, model);
+        bool checkSamplingDelay = false;
+        if(nodeInfo.syncSamplingVersion() == 1)
+        {
+            checkSamplingDelay = SyncSamplingFormulas::checkSamplingDelay(config.syncSamplingMode(), sampleRate, model);
+        }
         
         //find the sampling delay for this node
         uint32 samplingDelay = findSamplingDelay(nodeAddress);
@@ -753,7 +760,7 @@ namespace mscl
         uint32 samplingDelayCheck = static_cast<uint32>(SyncSamplingFormulas::MAX_SLOTS / sampleRate.samplesPerSecond());
 
         //check if the node can be assigned slot 1 or not
-        bool canHaveSlot1 = SyncSamplingFormulas::canHaveSlot1(model);
+        bool canHaveSlot1 = SyncSamplingFormulas::canHaveSlot1(model, nodeInfo.syncSamplingVersion());
 
         bool foundTakenSlot = false;
         uint16 resultSlot = 0;
@@ -1212,6 +1219,10 @@ namespace mscl
 
     void SyncSamplingNetwork::sendStartToAllNodes()
     {
+        static const uint8 MAX_RETRIES = 2;
+        uint8 retryCount = 0;
+        bool nodeSuccess = false;
+
         //go through each node in the network
         for(NodeAddress nodeAddress : m_networkOrder)
         {
@@ -1220,13 +1231,24 @@ namespace mscl
             //only want to start nodes that haven't already been started (in previous calls to this function)
             if(!nodeInfo.m_startedSampling)
             {
-                //send the start sync sampling command to each node individually
-                if(!m_networkBase.node_startSyncSampling(nodeAddress))
+                retryCount = 0;
+                nodeSuccess = false;
+
+                //send the start sync sampling command to the node (with retries)
+                do
                 {
-                    //if the command has failed, throw an exception
-                    throw Error_NodeCommunication(nodeAddress, "Failed to start Synchronized Sampling on the Node");
+                    nodeSuccess = m_networkBase.node_startSyncSampling(nodeAddress);
+                    retryCount++;
                 }
-                //the command succeeded
+                while(!nodeSuccess && retryCount <= MAX_RETRIES);
+
+                if(!nodeSuccess)
+                {
+                    nodeInfo.m_startedSampling = false;
+
+                    //no longer throwing an exception here as we want to continue on to the next nodes
+                    //and no response is not necessarily indicative of a failure, which can mess things up if the node really started
+                }
                 else
                 {
                     //mark this node as started sampling so that we don't apply it again on successive calls to this function

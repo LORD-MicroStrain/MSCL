@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -31,7 +31,7 @@ namespace mscl
 
         //build the 1 sweep that we need to add
         DataSweep sweep;
-        sweep.samplingType(DataSweep::samplingType_NonSync);
+        sweep.samplingType(DataSweep::samplingType_BeaconEcho);
         sweep.frequency(m_frequency);
         sweep.tick(0);  //no tick
         sweep.nodeAddress(m_nodeAddress);
@@ -51,7 +51,7 @@ namespace mscl
         uint64 timestampSec = m_payload.read_uint32(2);
         Timestamp time((timestampSec * TimeSpan::NANOSECONDS_PER_SECOND)); //no nanoseconds provided in this packet
 
-        static const std::string chName = WirelessChannel::channelName(WirelessChannel::channel_beaconEcho);
+        static const auto chName = std::bind(WirelessChannel::channelName, WirelessChannel::channel_beaconEcho);
 
         chData.emplace_back(WirelessChannel::channel_beaconEcho, 1, chName, valueType_Timestamp, anyType(time));
 

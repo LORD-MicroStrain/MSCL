@@ -1,4 +1,4 @@
-function parseData()
+function parseData_2016_01_19()
 
 % MSCL Example: ParseData
 %    This example shows how to parse incoming data from an Inertial Device.
@@ -12,7 +12,7 @@ msclInfo = NET.addAssembly('C:\Program Files\MATLAB\MSCL\MSCL_Managed.dll');
 
 %TODO: change these constants to match your setup
 
-COM_PORT = 'COM4';
+COM_PORT = 'COM3';
 
 try
     % create a Serial Connection with the specified COM Port, default baud rate of 921600
@@ -28,21 +28,27 @@ try
     
     while true
         try
-            % get the next data packet from the node, with a timeout of 500 milliseconds
-            packet = node.getNextDataPacket(500);
+            % get all the data packets from the node, with a timeout of 500 milliseconds
+            packets = node.getDataPackets(500);
             
-            % print out the data
-            display('Packet received: ');
+            % iterate over all the data packets received
+            for j = 1:packets.Count(),
             
-            % iterate over all the data points in the packet
-            for i = 1:packet.data().Count(),
-                dataPoint = packet.data().Item(i-1);
-                display(['dataPoint: ',num2str(dataPoint.as_float)]) % display dataPoint value as string
-            end
-            
-            %if the dataPoint is invalid
-            if dataPoint.valid() == false,
-                display('Invalid data point')
+              packet = packets.Item(j-1);
+              % print out the data
+              display('Packet received: ');
+              
+              % iterate over all the data points in the packet
+              for i = 1:packet.data().Count(),
+                  dataPoint = packet.data().Item(i-1);
+                  display(['dataPoint: ',num2str(dataPoint.as_float)]) % display dataPoint value as string
+              end
+              
+              %if the dataPoint is invalid
+              if dataPoint.valid() == false,
+                  display('Invalid data point')
+              end
+              
             end
             
         catch err

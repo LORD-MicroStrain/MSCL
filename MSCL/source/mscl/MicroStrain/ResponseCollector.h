@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -11,10 +11,22 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
+    class Connection;
     class DataBuffer;
     class WirelessPacket;
     class InertialDataField;
     class ResponsePattern;
+
+    struct ResponseInfo
+    {
+        ResponsePattern* pattern;
+        std::size_t minBytePosition;
+
+        ResponseInfo(ResponsePattern* responsePattern, std::size_t minBytePos):
+          pattern(responsePattern),
+          minBytePosition(minBytePos)
+        { }
+    };
 
     //Class: ResponseCollector
     //    Stores all the expected command responses
@@ -23,22 +35,33 @@ namespace mscl
     public:
         //Default Constructor: ResponseCollector
         //    Creates a ResponseCollector object
-        ResponseCollector(){};
+        ResponseCollector();
 
     private:
         ResponseCollector(const ResponseCollector&);                                //copy constructor disabled
-        std::shared_ptr<ResponseCollector> operator=(const ResponseCollector&);        //assignement operator disabled
+        std::shared_ptr<ResponseCollector> operator=(const ResponseCollector&);     //assignement operator disabled
 
     private:
         //Variable: m_expectedResponses
         //    Holds the response patterns that, if matched, belong to this collector
-        std::vector<ResponsePattern*> m_expectedResponses;
+        std::vector<ResponseInfo> m_expectedResponses;
 
         //Variable: m_responseMutex
         //    A mutex used for thread safety when accessing/modifying the m_expectedResponses vector
         std::mutex m_responseMutex;
 
+        //Variable: m_connection
+        //    The <Connection> pointer to use for retrieving byte information.
+        Connection* m_connection;
+
     public:
+        //Function: setConnection
+        //    Sets the connection points to use for retrieving byte information.
+        //
+        //Parameters:
+        //    connection - The <Connection> pointer to use for retrieving byte info.
+        void setConnection(Connection* connection);
+
         //Function: registerResponse
         //    Registers a <ResponsePattern> with this collector
         //
@@ -60,6 +83,9 @@ namespace mscl
         //    true if the response collector has any response patterns to match, false otherwise
         bool waitingForResponse();
 
+        //Function: 
+        void adjustResponsesMinBytePos(std::size_t bytesToSubtract);
+
         //Function: matchExpected
         //    Checks to see if the byte(s) passed in match any of the expected responses
         //
@@ -76,10 +102,11 @@ namespace mscl
         //
         //Parameters:
         //    packet - The <WirelessPacket> to be compared against the expected responses
+        //    lastReadPos - The last read position where the packet was parsed from.
         //
         //Returns:
         //    true if the packet matched an expected response, false otherwise
-        bool matchExpected(const WirelessPacket& packet);
+        bool matchExpected(const WirelessPacket& packet, std::size_t lastReadPos);
 
         //Function: matchExpected
         //    Checks to see if the <InertialDataField> passed in matches any of the expected responses

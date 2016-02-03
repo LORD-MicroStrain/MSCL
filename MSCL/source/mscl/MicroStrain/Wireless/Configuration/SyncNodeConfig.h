@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -230,5 +230,9 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to write the value to the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void maxRetransPerBurst(uint32 maxReTxPerBurst);
+
+        //Function: applyEepromChanges
+        //    Resets the radio/power on the Node to apply eeprom changes that have been made.
+        void applyEepromChanges();
     };
 }

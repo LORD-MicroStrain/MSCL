@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -10,6 +10,12 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
+    bool Inertial_Commands::parseData_singleBool(const GenericInertialCommandResponse& response)
+    {
+        //cast to comm mode and return
+        return static_cast<bool>(response.data().read_uint8(0) == 1);
+    }
+
     void Inertial_Commands::parseData_GetDeviceInfo(const GenericInertialCommandResponse& response, InertialDeviceInfo& result)
     {
         //all the positions of the info in the fieldData

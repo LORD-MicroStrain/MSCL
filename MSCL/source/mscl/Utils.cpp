@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -396,6 +396,18 @@ namespace mscl
         {
             //replace all characters that don't match (a-z)(A-Z)(0-9)-_. with a '-'
             str = std::regex_replace(str, std::regex("[^a-zA-Z0-9-_.]"), "-");
+        }
+
+        float normalizeAngle(float angle)
+        {
+            angle = fmod(angle, 360.0f);
+
+            if(angle < 0.0f)
+            {
+                angle = 360 + angle;
+            }
+
+            return angle;
         }
     }
 #endif

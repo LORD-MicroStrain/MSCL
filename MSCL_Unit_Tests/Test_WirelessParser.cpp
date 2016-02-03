@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -239,22 +239,21 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_DataPacket)
     WirelessPacketCollector packetCollector;
     WirelessParser parser(packetCollector, responseCollector);
 
-    DataSweep sweep;
-    //check that calling getNextDataSweep currently throws an Error_NoData exception as there are no packets
-    BOOST_CHECK_THROW(packetCollector.getNextDataSweep(sweep, 0), Error_NoData);
+    DataSweeps sweeps;
+    packetCollector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 0);
 
     //call the parse() function, sending the DataBuffer we created
     parser.parse(b, WirelessTypes::freq_15);
 
-    //calling getNextDataSweep now should return a legitimate DataSweep
-    packetCollector.getNextDataSweep(sweep, 0);
+    packetCollector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 1);
+
+    DataSweep sweep = sweeps.at(0);
 
     //check that the sweep is what we stored there
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 456);
     BOOST_CHECK_EQUAL(sweep.frequency(), WirelessTypes::freq_15);
-
-    //check that calling getNextDataSweep again throws an Error_NoData exception
-    BOOST_CHECK_THROW(packetCollector.getNextDataSweep(sweep, 0), Error_NoData);
 }
 
 BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Duplicate)
@@ -287,26 +286,29 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Duplicate)
     WirelessPacketCollector packetCollector;
     WirelessParser parser(packetCollector, responseCollector);
 
-    DataSweep sweep;
-
-    //check that calling getNextDataSweep currently throws an Error_NoData exception as there are no packets
-    BOOST_CHECK_THROW(packetCollector.getNextDataSweep(sweep, 0), Error_NoData);
+    DataSweeps sweeps;
+    packetCollector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 0);
 
     //call the parse() function, sending the DataBuffer we created
     parser.parse(b, WirelessTypes::freq_18);
 
-    //calling getNextDataSweep now should return a legitimate DataSweep
-    packetCollector.getNextDataSweep(sweep, 0);
+    packetCollector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 1);
+
+    DataSweep sweep = sweeps.at(0);
 
     //check that the sweep is what we stored there
     BOOST_CHECK_EQUAL(sweep.tick(), 0);
     BOOST_CHECK_EQUAL(sweep.frequency(), WirelessTypes::freq_18);
+    sweeps.clear();
 
     //parse the same packet again
     parser.parse(bDuplicate, WirelessTypes::freq_18);
 
     //check that the packet was thrown out as being a duplicate
-    BOOST_CHECK_THROW(packetCollector.getNextDataSweep(sweep, 0), Error_NoData);
+    packetCollector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 0);
 
     data[11] = 0x01;    //increment the tick
     data[17] = 0x53;    //checksum
@@ -315,8 +317,11 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Duplicate)
 
     parser.parse(b3, WirelessTypes::freq_15);
 
-    DataSweep sweep2;
-    packetCollector.getNextDataSweep(sweep2, 0);
+    packetCollector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 1);
+
+    DataSweep sweep2 = sweeps.at(0);
+
 
     BOOST_CHECK_EQUAL(sweep2.tick(), 1);
     BOOST_CHECK_EQUAL(sweep2.frequency(), WirelessTypes::freq_15);
@@ -353,60 +358,16 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_ResponsePacket_NoMatch)
     WirelessPacketCollector packetCollector;
     WirelessParser parser(packetCollector, rc);
 
-    DataSweep sweep;
-    //check that calling getNextDataSweep currently throws an Error_NoData exception as there are no packets
-    BOOST_CHECK_THROW(packetCollector.getNextDataSweep(sweep, 0), Error_NoData);
+    DataSweeps sweeps;
+    packetCollector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 0);
 
     //call the parse() function, sending the DataBuffer we created
     parser.parse(b, WirelessTypes::freq_15);
 
-    //check that calling getNextDataSweep still throws an Error_NoData exception (no data was added)
-    BOOST_CHECK_THROW(packetCollector.getNextDataSweep(sweep, 0), Error_NoData);
+    packetCollector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 0);
 }
-
-/*
-BOOST_AUTO_TEST_CASE(WirelessParser_Parse_ResponsePacket_MatchCmd)
-{
-    Bytes data;
-    data.push_back(0xBC);
-    data.push_back(0x00);
-    data.push_back(0x00);
-    data.push_back(0x00);
-    data.push_back(0x01);
-    data.push_back(0x03);
-    data.push_back(0x0D);
-    data.push_back(0x00);
-    data.push_back(0x00);
-    data.push_back(0x00);
-    data.push_back(0x00);
-    data.push_back(0x00);
-    data.push_back(0x11);
-
-    DataBuffer b(data);
-
-    //create the response for the LongPing command that we will be matching
-    LongPing::Response response(123);
-
-    //register the response with the response collector
-    std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    RegisterTracker tracker = rc.registerResponse(response);
-
-    //build the long ping command to send
-    ByteStream pingCommand = LongPing::buildCommand(123);
-
-    WirelessPacketCollector packetCollector;
-    WirelessParser parser(&packetCollector, rc);
-
-    //check that calling getNextDataSweep currently throws an Error_NoData exception as there are no packets
-    BOOST_CHECK_THROW(packetCollector.getNextDataSweep(0), Error_NoData);
-
-    //call the parse() function, sending the DataBuffer we created
-    parser.parse(b);
-
-    //check that calling getNextDataSweep still throws an Error_NoData exception (no data was added)
-    BOOST_CHECK_THROW(packetCollector.getNextDataSweep(0), Error_NoData);
-}
-*/
 
 BOOST_AUTO_TEST_CASE(WirelessParser_Parse_ResponsePacket_Match_Packet)
 {
@@ -437,10 +398,9 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_ResponsePacket_Match_Packet)
     WirelessPacketCollector packetCollector;
     WirelessParser parser(packetCollector, rc);
 
-    DataSweep sweep;
-
-    //check that calling getNextDataSweep currently throws an Error_NoData exception as there are no packets
-    BOOST_CHECK_THROW(packetCollector.getNextDataSweep(sweep, 0), Error_NoData);
+    DataSweeps sweeps;
+    packetCollector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 0);
 
     //call the parse() function, sending the DataBuffer we created
     parser.parse(b, WirelessTypes::freq_15);
@@ -478,16 +438,15 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Bad_Checksum)
     WirelessPacketCollector packetCollector;
     WirelessParser parser(packetCollector, rc);
 
-    DataSweep sweep;
-
-    //check that calling getNextDataSweep currently throws an Error_NoData exception as there are no packets
-    BOOST_CHECK_THROW(packetCollector.getNextDataSweep(sweep, 0), Error_NoData);
+    DataSweeps sweeps;
+    packetCollector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 0);
 
     //call the parse() function, sending the DataBuffer we created
     parser.parse(b, WirelessTypes::freq_15);
 
-    //check that calling getNextDataSweep again throws an Error_NoData exception
-    BOOST_CHECK_THROW(packetCollector.getNextDataSweep(sweep, 0), Error_NoData);
+    packetCollector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 0);
 }
 
 BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Bad_Followed_By_Good)
@@ -521,22 +480,20 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Bad_Followed_By_Good)
     WirelessPacketCollector packetCollector;
     WirelessParser parser(packetCollector, rc);
 
-    DataSweep sweep;
-
-    //check that calling getNextDataSweep currently throws an Error_NoData exception as there are no packets
-    BOOST_CHECK_THROW(packetCollector.getNextDataSweep(sweep, 0), Error_NoData);
+    DataSweeps sweeps;
+    packetCollector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 0);
 
     //call the parse() function, sending the DataBuffer we created
     parser.parse(b, WirelessTypes::freq_15);
 
-    //calling getNextDataSweep now should return a legitimate DataSweep
-    packetCollector.getNextDataSweep(sweep, 0);
+    packetCollector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 1);
+
+    DataSweep sweep = sweeps.at(0);
 
     //check that the sweep is what we stored there
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 456);
-
-    //check that calling getNextDataSweep again throws an Error_NoData exception
-    BOOST_CHECK_THROW(packetCollector.getNextDataSweep(sweep, 0), Error_NoData);
 }
 
 
@@ -563,16 +520,15 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Bad)
     WirelessPacketCollector packetCollector;
     WirelessParser parser(packetCollector, rc);
 
-    DataSweep sweep;
-
-    //check that calling getNextDataSweep currently throws an Error_NoData exception as there are no packets
-    BOOST_CHECK_THROW(packetCollector.getNextDataSweep(sweep, 0), Error_NoData);
+    DataSweeps sweeps;
+    packetCollector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 0);
 
     //call the parse() function, sending the DataBuffer we created
     parser.parse(b, WirelessTypes::freq_15);
 
-    //check that calling getNextDataSweep again throws an Error_NoData exception
-    BOOST_CHECK_THROW(packetCollector.getNextDataSweep(sweep, 0), Error_NoData);
+    packetCollector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 0);
 }
 
 BOOST_AUTO_TEST_CASE(WirelessParser_Parse_StartSyncSampling_1node)

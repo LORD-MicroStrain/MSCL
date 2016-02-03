@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -204,5 +204,10 @@ namespace mscl
     {
         //write the max retransmissions per burst to eeprom
         m_eepromHelper.write_maxRetransPerBurst(static_cast<uint16>(maxReTxPerBurst));
+    }
+
+    void SyncNodeConfig::applyEepromChanges()
+    {
+        m_eepromHelper.applyEepromChanges();
     }
 }

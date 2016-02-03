@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -222,6 +222,20 @@ namespace mscl
         //    The remaining number of bytes available to read
         std::size_t bytesRemaining() const;
 
+        //Function: appendPosition
+        //    Gets the append position of the buffer.
+        //
+        //Returns:
+        //    The append position of the buffer.
+        std::size_t appendPosition() const;
+
+        //Function: readPosition
+        //    Gets the read position of the buffer.
+        //
+        //Returns:
+        //    The read position of the buffer.
+        std::size_t readPosition() const;
+
         //Function: moreToRead
         //    Gets whether or not there are more bytes to be read in the DataBuffer
         //
@@ -232,7 +246,10 @@ namespace mscl
         //Function: shiftExtraToStart
         //    Copies any unparsed data in the DataBuffer to the front of the buffer. 
         //    Also resets the readPosition and moves the appendPosition to immediately after the data that was moved.
-        void shiftExtraToStart();
+        //
+        //Returns:
+        //    The number of bytes that were shifted.
+        std::size_t shiftExtraToStart();
 
         //Function: getBufferWriter
         //    Creates a <BufferWriter> object based on this DataBuffer.

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -58,17 +58,6 @@ namespace mscl
         //Parameters:
         //    packet - The <InertialPacket> to be added to the buffer
         void addDataPacket(const InertialPacket& packet);
-
-        //Function: getNextDataPacket
-        //    Gets the next <InertialDataPacket> in the buffer.
-        //
-        //Parameters:
-        //    packet - The <InertialDataPacket> to hold the result.
-        //    timeout - the timeout, in milliseconds, to wait for the next data packet if necessary.
-        //
-        //Exceptions:
-        //    - <Error_NoData>: No data was collected.
-        void getNextDataPacket(InertialDataPacket& packet, uint32 timeout);
 
         //Function: getDataPackets
         //    Gets up to the requested amount of data packets that have been collected.

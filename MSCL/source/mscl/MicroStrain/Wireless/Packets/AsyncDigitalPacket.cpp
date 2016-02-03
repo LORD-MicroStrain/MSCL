@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -58,18 +58,16 @@ namespace mscl
         if(m_numSweeps == 0) { throw Error("Invalid Packet"); }
 
         //create a sample rate for this data
-        SampleRate digitalRate(SampleRate::rateType_event, 0);
+        SampleRate digitalRate = SampleRate::Event();
 
         //there are multiple sweeps (events) in this packet
         for(uint32 sweepItr = 0; sweepItr < m_numSweeps; sweepItr++)
         {
-            tick += static_cast<uint16>(sweepItr);
-
             //build a sweep to add
             DataSweep sweep;
             sweep.samplingType(DataSweep::samplingType_AsyncDigital);
             sweep.frequency(m_frequency);
-            sweep.tick(tick);
+            sweep.tick(tick++);
             sweep.nodeAddress(m_nodeAddress);
             sweep.sampleRate(digitalRate);
 

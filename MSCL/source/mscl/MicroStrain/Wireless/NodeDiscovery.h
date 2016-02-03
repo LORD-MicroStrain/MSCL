@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include "mscl/Timestamp.h"
@@ -63,6 +63,10 @@ namespace mscl
         //    The <WirelessTypes::DefaultMode> of the node that sent the Node Discovery packet.
         WirelessTypes::DefaultMode m_defaultMode;
 
+        //Variable: m_bitResult
+        //    The Built In Test result that was sent in the packet.
+        uint32 m_bitResult;
+
         //Variable: m_baseRssi
         //    The Base Station RSSI that identifies the received signal strength at the Base Station.
         int16 m_baseRssi;
@@ -92,6 +96,13 @@ namespace mscl
         //Parameters:
         //    packet - The <WirelessPacket> which is a version 3 Node Discovery packet.
         void initFromPacket_v3(const WirelessPacket& packet);
+
+        //Function: initFromPacket_v4
+        //    Initializes the NodeDiscovery object from a version 4 Node Discovery packet.
+        //
+        //Parameters:
+        //    packet - The <WirelessPacket> which is a version 4 Node Discovery packet.
+        void initFromPacket_v4(const WirelessPacket& packet);
 
     public:
         //API Function: nodeAddress
@@ -146,6 +157,13 @@ namespace mscl
         //Returns:
         //    The <WirelessTypes::DefaultMode> of the discovered Node.
         WirelessTypes::DefaultMode defaultMode();
+
+        //API Function: builtInTestResult
+        //    Gets the result bitmask of the built in test.
+        //
+        //Returns:
+        //  A uint32 bitmask representing the result of the built in test.
+        uint32 builtInTestResult();
 
         //API Function: baseRssi
         //    Gets the base station rssi of the discovered Node.

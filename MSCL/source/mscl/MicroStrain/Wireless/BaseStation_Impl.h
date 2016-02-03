@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -319,18 +319,6 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::MicroControllerType microcontroller() const;
 
-        //Function: getNextData
-        //    Gets the next single <DataSweep> of sampled data (LDC, Sync Sampling, etc) collected by this BaseStation.
-        //
-        //Parameters:
-        //    sweep - The <DataSweep> to hold the result.
-        //    timeout - the timeout, in milliseconds, to wait for the next data packet if necessary (default of 0)
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation
-        //    - <Error_NoData>: No data packets were found
-        void getNextData(DataSweep& sweep, uint32 timeout = 0);
-
         //Function: getData
         //    Gets up to the requested amount of <DataSweep>s of sampled data that was collected by this BaseStation.
         //
@@ -361,26 +349,19 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the BaseStation
         NodeDiscoveries getNodeDiscoveries();
 
-        //Function: baseCommandsTimeout
-        //    Sets the timeout to use when waiting for responses from base station commands
+        //Function: timeout
+        //    Sets the timeout to use when waiting for responses from commands.
         //
         //Parameters:
-        //    timeout - The timeout (in milliseconds) to set for base station commands
-        void baseCommandsTimeout(uint64 timeout);
+        //    timeout - The timeout (in milliseconds) to set.
+        void timeout(uint64 timeout);
 
-        //Function: nodeCommandsTimeout
-        //    Sets the timeout to use when waiting for responses from node commands
-        //
-        //Parameters:
-        //    timeout - The timeout (in milliseconds) to set for node commands
-        void nodeCommandsTimeout(uint64 timeout);
-
-        //Function: baseCommandsTimeout
-        //    Gets the current timeout to use when waiting for responses from base station commands.
+        //Function: timeout
+        //    Gets the current timeout to use when waiting for responses from commands.
         //
         //Returns:
-        //    The timeout (in milliseconds) set for base station commands.
-        uint64 baseCommandsTimeout() const;
+        //    The timeout (in milliseconds) set.
+        uint64 timeout() const;
 
         //Function: nodeCommandsTimeout
         //    Gets the current timeout to use when waiting for responses from node commands
@@ -499,6 +480,15 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         //    - <Error_Communication>: The beacon status command has failed.
         virtual BeaconStatus beaconStatus();
+
+        //Function: startRfSweepMode
+        //    Starts the BaseStation in RF Sweep Mode.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: RF Sweep Mode is not supported by this BaseStation.
+        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
+        //    - <Error_Communication>: The beacon status command has failed.
+        virtual void startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options);
 
         //Function: cyclePower
         //    Cycles the power on the base station.

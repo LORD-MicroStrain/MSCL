@@ -3,7 +3,7 @@
 #   This example does not start a Node sampling. To receive data, a Node
 #   must be put into a sampling mode.
 #
-#Updated: 01/06/2015
+#Updated: 01/18/2016
 
 #import the mscl library
 import sys
@@ -21,13 +21,11 @@ try:
     node = mscl.InertialNode(connection)
 
     #endless loop of reading in data
-    while (True):
-        try:
-            #This example uses the "getNextDataPacket()" command. This command gets the next InertialDataPacket in the buffer and throws an exception if no data exists.
-            #Alternatively, you may use the "getDataPackets()" command to get ALL the InertialDataPackets available in the buffer. If the returned container is empty, no data exists.
+    while (True):        
+        #get all the data packets from the node, with a timeout of 500 milliseconds
+        packets = node.getDataPackets(500)
         
-            #get the next data packet from the node, with a timeout of 500 milliseconds
-            packet = node.getNextDataPacket(500)
+        for packet in packets:
 
             #print out the data
             print "Packet Received: ",
@@ -43,9 +41,6 @@ try:
                     print "[Invalid] ",
 
             print ""
-            
-        except mscl.Error_NoData, noData:
-            print noData
     
 except mscl.Error, e:
     print "Error:", e

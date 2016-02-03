@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -84,17 +84,6 @@ namespace mscl
         //Parameters:
         //    packet - The <WirelessPacket> to be added to the buffer.
         void addNodeDiscoveryPacket(const WirelessPacket& packet);
-
-        //Function: getNextDataSweep
-        //    Gets the next <DataSweep> in the current <WirelessDataPacket> (or in the next WirelessDataPacket if there are no more sweeps in the current one)
-        //
-        //Parameters:
-        //    sweep - A <DataSweep> object to hold the result.
-        //    timeout - the timeout, in milliseconds, to wait for the next data packet if necessary
-        //
-        //Exceptions:
-        //    - <Error_NoData>: There are no more sweeps and no more data packets 
-        void getNextDataSweep(DataSweep& sweep, int timeout);
 
         //Function: getDataSweeps
         //    Gets up to the requested amount of data sweeps that have been collected.

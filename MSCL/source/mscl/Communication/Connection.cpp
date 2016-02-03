@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -97,6 +97,16 @@ namespace mscl
     void Connection::clearBuffer()
     {
         m_impl->clearBuffer();
+    }
+
+    std::size_t Connection::byteReadPos() const
+    {
+        return m_impl->byteReadPos();
+    }
+
+    std::size_t Connection::byteAppendPos() const
+    {
+        return m_impl->byteAppendPos();
     }
 
     void Connection::rawByteMode(bool enable)

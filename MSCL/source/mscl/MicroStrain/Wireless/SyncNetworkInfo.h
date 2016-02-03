@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include "mscl/Types.h"
@@ -100,6 +100,10 @@ namespace mscl
         //    The status of the node
         NodeStatus m_status;
 
+        //Variable: m_syncSamplingVersion
+        //     The version of the Sync Sampling formulas to use.
+        uint8 m_syncSamplingVersion;
+
         //Variable: m_optimized
         //    Whether or not this node has attempted optimization
         bool m_optimized;
@@ -171,6 +175,10 @@ namespace mscl
         uint32 groupSize() const;
 
     private:
+        //API Function: syncSamplingVersion
+        //     The version of the Sync Sampling formulas to use.
+        uint8 syncSamplingVersion() const;
+
         //Function: hasPendingConfig
         //    Gets whether or not this network info has a pending configuration set.
         //

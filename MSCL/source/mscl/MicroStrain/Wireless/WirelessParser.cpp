@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -29,7 +29,7 @@ namespace mscl
         m_responseCollector(responseCollector)
     {}
 
-    void WirelessParser::processPacket(const WirelessPacket& packet) 
+    void WirelessParser::processPacket(const WirelessPacket& packet, std::size_t lastReadPos)
     {
         //if this is a data packet
         if(packet.isDataPacket())
@@ -46,7 +46,7 @@ namespace mscl
         else
         {
             //this could be a valid ASPP command response
-            findMatchingResponse(packet);
+            findMatchingResponse(packet, lastReadPos);
         }
     }
     
@@ -73,7 +73,7 @@ namespace mscl
         return false;
     }
 
-    bool WirelessParser::findMatchingResponse(const WirelessPacket& packet)
+    bool WirelessParser::findMatchingResponse(const WirelessPacket& packet, std::size_t lastReadPos)
     {
         //attempt to get the pointer from the weak_ptr
         std::shared_ptr<ResponseCollector> collector(m_responseCollector.lock());
@@ -85,7 +85,7 @@ namespace mscl
             if(collector->waitingForResponse())
             {
                 //if the bytes match an expected response in the response collector
-                if(collector->matchExpected(packet))
+                if(collector->matchExpected(packet, lastReadPos))
                 {
                     return true;
                 }
@@ -107,9 +107,13 @@ namespace mscl
         //make a save point so we can revert if need be
         ReadBufferSavePoint savepoint(&data);
 
+        std::size_t lastReadPosition;
+
         //while there is more data to be read in the DataBuffer
         while(data.moreToRead())
         {
+            lastReadPosition = data.readPosition();
+
             //read the next byte (doesn't move data's read position)
             uint8 currentByte = data.peekByte();
 
@@ -130,7 +134,7 @@ namespace mscl
                 {
                     //good packet, process it and then look for the next
                     case parsePacketResult_completePacket:
-                        processPacket(packet);
+                        processPacket(packet, lastReadPosition);
                         savepoint.commit();
                         continue;    //packet has been processed, move to the next byte after the packet
 
@@ -222,9 +226,13 @@ namespace mscl
         //create a read save point for the DataBuffer
         ReadBufferSavePoint savePoint(&data);
 
+        std::size_t lastReadPosition;
+
         //while there are enough bytes remaining to make an ASPP response packet
         while(data.bytesRemaining() > WirelessPacket::ASPP_MIN_RESPONSE_PACKET_SIZE)
         {
+            lastReadPosition = data.readPosition();
+
             //move to the next byte
             data.read_uint8();
 
@@ -237,7 +245,7 @@ namespace mscl
                 savePoint.commit();
 
                 //process the packet
-                processPacket(packet);
+                processPacket(packet, lastReadPosition);
                 return true;
             }
         }
@@ -386,21 +394,23 @@ namespace mscl
         switch(packet.type())
         {
             //get the unique id depending on the type of packet
-            case WirelessPacket::packetType_LDC:                    uniqueId = LdcPacket::getUniqueId(packet);                    break;
-            case WirelessPacket::packetType_SyncSampling:           uniqueId = SyncSamplingPacket::getUniqueId(packet);            break;
-            case WirelessPacket::packetType_BufferedLDC:            uniqueId = BufferedLdcPacket::getUniqueId(packet);            break;
-            case WirelessPacket::packetType_LDC_16ch:               uniqueId = LdcPacket_16ch::getUniqueId(packet);                break;
-            case WirelessPacket::packetType_SyncSampling_16ch:      uniqueId = SyncSamplingPacket_16ch::getUniqueId(packet);    break;
-            case WirelessPacket::packetType_BufferedLDC_16ch:       uniqueId = BufferedLdcPacket_16ch::getUniqueId(packet);        break;
-            case WirelessPacket::packetType_AsyncDigital:           uniqueId = AsyncDigitalPacket::getUniqueId(packet);            break;
-            case WirelessPacket::packetType_AsyncDigitalAnalog:     uniqueId = AsyncDigitalAnalogPacket::getUniqueId(packet);    break;
+            case WirelessPacket::packetType_LDC:                    uniqueId = LdcPacket::getUniqueId(packet);                      break;
+            case WirelessPacket::packetType_SyncSampling:           uniqueId = SyncSamplingPacket::getUniqueId(packet);             break;
+            case WirelessPacket::packetType_BufferedLDC:            uniqueId = BufferedLdcPacket::getUniqueId(packet);              break;
+            case WirelessPacket::packetType_LDC_16ch:               uniqueId = LdcPacket_16ch::getUniqueId(packet);                 break;
+            case WirelessPacket::packetType_SyncSampling_16ch:      uniqueId = SyncSamplingPacket_16ch::getUniqueId(packet);        break;
+            case WirelessPacket::packetType_BufferedLDC_16ch:       uniqueId = BufferedLdcPacket_16ch::getUniqueId(packet);         break;
+            case WirelessPacket::packetType_AsyncDigital:           uniqueId = AsyncDigitalPacket::getUniqueId(packet);             break;
+            case WirelessPacket::packetType_AsyncDigitalAnalog:     uniqueId = AsyncDigitalAnalogPacket::getUniqueId(packet);       break;
 
             //isn't a valid data packet that has a unique id, so we can't check for duplicates
             case WirelessPacket::packetType_nodeDiscovery:
             case WirelessPacket::packetType_nodeDiscovery_v2:
             case WirelessPacket::packetType_nodeDiscovery_v3:
+            case WirelessPacket::packetType_nodeDiscovery_v4:
             case WirelessPacket::packetType_SHM:
             case WirelessPacket::packetType_beaconEcho:
+            case WirelessPacket::packetType_rfScanSweep:
             default:
                 return false;
         }

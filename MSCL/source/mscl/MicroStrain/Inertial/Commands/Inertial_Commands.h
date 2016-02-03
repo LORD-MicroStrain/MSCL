@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -37,6 +37,16 @@ namespace mscl
         };
 
     public:
+        //Function: parseData_singleBool
+        //    Parses the data for a single boolean flag response.
+        //
+        //Parameters:
+        //    response - The <GenericInertialCommandResponse> that contains the data to be parsed.
+        //
+        //Returns:
+        //    The boolean parsed from the response.
+        static bool parseData_singleBool(const GenericInertialCommandResponse& response);
+
         //Function: parseData_GetDeviceInfo
         //    Parses the data from a GetDeviceInfo response.
         //

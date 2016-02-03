@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -29,6 +29,8 @@ namespace mscl
     {
         //create the response collector
         m_responseCollector.reset(new ResponseCollector);
+
+        m_responseCollector->setConnection(&m_connection);
 
         //build the parser with the InertialNode_Impl's packet collector and response collector
         m_parser.reset(new InertialParser(&m_packetCollector, m_responseCollector));
@@ -128,15 +130,13 @@ namespace mscl
         m_parser->parse(data);
 
         //shift any extra bytes that weren't parsed, back to the front of the buffer
-        data.shiftExtraToStart();
-    }
+        std::size_t bytesShifted = data.shiftExtraToStart();
 
-    void InertialNode_Impl::getNextDataPacket(InertialDataPacket& packet, uint32 timeout)//timeout = 0
-    {
-        //check if a connection error has occurred
-        m_connection.throwIfError();
-
-        m_packetCollector.getNextDataPacket(packet, timeout);
+        if(bytesShifted > 0)
+        {
+            //subtract the bytes shifted from each command already waiting on a response
+            m_responseCollector->adjustResponsesMinBytePos(bytesShifted);
+        }
     }
 
     void InertialNode_Impl::getDataPackets(std::vector<InertialDataPacket>& packets, uint32 timeout, uint32 maxPackets)//maxPackets=0
@@ -152,9 +152,14 @@ namespace mscl
         return m_packetCollector.totalPackets();
     }
 
-    void InertialNode_Impl::commandsTimeout(uint64 timeout)
+    void InertialNode_Impl::timeout(uint64 timeout)
     {
         m_inertialCommandsTimeout = timeout;
+    }
+
+    uint64 InertialNode_Impl::timeout()
+    {
+        return m_inertialCommandsTimeout;
     }
 
     GenericInertialCommandResponse InertialNode_Impl::doInertialCmd(GenericInertialCommand::Response& response, const ByteStream& command, InertialTypes::Command commandId, bool verifySupported)
@@ -202,7 +207,7 @@ namespace mscl
         {
             return false;
         }
-        catch(Error_Timeout&)
+        catch(Error_Communication&)
         {
             return false;
         }
@@ -401,6 +406,41 @@ namespace mscl
 
         //send the command and wait for the response
         doInertialCmd(r, ContinuousDataStream::buildCommand_set(category, enable), ContinuousDataStream::CMD_ID);
+    }
+
+    void InertialNode_Impl::resetFilter()
+    {
+        ResetFilter::Response r(m_responseCollector);
+
+        doInertialCmd(r, ResetFilter::buildCommand(), ResetFilter::CMD_ID);
+    }
+
+    bool InertialNode_Impl::getAutoInitialization()
+    {
+        AutoInitializeControl::Response r(m_responseCollector, true);
+
+        return r.parseResponse(doInertialCmd(r, AutoInitializeControl::buildCommand_get(), AutoInitializeControl::CMD_ID));
+    }
+
+    void InertialNode_Impl::setAutoInitialization(bool enable)
+    {
+        AutoInitializeControl::Response r(m_responseCollector, false);
+
+        doInertialCmd(r, AutoInitializeControl::buildCommand_set(enable), AutoInitializeControl::CMD_ID);
+    }
+
+    void InertialNode_Impl::setInitialAttitude(const EulerAngles& attitude)
+    {
+        SetInitialAttitude::Response r(m_responseCollector);
+
+        doInertialCmd(r, SetInitialAttitude::buildCommand(attitude), SetInitialAttitude::CMD_ID);
+    }
+
+    void InertialNode_Impl::setInitialHeading(float heading)
+    {
+        SetInitialHeading::Response r(m_responseCollector);
+
+        doInertialCmd(r, SetInitialHeading::buildCommand(heading), SetInitialHeading::CMD_ID);
     }
 
     EulerAngles InertialNode_Impl::getSensorToVehicleTransformation()

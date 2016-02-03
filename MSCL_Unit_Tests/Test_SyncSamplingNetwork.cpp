@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -110,6 +110,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -174,6 +175,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous)
     
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -229,6 +231,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_noChannelMask)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -288,6 +291,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst_noChannelMask)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -343,6 +347,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_logOnly)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -402,6 +407,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_losslessDisabled_burst)
     
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -458,6 +464,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_losslessDisabled_continuous)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -515,6 +522,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_highCapacity)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -574,6 +582,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_highCapacity2)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -631,6 +640,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_multiple)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -681,6 +691,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_failCommunication)
     
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     SyncSamplingNetwork nwk(b);
 
@@ -712,6 +723,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_failCommunication_thenSucceed)
     
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     SyncSamplingNetwork nwk(b);
 
@@ -803,6 +815,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_removeNode)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -864,6 +877,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_refresh)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -951,6 +965,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_disableLosslessAfterwards)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -1020,6 +1035,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addMultipleNodes)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -1063,6 +1079,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addMultipleNodes)
 
     expectReadModel(impl2, WirelessModels::node_gLink_2g);
     expectGoodPing(impl2);
+    MOCK_EXPECT(impl2->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node200));
@@ -1110,6 +1127,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_enablehighCapacityAfterwards)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -1183,6 +1201,9 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_applyConfiguration_continuous)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    expectCyclePower(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
+    //expectResetRadio(impl);
 
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::TX_PER_GROUP, Value::UINT16((uint16)1)); //tx per group (should be 1)
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::GROUP_SIZE, Value::UINT16((uint16)1)); //group size (should be 1)
@@ -1238,6 +1259,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_applyConfiguration_burst)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    expectCyclePower(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -1294,6 +1317,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_applyConfiguration_again)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    expectCyclePower(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -1355,6 +1380,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_apply_networkNotOk)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -1419,6 +1445,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_pcTime)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    expectCyclePower(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node));
@@ -1463,6 +1491,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_pcTime_configNot
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node));
@@ -1498,6 +1527,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_timestamp)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    expectCyclePower(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node));
@@ -1542,6 +1573,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_timestamp_config
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node));
@@ -1577,6 +1609,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_noBase)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    expectCyclePower(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node));
@@ -1619,6 +1653,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_noBase_configNotApplied)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node));
@@ -1654,6 +1689,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_failSendStart)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    expectCyclePower(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node));
@@ -1667,7 +1704,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_failSendStart)
 
     MOCK_EXPECT(baseImpl->node_startSyncSampling).with(123).returns(false);    //send the start sync sampling command to node 123
 
-    BOOST_CHECK_THROW(nwk.startSampling_noBeacon(), Error_NodeCommunication);
+    BOOST_CHECK_NO_THROW(nwk.startSampling_noBeacon());    //changed to not throwing exception
 }
 
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_retry)
@@ -1698,6 +1735,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_retry)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    expectCyclePower(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node));
@@ -1723,6 +1762,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_retry)
 
     expectReadModel(impl2, WirelessModels::node_vLink);
     expectGoodPing(impl2);
+    expectCyclePower(impl2);
+    MOCK_EXPECT(impl2->firmwareVersion).returns(Version(7, 0));
 
     //add another node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node2));
@@ -1741,7 +1782,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_retry)
     MOCK_EXPECT(baseImpl->node_startSyncSampling).with(123).returns(false);    //FAIL SENDING START TO NODE 123
     MOCK_EXPECT(baseImpl->node_startSyncSampling).with(2).returns(true);    //send the start sync sampling command to node 2
 
-    BOOST_CHECK_THROW(nwk.startSampling_noBeacon(), Error_NodeCommunication);
+    BOOST_CHECK_NO_THROW(nwk.startSampling_noBeacon()); //changed to not throwing exception
 
     MOCK_RESET(baseImpl->node_startSyncSampling);//reset all expections
     MOCK_EXPECT(baseImpl->node_startSyncSampling).with(123).returns(true);    //NOW SUCCEED SENDING START TO NODE 2
@@ -1779,6 +1820,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_tooMuchBandwidth)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -1818,6 +1860,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_tooMuchBandwidth)
 
     expectReadModel(impl2, WirelessModels::node_gLink_2g);
     expectGoodPing(impl2);
+    MOCK_EXPECT(impl2->firmwareVersion).returns(Version(7, 0));
 
     //add another node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node200));
@@ -1866,6 +1909,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
 
     expectReadModel(impl, WirelessModels::node_vLink);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node1));
@@ -1906,6 +1950,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
 
     expectReadModel(impl2, WirelessModels::node_vLink);
     expectGoodPing(impl2);
+    MOCK_EXPECT(impl2->firmwareVersion).returns(Version(7, 0));
 
     //add another node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node2));
@@ -1946,6 +1991,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
 
     expectReadModel(impl3, WirelessModels::node_vLink);
     expectGoodPing(impl3);
+    MOCK_EXPECT(impl3->firmwareVersion).returns(Version(7, 0));
 
     //add another node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node3));
@@ -1987,6 +2033,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
 
     expectReadModel(impl4, WirelessModels::node_gLink_2g);
     expectGoodPing(impl4);
+    MOCK_EXPECT(impl4->firmwareVersion).returns(Version(7, 0));
 
     //add another node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node4));
@@ -2028,6 +2075,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
 
     expectReadModel(impl5, WirelessModels::node_tcLink_6ch);
     expectGoodPing(impl5);
+    MOCK_EXPECT(impl5->firmwareVersion).returns(Version(7, 0));
 
     //add another node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node5));
@@ -2071,6 +2119,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
 
     expectReadModel(impl6, WirelessModels::node_tcLink_6ch_ip67);
     expectGoodPing(impl6);
+    MOCK_EXPECT(impl6->firmwareVersion).returns(Version(7, 0));
 
     //add another node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node6));
@@ -2118,6 +2167,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_tcLink6ch)
 
     expectReadModel(impl, WirelessModels::node_tcLink_6ch);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node6));
@@ -2165,6 +2215,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_tcLink1ch)
 
     expectReadModel(impl, WirelessModels::node_tcLink_1ch);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node6));
@@ -2213,6 +2264,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_envLinkPro)
 
     expectReadModel(impl, WirelessModels::node_envLink_pro);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node6));
@@ -2260,6 +2312,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_envLinkMini)
 
     expectReadModel(impl, WirelessModels::node_envLink_mini);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node6));
@@ -2303,6 +2356,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_wattLink)
 
     expectReadModel(impl, WirelessModels::node_wattLink_3D400);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node6));
@@ -2339,6 +2393,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_sgLinkHermetic)
 
     expectReadModel(impl, WirelessModels::node_sgLink_herm_2700);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node6));
@@ -2383,6 +2438,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_setPendingConfig)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
     
 
     //add the node to the network
@@ -2457,6 +2513,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_setPendingConfig_InvalidNode)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
     
 
     //add the node to the network
@@ -2525,6 +2582,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_clearPendingConfig)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -2615,6 +2673,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_clearAllPendingConfigs)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
     
 
     //add the node to the network
@@ -2708,6 +2767,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_invalidConfig)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_THROW(nwk.addNode(node100), Error_InvalidNodeConfig);
@@ -2740,6 +2800,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_setPendingConfig_invalidConfig)
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));

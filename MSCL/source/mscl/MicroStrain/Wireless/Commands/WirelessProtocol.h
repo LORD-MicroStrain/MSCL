@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -47,6 +47,10 @@ namespace mscl
         //Variable: m_beaconStatus
         //    The function pointer for the Beacon Status protocol command.
         std::function<BeaconStatus(BaseStation_Impl*)> m_beaconStatus;
+
+        //Variable: m_startRfSweep
+        //    The function pointer for the Start RF Sweep Mode protocol command.
+        std::function<void(BaseStation_Impl*, uint32, uint32, uint32, uint16)> m_startRfSweep;
 
         //Variable: m_shortPing
         //    The function pointer for the Short Ping Node protocol command.
@@ -98,5 +102,9 @@ namespace mscl
         //Function: v1_2
         //    Static function to create a WirelessProtocol with version 1.2.
         static std::unique_ptr<WirelessProtocol> v1_2();
+
+        //Function: v1_3
+        //    Static function to create a WirelessProtocol with version 1.3.
+        static std::unique_ptr<WirelessProtocol> v1_3();
     };
 }

@@ -1,13 +1,16 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include "WirelessChannel.h"
 #include "mscl/MicroStrain/DataPoint.h"
+#include "mscl/Utils.h"
+
+#include <unordered_map>
 
 namespace mscl
 {
@@ -19,6 +22,13 @@ namespace mscl
     class WirelessDataPoint : public DataPoint
     {
     public:
+        enum ChannelPropertyId
+        {
+          channelPropertyId_angle
+        };
+
+        typedef std::unordered_map<ChannelPropertyId, Value, std::hash<int>> ChannelProperties;
+
         //Default Constructor: WirelessDataPoint
         //    Builds a WirelessDataPoint object
         WirelessDataPoint();
@@ -33,7 +43,9 @@ namespace mscl
         //    channelNumber - The channel number associated with the data point (ch1 = 1, ch8 = 8).
         //    type - The <ValueType> of the value to be stored
         //    value - The value to store
-        WirelessDataPoint(WirelessChannel::ChannelId channelId, uint8 channelNumber, ValueType type, const anyType& value);
+        //    channelProperties - Any <ChannelProperties> to store for later retrieval.
+        WirelessDataPoint(WirelessChannel::ChannelId channelId, uint8 channelNumber, ValueType type, const anyType& value,
+            const ChannelProperties& channelProperties = ChannelProperties());
 
         //Constructor: WirelessDataPoint
         //    Builds a WirelessDataPoint object.
@@ -45,9 +57,10 @@ namespace mscl
         //    channelName - The channel name associated with the data point.
         //    type - The <ValueType> of the value to be stored
         //    value - The value to store
-        WirelessDataPoint(WirelessChannel::ChannelId channelId, uint8 channelNumber, const std::string& channelName, ValueType type, const anyType& value);
+        WirelessDataPoint(WirelessChannel::ChannelId channelId, uint8 channelNumber, const Utils::Lazy<std::string>& channelName, ValueType type, const anyType& value,
+            const ChannelProperties& channelProperties = ChannelProperties());
 #endif
-
+    
     private:
         //Variable: m_channelId
         //    The <WirelessChannel::ChannelId> representing information about the channel this data point is associated with
@@ -59,7 +72,11 @@ namespace mscl
 
         //Variable: m_channelName
         //    The channel name associated with the data point.
-        std::string m_channelName;
+        //std::string m_channelName;
+
+        mutable Utils::Lazy<std::string> m_channelName;
+
+        ChannelProperties m_channelProperties;
 
     public:
         //API Function: channelId
@@ -90,6 +107,8 @@ namespace mscl
         //Exceptions:
         //    - <Error>: Unknown channel.
         const std::string& channelName() const;
+
+        const Value& channelProperty(ChannelPropertyId id) const;
     };
 
     //API Typedef: ChannelData

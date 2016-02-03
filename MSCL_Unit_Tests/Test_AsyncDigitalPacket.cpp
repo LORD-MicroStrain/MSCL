@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -52,8 +52,11 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalPacket_Constructor)
     WirelessPacketCollector collector;
     collector.addDataPacket(packet);
 
-    DataSweep sweep;
-    collector.getNextDataSweep(sweep, 0);
+    DataSweeps sweeps;
+    collector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 2);
+
+    DataSweep sweep = sweeps.at(0);
     
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
@@ -65,7 +68,7 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalPacket_Constructor)
     BOOST_CHECK_EQUAL(sweep.data().size(), 2);//2 digital channels
     BOOST_CHECK_EQUAL(sweep.data()[0].storedAs(), valueType_bool);
 
-    collector.getNextDataSweep(sweep, 0);
+    sweep = sweeps.at(1);
 
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
@@ -76,9 +79,6 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalPacket_Constructor)
     BOOST_CHECK_EQUAL(sweep.baseRssi(), 1);
     BOOST_CHECK_EQUAL(sweep.data().size(), 2);//2 digital channels
     BOOST_CHECK_EQUAL(sweep.data()[0].storedAs(), valueType_bool);
-
-    //check that calling getNextDataSweep now throws an Error_NoData exception
-    BOOST_CHECK_THROW(collector.getNextDataSweep(sweep, 0), Error_NoData);
 }
 
 BOOST_AUTO_TEST_CASE(AsyncDigitalPacket_IntegrityCheck_Good)

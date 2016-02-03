@@ -24,12 +24,14 @@ cd "$(cd -P -- $(dirname -- $0) && pwd -P)"
 echo '========================================================'
 echo '(zipOutput.sh) START - ZIP ALL OF THE MSCL OUTPUT'
 
-#copy all the Public C++ header files
-echo '(zipOutput.sh) Copying public header files'
-python copyPublicHeaders.py '../MSCL/source' $CPP_HEADERS_OUTPUT_DIR
-
 #copy the output/result files into a single directory structure 
 echo '(zipOutput.sh) Copying files'
+mkdir -p $CPP_HEADERS_OUTPUT_DIR
+mkdir -p $CPP_LIBS_OUTPUT_DIR
+mkdir -p $PYTHON_OUTPUT_DIR
+mkdir -p $EX_OUTPUT_DIR
+
+rsync -arv --prune-empty-dirs --exclude='.svn' --include='*/' --include='*.h' --exclude='*' '../MSCL/source/' $CPP_HEADERS_OUTPUT_DIR
 rsync -arv --prune-empty-dirs --exclude='.svn' --include='*/' --include='*.so' --exclude='*' '../Output/C++/' $CPP_LIBS_OUTPUT_DIR
 rsync -arv --prune-empty-dirs --exclude='.svn' --include='*/' --include='*.py' --include='*.so' --exclude='*' '../Output/Python/' $PYTHON_OUTPUT_DIR
 rsync -arv --prune-empty-dirs --exclude='.svn' --exclude='dependencies/' --include='*/' --include='*.h' --include='readme.txt' --include='*.sln' --include='*.props' --include='*.cpp' --include='*.vcxproj' --include='*.cs' --include='*.csproj' --include='*.py' --include='*.vi' --exclude='*' '../MSCL_Examples/' $EX_OUTPUT_DIR

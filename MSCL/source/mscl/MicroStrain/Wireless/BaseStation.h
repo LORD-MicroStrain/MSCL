@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include "mscl/Communication/Connection.h"
@@ -18,6 +18,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "WirelessTypes.h"
 #include "WirelessModels.h"
 #include "mscl/Version.h"
+
+#include <memory>
 
 namespace mscl
 {
@@ -39,12 +41,10 @@ namespace mscl
     public:
         //=====================================================================================================
         //API Constants: Default Timeouts
-        //    BASE_COMMANDS_DEFAULT_TIMEOUT    - 1100 ms    - The default timeout for a base station command (in milliseconds)
-        //    NODE_COMMANDS_DEFAULT_TIMEOUT    - 1000 ms    - The default timeout for a node command (in milliseconds)
-        //    BROADCAST_NODE_ADDRESS            - 65535        - The address to use for performing Broadcast commands that will be heard by all <WirelessNode>s on the frequency.
+        //    BASE_COMMANDS_DEFAULT_TIMEOUT    - 50 ms    - The default timeout for a base station command (in milliseconds)
+        //    BROADCAST_NODE_ADDRESS           - 65535      - The address to use for performing Broadcast commands that will be heard by all <WirelessNode>s on the frequency.
         //=====================================================================================================
-        static const uint64 BASE_COMMANDS_DEFAULT_TIMEOUT = 1100;
-        static const uint64 NODE_COMMANDS_DEFAULT_TIMEOUT = 1000;
+        static const uint64 BASE_COMMANDS_DEFAULT_TIMEOUT = 50;
         static const NodeAddress BROADCAST_NODE_ADDRESS = 65535;
 
     public:
@@ -246,21 +246,6 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::MicroControllerType microcontroller() const;
 
-        //API Function: getNextData
-        //    Gets the next single <DataSweep> of sampled data (LDC, Sync Sampling, etc) collected by this BaseStation.
-        //    See the <getData> function for getting all available data packets that are in the buffer.
-        //
-        //Parameters:
-        //    timeout - the timeout, in milliseconds, to wait for the next data sweep if necessary (default of 0)
-        //
-        //Returns:
-        //    The next <DataSweep> that was collected by this BaseStation object
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation
-        //    - <Error_NoData>: No data packets were found
-        DataSweep getNextData(uint32 timeout = 0);
-
         //API Function: getData
         //    Gets up to the requested amount of <DataSweep>s of sampled data that was collected by this BaseStation.
         //
@@ -293,33 +278,23 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the BaseStation
         NodeDiscoveries getNodeDiscoveries();
 
-        //API Function: baseCommandsTimeout
-        //    Sets the timeout to use when waiting for responses from base station commands
+        //API Function: timeout
+        //    Sets the timeout to use when waiting for responses from commands.
+        //    This timeout is used directly for BaseStation commands, while some additional time is added for Node commands.
+        //    Note: Some commands have a minimum timeout that will override this if set lower than the minimum.
         //
         //Parameters:
-        //    timeout - The timeout (in milliseconds) to set for base station commands
-        void baseCommandsTimeout(uint64 timeout);
-
-        //API Function: nodeCommandsTimeout
-        //    Sets the timeout to use when waiting for responses from node commands
-        //
-        //Parameters:
-        //    timeout - The timeout (in milliseconds) to set for node commands
-        void nodeCommandsTimeout(uint64 timeout);
+        //    timeout - The timeout (in milliseconds) to set for commands.
+        void timeout(uint64 timeout);
 
         //API Function: baseCommandsTimeout
         //    Gets the current timeout to use when waiting for responses from base station commands.
+        //    This timeout is used directly for BaseStation commands, while some additional time is added for Node commands.
+        //    Note: Some commands have a minimum timeout that will override this if set lower than the minimum.
         //
         //Returns:
         // The timeout (in milliseconds) set for base station commands.
-        uint64 baseCommandsTimeout() const;
-
-        //API Function: nodeCommandsTimeout
-        //    Gets the current timeout to use when waiting for responses from node commands.
-        //
-        //Returns:
-        // The timeout (in milliseconds) set for node commands.
-        uint64 nodeCommandsTimeout() const;
+        uint64 timeout() const;
 
         //API Function: ping
         //    Pings the base station
@@ -425,9 +400,26 @@ namespace mscl
         //    A <BeaconStatus> object containing status information of the beacon.
         //
         //Exceptions:
+        //    - <Error_NotSupported>: Beacon Status is not supported by this BaseStation.
         //    - <Error_Communication>: Failed to get the beacon status.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         BeaconStatus beaconStatus();
+
+        //API Function: startRfSweepMode
+        //    Starts the BaseStation in RF Sweep Mode.
+        //    Note: To exit this Mode, send any command to the BaseStation (such as ping).
+        //
+        //Parameters:
+        //  minFreq - The minimum frequency to use in the scan in kHz (2400000 = 2.4GHz).
+        //  maxFreq - The maximum frequency to use in the scan in kHz (2400000 = 2.4GHz).
+        //  interval - The interval between frequencies.
+        //  options - This is currently an Advanced setting, used internally.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: RF Sweep Mode is not supported by this BaseStation.
+        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
+        //    - <Error_Communication>: The beacon status command has failed.
+        void startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options=0);
 
         //API Function: cyclePower
         //    Cycles the power on the base station.

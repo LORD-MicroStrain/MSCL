@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(WirelessPacketCollector_MatchExpected_Packet_Success)
     packet.payload(b);
 
     //check that matchExpected() returns true
-    BOOST_CHECK_EQUAL(collector->matchExpected(packet), true);
+    BOOST_CHECK_EQUAL(collector->matchExpected(packet, 0), true);
 
     collector->unregisterResponse(&response);
 
@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE(WirelessPacketCollector_MatchExpected_Packet_False)
     packet.payload(b);
 
     //check that matchExpected() returns false
-    BOOST_CHECK_EQUAL(collector->matchExpected(packet), false);
+    BOOST_CHECK_EQUAL(collector->matchExpected(packet, 0), false);
 }
 
 BOOST_AUTO_TEST_CASE(WirelessPacketCollector_MatchExpected_InertialDataField_Fail)

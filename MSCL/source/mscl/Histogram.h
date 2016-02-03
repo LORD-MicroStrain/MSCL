@@ -1,75 +1,16 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include "Value.h"
+#include "Bin.h"
 
 namespace mscl
-{
-    //Title: Histogram
-
-    //API Class: Bin
-    //    Represents a single bin within a Histogram.
-    class Bin
-    {
-    public:
-        //API Constructor: Bin
-        //    Creates a Bin object.
-        //
-        //Parameters:
-        //    start - The start of the range of the bin.
-        //    end - The end of the range of the bin (non-inclusive).
-        //    count - The number of values that fall within the range of this bin.
-        Bin(const Value& start, const Value& end, uint32 count);
-
-    private:
-        Bin();                        //default constructor disabled
-
-    private:
-        //Variable: m_start
-        //    The start of the range of the bin.
-        Value m_start;
-
-        //Variable: m_end
-        //    The end of the range of the bin (non-inclusive).
-        Value m_end;
-
-        //Variable: m_count
-        //    The number of values that fall within the range of this bin.
-        uint32 m_count;
-
-    public:
-        //API Function: start
-        //    Gets the start of the range of the bin.
-        //
-        //Returns:
-        //    The start of the range of the bin, as a <Value> object.
-        Value start() const;
-
-        //API Function: end
-        //    Gets the end of the range of the bin (non-inclusive).
-        //
-        //Returns:
-        //    The end of the range of the bin, as a <Value> object.
-        Value end() const;
-
-        //API Function: count
-        //    Gets the number of values that fall within the range of this bin.
-        //
-        //Returns:
-        //    The number of values that fall within the range of this bin.
-        uint32 count() const;
-    };
-
-    //API Typedef: Bins
-    //    Typedef for a vector of <Bin> objects.
-    typedef std::vector<Bin> Bins;
-
-    
+{    
     //API Class: Histogram
     //    Represents a Histogram object.
     class Histogram

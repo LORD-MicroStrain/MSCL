@@ -34,12 +34,9 @@ echo ========================================================
 echo (zipOutput.cmd) START - ZIP ALL OF THE MSCL OUTPUT
 echo.
 
-REM copy all the Public C++ header files
-echo (zipOutput.cmd) Copying public header files
-python copyPublicHeaders.py "..\MSCL\source" %CPP_HEADERS_OUTPUT_DIR%
-
 REM copy the output/result files into a single directory structure 
 echo (zipOutput.cmd) Copying files
+xcopy "..\MSCL\source\*.h" %CPP_HEADERS_OUTPUT_DIR% /i /s
 xcopy "..\Output\C++\*.lib" %CPP_LIBS_OUTPUT_DIR% /i /s
 xcopy "..\Output\C++\*.pdb" %CPP_LIBS_OUTPUT_DIR% /i /s
 xcopy "..\Output\DotNet\x86\*.dll" %DOTNET_OUTPUT_DIR% /i /s
@@ -58,6 +55,7 @@ xcopy "..\MSCL_Examples\*.cs" %EX_OUTPUT_DIR% /exclude:outputExcludeList.txt /i 
 xcopy "..\MSCL_Examples\*.csproj" %EX_OUTPUT_DIR% /exclude:outputExcludeList.txt /i /s
 xcopy "..\MSCL_Examples\*.py" %EX_OUTPUT_DIR% /exclude:outputExcludeList.txt /i /s
 xcopy "..\MSCL_Examples\*.vi" %EX_OUTPUT_DIR% /exclude:outputExcludeList.txt /i /s
+xcopy "..\MSCL_Examples\*.m" %EX_OUTPUT_DIR% /exclude:outputExcludeList.txt /i /s
 
 REM copy the MSCL_Examples dependencies folder
 echo (zipOutput.cmd) Copying example dependencies folder

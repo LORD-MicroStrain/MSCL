@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -51,7 +51,8 @@ namespace mscl
         //    sampleRate - The <SampleRate>
         //    lossless - Whether the network is using lossless or not
         //    highBandwidth - Whether we are attempting to optimize bandwidth or not
-        uint32 maxBytesPerPacket(const SampleRate& sampleRate, bool lossless, bool highBandwidth);
+        //    syncFormulaVersion - The version of the Sync Sampling formula to use
+        uint32 maxBytesPerPacket(const SampleRate& sampleRate, bool lossless, bool highBandwidth, uint8 syncFormulaVersion);
 
         //Function: groupSize
         //    Calculates the group size
@@ -159,10 +160,11 @@ namespace mscl
         //
         //Parameters:
         //    nodeModel - The <WirelessModels::NodeModel> of the node
+        //    syncVersion - The version of the Sync Sampling formulas supported by the node
         //
         //Returns:
         //    true if the node can be assigned slot 1, false if it cannot be assigned slot 1
-        bool canHaveSlot1(WirelessModels::NodeModel nodeModel);
+        bool canHaveSlot1(WirelessModels::NodeModel nodeModel, uint8 syncVersion);
 
         
         //==================================================================

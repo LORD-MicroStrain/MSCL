@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include "WirelessTypes.h"
@@ -131,6 +131,7 @@ namespace mscl
         //    channel_hcl_rawInertial_gyroZ          - 108 - HCL Smart Bearing Raw Inertial - gyro Z
         //    channel_rawAngleStrain                 - 109 - Raw Angle Strain
         //    channel_beaconEcho                     - 110 - Beacon Echo
+        //    channel_rfSweep                        - 111 - RF Sweep
         //=====================================================================================================
         enum ChannelId
         {
@@ -244,7 +245,8 @@ namespace mscl
             channel_hcl_rawInertial_gyroY      = 107,
             channel_hcl_rawInertial_gyroZ      = 108,
             channel_rawAngleStrain             = 109,
-            channel_beaconEcho                 = 110
+            channel_beaconEcho                 = 110,
+            channel_rfSweep                    = 111
         };
 
         WirelessChannel();    //default constructor

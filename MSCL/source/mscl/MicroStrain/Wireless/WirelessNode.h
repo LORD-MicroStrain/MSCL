@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include "Commands/AutoCalResult.h"
@@ -168,11 +168,10 @@ namespace mscl
         uint16 nodeAddress() const;
 
         //API Function: frequency
-        //    Gets the frequency that the Node is believed to be on.
-        //    If the frequency is unknown, it will be read from the Node.
+        //    Gets the frequency that the Node is on.
         //
         //Returns:
-        //    A <WirelessTypes::Frequency> that the Node is believed to be on.
+        //    A <WirelessTypes::Frequency> that the Node is on.
         //
         //Exceptions:
         //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.

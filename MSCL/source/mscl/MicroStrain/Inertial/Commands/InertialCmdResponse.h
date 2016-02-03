@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include "mscl/MicroStrain/ResponsePattern.h"
@@ -55,7 +55,7 @@ namespace mscl
         //    Throws an exeption if the response was a failure.
         //
         //Exceptions:
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         void throwIfFailed();
 

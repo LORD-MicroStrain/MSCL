@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -89,6 +89,10 @@ namespace mscl
         //Returns:
         //    The node address of the Node.
         uint16 nodeAddress() const;
+
+        //Function: applyEepromChanges
+        //    Resets the radio/power on the Node to apply eeprom changes that have been made.
+        void applyEepromChanges();
 
         //Function: read_frequency
         //    Reads the frequency from the Node.

@@ -1,8 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
+
 #pragma once
 
 #include <iomanip>
@@ -380,6 +381,16 @@ namespace mscl
         //    str - The string to filter. This will hold the result.
         void filterSensorcloudName(std::string& str);
 
+        //Function: normalizeAngle
+        //    Normalizes an angle value to be between 0 and 360 degrees.
+        //
+        //Parameters:
+        //    angle - The angle to normalize.
+        //
+        //Returns:
+        //    The normalized angle within 0 and 360 degrees.
+        float normalizeAngle(float angle);
+
         //Function: isNaN
         //    Checks whether the given value is NaN or not.
         //
@@ -453,6 +464,30 @@ namespace mscl
             s << value;
             return s.str();
         }
+
+        template<typename T>
+        class Lazy
+        {
+        public:
+          template<typename LoadFn>
+          Lazy(LoadFn loadFn) :
+          m_loadFn(loadFn),
+          m_loaded(false)
+          {}
+
+          const T& operator*()
+          {
+            if(!m_loaded)
+              m_value = m_loadFn();
+            m_loaded = true;
+            return m_value;
+          }
+
+        private:
+          std::function<T()> m_loadFn;
+          T m_value;
+          bool m_loaded;
+        };
     }
 #endif
 }

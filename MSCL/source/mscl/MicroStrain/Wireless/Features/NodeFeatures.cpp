@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -32,6 +32,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeFeatures_tclink1ch.h"
 #include "NodeFeatures_tclink3ch.h"
 #include "NodeFeatures_tclink6ch.h"
+#include "NodeFeatures_vlink2.h"
 #include "NodeFeatures_vlink.h"
 #include "NodeFeatures_vlink_legacy.h"
 
@@ -125,6 +126,9 @@ namespace mscl
         case WirelessModels::node_tcLink_6ch_ip67:
         case WirelessModels::node_tcLink_6ch_ip67_rht:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_tclink6ch(info));
+
+        case WirelessModels::node_vLink2:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_vlink2(info));
 
         case WirelessModels::node_vLink:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_vlink(info));
@@ -522,6 +526,13 @@ namespace mscl
         //get the first rate in the sample rates, which should be the fastest
         WirelessTypes::WirelessSampleRate maxRate = rates.front();
 
+        //gen 2 nodes don't have any sample rate limits
+        static const Version MIN_GEN_2_NODES(10, 0);
+        if(m_nodeInfo.firmwareVersion >= MIN_GEN_2_NODES)
+        {
+            return maxRate;
+        }
+
         //4096 is a special case that is only allowed with 1 active channel
         if(channels.count() > 1 && maxRate == WirelessTypes::sampleRate_4096Hz)
         {
@@ -803,5 +814,19 @@ namespace mscl
         }
 
         return false;
+    }
+
+    bool NodeFeatures::supportsSleepIntervalSeconds() const
+    {
+        static const Version MIN_SLEEP_INTERVAL_SECONDS_FW(10, 0);
+
+        return (m_nodeInfo.firmwareVersion >= MIN_SLEEP_INTERVAL_SECONDS_FW);
+    }
+
+    bool NodeFeatures::supportsEepromCommitViaRadioReset() const
+    {
+        static const Version MIN_EEPROM_COMMIT_RADIO_FW(10, 30072);
+
+        return (m_nodeInfo.firmwareVersion >= MIN_EEPROM_COMMIT_RADIO_FW);
     }
 }

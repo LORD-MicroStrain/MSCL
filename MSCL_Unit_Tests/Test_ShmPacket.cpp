@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -47,8 +47,11 @@ BOOST_AUTO_TEST_CASE(ShmPacket_Constructor)
     WirelessPacketCollector collector;
     collector.addDataPacket(packet);
 
-    DataSweep sweep;
-    collector.getNextDataSweep(sweep, 0);
+    DataSweeps sweeps;
+    collector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 1);
+
+    DataSweep sweep = sweeps.at(0);
     
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
@@ -73,14 +76,10 @@ BOOST_AUTO_TEST_CASE(ShmPacket_Constructor)
     BOOST_CHECK_EQUAL(bins.size(), 21);
     BOOST_CHECK_EQUAL(bin.start().as_uint32(), 10);
     BOOST_CHECK_EQUAL(bin.end().as_uint32(), 15);
-    BOOST_CHECK_EQUAL(bin.count(), 13);
+    BOOST_CHECK_EQUAL(bin.count().as_uint32(), 13);
     bin = bins.at(1);
     BOOST_CHECK_EQUAL(bin.start().as_uint32(), 15);
     BOOST_CHECK_EQUAL(bin.end().as_uint32(), 20);
-
-
-    //check that calling getNextDataSweep now throws an Error_NoData exception
-    BOOST_CHECK_THROW(collector.getNextDataSweep(sweep, 0), Error_NoData);
 }
 
 BOOST_AUTO_TEST_CASE(ShmPacket2_Constructor)
@@ -114,8 +113,11 @@ BOOST_AUTO_TEST_CASE(ShmPacket2_Constructor)
     WirelessPacketCollector collector;
     collector.addDataPacket(packet);
 
-    DataSweep sweep;
-    collector.getNextDataSweep(sweep, 0);
+    DataSweeps sweeps;
+    collector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 1);
+
+    DataSweep sweep = sweeps.at(0);
 
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
@@ -140,14 +142,10 @@ BOOST_AUTO_TEST_CASE(ShmPacket2_Constructor)
     BOOST_CHECK_EQUAL(bins.size(), 21);
     BOOST_CHECK_EQUAL(bin.start().as_uint32(), 10);
     BOOST_CHECK_EQUAL(bin.end().as_uint32(), 15);
-    BOOST_CHECK_EQUAL(bin.count(), 3000000000);
+    BOOST_CHECK_EQUAL(bin.count().as_uint32(), 3000000000);
     bin = bins.at(1);
     BOOST_CHECK_EQUAL(bin.start().as_uint32(), 15);
     BOOST_CHECK_EQUAL(bin.end().as_uint32(), 20);
-
-
-    //check that calling getNextDataSweep now throws an Error_NoData exception
-    BOOST_CHECK_THROW(collector.getNextDataSweep(sweep, 0), Error_NoData);
 }
 
 BOOST_AUTO_TEST_CASE(ShmPacket_IntegrityCheck_SmallPayload)

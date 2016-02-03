@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -9,6 +9,12 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/SampleUtils.h"
 #include "mscl/Utils.h"
 
+namespace {
+std::string channelName(mscl::WirelessChannel::ChannelId id, float angle)
+{
+  return mscl::WirelessChannel::channelName(mscl::WirelessChannel::channel_rawAngleStrain) + "_angle" + mscl::Utils::toStrWithPrecision(angle, 2, true);
+}
+}
 
 namespace mscl
 {
@@ -61,7 +67,6 @@ namespace mscl
         static const uint8 DIST_ANGLE_MODE = 0x01;
 
         ChannelData chData;
-        std::string chName;
         float angle, chVal;
 
         //parse the specific angle mode payload
@@ -75,9 +80,10 @@ namespace mscl
             {
                 angle = payload.read_float();
                 chVal = payload.read_float();
-                chName = WC::channelName(WC::channel_rawAngleStrain) + "_angle" + Utils::toStrWithPrecision(angle, 2, true);
-
-                chData.emplace_back(WC::channel_rawAngleStrain, i, chName, valueType_float, anyType(chVal));
+                auto chName = bind(channelName, WC::channel_rawAngleStrain, angle);
+                
+                WirelessDataPoint::ChannelProperties properties({std::make_pair(WirelessDataPoint::channelPropertyId_angle, Value::FLOAT(angle))});
+                chData.emplace_back(WC::channel_rawAngleStrain, i, chName, valueType_float, anyType(chVal), properties);
             }
         }
         //parse the distributed angle mode payload
@@ -103,9 +109,10 @@ namespace mscl
                 //read the channel value from the payload
                 chVal = payload.read_float();
 
-                chName = WC::channelName(WC::channel_rawAngleStrain) + "_angle" + Utils::toStrWithPrecision(angle, 2, true);
+                auto chName = bind(channelName, WC::channel_rawAngleStrain, angle);
 
-                chData.emplace_back(WC::channel_rawAngleStrain, i, chName, valueType_float, anyType(chVal));
+                WirelessDataPoint::ChannelProperties properties({std::make_pair(WirelessDataPoint::channelPropertyId_angle, Value::FLOAT(angle))});
+                chData.emplace_back(WC::channel_rawAngleStrain, i, chName, valueType_float, anyType(chVal), properties);
             }
         }
 
@@ -150,18 +157,6 @@ namespace mscl
         return packet.payload().read_uint16(2);
     }
 
-    float RawAngleStrainPacket::normalizeAngle(float angle)
-    {
-        angle = fmod(angle, 360.0f);
-
-        if(angle < 0.0f)
-        {
-            angle = 360 + angle;
-        }
-
-        return angle;
-    }
-
     std::vector<float> RawAngleStrainPacket::distributeAngles(float low, float high, uint8 count)
     {
         std::vector<float> angles;
@@ -175,8 +170,8 @@ namespace mscl
         angles.reserve(count);
 
         //normalize the lower and upper bounds
-        low = normalizeAngle(low);
-        high = normalizeAngle(high);
+        low = Utils::normalizeAngle(low);
+        high = Utils::normalizeAngle(high);
 
         float step;
 
@@ -192,7 +187,7 @@ namespace mscl
         //calculate and add each angle to the vector
         for(uint8 i = 0; i < count; ++i)
         {
-            angles.emplace_back(normalizeAngle(low + (i * step)));
+            angles.emplace_back(Utils::normalizeAngle(low + (i * step)));
         }
 
         return angles;

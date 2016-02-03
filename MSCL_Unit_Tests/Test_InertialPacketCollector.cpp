@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -12,38 +12,6 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 using namespace mscl;
 
 BOOST_AUTO_TEST_SUITE(InertialPacketCollector_Test)
-
-BOOST_AUTO_TEST_CASE(InertialPacketCollector_getNextDataPacket_success)
-{
-    InertialPacketCollector collector;
-
-    InertialPacket p;
-    p.descriptorSet(DescriptorSet::DESC_SET_DATA_GPS);
-
-    //add the packet to the collector
-    collector.addDataPacket(p);
-
-    //call getNextDataPacket on the collector
-    InertialDataPacket result;
-    collector.getNextDataPacket(result, 1);
-
-    //check that we got a valid packet
-    BOOST_CHECK_EQUAL(result.isDataPacket(), true);
-    BOOST_CHECK_EQUAL(result.descriptorSet(), DescriptorSet::DESC_SET_DATA_GPS);
-
-    //check that calling getNextDataPacket again throws an exception
-    BOOST_CHECK_THROW(collector.getNextDataPacket(result, 1), Error_NoData);
-}
-
-BOOST_AUTO_TEST_CASE(InertialPacketCollector_getNextDataPacket_noData)
-{
-    InertialPacketCollector collector;
-
-    InertialDataPacket packet;
-
-    //check that calling getNextDataPacket throws an exception
-    BOOST_CHECK_THROW(collector.getNextDataPacket(packet, 1), Error_NoData);
-}
 
 BOOST_AUTO_TEST_CASE(InertialPacketCollector_getDataPackets_noData)
 {

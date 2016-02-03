@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -45,50 +45,6 @@ void expectNodeInfo_InertialNode(std::shared_ptr<mock_InertialNodeImpl> node)
 }
 
 BOOST_AUTO_TEST_SUITE(InertialNode_Test)
-
-BOOST_AUTO_TEST_CASE(InertialNode_getNextDataPacket_success)
-{
-    std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-    Connection conn(connImpl);
-
-    //create the InertialNode object
-    InertialNode node(conn);
-
-    ByteStream bytes;
-
-    //add bytes to the ByteStream
-    bytes.append_uint16(0x7565);        //start of packet bytes
-    bytes.append_uint16(0x800E);        //descriptor set / payload len
-    bytes.append_uint16(0x0E01);        //field length / field descriptor
-    bytes.append_uint32(0x3F9DF3B6);    //Accel 1 float
-    bytes.append_uint32(0x00000000);    //Accel 2 float
-    bytes.append_uint32(0x00000000);    //Accel 3 float
-    bytes.append_uint16(bytes.calculateFletcherChecksum(0, 17));
-    connImpl->setResponseBytes(bytes);
-
-    //force parsing of the bytes we just set
-    connImpl->parseNextResponse();
-
-    InertialDataPacket p = node.getNextDataPacket(1000);
-
-    //check that the packet is correct
-    BOOST_CHECK_EQUAL(p.descriptorSet(), DescriptorSet::DESC_SET_DATA_SENSOR);
-    BOOST_CHECK_EQUAL(p.isDataPacket(), true);
-    BOOST_CHECK_EQUAL(p.data().size(), 3);
-}
-
-
-BOOST_AUTO_TEST_CASE(InertialNode_getNextDataPacket_noData)
-{
-    std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-    Connection conn(connImpl);
-
-    //create the InertialNode object
-    InertialNode node(conn);
-
-    //check that calling getNextDataPacket throws an exception as there is no data yet
-    BOOST_CHECK_THROW(node.getNextDataPacket(1), Error_NoData);
-}
 
 BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_noData)
 {
@@ -187,7 +143,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_Ping_FailTimeout)
     //create the InertialNode object
     InertialNode node(conn);
 
-    node.commandsTimeout(1);
+    node.timeout(1);
 
     BOOST_CHECK_EQUAL(node.ping(), false);
 }

@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include <memory>
@@ -31,6 +31,7 @@ namespace mscl
         //    samplingType_AsyncDigitalAnalog        - 5 - Asynchronous Digital + Analog sampling type
         //    samplingType_SHM                       - 6 - Structural Health Monitoring type
         //    samplingType_BeaconEcho                - 7 - Beacon Echo
+        //    samplingType_RfSweep                   - 8 - RF Scan Sweep
         //============================================================================
         enum SamplingType
         {
@@ -41,7 +42,8 @@ namespace mscl
             samplingType_AsyncDigital              = 4,
             samplingType_AsyncDigitalAnalog        = 5,
             samplingType_SHM                       = 6,
-            samplingType_BeaconEcho                = 7
+            samplingType_BeaconEcho                = 7,
+            samplingType_RfSweep                   = 8
         };
 
         //API Constructor: DataSweep

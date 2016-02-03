@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -32,12 +32,12 @@ BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_maxBytesPerPacket)
     SampleRate hz_512 = SampleRate::Hertz(512);
     SampleRate sec_10 = SampleRate::Seconds(10);
 
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_256, true, true), 32);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_256, true, false), 64);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_256, false, false), 96);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_512, true, true), 32);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_512, true, false), 48);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(sec_10, true, false), 64);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_256, true, true, 1), 32);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_256, true, false, 1), 64);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_256, false, false, 1), 96);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_512, true, true, 1), 32);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_512, true, false, 1), 48);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(sec_10, true, false, 1), 64);
 }
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_groupSize)
@@ -123,8 +123,9 @@ BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_slotsBetweenTx)
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_canHaveSlot1)
 {
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::canHaveSlot1(WirelessModels::node_sgLink), true);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::canHaveSlot1(WirelessModels::node_tcLink_1ch), false);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::canHaveSlot1(WirelessModels::node_sgLink, 1), true);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::canHaveSlot1(WirelessModels::node_tcLink_1ch, 1), false);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::canHaveSlot1(WirelessModels::node_tcLink_1ch, 2), true);
 }
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_totalBytesPerBurst)

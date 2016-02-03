@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -23,14 +23,14 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_Constructor_4byteFloat)
     payloadBytes.push_back(2);        //data type - float
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
-    payloadBytes.push_back(0);        
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
     payloadBytes.push_back(0);        //timestamp offset msb
     payloadBytes.push_back(1);        //timestamp offset lsb
     payloadBytes.push_back(0);        //digital data b1 (0000 0000)
@@ -66,9 +66,13 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_Constructor_4byteFloat)
     WirelessPacketCollector collector;
     collector.addDataPacket(packet);
 
-    DataSweep sweep;
-    collector.getNextDataSweep(sweep, 0);
-    
+    DataSweeps sweeps;
+    collector.getDataSweeps(sweeps);
+
+    BOOST_CHECK_EQUAL(sweeps.size(), 2);
+
+    DataSweep sweep = sweeps.at(0);
+
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);
@@ -80,7 +84,7 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_Constructor_4byteFloat)
     BOOST_CHECK_EQUAL(sweep.data().size(), 1);//1 analog channel
     BOOST_CHECK_EQUAL(sweep.data()[0].storedAs(), valueType_float);
 
-    collector.getNextDataSweep(sweep, 0);
+    sweep = sweeps.at(1);
 
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
@@ -93,9 +97,6 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_Constructor_4byteFloat)
     BOOST_CHECK_EQUAL(sweep.data().size(), 2);//2 analog channels
     BOOST_CHECK_EQUAL(sweep.data()[0].storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(sweep.data()[1].storedAs(), valueType_float);
-
-    //check that calling getNextDataSweep now throws an Error_NoData exception
-    BOOST_CHECK_THROW(collector.getNextDataSweep(sweep, 0), Error_NoData);
 }
 
 BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_Constructor_2byteUint)
@@ -134,8 +135,12 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_Constructor_2byteUint)
     WirelessPacketCollector collector;
     collector.addDataPacket(packet);
 
-    DataSweep sweep;
-    collector.getNextDataSweep(sweep, 0);
+    DataSweeps sweeps;
+    collector.getDataSweeps(sweeps);
+
+    BOOST_CHECK_EQUAL(sweeps.size(), 1);
+
+    DataSweep sweep = sweeps.at(0);
     
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
@@ -146,9 +151,6 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_Constructor_2byteUint)
     BOOST_CHECK_EQUAL(sweep.baseRssi(), -55);
     BOOST_CHECK_EQUAL(sweep.data().size(), 1);//1 analog channel
     BOOST_CHECK_EQUAL(sweep.data()[0].storedAs(), valueType_uint16);
-
-    //check that calling getNextDataSweep now throws an Error_NoData exception
-    BOOST_CHECK_THROW(collector.getNextDataSweep(sweep, 0), Error_NoData);
 }
 
 BOOST_AUTO_TEST_CASE(AsyncDigitalAnalogPacket_IntegrityCheck_Good)

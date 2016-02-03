@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -44,8 +44,11 @@ BOOST_AUTO_TEST_CASE(WirelessPacketCollector_AddDataPacket_SyncSampling)
     WirelessPacketCollector collector;
     collector.addDataPacket(packet);
 
-    DataSweep sweep;
-    collector.getNextDataSweep(sweep, 1);
+    DataSweeps sweeps;
+    collector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 1);
+
+    DataSweep sweep = sweeps.at(0);
 
     //check that the sweep contains the data we setup
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 567);
@@ -72,8 +75,11 @@ BOOST_AUTO_TEST_CASE(WirelessPacketCollector_GetNextDataSweep_AddDataPacket_LDC)
     WirelessPacketCollector collector;
     collector.addDataPacket(packet);
 
-    DataSweep sweep;
-    collector.getNextDataSweep(sweep, 1);
+    DataSweeps sweeps;
+    collector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 1);
+
+    DataSweep sweep = sweeps.at(0);
 
     //check that the sweep contains the data we setup
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 678);
@@ -100,106 +106,14 @@ BOOST_AUTO_TEST_CASE(WirelessPacketCollector_AddDataPacket_BufferedLdc)
     WirelessPacketCollector collector;
     collector.addDataPacket(packet);
 
-    DataSweep sweep;
-    collector.getNextDataSweep(sweep, 1);
+    DataSweeps sweeps;
+    collector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 1);
+
+    DataSweep sweep = sweeps.at(0);
 
     //check that the sweep contains the data we setup
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 567);
-}
-
-BOOST_AUTO_TEST_CASE(WirelessPacketCollector_GetNextDataPacket_Timeout)
-{
-    WirelessPacketCollector collector;
-
-    DataSweep sweep;
-    //we don't have any data, so make sure calling getNextDataSweep with a timeout of 1 millisecond throws an exception
-    BOOST_CHECK_THROW(collector.getNextDataSweep(sweep, 1), Error_NoData);
-}
-
-BOOST_AUTO_TEST_CASE(WirelessPacketCollector_GetNextDataSweep_MulitipleSweeps)
-{
-    //a valid sync sampling packet payload with 2 sweeps
-    Bytes payload;
-    payload.push_back(0x02);        //first byte in payload of 0x02 signifies sync sampling packet type
-    payload.push_back(0x01);        //channel mask
-    payload.push_back(0x70);
-    payload.push_back(0x03);        //data type
-    payload.push_back(0x00);
-    payload.push_back(0x00);
-    payload.push_back(0x00);
-    payload.push_back(0x00);
-    payload.push_back(0x00);
-    payload.push_back(0x00);
-    payload.push_back(0x00);
-    payload.push_back(0x00);
-    payload.push_back(0x00);
-    payload.push_back(0x00);
-    payload.push_back(0x00);        //sweep 1
-    payload.push_back(0x00);        //sweep 1
-    payload.push_back(0x01);        //sweep 2
-    payload.push_back(0x01);        //sweep 2
-
-    WirelessPacket packet;
-    packet.type(WirelessPacket::packetType_SyncSampling);
-    packet.nodeAddress(234);
-    packet.payload(payload);
-
-    WirelessPacketCollector collector;
-    collector.addDataPacket(packet);
-
-    DataSweep sweep;
-    collector.getNextDataSweep(sweep, 0);
-
-    //check that the sweep contains the data we setup
-    BOOST_CHECK_EQUAL(sweep.nodeAddress(), 234);
-
-    //we should have multiple sweeps in this same packet, so this should be ok
-    DataSweep sweep2;
-    collector.getNextDataSweep(sweep2, 0);
-
-    //check that the sweep contains the data we setup
-    BOOST_CHECK_EQUAL(sweep2.nodeAddress(), 234);
-}
-
-
-BOOST_AUTO_TEST_CASE(WirelessPacketCollector_GetNextDataSweep_MulitiplePackets)
-{
-    //a valid LDC packet payload
-    Bytes data;
-    data.push_back(0x02);        //first byte in payload of 0x02 signifies sync sampling packet type
-    data.push_back(0x01);        //channel mask
-    data.push_back(0x70);        //sample rate
-    data.push_back(0x03);        //data type
-    data.push_back(0x00);
-    data.push_back(0x00);
-    data.push_back(0x00);
-    data.push_back(0x00);
-
-    WirelessPacket packet;
-    packet.type(WirelessPacket::packetType_LDC);
-    packet.nodeAddress(678);
-    packet.payload(data);
-
-    WirelessPacket packet2;
-    packet2.type(WirelessPacket::packetType_LDC);
-    packet2.nodeAddress(154);
-    packet2.payload(data);
-
-    WirelessPacketCollector collector;
-    collector.addDataPacket(packet);
-    collector.addDataPacket(packet2);
-
-    DataSweep sweep;
-    collector.getNextDataSweep(sweep, 0);
-
-    //check that the sweep contains the data we setup
-    BOOST_CHECK_EQUAL(sweep.nodeAddress(), 678);
-
-    DataSweep sweep2;
-    collector.getNextDataSweep(sweep2, 0);
-
-    //check that the sweep contains the data we setup
-    BOOST_CHECK_EQUAL(sweep2.nodeAddress(), 154);
 }
 
 BOOST_AUTO_TEST_CASE(WirelessPacketCollector_GetDataSweeps_NoData)

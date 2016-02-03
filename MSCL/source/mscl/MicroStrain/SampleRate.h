@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include "mscl/TimeSpan.h"
@@ -26,13 +26,13 @@ namespace mscl
     public:
         //=====================================================================================================
         //API Enums: RateType
-        //    rateType_seconds    - 0 - Sample rate type of seconds    (less than 1 Hz) 
+        //    rateType_seconds      - 0 - Sample rate type of seconds    (less than 1 Hz) 
         //    rateType_hertz        - 1 - Sample rate type of Hertz        (1 Hz and above)
         //    rateType_event        - 2 - Event triggered, No sample rate
         //=====================================================================================================
         enum RateType
         {
-            rateType_seconds    = 0,
+            rateType_seconds      = 0,
             rateType_hertz        = 1,
             rateType_event        = 2
         };
@@ -152,6 +152,13 @@ namespace mscl
         //Returns:
         //    A SampleRate object built from the given parameter
         static SampleRate Seconds(uint32 secondsBetweenSamples);
+
+        //API Function: Seconds
+        //    Creates a SampleRate object with the asynchronous/event type.
+        //
+        //Returns:
+        //    A SampleRate object of the event type.
+        static SampleRate Event();
 
         //API Function: FromWirelessEepromValue
         //    Creates a SampleRate object from the <WirelessTypes::WirelessSampleRate> value (the value that gets stored in eeprom).

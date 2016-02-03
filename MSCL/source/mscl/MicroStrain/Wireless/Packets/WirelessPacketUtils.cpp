@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -16,7 +16,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeDiscoveryPacket.h"
 #include "NodeDiscoveryPacket_v2.h"
 #include "NodeDiscoveryPacket_v3.h"
+#include "NodeDiscoveryPacket_v4.h"
 #include "RawAngleStrainPacket.h"
+#include "RfSweepPacket.h"
 #include "ShmPacket.h"
 #include "SyncSamplingPacket.h"
 #include "SyncSamplingPacket_16ch.h"
@@ -92,10 +94,12 @@ namespace mscl
             case WirelessPacket::packetType_nodeDiscovery:              return NodeDiscoveryPacket::integrityCheck(packet);
             case WirelessPacket::packetType_nodeDiscovery_v2:           return NodeDiscoveryPacket_v2::integrityCheck(packet);
             case WirelessPacket::packetType_nodeDiscovery_v3:           return NodeDiscoveryPacket_v3::integrityCheck(packet);
+            case WirelessPacket::packetType_nodeDiscovery_v4:           return NodeDiscoveryPacket_v4::integrityCheck(packet);
             case WirelessPacket::packetType_SHM:                        return ShmPacket::integrityCheck(packet);
             case WirelessPacket::packetType_HclSmartBearing_Raw:        return HclSmartBearing_RawPacket::integrityCheck(packet);
             case WirelessPacket::packetType_rawAngleStrain:             return RawAngleStrainPacket::integrityCheck(packet);
             case WirelessPacket::packetType_beaconEcho:                 return BeaconEchoPacket::integrityCheck(packet);
+            case WirelessPacket::packetType_rfScanSweep:                return RfSweepPacket::integrityCheck(packet);
 
             case WirelessPacket::packetType_nodeCommand:
             case WirelessPacket::packetType_nodeSuccessReply:

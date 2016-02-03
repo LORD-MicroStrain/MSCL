@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -15,9 +15,17 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/TimeSpan.h"
 #include "mscl/Types.h"
 
+namespace {
+    std::string channelName(mscl::WirelessChannel::ChannelId id, float angle)
+    {
+      return mscl::WirelessChannel::channelName(id) + "_angle" + mscl::Utils::toStrWithPrecision(angle, 2, true);
+    }
+}
+
 
 namespace mscl
 {
+
 
     ShmPacket::ShmPacket(const WirelessPacket& packet):
         m_binCount(21)    //always 21 histogram bins in this packet
@@ -112,7 +120,7 @@ namespace mscl
             count = m_payload.read_uint32(PAYLOAD_OFFSET_BIN_DATA + (i * DATA_SIZE));
 
             //create the bin to add to the Histogram
-            Bin bin(Value::UINT32(start), Value::UINT32(end), count);
+            Bin bin(Value::UINT32(start), Value::UINT32(end), Value::UINT32(count));
 
             //add the bin to the Histogram
             histogram.addBin(bin);
@@ -127,7 +135,7 @@ namespace mscl
 
         //create and add the WirelessDataPoint to the ChannelData vector
         ChannelData chData;
-        std::string chName = WirelessChannel::channelName(WirelessChannel::channel_structuralHealth) + "_angle" + Utils::toStrWithPrecision(angle, 2, true);
+        auto chName = std::bind(channelName, WirelessChannel::channel_structuralHealth, angle);
         chData.push_back(WirelessDataPoint(WirelessChannel::channel_structuralHealth, 0, chName, valueType_StructuralHealth, anyType(shm)));
 
         //add the channel data to the sweep
@@ -190,7 +198,7 @@ namespace mscl
             count = m_payload.read_uint32(PAYLOAD_OFFSET_BIN_DATA + (i * DATA_SIZE));
 
             //create the bin to add to the Histogram
-            Bin bin(Value::UINT32(start), Value::UINT32(end), count);
+            Bin bin(Value::UINT32(start), Value::UINT32(end), Value::UINT32(count));
 
             //add the bin to the Histogram
             histogram.addBin(bin);
@@ -205,7 +213,7 @@ namespace mscl
 
         //create and add the WirelessDataPoint to the ChannelData vector
         ChannelData chData;
-        std::string chName = WirelessChannel::channelName(WirelessChannel::channel_structuralHealth) + "_angle" + Utils::toStrWithPrecision(angle, 2, true);
+        auto chName = std::bind(channelName, WirelessChannel::channel_structuralHealth, angle);
         chData.push_back(WirelessDataPoint(WirelessChannel::channel_structuralHealth, 0, chName, valueType_StructuralHealth, anyType(shm)));
 
         //add the channel data to the sweep

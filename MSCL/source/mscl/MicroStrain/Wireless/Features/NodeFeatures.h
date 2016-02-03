@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include <memory>
@@ -602,5 +602,13 @@ namespace mscl
         //Function: supportsAutoBalance2
         //    Checks if the Node supports the AutoBalance (Version 2) command.
         virtual bool supportsAutoBalance2() const;
+
+        //Function: supportsSleepIntervalSeconds
+        //    Checks if the Node supports a sleep interval eeprom directly in seconds.
+        virtual bool supportsSleepIntervalSeconds() const;
+
+        //Function: supportsEepromCommitViaRadioReset
+        //    Checks if eeprom changes can be committed by only cycling the radio, instead of cycling power.
+        virtual bool supportsEepromCommitViaRadioReset() const;
     };
 }

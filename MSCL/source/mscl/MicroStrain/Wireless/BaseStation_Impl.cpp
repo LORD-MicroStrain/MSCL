@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -27,6 +27,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Commands/BaseStation_ReadEeprom_v2.h"
 #include "Commands/BaseStation_WriteEeprom.h"
 #include "Commands/BaseStation_WriteEeprom_v2.h"
+#include "Commands/BaseStation_RfSweepStart.h"
 #include "Commands/BaseStation_SetBeacon.h"
 #include "Commands/BaseStation_SetBeacon_v2.h"
 
@@ -59,11 +60,13 @@ namespace mscl
         m_connection(connection),
         m_responseCollector(std::make_shared<ResponseCollector>()),
         m_baseCommandsTimeout(baseTimeout),
-        m_nodeCommandsTimeout(BaseStation::NODE_COMMANDS_DEFAULT_TIMEOUT),
+        m_nodeCommandsTimeout(baseTimeout + 50),
         m_frequency(WirelessTypes::freq_unknown),
         m_eeprom(new BaseStationEeprom(this)),
         m_eepromHelper(new BaseStationEepromHelper(this))
     {
+        m_responseCollector->setConnection(&m_connection);
+
         //build the parser with the base station's packet collector and response collector
         m_parser.reset(new WirelessParser(m_packetCollector, m_responseCollector));
 
@@ -198,7 +201,13 @@ namespace mscl
         m_parser->parse(data, m_frequency);
 
         //shift any extra bytes that weren't parsed, back to the front of the buffer
-        data.shiftExtraToStart();
+        std::size_t bytesShifted = data.shiftExtraToStart();
+
+        if(bytesShifted > 0)
+        {
+            //subtract the bytes shifted from each command already waiting on a response
+            m_responseCollector->adjustResponsesMinBytePos(bytesShifted);
+        }
     }
 
     void BaseStation_Impl::useEepromCache(bool useCache)
@@ -329,14 +338,6 @@ namespace mscl
         return static_cast<WirelessTypes::MicroControllerType>(readEeprom(BaseStationEepromMap::MICROCONTROLLER).as_uint16());
     }
 
-    void BaseStation_Impl::getNextData(DataSweep& sweep, uint32 timeout)//timeout = 0
-    {
-        //check if a connection error has occurred
-        m_connection.throwIfError();
-
-        return m_packetCollector.getNextDataSweep(sweep, timeout);
-    }
-
     void BaseStation_Impl::getData(std::vector<DataSweep>& sweeps, uint32 timeout, uint32 maxSweeps)
     {
         //check if a connection error has occurred
@@ -404,24 +405,17 @@ namespace mscl
         return timeNowInSeconds;
     }
 
-    void BaseStation_Impl::baseCommandsTimeout(uint64 timeout)
+    void BaseStation_Impl::timeout(uint64 timeout)
     {
         m_baseCommandsTimeout = timeout;
+
+        //add a bit more time for communication between Nodes and Bases
+        m_nodeCommandsTimeout = timeout + 50;
     }
 
-    void BaseStation_Impl::nodeCommandsTimeout(uint64 timeout)
-    {
-        m_nodeCommandsTimeout = timeout;
-    }
-
-    uint64 BaseStation_Impl::baseCommandsTimeout() const
+    uint64 BaseStation_Impl::timeout() const
     {
         return m_baseCommandsTimeout;
-    }
-
-    uint64 BaseStation_Impl::nodeCommandsTimeout() const
-    {
-        return m_nodeCommandsTimeout;
     }
 
 
@@ -478,6 +472,36 @@ namespace mscl
         }
 
         return protocol().m_beaconStatus(this);
+    }
+
+    void BaseStation_Impl::startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options)
+    {
+        //verify rf sweep mode is supported
+        if(!features().supportsRfSweepMode())
+        {
+            throw Error_NotSupported("RF Sweep Mode is not supported by this BaseStation.");
+        }
+
+        //create the response for the BaseStation_Ping command
+        BaseStation_RfSweepStart::Response response(m_responseCollector, minFreq, maxFreq, interval, options);
+
+        //send the ping command to the base station
+        m_connection.write(BaseStation_RfSweepStart::buildCommand(minFreq, maxFreq, interval, options));
+
+        //wait for the response or a timeout
+        response.wait(m_baseCommandsTimeout);
+
+        //if the enable beacon command failed
+        if(!response.success())
+        {
+            //throw an exception so that the user cannot ignore a failure
+            throw Error_Communication("Failed to start RF Sweep Mode.");
+        }
+        else
+        {
+            //update basestation last comm time
+            m_lastCommTime.setTimeNow();
+        }
     }
 
     bool BaseStation_Impl::ping_v1()
@@ -632,6 +656,8 @@ namespace mscl
 
     Timestamp BaseStation_Impl::enableBeacon_v1(uint32 utcTime)
     {
+        static const uint64 MIN_TIMEOUT = 1100;
+
         //create the response for the BaseStation_SetBeacon command
         BaseStation_SetBeacon::Response response(utcTime, m_responseCollector);
 
@@ -639,7 +665,7 @@ namespace mscl
         m_connection.write(BaseStation_SetBeacon::buildCommand(utcTime));
 
         //wait for the response or a timeout
-        response.wait(m_baseCommandsTimeout);
+        response.wait( std::max(m_baseCommandsTimeout, MIN_TIMEOUT) );
 
         //if the enable beacon command failed
         if(!response.success())
@@ -996,10 +1022,10 @@ namespace mscl
         static const uint16 RESET_BASE = 0x01;
 
         //store the original timeout that is currently set
-        uint64 originalTimeout = baseCommandsTimeout();
+        uint64 originalTimeout = timeout();
 
         //when this goes out of scope, it will write back the original timeout (need cast for overloaded ambiguity)
-        ScopeHelper writebackTimeout(std::bind(static_cast<void(BaseStation_Impl::*)(uint64)>(&BaseStation_Impl::baseCommandsTimeout), this, originalTimeout));
+        ScopeHelper writebackTimeout(std::bind(static_cast<void(BaseStation_Impl::*)(uint64)>(&BaseStation_Impl::timeout), this, originalTimeout));
 
         //force determining of the protocol if it hasn't been already
         //Note: this is so that we can set the timeout short and write eeprom without worrying about reading
@@ -1008,7 +1034,7 @@ namespace mscl
         try
         {
             //this command doesn't have a response, change to a quick timeout
-            baseCommandsTimeout(0);
+            timeout(0);
 
             //write a 0x01 to the CYCLE_POWER eeprom location on the base station
             writeEeprom(BaseStationEepromMap::CYCLE_POWER, Value::UINT16(RESET_BASE));
@@ -1242,6 +1268,13 @@ namespace mscl
         m_connection.write(command);
         
         //no response for this command
+
+        //send the command a few extra times for good measure
+        Utils::threadSleep(5);
+        m_connection.write(command);
+
+        Utils::threadSleep(10);
+        m_connection.write(command);
     }
 
     bool BaseStation_Impl::node_armForDatalogging(NodeAddress nodeAddress, const std::string& message)

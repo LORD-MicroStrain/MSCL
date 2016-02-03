@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include "mscl/Timestamp.h"
@@ -207,8 +207,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error>: The network configuration has not been applied. Cannot start sampling.
-        //              The enable beacon command has failed. The beacon has not been started.
-        //    - <Error_NodeCommunication>: Failed to start a Node Synchronized Sampling.
+        //    - <Error_Communication>: The disable/enable beacon command has failed. The beacon has not been started.
         //    - <Error_Connection>: A connection error has occurred.
         void startSampling();
 
@@ -222,8 +221,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error>: The network configuration has not been applied. Cannot start sampling.
-        //              The enable beacon command has failed. The beacon has not been started.
-        //    - <Error_NodeCommunication>: Failed to start a Node Synchronized Sampling.
+        //    - <Error_Communication>: The disable/enable beacon command has failed. The beacon has not been started.
         //    - <Error_Connection>: A connection error has occurred.
         void startSampling(Timestamp startTime);
 
@@ -234,8 +232,6 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error>: The network configuration has not been applied. Cannot start sampling.
-        //              The enable beacon command has failed. The beacon has not been started.
-        //    - <Error_NodeCommunication>: Failed to start a Node Synchronized Sampling.
         //    - <Error_Connection>: A connection error has occurred.
         void startSampling_noBeacon();
 

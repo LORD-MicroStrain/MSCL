@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -101,6 +101,14 @@ namespace mscl
         //Function: clearBuffer
         //    Resets the read buffer.
         virtual void clearBuffer() = 0;
+
+        //Function: byteReadPos
+        //    Gets the read position from the byte buffer.
+        virtual std::size_t byteReadPos() const = 0;
+
+        //Function: byteAppendPos
+        //    Gets the append position from the byte buffer.
+        virtual std::size_t byteAppendPos() const = 0;
 
         //Function: rawByteMode
         //    Puts the connection into "Raw Byte Mode." 
@@ -270,6 +278,14 @@ namespace mscl
         //    Clears the read buffer.
         virtual void clearBuffer() final;
 
+        //Function: byteReadPos
+        //    Gets the read position from the byte buffer.
+        virtual std::size_t byteReadPos() const final;
+
+        //Function: byteAppendPos
+        //    Gets the append position from the byte buffer.
+        virtual std::size_t byteAppendPos() const final;
+
         //Function: startIoThread
         //    Starts the main thread for reading in all the data and handling write commands
         void startIoThread();
@@ -375,6 +391,18 @@ namespace mscl
     void Connection_Impl<Comm_Object>::clearBuffer()
     {
         m_comm->clearBuffer();
+    }
+
+    template <typename Comm_Object>
+    std::size_t Connection_Impl<Comm_Object>::byteReadPos() const
+    {
+        return m_comm->byteReadPos();
+    }
+
+    template <typename Comm_Object>
+    std::size_t Connection_Impl<Comm_Object>::byteAppendPos() const
+    {
+        return m_comm->byteAppendPos();
     }
 
     template <typename Comm_Object>

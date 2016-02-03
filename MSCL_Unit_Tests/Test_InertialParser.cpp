@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -145,19 +145,20 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket_AfterBadBytes)
     InertialParser parser(&packetCollector, responseCollector);
     InertialPacket packet;
 
-    InertialDataPacket dataPacket;
+    InertialDataPackets dataPackets;
 
-    //check that calling getNextDataPacket currently throws an Error_NoData exception as there are no packets
-    BOOST_CHECK_THROW(packetCollector.getNextDataPacket(dataPacket, 0), Error_NoData);
+    packetCollector.getDataPackets(dataPackets);
+
+    BOOST_CHECK_EQUAL(dataPackets.size(), 0);
 
     //call the parse() function, sending the DataBuffer we created
     parser.parse(buffer);
 
     //calling getNextDataPacket now should return a legitimate InertialDataPacket
-    packetCollector.getNextDataPacket(dataPacket, 0);
+    packetCollector.getDataPackets(dataPackets, 0);
 
-    BOOST_CHECK_EQUAL(dataPacket.isDataPacket(), true);
-    BOOST_CHECK_EQUAL(dataPacket.descriptorSet(), DescriptorSet::DESC_SET_DATA_SENSOR);
+    BOOST_CHECK_EQUAL(dataPackets.at(0).isDataPacket(), true);
+    BOOST_CHECK_EQUAL(dataPackets.at(0).descriptorSet(), DescriptorSet::DESC_SET_DATA_SENSOR);
 }
 
 BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket)
@@ -184,19 +185,20 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket)
     InertialParser parser(&packetCollector, responseCollector);
     InertialPacket packet;
 
-    InertialDataPacket dataPacket;
+    InertialDataPackets dataPackets;
 
-    //check that calling getNextDataPacket currently throws an Error_NoData exception as there are no packets
-    BOOST_CHECK_THROW(packetCollector.getNextDataPacket(dataPacket, 0), Error_NoData);
+    packetCollector.getDataPackets(dataPackets);
+
+    BOOST_CHECK_EQUAL(dataPackets.size(), 0);
 
     //call the parse() function, sending the DataBuffer we created
     parser.parse(buffer);
 
     //calling getNextDataPacket now should return a legitimate InertialDataPacket
-    packetCollector.getNextDataPacket(dataPacket, 0);
+    packetCollector.getDataPackets(dataPackets);
 
-    BOOST_CHECK_EQUAL(dataPacket.isDataPacket(), true);
-    BOOST_CHECK_EQUAL(dataPacket.descriptorSet(), DescriptorSet::DESC_SET_DATA_SENSOR);
+    BOOST_CHECK_EQUAL(dataPackets.at(0).isDataPacket(), true);
+    BOOST_CHECK_EQUAL(dataPackets.at(0).descriptorSet(), DescriptorSet::DESC_SET_DATA_SENSOR);
 }
 
 BOOST_AUTO_TEST_CASE(InertialParser_parse_responsePacket_notExpected)
@@ -222,16 +224,18 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_responsePacket_notExpected)
     InertialParser parser(&packetCollector, responseCollector);
     InertialPacket packet;
 
-    InertialDataPacket dataPacket;
+    InertialDataPackets dataPackets;
 
-    //check that calling getNextDataPacket currently throws an Error_NoData exception as there are no packets
-    BOOST_CHECK_THROW(packetCollector.getNextDataPacket(dataPacket, 0), Error_NoData);
+    packetCollector.getDataPackets(dataPackets);
+
+    BOOST_CHECK_EQUAL(dataPackets.size(), 0);
 
     //call the parse() function, sending the DataBuffer we created
     parser.parse(buffer);
 
-    //check that calling getNextDataPacket still throws an Error_NoData exception as there are no packets
-    BOOST_CHECK_THROW(packetCollector.getNextDataPacket(dataPacket, 0), Error_NoData);
+    packetCollector.getDataPackets(dataPackets);
+
+    BOOST_CHECK_EQUAL(dataPackets.size(), 0);
 }
 
 BOOST_AUTO_TEST_CASE(InertialParser_parse_badChecksum)
@@ -254,16 +258,18 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_badChecksum)
     InertialParser parser(&packetCollector, responseCollector);
     InertialPacket packet;
 
-    InertialDataPacket dataPacket;
+    InertialDataPackets dataPackets;
 
-    //check that calling getNextDataPacket currently throws an Error_NoData exception as there are no packets
-    BOOST_CHECK_THROW(packetCollector.getNextDataPacket(dataPacket, 0), Error_NoData);
+    packetCollector.getDataPackets(dataPackets);
+
+    BOOST_CHECK_EQUAL(dataPackets.size(), 0);
 
     //call the parse() function, sending the DataBuffer we created
     parser.parse(buffer);
 
-    //check that calling getNextDataPacket still throws an Error_NoData exception as there are no packets
-    BOOST_CHECK_THROW(packetCollector.getNextDataPacket(dataPacket, 0), Error_NoData);
+    packetCollector.getDataPackets(dataPackets);
+
+    BOOST_CHECK_EQUAL(dataPackets.size(), 0);
 }
 
 BOOST_AUTO_TEST_CASE(InertialParser_parse_notEnoughData)
@@ -300,19 +306,23 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_notEnoughData)
     InertialParser parser(&packetCollector, responseCollector);
     InertialPacket packet;
 
-    InertialDataPacket dataPacket;
+    InertialDataPackets dataPackets;
 
-    //check that calling getNextDataPacket currently throws an Error_NoData exception as there are no packets
-    BOOST_CHECK_THROW(packetCollector.getNextDataPacket(dataPacket, 0), Error_NoData);
+    packetCollector.getDataPackets(dataPackets);
+
+    BOOST_CHECK_EQUAL(dataPackets.size(), 0);
 
     //call the parse() function, sending the DataBuffer we created
     parser.parse(buffer);
 
-    //check that calling getNextDataPacket doesn't throw an exception as there is legitimate data
-    BOOST_CHECK_NO_THROW(packetCollector.getNextDataPacket(dataPacket, 0));
+    packetCollector.getDataPackets(dataPackets);
 
-    //check that calling getNextDataPacket now throws an Error_NoData exception again
-    BOOST_CHECK_THROW(packetCollector.getNextDataPacket(dataPacket, 0), Error_NoData);    
+    BOOST_CHECK_EQUAL(dataPackets.size(), 1);
+    dataPackets.clear();
+
+    packetCollector.getDataPackets(dataPackets);
+
+    BOOST_CHECK_EQUAL(dataPackets.size(), 0);
 }
 
 BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket_AfterNotEnoughData)
@@ -336,19 +346,21 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket_AfterNotEnoughData)
     InertialParser parser(&packetCollector, responseCollector);
     InertialPacket packet;
 
-    InertialDataPacket dataPacket;
+    InertialDataPackets dataPackets;
 
-    //check that calling getNextDataPacket currently throws an Error_NoData exception as there are no packets
-    BOOST_CHECK_THROW(packetCollector.getNextDataPacket(dataPacket, 0), Error_NoData);
+    packetCollector.getDataPackets(dataPackets);
+
+    BOOST_CHECK_EQUAL(dataPackets.size(), 0);
 
     //call the parse() function, sending the DataBuffer we created
     parser.parse(buffer);
 
-    //calling getNextDataPacket now should return a legitimate InertialDataPacket
-    packetCollector.getNextDataPacket(dataPacket, 0);
+    packetCollector.getDataPackets(dataPackets);
 
-    BOOST_CHECK_EQUAL(dataPacket.isDataPacket(), true);
-    BOOST_CHECK_EQUAL(dataPacket.descriptorSet(), DescriptorSet::DESC_SET_DATA_SENSOR);
+    BOOST_CHECK_EQUAL(dataPackets.size(), 1);
+
+    BOOST_CHECK_EQUAL(dataPackets.at(0).isDataPacket(), true);
+    BOOST_CHECK_EQUAL(dataPackets.at(0).descriptorSet(), DescriptorSet::DESC_SET_DATA_SENSOR);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -133,7 +133,7 @@ namespace mscl
         m_baseStation.connection().write(cancel);
         
         //wait for the response to be met (trying to match the "canceled" response)
-        if(!wait(m_baseStation.baseCommandsTimeout() + 100))
+        if(!wait(m_baseStation.timeout() + 100))
         {
             throw Error_Communication("Failed to cancel the Set to Idle operation.");
         }

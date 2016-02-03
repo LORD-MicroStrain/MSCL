@@ -1,8 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
+
 #pragma once
 
 #include "mscl/MicroStrain/ByteStream.h"
@@ -66,6 +67,7 @@ namespace mscl
         //    packetType_AsyncDigitalAnalog              - 0x0F - Asynchronous Digital and Analog (Event) Packet
         //    packetType_beaconEcho                      - 0x10 - Beacon Echo Packet
         //    packetType_LDC_16ch                        - 0x14 - LDC Packet with 16 channel support
+        //    packetType_nodeDiscovery_v4                - 0x16 - Node Discovery Packet (version 4)
         //    packetType_nodeDiscovery_v2                - 0x17 - Node Discovery Packet (version 2)
         //    packetType_nodeDiscovery_v3                - 0x18 - Node Discovery Packet (version 3)
         //    packetType_SyncSampling_16ch               - 0x1A - Synchronized Sampling Packet with 16 channel support
@@ -75,6 +77,7 @@ namespace mscl
         //    packetType_baseCommand                     - 0x30 - Base Station Command Packet
         //    packetType_baseSuccessReply                - 0x31 - Base Station Command Reply Packet
         //    packetType_baseErrorReply                  - 0x32 - Base Station Command Error Reply Packet
+        //    packetType_rfScanSweep                     - 0x33 - RF Sweep Packet sent from the BaseStation in RF Scan Mode
         //    packetType_SHM                             - 0xA0 - Structural Health Monitoring Packet
         //    packetType_HclSmartBearing_Calibrated      - 0xA1 - HclSmartBearing Calibrated data Packet
         //    packetType_HclSmartBearing_Raw             - 0xA2 - HclSmartBearing Raw data Packet
@@ -95,6 +98,7 @@ namespace mscl
             packetType_AsyncDigitalAnalog              = 0x0F,
             packetType_beaconEcho                      = 0x10,
             packetType_LDC_16ch                        = 0x14,
+            packetType_nodeDiscovery_v4                = 0x16,
             packetType_nodeDiscovery_v2                = 0x17,
             packetType_nodeDiscovery_v3                = 0x18,
             packetType_SyncSampling_16ch               = 0x1A,
@@ -104,6 +108,7 @@ namespace mscl
             packetType_baseCommand                     = 0x30,
             packetType_baseSuccessReply                = 0x31,
             packetType_baseErrorReply                  = 0x32,
+            packetType_rfScanSweep                     = 0x33,
             packetType_SHM                             = 0xA0,
             packetType_HclSmartBearing_Calibrated      = 0xA1,
             packetType_HclSmartBearing_Raw             = 0xA2,

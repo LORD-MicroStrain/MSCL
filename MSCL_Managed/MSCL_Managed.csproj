@@ -156,6 +156,7 @@
     <Compile Include="mscl\PingResponse.cs" />
     <Compile Include="mscl\PositionOffset.cs" />
     <Compile Include="mscl\RadioFeatures.cs" />
+    <Compile Include="mscl\RfSweep.cs" />
     <Compile Include="mscl\SampleRate.cs" />
     <Compile Include="mscl\SampleRates.cs" />
     <Compile Include="mscl\SamplingModes.cs" />

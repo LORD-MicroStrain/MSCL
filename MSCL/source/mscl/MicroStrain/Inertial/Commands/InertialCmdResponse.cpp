@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -32,7 +32,7 @@ namespace mscl
         {
             //if the state is Timeout
             case ResponsePattern::STATE_FAIL_TIMEOUT:
-                throw Error_Timeout();
+                throw Error_Communication();
                 break;
 
             //if the state is Fail

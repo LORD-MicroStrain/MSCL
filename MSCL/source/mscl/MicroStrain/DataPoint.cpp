@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -76,6 +76,19 @@ namespace mscl
         try
         {
             StructuralHealth result = any_cast<StructuralHealth>(m_value);
+            return result;
+        }
+        catch(std::bad_cast&)
+        {
+            throw Error_BadDataType();
+        }
+    }
+
+    const RfSweep DataPoint::as_RfSweep() const
+    {
+        try
+        {
+            RfSweep result = any_cast<RfSweep>(m_value);
             return result;
         }
         catch(std::bad_cast&)

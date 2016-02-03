@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -16,6 +16,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "LdcPacket.h"
 #include "LdcPacket_16ch.h"
 #include "RawAngleStrainPacket.h"
+#include "RfSweepPacket.h"
 #include "ShmPacket.h"
 #include "SyncSamplingPacket.h"
 #include "SyncSamplingPacket_16ch.h"
@@ -100,8 +101,14 @@ namespace mscl
                     m_dataPackets.push_back(RawAngleStrainPacket(packet));
                     break;
 
+                //Beacon Echo packet
                 case WirelessPacket::packetType_beaconEcho:
                     m_dataPackets.push_back(BeaconEchoPacket(packet));
+                    break;
+                    
+                //RF Sweep packet
+                case WirelessPacket::packetType_rfScanSweep:
+                    m_dataPackets.push_back(RfSweepPacket(packet));
                     break;
 
                 //bad packet type, this function shouldn't have been called
@@ -153,26 +160,6 @@ namespace mscl
 
         //return the WirelessDataPacket 
         return resultPacket;
-    }
-
-    void WirelessPacketCollector::getNextDataSweep(DataSweep& sweep, int timeout)
-    {
-        //if there are more sweeps to be read in the packet
-        if(m_currentDataPacket.moreSweeps())
-        {
-            //get the next sweep in the current data packet
-            m_currentDataPacket.getNextSweep(sweep);
-        }
-        else
-        {
-            //if we got here, m_currentDataPacket has no more sweeps
-
-            //read the next WirelessDataPacket, store it in our m_currentDataPacket
-            m_currentDataPacket = getNextDataPacket(timeout);
-
-            //get the next sweep in the new data packet
-            m_currentDataPacket.getNextSweep(sweep);
-        }
     }
 
     void WirelessPacketCollector::getDataSweeps(std::vector<DataSweep>& sweeps, uint32 timeout, uint32 maxSweeps)

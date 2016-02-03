@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include <map>
@@ -79,11 +79,18 @@ namespace mscl
         bool supportsAnalogPairing() const;
 
         //API Function: supportsBeaconStatus
-        //    Checks if the BaseStation support the beaconStatus command.
+        //    Checks if the BaseStation supports the beaconStatus command.
         //
         //Returns:
         //    true if the BaseStation supports the beacon status command, false otherwise.
         bool supportsBeaconStatus() const;
+
+        //API Function: supportsRfSweepMode
+        //    Checks if the BaseStation supports RF Sweep Mode.
+        //
+        //Returns:
+        //    true if the BaseStation supports RF Sweep Mode, false otherwise.
+        bool supportsRfSweepMode() const;
 
         //API Function: buttonCount
         //    Gets the total number of buttons that are supported.

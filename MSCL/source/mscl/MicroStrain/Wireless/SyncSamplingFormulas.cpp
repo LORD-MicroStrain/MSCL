@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -21,7 +21,7 @@ namespace SyncSamplingFormulas
         return sampleRate.samplesPerSecond() * numChs * bytesPerSample;
     }
 
-    uint32 maxBytesPerPacket(const SampleRate& sampleRate, bool lossless, bool highBandwidth)
+    uint32 maxBytesPerPacket(const SampleRate& sampleRate, bool lossless, bool highBandwidth, uint8 syncFormulaVersion)
     {
         if(highBandwidth)
         {
@@ -29,21 +29,22 @@ namespace SyncSamplingFormulas
             return 32;
         }
 
-        //if the sample rate is less than 512 Hz
-        if(sampleRate < SampleRate::Hertz(512))
+        //special cases for sync version 1
+        if(syncFormulaVersion == 1)
         {
-            if(lossless)
+            if(sampleRate >= SampleRate::Hertz(512))
             {
-                return 64;
+                return 48;
             }
-            else
-            {
-                return 96;
-            }
+        }
+
+        if(lossless)
+        {
+            return 64;
         }
         else
         {
-            return 48;
+            return 96;
         }
     }
 
@@ -147,8 +148,13 @@ namespace SyncSamplingFormulas
         return static_cast<uint16>((MAX_SLOTS * groupSize) / txPerGroup);
     }
 
-    bool canHaveSlot1(WirelessModels::NodeModel nodeModel)
+    bool canHaveSlot1(WirelessModels::NodeModel nodeModel, uint8 syncVersion)
     {
+        if(syncVersion > 1)
+        {
+            return true;
+        }
+
         switch(nodeModel)
         {
         //certain node types are not allowed to have slot 1

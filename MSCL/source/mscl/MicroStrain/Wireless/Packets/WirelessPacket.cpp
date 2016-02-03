@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -60,6 +60,7 @@ namespace mscl
         case packetType_HclSmartBearing_Raw:
         case packetType_beaconEcho:
         case packetType_rawAngleStrain:
+        case packetType_rfScanSweep:
             return true;
 
         //any other packet type is not a data packet
@@ -75,6 +76,7 @@ namespace mscl
             case packetType_nodeDiscovery:
             case packetType_nodeDiscovery_v2:
             case packetType_nodeDiscovery_v3:
+            case packetType_nodeDiscovery_v4:
                 return true;
 
             default:

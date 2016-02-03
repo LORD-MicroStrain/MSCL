@@ -147,7 +147,7 @@
     </Link>
     <PostBuildEvent>
       <Message>*****RUNNING MSCL UNIT TESTS*****</Message>
-      <Command>IF NOT '%ISHUDSONBUILD%'=='True' "$(TargetPath)" --log_level=all --report_level=no</Command>
+      <Command>IF NOT '%ISHUDSONBUILD%'=='True' "$(TargetPath)" --log_level=test_suite --report_level=no</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'">
@@ -201,7 +201,7 @@
     </Link>
     <PostBuildEvent>
       <Message>*****RUNNING MSCL UNIT TESTS*****</Message>
-      <Command>IF NOT '%ISHUDSONBUILD%'=='True' "$(TargetPath)" --log_level=all --report_level=no</Command>
+      <Command>IF NOT '%ISHUDSONBUILD%'=='True' "$(TargetPath)" --log_level=test_suite --report_level=no</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'">

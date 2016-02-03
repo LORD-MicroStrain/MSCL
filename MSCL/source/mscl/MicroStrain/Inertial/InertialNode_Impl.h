@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -33,8 +33,8 @@ namespace mscl
     {
     private:
         //Constant: COMMANDS_DEFAULT_TIMEOUT
-        //    The default timeout for Inertial commands (1 second)
-        static const uint64 COMMANDS_DEFAULT_TIMEOUT = 1000;
+        //    The default timeout for Inertial commands (100 milliseconds)
+        static const uint64 COMMANDS_DEFAULT_TIMEOUT = 100;
 
     public:
         //Constructor: InertialNode_Impl
@@ -133,7 +133,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_InertialCmdFailed>: The command has failed.
-        virtual GenericInertialCommandResponse doInertialCmd(GenericInertialCommand::Response& response, const ByteStream& command, InertialTypes::Command commandId, bool verifySupported=true);
+        virtual GenericInertialCommandResponse doInertialCmd(GenericInertialCommand::Response& response, const ByteStream& command, InertialTypes::Command commandId, bool verifySupported = true);
 
     public:
         //Function: info
@@ -144,7 +144,7 @@ namespace mscl
         //    A reference to the <InertialNodeInfo> for this Node.
         //
         //Exceptions:
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: Information failed to be loaded for this Node.
         const InertialNodeInfo& info();
@@ -154,7 +154,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: The model is not supported by MSCL.
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: Information failed to be loaded for this Node.
         virtual const InertialNodeFeatures& features();
@@ -176,18 +176,6 @@ namespace mscl
         //    - <Error>: The <InertialTypes::InertialCategory> is invalid.
         const SampleRates& supportedSampleRates(InertialTypes::InertialCategory category);
 
-        //Function: getNextDataPacket
-        //    Gets the next <InertialDataPacket> containing sampled data sent from this Inertial device.
-        //
-        //Parameters:
-        //    packet - The <InertialDataPacket> to hold the result.
-        //    timeout - the timeout, in milliseconds, to wait for the next data packet if necessary (default of 0)
-        //
-        //Exceptions:
-        //    - <Error_NoData>: No data was collected for this device.
-        //    - <Error_Connection>: A connection error has occurred with the InertialNode
-        void getNextDataPacket(InertialDataPacket& packet, uint32 timeout = 0);
-
         //Function: getDataPackets
         //    Gets up to the requested amount of data packets that have been collected.
         //
@@ -207,12 +195,19 @@ namespace mscl
         //    The total number of data packets that are currently in the buffer.
         uint32 totalPackets();
 
-        //Function: commandsTimeout
+        //Function: timeout
         //    Sets the timeout to use when waiting for responses from Inertial commands.
         //
         //Parameters:
         //    timeout - The timeout (in milliseconds) to set for Inertial commands.
-        void commandsTimeout(uint64 timeout);
+        void timeout(uint64 timeout);
+
+        //API Function: timeout
+        //    Gets the timeout to use when waiting for responses from Inertial commands.
+        //
+        //Returns:
+        //    The timeout (in milliseconds) used for Inertial commands.
+        uint64 timeout();
 
     private:
         //Function: getDeviceInfo
@@ -223,7 +218,7 @@ namespace mscl
         //    A <InertialDeviceInfo> object that holds the response of the "Get Device Information" command.
         //
         //Exceptions:
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         virtual InertialDeviceInfo getDeviceInfo();
@@ -236,7 +231,7 @@ namespace mscl
         //    The supported descriptors retrieved from the "Get Device Descriptor Sets" command.
         //
         //Exceptions:
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         virtual std::vector<uint16> getDescriptorSets();
@@ -258,7 +253,7 @@ namespace mscl
         //    After this command is used, the <resume> command may be used to put the Node back into the mode it was previously in before setToIdle was called.
         //
         //Exceptions:
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setToIdle();
@@ -268,7 +263,7 @@ namespace mscl
         //    If the <setToIdle> command was not issues, then the device is placed in default mode.
         //
         //Exceptions:
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void resume();
@@ -284,7 +279,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command or <InertialTypes::InertialCategory> is not supported by this Node.
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         virtual uint16 getDataRateBase(InertialTypes::InertialCategory category);
@@ -300,7 +295,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command or <InertialTypes::InertialCategory> is not supported by this Node.
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         virtual InertialChannels getMessageFormat(InertialTypes::InertialCategory category);
@@ -315,7 +310,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command or <InertialTypes::InertialCategory> is not supported by this Node.
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         //    - <Error>: An <InertialChannel> in the channels parameter is not part of the specified <InertialTypes::InertialCategory>'s descriptor set.
@@ -329,7 +324,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         virtual uint8 getCommunicationMode();
@@ -342,7 +337,9 @@ namespace mscl
         //    communicationMode - The communication mode to set. This is an advanced command, and therefore the communication modes for your device should be researched to determine what each communication mode is.
         //
         //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         virtual void setCommunicationMode(uint8 communicationMode);
 
         //Function: enableDataStream
@@ -354,15 +351,79 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command, or <InertialTypes::InertialTypeCategory>, is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void enableDataStream(InertialTypes::InertialCategory category, bool enable);
+
+        //Function: resetFilter
+        //    Resets the filter to the initialize state.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void resetFilter();
+
+        //Function: getAutoInitialization
+        //    Gets the state of the automatic initialization upon device startup.
+        //
+        //Returns:
+        //    true if auto-initialization is enabled, false if it is disabled.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        bool getAutoInitialization();
+
+        //Function: setAutoInitialization
+        //    Sets the state of the automatic initialization upon device startup.
+        //
+        //Parameters:
+        //    enable - Whether to enable (true) or disable(false) auto-initialization.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setAutoInitialization(bool enable);
+
+        //Function: setInitialAttitude
+        //    Sets the initial attitude.
+        //
+        //Parameters:
+        //  attitude - The <EulerAngles> (in radians) representing the sensor body frame with respect to the local NED frame.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setInitialAttitude(const EulerAngles& attitude);
+
+        //Function: setInitialHeading
+        //    Sets the initial heading.
+        //
+        //Parameters:
+        //  heading - The heading to set (in radians).
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setInitialHeading(float heading);
 
         //Function: getSensorToVehicleTransformation
         //    Gets the sensor to vehicle frame transformation matrix using roll, pitch, and yaw Euler angles (in radians).
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command or <InertialTypes::InertialCategory> is not supported by this Node.
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         EulerAngles getSensorToVehicleTransformation();
@@ -375,7 +436,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setSensorToVehicleTransformation(const EulerAngles& angles);
@@ -385,7 +446,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         PositionOffset getSensorToVehicleOffset();
@@ -398,7 +459,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setSensorToVehicleOffset(const PositionOffset& offset);
@@ -408,7 +469,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         PositionOffset getAntennaOffset();
@@ -421,7 +482,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
-        //    - <Error_Timeout>: There was no response to the command. The command timed out.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setAntennaOffset(const PositionOffset& offset);

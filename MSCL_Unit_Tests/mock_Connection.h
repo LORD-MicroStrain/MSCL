@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -65,6 +65,16 @@ private:
     virtual void disconnect() {}
     virtual void reconnect() {}
     virtual void establishConnection() {}
+
+    virtual std::size_t byteReadPos() const
+    {
+      return 0;
+    }
+
+    virtual std::size_t byteAppendPos() const
+    {
+      return 0;
+    }
 
     virtual void rawByteMode(bool enable){}
     virtual void getRawBytes(Bytes& bytes, uint32 timeout = 0, uint32 maxBytes = 0) {};

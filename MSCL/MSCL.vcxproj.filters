@@ -659,6 +659,19 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\BeaconEchoPacket.h">
       <Filter>MicroStrain\Wireless\Packets</Filter>
     </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket_v4.h">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_RfSweepStart.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\RfSweepPacket.h">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\Bin.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink2.h">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp">
@@ -1243,6 +1256,19 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\BeaconEchoPacket.cpp">
       <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket_v4.cpp">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_RfSweepStart.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\RfSweepPacket.cpp">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\Bin.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink2.cpp">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

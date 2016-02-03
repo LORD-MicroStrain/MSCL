@@ -2,6 +2,133 @@
 All notable changes to this project will be documented in this file.
 
 -------------------------------------------------------------------------
+1.32.0 - 2016-02-03
+- added InertialNode.setInitialAttitude() command.
+- added InertialNode.setInitialHeading() command.
+- fix for 8192Hz sample rate throwing exceptions when being used.
+- removed maxSampleRate restriction for Nodes with FW 10.0+.
+
+-------------------------------------------------------------------------
+1.31.0 - 2016-02-03
+- added InertialNode.getAutoInitialization() command.
+- added InertialNode.setAutoInitialization() command.
+
+-------------------------------------------------------------------------
+1.30.0 - 2016-02-03
+- added InertialNode.resetFilter() command.
+- removed the Error_Timeout exception (replaced with Error_Communication everywhere).
+
+-------------------------------------------------------------------------
+1.29.1 - 2016-01-29
+- fix for failing to parse the BaseStation startRfSweep command response.
+
+-------------------------------------------------------------------------
+1.29.0 - 2016-01-27
+- removed BaseStation.nodeCommandsTimeout() and BaseStation.basecommandsTimeout()
+  in favor of a single BaseStation.timeout() function.
+- renamed InertialNode.commandsTimeout() to InertialNode.timeout().
+- changed default timeout of BaseStation commands to 50ms (from 1100ms!).
+- WirelessNode timeouts now add 50ms to the normal BaseStation timeout (so default of 100ms).
+- change default timeout of InertialNode commands to 100ms (from 1000ms!).
+- added minimum timeout of 1100ms to old BaseStation enable/disable beacon commands.
+
+-------------------------------------------------------------------------
+1.28.3 - 2016-01-27
+- fix for tick being calculated incorrectly for all buffered packets.
+
+-------------------------------------------------------------------------
+1.28.2 - 2016-01-26
+- fix for startRfSweepMode having the wrong payload length in the command.
+
+-------------------------------------------------------------------------
+1.28.1 - 2016-01-26
+- additional logic for Sync Sampling formulas v2.
+
+-------------------------------------------------------------------------
+1.28.0 - 2016-01-25
+- changed Sync Sampling formulas to support new nodes' methods (fw 10.0+).
+
+-------------------------------------------------------------------------
+1.27.1 - 2016-01-21
+- applying eeprom changes in SyncSamplingNetwork.applyConfiguration by resetting the node.
+
+-------------------------------------------------------------------------
+1.27.0 - 2016-01-20
+- SyncSamplingNetwork.startSampling functions no longer throw communication error exceptions
+  -If a Node fails to respond to a start sync command, 3 more attempts are made, then it moved to other nodes.
+   This is because we can not get the response when a Node really does start, and then successive
+   calls to the startSampling function will not be able to start that Node, nor Nodes behind it in the network.
+
+-------------------------------------------------------------------------
+1.26.0 - 2016-01-18
+- no longer caching eeprom 1030.
+- initial support for the new V-Link.
+- added "options" parameter to the startRfSweep command (for internal use).
+
+-------------------------------------------------------------------------
+1.25.0 - 2016-01-18
+- removed BaseStation.getNextData() in favor of BaseStation.getData()
+- removed InertialNode.getNextDataPacket() in favor of InertialNode.getDataPackets()
+
+-------------------------------------------------------------------------
+1.24.1 - 2016-01-13
+- fix for RfSweep data throwing an error when asking for channel name.
+
+-------------------------------------------------------------------------
+1.24.0 - 2016-01-12
+- added parsing of RfSweep data packets.
+
+-------------------------------------------------------------------------
+1.23.0 - 2016-01-11
+- added BaseStation startRfSweepMode command.
+
+-------------------------------------------------------------------------
+1.22.0 - 2016-01-08
+- Wireless command responses now ignore the bytes that were already in the read buffer before the command was sent.
+    - this was a fix for the short commands/responses sometimes erroneously getting mixed up.
+
+-------------------------------------------------------------------------
+1.21.11 - 2016-01-06
+- WirelessDataPoint now lazy loads the channelName.
+- WirelessDataPoint now has arbitrary properties that can be set by packet parsers to be passed to user programs.
+
+-------------------------------------------------------------------------
+1.21.10 - 2015-12-16
+- support for parsing Node Discovery v4 packets.
+
+-------------------------------------------------------------------------
+1.21.9 - 2015-12-14
+- sending the startNonSyncSampling command multiple times to give Nodes a better chance at successfully starting.
+
+-------------------------------------------------------------------------
+1.21.8 - 2015-12-14
+- reverting changes made in 1.21.7.
+
+-------------------------------------------------------------------------
+1.21.7 - 2015-12-11
+- changed SampleRate::str() to return strings that match SensorCloud's specs.
+
+-------------------------------------------------------------------------
+1.21.6 - 2015-12-09
+- adding Node Built In Test to eeproms that shouldn't be cached.
+
+-------------------------------------------------------------------------
+1.21.5 - 2015-12-07
+- using reset radio to apply Node eeproms when possible, instead of cycle power.
+
+-------------------------------------------------------------------------
+1.21.4 - 2015-12-02
+- checking if sampling modes are supported when defaulting to a sampling mode if not yet set in eeprom.
+
+-------------------------------------------------------------------------
+1.21.3 - 2015-12-01
+- support for Sleep Interval eeprom on Nodes with firmware 10.0+.
+
+-------------------------------------------------------------------------
+1.21.2 - 2015-11-19
+- fix for issues with min and max distributed angles throwing errors when they are valid. 
+
+-------------------------------------------------------------------------
 1.21.1 - 2015-11-11
 - fixed bugs causing Raw Angle Strain packets to get parsed incorrectly.
 

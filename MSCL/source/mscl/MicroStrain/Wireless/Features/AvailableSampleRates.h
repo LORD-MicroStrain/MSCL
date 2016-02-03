@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -35,6 +35,14 @@ namespace mscl
         //    armedDatalog_vlink - armed datalogging sample rates for the V-Link
         static const WirelessTypes::WirelessSampleRates burst_vlink;
         static const WirelessTypes::WirelessSampleRates armedDatalog_vlink;
+
+        //Constants: V-Link2 Sample Rates
+        //    continuous_vlink2 - continuous sample rates for the V-Link2.
+        //    burst_vlink2 - burst sample rates for the V-Link
+        //    armedDatalog_vlink2 - armed datalogging sample rates for the V-Link
+        static const WirelessTypes::WirelessSampleRates continuous_vlink2;
+        static const WirelessTypes::WirelessSampleRates burst_vlink2;
+        static const WirelessTypes::WirelessSampleRates armedDatalog_vlink2;
 
         //Constants: IEPE-Link Sample Rates
         //    burst_iepe - burst sample rates for the IEPE-Link

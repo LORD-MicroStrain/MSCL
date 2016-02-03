@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -75,8 +75,9 @@ namespace mscl
         //    or adds it to the appropriate handler depending on the packet type
         //
         //Parameters:
-        //    packet - A verified, valid <WirelessPacket> 
-        void processPacket(const WirelessPacket& packet);
+        //    packet - A verified, valid <WirelessPacket>
+        //    lastReadPos - The last read position where the packet was parsed from.
+        void processPacket(const WirelessPacket& packet, std::size_t lastReadPos);
 
         //Function: findMatchingResponse
         //    Takes a <DataBuffer> of bytes and checks if the packet collector has any responses it is waiting on.
@@ -95,10 +96,11 @@ namespace mscl
         //
         //Parameters:
         //    packet - A <WirelessPacket> to match against expected responses
+        //    lastReadPos - The last read position where the packet was parsed from.
         //
         //Returns:
         //    true if the packet matched an expected response, false otherwise
-        bool findMatchingResponse(const WirelessPacket& packet);
+        bool findMatchingResponse(const WirelessPacket& packet, std::size_t lastReadPos);
 
         //Function: isDuplicate
         //    Checks whether the passed in packet is a duplicate of the previous packet that came in.

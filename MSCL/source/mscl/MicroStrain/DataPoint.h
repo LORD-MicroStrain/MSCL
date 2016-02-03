@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include "mscl/Value.h"
@@ -14,8 +14,17 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/Timestamp.h"
 #include "mscl/MicroStrain/Wireless/StructuralHealth.h"
 
+#include <map>
+
 namespace mscl
 {
+    //API Title: DataPoint
+
+    //API Typedef: RfSweep
+    //    Typedef for a map of uint32 to int16 values.
+    typedef std::map<uint32, int16> RfSweep;
+
+
     //API Class: DataPoint
     //    Base class representing common functionality between Wireless and Inertial data points
     //
@@ -50,18 +59,6 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_BadDataType>: The type in which the value was stored could not be converted to <Vector>
-        //
-        //Example Use:
-        //    (start code)
-        //        SerialConnection connection("COM25");
-        //        InertialNode device(&connection);
-        //        InertialDataPoints data = device.getNextDataPacket().data();
-        //        if(data[0].storedAs() == valueType_Vector)
-        //        {
-        //            std::cout << data[0].as_Vector().at_float(0);
-        //            std::cout << data[0].as_Vector().at_float(1);
-        //        }
-        //    (end code)
         const Vector as_Vector() const;
 
         //API Function: as_Matrix
@@ -72,18 +69,6 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_BadDataType>: The type in which the value was stored could not be converted to a <Matrix>
-        //
-        //Example Use:
-        //    (start code)
-        //        SerialConnection connection("COM25");
-        //        InertialNode device(&connection);
-        //        InertialDataPoints data = device.getNextDataPacket().data();
-        //        if(data[0].storedAs() == valueType_Matrix)
-        //        {
-        //            std::cout << data[0].as_Matrix().at_float(0, 0);
-        //            std::cout << data[0].as_Matrix().at_float(0, 1);
-        //        }
-        //    (end code)
         const Matrix as_Matrix() const;
 
         //API Function: as_Timestamp
@@ -94,17 +79,6 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_BadDataType>: The type in which the value was stored could not be converted to a <Timestamp>
-        //
-        //Example Use:
-        //    (start code)
-        //        SerialConnection connection("COM25");
-        //        InertialNode device(&connection);
-        //        InertialDataPoints data = device.getNextDataPacket().data();
-        //        if(data[0].storedAs() == valueType_Timestamp)
-        //        {
-        //            std::cout << data[0].as_Timestamp().nanoseconds();
-        //        }
-        //    (end code)
         const Timestamp as_Timestamp() const;
 
         //API Function: as_Bytes
@@ -127,6 +101,16 @@ namespace mscl
         //    - <Error_BadDataType>: The type in which the value was stored could not be converted to a <StructuralHealth> object.
         const StructuralHealth as_StructuralHealth() const;
 
+        //API Function: as_RfSweep
+        //    Gets the data value as an <RfSweep>.
+        //
+        //Returns:
+        //    The data value as an <RfSweep>.
+        //
+        //Exceptions:
+        //    - <Error_BadDataType>: The type in which the value was stored could not be converted to an <RfSweep>.
+        const RfSweep as_RfSweep() const;
+
         //API Function: as_string
         //    Gets the data value as a string
         //
@@ -139,14 +123,6 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_BadDataType>: The type in which the value was stored could not be converted to a string.
-        //        
-        //Example Use:
-        //    (start code)
-        //        SerialConnection connection("COM25");
-        //        InertialNode device(&connection);
-        //        InertialDataPoints data = device.getNextDataPacket().data();
-        //        std::cout << data[0].as_string();
-        //    (end code)
         std::string as_string() const;
     };
 }

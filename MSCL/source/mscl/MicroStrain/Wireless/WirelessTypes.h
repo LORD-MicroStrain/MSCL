@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include "mscl/Types.h"
@@ -465,6 +465,7 @@ namespace mscl
         //    sampleRate_90kHz           - 79    - 90 kHz
         //    sampleRate_100kHz          - 80    - 100 kHz
         //
+        //    sampleRate_8192Hz          - 100    - 8192 Hz
         //    sampleRate_4096Hz          - 101    - 4096 Hz
         //    sampleRate_2048Hz          - 102    - 2048 Hz
         //    sampleRate_1024Hz          - 103    - 1024 Hz
@@ -523,6 +524,7 @@ namespace mscl
             sampleRate_90kHz           = 79,
             sampleRate_100kHz          = 80,
 
+            sampleRate_8192Hz          = 100,
             sampleRate_4096Hz          = 101,
             sampleRate_2048Hz          = 102,
             sampleRate_1024Hz          = 103,

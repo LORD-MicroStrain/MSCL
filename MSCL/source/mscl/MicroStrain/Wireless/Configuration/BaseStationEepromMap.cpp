@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -80,21 +80,29 @@ namespace mscl
 
     bool BaseStationEepromMap::canUseCache_read(uint16 eepromLocation)
     {
-        return true;
+        switch(eepromLocation)
+        {
+            case 1030:
+                return false;
+
+            default:
+                return true;
+        }
     }
 
     bool BaseStationEepromMap::canUseCache_write(uint16 eepromLocation)
     {
         switch(eepromLocation)
         {
-        //eeprom locations that should always be written to the device, never using the cache to check if its the same value
-        case 250:    //CYCLE_POWER
-        case 90:    //FREQUENCY
-            return false;
+            //eeprom locations that should always be written to the device, never using the cache to check if its the same value
+            case 90:    //FREQUENCY
+            case 250:   //CYCLE_POWER
+            case 1030:
+                return false;
 
-        //all other eeprom locations can use the cache
-        default:
-            return true;
+            //all other eeprom locations can use the cache
+            default:
+                return true;
         }
     }
 

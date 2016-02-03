@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -8,6 +8,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 #include "mscl/Exceptions.h"
+#include "mscl/Utils.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -17,49 +18,49 @@ BOOST_AUTO_TEST_SUITE(normalizeAngle_fn)
 
 BOOST_AUTO_TEST_CASE(Test1)
 {
-    float result = RawAngleStrainPacket::normalizeAngle(0);
+    float result = Utils::normalizeAngle(0);
 
     BOOST_CHECK_CLOSE(result, 0.0f, std::numeric_limits<float>::epsilon());
 }
 
 BOOST_AUTO_TEST_CASE(Test2)
 {
-    float result = RawAngleStrainPacket::normalizeAngle(360);
+    float result = Utils::normalizeAngle(360);
 
     BOOST_CHECK_CLOSE(result, 0.0f, std::numeric_limits<float>::epsilon());
 }
 
 BOOST_AUTO_TEST_CASE(Test3)
 {
-    float result = RawAngleStrainPacket::normalizeAngle(359);
+    float result = Utils::normalizeAngle(359);
 
     BOOST_CHECK_CLOSE(result, 359.0f, std::numeric_limits<float>::epsilon());
 }
 
 BOOST_AUTO_TEST_CASE(Test4)
 {
-    float result = RawAngleStrainPacket::normalizeAngle(-1);
+    float result = Utils::normalizeAngle(-1);
 
     BOOST_CHECK_CLOSE(result, 359.0f, std::numeric_limits<float>::epsilon());
 }
 
 BOOST_AUTO_TEST_CASE(Test5)
 {
-    float result = RawAngleStrainPacket::normalizeAngle(245);
+    float result = Utils::normalizeAngle(245);
 
     BOOST_CHECK_CLOSE(result, 245.0f, std::numeric_limits<float>::epsilon());
 }
 
 BOOST_AUTO_TEST_CASE(Test6)
 {
-    float result = RawAngleStrainPacket::normalizeAngle(5640);
+    float result = Utils::normalizeAngle(5640);
 
     BOOST_CHECK_CLOSE(result, 240.0f, std::numeric_limits<float>::epsilon());
 }
 
 BOOST_AUTO_TEST_CASE(Test7)
 {
-    float result = RawAngleStrainPacket::normalizeAngle(-725);
+    float result = Utils::normalizeAngle(-725);
 
     BOOST_CHECK_CLOSE(result, 355.0f, std::numeric_limits<float>::epsilon());
 }

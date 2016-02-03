@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -134,39 +134,6 @@ BOOST_AUTO_TEST_CASE(Exceptions_ErrorUnknownSampleRate)
     {
         //throw the Error_UnknownSampleRate() exception
         throw Error_UnknownSampleRate();
-    }
-    catch(Error&)
-    {
-        caughtException = true;
-    }
-
-    //check that we caught the exception using the base Error exception class
-    BOOST_CHECK_EQUAL(caughtException, true);
-}
-
-BOOST_AUTO_TEST_CASE(Exceptions_ErrorTimeout)
-{
-    std::string txt = "";
-
-    try
-    {
-        //throw the Error_Timeout() exception
-        throw Error_Timeout();
-    }
-    catch(Error_Timeout& ex)
-    {
-        txt = ex.what();
-    }
-
-    //check that the standard text was received
-    BOOST_CHECK_EQUAL(txt, "The operation has timed out.");
-
-
-    bool caughtException = false;
-    try
-    {
-        //throw the Error_Timeout() exception
-        throw Error_Timeout();
     }
     catch(Error&)
     {

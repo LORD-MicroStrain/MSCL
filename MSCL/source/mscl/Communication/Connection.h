@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include <functional>
@@ -164,6 +164,14 @@ namespace mscl
         //Function: clearBuffer
         //    Resets the read buffer.
         void clearBuffer();
+
+        //Function: byteReadPos
+        //    Gets the read position from the byte buffer.
+        std::size_t byteReadPos() const;
+
+        //Function: byteAppendPos
+        //    Gets the append position from the byte buffer.
+        std::size_t byteAppendPos() const;
 
         //API Function: rawByteMode
         //    Puts the connection into "Raw Byte Mode." 

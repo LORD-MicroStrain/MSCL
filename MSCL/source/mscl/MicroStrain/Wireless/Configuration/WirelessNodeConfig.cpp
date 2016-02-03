@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -291,9 +291,12 @@ namespace mscl
                         outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_FATIGUE_DIST_NUM_ANGLES, "Number of Distributed Angles is out of range (4-16)."));
                     }
 
+                    float normUpper = Utils::normalizeAngle(m_fatigueOptions->distributedAngleMode_upperBound());
+                    float normLower = Utils::normalizeAngle(m_fatigueOptions->distributedAngleMode_lowerBound());
+
                     //check if upper and lower bounds are within 1 degree
-                    float diff = std::abs(m_fatigueOptions->distributedAngleMode_upperBound() - m_fatigueOptions->distributedAngleMode_lowerBound());
-                    bool lowGreaterThanUpper = m_fatigueOptions->distributedAngleMode_upperBound() < m_fatigueOptions->distributedAngleMode_lowerBound();
+                    float diff = std::abs(normUpper - normLower);
+                    bool lowGreaterThanUpper = normUpper < normLower;
 
                     if(diff < 1.0f || (lowGreaterThanUpper && diff > 359.0f))
                     {

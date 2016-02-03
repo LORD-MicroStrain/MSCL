@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -126,31 +126,14 @@ namespace mscl
         return m_impl->getNodeDiscoveries(); 
     }
 
-    void BaseStation::baseCommandsTimeout(uint64 timeout)
+    void BaseStation::timeout(uint64 timeout)
     { 
-        m_impl->baseCommandsTimeout(timeout);
+        m_impl->timeout(timeout);
     }
 
-    void BaseStation::nodeCommandsTimeout(uint64 timeout)
+    uint64 BaseStation::timeout() const
     { 
-        m_impl->nodeCommandsTimeout(timeout);
-    }
-
-    uint64 BaseStation::baseCommandsTimeout() const
-    { 
-        return m_impl->baseCommandsTimeout();
-    }
-
-    uint64 BaseStation::nodeCommandsTimeout() const
-    { 
-        return m_impl->nodeCommandsTimeout();
-    }
-
-    DataSweep BaseStation::getNextData(uint32 timeout)
-    {
-        DataSweep sweep;
-        m_impl->getNextData(sweep, timeout);
-        return sweep;
+        return m_impl->timeout();
     }
 
     DataSweeps BaseStation::getData(uint32 timeout, uint32 maxSweeps)
@@ -203,6 +186,11 @@ namespace mscl
     void BaseStation::cyclePower()
     { 
         m_impl->cyclePower();
+    }
+
+    void BaseStation::startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options)
+    {
+        m_impl->startRfSweepMode(minFreq, maxFreq, interval, options);
     }
 
     void BaseStation::resetRadio()

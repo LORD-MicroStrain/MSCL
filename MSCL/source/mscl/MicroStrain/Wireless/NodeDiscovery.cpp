@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -9,6 +9,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Packets/NodeDiscoveryPacket.h"
 #include "Packets/NodeDiscoveryPacket_v2.h"
 #include "Packets/NodeDiscoveryPacket_v3.h"
+#include "Packets/NodeDiscoveryPacket_v4.h"
 
 namespace mscl
 {
@@ -20,6 +21,7 @@ namespace mscl
         m_serialNumber(0),
         m_firmwareVersion(0, 0, 0),
         m_defaultMode(static_cast<WirelessTypes::DefaultMode>(999)),
+        m_bitResult(0),
         m_baseRssi(WirelessTypes::UNKNOWN_RSSI),
         m_timestamp(0)
     {
@@ -44,6 +46,10 @@ namespace mscl
                 initFromPacket_v3(packet);
                 break;
 
+            case WirelessPacket::packetType_nodeDiscovery_v4:
+                initFromPacket_v4(packet);
+                break;
+
             default:
                 break;
         }
@@ -66,6 +72,7 @@ namespace mscl
         m_serialNumber = 0;
         m_firmwareVersion = Version(0, 0, 0);
         m_defaultMode = static_cast<WirelessTypes::DefaultMode>(999);
+        m_bitResult = 0;
     }
 
     void NodeDiscovery::initFromPacket_v2(const WirelessPacket& packet)
@@ -94,6 +101,7 @@ namespace mscl
 
         //unknown info we don't get in this packet
         m_defaultMode = static_cast<WirelessTypes::DefaultMode>(999);
+        m_bitResult = 0;
     }
 
     void NodeDiscovery::initFromPacket_v3(const WirelessPacket& packet)
@@ -127,6 +135,17 @@ namespace mscl
 
         //Default Mode
         m_defaultMode = static_cast<WirelessTypes::DefaultMode>(payload.read_uint16(Info::PAYLOAD_OFFSET_DEFAULT_MODE));
+
+        //unknown info we don't get in this packet
+        m_bitResult = 0;
+    }
+
+    void NodeDiscovery::initFromPacket_v4(const WirelessPacket& packet)
+    {
+        //same first bytes as v3 packet
+        initFromPacket_v3(packet);
+
+        m_bitResult = packet.payload().read_uint32(NodeDiscoveryPacket_v4::PAYLOAD_OFFSET_BUILT_IN_TEST);
     }
 
     uint16 NodeDiscovery::nodeAddress() const
@@ -162,6 +181,11 @@ namespace mscl
     WirelessTypes::DefaultMode NodeDiscovery::defaultMode()
     {
         return m_defaultMode;
+    }
+
+    uint32 NodeDiscovery::builtInTestResult()
+    {
+        return m_bitResult;
     }
 
     int16 NodeDiscovery::baseRssi() const

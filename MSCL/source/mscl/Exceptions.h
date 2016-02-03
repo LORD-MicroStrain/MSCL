@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include <exception>
@@ -150,30 +150,13 @@ namespace mscl
         }
     };
 
-    
-    //API Class: Error_Timeout
-    //    A read/write timeout exception
-    class Error_Timeout : public Error
-    {
-    public:
-        //API Constructor: Error_Timeout
-        //    Initializes the Error_Timeout object with a default description
-        Error_Timeout() :
-            Error("The operation has timed out.")
-        {}
-
-        ~Error_Timeout() throw()
-        {}
-    };
-    
-
     //API Class: Error_Communication
     //    The exception for failing to communicate with a device.
     class Error_Communication : public Error
     {
     public:
-        //API Constructor: Error_NodeCommunication
-        //    Initializes the Error_NodeCommunication object.
+        //API Constructor: Error_Communication
+        //    Initializes the Error_Communication object.
         Error_Communication() :
             Error("Failed to communicate with the device.")
         {

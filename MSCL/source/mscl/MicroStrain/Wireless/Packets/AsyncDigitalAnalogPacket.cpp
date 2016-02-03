@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -53,7 +53,7 @@ namespace mscl
         m_dataType = static_cast<WirelessTypes::DataType>(dataType);
 
         //create a sample rate for this data
-        SampleRate digitalRate(SampleRate::rateType_event, 0);
+        static const SampleRate digitalRate = SampleRate::Event();
 
         std::size_t payloadLen = m_payload.size();
         uint16 sweepItr = 0;
@@ -64,13 +64,11 @@ namespace mscl
         //while there is still more data for us to read
         while(byteItr < payloadLen)
         {
-            tick += sweepItr;
-
             //build a sweep to add
             DataSweep sweep;
             sweep.samplingType(DataSweep::samplingType_AsyncDigitalAnalog);
             sweep.frequency(m_frequency);
-            sweep.tick(tick);
+            sweep.tick(tick++);
             sweep.nodeAddress(m_nodeAddress);
             sweep.sampleRate(digitalRate);
 

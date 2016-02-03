@@ -41,14 +41,6 @@
         }
     }
 
-    public class Error_Timeout : Error
-    {
-        public Error_Timeout(string message)
-            : base(message)
-        {
-        }
-    }
-
     public class Error_Communication : Error
     {
         public Error_Communication(string message)

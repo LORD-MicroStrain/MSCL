@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include "simple_any.h"
@@ -58,14 +58,14 @@ namespace mscl
     
     //verify some standard information at compile time
     static_assert(sizeof(int) >= 4, "int is less than 4 bytes");
-    static_assert(sizeof(std::int8_t)    == sizeof(signed char),    "int8_t != signed char");
-    static_assert(sizeof(std::uint8_t)    == sizeof(unsigned char), "uint8_t != unsigned char");
-    static_assert(sizeof(std::int16_t)    == sizeof(signed short), "int16_t != signed short");
-    static_assert(sizeof(std::uint16_t)    == sizeof(unsigned short), "uint16_t != unsigned short");
-    static_assert(sizeof(std::int32_t)    == sizeof(signed int), "int32_t != signed int");
-    static_assert(sizeof(std::uint32_t)    == sizeof(unsigned int), "uint32_t != unsigned int");
-    static_assert(sizeof(std::int64_t)    == sizeof(long long), "int64_t != long long");
-    static_assert(sizeof(std::uint64_t)    == sizeof(unsigned long long), "uint64_t != unsigned long long");
+    static_assert(sizeof(std::int8_t) == sizeof(signed char), "int8_t != signed char");
+    static_assert(sizeof(std::uint8_t) == sizeof(unsigned char), "uint8_t != unsigned char");
+    static_assert(sizeof(std::int16_t) == sizeof(signed short), "int16_t != signed short");
+    static_assert(sizeof(std::uint16_t) == sizeof(unsigned short), "uint16_t != unsigned short");
+    static_assert(sizeof(std::int32_t) == sizeof(signed int), "int32_t != signed int");
+    static_assert(sizeof(std::uint32_t) == sizeof(unsigned int), "uint32_t != unsigned int");
+    static_assert(sizeof(std::int64_t) == sizeof(long long), "int64_t != long long");
+    static_assert(sizeof(std::uint64_t) == sizeof(unsigned long long), "uint64_t != unsigned long long");
 
     //Typedef: mutex_lock_guard
     //    Typedef for a lock_gaurd (automatically locks and unlocks) to a mutex.
@@ -120,36 +120,38 @@ namespace mscl
     
     //================================================================================================================
     //API Enums: ValueType
-    //    valueType_float                        - 0 - The value is stored as a 4-byte float 
-    //    valueType_double                    - 1 - The value is stored as an 8-byte double
-    //    valueType_uint8                        - 2 - The value is stored as a 1-byte unsigned integer
-    //    valueType_uint16                    - 3 - The value is stored as a 2-byte unsigned integer
-    //    valueType_uint32                    - 4 - The value is stored as a 4-byte unsigned integer
-    //    valueType_int16                        - 5 - The value is stored as a 2-byte signed integer
-    //    valueType_int32                        - 6 - The value is stored as a 4-byte signed integer
-    //    valueType_bool                        - 7 - The value is stored as a 1-byte boolean
-    //    valueType_Vector                    - 8 - The value is stored as a <Vector> object
-    //    valueType_Matrix                    - 9 - The value is stored as a <Matrix> object
-    //    valueType_Timestamp                    - 10 - The value is stored as a <Timestamp> object
-    //    valueType_string                    - 11 - The value is stored as a string
-    //    valueType_Bytes                        - 12 - The value is stored as a <Bytes> object
-    //    valueType_StructuralHealth            - 13 - The value is stored as a <StructuralHealth> object
+    //    valueType_float                        - 0 - The value is stored as a 4-byte float .
+    //    valueType_double                       - 1 - The value is stored as an 8-byte double.
+    //    valueType_uint8                        - 2 - The value is stored as a 1-byte unsigned integer.
+    //    valueType_uint16                       - 3 - The value is stored as a 2-byte unsigned integer.
+    //    valueType_uint32                       - 4 - The value is stored as a 4-byte unsigned integer.
+    //    valueType_int16                        - 5 - The value is stored as a 2-byte signed integer.
+    //    valueType_int32                        - 6 - The value is stored as a 4-byte signed integer.
+    //    valueType_bool                         - 7 - The value is stored as a 1-byte boolean.
+    //    valueType_Vector                       - 8 - The value is stored as a <Vector> object.
+    //    valueType_Matrix                       - 9 - The value is stored as a <Matrix> object.
+    //    valueType_Timestamp                    - 10 - The value is stored as a <Timestamp> object.
+    //    valueType_string                       - 11 - The value is stored as a string.
+    //    valueType_Bytes                        - 12 - The value is stored as a <Bytes> object.
+    //    valueType_StructuralHealth             - 13 - The value is stored as a <StructuralHealth> object.
+    //    valueType_RfSweep                      - 14 - The value is stored as a <RfSweep>.
     //================================================================================================================
     enum ValueType
     {
         valueType_float                        = 0,
-        valueType_double                    = 1,
+        valueType_double                       = 1,
         valueType_uint8                        = 2,
-        valueType_uint16                    = 3,
-        valueType_uint32                    = 4,
+        valueType_uint16                       = 3,
+        valueType_uint32                       = 4,
         valueType_int16                        = 5,
         valueType_int32                        = 6,
-        valueType_bool                        = 7,
-        valueType_Vector                    = 8,
-        valueType_Matrix                    = 9,
+        valueType_bool                         = 7,
+        valueType_Vector                       = 8,
+        valueType_Matrix                       = 9,
         valueType_Timestamp                    = 10,
-        valueType_string                    = 11,
+        valueType_string                       = 11,
         valueType_Bytes                        = 12,
-        valueType_StructuralHealth            = 13
+        valueType_StructuralHealth             = 13,
+        valueType_RfSweep                      = 14
     };
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -160,6 +160,7 @@ namespace mscl
 
             case channel_rawAngleStrain:           return "rawAngleStrain";
             case channel_beaconEcho:               return "beaconEcho";
+            case channel_rfSweep:                  return "rfSweep";
 
             case channel_error_code:               return "errorCode";
 

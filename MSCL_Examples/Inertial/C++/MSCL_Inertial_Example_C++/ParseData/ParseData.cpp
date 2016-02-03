@@ -3,7 +3,7 @@
 //  This example does not start a Node sampling. To receive data, a Node
 //  must be put into a sampling mode.
 //
-//Updated: 01/06/2015
+//Updated: 01/18/2016
 
 #include <iostream>
 using namespace std;
@@ -28,44 +28,35 @@ int main(int argc, char **argv)
 		//endless loop of reading in data
 		while(true)
 		{
-			try
-			{
-				//This example uses the "getNextDataPacket()" command. This command gets the next InertialDataPacket in the buffer and throws an exception if no data exists.
-				//Alternatively, you may use the "getDataPackets()" command to get ALL the InertialDataPackets available in the buffer. If the returned container is empty, no data exists.
+      //get all the data packets from the node, with a timeout of 500 milliseconds
+      mscl::InertialDataPackets packets = node.getDataPackets(500);
 
-				//get the next data packet from the node, with a timeout of 500 milliseconds
-				mscl::InertialDataPacket packet = node.getNextDataPacket(500);
+      for(mscl::InertialDataPacket packet : packets)
+      {
+        //print out the data
+        cout << "Packet Received: ";
 
-				//if we got here, no exception was thrown so data was successfully read in
+        //get the data in the packet
+        mscl::InertialDataPoints data = packet.data();
+        mscl::InertialDataPoint dataPoint;
 
-				//print out the data
-				cout << "Packet Received: ";
+        //loop through all the data points in the packet
+        for(unsigned int itr = 0; itr < data.size(); itr++)
+        {
+          dataPoint = data[itr];
 
-				//get the data in the packet
-				mscl::InertialDataPoints data = packet.data();
-				mscl::InertialDataPoint dataPoint;
+          //print out the channel data
+          cout << dataPoint.str() << ": ";
+          cout << dataPoint.as_string() << " "; //Just printing this out as a string. Other methods (ie. as_float, as_uint16, as_Vector) are also available.
 
-				//loop through all the data points in the packet
-				for(unsigned int itr = 0; itr < data.size(); itr++)
-				{
-					dataPoint = data[itr];
-
-					//print out the channel data
-					cout << dataPoint.str() << ": ";
-					cout << dataPoint.as_string() << " "; //Just printing this out as a string. Other methods (ie. as_float, as_uint16, as_Vector) are also available.
-
-					//if the dataPoint is invalid
-					if(!dataPoint.valid())
-					{
-						cout << "[Invalid] ";
-					}
-				}
-				cout << endl;
-			}
-			catch(mscl::Error_NoData& noData)
-			{
-				cout << noData.what() << endl;
-			}
+          //if the dataPoint is invalid
+          if(!dataPoint.valid())
+          {
+            cout << "[Invalid] ";
+          }
+        }
+        cout << endl;
+      }
 		}
 	}
 	catch(mscl::Error& e)

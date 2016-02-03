@@ -3,7 +3,7 @@
 //  This example does not start a Node sampling. To receive data, a Node
 //  must be put into a sampling mode.
 //
-//Updated: 01/06/2015
+//Updated: 01/18/2016
 
 //Note: If you are having 'PINVOKE' errors, please make sure the following is true:
 //  -'MSCL_Managed' is added as a Refence for the project (add 'MSCL_Managed.dll')
@@ -31,15 +31,12 @@ namespace ParseData
 
                 //endless loop of reading in data
                 while (true)
-                {
-                    try
-                    {
-                        //This example uses the "getNextDataPacket()" command. This command gets the next InertialDataPacket in the buffer and throws an exception if no data exists.
-                        //Alternatively, you may use the "getDataPackets()" command to get ALL the InertialDataPackets available in the buffer. If the returned container is empty, no data exists.
+                {             
+                    //get all of the next data packet from the node, with a timeout of 500 milliseconds
+                    mscl.InertialDataPackets packets = node.getDataPackets(500);
                     
-                        //get the next data packet from the node, with a timeout of 500 milliseconds
-                        mscl.InertialDataPacket packet = node.getNextDataPacket(500);
-
+                    foreach (mscl.InertialDataPacket in packets)
+                    {
                         //print out the data
                         Console.Write("Packet Received: ");
                         
@@ -58,10 +55,6 @@ namespace ParseData
                             }
                         }
                         Console.WriteLine();
-                    }
-                    catch (mscl.Error_NoData noData)
-                    {
-                        Console.WriteLine(noData.Message);
                     }
                 }
             }

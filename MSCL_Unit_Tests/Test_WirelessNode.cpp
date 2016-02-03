@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -315,21 +315,21 @@ BOOST_AUTO_TEST_CASE(WirelessNode_get_and_setBaseStation)
 {
     std::shared_ptr<mock_baseStationImpl> impl(new mock_baseStationImpl);
     BaseStation base(impl);
-    base.baseCommandsTimeout(30000);    //change the timeout to 30 seconds
+    base.timeout(30000);    //change the timeout to 30 seconds
 
     //call the create function
     WirelessNode node(123, base);
 
-    BOOST_CHECK(node.getBaseStation().baseCommandsTimeout() == 30000);
+    BOOST_CHECK(node.getBaseStation().timeout() == 30000);
 
     std::shared_ptr<mock_baseStationImpl> impl2(new mock_baseStationImpl);
     BaseStation base2(impl2);
-    base2.baseCommandsTimeout(12000);    //change the timeout to 12 seconds
+    base2.timeout(12000);    //change the timeout to 12 seconds
 
     //call the setBaseStation command
     node.setBaseStation(base2);
 
-    BOOST_CHECK(node.getBaseStation().baseCommandsTimeout() == 12000);
+    BOOST_CHECK(node.getBaseStation().timeout() == 12000);
 }
 
 /*

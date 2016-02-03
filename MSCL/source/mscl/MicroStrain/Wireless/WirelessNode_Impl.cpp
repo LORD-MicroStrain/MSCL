@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -269,7 +269,7 @@ namespace mscl
 
         //if the apply succeeded, we need to cycle the power
         //for some eeproms to actually take the changes
-        cyclePower();
+        m_eepromHelper->applyEepromChanges();
     }
 
     uint16 WirelessNode_Impl::getNumDatalogSessions() const

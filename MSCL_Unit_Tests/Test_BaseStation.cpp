@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -131,54 +131,6 @@ BOOST_AUTO_TEST_CASE(BaseStation_serial)
 
     //check that the response is successful
     BOOST_CHECK_EQUAL(b.serial(), "6307-1010-07546");
-}
-
-BOOST_AUTO_TEST_CASE(BaseStation_GetNextData_NoData)
-{
-    std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-    Connection conn(connImpl);
-
-    //create the base station (loads the info)
-    BaseStation base(conn);
-
-    //check that calling getNextData throws an Error_NoData exception
-    BOOST_CHECK_THROW(base.getNextData(), Error_NoData);
-}
-
-BOOST_AUTO_TEST_CASE(BaseStation_GetNextData_Success)
-{
-    std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-    Connection conn(connImpl);
-
-    //create the base station (loads the info)
-    BaseStation base(conn);
-
-    //build a LDC data packet to send
-    ByteStream data;
-    data.append_uint8(0xAA);
-    data.append_uint8(0x07);
-    data.append_uint8(0x04);
-    data.append_uint16(456);    //node address
-    data.append_uint8(8);        //payload length
-    data.append_uint8(0x02);
-    data.append_uint8(0x01);
-    data.append_uint8(0x70);
-    data.append_uint8(0x03);    //data type
-    data.append_uint16(45);
-    data.append_uint16(165);    //channel data
-    data.append_uint16(0x00);
-    data.append_uint16(data.calculateSimpleChecksum(1, 13));    //checksum
-    connImpl->setResponseBytes(data);
-
-    //force parsing of the bytes we just set
-    connImpl->parseNextResponse();
-
-    DataSweep sweep = base.getNextData(1000);
-
-    //check that the packet came across and looks right
-    BOOST_CHECK_EQUAL(sweep.tick(), 45);
-    BOOST_CHECK_EQUAL(sweep.nodeAddress(), 456);
-    BOOST_CHECK_EQUAL(sweep.frequency(), WirelessTypes::freq_unknown);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStation_GetData_NoData)
@@ -340,7 +292,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeLongPing_Fail_Timeout)
 
     //create the base station (loads the info)
     BaseStation base(conn);
-    base.nodeCommandsTimeout(10);
+    base.timeout(1);
 
     //create and set the response for the node_ping command
     ByteStream data;
@@ -392,7 +344,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeEepromRead_Fail_Timeout)
 
     //create the base station (loads the info)
     BaseStation base(conn);
-    base.nodeCommandsTimeout(10);
+    base.timeout(1);
 
     uint16 eepromValue = 0;
     bool result = base.node_readEeprom(*(WirelessProtocol::v1_0().get()), 327, 112, eepromValue);
@@ -439,7 +391,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeEepromWrite_Fail_Timeout)
 
     //create the base station (loads the info)
     BaseStation base(conn);
-    base.nodeCommandsTimeout(10);
+    base.timeout(1);
 
 
     //build the data to send
@@ -486,7 +438,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodePageDownload_FailResponse)
 
     //create the base station (loads the info)
     BaseStation base(conn);
-    base.nodeCommandsTimeout(10);
+    base.timeout(1);
 
     //build the data to send
     ByteStream data;
@@ -508,8 +460,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_node_startSyncSampling)
 
     //create the base station (loads the info)
     BaseStation base(conn);
-    base.baseCommandsTimeout(10);
-    base.nodeCommandsTimeout(10);
+    base.timeout(10);
 
     //build the Start Sync Sampling response bytes
     ByteStream data;
@@ -580,8 +531,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_node_autocal_fail)
 
     //create the base station (loads the info)
     BaseStation base(conn);
-    base.baseCommandsTimeout(10);
-    base.nodeCommandsTimeout(10);
+    base.timeout(1);
 
     //Build the Node Received response bytes
     ByteStream data;
@@ -611,8 +561,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_node_autocal_success)
 
     //create the base station (loads the info)
     BaseStation base(conn);
-    base.baseCommandsTimeout(10);
-    base.nodeCommandsTimeout(10);
+    base.timeout(10);
 
     //Build the Node Received response bytes
     ByteStream data;

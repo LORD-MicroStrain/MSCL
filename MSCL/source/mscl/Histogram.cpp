@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -8,30 +8,6 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    Bin::Bin(const Value& start, const Value& end, uint32 count):
-        m_start(start),
-        m_end(end),
-        m_count(count)
-    {
-    }
-
-    Value Bin::start() const
-    {
-        return m_start;
-    }
-
-    Value Bin::end() const
-    {
-        return m_end;
-    }
-
-    uint32 Bin::count() const
-    {
-        return m_count;
-    }
-
-
-
     Histogram::Histogram(const Value& binsStart, const Value& binsSize):
         m_binsStart(binsStart),
         m_binsSize(binsSize)

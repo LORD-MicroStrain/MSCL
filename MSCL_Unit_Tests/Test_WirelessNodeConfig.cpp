@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_setMultipleValues)
     //expect the eeprom writes
     expectWrite(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(200));
     expectWrite(impl, NodeEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::power_16dBm));
-    expectCyclePower(impl);
+    expectResetRadio(impl);
 
     BOOST_CHECK_NO_THROW(node.applyConfig(c));
 }

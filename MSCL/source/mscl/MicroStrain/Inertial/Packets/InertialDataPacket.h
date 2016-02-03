@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-//PUBLIC_HEADER
+
 #pragma once
 
 #include "InertialPacket.h"
@@ -68,14 +68,6 @@ namespace mscl
         //
         //Returns:
         //    The <InertialDataPoints> that are contained within this packet
-        //
-        //Example Use:
-        //    (start code)
-        //        SerialConnection connection("COM25");
-        //        InertialNode device(&connection);
-        //        InertialDataPacket packet = device.getNextDataPacket();
-        //        InertialDataPoints data = packet.data();
-        //    (end code)
         const InertialDataPoints& data() const;
 
         //API Function: timestamp

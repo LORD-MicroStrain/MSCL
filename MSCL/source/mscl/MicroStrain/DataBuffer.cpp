@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -72,6 +72,16 @@ namespace mscl
         assert(result >= 0);
 
         return result;
+    }
+
+    std::size_t DataBuffer::appendPosition() const
+    {
+        return m_appendPosition;
+    }
+
+    std::size_t DataBuffer::readPosition() const
+    {
+        return m_readPosition;
     }
 
     uint8 DataBuffer::peekByte()
@@ -245,17 +255,19 @@ namespace mscl
         return (bytesRemaining() > 0);
     }
 
-    void DataBuffer::shiftExtraToStart()
+    std::size_t DataBuffer::shiftExtraToStart()
     {
+        std::size_t startReadPos = m_readPosition;
+        
         //the number of extra bytes that need to be moved
         std::size_t numExtraBytes = m_appendPosition - m_readPosition;
 
         //if there is data that needs to be moved (appended to buffer, but not read in completely)
-        if(numExtraBytes > 0)
+        //and we wouldn't just be copying to the same position
+        if(numExtraBytes > 0 && m_readPosition != 0)
         {
             //copy any extra data back to the beginning of the buffer
             std::copy(m_data.begin() + m_readPosition, m_data.begin() + m_appendPosition, m_data.begin());
-            //std::copy(&m_data[m_readPosition], &m_data[m_appendPosition], m_data.begin());
         }
 
         //reset the read position back to position 0
@@ -263,6 +275,8 @@ namespace mscl
 
         //reset the append position to immediately after the bytes we just put at the beginning of the buffer
         m_appendPosition = numExtraBytes;
+
+        return startReadPos;
     }
 
     BufferWriter DataBuffer::getBufferWriter()

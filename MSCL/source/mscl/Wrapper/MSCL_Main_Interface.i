@@ -16,12 +16,12 @@
 %rename(__ge__) mscl::Version::operator>=;
 %typemap(cscode) mscl::Version 
 %{ 
-	public override bool Equals(object obj){Version other = obj as Version; return this.__eq__(other);}
-	public override int GetHashCode(){ return (int)(majorPart() ^ minorPart() ^ patchPart()); }
-	public static bool operator<(Version v1, Version v2){return v1.__lt__(v2);} 
-	public static bool operator<=(Version v1, Version v2){return v1.__le__(v2);} 
-	public static bool operator>(Version v1, Version v2){return v1.__gt__(v2);} 
-	public static bool operator>=(Version v1, Version v2){return v1.__ge__(v2);} 
+    public override bool Equals(object obj){Version other = obj as Version; return this.__eq__(other);}
+    public override int GetHashCode(){ return (int)(majorPart() ^ minorPart() ^ patchPart()); }
+    public static bool operator<(Version v1, Version v2){return v1.__lt__(v2);} 
+    public static bool operator<=(Version v1, Version v2){return v1.__le__(v2);} 
+    public static bool operator>(Version v1, Version v2){return v1.__gt__(v2);} 
+    public static bool operator>=(Version v1, Version v2){return v1.__ge__(v2);} 
 %}
 
 %rename(__eq__) mscl::ChannelMask::operator==;
@@ -30,10 +30,10 @@
 %rename(__gt__) mscl::ChannelMask::operator>;
 %typemap(cscode) mscl::ChannelMask 
 %{ 
-	public override bool Equals(object obj){ChannelMask other = obj as ChannelMask; return this.__eq__(other);}
-	public override int GetHashCode(){ return (int)(toMask()); } 
-	public static bool operator<(ChannelMask v1, ChannelMask v2) { return v1.__lt__(v2); }
-	public static bool operator>(ChannelMask v1, ChannelMask v2) { return v1.__gt__(v2); }
+    public override bool Equals(object obj){ChannelMask other = obj as ChannelMask; return this.__eq__(other);}
+    public override int GetHashCode(){ return (int)(toMask()); } 
+    public static bool operator<(ChannelMask v1, ChannelMask v2) { return v1.__lt__(v2); }
+    public static bool operator>(ChannelMask v1, ChannelMask v2) { return v1.__gt__(v2); }
 %}
 
 //functions that take/return a reference need to tell C# how to wrap them
@@ -68,6 +68,7 @@
 %{
 // Put headers and other declarations here
 #include "../Exceptions.h"
+#include "../Bin.h"
 #include "../Histogram.h"
 #include "../LibVersion.h"
 #include "../Timestamp.h"
@@ -140,6 +141,7 @@
 %include "../Types.h"
 %include "../LibVersion.h"
 %include "../Value.h"
+%include "../Bin.h"
 %include "../Histogram.h"
 %include "../Timestamp.h"
 %include "../TimeSpan.h"
@@ -199,35 +201,36 @@
 
 namespace std
 {
-	%template(ChannelData)				vector<mscl::WirelessDataPoint>;
-	%template(InertialDataPoints)		vector<mscl::InertialDataPoint>;
-	%template(Bytes)					vector<unsigned char>;
-	%template(DeviceList)				map<string, mscl::DeviceInfo>;
-	%template(NodeDiscoveries)			vector<mscl::NodeDiscovery>;
-	%template(DataSweeps)				vector<mscl::DataSweep>;
-	%template(LoggedDataSweeps)			vector <mscl::LoggedDataSweep>;
-	%template(InertialDataPackets)		vector<mscl::InertialDataPacket>;
-	%template(InertialChannels)			vector<mscl::InertialChannel>;
-	%template(DataCollectionMethods)	vector<mscl::WirelessTypes::DataCollectionMethod>;
-	%template(DataFormats)				vector<mscl::WirelessTypes::DataFormat>;
-	%template(WirelessSampleRates)		vector<mscl::WirelessTypes::WirelessSampleRate>;
-	%template(SamplingModes)			vector<mscl::WirelessTypes::SamplingMode>;
-	%template(DefaultModes)				vector<mscl::WirelessTypes::DefaultMode>;
-	%template(TransmitPowers)			vector<mscl::WirelessTypes::TransmitPower>;
-	%template(ChannelGroupSettings)		vector<mscl::WirelessTypes::ChannelGroupSetting>;
-	%template(FatigueModes)				vector<mscl::WirelessTypes::FatigueMode>;
-	%template(SampleRates)				vector<mscl::SampleRate>;
-	%template(ConfigIssues)				vector<mscl::ConfigIssue>;
-	%template(ChannelFields)			vector<mscl::InertialTypes::ChannelField>;
-	%template(ChannelMasks)				vector<mscl::ChannelMask>;
-	%template(ChannelGroups)			vector<mscl::ChannelGroup>;
-	%template(WirelessChannels)			vector<mscl::WirelessChannel>;
-	%template(DamageAngles)				map<uint8_t, float>;
-	%template(SnCurveSegments)			map<uint8_t, mscl::SnCurveSegment>;
+    %template(ChannelData)				vector<mscl::WirelessDataPoint>;
+    %template(InertialDataPoints)		vector<mscl::InertialDataPoint>;
+    %template(Bytes)					vector<unsigned char>;
+    %template(DeviceList)				map<string, mscl::DeviceInfo>;
+    %template(NodeDiscoveries)			vector<mscl::NodeDiscovery>;
+    %template(DataSweeps)				vector<mscl::DataSweep>;
+    %template(LoggedDataSweeps)			vector<mscl::LoggedDataSweep>;
+    %template(InertialDataPackets)		vector<mscl::InertialDataPacket>;
+    %template(InertialChannels)			vector<mscl::InertialChannel>;
+    %template(DataCollectionMethods)	vector<mscl::WirelessTypes::DataCollectionMethod>;
+    %template(DataFormats)				vector<mscl::WirelessTypes::DataFormat>;
+    %template(WirelessSampleRates)		vector<mscl::WirelessTypes::WirelessSampleRate>;
+    %template(SamplingModes)			vector<mscl::WirelessTypes::SamplingMode>;
+    %template(DefaultModes)				vector<mscl::WirelessTypes::DefaultMode>;
+    %template(TransmitPowers)			vector<mscl::WirelessTypes::TransmitPower>;
+    %template(ChannelGroupSettings)		vector<mscl::WirelessTypes::ChannelGroupSetting>;
+    %template(FatigueModes)				vector<mscl::WirelessTypes::FatigueMode>;
+    %template(SampleRates)				vector<mscl::SampleRate>;
+    %template(ConfigIssues)				vector<mscl::ConfigIssue>;
+    %template(ChannelFields)			vector<mscl::InertialTypes::ChannelField>;
+    %template(ChannelMasks)				vector<mscl::ChannelMask>;
+    %template(ChannelGroups)			vector<mscl::ChannelGroup>;
+    %template(WirelessChannels)			vector<mscl::WirelessChannel>;
+    %template(DamageAngles)				map<uint8_t, float>;
+    %template(SnCurveSegments)			map<uint8_t, mscl::SnCurveSegment>;
+    %template(RfSweep)                  map<uint32_t, int16_t>;
 
-	%ignore vector<mscl::Bin>::vector(size_type);				//no default constructor
-	%ignore vector<mscl::Bin>::resize;							//no default constructor
-	%template(Bins) vector<mscl::Bin>;
+    %ignore vector<mscl::Bin>::vector(size_type);				//no default constructor
+    %ignore vector<mscl::Bin>::resize;							//no default constructor
+    %template(Bins) vector<mscl::Bin>;
 };
 
 //C# should not create classes for the Exceptions classes. 

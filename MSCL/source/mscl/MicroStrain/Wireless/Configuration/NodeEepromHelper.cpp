@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -43,6 +43,19 @@ namespace mscl
     uint16 NodeEepromHelper::nodeAddress() const
     {
         return m_node->nodeAddress();
+    }
+
+    void NodeEepromHelper::applyEepromChanges()
+    {
+        //if we can just reset the radio to commit the changes
+        if(m_node->features().supportsEepromCommitViaRadioReset())
+        {
+            m_node->resetRadio();
+        }
+        else
+        {
+            m_node->cyclePower();
+        }
     }
 
     WirelessTypes::Frequency NodeEepromHelper::read_frequency() const
@@ -482,15 +495,30 @@ namespace mscl
         //if the sampling mode value is not set
         if(samplingModeVal == 0 || samplingModeVal == 0xFFFF || samplingModeVal == 0xAAAA)
         {
-            //need to check if burst is enabled
-            WirelessTypes::SyncSamplingMode mode = read_syncSamplingMode();
-            if(mode == WirelessTypes::syncMode_burst)
+            if(m_node->features().supportsSamplingMode(WirelessTypes::samplingMode_syncBurst) ||
+               m_node->features().supportsSamplingMode(WirelessTypes::samplingMode_sync))
             {
-                return WirelessTypes::samplingMode_syncBurst;
-            }
+                //need to check if burst is enabled
+                WirelessTypes::SyncSamplingMode mode = read_syncSamplingMode();
+                if(mode == WirelessTypes::syncMode_burst)
+                {
+                    //default to burst
+                    return WirelessTypes::samplingMode_syncBurst;
+                }
 
-            //default to the first sampling mode (sync sampling)
-            return WirelessTypes::samplingMode_sync;
+                //default to the sync
+                return WirelessTypes::samplingMode_sync;
+            }
+            else if(m_node->features().supportsSamplingMode(WirelessTypes::samplingMode_nonSync))
+            {
+                //default to non-sync
+                return WirelessTypes::samplingMode_nonSync;
+            }
+            else
+            {
+                //default to armed datalogging
+                return WirelessTypes::samplingMode_armedDatalog;
+            }
         }
 
         //cast to a sampling mode and return
@@ -628,15 +656,23 @@ namespace mscl
     {
         //read the value stored in eeprom
         uint16 eeVal = read(NodeEepromMap::SLEEP_INTERVAL).as_uint16();
-
         uint16 seconds = 5;
-        if(eeVal != 0)
+
+        //value stored in eeprom is direct seconds
+        if(m_node->features().supportsSleepIntervalSeconds())
         {
-            seconds = (MAX_SLEEP_INTERVAL_EEVAL / eeVal);
+            seconds = eeVal;
+        }
+        else
+        {
+            if(eeVal != 0)
+            {
+                seconds = (MAX_SLEEP_INTERVAL_EEVAL / eeVal);
+            }
         }
 
         //if the seconds value is more than 60 seconds
-        if(seconds > 60)
+        if(seconds > 60 || seconds == 0)
         {
             //the node defaults to 5 seconds
             seconds = 5;
@@ -647,11 +683,21 @@ namespace mscl
 
     void NodeEepromHelper::write_checkRadioInterval(uint8 interval)
     {
-        //calculate the eeprom value to write
-        uint16 eepromVal = (MAX_SLEEP_INTERVAL_EEVAL / interval);
+        uint16 valToWrite;
+
+        //value stored in eeprom is direct seconds
+        if(m_node->features().supportsSleepIntervalSeconds())
+        {
+            valToWrite = interval;
+        }
+        else
+        {
+            //calculate the eeprom value to write
+            valToWrite = (MAX_SLEEP_INTERVAL_EEVAL / interval);
+        }
 
         //write the value to the node
-        write(NodeEepromMap::SLEEP_INTERVAL, Value::UINT16(eepromVal));
+        write(NodeEepromMap::SLEEP_INTERVAL, Value::UINT16(valToWrite));
     }
 
     WirelessTypes::DefaultMode NodeEepromHelper::read_defaultMode() const

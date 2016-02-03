@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -71,6 +71,13 @@ namespace mscl
         static const Version MIN_BEACON_STATUS_FW(4, 0);
 
         return (m_baseInfo.firmwareVersion >= MIN_BEACON_STATUS_FW);
+    }
+
+    bool BaseStationFeatures::supportsRfSweepMode() const
+    {
+        static const Version MIN_RF_SWEEP_FW(4, 30448);
+
+        return (m_baseInfo.firmwareVersion >= MIN_RF_SWEEP_FW);
     }
 
     uint8 BaseStationFeatures::analogPortCount() const

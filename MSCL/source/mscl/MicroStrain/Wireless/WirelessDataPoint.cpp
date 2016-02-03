@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -15,25 +15,29 @@ namespace mscl
         DataPoint(valueType_float, anyType(0.0f)),
         m_channelId(WirelessChannel::channel_unknown),
         m_channelNumber(0),
-        m_channelName("unknown")
+        m_channelName([](){return "unknown";})
     {
     }
 
     //WirelessDataPoint constructor
-    WirelessDataPoint::WirelessDataPoint(WirelessChannel::ChannelId channelId, uint8 channelNumber, ValueType type, const anyType& value):
+    WirelessDataPoint::WirelessDataPoint(WirelessChannel::ChannelId channelId, uint8 channelNumber, ValueType type, const anyType& value,
+          const ChannelProperties& channelProperties):
         DataPoint(type, value),
         m_channelId(channelId),
         m_channelNumber(channelNumber),
-        m_channelName(WirelessChannel::channelName(m_channelId))
+        m_channelName(std::bind(WirelessChannel::channelName, m_channelId)),
+        m_channelProperties(channelProperties)
     {
     }
 
     //WirelessDataPoint constructor
-    WirelessDataPoint::WirelessDataPoint(WirelessChannel::ChannelId channelId, uint8 channelNumber, const std::string& channelName, ValueType type, const anyType& value):
+    WirelessDataPoint::WirelessDataPoint(WirelessChannel::ChannelId channelId, uint8 channelNumber, const Utils::Lazy<std::string>& channelName, ValueType type, const anyType& value,
+          const ChannelProperties& channelProperties):
         DataPoint(type, value),
         m_channelId(channelId),
         m_channelNumber(channelNumber),
-        m_channelName(channelName)
+        m_channelName(channelName),
+        m_channelProperties(channelProperties)
     {
     }
 
@@ -50,6 +54,14 @@ namespace mscl
 
     const std::string& WirelessDataPoint::channelName() const
     {
-        return m_channelName;
+        return *m_channelName;
+    }
+
+    const Value& WirelessDataPoint::channelProperty(ChannelPropertyId id) const
+    {
+        auto iter = m_channelProperties.find(id);
+        if(iter == m_channelProperties.end())
+          throw std::runtime_error("invalid property");
+        return iter->second;
     }
 }

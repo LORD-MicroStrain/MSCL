@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -47,23 +47,23 @@ BOOST_AUTO_TEST_CASE(BufferedLdc_Constructor_4ByteFloat)
     WirelessPacketCollector collector;
     collector.addDataPacket(packet);
 
-    DataSweep sweep;
-    collector.getNextDataSweep(sweep, 0);
+    DataSweeps sweeps;
+    collector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 2);
+
+    DataSweep sweep = sweeps.at(0);
     
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);
     BOOST_CHECK_EQUAL(sweep.data()[0].storedAs(), valueType_float);
 
-    collector.getNextDataSweep(sweep, 0);
+    sweep = sweeps.at(1);
     
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 2);    //check that the tick incremented (by MSCL, not by the packet)
     BOOST_CHECK_EQUAL(sweep.data()[0].storedAs(), valueType_float);
-
-    //check that calling getNextDataSweep now throws an Error_NoData exception
-    BOOST_CHECK_THROW(collector.getNextDataSweep(sweep, 0), Error_NoData);
 }
 
 BOOST_AUTO_TEST_CASE(BufferedLdc_Constructor_2ByteUint)
@@ -91,17 +91,17 @@ BOOST_AUTO_TEST_CASE(BufferedLdc_Constructor_2ByteUint)
     WirelessPacketCollector collector;
     collector.addDataPacket(packet);
 
-    DataSweep sweep;
-    collector.getNextDataSweep(sweep, 0);
+    DataSweeps sweeps;
+    collector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 1);
+
+    DataSweep sweep = sweeps.at(0);
     
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);
     BOOST_CHECK_EQUAL(sweep.data()[0].storedAs(), valueType_uint16);
     BOOST_CHECK_EQUAL(sweep.data()[0].as_uint16(), 254);    //check that the data was shifted (divided by 2)
-
-    //check that calling getNextDataSweep now throws an Error_NoData exception
-    BOOST_CHECK_THROW(collector.getNextDataSweep(sweep, 0), Error_NoData);
 }
 
 BOOST_AUTO_TEST_CASE(BufferedLdc_Constructor_2ByteUintShifted)
@@ -129,17 +129,17 @@ BOOST_AUTO_TEST_CASE(BufferedLdc_Constructor_2ByteUintShifted)
     WirelessPacketCollector collector;
     collector.addDataPacket(packet);
 
-    DataSweep sweep;
-    collector.getNextDataSweep(sweep, 0);
+    DataSweeps sweeps;
+    collector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 1);
+
+    DataSweep sweep = sweeps.at(0);
     
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);
     BOOST_CHECK_EQUAL(sweep.data()[0].storedAs(), valueType_uint16);
     BOOST_CHECK_EQUAL(sweep.data()[0].as_uint16(), 127);    //check that the data was shifted (divided by 2)
-
-    //check that calling getNextDataSweep now throws an Error_NoData exception
-    BOOST_CHECK_THROW(collector.getNextDataSweep(sweep, 0), Error_NoData);
 }
 
 BOOST_AUTO_TEST_CASE(BufferedLdc_Constructor_NoChannelMask)
@@ -165,8 +165,11 @@ BOOST_AUTO_TEST_CASE(BufferedLdc_Constructor_NoChannelMask)
     WirelessPacketCollector collector;
     collector.addDataPacket(packet);
 
-    DataSweep sweep;
-    collector.getNextDataSweep(sweep, 0);
+    DataSweeps sweeps;
+    collector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 1);
+
+    DataSweep sweep = sweeps.at(0);
     
     //check that the sweep data matches the packet we added
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);

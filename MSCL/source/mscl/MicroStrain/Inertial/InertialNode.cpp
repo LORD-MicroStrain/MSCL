@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -39,17 +39,10 @@ namespace mscl
         return m_impl->features();
     }
 
-    InertialDataPacket InertialNode::getNextDataPacket(uint32 timeout)                        
-    { 
-        InertialDataPacket packet;
-        m_impl->getNextDataPacket(packet, timeout); 
-        return packet;
-    }
-
     InertialDataPackets InertialNode::getDataPackets(uint32 timeout, uint32 maxPackets)                        
     { 
         InertialDataPackets packets;
-        m_impl->getDataPackets(packets, timeout, maxPackets); 
+        m_impl->getDataPackets(packets, timeout, maxPackets);
         return packets;
     }
 
@@ -77,9 +70,14 @@ namespace mscl
         return m_impl->totalPackets(); 
     }
 
-    void InertialNode::commandsTimeout(uint64 timeout)                                        
+    void InertialNode::timeout(uint64 timeout)                                        
     { 
-        m_impl->commandsTimeout(timeout); 
+        m_impl->timeout(timeout); 
+    }
+
+    uint64 InertialNode::timeout()
+    {
+        return m_impl->timeout();
     }
 
     std::string InertialNode::name()
@@ -130,6 +128,31 @@ namespace mscl
     void InertialNode::enableDataStream(InertialTypes::InertialCategory category, bool enable)
     {
         m_impl->enableDataStream(category, enable);
+    }
+
+    void InertialNode::resetFilter()
+    {
+        m_impl->resetFilter();
+    }
+
+    bool InertialNode::getAutoInitialization()
+    {
+        return m_impl->getAutoInitialization();
+    }
+
+    void InertialNode::setAutoInitialization(bool enable)
+    {
+        m_impl->setAutoInitialization(enable);
+    }
+
+    void InertialNode::setInitialAttitude(const EulerAngles& attitude)
+    {
+        m_impl->setInitialAttitude(attitude);
+    }
+
+    void InertialNode::setInitialHeading(float heading)
+    {
+        m_impl->setInitialHeading(heading);
     }
 
     EulerAngles InertialNode::getSensorToVehicleTransformation()

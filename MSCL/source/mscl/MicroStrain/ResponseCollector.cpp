@@ -1,25 +1,41 @@
 /*******************************************************************************
-Copyright(c) 2015 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
+#include "DataBuffer.h"
 #include "ResponseCollector.h"
 #include "ResponsePattern.h"
-#include "DataBuffer.h"
-
+#include "mscl/Communication/Connection.h"
 #include "Wireless/Packets/WirelessPacket.h"
 #include "Inertial/InertialDataField.h"
 
 namespace mscl
 {
+    ResponseCollector::ResponseCollector():
+      m_connection(nullptr)
+    { }
+
+    void ResponseCollector::setConnection(Connection* connection)
+    {
+        m_connection = connection;
+    }
+
     void ResponseCollector::registerResponse(ResponsePattern* response)
     {
         //get a lock on the response mutex
         mutex_lock_guard lock(m_responseMutex);
 
+        //determine the minimum byte position for the response
+        std::size_t minBytePos = 0;
+        if(m_connection)
+        {
+            minBytePos = m_connection->byteAppendPos();
+        }
+
         //add the ResponsePattern to the vector of expected responses
-        m_expectedResponses.push_back(response);
+        m_expectedResponses.emplace_back(response, minBytePos);
     }
 
     void ResponseCollector::unregisterResponse(ResponsePattern* response)
@@ -28,16 +44,15 @@ namespace mscl
         mutex_lock_guard lock(m_responseMutex);
 
         //find the ResponsePattern in the vector of expected responses
-        auto pos = std::find(m_expectedResponses.begin(), m_expectedResponses.end(), response);
-
-        //if we didn't find the ResponsePattern in the vector of responses
-        if(pos == m_expectedResponses.end())
+        for(auto itr = m_expectedResponses.begin(); itr < m_expectedResponses.end(); itr++)
         {
-            return;
+            if(itr->pattern == response)
+            {
+                //remove the response from the vector
+                m_expectedResponses.erase(itr);
+                return;
+            }
         }
-
-        //remove the response from the vector 
-        m_expectedResponses.erase(pos);
     }
 
     bool ResponseCollector::waitingForResponse()
@@ -46,6 +61,26 @@ namespace mscl
         mutex_lock_guard lock(m_responseMutex);
 
         return !m_expectedResponses.empty();
+    }
+
+    void ResponseCollector::adjustResponsesMinBytePos(std::size_t bytesToSubtract)
+    {
+        //get a lock on the response mutex
+        mutex_lock_guard lock(m_responseMutex);
+
+        //subtract the byte position from each expected response
+        for(auto itr = m_expectedResponses.begin(); itr < m_expectedResponses.end(); itr++)
+        {
+            if(bytesToSubtract > itr->minBytePosition)
+            {
+                //don't let the position go negative
+                itr->minBytePosition = 0;
+            }
+            else
+            {
+                itr->minBytePosition -= bytesToSubtract;
+            }
+        }
     }
 
     bool ResponseCollector::matchExpected(DataBuffer& data)
@@ -67,14 +102,20 @@ namespace mscl
             //look through all the expected responses
             for(auto itr = m_expectedResponses.begin(); itr < m_expectedResponses.end(); itr++)
             {
+                //don't try to match bytes that were in the buffer before the command was sent
+                if(data.readPosition() < itr->minBytePosition)
+                {
+                    continue;
+                }
+
                 //if we found a match
-                if((*itr)->match(data))
+                if(itr->pattern->match(data))
                 {
                     //match functions move the data pointer on success (even if not fully matched)
                     //need to make sure we don't roll back to our previous savepoint.
                     savepoint.commit();
 
-                    if((*itr)->fullyMatched())
+                    if(itr->pattern->fullyMatched())
                     {
                         //unregister the response
                         m_expectedResponses.erase(itr);
@@ -101,7 +142,7 @@ namespace mscl
         return false;
     }
 
-    bool ResponseCollector::matchExpected(const WirelessPacket& packet)
+    bool ResponseCollector::matchExpected(const WirelessPacket& packet, std::size_t lastReadPos)
     {
         //get a lock on the response mutex
         mutex_lock_guard lock(m_responseMutex);
@@ -109,10 +150,16 @@ namespace mscl
         //look through all the expected responses
         for(auto itr = m_expectedResponses.begin(); itr < m_expectedResponses.end(); itr++)
         {
-            //if we found a match
-            if((*itr)->match(packet))
+            //don't try to match bytes/packets that were in the buffer before the command was sent
+            if(lastReadPos < itr->minBytePosition)
             {
-                if((*itr)->fullyMatched())
+                continue;
+            }
+
+            //if we found a match
+            if(itr->pattern->match(packet))
+            {
+                if(itr->pattern->fullyMatched())
                 {
                     //unregister the response
                     m_expectedResponses.erase(itr);
@@ -134,9 +181,9 @@ namespace mscl
         for(auto itr = m_expectedResponses.begin(); itr < m_expectedResponses.end(); itr++)
         {
             //if we found a match
-            if((*itr)->match(field))
+            if(itr->pattern->match(field))
             {
-                if( (*itr)->fullyMatched() )
+                if(itr->pattern->fullyMatched() )
                 {
                     //unregister the response
                     m_expectedResponses.erase(itr);
