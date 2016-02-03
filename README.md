@@ -1,4 +1,4 @@
-To quickly get started, [download the latest pre-built binaries (1.21.1)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v1.21.1/MSCL_1.21.1.zip). 
+In most cases, you don't need to build MSCL from source. Simply [download the latest pre-built binaries (1.32.0)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v1.32.0/MSCL_1.32.0.zip). 
 
 If you want to build MSCL from source, see the [Build ReadMe](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme.md).
 
