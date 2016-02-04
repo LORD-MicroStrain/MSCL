@@ -15,9 +15,9 @@ The library is currently available in:
 ### Documentation
 [Quick Start Guide](http://lord-microstrain.github.io/MSCL/Documentation/Getting%20Started/index.html)
 
-[Public Documentation](http://lord-microstrain.github.io/MSCL/Documentation/MSCL_Public_Documentation/index.html) - Documentation for all of the public functionality of MSCL.
+[Public Documentation](http://lord-microstrain.github.io/MSCL/Documentation/MSCL%20API%20Documentation/index.html) - Documentation for all of the public functionality of MSCL.
 
-[Full Documentation](http://lord-microstrain.github.io/MSCL/Documentation/MSCL_Full_Documentation/index.html) - Full Documentation of everything in MSCL.
+[Full Documentation](http://lord-microstrain.github.io/MSCL/Documentation/MSCL%20Documentation/index.html) - Full Documentation of everything in MSCL.
 
 [Example Code](https://github.com/LORD-MicroStrain/MSCL/tree/master/MSCL_Examples)
   * Note: LabVIEW example code is coming soon. Contact us for availability.
