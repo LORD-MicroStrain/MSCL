@@ -5,6 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "AutoBalance_v2.h"
+#include "WirelessProtocol.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
@@ -13,14 +14,14 @@ namespace mscl
     {
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint8(0xAA);                //Start of Packet
-        cmd.append_uint8(0x05);                //Delivery Stop Flag
-        cmd.append_uint8(0x00);                //App Data Type
-        cmd.append_uint16(nodeAddress);        //Node address
-        cmd.append_uint8(0x07);                //Payload Length
-        cmd.append_uint16(0x0065);            //Command Id
-        cmd.append_uint8(channelNumber);    //Channel Number
-        cmd.append_float(targetPercent);    //Target Balance Value
+        cmd.append_uint8(0xAA);                                               //Start of Packet
+        cmd.append_uint8(0x05);                                               //Delivery Stop Flag
+        cmd.append_uint8(0x00);                                               //App Data Type
+        cmd.append_uint16(nodeAddress);                                       //Node address
+        cmd.append_uint8(0x07);                                               //Payload Length
+        cmd.append_uint16(WirelessProtocol::cmdId_autoBalance_v2);            //Command Id
+        cmd.append_uint8(channelNumber);                                      //Channel Number
+        cmd.append_float(targetPercent);                                      //Target Percentage Value
 
         //calculate the checksum of bytes 2-13
         uint16 checksum = cmd.calculateSimpleChecksum(1, 12);
@@ -43,13 +44,13 @@ namespace mscl
         WirelessPacket::Payload payload = packet.payload();
 
         //check the main bytes of the packet
-        if(packet.deliveryStopFlags().toByte() != 0x07 ||                    //delivery stop flag
-           packet.type() != WirelessPacket::packetType_nodeSuccessReply ||    //app data type
-           packet.nodeAddress() != m_nodeAddress ||                            //node address
-           payload.size() != 0x10 ||                                        //payload length
-           payload.read_uint16(0) != 0x0065 ||                                //command id
-           payload.read_uint8(2) != m_channelNumber ||                        //channel number (echo)
-           payload.read_float(3) != m_targetPercent                            //target percent (echo)
+        if(packet.deliveryStopFlags().toInvertedByte() != 0x07 ||               //delivery stop flag
+           packet.type() != WirelessPacket::packetType_nodeSuccessReply ||      //app data type
+           packet.nodeAddress() != m_nodeAddress ||                             //node address
+           payload.size() != 0x10 ||                                            //payload length
+           payload.read_uint16(0) != WirelessProtocol::cmdId_autoBalance_v2 ||  //command id
+           payload.read_uint8(2) != m_channelNumber ||                          //channel number (echo)
+           payload.read_float(3) != m_targetPercent                             //target percent (echo)
            )
         {
             //failed to match some of the bytes

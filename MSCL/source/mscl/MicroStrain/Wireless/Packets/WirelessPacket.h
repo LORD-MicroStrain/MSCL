@@ -23,35 +23,23 @@ namespace mscl
 
         //=====================================================================================================
         //Constants: Wireless Packet Bytes
-        //    ASPP_START_OF_PACKET_BYTE      - 0xAA      - The "Start of Packet" byte for the ASPP packets
-        //    ASPP_POS_START_OF_PACKET       - 0;        - The byte position for the Start of Packet byte
-        //    ASPP_POS_DELIVERY_FLAGS        - 1;        - The byte position for the Delivery Stop Flags
-        //    ASPP_POS_APP_DATA_TYPE         - 2;        - The byte position for the App Data Type
-        //    ASPP_POS_NODE_ADDRESS          - 3;        - The byte position for the Node Address
-        //    ASPP_POS_PAYLOAD_LEN           - 5;        - The byte position for the payload length
-        //    ASPP_POS_PAYLOAD_START         - 6;        - The byte position for the start of the payload bytes
+        //    ASPP_V1_START_OF_PACKET_BYTE      - 0xAA      - The "Start of Packet" byte for the ASPP v1 packets
+        //    ASPP_V1_START_OF_PACKET_BYTE      - 0xAB      - The "Start of Packet" byte for the ASPP v2 packets
         //=====================================================================================================
-        static const uint8 ASPP_START_OF_PACKET_BYTE       = 0xAA;
-        static const short ASPP_POS_START_OF_PACKET        = 0;
-        static const short ASPP_POS_DELIVERY_FLAGS         = 1;
-        static const short ASPP_POS_APP_DATA_TYPE          = 2;
-        static const short ASPP_POS_NODE_ADDRESS           = 3;
-        static const short ASPP_POS_PAYLOAD_LEN            = 5;
-        static const short ASPP_POS_PAYLOAD_START          = 6;
+        static const uint8 ASPP_V1_START_OF_PACKET_BYTE       = 0xAA;
+        static const uint8 ASPP_V2_START_OF_PACKET_BYTE       = 0xAB;
 
         //=====================================================================================================
         //Constants: Wireless Packet Information
-        //    ASPP_MIN_RESPONSE_PACKET_SIZE     - 10    - The minimum number of bytes to make a valid ASPP Response packet (Payload len + LQI + RSSI + Checksum)
-        //    ASPP_NUM_BYTES_BEFORE_PAYLOAD     - 6     - The number of bytes in the ASPP packets before the payload
-        //    ASPP_NUM_BYTES_AFTER_PAYLOAD      - 4     - The number of bytes in the ASPP packets after the payload
-        //    ASPP_NUM_COMMAND_BYTES            - 2     - The number of command bytes in the ASPP packets
-        //    START_CHECKSUM_POS                - 1     - The starting position for calculating the checksum in ASPP packets
+        //    ASPP_MIN_RESPONSE_PACKET_SIZE     - 10    - The minimum number of bytes to make a valid ASPP Response packet (Payload len + NODE RSSI + BASE RSSI + Checksum)
+        //    ASPP_V1_NUM_BYTES_BEFORE_PAYLOAD  - 6     - The number of bytes in the ASPP packets before the payload
+        //    ASPP_V1_NUM_BYTES_AFTER_PAYLOAD   - 4     - The number of bytes in the ASPP packets after the payload
         //=====================================================================================================
-        static const uint16 ASPP_MIN_RESPONSE_PACKET_SIZE     = 10;
-        static const uint16 ASPP_NUM_BYTES_BEFORE_PAYLOAD     = 6;
-        static const uint16 ASPP_NUM_BYTES_AFTER_PAYLOAD      = 4;
-        static const uint16 ASPP_NUM_COMMAND_BYTES            = 2;
-        static const uint16 START_CHECKSUM_POS                = 1;
+        static const uint16 ASPP_MIN_RESPONSE_PACKET_SIZE       = 10;
+        static const uint16 ASPP_V1_NUM_BYTES_BEFORE_PAYLOAD    = 6;
+        static const uint16 ASPP_V1_NUM_BYTES_AFTER_PAYLOAD     = 4;
+        static const uint16 ASPP_V2_NUM_BYTES_BEFORE_PAYLOAD    = 9;
+        static const uint16 ASPP_V2_NUM_BYTES_AFTER_PAYLOAD     = 4;
 
         //=====================================================================================================
         //Enums: PacketType
@@ -66,6 +54,7 @@ namespace mscl
         //    packetType_AsyncDigital                    - 0x0E - Asynchronous Digital (Event) Packet
         //    packetType_AsyncDigitalAnalog              - 0x0F - Asynchronous Digital and Analog (Event) Packet
         //    packetType_beaconEcho                      - 0x10 - Beacon Echo Packet
+        //    packetType_diagnostic                      - 0x11 - Diagnostic Packet
         //    packetType_LDC_16ch                        - 0x14 - LDC Packet with 16 channel support
         //    packetType_nodeDiscovery_v4                - 0x16 - Node Discovery Packet (version 4)
         //    packetType_nodeDiscovery_v2                - 0x17 - Node Discovery Packet (version 2)
@@ -82,6 +71,7 @@ namespace mscl
         //    packetType_HclSmartBearing_Calibrated      - 0xA1 - HclSmartBearing Calibrated data Packet
         //    packetType_HclSmartBearing_Raw             - 0xA2 - HclSmartBearing Raw data Packet
         //    packetType_rawAngleStrain                  - 0xA3 - Raw Angle Strain data Packet
+        //    packetType_roller                          - 0xA4 - Roller data Packet
         //=====================================================================================================
         enum PacketType
         {
@@ -97,6 +87,7 @@ namespace mscl
             packetType_AsyncDigital                    = 0x0E,
             packetType_AsyncDigitalAnalog              = 0x0F,
             packetType_beaconEcho                      = 0x10,
+            packetType_diagnostic                      = 0x11,
             packetType_LDC_16ch                        = 0x14,
             packetType_nodeDiscovery_v4                = 0x16,
             packetType_nodeDiscovery_v2                = 0x17,
@@ -112,7 +103,8 @@ namespace mscl
             packetType_SHM                             = 0xA0,
             packetType_HclSmartBearing_Calibrated      = 0xA1,
             packetType_HclSmartBearing_Raw             = 0xA2,
-            packetType_rawAngleStrain                  = 0xA3
+            packetType_rawAngleStrain                  = 0xA3,
+            packetType_roller                          = 0xA4,
         };
 
         //===================================================
@@ -160,11 +152,11 @@ namespace mscl
 
         //Variable: m_type
         //    The packet type of the packet
-        PacketType    m_type;
+        PacketType m_type;
 
         //Variable: m_nodeAddress
         //    The node address in the packet
-        NodeAddress m_nodeAddress;
+        uint32 m_nodeAddress;
 
         //Variable: m_nodeRSSI
         //    The node received signal strength indicator (strength of which the node received the command from the base station).
@@ -231,14 +223,14 @@ namespace mscl
         //
         //Returns:
         //    The node address of the packet
-        NodeAddress nodeAddress() const;
+        uint32 nodeAddress() const;
 
         //Function: nodeAddress
         //    Sets the node address of the packet
         //
         //Parameters:
         //    address - The node address to set 
-        void nodeAddress(NodeAddress address);
+        void nodeAddress(uint32 address);
 
         //Function: nodeRSSI
         //    Gets the node RSSI of the packet

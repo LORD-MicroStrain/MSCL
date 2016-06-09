@@ -23,6 +23,11 @@ namespace mscl
         //    Initializes a DeliveryStopFlags object given specific values
         DeliveryStopFlags(bool pc, bool appBoard, bool linkBoard, bool baseStation);
 
+    private:
+        //Variable: m_inverted
+        //  Whether the delivery stop flag logic is inverted (like in ASPP v1) or not (ASPP v2).
+        bool m_inverted;
+
     public:
         //Variable: pc
         //    A stop flag representing the pc
@@ -62,12 +67,26 @@ namespace mscl
         //    true if the two DeliveryStopFlags are identical, false otherwise
         bool compare(const DeliveryStopFlags& src) const;
 
+        //Function: fromInvertedByte
+        //    Sets all the stop flags based on the inverted (ASPP v1) byte value passed in
+        //
+        //Parameters:
+        //    dsf - The inverted (ASPP v1) delivery stop flag byte
+        static DeliveryStopFlags fromInvertedByte(uint8 dsf);
+
         //Function: fromByte
         //    Sets all the stop flags based on the byte value passed in
         //
         //Parameters:
         //    dsf - The delivery stop flag byte
         static DeliveryStopFlags fromByte(uint8 dsf);
+
+        //Function: toInvertedByte
+        //    Gets the inverted (ASPP v1) delivery stop flag byte value based on the current stop flags set
+        //
+        //Returns:
+        //    The inverted (ASPP v1) delivery stop flag byte built from the current set stop flags
+        uint8 toInvertedByte() const;
 
         //Function: toByte
         //    Gets the delivery stop flag byte value based on the current stop flags set

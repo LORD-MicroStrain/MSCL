@@ -299,6 +299,32 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeTimeBetweenBursts)
     BOOST_CHECK(time4 == TimeSpan::Minutes(667));
 }
 
+BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeEventDuration)
+{
+    NodeInfo info1(Version(8, 0), WirelessModels::node_bladeImpactLink, 0, WirelessTypes::region_usa);
+    std::shared_ptr<NodeFeatures> features1 = NodeFeatures::create(info1);
+
+    NodeInfo info2(Version(10, 0), WirelessModels::node_bladeImpactLink, 0, WirelessTypes::region_usa);
+    std::shared_ptr<NodeFeatures> features2 = NodeFeatures::create(info2);
+
+    uint32 f1 = 1000;
+    uint32 f2 = 50;
+    uint32 f3 = 247058;
+    uint32 f4 = 72435123;
+
+    BOOST_CHECK_EQUAL(features1->normalizeEventDuration(f1), 1000);
+    BOOST_CHECK_EQUAL(features2->normalizeEventDuration(f1), 1000);
+
+    BOOST_CHECK_EQUAL(features1->normalizeEventDuration(f2), 1000);
+    BOOST_CHECK_EQUAL(features2->normalizeEventDuration(f2), 50);
+
+    BOOST_CHECK_EQUAL(features1->normalizeEventDuration(f3), 248000);
+    BOOST_CHECK_EQUAL(features2->normalizeEventDuration(f3), 247060);
+
+    BOOST_CHECK_EQUAL(features1->normalizeEventDuration(f4), 65535000);
+    BOOST_CHECK_EQUAL(features2->normalizeEventDuration(f4), 655350);
+}
+
 BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_usa_brazil)
 {
     {
@@ -475,7 +501,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeHardwareGain_sgLinkRgd)
     BOOST_CHECK_CLOSE(features->normalizeHardwareGain(0), 30.5, 0.1);
 }
 
-BOOST_AUTO_TEST_CASE(ChannelFeatures_normalizeHardwareGain_vLink)
+BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeHardwareGain_vLink)
 {
     NodeInfo info(Version(1, 0), WirelessModels::node_vLink, 0, WirelessTypes::region_usa);
 
@@ -489,6 +515,52 @@ BOOST_AUTO_TEST_CASE(ChannelFeatures_normalizeHardwareGain_vLink)
     BOOST_CHECK_CLOSE(features->normalizeHardwareGain(3799), 3798.9500567536893, 0.1);
     BOOST_CHECK_CLOSE(features->normalizeHardwareGain(13070), 13073.73046875, 0.1);
     BOOST_CHECK_CLOSE(features->normalizeHardwareGain(13073.73046875), 13073.73046875, 0.1);
+}
+
+BOOST_AUTO_TEST_CASE(NodeFeatures_filterSettlingTime_a)
+{
+    NodeInfo info(Version(1, 0), WirelessModels::node_tcLink_6ch, 0, WirelessTypes::region_usa);
+
+    std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
+
+    BOOST_CHECK_EQUAL(features->maxFilterSettlingTime(SampleRate::Hertz(32)), WirelessTypes::settling_4ms);
+    BOOST_CHECK_EQUAL(features->maxFilterSettlingTime(SampleRate::Hertz(8)), WirelessTypes::settling_4ms);
+    BOOST_CHECK_EQUAL(features->maxFilterSettlingTime(SampleRate::Hertz(4)), WirelessTypes::settling_8ms);
+    BOOST_CHECK_EQUAL(features->maxFilterSettlingTime(SampleRate::Hertz(2)), WirelessTypes::settling_16ms);
+    BOOST_CHECK_EQUAL(features->maxFilterSettlingTime(SampleRate::Hertz(1)), WirelessTypes::settling_60ms);
+    BOOST_CHECK_EQUAL(features->maxFilterSettlingTime(SampleRate::Seconds(10)), WirelessTypes::settling_200ms);
+
+    WirelessTypes::SamplingMode mode = WirelessTypes::samplingMode_nonSync;
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_4ms, mode), WirelessTypes::sampleRate_8Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_8ms, mode), WirelessTypes::sampleRate_4Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_16ms, mode), WirelessTypes::sampleRate_2Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_40ms, mode), WirelessTypes::sampleRate_1Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_60ms, mode), WirelessTypes::sampleRate_1Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_101ms_90db, mode), WirelessTypes::sampleRate_2Sec);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_120ms_65db, mode), WirelessTypes::sampleRate_2Sec);
+}
+
+BOOST_AUTO_TEST_CASE(NodeFeatures_filterSettlingTime_b)
+{
+    NodeInfo info(Version(1, 0), WirelessModels::node_tcLink_1ch, 0, WirelessTypes::region_usa);
+
+    std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
+
+    BOOST_CHECK_EQUAL(features->maxFilterSettlingTime(SampleRate::Hertz(128)), WirelessTypes::settling_4ms);
+    BOOST_CHECK_EQUAL(features->maxFilterSettlingTime(SampleRate::Hertz(64)), WirelessTypes::settling_4ms);
+    BOOST_CHECK_EQUAL(features->maxFilterSettlingTime(SampleRate::Hertz(32)), WirelessTypes::settling_8ms);
+    BOOST_CHECK_EQUAL(features->maxFilterSettlingTime(SampleRate::Hertz(16)), WirelessTypes::settling_16ms);
+    BOOST_CHECK_EQUAL(features->maxFilterSettlingTime(SampleRate::Hertz(8)), WirelessTypes::settling_32ms);
+    BOOST_CHECK_EQUAL(features->maxFilterSettlingTime(SampleRate::Hertz(2)), WirelessTypes::settling_200ms);
+
+    WirelessTypes::SamplingMode mode = WirelessTypes::samplingMode_nonSync;
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_4ms, mode), WirelessTypes::sampleRate_64Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_8ms, mode), WirelessTypes::sampleRate_32Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_16ms, mode), WirelessTypes::sampleRate_16Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_32ms, mode), WirelessTypes::sampleRate_8Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_60ms, mode), WirelessTypes::sampleRate_4Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_101ms_90db, mode), WirelessTypes::sampleRate_4Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_120ms_65db, mode), WirelessTypes::sampleRate_4Hz);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

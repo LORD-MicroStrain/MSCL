@@ -112,10 +112,6 @@ namespace mscl
         //    A <Timestamp> representing the last time communication was achieved with the BaseStation.
         Timestamp m_lastCommTime;
 
-        //Variable: m_nodesLastCommTime
-        //    A map of <NodeAddress> to <Timestamp> objects, holding the last communication time for nodes with this BaseStation.
-        std::map<NodeAddress, Timestamp> m_nodesLastCommTime;
-
     private:
         //Function: getTimeForBeacon
         //    Gets the system time in UTC seconds since Unix Epoch as close to 0 milliseconds as possible
@@ -192,6 +188,9 @@ namespace mscl
 
         //Function: lastCommunicationTime
         //    Gets the <Timestamp> for the last time we communicated with the BaseStation.
+        //
+        //Exceptions:
+        //  - <Error_NoData>: There is no communication time logged for this device.
         const Timestamp& lastCommunicationTime() const;
 
         //Function: read
@@ -632,266 +631,91 @@ namespace mscl
         BaseStationAnalogPair getAnalogPair(uint8 portNumber) const;
 
     private:
-        //Function: ping_v1
+        //Function: protocol_ping_v1
         //    Performs version 1 of the Ping BaseStation command.
-        //
-        //Returns:
-        //    true if successfully pinged the base station, false otherwise.
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool ping_v1();
+        bool protocol_ping_v1();
 
-        //Function: ping_v2
+        //Function: protocol_ping_v2
         //    Performs version 2 of the Ping BaseStation command.
-        //
-        //Returns:
-        //    true if successfully pinged the base station, false otherwise.
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool ping_v2();
+        bool protocol_ping_v2();
 
-        //Function: read_v1
+        //Function: protocol_read_v1
         //    Performs version 1 of the Read BaseStation EEPROM command.
-        //
-        //Parameters:
-        //    eepromAddress - The Eeprom address to get the value for.
-        //    result - The value that was read from Eeprom if successful.
-        //
-        //Returns:
-        //    true if the read was successful, false otherwise.
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool read_v1(uint16 eepromAddress, uint16& result);
+        bool protocol_read_v1(uint16 eepromAddress, uint16& result);
 
-        //Function: read_v2
+        //Function: protocol_read_v2
         //    Performs version 2 of the Read BaseStation EEPROM command.
-        //
-        //Parameters:
-        //    eepromAddress - The Eeprom address to get the value for.
-        //    result - The value that was read from Eeprom if successful.
-        //
-        //Returns:
-        //    true if the read was successful, false otherwise.
-        //
-        //Exceptions:
-        //    - <Error_NotSupported>: Unsupported eeprom location.
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool read_v2(uint16 eepromAddress, uint16& result);
+        bool protocol_read_v2(uint16 eepromAddress, uint16& result);
 
-        //Function: write_v1
+        //Function: protocol_write_v1
         //    Performs version 1 of the Write BaseStation EEPROM command.
-        //
-        //Parameters:
-        //    eepromAddress - The Eeprom address to set the value for.
-        //    value - The value to write to the Eeprom.
-        //
-        //Returns:
-        //    true if the write was successful, false otherwise.
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool write_v1(uint16 eepromAddress, uint16 value);
+        bool protocol_write_v1(uint16 eepromAddress, uint16 value);
 
-        //Function: write_v2
+        //Function: protocol_write_v2
         //    Performs version 2 of the Write BaseStation EEPROM command.
-        //
-        //Parameters:
-        //    eepromAddress - The Eeprom address to set the value for.
-        //    value - The value to write to the Eeprom.
-        //
-        //Returns:
-        //    true if the write was successful, false otherwise.
-        //
-        //Exceptions:
-        //    - <Error_NotSupported>: Unsupported eeprom location or value.
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool write_v2(uint16 eepromAddress, uint16 value);
+        bool protocol_write_v2(uint16 eepromAddress, uint16 value);
 
-        //Function: enableBeacon_v1
+        //Function: protocol_enableBeacon_v1
         //    Performs version 1 of the Enable Beacon command.
-        //
-        //Parameters:
-        //    utcTime - The start time for the beacon in UTC seconds from the Unix Epoch (01/01/1970).
-        //
-        //Returns:
-        //    A <Timestamp> representing the initial time that was sent to start the beacon.
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation
-        //    - <Error_Communication>: The enable beacon command has failed.
-        Timestamp enableBeacon_v1(uint32 utcTime);
+        Timestamp protocol_enableBeacon_v1(uint32 utcTime);
 
-        //Function: enableBeacon_v2
+        //Function: protocol_enableBeacon_v2
         //    Performs version 2 of the Enable Beacon command.
-        //
-        //Parameters:
-        //    utcTime - The start time for the beacon in UTC seconds from the Unix Epoch (01/01/1970).
-        //
-        //Returns:
-        //    A <Timestamp> representing the initial time that was sent to start the beacon.
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation
-        //    - <Error_Communication>: The enable beacon command has failed.
-        Timestamp enableBeacon_v2(uint32 utcTime);
+        Timestamp protocol_enableBeacon_v2(uint32 utcTime);
 
-        //Function: beaconStatus_v1
+        //Function: protocol_beaconStatus_v1
         //    Performs version 1 of the Beacon Status command.
-        //
-        //Returns:
-        //    A <BeaconStatus> object containing status information of the beacon.
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation
-        //    - <Error_Communication>: The beacon status command has failed.
-        BeaconStatus beaconStatus_v1();
+        BeaconStatus protocol_beaconStatus_v1();
 
-        //Function: node_pageDownload_v1
+        //Function: protocol_startRfSweepMode
+        //    Starts the BaseStation in RF Sweep Mode.
+        void protocol_startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options);
+
+        //Function: protocol_node_pageDownload_v1
         //    Performs Version 1 of the Node Page Download command.
-        //
-        //Parameters:
-        //    nodeAddress - The node address of the Node to download data from
-        //    pageIndex - The page index to download from the Node
-        //    data - Output parameter that contains the resulting data downloaded from the Node, if any
-        //
-        //Returns:
-        //    true if the page download command succeeded, false otherwise
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation
-        bool node_pageDownload_v1(NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data);
+        bool protocol_node_pageDownload_v1(NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data);
 
-        //Function: node_shortPing_v1
+        //Function: protocol_node_shortPing_v1
         //    Performs Version 1 of the Node Short Ping command.
-        //
-        //Parameters:
-        //    nodeAddress - The node address of the Node to short ping.
-        //
-        //Returns:
-        //    true if the short ping command succeeded, false otherwise.
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool node_shortPing_v1(NodeAddress nodeAddress);
+        bool protocol_node_shortPing_v1(NodeAddress nodeAddress);
 
-        //Function: node_shortPing_v2
+        //Function: protocol_node_shortPing_v2
         //    Performs Version 2 of the Node Short Ping command.
-        //
-        //Parameters:
-        //    nodeAddress - The node address of the Node to short ping.
-        //
-        //Returns:
-        //    true if the short ping command succeeded, false otherwise.
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool node_shortPing_v2(NodeAddress nodeAddress);
+        bool protocol_node_shortPing_v2(NodeAddress nodeAddress);
 
-        //Function: node_readEeprom_v1
+        //Function: protocol_node_readEeprom_v1
         //    Performs Version 1 of the Node Read Eeprom command.
-        //
-        //Parameters:
-        //    nodeAddress - the node address of the node to read from.
-        //    eepromAddress - the EEPROM address to read the value from.
-        //    eepromValue - holds the result value read from EEPROM if successful.
-        //
-        //Returns:
-        //    true if the command was successful, false otherwise.
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation
-        bool node_readEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue);
+        bool protocol_node_readEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue);
 
-        //Function: node_readEeprom_v2
+        //Function: protocol_node_readEeprom_v2
         //    Performs Version 2 of the Node Read Eeprom command.
-        //
-        //Parameters:
-        //    nodeAddress - the node address of the node to read from.
-        //    eepromAddress - the EEPROM address to read the value from.
-        //    eepromValue - holds the result value read from EEPROM if successful.
-        //
-        //Returns:
-        //    true if the command was successful, false otherwise.
-        //
-        //Exceptions:
-        //    - <Error_NotSupported>: Unsupported eeprom location.
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation
-        bool node_readEeprom_v2(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue);
+        bool protocol_node_readEeprom_v2(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue);
 
-        //Function: node_writeEeprom_v1
+        //Function: protocol_node_writeEeprom_v1
         //    Performs Version 1 of the Node Write Eeprom command.
-        //
-        //Parameters:
-        //    nodeAddress - the node address of the node to write to.
-        //    eepromAddress - the EEPROM address to write the value to.
-        //    value - the value to write to EEPROM.
-        //
-        //Returns:
-        //    true if the write eeprom command succeeded, false otherwise.
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation
-        bool node_writeEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16 value);
+        bool protocol_node_writeEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16 value);
 
-        //Function: node_writeEeprom_v2
+        //Function: protocol_node_writeEeprom_v2
         //    Performs Version 2 of the Node Write Eeprom command.
-        //
-        //Parameters:
-        //    nodeAddress - the node address of the node to write to.
-        //    eepromAddress - the EEPROM address to write the value to.
-        //    value - the value to write to EEPROM.
-        //
-        //Returns:
-        //    true if the write eeprom command succeeded, false otherwise.
-        //
-        //Exceptions:
-        //    - <Error_NotSupported>: Unsupported eeprom location or value.
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation
-        bool node_writeEeprom_v2(NodeAddress nodeAddress, uint16 eepromAddress, uint16 value);
+        bool protocol_node_writeEeprom_v2(NodeAddress nodeAddress, uint16 eepromAddress, uint16 value);
 
-        //Function: node_autoBalance_v1
+        //Function: protocol_node_autoBalance_v1
         //    Performs Version 1 of the Node AutoBalance command.
-        //
-        //Parameters:
-        //    nodeAddress - The node address of the Node to send the command to.
-        //    channelNumber - The channel number (ch1 = 1, ch8 = 8) to balance.
-        //    targetPercent - The target percentage (0 - 100) to balance to.
-        //    result - The <AutoBalanceResult> of the command (empty in the case of v1).
-        //
-        //Returns:
-        //    true if the command succeeded, false if it failed.
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool node_autoBalance_v1(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result);
+        bool protocol_node_autoBalance_v1(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result);
 
-        //Function: node_autoBalance_v2
+        //Function: protocol_node_autoBalance_v2
         //    Performs Version 2 of the Node AutoBalance command.
-        //
-        //Parameters:
-        //    nodeAddress - The node address of the Node to send the command to.
-        //    channelNumber - The channel number (ch1 = 1, ch8 = 8) to balance.
-        //    targetPercent - The target percentage (0 - 100) to balance to.
-        //    result - The <AutoBalanceResult> of the command.
-        //
-        //Returns:
-        //    true if the command succeeded, false if it failed.
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool node_autoBalance_v2(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result);
+        bool protocol_node_autoBalance_v2(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result);
+
+        //Function: protocol_node_erase_v1
+        //    Performs Version 1 of the Node erase command.
+        bool protocol_node_erase_v1(NodeAddress nodeAddress);
+
+        //Function: protocol_node_erase_v2
+        //    Performs Version 2 of the Node erase command.
+        bool protocol_node_erase_v2(NodeAddress nodeAddress);
 
     public:
-        //Function: node_lastCommunicationTime
-        //    Gets the <Timestamp> for the last time MSCL communicated with the given node address.
-        //
-        //Parameters:
-        //    nodeAddress - The node address of the Node to check for.
-        const Timestamp& node_lastCommunicationTime(NodeAddress nodeAddress);
-
         //Function: node_ping
         //    Pings the specified Node.
         //
@@ -996,6 +820,17 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the BaseStation
         virtual bool node_pageDownload(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data);
 
+        //Function: node_erase
+        //    Sends the Erase command to a Node.
+        //
+        //Parameters:
+        //    nodeProtocol - The <WirelessProtocol> for the Node.
+        //    nodeAddress - The node address of the Node to send the command to.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
+        virtual bool node_erase(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress);
+
         //Function: node_startSyncSampling
         //    Sends the Start Synchronized Sampling command to a Node.
         //
@@ -1042,16 +877,6 @@ namespace mscl
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         virtual void node_triggerArmedDatalogging(NodeAddress nodeAddress);
-
-        //Function: node_erase
-        //    Sends the Erase command to a Node.
-        //
-        //Parameters:
-        //    nodeAddress - The node address of the Node to send the command to.
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        virtual bool node_erase(NodeAddress nodeAddress);
 
         //Function: node_autoBalance
         //    Sends the AutoBalance command to a Node.

@@ -20,7 +20,7 @@ WirelessPacket buildAutoCalNodeRecResponse(int nodeAddress)
     payload.append_float(5.0f);    //time to completion
 
     WirelessPacket packet;
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x07));
     packet.type(WirelessPacket::packetType_nodeReceived);
     packet.nodeAddress(nodeAddress);
     packet.payload(payload.data());
@@ -43,7 +43,7 @@ WirelessPacket buildAutoCalCompletionResponse(int nodeAddress)
 
     //build the correct packet response first
     WirelessPacket packet;
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x07));
     packet.type(WirelessPacket::packetType_nodeSuccessReply);
     packet.nodeAddress(nodeAddress);
     packet.payload(payload.data());

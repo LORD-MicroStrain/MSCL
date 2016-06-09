@@ -25,12 +25,19 @@ namespace mscl
     private:
         RawAngleStrainPacket();        //default constructor disabled
 
+        static const uint8 SPECIFIC_ANGLE_MODE = 0x00;
+        static const uint8 SPECIFIC_ANGLE_MODE_SYNC = 0x10;
+        static const uint8 DIST_ANGLE_MODE = 0x01;
+        static const uint8 DIST_ANGLE_MODE_SYNC = 0x11;
+
         //Function: parseSweeps
         //    Parses the passed in WirelessPacket for all the sweep information and adds a sweep to the sweeps container
         //
         //Exceptions:
         //    - <Error_UnknownSampleRate>: failed to find the sample rate in the list
         void parseSweeps();
+
+        void parseSweepsSync();
 
     public:
         //Function: integrityCheck
@@ -64,6 +71,13 @@ namespace mscl
         //Returns:
         //  The angles determined from the distribution range.
         static std::vector<float> distributeAngles(float low, float high, uint8 count);
+
+        //Function: buildChannelName
+        //  Builds a channel name for the Raw Angle Strain data.
+        //
+        //Parameters:
+        //  angle - The angle of the data.
+        static std::string buildChannelName(float angle);
     };
 
 }

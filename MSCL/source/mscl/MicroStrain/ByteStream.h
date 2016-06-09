@@ -198,6 +198,19 @@ namespace mscl
         //    - std::out_of_range: The index requested is out of range
         uint32 read_uint32(std::size_t position) const;
 
+        //Function: read_uint64
+        //    Reads an 8-byte unsigned integer from the byte stream
+        //
+        //Parameters:
+        //    position - The 0-based position to read from
+        //
+        //Returns:
+        //    The uint64 at the requested position
+        //
+        //Exceptions:
+        //    - std::out_of_range: The index requested is out of range
+        uint64 read_uint64(std::size_t position) const;
+
         //Function: read_float
         //    Reads a 4-byte float from the byte stream
         //

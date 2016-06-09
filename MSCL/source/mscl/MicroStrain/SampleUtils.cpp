@@ -125,12 +125,12 @@ namespace mscl
         case WirelessTypes::sampleRate_10Sec:           return SampleRate::Seconds(10);
         case WirelessTypes::sampleRate_30Sec:           return SampleRate::Seconds(30);
         case WirelessTypes::sampleRate_1Min:            return SampleRate::Seconds(60);
-        case WirelessTypes::sampleRate_2Min:            return SampleRate::Seconds(2 * 60);
-        case WirelessTypes::sampleRate_5Min:            return SampleRate::Seconds(5 * 60);
-        case WirelessTypes::sampleRate_10Min:           return SampleRate::Seconds(10 * 60);
-        case WirelessTypes::sampleRate_30Min:           return SampleRate::Seconds(30 * 60);
-        case WirelessTypes::sampleRate_60Min:           return SampleRate::Seconds(60 * 60);
-        case WirelessTypes::sampleRate_24Hours:         return SampleRate::Seconds(60 * 60 * 24);
+        case WirelessTypes::sampleRate_2Min:            return SampleRate::Seconds(120);
+        case WirelessTypes::sampleRate_5Min:            return SampleRate::Seconds(300);
+        case WirelessTypes::sampleRate_10Min:           return SampleRate::Seconds(600);
+        case WirelessTypes::sampleRate_30Min:           return SampleRate::Seconds(1800);
+        case WirelessTypes::sampleRate_60Min:           return SampleRate::Seconds(3600);
+        case WirelessTypes::sampleRate_24Hours:         return SampleRate::Seconds(86400);
 
         default:
             throw Error_UnknownSampleRate();

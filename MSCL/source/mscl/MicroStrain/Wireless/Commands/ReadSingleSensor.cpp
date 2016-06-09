@@ -5,6 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "ReadSingleSensor.h"
+#include "WirelessProtocol.h"
 #include "mscl/MicroStrain/ChecksumBuilder.h"
 
 namespace mscl
@@ -13,10 +14,10 @@ namespace mscl
     {
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint8(0x03);                //Start of Packet
-        cmd.append_uint16(nodeAddress);        //Node address    (2 bytes)
-        cmd.append_uint8(0x01);                //Command Byte
-        cmd.append_uint8(channelNumber);    //Channel number
+        cmd.append_uint8(WirelessProtocol::cmdId_readSingleSensor); //Command ID
+        cmd.append_uint16(nodeAddress);                             //Node address    (2 bytes)
+        cmd.append_uint8(0x01);                                     //Command Byte
+        cmd.append_uint8(channelNumber);                            //Channel number
 
         return cmd;
     }

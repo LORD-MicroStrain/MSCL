@@ -22,7 +22,9 @@ namespace mscl
         m_highCapacity(false),
         m_percentBandwidth(0.0f),
         m_networkOk(true),
-        m_configApplied(false)
+        m_configApplied(false),
+        m_disabledBeacon(false),
+        m_availableSlotCount(0)
     {
     }
 
@@ -49,7 +51,9 @@ namespace mscl
             //verify that the sampling mode is Sync Sampling
             SyncNodeConfig config(info.get());
             WirelessTypes::SamplingMode samplingMode = config.samplingMode();
-            if(samplingMode != WirelessTypes::samplingMode_sync && samplingMode != WirelessTypes::samplingMode_syncBurst)
+            if(samplingMode != WirelessTypes::samplingMode_sync &&
+               samplingMode != WirelessTypes::samplingMode_syncBurst &&
+               samplingMode != WirelessTypes::samplingMode_syncEvent)
             {
                 //nodes being added to the network must have their configuration be in Sync Sampling mode.
                 ConfigIssues issues;
@@ -67,7 +71,17 @@ namespace mscl
             }
 
             //add the node address to the network order container
-            m_networkOrder.push_back(node.nodeAddress());
+            m_allNodes.push_back(node.nodeAddress());
+
+            //add the node to the correct container based on event driven or not
+            if(samplingMode == WirelessTypes::samplingMode_syncEvent)
+            {
+                m_eventNodes.push_back(node.nodeAddress());
+            }
+            else
+            {
+                m_nonEventNodes.push_back(node.nodeAddress());
+            }
 
             //refresh the entire network
             refresh();
@@ -100,13 +114,29 @@ namespace mscl
         m_nodes.erase(nodeAddress);
 
         //find the node address in the networkOrder vector
-        auto node = std::find(m_networkOrder.begin(), m_networkOrder.end(), nodeAddress);
+        auto node = std::find(m_allNodes.begin(), m_allNodes.end(), nodeAddress);
 
         //if we found the node
-        if(node != m_networkOrder.end())
+        if(node != m_allNodes.end())
         {
             //remove from the network order vector
-            m_networkOrder.erase(node);
+            m_allNodes.erase(node);
+        }
+
+        //remove from the event nodes if its in that container
+        node = std::find(m_eventNodes.begin(), m_eventNodes.end(), nodeAddress);
+        if(node != m_eventNodes.end())
+        {
+            m_eventNodes.erase(node);
+        }
+        else
+        {
+            //remove from the non-event nodes if its in that container
+            node = std::find(m_nonEventNodes.begin(), m_nonEventNodes.end(), nodeAddress);
+            if(node != m_nonEventNodes.end())
+            {
+                m_nonEventNodes.erase(node);
+            }
         }
 
         //refresh the entire network
@@ -131,18 +161,27 @@ namespace mscl
         try
         {
             //loop through each node in the network
-            for(NodeAddress nodeAddress : m_networkOrder)
+            for(NodeAddress nodeAddress : m_allNodes)
             {
                 //calculate the values and store in the SyncNetworkInfo map, not optimizing at this point
                 calculateNetworkValues(nodeAddress, false);
             }
 
-            //sort the network by bandwidth
-            sortByBandwidth();
+            //sort the non-event nodes by bandwidth
+            sortByBandwidth( m_nonEventNodes );
 
-            //find slots for each node in the network 
-            //Note: node's status are set to OK or Does Not Fit in this function
-            findSlotsForNodes();
+            //find slots for each non-event node in the network
+            //  Note: node's status are set to OK or Does Not Fit in this function
+            findSlotsForNodes( m_nonEventNodes );
+
+            //recalculate transmissions per group and bandwidth for event nodes
+            divvyUpEventTransmissions();
+
+            //sort the full list of nodes (event and non-event) by bandwidth
+            sortByBandwidth(m_allNodes);
+
+            //find slots for full list of nodes
+            findSlotsForNodes(m_allNodes);
 
             //update the status of each node, and calculate the total percent bandwidth
             updateNetworkStatus();
@@ -207,8 +246,16 @@ namespace mscl
 
     void SyncSamplingNetwork::applyConfiguration()
     {
-        //clear any pending configurations (refreshes the network if cleared any)
-        clearAllPendingConfigs();
+        static const uint8 LEGACY_MODE_TDMA_OFFSET = 3;
+
+        //loop through each configuration 
+        for(auto &nodeItr : m_nodes)
+        {
+            if(nodeItr.second->hasPendingConfig())
+            {
+                throw Error("Cannot apply network settings with a pending config.");
+            }
+        }
 
         //if the network is not OK
         if(!m_networkOk)
@@ -224,8 +271,10 @@ namespace mscl
             reTx_toWrite = WirelessTypes::retransmission_off;
         }
 
+        bool legacyMode = inLegacyMode();
+
         //go through each node in the network
-        for(NodeAddress nodeAddress : m_networkOrder)
+        for(NodeAddress nodeAddress : m_allNodes)
         {
             SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
 
@@ -244,8 +293,17 @@ namespace mscl
             //write the group size value that we calculated
             config.groupSize(nodeInfo.m_groupSize);
 
-            //write the TDMA address that we found
-            config.tdmaAddress(nodeInfo.m_tdmaAddress);
+            //if we have a mixed legacy network,
+            if(legacyMode && nodeInfo.syncSamplingVersion() == 2)
+            {
+                //write the TDMA address that we found, adding in the offset for legacy mode
+                config.tdmaAddress(nodeInfo.m_tdmaAddress + LEGACY_MODE_TDMA_OFFSET);
+            }
+            else
+            {
+                //write the TDMA address that we found
+                config.tdmaAddress(nodeInfo.m_tdmaAddress);
+            }
 
             //get the node's current retransmission (lossless) value
             WirelessTypes::NodeRetransmission reTx = config.retransmission();
@@ -262,7 +320,7 @@ namespace mscl
             }
 
             //if lossless is enabled and we are in burst mode
-            if(m_lossless && config.syncSamplingMode() == WirelessTypes::syncMode_burst)
+            if(m_lossless && config.samplingMode() == WirelessTypes::samplingMode_syncBurst)
             {
                 //write the max retransmissions per burst that we calculated
                 config.maxRetransPerBurst(nodeInfo.m_maxRetxPerBurst);
@@ -287,10 +345,14 @@ namespace mscl
             throw Error("Network configuration has not been applied. Cannot start sampling.");
         }
 
-        //disable the beacon on the master base station
-        //    Note: The beacon is the key to starting the network. 
-        //          Each node should be sent the start command, then the beacon should be enabled.
-        m_networkBase.disableBeacon();
+        if(!m_disabledBeacon)
+        {
+            //disable the beacon on the master base station
+            //    Note: The beacon is the key to starting the network. 
+            //          Each node should be sent the start command, then the beacon should be enabled.
+            m_networkBase.disableBeacon();
+            m_disabledBeacon = true;
+        }
 
         //send the start sync sampling command to all nodes in the network
         sendStartToAllNodes();
@@ -306,10 +368,14 @@ namespace mscl
             throw Error("Network configuration has not been applied. Cannot start sampling.");
         }
 
-        //disable the beacon on the master base station
-        //    Note: The beacon is the key to starting the network. 
-        //          Each node should be sent the start command, then the beacon should be enabled.
-        m_networkBase.disableBeacon();
+        if(!m_disabledBeacon)
+        {
+            //disable the beacon on the master base station
+            //    Note: The beacon is the key to starting the network. 
+            //          Each node should be sent the start command, then the beacon should be enabled.
+            m_networkBase.disableBeacon();
+            m_disabledBeacon = true;
+        }
 
         //send the start sync sampling command to all nodes in the network
         sendStartToAllNodes();
@@ -343,49 +409,6 @@ namespace mscl
         return *(result->second.get());
     }
 
-    void SyncSamplingNetwork::setPendingConfig(uint16 nodeAddress, const WirelessNodeConfig& config)
-    {
-        //set the pending config for the given node
-        getNodeNetworkInfo(nodeAddress).setPendingConfig(config);
-
-        //refresh the entire network
-        refresh();
-    }
-
-    void SyncSamplingNetwork::clearPendingConfig(uint16 nodeAddress)
-    {
-        //clear the pending config for the given node
-        getNodeNetworkInfo(nodeAddress).clearPendingConfig();
-
-        //refresh the entire network
-        refresh();
-    }
-
-    void SyncSamplingNetwork::clearAllPendingConfigs()
-    {
-        bool clearedConfig = false;
-
-        //loop through each configuration 
-        for(auto &nodeItr : m_nodes)
-        {
-            if(nodeItr.second->hasPendingConfig())
-            {
-                //clear the configuration
-                nodeItr.second->clearPendingConfig();
-
-                //we've cleared at least 1 pending config
-                clearedConfig = true;
-            }
-        }
-
-        if(clearedConfig)
-        {
-            //refresh the entire network
-            refresh();
-        }
-    }
-
-
     void SyncSamplingNetwork::calculateNetworkValues(NodeAddress nodeAddress, bool optimizeBandwidth)
     {
         SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
@@ -400,55 +423,39 @@ namespace mscl
             //only use lossless if lossless is enabled for the network AND the node isn't set to "retransmission_disabled"
             bool useLossless = (m_lossless && config.retransmission() != WirelessTypes::retransmission_disabled);
 
-            ChannelMask activeChs = config.activeChannels();
-
-            //get the total number of active channels set on the Node
-            uint16 totalChannels = activeChs.count();
-
-            WirelessModels::NodeModel model = nodeInfo.m_model;
-
-            //if this is the iepe-link, and channel 4 (temp) is enabled
-            if(activeChs.enabled(4) && model == WirelessModels::node_iepeLink)
-            {
-                //channel 4 doesn't count as a channel in calculations (it transmits at a rate of once per burst)
-                totalChannels -= 1;
-            }
-
-            //get the SampleRate set on the Node
+            uint16 totalChannels = config.activeChannelCount();
             SampleRate sampleRate = config.sampleRate();
+            uint8 bytesPerSample = WirelessTypes::dataFormatSize(config.dataFormat());
 
             uint32 maxRetransmissionPerBurst = 0;
+
+            //calculate the number of bytes per sweep
+            nodeInfo.m_bytesPerSweep = SyncSamplingFormulas::bytesPerSweep(bytesPerSample, totalChannels);
         
             //if the sampling mode is Burst
-            if(config.syncSamplingMode() == WirelessTypes::syncMode_burst)
+            if(config.samplingMode() == WirelessTypes::samplingMode_syncBurst)
             {
                 //burst mode has a pre-defined group size
                 groupSize = 1;
-
-                //get the number of bytes per sample
-                uint8 bytesPerSample = WirelessTypes::dataFormatSize(config.dataFormat());
-
-                //calculate the number of bytes per sweep
-                uint32 bytesPerSweep = SyncSamplingFormulas::bytesPerSweep(bytesPerSample, totalChannels);
 
                 //get the number of sweeps per session set on the Node
                 uint32 sweepsPerSession = config.sweepsPerSession();
 
                 //calculate the total number of bytes
-                uint32 totalBytesPerBurst = totalChannels * sweepsPerSession * bytesPerSample;
+                nodeInfo.m_bytesPerBurst = totalChannels * sweepsPerSession * bytesPerSample;
 
                 //calculate the sample duration
                 double sampleDuration = SyncSamplingFormulas::sampleDuration(sweepsPerSession, sampleRate);
 
                 //calculate the maximum number of bytes per packet
-                uint32 maxBytesPerPacket = SyncSamplingFormulas::maxDataBytesPerPacket(bytesPerSweep, useLossless);
+                nodeInfo.m_maxBytesPerPacket = SyncSamplingFormulas::maxBytesPerBurstPacket(nodeInfo.m_bytesPerSweep, useLossless);
 
                 //calculate the total number of needed transmissions
-                uint32 totalNeededTx = SyncSamplingFormulas::totalNeededBurstTx(totalBytesPerBurst, maxBytesPerPacket);
+                uint32 totalNeededTx = SyncSamplingFormulas::totalNeededBurstTx(nodeInfo.m_bytesPerBurst, nodeInfo.m_maxBytesPerPacket);
                 maxRetransmissionPerBurst = totalNeededTx;
 
                 //if there are not bytes per burst
-                if(totalBytesPerBurst == 0)
+                if(nodeInfo.m_bytesPerBurst == 0)
                 {
                     //the transmissions per group is 0
                     txPerGroup = 0;
@@ -484,24 +491,21 @@ namespace mscl
                     }
                 }
 
-                //get the number of bytes per sample
-                uint8 bytesPerSample = WirelessTypes::dataFormatSize(config.dataFormat());
-
                 //calculate the total number of bytes per second
-                double bytesPerSecond = SyncSamplingFormulas::bytesPerSecond(sampleRate, totalChannels, bytesPerSample);
+                nodeInfo.m_bytesPerSecond = SyncSamplingFormulas::bytesPerSecond(sampleRate, totalChannels, bytesPerSample);
 
                 //calculate the maximum bytes per packet
-                uint32 maxBytesPerPacket = SyncSamplingFormulas::maxBytesPerPacket(sampleRate, useLossless, optimizeBandwidth, nodeInfo.syncSamplingVersion());
+                nodeInfo.m_maxBytesPerPacket = SyncSamplingFormulas::maxBytesPerPacket(sampleRate, useLossless, optimizeBandwidth, nodeInfo.syncSamplingVersion());
 
                 //calculate the group size
-                groupSize = SyncSamplingFormulas::groupSize(bytesPerSecond, maxBytesPerPacket, useHighCapacity);
+                groupSize = SyncSamplingFormulas::groupSize(nodeInfo.m_bytesPerSecond, nodeInfo.m_maxBytesPerPacket, useHighCapacity);
 
                 //calculate the number of transmissions per group
-                txPerGroup = SyncSamplingFormulas::txPerGroup(bytesPerSecond, maxBytesPerPacket, groupSize);
+                txPerGroup = SyncSamplingFormulas::txPerGroup(nodeInfo.m_bytesPerSecond, nodeInfo.m_maxBytesPerPacket, groupSize);
             }
 
             //calculate the maximum TDMA address
-            uint32 maxTdma = SyncSamplingFormulas::maxTdmaAddress(txPerGroup, groupSize);
+            uint32 maxTdma = SyncSamplingFormulas::maxTdmaAddress(txPerGroup, groupSize, inLegacyMode());
 
             //calculate the transmissions per second
             float txPerSecond = SyncSamplingFormulas::txPerSecond(txPerGroup, groupSize);
@@ -517,7 +521,7 @@ namespace mscl
             else
             {
                 //calculate the percent of total bandwidth
-                percentBandwidth = SyncSamplingFormulas::percentBandwidth(txPerSecond);
+                percentBandwidth = SyncSamplingFormulas::percentBandwidth(txPerSecond, inLegacyMode());
             }
 
             //if the configuration was previously applied, it isn't any longer
@@ -553,6 +557,112 @@ namespace mscl
         }
     }
 
+    void SyncSamplingNetwork::divvyUpEventTransmissions()
+    {
+        if(m_eventNodes.size() == 0)
+        {
+            return;
+        }
+
+        //convert the "mini-slots" to real slots
+        uint16 largeSlotsLeft = m_availableSlotCount / SyncSamplingFormulas::slotSpacing();
+
+        //if all nodes only have 1 slot available to them, make sure they can still fit
+        if(m_eventNodes.size() > largeSlotsLeft)
+        {
+            return;
+        }
+
+        double totalBytesPerSec = 0.0;
+
+        //calculate the total Bytes per Second for all event nodes
+        for(auto nodeAddress : m_eventNodes)
+        {
+            SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
+
+            //add up the continuous bytes per second for each event node (as if sampling continuously)
+            totalBytesPerSec += nodeInfo.m_bytesPerSecond;
+        }
+
+        //calculate the slots per second for all event nodes
+        for(auto nodeAddress : m_eventNodes)
+        {
+            SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
+
+            nodeInfo.m_txPerGroup = Utils::floorBase2(largeSlotsLeft * (nodeInfo.m_bytesPerSecond / totalBytesPerSec));
+
+            if(nodeInfo.dutyCycle() > 1.0)
+            {
+                nodeInfo.dutyCycle(1.0f);
+            }
+
+            if(nodeInfo.m_txPerGroup == 0)
+            {
+                nodeInfo.m_txPerGroup = 1;
+            }
+        }
+
+        float highestDutyCycle = 0.0;
+        SyncNetworkInfo* highestDutyCycleNodeInfo = nullptr;
+
+        //make sure we aren't over using our slots
+        while(totalEventTxPerGroup() > largeSlotsLeft)
+        {
+            //divide the slots of the node with the highest duty cycle in half (ignoring nodes with 1 slot)
+
+            highestDutyCycle = 0.0;
+
+            for(auto nodeAddress : m_eventNodes)
+            {
+                SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
+
+                //only look at nodes with more than 1 tx per group
+                if(nodeInfo.m_txPerGroup > 1)
+                {
+                    //keep track of the highest duty cycle
+                    if(nodeInfo.dutyCycle() > highestDutyCycle)
+                    {
+                        highestDutyCycle = nodeInfo.dutyCycle();
+                        highestDutyCycleNodeInfo = &nodeInfo;
+                    }
+                }
+            }
+
+            highestDutyCycleNodeInfo->m_txPerGroup /= 2;
+        }
+
+        float txPerSecond = 0.0f;
+        bool legacyMode = inLegacyMode();
+        
+        //update other values that were affected by txPerGroup changing
+        for(auto nodeAddress : m_eventNodes)
+        {
+            SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
+
+            //don't update on log-only nodes
+            if(nodeInfo.m_percentBandwidth != 0.0f)
+            {
+                txPerSecond = SyncSamplingFormulas::txPerSecond(nodeInfo.m_txPerGroup, nodeInfo.m_groupSize);
+
+                nodeInfo.m_maxTdmaAddress = SyncSamplingFormulas::maxTdmaAddress(nodeInfo.m_txPerGroup, nodeInfo.m_groupSize, legacyMode);
+                nodeInfo.m_percentBandwidth = SyncSamplingFormulas::percentBandwidth(txPerSecond, legacyMode);
+                nodeInfo.m_percentBandwidth_optimized = nodeInfo.m_percentBandwidth;
+            }
+        }
+    }
+
+    double SyncSamplingNetwork::totalEventTxPerGroup()
+    {
+        double result = 0.0;
+        for(auto nodeAddress : m_eventNodes)
+        {
+            SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
+            result += nodeInfo.m_txPerGroup;
+        }
+
+        return result;
+    }
+
     void SyncSamplingNetwork::updateNetworkStatus()
     {
         float okStatusBandwidth = 0.0f;
@@ -561,7 +671,7 @@ namespace mscl
         m_percentBandwidth = 0.0f;
 
         //loop through each node in the network
-        for(NodeAddress nodeAddress : m_networkOrder)
+        for(NodeAddress nodeAddress : m_allNodes)
         {
             SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
 
@@ -583,7 +693,7 @@ namespace mscl
         bool foundNodeNotInNetwork = false;
 
         //loop through each node in the network again
-        for(NodeAddress nodeAddress : m_networkOrder)
+        for(NodeAddress nodeAddress : m_allNodes)
         {
             SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
 
@@ -608,10 +718,10 @@ namespace mscl
         m_networkOk = !foundNodeNotInNetwork;
     }
 
-    void SyncSamplingNetwork::sortByBandwidth()
+    void SyncSamplingNetwork::sortByBandwidth(std::vector<NodeAddress>& container)
     {
-        //sort the network order container, using the sortingFunction
-        std::sort(m_networkOrder.begin(), m_networkOrder.end(), std::bind(&SyncSamplingNetwork::sortingFunction, this, std::placeholders::_1, std::placeholders::_2));
+        //sort the passed in container of node addresses, using the sortingFunction
+        std::sort(container.begin(), container.end(), std::bind(&SyncSamplingNetwork::sortingFunction, this, std::placeholders::_1, std::placeholders::_2));
     }
 
     bool SyncSamplingNetwork::sortingFunction(NodeAddress address1, NodeAddress address2)
@@ -642,7 +752,7 @@ namespace mscl
         }
     }
 
-    bool SyncSamplingNetwork::findSlotsForNodes()
+    bool SyncSamplingNetwork::findSlotsForNodes(const std::vector<NodeAddress>& nodes)
     {
         bool result = true;
 
@@ -657,9 +767,10 @@ namespace mscl
         //clear, than resize the slots container to the total slots
         m_slots.clear();
         m_slots.resize(totalSlots, false);
+        m_availableSlotCount = totalSlots;
 
         //loop through all the node addresses (in network order)
-        for(NodeAddress nodeAddress : m_networkOrder)
+        for(NodeAddress nodeAddress : nodes)
         {
             SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
             SyncNodeConfig config(&nodeInfo);
@@ -706,7 +817,7 @@ namespace mscl
         bool checkSamplingDelay = false;
         if(nodeInfo.syncSamplingVersion() == 1)
         {
-            checkSamplingDelay = SyncSamplingFormulas::checkSamplingDelay(config.syncSamplingMode(), sampleRate, model);
+            checkSamplingDelay = SyncSamplingFormulas::checkSamplingDelay(config.samplingMode(), sampleRate, model);
         }
         
         //find the sampling delay for this node
@@ -760,7 +871,7 @@ namespace mscl
         uint32 samplingDelayCheck = static_cast<uint32>(SyncSamplingFormulas::MAX_SLOTS / sampleRate.samplesPerSecond());
 
         //check if the node can be assigned slot 1 or not
-        bool canHaveSlot1 = SyncSamplingFormulas::canHaveSlot1(model, nodeInfo.syncSamplingVersion());
+        bool canHaveSlot1 = SyncSamplingFormulas::canHaveFirstSlot(model, nodeInfo.syncSamplingVersion());
 
         bool foundTakenSlot = false;
         uint16 resultSlot = 0;
@@ -773,7 +884,7 @@ namespace mscl
         for(slotItr = SyncSamplingFormulas::MIN_TDMA; slotItr < totalSlots && slotItr <= maxAddress; slotItr += slotSize)
         {
             //if this slot is available
-            if(m_slots.at(0) == false)
+            if(m_slots.at(slotItr - 1) == false)
             {
                 //if this is slot 1 and this node is not allowed to have slot 1
                 if(slotItr == 1 && !canHaveSlot1)
@@ -795,15 +906,15 @@ namespace mscl
 
                 checkSlotsItr = slotItr;
 
-                while( ((checkSlotsItr + slotSize) < slotTotalPerNode) &&        //while there is room to continue looking
-                    (numTxFound < totalTxRequired) &&                            //and we haven't found all the transmission slots that are required
-                    !foundTakenSlot)                                            //and we haven't found a taken slot
+                while( ((checkSlotsItr - 1 + slotSize) <= slotTotalPerNode) &&        //while there is room to continue looking
+                       (numTxFound < totalTxRequired) &&                         //and we haven't found all the transmission slots that are required
+                       !foundTakenSlot)                                          //and we haven't found a taken slot
                 {
                     //check that the next [slotSize] spaces are available
                     for(extraSlotItr = 1; extraSlotItr < slotSize; ++extraSlotItr)
                     {
                         //if we find a taken slot
-                        if(m_slots.at(checkSlotsItr + extraSlotItr) == true)
+                        if(m_slots.at(checkSlotsItr - 1 + extraSlotItr) == true)
                         {
                             //stop looking at this slot
                             foundTakenSlot = true;
@@ -829,15 +940,16 @@ namespace mscl
                     resultSlot = slotItr;
 
                     //need to fill in all the slots that this node will be using (all the way up the line)
-                    while((slotItr + slotSize) < totalSlots)
+                    while((slotItr - 1 + slotSize) <= totalSlots)
                     {
                         //loop through [slotSize] number of slots
                         for(uint16 writeSlot = 0; writeSlot < slotSize; ++writeSlot)
                         {
-                            assert(m_slots.at(slotItr + writeSlot) == false);    //none of these slots should already be taken
+                            assert(m_slots.at(slotItr - 1 + writeSlot) == false);    //none of these slots should already be taken
 
                             //set the slot to 1 to signify it is taken
-                            m_slots.at(slotItr + writeSlot) = true;
+                            m_slots.at(slotItr - 1 + writeSlot) = true;
+                            m_availableSlotCount--;
                         }
 
                         //move the slotItr the number of slots between transmissions
@@ -869,7 +981,7 @@ namespace mscl
         }
 
         //reset the "optimized" flags for all the nodes
-        for(NodeAddress nodeAddress : m_networkOrder)
+        for(NodeAddress nodeAddress : m_allNodes)
         {
             getNodeNetworkInfo(nodeAddress).m_optimized = false;
         }
@@ -886,7 +998,7 @@ namespace mscl
             optimizationNeeded = false;
 
             //loop through nodes from lowest %BW to highest %BW
-            for(auto networkItr = m_networkOrder.rbegin(); networkItr != m_networkOrder.rend(); ++networkItr)
+            for(auto networkItr = m_allNodes.rbegin(); networkItr != m_allNodes.rend(); ++networkItr)
             {
                 NodeAddress nodeAddress = *networkItr;
 
@@ -907,7 +1019,8 @@ namespace mscl
                 SyncNodeConfig config(&nodeInfo);
 
                 //don't optimize in the following situations
-                if( config.syncSamplingMode() == WirelessTypes::syncMode_burst || 
+                if( config.samplingMode() == WirelessTypes::samplingMode_syncBurst ||
+                    config.samplingMode() == WirelessTypes::samplingMode_syncEvent ||
                     config.sampleRate() >= HIGH_SAMPLERATE ||
                     SyncSamplingFormulas::txPerSecond(nodeInfo.m_txPerGroup, nodeInfo.m_groupSize) >= 64.0f ||
                     config.retransmission() == WirelessTypes::retransmission_disabled
@@ -922,10 +1035,10 @@ namespace mscl
                 calculateNetworkValues(nodeAddress, true);
 
                 //re-sort the network by bandwidth
-                sortByBandwidth();
+                sortByBandwidth(m_allNodes);
 
                 //find slots for all the nodes again, using their newly calculated values
-                bool allNodesFoundSlots = findSlotsForNodes();
+                bool allNodesFoundSlots = findSlotsForNodes(m_allNodes);
 
                 //if the network is no longer OK (slots not found for all nodes)
                 if(!allNodesFoundSlots)
@@ -934,10 +1047,10 @@ namespace mscl
                     calculateNetworkValues(nodeAddress, false);
 
                     //re-sort the network by bandwidth
-                    sortByBandwidth();
+                    sortByBandwidth(m_allNodes);
 
                     //find slots for all the nodes again
-                    findSlotsForNodes();
+                    findSlotsForNodes(m_allNodes);
 
                     //stop and return on the first node that fails to optimize
                     //    Note: this is ok because we are working in reverse order of % bandwidth
@@ -1224,7 +1337,7 @@ namespace mscl
         bool nodeSuccess = false;
 
         //go through each node in the network
-        for(NodeAddress nodeAddress : m_networkOrder)
+        for(NodeAddress nodeAddress : m_allNodes)
         {
             SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
 
@@ -1259,6 +1372,23 @@ namespace mscl
                 }
             }
         }
+    }
+
+    bool SyncSamplingNetwork::inLegacyMode()
+    {
+        //go through each node in the network
+        for(NodeAddress nodeAddress : m_allNodes)
+        {
+            SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
+
+            //if we find any node with v1 sync version, the network is in legacy mode
+            if(nodeInfo.syncSamplingVersion() == 1)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
     
     //TODO: possibly don't optimize nodes that already have extra bandwidth (are slow)

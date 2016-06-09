@@ -615,6 +615,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="source\mscl\Bin.h" />
+    <ClInclude Include="source\mscl\BitMask.h" />
     <ClInclude Include="source\mscl\Communication\BoostCommunication.h" />
     <ClInclude Include="source\mscl\Communication\Connection.h" />
     <ClInclude Include="source\mscl\Communication\Connection_Impl.h" />
@@ -693,6 +694,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStationButton.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStationInfo.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStation_Impl.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\CalCoefficients.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\ChannelMask.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ArmForDatalogging.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\AutoBalance.h" />
@@ -707,6 +709,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_SetBeacon_v2.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_WriteEeprom_v2.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\Erase.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\Erase_v2.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\PageDownload.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom_v2.h" />
@@ -729,6 +732,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\ConfigIssue.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\Eeprom.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\EepromLocation.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\EventTriggerOptions.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\FatigueOptions.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\HardwareGain.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\HistogramOptions.h" />
@@ -746,7 +750,10 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_usb.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_wsda.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\ChannelGroup.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\FlashInfo.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_bladeImpactLink.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_cfBearingTempLink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_dvrtlink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_envlinkMini.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_envlinkPro.h" />
@@ -768,12 +775,14 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink1ch.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink3ch.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink6ch.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_torqueLink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink2.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink_legacy.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeInfo.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\LinearEquation.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\LoggedDataSweep.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\NodeCommTimes.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\NodeDiscovery.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\NodeMemory.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\AsyncDigitalAnalogPacket.h" />
@@ -790,6 +799,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ShortPing.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\DataSweep.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\DeliveryStopFlags.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\DiagnosticPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\HclSmartBearing_RawPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket_16ch.h" />
@@ -799,6 +809,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket_v4.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\RawAngleStrainPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\RfSweepPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\RollerPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\ShmPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket_16ch.h" />
@@ -844,6 +855,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\Bin.cpp" />
+    <ClCompile Include="source\mscl\BitMask.cpp" />
     <ClCompile Include="source\mscl\Communication\Connection.cpp" />
     <ClCompile Include="source\mscl\Communication\Devices.cpp" />
     <ClCompile Include="source\mscl\Communication\SerialConnection.cpp" />
@@ -915,6 +927,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStationButton.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStationInfo.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStation_Impl.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\CalCoefficients.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\ChannelMask.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ArmForDatalogging.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\AutoBalance.cpp" />
@@ -929,6 +942,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_SetBeacon_v2.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_WriteEeprom_v2.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\Erase.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\Erase_v2.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\PageDownload.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom_v2.cpp" />
@@ -951,6 +965,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\ConfigIssue.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\Eeprom.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\EepromLocation.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\EventTriggerOptions.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\FatigueOptions.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\HardwareGain.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\HistogramOptions.cpp" />
@@ -968,7 +983,10 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_usb.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_wsda.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\ChannelGroup.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\FlashInfo.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_bladeImpactLink.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_cfBearingTempLink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_dvrtlink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_envlinkMini.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_envlinkPro.cpp" />
@@ -990,12 +1008,14 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink1ch.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink3ch.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink6ch.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_torqueLink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink2.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink_legacy.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeInfo.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\LinearEquation.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\LoggedDataSweep.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\NodeCommTimes.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\NodeDiscovery.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\NodeMemory.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\AsyncDigitalAnalogPacket.cpp" />
@@ -1012,6 +1032,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ShortPing.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\DataSweep.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\DeliveryStopFlags.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\DiagnosticPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\HclSmartBearing_RawPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket_16ch.cpp" />
@@ -1021,6 +1042,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket_v4.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\RawAngleStrainPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\RfSweepPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\RollerPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\ShmPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket_16ch.cpp" />

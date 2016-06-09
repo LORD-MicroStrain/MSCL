@@ -22,13 +22,6 @@ namespace mscl
         BaseStation_SetBeacon& operator=(const BaseStation_SetBeacon&);        //assignement operator disabled
 
     public:
-        //=====================================================================================================
-        //Constants: Packet Information
-        //    COMMAND_ID    - 0xBEAC        - The Command ID for the set beacon command
-        //=====================================================================================================
-        static const uint16 COMMAND_ID    = 0xBEAC;
-
-
         //Function: buildCommand
         //    Builds the set beacon command packet, using the passed in seconds as the start time
         //

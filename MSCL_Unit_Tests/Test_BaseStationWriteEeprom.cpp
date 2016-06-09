@@ -40,7 +40,7 @@ WirelessPacket buildBaseWriteEepromResponseV2(uint16 eepromLocation, uint16 valu
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(0x1234);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x07));
     packet.type(WirelessPacket::packetType_baseSuccessReply);
     packet.payload(bs.data());    //give the packet the payload bytes we created
 
@@ -58,7 +58,7 @@ WirelessPacket buildBaseWriteEepromFailureV2(uint16 eepromLocation, uint16 value
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(0x1234);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x07));
     packet.type(WirelessPacket::packetType_baseErrorReply);
     packet.payload(bs.data());    //give the packet the payload bytes we created
 

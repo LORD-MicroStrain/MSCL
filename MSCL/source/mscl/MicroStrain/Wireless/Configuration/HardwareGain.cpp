@@ -52,7 +52,7 @@ namespace mscl
 
     uint16 HardwareGain::gainToBits_sgLinkOem(double gain)
     {
-        return static_cast<uint16>( Utils::logBase2(gain/10.0) + 0.5 ) - 1;
+        return static_cast<uint16>( std::log2(gain/10.0) + 0.5 ) - 1;
     }
 
     uint16 HardwareGain::gainToBits_sgLinkRgd(double gain)
@@ -72,12 +72,12 @@ namespace mscl
 
     uint16 HardwareGain::gainToBits_tcLink(double gain)
     {
-        return static_cast<uint16>(Utils::logBase2(gain) + 0.5);
+        return static_cast<uint16>(std::log2(gain) + 0.5);
     }
 
     uint16 HardwareGain::gainToBits_mvpervLink(double gain)
     {
-        return static_cast<uint16>(Utils::logBase2(gain / 20.0) + 0.5);
+        return static_cast<uint16>(std::log2(gain / 20.0) + 0.5);
     }
 
     double HardwareGain::bitsToGain(uint16 bits, WirelessModels::NodeModel nodeType)
@@ -101,6 +101,7 @@ namespace mscl
             case WirelessModels::node_sgLink_herm_2700:
             case WirelessModels::node_sgLink_herm_2800:
             case WirelessModels::node_sgLink_micro:
+            case WirelessModels::node_torqueLink:
                 return bitsToGain_sgLinkOem(bits);
 
             case WirelessModels::node_tcLink_1ch:
@@ -149,6 +150,7 @@ namespace mscl
             case WirelessModels::node_sgLink_herm_2700:
             case WirelessModels::node_sgLink_herm_2800:
             case WirelessModels::node_sgLink_micro:
+            case WirelessModels::node_torqueLink:
                 return gainToBits_sgLinkOem(gain);
 
             case WirelessModels::node_tcLink_1ch:
@@ -196,6 +198,7 @@ namespace mscl
             case WirelessModels::node_sgLink_herm_2700:
             case WirelessModels::node_sgLink_herm_2800:
             case WirelessModels::node_sgLink_micro:
+            case WirelessModels::node_torqueLink:
                 maxBits = MAX_BITS_SGLINKOEM;
                 break;
 

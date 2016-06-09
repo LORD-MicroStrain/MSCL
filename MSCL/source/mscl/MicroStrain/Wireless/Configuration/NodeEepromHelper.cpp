@@ -7,12 +7,14 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeEepromHelper.h"
 
 #include "ActivitySense.h"
+#include "EventTriggerOptions.h"
 #include "FatigueOptions.h"
 #include "HardwareGain.h"
 #include "HistogramOptions.h"
 #include "NodeEepromMap.h"
 #include "mscl/MicroStrain/Wireless/WirelessNode_Impl.h"
 #include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/Features/FlashInfo.h"
 #include "mscl/Utils.h"
 
 namespace mscl
@@ -66,8 +68,6 @@ namespace mscl
 
     WirelessTypes::RegionCode NodeEepromHelper::read_regionCode() const
     {
-        //Note: this function can never use the NodeFeatures/NodeInfo call, as NodeInfo relies on this function.
-
         //read the value from eeprom
         uint16 code = read(NodeEepromMap::REGION_CODE).as_uint16();
 
@@ -87,8 +87,6 @@ namespace mscl
 
     Version NodeEepromHelper::read_fwVersion() const
     {
-        //Note: this function can never use the NodeFeatures/NodeInfo call, as NodeInfo relies on this function.
-
         //read the firmware version eeprom
         uint16 fwValue1 = read(NodeEepromMap::FIRMWARE_VER).as_uint16();
 
@@ -115,8 +113,6 @@ namespace mscl
 
     WirelessModels::NodeModel NodeEepromHelper::read_model() const
     {
-        //Note: this function can never use the NodeFeatures/NodeInfo call, as NodeInfo relies on this function.
-
         //read the model number from eeprom
         uint16 model = read(NodeEepromMap::MODEL_NUMBER).as_uint16();
 
@@ -192,9 +188,14 @@ namespace mscl
 
     uint64 NodeEepromHelper::read_dataStorageSize() const
     {
-        //Note: this function can never use the NodeFeatures/NodeInfo call, as NodeInfo relies on this function.
-
-        return read(NodeEepromMap::MAX_MEMORY).as_uint16() * BYTES_PER_DATALOG_PAGE;
+        if(m_node->features().supportsFlashId())
+        {
+            return FlashInfo::FROM_FLASH_ID(read(NodeEepromMap::FLASH_ID).as_uint16()).storageSize;
+        }
+        else
+        {
+            return read(NodeEepromMap::MAX_MEMORY).as_uint16() * BYTES_PER_DATALOG_PAGE;
+        }
     }
 
     WirelessTypes::SettlingTime NodeEepromHelper::read_filter1() const
@@ -485,6 +486,22 @@ namespace mscl
     void NodeEepromHelper::write_samplingMode(WirelessTypes::SamplingMode samplingMode)
     {
         write(NodeEepromMap::SAMPLING_MODE, Value::UINT16(static_cast<uint16>(samplingMode)));
+
+        //if we need to set the "sync sampling mode"
+        if(samplingMode == WirelessTypes::samplingMode_sync ||
+           samplingMode == WirelessTypes::samplingMode_syncEvent ||
+           samplingMode == WirelessTypes::samplingMode_syncBurst)
+        {
+            //find the SyncSamplingMode that we need to set (burst or not burst)
+            WirelessTypes::SyncSamplingMode syncMode = WirelessTypes::syncMode_continuous;
+            if(samplingMode == WirelessTypes::samplingMode_syncBurst)
+            {
+                syncMode = WirelessTypes::syncMode_burst;
+            }
+
+            //write the sync sampling mode 
+            write_syncSamplingMode(syncMode);
+        }
     }
 
     WirelessTypes::SamplingMode NodeEepromHelper::read_samplingMode() const
@@ -492,11 +509,11 @@ namespace mscl
         //read the sampling mode eeprom value
         uint16 samplingModeVal = read(NodeEepromMap::SAMPLING_MODE).as_uint16();
 
-        //if the sampling mode value is not set
+        //if the sampling mode value is not set (uninitialized, legacy nodes)
         if(samplingModeVal == 0 || samplingModeVal == 0xFFFF || samplingModeVal == 0xAAAA)
         {
-            if(m_node->features().supportsSamplingMode(WirelessTypes::samplingMode_syncBurst) ||
-               m_node->features().supportsSamplingMode(WirelessTypes::samplingMode_sync))
+            if(m_node->features().supportsSamplingMode(WirelessTypes::samplingMode_sync) || 
+               m_node->features().supportsSamplingMode(WirelessTypes::samplingMode_syncBurst))
             {
                 //need to check if burst is enabled
                 WirelessTypes::SyncSamplingMode mode = read_syncSamplingMode();
@@ -506,11 +523,25 @@ namespace mscl
                     return WirelessTypes::samplingMode_syncBurst;
                 }
 
+                //if any event triggers are enabled
+                if(m_node->features().supportsEventTrigger() && (read_eventTriggerMask().enabledCount() != 0))
+                {
+                    //default to sync + event
+                    return WirelessTypes::samplingMode_syncEvent;
+                }
+
                 //default to the sync
                 return WirelessTypes::samplingMode_sync;
             }
             else if(m_node->features().supportsSamplingMode(WirelessTypes::samplingMode_nonSync))
             {
+                //if any event triggers are enabled
+                if(m_node->features().supportsEventTrigger() && (read_eventTriggerMask().enabledCount() != 0))
+                {
+                    //default to non-sync + event
+                    return WirelessTypes::samplingMode_nonSyncEvent;
+                }
+
                 //default to non-sync
                 return WirelessTypes::samplingMode_nonSync;
             }
@@ -590,7 +621,15 @@ namespace mscl
         uint16 actionIdVal = read(eepromLocation).as_uint16();
 
         //the unit is the lsb of the actionId
-        return static_cast<WirelessTypes::CalCoef_Unit>(Utils::lsb(actionIdVal));
+        WirelessTypes::CalCoef_Unit unitVal = static_cast<WirelessTypes::CalCoef_Unit>(Utils::lsb(actionIdVal));
+
+        //check for uninitialized value
+        if(unitVal == 0xAA || unitVal == 0xFF)
+        {
+            unitVal = WirelessTypes::unit_none;
+        }
+
+        return unitVal;
     }
 
     WirelessTypes::CalCoef_EquationType NodeEepromHelper::read_channelEquation(const ChannelMask& mask) const
@@ -804,6 +843,24 @@ namespace mscl
         write(eeprom, Value::UINT16(offset));
     }
 
+    WirelessTypes::Filter NodeEepromHelper::read_lowPassFilter(const ChannelMask& mask) const
+    {
+        //find the eeprom location
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_lowPassFilter, mask);
+
+        //return the result read from eeprom
+        return static_cast<WirelessTypes::Filter>(read(eeprom).as_uint16());
+    }
+
+    void NodeEepromHelper::write_lowPassFilter(const ChannelMask& mask, WirelessTypes::Filter filter)
+    {
+        //find the eeprom location
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_lowPassFilter, mask);
+
+        //write the hardware gain (in bits) to eeprom
+        write(eeprom, Value::UINT16(static_cast<uint16>(filter)));
+    }
+
     float NodeEepromHelper::read_gaugeFactor(const ChannelMask& mask) const
     {
         //find the eeprom location
@@ -884,7 +941,7 @@ namespace mscl
         uint8 numSnCurveSegments = features.numSnCurveSegments();
 
         //the legacy SHM-Link has different eeproms for damage angles
-        bool hasLegacyAngles = (features.m_nodeInfo.model == WirelessModels::node_shmLink);
+        bool hasLegacyAngles = (features.m_nodeInfo.model() == WirelessModels::node_shmLink);
 
         //Young's Modulus
         if(features.supportsYoungsModConfig())
@@ -998,7 +1055,7 @@ namespace mscl
         uint8 numSnCurveSegments = features.numSnCurveSegments();
 
         //the legacy SHM-Link has different eeproms for damage angles
-        bool hasLegacyAngles = (features.m_nodeInfo.model == WirelessModels::node_shmLink);
+        bool hasLegacyAngles = (features.m_nodeInfo.model() == WirelessModels::node_shmLink);
 
         //Young's Modulus
         if(features.supportsYoungsModConfig())
@@ -1154,6 +1211,133 @@ namespace mscl
         write(NodeEepromMap::BIN_SIZE, Value::UINT16(options.binsSize()));
     }
 
+    BitMask NodeEepromHelper::read_eventTriggerMask() const
+    {
+        return BitMask(read(NodeEepromMap::EVENT_TRIGGER_MASK).as_uint16());
+    }
+
+    void NodeEepromHelper::read_eventTriggerOptions(EventTriggerOptions& result) const
+    {
+        const uint8 numTriggers = m_node->features().numEventTriggers();
+
+        //Trigger Mask
+        BitMask mask(read(NodeEepromMap::EVENT_TRIGGER_MASK).as_uint16());
+
+        uint32 pre;
+        uint32 post;
+
+        //Pre and Post Event Duration
+        read_eventTriggerDurations(pre, post);
+
+        result.preDuration(pre);
+        result.postDuration(post);
+
+        EepromLocation channelEeprom = NodeEepromMap::EVENT_SRC_1;
+        EepromLocation typeEeprom = NodeEepromMap::EVENT_OPER_1;
+        EepromLocation valueEeprom = NodeEepromMap::EVENT_VAL1_1;
+
+        uint8 triggerChannel;
+        WirelessTypes::EventTriggerType triggerType;
+        uint16 triggerValue;
+
+        for(uint8 i = 0; i < numTriggers; i++)
+        {
+            //get the eeproms for this trigger
+            NodeEepromMap::getEventTriggerEeproms(i, channelEeprom, typeEeprom, valueEeprom);
+
+            //build the trigger mask using the one read in above
+            result.enableTrigger(i, mask.enabled(i));
+
+            triggerChannel = read(channelEeprom).as_uint8();
+            triggerType = static_cast<WirelessTypes::EventTriggerType>(read(typeEeprom).as_uint16());
+            triggerValue = read(valueEeprom).as_uint16();
+
+            Trigger tempTrigger(triggerChannel, triggerType, triggerValue);
+
+            result.trigger(i, tempTrigger);
+        }
+    }
+
+    void NodeEepromHelper::write_eventTriggerOptions(const EventTriggerOptions& options)
+    {
+        const uint8 numTriggers = m_node->features().numEventTriggers();
+
+        uint16 preVal;
+        uint16 postVal;
+
+        if(m_node->features().supportsCentisecondEventDuration())
+        {
+            //value is in 10s of milliseconds
+            preVal = static_cast<uint16>(options.preDuration() / 10);
+            postVal = static_cast<uint16>(options.postDuration() / 10);
+        }
+        else
+        {
+            //value is in seconds
+            preVal = static_cast<uint16>(options.preDuration() / 1000);
+            postVal = static_cast<uint16>(options.postDuration() / 1000);
+        }
+
+        //Pre Event Duration
+        write(NodeEepromMap::EVENT_PRE_DURATION, Value::UINT16(preVal));
+
+        //Post Event Duration
+        write(NodeEepromMap::EVENT_POST_DURATION, Value::UINT16(postVal));
+
+        EepromLocation channelEeprom = NodeEepromMap::EVENT_SRC_1;
+        EepromLocation typeEeprom = NodeEepromMap::EVENT_OPER_1;
+        EepromLocation valueEeprom = NodeEepromMap::EVENT_VAL1_1;
+
+        BitMask mask;
+
+        Trigger tempTrigger;
+
+        for(uint8 i = 0; i < numTriggers; i++)
+        {
+            //get the eeproms for this trigger
+            NodeEepromMap::getEventTriggerEeproms(i, channelEeprom, typeEeprom, valueEeprom);
+
+            //build the trigger mask to write
+            mask.enable(i, options.triggerEnabled(i));
+
+            tempTrigger = options.trigger(i);
+
+            //Trigger Channel
+            write(channelEeprom, Value::UINT16(tempTrigger.channelNumber()));
+
+            //Trigger Type
+            write(typeEeprom, Value::UINT16(static_cast<uint16>(tempTrigger.triggerType())));
+
+            //Trigger Value
+            write(valueEeprom, Value::UINT16(tempTrigger.triggerValue()));
+        }
+
+        //Trigger Mask
+        write(NodeEepromMap::EVENT_TRIGGER_MASK, Value::UINT16(mask.toMask()));
+    }
+
+    void NodeEepromHelper::read_eventTriggerDurations(uint32& pre, uint32& post) const
+    {
+        //Pre Event Duration
+        uint16 preVal = read(NodeEepromMap::EVENT_PRE_DURATION).as_uint16();
+
+        //Post Event Duration
+        uint16 postVal = read(NodeEepromMap::EVENT_POST_DURATION).as_uint16();
+
+        if(m_node->features().supportsCentisecondEventDuration())
+        {
+            //value is in 10s of milliseconds
+            pre = static_cast<uint32>(preVal) * 10;
+            post = static_cast<uint32>(postVal) * 10;
+        }
+        else
+        {
+            //value is in seconds
+            pre = static_cast<uint32>(preVal) * 1000;
+            post = static_cast<uint32>(postVal) * 1000;
+        }
+    }
+
     void NodeEepromHelper::clearHistogram()
     {
         //histogram is cleared by writing a 1 to the RESET_BINS eeprom location
@@ -1202,5 +1386,25 @@ namespace mscl
     {
         //write the value to eeprom
         write(NodeEepromMap::LOST_BEACON_TIMEOUT, Value::UINT16(minutes));
+    }
+
+    uint16 NodeEepromHelper::read_diagnosticInterval() const
+    {
+        return read(NodeEepromMap::DIAGNOSTIC_INTERVAL).as_uint16();
+    }
+
+    void NodeEepromHelper::write_diagnosticInterval(uint16 seconds)
+    {
+        write(NodeEepromMap::DIAGNOSTIC_INTERVAL, Value::UINT16(seconds));
+    }
+
+    WirelessTypes::StorageLimitMode NodeEepromHelper::read_storageLimitMode() const
+    {
+        return static_cast<WirelessTypes::StorageLimitMode>(read(NodeEepromMap::STORAGE_LIMIT_MODE).as_uint16());
+    }
+
+    void NodeEepromHelper::write_storageLimitMode(WirelessTypes::StorageLimitMode mode)
+    {
+        write(NodeEepromMap::STORAGE_LIMIT_MODE, Value::UINT16(static_cast<uint16>(mode)));
     }
 }

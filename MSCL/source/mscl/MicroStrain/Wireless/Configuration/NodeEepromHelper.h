@@ -20,6 +20,7 @@ namespace mscl
 {
     //forward declarations
     class ActivitySense;
+    class EventTriggerOptions;
     class FatigueOptions;
     class HistogramOptions;
     class WirelessNode_Impl;
@@ -842,6 +843,34 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_hardwareOffset(const ChannelMask& mask, uint16 offset);
 
+        //Function: read_lowPassFilter
+        //    Reads the low pass filter for the specified <ChannelMask> from the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to read the low pass filter for.
+        //
+        //Returns:
+        //    The <WirelessTypes::Filter> representing the low pass filter for the given <ChannelMask>.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Low Pass Filter is not supported for the given <ChannelMask> or Node.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::Filter read_lowPassFilter(const ChannelMask& mask) const;
+
+        //Function: write_lowPassFilter
+        //    Writes the low pass filter value for the specified <ChannelMask> to the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to write the hardware offset for.
+        //    filter - The <WirelessTypes::Filter> representing the low pass filter value to write to the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Low Pass Filter is not supported for the given <ChannelMask> or Node.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_lowPassFilter(const ChannelMask& mask, WirelessTypes::Filter filter);
+
         //Function: read_gaugeFactor
         //    Reads the gauge factor for the specified <ChannelMask> from the Node.
         //
@@ -977,6 +1006,59 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_histogramOptions(const HistogramOptions& options);
 
+        //Function: read_eventTriggerOptions
+        //  Reads the <EventTriggerOptions> from the Node.
+        //  This assumes Event Trigger is supported by the Node.
+        //
+        //Parameters:
+        //  result - Will hold the result of the <EventTriggerOptions> read from the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void read_eventTriggerOptions(EventTriggerOptions& result) const;
+
+        //Function: write_eventTriggerOptions
+        //  Writes the <EventTriggerOptions> to the Node.
+        //  This assumes Event Trigger is supported by the Node and all options are valid.
+        //
+        //Parameters:
+        //  options - The <EventTriggerOptions> to write to the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_eventTriggerOptions(const EventTriggerOptions& options);
+
+        //Function: read_eventTriggerDurations
+        //  Reads the pre and post durations for event trigger from the Node.
+        //  This assumes Event Trigger is supported by the Node.
+        //
+        //Parameters:
+        //  pre - The pre event duration read from the Node.
+        //  post - The post event duration read from the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void read_eventTriggerDurations(uint32& pre, uint32& post) const;
+
+        //Function: read_eventTriggerMask
+        //  Reads the triger mask for event trigger from the Node.
+        //  This assumes Event Trigger is supported by the Node.
+        //
+        //Returns:
+        //  The <BitMask> representing the active and inactive event triggers.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        BitMask read_eventTriggerMask() const;
+
         //Function: clearHistogram
         //    Clears the Histogram on the Node.
         //    This assumes histogram options configuration is supported by the Node.
@@ -1013,5 +1095,57 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_lostBeaconTimeout(uint16 minutes);
+
+        //Function: read_diagnosticInterval
+        //    Reads the diagnostic packet interval value from the Node.
+        //    A value of 0 means the diagnostic packet is disabled.
+        //    This assumes diagnostic info is supported by the Node.
+        //
+        //Returns:
+        //    The diagnostic packet interval, in seconds.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        uint16 read_diagnosticInterval() const;
+
+        //Function: write_diagnosticInterval
+        //    Writes the diagnostic packet interval value, in seconds, to the Node.
+        //    This assumes diagnostic info is supported by the Node.
+        //
+        //Parameters:
+        //    seconds - The diagnostic packet interval, in seconds.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_diagnosticInterval(uint16 seconds);
+
+        //Function: read_storageLimitMode
+        //    Reads the storage limit mode from the Node.
+        //
+        //Returns:
+        //    The <WirelessTypes::StorageLimitMode> currently set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::StorageLimitMode read_storageLimitMode() const;
+
+        //Function: write_storageLimitMode
+        //    Writes the storage limit mode to the Node.
+        //    This assumes it is supported by the Node.
+        //
+        //Parameters:
+        //    mode - The <WirelessTypes::StorageLimitMode> to write.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_storageLimitMode(WirelessTypes::StorageLimitMode mode);
     };
 }

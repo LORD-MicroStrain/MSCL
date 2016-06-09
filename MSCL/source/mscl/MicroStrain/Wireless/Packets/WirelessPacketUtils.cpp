@@ -10,6 +10,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "BeaconEchoPacket.h"
 #include "BufferedLdcPacket.h"
 #include "BufferedLdcPacket_16ch.h"
+#include "DiagnosticPacket.h"
 #include "HclSmartBearing_RawPacket.h"
 #include "LdcPacket.h"
 #include "LdcPacket_16ch.h"
@@ -19,6 +20,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeDiscoveryPacket_v4.h"
 #include "RawAngleStrainPacket.h"
 #include "RfSweepPacket.h"
+#include "RollerPacket.h"
 #include "ShmPacket.h"
 #include "SyncSamplingPacket.h"
 #include "SyncSamplingPacket_16ch.h"
@@ -100,6 +102,8 @@ namespace mscl
             case WirelessPacket::packetType_rawAngleStrain:             return RawAngleStrainPacket::integrityCheck(packet);
             case WirelessPacket::packetType_beaconEcho:                 return BeaconEchoPacket::integrityCheck(packet);
             case WirelessPacket::packetType_rfScanSweep:                return RfSweepPacket::integrityCheck(packet);
+            case WirelessPacket::packetType_diagnostic:                 return DiagnosticPacket::integrityCheck(packet);
+            case WirelessPacket::packetType_roller:                     return RollerPacket::integrityCheck(packet);
 
             case WirelessPacket::packetType_nodeCommand:
             case WirelessPacket::packetType_nodeSuccessReply:

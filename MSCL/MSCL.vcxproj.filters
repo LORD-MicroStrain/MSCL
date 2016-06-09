@@ -672,6 +672,37 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink2.h">
       <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
     </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_cfBearingTempLink.h">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\DiagnosticPacket.h">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\BitMask.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\EventTriggerOptions.h">
+      <Filter>MicroStrain\Wireless\Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\RollerPacket.h">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\NodeCommTimes.h">
+      <Filter>MicroStrain\Wireless</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_bladeImpactLink.h">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\CalCoefficients.h">
+      <Filter>MicroStrain\Wireless</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_torqueLink.h">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\FlashInfo.h">
+      <Filter>MicroStrain\Wireless\Features</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\Erase_v2.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp">
@@ -1269,6 +1300,37 @@
     <ClCompile Include="source\mscl\Bin.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink2.cpp">
       <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_cfBearingTempLink.cpp">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\DiagnosticPacket.cpp">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\BitMask.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\EventTriggerOptions.cpp">
+      <Filter>MicroStrain\Wireless\Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\RollerPacket.cpp">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\NodeCommTimes.cpp">
+      <Filter>MicroStrain\Wireless</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_bladeImpactLink.cpp">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\CalCoefficients.cpp">
+      <Filter>MicroStrain\Wireless</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_torqueLink.cpp">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\FlashInfo.cpp">
+      <Filter>MicroStrain\Wireless\Features</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\Erase_v2.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

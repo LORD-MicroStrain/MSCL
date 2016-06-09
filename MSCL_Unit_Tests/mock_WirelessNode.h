@@ -107,6 +107,15 @@ static void expectNodeFeatures(std::unique_ptr<NodeFeatures>& features, std::sha
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 }
 
+static void expectNodeFeatures_fw10(std::unique_ptr<NodeFeatures>& features, std::shared_ptr<mock_WirelessNodeImpl> impl, WirelessModels::NodeModel model = WirelessModels::node_gLink_2g)
+{
+    NodeInfo info(Version(10, 0), model, 0, WirelessTypes::region_usa);
+
+    features = NodeFeatures::create(info);
+
+    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+}
+
 static void expectResetRadio(std::shared_ptr<mock_WirelessNodeImpl> impl)
 {
     expectWrite(impl, NodeEepromMap::CYCLE_POWER, Value::UINT16(2));

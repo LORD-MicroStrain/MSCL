@@ -89,6 +89,34 @@ namespace mscl
         return eeprom.read_settlingTime(mask);
     }
 
+    void WirelessNodeConfig::curEventTriggerDurations(const NodeEepromHelper& eeprom, uint32& pre, uint32& post) const
+    {
+        //if its currently set in the config, return the set value
+        if(isSet(m_eventTriggerOptions)) 
+        { 
+            pre = m_eventTriggerOptions->preDuration();
+            post = m_eventTriggerOptions->postDuration();
+        }
+        else
+        {
+            //read the values from eeprom
+            eeprom.read_eventTriggerDurations(pre, post);
+        }
+    }
+
+    BitMask WirelessNodeConfig::curEventTriggerMask(const NodeEepromHelper& eeprom) const
+    {
+        if(isSet(m_eventTriggerOptions))
+        {
+            return m_eventTriggerOptions->triggerMask();
+        }
+        else
+        {
+            //read the value from eeprom
+            return eeprom.read_eventTriggerMask();
+        }
+    }
+
     bool WirelessNodeConfig::verifySupported(const NodeFeatures& features, const NodeEepromHelper& eeprom, ConfigIssues& outIssues) const
     {
         //Default Mode
@@ -336,6 +364,46 @@ namespace mscl
             }
         }
 
+        //Event Trigger
+        if(isSet(m_eventTriggerOptions))
+        {
+            if(!features.supportsEventTrigger())
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER, "Event Triggering is not supported by this Node."));
+            }
+            //verify the pre duration is normalized
+            else if((*m_eventTriggerOptions).preDuration() != features.normalizeEventDuration((*m_eventTriggerOptions).preDuration()))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER, "The pre event duration needs to be normalized."));
+            }
+            //verify the post duration is normalized
+            else if((*m_eventTriggerOptions).postDuration() != features.normalizeEventDuration((*m_eventTriggerOptions).postDuration()))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER, "The post event duration needs to be normalized."));
+            }
+        }
+
+        //Diagnostic Interval
+        if(isSet(m_diagnosticInterval))
+        {
+            if(!features.supportsDiagnosticInfo())
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DIAGNOSTIC_INTERVAL, "Diagnostic Info is not supported by this Node."));
+            }
+        }
+
+        //Storage Limit Mode
+        if(isSet(m_storageLimitMode))
+        {
+            const WirelessTypes::StorageLimitModes limitModes = features.storageLimitModes();
+
+            //if the storage limit mode is not supported
+            if(std::find(limitModes.begin(), limitModes.end(), *m_storageLimitMode) == limitModes.end())
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_STORAGE_LIMIT_MODE, "The Storage Limit Mode is not supported by this Node."));
+            }
+        }
+
         //Hardware Gain(s)
         for(const auto& gain : m_hardwareGains)
         {
@@ -351,13 +419,23 @@ namespace mscl
             }
         }
 
-        //Hardware Offsets(s)
+        //Hardware Offset(s)
         for(const auto& offset : m_hardwareOffsets)
         {
             //verify hardware offset is supported for the channel mask
             if(!features.supportsChannelSetting(WirelessTypes::chSetting_hardwareOffset, offset.first))
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_HARDWARE_OFFSET, "Hardware Offset is not supported for the provided Channel Mask.", offset.first));
+            }
+        }
+
+        //Low Pass Filter(s)
+        for(const auto& filter : m_lowPassFilters)
+        {
+            //verify low pass filter is supported for the channel mask
+            if(!features.supportsChannelSetting(WirelessTypes::chSetting_lowPassFilter, filter.first))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_LOW_PASS_FILTER, "Low Pass Filter is not supported for the provided Channel Mask.", filter.first));
             }
         }
 
@@ -413,6 +491,7 @@ namespace mscl
            isSet(m_activeChannels) ||
            isSet(m_numSweeps) ||
            isSet(m_dataFormat) ||
+           isSet(m_eventTriggerOptions) ||
            isAnySet(m_settlingTimes))
         {
             //read in all of the sampling values, either from the config or from the Node if not set
@@ -430,6 +509,32 @@ namespace mscl
                 //need to just return this issue instead of continuing as
                 //other issue checks require the number of channels to be > 0
                 return false;
+            }
+
+            //verify sampling mode with event trigger settings
+            if(isSet(m_samplingMode) || isSet(m_eventTriggerOptions))
+            {
+                //if trying to set the sampling mode to an event trigger mode
+                if(samplingMode == WirelessTypes::samplingMode_nonSyncEvent ||
+                   samplingMode == WirelessTypes::samplingMode_syncEvent)
+                {
+                    //verify at least 1 event trigger is enabled
+                    if(curEventTriggerMask(eeprom).enabledCount() == 0)
+                    {
+                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER_MASK, "The Sampling Mode includes Event Triggering, but no Events are enabled."));
+                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "The Sampling Mode includes Event Triggering, but no Events are enabled."));
+                    }
+                }
+                //if trying to set the sampling mode to a non-event trigger mode
+                else
+                {
+                    //verify all event trigger are disabled
+                    if(features.supportsEventTrigger() && (curEventTriggerMask(eeprom).enabledCount() != 0))
+                    {
+                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER_MASK, "Event Triggers are enabled, but the Sampling Mode does not include Event Triggering."));
+                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "Event Triggers are enabled, but the Sampling Mode does not include Event Triggering."));
+                    }
+                }
             }
 
             //verify Sample Rate with Sampling Mode
@@ -515,6 +620,29 @@ namespace mscl
                     }
                 }
             }
+
+            //verify Event Trigger settings
+            if(features.supportsEventTrigger() && 
+               (isSet(m_eventTriggerOptions) || isSet(m_sampleRate) || isSet(m_activeChannels) || isSet(m_dataFormat)))
+            {
+                //only verify event trigger settings if a trigger is enabled
+                if(curEventTriggerMask(eeprom).enabledCount() > 0)
+                {
+                    uint32 preDuration;
+                    uint32 postDuration;
+
+                    //get the current durations
+                    curEventTriggerDurations(eeprom, preDuration, postDuration);
+
+                    uint32 maxDuration = features.maxEventTriggerTotalDuration(dataFormat, channels, SampleRate::FromWirelessEepromValue(sampleRate));
+
+                    //verify the pre+post duration is within range
+                    if((preDuration + postDuration) > maxDuration)
+                    {
+                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER_DURATION, "The total event duration exceeds the max for this Configuration."));
+                    }
+                }
+            }
         }
 
         //return true if no issues
@@ -559,28 +687,8 @@ namespace mscl
         //write transmit power
         if(isSet(m_transmitPower)) { eeprom.write_transmitPower(*m_transmitPower); }
 
-        if(isSet(m_samplingMode)) 
-        { 
-            WirelessTypes::SamplingMode tempMode = *m_samplingMode;
-
-            //write the sampling mode
-            eeprom.write_samplingMode(tempMode);
-
-            //if we need to set the "sync sampling mode"
-            if(tempMode == WirelessTypes::samplingMode_sync ||
-               tempMode == WirelessTypes::samplingMode_syncBurst)
-            {
-                //find the SyncSamplingMode that we need to set (burst or not burst)
-                WirelessTypes::SyncSamplingMode syncMode = WirelessTypes::syncMode_continuous;
-                if(tempMode == WirelessTypes::samplingMode_syncBurst)
-                {
-                    syncMode = WirelessTypes::syncMode_burst;
-                }
-
-                //save the sync sampling mode 
-                eeprom.write_syncSamplingMode(syncMode);
-            }
-        }
+        //write the sample mode (also updates the hidden SyncSamplingMode
+        if(isSet(m_samplingMode)) { eeprom.write_samplingMode(*m_samplingMode); }
 
         //write sample rate
         if(isSet(m_sampleRate)) { eeprom.write_sampleRate(*m_sampleRate, curSamplingMode(eeprom)); }
@@ -615,6 +723,24 @@ namespace mscl
         //write Activity Sense Options
         if(isSet(m_activitySense)) { eeprom.write_activitySense(*m_activitySense); }
 
+        //write Event Trigger Options
+        if(isSet(m_eventTriggerOptions)) { eeprom.write_eventTriggerOptions(*m_eventTriggerOptions); }
+
+        //write Diagnostic Interval
+        if(isSet(m_diagnosticInterval)) { eeprom.write_diagnosticInterval(*m_diagnosticInterval); }
+
+        //write Storage Limit Mode
+        if(isSet(m_storageLimitMode))
+        {
+            //since old nodes don't support this eeprom, but do support
+            //one of the modes, if the config is valid and got here, the user
+            //must be trying to set to the only one it supports, so fake it and don't apply
+            if(features.supportsStorageLimitModeConfig())
+            {
+                eeprom.write_storageLimitMode(*m_storageLimitMode);
+            }
+        }
+
         //write Hardware Gain(s)
         for(const auto& gain : m_hardwareGains)
         {
@@ -625,6 +751,12 @@ namespace mscl
         for(const auto& offset : m_hardwareOffsets)
         {
             eeprom.write_hardwareOffset(offset.first, offset.second);
+        }
+
+        //write low pass filter(s)
+        for(const auto& filter : m_lowPassFilters)
+        {
+            eeprom.write_lowPassFilter(filter.first, filter.second);
         }
 
         //write Gauge Factor(s)
@@ -827,6 +959,16 @@ namespace mscl
         setChannelMapVal(m_hardwareOffsets, mask, offset);
     }
 
+    WirelessTypes::Filter WirelessNodeConfig::lowPassFilter(const ChannelMask& mask) const
+    {
+        return getChannelMapVal(m_lowPassFilters, mask, "Low Pass Filter");
+    }
+
+    void WirelessNodeConfig::lowPassFilter(const ChannelMask& mask, WirelessTypes::Filter filter)
+    {
+        setChannelMapVal(m_lowPassFilters, mask, filter);
+    }
+
     float WirelessNodeConfig::gaugeFactor(const ChannelMask& mask) const
     {
         return getChannelMapVal(m_gaugeFactors, mask, "Gauge Factor");
@@ -918,5 +1060,38 @@ namespace mscl
     void WirelessNodeConfig::activitySense(const ActivitySense& activitySenseOpts)
     {
         m_activitySense = activitySenseOpts;
+    }
+
+    const EventTriggerOptions& WirelessNodeConfig::eventTriggerOptions() const
+    {
+        checkValue(m_eventTriggerOptions, "Event Trigger Options");
+        return *m_eventTriggerOptions;
+    }
+
+    void WirelessNodeConfig::eventTriggerOptions(const EventTriggerOptions& eventTriggerOpts)
+    {
+        m_eventTriggerOptions = eventTriggerOpts;
+    }
+
+    uint16 WirelessNodeConfig::diagnosticInterval() const
+    {
+        checkValue(m_diagnosticInterval, "Diagnostic Info Interval");
+        return *m_diagnosticInterval;
+    }
+
+    void WirelessNodeConfig::diagnosticInterval(uint16 interval)
+    {
+        m_diagnosticInterval = interval;
+    }
+
+    WirelessTypes::StorageLimitMode WirelessNodeConfig::storageLimitMode() const
+    {
+        checkValue(m_storageLimitMode, "Storage Limit Mode");
+        return *m_storageLimitMode;
+    }
+
+    void WirelessNodeConfig::storageLimitMode(WirelessTypes::StorageLimitMode mode)
+    {
+        m_storageLimitMode = mode;
     }
 }

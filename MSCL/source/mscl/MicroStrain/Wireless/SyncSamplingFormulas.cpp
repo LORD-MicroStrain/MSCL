@@ -58,7 +58,7 @@ namespace SyncSamplingFormulas
         {
             if(bytesPerSecond <= std::floor(static_cast<double>(maxBytesPerPacket / 2)))
             {
-                groupSize = Utils::roundDownToNearestBase2( std::floor(maxBytesPerPacket / bytesPerSecond) );
+                groupSize = Utils::floorBase2( std::floor(maxBytesPerPacket / bytesPerSecond) );
             }
             else
             {
@@ -80,7 +80,7 @@ namespace SyncSamplingFormulas
 
     uint32 txPerGroup(double bytesPerSecond, uint32 maxBytesPerPacket, uint32 groupSize)
     {
-        return Utils::roundUpToNearestBase2( std::ceil( (bytesPerSecond * groupSize) / maxBytesPerPacket) );
+        return Utils::ceilBase2( std::ceil( (bytesPerSecond * groupSize) / maxBytesPerPacket) );
     }
 
     float txPerSecond(uint32 txPerGroup, uint32 groupSize)
@@ -100,9 +100,16 @@ namespace SyncSamplingFormulas
         return 8;    //always returning 8 for now
     }
 
-    uint32 maxTdmaAddress(uint32 txPerGroup, uint32 groupSize)
+    uint32 maxTdmaAddress(uint32 txPerGroup, uint32 groupSize, bool legacyNwk)
     {
-        uint32 address = static_cast<uint32>(Utils::round( ((groupSize * MAX_SLOTS) / static_cast<float>(txPerGroup)) - slotSpacing() ));
+        uint8 disallowedSlots = 0;
+
+        if(legacyNwk)
+        {
+            disallowedSlots = 1;
+        }
+
+        uint32 address = static_cast<uint32>(Utils::round( ((groupSize * MAX_SLOTS) / static_cast<float>(txPerGroup)) - (slotSpacing() * disallowedSlots) ));
 
         //make sure its a minimum of MIN_TDMA
         Utils::checkBounds_min(address, static_cast<uint32>(MIN_TDMA));
@@ -110,9 +117,16 @@ namespace SyncSamplingFormulas
         return address;
     }
 
-    float percentBandwidth(float txPerSecond)
+    float percentBandwidth(float txPerSecond, bool legacyNwk)
     {
-        return ((txPerSecond * slotSpacing()) / static_cast<float>(MAX_SLOTS - MIN_TDMA)) * 100;
+        uint8 disallowedSlots = 0;
+
+        if(legacyNwk)
+        {
+            disallowedSlots = 1;
+        }
+
+        return ((txPerSecond * slotSpacing()) / static_cast<float>(MAX_SLOTS - disallowedSlots)) * 100;
     }
 
     double sampleDuration(uint32 numSweeps, const SampleRate& sampleRate)
@@ -125,10 +139,10 @@ namespace SyncSamplingFormulas
         return bytesPerSample * numChs;
     }
 
-    bool checkSamplingDelay(WirelessTypes::SyncSamplingMode samplingMode, const SampleRate& sampleRate, WirelessModels::NodeModel nodeModel)
+    bool checkSamplingDelay(WirelessTypes::SamplingMode samplingMode, const SampleRate& sampleRate, WirelessModels::NodeModel nodeModel)
     {
         //if the sampling mode is not Burst mode
-        if(samplingMode != WirelessTypes::syncMode_burst)
+        if(samplingMode != WirelessTypes::samplingMode_syncBurst)
         {
             //if the sample rate is 16hz or slower, or the 32hz or faster and a tclink1ch or rtdlink, or the model is SHM-Link
             if( (sampleRate <= SampleRate::Hertz(16)) ||
@@ -148,7 +162,7 @@ namespace SyncSamplingFormulas
         return static_cast<uint16>((MAX_SLOTS * groupSize) / txPerGroup);
     }
 
-    bool canHaveSlot1(WirelessModels::NodeModel nodeModel, uint8 syncVersion)
+    bool canHaveFirstSlot(WirelessModels::NodeModel nodeModel, uint8 syncVersion)
     {
         if(syncVersion > 1)
         {
@@ -180,7 +194,7 @@ namespace SyncSamplingFormulas
         return bytesPerSweep * numSweeps;
     }
 
-    uint32 maxDataBytesPerPacket(uint32 bytesPerSweep, bool lossless)
+    uint32 maxBytesPerBurstPacket(uint32 bytesPerSweep, bool lossless)
     {
         float numBytes = 96.0f;
 
@@ -215,7 +229,7 @@ namespace SyncSamplingFormulas
 
         uint32 bytesPerBurst = totalBytesPerBurst(bytesPerSweep, sweepsPerBurst);
 
-        uint32 maxBytesPerPacket = maxDataBytesPerPacket(bytesPerSweep, true);
+        uint32 maxBytesPerPacket = maxBytesPerBurstPacket(bytesPerSweep, true);
 
         uint32 totalNeededTx = totalNeededBurstTx(bytesPerBurst, maxBytesPerPacket);
 
@@ -226,7 +240,7 @@ namespace SyncSamplingFormulas
 
     uint32 burstTxPerSecond(uint32 totalNeededTx, uint32 timeBetweenBursts, double sampleDuration, bool lossless)
     {
-        uint32 txPerSec = Utils::roundUpToNearestBase2( (static_cast<double>(totalNeededTx) / (timeBetweenBursts - 4 - sampleDuration)) );
+        uint32 txPerSec = Utils::ceilBase2( (static_cast<double>(totalNeededTx) / (timeBetweenBursts - 4 - sampleDuration)) );
 
         //must be within range 1 - 64
         Utils::checkBounds_min(txPerSec, static_cast<uint32>(1));

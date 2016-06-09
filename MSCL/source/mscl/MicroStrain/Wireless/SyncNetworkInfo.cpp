@@ -21,6 +21,10 @@ namespace mscl
         m_maxTdmaAddress(0),
         m_txPerGroup(0),
         m_groupSize(0),
+        m_bytesPerSweep(0),
+        m_bytesPerBurst(0),
+        m_maxBytesPerPacket(0),
+        m_bytesPerSecond(0.0),
         m_maxRetxPerBurst(0),
         m_status(status_DoesNotFit),
         m_syncSamplingVersion(1),
@@ -81,6 +85,16 @@ namespace mscl
         return m_syncSamplingVersion;
     }
 
+    float SyncNetworkInfo::dutyCycle() const
+    {
+        return static_cast<float>((m_txPerGroup * m_maxBytesPerPacket) / m_bytesPerSecond);
+    }
+
+    void SyncNetworkInfo::dutyCycle(float percent)
+    {
+        m_txPerGroup = Utils::ceilBase2(percent * m_bytesPerSecond / m_maxBytesPerPacket);
+    }
+
     void SyncNetworkInfo::setPendingConfig(const WirelessNodeConfig& config)
     {
         try
@@ -91,7 +105,9 @@ namespace mscl
             //if we got here, the mode was set in the config (no exception thrown)
 
             //the mode was set, check the mode is what we want
-            if(mode != WirelessTypes::samplingMode_sync && mode != WirelessTypes::samplingMode_syncBurst)
+            if(mode != WirelessTypes::samplingMode_sync &&
+               mode != WirelessTypes::samplingMode_syncBurst &&
+               mode != WirelessTypes::samplingMode_syncEvent)
             {
                 //nodes must have their configuration be in Sync Sampling mode.
                 ConfigIssues issues;
@@ -113,13 +129,5 @@ namespace mscl
     {
         //return the pending configuration
         return m_pendingConfig;
-    }
-
-    void SyncNetworkInfo::clearPendingConfig()
-    {
-        m_hasPendingConfig = false;
-
-        //set to a blank WirelessNodeConfig
-        m_pendingConfig = WirelessNodeConfig();
     }
 }

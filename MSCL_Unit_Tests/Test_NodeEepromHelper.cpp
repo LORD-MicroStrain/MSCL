@@ -346,7 +346,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_setChannelCalCoefficients)
     LinearEquation eq(2.345f, 0.0005f);
 
     BOOST_CHECK_NO_THROW(c.write_channelLinearEquation(ChannelMask(4), eq));
-    BOOST_CHECK_NO_THROW(c.write_channelUnit(ChannelMask(4), WirelessTypes::unit_bits));
+    BOOST_CHECK_NO_THROW(c.write_channelUnit(ChannelMask(4), WirelessTypes::unit_other_bits));
     BOOST_CHECK_NO_THROW(c.write_channelEquation(ChannelMask(4), WirelessTypes::equation_standard));
 }
 

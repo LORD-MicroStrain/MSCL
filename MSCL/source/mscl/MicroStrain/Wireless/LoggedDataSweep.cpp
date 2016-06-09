@@ -31,11 +31,6 @@ namespace mscl
         m_timestamp = time;
     }
 
-    uint64 LoggedDataSweep::nanoseconds() const
-    {
-        return m_timestamp.nanoseconds();
-    }
-
     uint64 LoggedDataSweep::tick() const
     {
         return m_tick;

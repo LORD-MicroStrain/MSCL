@@ -26,7 +26,7 @@ namespace mscl
         m_dataSweeps.push_back(sweep);
     }
 
-    void WirelessDataPacket::addDataPoint(ChannelData& container, uint8 channelNumber, int channelDataIndex, int sweepIndex, WirelessChannel::ChannelId channelName) const
+    void WirelessDataPacket::addDataPoint(ChannelData& container, uint8 channelNumber, int channelDataIndex, int sweepIndex, WirelessChannel::ChannelId channelId) const
     {
         //find the offset into the payload to get the data
         uint32 offset = (sweepIndex * m_sweepSize) + (channelDataIndex * WirelessTypes::dataTypeSize(m_dataType)) + m_payloadOffsetChannelData;
@@ -36,7 +36,7 @@ namespace mscl
         //parse the data from the payload
         getPayloadData(offset, data);
 
-        container.emplace_back(channelName, channelNumber, WirelessTypes::dataTypeToValueType(m_dataType), data);
+        container.emplace_back(channelId, channelNumber, WirelessTypes::dataTypeToValueType(m_dataType), data);
     }
 
     //    Gets the next DataSweep in the packet

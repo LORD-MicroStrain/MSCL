@@ -20,7 +20,7 @@ WirelessPacket buildSyncSamplingResponse(uint16 nodeAddress)
 
     //build the correct packet response first
     WirelessPacket packet;
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x07));
     packet.type(static_cast<WirelessPacket::PacketType>(0x00));
     packet.nodeAddress(nodeAddress);
     packet.payload(payload);
@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(StartSyncSampling_buildCommand)
 {
     ByteStream result = StartSyncSampling::buildCommand(123);
 
-    uint8 sop = WirelessPacket::ASPP_START_OF_PACKET_BYTE;
+    uint8 sop = WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE;
 
     BOOST_CHECK_EQUAL(result.read_uint8(0), sop);
     BOOST_CHECK_EQUAL(result.read_uint8(1), 0x05);
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE(StartSyncSampling_Response_match_fail_dsf)
     //build the packet response
     WirelessPacket packet = buildSyncSamplingResponse(123);
 
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x08));    //wrong DSF
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x08));    //wrong DSF
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(packet), false);

@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_4ByteFloat)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_SyncSampling_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -64,7 +64,6 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_4ByteFloat)
     BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
     BOOST_CHECK_EQUAL(sweep.tick(), 1);
     BOOST_CHECK_EQUAL(sweep.timestamp().nanoseconds(), 0);
-    BOOST_CHECK_EQUAL(sweep.nanoseconds(), 0);
     BOOST_CHECK_EQUAL(sweep.sampleRate().prettyStr(), "2Hz");
     BOOST_CHECK_EQUAL(sweep.nodeRssi(), 1);
     BOOST_CHECK_EQUAL(sweep.baseRssi(), 1);
@@ -102,7 +101,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_2ByteUint)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_SyncSampling_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -149,7 +148,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_2ByteUintShifted)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_SyncSampling_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -193,7 +192,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_NoChannelMask)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_SyncSampling_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -239,7 +238,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_Valid)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_SyncSampling_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -259,7 +258,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_SmallPayload)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_SyncSampling_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -292,7 +291,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_BadAppID)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_SyncSampling_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -325,7 +324,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_BadStopFlags)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(15));    //INVALID DELIVERY STOP FLAGS
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(15));    //INVALID DELIVERY STOP FLAGS
     packet.type(WirelessPacket::packetType_SyncSampling_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -358,7 +357,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_BadDataType)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_SyncSampling_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -391,7 +390,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_BadPacketType)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_LDC); //INVALID packet type
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -422,7 +421,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_NoChannelsActive)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_SyncSampling_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -455,7 +454,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_InvalidPayloadBytes)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_SyncSampling_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);

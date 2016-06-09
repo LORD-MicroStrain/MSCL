@@ -35,28 +35,32 @@ namespace mscl
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_1},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1},
-                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_1}}
+                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_1},
+                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_1}}
         );
 
         m_channelGroups.emplace_back(DIFFERENTIAL_CH2, "Differential Channel 2",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_2},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_2},
-                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_2}}
+                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_2},
+                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_2}}
         );
 
         m_channelGroups.emplace_back(DIFFERENTIAL_CH3, "Differential Channel 3",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_3},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_3},
-                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_3}}
+                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_3},
+                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_3}}
         );
 
         m_channelGroups.emplace_back(DIFFERENTIAL_CH4, "Differential Channel 4",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_4},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_4},
-                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_4}}
+                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_4},
+                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_4}}
         );
 
         addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
@@ -91,27 +95,10 @@ namespace mscl
 
     WirelessTypes::WirelessSampleRate NodeFeatures_vlink::maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels) const
     {
-        bool channelLimit = false;
+        uint16 channelCount = channels.count();
 
-        //determine if the number of active channels affects the max sample rate
-        switch(samplingMode)
+        if(samplingMode == WirelessTypes::samplingMode_syncBurst)
         {
-            //modes that the sample rate is limited by the number of channels active
-            case WirelessTypes::samplingMode_syncBurst:
-            case WirelessTypes::samplingMode_armedDatalog:
-                channelLimit = true;
-                break;
-
-            default:
-                channelLimit = false;
-                break;
-        }
-
-        //if the number of active channels affects the max sample rate
-        if(channelLimit)
-        {
-            uint16 channelCount = channels.count();
-
             //determine the actual max rate based on the # of active channels
             switch(channelCount)
             {
@@ -131,6 +118,29 @@ namespace mscl
                     return WirelessTypes::sampleRate_3kHz;
                 default:
                     return WirelessTypes::sampleRate_2kHz;
+            }
+        }
+        else if(samplingMode == WirelessTypes::samplingMode_armedDatalog)
+        {
+            //determine the actual max rate based on the # of active channels
+            switch(channelCount)
+            {
+                case 1:
+                    return WirelessTypes::sampleRate_10kHz;
+                case 2:
+                    return WirelessTypes::sampleRate_7kHz;
+                case 3:
+                    return WirelessTypes::sampleRate_6kHz;
+                case 4:
+                    return WirelessTypes::sampleRate_5kHz;
+                case 5:
+                    return WirelessTypes::sampleRate_4kHz;
+                case 6:
+                    return WirelessTypes::sampleRate_4kHz;
+                case 7:
+                    return WirelessTypes::sampleRate_3kHz;
+                default:
+                    return WirelessTypes::sampleRate_3kHz;
             }
         }
         //number of channels has no affect on sample rate

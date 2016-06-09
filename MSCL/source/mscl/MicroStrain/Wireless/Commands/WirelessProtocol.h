@@ -72,6 +72,10 @@ namespace mscl
         //    The function pointer for the Node AutoBalance protocol command.
         std::function<bool(BaseStation_Impl*, NodeAddress, uint8, float, AutoBalanceResult&)> m_autoBalance;
 
+        //Variable: m_erase
+        //    The function pointer for the Node Erase protocol command.
+        std::function<bool(BaseStation_Impl*, NodeAddress)> m_erase;
+
     public:
         //Constant: BASE_STATION_ADDRESS
         //    The address of our generic Base Station.
@@ -106,5 +110,83 @@ namespace mscl
         //Function: v1_3
         //    Static function to create a WirelessProtocol with version 1.3.
         static std::unique_ptr<WirelessProtocol> v1_3();
+
+        //Function: v1_4
+        //    Static function to create a WirelessProtocol with version 1.4.
+        static std::unique_ptr<WirelessProtocol> v1_4();
+
+    public:
+        //Enums: CommandID
+        //  The Wireless command IDs.
+        //
+        //  cmdId_basePing_v1           - 0x01      - Ping Base Station (v1)
+        //  cmdId_basePing_v2           - 0x0001    - Ping Base Station (v2)
+        //  cmdId_shortPing_v1          - 0x02      - Short Ping (v1)
+        //  cmdId_longPing              - 0x0002    - Long Ping
+        //  cmdId_readSingleSensor      - 0x03      - Read Single Sensor
+        //  cmdId_readEeprom_v1         - 0x0003    - Read Eeprom (v1)
+        //  cmdId_writeEeprom_v1        - 0x0004    - Write Eeprom (v1) 
+        //  cmdId_pageDownload          - 0x05      - Page Download
+        //  cmdId_erase                 - 0x06      - Erase (v1)
+        //  cmdId_readEeprom_v2         - 0x0007    - Read Eeprom (v2)
+        //  cmdId_writeEeprom_v2        - 0x0008    - Write Eeprom (v2)
+        //  cmdId_armForDatalog         - 0x000D    - Arm for Datalogging
+        //  cmdId_triggerArmedLog       - 0x000E    - Trigger Armed Datalogging
+        //  cmdId_shortPing_v2          - 0x0012    - Short Ping (v2)
+        //  cmdId_logSessionInfo        - 0x0020    - Get the Logged Session Info
+        //  cmdId_getLogData            - 0x0021    - Get Logged Data
+        //  cmdId_erase_v2              - 0x0022    - Erase Logged Data
+        //  cmdId_sleep                 - 0x32      - Sleep
+        //  cmdId_startStreaming        - 0x38      - Start Streaming
+        //  cmdId_startLdc              - 0x0038    - Start Low Duty Cycle
+        //  cmdId_startSync             - 0x003B    - Start Sync Sampling
+        //  cmdId_autoBalance_v1        - 0x62      - Auto Balance (v1)
+        //  cmdId_autoCal               - 0x0064    - Auto Calibrate
+        //  cmdId_autoBalance_v2        - 0x0065    - Auto Balance (v2)
+        //  cmdId_base_readEeprom_v1    - 0x73      - Read Base Station Eeprom (v1)
+        //  cmdId_base_readEeprom_v2    - 0x0073    - Read Base Station Eeprom (v2)
+        //  cmdId_base_writeEeprom_v1   - 0x78      - Write Base Station Eeprom (v1)
+        //  cmdId_base_writeEeprom_v2   - 0x0078    - Write Base Station Eeprom (v2)
+        //  cmdId_stopNode              - 0x0090    - Stop Node
+        //  cmdId_base_rfScan           - 0x00ED    - Base Station Rf Energy Frequency Scan
+        //  cmdId_base_setBeaconTime    - 0xBEAB    - Base Station Set Beacon Timestamp
+        //  cmdId_base_setBeacon        - 0xBEAC    - Base Station Enable/Disable Beacon
+        //  cmdId_base_getBeaconStatus  - 0xBEAD    - Base Station Get Beacon Status
+        enum CommandID
+        {
+            cmdId_basePing              = 0x01,
+            cmdId_basePing_v2           = 0x0001,
+            cmdId_shortPing             = 0x02,
+            cmdId_longPing              = 0x0002,
+            cmdId_readSingleSensor      = 0x03,
+            cmdId_readEeprom            = 0x0003,
+            cmdId_writeEeprom           = 0x0004,
+            cmdId_pageDownload          = 0x05,
+            cmdId_erase                 = 0x06,
+            cmdId_readEeprom_v2         = 0x0007,
+            cmdId_writeEeprom_v2        = 0x0008,
+            cmdId_armForDatalog         = 0x000D,
+            cmdId_triggerArmedLog       = 0x000E,
+            cmdId_shortPing_v2          = 0x0012,
+            cmdId_logSessionInfo        = 0x0020,
+            cmdId_getLogData            = 0x0021,
+            cmdId_erase_v2              = 0x0022,
+            cmdId_sleep                 = 0x32,
+            cmdId_startStreaming        = 0x38,
+            cmdId_startLdc              = 0x0038,
+            cmdId_startSync             = 0x003B,
+            cmdId_autoBalance           = 0x62,
+            cmdId_autoCal               = 0x0064,
+            cmdId_autoBalance_v2        = 0x0065,
+            cmdId_base_readEeprom       = 0x73,
+            cmdId_base_readEeprom_v2    = 0x0073,
+            cmdId_base_writeEeprom      = 0x78,
+            cmdId_base_writeEeprom_v2   = 0x0078,
+            cmdId_stopNode              = 0x0090,
+            cmdId_base_rfScan           = 0x00ED,
+            cmdId_base_setBeaconTime    = 0xBEAB,
+            cmdId_base_setBeacon        = 0xBEAC,
+            cmdId_base_getBeaconStatus  = 0xBEAD,
+        };
     };
 }

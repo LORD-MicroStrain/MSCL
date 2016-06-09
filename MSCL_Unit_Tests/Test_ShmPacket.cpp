@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(ShmPacket_Constructor)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_SHM);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(ShmPacket2_Constructor)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_SHM);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(ShmPacket_IntegrityCheck_SmallPayload)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_SHM);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -197,7 +197,7 @@ BOOST_AUTO_TEST_CASE(ShmPacket_IntegrityCheck_BadStopFlags)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(15));    //INVALID DELIVERY STOP FLAGS
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(15));    //INVALID DELIVERY STOP FLAGS
     packet.type(WirelessPacket::packetType_SHM);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -229,7 +229,7 @@ BOOST_AUTO_TEST_CASE(ShmPacket_IntegrityCheck_BadPacketType)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_SyncSampling);        //INVALID PACKET TYPE
     packet.nodeRSSI(1);
     packet.baseRSSI(1);

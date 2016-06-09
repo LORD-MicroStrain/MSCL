@@ -754,6 +754,9 @@ BOOST_AUTO_TEST_CASE(WirelessNode_erase)
     std::shared_ptr<mock_baseStationImpl> impl(new mock_baseStationImpl);
     BaseStation base(impl);
     WirelessNode node(123, base);
+    
+    MOCK_EXPECT(impl->node_pageDownload).returns(false);
+    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 108, mock::assign(9)).returns(true);
 
     MOCK_EXPECT(impl->node_erase).once().returns(true);
 

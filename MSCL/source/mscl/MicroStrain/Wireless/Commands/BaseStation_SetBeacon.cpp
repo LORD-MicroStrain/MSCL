@@ -6,6 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "stdafx.h"
 
 #include "BaseStation_SetBeacon.h"
+#include "WirelessProtocol.h"
 
 namespace mscl
 {
@@ -15,7 +16,7 @@ namespace mscl
 
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint16(COMMAND_ID);
+        cmd.append_uint16(WirelessProtocol::cmdId_base_setBeacon);
         cmd.append_uint32(beaconTime);                    
 
         return cmd;
@@ -42,7 +43,7 @@ namespace mscl
         }
 
         //if it doesn't match the command Id
-        if(data.read_uint16() != COMMAND_ID) 
+        if(data.read_uint16() != WirelessProtocol::cmdId_base_setBeacon)
         { 
             return false; 
         }

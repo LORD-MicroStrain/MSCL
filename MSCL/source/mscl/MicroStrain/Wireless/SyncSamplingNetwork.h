@@ -42,9 +42,17 @@ namespace mscl
         //    A map of node addresses to <SyncNetworkInfo>s containing all the nodes that were added to the network.
         std::map<uint16, std::unique_ptr<SyncNetworkInfo> > m_nodes;
 
-        //Variable: m_networkOrder
-        //    A vector of node addresses that will be sorted to hold the order of how the nodes should be structured in the network.
-        std::vector<NodeAddress> m_networkOrder;
+        //Variable: m_allNodes
+        //    A vector of node addresses for every node in the network.
+        std::vector<NodeAddress> m_allNodes;
+
+        //Variable: m_eventNodes
+        //  A vector of node addresses for every node in Event-Driven mode.
+        std::vector<NodeAddress> m_eventNodes;
+
+        //Variable: m_nonEventNodes
+        //  A vector of node addresses for every node Not in Event-Driven mode.
+        std::vector<NodeAddress> m_nonEventNodes;
 
         //Variable: m_slots
         //    A vector of bools representing all of the transmission slots. If a slot is set (true), it it taken. If a slot is unset (false), it is available.
@@ -70,6 +78,14 @@ namespace mscl
         //Variable: m_configApplied
         //    Whether the calculated network configuration values have been applied to all of the nodes in the network.
         bool m_configApplied;
+
+        //Variable: m_disabledBeacon
+        //    Whether the beacon has already been disabled or not by this object.
+        bool m_disabledBeacon;
+
+        //Variable: m_availableSlotCount
+        //    The number of remaining available slots.
+        uint16 m_availableSlotCount;
 
     public:
         //API Function: addNode
@@ -248,52 +264,8 @@ namespace mscl
         //    - <Error>: The node address was not found in the map.
         SyncNetworkInfo& getNodeNetworkInfo(uint16 nodeAddress);
 
-        //API Function: setPendingConfig
-        //    Sets a pending configuration for a specific <WirelessNode> in the network.
-        //    This is a configuration that is not actually applied to the Node, but
-        //    used in all network calculations. In this way, you may see how some configuration
-        //    changes affect the network bandwidth before applying the configuration.
-        //    This function automatically calls <refresh> on the network.
-        //
-        //Parameters:
-        //    nodeAddress - The node address of the <WirelessNode> to set the pending config for.
-        //    config - The <WirelessNodeConfig> to set for the Node.
-        //
-        //Exceptions:
-        //    - <Error>: The node address was not found in the network. The configuration has not been set.
-        //    - <Error_InvalidNodeConfig>: The configuration is not set for Synchronized Sampling mode.
-        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
-        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void setPendingConfig(uint16 nodeAddress, const WirelessNodeConfig& config);
-
-        //API Function: clearPendingConfig
-        //    Clears a pending config that is currently set for a specific <WirelessNode> in the network.
-        //    By clearing the pending config, the network will recalculate using the configuration
-        //    that is currently set on the Wireless Node.
-        //    This function automatically calls <refresh> on the network.
-        //
-        //Parameters:
-        //    nodeAddress - The node address of the <WirelessNode> to set the pending config for.
-        //
-        //Exceptions:
-        //    - <Error>: The node address was not found in the network. No changes have been made.
-        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
-        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void clearPendingConfig(uint16 nodeAddress);
-
-        //API Function: clearAllPendingConfigs
-        //    Clears all pending configurations that are currently set in the network.
-        //    By clearing the pending configs, the network will recalculate using the
-        //    configurations currently set on the Wireless Nodes.
-        //    This function automatically calls <refresh> on the network if any pending configurations were cleared.
-        //
-        //Exceptions:
-        //    - <Error_NodeCommunication>: Failed to communicate with a Node.
-        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void clearAllPendingConfigs();
-
     private:
-        //API Function: addNodeToNetwork
+        //Function: addNodeToNetwork
         //    Adds a <WirelessNode> to the Sync Sampling network, with or without a given pending <WirelessNodeConfig>. 
         //    If the Node already exists in the network, it will not be added.
         //    The Node's parent <BaseStation> should be the same as the network's master <BaseStation>.
@@ -325,13 +297,21 @@ namespace mscl
         //    - <Error_UnknownSampleRate>: The sample rate value read from the node is not a valid SampleRate.
         void calculateNetworkValues(NodeAddress nodeAddress, bool optimizeBandwidth);
 
+        void divvyUpEventTransmissions();
+
+        double totalEventTxPerGroup();
+
         //Function: updateNetworkStatus
         //    Updates the status of each Node and calculates the total percent of bandwidth
         void updateNetworkStatus();
 
         //Function: sortByBandwidth
-        //    Sorts the networkorder container by the percent of bandwidth (and by node address is bandwidth is the same).
-        void sortByBandwidth();
+        //    Sorts the vector of nodes by the percent of bandwidth (and by node address is bandwidth is the same).
+        //
+        //Parameters:
+        //  container - The container of node addresses to sort by bandwidth.
+        //              Each node in this container needs to have already had its percent bandwidth calculated.
+        void sortByBandwidth( std::vector<NodeAddress>& container );
 
         //Function: sortingFunction
         //    The function used as a predicate to sort the networkorder container by bandwidth
@@ -345,8 +325,11 @@ namespace mscl
         bool sortingFunction(NodeAddress address1, NodeAddress address2);
 
         //Function: findSlotsForNodes
-        //    Finds TDMA slots for every Node in the network. 
+        //    Finds TDMA slots for every Node in the given vector of nodes. 
         //    Note that this clears m_slots before finding new slots for all of the Nodes.
+        //
+        //Parameters:
+        //  container - The container of node addresses to find slots for, sorted in order of priority.
         //
         //Returns:
         //    true if a slot was found for every node in the network, false if any of the nodes failed to find a slot.
@@ -354,7 +337,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_NodeCommunication>: Failed to communicate with a Node.
         //    - <Error_Connection>: A connection error has occurred.
-        bool findSlotsForNodes();
+        bool findSlotsForNodes(const std::vector<NodeAddress>& nodes);
 
         //Function: getTdmaSlot
         //    Finds a TDMA slot for a single Node.
@@ -400,5 +383,12 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to start a Node Synchronized Sampling.
         //    - <Error_Connection>: A connection error has occurred.
         void sendStartToAllNodes();
+
+        //Function: inLegacyMode
+        //  Gets whether the network is in legacy mode (has at least 1 sync v1 node) or not.
+        //
+        //Returns:
+        //  true if in legacy mode, false otherwise.
+        bool inLegacyMode();
     };
 }

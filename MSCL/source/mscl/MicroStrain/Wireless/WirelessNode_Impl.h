@@ -15,6 +15,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Commands/WirelessProtocol.h"
 #include "Configuration/ActivitySense.h"
 #include "Configuration/ConfigIssue.h"
+#include "Configuration/EventTriggerOptions.h"
 #include "Configuration/FatigueOptions.h"
 #include "Configuration/HistogramOptions.h"
 #include "Configuration/NodeEeprom.h"
@@ -427,6 +428,18 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint16 getHardwareOffset(const ChannelMask& mask) const;
 
+        //Function: getLowPassFilter
+        //    Reads the Low Pass Filter of the specified <ChannelMask> currently set on the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> of the low pass filter to read.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Low Pass Filter is not supported for the provided <ChannelMask>.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::Filter getLowPassFilter(const ChannelMask& mask) const;
+
         //Function: getGaugeFactor
         //    Reads the gauge factor of the specified <ChannelMask> currently set on the Node.
         //
@@ -522,6 +535,34 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to read from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         ActivitySense getActivitySense() const;
+
+        //Function: getEventTriggerOptions
+        //  Reads the <EventTriggerOptions> currently set on the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Event Trigger configuration is not supported by this Node.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        EventTriggerOptions getEventTriggerOptions() const;
+
+        //Function: getDiagnosticInterval
+        //  Reads the interval (in seconds) at which the diagnostic info is configured to be sent.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Diagnostic Info is not supported by this Node.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        uint16 getDiagnosticInterval() const;
+
+        //Function: getStorageLimitMode
+        //  Rates the <WirelessTypes::StorageLimitMode> that the Node is configured for.
+        //  This determines what happens when the datalogging storage limit is reached on the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Storage Limit Mode (or datalogging) is not supported by this Node.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::StorageLimitMode getStorageLimitMode() const;
 
     public:
         //Function: quickPing

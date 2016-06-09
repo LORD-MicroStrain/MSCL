@@ -42,7 +42,7 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalPacket_Constructor)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_AsyncDigital);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalPacket_IntegrityCheck_Good)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_AsyncDigital);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalPacket_IntegrityCheck_SmallPayload)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_AsyncDigital);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalPacket_IntegrityCheck_BadStopFlags)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(15));    //INVALID DELIVERY STOP FLAGS
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(15));    //INVALID DELIVERY STOP FLAGS
     packet.type(WirelessPacket::packetType_AsyncDigital);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalPacket_IntegrityCheck_BadPacketType)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_LDC); //INVALID packet type
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -224,7 +224,7 @@ BOOST_AUTO_TEST_CASE(AsyncDigitalPacket_IntegrityCheck_InvalidPayloadBytes)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_AsyncDigital);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);

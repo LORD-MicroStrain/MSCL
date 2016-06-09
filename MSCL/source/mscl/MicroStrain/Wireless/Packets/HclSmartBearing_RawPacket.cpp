@@ -86,6 +86,7 @@ namespace mscl
         sweep.timestamp(Timestamp(realTimestamp));
         sweep.nodeRssi(m_nodeRSSI);
         sweep.baseRssi(m_baseRSSI);
+        sweep.calApplied(true);
 
         static const uint16 DATA_START = 15;
 
@@ -154,6 +155,7 @@ namespace mscl
         sweep.timestamp(Timestamp(realTimestamp));
         sweep.nodeRssi(m_nodeRSSI);
         sweep.baseRssi(m_baseRSSI);
+        sweep.calApplied(true);
 
         static const uint16 DATA_START = 13;
 
@@ -231,6 +233,7 @@ namespace mscl
         sweep.timestamp(Timestamp(realTimestamp));
         sweep.nodeRssi(m_nodeRSSI);
         sweep.baseRssi(m_baseRSSI);
+        sweep.calApplied(true);
 
         static const uint16 DATA_START = 13;
 

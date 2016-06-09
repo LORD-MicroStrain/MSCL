@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_CASE(NodeDiscovery_v3_IntegrityCheck_Fail_PayloadSize)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x07));
     packet.type(WirelessPacket::packetType_nodeDiscovery_v3);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(NodeDiscovery_v3_IntegrityCheck_Fail_Frequency)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x07));
     packet.type(WirelessPacket::packetType_nodeDiscovery_v3);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(NodeDiscovery_v3_IntegrityCheck_Fail_PacketType)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x07));
     packet.type(WirelessPacket::packetType_nodeDiscovery_v2);                //invalid packet type
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -156,7 +156,7 @@ BOOST_AUTO_TEST_CASE(NodeDiscovery_v3_IntegrityCheck_Success)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x07));
     packet.type(WirelessPacket::packetType_nodeDiscovery_v3);                
     packet.nodeRSSI(1);
     packet.baseRSSI(1);

@@ -21,14 +21,6 @@ namespace mscl
         BaseStation_WriteEeprom& operator=(const BaseStation_WriteEeprom&);    //assignement operator disabled
 
     public:
-        //=====================================================================================================
-        //Constants: Packet Information
-        //    COMMAND_BYTE    - 0x78    - The Command ID byte of the write eeprom command
-        //    FAIL_BYTE        - 0x21    - The Fail Response ID byte for the write eeprom command
-        //=====================================================================================================
-        static const short COMMAND_BYTE            = 0x78;
-        static const short FAIL_BYTE            = 0x21;
-
         //Function: buildCommand
         //    Builds the eeprom write command packet
         //

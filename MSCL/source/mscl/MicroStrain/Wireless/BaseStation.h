@@ -144,6 +144,9 @@ namespace mscl
         //
         //Returns:
         //    A <Timestamp> representing the last time MSCL communicated with the BaseStation. This will be a Timestamp of 0 if never communicated with.
+        //
+        //Exceptions:
+        //  - <Error_NoData>: There is no communication time logged for this device.
         const Timestamp& lastCommunicationTime() const;
 
         //API Function: readWriteRetries
@@ -287,7 +290,7 @@ namespace mscl
         //    timeout - The timeout (in milliseconds) to set for commands.
         void timeout(uint64 timeout);
 
-        //API Function: baseCommandsTimeout
+        //API Function: timeout
         //    Gets the current timeout to use when waiting for responses from base station commands.
         //    This timeout is used directly for BaseStation commands, while some additional time is added for Node commands.
         //    Note: Some commands have a minimum timeout that will override this if set lower than the minimum.
@@ -594,16 +597,6 @@ namespace mscl
 //all the node functions in the base station class should not be exposed to SWIG
 #ifndef SWIG
     public:
-        //Function: node_lastCommunicationTime
-        //    Gets the <Timestamp> for the last time MSCL communicated with the given node address.
-        //
-        //Parameters:
-        //    nodeAddress - The node address of the Node to check for.
-        //
-        //Returns:
-        //    A <Timestamp> representing the last time MSCL communicated with the Node, through this BaseStation.
-        const Timestamp& node_lastCommunicationTime(NodeAddress nodeAddress) const;
-
         //Function: node_shortPing
         //    Pings a specific node.
         //
@@ -707,6 +700,17 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the BaseStation
         bool node_pageDownload(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data);
 
+        //Function: node_erase
+        //    Sends the Erase command to a Node.
+        //
+        //Parameters:
+        //    protocol - The <WirelessProtocol> for the Node.
+        //    nodeAddress - The node address of the Node to send the command to.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
+        bool node_erase(const WirelessProtocol& protocol, NodeAddress nodeAddress);
+
         //Function: node_startSyncSampling
         //    Sends the Start Synchronized Sampling command to a Node.
         //
@@ -750,16 +754,6 @@ namespace mscl
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         void node_triggerArmedDatalogging(NodeAddress nodeAddress);
-
-        //Function: node_erase
-        //    Sends the Erase command to a Node.
-        //
-        //Parameters:
-        //    nodeAddress - The node address of the Node to send the command to.
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool node_erase(NodeAddress nodeAddress);
 
         //Function: node_autoBalance
         //    Sends the AutoBalance command to a Node.

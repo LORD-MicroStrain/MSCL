@@ -11,6 +11,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/RadioFeatures.h"
 
+#include <boost/optional.hpp>
+
 namespace mscl
 {
     class WirelessNode_Impl;    //forward declarations
@@ -30,7 +32,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        NodeInfo(const WirelessNode_Impl& node);
+        NodeInfo(const WirelessNode_Impl* node);
         
         //Constructor: NodeInfo
         //    Creates a NodeInfo object.
@@ -46,21 +48,29 @@ namespace mscl
     private:
         NodeInfo();        //disabled default constructor
 
-    public:
+        const WirelessNode_Impl* m_node;
+
+    private:
         //Variable: firmwareVersion
         //    The firmware <Version> of the node.
-        Version firmwareVersion;
+        mutable boost::optional<Version> m_firmwareVersion;
 
         //Variable: model
         //    The <WirelessModels::NodeModel> of the node.
-        WirelessModels::NodeModel model;
+        mutable boost::optional<WirelessModels::NodeModel> m_model;
 
         //Variable: dataStorageSize
         //    The maximum number of bytes that can be stored to the node.
-        uint64 dataStorageSize;
+        mutable boost::optional<uint64> m_dataStorageSize;
 
         //Variable: regionCode
         //    The <WirelessTypes::RegionCode> of the node.
-        WirelessTypes::RegionCode regionCode;
+        mutable boost::optional<WirelessTypes::RegionCode> m_regionCode;
+
+    public:
+        Version firmwareVersion() const;
+        WirelessModels::NodeModel model() const;
+        uint64 dataStorageSize() const;
+        WirelessTypes::RegionCode regionCode() const;
     };
 }

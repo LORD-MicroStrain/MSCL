@@ -54,13 +54,6 @@ namespace mscl
         //    A <Timestamp> representing the timestamp of the sweep
         Timestamp timestamp() const;
 
-        //API Function: nanoseconds
-        //    Gets the timestamp of the sweep in nanoseconds since UTC
-        //
-        //Returns:
-        //    The timestamp of the sweep in nanoseconds since UTC
-        uint64 nanoseconds() const;
-
         //API Function: tick
         //    Gets the tick value of the sweep
         //

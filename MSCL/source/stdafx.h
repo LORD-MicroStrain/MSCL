@@ -31,7 +31,6 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include <map>                                                     //for std::map
 #include <memory>                                                  //for std::shared_ptr, std::unique_ptr
 #include <mutex>                                                   //for std::mutex
-#include <regex>                                                   //for std::regex
 #include <set>                                                     //for std::set
 #include <sstream>                                                 //for std::stringstream
 #include <string>                                                  //for std::string

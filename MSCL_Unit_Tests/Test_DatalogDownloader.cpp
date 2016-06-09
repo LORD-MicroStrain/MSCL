@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v1_0)
 
     BOOST_CHECK_EQUAL(dl.complete(), false);
 
-    ByteStream data;
+    ByteStream data(false);
     data.append_uint16(0xFFFF);
     data.append_uint8(0xFD);    //header id
     data.append_uint8(0x00);    //trigger id
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_0)
 
     BOOST_CHECK_EQUAL(dl.complete(), false);
 
-    ByteStream data;
+    ByteStream data(false);
     data.append_uint16(0xFFFF);
     data.append_uint8(0xFD);    //header id
     data.append_uint8(0x00);    //trigger id
@@ -166,6 +166,11 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_0)
     BOOST_CHECK_EQUAL(dl.totalSweeps(), 500);
     BOOST_CHECK_EQUAL(dl.triggerType(), WirelessTypes::trigger_userInit);
     BOOST_CHECK_EQUAL(dl.userString(), "");
+    BOOST_CHECK_EQUAL(dl.calCoefficients().size(), 1);
+    BOOST_CHECK_EQUAL(dl.calCoefficients().at(WirelessChannel::channel_1).equationType(), WirelessTypes::equation_standard);
+    BOOST_CHECK_EQUAL(dl.calCoefficients().at(WirelessChannel::channel_1).unit(), WirelessTypes::unit_volts_volts);
+    BOOST_CHECK_CLOSE(dl.calCoefficients().at(WirelessChannel::channel_1).linearEquation().slope(), 2.5, 0.001);
+    BOOST_CHECK_CLOSE(dl.calCoefficients().at(WirelessChannel::channel_1).linearEquation().offset(), 0.1234, 0.001);
 
     BOOST_CHECK_EQUAL(sweep.timestamp().nanoseconds(), 0);
     BOOST_CHECK_EQUAL(sweep.tick(), 0);
@@ -207,7 +212,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_1)
 
     BOOST_CHECK_EQUAL(dl.complete(), false);
 
-    ByteStream data;
+    ByteStream data(false);
     data.append_uint16(0xFFFF);
     data.append_uint8(0xFD);    //header id
     data.append_uint8(0x00);    //trigger id
@@ -223,9 +228,9 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_1)
     data.append_uint16(0x00);    //# of user bytes
     data.append_uint16(0x0A);    //# of bytes per channel
     data.append_uint8(0x04);    //equation id
-    data.append_uint8(0x06);    //unit id
-    data.append_float(2.5f);    //slope
-    data.append_float(0.1234f);    //offset
+    data.append_uint8(0x02);    //unit id
+    data.append_float(6.1f);    //slope
+    data.append_float(12.05f);    //offset
     data.append_uint16(0x08);    //# of bytes before end of header
     data.append_uint32(0);        //timestamp (seconds)
     data.append_uint32(0);        //timestamp (nanoseconds)
@@ -238,12 +243,18 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_1)
 
     LoggedDataSweep sweep = dl.getNextData();
 
+    BOOST_CHECK_EQUAL(dl.complete(), false);
     BOOST_CHECK(dl.sampleRate() == SampleRate::Hertz(32));
     BOOST_CHECK_EQUAL(dl.sessionIndex(), 1);
     BOOST_CHECK_EQUAL(dl.startOfSession(), true);
     BOOST_CHECK_EQUAL(dl.totalSweeps(), 50000);
     BOOST_CHECK_EQUAL(dl.triggerType(), WirelessTypes::trigger_userInit);
     BOOST_CHECK_EQUAL(dl.userString(), "");
+    BOOST_CHECK_EQUAL(dl.calCoefficients().size(), 1);
+    BOOST_CHECK_EQUAL(dl.calCoefficients().at(WirelessChannel::channel_1).equationType(), WirelessTypes::equation_standard);
+    BOOST_CHECK_EQUAL(dl.calCoefficients().at(WirelessChannel::channel_1).unit(), WirelessTypes::unit_strain_strain);
+    BOOST_CHECK_CLOSE(dl.calCoefficients().at(WirelessChannel::channel_1).linearEquation().slope(), 6.1, 0.001);
+    BOOST_CHECK_CLOSE(dl.calCoefficients().at(WirelessChannel::channel_1).linearEquation().offset(), 12.05, 0.001);
 
     BOOST_CHECK_EQUAL(sweep.timestamp().nanoseconds(), 0);
     BOOST_CHECK_EQUAL(sweep.tick(), 0);
@@ -261,6 +272,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_1)
     BOOST_CHECK_EQUAL(sweep.data().at(0).as_int16(), 9212);
 
     BOOST_CHECK_EQUAL(dl.complete(), true);
+    BOOST_CHECK_CLOSE(dl.percentComplete(), 100.0, 0.001);
     BOOST_CHECK_THROW(dl.getNextData(), Error_NoData);
 }
 

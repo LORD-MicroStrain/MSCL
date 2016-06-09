@@ -70,8 +70,8 @@ namespace mscl
         //    channelNumber - The channel number to set (ch1 = 1, ch8 = 8).
         //    channelDataIndex - The index into the channel data (not the actual channel index). ex. if channel 1 and 3 are active, channel 1 = index 0 and channel 3 = index 1.
         //    sweepIndex - The index of the sweep into the packet starting at index 0.
-        //    channelName - The <WirelessChannel::ChannelId> to give to the WirelessDataPoint.
-        void addDataPoint(ChannelData& container, uint8 channelNumber, int channelDataIndex, int sweepIndex, WirelessChannel::ChannelId channelName) const;
+        //    channelId - The <WirelessChannel::ChannelId> to give to the WirelessDataPoint.
+        void addDataPoint(ChannelData& container, uint8 channelNumber, int channelDataIndex, int sweepIndex, WirelessChannel::ChannelId channelId) const;
 
         //Function: wirelessChannelFromChNum
         //    Converts a channel number to a <WirelessChannel>

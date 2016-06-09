@@ -13,13 +13,25 @@ namespace mscl
     NodeFeatures_mvpervlink::NodeFeatures_mvpervlink(const NodeInfo& info):
         NodeFeatures(info)
     {
-        static const ChannelMask DIFFERENTIAL_CHS(BOOST_BINARY(00000001));    //ch1
+        static const ChannelMask DIFFERENTIAL_CHS(BOOST_BINARY(00000011));    //ch1 - ch2
+        static const ChannelMask DIFFERENTIAL_CH1(BOOST_BINARY(00000001));    //ch1
+        static const ChannelMask DIFFERENTIAL_CH2(BOOST_BINARY(00000010));    //ch2
 
         m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential Channels",
                                      ChannelGroup::SettingsMap{
-                                         {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_1},
+                                         {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_1}}
+        );
+
+        m_channelGroups.emplace_back(DIFFERENTIAL_CH1, "Differential Channel 1",
+                                     ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1},
                                          {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_1}}
+        );
+
+        m_channelGroups.emplace_back(DIFFERENTIAL_CH2, "Differential Channel 2",
+                                     ChannelGroup::SettingsMap{
+                                         {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_2},
+                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_2}}
         );
 
         //Channels

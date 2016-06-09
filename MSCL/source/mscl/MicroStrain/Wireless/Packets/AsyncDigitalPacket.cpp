@@ -89,6 +89,7 @@ namespace mscl
             //get this sweep's node and base rssi values
             sweep.nodeRssi(m_nodeRSSI);
             sweep.baseRssi(m_baseRSSI);
+            sweep.calApplied(true);
         
             ChannelData chData;
 
@@ -103,11 +104,8 @@ namespace mscl
                     //get the digital value (as a bool)
                     bool dataVal = digitalDataMask.enabled(chItr);
 
-                    //create a WirelessDataPoint from the digital data
-                    WirelessDataPoint point(wirelessChannelFromChNum(chItr), chItr, valueType_bool, anyType(dataVal));
-
-                    //add the point to the ChannelData vector
-                    chData.push_back(point);
+                    //add a WirelessDataPoint from the digital data to the ChannelData vector
+                    chData.push_back(WirelessDataPoint(wirelessChannelFromChNum(chItr), chItr, valueType_bool, anyType(dataVal)));
                 }
             }
 

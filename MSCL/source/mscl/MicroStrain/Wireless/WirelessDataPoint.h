@@ -44,12 +44,15 @@ namespace mscl
         //    type - The <ValueType> of the value to be stored
         //    value - The value to store
         //    channelProperties - Any <ChannelProperties> to store for later retrieval.
-        WirelessDataPoint(WirelessChannel::ChannelId channelId, uint8 channelNumber, ValueType type, const anyType& value,
+        WirelessDataPoint(
+            WirelessChannel::ChannelId channelId,
+            uint8 channelNumber,
+            ValueType type,
+            const anyType& value,
             const ChannelProperties& channelProperties = ChannelProperties());
 
         //Constructor: WirelessDataPoint
         //    Builds a WirelessDataPoint object.
-        //    The channel name will be automatically generated from the given channel id.
         //    
         //Parameters:
         //    channelId - The <WirelessChannel::ChannelId> of the the data point
@@ -57,7 +60,13 @@ namespace mscl
         //    channelName - The channel name associated with the data point.
         //    type - The <ValueType> of the value to be stored
         //    value - The value to store
-        WirelessDataPoint(WirelessChannel::ChannelId channelId, uint8 channelNumber, const Utils::Lazy<std::string>& channelName, ValueType type, const anyType& value,
+        //    channelProperties - Any <ChannelProperties> to store for later retrieval.
+        WirelessDataPoint(
+            WirelessChannel::ChannelId channelId,
+            uint8 channelNumber,
+            const Utils::Lazy<std::string>& channelName,
+            ValueType type,
+            const anyType& value,
             const ChannelProperties& channelProperties = ChannelProperties());
 #endif
     
@@ -71,9 +80,7 @@ namespace mscl
         uint8 m_channelNumber;
 
         //Variable: m_channelName
-        //    The channel name associated with the data point.
-        //std::string m_channelName;
-
+        //    The channel name associated with the data point (as a lazy load function).
         mutable Utils::Lazy<std::string> m_channelName;
 
         ChannelProperties m_channelProperties;

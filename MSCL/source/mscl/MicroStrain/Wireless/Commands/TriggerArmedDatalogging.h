@@ -23,12 +23,6 @@ namespace mscl
         TriggerArmedDatalogging& operator=(const TriggerArmedDatalogging&);    //disabled assignment operator
 
     public:
-        //=====================================================================================================
-        //Constants: Packet Information
-        //    COMMAND_ID    - 0x000E        - The Command ID for the TriggerArmedDatalogging command
-        //=====================================================================================================
-        static const uint16 COMMAND_ID = 0x000E;
-
         //Function: buildCommand
         //    Builds the TriggerArmedDatalogging command packet.
         //

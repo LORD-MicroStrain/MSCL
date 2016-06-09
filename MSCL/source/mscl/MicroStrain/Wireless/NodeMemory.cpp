@@ -115,7 +115,7 @@ namespace mscl
         return data->read_uint8(offset);
     }
 
-    uint64 NodeMemory::bytesRemaining(uint64 currentByte)
+    uint64 NodeMemory::bytesRemaining(uint64 currentByte) const
     {
         //if the current byte is past the end of the total bytes
         if(currentByte > m_totalBytes)
@@ -126,5 +126,16 @@ namespace mscl
 
         //return the difference between the total bytes and the current byte
         return m_totalBytes - currentByte;
+    }
+
+    float NodeMemory::percentComplete(uint64 currentByte) const
+    {
+        //if we have completed
+        if(currentByte > m_totalBytes)
+        {
+            return 100.0;
+        }
+
+        return (static_cast<float>(currentByte) / static_cast<float>(m_totalBytes)) * 100.0f;
     }
 }

@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(NodeDiscovery_Constructor)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_nodeDiscovery);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(NodeDiscovery_Constructor_v2)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x07));
     packet.type(WirelessPacket::packetType_nodeDiscovery_v2);
     packet.nodeRSSI(-45);
     packet.baseRSSI(-5);
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(NodeDiscovery_Constructor_v3)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x07));
     packet.type(WirelessPacket::packetType_nodeDiscovery_v3);
     packet.nodeRSSI(-45);
     packet.baseRSSI(-5);

@@ -21,8 +21,8 @@ namespace mscl
         NodeFeatures_glink2Internal(const NodeInfo& info);
 
     public:
-        //Function: sampleRates
-        //    Gets a list of the <WirelessTypes::WirelessSampleRates> that are supported by this Node for the given sampling mode.
         virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode) const override;
+
+        virtual const WirelessTypes::Filters lowPassFilters() const override;
     };
 }

@@ -433,13 +433,6 @@ BOOST_AUTO_TEST_CASE(Utils_valueTypeSize)
     BOOST_CHECK_THROW(Utils::valueTypeSize(valueType_Vector), Error);
 }
 
-BOOST_AUTO_TEST_CASE(Utils_logBase2)
-{
-    BOOST_CHECK_CLOSE(Utils::logBase2(256), 8, 0.1);
-    BOOST_CHECK_CLOSE(Utils::logBase2(2), 1, 0.1);
-    BOOST_CHECK_CLOSE(Utils::logBase2(4000), 11.965784, 0.001);
-}
-
 BOOST_AUTO_TEST_CASE(Utils_round)
 {
     BOOST_CHECK_CLOSE(Utils::round(4.50f), 5.0, 0.1);
@@ -448,20 +441,20 @@ BOOST_AUTO_TEST_CASE(Utils_round)
     BOOST_CHECK_CLOSE(Utils::round(4.23f), 4.0, 0.1);
 }
 
-BOOST_AUTO_TEST_CASE(Utils_roundDownToNearestBase2)
+BOOST_AUTO_TEST_CASE(Utils_floorBase2)
 {
-    BOOST_CHECK_EQUAL(Utils::roundDownToNearestBase2(256), 256);
-    BOOST_CHECK_EQUAL(Utils::roundDownToNearestBase2(251), 128);
-    BOOST_CHECK_EQUAL(Utils::roundDownToNearestBase2(4000), 2048);
-    BOOST_CHECK_EQUAL(Utils::roundDownToNearestBase2(32.0), 32);
+    BOOST_CHECK_EQUAL(Utils::floorBase2(256), 256);
+    BOOST_CHECK_EQUAL(Utils::floorBase2(251), 128);
+    BOOST_CHECK_EQUAL(Utils::floorBase2(4000), 2048);
+    BOOST_CHECK_EQUAL(Utils::floorBase2(32.0), 32);
 }
 
-BOOST_AUTO_TEST_CASE(Utils_roundUpToNearestBase2)
+BOOST_AUTO_TEST_CASE(Utils_ceilBase2)
 {
-    BOOST_CHECK_EQUAL(Utils::roundUpToNearestBase2(256), 256);
-    BOOST_CHECK_EQUAL(Utils::roundUpToNearestBase2(251), 256);
-    BOOST_CHECK_EQUAL(Utils::roundUpToNearestBase2(4000), 4096);
-    BOOST_CHECK_EQUAL(Utils::roundUpToNearestBase2(32.0), 32);
+    BOOST_CHECK_EQUAL(Utils::ceilBase2(256), 256);
+    BOOST_CHECK_EQUAL(Utils::ceilBase2(251), 256);
+    BOOST_CHECK_EQUAL(Utils::ceilBase2(4000), 4096);
+    BOOST_CHECK_EQUAL(Utils::ceilBase2(32.0), 32);
 }
 
 BOOST_AUTO_TEST_CASE(Utils_bitIsSet)

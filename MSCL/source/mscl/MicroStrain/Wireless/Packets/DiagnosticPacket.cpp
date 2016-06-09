@@ -1,0 +1,219 @@
+/*******************************************************************************
+Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
+#include "stdafx.h"
+
+#include "DiagnosticPacket.h"
+
+namespace mscl
+{
+    DiagnosticPacket::DiagnosticPacket(const WirelessPacket& packet)
+    {
+        //construct the data packet from the wireless packet passed in
+        m_nodeAddress              = packet.nodeAddress();
+        m_deliveryStopFlags        = packet.deliveryStopFlags();
+        m_type                     = packet.type();
+        m_nodeRSSI                 = WirelessTypes::UNKNOWN_RSSI;
+        m_baseRSSI                 = packet.baseRSSI();
+        m_frequency                = packet.frequency();
+        m_payload                  = packet.payload();
+
+        //parse the data sweeps in the packet
+        parseSweeps();
+    }
+
+    void DiagnosticPacket::parseSweeps()
+    {
+        DataBuffer payload(m_payload);
+        m_numSweeps = 1;
+
+        //build the 1 sweep that we need to add
+        DataSweep sweep;
+        sweep.samplingType(DataSweep::samplingType_Diagnostic);
+        sweep.frequency(m_frequency);
+        sweep.nodeAddress(m_nodeAddress);
+
+        //the data itself is the beacon timestamp. 
+        //use this for the current PC time
+        sweep.timestamp(Timestamp::timeNow());
+
+        //get this sweep's node and base rssi values
+        sweep.nodeRssi(m_nodeRSSI);
+        sweep.baseRssi(m_baseRSSI);
+
+        sweep.calApplied(true);
+
+        //get the packet interval (in seconds)
+        uint16 packetInterval = payload.read_uint16();
+
+        sweep.tick(payload.read_uint16());
+        sweep.sampleRate(SampleRate::Seconds(packetInterval));
+
+        size_t numInfoItemBytes = payload.size() - 4;
+        size_t infoByteCounter = 0;
+
+        ChannelData chData;
+
+        //iterate over all of the info bytes
+        while(infoByteCounter < numInfoItemBytes)
+        {
+            uint8 infoLen = payload.read_uint8();
+
+            uint8 infoId = payload.read_uint8();
+
+            addDataPoint(chData, payload, infoLen - 1, infoId);
+
+            infoByteCounter += (infoLen + 1);
+        }
+
+        //add the channel data to the sweep
+        sweep.data(chData);
+
+        //add the sweep to the container of sweeps
+        addSweep(sweep);
+    }
+
+    void DiagnosticPacket::addDataPoint(ChannelData& container, DataBuffer& payload, uint8 infoLength, uint8 infoId) const
+    {
+        switch(infoId)
+        {
+            //Current State
+            case 0:
+                container.emplace_back(WirelessChannel::channel_diag_state, 0, valueType_uint8, anyType(payload.read_uint8()));
+                break;
+
+            //Run Time
+            case 1:
+                //idle time
+                container.emplace_back(WirelessChannel::channel_diag_runtime_idle, 0, valueType_uint32, anyType(payload.read_uint32()));
+
+                //sleep time
+                container.emplace_back(WirelessChannel::channel_diag_runtime_sleep, 0, valueType_uint32, anyType(payload.read_uint32()));
+
+                //active run time
+                container.emplace_back(WirelessChannel::channel_diag_runtime_activeRun, 0, valueType_uint32, anyType(payload.read_uint32()));
+
+                //inactive run time
+                container.emplace_back(WirelessChannel::channel_diag_runtime_inactiveRun, 0, valueType_uint32, anyType(payload.read_uint32()));
+                break;
+
+            //Reset Counter
+            case 2:
+                container.emplace_back(WirelessChannel::channel_diag_resetCounter, 0, valueType_uint16, anyType(payload.read_uint16()));
+                break;
+
+            //Battery flag
+            case 3:
+                container.emplace_back(WirelessChannel::channel_diag_lowBatteryFlag, 0, valueType_uint8, anyType(payload.read_uint8()));
+                break;
+
+            //Sample info
+            case 4:
+                //sweep index
+                container.emplace_back(WirelessChannel::channel_diag_sweepIndex, 0, valueType_uint32, anyType(payload.read_uint32()));
+
+                //bad sweep count
+                container.emplace_back(WirelessChannel::channel_diag_badSweepCount, 0, valueType_uint32, anyType(payload.read_uint32()));
+                break;
+
+            //Transmit info
+            case 5:
+                //total transmissions
+                container.emplace_back(WirelessChannel::channel_diag_totalTx, 0, valueType_uint32, anyType(payload.read_uint32()));
+
+                //total retransmissions
+                container.emplace_back(WirelessChannel::channel_diag_totalReTx, 0, valueType_uint32, anyType(payload.read_uint32()));
+
+                //total dropped packets
+                container.emplace_back(WirelessChannel::channel_diag_totalDroppedPackets, 0, valueType_uint32, anyType(payload.read_uint32()));
+                break;
+
+            //Built in Test result
+            case 6:
+                //BIT
+                container.emplace_back(WirelessChannel::channel_diag_builtInTestResult, 0, valueType_uint32, anyType(payload.read_uint32()));
+                break;
+
+            //Unknown info
+            default:
+            {
+                //read past the bytes we don't know about
+                for(uint8 i = 0; i < infoLength; i++)
+                {
+                    payload.read_uint8();
+                }
+            }
+            break;
+        }
+    }
+
+    bool DiagnosticPacket::integrityCheck(const WirelessPacket& packet)
+    {
+        WirelessPacket::Payload payload = packet.payload();
+
+        //verify the minimum payload size
+        if(payload.size() < 7)
+        {
+            return false;
+        }
+
+        //verify the delivery stop flags are what we expected
+        if(!packet.deliveryStopFlags().pc)
+        {
+            //packet not intended for the PC
+            return false;
+        }
+
+        //verify the packet type is correct
+        if(packet.type() != packetType_diagnostic)
+        {
+            //packet is not an LDC packet
+            return false;
+        }
+
+        //verify packet interval
+        if(payload.read_uint16(2) == 0)
+        {
+            //packet interval should never be 0 (invalid payload)
+            return false;
+        }
+
+        DataBuffer bytes(payload);
+
+        //skip the sample rate and tick bytes
+        bytes.skipBytes(4);
+
+        //verify the payload is correct
+        while(bytes.moreToRead())
+        {
+            uint8 infoLen = bytes.read_uint8();
+
+            if(infoLen == 0)
+            {
+                //no info length should be 0 (invalid payload)
+                return false;
+            }
+
+            //verify we can read all the bytes in the length described
+            if(bytes.bytesRemaining() < infoLen)
+            {
+                //can't read all the bytes (invalid payload)
+                return false;
+            }
+
+            //skip passed the bytes being asked to read
+            bytes.skipBytes(infoLen);
+        }
+
+        //packet looks valid
+        return true;
+    }
+
+    UniqueWirelessPacketId DiagnosticPacket::getUniqueId(const WirelessPacket& packet)
+    {
+        //return the tick value
+        return packet.payload().read_uint16(2);
+    }
+}

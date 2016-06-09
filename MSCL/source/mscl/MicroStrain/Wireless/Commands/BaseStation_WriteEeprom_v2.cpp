@@ -15,15 +15,15 @@ namespace mscl
         //build the command ByteStream
         ByteStream cmd;
 
-        cmd.append_uint8(0xAA);                //Start of packet
-        cmd.append_uint8(0x0E);                //Delivery Stop Flag
-        cmd.append_uint8(0x30);                //App Data Type
-        cmd.append_uint16(WirelessProtocol::BASE_STATION_ADDRESS);    //Base Station Address
-        cmd.append_uint8(0x06);                //Payload length
-        cmd.append_uint16(0x0078);            //Command ID
-        cmd.append_uint16(eepromAddress);    //eeprom address to write to
-        cmd.append_uint16(valueToWrite);    //value to write
-        cmd.append_uint16(cmd.calculateSimpleChecksum(1, 11));    //checksum
+        cmd.append_uint8(0xAA);                                                    //Start of packet
+        cmd.append_uint8(0x0E);                                                    //Delivery Stop Flag
+        cmd.append_uint8(0x30);                                                    //App Data Type
+        cmd.append_uint16(WirelessProtocol::BASE_STATION_ADDRESS);                 //Base Station Address
+        cmd.append_uint8(0x06);                                                    //Payload length
+        cmd.append_uint16(WirelessProtocol::cmdId_base_writeEeprom_v2);            //Command ID
+        cmd.append_uint16(eepromAddress);                                          //eeprom address to write to
+        cmd.append_uint16(valueToWrite);                                           //value to write
+        cmd.append_uint16(cmd.calculateSimpleChecksum(1, 11));                     //checksum
 
         //return the built command bytes
         return cmd;
@@ -43,13 +43,13 @@ namespace mscl
         WirelessPacket::Payload payload = packet.payload();
 
         //check the main bytes of the packet
-        if(packet.deliveryStopFlags().toByte() != 0x07 ||                        //delivery stop flag
-           packet.type() != WirelessPacket::packetType_baseSuccessReply ||        //app data type
-           packet.nodeAddress() != WirelessProtocol::BASE_STATION_ADDRESS ||    //node address
-           payload.size() != 0x06 ||                                            //payload length
-           payload.read_uint16(0) != 0x0078 ||                                    //command ID
-           payload.read_uint16(2) != m_eepromAddress ||                            //eeprom address
-           payload.read_uint16(4) != m_valueWritten                                //value written
+        if(packet.deliveryStopFlags().toInvertedByte() != 0x07 ||                        //delivery stop flag
+           packet.type() != WirelessPacket::packetType_baseSuccessReply ||               //app data type
+           packet.nodeAddress() != WirelessProtocol::BASE_STATION_ADDRESS ||             //node address
+           payload.size() != 0x06 ||                                                     //payload length
+           payload.read_uint16(0) != WirelessProtocol::cmdId_base_writeEeprom_v2 ||      //command ID
+           payload.read_uint16(2) != m_eepromAddress ||                                  //eeprom address
+           payload.read_uint16(4) != m_valueWritten                                      //value written
            )
         {
             //failed to match some of the bytes
@@ -67,13 +67,13 @@ namespace mscl
         WirelessPacket::Payload payload = packet.payload();
 
         //check the main bytes of the packet
-        if(packet.deliveryStopFlags().toByte() != 0x07 ||                        //delivery stop flag
-           packet.type() != WirelessPacket::packetType_baseErrorReply ||        //app data type
-           packet.nodeAddress() != WirelessProtocol::BASE_STATION_ADDRESS ||    //node address
-           payload.size() != 0x07 ||                                            //payload length
-           payload.read_uint16(0) != 0x0078 ||                                    //command ID
-           payload.read_uint16(2) != m_eepromAddress ||                            //eeprom address
-           payload.read_uint16(4) != m_valueWritten                                //value written
+        if(packet.deliveryStopFlags().toInvertedByte() != 0x07 ||                        //delivery stop flag
+           packet.type() != WirelessPacket::packetType_baseErrorReply ||                 //app data type
+           packet.nodeAddress() != WirelessProtocol::BASE_STATION_ADDRESS ||             //node address
+           payload.size() != 0x07 ||                                                     //payload length
+           payload.read_uint16(0) != WirelessProtocol::cmdId_base_writeEeprom_v2 ||      //command ID
+           payload.read_uint16(2) != m_eepromAddress ||                                  //eeprom address
+           payload.read_uint16(4) != m_valueWritten                                      //value written
            )
         {
             //failed to match some of the bytes

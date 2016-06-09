@@ -29,6 +29,7 @@ namespace mscl
     {
         friend class WirelessNode_Impl;
         friend class NodeEepromHelper;
+        friend class WirelessNodeConfig;
 
     private:
         NodeFeatures();                                    //disabled default constructor
@@ -88,6 +89,24 @@ namespace mscl
         //    Gets the max filter settling time allowed by the given <SampleRate>. 
         //    This is version B of this function. Different nodes use different versions.
         static WirelessTypes::SettlingTime maxFilterSettlingTime_B(const SampleRate& rate);
+
+        //Function: maxSampleRateForSettlingTime_A
+        //  Gets the max <WirelessTypes::WirelessSampleRate> allowed by the given <WirelessTypes::SettlingTime>.
+        //  This is version A of this function. Different nodes use different versions.
+        //
+        //Parameters:
+        //  settlingTime - The settling time to get the max sample rate for.
+        //  rates - The <WirelessTypes::WirelessSampleRates> available for the Node (presumably for a specific sampling mode).
+        static WirelessTypes::WirelessSampleRate maxSampleRateForSettlingTime_A(WirelessTypes::SettlingTime settlingTime, const WirelessTypes::WirelessSampleRates& rates);
+
+        //Function: maxSampleRateForSettlingTime_B
+        //  Gets the max <WirelessTypes::WirelessSampleRate> allowed by the given <WirelessTypes::SettlingTime>.
+        //  This is version B of this function. Different nodes use different versions.
+        //
+        //Parameters:
+        //  settlingTime - The settling time to get the max sample rate for.
+        //  rates - The <WirelessTypes::WirelessSampleRates> available for the Node (presumably for a specific sampling mode).
+        static WirelessTypes::WirelessSampleRate maxSampleRateForSettlingTime_B(WirelessTypes::SettlingTime settlingTime, const WirelessTypes::WirelessSampleRates& rates);
 
     public:
         //API Function: normalizeNumSweeps
@@ -182,6 +201,13 @@ namespace mscl
         //Returns:
         //    true if the Node supports Hardware Offset for at least one <ChannelGroup>, false otherwise.
         bool supportsHardwareOffset() const;
+
+        //API Function: supportsLowPassFilter
+        //  Checks if the Node supports Low Pass Filter for any of its <ChannelGroups>.
+        //
+        //Returns:
+        //  true if the Node supports Low Pass Filter for at least one <ChannelGroup>, false otherwise.
+        bool supportsLowPassFilter() const;
 
         //API Function: supportsGaugeFactor
         //    Checks if the Node supports Gauge Factor for any of its <ChannelGroups>.
@@ -281,6 +307,13 @@ namespace mscl
         //    true if the Node supports Auto Balance for at least 1 <ChannelGroup>, false otherwise.
         virtual bool supportsAutoBalance() const;
 
+        //API Function: supportsShuntCal
+        //  Checks if the Node supports Shunt Cal for any of its <ChannelGroups>.
+        //
+        //Returns:
+        //  true if the Node supports Shunt Cal for at least 1 <ChannelGroup>, false otherwise.
+        virtual bool supportsShuntCal() const;
+
         //API Function: supportsAutoCal
         //    Checks if the Node supports the AutoCal commands.
         //
@@ -294,6 +327,27 @@ namespace mscl
         //Returns:
         //    true if the Node supported limited duration, false if the Node only supports unlimited sampling.
         virtual bool supportsLimitedDuration() const;
+
+        //API Function: supportsEventTrigger
+        //  Checks if the Node supports Event Trigger sampling.
+        //
+        //Returns:
+        //  true if the Node supports Event Trigger, false otherwise.
+        virtual bool supportsEventTrigger() const;
+
+        //API Function: supportsDiagnosticInfo
+        //  Checks if the Node supports sending Diagnostic Info.
+        //
+        //Returns:
+        //  true if the Node can be configured to send diagnostic info, false otherwise.
+        virtual bool supportsDiagnosticInfo() const;
+
+        //API Function: supportsLoggedData
+        //  Checks if the Node supports logging to internal memory.
+        //
+        //Returns:
+        //  true if the Node can store logged data, false otherwise.
+        virtual bool supportsLoggedData() const;
 
         //API Function: supportsChannel
         //    Checks if a specific channel is supported (can be enabled) by this Node.
@@ -376,6 +430,13 @@ namespace mscl
         //    true if the fatigue mode is supported, false otherwise.
         bool supportsFatigueMode(WirelessTypes::FatigueMode mode) const;
 
+        //API Function: supportsCentisecondEventDuration
+        //  Checks if the node configures event duration in 10s of milliseconds or not.
+        //
+        //Returns:
+        //  true if the node uses 10s of milliseconds for event duration, false if it uses seconds for event duration.
+        virtual bool supportsCentisecondEventDuration() const;
+
         //API Function: maxSampleRate
         //    Gets the maximum <SampleRate> value that is supported by this Node with the given <SamplingMode> and <ChannelMask>.
         //
@@ -386,6 +447,20 @@ namespace mscl
         //Returns:
         //    The max <WirelessTypes::WirelessSampleRate> that is supported by this Node with the given <WirelessTypes::SamplingMode> and <ChannelMask>.
         virtual WirelessTypes::WirelessSampleRate maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels) const;
+
+        //API Function: maxSampleRateForSettlingTime
+        //  Gets the maximum <SampleRate> value that is supported by this Node with the given <WirelessTypes::SettlingTime>.
+        //
+        //Parameters:
+        //  filterSettlingTime - The <WirelessTypes::SettlingTime> to check the max sample rate for.
+        //  samplingMode - The <WirelessTypes::SamplingMode> that the Node will be in for determining sample rates.
+        //
+        //Returns:
+        //    The max <WirelessTypes::WirelessSampleRate> that is supported by this Node with the given <WirelessTypes::SettlingTime>.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The Filter Settling Time feature is not supported by this Node.
+        virtual WirelessTypes::WirelessSampleRate maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode) const;
 
         //API Function: maxFilterSettlingTime
         //    Gets the maximum <WirelessTypes::SettlingTime> available for the given <SampleRate>.
@@ -484,7 +559,7 @@ namespace mscl
         //Parameters:
         //    dataFormat - The <WirelessTypes::DataFormat> of the sampling session.
         //    numChannels - The number of active channels for the sampling session.
-        //    sampleRate - The <SampleRate> that for the sampling session.
+        //    sampleRate - The <SampleRate> for the sampling session.
         //    sweepsPerBurst - The number of sweeps per burst for the sampling session.
         //
         //Returns:
@@ -504,6 +579,25 @@ namespace mscl
         //Exceptions:
         //    - <Error_NotSupported>: The hardware gain feature is not supported by this Node.
         double maxHardwareGain() const;
+
+        //API Function: maxEventTriggerTotalDuration
+        //  Gets the max event trigger duration (in milliseconds) that can be applied for both the pre and post event durations (combined).
+        //
+        //Parameters:
+        //  dataFormat - The <WirelessTypes::DataFormat> of the sampling session.
+        //  numChannels - The number of active channels for the sampling session.
+        //  sampleRate - The <SampleRate> for the sampling session.
+        uint32 maxEventTriggerTotalDuration(WirelessTypes::DataFormat dataFormat, const ChannelMask& channels, const SampleRate& sampleRate) const;
+
+        //API Function: normalizeEventDuration
+        //  Normalizes the Event Trigger duration so that is is an acceptable value.
+        //
+        //Parameters:
+        //  duration - The pre or post duration (in milliseconds) to normalize.
+        //
+        //Returns:
+        //  The normalized event duration (in milliseconds) that can be stored on the Node.
+        uint32 normalizeEventDuration(uint32 duration) const;
 
         //API Function: normalizeHardwareGain
         //    Normalizes the hardware gain value so that it is within an acceptable range.
@@ -531,6 +625,13 @@ namespace mscl
         //Returns:
         //    The number of Sn Curve segments on this Node.
         virtual uint8 numSnCurveSegments() const;
+
+        //API Function: numEventTriggers
+        //  Gets the number of supported event triggers on this Node.
+        //
+        //Returns:
+        //  The number of event triggers on this Node (0 if event sampling is not supported).
+        virtual uint8 numEventTriggers() const;
 
         //API Function: defaultModes
         //    Gets a list of the <WirelessTypes::DefaultMode>s that are supported by this Node.
@@ -594,6 +695,20 @@ namespace mscl
         //    A vector of <WirelessTypes::FatigueModes> supported by the Node.
         virtual const WirelessTypes::FatigueModes fatigueModes() const;
 
+        //API Function: lowPassFilters
+        //    Gets a list of the Low Pass <WirelessTypes::Filter>s that are supported by this Node.
+        //
+        //Returns:
+        //    A vector of Low Pass <WirelessTypes::Filters> supported by the Node.
+        virtual const WirelessTypes::Filters lowPassFilters() const;
+
+        //API Function: storageLimitModes
+        //  Gets a list of the <WirelessTypes::StorageLimitModes> that are supported by this Node.
+        //
+        //Returns:
+        //  A vector of <WirelessTypes::StorageLimitModes> supported by the Node.
+        virtual const WirelessTypes::StorageLimitModes storageLimitModes() const;
+
     protected:
         //Function: supportsNewTransmitPowers
         //    Checks if the Node supports the new transmit powers (true), or the old ones (false).
@@ -610,5 +725,13 @@ namespace mscl
         //Function: supportsEepromCommitViaRadioReset
         //    Checks if eeprom changes can be committed by only cycling the radio, instead of cycling power.
         virtual bool supportsEepromCommitViaRadioReset() const;
+
+        //Function: supportsFlashId
+        //  Checks if the Node supports the Flash ID eeprom.
+        virtual bool supportsFlashId() const;
+
+        //Function: supportsStorageLimitModeConfig
+        //  Checks if the Node supports configuring storage limit mode.
+        virtual bool supportsStorageLimitModeConfig() const;
     };
 }

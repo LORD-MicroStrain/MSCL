@@ -36,12 +36,6 @@ namespace mscl
         //    A <ByteStream> containing the command packet
         static ByteStream buildCommand(NodeAddress nodeAddress, uint16 eepromAddress, uint16 valueToWrite);
 
-        //=====================================================================================================
-        //Constants: Packet Bytes
-        //    COMMAND_ID - 0x0004    - The Command ID for the WriteEeprom Command
-        //=====================================================================================================
-        static const short COMMAND_ID = 0x0004;
-
         //Class: Response
         //    Handles the response to the WriteEeprom Node command
         class Response : public ResponsePattern

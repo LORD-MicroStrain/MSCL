@@ -4,6 +4,7 @@ Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
+#include "WirelessProtocol.h"
 #include "Erase.h"
 
 namespace mscl
@@ -12,9 +13,9 @@ namespace mscl
     {
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint8(0x06);                //Start of Packet
-        cmd.append_uint16(nodeAddress);        //Node address    (2 bytes)
-        cmd.append_uint32(0x08100CFF);        //Command Bytes (4 bytes)
+        cmd.append_uint8(WirelessProtocol::cmdId_erase);    //Command ID
+        cmd.append_uint16(nodeAddress);                     //Node address  (2 bytes)
+        cmd.append_uint32(0x08100CFF);                      //Command Bytes (4 bytes)
 
         return cmd;
     }
@@ -48,7 +49,7 @@ namespace mscl
             m_success = false;
         }
         //single byte 0x06 is a success response
-        else if(resultByte == 0x06)
+        else if(resultByte == WirelessProtocol::cmdId_erase)
         {
             //success response
             m_success = true;

@@ -44,6 +44,8 @@ namespace mscl
         sweep.nodeRssi(m_nodeRSSI);
         sweep.baseRssi(m_baseRSSI);
 
+        sweep.calApplied(true);
+
         //determine the sweep information
         uint32 minFreq = m_payload.read_uint32(1);
         //uint32 maxFreq = m_payload.read_uint32(5);

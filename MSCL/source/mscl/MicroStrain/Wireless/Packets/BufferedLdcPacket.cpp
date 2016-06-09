@@ -88,6 +88,9 @@ namespace mscl
             //get this sweep's node and base rssi values
             sweep.nodeRssi(m_nodeRSSI);
             sweep.baseRssi(m_baseRSSI);
+
+            //cals applied if the data type is float
+            sweep.calApplied(m_dataType == WirelessTypes::dataType_4ByteFloat);
         
             ChannelData chData;
 

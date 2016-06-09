@@ -119,17 +119,21 @@ namespace mscl
         //API Enums: SamplingMode
         //    Represents the types of sampling modes the Node can be in.
         //
-        //    samplingMode_sync             - 1 - The Synchronized Sampling mode
-        //    samplingMode_syncBurst        - 2 - The Synchronized Sampling, Burst mode
-        //    samplingMode_nonSync          - 3    - The Asynchronous Sampling mode (LDC)
-        //    samplingMode_armedDatalog     - 4 - The Armed Datalogging Sampling mode
+        //    samplingMode_sync             - 1 - Synchronized Sampling mode
+        //    samplingMode_syncBurst        - 2 - Synchronized Sampling, Burst mode
+        //    samplingMode_nonSync          - 3 - Asynchronous Sampling mode (LDC)
+        //    samplingMode_armedDatalog     - 4 - Armed Datalogging Sampling mode
+        //    samplingMode_syncEvent        - 5 - Synchronized Sampling mode with Event Triggering
+        //    samplingMode_nonSyncEvent     - 6 - Asynchronous Sampling mode (LDC) with Event Triggering
         //=====================================================================================================
         enum SamplingMode
         {
             samplingMode_sync             = 1,
             samplingMode_syncBurst        = 2,
             samplingMode_nonSync          = 3,
-            samplingMode_armedDatalog     = 4
+            samplingMode_armedDatalog     = 4,
+            samplingMode_syncEvent        = 5,
+            samplingMode_nonSyncEvent     = 6
         };
 
         //=====================================================================================================
@@ -202,8 +206,8 @@ namespace mscl
         //    power_20dBm   - 20 - 20 dBm (100 mw)
         //    power_16dBm   - 16 - 16 dBm (39 mw)
         //    power_10dBm   - 10 - 10 dBm (10 mw)
-        //    power_5dBm    - 5     - 5 dBm (3 mw)
-        //    power_0dBm    - 0     - 0 dBm  (1 mw)
+        //    power_5dBm    - 5  - 5 dBm (3 mw)
+        //    power_0dBm    - 0  - 0 dBm  (1 mw)
         //=====================================================================================================
         enum TransmitPower
         {
@@ -265,79 +269,202 @@ namespace mscl
         //API Enums: CalCoef_Unit
         //    Represents the unit types that can be used for calibration coefficients on Wireless Nodes.
         //
-        //    unit_none                          - 0        - no unit or unknown unit
-        //    unit_bits                          - 1        - raw bits
-        //    unit_strain_strain                 - 2        - Strain
-        //    unit_strain_microStrain            - 3        - microStrain
-        //    unit_accel_g                       - 4        - acceleration due to gravity
-        //    unit_accel_milliG                  - 34    - milli-G's
-        //    unit_accel_ms2                     - 5        - meters per second squared
-        //    unit_volts_volts                   - 6        - volts
-        //    unit_volts_millivolts              - 7        - milliVolts
-        //    unit_volts_microvolts              - 8        - microVolts
-        //    unit_temp_celsius                  - 9        - degrees Celsius
-        //    unit_temp_kelvin                   - 10    - Kelvin
-        //    unit_temp_fahrenheit               - 11    - degrees Fahrenheit
-        //    unit_displacement_meters           - 12    - meters
-        //    unit_displacement_millimeters      - 13    - millimeters
-        //    unit_displacement_micrometers      - 14    - micrometers
-        //    unit_force_lbf                     - 15    - pound force
-        //    unit_force_newtons                 - 16    - Newtons
-        //    unit_force_kiloNewtons             - 17    - kiloNewtons
-        //    unit_mass_kilograms                - 18    - kilograms
-        //    unit_pressure_bar                  - 19    - bar
-        //    unit_pressure_psi                  - 20    - pounds per square inch
-        //    unit_pressure_atm                  - 21    - atmospheric pressure
-        //    unit_pressure_mmHg                 - 22    - millimeters of mercury
-        //    unit_pressure_pascal               - 23    - Pascal
-        //    unit_pressure_megaPascal           - 24    - megaPascal
-        //    unit_pressure_kiloPascal           - 25    - kiloPascal
-        //    unit_general_degrees               - 26    - degrees
-        //    unit_general_degreesPerSec         - 27    - degrees per second
-        //    unit_general_radiansPerSec         - 28    - radians per second
-        //    unit_general_percent               - 29    - percent
-        //    unit_general_rpm                   - 30    - revolutions per minute
-        //    unit_general_hertz                 - 31    - hertz
-        //    unit_general_percentRh             - 32    - percent relative humidity
-        //    unit_general_mVperV                - 33    - milliVolt/Volt
+        //    unit_none                           - 0   - no unit or unknown unit
+        //    unit_accel_g                        - 4   - acceleration due to gravity
+        //    unit_accel_mPerSec2                 - 5   - meters per second squared
+        //    unit_accel_milliG                   - 34  - milli-G's
+        //    unit_accel_ftPerSec2                - 35  - Feet/Second Squared
+        //    unit_angDisplacement_degrees        - 26  - degrees
+        //    unit_angDisplacement_radians        - 65  - Radians
+        //    unit_angVelocity_degreesPerSec      - 27  - degrees per second
+        //    unit_angVelocity_radiansPerSec      - 28  - radians per second
+        //    unit_current_ampere                 - 58  - Ampere
+        //    unit_current_milliampere            - 59  - Milliampere
+        //    unit_current_microampere            - 60  - Microampere
+        //    unit_density_kgPerMeter3            - 93  - kg per meter cubed
+        //    unit_displacement_meters            - 12  - meters
+        //    unit_displacement_millimeters       - 13  - millimeters
+        //    unit_displacement_micrometers       - 14  - micrometers
+        //    unit_displacement_feet              - 38  - Feet
+        //    unit_displacement_inches            - 39  - Inches
+        //    unit_displacement_yards             - 40  - Yards
+        //    unit_displacement_miles             - 41  - Miles
+        //    unit_displacement_nautMiles         - 42  - Nautical Miles
+        //    unit_displacement_thouInch          - 43  - Thousandths of an Inch
+        //    unit_displacement_hundInch          - 44  - Hundredths of an Inch
+        //    unit_displacement_kilometers        - 45  - Kilometers
+        //    unit_displacement_centimeters       - 46  - Centimers
+        //    unit_energy_wattHour                - 54  - Watt-Hour
+        //    unit_energy_kiloWattHour            - 55  - Kilowatt-Hour
+        //    unit_flowRate_cubicMetersPerSec     - 75  - Cubic Meters Per Second
+        //    unit_flowRate_cubicFtPerSec         - 76  - Cubic Feet Per Second
+        //    unit_force_lbf                      - 15  - pound force
+        //    unit_force_newtons                  - 16  - Newtons
+        //    unit_force_kiloNewtons              - 17  - kiloNewtons
+        //    unit_freq_rpm                       - 30  - revolutions per minute
+        //    unit_freq_hertz                     - 31  - hertz
+        //    unit_freq_kiloHertz                 - 64  - Kilohertz
+        //    unit_irradiance_wattsPerSqMeter     - 47  - Watts per Square Meter
+        //    unit_magneticFlux_gauss             - 89  - Gauss
+        //    unit_mass_kilograms                 - 18  - kilograms
+        //    unit_mass_pound                     - 49  - Pound
+        //    unit_other_bits                     - 1   - raw bits
+        //    unit_other_mVperV                   - 33  - milliVolt/Volt
+        //    unit_other_percentLife              - 36  - % Life
+        //    unit_other_count                    - 37  - Count
+        //    unit_other_percent                  - 29  - percent
+        //    unit_other_value                    - 88  - value
+        //    unit_other_gSec                     - 90  - G-Seconds
+        //    unit_other_secsPerSec               - 91  - Seconds per Second (clock-drift)
+        //    unit_other_unitless                 - 94  - unitless
+        //    unit_par_microEinstein              - 48  - microEinstein
+        //    unit_power_watt                     - 50  - Watt
+        //    unit_power_milliwatt                - 51  - Milliwatt
+        //    unit_power_horsepower               - 52  - Horsepower
+        //    unit_pressure_bar                   - 19  - bar
+        //    unit_pressure_millibar              - 61  - MilliBar
+        //    unit_pressure_psi                   - 20  - pounds per square inch
+        //    unit_pressure_atm                   - 21  - atmospheric pressure
+        //    unit_pressure_mmHg                  - 22  - millimeters of mercury
+        //    unit_pressure_inHg                  - 62  - Inches of Mercury
+        //    unit_pressure_pascal                - 23  - Pascal
+        //    unit_pressure_megaPascal            - 24  - megaPascal
+        //    unit_pressure_kiloPascal            - 25  - kiloPascal
+        //    unit_reactiveEnergy_VARh            - 56  - Volt-Ampere Reactive Hour
+        //    unit_reactiveEnergy_kVARh           - 57  - Kilovolt-Ampere Reactive Hour
+        //    unit_reactivePower_var              - 53  - Volt-Ampere Reactive
+        //    unit_rh_percentRh                   - 32  - percent relative humidity
+        //    unit_rssi_dBm                       - 63  - dBm
+        //    unit_rssi_dBHz                      - 92  - dBHz
+        //    unit_strain_strain                  - 2   - Strain
+        //    unit_strain_microStrain             - 3   - microStrain
+        //    unit_temp_celsius                   - 9   - degrees Celsius
+        //    unit_temp_kelvin                    - 10  - Kelvin
+        //    unit_temp_fahrenheit                - 11  - degrees Fahrenheit
+        //    unit_time_secs                      - 80  - Seconds
+        //    unit_time_nanosecs                  - 81  - Nanoseconds
+        //    unit_time_microsecs                 - 82  - Microseconds
+        //    unit_time_millisecs                 - 83  - Milliseconds
+        //    unit_time_minutes                   - 84  - Minutes
+        //    unit_time_hours                     - 85  - Hours
+        //    unit_time_days                      - 86  - Days
+        //    unit_time_weeks                     - 87  - Weeks
+        //    unit_torque_newtonMeter             - 77  - Newton Meter
+        //    unit_torque_footPounds              - 78  - Foot Pounds
+        //    unit_torque_inchPounds              - 79  - Inch Pounds
+        //    unit_velocity_metersPerSec          - 66  - Meters per Second
+        //    unit_velocity_kilometersPerSec      - 67  - Kilometers per Second
+        //    unit_velocity_kilometersPerHr       - 68  - Kilometers per Hour
+        //    unit_velocity_milesPerHr            - 69  - Miles per Hour
+        //    unit_velocity_knots                 - 70  - Knots
+        //    unit_volts_volts                    - 6   - volts
+        //    unit_volts_millivolts               - 7   - milliVolts
+        //    unit_volts_microvolts               - 8   - microVolts
+        //    unit_volume_cubicMeter              - 71  - Cubic Meter
+        //    unit_volume_cubicFt                 - 72  - Cubic Feet
+        //    unit_volume_liters                  - 73  - Liters
+        //    unit_volume_gallon                  - 74  - Gallon
         //=====================================================================================================
         enum CalCoef_Unit
         {
-            unit_none                          = 0,
-            unit_bits                          = 1,
-            unit_strain_strain                 = 2,
-            unit_strain_microStrain            = 3,
-            unit_accel_g                       = 4,
-            unit_accel_milliG                  = 34,
-            unit_accel_ms2                     = 5,
-            unit_volts_volts                   = 6,
-            unit_volts_millivolts              = 7,
-            unit_volts_microvolts              = 8,
-            unit_temp_celsius                  = 9,
-            unit_temp_kelvin                   = 10,
-            unit_temp_fahrenheit               = 11,
-            unit_displacement_meters           = 12,
-            unit_displacement_millimeters      = 13,
-            unit_displacement_micrometers      = 14,
-            unit_force_lbf                     = 15,
-            unit_force_newtons                 = 16,
-            unit_force_kiloNewtons             = 17,
-            unit_mass_kilograms                = 18,
-            unit_pressure_bar                  = 19,
-            unit_pressure_psi                  = 20,
-            unit_pressure_atm                  = 21,
-            unit_pressure_mmHg                 = 22,
-            unit_pressure_pascal               = 23,
-            unit_pressure_megaPascal           = 24,
-            unit_pressure_kiloPascal           = 25,
-            unit_general_degrees               = 26,
-            unit_general_degreesPerSec         = 27,
-            unit_general_radiansPerSec         = 28,
-            unit_general_percent               = 29,
-            unit_general_rpm                   = 30,
-            unit_general_hertz                 = 31,
-            unit_general_percentRh             = 32,
-            unit_general_mVperV                = 33
+            unit_none                           = 0,
+            unit_other_bits                     = 1,
+            unit_strain_strain                  = 2,
+            unit_strain_microStrain             = 3,
+            unit_accel_g                        = 4,
+            unit_accel_mPerSec2                 = 5,
+            unit_volts_volts                    = 6,
+            unit_volts_millivolts               = 7,
+            unit_volts_microvolts               = 8,
+            unit_temp_celsius                   = 9,
+            unit_temp_kelvin                    = 10,
+            unit_temp_fahrenheit                = 11,
+            unit_displacement_meters            = 12,
+            unit_displacement_millimeters       = 13,
+            unit_displacement_micrometers       = 14,
+            unit_force_lbf                      = 15,
+            unit_force_newtons                  = 16,
+            unit_force_kiloNewtons              = 17,
+            unit_mass_kilograms                 = 18,
+            unit_pressure_bar                   = 19,
+            unit_pressure_psi                   = 20,
+            unit_pressure_atm                   = 21,
+            unit_pressure_mmHg                  = 22,
+            unit_pressure_pascal                = 23,
+            unit_pressure_megaPascal            = 24,
+            unit_pressure_kiloPascal            = 25,
+            unit_angDisplacement_degrees        = 26,
+            unit_angVelocity_degreesPerSec      = 27,
+            unit_angVelocity_radiansPerSec      = 28,
+            unit_other_percent                  = 29,
+            unit_freq_rpm                       = 30,
+            unit_freq_hertz                     = 31,
+            unit_rh_percentRh                   = 32,
+            unit_other_mVperV                   = 33,
+            unit_accel_milliG                   = 34,
+            unit_accel_ftPerSec2                = 35,
+            unit_other_percentLife              = 36,
+            unit_other_count                    = 37,
+            unit_displacement_feet              = 38,
+            unit_displacement_inches            = 39,
+            unit_displacement_yards             = 40,
+            unit_displacement_miles             = 41,
+            unit_displacement_nautMiles         = 42,
+            unit_displacement_thouInch          = 43,
+            unit_displacement_hundInch          = 44,
+            unit_displacement_kilometers        = 45,
+            unit_displacement_centimeters       = 46,
+            unit_irradiance_wattsPerSqMeter     = 47,
+            unit_par_microEinstein              = 48,
+            unit_mass_pound                     = 49,
+            unit_power_watt                     = 50,
+            unit_power_milliwatt                = 51,
+            unit_power_horsepower               = 52,
+            unit_reactivePower_var              = 53,
+            unit_energy_wattHour                = 54,
+            unit_energy_kiloWattHour            = 55,
+            unit_reactiveEnergy_VARh            = 56,
+            unit_reactiveEnergy_kVARh           = 57,
+            unit_current_ampere                 = 58,
+            unit_current_milliampere            = 59,
+            unit_current_microampere            = 60,
+            unit_pressure_millibar              = 61,
+            unit_pressure_inHg                  = 62,
+            unit_rssi_dBm                       = 63,
+            unit_freq_kiloHertz                 = 64,
+            unit_angDisplacement_radians        = 65,
+            unit_velocity_metersPerSec          = 66,
+            unit_velocity_kilometersPerSec      = 67,
+            unit_velocity_kilometersPerHr       = 68,
+            unit_velocity_milesPerHr            = 69,
+            unit_velocity_knots                 = 70,
+            unit_volume_cubicMeter              = 71,
+            unit_volume_cubicFt                 = 72,
+            unit_volume_liters                  = 73,
+            unit_volume_gallon                  = 74,
+            unit_flowRate_cubicMetersPerSec     = 75,
+            unit_flowRate_cubicFtPerSec         = 76,
+            unit_torque_newtonMeter             = 77,
+            unit_torque_footPounds              = 78,
+            unit_torque_inchPounds              = 79,
+            unit_time_secs                      = 80,
+            unit_time_nanosecs                  = 81,
+            unit_time_microsecs                 = 82,
+            unit_time_millisecs                 = 83,
+            unit_time_minutes                   = 84,
+            unit_time_hours                     = 85,
+            unit_time_days                      = 86,
+            unit_time_weeks                     = 87,
+            unit_other_value                    = 88,
+            unit_magneticFlux_gauss             = 89,
+            unit_other_gSec                     = 90,
+            unit_other_secsPerSec               = 91,
+            unit_rssi_dBHz                      = 92,
+            unit_density_kgPerMeter3            = 93,
+            unit_other_unitless                 = 94
+
+            //170 (0xAA) needs to be reserved - treated as none
+            //255 (0xFF) needs to be reserved - treated as none
         };
 
         //=====================================================================================================
@@ -581,6 +708,8 @@ namespace mscl
         //    chSetting_hardwareOffset          - 6 - Hardware Offset
         //    chSetting_autoBalance             - 7 - Autobalance Function
         //    chSetting_gaugeFactor             - 8 - Gauge Factor
+        //    chSetting_lowPassFilter           - 9 - Low Pass Filter
+        //    chSetting_shuntCal                - 10 - Shunt Cal (Note: the actual shunt cal operation is not a features in MSCL)
         enum ChannelGroupSetting
         {
             chSetting_hardwareGain            = 0,
@@ -591,7 +720,9 @@ namespace mscl
             chSetting_equationType            = 5,
             chSetting_hardwareOffset          = 6,
             chSetting_autoBalance             = 7,
-            chSetting_gaugeFactor             = 8
+            chSetting_gaugeFactor             = 8,
+            chSetting_lowPassFilter           = 9,
+            chSetting_shuntCal                = 10,
         };
 
         //API Enum: AutoBalanceErrorFlag
@@ -654,6 +785,69 @@ namespace mscl
             fatigueMode_rawGaugeStrain         = 2
         };
 
+        //API Enum: EventTriggerType
+        //  The types of event triggers that are available.
+        //
+        //  eventTrigger_ceiling    - 1 - Ceiling Trigger (greater than)
+        //  eventTrigger_floor      - 2 - Floor Trigger (less than)
+        enum EventTriggerType
+        {
+            eventTrigger_ceiling    = 1,
+            eventTrigger_floor      = 2
+        };
+
+        //API Enum: Filter
+        //  The filter options (used for low pass filter)
+        //
+        //  filter_33000hz  - 33000
+        //  filter_20000hz  - 20000
+        //  filter_10000hz  - 10000
+        //  filter_5000hz   - 5000
+        //  filter_4096hz   - 4096
+        //  filter_2048hz   - 2048
+        //  filter_2000hz   - 2000
+        //  filter_1024hz   - 1024
+        //  filter_1000hz   - 1000
+        //  filter_512hz    - 512
+        //  filter_500hz    - 500
+        //  filter_256hz    - 256
+        //  filter_200hz    - 200
+        //  filter_128hz    - 128
+        //  filter_100hz    - 100
+        //  filter_50hz     - 50
+        //  filter_26hz     - 26
+        enum Filter
+        {
+            filter_33000hz = 33000,
+            filter_20000hz = 20000,
+            filter_10000hz = 10000,
+            filter_5000hz  = 5000,
+            filter_4096hz  = 4096,
+            filter_2048hz  = 2048,
+            filter_2000hz  = 2000,
+            filter_1024hz  = 1024,
+            filter_1000hz  = 1000,
+            filter_512hz   = 512,
+            filter_500hz   = 500,
+            filter_256hz   = 256,
+            filter_200hz   = 200,
+            filter_128hz   = 128,
+            filter_100hz   = 100,
+            filter_50hz    = 50,
+            filter_26hz    = 26
+        };
+
+        //API Enum: StorageLimitMode
+        //  The options available for configuring what happens when the storage limit is reached when logging to a Node.
+        //
+        //  storageLimit_overwrite  - 0 - When the max memory is reached, old data is overwritten (FIFO).
+        //  storageLimit_stop       - 1 - When the max memory is reached, the Node stops sampling and returns to its idle state.
+        enum StorageLimitMode
+        {
+            storageLimit_overwrite  = 0,
+            storageLimit_stop       = 1
+        };
+
     public:
         //API Typedefs:
         //    DataCollectionMethods      - A vector of <DataCollectionMethod> enums.
@@ -664,6 +858,7 @@ namespace mscl
         //    TransmitPowers             - A vector of <TransmitPower> enums.
         //    ChannelGroupSettings       - A vector of <ChannelGroupSetting> enums.
         //    FatigueModes               - A vector of <FatigueMode> enums.
+        //    StorageLimitModes          - A vector of <StorageLimitMode> enums.
         typedef std::vector<DataCollectionMethod> DataCollectionMethods;
         typedef std::vector<DataFormat> DataFormats;
         typedef std::vector<WirelessSampleRate> WirelessSampleRates;
@@ -672,6 +867,8 @@ namespace mscl
         typedef std::vector<TransmitPower> TransmitPowers;
         typedef std::vector<ChannelGroupSetting> ChannelGroupSettings;
         typedef std::vector<FatigueMode> FatigueModes;
+        typedef std::vector<Filter> Filters;
+        typedef std::vector<StorageLimitMode> StorageLimitModes;
 
         //API Constant: UNKNOWN_RSSI = 999
         //    The value given for an unknown RSSI value.

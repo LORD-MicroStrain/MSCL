@@ -57,13 +57,13 @@ namespace mscl
     }
 
     void WirelessNode::setBaseStation(const BaseStation& basestation)
-    { 
-        m_impl->setBaseStation(basestation); 
+    {
+        m_impl->setBaseStation(basestation);
     }
 
     BaseStation& WirelessNode::getBaseStation()
-    { 
-        return m_impl->getBaseStation(); 
+    {
+        return m_impl->getBaseStation();
     }
 
     bool WirelessNode::hasBaseStation(const BaseStation& basestation) const
@@ -81,9 +81,9 @@ namespace mscl
         m_impl->readWriteRetries(numRetries);
     }
 
-    void WirelessNode::useEepromCache(bool useCache)                                            
-    { 
-        m_impl->useEepromCache(useCache); 
+    void WirelessNode::useEepromCache(bool useCache)
+    {
+        m_impl->useEepromCache(useCache);
     }
 
     void WirelessNode::clearEepromCache()
@@ -92,13 +92,13 @@ namespace mscl
     }
 
     uint16 WirelessNode::nodeAddress() const
-    { 
-        return m_impl->nodeAddress(); 
+    {
+        return m_impl->nodeAddress();
     }
 
     WirelessTypes::Frequency WirelessNode::frequency() const
-    { 
-        return m_impl->frequency(); 
+    {
+        return m_impl->frequency();
     }
 
     bool WirelessNode::quickPing()
@@ -106,9 +106,9 @@ namespace mscl
         return m_impl->quickPing();
     }
 
-    PingResponse WirelessNode::ping()                                                        
-    { 
-        return m_impl->ping(); 
+    PingResponse WirelessNode::ping()
+    {
+        return m_impl->ping();
     }
 
     bool WirelessNode::sleep()
@@ -116,9 +116,9 @@ namespace mscl
         return m_impl->sleep();
     }
 
-    void WirelessNode::cyclePower()                                                                
-    { 
-        m_impl->cyclePower(); 
+    void WirelessNode::cyclePower()
+    {
+        m_impl->cyclePower();
     }
 
     void WirelessNode::resetRadio()
@@ -126,14 +126,14 @@ namespace mscl
         m_impl->resetRadio();
     }
 
-    void WirelessNode::changeFrequency(WirelessTypes::Frequency frequency)                        
-    { 
+    void WirelessNode::changeFrequency(WirelessTypes::Frequency frequency)
+    {
         m_impl->changeFrequency(frequency);
     }
 
-    SetToIdleStatus WirelessNode::setToIdle()                                                            
-    { 
-        return m_impl->setToIdle(); 
+    SetToIdleStatus WirelessNode::setToIdle()
+    {
+        return m_impl->setToIdle();
     }
 
     void WirelessNode::erase()
@@ -141,9 +141,9 @@ namespace mscl
         m_impl->erase();
     }
 
-    void WirelessNode::startNonSyncSampling()                                                    
-    { 
-        m_impl->startNonSyncSampling(); 
+    void WirelessNode::startNonSyncSampling()
+    {
+        m_impl->startNonSyncSampling();
     }
 
     void WirelessNode::clearHistogram()
@@ -162,28 +162,28 @@ namespace mscl
     }
 
     uint16 WirelessNode::readEeprom(uint16 location) const
-    { 
-        return m_impl->readEeprom(location); 
+    {
+        return m_impl->readEeprom(location);
     }
 
     void WirelessNode::writeEeprom(uint16 location, uint16 value)
-    { 
-        m_impl->writeEeprom(location, value); 
+    {
+        m_impl->writeEeprom(location, value);
     }
 
     Version WirelessNode::firmwareVersion() const
-    { 
-        return m_impl->firmwareVersion(); 
+    {
+        return m_impl->firmwareVersion();
     }
 
     WirelessModels::NodeModel WirelessNode::model() const
-    { 
-        return m_impl->model(); 
+    {
+        return m_impl->model();
     }
 
     std::string WirelessNode::serial() const
-    { 
-        return m_impl->serial(); 
+    {
+        return m_impl->serial();
     }
 
     std::string WirelessNode::name() const
@@ -192,13 +192,13 @@ namespace mscl
     }
 
     WirelessTypes::MicroControllerType WirelessNode::microcontroller() const
-    { 
-        return m_impl->microcontroller(); 
+    {
+        return m_impl->microcontroller();
     }
 
     RadioFeatures WirelessNode::radioFeatures() const
-    { 
-        return m_impl->radioFeatures(); 
+    {
+        return m_impl->radioFeatures();
     }
 
     uint64 WirelessNode::dataStorageSize() const
@@ -301,6 +301,11 @@ namespace mscl
         return m_impl->getHardwareOffset(mask);
     }
 
+    WirelessTypes::Filter WirelessNode::getLowPassFilter(const ChannelMask& mask) const
+    {
+        return m_impl->getLowPassFilter(mask);
+    }
+
     float WirelessNode::getGaugeFactor(const ChannelMask& mask) const
     {
         return m_impl->getGaugeFactor(mask);
@@ -344,5 +349,20 @@ namespace mscl
     ActivitySense WirelessNode::getActivitySense() const
     {
         return m_impl->getActivitySense();
+    }
+
+    EventTriggerOptions WirelessNode::getEventTriggerOptions() const
+    {
+        return m_impl->getEventTriggerOptions();
+    }
+
+    uint16 WirelessNode::getDiagnosticInterval() const
+    {
+        return m_impl->getDiagnosticInterval();
+    }
+
+    WirelessTypes::StorageLimitMode WirelessNode::getStorageLimitMode() const
+    {
+        return m_impl->getStorageLimitMode();
     }
 }

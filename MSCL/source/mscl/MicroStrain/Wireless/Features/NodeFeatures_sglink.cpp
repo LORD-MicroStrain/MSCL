@@ -19,7 +19,8 @@ namespace mscl
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_1},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1},
-                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_1}}
+                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_1},
+                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_1}}
         );
 
         addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);

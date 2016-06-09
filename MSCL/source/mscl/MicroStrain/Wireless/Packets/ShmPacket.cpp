@@ -15,14 +15,6 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/TimeSpan.h"
 #include "mscl/Types.h"
 
-namespace {
-    std::string channelName(mscl::WirelessChannel::ChannelId id, float angle)
-    {
-      return mscl::WirelessChannel::channelName(id) + "_angle" + mscl::Utils::toStrWithPrecision(angle, 2, true);
-    }
-}
-
-
 namespace mscl
 {
 
@@ -107,6 +99,7 @@ namespace mscl
 
         sweep.nodeRssi(m_nodeRSSI);
         sweep.baseRssi(m_baseRSSI);
+        sweep.calApplied(true);
 
         Histogram histogram(Value::UINT32(static_cast<uint32>(binStart)), Value::UINT32(static_cast<uint32>(binSize)));
         uint32 start = binStart;
@@ -135,7 +128,7 @@ namespace mscl
 
         //create and add the WirelessDataPoint to the ChannelData vector
         ChannelData chData;
-        auto chName = std::bind(channelName, WirelessChannel::channel_structuralHealth, angle);
+        auto chName = std::bind(ShmPacket::buildChannelName, angle);
         chData.push_back(WirelessDataPoint(WirelessChannel::channel_structuralHealth, 0, chName, valueType_StructuralHealth, anyType(shm)));
 
         //add the channel data to the sweep
@@ -185,6 +178,7 @@ namespace mscl
 
         sweep.nodeRssi(m_nodeRSSI);
         sweep.baseRssi(m_baseRSSI);
+        sweep.calApplied(true);
 
         Histogram histogram(Value::UINT32(static_cast<uint32>(binStart)), Value::UINT32(static_cast<uint32>(binSize)));
         uint32 start = binStart;
@@ -213,7 +207,7 @@ namespace mscl
 
         //create and add the WirelessDataPoint to the ChannelData vector
         ChannelData chData;
-        auto chName = std::bind(channelName, WirelessChannel::channel_structuralHealth, angle);
+        auto chName = std::bind(ShmPacket::buildChannelName, angle);
         chData.push_back(WirelessDataPoint(WirelessChannel::channel_structuralHealth, 0, chName, valueType_StructuralHealth, anyType(shm)));
 
         //add the channel data to the sweep
@@ -262,5 +256,10 @@ namespace mscl
 
         //packet looks valid
         return true;
+    }
+
+    std::string ShmPacket::buildChannelName(float angle)
+    {
+        return WirelessChannel::channelName(WirelessChannel::channel_structuralHealth) + "_angle" + Utils::toStrWithPrecision(angle, 2, true);
     }
 }

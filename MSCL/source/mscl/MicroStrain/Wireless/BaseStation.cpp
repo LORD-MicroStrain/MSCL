@@ -256,12 +256,6 @@ namespace mscl
     //================================================================================================
     //                                        NODE COMMANDS
     //================================================================================================
-
-    const Timestamp& BaseStation::node_lastCommunicationTime(NodeAddress nodeAddress) const
-    {
-        return m_impl->node_lastCommunicationTime(nodeAddress);
-    }
-
     bool BaseStation::node_shortPing(NodeAddress nodeAddress)
     { 
         return m_impl->node_shortPing(nodeAddress);
@@ -297,6 +291,11 @@ namespace mscl
         return m_impl->node_pageDownload(protocol, nodeAddress, pageIndex, data);
     }
 
+    bool BaseStation::node_erase(const WirelessProtocol& protocol, NodeAddress nodeAddress)
+    {
+        return m_impl->node_erase(protocol, nodeAddress);
+    }
+
     bool BaseStation::node_startSyncSampling(NodeAddress nodeAddress)
     { 
         return m_impl->node_startSyncSampling(nodeAddress);
@@ -315,11 +314,6 @@ namespace mscl
     void BaseStation::node_triggerArmedDatalogging(NodeAddress nodeAddress)
     {
         return m_impl->node_triggerArmedDatalogging(nodeAddress);
-    }
-
-    bool BaseStation::node_erase(NodeAddress nodeAddress)
-    {
-        return m_impl->node_erase(nodeAddress);
     }
 
     bool BaseStation::node_autoBalance(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result)

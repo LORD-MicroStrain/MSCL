@@ -23,12 +23,6 @@ namespace mscl
         StartSyncSampling& operator=(const StartSyncSampling&);    //disabled assignment operator
 
     public:
-        //=====================================================================================================
-        //Constants: Packet Information
-        //    COMMAND_ID    - 0x003B        - The Command ID for the Start Sync Sampling command
-        //=====================================================================================================
-        static const uint16 COMMAND_ID = 0x003B;
-
         //Function: buildCommand
         //    Builds the Start Sync Sampling command packet
         //

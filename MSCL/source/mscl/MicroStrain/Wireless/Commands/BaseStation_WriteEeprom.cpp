@@ -6,6 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "stdafx.h"
 
 #include "BaseStation_WriteEeprom.h"
+#include "WirelessProtocol.h"
 #include "mscl/MicroStrain/ChecksumBuilder.h"
 
 namespace mscl
@@ -15,7 +16,7 @@ namespace mscl
         //build the command ByteStream
         ByteStream cmd;
 
-        cmd.append_uint8(COMMAND_BYTE);
+        cmd.append_uint8(WirelessProtocol::cmdId_base_writeEeprom);
         cmd.append_uint16(eepromAddress);                        //eeprom address to write to
         cmd.append_uint16(valueToWrite);                        //value to write to eeprom
         cmd.append_uint16(cmd.calculateSimpleChecksum(1, 4));    //checksum
@@ -44,7 +45,7 @@ namespace mscl
         }
 
         //if the first byte isn't the command byte
-        if(data.read_uint8() != COMMAND_BYTE) 
+        if(data.read_uint8() != WirelessProtocol::cmdId_base_writeEeprom)
         { 
             return false; 
         }
@@ -95,7 +96,7 @@ namespace mscl
         }
 
         //if the first byte isn't the fail byte
-        if(data.read_uint8() != FAIL_BYTE) 
+        if(data.read_uint8() != 0x21) 
         { 
             return false; 
         }

@@ -16,12 +16,12 @@ namespace mscl
     {
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint8(0xAA);            //Start of Packet
-        cmd.append_uint8(0x0E);            //Delivery Stop Flag
-        cmd.append_uint8(0x30);            //App Data Type
-        cmd.append_uint16(WirelessProtocol::BASE_STATION_ADDRESS);    //Base Station Address
-        cmd.append_uint8(0x02);            //Payload length
-        cmd.append_uint16(0x0001);        //Command ID
+        cmd.append_uint8(0xAA);                                        //Start of Packet
+        cmd.append_uint8(0x0E);                                        //Delivery Stop Flag
+        cmd.append_uint8(0x30);                                        //App Data Type
+        cmd.append_uint16(WirelessProtocol::BASE_STATION_ADDRESS);     //Base Station Address
+        cmd.append_uint8(0x02);                                        //Payload length
+        cmd.append_uint16(WirelessProtocol::cmdId_basePing_v2);        //Command ID
 
         //calculate the checksum of bytes 2-8
         uint16 checksum = cmd.calculateSimpleChecksum(1, 7);
@@ -41,11 +41,11 @@ namespace mscl
         WirelessPacket::Payload payload = packet.payload();
 
         //check the main bytes of the packet
-        if(packet.deliveryStopFlags().toByte() != 0x07 ||    //delivery stop flag
-           packet.type() != 0x31 ||                            //app data type
+        if(packet.deliveryStopFlags().toInvertedByte() != 0x07 ||               //delivery stop flag
+           packet.type() != 0x31 ||                                             //app data type
            packet.nodeAddress() != WirelessProtocol::BASE_STATION_ADDRESS ||    //node address
-           payload.size() != 0x02 ||                        //payload length
-           payload.read_uint16(0) != 0x0001
+           payload.size() != 0x02 ||                                            //payload length
+           payload.read_uint16(0) != WirelessProtocol::cmdId_basePing_v2        //command id
            )
         {
             //failed to match some of the bytes

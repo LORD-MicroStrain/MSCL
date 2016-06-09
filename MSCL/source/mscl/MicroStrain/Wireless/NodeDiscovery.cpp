@@ -148,7 +148,7 @@ namespace mscl
         m_bitResult = packet.payload().read_uint32(NodeDiscoveryPacket_v4::PAYLOAD_OFFSET_BUILT_IN_TEST);
     }
 
-    uint16 NodeDiscovery::nodeAddress() const
+    uint32 NodeDiscovery::nodeAddress() const
     {
         return m_nodeAddress;
     }

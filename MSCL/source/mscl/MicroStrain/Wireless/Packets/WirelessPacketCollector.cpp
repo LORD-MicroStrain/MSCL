@@ -12,15 +12,18 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "BeaconEchoPacket.h"
 #include "BufferedLdcPacket.h"
 #include "BufferedLdcPacket_16ch.h"
+#include "DiagnosticPacket.h"
 #include "HclSmartBearing_RawPacket.h"
 #include "LdcPacket.h"
 #include "LdcPacket_16ch.h"
 #include "RawAngleStrainPacket.h"
 #include "RfSweepPacket.h"
+#include "RollerPacket.h"
 #include "ShmPacket.h"
 #include "SyncSamplingPacket.h"
 #include "SyncSamplingPacket_16ch.h"
 #include "WirelessPacketCollector.h"
+#include "mscl/MicroStrain/Wireless/NodeCommTimes.h"
 
 namespace mscl
 {
@@ -40,9 +43,11 @@ namespace mscl
         //create a boost_lock for thread safety
         mutex_lock_guard lock(m_packetMutex);
 
+        //update the last communication time
+        NodeCommTimes::updateCommTime(packet.nodeAddress());
+
         try
         {
-
             //add a different packet depending on its type
             switch(packet.type())
             {
@@ -111,6 +116,16 @@ namespace mscl
                     m_dataPackets.push_back(RfSweepPacket(packet));
                     break;
 
+                //Diagnostic packet
+                case WirelessPacket::packetType_diagnostic:
+                    m_dataPackets.push_back(DiagnosticPacket(packet));
+                    break;
+
+                //Roller packet
+                case WirelessPacket::packetType_roller:
+                    m_dataPackets.push_back(RollerPacket(packet));
+                    break;
+
                 //bad packet type, this function shouldn't have been called
                 default:
                     throw Error("Unknown Packet Type");
@@ -119,7 +134,7 @@ namespace mscl
             //notify the read thread, if it is waiting for data to be put into the buffer
             m_emptyBufferCondition.notify_one();
         }
-        catch(Error&)
+        catch(std::exception&)
         {
             //there was an error building one of the packets, just return
         }
@@ -129,6 +144,9 @@ namespace mscl
     {
         //create a boost_lock for thread safety
         mutex_lock_guard lock(m_nodeDiscoveryMutex);
+
+        //update the last communication time
+        NodeCommTimes::updateCommTime(packet.nodeAddress());
 
         //add a Node Discovery packet to the node discovery packet container
         m_nodeDiscoveryPackets.push_back( NodeDiscovery(packet) );

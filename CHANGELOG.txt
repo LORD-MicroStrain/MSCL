@@ -1,5 +1,263 @@
-# MSCL Change Log
-All notable changes to this project will be documented in this file.
+======================================================================================================
+MSCL Change Log - update with each release
+
+The version number scheme in MSCL is as follows:
+MAJOR.MINOR.PATCH
+
+The MAJOR version is incremented when changes are made (to the public interface) that are not backwards compatible.
+The MINOR version is incremented when a new feature is added (to the public interface) or a current feature is improved upon.
+The PATCH version is incremented when a bug is fixed.
+======================================================================================================
+
+-------------------------------------------------------------------------
+4.3.1 - 2016-06-08
+- fix for parsing packet failures causing crash, now just them throwing out.
+
+-------------------------------------------------------------------------
+4.3.0 - 2016-06-08
+- added support for Storage Limit Mode
+    - added NodeFeatures::storageLimitModes
+    - added WirelessNode::getStorageLimitMode for getting the config
+    - added WirelessNodeConfig::storageLimitMode for setting the config
+
+-------------------------------------------------------------------------
+4.2.1 - 2016-06-08
+- changed filterSensorcloudName to not use regex.
+- removed regex include as its no longer needed.
+
+-------------------------------------------------------------------------
+4.2.0 - 2016-06-01
+- support for v2 of the Erase node command (handled automatically through the same interface).
+
+-------------------------------------------------------------------------
+4.1.1 - 2016-06-01
+- support for Flash ID eeprom on new nodes (currently used for determining data storage size).
+
+-------------------------------------------------------------------------
+4.1.0 - 2016-05-31
+- added NodeFeatures::supportsCentisecondEventDuration to the public interface.
+
+-------------------------------------------------------------------------
+4.0.0 - 2016-05-27
+- Event pre/post duration moved to milliseconds in MSCL to avoid floating point errors.
+- CHANGED EventTriggerOptions::preDuration to take/return a uint32 number of milliseconds instead of float seconds.
+- CHANGED EventTriggerOptions::postDuration to take/return a uint32 number of milliseconds instead of float seconds.
+- CHANGED NodeFeatures::maxEventTriggerTotalDuration to return the max event duration in milliseconds.
+- CHANGED NodeFeatures::normalizeEventDuration to take and return event durations in milliseconds.
+
+-------------------------------------------------------------------------
+3.0.1 - 2016-05-26
+- fix for allowing pre and post duration above maximum values.
+
+-------------------------------------------------------------------------
+3.0.0 - 2016-05-26
+- CHANGED EventTriggerOptions::preDuration to take/return a float number of seconds instead of uint16.
+- CHANGED EventTriggerOptions::postDuration to take/return a float number of seconds instead of uint16.
+- added NodeFeatures::normalizeEventDuration to normalize the pre and post event duration values.
+- support for new nodes using 10s-of-milliseconds resolution for pre/post duration.
+
+-------------------------------------------------------------------------
+2.1.0 - 2016-05-25
+- added support for Torque-Link.
+
+-------------------------------------------------------------------------
+2.0.2 - 2016-05-24
+- fix for Event Driven nodes in network being sorted by bandwidth incorrectly.
+
+-------------------------------------------------------------------------
+2.0.1 - 2016-05-24
+- fix for SyncSamplingNetwork using Sync eeprom when should be using the Sampling eeprom.
+  This caused Event Driven nodes to run through the optimizeBandwidth routine, messing with the logic.
+
+-------------------------------------------------------------------------
+2.0.0 - 2016-05-24
+- support for optimizing slots for Event Driven nodes.
+- DELETED SyncSamplingNetwork::setPendingConfig
+- DELETED SyncSamplingNetwork::clearPendingConfig
+- DELETED SyncSamplingNetwork::clearAllPendingConfigs
+- RENAMED Utils::roundDownToNearestBase2 to Utils::floorBase2
+- RENAMED Utils::roundUpToNearestBase2 to Utils::ceilBase2
+
+-------------------------------------------------------------------------
+1.46.0 - 2016-05-20
+- added special rules for sync networks with mixed old (fw < 10.0) and new (fw >= 10.0) nodes.
+
+-------------------------------------------------------------------------
+1.45.5 - 2016-05-12
+- fix for incorrect parsing of ASPP v2 packets.
+
+-------------------------------------------------------------------------
+1.45.4 - 2016-05-11
+- fix for DatalogDownloader's LoggedDataSweep parsing floats incorrectly.
+
+-------------------------------------------------------------------------
+1.45.3 - 2016-05-11
+- fix for DatalogDownloader's LoggedDataSweep calsApplied being set incorrectly.
+
+-------------------------------------------------------------------------
+1.45.2 - 2016-05-11
+- forcing uninitialized unit values (0xAA or 0xFF) read from eeprom or datalog download to a unit_none id.
+
+-------------------------------------------------------------------------
+1.45.1 - 2016-05-11
+- fixed float values (data and cal coefficients) being read in the wrong endianess in the DatalogDownloader.
+
+-------------------------------------------------------------------------
+1.45.0 - 2016-05-09
+- moved the calApplied() function from the datapoint level to the sweep level.
+- removed the nanoseconds() function from the DataSweep, as it was redundant with the Timestamp() function.
+- added more units
+
+-------------------------------------------------------------------------
+1.44.1 - 2016-05-04
+- no longer checking for invalid event trigger settings when no triggers active.
+
+-------------------------------------------------------------------------
+1.44.0 - 2016-05-04
+- added the shuntCal wireless channel setting.
+
+-------------------------------------------------------------------------
+1.43.0 - 2016-05-03
+- added support for the Built in Test diagnostic packet channel.
+
+-------------------------------------------------------------------------
+1.42.0 - 2016-04-27
+- added support for getting cal coefficients from the DatalogDownloader.
+- added CalCoefficients class as a wrapper for LinearEquation, unit, and equation type.
+
+-------------------------------------------------------------------------
+1.41.1 - 2016-04-26
+- fix for Blade-Impact-Link listing 3 low pass filters for 1 channel.
+
+-------------------------------------------------------------------------
+1.41.0 - 2016-04-25
+- added support for low pass filter configuration.
+
+-------------------------------------------------------------------------
+1.40.1 - 2016-04-20
+- added uint16 support for the Blade-Impact-Link.
+
+-------------------------------------------------------------------------
+1.40.0 - 2016-04-20
+- added maxSampleRateForSettlingTime NodeFeatures call.
+
+-------------------------------------------------------------------------
+1.39.5 - 2016-04-18
+- made separate ConfigIssue enums for Event trigger mask and Event trigger duration.
+
+-------------------------------------------------------------------------
+1.39.4 - 2016-04-15
+- fix for a few edge cases where event sampling types weren't being checked.
+
+-------------------------------------------------------------------------
+1.39.3 - 2016-04-15
+- fix for V-Link-2 not having any listed sample rates for event driven.
+
+-------------------------------------------------------------------------
+1.39.2 - 2016-04-15
+- converting uninitialized unit to a "none" unit.
+
+-------------------------------------------------------------------------
+1.39.1 - 2016-04-15
+- added all the units that SensorCloud has to MSCL.
+
+-------------------------------------------------------------------------
+1.39.0 - 2016-04-15
+- added nonSyncEvent and syncEvent WirelessSamplingModes.
+- added logic to the WirelessNodeConfig verify for these new sampling modes.
+- added new sample rates to the Blade-Impact-Link for these new sampling modes.
+
+-------------------------------------------------------------------------
+1.38.0 - 2016-04-15
+- added basic support for Blade-Impact-Link.
+
+-------------------------------------------------------------------------
+1.37.2 - 2016-04-12
+- added calApplied() function to WirelessDataPoint class.
+
+-------------------------------------------------------------------------
+1.37.1 - 2016-04-07
+- updated WirelessNode.lastCommunicationTime() to be BaseStation independent.
+- updated all lastCommunicationTime functions to include when data is heard
+  from the device as well as command replies.
+
+-------------------------------------------------------------------------
+1.37.0 - 2016-04-06
+- support for parsing of incoming ASPP v2 packets.
+- support for parsing of RollerPackets.
+- changed Wireless Node nodeAddress to uint32 when parsing data.
+
+-------------------------------------------------------------------------
+1.36.3 - 2016-03-28
+- not disabling beacon on successive calls to SyncSamplingNetwork.startSampling()
+- increased # of retries to ping after a cycle power from 5 to 15.
+
+-------------------------------------------------------------------------
+1.36.2 - 2016-03-24
+- retrying up to 10x to communicate after an autobalance command is sent.
+
+-------------------------------------------------------------------------
+1.36.1 - 2016-03-18
+- removed check for page download failure as it was causing issues.
+  Unfortunately, this means the page download now needs to time out for a failure.
+
+-------------------------------------------------------------------------
+1.36.0 - 2016-03-16
+- added NodeFeatures.supportsLoggedData() function.
+
+-------------------------------------------------------------------------
+1.35.4 - 2016-03-15
+- added percentComplete to the DatalogDownloader class.
+
+-------------------------------------------------------------------------
+1.35.3 - 2016-03-09
+- added setting of direct triggerMask to EventTriggerOptions.
+
+-------------------------------------------------------------------------
+1.35.2 - 2016-03-09
+- changed the way specific trigger settings are configured in EventTriggerOptions.
+
+-------------------------------------------------------------------------
+1.35.1 - 2016-03-09
+- added triggerMask() function to EventTriggerOptions.
+
+-------------------------------------------------------------------------
+1.35.0 - 2016-02-29
+- support for configuration of diagnostic packets.
+
+-------------------------------------------------------------------------
+1.34.3 - 2016-02-26
+- initial support for setting Event Trigger sampling configuration.
+
+-------------------------------------------------------------------------
+1.34.2 - 2016-02-25
+- initial support for getting Event Trigger sampling configuration.
+
+-------------------------------------------------------------------------
+1.34.1 - 2016-02-23
+- support for the changed sample rate format in diagnostic packet.
+
+-------------------------------------------------------------------------
+1.34.0 - 2016-02-19
+- Parsing of diagnostic packets.
+
+-------------------------------------------------------------------------
+1.33.1 - 2016-02-17
+- fix for Raw Strain Sync packets duplicating channels between sweeps.
+
+-------------------------------------------------------------------------
+1.33.0 - 2016-02-16
+- added support for Raw Strain Sync data packets.
+- added sync support for the shm-link Node (non-custom).
+
+-------------------------------------------------------------------------
+1.32.2 - 2016-02-15
+- sending a byte/ping to the BaseStation before starting SetToIdle to attempt to fix
+  an issue where the Base won't start the Set To Idle operation when lots of data over the air.
+
+-------------------------------------------------------------------------
+1.32.1 - 2016-02-11
+- support for the CF-Bearing-Temp-Link
 
 -------------------------------------------------------------------------
 1.32.0 - 2016-02-03

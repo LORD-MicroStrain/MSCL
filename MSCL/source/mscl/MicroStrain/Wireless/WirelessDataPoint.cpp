@@ -20,8 +20,11 @@ namespace mscl
     }
 
     //WirelessDataPoint constructor
-    WirelessDataPoint::WirelessDataPoint(WirelessChannel::ChannelId channelId, uint8 channelNumber, ValueType type, const anyType& value,
-          const ChannelProperties& channelProperties):
+    WirelessDataPoint::WirelessDataPoint(WirelessChannel::ChannelId channelId,
+                                         uint8 channelNumber,
+                                         ValueType type,
+                                         const anyType& value,
+                                         const ChannelProperties& channelProperties):
         DataPoint(type, value),
         m_channelId(channelId),
         m_channelNumber(channelNumber),
@@ -31,8 +34,12 @@ namespace mscl
     }
 
     //WirelessDataPoint constructor
-    WirelessDataPoint::WirelessDataPoint(WirelessChannel::ChannelId channelId, uint8 channelNumber, const Utils::Lazy<std::string>& channelName, ValueType type, const anyType& value,
-          const ChannelProperties& channelProperties):
+    WirelessDataPoint::WirelessDataPoint(WirelessChannel::ChannelId channelId,
+                                         uint8 channelNumber,
+                                         const Utils::Lazy<std::string>& channelName,
+                                         ValueType type,
+                                         const anyType& value,
+                                         const ChannelProperties& channelProperties):
         DataPoint(type, value),
         m_channelId(channelId),
         m_channelNumber(channelNumber),

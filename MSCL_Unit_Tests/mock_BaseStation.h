@@ -46,7 +46,7 @@ MOCK_BASE_CLASS(mock_baseStationImpl, BaseStation_Impl)
     MOCK_METHOD(node_startSyncSampling, 1);
     MOCK_METHOD(node_armForDatalogging, 2);
     MOCK_METHOD(node_triggerArmedDatalogging, 1);
-    MOCK_METHOD(node_erase, 1);
+    MOCK_METHOD(node_erase, 2);
     MOCK_METHOD(node_setToIdle, 2);
 };
 

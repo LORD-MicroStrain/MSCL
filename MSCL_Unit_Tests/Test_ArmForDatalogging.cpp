@@ -20,7 +20,7 @@ WirelessPacket buildArmForDataloggingResponse(uint16 nodeAddress)
 
     //build the correct packet response first
     WirelessPacket packet;
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x07));
     packet.type(static_cast<WirelessPacket::PacketType>(0x00));
     packet.nodeAddress(nodeAddress);
     packet.payload(payload);
@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(ArmForDatalogging_buildCommand_nomessage)
 {
     ByteStream result = ArmForDatalogging::buildCommand(123);
 
-    uint8 sop = WirelessPacket::ASPP_START_OF_PACKET_BYTE;
+    uint8 sop = WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE;
 
     BOOST_CHECK_EQUAL(result.read_uint8(0), sop);
     BOOST_CHECK_EQUAL(result.read_uint8(1), 0x05);
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(ArmForDatalogging_buildCommand_withShortMessage)
     uint16 messageLen = message.length();
     ByteStream result = ArmForDatalogging::buildCommand(123, message);
 
-    uint8 sop = WirelessPacket::ASPP_START_OF_PACKET_BYTE;
+    uint8 sop = WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE;
 
     BOOST_CHECK_EQUAL(result.read_uint8(0), sop);
     BOOST_CHECK_EQUAL(result.read_uint8(1), 0x05);
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(ArmForDatalogging_buildCommand_withLongMessage)
     uint16 messageLen = truncatedMessage.length();
     ByteStream result = ArmForDatalogging::buildCommand(123, message);
 
-    uint8 sop = WirelessPacket::ASPP_START_OF_PACKET_BYTE;
+    uint8 sop = WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE;
 
     BOOST_CHECK_EQUAL(result.read_uint8(0), sop);
     BOOST_CHECK_EQUAL(result.read_uint8(1), 0x05);
@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_CASE(ArmForDatalogging_Response_match_fail_dsf)
     //build the packet response
     WirelessPacket packet = buildArmForDataloggingResponse(123);
 
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x08));    //wrong DSF
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x08));    //wrong DSF
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(packet), false);

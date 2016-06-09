@@ -51,7 +51,7 @@ try:
     #   Note: if you do not want to enable a beacon at this time, use the startSampling
     #   noBeacon() function. (A beacon is required for the nodes to actually start sending data).
     print "Starting the network...",
-    network.startSampling_noBeacon()
+    network.startSampling()
     print "Done."
 
     # =======================================================================================

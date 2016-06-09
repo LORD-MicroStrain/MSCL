@@ -7,6 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "DatalogDownloader.h"
 
 #include "Configuration/NodeEepromHelper.h"
+#include "Features/NodeFeatures.h"
 #include "NodeMemory.h"
 #include "WirelessDataPoint.h"
 #include "mscl/Utils.h"
@@ -24,6 +25,12 @@ namespace mscl
         m_currentByte(0),
         m_sweepCount(0)
     {
+        //verify the node supports logged data
+        if(!node.features().supportsLoggedData())
+        {
+            throw Error_NotSupported("Logging is not supported by this Node.");
+        }
+
         //get the datalogging information from the Node
         m_logPage = m_node.eepromHelper().read_logPage();
         m_pageOffset = m_node.eepromHelper().read_logPageOffset();
@@ -76,7 +83,7 @@ namespace mscl
         return Utils::make_uint32(b1, b2, b3, b4);
     }
 
-    float DatalogDownloader::read_float(uint64& position)
+    float DatalogDownloader::read_float_bigEndian(uint64& position)
     {
         //read single bytes from the Node's memory
         uint8 b1 = m_nodeMemory->at(position);
@@ -87,8 +94,23 @@ namespace mscl
         //increment the position
         position += 4;
 
-        //build into a float and return (device data in big endian)
+        //build into a float and return
         return Utils::make_float_big_endian(b1, b2, b3, b4);
+    }
+
+    float DatalogDownloader::read_float_littleEndian(uint64& position)
+    {
+        //read single bytes from the Node's memory
+        uint8 b1 = m_nodeMemory->at(position);
+        uint8 b2 = m_nodeMemory->at(position + 1);
+        uint8 b3 = m_nodeMemory->at(position + 2);
+        uint8 b4 = m_nodeMemory->at(position + 3);
+
+        //increment the position
+        position += 4;
+
+        //build into a float and return
+        return Utils::make_float_little_endian(b1, b2, b3, b4);
     }
 
     std::string DatalogDownloader::read_string(uint64& position, uint64 length)
@@ -282,28 +304,50 @@ namespace mscl
         uint16 bytesPerChannel = read_uint16(byteItr);
 
         //loop through all of the active channels to get channel action information
-        uint16 channelItr = 0;
-        uint16 totalChannelMask = m_sessionInfo.activeChannels.count();
-        for(channelItr = 0; channelItr < totalChannelMask; ++channelItr)
+        uint8 channelItr = 0;
+        uint8 lastChannel = m_sessionInfo.activeChannels.count();
+
+        WirelessChannel::ChannelId chId;
+        WirelessTypes::CalCoef_EquationType equation;
+        WirelessTypes::CalCoef_Unit unit;
+        float slope;
+        float offset;
+
+        for(channelItr = 1; channelItr <= lastChannel; ++channelItr)
         {
-            byteCounter = byteItr;
+            //only contains channel action info if the channel is in the data
+            if(m_sessionInfo.activeChannels.enabled(channelItr))
+            {
+                byteCounter = byteItr;
 
-            //TODO: read the channel action equation
-            byteItr += 1;
+                chId = static_cast<WirelessChannel::ChannelId>(channelItr);
 
-            //TODO: read the channel action unit
-            byteItr += 1;
+                //read the channel action equation
+                equation = static_cast<WirelessTypes::CalCoef_EquationType>(read_uint8(byteItr));
 
-            //TODO: read the channel action slope
-            byteItr += 4;
+                //read the channel action unit
+                unit = static_cast<WirelessTypes::CalCoef_Unit>(read_uint8(byteItr));
 
-            //TODO: read the channel action offset
-            byteItr += 4;
+                //check for uninitialized value
+                if(unit == 0xAA || unit == 0xFF)
+                {
+                    unit = WirelessTypes::unit_none;
+                }
 
-            //====================================================
-            //MOVE PASSED ANY EXTRA BYTES
-            byteItr += (bytesPerChannel - (byteItr - byteCounter));
-            //====================================================
+                //read the channel action slope
+                slope = read_float_littleEndian(byteItr);
+
+                //read the channel action offset
+                offset = read_float_littleEndian(byteItr);
+
+                //add the cal coefficients to the session info
+                m_sessionInfo.calCoefficients.insert(std::make_pair(chId, CalCoefficients(equation, unit, LinearEquation(slope, offset))));
+
+                //====================================================
+                //MOVE PASSED ANY EXTRA BYTES
+                byteItr += (bytesPerChannel - (byteItr - byteCounter));
+                //====================================================
+            }
         }
 
         //read the number of bytes before the end of the header
@@ -345,6 +389,11 @@ namespace mscl
         return false;
     }
 
+    float DatalogDownloader::percentComplete() const
+    {
+        return m_nodeMemory->percentComplete(m_currentByte);
+    }
+
     LoggedDataSweep DatalogDownloader::getNextData()
     {
         if(complete())
@@ -383,6 +432,9 @@ namespace mscl
 
         uint8 lastActiveCh = m_sessionInfo.activeChannels.lastChEnabled();
 
+        //calibrations are applied if floating point data
+        m_sessionInfo.calsApplied = (m_sessionInfo.dataType == WirelessTypes::dataType_4ByteFloat);
+
         //loop through all the channels
         for(uint8 chItr = 1; chItr <= lastActiveCh; ++chItr)
         {
@@ -395,7 +447,7 @@ namespace mscl
                 {
                     //4 byte float value
                     case WirelessTypes::dataType_4ByteFloat:
-                        dataPoint = read_float(byteItr);
+                        dataPoint = read_float_bigEndian(byteItr);
                         break;
 
                     //4 byte uint32 value
@@ -431,33 +483,43 @@ namespace mscl
         return LoggedDataSweep(Timestamp(sweepTime), sweepTick, chData);
     }
 
-    bool DatalogDownloader::startOfSession()
+    bool DatalogDownloader::startOfSession() const
     {
         return m_sessionInfo.startOfTrigger;
     }
 
-    WirelessTypes::TriggerType DatalogDownloader::triggerType()
+    WirelessTypes::TriggerType DatalogDownloader::triggerType() const
     {
         return m_sessionInfo.triggerType;
     }
 
-    uint32 DatalogDownloader::totalSweeps()
+    uint32 DatalogDownloader::totalSweeps() const
     {
         return m_sessionInfo.numSweeps;
     }
 
-    uint16 DatalogDownloader::sessionIndex()
+    uint16 DatalogDownloader::sessionIndex() const
     {
         return m_sessionInfo.sessionIndex;
     }
 
-    const SampleRate& DatalogDownloader::sampleRate()
+    const SampleRate& DatalogDownloader::sampleRate() const
     {
         return m_sessionInfo.sampleRate;
     }
 
-    const std::string& DatalogDownloader::userString()
+    const std::string& DatalogDownloader::userString() const
     {
         return m_sessionInfo.userString;
+    }
+
+    const ChannelCalMap& DatalogDownloader::calCoefficients() const
+    {
+        return m_sessionInfo.calCoefficients;
+    }
+
+    bool DatalogDownloader::calsApplied() const
+    {
+        return m_sessionInfo.calsApplied;
     }
 }

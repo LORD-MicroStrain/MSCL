@@ -17,6 +17,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/TimeSpan.h"
 #include "ActivitySense.h"
 #include "ConfigIssue.h"
+#include "EventTriggerOptions.h"
 #include "FatigueOptions.h"
 #include "HistogramOptions.h"
 
@@ -105,6 +106,18 @@ namespace mscl
         //    The <ActivitySense> to set.
         boost::optional<ActivitySense> m_activitySense;
 
+        //Variable: m_eventTriggerOptions
+        //  The <EventTriggerOptions> to set.
+        boost::optional<EventTriggerOptions> m_eventTriggerOptions;
+
+        //Variable: m_diagnosticInterval
+        //  The interval of the diagnostic packet to set.
+        boost::optional<uint16> m_diagnosticInterval;
+
+        //Variable: m_storageLimitMode
+        //  The <WirelessTypes::StorageLimitMode> to set.
+        boost::optional<WirelessTypes::StorageLimitMode> m_storageLimitMode;
+
         //Variable: m_hardwareGains
         //    The map of <ChannelMask> to hardware gains to set.
         std::map<ChannelMask, double> m_hardwareGains;
@@ -112,6 +125,10 @@ namespace mscl
         //Variable: m_hardwareOffsets
         //    The map of <ChannelMask> to hardware offsets to set.
         std::map<ChannelMask, uint16> m_hardwareOffsets;
+
+        //Variable: m_lowPassFilters
+        //  The map of <ChannelMask> to low pass filters to set.
+        std::map<ChannelMask, WirelessTypes::Filter> m_lowPassFilters;
 
         //Variable: m_gaugeFactors
         //    The map of <ChannelMask> to gauge factors to set.
@@ -169,6 +186,14 @@ namespace mscl
         //Function: curSettlingTime
         //    Gets the filter settling time currently set for the given <ChannelMask>, or from the node if not set.
         WirelessTypes::SettlingTime curSettlingTime(const ChannelMask& mask, const NodeEepromHelper& eeprom) const;
+
+        //Function: curEventTriggerDuration
+        //  Gets the event trigger options currently set, or from the node if not set.
+        void curEventTriggerDurations(const NodeEepromHelper& eeprom, uint32& pre, uint32& post) const;
+
+        //Function: curEventTriggerMask
+        //  Gets the event trigger mask currently set, or from the node if not set.
+        BitMask curEventTriggerMask(const NodeEepromHelper& eeprom) const;
 
     private:
         //Function: checkValue
@@ -527,6 +552,20 @@ namespace mscl
         //    Sets the hardware offset for the given <ChannelMask> in the Config.
         void hardwareOffset(const ChannelMask& mask, uint16 offset);
 
+        //API Function: lowPassFilter
+        //    Gets the low pass <WirelessTypes::Filter> for the given <ChannelMask> in the Config, if set.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to set the hardware offset for.
+        //
+        //Exceptions:
+        //    <Error_NoData> - The requested value has not been set.
+        WirelessTypes::Filter lowPassFilter(const ChannelMask& mask) const;
+
+        //API Function: hardwareOffset
+        //    Sets the hardware offset for the given <ChannelMask> in the Config.
+        void lowPassFilter(const ChannelMask& mask, WirelessTypes::Filter filter);
+
         //API Function: gaugeFactor
         //    Gets the gauge factor for the given <ChannelMask> in the Config, if set.
         //
@@ -643,5 +682,40 @@ namespace mscl
         //API Function: activitySense
         //    Sets the <ActivitySense> in the Config.
         void activitySense(const ActivitySense& activitySenseOpts);
+
+        //API Function: eventTriggerOptions
+        //  Gets the <EventTriggerOptions> currently set in the Config.
+        //
+        //Exceptions:
+        //  <Error_NoData> - The requested value has not been set.
+        const EventTriggerOptions& eventTriggerOptions() const;
+
+        //API Function: eventTriggerOptions
+        //  Sets the <EventTriggerOptions> in the Config.
+        void eventTriggerOptions(const EventTriggerOptions& eventTriggerOpts);
+
+        //API Function: diagnosticInterval
+        //  Gets the diagnostic info interval currently set in the Config.
+        //  A value of 0 is disabled.
+        //
+        //Exceptions:
+        //  <Error_NoData> - The requested value has not been set.
+        uint16 diagnosticInterval() const;
+
+        //API Function: diagnosticInterval
+        //  Sets the diagnostic info interval in the Config.
+        //  A value of 0 disables the diagnostic info.
+        void diagnosticInterval(uint16 interval);
+
+        //API Function: storageLimitMode
+        //  Gets the <WirelessTypes::StorageLimitMode> currently set in the Config.
+        //
+        //Exceptions:
+        //  <Error_NoData> - The requested value has not been set.
+        WirelessTypes::StorageLimitMode storageLimitMode() const;
+
+        //API Function: storageLimitMode
+        //  Sets the <WirelessTypes::StorageLimitMode> in the Config.
+        void storageLimitMode(WirelessTypes::StorageLimitMode mode);
     };
 }

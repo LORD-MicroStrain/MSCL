@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("MSCL")]
 [assembly: AssemblyDescription("MicroStrain Communication Library")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("LORD MicroStrain Sensing Systems")]
+[assembly: AssemblyCompany("LORD Sensing")]
 [assembly: AssemblyProduct("MSCL")]
-[assembly: AssemblyCopyright("Copyright © LORD 2013")]
+[assembly: AssemblyCopyright("Copyright © 2016 LORD Corporation")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -34,5 +34,5 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 //
 //update with each release
-[assembly: AssemblyVersion("1.32.0.0")]
-[assembly: AssemblyFileVersion("1.32.0.0")]
+[assembly: AssemblyVersion("4.3.1.0")]
+[assembly: AssemblyFileVersion("4.3.1.0")]

@@ -137,6 +137,16 @@ namespace mscl
         //
         //Returns:
         //    The number of bytes remaining before the end of the Node's datalogging memory.
-        uint64 bytesRemaining(uint64 currentByte);
+        uint64 bytesRemaining(uint64 currentByte) const;
+
+        //Function: percentComplete
+        //    Calculates the percentage complete based on the given byte position.
+        //
+        //Parameters:
+        //    currentByte - The byte position to check against the total bytes to calculate the percent complete.
+        //
+        //Returns:
+        //  The percentage complete (0 - 100).
+        float percentComplete(uint64 currentByte) const;
     };
 }

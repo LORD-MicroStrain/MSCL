@@ -24,14 +24,6 @@ namespace mscl
         BaseStation_ReadEeprom& operator=(const BaseStation_ReadEeprom&);    //assignement operator disabled
 
     public:
-        //=====================================================================================================
-        //Constants: Packet Bytes
-        //    COMMAND_BYTE    - 0x73    - The Command ID byte for the read eeprom command
-        //    FAIL_BYTE        - 0x21    - The Fail Response ID byte for the read eeprom command
-        //=====================================================================================================
-        static const short COMMAND_BYTE = 0x73;
-        static const short FAIL_BYTE    = 0x21;
-
         //Function: buildCommand
         //    Builds the eeprom read command packet
         //

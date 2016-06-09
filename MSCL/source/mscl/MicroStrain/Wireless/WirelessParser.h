@@ -23,8 +23,8 @@ namespace mscl
     {
     private:
         //Typedef: DuplicateCheckMap
-        //    A typedef for a map of <NodeAddress>es to a timestamp or tick value to check for packet duplication
-        typedef std::map<NodeAddress, uint16> DuplicateCheckMap;
+        //    A typedef for a map of node addresses to a timestamp or tick value to check for packet duplication
+        typedef std::map<uint32, uint16> DuplicateCheckMap;
 
     public:
         //Enums: ParsePacketResult
@@ -112,10 +112,36 @@ namespace mscl
         //    true if the packet is a duplicate, false otherwise.
         bool isDuplicate(const WirelessPacket& packet);
 
+        //Function: parseAsPacket_ASPP_1
+        //    Takes a DataBuffer that has had its read position moved to the start of a packet 
+        //    and verifies that the bytes form a valid ASPP v1 packet.
+        //
+        //Parameters:
+        //    data - A <DataBuffer> with its read position at the start of a an ASPP v1 packet (0xAA).
+        //    packet - A <WirelessPacket> to hold all the packet information if the packet is verified from the DataBuffer.
+        //    freq - A <WirelessTypes::Frequency> representing the frequency that this data was collected on.
+        //
+        //Returns:
+        //    A <ParsePacketResult> describing if the packet was verified, or why it failed verification.
+        WirelessParser::ParsePacketResult parseAsPacket_ASPP_v1(DataBuffer& data, WirelessPacket& packet, WirelessTypes::Frequency freq);
+
+        //Function: parseAsPacket_ASPP_1
+        //    Takes a DataBuffer that has had its read position moved to the start of a packet 
+        //    and verifies that the bytes form a valid ASPP v2 packet.
+        //
+        //Parameters:
+        //    data - A <DataBuffer> with its read position at the start of a an ASPP v2 packet (0xAB).
+        //    packet - A <WirelessPacket> to hold all the packet information if the packet is verified from the DataBuffer.
+        //    freq - A <WirelessTypes::Frequency> representing the frequency that this data was collected on.
+        //
+        //Returns:
+        //    A <ParsePacketResult> describing if the packet was verified, or why it failed verification.
+        WirelessParser::ParsePacketResult parseAsPacket_ASPP_v2(DataBuffer& data, WirelessPacket& packet, WirelessTypes::Frequency freq);
+
     public:
         //Function: parseAsPacket
         //    Takes a DataBuffer that has had its read position moved to the start of a packet 
-        //    and verifies that the bytes form a valid ASPP packet.
+        //    and verifies that the bytes form a valid ASPP v1 or v2 packet.
         //
         //Parameters:
         //    data - A <DataBuffer> with its read position at the start of a packet (0xAA).

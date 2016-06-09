@@ -9,13 +9,6 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/SampleUtils.h"
 #include "mscl/Utils.h"
 
-namespace {
-std::string channelName(mscl::WirelessChannel::ChannelId id, float angle)
-{
-  return mscl::WirelessChannel::channelName(mscl::WirelessChannel::channel_rawAngleStrain) + "_angle" + mscl::Utils::toStrWithPrecision(angle, 2, true);
-}
-}
-
 namespace mscl
 {
     RawAngleStrainPacket::RawAngleStrainPacket(const WirelessPacket& packet)
@@ -30,8 +23,20 @@ namespace mscl
         m_payload                  = packet.payload();
         m_payloadOffsetChannelData = 0; //not used for these packets
 
-        //parse the data sweeps in the packet
-        parseSweeps();
+        //parse the sweeps differently depending on Sync or NonSync
+        switch(m_payload.read_uint8(0))
+        {
+            case SPECIFIC_ANGLE_MODE_SYNC:
+            case DIST_ANGLE_MODE_SYNC:
+                parseSweepsSync();
+                break;
+
+            case SPECIFIC_ANGLE_MODE:
+            case DIST_ANGLE_MODE:
+            default:
+                parseSweeps();
+                break;
+        }
     }
 
     void RawAngleStrainPacket::parseSweeps()
@@ -63,13 +68,11 @@ namespace mscl
         sweep.nodeRssi(m_nodeRSSI);
         sweep.baseRssi(m_baseRSSI);
 
-        static const uint8 SPECIFIC_ANGLE_MODE = 0x00;
-        static const uint8 DIST_ANGLE_MODE = 0x01;
+        sweep.calApplied(true);
 
         ChannelData chData;
         float angle, chVal;
 
-        //parse the specific angle mode payload
         if(appId == SPECIFIC_ANGLE_MODE)
         {
             //the number of angles in the packet
@@ -80,13 +83,12 @@ namespace mscl
             {
                 angle = payload.read_float();
                 chVal = payload.read_float();
-                auto chName = bind(channelName, WC::channel_rawAngleStrain, angle);
-                
+                auto chName = bind(RawAngleStrainPacket::buildChannelName, angle);
+
                 WirelessDataPoint::ChannelProperties properties({std::make_pair(WirelessDataPoint::channelPropertyId_angle, Value::FLOAT(angle))});
                 chData.emplace_back(WC::channel_rawAngleStrain, i, chName, valueType_float, anyType(chVal), properties);
             }
         }
-        //parse the distributed angle mode payload
         else if(appId == DIST_ANGLE_MODE)
         {
             //the lower bound angle
@@ -109,7 +111,7 @@ namespace mscl
                 //read the channel value from the payload
                 chVal = payload.read_float();
 
-                auto chName = bind(channelName, WC::channel_rawAngleStrain, angle);
+                auto chName = bind(RawAngleStrainPacket::buildChannelName, angle);
 
                 WirelessDataPoint::ChannelProperties properties({std::make_pair(WirelessDataPoint::channelPropertyId_angle, Value::FLOAT(angle))});
                 chData.emplace_back(WC::channel_rawAngleStrain, i, chName, valueType_float, anyType(chVal), properties);
@@ -121,6 +123,161 @@ namespace mscl
 
         //add the sweep to the container of sweeps
         addSweep(sweep);
+    }
+
+    void RawAngleStrainPacket::parseSweepsSync()
+    {
+        typedef WirelessChannel WC;
+
+        DataBuffer payload(m_payload);
+
+        //read the values from the payload
+        uint8 appId = payload.read_uint8();
+        uint8 sampleRate = payload.read_uint8();
+        uint16 tick = payload.read_uint16();
+        uint64 timestamp = payload.read_uint64();
+
+        //create a SampleRate object from the sampleRate byte
+        SampleRate currentRate = SampleUtils::convertToSampleRate(sampleRate);
+
+        //get the value to increment the timestamp by for each sweep (the timestamp from the packet only applies to the first sweep)
+        const uint64 TS_INCREMENT = currentRate.samplePeriod().getNanoseconds();
+
+        //set the data type of the packet
+        m_dataType = WirelessTypes::dataType_4ByteFloat;
+
+        float angle, chVal;
+
+        if(appId == SPECIFIC_ANGLE_MODE_SYNC)
+        {
+            //the number of angles in the packet
+            uint8 numAngles = payload.read_uint8();
+            uint8 numAngleIdBytes = 4 * numAngles;
+
+            m_sweepSize = numAngles * WirelessTypes::dataTypeSize(m_dataType);
+
+            if(m_sweepSize == 0)
+            {
+                m_numSweeps = 1;
+            }
+            else
+            {
+                m_numSweeps = (payload.size() - 13 - numAngleIdBytes) / m_sweepSize;
+            }
+
+            //if we still have no sweeps, there was an error in the packet
+            if(m_numSweeps == 0) { throw Error("Invalid Packet"); }
+
+            //get the angle id for each angle
+            std::vector<float> angles;
+            for(uint8 i = 0; i < numAngles; ++i)
+            {
+                angles.push_back(payload.read_float());
+            }
+
+            //loop over every sweep in the packet (buffered)
+            for(uint32 sweepItr = 0; sweepItr < m_numSweeps; sweepItr++)
+            {
+                DataSweep sweep;
+                sweep.samplingType(DataSweep::samplingType_SyncSampling);
+                sweep.frequency(m_frequency);
+                sweep.tick(tick++);
+                sweep.nodeAddress(m_nodeAddress);
+                sweep.sampleRate(currentRate);
+
+                //build this sweep's timestamp
+                sweep.timestamp(Timestamp(timestamp + (TS_INCREMENT * sweepItr)));
+
+                sweep.nodeRssi(m_nodeRSSI);
+                sweep.baseRssi(m_baseRSSI);
+
+                sweep.calApplied(true);
+
+                ChannelData chData;
+
+                for(uint8 i = 0; i < numAngles; ++i)
+                {
+                    angle = angles.at(i);
+                    chVal = payload.read_float();
+                    auto chName = bind(RawAngleStrainPacket::buildChannelName, angle);
+
+                    WirelessDataPoint::ChannelProperties properties({std::make_pair(WirelessDataPoint::channelPropertyId_angle, Value::FLOAT(angle))});
+                    chData.emplace_back(WC::channel_rawAngleStrain, i, chName, valueType_float, anyType(chVal), properties);
+                }
+
+                //add the channel data to the sweep
+                sweep.data(chData);
+
+                //add the sweep to the container of sweeps
+                addSweep(sweep);
+            }
+        }
+        else if(appId == DIST_ANGLE_MODE_SYNC)
+        {
+            //the lower bound angle
+            float lowerBound = payload.read_float();
+
+            //the upper bound angle
+            float upperBound = payload.read_float();
+
+            //the number of angles in the packet
+            uint8 numAngles = payload.read_uint8();
+
+            m_sweepSize = numAngles * WirelessTypes::dataTypeSize(m_dataType);
+
+            if(m_sweepSize == 0)
+            {
+                m_numSweeps = 1;
+            }
+            else
+            {
+                m_numSweeps = (payload.size() - 21) / m_sweepSize;
+            }
+
+            //determine the angles based on the distribution
+            std::vector<float> angles = distributeAngles(lowerBound, upperBound, numAngles);
+
+            //loop over every sweep in the packet (buffered)
+            for(uint32 sweepItr = 0; sweepItr < m_numSweeps; sweepItr++)
+            {
+                DataSweep sweep;
+                sweep.samplingType(DataSweep::samplingType_SyncSampling);
+                sweep.frequency(m_frequency);
+                sweep.tick(tick++);
+                sweep.nodeAddress(m_nodeAddress);
+                sweep.sampleRate(currentRate);
+
+                //build this sweep's timestamp
+                sweep.timestamp(Timestamp(timestamp + (TS_INCREMENT * sweepItr)));
+
+                sweep.nodeRssi(m_nodeRSSI);
+                sweep.baseRssi(m_baseRSSI);
+
+                sweep.calApplied(true);
+
+                ChannelData chData;
+
+                //get the name and angle data per angle
+                for(uint8 i = 0; i < angles.size(); ++i)
+                {
+                    angle = angles.at(i);
+
+                    //read the channel value from the payload
+                    chVal = payload.read_float();
+
+                    auto chName = bind(RawAngleStrainPacket::buildChannelName, angle);
+
+                    WirelessDataPoint::ChannelProperties properties({std::make_pair(WirelessDataPoint::channelPropertyId_angle, Value::FLOAT(angle))});
+                    chData.emplace_back(WC::channel_rawAngleStrain, i, chName, valueType_float, anyType(chVal), properties);
+                }
+
+                //add the channel data to the sweep
+                sweep.data(chData);
+
+                //add the sweep to the container of sweeps
+                addSweep(sweep);
+            }
+        }
     }
 
     bool RawAngleStrainPacket::integrityCheck(const WirelessPacket& packet)
@@ -191,5 +348,10 @@ namespace mscl
         }
 
         return angles;
+    }
+
+    std::string RawAngleStrainPacket::buildChannelName(float angle)
+    {
+        return WirelessChannel::channelName(WirelessChannel::channel_rawAngleStrain) + "_angle" + Utils::toStrWithPrecision(angle, 2, true);
     }
 }

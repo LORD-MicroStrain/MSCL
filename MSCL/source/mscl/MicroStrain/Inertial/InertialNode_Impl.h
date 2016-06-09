@@ -111,12 +111,12 @@ namespace mscl
         std::unique_ptr<InertialNodeFeatures> m_features;
 
     private:
-        //Function: parseResponse
+        //Function: parseData
         //    Callback function that parses any bytes that are in the read buffer to find packets or command responses
         //
         //Parameters:
         //    data - The <DataBuffer> containing all the data to be parsed
-        void parseResponse(DataBuffer& data);
+        void parseData(DataBuffer& data);
 
         //Function: doInertialCmd
         //    Performs a generic Inertial Command, sending the command bytes and waiting for the response.
@@ -161,6 +161,9 @@ namespace mscl
 
         //Function: lastCommunicationTime
         //    Gets the <Timestamp> for the last time we communicated with the InertialNode.
+        //
+        //Exceptions:
+        //  - <Error_NoData>: There is no communication time logged for this device.
         const Timestamp& lastCommunicationTime() const;
 
         //Function: supportedSampleRates

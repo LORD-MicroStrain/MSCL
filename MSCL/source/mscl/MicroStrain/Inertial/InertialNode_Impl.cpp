@@ -36,7 +36,7 @@ namespace mscl
         m_parser.reset(new InertialParser(&m_packetCollector, m_responseCollector));
 
         //register the parse function with the connection
-        m_connection.registerParser(std::bind(&InertialNode_Impl::parseResponse, this, std::placeholders::_1));
+        m_connection.registerParser(std::bind(&InertialNode_Impl::parseData, this, std::placeholders::_1));
     }
 
     InertialNode_Impl::~InertialNode_Impl()
@@ -47,6 +47,11 @@ namespace mscl
 
     const Timestamp& InertialNode_Impl::lastCommunicationTime() const
     {
+        if(m_lastCommTime.nanoseconds() == 0)
+        {
+            throw Error_NoData("The Inertial Node has not yet been communicated with.");
+        }
+
         return m_lastCommTime;
     }
 
@@ -124,10 +129,13 @@ namespace mscl
         return *rates;
     }
 
-    void InertialNode_Impl::parseResponse(DataBuffer& data)
+    void InertialNode_Impl::parseData(DataBuffer& data)
     {
         //send the readBuffer to the parser to parse all the bytes
         m_parser->parse(data);
+
+        //update InertialNode last comm time
+        m_lastCommTime.setTimeNow();
 
         //shift any extra bytes that weren't parsed, back to the front of the buffer
         std::size_t bytesShifted = data.shiftExtraToStart();
@@ -184,9 +192,6 @@ namespace mscl
 
         //throw an exception if not successful
         result.throwIfFailed();
-
-        //update InertialNode last comm time
-        m_lastCommTime.setTimeNow();
 
         return result;
     }

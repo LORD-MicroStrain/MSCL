@@ -21,6 +21,9 @@ namespace mscl
         addCalCoeffChannelGroup(3, NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);
         addCalCoeffChannelGroup(4, NodeEepromMap::CH_ACTION_SLOPE_4, NodeEepromMap::CH_ACTION_ID_4);
 
+        static const ChannelMask ACCEL_CHS(BOOST_BINARY(00000111)); //ch1 - ch3
+        m_channelGroups.emplace_back(ACCEL_CHS, "Accel Channels", ChannelGroup::SettingsMap{{WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1}});
+
         //Channels
         m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_acceleration);    //accel x
         m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_acceleration);    //accel y
@@ -46,5 +49,19 @@ namespace mscl
         default:
             throw Error("Invalid SamplingMode");
         }
+    }
+
+    const WirelessTypes::Filters NodeFeatures_glink2Internal::lowPassFilters() const
+    {
+        static const WirelessTypes::Filters filters = {
+            {WirelessTypes::filter_1000hz},
+            {WirelessTypes::filter_2000hz},
+            {WirelessTypes::filter_500hz},
+            {WirelessTypes::filter_200hz},
+            {WirelessTypes::filter_100hz},
+            {WirelessTypes::filter_50hz},
+            {WirelessTypes::filter_26hz}
+        };
+        return filters;
     }
 }

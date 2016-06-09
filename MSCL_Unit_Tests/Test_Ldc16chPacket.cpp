@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(LdcPacket_Constructor_4ByteFloat)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_LDC_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(Ldc16chPacket_Constructor_2byteUint_Shifted)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_LDC_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(Ldc16chPacket_Constructor_2byteUint)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_LDC_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE(Ldc16chPacket_IntegrityCheck_Good)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_LDC_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(Ldc16chPacket_IntegrityCheck_SmallPayload)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_LDC_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(Ldc16chPacket_IntegrityCheck_BadAppID)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_LDC_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -215,7 +215,7 @@ BOOST_AUTO_TEST_CASE(Ldc16chPacket_IntegrityCheck_BadStopFlags)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(15));    //INVALID DELIVERY STOP FLAGS
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(15));    //INVALID DELIVERY STOP FLAGS
     packet.type(WirelessPacket::packetType_LDC_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -240,7 +240,7 @@ BOOST_AUTO_TEST_CASE(Ldc16chPacket_IntegrityCheck_BadPacketType)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_LDC);        //INVALID PACKET TYPE
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -265,7 +265,7 @@ BOOST_AUTO_TEST_CASE(Ldc16chPacket_IntegrityCheck_InvalidPayloadSize)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_LDC_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);
@@ -290,7 +290,7 @@ BOOST_AUTO_TEST_CASE(Ldc16chPacket_IntegrityCheck_BadDataType)
     //build a WirelessPacket
     WirelessPacket packet;
     packet.nodeAddress(345);
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
     packet.type(WirelessPacket::packetType_LDC_16ch);
     packet.nodeRSSI(1);
     packet.baseRSSI(1);

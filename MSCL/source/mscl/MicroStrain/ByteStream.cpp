@@ -203,6 +203,23 @@ namespace mscl
         return Utils::make_uint32(b1, b2, b3, b4);
     }
 
+    uint64 ByteStream::read_uint64(std::size_t position) const
+    {
+        //verify that the position being asked for is in range
+        verifyBytesInStream(position, 8);
+
+        uint8 b1 = m_bytes.at(position);
+        uint8 b2 = m_bytes.at(position + 1);
+        uint8 b3 = m_bytes.at(position + 2);
+        uint8 b4 = m_bytes.at(position + 3);
+        uint8 b5 = m_bytes.at(position + 4);
+        uint8 b6 = m_bytes.at(position + 5);
+        uint8 b7 = m_bytes.at(position + 6);
+        uint8 b8 = m_bytes.at(position + 7);
+
+        return Utils::make_uint64(b1, b2, b3, b4, b5, b6, b7, b8);
+    }
+
     //read a float (4 bytes) from the bytestream
     float ByteStream::read_float(std::size_t position) const
     {

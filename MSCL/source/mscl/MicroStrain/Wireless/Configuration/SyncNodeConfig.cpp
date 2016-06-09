@@ -52,6 +52,24 @@ namespace mscl
         }
     }
 
+    uint16 SyncNodeConfig::activeChannelCount()
+    {
+        ChannelMask mask = activeChannels();
+
+        uint16 totalChannelCount = mask.count();
+
+        WirelessModels::NodeModel model = m_networkInfo->m_model;
+
+        //if this is the iepe-link, and channel 4 (temp) is enabled
+        if(mask.enabled(4) && model == WirelessModels::node_iepeLink)
+        {
+            //channel 4 doesn't count as a channel in calculations (it transmits at a rate of once per burst)
+            totalChannelCount -= 1;
+        }
+
+        return totalChannelCount;
+    }
+
     WirelessTypes::DataFormat SyncNodeConfig::dataFormat()
     {
         try
@@ -91,32 +109,6 @@ namespace mscl
         {
             //not set in the config, read the value from eeprom
             return m_eepromHelper.read_numSweeps();
-        }
-    }
-
-    WirelessTypes::SyncSamplingMode SyncNodeConfig::syncSamplingMode()
-    {
-        try
-        {
-            //try to read the value from the pending config
-            WirelessTypes::SamplingMode samplingMode = m_networkInfo->getPendingConfig().samplingMode();
-            
-            //the sampling config only has the WirelessTypes::SamplingMode, so we need
-            //to convert it to the corresponding WirelessTypes::SyncSamplingMode 
-            switch(samplingMode)
-            {
-            case WirelessTypes::samplingMode_syncBurst:
-                return WirelessTypes::syncMode_burst;
-
-            case WirelessTypes::samplingMode_sync:
-            default:
-                return WirelessTypes::syncMode_continuous;
-            }
-        }
-        catch(Error_NoData&)
-        {
-            //read the value from eeprom
-            return m_eepromHelper.read_syncSamplingMode();
         }
     }
 

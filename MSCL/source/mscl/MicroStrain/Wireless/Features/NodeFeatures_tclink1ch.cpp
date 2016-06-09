@@ -78,4 +78,9 @@ namespace mscl
     {
         return maxFilterSettlingTime_B(rate);
     }
+
+    WirelessTypes::WirelessSampleRate NodeFeatures_tclink1ch::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode) const
+    {
+        return maxSampleRateForSettlingTime_B(filterSettlingTime, sampleRates(samplingMode));
+    }
 }

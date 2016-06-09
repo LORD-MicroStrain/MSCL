@@ -8,9 +8,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include <memory>
 
-#include "WirelessNode.h"
+#include "CalCoefficients.h"
 #include "ChannelMask.h"
 #include "LoggedDataSweep.h"
+#include "WirelessNode.h"
 #include "WirelessTypes.h"
 #include "mscl/Version.h"
 #include "mscl/MicroStrain/SampleRate.h"
@@ -69,8 +70,14 @@ namespace mscl
         //Variable: timestamp
         //    The starting timestamp for the session, in nanoseconds.
         uint64 timestamp;
-        
-        //TODO: add support for ChannelActions
+
+        //Variable: calsApplied;
+        //  Whether the cal coefficients are applied to the data or not.
+        bool calsApplied;
+
+        //Variable: calCoefficients
+        //    A map of <WirelessChannel::ChannelId> to <CalCoefficients>.
+        ChannelCalMap calCoefficients;
 
         DatalogSessionInfo():
             startOfTrigger(false),
@@ -83,7 +90,8 @@ namespace mscl
             dataType(WirelessTypes::dataType_2byteUInt_16bitRes),
             valueType(valueType_uint16),
             userString(""),
-            timestamp(0)
+            timestamp(0),
+            calsApplied(true)
         {
         }
     };
@@ -101,6 +109,7 @@ namespace mscl
         //    node - The <WirelessNode> to download the data from.
         //
         //Exceptions:
+        //    - <Error_NotSupported>: Logged data is not supported by the Node.
         //    - <Error_NodeCommunication>: Failed to read info from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         explicit DatalogDownloader(const WirelessNode& node);
@@ -203,8 +212,8 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred.
         uint32 read_uint32(uint64& position);
 
-        //Function: read_float
-        //    Reads a 4-byte float from the Node's memory.
+        //Function: read_float_bigEndian
+        //    Reads a 4-byte float from the Node's memory (in big endian).
         //
         //Parameters:
         //    position - The 0-based position to read from.  This value will be incremented by 4 if successful.
@@ -216,7 +225,22 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to download data from the Node.
         //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
         //    - <Error_Connection>: A connection error has occurred.
-        float read_float(uint64& position);
+        float read_float_bigEndian(uint64& position);
+
+        //Function: read_float_littleEndian
+        //    Reads a 4-byte float from the Node's memory (in little endian).
+        //
+        //Parameters:
+        //    position - The 0-based position to read from.  This value will be incremented by 4 if successful.
+        //
+        //Returns:
+        //    The float at the requested position in the Node's memory.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to download data from the Node.
+        //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
+        //    - <Error_Connection>: A connection error has occurred.
+        float read_float_littleEndian(uint64& position);
 
         //Function: read_string
         //    Reads a string of the specified length from the Node's memory.
@@ -264,6 +288,13 @@ namespace mscl
         //    true if all the data has been downloaded, false if there is still more data to download.
         bool complete();
 
+        //API Function: percentComplete
+        //    Gets the percent completion of the download.
+        //
+        //Returns:
+        //  The percent completion of the download (0 - 100).
+        float percentComplete() const;
+
         //API Function: getNextData
         //    Gets the next <LoggedDataSweep> that is logged to the Node.
         //
@@ -283,21 +314,21 @@ namespace mscl
         //
         //Returns:
         //    true if a new datalogging session has been found, false otherwise.
-        bool startOfSession();
+        bool startOfSession() const;
 
         //API Function: triggerType
         //    Gets the <WirelessTypes::TriggerType> of the current datalogging session.
         //
         //Returns:
         //    The <WirelessTypes::TriggerType> of the current datalogging session.
-        WirelessTypes::TriggerType triggerType();
+        WirelessTypes::TriggerType triggerType() const;
 
         //API Function: totalSweeps
         //    Gets the total number of sweeps that are in the current datalogging session.
         //
         //Returns:
         //    The total number of sweeps that are in the current datalogging session.
-        uint32 totalSweeps();
+        uint32 totalSweeps() const;
 
         //API Function: sessionIndex
         //    Gets the index of the current datalogging session. 
@@ -305,20 +336,34 @@ namespace mscl
         //
         //Returns:
         //    The index of the current datalogging session. 
-        uint16 sessionIndex();
+        uint16 sessionIndex() const;
 
         //API Function: sampleRate
         //    Gets the <SampleRate> of the current datalogging session.
         //
         //Returns:
         //    The <SampleRate> of the current datalogging session.
-        const SampleRate& sampleRate();
+        const SampleRate& sampleRate() const;
 
         //API Function: userString
         //    Gets the user entered string of the current datalogging session (if any).
         //
         //Returns:
         //    The user entered string of the current datalogging session, or an empty string if none was provided.
-        const std::string& userString();
+        const std::string& userString() const;
+
+        //API Function: calCoefficients
+        //  Gets the <ChannelCalMap> of the current datalogging session.
+        //
+        //Returns:
+        //  The <ChannelCalMap> of <WirelessChannel::ChannelId>s to <CalCoefficients>. 
+        const ChannelCalMap& calCoefficients() const;
+
+        //API Function: calsApplied
+        //  Gets whether all of the given cal coefficients are already applied to the data or not.
+        //
+        //Returns:
+        //  true if the cal coefficients are already applied, false if they are not already applied.
+        bool calsApplied() const;
     };
 }

@@ -6,24 +6,25 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "stdafx.h"
 
 #include "WirelessParser.h"
-#include "Packets/WirelessPacket.h"
-#include "Packets/WirelessPacketUtils.h"
-#include "Packets/WirelessPacketCollector.h"
-#include "Packets/LdcPacket.h"
-#include "Packets/LdcPacket_16ch.h"
-#include "Packets/SyncSamplingPacket.h"
-#include "Packets/SyncSamplingPacket_16ch.h"
+#include "Packets/AsyncDigitalAnalogPacket.h"
+#include "Packets/AsyncDigitalPacket.h"
 #include "Packets/BufferedLdcPacket.h"
 #include "Packets/BufferedLdcPacket_16ch.h"
-#include "Packets/AsyncDigitalPacket.h"
-#include "Packets/AsyncDigitalAnalogPacket.h"
+#include "Packets/DiagnosticPacket.h"
+#include "Packets/LdcPacket.h"
+#include "Packets/LdcPacket_16ch.h"
+#include "Packets/RollerPacket.h"
+#include "Packets/SyncSamplingPacket.h"
+#include "Packets/SyncSamplingPacket_16ch.h"
+#include "Packets/WirelessPacket.h"
+#include "Packets/WirelessPacketCollector.h"
+#include "Packets/WirelessPacketUtils.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/ChecksumBuilder.h"
 
 
 namespace mscl
 {
-
     WirelessParser::WirelessParser(WirelessPacketCollector& packetCollector, std::weak_ptr<ResponseCollector> responseCollector):
         m_packetCollector(packetCollector),
         m_responseCollector(responseCollector)
@@ -123,8 +124,9 @@ namespace mscl
             //notEnoughData is true when the bytes could be a valid packet, but there isn't enough bytes to be sure
             bool notEnoughData = false;
 
-            //if this is an ASPP Start of Packet byte (0xAA)
-            if(currentByte == WirelessPacket::ASPP_START_OF_PACKET_BYTE)
+            //if this is any ASPP Start of Packet byte
+            if(currentByte == WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE ||
+               currentByte == WirelessPacket::ASPP_V2_START_OF_PACKET_BYTE)
             {
                 //check if the packet is a valid ASPP packet, starting at this byte
                 parseResult = parseAsPacket(data, packet, freq);
@@ -152,8 +154,8 @@ namespace mscl
                     case parsePacketResult_notEnoughData:
                         moveToNextByte = false;
                         notEnoughData = true;
-                        break;                    
-                    
+                        break;
+
                     default:
                         assert(false); //unhandled verifyResult,  need to add a case for it
                 }
@@ -254,28 +256,27 @@ namespace mscl
         return false;
     }
 
-    WirelessParser::ParsePacketResult WirelessParser::parseAsPacket(DataBuffer& data, WirelessPacket& packet, WirelessTypes::Frequency freq)
+    WirelessParser::ParsePacketResult WirelessParser::parseAsPacket_ASPP_v1(DataBuffer& data, WirelessPacket& packet, WirelessTypes::Frequency freq)
     {
         //Assume we are at the start of the packet, read the packet header
         //byte 1        - Start Of Packet
         //byte 2        - Delivery Stop Flag
         //byte 3        - App Data Type
-        //byte 4        - Node Address (MSB)
-        //byte 5        - Node Address (LSB)
+        //byte 4 - 5    - Node Address (uint16)
         //byte 6        - Payload Length
         //byte 7 to N-4 - Payload
-        //byte N-3        - Node RSSI
-        //byte N-2        - Base RSSI
-        //byte N-1        - Checksum (MSB)
-        //byte N        - Checksum (LSB)
+        //byte N-3      - Node RSSI
+        //byte N-2      - Base RSSI
+        //byte N-1      - Simple Checksum (MSB)
+        //byte N        - Simple Checksum (LSB)
 
         //create a save point for the DataBuffer
         ReadBufferSavePoint savePoint(&data);
 
         std::size_t totalBytesAvailable = data.bytesRemaining();
 
-        //we need at least 6 bytes for any ASPP packet
-        if(totalBytesAvailable < 6)
+        //we need at least 10 bytes for any ASPP v1 packet
+        if(totalBytesAvailable < 10)
         {
             //Not Enough Data to tell if valid packet
             return parsePacketResult_notEnoughData;
@@ -285,7 +286,7 @@ namespace mscl
         uint8 startOfPacket = data.read_uint8();                        //Start Of Packet
 
         //verify that the first byte is the Start Of Packet
-        if(startOfPacket != WirelessPacket::ASPP_START_OF_PACKET_BYTE)
+        if(startOfPacket != WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE)
         {    
             //Invalid Packet
             return parsePacketResult_invalidPacket;
@@ -295,16 +296,16 @@ namespace mscl
         uint8 deliveryStopFlag = data.read_uint8();                    //Delivery Stop Flag
 
         //read byte 3
-        uint8 appDataType = data.read_uint8();                            //App Data Type
+        uint8 appDataType = data.read_uint8();                         //App Data Type
 
         //read bytes 4 and 5
-        NodeAddress nodeAddress = data.read_uint16();                    //Node Address
+        uint16 nodeAddress = data.read_uint16();                  //Node Address
 
         //read byte 6
-        uint8 payloadLength = data.read_uint8();                        //Payload Length (max of 255)
+        uint8 payloadLength = data.read_uint8();                       //Payload Length (max of 255)
 
         //determine the full packet length 
-        uint32 packetLength = payloadLength + WirelessPacket::ASPP_NUM_BYTES_BEFORE_PAYLOAD + WirelessPacket::ASPP_NUM_BYTES_AFTER_PAYLOAD;
+        uint32 packetLength = payloadLength + WirelessPacket::ASPP_V1_NUM_BYTES_BEFORE_PAYLOAD + WirelessPacket::ASPP_V1_NUM_BYTES_AFTER_PAYLOAD;
 
         //the DataBuffer must be large enough to hold the rest of the packet
         if(totalBytesAvailable < packetLength)
@@ -348,12 +349,12 @@ namespace mscl
             return parsePacketResult_badChecksum;
         }
 
-        DeliveryStopFlags flags = DeliveryStopFlags::fromByte(deliveryStopFlag);
+        DeliveryStopFlags flags = DeliveryStopFlags::fromInvertedByte(deliveryStopFlag);
 
         //add all the info about the packet to the WirelessPacket reference passed in
         packet.deliveryStopFlags(flags);
         packet.type(static_cast<WirelessPacket::PacketType>(appDataType));
-        packet.nodeAddress(nodeAddress);
+        packet.nodeAddress(static_cast<uint32>(nodeAddress));
         packet.payload(payload);
         packet.nodeRSSI(nodeRSSI);
         packet.baseRSSI(baseRSSI);
@@ -385,10 +386,167 @@ namespace mscl
         return parsePacketResult_completePacket;
     }
 
+    WirelessParser::ParsePacketResult WirelessParser::parseAsPacket_ASPP_v2(DataBuffer& data, WirelessPacket& packet, WirelessTypes::Frequency freq)
+    {
+        //Assume we are at the start of the packet, read the packet header
+        //byte 1         - Start Of Packet
+        //byte 2         - Delivery Stop Flag
+        //byte 3         - App Data Type
+        //byte 4 - 7     - Node Address (uint32)
+        //byte 8 - 9     - Payload Length
+        //byte 10 to N-4 - Payload
+        //byte N-3       - Node RSSI
+        //byte N-2       - Base RSSI
+        //byte N-1       - Fletcher Checksum (MSB)
+        //byte N         - Fletcher Checksum (LSB)
+
+        //create a save point for the DataBuffer
+        ReadBufferSavePoint savePoint(&data);
+
+        std::size_t totalBytesAvailable = data.bytesRemaining();
+
+        //we need at least 13 bytes for any ASPP v2 packet (if empty payload)
+        if(totalBytesAvailable < 13)
+        {
+            //Not Enough Data to tell if valid packet
+            return parsePacketResult_notEnoughData;
+        }
+
+        //read byte 1
+        uint8 startOfPacket = data.read_uint8();                        //Start Of Packet
+
+        //verify that the first byte is the Start Of Packet
+        if(startOfPacket != WirelessPacket::ASPP_V2_START_OF_PACKET_BYTE)
+        {
+            //Invalid Packet
+            return parsePacketResult_invalidPacket;
+        }
+
+        //read byte 2
+        uint8 deliveryStopFlag = data.read_uint8();                     //Delivery Stop Flag
+
+        //read byte 3
+        uint8 appDataType = data.read_uint8();                          //App Data Type
+
+        //read bytes 4 - 7 
+        uint32 nodeAddress = data.read_uint32();                        //Node Address
+
+        //read bytes 8 and 9
+        uint16 payloadLength = data.read_uint16();                      //Payload Length
+
+        //determine the full packet length 
+        size_t packetLength = payloadLength + WirelessPacket::ASPP_V2_NUM_BYTES_BEFORE_PAYLOAD + WirelessPacket::ASPP_V2_NUM_BYTES_AFTER_PAYLOAD;
+
+        //the DataBuffer must be large enough to hold the rest of the packet
+        if(totalBytesAvailable < packetLength)
+        {
+            //Not Enough Data to tell if valid packet
+            return parsePacketResult_notEnoughData;
+        }
+
+        //create the Bytes vector to hold the payload bytes
+        Bytes payload;
+        payload.reserve(payloadLength);
+
+        //loop through the payload
+        for(uint16 payloadItr = 0; payloadItr < payloadLength; payloadItr++)
+        {
+            //store the payload bytes
+            payload.push_back(data.read_uint8());                        //Payload Bytes
+        }
+
+        //read the node RSSI
+        uint8 nodeRSSI = data.read_uint8();                             //Node RSSI
+
+        //read the base station rssi
+        uint8 baseRSSI = data.read_uint8();                             //Base RSSI
+
+        //get the checksum sent in the packet
+        uint16 checksum = data.read_uint16();                           //Checksum
+
+        //build the checksum to calculate from all the bytes
+        ChecksumBuilder calcChecksum;
+        calcChecksum.append_uint8(startOfPacket);
+        calcChecksum.append_uint8(deliveryStopFlag);
+        calcChecksum.append_uint8(appDataType);
+        calcChecksum.append_uint32(nodeAddress);
+        calcChecksum.append_uint16(payloadLength);
+        calcChecksum.appendBytes(payload);
+        calcChecksum.append_uint8(nodeRSSI);
+        calcChecksum.append_uint8(baseRSSI);
+
+        //verify that the returned checksum is the same as the one we calculated
+        if(checksum != calcChecksum.fletcherChecksum())
+        {
+            //Bad Checksum
+            return parsePacketResult_badChecksum;
+        }
+
+        DeliveryStopFlags flags = DeliveryStopFlags::fromByte(deliveryStopFlag);
+
+        //add all the info about the packet to the WirelessPacket reference passed in
+        packet.deliveryStopFlags(flags);
+        packet.type(static_cast<WirelessPacket::PacketType>(appDataType));
+        packet.nodeAddress(nodeAddress);
+        packet.payload(payload);
+        packet.nodeRSSI(static_cast<int16>(nodeRSSI) - 205);
+        packet.baseRSSI(static_cast<int16>(baseRSSI) - 205);
+        packet.frequency(freq);
+
+        //Correct the packet type if it is incorrect
+        WirelessPacketUtils::correctPacketType(packet);
+
+        //make sure the packet is valid based on its specific type
+        if(!WirelessPacketUtils::packetIntegrityCheck(packet))
+        {
+            //not a valid packet, failed integrity check
+            return parsePacketResult_invalidPacket;
+        }
+
+        //check if the packet is a duplicate
+        if(isDuplicate(packet))
+        {
+            //even though it is a duplicate, we still have a complete packet so commit the bytes to skip over them
+            savePoint.commit();
+
+            //duplicate packet
+            return parsePacketResult_duplicate;
+        }
+
+        //we have a complete packet, commit the bytes that we just read (move the read pointer)
+        savePoint.commit();
+
+        return parsePacketResult_completePacket;
+    }
+
+    WirelessParser::ParsePacketResult WirelessParser::parseAsPacket(DataBuffer& data, WirelessPacket& packet, WirelessTypes::Frequency freq)
+    {
+        std::size_t totalBytesAvailable = data.bytesRemaining();
+
+        if(totalBytesAvailable == 0)
+        {
+            //Not Enough Data to tell if valid packet
+            return parsePacketResult_notEnoughData;
+        }
+
+        //choose the correct ASPP version parser
+        switch(data.peekByte())
+        {
+            case WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE:
+                return parseAsPacket_ASPP_v1(data, packet, freq);
+
+            case WirelessPacket::ASPP_V2_START_OF_PACKET_BYTE:
+                return parseAsPacket_ASPP_v2(data, packet, freq);
+
+            default:
+                return parsePacketResult_invalidPacket;
+        }
+    }
+
     bool WirelessParser::isDuplicate(const WirelessPacket& packet)
     {
         uint16 uniqueId;
-        NodeAddress packetsNode = packet.nodeAddress();
+        uint32 packetsNode = packet.nodeAddress();
 
         //check the packet type
         switch(packet.type())
@@ -402,6 +560,8 @@ namespace mscl
             case WirelessPacket::packetType_BufferedLDC_16ch:       uniqueId = BufferedLdcPacket_16ch::getUniqueId(packet);         break;
             case WirelessPacket::packetType_AsyncDigital:           uniqueId = AsyncDigitalPacket::getUniqueId(packet);             break;
             case WirelessPacket::packetType_AsyncDigitalAnalog:     uniqueId = AsyncDigitalAnalogPacket::getUniqueId(packet);       break;
+            case WirelessPacket::packetType_diagnostic:             uniqueId = DiagnosticPacket::getUniqueId(packet);               break;
+            case WirelessPacket::packetType_roller:                 uniqueId = RollerPacket::getUniqueId(packet);                   break;
 
             //isn't a valid data packet that has a unique id, so we can't check for duplicates
             case WirelessPacket::packetType_nodeDiscovery:

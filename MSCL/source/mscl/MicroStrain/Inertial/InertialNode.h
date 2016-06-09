@@ -91,7 +91,10 @@ namespace mscl
         //    Gets the <Timestamp> for the last time MSCL communicated with the InertialNode.
         //
         //Returns:
-        //    A <Timestamp> representing the last time MSCL communicated with the Node. This will be a Timestamp of 0 if never communicated with.
+        //    A <Timestamp> representing the last time MSCL communicated with the Node.
+        //
+        //Exceptions:
+        //  - <Error_NoData>: There is no communication time logged for this device.
         const Timestamp& lastCommunicationTime() const;
 
         //API Function: supportedSampleRates

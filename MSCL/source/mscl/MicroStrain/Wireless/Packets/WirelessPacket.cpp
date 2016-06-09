@@ -61,6 +61,8 @@ namespace mscl
         case packetType_beaconEcho:
         case packetType_rawAngleStrain:
         case packetType_rfScanSweep:
+        case packetType_diagnostic:
+        case packetType_roller:
             return true;
 
         //any other packet type is not a data packet
@@ -93,10 +95,7 @@ namespace mscl
     //delivery Stop Flags setter
     void WirelessPacket::deliveryStopFlags(DeliveryStopFlags flags)
     {
-        m_deliveryStopFlags.appBoard = flags.appBoard;
-        m_deliveryStopFlags.baseStation = flags.baseStation;
-        m_deliveryStopFlags.linkBoard = flags.linkBoard;
-        m_deliveryStopFlags.pc = flags.pc;
+        m_deliveryStopFlags = flags;
     }
     
     //type getter
@@ -112,13 +111,13 @@ namespace mscl
     }
 
     //node address getter
-    NodeAddress WirelessPacket::nodeAddress() const
+    uint32 WirelessPacket::nodeAddress() const
     {
         return m_nodeAddress;
     }
 
     //node address setter
-    void WirelessPacket::nodeAddress(NodeAddress address)
+    void WirelessPacket::nodeAddress(uint32 address)
     {
         m_nodeAddress = address;
     }

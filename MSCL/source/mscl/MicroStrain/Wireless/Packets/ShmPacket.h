@@ -52,6 +52,13 @@ namespace mscl
         //Returns:
         //    true if the packet is a well formed SHM packet, false otherwise.
         static bool integrityCheck(const WirelessPacket& packet);
+
+        //Function: buildChannelName
+        //  Builds a channel name for the SHM data.
+        //
+        //Parameters:
+        //  angle - The angle of the data.
+        static std::string buildChannelName(float angle);
     };
 
 }

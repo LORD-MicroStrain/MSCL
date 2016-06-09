@@ -25,8 +25,8 @@ namespace mscl
 
         virtual const WirelessTypes::DataCollectionMethods dataCollectionMethods() const final;
 
-        virtual const WirelessTypes::DataFormats dataFormats() const;
+        virtual const WirelessTypes::DataFormats dataFormats() const override;
 
-        virtual const WirelessTypes::SamplingModes samplingModes() const;
+        virtual const WirelessTypes::SamplingModes samplingModes() const override;
     };
 }

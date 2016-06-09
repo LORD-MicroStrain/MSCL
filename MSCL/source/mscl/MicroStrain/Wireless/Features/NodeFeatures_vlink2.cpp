@@ -35,28 +35,32 @@ namespace mscl
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_1},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1},
-                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_1}}
+                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_1},
+                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_1}}
         );
 
         m_channelGroups.emplace_back(DIFFERENTIAL_CH2, "Differential Channel 2",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_2},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_2},
-                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_2}}
+                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_2},
+                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_2}}
         );
 
         m_channelGroups.emplace_back(DIFFERENTIAL_CH3, "Differential Channel 3",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_3},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_3},
-                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_3}}
+                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_3},
+                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_3}}
         );
 
         m_channelGroups.emplace_back(DIFFERENTIAL_CH4, "Differential Channel 4",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_4},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_4},
-                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_4}}
+                                         {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_4},
+                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_4}}
         );
 
         addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
@@ -69,6 +73,21 @@ namespace mscl
         addCalCoeffChannelGroup(8, NodeEepromMap::CH_ACTION_SLOPE_8, NodeEepromMap::CH_ACTION_ID_8);
     }
 
+    const WirelessTypes::SamplingModes NodeFeatures_vlink2::samplingModes() const
+    {
+        //build and return the sampling modes that are supported
+        WirelessTypes::SamplingModes result;
+
+        result.push_back(WirelessTypes::samplingMode_sync);
+        result.push_back(WirelessTypes::samplingMode_syncBurst);
+        result.push_back(WirelessTypes::samplingMode_nonSync);
+        result.push_back(WirelessTypes::samplingMode_armedDatalog);
+        result.push_back(WirelessTypes::samplingMode_nonSyncEvent);
+        result.push_back(WirelessTypes::samplingMode_syncEvent);
+
+        return result;
+    }
+
     const WirelessTypes::WirelessSampleRates NodeFeatures_vlink2::sampleRates(WirelessTypes::SamplingMode samplingMode) const
     {
         //the list of sample rates varies for each sampling mode
@@ -79,6 +98,8 @@ namespace mscl
             return AvailableSampleRates::continuous_vlink2;
         
         case WirelessTypes::samplingMode_syncBurst:
+        case WirelessTypes::samplingMode_nonSyncEvent:
+        case WirelessTypes::samplingMode_syncEvent:
             return AvailableSampleRates::burst_vlink2;
 
         case WirelessTypes::samplingMode_armedDatalog:

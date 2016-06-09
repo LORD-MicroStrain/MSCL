@@ -63,5 +63,17 @@ namespace mscl
         //Constants: SHM-Link2 SampleRates
         //    continuous_envlink - continuous sample rates for the SHM-Link 2 nodes.
         static const WirelessTypes::WirelessSampleRates continuous_shmLink2;
+
+        //Constants: CF-Bearing-Temp-Link SampleRates
+        //    continuous_envlink - continuous sample rates for the CF-Bearing-Temp-Link node.
+        static const WirelessTypes::WirelessSampleRates continuous_cfBearing;
+
+        //Constants: Blade-Impact-Link Sample Rates
+        //    continuous_blade   - continuous sample rates for the Blade-Impact-Link
+        //    burst_blade        - burst sample rates for the Blade-Impact-Link
+        //    event_blade        - event trigger sample rates for the Blade-Impact-Link
+        static const WirelessTypes::WirelessSampleRates continuous_blade;
+        static const WirelessTypes::WirelessSampleRates burst_blade;
+        static const WirelessTypes::WirelessSampleRates event_blade;
     };
 }

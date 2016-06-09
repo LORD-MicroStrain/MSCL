@@ -9,7 +9,6 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include <bitset>
 #include <chrono>
 #include <locale>
-#include <regex>
 #include <thread>
 
 #include "HighResClock.h"
@@ -130,13 +129,20 @@ namespace mscl
             //Shift lsb 8 bits left, OR the lsb in
             uint16 loWord = (byte3 << 8) | byte4;
 
-            //Shift hiWord 16 bits left, OR the loWord in
-            return (static_cast<uint32>(hiWord) << 16) | static_cast<uint32>(loWord);
+            return make_uint32(hiWord, loWord);
         }
 
         uint32 make_uint32(uint16 msw, uint16 lsw)
         {
             return (static_cast<uint32>(msw) << 16) | static_cast<uint32>(lsw);
+        }
+
+        uint64 make_uint64(uint8 msb, uint8 byte2, uint8 byte3, uint8 byte4, uint8 byte5, uint8 byte6, uint8 byte7, uint8 lsb)
+        {
+            uint32 high = make_uint32(msb, byte2, byte3, byte4);
+            uint32 low = make_uint32(byte5, byte6, byte7, lsb);
+
+            return (static_cast<uint64>(high) << 32 | static_cast<uint64>(low));
         }
 
         void split_float_big_endian(float value, uint8& msb, uint8& byte2, uint8& byte3, uint8& lsb)
@@ -149,8 +155,8 @@ namespace mscl
 
             //get each byte of the float
             msb        = tmp[0];
-            byte2    = tmp[1];
-            byte3    = tmp[2];
+            byte2      = tmp[1];
+            byte3      = tmp[2];
             lsb        = tmp[3];
         }
 
@@ -164,8 +170,8 @@ namespace mscl
 
             //get each byte of the float
             lsb        = tmp[0];
-            byte2    = tmp[1];
-            byte3    = tmp[2];
+            byte2      = tmp[1];
+            byte3      = tmp[2];
             msb        = tmp[3];
         }
 
@@ -300,34 +306,19 @@ namespace mscl
             std::this_thread::sleep_for(std::chrono::milliseconds(milli));
         }
 
-        double logBase2(double value)
-        {
-            return (std::log(value) / std::log(2.0));
-        }
-
         float round(float value)
         {
             return std::floor( value + 0.5f );
         }
 
-        uint32 roundDownToNearestBase2(double value)
+        uint32 floorBase2(double value)
         {
-            return static_cast<int>( std::pow( 2, std::floor( logBase2(value) ) ) );
+            return static_cast<uint32>( std::pow( 2, std::floor( std::log2(value) ) ) );
         }
 
-        uint32 roundUpToNearestBase2(double value)
+        uint32 ceilBase2(double value)
         {
-            uint32 val = static_cast<uint32>(std::ceil(value));
-
-            val--;
-            val |= val >> 1;
-            val |= val >> 2;
-            val |= val >> 4;
-            val |= val >> 8;
-            val |= val >> 16;
-            val++;
-
-            return val;
+            return static_cast<uint32>( std::pow(2, std::ceil( std::log2(value) ) ) );
         }
 
         double radiansToDegrees(float angle)
@@ -395,7 +386,13 @@ namespace mscl
         void filterSensorcloudName(std::string& str)
         {
             //replace all characters that don't match (a-z)(A-Z)(0-9)-_. with a '-'
-            str = std::regex_replace(str, std::regex("[^a-zA-Z0-9-_.]"), "-");
+            for(std::size_t i=0; i < str.length(); i++) 
+            {
+              if (!isalnum(str[i]) && str[i] != '-' && str[i] != '.' && str[i] != '_')
+              {
+                str[i] = '-';
+              }
+            }
         }
 
         float normalizeAngle(float angle)

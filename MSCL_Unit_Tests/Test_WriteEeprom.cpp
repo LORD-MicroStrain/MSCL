@@ -19,7 +19,7 @@ WirelessPacket buildWriteEepromResponse(int nodeAddress)
 
     //build the correct packet response first
     WirelessPacket packet;
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x00));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x00));
     packet.type(static_cast<WirelessPacket::PacketType>(0x00));
     packet.nodeAddress(nodeAddress);
     packet.payload(payload);
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE(WriteEeprom_Match_Fail_DSF)
     //build the correct packet response first
     WirelessPacket packet = buildWriteEepromResponse(123);
 
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x08));    //wrong DSF
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x08));    //wrong DSF
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(packet), false);

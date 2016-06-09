@@ -16,6 +16,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Configuration/NodeEeprom.h"
 #include "Configuration/NodeEepromMap.h"
 #include "Configuration/WirelessNodeConfig.h"
+#include "NodeCommTimes.h"
 
 namespace mscl
 {
@@ -116,7 +117,7 @@ namespace mscl
         if(m_features == NULL)
         {
             //create the NodeInfo to give to the features
-            NodeInfo info(*this);
+            NodeInfo info(this);
 
             //set the features variable by creating a new NodeFeatures pointer
             m_features = NodeFeatures::create(info);
@@ -139,7 +140,7 @@ namespace mscl
 
     const Timestamp& WirelessNode_Impl::lastCommunicationTime() const
     {
-        return m_baseStation.node_lastCommunicationTime(m_address);
+        return NodeCommTimes::getLastCommTime(m_address);
     }
 
     void WirelessNode_Impl::setBaseStation(const BaseStation& basestation)
@@ -370,6 +371,11 @@ namespace mscl
         return m_eepromHelper->read_hardwareOffset(mask);
     }
 
+    WirelessTypes::Filter WirelessNode_Impl::getLowPassFilter(const ChannelMask& mask) const
+    {
+        return m_eepromHelper->read_lowPassFilter(mask);
+    }
+
     float WirelessNode_Impl::getGaugeFactor(const ChannelMask& mask) const
     {
         return m_eepromHelper->read_gaugeFactor(mask);
@@ -441,6 +447,45 @@ namespace mscl
         return result;
     }
 
+    EventTriggerOptions WirelessNode_Impl::getEventTriggerOptions() const
+    {
+        //if the node doesn't support event trigger options
+        if(!features().supportsEventTrigger())
+        {
+            throw Error_NotSupported("Event Trigger is not supported by this Node.");
+        }
+
+        EventTriggerOptions result;
+        m_eepromHelper->read_eventTriggerOptions(result);
+        return result;
+    }
+
+    uint16 WirelessNode_Impl::getDiagnosticInterval() const
+    {
+        if(!features().supportsDiagnosticInfo())
+        {
+            throw Error_NotSupported("Diagnostic Info is not supported by this Node.");
+        }
+
+        return m_eepromHelper->read_diagnosticInterval();
+    }
+
+    WirelessTypes::StorageLimitMode WirelessNode_Impl::getStorageLimitMode() const
+    {
+        if(!features().supportsLoggedData())
+        {
+            throw Error_NotSupported("Datalogging is not supported by this Node.");
+        }
+
+        if(!features().supportsStorageLimitModeConfig())
+        {
+            //legacy nodes don't support this eeprom, but are
+            //hard coded to stop when the storage limit is reached.
+            return WirelessTypes::storageLimit_stop;
+        }
+
+        return m_eepromHelper->read_storageLimitMode();
+    }
 
     /*
     bool WirelessNode_Impl::shortPing()
@@ -483,7 +528,7 @@ namespace mscl
         //attempt to ping the node a few times to see if its back online
         bool pingSuccess = false;
         uint8 retries = 0;
-        while(!pingSuccess && retries <= 5)
+        while(!pingSuccess && retries <= 15)
         {
             pingSuccess = ping().success();
             retries++;
@@ -522,7 +567,7 @@ namespace mscl
     void WirelessNode_Impl::erase()
     {
         //call the node_erase command from the parent BaseStation
-        bool success = m_baseStation.node_erase(m_address);
+        bool success = m_baseStation.node_erase(protocol(), m_address);
 
         //if the erase command failed
         if(!success)
@@ -533,8 +578,11 @@ namespace mscl
 
     void WirelessNode_Impl::startNonSyncSampling()
     {
+        WirelessTypes::SamplingMode mode = eeHelper().read_samplingMode();
+
         //verify that the node is configured for nonSyncSampling mode
-        if(eeHelper().read_samplingMode() != WirelessTypes::samplingMode_nonSync)
+        if(mode != WirelessTypes::samplingMode_nonSync &&
+           mode != WirelessTypes::samplingMode_nonSyncEvent)
         {
             ConfigIssues issues;
             issues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "Configuration is not set for Non-Synchronized Sampling Mode."));
@@ -599,11 +647,11 @@ namespace mscl
             //when this goes out of scope, it will change back the original retries value
             ScopeHelper writebackRetries(std::bind(&WirelessNode_Impl::readWriteRetries, this, startRetries));
 
-            //if there are less than 3 retries
-            if(startRetries < 3)
+            //if there are less than 10 retries
+            if(startRetries < 10)
             {
                 //we want to retry at least a few times
-                readWriteRetries(3);
+                readWriteRetries(10);
             }
             else
             {
@@ -659,8 +707,8 @@ namespace mscl
 
     AutoCalResult_shmLink WirelessNode_Impl::autoCal_shmLink()
     {
-        WirelessModels::NodeModel model = features().m_nodeInfo.model;
-        const Version& fwVers = features().m_nodeInfo.firmwareVersion;
+        WirelessModels::NodeModel nodeModel = features().m_nodeInfo.model();
+        const Version& fwVers = features().m_nodeInfo.firmwareVersion();
 
         //verify the node supports autocal
         if(!features().supportsAutoCal())
@@ -669,15 +717,15 @@ namespace mscl
         }
 
         //verify the node is the correct model
-        if(model != WirelessModels::node_shmLink2 &&
-           model != WirelessModels::node_shmLink2_cust1)
+        if(nodeModel != WirelessModels::node_shmLink2 &&
+           nodeModel != WirelessModels::node_shmLink2_cust1)
         {
             throw Error_NotSupported("autoCal_shmLink is not supported by this Node's model.");
         }
 
         //perform the autocal command by the base station
         AutoCalResult_shmLink result;
-        bool success = m_baseStation.node_autocal(m_address, model, fwVers, result);
+        bool success = m_baseStation.node_autocal(m_address, nodeModel, fwVers, result);
 
         if(!success)
         {

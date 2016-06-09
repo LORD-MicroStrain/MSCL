@@ -37,7 +37,7 @@ namespace mscl
     private:
         //Variable: m_nodeAddress
         //    The node address of the node that sent the Node Discovery packet.
-        uint16 m_nodeAddress;
+        uint32 m_nodeAddress;
 
         //Variable: m_radioChannel
         //    The radio channel (<WirelessTypes::Frequency>) that the node was on that sent the Node Discovery packet.
@@ -110,7 +110,7 @@ namespace mscl
         //
         //Returns:
         //    The node address of the discovered Node.
-        uint16 nodeAddress() const;
+        uint32 nodeAddress() const;
 
         //API Function: frequency
         //    Gets the <WirelessTypes::Frequency> of the discovered Node.

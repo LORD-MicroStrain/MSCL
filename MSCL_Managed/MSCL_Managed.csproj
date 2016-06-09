@@ -99,14 +99,16 @@
     <Compile Include="mscl\BeaconStatus.cs" />
     <Compile Include="mscl\Bin.cs" />
     <Compile Include="mscl\Bins.cs" />
+    <Compile Include="mscl\BitMask.cs" />
     <Compile Include="mscl\Bytes.cs" />
+    <Compile Include="mscl\CalCoefficients.cs" />
+    <Compile Include="mscl\ChannelCalMap.cs" />
     <Compile Include="mscl\ChannelData.cs" />
     <Compile Include="mscl\ChannelFields.cs" />
     <Compile Include="mscl\ChannelGroup.cs" />
     <Compile Include="mscl\ChannelGroups.cs" />
     <Compile Include="mscl\ChannelGroupSettings.cs" />
     <Compile Include="mscl\ChannelMask.cs" />
-    <Compile Include="mscl\ChannelMasks.cs" />
     <Compile Include="mscl\ConfigIssue.cs" />
     <Compile Include="mscl\ConfigIssues.cs" />
     <Compile Include="mscl\Connection.cs" />
@@ -122,11 +124,13 @@
     <Compile Include="mscl\DeviceList.cs" />
     <Compile Include="mscl\Devices.cs" />
     <Compile Include="mscl\EulerAngles.cs" />
+    <Compile Include="mscl\EventTriggerOptions.cs" />
     <Compile Include="mscl\Exceptions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="mscl\FatigueModes.cs" />
     <Compile Include="mscl\FatigueOptions.cs" />
+    <Compile Include="mscl\Filters.cs" />
     <Compile Include="mscl\Histogram.cs" />
     <Compile Include="mscl\HistogramOptions.cs" />
     <Compile Include="mscl\InertialChannel.cs" />
@@ -163,12 +167,15 @@
     <Compile Include="mscl\SetToIdleStatus.cs" />
     <Compile Include="mscl\SnCurveSegment.cs" />
     <Compile Include="mscl\SnCurveSegments.cs" />
+    <Compile Include="mscl\StorageLimitModes.cs" />
     <Compile Include="mscl\StructuralHealth.cs" />
     <Compile Include="mscl\SyncNetworkInfo.cs" />
     <Compile Include="mscl\SyncSamplingNetwork.cs" />
     <Compile Include="mscl\TimeSpan.cs" />
     <Compile Include="mscl\Timestamp.cs" />
     <Compile Include="mscl\TransmitPowers.cs" />
+    <Compile Include="mscl\Trigger.cs" />
+    <Compile Include="mscl\Triggers.cs" />
     <Compile Include="mscl\Value.cs" />
     <Compile Include="mscl\ValueType.cs" />
     <Compile Include="mscl\Vector.cs" />

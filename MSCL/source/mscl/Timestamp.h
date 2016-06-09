@@ -56,7 +56,7 @@ namespace mscl
 #endif
 
     public:
-        //API Function: nanosecondsSinceEpoch
+        //API Function: nanoseconds
         //    Gets the number of nanoseconds since the unix epoch
         //
         //Returns:

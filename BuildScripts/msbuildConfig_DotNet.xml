@@ -1,0 +1,74 @@
+<Project DefaultTargets="BuildAll" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <ConfigurationDotNet>Release (.NET)</ConfigurationDotNet>
+    <ConfigurationDotNet64>Release x64 (.NET)</ConfigurationDotNet64>
+  </PropertyGroup>
+
+  <!--Include all the project files that we want to build into the "CoreProjectsToBuild" item-->
+  <ItemGroup>
+    <ManagedProjectsToBuild Include="..\MSCL\MSCL.vcxproj" />
+    <ManagedProjectsToBuild Include="..\MSCL_Managed\MSCL_Managed.csproj" />
+  </ItemGroup>
+
+  <!--create the BuildAll Target which calls everything we want to do-->
+  <PropertyGroup>
+    <FullBuildTask>
+      
+      <!--Clean and build the managed .NET project in Release build-->
+      CleanManaged;
+      BuildManaged;
+      
+      <!--Clean and build the managed .NET 64-bit project in Release x64 build-->
+      CleanManaged64;
+      BuildManaged64;
+      
+    </FullBuildTask>
+  </PropertyGroup>
+  <Target Name="BuildAll" DependsOnTargets="$(FullBuildTask)"/>
+
+
+  <!--CLEAN CORE C++ PROJECT (Static Lib)-->
+
+  <!--CLEAN MANAGED .NET PROJECT-->
+  <Target Name="CleanManaged">
+    <Message Text="=====================Cleaning the Managed Project (Release x86)====================="/>
+    <MSBuild Projects="@(ManagedProjectsToBuild)"
+             Targets="Clean"
+             Properties="Configuration=$(ConfigurationDotNet)">
+    </MSBuild>
+  </Target>
+  
+  <!--CLEAN MANAGED .NET x64 PROJECT-->
+  <Target Name="CleanManaged64">
+    <Message Text="=====================Cleaning the Managed Project (Release x64)====================="/>
+    <MSBuild Projects="@(ManagedProjectsToBuild)"
+             Targets="Clean"
+             Properties="Configuration=$(ConfigurationDotNet64);Platform=x64">
+    </MSBuild>
+  </Target>
+  
+  
+
+
+  <!--BUILD MANAGED .NET PROJECT-->
+  <Target Name="BuildManaged">
+    <Message Text="=====================Building the Managed Project (Release x86)====================="/>
+    <MSBuild Projects="@(ManagedProjectsToBuild)"
+             ContinueOnError="false"
+             Properties="Configuration=$(ConfigurationDotNet)">
+      <Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
+    </MSBuild>
+  </Target>
+  
+  <!--BUILD MANAGED .NET 64-bit PROJECT-->
+  <Target Name="BuildManaged64">
+    <Message Text="=====================Building the Managed Project (Release x64)====================="/>
+    <MSBuild Projects="@(ManagedProjectsToBuild)"
+             ContinueOnError="false"
+             Properties="Configuration=$(ConfigurationDotNet64);Platform=x64">
+      <Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
+    </MSBuild>
+  </Target>
+  
+</Project>

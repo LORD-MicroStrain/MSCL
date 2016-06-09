@@ -5,8 +5,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/ResponsePattern.h"
+#include "mscl/MicroStrain/ByteStream.h"
 
 namespace mscl
 {
@@ -23,12 +23,6 @@ namespace mscl
         ArmForDatalogging& operator=(const ArmForDatalogging&);    //disabled assignment operator
 
     public:
-        //=====================================================================================================
-        //Constants: Packet Information
-        //    COMMAND_ID    - 0x000D        - The Command ID for the ArmForDatalogging command
-        //=====================================================================================================
-        static const uint16 COMMAND_ID = 0x000D;
-
         //Function: buildCommand
         //    Builds the ArmForDatalogging command packet.
         //

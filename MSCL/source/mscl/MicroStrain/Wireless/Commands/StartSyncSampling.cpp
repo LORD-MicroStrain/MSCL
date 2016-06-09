@@ -5,6 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "StartSyncSampling.h"
+#include "WirelessProtocol.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
@@ -14,12 +15,12 @@ namespace mscl
     {
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint8(WirelessPacket::ASPP_START_OF_PACKET_BYTE);    //Start of Packet
+        cmd.append_uint8(WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE);    //Start of Packet
         cmd.append_uint8(0x05);                                            //Delivery Stop Flag
         cmd.append_uint8(0x00);                                            //App Data Type
         cmd.append_uint16(nodeAddress);                                    //Node Address
         cmd.append_uint8(0x02);                                            //Payload Length
-        cmd.append_uint16(COMMAND_ID);                                    //Command ID
+        cmd.append_uint16(WirelessProtocol::cmdId_startSync);              //Command ID
 
         //calculate the checksum of bytes 2-8
         uint16 checksum = cmd.calculateSimpleChecksum(1, 7);
@@ -40,11 +41,11 @@ namespace mscl
         WirelessPacket::Payload payload = packet.payload();
 
         //check the main bytes of the packet
-        if( packet.deliveryStopFlags().toByte() != 0x07                ||    //delivery stop flag
-            packet.type() != WirelessPacket::packetType_nodeCommand ||    //app data type
-            packet.nodeAddress() != m_nodeAddress                    ||    //node address
-            payload.size() != 0x03                                    ||    //payload length
-            payload.read_uint16(0) != COMMAND_ID                    //Command ID
+        if( packet.deliveryStopFlags().toInvertedByte() != 0x07 ||                         //delivery stop flag
+            packet.type() != WirelessPacket::packetType_nodeCommand ||                     //app data type
+            packet.nodeAddress() != m_nodeAddress ||                                       //node address
+            payload.size() != 0x03 ||                                                      //payload length
+            payload.read_uint16(0) != WirelessProtocol::cmdId_startSync                    //Command ID
             )            
         {
             //failed to match some of the bytes

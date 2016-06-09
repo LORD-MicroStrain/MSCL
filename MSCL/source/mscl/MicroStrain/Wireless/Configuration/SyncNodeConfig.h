@@ -65,6 +65,19 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         ChannelMask activeChannels();
 
+        //Function: activeChannelCount
+        //    Gets the number of active channels on the node for use in Sync Sampling formulas.
+        //    Note: this does not necessarily return the true active channel count, as some channels
+        //          on some nodes don't count towards active channels in Sync Sampling formulas.
+        //
+        //Returns:
+        //    The number of active channels on the node for use in Sync Sampling formulas.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        uint16 activeChannelCount();
+
         //Function: dataFormat
         //    Gets the <WirelessTypes::DataFormat> of the node.
         //
@@ -97,17 +110,6 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint32 sweepsPerSession();
-
-        //Function: syncSamplingMode
-        //    Gets the <WirelessTypes::SyncSamplingMode> of the node.
-        //
-        //Returns:
-        //    The <WirelessTypes::SyncSamplingMode> of the node.
-        //
-        //Exceptions:
-        //    - <Error_NodeCommunication>: Failed to read the value from the Node.
-        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        WirelessTypes::SyncSamplingMode syncSamplingMode();
 
         //Function: samplingMode
         //    Gets the <WirelessTypes::SamplingMode> ofthe node.

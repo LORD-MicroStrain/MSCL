@@ -32,18 +32,20 @@ namespace mscl
         //    samplingType_SHM                       - 6 - Structural Health Monitoring type
         //    samplingType_BeaconEcho                - 7 - Beacon Echo
         //    samplingType_RfSweep                   - 8 - RF Scan Sweep
+        //    samplingType_Diagnostic                - 9 - Diagnostic Packet
         //============================================================================
         enum SamplingType
         {
-            samplingType_NonSync                   = 0,
-            samplingType_NonSync_Buffered          = 1,
-            samplingType_SyncSampling              = 2,
-            samplingType_SyncSampling_Burst        = 3,
-            samplingType_AsyncDigital              = 4,
-            samplingType_AsyncDigitalAnalog        = 5,
-            samplingType_SHM                       = 6,
-            samplingType_BeaconEcho                = 7,
-            samplingType_RfSweep                   = 8
+            samplingType_NonSync                    = 0,
+            samplingType_NonSync_Buffered           = 1,
+            samplingType_SyncSampling               = 2,
+            samplingType_SyncSampling_Burst         = 3,
+            samplingType_AsyncDigital               = 4,
+            samplingType_AsyncDigitalAnalog         = 5,
+            samplingType_SHM                        = 6,
+            samplingType_BeaconEcho                 = 7,
+            samplingType_RfSweep                    = 8,
+            samplingType_Diagnostic                 = 9
         };
 
         //API Constructor: DataSweep
@@ -65,7 +67,7 @@ namespace mscl
 
         //Variable: m_nodeAddress
         //    The node address that was contained in the packet (identifies the node this packet came from)
-        NodeAddress m_nodeAddress;
+        uint32 m_nodeAddress;
 
         //Variable: m_data
         //    Contains one or more <WirelessDataPoint>s, corresponding to each channel's data for this sweep
@@ -87,20 +89,17 @@ namespace mscl
         //    The <WirelessTypes::Frequency> representing the radio frequency that this DataSweep was collected on
         WirelessTypes::Frequency m_frequency;
 
+        //Variable: m_calsApplied
+        //  Whether calibration coefficients have been applied to the data or not.
+        bool m_calsApplied;
+
     public:
         //API Function: timestamp
         //    Gets the timestamp of the sweep as a <Timestamp>
         //
         //Returns:
         //    A <Timestamp> representing the timestamp of the sweep
-        Timestamp timestamp() const;
-
-        //API Function: nanoseconds
-        //    Gets the timestamp of the sweep in nanoseconds since UTC
-        //
-        //Returns:
-        //    The timestamp of the sweep in nanoseconds since UTC
-        uint64 nanoseconds() const;
+        const Timestamp& timestamp() const;
 
         //API Function: tick
         //    Gets the tick value of the sweep
@@ -121,7 +120,7 @@ namespace mscl
         //
         //Returns:
         //    The node address this sweep is associated with
-        NodeAddress nodeAddress() const;
+        uint32 nodeAddress() const;
 
         //API Function: data
         //    Gets the channel data in this sweep as a <WirelessDataPoint::ChannelData> container.
@@ -158,6 +157,13 @@ namespace mscl
         //    A <WirelessTypes::Frequency> representing the radio frequency that this DataSweep was collected on
         WirelessTypes::Frequency frequency() const;
 
+        //API Function: calApplied
+        //  Gets whether calibration coefficients have been applied to the data already.
+        //
+        //Returns:
+        //  true if the data already has cal coefficients applied to it, false if it does not have any cal coefficients applied.
+        bool calApplied() const;
+
 #ifndef SWIG
         //Function: timestamp
         //    Sets the timestamp of the sweep
@@ -185,7 +191,7 @@ namespace mscl
         //
         //Parameters:
         //    address - The node address to set
-        void nodeAddress(NodeAddress address);
+        void nodeAddress(uint32 address);
 
         //Function: data
         //    Sets the data of the sweep
@@ -221,6 +227,13 @@ namespace mscl
         //Parameters:
         //    freq - The <WirelessTypes::Frequency> that this DataSweep was collected on
         void frequency(WirelessTypes::Frequency freq);
+
+        //Function: calApplied
+        //  Sets whether calibration coefficients have been applied to the data already.
+        //
+        //Parameters:
+        //  applied - Whether the cals have been applied or not.
+        void calApplied(bool applied);
 #endif
     };
 

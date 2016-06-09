@@ -25,12 +25,6 @@ namespace mscl
         PageDownload& operator=(const PageDownload&);    //assignment operator disabled
 
     public:
-        //=====================================================================================================
-        //Constants: Packet Information
-        //    COMMAND_ID    - 0x05        - The Command ID for the Page Download command
-        //=====================================================================================================
-        static const uint8 COMMAND_ID    = 0x05;
-
         //Function: buildCommand
         //    Builds the PageDownload command packet
         //

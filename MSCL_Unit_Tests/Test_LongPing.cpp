@@ -19,7 +19,7 @@ WirelessPacket buildLongPingResponse(int nodeAddress)
 
     //build the correct packet response first
     WirelessPacket packet;
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x07));
     packet.type(static_cast<WirelessPacket::PacketType>(0x02));
     packet.nodeAddress(nodeAddress);
     packet.payload(payload);
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(LongPing_Match_Fail_DSF)
     //build the correct packet response first
     WirelessPacket packet = buildLongPingResponse(123);
 
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x00));    //wrong DSF
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x00));    //wrong DSF
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(packet), false);

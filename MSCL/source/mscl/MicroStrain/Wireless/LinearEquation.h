@@ -15,7 +15,7 @@ namespace mscl
     public:
         //API Constructor: LinearEquation
         //    Creates a default constructed LinearEquation object.
-        //    slope = 1.0, offset = 0.0, unit = unit_none
+        //    (slope = 1.0, offset = 0.0)
         LinearEquation();
 
         //API Constructor: LinearEquation

@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(TriggerArmedDatalogging_buildCommand)
 
     BOOST_CHECK_EQUAL(result.size(), 18);
 
-    uint8 sop = WirelessPacket::ASPP_START_OF_PACKET_BYTE;
+    uint8 sop = WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE;
 
     BOOST_CHECK_EQUAL(result.read_uint8(0), sop);
     BOOST_CHECK_EQUAL(result.read_uint8(1), 0x05);

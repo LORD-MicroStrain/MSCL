@@ -92,6 +92,22 @@ namespace mscl
         //    The size of the group
         uint32 m_groupSize;
 
+        //Variable: m_bytesPerSweep
+        //  The number of bytes per data sweep.
+        uint32 m_bytesPerSweep;
+
+        //Variable: m_bytesPerBurst
+        //  The number of bytes per burst (only valid if in Burst mode).
+        uint32 m_bytesPerBurst;
+
+        //Variable: m_maxBytesPerPacket
+        //  The maximum number of bytes per packet.
+        uint32 m_maxBytesPerPacket;
+
+        //Variable: m_bytesPerSecond
+        //  The number of bytes per second (continuous sampling).
+        double m_bytesPerSecond;
+
         //Variable: m_maxRetxPerBurst
         //    The number of maximum retransmissions per burst (if burst)
         uint32 m_maxRetxPerBurst;
@@ -175,9 +191,20 @@ namespace mscl
         uint32 groupSize() const;
 
     private:
-        //API Function: syncSamplingVersion
+        //Function: syncSamplingVersion
         //     The version of the Sync Sampling formulas to use.
         uint8 syncSamplingVersion() const;
+
+        //Function: dutyCycle
+        //  Gets the duty cycle currently set (for Event Driven).
+        float dutyCycle() const;
+
+        //Function: dutyCycle
+        //  Takes a duty cycle percentage (0 - 1) and updates the m_txPerGroup value.
+        //
+        //Parameters:
+        //  percent - The duty cycle percentage (0.0 - 1.0).
+        void dutyCycle(float percent);
 
         //Function: hasPendingConfig
         //    Gets whether or not this network info has a pending configuration set.
@@ -204,10 +231,6 @@ namespace mscl
         //Returns:
         //    The <WirelessNodeConfig> pointer that is currently set.
         const WirelessNodeConfig& getPendingConfig() const;
-        
-        //Function: clearPendingConfig
-        //    Clears any pending config that is currently set.
-        void clearPendingConfig();
     };
 
 }

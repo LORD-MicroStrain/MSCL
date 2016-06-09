@@ -40,7 +40,7 @@ namespace mscl
         m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_diffTemperature);    //temp (thermocouple)
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_temperature);        //cjc temp
         
-        if(info.model != WirelessModels::node_tcLink_6ch_ip67)
+        if(info.model() != WirelessModels::node_tcLink_6ch_ip67)
         {
             m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_rh);            //% RH
 
@@ -91,5 +91,10 @@ namespace mscl
     WirelessTypes::SettlingTime NodeFeatures_tclink6ch::maxFilterSettlingTime(const SampleRate& rate) const
     {
         return maxFilterSettlingTime_A(rate);
+    }
+
+    WirelessTypes::WirelessSampleRate NodeFeatures_tclink6ch::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode) const
+    {
+        return maxSampleRateForSettlingTime_A(filterSettlingTime, sampleRates(samplingMode));
     }
 }

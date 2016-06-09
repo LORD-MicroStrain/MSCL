@@ -5,6 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "PageDownload.h"
+#include "WirelessProtocol.h"
 #include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/DataBuffer.h"
 
@@ -16,9 +17,9 @@ namespace mscl
     {
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint8(COMMAND_ID);        //Command ID
-        cmd.append_uint16(nodeAddress);        //Node address    (2 bytes)
-        cmd.append_uint16(pageIndex);        //Page index    (2 bytes)
+        cmd.append_uint8(WirelessProtocol::cmdId_pageDownload);        //Command ID
+        cmd.append_uint16(nodeAddress);                                //Node address    (2 bytes)
+        cmd.append_uint16(pageIndex);                                  //Page index    (2 bytes)
 
         return cmd;
     }
@@ -55,7 +56,7 @@ namespace mscl
         }
 
         //if the bytes match the fail response (must match perfectly, no extra bytes)
-        if(matchFailResponse(data))
+        /*if(matchFailResponse(data))
         {
             //we have fully matched the response
             m_fullyMatched = true;
@@ -63,9 +64,9 @@ namespace mscl
             //notify that the response was matched
             m_matchCondition.notify();
             return true;
-        }
+        }*/
         //if the bytes match the success response
-        else if(matchSuccessResponse(data))
+        if(matchSuccessResponse(data))
         {
             //we have fully matched the response
             m_fullyMatched = true;
@@ -96,7 +97,7 @@ namespace mscl
         }
 
         //check if the first byte (Command ID) is correct
-        if(data.read_uint8() != COMMAND_ID)
+        if(data.read_uint8() != WirelessProtocol::cmdId_pageDownload)
         {
             return false;
         }

@@ -1,4 +1,4 @@
-﻿Format: 2.0 (Development Release 05-04-2015)
+﻿Format: 2.0 (Development Release 08-22-2015)
 
 # This is the file you use to provide information about your project.  It can
 # also be used to specify input and output settings so you don't have to
@@ -11,7 +11,7 @@
 Title: MSCL Full Documentation
 Subtitle: MicroStrain Communication Library
 
-Copyright: © 2015 LORD Corporation. All Rights Reserved.
+Copyright: © 2016 LORD Corporation. All Rights Reserved.
 
 Timestamp: Updated mm/dd/yyyy
 #    m     - Single digit month, when possible.  January is "1".
@@ -21,9 +21,9 @@ Timestamp: Updated mm/dd/yyyy
 #    d     - Single digit day, when possible.  1 is "1".
 #    dd    - Always double digit day.  1 is "01".
 #    day   - Day with text extension.  1 is "1st".
-#    yy    - Double digit year.  2015 is "15".
-#    yyyy  - Four digit year.  2015 is "2015".
-#    year  - Four digit year.  2015 is "2015".
+#    yy    - Double digit year.  2016 is "16".
+#    yyyy  - Four digit year.  2016 is "2016".
+#    year  - Four digit year.  2016 is "2016".
 
 
 # This is where you specify general information about your project.

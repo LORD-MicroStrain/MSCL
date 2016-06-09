@@ -86,7 +86,7 @@ namespace mscl
 
     uint8 DataBuffer::peekByte()
     {
-        static const uint32 READ_SIZE = 1;
+        static const std::size_t READ_SIZE = 1;
 
         if(bytesRemaining() < READ_SIZE)
         {
@@ -100,9 +100,14 @@ namespace mscl
         return result;
     }
 
+    void DataBuffer::skipBytes(std::size_t numBytesToSkip)
+    {
+        m_readPosition += numBytesToSkip;
+    }
+
     int8 DataBuffer::read_int8()
     {
-        static const uint32 READ_SIZE = 1;
+        static const std::size_t READ_SIZE = 1;
 
         if(bytesRemaining() < READ_SIZE)
         {
@@ -121,7 +126,7 @@ namespace mscl
 
     uint8 DataBuffer::read_uint8()
     {
-        static const uint32 READ_SIZE = 1;
+        static const std::size_t READ_SIZE = 1;
 
         if(bytesRemaining() < READ_SIZE)
         {
@@ -140,7 +145,7 @@ namespace mscl
 
     int16 DataBuffer::read_int16()
     {
-        static const uint32 READ_SIZE = 2;
+        static const std::size_t READ_SIZE = 2;
 
         if(bytesRemaining() < READ_SIZE)
         {
@@ -159,7 +164,7 @@ namespace mscl
 
     uint16 DataBuffer::read_uint16()
     {
-        static const uint32 READ_SIZE = 2;
+        static const std::size_t READ_SIZE = 2;
 
         if(bytesRemaining() < READ_SIZE)
         {
@@ -178,7 +183,7 @@ namespace mscl
 
     uint32 DataBuffer::read_uint32()
     {
-        static const uint32 READ_SIZE = 4;
+        static const std::size_t READ_SIZE = 4;
 
         if(bytesRemaining() < READ_SIZE)
         {
@@ -195,9 +200,28 @@ namespace mscl
         return result;
     }
 
+    uint64 DataBuffer::read_uint64()
+    {
+        static const std::size_t READ_SIZE = 8;
+
+        if(bytesRemaining() < READ_SIZE)
+        {
+            throw(std::out_of_range("No data to read in buffer"));
+        }
+
+        //read the next dword in the buffer
+        uint64 result = m_data.read_uint64(m_readPosition);
+
+        //read a dword, so move the position 4 bytes
+        m_readPosition += READ_SIZE;
+
+        //return the dword read
+        return result;
+    }
+
     float DataBuffer::read_float()
     {
-        static const uint32 READ_SIZE = 4;
+        static const std::size_t READ_SIZE = 4;
 
         if(bytesRemaining() < READ_SIZE)
         {
@@ -216,7 +240,7 @@ namespace mscl
 
     double DataBuffer::read_double()
     {
-        static const uint32 READ_SIZE = 8;
+        static const std::size_t READ_SIZE = 8;
 
         if(bytesRemaining() < READ_SIZE)
         {

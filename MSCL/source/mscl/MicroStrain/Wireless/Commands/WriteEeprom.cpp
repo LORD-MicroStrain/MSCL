@@ -5,6 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "WriteEeprom.h"
+#include "WirelessProtocol.h"
 #include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
@@ -14,14 +15,14 @@ namespace mscl
     {
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint8(0xAA);                //Start of Packet
-        cmd.append_uint8(0x05);                //Delivery Stop Flag
-        cmd.append_uint8(0x00);                //App Data Type
-        cmd.append_uint16(nodeAddress);        //Node address    (2 bytes)
-        cmd.append_uint8(0x06);                //Payload length
-        cmd.append_uint16(COMMAND_ID);        //Command ID    (2 bytes)
-        cmd.append_uint16(eepromAddress);    //EEPROM Address (2 bytes)
-        cmd.append_uint16(valueToWrite);    //EEPROM Address (2 bytes)
+        cmd.append_uint8(0xAA);                                 //Start of Packet
+        cmd.append_uint8(0x05);                                 //Delivery Stop Flag
+        cmd.append_uint8(0x00);                                 //App Data Type
+        cmd.append_uint16(nodeAddress);                         //Node address    (2 bytes)
+        cmd.append_uint8(0x06);                                 //Payload length
+        cmd.append_uint16(WirelessProtocol::cmdId_writeEeprom); //Command ID    (2 bytes)
+        cmd.append_uint16(eepromAddress);                       //EEPROM Address (2 bytes)
+        cmd.append_uint16(valueToWrite);                        //EEPROM Address (2 bytes)
 
         //calculate the checsum of bytes 2-12
         uint16 checksum = cmd.calculateSimpleChecksum(1, 11);
@@ -42,23 +43,14 @@ namespace mscl
         WirelessPacket::Payload payload = packet.payload();
 
         //check the main bytes of the packet
-        if( packet.deliveryStopFlags().toByte() != 0x00 ||    //delivery stop flag
-            packet.type() != 0x00 ||                        //app data type
-            packet.nodeAddress() != m_nodeAddress ||        //node address
-            payload.size() != 0x02                            //payload length
+        if( packet.deliveryStopFlags().toInvertedByte() != 0x00 ||          //delivery stop flag
+            packet.type() != 0x00 ||                                        //app data type
+            packet.nodeAddress() != m_nodeAddress ||                        //node address
+            payload.size() != 0x02 ||                                       //payload length
+            payload.read_uint16(0) != WirelessProtocol::cmdId_writeEeprom   //cmd id
             )            
         {
             //failed to match some of the bytes
-            return false;
-        }
-
-        //get the eeprom value from the response
-        uint16 commandId = payload.read_uint16(0);
-
-        //make sure the command ID is correct
-        if(commandId != COMMAND_ID)
-        {
-            //failed to match the COMMAND ID
             return false;
         }
 

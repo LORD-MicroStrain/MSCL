@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(WirelessPacketCollector_MatchExpected_Packet_Success)
     b.push_back(0x00);
 
     WirelessPacket packet;
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x07));
     packet.type(static_cast<WirelessPacket::PacketType>(0x02));
     packet.nodeAddress(123);
     packet.payload(b);
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(WirelessPacketCollector_MatchExpected_Packet_False)
     b.push_back(0x00);
 
     WirelessPacket packet;
-    packet.deliveryStopFlags(DeliveryStopFlags::fromByte(0x07));
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x07));
     packet.type(static_cast<WirelessPacket::PacketType>(0x02));
     packet.nodeAddress(456);
     packet.payload(b);

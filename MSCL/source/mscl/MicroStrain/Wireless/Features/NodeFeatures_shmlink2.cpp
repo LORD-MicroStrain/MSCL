@@ -42,7 +42,7 @@ namespace mscl
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration);        //accel z
         m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_temperature);        //temp
     }
-
+    
     const WirelessTypes::DataCollectionMethods NodeFeatures_shmlink2::dataCollectionMethods() const
     {
         //build and return the data collection methods that are supported
@@ -64,6 +64,11 @@ namespace mscl
         //build and return the sampling modes that are supported
         WirelessTypes::SamplingModes result;
 
+        if(m_nodeInfo.model() == WirelessModels::node_shmLink2)
+        {
+            result.push_back(WirelessTypes::samplingMode_sync);
+        }
+
         result.push_back(WirelessTypes::samplingMode_nonSync);
 
         return result;
@@ -74,6 +79,7 @@ namespace mscl
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
         {
+            case WirelessTypes::samplingMode_sync:
             case WirelessTypes::samplingMode_nonSync:
                 return AvailableSampleRates::continuous_shmLink2;
 

@@ -5,6 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "LongPing.h"
+#include "WirelessProtocol.h"
 #include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
@@ -57,12 +58,12 @@ namespace mscl
     {
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint8(0xAA);            //Start of Packet
-        cmd.append_uint8(0x05);            //Delivery Stop Flag
-        cmd.append_uint8(0x00);            //App Data Type
-        cmd.append_uint16(nodeAddress);    //Node address    (2 bytes)
-        cmd.append_uint8(0x02);            //Payload length
-        cmd.append_uint16(0x02);        //Command ID    (2 bytes)
+        cmd.append_uint8(0xAA);                                     //Start of Packet
+        cmd.append_uint8(0x05);                                     //Delivery Stop Flag
+        cmd.append_uint8(0x00);                                     //App Data Type
+        cmd.append_uint16(nodeAddress);                             //Node address    (2 bytes)
+        cmd.append_uint8(0x02);                                     //Payload length
+        cmd.append_uint16(WirelessProtocol::cmdId_longPing);        //Command ID    (2 bytes)
 
         //calculate the checksum of bytes 2-8
         uint16 checksum = cmd.calculateSimpleChecksum(1, 7);
@@ -84,10 +85,10 @@ namespace mscl
         WirelessPacket::Payload payload = packet.payload();
 
         //check the main bytes of the packet
-        if( packet.deliveryStopFlags().toByte() != 0x07 ||    //delivery stop flag
-            packet.type() != 0x02 ||                        //app data type
-            packet.nodeAddress() != m_nodeAddress ||        //node address
-            payload.size() != 0x02 ||                        //payload length
+        if( packet.deliveryStopFlags().toInvertedByte() != 0x07 ||    //delivery stop flag
+            packet.type() != 0x02 ||                                  //app data type
+            packet.nodeAddress() != m_nodeAddress ||                  //node address
+            payload.size() != 0x02 ||                                 //payload length
             payload.read_uint16(0) != 0x0000
             )            
         {

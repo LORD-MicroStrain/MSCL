@@ -17,6 +17,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/Version.h"
 #include "BaseStationInfo.h"
 #include "BaseStation.h"
+#include "NodeCommTimes.h"
 
 //Base Station commands
 #include "Commands/WirelessProtocol.h"
@@ -38,6 +39,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Commands/AutoCal.h"
 #include "Commands/AutoCalResult.h"
 #include "Commands/Erase.h"
+#include "Commands/Erase_v2.h"
 #include "Commands/LongPing.h"
 #include "Commands/PageDownload.h"
 #include "Commands/ReadEeprom.h"
@@ -192,6 +194,11 @@ namespace mscl
 
     const Timestamp& BaseStation_Impl::lastCommunicationTime() const
     {
+        if(m_lastCommTime.nanoseconds() == 0)
+        {
+            throw Error_NoData("The BaseStation has not yet been communicated with.");
+        }
+
         return m_lastCommTime;
     }
 
@@ -199,6 +206,8 @@ namespace mscl
     {
         //send the readBuffer to the parser to parse all the bytes
         m_parser->parse(data, m_frequency);
+
+        m_lastCommTime.setTimeNow();
 
         //shift any extra bytes that weren't parsed, back to the front of the buffer
         std::size_t bytesShifted = data.shiftExtraToStart();
@@ -482,29 +491,10 @@ namespace mscl
             throw Error_NotSupported("RF Sweep Mode is not supported by this BaseStation.");
         }
 
-        //create the response for the BaseStation_Ping command
-        BaseStation_RfSweepStart::Response response(m_responseCollector, minFreq, maxFreq, interval, options);
-
-        //send the ping command to the base station
-        m_connection.write(BaseStation_RfSweepStart::buildCommand(minFreq, maxFreq, interval, options));
-
-        //wait for the response or a timeout
-        response.wait(m_baseCommandsTimeout);
-
-        //if the enable beacon command failed
-        if(!response.success())
-        {
-            //throw an exception so that the user cannot ignore a failure
-            throw Error_Communication("Failed to start RF Sweep Mode.");
-        }
-        else
-        {
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-        }
+        return protocol().m_startRfSweep(this, minFreq, maxFreq, interval, options);
     }
 
-    bool BaseStation_Impl::ping_v1()
+    bool BaseStation_Impl::protocol_ping_v1()
     {
         //create the response for the BaseStation_Ping command
         BaseStation_Ping::Response response(m_responseCollector);
@@ -515,17 +505,11 @@ namespace mscl
         //wait for the response or a timeout
         response.wait(m_baseCommandsTimeout);
 
-        if(response.success())
-        {
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-        }
-
         //return the result of the response
         return response.success();
     }
 
-    bool BaseStation_Impl::ping_v2()
+    bool BaseStation_Impl::protocol_ping_v2()
     {
         //create the response for the BaseStation_Ping command
         BaseStation_Ping_v2::Response response(m_responseCollector);
@@ -536,17 +520,11 @@ namespace mscl
         //wait for the response or a timeout
         response.wait(m_baseCommandsTimeout);
 
-        if(response.success())
-        {
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-        }
-
         //return the result of the response
         return response.success();
     }
 
-    bool BaseStation_Impl::read_v1(uint16 eepromAddress, uint16& result)
+    bool BaseStation_Impl::protocol_read_v1(uint16 eepromAddress, uint16& result)
     {
         //create the response for the BaseStation_ReadEeprom command
         BaseStation_ReadEeprom::Response response(m_responseCollector);
@@ -563,16 +541,13 @@ namespace mscl
             //get the eeprom value that we read
             result = response.result();
 
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
             return true;
         }
 
         return false;
     }
 
-    bool BaseStation_Impl::read_v2(uint16 eepromAddress, uint16& result)
+    bool BaseStation_Impl::protocol_read_v2(uint16 eepromAddress, uint16& result)
     {
         //create the response for the BaseStation_ReadEeprom command
         BaseStation_ReadEeprom_v2::Response response(eepromAddress, m_responseCollector);
@@ -589,9 +564,6 @@ namespace mscl
             //get the eeprom value that we read
             result = response.result();
 
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
             return true;
         }
         else
@@ -603,7 +575,7 @@ namespace mscl
         return false;
     }
 
-    bool BaseStation_Impl::write_v1(uint16 eepromAddress, uint16 value)
+    bool BaseStation_Impl::protocol_write_v1(uint16 eepromAddress, uint16 value)
     {
         //create the response for the BaseStation_WriteEeprom command
         BaseStation_WriteEeprom::Response response(value, m_responseCollector);
@@ -614,19 +586,10 @@ namespace mscl
         //wait for the response or a timeout
         response.wait(m_baseCommandsTimeout);
 
-        //if the write command failed
-        if(response.success())
-        {
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
-            return true;
-        }
-
-        return false;
+        return response.success();
     }
 
-    bool BaseStation_Impl::write_v2(uint16 eepromAddress, uint16 value)
+    bool BaseStation_Impl::protocol_write_v2(uint16 eepromAddress, uint16 value)
     {
         //create the response for the BaseStation_WriteEeprom command
         BaseStation_WriteEeprom_v2::Response response(value, eepromAddress, m_responseCollector);
@@ -638,23 +601,18 @@ namespace mscl
         response.wait(m_baseCommandsTimeout);
 
         //if the write command failed
-        if(response.success())
-        {
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
-            return true;
-        }
-        else
+        if(!response.success())
         {
             //throw an exception if we need to
             WirelessPacket::throwEepromResponseError(response.errorCode(), eepromAddress);
+
+            return false;
         }
 
-        return false;
+        return true;
     }
 
-    Timestamp BaseStation_Impl::enableBeacon_v1(uint32 utcTime)
+    Timestamp BaseStation_Impl::protocol_enableBeacon_v1(uint32 utcTime)
     {
         static const uint64 MIN_TIMEOUT = 1100;
 
@@ -674,13 +632,10 @@ namespace mscl
             throw Error_Communication("The Enable Beacon command has failed");
         }
 
-        //update basestation last comm time
-        m_lastCommTime.setTimeNow();
-
         return response.beaconStartTime();
     }
 
-    Timestamp BaseStation_Impl::enableBeacon_v2(uint32 utcTime)
+    Timestamp BaseStation_Impl::protocol_enableBeacon_v2(uint32 utcTime)
     {
         //create the response for the BaseStation_SetBeacon command
         BaseStation_SetBeacon_v2::Response response(utcTime, m_responseCollector);
@@ -698,13 +653,10 @@ namespace mscl
             throw Error_Communication("The Enable Beacon command has failed");
         }
 
-        //update basestation last comm time
-        m_lastCommTime.setTimeNow();
-
         return response.beaconStartTime();
     }
 
-    BeaconStatus BaseStation_Impl::beaconStatus_v1()
+    BeaconStatus BaseStation_Impl::protocol_beaconStatus_v1()
     {
         //create the response for the command
         BaseStation_BeaconStatus::Response response(m_responseCollector);
@@ -722,14 +674,30 @@ namespace mscl
             throw Error_Communication("The Beacon Status command has failed");
         }
 
-        //update basestation last comm time
-        m_lastCommTime.setTimeNow();
-
         //return the result of the response
         return response.result();
     }
 
-    bool BaseStation_Impl::node_pageDownload_v1(NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data)
+    void BaseStation_Impl::protocol_startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options)
+    {
+        //create the response for the BaseStation_Ping command
+        BaseStation_RfSweepStart::Response response(m_responseCollector, minFreq, maxFreq, interval, options);
+
+        //send the ping command to the base station
+        m_connection.write(BaseStation_RfSweepStart::buildCommand(minFreq, maxFreq, interval, options));
+
+        //wait for the response or a timeout
+        response.wait(m_baseCommandsTimeout);
+
+        //if the enable beacon command failed
+        if(!response.success())
+        {
+            //throw an exception so that the user cannot ignore a failure
+            throw Error_Communication("Failed to start RF Sweep Mode.");
+        }
+    }
+
+    bool BaseStation_Impl::protocol_node_pageDownload_v1(NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data)
     {
         //create the response for the PageDownload command
         PageDownload::Response response(m_responseCollector);
@@ -749,11 +717,8 @@ namespace mscl
             //get the data points and store them in the data parameter
             data = response.dataPoints();
 
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
             //update node last comm time
-            m_nodesLastCommTime[nodeAddress].setTimeNow();
+            NodeCommTimes::updateCommTime(nodeAddress);
 
             return true;
         }
@@ -762,7 +727,7 @@ namespace mscl
         return false;
     }
 
-    bool BaseStation_Impl::node_shortPing_v1(NodeAddress nodeAddress)
+    bool BaseStation_Impl::protocol_node_shortPing_v1(NodeAddress nodeAddress)
     {
         //create the response for the short ping command
         ShortPing::Response response(m_responseCollector);
@@ -775,18 +740,15 @@ namespace mscl
 
         if(response.success())
         {
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
             //update node last comm time
-            m_nodesLastCommTime[nodeAddress].setTimeNow();
+            NodeCommTimes::updateCommTime(nodeAddress);
         }
 
         //return the result of the response
         return response.success();
     }
 
-    bool BaseStation_Impl::node_shortPing_v2(NodeAddress nodeAddress)
+    bool BaseStation_Impl::protocol_node_shortPing_v2(NodeAddress nodeAddress)
     {
         //create the response for the short ping command
         ShortPing_v2::Response response(nodeAddress, m_responseCollector);
@@ -799,18 +761,15 @@ namespace mscl
 
         if(response.success())
         {
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
             //update node last comm time
-            m_nodesLastCommTime[nodeAddress].setTimeNow();
+            NodeCommTimes::updateCommTime(nodeAddress);
         }
 
         //return the result of the response
         return response.success();
     }
 
-    bool BaseStation_Impl::node_readEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
+    bool BaseStation_Impl::protocol_node_readEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
     {
         bool success = false;
 
@@ -832,17 +791,14 @@ namespace mscl
             //set the eeprom value to the result
             eepromValue = response.eepromValue();
 
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
             //update node last comm time
-            m_nodesLastCommTime[nodeAddress].setTimeNow();
+            NodeCommTimes::updateCommTime(nodeAddress);
         }
 
         return success;
     }
 
-    bool BaseStation_Impl::node_readEeprom_v2(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
+    bool BaseStation_Impl::protocol_node_readEeprom_v2(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
     {
         bool success = false;
 
@@ -864,11 +820,8 @@ namespace mscl
             //set the eeprom value to the result
             eepromValue = response.eepromValue();
 
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
             //update node last comm time
-            m_nodesLastCommTime[nodeAddress].setTimeNow();
+            NodeCommTimes::updateCommTime(nodeAddress);
         }
         else
         {
@@ -879,7 +832,7 @@ namespace mscl
         return success;
     }
 
-    bool BaseStation_Impl::node_writeEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16 value)
+    bool BaseStation_Impl::protocol_node_writeEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16 value)
     {
         bool success = false;
 
@@ -900,17 +853,14 @@ namespace mscl
 
         if(success)
         {
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
             //update node last comm time
-            m_nodesLastCommTime[nodeAddress].setTimeNow();
+            NodeCommTimes::updateCommTime(nodeAddress);
         }
 
         return success;
     }
 
-    bool BaseStation_Impl::node_writeEeprom_v2(NodeAddress nodeAddress, uint16 eepromAddress, uint16 value)
+    bool BaseStation_Impl::protocol_node_writeEeprom_v2(NodeAddress nodeAddress, uint16 eepromAddress, uint16 value)
     {
         bool success = false;
 
@@ -931,11 +881,8 @@ namespace mscl
 
         if(success)
         {
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
             //update node last comm time
-            m_nodesLastCommTime[nodeAddress].setTimeNow();
+            NodeCommTimes::updateCommTime(nodeAddress);
         }
         else
         {
@@ -946,7 +893,7 @@ namespace mscl
         return success;
     }
 
-    bool BaseStation_Impl::node_autoBalance_v1(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result)
+    bool BaseStation_Impl::protocol_node_autoBalance_v1(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result)
     {
         //determine the target value to send to the autobalance command (max bits is always 4096 for this command)
         uint16 targetVal = static_cast<uint16>(4096 * targetPercent / 100.0f);
@@ -964,7 +911,7 @@ namespace mscl
         return true;
     }
 
-    bool BaseStation_Impl::node_autoBalance_v2(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result)
+    bool BaseStation_Impl::protocol_node_autoBalance_v2(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result)
     {
         bool success = false;
 
@@ -985,16 +932,55 @@ namespace mscl
 
         if(success)
         {
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
             //update node last comm time
-            m_nodesLastCommTime[nodeAddress].setTimeNow();
+            NodeCommTimes::updateCommTime(nodeAddress);
         }
 
         result = response.result();
 
         return success;
+    }
+
+    bool BaseStation_Impl::protocol_node_erase_v1(NodeAddress nodeAddress)
+    {
+        //create the response for the Erase command
+        Erase::Response response(m_responseCollector);
+
+        //send the erase command to the base station
+        m_connection.write(Erase::buildCommand(nodeAddress));
+
+        //wait for the response or timeout
+        response.wait(m_nodeCommandsTimeout);
+
+        if(response.success())
+        {
+            //update node last comm time
+            NodeCommTimes::updateCommTime(nodeAddress);
+        }
+
+        //return the result of the response
+        return response.success();
+    }
+
+    bool BaseStation_Impl::protocol_node_erase_v2(NodeAddress nodeAddress)
+    {
+        //create the response for the Erase command
+        Erase_v2::Response response(nodeAddress, m_responseCollector);
+
+        //send the erase command to the base station
+        m_connection.write(Erase_v2::buildCommand(nodeAddress));
+
+        //wait for the response or timeout
+        response.wait(m_nodeCommandsTimeout);
+
+        if(response.success())
+        {
+            //update node last comm time
+            NodeCommTimes::updateCommTime(nodeAddress);
+        }
+
+        //return the result of the response
+        return response.success();
     }
 
     Value BaseStation_Impl::readEeprom(const EepromLocation& location) const
@@ -1146,11 +1132,6 @@ namespace mscl
     //                                        NODE COMMANDS
     //================================================================================================
 
-    const Timestamp& BaseStation_Impl::node_lastCommunicationTime(NodeAddress nodeAddress)
-    {
-        return m_nodesLastCommTime[nodeAddress];
-    }
-
     PingResponse BaseStation_Impl::node_ping(NodeAddress nodeAddress)
     {
         //create the response for the LongPing command with the node address
@@ -1167,11 +1148,8 @@ namespace mscl
 
         if(response.result().success())
         {
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
             //update node last comm time
-            m_nodesLastCommTime[nodeAddress].setTimeNow();
+            NodeCommTimes::updateCommTime(nodeAddress);
         }
 
         //return the result of the response
@@ -1196,6 +1174,10 @@ namespace mscl
 
     SetToIdleStatus BaseStation_Impl::node_setToIdle(NodeAddress nodeAddress, const BaseStation& base)
     {
+        //send a byte to the base station first (helps when a lot of data is coming over the air)
+        static const Bytes alert{0x01};
+        m_connection.write(alert);
+
         //create the response for the Set to Idle command
         std::shared_ptr<SetToIdle::Response> response(std::make_shared<SetToIdle::Response>(nodeAddress, m_responseCollector, base));
 
@@ -1232,6 +1214,11 @@ namespace mscl
         return nodeProtocol.m_pageDownload(this, nodeAddress, pageIndex, data);
     }
 
+    bool BaseStation_Impl::node_erase(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress)
+    {
+        return nodeProtocol.m_erase(this, nodeAddress);
+    }
+
     bool BaseStation_Impl::node_startSyncSampling(NodeAddress nodeAddress)
     {
         //create the response for the StartSyncSampling command
@@ -1248,11 +1235,8 @@ namespace mscl
 
         if(response.success())
         {
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
             //update node last comm time
-            m_nodesLastCommTime[nodeAddress].setTimeNow();
+            NodeCommTimes::updateCommTime(nodeAddress);
         }
 
         //return the result of the response
@@ -1293,11 +1277,8 @@ namespace mscl
 
         if(response.success())
         {
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
             //update node last comm time
-            m_nodesLastCommTime[nodeAddress].setTimeNow();
+            NodeCommTimes::updateCommTime(nodeAddress);
         }
 
         //return the result of the response
@@ -1313,30 +1294,6 @@ namespace mscl
         m_connection.write(command);
 
         //no response for this command
-    }
-
-    bool BaseStation_Impl::node_erase(NodeAddress nodeAddress)
-    {
-        //create the response for the Erase command
-        Erase::Response response(m_responseCollector);
-
-        //send the erase command to the base station
-        m_connection.write(Erase::buildCommand(nodeAddress));
-
-        //wait for the response or timeout
-        response.wait(m_nodeCommandsTimeout);
-
-        if(response.success())
-        {
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
-            //update node last comm time
-            m_nodesLastCommTime[nodeAddress].setTimeNow();
-        }
-
-        //return the result of the response
-        return response.success();
     }
 
     bool BaseStation_Impl::node_autoBalance(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result)
@@ -1370,8 +1327,7 @@ namespace mscl
         if(response.calStarted() && !response.fullyMatched())
         {
             //update last comm times
-            m_lastCommTime.setTimeNow();
-            m_nodesLastCommTime[nodeAddress].setTimeNow();
+            NodeCommTimes::updateCommTime(nodeAddress);
 
             //the Node tells us how much time it takes to complete, so ask for that and
             //convert the seconds to milliseconds, and add some extra buffer time
@@ -1384,8 +1340,7 @@ namespace mscl
         if(response.fullyMatched())
         {
             //update last comm times
-            m_lastCommTime.setTimeNow();
-            m_nodesLastCommTime[nodeAddress].setTimeNow();
+            NodeCommTimes::updateCommTime(nodeAddress);
 
             //give the response data to the result object
             result.m_completionFlag = response.completionFlag();
@@ -1410,11 +1365,8 @@ namespace mscl
         {
             result = response.sensorValue();
 
-            //update basestation last comm time
-            m_lastCommTime.setTimeNow();
-
             //update node last comm time
-            m_nodesLastCommTime[nodeAddress].setTimeNow();
+            NodeCommTimes::updateCommTime(nodeAddress);
         }
 
         //return the result of the response

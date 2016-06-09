@@ -6,6 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "stdafx.h"
 #include "mscl/Utils.h"
 #include "TriggerArmedDatalogging.h"
+#include "WirelessProtocol.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
@@ -20,14 +21,14 @@ namespace mscl
 
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint8(WirelessPacket::ASPP_START_OF_PACKET_BYTE);    //Start of Packet
+        cmd.append_uint8(WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE);    //Start of Packet
         cmd.append_uint8(0x05);                                            //Delivery Stop Flag
         cmd.append_uint8(0x00);                                            //App Data Type
         cmd.append_uint16(nodeAddress);                                    //Node Address
         cmd.append_uint8(0x0A);                                            //Payload Length
-        cmd.append_uint16(COMMAND_ID);                                    //Command ID
+        cmd.append_uint16(WirelessProtocol::cmdId_triggerArmedLog);        //Command ID
         cmd.append_uint32(secondsPart);                                    //UTC Timestamp (seconds)
-        cmd.append_uint32(nanosPart);                                    //UTC Timestamp (nanoseconds)
+        cmd.append_uint32(nanosPart);                                      //UTC Timestamp (nanoseconds)
 
         //calculate the checksum of bytes 2-8
         uint16 checksum = cmd.calculateSimpleChecksum(1, 15);

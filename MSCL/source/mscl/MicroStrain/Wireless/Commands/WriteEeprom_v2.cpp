@@ -5,6 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "WriteEeprom_v2.h"
+#include "WirelessProtocol.h"
 #include "mscl/MicroStrain/ByteStream.h"
 
 namespace mscl
@@ -13,14 +14,14 @@ namespace mscl
     {
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint8(0xAA);                //Start of Packet
-        cmd.append_uint8(0x05);                //Delivery Stop Flag
-        cmd.append_uint8(0x00);                //App Data Type
-        cmd.append_uint16(nodeAddress);        //Node address    (2 bytes)
-        cmd.append_uint8(0x06);                //Payload length
-        cmd.append_uint16(COMMAND_ID);        //Command ID    (2 bytes)
-        cmd.append_uint16(eepromAddress);    //EEPROM Address (2 bytes)
-        cmd.append_uint16(valueToWrite);    //EEPROM Address (2 bytes)
+        cmd.append_uint8(0xAA);                                           //Start of Packet
+        cmd.append_uint8(0x05);                                           //Delivery Stop Flag
+        cmd.append_uint8(0x00);                                           //App Data Type
+        cmd.append_uint16(nodeAddress);                                   //Node address    (2 bytes)
+        cmd.append_uint8(0x06);                                           //Payload length
+        cmd.append_uint16(WirelessProtocol::cmdId_writeEeprom_v2);        //Command ID    (2 bytes)
+        cmd.append_uint16(eepromAddress);                                 //EEPROM Address (2 bytes)
+        cmd.append_uint16(valueToWrite);                                  //EEPROM Address (2 bytes)
 
         //calculate the checsum of bytes 2-12
         uint16 checksum = cmd.calculateSimpleChecksum(1, 11);
@@ -43,7 +44,7 @@ namespace mscl
     {
         WirelessPacket::Payload payload = packet.payload();
 
-        uint8 dsf = packet.deliveryStopFlags().toByte();
+        uint8 dsf = packet.deliveryStopFlags().toInvertedByte();
 
         //check the main bytes of the packet
         if(packet.type() != 0x00 ||                        //app data type
@@ -59,7 +60,7 @@ namespace mscl
         if(dsf == 0x07)
         {
             //check command ID
-            if(payload.read_uint16(0) != COMMAND_ID)    //this is the correct packet
+            if(payload.read_uint16(0) != WirelessProtocol::cmdId_writeEeprom_v2)    //this is the correct packet
             {
                 return false;
             }
@@ -105,13 +106,13 @@ namespace mscl
         WirelessPacket::Payload payload = packet.payload();
 
         //check the main bytes of the packet
-        if(packet.deliveryStopFlags().toByte() != 0x07 ||                    //delivery stop flag
-           packet.type() != WirelessPacket::packetType_nodeErrorReply ||    //app data type
-           packet.nodeAddress() != m_nodeAddress ||                            //node address
-           payload.size() != 0x07 ||                                        //payload length
-           payload.read_uint16(0) != COMMAND_ID ||                            //command ID
-           payload.read_uint16(2) != m_eepromAddress ||                        //eeprom address
-           payload.read_uint16(4) != m_eepromValue                            //eeprom value
+        if(packet.deliveryStopFlags().toInvertedByte() != 0x07 ||                    //delivery stop flag
+           packet.type() != WirelessPacket::packetType_nodeErrorReply ||             //app data type
+           packet.nodeAddress() != m_nodeAddress ||                                  //node address
+           payload.size() != 0x07 ||                                                 //payload length
+           payload.read_uint16(0) != WirelessProtocol::cmdId_writeEeprom_v2 ||       //command ID
+           payload.read_uint16(2) != m_eepromAddress ||                              //eeprom address
+           payload.read_uint16(4) != m_eepromValue                                   //eeprom value
            )
         {
             //failed to match some of the bytes

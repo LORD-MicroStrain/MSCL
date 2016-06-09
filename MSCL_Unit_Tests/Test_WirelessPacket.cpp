@@ -14,12 +14,32 @@ BOOST_AUTO_TEST_SUITE(WirelessPacket_Test)
 
 BOOST_AUTO_TEST_SUITE(DeliveryStopFlags_Suite)
 
-BOOST_AUTO_TEST_CASE(DeliveryStopFlag_ToFrom)
+BOOST_AUTO_TEST_CASE(DeliveryStopFlag_ToFrom_Inverted)
 {
     uint8 originalByte = 6;    //0000 0110
 
     //build the flags from the byte
-    DeliveryStopFlags flags = DeliveryStopFlags::fromByte(originalByte);    
+    DeliveryStopFlags flags = DeliveryStopFlags::fromInvertedByte(originalByte);    
+
+    //verify that all the flags are what we want them to be
+    BOOST_CHECK_EQUAL(flags.pc, true);
+    BOOST_CHECK_EQUAL(flags.appBoard, false);
+    BOOST_CHECK_EQUAL(flags.linkBoard, false);
+    BOOST_CHECK_EQUAL(flags.baseStation, true);
+
+    //build a byte from the flags
+    uint8 revert = flags.toInvertedByte();
+
+    //make sure they are equal
+    BOOST_CHECK_EQUAL(originalByte, revert);
+}
+
+BOOST_AUTO_TEST_CASE(DeliveryStopFlag_ToFrom)
+{
+    uint8 originalByte = 9;    //0000 1001
+
+    //build the flags from the byte
+    DeliveryStopFlags flags = DeliveryStopFlags::fromByte(originalByte);
 
     //verify that all the flags are what we want them to be
     BOOST_CHECK_EQUAL(flags.pc, true);

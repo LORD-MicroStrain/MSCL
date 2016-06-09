@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst)
     s.timebetwburst = 350;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
-    s.samplingMode = WirelessTypes::samplingMode_sync;
+    s.samplingMode = WirelessTypes::samplingMode_syncBurst;
 
     expectSampling_Burst(impl, s);
 
@@ -392,7 +392,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_losslessDisabled_burst)
         timebetwburst = 350,
         collectionMode = WirelessTypes::collectionMethod_logAndTransmit,
         samplingDelay = 5,
-        samplingMode = WirelessTypes::samplingMode_sync;
+        samplingMode = WirelessTypes::samplingMode_syncBurst;
 
     expectRead(impl, NodeEepromMap::NODE_RETRANSMIT, Value::UINT16(retx));                //retransmission        (on)
     expectRead(impl, NodeEepromMap::ACTIVE_CHANNEL_MASK, Value::UINT16(chs));            //active channels mask    (channels 1 and 3)
@@ -910,7 +910,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_refresh)
     sb.dataFormat = WirelessTypes::dataFormat_2byte_uint;
     sb.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     sb.samplingDelay = 5;
-    sb.samplingMode = WirelessTypes::samplingMode_sync;
+    sb.samplingMode = WirelessTypes::samplingMode_syncBurst;
     sb.sweeps = 256;
     sb.timebetwburst = 350;
     expectSampling_Burst(impl, sb);
@@ -1074,7 +1074,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addMultipleNodes)
     sb.timebetwburst = 350;
     sb.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     sb.samplingDelay = 5;
-    sb.samplingMode = WirelessTypes::samplingMode_sync;
+    sb.samplingMode = WirelessTypes::samplingMode_syncBurst;
     expectSampling_Burst(impl2, sb);
 
     expectReadModel(impl2, WirelessModels::node_gLink_2g);
@@ -1254,7 +1254,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_applyConfiguration_burst)
     sb.timebetwburst = 350;
     sb.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     sb.samplingDelay = 5;
-    sb.samplingMode = WirelessTypes::samplingMode_sync;
+    sb.samplingMode = WirelessTypes::samplingMode_syncBurst;
     expectSampling_Burst(impl, sb);
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
@@ -1879,6 +1879,191 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_tooMuchBandwidth)
     BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 100.098, 0.1);
 }
 
+BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_legacyMixedNetwork_tooMuchBandwidth)
+{
+    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
+    WirelessNode node100(100, b);
+    node100.setImpl(impl);
+
+    std::unique_ptr<NodeFeatures> features;
+    expectNodeFeatures(features, impl);
+
+    SyncSamplingNetwork nwk(b);
+
+    //eeprom reads performed by the SyncSamplingNetwork
+    Sampling_Continuous s;
+    s.retx = WirelessTypes::retransmission_on;
+    s.chs = 12;
+    s.rate = 104;
+    s.syncMode = WirelessTypes::syncMode_continuous;
+    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
+    s.samplingDelay = 5;
+    s.samplingMode = WirelessTypes::samplingMode_sync;
+    expectSampling_Continuous(impl, s);
+
+    expectReadModel(impl, WirelessModels::node_gLink_2g);
+    expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
+
+    //add the node to the network
+    BOOST_CHECK_NO_THROW(nwk.addNode(node100));
+
+    //verify the network information
+    BOOST_CHECK_EQUAL(nwk.ok(), true);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 50.049, 0.1);
+
+    //verify the networkInfo for the nodes in the network
+    const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
+    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
+    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
+    BOOST_CHECK_CLOSE(info.percentBandwidth(), 50.049, 0.1);
+    BOOST_CHECK_EQUAL(info.groupSize(), 1);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 64);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 8);
+    BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
+
+    BaseStation b2 = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b2, 200));
+    WirelessNode node200(200, b2);
+    node200.setImpl(impl2);
+
+    expectNodeFeatures_fw10(features, impl2);       //network will contain old (<10.0) and new (>10.0) nodes
+
+    //eeprom reads performed by the SyncSamplingNetwork
+    Sampling_Continuous s2;
+    s2.retx = WirelessTypes::retransmission_on;
+    s2.chs = 7;
+    s2.rate = 104;
+    s2.syncMode = WirelessTypes::syncMode_continuous;
+    s2.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s2.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
+    s2.samplingDelay = 5;
+    s2.samplingMode = WirelessTypes::samplingMode_sync;
+    expectSampling_Continuous(impl2, s2);
+
+    expectReadModel(impl2, WirelessModels::node_gLink_2g);
+    expectGoodPing(impl2);
+    MOCK_EXPECT(impl2->firmwareVersion).returns(Version(10, 0));
+
+    //add another node to the network
+    BOOST_CHECK_NO_THROW(nwk.addNode(node200));
+
+    //verify the networkInfo for the nodes in the network
+    const SyncNetworkInfo& info2 = nwk.getNodeNetworkInfo(200);
+    BOOST_CHECK_EQUAL(info2.status(), SyncNetworkInfo::status_DoesNotFit);
+    BOOST_CHECK_EQUAL(info2.configurationApplied(), false);
+    BOOST_CHECK_CLOSE(info2.percentBandwidth(), 50.049, 0.1);
+    BOOST_CHECK_EQUAL(info2.groupSize(), 1);
+    BOOST_CHECK_EQUAL(info2.transmissionPerGroup(), 64);
+    BOOST_CHECK_EQUAL(info2.maxTdmaAddress(), 8);
+    BOOST_CHECK_EQUAL(info2.tdmaAddress(), 0);
+
+    BOOST_CHECK_EQUAL(nwk.ok(), false);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 100.098, 0.1);
+}
+
+BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_gen2_bandwidthNowFits)
+{
+    //the previous test barely didn't fit the nodes in the network
+    //gen 2 nodes (fw 10.0+) fix this problem, which this tests
+
+    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
+    WirelessNode node100(100, b);
+    node100.setImpl(impl);
+
+    std::unique_ptr<NodeFeatures> features;
+    expectNodeFeatures_fw10(features, impl);
+
+
+    SyncSamplingNetwork nwk(b);
+
+    //eeprom reads performed by the SyncSamplingNetwork
+    Sampling_Continuous s;
+    s.retx = WirelessTypes::retransmission_on;
+    s.chs = 12;
+    s.rate = 104;
+    s.syncMode = WirelessTypes::syncMode_continuous;
+    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
+    s.samplingDelay = 5;
+    s.samplingMode = WirelessTypes::samplingMode_sync;
+    expectSampling_Continuous(impl, s);
+
+    expectReadModel(impl, WirelessModels::node_gLink_2g);
+    expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(10, 0));
+
+    //add the node to the network
+    BOOST_CHECK_NO_THROW(nwk.addNode(node100));
+
+    //verify the network information
+    BOOST_CHECK_EQUAL(nwk.ok(), true);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 25.0, 0.1);
+
+    //verify the networkInfo for the nodes in the network
+    SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
+    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
+    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
+    BOOST_CHECK_CLOSE(info.percentBandwidth(), 25.0, 0.1);
+    BOOST_CHECK_EQUAL(info.groupSize(), 1);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 32);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 32);
+    BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
+
+    BaseStation b2 = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b2, 200));
+    WirelessNode node200(200, b2);
+    node200.setImpl(impl2);
+
+    expectNodeFeatures_fw10(features, impl2);
+
+    //eeprom reads performed by the SyncSamplingNetwork
+    Sampling_Continuous s2;
+    s2.retx = WirelessTypes::retransmission_on;
+    s2.chs = 7;
+    s2.rate = 104;
+    s2.syncMode = WirelessTypes::syncMode_continuous;
+    s2.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s2.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
+    s2.samplingDelay = 5;
+    s2.samplingMode = WirelessTypes::samplingMode_sync;
+    expectSampling_Continuous(impl2, s2);
+
+    expectReadModel(impl2, WirelessModels::node_gLink_2g);
+    expectGoodPing(impl2);
+    MOCK_EXPECT(impl2->firmwareVersion).returns(Version(10, 0));
+
+    //add another node to the network
+    BOOST_CHECK_NO_THROW(nwk.addNode(node200));
+
+    //verify the networkInfo for the nodes in the network
+    const SyncNetworkInfo& info2 = nwk.getNodeNetworkInfo(200);
+    BOOST_CHECK_EQUAL(info2.status(), SyncNetworkInfo::status_OK);
+    BOOST_CHECK_EQUAL(info2.configurationApplied(), false);
+    BOOST_CHECK_CLOSE(info2.percentBandwidth(), 50.0, 0.1);
+    BOOST_CHECK_EQUAL(info2.groupSize(), 1);
+    BOOST_CHECK_EQUAL(info2.transmissionPerGroup(), 64);
+    BOOST_CHECK_EQUAL(info2.maxTdmaAddress(), 16);
+    BOOST_CHECK_EQUAL(info2.tdmaAddress(), 1);
+
+    //the first node was updated, check its new values
+    info = nwk.getNodeNetworkInfo(100);
+    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
+    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
+    BOOST_CHECK_CLOSE(info.percentBandwidth(), 25.0, 0.1);
+    BOOST_CHECK_EQUAL(info.groupSize(), 1);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 32);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 32);
+    BOOST_CHECK_EQUAL(info.tdmaAddress(), 9);
+
+    BOOST_CHECK_EQUAL(nwk.ok(), true);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 75.0, 0.1);
+}
+
+
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
 {
     //this tests adding multiple nodes until a node fails to be added due to not
@@ -2412,332 +2597,6 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_sgLinkHermetic)
     BOOST_CHECK_EQUAL(info6.tdmaAddress(), 1);
 }
 
-BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_setPendingConfig)
-{
-    BaseStation b = makeBaseStationWithMockImpl();
-    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
-    WirelessNode node100(100, b);
-    node100.setImpl(impl);
-
-    std::unique_ptr<NodeFeatures> features;
-    expectNodeFeatures(features, impl, WirelessModels::node_gLink_2g);
-
-    SyncSamplingNetwork nwk(b);
-
-    //eeprom reads performed by the SyncSamplingNetwork
-    Sampling_Continuous s;
-    s.retx = WirelessTypes::retransmission_on;
-    s.chs = 7;
-    s.rate = 112;
-    s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
-    s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
-    s.samplingDelay = 5;
-    s.samplingMode = WirelessTypes::samplingMode_sync;
-    expectSampling_Continuous(impl, s);
-
-    expectReadModel(impl, WirelessModels::node_gLink_2g);
-    expectGoodPing(impl);
-    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
-    
-
-    //add the node to the network
-    BOOST_CHECK_NO_THROW(nwk.addNode(node100));
-
-    //verify the network information
-    BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.782, 0.1);
-
-    //verify the networkInfo for the nodes in the network
-    const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
-    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
-    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info.percentBandwidth(), 0.782, 0.1);
-    BOOST_CHECK_EQUAL(info.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 1);
-    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 1016);
-    BOOST_CHECK_EQUAL(info.tdmaAddress(), 9);
-
-
-    //build the sampling config that we want to set as pending
-    WirelessNodeConfig config;
-    config.activeChannels(ChannelMask(5));
-    config.sampleRate(WirelessTypes::sampleRate_256Hz);
-    config.samplingMode(WirelessTypes::samplingMode_syncBurst);
-    config.numSweeps(25600);
-    config.timeBetweenBursts(TimeSpan::Seconds(350));
-
-    //set the pending config for the node
-    nwk.setPendingConfig(100, config);
-
-
-    //verify the network information again, should now be changed
-    BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 12.512, 0.1);
-
-    //verify the networkInfo for the nodes in the network
-    const SyncNetworkInfo& info2 = nwk.getNodeNetworkInfo(100);
-    BOOST_CHECK_EQUAL(info2.status(), SyncNetworkInfo::status_OK);
-    BOOST_CHECK_EQUAL(info2.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info2.percentBandwidth(), 12.512, 0.1);
-    BOOST_CHECK_EQUAL(info2.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info2.transmissionPerGroup(), 16);
-    BOOST_CHECK_EQUAL(info2.maxTdmaAddress(), 56);
-    BOOST_CHECK_EQUAL(info2.tdmaAddress(), 1);
-}
-
-BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_setPendingConfig_InvalidNode)
-{
-    BaseStation b = makeBaseStationWithMockImpl();
-    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
-    WirelessNode node100(100, b);
-    node100.setImpl(impl);
-
-    std::unique_ptr<NodeFeatures> features;
-    expectNodeFeatures(features, impl);
-    
-
-    SyncSamplingNetwork nwk(b);
-
-    //eeprom reads performed by the SyncSamplingNetwork
-    Sampling_Continuous s;
-    s.retx = WirelessTypes::retransmission_on;
-    s.chs = 7;
-    s.rate = 112;
-    s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
-    s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
-    s.samplingDelay = 5;
-    s.samplingMode = WirelessTypes::samplingMode_sync;
-    expectSampling_Continuous(impl, s);
-
-    expectReadModel(impl, WirelessModels::node_gLink_2g);
-    expectGoodPing(impl);
-    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
-    
-
-    //add the node to the network
-    BOOST_CHECK_NO_THROW(nwk.addNode(node100));
-
-    //verify the network information
-    BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.782, 0.1);
-
-    //verify the networkInfo for the nodes in the network
-    const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
-    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
-    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info.percentBandwidth(), 0.782, 0.1);
-    BOOST_CHECK_EQUAL(info.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 1);
-    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 1016);
-    BOOST_CHECK_EQUAL(info.tdmaAddress(), 9);
-
-
-    //build the sampling config that we want to set as pending
-    WirelessNodeConfig config;
-
-    //set the pending config for a node NOT IN THE NETWORK
-    BOOST_CHECK_THROW(nwk.setPendingConfig(200, config), Error);
-
-
-    //verify the network information
-    BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.782, 0.1);
-
-    //verify the networkInfo for the nodes in the network
-    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
-    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info.percentBandwidth(), 0.782, 0.1);
-    BOOST_CHECK_EQUAL(info.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 1);
-    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 1016);
-    BOOST_CHECK_EQUAL(info.tdmaAddress(), 9);
-}
-
-BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_clearPendingConfig)
-{
-    BaseStation b = makeBaseStationWithMockImpl();
-    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
-    WirelessNode node100(100, b);
-    node100.setImpl(impl);
-
-    std::unique_ptr<NodeFeatures> features;
-    expectNodeFeatures(features, impl);
-    
-
-    SyncSamplingNetwork nwk(b);
-
-    //eeprom reads performed by the SyncSamplingNetwork
-    Sampling_Continuous s;
-    s.retx = WirelessTypes::retransmission_on;
-    s.chs = 7;
-    s.rate = 112;
-    s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
-    s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
-    s.samplingDelay = 5;
-    s.samplingMode = WirelessTypes::samplingMode_sync;
-    expectSampling_Continuous(impl, s);
-
-    expectReadModel(impl, WirelessModels::node_gLink_2g);
-    expectGoodPing(impl);
-    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
-
-    //add the node to the network
-    BOOST_CHECK_NO_THROW(nwk.addNode(node100));
-
-    //verify the network information
-    BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.782, 0.1);
-
-    //verify the networkInfo for the nodes in the network
-    const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
-    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
-    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info.percentBandwidth(), 0.782, 0.1);
-    BOOST_CHECK_EQUAL(info.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 1);
-    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 1016);
-    BOOST_CHECK_EQUAL(info.tdmaAddress(), 9);
-
-
-    //build the sampling config that we want to set as pending
-    WirelessNodeConfig config;
-    config.activeChannels(ChannelMask(5));
-    config.sampleRate(WirelessTypes::sampleRate_256Hz);
-    config.samplingMode(WirelessTypes::samplingMode_syncBurst);
-    config.numSweeps(25600);
-    config.timeBetweenBursts(TimeSpan::Seconds(350));
-
-    //set the pending config for the node
-    nwk.setPendingConfig(100, config);
-
-
-    //verify the network information again, should now be changed
-    BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 12.512, 0.1);
-
-    //verify the networkInfo for the nodes in the network
-    const SyncNetworkInfo& info2 = nwk.getNodeNetworkInfo(100);
-    BOOST_CHECK_EQUAL(info2.status(), SyncNetworkInfo::status_OK);
-    BOOST_CHECK_EQUAL(info2.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info2.percentBandwidth(), 12.512, 0.1);
-    BOOST_CHECK_EQUAL(info2.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info2.transmissionPerGroup(), 16);
-    BOOST_CHECK_EQUAL(info2.maxTdmaAddress(), 56);
-    BOOST_CHECK_EQUAL(info2.tdmaAddress(), 1);
-
-    //clear the pending config for the node
-    nwk.clearPendingConfig(100);
-
-    //verify the network information
-    BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.782, 0.1);
-
-    //verify the networkInfo for the nodes in the network
-    const SyncNetworkInfo& info3 = nwk.getNodeNetworkInfo(100);
-    BOOST_CHECK_EQUAL(info3.status(), SyncNetworkInfo::status_OK);
-    BOOST_CHECK_EQUAL(info3.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info3.percentBandwidth(), 0.782, 0.1);
-    BOOST_CHECK_EQUAL(info3.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info3.transmissionPerGroup(), 1);
-    BOOST_CHECK_EQUAL(info3.maxTdmaAddress(), 1016);
-    BOOST_CHECK_EQUAL(info3.tdmaAddress(), 9);
-}
-
-BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_clearAllPendingConfigs)
-{
-    BaseStation b = makeBaseStationWithMockImpl();
-    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
-    WirelessNode node100(100, b);
-    node100.setImpl(impl);
-
-    std::unique_ptr<NodeFeatures> features;
-    expectNodeFeatures(features, impl);
-    
-
-    SyncSamplingNetwork nwk(b);
-
-    //eeprom reads performed by the SyncSamplingNetwork
-    Sampling_Continuous s;
-    s.retx = WirelessTypes::retransmission_on;
-    s.chs = 7;
-    s.rate = 112;
-    s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
-    s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
-    s.samplingDelay = 5;
-    s.samplingMode = WirelessTypes::samplingMode_sync;
-    expectSampling_Continuous(impl, s);
-
-    expectReadModel(impl, WirelessModels::node_gLink_2g);
-    expectGoodPing(impl);
-    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
-    
-
-    //add the node to the network
-    BOOST_CHECK_NO_THROW(nwk.addNode(node100));
-
-    //verify the network information
-    BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.782, 0.1);
-
-    //verify the networkInfo for the nodes in the network
-    const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
-    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
-    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info.percentBandwidth(), 0.782, 0.1);
-    BOOST_CHECK_EQUAL(info.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 1);
-    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 1016);
-    BOOST_CHECK_EQUAL(info.tdmaAddress(), 9);
-
-
-    //build the sampling config that we want to set as pending
-    WirelessNodeConfig config;
-    config.activeChannels(ChannelMask(5));
-    config.sampleRate(WirelessTypes::sampleRate_256Hz);
-    config.samplingMode(WirelessTypes::samplingMode_syncBurst);
-    config.numSweeps(25600);
-    config.timeBetweenBursts(TimeSpan::Seconds(350));
-
-    //set the pending config for the node
-    nwk.setPendingConfig(100, config);
-
-
-    //verify the network information again, should now be changed
-    BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 12.512, 0.1);
-
-    //verify the networkInfo for the nodes in the network
-    const SyncNetworkInfo& info2 = nwk.getNodeNetworkInfo(100);
-    BOOST_CHECK_EQUAL(info2.status(), SyncNetworkInfo::status_OK);
-    BOOST_CHECK_EQUAL(info2.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info2.percentBandwidth(), 12.512, 0.1);
-    BOOST_CHECK_EQUAL(info2.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info2.transmissionPerGroup(), 16);
-    BOOST_CHECK_EQUAL(info2.maxTdmaAddress(), 56);
-    BOOST_CHECK_EQUAL(info2.tdmaAddress(), 1);
-
-    //clear the pending config for the node
-    nwk.clearAllPendingConfigs();
-
-    //verify the network information
-    BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.782, 0.1);
-
-    //verify the networkInfo for the nodes in the network
-    const SyncNetworkInfo& info3 = nwk.getNodeNetworkInfo(100);
-    BOOST_CHECK_EQUAL(info3.status(), SyncNetworkInfo::status_OK);
-    BOOST_CHECK_EQUAL(info3.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info3.percentBandwidth(), 0.782, 0.1);
-    BOOST_CHECK_EQUAL(info3.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info3.transmissionPerGroup(), 1);
-    BOOST_CHECK_EQUAL(info3.maxTdmaAddress(), 1016);
-    BOOST_CHECK_EQUAL(info3.tdmaAddress(), 9);
-}
-
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_invalidConfig)
 {
     //this tests adding a node that has a config set to something other than sync sampling
@@ -2773,78 +2632,113 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_invalidConfig)
     BOOST_CHECK_THROW(nwk.addNode(node100), Error_InvalidNodeConfig);
 }
 
-BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_setPendingConfig_invalidConfig)
+BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_event)
 {
+    //this tests adds a single node in event driven sync mode
+
     BaseStation b = makeBaseStationWithMockImpl();
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
 
-    std::unique_ptr<NodeFeatures> features;
-    expectNodeFeatures(features, impl);
-    
-
     SyncSamplingNetwork nwk(b);
 
-    //eeprom reads performed by the SyncSamplingNetwork
+    std::unique_ptr<NodeFeatures> features;
+    expectNodeFeatures(features, impl);
+
     Sampling_Continuous s;
     s.retx = WirelessTypes::retransmission_on;
-    s.chs = 7;
-    s.rate = 112;
+    s.chs = 13;//ch1, ch3, ch4
+    s.rate = static_cast<uint16>(WirelessTypes::sampleRate_8192Hz);
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_4byte_float;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
-    s.samplingMode = WirelessTypes::samplingMode_sync;
+    s.samplingMode = WirelessTypes::samplingMode_syncEvent;
     expectSampling_Continuous(impl, s);
 
-    expectReadModel(impl, WirelessModels::node_gLink_2g);
+    expectReadModel(impl, WirelessModels::node_bladeImpactLink);
     expectGoodPing(impl);
-    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(10, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
 
     //verify the network information
     BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.782, 0.1);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 100.0, 0.1);  //starts out at 100% bandwidth
 
     //verify the networkInfo for the nodes in the network
-    const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
+    SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
+    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
+    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
+    BOOST_CHECK_CLOSE(info.percentBandwidth(), 100.0, 0.1); //starts out at 100% bandwidth
+    BOOST_CHECK_EQUAL(info.groupSize(), 1);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 128);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 8);
+    BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b, 200));
+    WirelessNode node200(200, b);
+    node200.setImpl(impl2);
+
+    std::unique_ptr<NodeFeatures> features2;
+    expectNodeFeatures(features2, impl2);
+
+    Sampling_Continuous s2;
+    s2.retx = WirelessTypes::retransmission_on;
+    s2.chs = 5;//ch1, ch3
+    s2.rate = static_cast<uint16>(WirelessTypes::sampleRate_32Hz);
+    s2.syncMode = WirelessTypes::syncMode_continuous;
+    s2.dataFormat = WirelessTypes::dataFormat_4byte_float;
+    s2.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
+    s2.samplingDelay = 5;
+    s2.samplingMode = WirelessTypes::samplingMode_syncEvent;
+    expectSampling_Continuous(impl2, s2);
+
+    expectReadModel(impl2, WirelessModels::node_bladeImpactLink);
+    expectGoodPing(impl2);
+    MOCK_EXPECT(impl2->firmwareVersion).returns(Version(10, 0));
+
+    //add the node to the network
+    BOOST_CHECK_NO_THROW(nwk.addNode(node200));
+
+    //verify the network information
+    BOOST_CHECK_EQUAL(nwk.ok(), true);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 50.78125, 0.1);   //event bandwidth was spread out more evenly
+
+    //check node 100's info again
+    info = nwk.getNodeNetworkInfo(100);
+    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
+    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
+    BOOST_CHECK_CLOSE(info.percentBandwidth(), 50.0, 0.1);
+    BOOST_CHECK_EQUAL(info.groupSize(), 1);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 64);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 16);
+    BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
+
+    //verify the networkInfo for node 200
+    info = nwk.getNodeNetworkInfo(200);
     BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
     BOOST_CHECK_EQUAL(info.configurationApplied(), false);
     BOOST_CHECK_CLOSE(info.percentBandwidth(), 0.782, 0.1);
     BOOST_CHECK_EQUAL(info.groupSize(), 1);
     BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 1);
-    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 1016);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 1024);
     BOOST_CHECK_EQUAL(info.tdmaAddress(), 9);
-
-
-    //build the sampling config that we want to set as pending
-    WirelessNodeConfig config;
-    config.activeChannels(ChannelMask(5));
-    config.sampleRate(WirelessTypes::sampleRate_256Hz);
-    config.samplingMode(WirelessTypes::samplingMode_nonSync);        //INVALID CONFIG
-    config.numSweeps(25600);
-    config.timeBetweenBursts(TimeSpan::Seconds(350));
-
-    //set the pending config for the node
-    BOOST_CHECK_THROW(nwk.setPendingConfig(100, config), Error_InvalidNodeConfig);
-
-
-    //verify the network information again, nothing should have changed
-    BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.782, 0.1);
-
-    //verify the networkInfo for the nodes in the network (nothing should have changed)
-    const SyncNetworkInfo& info2 = nwk.getNodeNetworkInfo(100);
-    BOOST_CHECK_EQUAL(info2.status(), SyncNetworkInfo::status_OK);
-    BOOST_CHECK_EQUAL(info2.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info2.percentBandwidth(), 0.782, 0.1);
-    BOOST_CHECK_EQUAL(info2.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info2.transmissionPerGroup(), 1);
-    BOOST_CHECK_EQUAL(info2.maxTdmaAddress(), 1016);
-    BOOST_CHECK_EQUAL(info2.tdmaAddress(), 9);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

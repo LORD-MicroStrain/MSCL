@@ -146,6 +146,19 @@ namespace mscl
         //    the 4-byte uint32 built from the 2 uint16 words.
         uint32 make_uint32(uint16 msw, uint16 lsw);
 
+        //Function: make_uint64
+        //    gets the 8-byte unsigned integer from the 8 individual bytes
+        //
+        //Parameters:
+        //    msb - the msb to be used
+        //    byte2 - the second byte to be used
+        //    byte3 - the third byte to be used
+        //    lsb - the lsb to be used
+        //
+        //Returns:
+        //    the 4-byte uint32 built from the 4 bytes
+        uint64 make_uint64(uint8 msb, uint8 byte2, uint8 byte3, uint8 byte4, uint8 byte5, uint8 byte6, uint8 byte7, uint8 lsb);
+
         //Function: split_float_big_endian
         //    Converts the 4-byte float (in system endian) into its 4 individual bytes in big endian
         //
@@ -272,16 +285,6 @@ namespace mscl
         //    milli - The number of milliseconds to sleep for.
         void threadSleep(uint64 milli);
 
-        //Function: logBase2
-        //    Gets the log base 2 of a value
-        //
-        //Parameters:
-        //    value - The value to get the log of
-        //
-        //Returns:
-        //    The log base 2 of the value
-        double logBase2(double value);
-
         //Function: round
         //    Returns the value that is nearest to the provided value to round. (ie. round(2.5) == 3, round(2.4) == 2)
         //
@@ -292,7 +295,7 @@ namespace mscl
         //    The rounded result.
         float round(float value);
 
-        //Function: roundDownToNearestBase2
+        //Function: floorBase2
         //    Rounds down to the nearest base 2 value
         //
         //Parameters:
@@ -300,9 +303,9 @@ namespace mscl
         //
         //Returns:
         //    The value rounded down to the nearest base 2
-        uint32 roundDownToNearestBase2(double value);
+        uint32 floorBase2(double value);
 
-        //Function: roundUpToNearestBase2
+        //Function: ceilBase2
         //    Rounds up to the nearest base 2 value
         //
         //Parameters:
@@ -310,7 +313,7 @@ namespace mscl
         //
         //Returns:
         //    The value rounded up to the nearest base 2
-        uint32 roundUpToNearestBase2(double value);
+        uint32 ceilBase2(double value);
 
         //Function: radiansToDegrees
         //    Converts the radian angle to degrees.

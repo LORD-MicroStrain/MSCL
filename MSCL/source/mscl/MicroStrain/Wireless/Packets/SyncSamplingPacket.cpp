@@ -35,14 +35,14 @@ namespace mscl
     void SyncSamplingPacket::parseSweeps()
     {
         //read the values from the payload
-        uint8 channelMask        = m_payload.read_uint8(PAYLOAD_OFFSET_CHANNEL_MASK);
-        uint8 sampleRate        = m_payload.read_uint8(PAYLOAD_OFFSET_SAMPLE_RATE);
-        uint8 dataType            = m_payload.read_uint8(PAYLOAD_OFFSET_DATA_TYPE);
+        uint8 channelMask          = m_payload.read_uint8(PAYLOAD_OFFSET_CHANNEL_MASK);
+        uint8 sampleRate           = m_payload.read_uint8(PAYLOAD_OFFSET_SAMPLE_RATE);
+        uint8 dataType             = m_payload.read_uint8(PAYLOAD_OFFSET_DATA_TYPE);
         uint16 tick                = m_payload.read_uint16(PAYLOAD_OFFSET_TICK);
-        uint8 sampleMode        = m_payload.read_uint8(PAYLOAD_OFFSET_APP_ID);
+        uint8 sampleMode           = m_payload.read_uint8(PAYLOAD_OFFSET_APP_ID);
 
         uint64 timestampSeconds    = m_payload.read_uint32(PAYLOAD_OFFSET_TS_SEC);        //the timestamp (UTC) seconds part
-        uint64 timestampNanos    = m_payload.read_uint32(PAYLOAD_OFFSET_TS_NANOSEC);    //the timestamp (UTC) nanoseconds part
+        uint64 timestampNanos      = m_payload.read_uint32(PAYLOAD_OFFSET_TS_NANOSEC);    //the timestamp (UTC) nanoseconds part
 
         //set the data type of the packet
         m_dataType = static_cast<WirelessTypes::DataType>(dataType);
@@ -102,6 +102,9 @@ namespace mscl
             //get this sweep's node and base rssi values
             sweep.nodeRssi(m_nodeRSSI);
             sweep.baseRssi(m_baseRSSI);
+
+            //cals applied if the data type is float
+            sweep.calApplied(m_dataType == WirelessTypes::dataType_4ByteFloat);
         
             ChannelData chData;
 

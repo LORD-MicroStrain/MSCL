@@ -5,7 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "SetToIdle.h"
-
+#include "WirelessProtocol.h"
 #include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
@@ -15,12 +15,12 @@ namespace mscl
     {
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint8(0xAA);            //Start of Packet
-        cmd.append_uint8(0xFE);            //Delivery Stop Flag
-        cmd.append_uint8(0x00);            //App Data Type
-        cmd.append_uint16(nodeAddress);    //Node address    (2 bytes)
-        cmd.append_uint8(0x02);            //Payload Length
-        cmd.append_uint16(0x0090);        //Command ID    (2 bytes)
+        cmd.append_uint8(0xAA);                                     //Start of Packet
+        cmd.append_uint8(0xFE);                                     //Delivery Stop Flag
+        cmd.append_uint8(0x00);                                     //App Data Type
+        cmd.append_uint16(nodeAddress);                             //Node address    (2 bytes)
+        cmd.append_uint8(0x02);                                     //Payload Length
+        cmd.append_uint16(WirelessProtocol::cmdId_stopNode);        //Command ID    (2 bytes)
 
         //calculate the checksum of bytes 2-8
         uint16 checksum = cmd.calculateSimpleChecksum(1, 7);

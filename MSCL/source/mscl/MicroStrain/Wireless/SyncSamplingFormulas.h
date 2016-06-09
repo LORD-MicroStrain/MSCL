@@ -101,17 +101,18 @@ namespace mscl
         //
         //Returns:
         //    The maximum TDMA address that is allowed
-        uint32 maxTdmaAddress(uint32 txPerGroup, uint32 groupSize);
+        uint32 maxTdmaAddress(uint32 txPerGroup, uint32 groupSize, bool legacyNwk);
 
         //Function: percentBandwidth
         //    Calculates the percent of bandwidth for a single node
         //
         //Parametesr:
         //    txPerSecond - The number of transmissions per second
+        //    legacyNwk - Whether the network has legacy nodes or not.
         //
         //Returns:
         //    The percent of bandwidth
-        float percentBandwidth(float txPerSecond);
+        float percentBandwidth(float txPerSecond, bool legacyNwk);
 
         //Function: sampleDuration
         //    Calculates the sample duration for a given sample rate and number of sweeps
@@ -136,13 +137,13 @@ namespace mscl
         //    Whether or not the sampling delay should be checked when finding slots in the Sync Sampling network
         //
         //Parameters:
-        //    samplingMode - The <WirelessTypes::SyncSamplingMode> of the node
+        //    samplingMode - The <WirelessTypes::SamplingMode> of the node
         //    sampleRate - The <SampleRate> of the node
         //    nodeModel - The <WirelessModels::NodeModel> of the node
         //
         //Returns:
         //    true if the sampling delay should be checked, false if it should not be checked
-        bool checkSamplingDelay(WirelessTypes::SyncSamplingMode samplingMode, const SampleRate& sampleRate, WirelessModels::NodeModel nodeModel);
+        bool checkSamplingDelay(WirelessTypes::SamplingMode samplingMode, const SampleRate& sampleRate, WirelessModels::NodeModel nodeModel);
 
         //Function: slotsBetweenTx
         //    Calculates the number of slots that need to be between each transmission
@@ -155,7 +156,7 @@ namespace mscl
         //    The number of slots that need to be between each transmission
         uint16 slotsBetweenTx(uint32 txPerGroup, uint32 groupSize);
 
-        //Function: canHaveSlot1
+        //Function: canHaveFirstSlot
         //    Checks whether the node can be assigned slot 1 in the Sync Sampling network
         //
         //Parameters:
@@ -164,7 +165,7 @@ namespace mscl
         //
         //Returns:
         //    true if the node can be assigned slot 1, false if it cannot be assigned slot 1
-        bool canHaveSlot1(WirelessModels::NodeModel nodeModel, uint8 syncVersion);
+        bool canHaveFirstSlot(WirelessModels::NodeModel nodeModel, uint8 syncVersion);
 
         
         //==================================================================
@@ -182,7 +183,7 @@ namespace mscl
         //    The total number of bytes per burst
         uint32 totalBytesPerBurst(uint32 bytesPerSweep, uint32 numSweeps);
 
-        //Function: maxDataBytesPerPacket
+        //Function: maxBytesPerBurstPacket
         //    Gets the maximum number of bytes per packet
         //
         //Parameters:
@@ -191,7 +192,7 @@ namespace mscl
         //
         //Returns:
         //    The maximum number of bytes per packet
-        uint32 maxDataBytesPerPacket(uint32 bytesPerSweep, bool lossless);
+        uint32 maxBytesPerBurstPacket(uint32 bytesPerSweep, bool lossless);
 
         //Function: totalNeededBurstTx
         //    Calculates the total needed transmissions for bursts

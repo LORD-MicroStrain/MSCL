@@ -74,15 +74,19 @@ BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_slotSpacing)
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_maxTdmaAddress)
 {
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxTdmaAddress(4, 1), 248);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxTdmaAddress(16, 2), 120);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxTdmaAddress(4, 1, true), 248);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxTdmaAddress(16, 2, true), 120);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxTdmaAddress(128, 1, true), 1);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxTdmaAddress(128, 1, false), 8);
 }
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_percentBandwidth)
 {
-    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(0.0f), 0.0, 0.1);
-    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(4.0f), 3.128, 0.1);
-    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(8.0f), 6.256, 0.1);
+    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(0.0f, true), 0.0, 0.1);
+    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(4.0f, true), 3.128, 0.1);
+    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(8.0f, true), 6.256, 0.1);
+    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(128.0f, true), 100.097, 0.1);
+    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(128.0f, false), 100.0, 0.1);
 }
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_sampleDuration)
@@ -107,11 +111,11 @@ BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_checkSamplingDelay)
     SampleRate hz_1 = SampleRate::Hertz(1);
     SampleRate hz_256 = SampleRate::Hertz(256);
 
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::checkSamplingDelay(WirelessTypes::syncMode_continuous, hz_1, WirelessModels::node_gLink_10g), true);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::checkSamplingDelay(WirelessTypes::syncMode_continuous, hz_256, WirelessModels::node_tcLink_1ch), true);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::checkSamplingDelay(WirelessTypes::syncMode_continuous, hz_256, WirelessModels::node_shmLink), true);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::checkSamplingDelay(WirelessTypes::samplingMode_sync, hz_1, WirelessModels::node_gLink_10g), true);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::checkSamplingDelay(WirelessTypes::samplingMode_sync, hz_256, WirelessModels::node_tcLink_1ch), true);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::checkSamplingDelay(WirelessTypes::samplingMode_sync, hz_256, WirelessModels::node_shmLink), true);
 
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::checkSamplingDelay(WirelessTypes::syncMode_continuous, hz_256, WirelessModels::node_gLink_10g), false);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::checkSamplingDelay(WirelessTypes::samplingMode_sync, hz_256, WirelessModels::node_gLink_10g), false);
 }
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_slotsBetweenTx)
@@ -123,9 +127,9 @@ BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_slotsBetweenTx)
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_canHaveSlot1)
 {
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::canHaveSlot1(WirelessModels::node_sgLink, 1), true);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::canHaveSlot1(WirelessModels::node_tcLink_1ch, 1), false);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::canHaveSlot1(WirelessModels::node_tcLink_1ch, 2), true);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::canHaveFirstSlot(WirelessModels::node_sgLink, 1), true);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::canHaveFirstSlot(WirelessModels::node_tcLink_1ch, 1), false);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::canHaveFirstSlot(WirelessModels::node_tcLink_1ch, 2), true);
 }
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_totalBytesPerBurst)
@@ -136,10 +140,10 @@ BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_totalBytesPerBurst)
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_maxDataBytesPerPacket)
 {
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxDataBytesPerPacket(20, true), 80);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxDataBytesPerPacket(256, true), 0);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxDataBytesPerPacket(20, false), 80);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxDataBytesPerPacket(256, false), 0);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerBurstPacket(20, true), 80);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerBurstPacket(256, true), 0);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerBurstPacket(20, false), 80);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerBurstPacket(256, false), 0);
 }
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_totalNeededBurstTx)

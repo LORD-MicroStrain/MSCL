@@ -6,23 +6,19 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #pragma once
 
+#include "mscl/BitMask.h"
 #include "mscl/Types.h"
 
 namespace mscl
 {
     //API Class: ChannelMask
     //    Represents the channel mask (active and inactive channels) for a WirelessNode. 
-    class ChannelMask
+    class ChannelMask : public BitMask
     {
     public:
         //API Constant: MAX_CHANNELS = 16
         //    The maximum number of channels currently available on any node
         static const uint8 MAX_CHANNELS = 16;
-
-    private:
-        //Variable: m_channels[MAX_CHANNELS]
-        //    An array of bools representing whether a channel is active or not
-        bool m_channels[MAX_CHANNELS];
 
     public:
         //API Constructor: ChannelMask
@@ -35,22 +31,6 @@ namespace mscl
         //API Constructor: ChannelMask
         //    The default constructor for creating an ChannelMask object, which sets all the channels to inactive
         ChannelMask();
-
-        //API Operator: ==
-        //    Equal operator for comparing ChannelMasks.
-        bool operator==(const ChannelMask& other) const;
-
-        //API Operator: !=
-        //    Not Equal operator for comparing ChannelMasks.
-        bool operator!=(const ChannelMask& other) const;
-
-        //API Operator: <
-        //    Less Than operator for comparing ChannelMasks.
-        bool operator<(const ChannelMask& other) const;
-
-        //API Operator: >
-        //    Greater Than operator for comparing ChannelMasks.
-        bool operator>(const ChannelMask& other) const;
 
         //API Function: fromMask
         //    Initializes the ChannelMask object from a channel mask
@@ -99,7 +79,4 @@ namespace mscl
         //    The channel number (ch1 = 1, ch16 = 16) of the last channel enabled. 0 if no channels are enabled.
         uint8 lastChEnabled() const;
     };
-
-    //Typedef for a vector of <ChannelMask> objects.
-    typedef std::vector<ChannelMask> ChannelMasks;
 }

@@ -24,8 +24,8 @@ namespace mscl
         NodeFeatures_vlink2(const NodeInfo& info);
 
     public:
-        //Function: sampleRates
-        //    Gets a list of the <WirelessTypes::WirelessSampleRate>s that are supported by this Node for the given sampling mode.
+        virtual const WirelessTypes::SamplingModes samplingModes() const override;
+
         virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode) const override;
     };
 }

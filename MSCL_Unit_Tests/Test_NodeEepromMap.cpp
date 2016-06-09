@@ -49,4 +49,59 @@ BOOST_AUTO_TEST_CASE(NodeEepromMap_getOffsetEeprom)
     BOOST_CHECK_EQUAL(offset7.valueType(), NodeEepromMap::CH_ACTION_OFFSET_7.valueType());
 }
 
+BOOST_AUTO_TEST_CASE(NodeEepromMap_getEventTriggerEeproms)
+{
+    EepromLocation ch = NodeEepromMap::EVENT_SRC_1;
+    EepromLocation type = NodeEepromMap::EVENT_OPER_1;
+    EepromLocation val = NodeEepromMap::EVENT_VAL1_1;
+
+    //Trigger 3
+    NodeEepromMap::getEventTriggerEeproms(2, ch, type, val);
+    BOOST_CHECK_EQUAL(ch.id(), NodeEepromMap::EVENT_SRC_3.id());
+    BOOST_CHECK_EQUAL(ch.location(), NodeEepromMap::EVENT_SRC_3.location());
+    BOOST_CHECK_EQUAL(ch.valueType(), NodeEepromMap::EVENT_SRC_3.valueType());
+    BOOST_CHECK_EQUAL(type.id(), NodeEepromMap::EVENT_OPER_3.id());
+    BOOST_CHECK_EQUAL(type.location(), NodeEepromMap::EVENT_OPER_3.location());
+    BOOST_CHECK_EQUAL(type.valueType(), NodeEepromMap::EVENT_OPER_3.valueType());
+    BOOST_CHECK_EQUAL(val.id(), NodeEepromMap::EVENT_VAL1_3.id());
+    BOOST_CHECK_EQUAL(val.location(), NodeEepromMap::EVENT_VAL1_3.location());
+    BOOST_CHECK_EQUAL(val.valueType(), NodeEepromMap::EVENT_VAL1_3.valueType());
+
+    //Trigger 1
+    NodeEepromMap::getEventTriggerEeproms(0, ch, type, val);
+    BOOST_CHECK_EQUAL(ch.id(), NodeEepromMap::EVENT_SRC_1.id());
+    BOOST_CHECK_EQUAL(ch.location(), NodeEepromMap::EVENT_SRC_1.location());
+    BOOST_CHECK_EQUAL(ch.valueType(), NodeEepromMap::EVENT_SRC_1.valueType());
+    BOOST_CHECK_EQUAL(type.id(), NodeEepromMap::EVENT_OPER_1.id());
+    BOOST_CHECK_EQUAL(type.location(), NodeEepromMap::EVENT_OPER_1.location());
+    BOOST_CHECK_EQUAL(type.valueType(), NodeEepromMap::EVENT_OPER_1.valueType());
+    BOOST_CHECK_EQUAL(val.id(), NodeEepromMap::EVENT_VAL1_1.id());
+    BOOST_CHECK_EQUAL(val.location(), NodeEepromMap::EVENT_VAL1_1.location());
+    BOOST_CHECK_EQUAL(val.valueType(), NodeEepromMap::EVENT_VAL1_1.valueType());
+
+    //Trigger 7
+    NodeEepromMap::getEventTriggerEeproms(6, ch, type, val);
+    BOOST_CHECK_EQUAL(ch.id(), NodeEepromMap::EVENT_SRC_7.id());
+    BOOST_CHECK_EQUAL(ch.location(), NodeEepromMap::EVENT_SRC_7.location());
+    BOOST_CHECK_EQUAL(ch.valueType(), NodeEepromMap::EVENT_SRC_7.valueType());
+    BOOST_CHECK_EQUAL(type.id(), NodeEepromMap::EVENT_OPER_7.id());
+    BOOST_CHECK_EQUAL(type.location(), NodeEepromMap::EVENT_OPER_7.location());
+    BOOST_CHECK_EQUAL(type.valueType(), NodeEepromMap::EVENT_OPER_7.valueType());
+    BOOST_CHECK_EQUAL(val.id(), NodeEepromMap::EVENT_VAL1_7.id());
+    BOOST_CHECK_EQUAL(val.location(), NodeEepromMap::EVENT_VAL1_7.location());
+    BOOST_CHECK_EQUAL(val.valueType(), NodeEepromMap::EVENT_VAL1_7.valueType());
+
+    //Trigger 8
+    NodeEepromMap::getEventTriggerEeproms(7, ch, type, val);
+    BOOST_CHECK_EQUAL(ch.id(), NodeEepromMap::EVENT_SRC_8.id());
+    BOOST_CHECK_EQUAL(ch.location(), NodeEepromMap::EVENT_SRC_8.location());
+    BOOST_CHECK_EQUAL(ch.valueType(), NodeEepromMap::EVENT_SRC_8.valueType());
+    BOOST_CHECK_EQUAL(type.id(), NodeEepromMap::EVENT_OPER_8.id());
+    BOOST_CHECK_EQUAL(type.location(), NodeEepromMap::EVENT_OPER_8.location());
+    BOOST_CHECK_EQUAL(type.valueType(), NodeEepromMap::EVENT_OPER_8.valueType());
+    BOOST_CHECK_EQUAL(val.id(), NodeEepromMap::EVENT_VAL1_8.id());
+    BOOST_CHECK_EQUAL(val.location(), NodeEepromMap::EVENT_VAL1_8.location());
+    BOOST_CHECK_EQUAL(val.valueType(), NodeEepromMap::EVENT_VAL1_8.valueType());
+}
+
 BOOST_AUTO_TEST_SUITE_END()

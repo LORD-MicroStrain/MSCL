@@ -125,6 +125,10 @@ namespace mscl
         //    - std::out_of_range: The index requested is out of range
         uint8 peekByte();
 
+        //Function: skipBytes
+        //    Moves the read pointer forward the requested number of bytes
+        void skipBytes(std::size_t numBytesToSkip);
+
         //Function: read_int8
         //    Reads the next 1-byte signed integer from the buffer
         //
@@ -174,6 +178,16 @@ namespace mscl
         //Exceptions:
         //    - std::out_of_range: The index requested is out of range
         uint32 read_uint32();
+
+        //Function: read_uint64
+        //    Reads the next 8-byte unsigned integer from the buffer
+        //
+        //Returns:
+        //    The next uint364 in the buffer, based on its current position
+        //
+        //Exceptions:
+        //    - std::out_of_range: The index requested is out of range
+        uint64 read_uint64();
 
         //Function: read_float
         //    Reads the next 4-byte float from the buffer

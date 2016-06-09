@@ -5,6 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "ShortPing.h"
+#include "WirelessProtocol.h"
 #include "mscl/MicroStrain/ByteStream.h"
 
 
@@ -14,7 +15,7 @@ namespace mscl
     {
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint8(0x02);            
+        cmd.append_uint8(WirelessProtocol::cmdId_shortPing);
         cmd.append_uint16(nodeAddress);    //Node address    (2 bytes)
 
         return cmd;
@@ -49,7 +50,7 @@ namespace mscl
             m_success = false;
         }
         //single byte 0x02 is a success response
-        else if(resultByte == 0x02)
+        else if(resultByte == WirelessProtocol::cmdId_shortPing)
         {
             //success response
             m_success = true;

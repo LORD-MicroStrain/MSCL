@@ -51,6 +51,8 @@ namespace mscl
     const EepromLocation NodeEepromMap::HW_GAIN_2                      (130, valueType_uint16);
     const EepromLocation NodeEepromMap::HW_GAIN_3                      (132, valueType_uint16);
     const EepromLocation NodeEepromMap::HW_GAIN_4                      (134, valueType_uint16);
+    const EepromLocation NodeEepromMap::FLASH_ID                       (136, valueType_uint16);
+    const EepromLocation NodeEepromMap::STORAGE_LIMIT_MODE             (138, valueType_uint16);
     const EepromLocation NodeEepromMap::CH_ACTION_ID_1                 (150, valueType_uint16);
     const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_1              (152, valueType_float);
     const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_1             (156, valueType_float);
@@ -89,8 +91,9 @@ namespace mscl
     const EepromLocation NodeEepromMap::MAX_RETRANS_BURST              (276, valueType_uint16);
     const EepromLocation NodeEepromMap::REGION_CODE                    (280, valueType_uint16);
     const EepromLocation NodeEepromMap::DATA_PACKET_FORMAT             (292, valueType_uint16);
+    const EepromLocation NodeEepromMap::DIAGNOSTIC_INTERVAL            (300, valueType_uint16);
     const EepromLocation NodeEepromMap::EVENT_SAMPLE_RATE              (328, valueType_uint16);
-    const EepromLocation NodeEepromMap::EVENT_CHANNEL_MASK             (330, valueType_uint16);
+    const EepromLocation NodeEepromMap::EVENT_TRIGGER_MASK             (330, valueType_uint16);
     const EepromLocation NodeEepromMap::EVENT_PRE_DURATION             (332, valueType_uint16);
     const EepromLocation NodeEepromMap::EVENT_POST_DURATION            (334, valueType_uint16);
     const EepromLocation NodeEepromMap::EVENT_SRC_1                    (336, valueType_uint16);
@@ -125,7 +128,10 @@ namespace mscl
     const EepromLocation NodeEepromMap::EVENT_OPER_8                   (394, valueType_uint16);
     const EepromLocation NodeEepromMap::EVENT_VAL1_8                   (396, valueType_uint16);
     const EepromLocation NodeEepromMap::EVENT_VAL2_8                   (398, valueType_uint16);
-    const EepromLocation NodeEepromMap::CHANNEL_FILTER                 (440, valueType_uint16);
+    const EepromLocation NodeEepromMap::LOW_PASS_FILTER_1              (440, valueType_uint16);
+    const EepromLocation NodeEepromMap::LOW_PASS_FILTER_2              (442, valueType_uint16);
+    const EepromLocation NodeEepromMap::LOW_PASS_FILTER_3              (444, valueType_uint16);
+    const EepromLocation NodeEepromMap::LOW_PASS_FILTER_4              (446, valueType_uint16);
     const EepromLocation NodeEepromMap::MIN_SOFT_VER_MAJOR             (480, valueType_uint16);
     const EepromLocation NodeEepromMap::MIN_SOFT_VER_MINOR             (482, valueType_uint16);
     const EepromLocation NodeEepromMap::HW_OFFSET_5                    (504, valueType_uint16);
@@ -218,5 +224,24 @@ namespace mscl
         static const uint16 idDiff = CH_ACTION_OFFSET_1.id() - CH_ACTION_SLOPE_1.id();
 
         return EepromLocation(slopeEeprom.id() + idDiff, slopeEeprom.location() + eepromDiff, CH_ACTION_OFFSET_1.valueType());
+    }
+
+    void NodeEepromMap::getEventTriggerEeproms(uint8 triggerIndex, EepromLocation& channel, EepromLocation& type, EepromLocation& value)
+    {
+        //difference between trigger groups
+        const uint16 eepromDiff = (EVENT_SRC_2.location() - EVENT_SRC_1.location()) * triggerIndex;
+
+        //difference between trigger ids
+        const uint16 idDiff = (EVENT_SRC_2.id() - EVENT_SRC_1.id()) * triggerIndex;
+
+        //build the eeproms using the offsets
+        EepromLocation channelEeprom(EVENT_SRC_1.id() + idDiff, EVENT_SRC_1.location() + eepromDiff, EVENT_SRC_1.valueType());
+        EepromLocation typeEeprom(EVENT_OPER_1.id() + idDiff, EVENT_OPER_1.location() + eepromDiff, EVENT_OPER_1.valueType());
+        EepromLocation valueEeprom(EVENT_VAL1_1.id() + idDiff, EVENT_VAL1_1.location() + eepromDiff, EVENT_VAL1_1.valueType());
+
+        //reassign the results
+        channel = channelEeprom;
+        type = typeEeprom;
+        value = valueEeprom;
     }
 }

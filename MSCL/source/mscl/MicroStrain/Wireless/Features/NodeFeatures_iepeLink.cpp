@@ -19,10 +19,13 @@ namespace mscl
         addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
         addCalCoeffChannelGroup(4, NodeEepromMap::CH_ACTION_SLOPE_4, NodeEepromMap::CH_ACTION_ID_4);
 
+        static const ChannelMask CH1(BOOST_BINARY(00000001)); //ch1
+        m_channelGroups.emplace_back(CH1, "Accel Channel 1", ChannelGroup::SettingsMap{{WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1}});
+
         //Channels
         //    Note: Channel 4 is unique in that it doesn't follow the sample rate of the node. 
         //          Instead, it is sent once every burst, with a provided sample rate of once every 24 hours.
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_acceleration);    //accel
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_acceleration);   //accel
         m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_temperature);    //temp    
     }
 
@@ -63,6 +66,24 @@ namespace mscl
         default:
             throw Error("Invalid SamplingMode");
         }
+    }
+
+    const WirelessTypes::Filters NodeFeatures_iepeLink::lowPassFilters() const
+    {
+        static const WirelessTypes::Filters filters = {
+            {WirelessTypes::filter_33000hz},
+            {WirelessTypes::filter_20000hz},
+            {WirelessTypes::filter_10000hz},
+            {WirelessTypes::filter_5000hz},
+            {WirelessTypes::filter_2000hz},
+            {WirelessTypes::filter_1000hz},
+            {WirelessTypes::filter_500hz},
+            {WirelessTypes::filter_200hz},
+            {WirelessTypes::filter_100hz},
+            {WirelessTypes::filter_50hz},
+            {WirelessTypes::filter_26hz}
+        };
+        return filters;
     }
 
     uint32 NodeFeatures_iepeLink::maxSweepsPerBurst(WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const

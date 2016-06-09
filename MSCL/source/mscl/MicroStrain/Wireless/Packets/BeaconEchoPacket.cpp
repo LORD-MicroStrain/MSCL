@@ -45,6 +45,8 @@ namespace mscl
         sweep.nodeRssi(m_nodeRSSI);
         sweep.baseRssi(m_baseRSSI);
 
+        sweep.calApplied(true);
+
         ChannelData chData;
 
         //build the current beacon timestamp

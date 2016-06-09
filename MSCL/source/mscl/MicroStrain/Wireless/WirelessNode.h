@@ -10,9 +10,11 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Commands/LongPing.h"
 #include "Configuration/ActivitySense.h"
 #include "Configuration/ConfigIssue.h"
+#include "Configuration/EventTriggerOptions.h"
 #include "Configuration/FatigueOptions.h"
 #include "Configuration/HistogramOptions.h"
 #include "mscl/Version.h"
+#include "mscl/BitMask.h"
 #include "ChannelMask.h"
 #include "BaseStation.h"
 #include "RadioFeatures.h"
@@ -93,11 +95,13 @@ namespace mscl
 
         //API Function: lastCommunicationTime
         //    Gets the <Timestamp> for the last time MSCL communicated with the Node.
-        //    Note: This is per BaseStation. If the parent BaseStation is changed, the last communication time will be reset.
-        //    Note: EEPROM reads using the cache, and data collection, will not update this timestamp.
+        //    Note: EEPROM reads using the cache will not update this timestamp.
         //
         //Returns:
-        //    A <Timestamp> representing the last time MSCL communicated with the Node. This will be a Timestamp of 0 if never communicated with.
+        //    A <Timestamp> representing the last time MSCL communicated with the Node.
+        //
+        //Exceptions:
+        //  - <Error_NoData>: There is no communication time logged for this Node.
         const Timestamp& lastCommunicationTime() const;
 
         //API Function: setBaseStation
@@ -693,6 +697,22 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint16 getHardwareOffset(const ChannelMask& mask) const;
 
+        //API Function: getLowPassFilter
+        //    Reads the Low Pass Filter of the specified <ChannelMask> currently set on the Node.
+        //    See Also: <NodeFeatures::channelGroups>, <NodeFeatures::supportsLowPassFilter>
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> of the low pass filter to read.
+        //
+        //Returns:
+        //    The Low Pass <WirelessTypes::Filter> currently set on the Node for the <ChannelMask>.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Low Pass Filter is not supported for the provided <ChannelMask>.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::Filter getLowPassFilter(const ChannelMask& mask) const;
+
         //API Function: getGaugeFactor
         //    Reads the gauge factor of the specified <ChannelMask> currently set on the Node.
         //    See Also: <NodeFeatures::channelGroups>, <NodeFeatures::supportsGaugeFactor>
@@ -825,6 +845,45 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to read from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         ActivitySense getActivitySense() const;
+
+        //API Function: getEventTriggerOptions
+        //  Reads the <EventTriggerOptions> currently set on the Node.
+        //  See Also: <NodeFeatures::supportsEventTrigger>
+        //
+        //Returns:
+        //  The <EventTriggerOptions> currently set on the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Event Triggering is not supported by this Node.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        EventTriggerOptions getEventTriggerOptions() const;
+
+        //API Function: getDiagnosticInterval
+        //  Reads the interval (in seconds) at which the diagnostic info is configured to be sent.
+        //  See Also: <NodeFeatures::supportsDiagnosticInfo>
+        //
+        //Returns:
+        //  The interval (in seconds) at which the diagnostic info is sent. 0 is disabled.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Diagnostic Info is not supported by this Node.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        uint16 getDiagnosticInterval() const;
+
+        //API Function: getStorageLimitMode
+        //  Rates the <WirelessTypes::StorageLimitMode> that the Node is configured for.
+        //  This determines what happens when the datalogging storage limit is reached on the Node.
+        //
+        //Returns:
+        //  The <WirelessTypes::StorageLimitMode> that the Node is configured for.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Storage Limit Mode (or datalogging) is not supported by this Node.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::StorageLimitMode getStorageLimitMode() const;
     };
 
 }

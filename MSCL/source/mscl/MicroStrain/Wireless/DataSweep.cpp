@@ -17,11 +17,12 @@ namespace mscl
         m_samplingMode(samplingType_SyncSampling),
         m_nodeRssi(0),
         m_baseRssi(0),
-        m_frequency(WirelessTypes::freq_unknown)
+        m_frequency(WirelessTypes::freq_unknown),
+        m_calsApplied(true)
     {
     }
 
-    Timestamp DataSweep::timestamp() const
+    const Timestamp& DataSweep::timestamp() const
     {
         return m_timestamp;
     }
@@ -29,11 +30,6 @@ namespace mscl
     void DataSweep::timestamp(const Timestamp& time)
     {
         m_timestamp = time;
-    }
-
-    uint64 DataSweep::nanoseconds() const
-    {
-        return m_timestamp.nanoseconds();
     }
 
     uint32 DataSweep::tick() const
@@ -56,12 +52,12 @@ namespace mscl
         m_sampleRate = rate;
     }
 
-    NodeAddress DataSweep::nodeAddress() const
+    uint32 DataSweep::nodeAddress() const
     {
         return m_nodeAddress;
     }
 
-    void DataSweep::nodeAddress(NodeAddress address)
+    void DataSweep::nodeAddress(uint32 address)
     {
         m_nodeAddress = address;
     }
@@ -114,5 +110,15 @@ namespace mscl
     void DataSweep::frequency(WirelessTypes::Frequency freq)
     {
         m_frequency = freq;
+    }
+
+    bool DataSweep::calApplied() const
+    {
+        return m_calsApplied;
+    }
+
+    void DataSweep::calApplied(bool applied)
+    {
+        m_calsApplied = applied;
     }
 }

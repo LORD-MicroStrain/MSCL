@@ -746,4 +746,55 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_fatigueDistAngles)
     BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_FATIGUE_DIST_NUM_ANGLES);
 }
 
+BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_eventTrigger)
+{
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl());
+    BaseStation b = makeBaseStationWithMockImpl();
+    WirelessNode node(123, b);
+    node.setImpl(impl);
+
+    std::unique_ptr<NodeFeatures> features;
+    expectNodeFeatures(features, impl, WirelessModels::node_bladeImpactLink);
+
+    EventTriggerOptions opts;
+    opts.triggerMask(BitMask(0));
+
+    WirelessNodeConfig c;
+    c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
+    c.activeChannels(ChannelMask(1));
+    c.numSweeps(1000);
+    c.dataFormat(WirelessTypes::dataFormat_4byte_float);
+    c.unlimitedDuration(true);
+
+    ConfigIssues issues;
+
+    //test good sampling mode with triggers disabled
+    c.eventTriggerOptions(opts);
+    c.samplingMode(WirelessTypes::samplingMode_sync);
+   
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
+
+    //test good sampling mode with triggers enabled
+    opts.triggerMask(BitMask(2));
+    c.eventTriggerOptions(opts);
+    c.samplingMode(WirelessTypes::samplingMode_nonSyncEvent);
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
+
+    //test bad sampling mode with triggers enabled
+    opts.triggerMask(BitMask(1));
+    c.eventTriggerOptions(opts);
+    c.samplingMode(WirelessTypes::samplingMode_sync);
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+    BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_EVENT_TRIGGER_MASK);
+    issues.clear();
+
+    //test bad sampling mode with triggers disabled
+    opts.triggerMask(BitMask(0));
+    c.eventTriggerOptions(opts);
+    c.samplingMode(WirelessTypes::samplingMode_syncEvent);
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+    BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_EVENT_TRIGGER_MASK);
+    issues.clear();
+}
+
 BOOST_AUTO_TEST_SUITE_END()

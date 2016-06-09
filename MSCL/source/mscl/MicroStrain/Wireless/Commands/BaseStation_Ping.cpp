@@ -6,6 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "stdafx.h"
 
 #include "BaseStation_Ping.h"
+#include "WirelessProtocol.h"
 
 namespace mscl
 {
@@ -14,7 +15,7 @@ namespace mscl
     {
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint8(0x01);
+        cmd.append_uint8(WirelessProtocol::cmdId_basePing);
 
         return cmd;
     }
@@ -40,7 +41,7 @@ namespace mscl
         ReadBufferSavePoint savePoint(&data);
 
         //single byte response of 0x01
-        if(data.read_uint8() != 0x01)
+        if(data.read_uint8() != WirelessProtocol::cmdId_basePing)
         {
             //not a good response
             m_success = false;
