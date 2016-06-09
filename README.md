@@ -1,9 +1,9 @@
-In most cases, you don't need to build MSCL from source. Simply [download the latest pre-built binaries (1.32.0)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v1.32.0/MSCL_1.32.0.zip). 
+In most cases, you don't need to build MSCL from source. Simply [download the latest pre-built binaries (4.3.1)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v4.3.1/MSCL_4.3.1.zip). 
 
 If you want to build MSCL from source, see the [Build ReadMe](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme.md).
 
 ### What is MSCL?
-MSCL is the MicroStrain Communication Library, developed by [LORD Microstrain Sensing Systems](http://microstrain.com) in Williston, VT. It was created to make it simple to interact with our [wireless](http://www.microstrain.com/wireless/sensors) and [wired](http://www.microstrain.com/inertial) sensors.
+MSCL is the MicroStrain Communication Library, developed by [LORD Sensing - Microstrain](http://microstrain.com) in Williston, VT. It was created to make it simple to interact with our [wireless](http://www.microstrain.com/wireless/sensors) and [wired](http://www.microstrain.com/inertial) sensors.
 
 ### Programming Languages
 MSCL is written in C++, but by using [SWIG](http://swig.org/) we are able to wrap it into a variety of languages.
