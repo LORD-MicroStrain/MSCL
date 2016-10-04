@@ -549,7 +549,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_node_autocal_fail)
     connImpl->setResponseBytes(data);
 
     AutoCalResult_shmLink result;
-    BOOST_CHECK_EQUAL(base.node_autocal(327, WirelessModels::node_shmLink2, Version(9,0), result), false);
+    BOOST_CHECK_EQUAL(base.node_autocal_shm(327, result), false);
 
     BOOST_CHECK_EQUAL(result.completionFlag(), WirelessTypes::autocal_notComplete);
 }
@@ -603,7 +603,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_node_autocal_success)
     connImpl->setResponseBytesWithDelay(responses, 2000);
 
     AutoCalResult_shmLink result;
-    BOOST_CHECK_EQUAL(base.node_autocal(327, WirelessModels::node_shmLink2, Version(9, 0), result), true);
+    BOOST_CHECK_EQUAL(base.node_autocal_shm(327, result), true);
 
     BOOST_CHECK_EQUAL(result.completionFlag(), WirelessTypes::autocal_success);
 }

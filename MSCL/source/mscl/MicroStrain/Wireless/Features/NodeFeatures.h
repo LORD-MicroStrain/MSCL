@@ -27,9 +27,11 @@ namespace mscl
     //    Contains information on which features are supported by a <WirelessNode>.
     class NodeFeatures
     {
-        friend class WirelessNode_Impl;
+        friend class DatalogDownloader;
         friend class NodeEepromHelper;
         friend class WirelessNodeConfig;
+        friend class WirelessNode_Impl;
+        friend class WirelessProtocol;
 
     private:
         NodeFeatures();                                    //disabled default constructor
@@ -38,6 +40,17 @@ namespace mscl
 
     public:
         virtual ~NodeFeatures() {};
+
+    private:
+        //Wireless Node FW version to ASPP version lookup
+        static const Version MIN_NODE_FW_PROTOCOL_1_5;
+        static const Version MIN_NODE_FW_PORTOCOL_1_4;
+        static const Version MIN_NODE_FW_PROTOCOL_1_2;
+        static const Version MIN_NODE_FW_PROTOCOL_1_1;
+
+        //Base Station FW version to ASPP version lookup
+        static const Version MIN_BASE_FW_PROTOCOL_1_3;
+        static const Version MIN_BASE_FW_PROTOCOL_1_1;
 
     protected:
         //Constructor: NodeFeatures
@@ -52,7 +65,7 @@ namespace mscl
         NodeInfo m_nodeInfo;
 
         //Variable: m_channels
-        //    Contains all of the supported channels for this Node..
+        //    Contains all of the supported channels for this Node.
         WirelessChannels m_channels;
 
         //Variable: m_channelGroups
@@ -177,6 +190,19 @@ namespace mscl
         //    A <ChannelGroups> container containing each group supported by this Node.
         ChannelGroups channelGroups() const;
 
+        //API Function: channelType
+        //  Gets the <WirelessTypes::ChannelType> for the requested channel number.
+        //
+        //Parameters:
+        //  channelNumber - The channel number to find the type for (ch1 = 1, ch8 = 8).
+        //
+        //Returns:
+        //  The <WirelessTypes::ChannelType> for the requested channel number.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: The channel number is not supported by this Node.
+        WirelessTypes::ChannelType channelType(uint8 channelNumber) const;
+
         //API Function: supportsChannelSetting
         //    Checks if the Node supports a given <WirelessTypes::ChannelGroupSetting> for the given <ChannelMask>.
         //
@@ -188,12 +214,12 @@ namespace mscl
         //    true if the <WirelessTypes::ChannelGroupSetting> is supported for the <ChannelMask>, false otherwise.
         bool supportsChannelSetting(WirelessTypes::ChannelGroupSetting setting, const ChannelMask& mask) const;
 
-        //API Function: supportsHardwareGain
-        //    Checks if the Node supports Hardware Gain for any of its <ChannelGroups>.
+        //API Function: supportsInputRange
+        //    Checks if the Node supports Input Range for any of its <ChannelGroups>.
         //    
         //Returns:
-        //    true if the Node supports Hardware Gain for at least one <ChannelGroup>, false otherwise.
-        bool supportsHardwareGain() const;
+        //    true if the Node supports Input Range for at least one <ChannelGroup>, false otherwise.
+        bool supportsInputRange() const;
 
         //API Function: supportsHardwareOffset
         //    Checks if the Node supports Hardware Offset for any of its <ChannelGroups>.
@@ -202,12 +228,12 @@ namespace mscl
         //    true if the Node supports Hardware Offset for at least one <ChannelGroup>, false otherwise.
         bool supportsHardwareOffset() const;
 
-        //API Function: supportsLowPassFilter
-        //  Checks if the Node supports Low Pass Filter for any of its <ChannelGroups>.
+        //API Function: supportsAntiAliasingFilter
+        //  Checks if the Node supports Anti-Aliasing Filter for any of its <ChannelGroups>.
         //
         //Returns:
-        //  true if the Node supports Low Pass Filter for at least one <ChannelGroup>, false otherwise.
-        bool supportsLowPassFilter() const;
+        //  true if the Node supports Anti-Aliasing Filter for at least one <ChannelGroup>, false otherwise.
+        bool supportsAntiAliasingFilter() const;
 
         //API Function: supportsGaugeFactor
         //    Checks if the Node supports Gauge Factor for any of its <ChannelGroups>.
@@ -307,12 +333,12 @@ namespace mscl
         //    true if the Node supports Auto Balance for at least 1 <ChannelGroup>, false otherwise.
         virtual bool supportsAutoBalance() const;
 
-        //API Function: supportsShuntCal
-        //  Checks if the Node supports Shunt Cal for any of its <ChannelGroups>.
+        //API Function: supportsLegacyShuntCal
+        //  Checks if the Node supports the legacy Shunt Cal for any of its <ChannelGroups>.
         //
         //Returns:
         //  true if the Node supports Shunt Cal for at least 1 <ChannelGroup>, false otherwise.
-        virtual bool supportsShuntCal() const;
+        virtual bool supportsLegacyShuntCal() const;
 
         //API Function: supportsAutoCal
         //    Checks if the Node supports the AutoCal commands.
@@ -320,6 +346,13 @@ namespace mscl
         //Returns:
         //    true if the Node supports an AutoCal command, false otherwise.
         virtual bool supportsAutoCal() const;
+
+        //API Function: supportsAutoShuntCal
+        //  Checks if the Node supports AutoShuntCal on any of this <ChannelGroups>.
+        //
+        //Returns:
+        //  true if the Node supports Auto Shunt Cal for at least 1 <ChannelGroup>, false otherwise.
+        virtual bool supportsAutoShuntCal() const;
 
         //API Function: supportsLimitedDuration
         //    Checks if the Node supports setting a limited duration of sampling.
@@ -349,6 +382,20 @@ namespace mscl
         //  true if the Node can store logged data, false otherwise.
         virtual bool supportsLoggedData() const;
 
+        //API Function: supportsSensorDelayConfig
+        //  Checks if the Node supports configuration of sensor delay.
+        //
+        //Returns:
+        //  true if the Node supports configuration of sensor delay, false otherwise.
+        virtual bool supportsSensorDelayConfig() const;
+
+        //API Function: supportsSensorDelayAlwaysOn
+        //  Checks if the Node supports setting the sensor delay value to "Always On."
+        //
+        //Returns:
+        //  true if the Node supports setting the sensor delay to "Always On", false otherwise
+        virtual bool supportsSensorDelayAlwaysOn() const;
+
         //API Function: supportsChannel
         //    Checks if a specific channel is supported (can be enabled) by this Node.
         //
@@ -375,10 +422,11 @@ namespace mscl
         //Parameters:
         //    sampleRate - The <WirelessTypes::WirelessSampleRate> to check if supported.
         //    samplingMode - The <WirelessTypes::SamplingMode> to check if the sample rate is supported for.
+        //    dataCollectionMethod - The <WirelessTypes::DataCollectionMethod dataCollectionMethod> to check if the sample rate is supported for.
         //
         //Returns:
         //    true if the sample rate is supported for the given sampling mode, false otherwise.
-        bool supportsSampleRate(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::SamplingMode samplingMode) const;
+        bool supportsSampleRate(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const;
 
         //API Function: supportsDataFormat
         //    Checks if a <WirelessTypes::DataFormat> is supported by this Node.
@@ -430,23 +478,54 @@ namespace mscl
         //    true if the fatigue mode is supported, false otherwise.
         bool supportsFatigueMode(WirelessTypes::FatigueMode mode) const;
 
-        //API Function: supportsCentisecondEventDuration
-        //  Checks if the node configures event duration in 10s of milliseconds or not.
+        //API function: supportsInputRange
+        //  Checks if a <WirelessTypes::InputRange> is supported by this Node for the given <ChannelMask>.
+        //
+        //Parameters:
+        //  range - The <WirelessTypes::InputRange> to check if supported.
+        //  channels - The <ChannelMask> to check for.
         //
         //Returns:
-        //  true if the node uses 10s of milliseconds for event duration, false if it uses seconds for event duration.
+        //  true if the input range is supported, false if it is not.
+        bool supportsInputRange(WirelessTypes::InputRange range, const ChannelMask& channels) const;
+
+        //API Function: supportsCentisecondEventDuration
+        //  Checks if the Node configures event duration in 10s of milliseconds or not.
+        //
+        //Returns:
+        //  true if the Node uses 10s of milliseconds for event duration, false if it uses seconds for event duration.
         virtual bool supportsCentisecondEventDuration() const;
 
+        //API Function: supportsGetDiagnosticInfo
+        //  Checks if the Node supports the Get Diagnostic Info command.
+        //
+        //Returns:
+        //  true if the Get Diagnostic Info command is supported, false if it is not.
+        virtual bool supportsGetDiagnosticInfo() const;
+
+        //API Function: supportsNonSyncLogWithTimestamps
+        //  Checks if the Node supports the version of Non-Sync Sampling that will add timestamps when logging.
+        //  If the Node does not support this, when downloading logged data from the Node, no timestamp information will be given.
+        //
+        //Returns:
+        //  true if the Node supports Non-Sync logging with timestamps.
+        virtual bool supportsNonSyncLogWithTimestamps() const;
+
         //API Function: maxSampleRate
-        //    Gets the maximum <SampleRate> value that is supported by this Node with the given <SamplingMode> and <ChannelMask>.
+        //    Gets the maximum <SampleRate> value that is supported by this Node with the given <SamplingMode>, <ChannelMask>, and <WirelessTypes::DataCollectionMethod>.
         //
         //Parameters:
         //    samplingMode - The <WirelessTypes::SamplingMode> to check the max sample rate for.
         //    channels - The <ChannelMask> to check the max sample rate for.
+        //    dataCollectionMethod - The <WirelessTypes::DataCollectionMethod> to check the max sample rate for.
         //
         //Returns:
         //    The max <WirelessTypes::WirelessSampleRate> that is supported by this Node with the given <WirelessTypes::SamplingMode> and <ChannelMask>.
-        virtual WirelessTypes::WirelessSampleRate maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels) const;
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The <WirelessTypes::SamplingMode> is not supported by this Node.
+        //                            The <WirelessTypes::DataCollectionMethod> is not supported by this Node.
+        virtual WirelessTypes::WirelessSampleRate maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod) const;
 
         //API Function: maxSampleRateForSettlingTime
         //  Gets the maximum <SampleRate> value that is supported by this Node with the given <WirelessTypes::SettlingTime>.
@@ -454,13 +533,14 @@ namespace mscl
         //Parameters:
         //  filterSettlingTime - The <WirelessTypes::SettlingTime> to check the max sample rate for.
         //  samplingMode - The <WirelessTypes::SamplingMode> that the Node will be in for determining sample rates.
+        //  dataCollectionMethod - The <WirelessTypes::DataCollectionMethod> that the Node will be set for in determining sample rates.
         //
         //Returns:
         //    The max <WirelessTypes::WirelessSampleRate> that is supported by this Node with the given <WirelessTypes::SettlingTime>.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The Filter Settling Time feature is not supported by this Node.
-        virtual WirelessTypes::WirelessSampleRate maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode) const;
+        virtual WirelessTypes::WirelessSampleRate maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const;
 
         //API Function: maxFilterSettlingTime
         //    Gets the maximum <WirelessTypes::SettlingTime> available for the given <SampleRate>.
@@ -566,19 +646,25 @@ namespace mscl
         //    A <TimeSpan> representing the minimum time that can be assigned for a Burst Sync Sampling session.
         TimeSpan minTimeBetweenBursts(WirelessTypes::DataFormat dataFormat, const ChannelMask& channels, const SampleRate& sampleRate, uint32 sweepsPerBurst) const;
 
-        //API Function: minHardwareGain
-        //    Gets the minimum hardware gain value that is supported.
+        //API Function: minSensorDelay
+        //  Gets the minimum sensor delay value (in microseconds) that is supported.
+        //
+        //Returns:
+        //  The minimum sensor delay value, in microseconds.
         //
         //Exceptions:
-        //    - <Error_NotSupported>: The hardware gain feature is not supported by this Node.
-        double minHardwareGain() const;
+        //  - <Error_NotSupported>: The sensor delay feature is not supported by this Node.
+        uint32 minSensorDelay() const;
 
-        //API Function: maxHardwareGain
-        //    Gets the maximum hardware gain value that is supported.
+        //API Function: maxSensorDelay
+        //  Gets the maximum sensor delay value (in microseconds) that is supported.
+        //
+        //Returns:
+        //  The maximum sensor delay value, in microseconds.
         //
         //Exceptions:
-        //    - <Error_NotSupported>: The hardware gain feature is not supported by this Node.
-        double maxHardwareGain() const;
+        //  - <Error_NotSupported>: The sensor delay feature is not supported by this Node.
+        uint32 maxSensorDelay() const;
 
         //API Function: maxEventTriggerTotalDuration
         //  Gets the max event trigger duration (in milliseconds) that can be applied for both the pre and post event durations (combined).
@@ -590,7 +676,7 @@ namespace mscl
         uint32 maxEventTriggerTotalDuration(WirelessTypes::DataFormat dataFormat, const ChannelMask& channels, const SampleRate& sampleRate) const;
 
         //API Function: normalizeEventDuration
-        //  Normalizes the Event Trigger duration so that is is an acceptable value.
+        //  Normalizes the Event Trigger duration so that it is an acceptable value.
         //
         //Parameters:
         //  duration - The pre or post duration (in milliseconds) to normalize.
@@ -599,18 +685,18 @@ namespace mscl
         //  The normalized event duration (in milliseconds) that can be stored on the Node.
         uint32 normalizeEventDuration(uint32 duration) const;
 
-        //API Function: normalizeHardwareGain
-        //    Normalizes the hardware gain value so that it is within an acceptable range.
+        //API Function: normalizeSensorDelay
+        //  Normalizes the sensor delay so that it is an acceptable value.
         //
         //Parameters:
-        //    gain - The hardware gain to be normalized.
+        //  delay - The sensor delay (in microseconds) to normalize.
         //
         //Returns:
-        //    The normalized hardware gain value that can be stored on the Node.
+        //  The normalized sensor delay (in microseconds) that can be stored on the Node.
         //
         //Exceptions:
-        //    - <Error_NotSupported>: The hardware gain feature is not supported by this Node.
-        double normalizeHardwareGain(double gain) const;
+        //    - <Error_NotSupported>: The sensor delay feature is not supported by this Node.
+        uint32 normalizeSensorDelay(uint32 delay) const;
 
         //API Function: numDamageAngles
         //    Gets the number of damage angles (see <FatigueOptions>) on this Node.
@@ -666,13 +752,15 @@ namespace mscl
         //
         //Parameters:
         //    samplingMode - The <WirelessTypes::SamplingMode> to get the sample rates for.
+        //    dataCollectionMethod - The <WirelessTypes::DataCollectionMethod> to get the sample rates for.
         //
         //Returns:
-        //    A vector of <WirelessTypes::WirelessSampleRate>s that are supported by this Node for the given sampling mode.
+        //    A vector of <WirelessTypes::WirelessSampleRate>s that are supported by this Node for the given sampling mode and data collection method.
         //
         //Exceptions:
-        //    - <Error>: The <WirelessTypes::SamplingMode> is not supported by this Node.
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode) const;
+        //    - <Error_NotSupported>: The <WirelessTypes::SamplingMode> is not supported by this Node.
+        //                            The <WirelessTypes::DataCollectionMethod> is not supported by this Node.
+        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const;
 
         //API Function: transmitPowers
         //    Gets a list of the <WirelessTypes::TransmitPowers> that are supported by this Node.
@@ -695,12 +783,12 @@ namespace mscl
         //    A vector of <WirelessTypes::FatigueModes> supported by the Node.
         virtual const WirelessTypes::FatigueModes fatigueModes() const;
 
-        //API Function: lowPassFilters
-        //    Gets a list of the Low Pass <WirelessTypes::Filter>s that are supported by this Node.
+        //API Function: antiAliasingFilters
+        //    Gets a list of the Anti-Aliasing <WirelessTypes::Filter>s that are supported by this Node.
         //
         //Returns:
-        //    A vector of Low Pass <WirelessTypes::Filters> supported by the Node.
-        virtual const WirelessTypes::Filters lowPassFilters() const;
+        //    A vector of Anti-Aliasing <WirelessTypes::Filters> supported by the Node.
+        virtual const WirelessTypes::Filters antiAliasingFilters() const;
 
         //API Function: storageLimitModes
         //  Gets a list of the <WirelessTypes::StorageLimitModes> that are supported by this Node.
@@ -708,6 +796,16 @@ namespace mscl
         //Returns:
         //  A vector of <WirelessTypes::StorageLimitModes> supported by the Node.
         virtual const WirelessTypes::StorageLimitModes storageLimitModes() const;
+
+        //API Function: inputRanges
+        //  Gets a list of <WirelessTypes::InputRanges> that are supported by this Node for the specified channel mask.
+        //
+        //Parameters:
+        //  channels - The <ChannelMask> of the channel group to get the supported input ranges for.
+        //
+        //Returns:
+        //  A vector of <WirelessTypes::InputRanges> that are supported by this Node.
+        virtual const WirelessTypes::InputRanges inputRanges(const ChannelMask& channels) const;
 
     protected:
         //Function: supportsNewTransmitPowers
@@ -733,5 +831,23 @@ namespace mscl
         //Function: supportsStorageLimitModeConfig
         //  Checks if the Node supports configuring storage limit mode.
         virtual bool supportsStorageLimitModeConfig() const;
+
+        //Function: datalogDownloadVersion
+        //  Gets the version of datalogging download to use.
+        virtual uint8 datalogDownloadVersion() const;
+
+        //Function: sensorDelayVersion
+        //  Gets the version of sensor delay that the Node supports.
+        virtual uint8 sensorDelayVersion() const;
+
+        //Function: usesLegacySensorDelayAlwaysOn
+        //  Checks if the Node uses the legacy value of 10,000 for always on (true)
+        //  or the new value of 65,535 for always on (false).
+        virtual bool usesLegacySensorDelayAlwaysOn() const;
+
+        //Function: usesFloatEventTriggerVal
+        //  Checks if the Node uses floating point for event trigger values.
+        //  Older nodes used uint16 (bits).
+        virtual bool usesFloatEventTriggerVal() const;
     };
 }

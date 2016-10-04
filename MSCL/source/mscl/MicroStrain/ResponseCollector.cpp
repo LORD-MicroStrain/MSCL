@@ -44,7 +44,7 @@ namespace mscl
         mutex_lock_guard lock(m_responseMutex);
 
         //find the ResponsePattern in the vector of expected responses
-        for(auto itr = m_expectedResponses.begin(); itr < m_expectedResponses.end(); itr++)
+        for(auto itr = m_expectedResponses.begin(); itr < m_expectedResponses.end(); ++itr)
         {
             if(itr->pattern == response)
             {
@@ -69,7 +69,7 @@ namespace mscl
         mutex_lock_guard lock(m_responseMutex);
 
         //subtract the byte position from each expected response
-        for(auto itr = m_expectedResponses.begin(); itr < m_expectedResponses.end(); itr++)
+        for(auto itr = m_expectedResponses.begin(); itr < m_expectedResponses.end(); ++itr)
         {
             if(bytesToSubtract > itr->minBytePosition)
             {
@@ -100,7 +100,7 @@ namespace mscl
             startBytesRemaining = data.bytesRemaining();
 
             //look through all the expected responses
-            for(auto itr = m_expectedResponses.begin(); itr < m_expectedResponses.end(); itr++)
+            for(auto itr = m_expectedResponses.begin(); itr < m_expectedResponses.end(); ++itr)
             {
                 //don't try to match bytes that were in the buffer before the command was sent
                 if(data.readPosition() < itr->minBytePosition)
@@ -148,7 +148,7 @@ namespace mscl
         mutex_lock_guard lock(m_responseMutex);
 
         //look through all the expected responses
-        for(auto itr = m_expectedResponses.begin(); itr < m_expectedResponses.end(); itr++)
+        for(auto itr = m_expectedResponses.begin(); itr < m_expectedResponses.end(); ++itr)
         {
             //don't try to match bytes/packets that were in the buffer before the command was sent
             if(lastReadPos < itr->minBytePosition)
@@ -178,7 +178,7 @@ namespace mscl
         mutex_lock_guard lock(m_responseMutex);
 
         //look through all the expected responses
-        for(auto itr = m_expectedResponses.begin(); itr < m_expectedResponses.end(); itr++)
+        for(auto itr = m_expectedResponses.begin(); itr < m_expectedResponses.end(); ++itr)
         {
             //if we found a match
             if(itr->pattern->match(field))

@@ -21,132 +21,183 @@ namespace mscl
         //
         //Parameters:
         //    node - The <WirelessNode> to access the memory of.
-        //    logPage - The last log page that contains datalogging data.
-        //    pageOffset - The byte offset into the last log page containing datalogging data.
         //
         //Exceptions:
         //    - <Error_NodeCommunication>: Failed to read info from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        NodeMemory(WirelessNode& node, uint16 logPage, uint16 pageOffset);
+        NodeMemory(WirelessNode& node);
+
+        //Destructor: ~NodeMemory
+        //  Destroys a NodeMemory object.
+        virtual ~NodeMemory() {};
 
     private:
-        NodeMemory();                                //disabled default constructor
-        NodeMemory(const NodeMemory&);                //disabled copy constructor
-        NodeMemory& operator=(const NodeMemory&);    //disabled assignment operator
+        NodeMemory();                               //disabled default constructor
+        NodeMemory(const NodeMemory&);              //disabled copy constructor
+        NodeMemory& operator=(const NodeMemory&);   //disabled assignment operator
 
-    private:
-        //Constants: Node Memory Constants
-        //    PAGE_SIZE    - 264    - The size of a single datalogging page (in bytes).
-        //    START_PAGE    - 2        - The first page on the Node that has actual datalogging data.
-        static const uint16 PAGE_SIZE = 264;
-        static const uint16 START_PAGE = 2;
-
+    protected:
         //Variable: m_node
         //    The <WirelessNode> to access the memory of.
         WirelessNode& m_node;
 
-        //Variable: m_logPage
-        //    The last log page that contains datalogging data.
-        uint16 m_logPage;
-
-        //Variable: m_pageOffset
-        //    The byte offset into the last log page containing datalogging data.
-        uint16 m_pageOffset;
-
         //Variable: m_totalBytes
         //    The total number of bytes that can be downloaded.
-        uint64 m_totalBytes;
+        uint32 m_totalBytes;
 
-        //Variable: m_currentPageNumber
-        //    Holds the page number of the data that is stored in m_currentPageData
-        uint16 m_currentPageNumber;
-
-        //Variable: m_previousPageNumbers
-        //    Holds the page number of the data that is stored in m_previousPageData
-        uint16 m_previousPageNumber;
-
-        //Variable: m_currentPageData
+        //Variable: m_currentData
         //    Contains data for the current page that has been downloaded.
-        ByteStream m_currentPageData;
+        ByteStream m_currentData;
 
-        //Variable: m_previousPageData
-        //    Contains data for the previous page that was downloaded.
-        //    This allows us to grab data from a page, and then look back at previous data (to piece a packet together) without redownloading it.
-        ByteStream m_previousPageData;
-
-    private:
-        //Function: findPageAndOffset
-        //    Gets the page and offset from the memory position.
-        //
-        //Parameters:
-        //    bytePosition - The byte position in the Node's datalogging memory.
-        //    page - Holds the page index result.
-        //    offset - Holds the offset position result;
-        void findPageAndOffset(uint64 bytePosition, uint16& page, uint16& offset) const;
-
-        //Function: getByteStream
-        //    Gets a pointer to the ByteStream containing the data for the requested page.
-        //    If the data does not exist in a current ByteStream, it will be downloaded from the Node.
-        //
-        //Parameters:
-        //    page - The page index to request data for.
+    protected:
+        //Function: nextByte
+        //    Reads the next byte from the datalogging data.
         //
         //Returns:
-        //    A ByteStream pointer containing the data for the requested page.
-        //
-        //Exceptions:
-        //    - <Error_NodeCommunication>: Failed to download data from the Node.
-        //    - <Error_Connection>: A connection error has occurred.
-        ByteStream* getByteStream(uint16 page);
-
-        //Function: findData
-        //    Gets the data ByteStream, and offset into the ByteStream to read from, given the byte position.
-        //
-        //Parameters:
-        //    bytePosition - The byte position requested in the Node's datalogging memory.
-        //    data - Holds the ByteStream result containing the data to read.
-        //    offset - Holds the offset result, which is the offset into the data to read from.
+        //    The 1-byte uint8 at the next position.
         //
         //Exceptions:
         //    - <Error_NodeCommunication>: Failed to download data from the Node.
         //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
         //    - <Error_Connection>: A connection error has occurred.
-        void findData(uint64 bytePosition, ByteStream** data, uint16& offset);
+        virtual uint8 nextByte() = 0;
 
     public:
-        //Function: at
-        //    Reads a 1-byte unsigned integer from the datalogging data.
-        //
-        //Parameters:
-        //    bytePosition - The 0-based position into the Node's memory to read from.
+        //Function: isNextByteNewHeader
+        //  Checks if the next byte will be the start of a new header.
+        //  Note: upon returning from this function, the read position will not have changed.
         //
         //Returns:
-        //    The 1-byte uint8 at the requested position.
-        //
-        //Exceptions:
-        //    - <Error_NodeCommunication>: Failed to download data from the Node.
-        //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
-        //    - <Error_Connection>: A connection error has occurred.
-        uint8 at(uint64 bytePosition);
+        //  true if the next byte starts a new header, false if it does not.
+        virtual bool isNextByteNewHeader() = 0;
+
+        //Function: readIndex
+        //  Returns the current read index for the data.
+        virtual uint32 readIndex() const = 0;
 
         //Function: bytesRemaining
-        //    Calculates how many bytes are remaining in the Node's datalogging memory, based on the given byte position.
-        //
-        //Parameters:
-        //    currentByte - The byte position to check against the total bytes to calculate the number of bytes remaining.
+        //    Calculates how many bytes are remaining in the Node's datalogging memory, based on the current byte position.
         //
         //Returns:
         //    The number of bytes remaining before the end of the Node's datalogging memory.
-        uint64 bytesRemaining(uint64 currentByte) const;
+        virtual uint32 bytesRemaining() = 0;
 
         //Function: percentComplete
-        //    Calculates the percentage complete based on the given byte position.
-        //
-        //Parameters:
-        //    currentByte - The byte position to check against the total bytes to calculate the percent complete.
+        //    Calculates the percentage complete based on the current byte position.
         //
         //Returns:
         //  The percentage complete (0 - 100).
-        float percentComplete(uint64 currentByte) const;
+        virtual float percentComplete() = 0;
+
+        //Function: skipBytes
+        //    Moves the read pointer ahead by the number of bytes specified (calls read_uint8).
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to download data from the Node.
+        //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
+        //    - <Error_Connection>: A connection error has occurred.
+        void skipBytes(uint32 numBytesToSkip);
+
+        //Function: read_uint8
+        //    Reads a 1-byte unsigned integer from the Node's memory.
+        //
+        //Returns:
+        //    The 1-byte uint8 at the next position in the Node's memory.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to download data from the Node.
+        //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
+        //    - <Error_Connection>: A connection error has occurred.
+        uint8 read_uint8();
+
+        //Function: read_uint16
+        //    Reads a 2-byte unsigned integer from the Node's memory.
+        //
+        //Parameters:
+        //    endian - The <Utils::Endianness> to read the bytes in.
+        //
+        //Returns:
+        //    The uint16 at the next position in the Node's memory.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to download data from the Node.
+        //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
+        //    - <Error_Connection>: A connection error has occurred.
+        uint16 read_uint16(Utils::Endianness endian = Utils::bigEndian);
+
+        //Function: read_uint24
+        //    Reads a 3-byte unsigned integer from the Node's memory.
+        //
+        //Parameters:
+        //    endian - The <Utils::Endianness> to read the bytes in.
+        //
+        //Returns:
+        //    A uint32 containing the uint24 value at the next position in the Node's memory.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to download data from the Node.
+        //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
+        //    - <Error_Connection>: A connection error has occurred.
+        uint32 read_uint24(Utils::Endianness endian = Utils::bigEndian);
+
+        //Function: read_uint32
+        //    Reads a 4-byte unsigned integer from the Node's memory.
+        //
+        //Parameters:
+        //    endian - The <Utils::Endianness> to read the bytes in.
+        //
+        //Returns:
+        //    The uint32 at the next position in the Node's memory.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to download data from the Node.
+        //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
+        //    - <Error_Connection>: A connection error has occurred.
+        uint32 read_uint32(Utils::Endianness endian = Utils::bigEndian);
+
+        //Function: read_uint64
+        //    Reads an 8-byte unsigned integer from the Node's memory.
+        //
+        //Parameters:
+        //    endian - The <Utils::Endianness> to read the bytes in.
+        //
+        //Returns:
+        //    The uint32 at the next position in the Node's memory.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to download data from the Node.
+        //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
+        //    - <Error_Connection>: A connection error has occurred.
+        uint64 read_uint64(Utils::Endianness endian = Utils::bigEndian);
+
+        //Function: read_float
+        //    Reads a 4-byte float from the Node's memory.
+        //
+        //Parameters:
+        //    endian - The <Utils::Endianness> to read the bytes in.
+        //
+        //Returns:
+        //    The float at the next position in the Node's memory.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to download data from the Node.
+        //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
+        //    - <Error_Connection>: A connection error has occurred.
+        float read_float(Utils::Endianness endian = Utils::bigEndian);
+
+        //Function: read_string
+        //    Reads a string of the specified length from the Node's memory.
+        //
+        //Parameters:
+        //    length - The size (number of characters) to read for.
+        //
+        //Returns:
+        //    The string at the next position in the Node's memory, of the requested length.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to download data from the Node.
+        //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
+        //    - <Error_Connection>: A connection error has occurred.
+        std::string read_string(uint32 length);
     };
 }

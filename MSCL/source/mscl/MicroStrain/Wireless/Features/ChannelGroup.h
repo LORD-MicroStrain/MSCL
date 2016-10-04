@@ -74,9 +74,35 @@ namespace mscl
         //    Gets the name of the channel group.
         const std::string& name() const;
 
+        //API Function: eepromLocation
+        //  Gets the eeprom location that the ChannelGroup uses for a specified setting.
+        //
+        //Parameters:
+        //  setting - The <WirelessTypes::ChannelGroupSetting> to find the eeprom location for.
+        //
+        //Returns:
+        //  The eeprom location for the specified setting.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: The requested <WirelessTypes::ChannelGroupSetting> is not supported by this ChannelGroup.
+        uint16 eepromLocation(WirelessTypes::ChannelGroupSetting setting) const;
+
         //API Function: settings
         //    Gets the <WirelessTypes::ChannelGroupSettings> that this group supports.
+        //
+        //Returns:
+        //  The <WirelessTypes::ChannelGroupSettings> for this group.
         const WirelessTypes::ChannelGroupSettings& settings() const;
+
+        //API Function: hasSetting
+        //  Helper function for quick check if setting is present in this channel group.
+        //
+        //Parameters:
+        //  setting - The <WirelessTypes::ChannelGroupSetting> to look for.
+        //
+        //Returns:
+        //  true if the ChannelGroup has the given setting, false otherwise.
+        bool hasSetting(WirelessTypes::ChannelGroupSetting setting) const;
     };
 
     //API Typedef: ChannelGroups

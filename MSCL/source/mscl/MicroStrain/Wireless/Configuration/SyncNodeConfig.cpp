@@ -126,12 +126,12 @@ namespace mscl
         }
     }
 
-    TimeSpan SyncNodeConfig::samplingDelay()
+    uint32 SyncNodeConfig::sensorDelay()
     {
         //not part of sampling configuration
 
         //read the value from eeprom
-        return m_eepromHelper.read_samplingDelay();
+        return m_eepromHelper.read_sensorDelay();
     }
 
     TimeSpan SyncNodeConfig::timeBetweenBursts()

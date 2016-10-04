@@ -6,6 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #pragma once
 
+#include <bitset>
 #include <iomanip>
 #include <string>
 #include "Types.h"
@@ -18,6 +19,14 @@ namespace mscl
     //    Note: Communication with our devices (wireless and inertial) is done in Big Endian.
     namespace Utils
     {
+        //Enum: Endianness
+        //  The possible endians that a value can be in.
+        enum Endianness
+        {
+            bigEndian = 0,
+            littleEndian = 1
+        };
+
         //Function: valueTypeSize
         //    Gets the size of the <ValueType>
         //
@@ -32,20 +41,22 @@ namespace mscl
         uint32 valueTypeSize(ValueType type);
 
         //Function: msb
-        //    Gets the Most Significant Byte from the 2-Byte WORD
+        //    Gets the Most Significant Byte from the 2-Byte unsigned integer
         //    
         //Parameters:
-        //    value - the 2-Byte unsigned integer to find the MSB from
+        //    value - the 2-Byte unsigned integer (in system endianness) to find the MSB from
+        //    endian - the <Endianness> to use for finding the msb.
         //
         //Returns:
         //    The Most Significant Byte of the passed in value
         uint8 msb(uint16 value);
 
         //Function: lsb
-        //    Gets the Least Significant Byte from the 2-Byte WORD
+        //    Gets the Least Significant Byte from the 2-Byte unsigned integer
         //    
         //Parameters:
-        //    value - the 2-Byte unsigned integer to find the LSB from
+        //    value - the 2-Byte unsigned integer (in system endianness) to find the LSB from
+        //    endian - the <Endianness> to use for finding the lsb.
         //
         //Returns:
         //    The Least Significant Byte of the passed in value
@@ -71,205 +82,180 @@ namespace mscl
         //    The Least Significant Nibble of the passed in value
         uint8 lsNibble(uint8 value);
 
+        //Function: split_int16
+        //    Converts the 2-byte signed integer into its individual 2 bytes.
+        //
+        //Parameters:
+        //    value - the 2 byte int16 (in system endianness) to convert into bytes
+        //    low - holds the low memory location result
+        //    high - holds the high memory location result
+        //    endian - The <Endianness> that the result bytes should be in.
+        //             ie. Big endian means low will be the msb, high will be the lsb. Little endian means low will be the lsb, high will be the msb.
+        void split_int16(int16 value, uint8& low, uint8& high, Endianness endian = bigEndian);
+
         //Function: make_int16
-        //    Gets the 2-byte nsigned integer from 2 individual MSB and LSB bytes
+        //    Gets the 2-byte signed integer (in system endianness) from 2 individual bytes
         //
         //Parameters:
         //    msb - the Most Significant Byte
         //    lsb - the Lease Significant Byte
+        //    endian - The <Endianness> that the passed in bytes are in.
+        //             ie. Big endian means low = msb, high = lsb. Little endian means low = lsb, high = msb
         //
         //Returns:
-        //    The 2-byte int16 built from the MSB and LSB bytes
-        int16 make_int16(uint8 msb, uint8 lsb);
+        //    The 2-byte int16 (in system endianness) built from the given bytes.
+        int16 make_int16(uint8 low, uint8 high, Endianness endian = bigEndian);
 
         //Function: split_uint16
-        //    Converts the 2-byte unsigned integer into its individual 2 bytes
+        //    Converts the 2-byte unsigned integer into its individual 2 bytes.
         //
         //Parameters:
-        //    value - the 2 byte uint16 to convert into bytes
-        //    msb - holds the Most Significant Byte result
-        //    lsb - holds the Least Significant Byte result
-        void split_uint16(uint16 value, uint8& msb, uint8& lsb);
+        //    value - the 2 byte uint16 (in system endianness) to convert into bytes
+        //    low - holds the low memory location result
+        //    high - holds the high memory location result
+        //    endian - The <Endianness> that the result bytes should be in.
+        //             ie. Big endian means low will be the msb, high will be the lsb. Little endian means low will be the lsb, high will be the msb.
+        void split_uint16(uint16 value, uint8& low, uint8& high, Endianness endian = bigEndian);
 
         //Function: make_uint16
-        //    Gets the 2-byte unsigned integer from 2 individual MSB and LSB bytes
-        //
+        //    Gets the 2-byte unsigned integer (in system endianness) from 2 individual bytes.
         //Parameters:
-        //    msb - the Most Significant Byte
-        //    lsb - the Lease Significant Byte
+        //    low - the low memory location byte
+        //    high - the high memory location byte
+        //    endian - The <Endianness> that the passed in bytes are in.
+        //             ie. Big endian means low = msb, high = lsb. Little endian means low = lsb, high = msb
         //
         //Returns:
-        //    The 2-byte uint16 built from the MSB and LSB bytes
-        uint16 make_uint16(uint8 msb, uint8 lsb);
+        //    The 2-byte uint16 (in system endianness) built from the given bytes.
+        uint16 make_uint16(uint8 low, uint8 high, Endianness endian = bigEndian);
 
         //Function: split_uint32
-        //    Converts the 4-byte unsigned integer into its 4 individual bytes
+        //    Converts the 4-byte unsigned integer into its 4 individual bytes.
         //
         //Parameters:
-        //    value - the 4 byte uint32 to convert into bytes
-        //    msb - holds the msb result 
+        //    value - the 4 byte uint32 (in system endianness) to convert into bytes
+        //    low - holds the low memory location result 
         //    byte2 - holds the second byte result
         //    byte3 - holds the third byte result
-        //    lsb - holds the lsb result
-        void split_uint32(uint32 value, uint8& msb, uint8& byte2, uint8& byte3, uint8& lsb);
+        //    high - holds the high memory location result
+        //    endian - The <Endianness> that the result bytes should be in.
+        //             ie. Big endian means low will be the msb, high will be the lsb. Little endian means low will be the lsb, high will be the msb.
+        void split_uint32(uint32 value, uint8& low, uint8& byte2, uint8& byte3, uint8& high, Endianness endian = bigEndian);
 
-        //Function: split_uint32
-        //    Converts the 4-byte unsigned integer into its 2 uint16 values.
+        //Function: split_uint64
+        //    Converts the 4-byte unsigned integer into its 4 individual bytes.
         //
         //Parameters:
-        //    value - the 4 byte uint32 to convert into bytes.
-        //    msw - holds the msw result.
-        //    lsw - holds the lsw result.
-        void split_uint32(uint32 value, uint16& msw, uint16& lsw);
+        //    value - the 4 byte uint32 (in system endianness) to convert into bytes
+        //    low - holds the low memory location result 
+        //    byte2 - holds the second byte result
+        //    byte3 - holds the third byte result
+        //    byte4 - holds the fourth byte result
+        //    byte5 - holds the fifth byte result
+        //    byte6 - holds the sixth byte result
+        //    byte7 - holds the seventh byte result
+        //    high - holds the high memory location result
+        //    endian - The <Endianness> that the result bytes should be in.
+        //             ie. Big endian means low will be the msb, high will be the lsb. Little endian means low will be the lsb, high will be the msb.
+        void split_uint64(uint64 value, uint8& low, uint8& byte2, uint8& byte3, uint8& byte4, uint8& byte5, uint8& byte6, uint8& byte7, uint8& high, Endianness endian = bigEndian);
 
         //Function: make_uint32
         //    gets the 4-byte unsigned integer from the 4 individual bytes
         //
         //Parameters:
-        //    msb - the msb to be used
+        //    low - the lowest memory location byte to be used
         //    byte2 - the second byte to be used
         //    byte3 - the third byte to be used
-        //    lsb - the lsb to be used
+        //    high - the highest memory location byte to be used
+        //    endian - The <Endianness> that the passed in bytes are in.
+        //             ie. Big endian means low = msb, high = lsb. Little endian means low = lsb, high = msb
         //
         //Returns:
         //    the 4-byte uint32 built from the 4 bytes
-        uint32 make_uint32(uint8 msb, uint8 byte2, uint8 byte3, uint8 lsb);
-
-        //Function: make_uint32
-        //    gets the 4-byte unsigned integer from the 2 uint16 words.
-        //
-        //Parameters:
-        //    msw - the most significant word to be used.
-        //    lsw - the lease significant word to be used.
-        //
-        //Returns:
-        //    the 4-byte uint32 built from the 2 uint16 words.
-        uint32 make_uint32(uint16 msw, uint16 lsw);
+        uint32 make_uint32(uint8 low, uint8 byte2, uint8 byte3, uint8 high, Endianness endian = bigEndian);
 
         //Function: make_uint64
         //    gets the 8-byte unsigned integer from the 8 individual bytes
         //
         //Parameters:
-        //    msb - the msb to be used
+        //    low - the lowest memory location byte to be used
         //    byte2 - the second byte to be used
         //    byte3 - the third byte to be used
-        //    lsb - the lsb to be used
+        //    byte4 - the fourth byte to be used
+        //    byte5 - the fifth byte to be used
+        //    byte6 - the sixth byte to be used
+        //    byte7 - the seventh byte to be used
+        //    high - the highest memory location byte to be used
+        //    endian - The <Endianness> that the passed in bytes are in.
+        //             ie. Big endian means low = msb, high = lsb. Little endian means low = lsb, high = msb
         //
         //Returns:
         //    the 4-byte uint32 built from the 4 bytes
-        uint64 make_uint64(uint8 msb, uint8 byte2, uint8 byte3, uint8 byte4, uint8 byte5, uint8 byte6, uint8 byte7, uint8 lsb);
+        uint64 make_uint64(uint8 low, uint8 byte2, uint8 byte3, uint8 byte4, uint8 byte5, uint8 byte6, uint8 byte7, uint8 high, Endianness endian = bigEndian);
 
-        //Function: split_float_big_endian
-        //    Converts the 4-byte float (in system endian) into its 4 individual bytes in big endian
+        //Function: split_float
+        //    Converts the 4-byte float (in system endian) into its 4 individual bytes.
         //
         //Parameters:
         //    value - the 4 byte float (in system endian) to convert into bytes
-        //    msb - holds the msb result
+        //    low - holds the lowest memory byte result
         //    byte2 - holds the second byte result
         //    byte3 - holds the third byte result
-        //    lsb - holds the lsb result
-        void split_float_big_endian(float value, uint8& msb, uint8& byte2, uint8& byte3, uint8& lsb);
+        //    high - holds the highest memory byte result
+        //    endian - The <Endianness> that the result bytes should be in.
+        //             ie. Big endian means low will be the msb, high will be the lsb. Little endian means low will be the lsb, high will be the msb.
+        void split_float(float value, uint8& low, uint8& byte2, uint8& byte3, uint8& high, Endianness endian = bigEndian);
 
-        //Function: split_float_little_endian
-        //    Converts the 4-byte float (in system endian) into its 4 individual bytes in little endian
+        //Function: make_float
+        //    Builds a 4-byte float (in system endian) from 4 bytes given
         //
         //Parameters:
-        //    value - the 4 byte float (in system endian) to convert into bytes
-        //    lsb - holds the lsb result
-        //    byte2 - holds the second byte result
-        //    byte3 - holds the third byte result
-        //    msb - holds the msb result
-        void split_float_little_endian(float value, uint8& lsb, uint8& byte2, uint8& byte3, uint8& msb);
-
-        //Function: make_float_big_endian
-        //    Builds a 4-byte float (in system endian) from 4 bytes given in big endian
-        //
-        //Parameters:
-        //    msb - the most significant byte
-        //    byte2 - the second byte
-        //    byte3 - the third byte
-        //    lsb - the least significant byte
+        //    low - the lowest memory location byte to be used
+        //    byte2 - the second byte to be used
+        //    byte3 - the third byte to be used
+        //    high - the highest memory location byte to be used
+        //    endian - The <Endianness> that the passed in bytes are in.
+        //             ie. Big endian means low = msb, high = lsb. Little endian means low = lsb, high = msb
         //
         //Returns:
         //    A 4-byte float in system-endianess built from the 4 given bytes
-        float make_float_big_endian(uint8 msb, uint8 byte2, uint8 byte3, uint8 lsb);
+        float make_float(uint8 low, uint8 byte2, uint8 byte3, uint8 high, Endianness endian = bigEndian);
 
-        //Function: make_float_little_endian
-        //    Builds a 4-byte float (in system endian) from 4 bytes given in little endian
-        //
-        //Parameters:
-        //    lsb - the least significant byte
-        //    byte2 - the second byte
-        //    byte3 - the third byte
-        //    msb - the most significant byte
-        //
-        //Returns:
-        //    A 4-byte float in system-endianess built from the 4 given bytes
-        float make_float_little_endian(uint8 lsb, uint8 byte2, uint8 byte3, uint8 msb);
-
-        //Function: split_double_big_endian
-        //    Converts the 8-byte double (in system endian) into its 8 individual bytes in big endian
+        //Function: split_double
+        //    Converts the 8-byte double (in system endian) into its 8 individual bytes.
         //
         //Parameters:
         //    value - the 8 byte double (in system endian) to convert into bytes
-        //    msb - holds the msb result
+        //    low - holds the lowest memory byte result
         //    byte2 - holds the second byte result
         //    byte3 - holds the third byte result
         //    byte4 - holds the fourth byte result
         //    byte5 - holds the fifth byte result
         //    byte6 - holds the sixth byte result
         //    byte7 - holds the seventh byte result
-        //    lsb - holds the lsb result
-        void split_double_big_endian(double value, uint8& msb, uint8& byte2, uint8& byte3, uint8& byte4, uint8& byte5, uint8& byte6, uint8& byte7, uint8& lsb);
+        //    high - holds the highest memory byte result
+        //    endian - The <Endianness> that the result bytes should be in.
+        //             ie. Big endian means low will be the msb, high will be the lsb. Little endian means low will be the lsb, high will be the msb.
+        void split_double(double value, uint8& low, uint8& byte2, uint8& byte3, uint8& byte4, uint8& byte5, uint8& byte6, uint8& byte7, uint8& high, Endianness endian = bigEndian);
 
-        //Function: split_double_little_endian
-        //    Converts the 8-byte double (in system endian) into its 8 individual bytes in little endian
+        //Function: make_double
+        //    Builds a 8-byte double (in system endian) from the bytes given.
         //
         //Parameters:
-        //    value - the 8 byte double (in system endian) to convert into bytes
-        //    lsb - holds the lsb result
-        //    byte2 - holds the second byte result
-        //    byte3 - holds the third byte result
-        //    byte4 - holds the fourth byte result
-        //    byte5 - holds the fifth byte result
-        //    byte6 - holds the sixth byte result
-        //    byte7 - holds the seventh byte result
-        //    msb - holds the msb result
-        void split_double_little_endian(double value, uint8& lsb, uint8& byte2, uint8& byte3, uint8& byte4, uint8& byte5, uint8& byte6, uint8& byte7, uint8& msb);
-
-        //Function: make_double_big_endian
-        //    Builds a 8-byte double (in system endian) from the bytes given in big endian
-        //
-        //Parameters:
-        //    msb - the msb to be used
+        //    low - the lowest memory byte to be used
         //    byte2 - the 2nd byte to be used
         //    byte3 - the 3rd byte to be used
         //    byte4 - the 4th byte to be used
         //    byte5 - the 5th byte to be used
         //    byte6 - the 6th byte to be used
         //    byte7 - the 7th byte to be used
-        //    lsb - the lsb to be used
+        //    high - the highest memory byte to be used
+        //    endian - The <Endianness> that the passed in bytes are in.
+        //             ie. Big endian means low = msb, high = lsb. Little endian means low = lsb, high = msb
         //
         //Returns:
         //    the 8-byte double (in system endian) built from the 8 bytes
-        double make_double_big_endian(uint8 msb, uint8 byte2, uint8 byte3, uint8 byte4, uint8 byte5, uint8 byte6, uint8 byte7, uint8 lsb);
-
-        //Function: make_double_little_endian
-        //    Builds a 8-byte double (in system endian) from the bytes given in little endian
-        //
-        //Parameters:
-        //    lsb - the lsb to be used
-        //    byte2 - the 2nd byte to be used
-        //    byte3 - the 3rd byte to be used
-        //    byte4 - the 4th byte to be used
-        //    byte5 - the 5th byte to be used
-        //    byte6 - the 6th byte to be used
-        //    byte7 - the 7th byte to be used
-        //    msb - the msb to be used
-        //
-        //Returns:
-        //    the 8-byte double (in system endian) built from the 8 bytes
-        double make_double_little_endian(uint8 lsb, uint8 byte2, uint8 byte3, uint8 byte4, uint8 byte5, uint8 byte6, uint8 byte7, uint8 msb);
+        double make_double(uint8 low, uint8 byte2, uint8 byte3, uint8 byte4, uint8 byte5, uint8 byte6, uint8 byte7, uint8 high, Endianness endian = bigEndian);
 
         //Function: getCurrentSystemTime
         //    Gets the current system time in nanoseconds since unix epoch
@@ -324,17 +310,6 @@ namespace mscl
         //Returns:
         //    The angle in degrees.
         double radiansToDegrees(float angle);
-
-        //Function: bitIsSet
-        //    Checks if a specific bit is set in the given value.
-        //
-        //Parameters:
-        //    value - The value to check the bit of.
-        //    bitPos - The bit position to check if it is set. (0 = far right)
-        //
-        //Returns:
-        //    true if the bit is set, false if it is not set.
-        bool bitIsSet(uint32 value, size_t bitPos);
 
         //Function: removeChar
         //    Removes all found instances of a char from a string.
@@ -393,6 +368,40 @@ namespace mscl
         //Returns:
         //    The normalized angle within 0 and 360 degrees.
         float normalizeAngle(float angle);
+
+        //Function: bitIsSet
+        //    Checks if a specific bit is set in the given value.
+        //
+        //Parameters:
+        //    value - The value to check the bit of.
+        //    bitPos - The bit position to check if it is set. (0 = far right)
+        //
+        //Returns:
+        //    true if the bit is set, false if it is not set.
+        template<typename T>
+        bool bitIsSet(T value, size_t bitPos)
+        {
+            std::bitset<64> bitset(value);
+
+            return bitset.test(bitPos);
+        }
+
+        //Function: setBit
+        //  Sets a specific bit to on or off.
+        //
+        //Parameters:
+        //  value - The value to update (will be updated with the result).
+        //  bitPos - The bit position to set. (0 = far right)
+        //  enable - true to set the bit to on, false to set the bit to off.
+        template<typename T>
+        void setBit(T& value, size_t bitPos, bool enable)
+        {
+            std::bitset<64> bitset(value);
+
+            bitset.set(bitPos, enable);
+
+            value = static_cast<T>(bitset.to_ullong());
+        }
 
         //Function: isNaN
         //    Checks whether the given value is NaN or not.

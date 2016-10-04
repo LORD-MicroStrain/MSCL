@@ -46,8 +46,18 @@ namespace mscl
         return m_name;
     }
 
+    uint16 ChannelGroup::eepromLocation(WirelessTypes::ChannelGroupSetting setting) const
+    {
+        return getSettingEeprom(setting).location();
+    }
+
     const WirelessTypes::ChannelGroupSettings& ChannelGroup::settings() const
     {
         return m_settings;
+    }
+
+    bool ChannelGroup::hasSetting(WirelessTypes::ChannelGroupSetting setting) const
+    {
+        return (m_settingsMap.find(setting) != m_settingsMap.end());
     }
 }

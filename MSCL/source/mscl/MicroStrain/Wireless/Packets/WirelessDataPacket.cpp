@@ -13,7 +13,7 @@ namespace mscl
 {
     WirelessDataPacket::WirelessDataPacket() :
         m_sweepPos(0),
-        m_dataType(WirelessTypes::dataType_2byteUInt_16bitRes),
+        m_dataType(WirelessTypes::dataType_uint16),
         m_sweepSize(0),
         m_numSweeps(0),
         m_payloadOffsetChannelData(0)
@@ -75,30 +75,42 @@ namespace mscl
 
     void WirelessDataPacket::getPayloadData(size_t payloadPosition, anyType& result) const
     {
-        typedef WirelessTypes WT;
-
         switch(m_dataType)
         {
-            //4 byte float value
-            case WT::dataType_4ByteFloat:
+            //float 32
+            case WirelessTypes::dataType_float32:
+            case WirelessTypes::dataType_float32_noCals:
                 result = m_payload.read_float(payloadPosition);
                 break;
 
-            //4 byte uint32 value
-            case WT::dataType_4byteUInt:
+            //uint32
+            case WirelessTypes::dataType_uint32:
                 result = m_payload.read_uint32(payloadPosition);
                 break;
 
-            //2 byte uint16 value (shifted, needs shifted right)
-            case WT::dataType_2byteUInt_shifted:
+            //uint16 value (shifted, needs shifted right)
+            case WirelessTypes::dataType_uint16_shifted:
                 result = boost::numeric_cast<uint16>(m_payload.read_uint16(payloadPosition) >> 1);
                 break;
 
-            //2 byte uint16 value
-            case WT::dataType_2byteUInt_12bitRes:
-            case WT::dataType_2byteUInt_16bitRes:
+            //uint16 value (from 18-bit node, needs shifted left)
+            case WirelessTypes::dataType_uint16_18bitTrunc:
+            {
+                uint32 val = static_cast<uint32>(m_payload.read_uint16(payloadPosition));
+                result = (val << 2);
+                break;
+            }
+
+            //uint16 value
+            case WirelessTypes::dataType_uint16_12bitRes:
+            case WirelessTypes::dataType_uint16:
             default:
                 result = m_payload.read_uint16(payloadPosition);
+                break;
+
+            //uint24 value (we store this as a uint32)
+            case WirelessTypes::dataType_uint24:
+                result = m_payload.read_uint24(payloadPosition);
                 break;
         }
     }

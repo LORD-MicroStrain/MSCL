@@ -58,13 +58,13 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -82,7 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'" Label="Configuration">
@@ -92,7 +92,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|x64'" Label="Configuration">
@@ -102,7 +102,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -114,7 +114,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release(Python)|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v120_xp</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -173,8 +173,8 @@
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
     <LinkIncremental>false</LinkIncremental>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
-    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
-    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib32-msvc-12.0;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_61_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_61_0\lib32-msvc-14.0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release(Python)|x64'">
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
@@ -187,8 +187,8 @@
     <OutDir>..\Output\C++\Release\</OutDir>
     <IntDir>build\$(Configuration)\</IntDir>
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
-    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
-    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib32-msvc-12.0;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_61_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_61_0\lib32-msvc-14.0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
@@ -198,8 +198,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|Win32'">
     <OutDir>..\Output\DotNet\x86\</OutDir>
     <IntDir>build\$(Configuration)\</IntDir>
-    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
-    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib32-msvc-12.0;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_61_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_61_0\lib32-msvc-14.0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|x64'">
     <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
@@ -208,8 +208,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'">
     <OutDir>..\Output\C++\Debug\</OutDir>
     <IntDir>build\$(Configuration)\</IntDir>
-    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
-    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib32-msvc-12.0;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_61_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_61_0\lib32-msvc-14.0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'">
     <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
@@ -220,14 +220,16 @@
     <IntDir>build\$(Configuration)\</IntDir>
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
-    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib32-msvc-12.0;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_61_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_61_0\lib32-msvc-14.0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'">
     <OutDir>..\Output\DotNet\</OutDir>
     <IntDir>build\$(Configuration)\</IntDir>
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_61_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_61_0\lib64-msvc-14.0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'">
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
@@ -259,6 +261,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290;4127;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <AdditionalOptions>/Zm150 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)$(ProjectName).dll</OutputFile>
@@ -329,6 +332,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290;4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ProgramDataBaseFileName>..\Output\C++\Release\$(ProjectName).pdb</ProgramDataBaseFileName>
+      <AdditionalOptions>/Zm150 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <PostBuildEvent>
       <Command />
@@ -389,6 +393,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <DisableSpecificWarnings>4290;4127;4100%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <AdditionalOptions>/Zm150 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <OptimizeReferences>false</OptimizeReferences>
@@ -447,6 +452,7 @@
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
       <ProgramDataBaseFileName>..\Output\C++\Debug\$(ProjectName).pdb</ProgramDataBaseFileName>
+      <AdditionalOptions>/Zm150 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <PostBuildEvent>
       <Command />
@@ -502,6 +508,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290;4127;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <AdditionalOptions>/Zm150 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <OutputFile>..\Output\DotNet\x86\$(ProjectName).dll</OutputFile>
@@ -534,6 +541,7 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290;4127;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <AdditionalOptions>/Zm150 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <OutputFile>..\Output\DotNet\$(ProjectName).dll</OutputFile>
@@ -618,6 +626,7 @@
     <ClInclude Include="source\mscl\BitMask.h" />
     <ClInclude Include="source\mscl\Communication\BoostCommunication.h" />
     <ClInclude Include="source\mscl\Communication\Connection.h" />
+    <ClInclude Include="source\mscl\Communication\ConnectionDebugData.h" />
     <ClInclude Include="source\mscl\Communication\Connection_Impl.h" />
     <ClInclude Include="source\mscl\Communication\Devices.h" />
     <ClInclude Include="source\mscl\Communication\NativeSerialPort.h" />
@@ -640,6 +649,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="source\mscl\Communication\UpnpDeviceFinderCallback.h" />
+    <ClInclude Include="source\mscl\Communication\UpnpService.h" />
+    <ClInclude Include="source\mscl\Communication\WsdaFinder.h" />
     <ClInclude Include="source\mscl\Endianness.h" />
     <ClInclude Include="source\mscl\HighResClock.h" />
     <ClInclude Include="source\mscl\Histogram.h" />
@@ -701,6 +713,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\AutoBalanceResult.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\AutoBalance_v2.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\AutoCal.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\AutoCalInfo.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\AutoCalResult.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_BeaconStatus.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_Ping_v2.h" />
@@ -710,6 +723,9 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_WriteEeprom_v2.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\Erase.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\Erase_v2.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\GetDatalogSessionInfo.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\GetDiagnosticInfo.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\GetLoggedData.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\PageDownload.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom_v2.h" />
@@ -719,6 +735,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ShortPing_v2.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\Sleep.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\StartNonSyncSampling.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\StartNonSyncSampling_v2.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\StartSyncSampling.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\TriggerArmedDatalogging.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\WirelessProtocol.h" />
@@ -734,8 +751,8 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\EepromLocation.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\EventTriggerOptions.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\FatigueOptions.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\HardwareGain.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\HistogramOptions.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\InputRange.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\NodeEeprom.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\NodeEepromHelper.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\NodeEepromMap.h" />
@@ -752,7 +769,6 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\ChannelGroup.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\FlashInfo.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_bladeImpactLink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_cfBearingTempLink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_dvrtlink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_envlinkMini.h" />
@@ -764,7 +780,6 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_mvpervlink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink8ch.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkMicro.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkoem.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkoemHermetic.h" />
@@ -777,14 +792,17 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink6ch.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_torqueLink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink2.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink200.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink_legacy.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_wirelessImpactSensor.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeInfo.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\LinearEquation.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\LoggedDataSweep.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\NodeCommTimes.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\NodeDiscovery.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\NodeMemory.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\NodeMemory_v1.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\NodeMemory_v2.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\AsyncDigitalAnalogPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\AsyncDigitalPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStation.h" />
@@ -800,6 +818,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\DataSweep.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\DeliveryStopFlags.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\DiagnosticPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\HclSmartBearing_CalPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\HclSmartBearing_RawPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket_16ch.h" />
@@ -857,6 +876,7 @@
     <ClCompile Include="source\mscl\Bin.cpp" />
     <ClCompile Include="source\mscl\BitMask.cpp" />
     <ClCompile Include="source\mscl\Communication\Connection.cpp" />
+    <ClCompile Include="source\mscl\Communication\ConnectionDebugData.cpp" />
     <ClCompile Include="source\mscl\Communication\Devices.cpp" />
     <ClCompile Include="source\mscl\Communication\SerialConnection.cpp" />
     <ClCompile Include="source\mscl\Communication\TcpIpConnection.cpp" />
@@ -874,6 +894,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="source\mscl\Communication\UpnpDeviceFinderCallback.cpp" />
+    <ClCompile Include="source\mscl\Communication\UpnpService.cpp" />
+    <ClCompile Include="source\mscl\Communication\WsdaFinder.cpp" />
     <ClCompile Include="source\mscl\HighResClock.cpp" />
     <ClCompile Include="source\mscl\Histogram.cpp" />
     <ClCompile Include="source\mscl\LibVersion.cpp" />
@@ -943,6 +966,9 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_WriteEeprom_v2.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\Erase.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\Erase_v2.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\GetDatalogSessionInfo.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\GetDiagnosticInfo.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\GetLoggedData.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\PageDownload.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom_v2.cpp" />
@@ -952,6 +978,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ShortPing_v2.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\Sleep.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\StartNonSyncSampling.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\StartNonSyncSampling_v2.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\StartSyncSampling.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\TriggerArmedDatalogging.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\WirelessProtocol.cpp" />
@@ -967,8 +994,8 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\EepromLocation.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\EventTriggerOptions.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\FatigueOptions.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\HardwareGain.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\HistogramOptions.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\InputRange.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\NodeEeprom.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\NodeEepromHelper.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\NodeEepromMap.cpp" />
@@ -985,7 +1012,6 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\ChannelGroup.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\FlashInfo.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_bladeImpactLink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_cfBearingTempLink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_dvrtlink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_envlinkMini.cpp" />
@@ -997,7 +1023,6 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_mvpervlink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink8ch.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkMicro.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkoem.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkoemHermetic.cpp" />
@@ -1010,14 +1035,17 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink6ch.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_torqueLink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink2.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink200.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink_legacy.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_wirelessImpactSensor.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeInfo.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\LinearEquation.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\LoggedDataSweep.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\NodeCommTimes.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\NodeDiscovery.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\NodeMemory.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\NodeMemory_v1.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\NodeMemory_v2.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\AsyncDigitalAnalogPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\AsyncDigitalPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStation.cpp" />
@@ -1033,6 +1061,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\DataSweep.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\DeliveryStopFlags.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\DiagnosticPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\HclSmartBearing_CalPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\HclSmartBearing_RawPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket_16ch.cpp" />

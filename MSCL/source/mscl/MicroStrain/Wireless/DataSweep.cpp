@@ -67,7 +67,7 @@ namespace mscl
         return m_data;
     }
 
-    void DataSweep::data(ChannelData data)
+    void DataSweep::data(const ChannelData& data)
     {
         m_data = data;
     }

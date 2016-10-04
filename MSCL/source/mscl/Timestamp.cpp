@@ -27,7 +27,8 @@ namespace mscl
 
     Timestamp::Timestamp(uint16 year, uint16 month, uint16 day, uint16 hour, uint16 minute, uint16 second, uint32 milli)
     {
-        boost::posix_time::ptime dateTime(boost::gregorian::date(year, month, day), boost::posix_time::hours(hour) + boost::posix_time::minutes(minute) + boost::posix_time::seconds(second) + boost::posix_time::milliseconds(milli));
+        boost::posix_time::ptime dateTime(boost::gregorian::date(year, month, day),
+                                          boost::posix_time::hours(hour) + boost::posix_time::minutes(minute) + boost::posix_time::seconds(second) + boost::posix_time::milliseconds(milli));
         m_nanoseconds = (dateTime - boost::posix_time::from_time_t(0)).total_nanoseconds();
     }
 

@@ -114,7 +114,6 @@ namespace mscl
         virtual ~DataBuffer();
 
     public:
-
         //Function: peekByte
         //    Gets the next byte from the buffer without moving the read position
         //
@@ -275,6 +274,13 @@ namespace mscl
         //Function: resetBuffer
         //    Resets the append and read positions in the buffer back to 0.
         void resetBuffer();
+
+        //Function: bytesToRead
+        //  Gets a copy of the underlying bytes in this DataBuffer from the read position to the appendPosition.
+        //
+        //Returns:
+        //  A <Bytes> container.
+        Bytes bytesToRead() const;
     };
 
     //Class: ReadBufferSavePoint

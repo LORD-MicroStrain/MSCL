@@ -86,7 +86,7 @@ namespace mscl
             //get this sweep's node and base rssi values
             sweep.nodeRssi(m_nodeRSSI);
             sweep.baseRssi(m_baseRSSI);
-            sweep.calApplied(m_dataType == WirelessTypes::dataType_4ByteFloat);
+            sweep.calApplied(m_dataType == WirelessTypes::dataType_float32);
 
             //the digital data is represented as the same structure as a channel mask (16 values, 1 or 0)
             ChannelMask digitalDataMask(digitalData);

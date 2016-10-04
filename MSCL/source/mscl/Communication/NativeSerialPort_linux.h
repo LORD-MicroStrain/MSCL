@@ -19,7 +19,7 @@ namespace mscl
     //
     //Returns:
     //    The port name string passed in
-    std::string getNativeSerialPort(std::string portName)
+    std::string getNativeSerialPort(const std::string& portName)
     {
         return portName;
     }

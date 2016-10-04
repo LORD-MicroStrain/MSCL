@@ -12,7 +12,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "WirelessNode_Impl.h"
 #include "Features/NodeInfo.h"
 #include "Features/NodeFeatures.h"
+#include "Commands/AutoCalInfo.h"
 #include "Commands/WirelessProtocol.h"
+#include "Commands/GetDatalogSessionInfo.h"
 #include "Configuration/NodeEeprom.h"
 #include "Configuration/NodeEepromMap.h"
 #include "Configuration/WirelessNodeConfig.h"
@@ -133,6 +135,9 @@ namespace mscl
         {
             //determine and assign the protocol for this BaseStation
             m_protocol = determineProtocol();
+
+            //protocol was updated so set m_eeprom as well
+            m_eeprom.reset(new NodeEeprom(m_address, m_baseStation, *(m_protocol.get()), m_eepromSettings));
         }
 
         return *(m_protocol.get());
@@ -183,7 +188,7 @@ namespace mscl
         }
     }
 
-    void WirelessNode_Impl::readWriteRetries(uint8 numRetries)
+    void WirelessNode_Impl::setReadWriteRetries(uint8 numRetries)
     {
         //will be cached for later in case m_eeprom is null
         m_eepromSettings.numRetries = numRetries;
@@ -192,6 +197,11 @@ namespace mscl
         {
             eeprom().updateSettings(m_eepromSettings);
         }
+    }
+
+    uint8 WirelessNode_Impl::getReadWriteRetries() const
+    {
+        return m_eepromSettings.numRetries;
     }
 
     void WirelessNode_Impl::useEepromCache(bool useCache)
@@ -273,9 +283,25 @@ namespace mscl
         m_eepromHelper->applyEepromChanges();
     }
 
-    uint16 WirelessNode_Impl::getNumDatalogSessions() const
+    uint16 WirelessNode_Impl::getNumDatalogSessions()
     {
-        return m_eepromHelper->read_numDatalogSessions();
+        if(features().datalogDownloadVersion() == 1)
+        {
+            return m_eepromHelper->read_numDatalogSessions();
+        }
+        else
+        {
+            //datalog v2+ doesn't support the num datalog sessions eeprom
+
+            //use the getDatalogSessionInfo command to obtain this information
+            DatalogSessionInfoResult info;
+            if(!m_baseStation.node_getDatalogSessionInfo(protocol(), m_address, info))
+            {
+                throw Error_NodeCommunication(nodeAddress(), "Failed to get the Datalogging Session Info");
+            }
+
+            return info.sessionCount;
+        }
     }
 
     WirelessTypes::DefaultMode WirelessNode_Impl::getDefaultMode() const
@@ -361,9 +387,9 @@ namespace mscl
         return m_eepromHelper->read_lostBeaconTimeout();
     }
 
-    double WirelessNode_Impl::getHardwareGain(const ChannelMask& mask) const
+    WirelessTypes::InputRange WirelessNode_Impl::getInputRange(const ChannelMask& mask) const
     {
-        return m_eepromHelper->read_hardwareGain(mask);
+        return m_eepromHelper->read_inputRange(mask);
     }
 
     uint16 WirelessNode_Impl::getHardwareOffset(const ChannelMask& mask) const
@@ -371,9 +397,9 @@ namespace mscl
         return m_eepromHelper->read_hardwareOffset(mask);
     }
 
-    WirelessTypes::Filter WirelessNode_Impl::getLowPassFilter(const ChannelMask& mask) const
+    WirelessTypes::Filter WirelessNode_Impl::getAntiAliasingFilter(const ChannelMask& mask) const
     {
-        return m_eepromHelper->read_lowPassFilter(mask);
+        return m_eepromHelper->read_antiAliasingFilter(mask);
     }
 
     float WirelessNode_Impl::getGaugeFactor(const ChannelMask& mask) const
@@ -487,6 +513,16 @@ namespace mscl
         return m_eepromHelper->read_storageLimitMode();
     }
 
+    uint32 WirelessNode_Impl::getSensorDelay() const
+    {
+        if(!features().supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+
+        return m_eepromHelper->read_sensorDelay();
+    }
+
     /*
     bool WirelessNode_Impl::shortPing()
     {
@@ -542,7 +578,7 @@ namespace mscl
         //cycle the radio on the node by writing a 2 to the CYCLE_POWER location
         writeEeprom(NodeEepromMap::CYCLE_POWER, Value::UINT16(RESET_RADIO));
 
-        Utils::threadSleep(100);
+        Utils::threadSleep(200);
     }
 
     void WirelessNode_Impl::changeFrequency(WirelessTypes::Frequency frequency)
@@ -590,7 +626,7 @@ namespace mscl
         }
 
         //call the node_startNonSyncSampling command from the parent BaseStation
-        m_baseStation.node_startNonSyncSampling(m_address);
+        m_baseStation.node_startNonSyncSampling(protocol(), m_address);
     }
 
     void WirelessNode_Impl::clearHistogram()
@@ -612,9 +648,17 @@ namespace mscl
         Utils::checkBounds_min(targetPercent, 0.0f);
         Utils::checkBounds_max(targetPercent, 100.0f);
 
-        //attempt a ping first 
+        //attempt a few pings first 
         //(legacy (v1) autobalance doesn't have a response packet, so need to check communication)
-        if(!ping().success())
+        uint8 retryCounter = 0;
+        bool pingSuccess = false;
+        while(!pingSuccess && retryCounter < 3)
+        {
+            pingSuccess = ping().success();
+            retryCounter++;
+        }
+
+        if(!pingSuccess)
         {
             throw Error_NodeCommunication(nodeAddress());
         }
@@ -645,13 +689,13 @@ namespace mscl
             uint8 startRetries = m_eepromSettings.numRetries;
 
             //when this goes out of scope, it will change back the original retries value
-            ScopeHelper writebackRetries(std::bind(&WirelessNode_Impl::readWriteRetries, this, startRetries));
+            ScopeHelper writebackRetries(std::bind(&WirelessNode_Impl::setReadWriteRetries, this, startRetries));
 
             //if there are less than 10 retries
             if(startRetries < 10)
             {
                 //we want to retry at least a few times
-                readWriteRetries(10);
+                setReadWriteRetries(10);
             }
             else
             {
@@ -698,7 +742,15 @@ namespace mscl
 
             if(readSensorSuccess)
             {
-                result.m_errorCode = WirelessTypes::autobalance_success;
+                //mark as questionable if not close enough to the target percentage
+                if(std::abs(result.m_percentAchieved - targetPercent) > 5.0)
+                {
+                    result.m_errorCode = WirelessTypes::autobalance_maybeInvalid;
+                }
+                else
+                {
+                    result.m_errorCode = WirelessTypes::autobalance_success;
+                }
             }
         }
 
@@ -708,7 +760,6 @@ namespace mscl
     AutoCalResult_shmLink WirelessNode_Impl::autoCal_shmLink()
     {
         WirelessModels::NodeModel nodeModel = features().m_nodeInfo.model();
-        const Version& fwVers = features().m_nodeInfo.firmwareVersion();
 
         //verify the node supports autocal
         if(!features().supportsAutoCal())
@@ -725,11 +776,39 @@ namespace mscl
 
         //perform the autocal command by the base station
         AutoCalResult_shmLink result;
-        bool success = m_baseStation.node_autocal(m_address, nodeModel, fwVers, result);
+        bool success = m_baseStation.node_autocal_shm(m_address, result);
 
         if(!success)
         {
             throw Error_NodeCommunication(m_address, "AutoCal has failed.");
+        }
+
+        return result;
+    }
+
+    AutoShuntCalResult WirelessNode_Impl::autoShuntCal(const ChannelMask& mask, const ShuntCalCmdInfo& commandInfo)
+    {
+        //verify the node supports this operation
+        if(!features().supportsAutoShuntCal())
+        {
+            throw Error_NotSupported("AutoShuntCal is not supported by this Node.");
+        }
+
+        //verify the channel mask supports this operation
+        if(!features().supportsChannelSetting(WirelessTypes::chSetting_autoShuntCal, mask))
+        {
+            throw Error_NotSupported("AutoShuntCal is not supported by the provided channel(s).");
+        }
+
+        uint8 channel = mask.lastChEnabled();
+        WirelessTypes::ChannelType chType = features().channelType(channel);
+
+        AutoShuntCalResult result;
+        bool success = m_baseStation.node_autoShuntCal(m_address, commandInfo, channel, model(), chType, result);
+
+        if(!success)
+        {
+            throw Error_NodeCommunication(m_address, "AutoShuntCal has failed.");
         }
 
         return result;
@@ -753,5 +832,21 @@ namespace mscl
     void WirelessNode_Impl::writeEeprom(uint16 location, uint16 value)
     {
         eeprom().writeEeprom(location, value);
+    }
+
+    void WirelessNode_Impl::getDiagnosticInfo(ChannelData& result)
+    {
+        //verify the node supports this operation
+        if(!features().supportsGetDiagnosticInfo())
+        {
+            throw Error_NotSupported("The Get Diagnostic Info command is not supported by this Node.");
+        }
+
+        bool success = m_baseStation.node_getDiagnosticInfo(m_address, result);
+
+        if(!success)
+        {
+            throw Error_NodeCommunication(m_address, "Get Diagnostic Info has failed.");
+        }
     }
 }

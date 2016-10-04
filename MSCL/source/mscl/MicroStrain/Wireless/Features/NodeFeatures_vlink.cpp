@@ -33,34 +33,34 @@ namespace mscl
 
         m_channelGroups.emplace_back(DIFFERENTIAL_CH1, "Differential Channel 1",
                                      ChannelGroup::SettingsMap{
-                                         {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_1},
+                                         {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_1},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1},
                                          {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_1},
-                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_1}}
+                                         {WirelessTypes::chSetting_legacyShuntCal, NodeEepromMap::CH_ACTION_SLOPE_1}}
         );
 
         m_channelGroups.emplace_back(DIFFERENTIAL_CH2, "Differential Channel 2",
                                      ChannelGroup::SettingsMap{
-                                         {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_2},
+                                         {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_2},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_2},
                                          {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_2},
-                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_2}}
+                                         {WirelessTypes::chSetting_legacyShuntCal, NodeEepromMap::CH_ACTION_SLOPE_2}}
         );
 
         m_channelGroups.emplace_back(DIFFERENTIAL_CH3, "Differential Channel 3",
                                      ChannelGroup::SettingsMap{
-                                         {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_3},
+                                         {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_3},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_3},
                                          {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_3},
-                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_3}}
+                                         {WirelessTypes::chSetting_legacyShuntCal, NodeEepromMap::CH_ACTION_SLOPE_3}}
         );
 
         m_channelGroups.emplace_back(DIFFERENTIAL_CH4, "Differential Channel 4",
                                      ChannelGroup::SettingsMap{
-                                         {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_4},
+                                         {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_4},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_4},
                                          {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_4},
-                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_4}}
+                                         {WirelessTypes::chSetting_legacyShuntCal, NodeEepromMap::CH_ACTION_SLOPE_4}}
         );
 
         addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
@@ -73,7 +73,12 @@ namespace mscl
         addCalCoeffChannelGroup(8, NodeEepromMap::CH_ACTION_SLOPE_8, NodeEepromMap::CH_ACTION_ID_8);
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures_vlink::sampleRates(WirelessTypes::SamplingMode samplingMode) const
+    bool NodeFeatures_vlink::supportsSensorDelayConfig() const
+    {
+        return true;
+    }
+
+    const WirelessTypes::WirelessSampleRates NodeFeatures_vlink::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
     {
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
@@ -89,11 +94,11 @@ namespace mscl
             return AvailableSampleRates::armedDatalog_vlink;
 
         default:
-            throw Error("Invalid SamplingMode");
+            throw Error_NotSupported("The sampling mode is not supported by this Node");
         }
     }
 
-    WirelessTypes::WirelessSampleRate NodeFeatures_vlink::maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels) const
+    WirelessTypes::WirelessSampleRate NodeFeatures_vlink::maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
     {
         uint16 channelCount = channels.count();
 
@@ -147,7 +152,7 @@ namespace mscl
         else
         {
             //just return the result of the parent class' function
-            return NodeFeatures::maxSampleRate(samplingMode, channels);
+            return NodeFeatures::maxSampleRate(samplingMode, channels, dataCollectionMethod);
         }
     }
 }

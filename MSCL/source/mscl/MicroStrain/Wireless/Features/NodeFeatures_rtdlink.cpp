@@ -24,7 +24,7 @@ namespace mscl
 
         m_channelGroups.emplace_back(THERMOCPL_CHS, "Thermocouple Channels",
                                      ChannelGroup::SettingsMap{
-                                         {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_1},
+                                         {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_1},
                                          {WirelessTypes::chSetting_filterSettlingTime, NodeEepromMap::FILTER_1}}
         );
 
@@ -54,14 +54,14 @@ namespace mscl
         //build and return the data formats that are supported
         WirelessTypes::DataFormats result;
 
-        result.push_back(WirelessTypes::dataFormat_4byte_float);
+        result.push_back(WirelessTypes::dataFormat_cal_float);
 
         //no support for uint16
 
         return result;
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures_rtdlink::sampleRates(WirelessTypes::SamplingMode samplingMode) const
+    const WirelessTypes::WirelessSampleRates NodeFeatures_rtdlink::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
     {
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
@@ -71,7 +71,7 @@ namespace mscl
                 return AvailableSampleRates::continuous_tclink1ch;
 
             default:
-                throw Error("Invalid SamplingMode");
+                throw Error_NotSupported("The sampling mode is not supported by this Node");
         }
     }
 
@@ -80,8 +80,8 @@ namespace mscl
         return maxFilterSettlingTime_B(rate);
     }
 
-    WirelessTypes::WirelessSampleRate NodeFeatures_rtdlink::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode) const
+    WirelessTypes::WirelessSampleRate NodeFeatures_rtdlink::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
     {
-        return maxSampleRateForSettlingTime_B(filterSettlingTime, sampleRates(samplingMode));
+        return maxSampleRateForSettlingTime_B(filterSettlingTime, sampleRates(samplingMode, dataCollectionMethod));
     }
 }

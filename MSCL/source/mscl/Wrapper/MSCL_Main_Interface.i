@@ -91,7 +91,11 @@
 #include "../Value.h"
 #include "../Utils.h"
 #include "../Communication/Devices.h"
+#include "../Communication/ConnectionDebugData.h"
 #include "../Communication/Connection.h"
+#ifndef UNIX_BUILD
+#include "../Communication/WsdaFinder.h"
+#endif
 #include "../MicroStrain/SampleRate.h"
 #include "../MicroStrain/DataPoint.h"
 #include "../MicroStrain/Vector.h"
@@ -126,6 +130,7 @@
 #include "../MicroStrain/Wireless/SyncSamplingNetwork.h"
 #include "../MicroStrain/Wireless/StructuralHealth.h"
 #include "../MicroStrain/Wireless/Commands/AutoBalanceResult.h"
+#include "../MicroStrain/Wireless/Commands/AutoCalInfo.h"
 #include "../MicroStrain/Wireless/Commands/AutoCalResult.h"
 #include "../MicroStrain/Wireless/Commands/BaseStation_BeaconStatus.h"
 #include "../MicroStrain/Wireless/Commands/LongPing.h"
@@ -164,7 +169,11 @@
 %include "../Version.h"
 %include "../Utils.h"
 %include "../Communication/Devices.h"
+%include "../Communication/ConnectionDebugData.h"
 %include "../Communication/Connection.h"
+#ifndef UNIX_BUILD
+    %include "../Communication/WsdaFinder.h"
+#endif
 %include "../MicroStrain/Wireless/WirelessTypes.h"
 %include "../MicroStrain/SampleRate.h"
 %include "../MicroStrain/Vector.h"
@@ -194,6 +203,7 @@
 %include "../MicroStrain/Wireless/RadioFeatures.h"
 %include "../MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
 %include "../MicroStrain/Wireless/Commands/AutoBalanceResult.h"
+%include "../MicroStrain/Wireless/Commands/AutoCalInfo.h"
 %include "../MicroStrain/Wireless/Commands/AutoCalResult.h"
 %include "../MicroStrain/Wireless/Commands/LongPing.h"
 %include "../MicroStrain/Wireless/Commands/SetToIdleStatus.h"
@@ -238,6 +248,7 @@ namespace std
     %template(FatigueModes)            vector<mscl::WirelessTypes::FatigueMode>;
     %template(Filters)                 vector<mscl::WirelessTypes::Filter>;
     %template(StorageLimitModes)       vector<mscl::WirelessTypes::StorageLimitMode>;
+    %template(InputRanges)             vector<mscl::WirelessTypes::InputRange>;
     %template(SampleRates)             vector<mscl::SampleRate>;
     %template(ConfigIssues)            vector<mscl::ConfigIssue>;
     %template(ChannelFields)           vector<mscl::InertialTypes::ChannelField>;
@@ -248,6 +259,11 @@ namespace std
     %template(RfSweep)                 map<uint32_t, int16_t>;
     %template(Triggers)                map<uint8_t, mscl::Trigger>;
     %template(ChannelCalMap)           map<mscl::WirelessChannel::ChannelId, mscl::CalCoefficients>;
+    %template(ConnectionDebugDataVec)  vector<mscl::ConnectionDebugData>;
+
+#ifndef UNIX_BUILD
+    %template(WsdaMap)                 map<string, mscl::WsdaInfo>;
+#endif
 
     %ignore vector<mscl::Bin>::vector(size_type);        //no default constructor
     %ignore vector<mscl::Bin>::resize;              //no default constructor

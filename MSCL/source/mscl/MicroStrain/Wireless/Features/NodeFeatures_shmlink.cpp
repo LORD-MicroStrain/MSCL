@@ -28,28 +28,28 @@ namespace mscl
 
         m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential Channels",
                                      ChannelGroup::SettingsMap{
-                                         {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_1}}
+                                         {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_1}}
         );
 
         m_channelGroups.emplace_back(DIFF_CH1, "Differential Channel 1",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1},
                                          {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_1},
-                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_1}}
+                                         {WirelessTypes::chSetting_legacyShuntCal, NodeEepromMap::CH_ACTION_SLOPE_1}}
         );
 
         m_channelGroups.emplace_back(DIFF_CH2, "Differential Channel 2",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_2},
                                          {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_2},
-                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_2}}
+                                         {WirelessTypes::chSetting_legacyShuntCal, NodeEepromMap::CH_ACTION_SLOPE_2}}
         );
 
         m_channelGroups.emplace_back(DIFF_CH3, "Differential Channel 3",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_3},
                                          {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_3},
-                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_3}}
+                                         {WirelessTypes::chSetting_legacyShuntCal, NodeEepromMap::CH_ACTION_SLOPE_3}}
         );
 
         //Channels
@@ -95,6 +95,16 @@ namespace mscl
     bool NodeFeatures_shmlink::supportsHistogramEnableConfig() const
     {
         return false;    //this version of the shm-link does not allow turning the histogram on and off
+    }
+
+    bool NodeFeatures_shmlink::supportsSensorDelayConfig() const
+    {
+        return true;
+    }
+
+    bool NodeFeatures_shmlink::supportsSensorDelayAlwaysOn() const
+    {
+        return false;
     }
 
     uint8 NodeFeatures_shmlink::numDamageAngles() const

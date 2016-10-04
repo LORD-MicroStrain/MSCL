@@ -13,7 +13,7 @@ namespace mscl
 {
     //API Class: ChannelMask
     //    Represents the channel mask (active and inactive channels) for a WirelessNode. 
-    class ChannelMask : public BitMask
+    class ChannelMask : private BitMask
     {
     public:
         //API Constant: MAX_CHANNELS = 16
@@ -31,6 +31,24 @@ namespace mscl
         //API Constructor: ChannelMask
         //    The default constructor for creating an ChannelMask object, which sets all the channels to inactive
         ChannelMask();
+
+        virtual ~ChannelMask() {};
+
+        //API Operator: ==
+        //  Equal operator for comparing ChannelMasks.
+        virtual bool operator==(const ChannelMask& other) const;
+
+        //API Operator: !=
+        //  Not Equal operator for comparing ChannelMasks.
+        virtual bool operator!=(const ChannelMask& other) const;
+
+        //API Operator: <
+        //  Less Than operator for comparing ChannelMasks.
+        virtual bool operator<(const ChannelMask& other) const;
+
+        //API Operator: >
+        //  Greater Than operator for comparing ChannelMasks.
+        virtual bool operator>(const ChannelMask& other) const;
 
         //API Function: fromMask
         //    Initializes the ChannelMask object from a channel mask

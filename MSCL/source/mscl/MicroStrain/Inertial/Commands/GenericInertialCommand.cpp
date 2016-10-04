@@ -24,14 +24,14 @@ namespace mscl
     {
     }
 
-    GenericInertialCommandResponse GenericInertialCommandResponse::ResponseSuccess(std::string cmdName, ByteStream data /*= ByteStream()*/)
+    GenericInertialCommandResponse GenericInertialCommandResponse::ResponseSuccess(const std::string& cmdName, ByteStream data /*= ByteStream()*/)
     {
         return GenericInertialCommandResponse(ResponsePattern::STATE_SUCCESS, true, InertialPacket::MIP_ACK_NACK_ERROR_NONE, cmdName, data);
     }
 
-    GenericInertialCommandResponse GenericInertialCommandResponse::ResponseFail(ResponsePattern::State errorState, InertialPacket::MipAckNack errorCode, std::string cmdName)
+    GenericInertialCommandResponse GenericInertialCommandResponse::ResponseFail(ResponsePattern::State errorState, InertialPacket::MipAckNack errorCode, const std::string& cmdName)
     {
-        return GenericInertialCommandResponse(errorState, false, errorCode, cmdName, 0);
+        return GenericInertialCommandResponse(errorState, false, errorCode, cmdName, ByteStream());
     }
 
     ByteStream GenericInertialCommandResponse::data() const
@@ -41,7 +41,7 @@ namespace mscl
     }
 
 
-    ByteStream GenericInertialCommand::buildCommand(uint8 descSetId, uint8 cmdByte, Bytes fieldData) //fieldData=Bytes()
+    ByteStream GenericInertialCommand::buildCommand(uint8 descSetId, uint8 cmdByte, const Bytes& fieldData) //fieldData=Bytes()
     {
         //create the field to add to the packet
         InertialDataField field(Utils::make_uint16(descSetId, cmdByte), fieldData);
@@ -53,7 +53,7 @@ namespace mscl
         return builder.buildPacket();
     }
 
-    ByteStream GenericInertialCommand::buildCommand(InertialTypes::Command commandId, Bytes fieldData) //fieldData=Bytes())
+    ByteStream GenericInertialCommand::buildCommand(InertialTypes::Command commandId, const Bytes& fieldData) //fieldData=Bytes())
     {
         uint16 field = static_cast<uint16>(commandId);
 

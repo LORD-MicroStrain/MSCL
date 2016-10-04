@@ -122,16 +122,16 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::SamplingMode samplingMode();
 
-        //Function: samplingDelay
-        //    Gets the value stored in eeprom for the sampling delay of the node.
+        //Function: sensorDelay
+        //    Gets the value stored in eeprom for the sensor delay of the node.
         //
         //Returns:
-        //    The sampling delay of the node as a <TimeSpan>.
+        //    The sensor delay of the node as a <TimeSpan>.
         //
         //Exceptions:
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        TimeSpan samplingDelay();
+        uint32 sensorDelay();
 
         //Function: timeBetweenBursts
         //    Gets the time between bursts of the node.

@@ -10,6 +10,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "WirelessParser.h"
 #include "WirelessModels.h"
 #include "Commands/AutoBalance_v2.h"
+#include "Commands/AutoCal.h"
 #include "Commands/BaseStation_BeaconStatus.h"
 #include "Commands/LongPing.h"
 #include "Commands/SetToIdleStatus.h"
@@ -29,7 +30,9 @@ namespace mscl
     class BaseStation;
     class BaseStationFeatures;
     class BaseStationConfig;
+    struct DatalogSessionInfoResult;
     class ResponsePattern;
+    struct ShuntCalCmdInfo;
     class WirelessProtocol;
 
     //Class: BaseStation_Impl
@@ -59,9 +62,9 @@ namespace mscl
         ~BaseStation_Impl();
 
     private:
-        BaseStation_Impl();                                        //default constructor disabled
-        BaseStation_Impl(const BaseStation_Impl&);                //copy constructor disabled
-        BaseStation_Impl& operator=(const BaseStation_Impl&);    //assignement operator disabled
+        BaseStation_Impl() = delete;                                    //default constructor disabled
+        BaseStation_Impl(const BaseStation_Impl&) = delete;             //copy constructor disabled
+        BaseStation_Impl& operator=(const BaseStation_Impl&) = delete;  //assignement operator disabled
 
     private:
         //Variable: m_connection
@@ -223,12 +226,16 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         bool write(uint16 eepromAddress, uint16 value);
 
-        //Function: readWriteRetries
+        //Function: setReadWriteRetries
         //    Sets the number of retry attempts for reading and writing with the BaseStation.
         //
         //Parameters:
         //    numRetries - The number of retries to set for all reading and writing with the BaseStation.
-        void readWriteRetries(uint8 numRetries);
+        void setReadWriteRetries(uint8 numRetries);
+
+        //Function: getReadWriteRetries
+        //    Gets the number of retry attempts for reading and writing with the BaseStation.
+        uint8 getReadWriteRetries() const;
 
         //Function: useEepromCache
         //    Sets whether or not to utilize the eeprom cache when configuring this BaseStation (default of enabled). This can be enabled/disabled at any time.
@@ -675,6 +682,14 @@ namespace mscl
         //    Performs Version 1 of the Node Page Download command.
         bool protocol_node_pageDownload_v1(NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data);
 
+        //Function: protocol_node_datalogInfo_v1
+        //  Performs Version 1 of the Get Datalog Session Info command.
+        bool protocol_node_datalogInfo_v1(NodeAddress nodeAddress, DatalogSessionInfoResult& result);
+
+        //Function: protocol_node_getDatalogData_v1
+        //  Performs Version 1 of the Get Datalog Data command.
+        bool protocol_node_getDatalogData_v1(NodeAddress nodeAddress, uint32 flashAddress, ByteStream& data);
+
         //Function: protocol_node_shortPing_v1
         //    Performs Version 1 of the Node Short Ping command.
         bool protocol_node_shortPing_v1(NodeAddress nodeAddress);
@@ -714,6 +729,14 @@ namespace mscl
         //Function: protocol_node_erase_v2
         //    Performs Version 2 of the Node erase command.
         bool protocol_node_erase_v2(NodeAddress nodeAddress);
+
+        //Function: protocol_node_startNonSync_v1
+        //  Performs Version 1 of the Start Non Sync Sampling command.
+        bool protocol_node_startNonSync_v1(NodeAddress nodeAddress);
+
+        //Function: protocol_node_startNonSync_v2
+        //  Performs Version 2 of the Start Non Sync Sampling command.
+        bool protocol_node_startNonSync_v2(NodeAddress nodeAddress);
 
     public:
         //Function: node_ping
@@ -817,8 +840,39 @@ namespace mscl
         //    true if the page download command succeeded, false otherwise
         //
         //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation
+        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         virtual bool node_pageDownload(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data);
+
+        //Function: node_getDatalogSessionInfo
+        //  Gets info about the datalog sessions on the Node.
+        //
+        //Parameters:
+        //  nodeProtocol - The <WirelessProtocol> for the Node.
+        //  nodeAddress - The node address of the Node to download data from.
+        //  result - The <DatalogSessionInfoResult> containing the result info on success.
+        //
+        //Returns:
+        //  true if the command succeded, false otherwise
+        //
+        //Exceptions:
+        //  - <Error_Connection>: A connection error has occurred with the BaseStation.
+        virtual bool node_getDatalogSessionInfo(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, DatalogSessionInfoResult& result);
+
+        //Function: node_getDatalogData
+        //  Gets a section of logged data from the Node.
+        //
+        //Parameters:
+        //  nodeProtocol - The <WirelessProtocol> for the Node.
+        //  nodeAddress - The node address of the Node to download data from.
+        //  flashAddress - The flash address to read from.
+        //  result - The <ByteStream> containing the resulting data bytes from the Node on success.
+        //
+        //Returns:
+        //  true if the command succeded, false otherwise
+        //
+        //Exceptions:
+        //  - <Error_Connection>: A connection error has occurred with the BaseStation.
+        virtual bool node_getDatalogData(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint32 flashAddress, ByteStream& result);
 
         //Function: node_erase
         //    Sends the Erase command to a Node.
@@ -848,11 +902,15 @@ namespace mscl
         //    Sends the Start Non-Synchronized Sampling command to a Node.
         //
         //Parameters:
+        //    nodeProtocol - The <WirelessProtocol> for the Node.
         //    nodeAddress - The node address of the Node to send the command to.
+        //
+        //Returns:
+        //  true if the Start Non Sync Sampling command succeded, false otherwise.
         //
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        virtual void node_startNonSyncSampling(NodeAddress nodeAddress);
+        virtual bool node_startNonSyncSampling(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress);
 
         //Function: node_armForDatalogging
         //    Sends the Arm For Datalogging command to a Node.
@@ -895,13 +953,11 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         virtual bool node_autoBalance(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result);
 
-        //Function: node_autocal
+        //Function: node_autocal_shm
         //    Performs automatic calibration for a Wireless Node.
         //
         //Parameters:
         //    nodeAddress - The node address of the Node to send the command to.
-        //    model - The <WirelessModels::NodeModel> of the Node.
-        //    fwVersion - The firmware <Version> of the Node.
         //    result - The <AutoCalResult> reference to hold the result.
         //
         //Returns:
@@ -909,7 +965,30 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool node_autocal(NodeAddress nodeAddress, WirelessModels::NodeModel model, const Version& fwVersion, AutoCalResult& result);
+        bool node_autocal_shm(NodeAddress nodeAddress, AutoCalResult& result);
+
+        //Function: node_autoShuntCal
+        //  Performs automatic shunt calibration for a Wireless Node.
+        //
+        //Parameters:
+        //  nodeAddress - The node address of the Node to send the command to.
+        //  commandInfo - The <ShuntCalCmdInfo> to use in the command.
+        //  chNum - The channel number to calibrated.
+        //  nodeType - The type of node being calibrated.
+        //  chType - The type of the channel being calibrated.
+        //  result - The <AutoCalResult> reference to hold the result.
+        //
+        //Returns:
+        //  true if the AutoCal command was successful, false otherwise.
+        //
+        //Exceptions:
+        //  - <Error_Connection>: A connection error has occurred with the BaseStation.
+        bool node_autoShuntCal(NodeAddress nodeAddress,
+                               const ShuntCalCmdInfo& commandInfo,
+                               uint8 chNum,
+                               WirelessModels::NodeModel nodeType,
+                               WirelessTypes::ChannelType chType,
+                               AutoCalResult& result);
 
         //Function: node_readSingleSensor
         //    Reads the bits value for a single channel on a Wireless Node.
@@ -925,5 +1004,33 @@ namespace mscl
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         bool node_readSingleSensor(NodeAddress nodeAddress, uint8 channelNumber, uint16& result);
+
+        //Function: node_getDiagnosticInfo
+        //  Performs an immediate request for the Node's Diagnostic Info.
+        //
+        //Parameters:
+        //  nodeAddress - The node address of the Node to send the command to.
+        //  result - The <ChannelData> container that will be filled with the result upon success.
+        //
+        //Returns:
+        //  true if the command was successful, false otherwise.
+        //
+        //Exceptions:
+        //  - <Error_Connection>: A connection error has occurred with the BaseStation.
+        bool node_getDiagnosticInfo(NodeAddress nodeAddress, ChannelData& result);
+
+    private:
+        //Function: node_autocal
+        //  Performs automatic calibration for a Wireless Node.
+        //
+        //Parameters:
+        //  nodeAddress - The node address of the Node to send the command to.
+        //  command - The <ByteStream> containing the autocal command to send.
+        //  response - The <AutoCal::Response> to use for parsing the response.
+        //  result - The <AutoCalResult> reference to hold the result.
+        //
+        //Exceptions:
+        //  - <Error_Connection>: A connection error has occurred with the BaseStation.
+        bool node_autocal(NodeAddress nodeAddress, const ByteStream& command, AutoCal::Response& response, AutoCalResult& result);
     };
 }

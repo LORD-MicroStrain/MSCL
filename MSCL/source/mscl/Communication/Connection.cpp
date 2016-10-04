@@ -11,7 +11,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "SerialConnection.h"
 #include "TcpIpConnection.h"
 
-#ifdef UNIX_SOCKETS
+#ifdef UNIX_BUILD
 #include "UnixSocketConnection.h"
 #endif
 
@@ -34,7 +34,7 @@ namespace mscl
         return Connection(tcpip);
     }
     
-#ifdef UNIX_SOCKETS
+#ifdef UNIX_BUILD
     Connection Connection::UnixSocket(const std::string& path)
     {
         std::shared_ptr<Connection_Impl_Base> socket(new UnixSocketConnection(path));
@@ -129,6 +129,18 @@ namespace mscl
 
         //convert the Bytes to a string
         std::string result(bytes.begin(), bytes.end());
+        return result;
+    }
+
+    void Connection::debugMode(bool enable)
+    {
+        m_impl->debugMode(enable);
+    }
+
+    ConnectionDebugDataVec Connection::getDebugData(uint32 timeout /*= 0*/)
+    {
+        ConnectionDebugDataVec result;
+        m_impl->getDebugData(result, timeout);
         return result;
     }
 

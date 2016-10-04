@@ -23,11 +23,6 @@ namespace mscl
         //    Initializes a DeliveryStopFlags object given specific values
         DeliveryStopFlags(bool pc, bool appBoard, bool linkBoard, bool baseStation);
 
-    private:
-        //Variable: m_inverted
-        //  Whether the delivery stop flag logic is inverted (like in ASPP v1) or not (ASPP v2).
-        bool m_inverted;
-
     public:
         //Variable: pc
         //    A stop flag representing the pc

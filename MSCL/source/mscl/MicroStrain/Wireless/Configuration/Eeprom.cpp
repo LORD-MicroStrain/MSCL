@@ -158,7 +158,7 @@ namespace mscl
         Utils::split_uint16(lsw, b3, b4);
 
         //convert the values into a float and return
-        return Utils::make_float_little_endian(b1, b2, b3, b4);    //note that this just swapped endianness by passing the msb as the lsb
+        return Utils::make_float(b1, b2, b3, b4, Utils::littleEndian);    //note that this just swapped endianness by passing the msb as the lsb
     }
 
     uint32 Eeprom::readEeprom_uint32(uint16 location)
@@ -170,7 +170,7 @@ namespace mscl
         uint16 lsw = readEeprom(location + 2);
 
         //make a uint32 and return
-        return Utils::make_uint32(msw, lsw);
+        return Utils::make_uint32(Utils::msb(msw), Utils::lsb(msw), Utils::msb(lsw), Utils::lsb(lsw));
     }
 
     int16 Eeprom::readEeprom_int16(uint16 location)
@@ -180,10 +180,12 @@ namespace mscl
 
     void Eeprom::writeEeprom_float(uint16 location, float value)
     {
+        //Note: floats in EEPROM for Wireless devices are in Little Endian
+
         uint8 b1, b2, b3, b4;
 
         //split the float into its 4 bytes (in little endian)
-        Utils::split_float_little_endian(value, b1, b2, b3, b4);
+        Utils::split_float(value, b1, b2, b3, b4, Utils::littleEndian);
 
         //write the first eeprom location
         writeEeprom(location, Utils::make_uint16(b1, b2));
@@ -194,17 +196,19 @@ namespace mscl
 
     void Eeprom::writeEeprom_uint32(uint16 location, uint32 value)
     {
-        uint16 msw = 0;
-        uint16 lsw = 0;
+        uint8 low = 0;
+        uint8 b2 = 0;
+        uint8 b3 = 0;
+        uint8 high = 0;
 
         //split the uint32 into 2 parts
-        Utils::split_uint32(value, msw, lsw);
+        Utils::split_uint32(value, low, b2, b3, high);
 
         //try to write the msw
-        writeEeprom(location, msw);
+        writeEeprom(location, Utils::make_uint16(low, b2));
 
         //try to write the lsw
-        writeEeprom(location + 2, lsw);    //TODO: possibly throw a custom exception if this throws? We wrote the msw but not the lsw
+        writeEeprom(location + 2, Utils::make_uint16(b3, high));    //TODO: possibly throw a custom exception if this throws? We wrote the msw but not the lsw
     }
 
     void Eeprom::writeEeprom_int16(uint16 location, int16 value)

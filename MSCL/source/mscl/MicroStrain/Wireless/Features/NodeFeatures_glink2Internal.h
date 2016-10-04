@@ -21,8 +21,8 @@ namespace mscl
         NodeFeatures_glink2Internal(const NodeInfo& info);
 
     public:
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode) const override;
+        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const override;
 
-        virtual const WirelessTypes::Filters lowPassFilters() const override;
+        virtual const WirelessTypes::Filters antiAliasingFilters() const override;
     };
 }

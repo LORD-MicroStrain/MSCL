@@ -50,16 +50,16 @@ namespace mscl
     {
     private:
         //Variable: m_errorFlagCh1
-        //    The <WirelessTypes::AutoCalErrorFlag> for the channel 1 strain sensor.
-        WirelessTypes::AutoCalErrorFlag m_errorFlagCh1;
+        //    The <WirelessTypes::AutoCalShmErrorFlag> for the channel 1 strain sensor.
+        WirelessTypes::AutoCalShmErrorFlag m_errorFlagCh1;
 
         //Variable: m_errorFlagCh2
-        //    The <WirelessTypes::AutoCalErrorFlag> for the channel 2 strain sensor.
-        WirelessTypes::AutoCalErrorFlag m_errorFlagCh2;
+        //    The <WirelessTypes::AutoCalShmErrorFlag> for the channel 2 strain sensor.
+        WirelessTypes::AutoCalShmErrorFlag m_errorFlagCh2;
 
         //Variable: m_errorFlagCh3
-        //    The <WirelessTypes::AutoCalErrorFlag> for the channel 3 strain sensor.
-        WirelessTypes::AutoCalErrorFlag m_errorFlagCh3;
+        //    The <WirelessTypes::AutoCalShmErrorFlag> for the channel 3 strain sensor.
+        WirelessTypes::AutoCalShmErrorFlag m_errorFlagCh3;
 
         //Variable: m_offsetCh1
         //    The offset applied for the channel 1 strain sensor.
@@ -82,16 +82,16 @@ namespace mscl
         virtual ~AutoCalResult_shmLink() {};
 
         //API Function: errorFlagCh1
-        //    Gets the <WirelessTypes::AutoCalErrorFlag> for the channel 1 strain sensor.
-        WirelessTypes::AutoCalErrorFlag errorFlagCh1() const;
+        //    Gets the <WirelessTypes::AutoCalShmErrorFlag> for the channel 1 strain sensor.
+        WirelessTypes::AutoCalShmErrorFlag errorFlagCh1() const;
 
         //API Function: errorFlagCh2
-        //    Gets the <WirelessTypes::AutoCalErrorFlag> for the channel 2 strain sensor.
-        WirelessTypes::AutoCalErrorFlag errorFlagCh2() const;
+        //    Gets the <WirelessTypes::AutoCalShmErrorFlag> for the channel 2 strain sensor.
+        WirelessTypes::AutoCalShmErrorFlag errorFlagCh2() const;
 
         //API Function: errorFlagCh3
-        //    Gets the <WirelessTypes::AutoCalErrorFlag> for the channel 3 strain sensor.
-        WirelessTypes::AutoCalErrorFlag errorFlagCh3() const;
+        //    Gets the <WirelessTypes::AutoCalShmErrorFlag> for the channel 3 strain sensor.
+        WirelessTypes::AutoCalShmErrorFlag errorFlagCh3() const;
 
         //API Function: offsetCh1
         //    Gets the offset applied for the channel 1 strain sensor.
@@ -108,6 +108,95 @@ namespace mscl
         //API Function: temperature
         //    Gets the temperature (in °C) at the time of the calibration.
         float temperature() const;
+
+    protected:
+        //Function: parse
+        //    Parses the auto cal info bytes for the shm-link.
+        virtual void parse(const Bytes& autoCalInfo) final;
+    };
+
+    //API Class: AutoShuntCalResult
+    //    Holds the result information from an autoCal_shunt command.
+    class AutoShuntCalResult: public AutoCalResult
+    {
+    private:
+        //Variable: m_errorFlag
+        //  The <WirelessTypes::AutoShuntCalErrorFlag> for the shunt calibration.
+        WirelessTypes::AutoShuntCalErrorFlag m_errorFlag;
+
+        //Variable: m_slope
+        //  The slope result of the shunt calibration.
+        float m_slope;
+
+        //Variable: m_offset
+        //  The offset result of the shunt calibration
+        float m_offset;
+
+        //Variable: m_baseMedian
+        //  The median of the baseline data sampled during the shunt calibration.
+        float m_baseMedian;
+        
+        //Variable: m_baseMin
+        //  The minimum of the baseline data sampled during the shunt calibration.
+        float m_baseMin;
+        
+        //Variable: m_baseMax
+        //  The maximum of the baseline data sampled during the shunt calibration.
+        float m_baseMax;
+        
+        //Variable: m_shuntMedian
+        //  The median of the shunted data sampled during the shunt calibration.
+        float m_shuntMedian;
+        
+        //Variable: m_shuntMin
+        //  The minimum of the shunted data sampled during the shunt calibration.
+        float m_shuntMin;
+        
+        //Variable: m_shuntMax
+        //  The maximum of the shunted data sampled during the shunt calibration.
+        float m_shuntMax;
+
+    public:
+        AutoShuntCalResult();
+        virtual ~AutoShuntCalResult() {};
+
+        //API Function: errorFlag
+        //  Gets the <WirelessTypes::AutoShuntCalErrorFlag> for the shunt calibration.
+        WirelessTypes::AutoShuntCalErrorFlag errorFlag() const;
+
+        //API Function: slope
+        //  Gets the slope result of the shunt calibration.
+        //  Note: This value was not applied to the Node. You will need to manually apply if desired.
+        float slope() const;
+
+        //API Function: offset
+        //  Gets the offset result of the shunt calibration.
+        //  Note: This value was not applied to the Node. You will need to manually apply if desired.
+        float offset() const;
+        
+        //API Function: baseMedian
+        //  Gets the median of the baseline data sampled during the shunt calibration.
+        float baseMedian() const;
+        
+        //API Function: 
+        //  Gets the minimum of the baseline data sampled during the shunt calibration.
+        float baseMin() const;
+        
+        //API Function: 
+        //  Gets the maximum of the baseline data sampled during the shunt calibration.
+        float baseMax() const;
+        
+        //API Function: 
+        //  Gets the median of the shunted data sampled during the shunt calibration.
+        float shuntMedian() const;
+        
+        //API Function: 
+        //  Gets the minimum of the shunted data sampled during the shunt calibration.
+        float shuntMin() const;
+        
+        //API Function: 
+        //  Gets the maximum of the shunted data sampled during the shunt calibration.
+        float shuntMax() const;
 
     protected:
         //Function: parse

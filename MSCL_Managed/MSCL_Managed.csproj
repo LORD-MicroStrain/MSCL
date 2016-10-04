@@ -91,6 +91,7 @@
     <Compile Include="mscl\AutoBalanceResult.cs" />
     <Compile Include="mscl\AutoCalResult.cs" />
     <Compile Include="mscl\AutoCalResult_shmLink.cs" />
+    <Compile Include="mscl\AutoShuntCalResult.cs" />
     <Compile Include="mscl\BaseStation.cs" />
     <Compile Include="mscl\BaseStationAnalogPair.cs" />
     <Compile Include="mscl\BaseStationButton.cs" />
@@ -112,6 +113,8 @@
     <Compile Include="mscl\ConfigIssue.cs" />
     <Compile Include="mscl\ConfigIssues.cs" />
     <Compile Include="mscl\Connection.cs" />
+    <Compile Include="mscl\ConnectionDebugData.cs" />
+    <Compile Include="mscl\ConnectionDebugDataVec.cs" />
     <Compile Include="mscl\DamageAngles.cs" />
     <Compile Include="mscl\DataCollectionMethods.cs" />
     <Compile Include="mscl\DataFormats.cs" />
@@ -146,6 +149,7 @@
     <Compile Include="mscl\InertialNodeInfo.cs" />
     <Compile Include="mscl\InertialPacket.cs" />
     <Compile Include="mscl\InertialTypes.cs" />
+    <Compile Include="mscl\InputRanges.cs" />
     <Compile Include="mscl\LibVersion.cs" />
     <Compile Include="mscl\LinearEquation.cs" />
     <Compile Include="mscl\LoggedDataSweep.cs" />
@@ -165,6 +169,7 @@
     <Compile Include="mscl\SampleRates.cs" />
     <Compile Include="mscl\SamplingModes.cs" />
     <Compile Include="mscl\SetToIdleStatus.cs" />
+    <Compile Include="mscl\ShuntCalCmdInfo.cs" />
     <Compile Include="mscl\SnCurveSegment.cs" />
     <Compile Include="mscl\SnCurveSegments.cs" />
     <Compile Include="mscl\StorageLimitModes.cs" />
@@ -188,6 +193,9 @@
     <Compile Include="mscl\WirelessNodeConfig.cs" />
     <Compile Include="mscl\WirelessSampleRates.cs" />
     <Compile Include="mscl\WirelessTypes.cs" />
+    <Compile Include="mscl\WsdaFinder.cs" />
+    <Compile Include="mscl\WsdaInfo.cs" />
+    <Compile Include="mscl\WsdaMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

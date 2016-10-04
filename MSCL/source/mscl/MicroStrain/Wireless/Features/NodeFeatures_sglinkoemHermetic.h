@@ -22,5 +22,9 @@ namespace mscl
         //Constructor: NodeFeatures_sglinkoemHermetic
         //    Creates a NodeFeatures_sglinkoemHermetic object.
         NodeFeatures_sglinkoemHermetic(const NodeInfo& info);
+
+        virtual bool supportsSensorDelayConfig() const override;
+
+        virtual bool supportsSensorDelayAlwaysOn() const override;
     };
 }

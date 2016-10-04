@@ -12,14 +12,12 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    ByteStream::ByteStream(bool bigEndian):
-        m_bigEndian(bigEndian)
+    ByteStream::ByteStream()
     {
     }
 
-    ByteStream::ByteStream(Bytes bytesToCopy, bool bigEndian):
-        m_bytes(bytesToCopy),
-        m_bigEndian(bigEndian)
+    ByteStream::ByteStream(Bytes bytesToCopy):
+        m_bytes(bytesToCopy)
     {
     }
 
@@ -53,26 +51,34 @@ namespace mscl
     }
 
     //add a WORD (2 bytes) to the bytestream
-    void ByteStream::append_int16(int16 value)
+    void ByteStream::append_int16(int16 value, Utils::Endianness endian /*= Utils::bigEndian*/)
     {
-        m_bytes.push_back( Utils::msb(value) );
-        m_bytes.push_back( Utils::lsb(value) );
+        uint8 low, high;
+
+        Utils::split_int16(value, low, high, endian);
+
+        m_bytes.push_back( low );
+        m_bytes.push_back( high );
     }
 
     //add a WORD (2 bytes) to the bytestream
-    void ByteStream::append_uint16(uint16 value)
+    void ByteStream::append_uint16(uint16 value, Utils::Endianness endian /*= Utils::bigEndian*/)
     {
-        m_bytes.push_back( Utils::msb(value) );
-        m_bytes.push_back( Utils::lsb(value) );
+        uint8 low, high;
+
+        Utils::split_uint16(value, low, high, endian);
+
+        m_bytes.push_back(low);
+        m_bytes.push_back(high);
     }
 
     //add a DWORD (4 bytes) to the bytestream
-    void ByteStream::append_uint32(uint32 value)
+    void ByteStream::append_uint32(uint32 value, Utils::Endianness endian /*= Utils::bigEndian*/)
     {
         uint8 b1, b2, b3, b4;
          
         //split the value into 4 bytes
-        Utils::split_uint32(value, b1, b2, b3, b4);
+        Utils::split_uint32(value, b1, b2, b3, b4, endian);
 
         m_bytes.push_back(b1);
         m_bytes.push_back(b2);
@@ -80,22 +86,30 @@ namespace mscl
         m_bytes.push_back(b4);
     }
 
+    void ByteStream::append_uint64(uint64 value, Utils::Endianness endian /*= Utils::bigEndian*/)
+    {
+        uint8 b1, b2, b3, b4, b5, b6, b7, b8;
+
+        //split the value into 8 bytes
+        Utils::split_uint64(value, b1, b2, b3, b4, b5, b6, b7, b8, endian);
+
+        m_bytes.push_back(b1);
+        m_bytes.push_back(b2);
+        m_bytes.push_back(b3);
+        m_bytes.push_back(b4);
+        m_bytes.push_back(b5);
+        m_bytes.push_back(b6);
+        m_bytes.push_back(b7);
+        m_bytes.push_back(b8);
+    }
+
     //add a float (4 bytes) to the bytestream
-    void ByteStream::append_float(float value)
+    void ByteStream::append_float(float value, Utils::Endianness endian /*= Utils::bigEndian*/)
     {
         uint8 b1, b2, b3, b4;
 
-        //if the ByteStream has big endian floats
-        if(m_bigEndian)
-        {
-            //split the value into 4 bytes (system to big endian)
-            Utils::split_float_big_endian(value, b1, b2, b3, b4);
-        }
-        else
-        {
-            //split the value into 4 bytes (system to little endian)
-            Utils::split_float_little_endian(value, b1, b2, b3, b4);
-        }
+        //split the value into 4 bytes (system to user requested endian)
+        Utils::split_float(value, b1, b2, b3, b4, endian);
 
         m_bytes.push_back(b1);
         m_bytes.push_back(b2);
@@ -104,21 +118,12 @@ namespace mscl
     }
 
     //add a double (8 bytes) to the bytestream
-    void ByteStream::append_double(double value)
+    void ByteStream::append_double(double value, Utils::Endianness endian /*= Utils::bigEndian*/)
     {
         uint8 b1, b2, b3, b4, b5, b6, b7, b8;
 
-        //if the ByteStream has big endian doubles
-        if(m_bigEndian)
-        {
-            //split the value into 8 bytes (system to big endian)
-            Utils::split_double_big_endian(value, b1, b2, b3, b4, b5, b6, b7, b8);
-        }
-        else
-        {
-            //split the value into 8 bytes (system to little endian)
-            Utils::split_double_little_endian(value, b1, b2, b3, b4, b5, b6, b7, b8);
-        }
+        //split the value into 8 bytes (system to user requested endian)
+        Utils::split_double(value, b1, b2, b3, b4, b5, b6, b7, b8, endian);
 
         m_bytes.push_back(b1);
         m_bytes.push_back(b2);
@@ -166,7 +171,7 @@ namespace mscl
     }
 
     //read a WORD (2 bytes) from the bytestream
-    int16 ByteStream::read_int16(std::size_t position) const
+    int16 ByteStream::read_int16(std::size_t position, Utils::Endianness endian /*= Utils::bigEndian*/) const
     {
         //verify that the position being asked for is in range
         verifyBytesInStream(position, 2);
@@ -174,11 +179,11 @@ namespace mscl
         uint8 b1 = m_bytes.at(position);
         uint8 b2 = m_bytes.at(position + 1);
 
-        return Utils::make_int16(b1, b2);
+        return Utils::make_int16(b1, b2, endian);
     }
 
     //read a WORD (2 bytes) from the bytestream
-    uint16 ByteStream::read_uint16(std::size_t position) const
+    uint16 ByteStream::read_uint16(std::size_t position, Utils::Endianness endian /*= Utils::bigEndian*/) const
     {
         //verify that the position being asked for is in range
         verifyBytesInStream(position, 2);
@@ -186,11 +191,24 @@ namespace mscl
         uint8 b1 = m_bytes.at(position);
         uint8 b2 = m_bytes.at(position + 1);
 
-        return Utils::make_uint16(b1, b2);
+        return Utils::make_uint16(b1, b2, endian);
+    }
+
+    uint32 ByteStream::read_uint24(std::size_t position, Utils::Endianness endian /*= Utils::bigEndian*/) const
+    {
+        //verify that the position being asked for is in range
+        verifyBytesInStream(position, 3);
+
+        uint8 b1 = m_bytes.at(position);
+        uint8 b2 = m_bytes.at(position + 1);
+        uint8 b3 = m_bytes.at(position + 2);
+
+        //build a uint32 from the 3 bytes
+        return Utils::make_uint32(0, b1, b2, b3, endian);
     }
 
     //read a DWORD (4 bytes) from the bytestream
-    uint32 ByteStream::read_uint32(std::size_t position) const
+    uint32 ByteStream::read_uint32(std::size_t position, Utils::Endianness endian /*= Utils::bigEndian*/) const
     {
         //verify that the position being asked for is in range
         verifyBytesInStream(position, 4);
@@ -200,10 +218,10 @@ namespace mscl
         uint8 b3 = m_bytes.at(position + 2);
         uint8 b4 = m_bytes.at(position + 3);
 
-        return Utils::make_uint32(b1, b2, b3, b4);
+        return Utils::make_uint32(b1, b2, b3, b4, endian);
     }
 
-    uint64 ByteStream::read_uint64(std::size_t position) const
+    uint64 ByteStream::read_uint64(std::size_t position, Utils::Endianness endian /*= Utils::bigEndian*/) const
     {
         //verify that the position being asked for is in range
         verifyBytesInStream(position, 8);
@@ -217,11 +235,11 @@ namespace mscl
         uint8 b7 = m_bytes.at(position + 6);
         uint8 b8 = m_bytes.at(position + 7);
 
-        return Utils::make_uint64(b1, b2, b3, b4, b5, b6, b7, b8);
+        return Utils::make_uint64(b1, b2, b3, b4, b5, b6, b7, b8, endian);
     }
 
     //read a float (4 bytes) from the bytestream
-    float ByteStream::read_float(std::size_t position) const
+    float ByteStream::read_float(std::size_t position, Utils::Endianness endian /*= Utils::bigEndian*/) const
     {
         //verify that the position being asked for is in range
         verifyBytesInStream(position, 4);
@@ -231,20 +249,11 @@ namespace mscl
         uint8 b3 = m_bytes.at(position + 2);
         uint8 b4 = m_bytes.at(position + 3);
 
-        //if the ByteStream contains big endian floats
-        if(m_bigEndian)
-        {
-            //convert the big endian bytes to a system endian float
-            return Utils::make_float_big_endian(b1, b2, b3, b4);
-        }
-        else
-        {
-            //convert the little endian bytes to a system endian float
-            return Utils::make_float_little_endian(b1, b2, b3, b4);
-        }
+        //convert the bytes to a system endian float
+        return Utils::make_float(b1, b2, b3, b4, endian);
     }
 
-    double ByteStream::read_double(std::size_t position) const
+    double ByteStream::read_double(std::size_t position, Utils::Endianness endian /*= Utils::bigEndian*/) const
     {
         //verify that the position being asked for is in range
         verifyBytesInStream(position, 8);
@@ -258,17 +267,8 @@ namespace mscl
         uint8 b7 = m_bytes.at(position + 6);
         uint8 b8 = m_bytes.at(position + 7);
 
-        //if the ByteStream contains big endian floats
-        if(m_bigEndian)
-        {
-            //convert the big endian bytes to a system endian double
-            return Utils::make_double_big_endian(b1, b2, b3, b4, b5, b6, b7, b8);
-        }
-        else
-        {
-            //convert the little endian bytes to a system endian double
-            return Utils::make_double_little_endian(b1, b2, b3, b4, b5, b6, b7, b8);
-        }
+        //convert the bytes to a system endian double
+        return Utils::make_double(b1, b2, b3, b4, b5, b6, b7, b8, endian);
     }
 
     std::string ByteStream::read_string(std::size_t position, std::size_t length) const
@@ -306,7 +306,7 @@ namespace mscl
         m_bytes.clear();
     }
 
-    bool ByteStream::empty()
+    bool ByteStream::empty() const
     {
         return m_bytes.empty();
     }
@@ -377,7 +377,7 @@ namespace mscl
         }
 
         //get the final checksum from the 2 bytes
-        finalChecksum = Utils::make_uint16(checksumByte1, checksumByte2);
+        finalChecksum = (static_cast<uint16>(checksumByte1) << 8) | static_cast<uint16>(checksumByte2);//Utils::make_uint16(checksumByte1, checksumByte2);
 
         return finalChecksum;
     }

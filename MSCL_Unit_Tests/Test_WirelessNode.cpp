@@ -92,16 +92,8 @@ BOOST_AUTO_TEST_CASE(WirelessNode_stop_destroyBaseBeforeStopNodeStatus)
     BOOST_CHECK_EQUAL(result.result(), SetToIdleStatus::setToIdleResult_notCompleted);
 
     MOCK_EXPECT(impl->ping).returns(true);
-    BOOST_CHECK_THROW(result.cancel(), Error_Communication);
 
-    try
-    {
-        result.cancel();
-    }
-    catch(Error_Communication& ex)
-    {
-        BOOST_CHECK_EQUAL(ex.what(), "Failed to cancel the Set to Idle operation.");
-    }
+    result.cancel();
 
     //a canceled stop node response, without the initial 0xAA in the response
     Bytes bytes;
@@ -348,7 +340,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_getSampling)
     MOCK_EXPECT(impl->readEeprom_uint16).once().with(NodeEepromMap::DATALOG_SAMPLE_RATE.location()).returns(WirelessTypes::sampleRate_32Hz);    //sample rate
     MOCK_EXPECT(impl->readEeprom_uint16).once().returns(40);                                                                            //num sweeps
     MOCK_EXPECT(impl->readEeprom_uint16).once().with(NodeEepromMap::UNLIMITED_DATALOG.location()).returns(0);                            //unlimited duration
-    MOCK_EXPECT(impl->readEeprom_uint16).once().returns(WirelessTypes::dataFormat_4byte_float);                                            //data format
+    MOCK_EXPECT(impl->readEeprom_uint16).once().returns(WirelessTypes::dataFormat_cal_float);                                            //data format
     MOCK_EXPECT(impl->readEeprom_uint16).once().returns(WirelessTypes::collectionMethod_logOnly);                                        //collection mode
     MOCK_EXPECT(impl->readEeprom_uint16).once().returns(100);                                                                            //time between bursts
 
@@ -360,7 +352,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_getSampling)
     BOOST_CHECK_EQUAL(sampling.sampleRate(), WirelessTypes::sampleRate_32Hz);
     BOOST_CHECK_EQUAL(sampling.numSweeps(), 4000);
     BOOST_CHECK_EQUAL(sampling.unlimitedDuration(), false);
-    BOOST_CHECK_EQUAL(sampling.dataFormat(), WirelessTypes::dataFormat_4byte_float);
+    BOOST_CHECK_EQUAL(sampling.dataFormat(), WirelessTypes::dataFormat_cal_float);
     BOOST_CHECK_EQUAL(sampling.dataCollectionMethod(), WirelessTypes::collectionMethod_logOnly);
     BOOST_CHECK_EQUAL(sampling.timeBetweenBursts().getSeconds(), 100);
 }
@@ -390,7 +382,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setSampling)
     MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::SAMPLE_RATE.location(), WirelessTypes::sampleRate_2Hz);                //sample rate
     MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::NUM_SWEEPS.location(), 10);                                            //num sweeps
     MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::UNLIMITED_SAMPLING.location(), 1);                                        //unlimited duration
-    MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::DATA_FORMAT.location(), WirelessTypes::dataFormat_2byte_uint);            //data format
+    MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::DATA_FORMAT.location(), WirelessTypes::dataFormat_raw_uint16);            //data format
     MOCK_EXPECT(impl->writeEeprom_uint16).once().with(NodeEepromMap::COLLECTION_MODE.location(), WirelessTypes::collectionMethod_transmitOnly);    //collection mode
 
     BOOST_CHECK_NO_THROW(node.setSamplingConfig(sampling));

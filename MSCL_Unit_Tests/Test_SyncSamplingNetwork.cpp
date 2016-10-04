@@ -99,7 +99,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst)
     s.chs = 5;
     s.rate = 105;
     s.syncMode = WirelessTypes::syncMode_burst;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.sweeps = 256;
     s.timebetwburst = 350;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous)
         chs = 7,
         rate = 112,
         syncMode = WirelessTypes::syncMode_continuous,
-        dataFormat = WirelessTypes::dataFormat_2byte_uint,
+        dataFormat = WirelessTypes::dataFormat_raw_uint16,
         collectionMode = WirelessTypes::collectionMethod_logAndTransmit,
         samplingDelay = 5,
         samplingMode = WirelessTypes::samplingMode_sync;
@@ -215,7 +215,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_noChannelMask)
         chs = 0,
         rate = 112,
         syncMode = WirelessTypes::syncMode_continuous,
-        dataFormat = WirelessTypes::dataFormat_2byte_uint,
+        dataFormat = WirelessTypes::dataFormat_raw_uint16,
         collectionMode = WirelessTypes::collectionMethod_logAndTransmit,
         samplingDelay = 5,
         samplingMode = WirelessTypes::samplingMode_sync;
@@ -271,7 +271,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst_noChannelMask)
         chs = 0,
         rate = 105,
         syncMode = WirelessTypes::syncMode_burst,
-        dataFormat = WirelessTypes::dataFormat_2byte_uint,
+        dataFormat = WirelessTypes::dataFormat_raw_uint16,
         sweeps = 256,
         timebetwburst = 350,
         collectionMode = WirelessTypes::collectionMethod_logAndTransmit,
@@ -331,7 +331,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_logOnly)
         chs = 7,
         rate = 112,
         syncMode = WirelessTypes::syncMode_continuous,
-        dataFormat = WirelessTypes::dataFormat_2byte_uint,
+        dataFormat = WirelessTypes::dataFormat_raw_uint16,
         collectionMode = WirelessTypes::collectionMethod_logOnly,
         samplingDelay = 5,
         samplingMode = WirelessTypes::samplingMode_sync;
@@ -387,7 +387,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_losslessDisabled_burst)
         chs = 5,
         rate = 105,
         syncMode = WirelessTypes::syncMode_burst,
-        dataFormat = WirelessTypes::dataFormat_2byte_uint,
+        dataFormat = WirelessTypes::dataFormat_raw_uint16,
         sweeps = 256,
         timebetwburst = 350,
         collectionMode = WirelessTypes::collectionMethod_logAndTransmit,
@@ -448,7 +448,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_losslessDisabled_continuous)
         chs = 7,
         rate = 105,
         syncMode = WirelessTypes::syncMode_continuous,
-        dataFormat = WirelessTypes::dataFormat_2byte_uint,
+        dataFormat = WirelessTypes::dataFormat_raw_uint16,
         collectionMode = WirelessTypes::collectionMethod_transmitOnly,
         samplingDelay = 5,
         samplingMode = WirelessTypes::samplingMode_sync;
@@ -506,7 +506,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_highCapacity)
         chs = 7,
         rate = 110,
         syncMode = WirelessTypes::syncMode_continuous,
-        dataFormat = WirelessTypes::dataFormat_2byte_uint,
+        dataFormat = WirelessTypes::dataFormat_raw_uint16,
         collectionMode = WirelessTypes::collectionMethod_transmitOnly,
         samplingDelay = 5,
         samplingMode = WirelessTypes::samplingMode_sync;
@@ -566,7 +566,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_highCapacity2)
         chs = 1,
         rate = 109,
         syncMode = WirelessTypes::syncMode_continuous,
-        dataFormat = WirelessTypes::dataFormat_2byte_uint,
+        dataFormat = WirelessTypes::dataFormat_raw_uint16,
         collectionMode = WirelessTypes::collectionMethod_transmitOnly,
         samplingDelay = 5,
         samplingMode = WirelessTypes::samplingMode_sync;
@@ -624,7 +624,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_multiple)
         chs = 7,
         rate = 112,
         syncMode = WirelessTypes::syncMode_continuous,
-        dataFormat = WirelessTypes::dataFormat_2byte_uint,
+        dataFormat = WirelessTypes::dataFormat_raw_uint16,
         collectionMode = WirelessTypes::collectionMethod_logAndTransmit,
         samplingDelay = 5,
         samplingMode = WirelessTypes::samplingMode_sync;
@@ -744,7 +744,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_failCommunication_thenSucceed)
         chs = 7,
         rate = 112,
         syncMode = WirelessTypes::syncMode_continuous,
-        dataFormat = WirelessTypes::dataFormat_2byte_uint,
+        dataFormat = WirelessTypes::dataFormat_raw_uint16,
         collectionMode = WirelessTypes::collectionMethod_logAndTransmit,
         samplingDelay = 5,
         samplingMode = WirelessTypes::samplingMode_sync;
@@ -799,7 +799,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_removeNode)
         chs = 7,
         rate = 112,
         syncMode = WirelessTypes::syncMode_continuous,
-        dataFormat = WirelessTypes::dataFormat_2byte_uint,
+        dataFormat = WirelessTypes::dataFormat_raw_uint16,
         collectionMode = WirelessTypes::collectionMethod_logAndTransmit,
         samplingDelay = 5,
         samplingMode = WirelessTypes::samplingMode_sync;
@@ -869,7 +869,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_refresh)
     s.chs = 7;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -907,7 +907,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_refresh)
     sb.chs = 5;
     sb.rate = 105;
     sb.syncMode = WirelessTypes::syncMode_burst;
-    sb.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    sb.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     sb.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     sb.samplingDelay = 5;
     sb.samplingMode = WirelessTypes::samplingMode_syncBurst;
@@ -957,7 +957,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_disableLosslessAfterwards)
     s.chs = 7;
     s.rate = 105;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1027,7 +1027,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addMultipleNodes)
     s.chs = 7;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1061,7 +1061,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addMultipleNodes)
     WirelessNode node200(200, b2);
     node200.setImpl(impl2);
 
-    expectNodeFeatures(features, impl2);
+    std::unique_ptr<NodeFeatures> features2;
+    expectNodeFeatures(features2, impl2);
 
     //eeprom reads performed by the SyncSamplingNetwork
     Sampling_Burst sb;
@@ -1069,7 +1070,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addMultipleNodes)
     sb.chs = 5;
     sb.rate = 105;
     sb.syncMode = WirelessTypes::syncMode_burst;
-    sb.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    sb.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     sb.sweeps = 256;
     sb.timebetwburst = 350;
     sb.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
@@ -1119,7 +1120,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_enablehighCapacityAfterwards)
     s.chs = 7;
     s.rate = 110;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_transmitOnly;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1193,7 +1194,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_applyConfiguration_continuous)
     s.chs = 7;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1249,7 +1250,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_applyConfiguration_burst)
     sb.chs = 5;
     sb.rate = 105;
     sb.syncMode = WirelessTypes::syncMode_burst;
-    sb.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    sb.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     sb.sweeps = 256;
     sb.timebetwburst = 350;
     sb.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
@@ -1309,7 +1310,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_applyConfiguration_again)
     s.chs = 7;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1372,7 +1373,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_apply_networkNotOk)
     s.chs = 7;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1437,7 +1438,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_pcTime)
     s.chs = 7;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1483,7 +1484,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_pcTime_configNot
     s.chs = 7;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1519,7 +1520,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_timestamp)
     s.chs = 7;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1565,7 +1566,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_timestamp_config
     s.chs = 7;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1601,7 +1602,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_noBase)
     s.chs = 7;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1645,7 +1646,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_noBase_configNotApplied)
     s.chs = 7;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1681,7 +1682,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_failSendStart)
     s.chs = 7;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1727,7 +1728,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_retry)
     s.chs = 7;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1754,7 +1755,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_retry)
     s2.chs = 255;
     s2.rate = 106;
     s2.syncMode = WirelessTypes::syncMode_continuous;
-    s2.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s2.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s2.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s2.samplingDelay = 10;
     s2.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1812,7 +1813,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_tooMuchBandwidth)
     s.chs = 12;
     s.rate = 104;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1843,8 +1844,9 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_tooMuchBandwidth)
     std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b2, 200));
     WirelessNode node200(200, b2);
     node200.setImpl(impl2);
-
-    expectNodeFeatures(features, impl2);
+    
+    std::unique_ptr<NodeFeatures> features2;
+    expectNodeFeatures(features2, impl2);
 
     //eeprom reads performed by the SyncSamplingNetwork
     Sampling_Continuous s2;
@@ -1852,7 +1854,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_tooMuchBandwidth)
     s2.chs = 7;
     s2.rate = 104;
     s2.syncMode = WirelessTypes::syncMode_continuous;
-    s2.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s2.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s2.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s2.samplingDelay = 5;
     s2.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1897,7 +1899,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_legacyMixedNetwork_tooMuchBandw
     s.chs = 12;
     s.rate = 104;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1929,7 +1931,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_legacyMixedNetwork_tooMuchBandw
     WirelessNode node200(200, b2);
     node200.setImpl(impl2);
 
-    expectNodeFeatures_fw10(features, impl2);       //network will contain old (<10.0) and new (>10.0) nodes
+    std::unique_ptr<NodeFeatures> features2;
+    expectNodeFeatures_fw10(features2, impl2);       //network will contain old (<10.0) and new (>10.0) nodes
 
     //eeprom reads performed by the SyncSamplingNetwork
     Sampling_Continuous s2;
@@ -1937,7 +1940,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_legacyMixedNetwork_tooMuchBandw
     s2.chs = 7;
     s2.rate = 104;
     s2.syncMode = WirelessTypes::syncMode_continuous;
-    s2.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s2.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s2.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s2.samplingDelay = 5;
     s2.samplingMode = WirelessTypes::samplingMode_sync;
@@ -1986,7 +1989,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_gen2_bandwidthNowFit
     s.chs = 12;
     s.rate = 104;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -2018,7 +2021,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_gen2_bandwidthNowFit
     WirelessNode node200(200, b2);
     node200.setImpl(impl2);
 
-    expectNodeFeatures_fw10(features, impl2);
+    std::unique_ptr<NodeFeatures> features2;
+    expectNodeFeatures_fw10(features2, impl2);
 
     //eeprom reads performed by the SyncSamplingNetwork
     Sampling_Continuous s2;
@@ -2026,7 +2030,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_gen2_bandwidthNowFit
     s2.chs = 7;
     s2.rate = 104;
     s2.syncMode = WirelessTypes::syncMode_continuous;
-    s2.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s2.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s2.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s2.samplingDelay = 5;
     s2.samplingMode = WirelessTypes::samplingMode_sync;
@@ -2086,7 +2090,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     s.chs = 255;
     s.rate = 105;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_transmitOnly;
     s.samplingDelay = 10;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -2127,7 +2131,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     s2.chs = 255;
     s2.rate = 106;
     s2.syncMode = WirelessTypes::syncMode_continuous;
-    s2.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s2.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s2.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s2.samplingDelay = 10;
     s2.samplingMode = WirelessTypes::samplingMode_sync;
@@ -2168,7 +2172,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     s3.chs = 255;
     s3.rate = 107;
     s3.syncMode = WirelessTypes::syncMode_continuous;
-    s3.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s3.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s3.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s3.samplingDelay = 10;
     s3.samplingMode = WirelessTypes::samplingMode_sync;
@@ -2210,7 +2214,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     s4.chs = 1;
     s4.rate = 113;
     s4.syncMode = WirelessTypes::syncMode_continuous;
-    s4.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s4.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s4.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s4.samplingDelay = 5;
     s4.samplingMode = WirelessTypes::samplingMode_sync;
@@ -2251,7 +2255,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     s5.chs = 127;
     s5.rate = 110;
     s5.syncMode = WirelessTypes::syncMode_continuous;
-    s5.dataFormat = WirelessTypes::dataFormat_4byte_float;
+    s5.dataFormat = WirelessTypes::dataFormat_cal_float;
     s5.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s5.samplingDelay = 10;
     s5.samplingMode = WirelessTypes::samplingMode_sync;
@@ -2295,7 +2299,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     s6.chs = 127;
     s6.rate = 110;
     s6.syncMode = WirelessTypes::syncMode_continuous;
-    s6.dataFormat = WirelessTypes::dataFormat_4byte_float;
+    s6.dataFormat = WirelessTypes::dataFormat_cal_float;
     s6.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s6.samplingDelay = 10;
     s6.samplingMode = WirelessTypes::samplingMode_sync;
@@ -2343,7 +2347,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_tcLink6ch)
     s.chs = 255;
     s.rate = 113;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_4byte_float;
+    s.dataFormat = WirelessTypes::dataFormat_cal_float;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 10;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -2391,7 +2395,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_tcLink1ch)
     s.chs = 1;
     s.rate = 107;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_4byte_float;
+    s.dataFormat = WirelessTypes::dataFormat_cal_float;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 10;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -2439,7 +2443,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_envLinkPro)
     s.chs = 255;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_4byte_float;
+    s.dataFormat = WirelessTypes::dataFormat_cal_float;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 10;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -2488,7 +2492,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_envLinkMini)
     s.chs = 199;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_4byte_float;
+    s.dataFormat = WirelessTypes::dataFormat_cal_float;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 10;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -2533,7 +2537,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_wattLink)
     s.chs = 1;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_4byte_float;
+    s.dataFormat = WirelessTypes::dataFormat_cal_float;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 10;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -2570,7 +2574,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_sgLinkHermetic)
     s.chs = 1;
     s.rate = 105;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 10;
     s.samplingMode = WirelessTypes::samplingMode_sync;
@@ -2618,7 +2622,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_invalidConfig)
     s.chs = 7;
     s.rate = 112;
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_2byte_uint;
+    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_nonSync;
@@ -2652,13 +2656,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_event)
     s.chs = 13;//ch1, ch3, ch4
     s.rate = static_cast<uint16>(WirelessTypes::sampleRate_8192Hz);
     s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_4byte_float;
+    s.dataFormat = WirelessTypes::dataFormat_cal_float;
     s.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_syncEvent;
     expectSampling_Continuous(impl, s);
 
-    expectReadModel(impl, WirelessModels::node_bladeImpactLink);
+    expectReadModel(impl, WirelessModels::node_wirelessImpactSensor);
     expectGoodPing(impl);
     MOCK_EXPECT(impl->firmwareVersion).returns(Version(10, 0));
 
@@ -2680,17 +2684,6 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_event)
     BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
 
 
-
-
-
-
-
-
-
-
-
-
-
     std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b, 200));
     WirelessNode node200(200, b);
     node200.setImpl(impl2);
@@ -2703,13 +2696,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_event)
     s2.chs = 5;//ch1, ch3
     s2.rate = static_cast<uint16>(WirelessTypes::sampleRate_32Hz);
     s2.syncMode = WirelessTypes::syncMode_continuous;
-    s2.dataFormat = WirelessTypes::dataFormat_4byte_float;
+    s2.dataFormat = WirelessTypes::dataFormat_cal_float;
     s2.collectionMode = WirelessTypes::collectionMethod_logAndTransmit;
     s2.samplingDelay = 5;
     s2.samplingMode = WirelessTypes::samplingMode_syncEvent;
     expectSampling_Continuous(impl2, s2);
 
-    expectReadModel(impl2, WirelessModels::node_bladeImpactLink);
+    expectReadModel(impl2, WirelessModels::node_wirelessImpactSensor);
     expectGoodPing(impl2);
     MOCK_EXPECT(impl2->firmwareVersion).returns(Version(10, 0));
 

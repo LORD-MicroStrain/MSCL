@@ -47,14 +47,14 @@ namespace mscl
         //build and return the data formats that are supported
         WirelessTypes::DataFormats result;
 
-        result.push_back(WirelessTypes::dataFormat_4byte_float);
+        result.push_back(WirelessTypes::dataFormat_cal_float);
 
         //no support for uint16
         
         return result;
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures_cfBearing::sampleRates(WirelessTypes::SamplingMode samplingMode) const
+    const WirelessTypes::WirelessSampleRates NodeFeatures_cfBearing::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
     {
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
@@ -63,7 +63,7 @@ namespace mscl
                 return AvailableSampleRates::continuous_cfBearing;
 
             default:
-                throw Error("Invalid SamplingMode");
+                throw Error_NotSupported("The sampling mode is not supported by this Node");
         }
     }
 }

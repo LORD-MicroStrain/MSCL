@@ -88,7 +88,7 @@ namespace mscl
         //
         //Parameters:
         //    data - The <ChannelData> to set
-        void data(ChannelData data);
+        void data(const ChannelData& data);
 #endif
     };
 

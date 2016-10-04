@@ -423,21 +423,9 @@ namespace mscl
 
     void FieldParser_BeaconedTimestamp::parse(const InertialDataField& field, InertialDataPoints& result) const
     {
-        namespace px = boost::posix_time;
-
-        //Constant: unixEpoch
-        //    The posixTime representing the unix epoch
-        static const px::ptime unixEpoch = px::ptime(boost::gregorian::date(1970, 1, 1));
-
-        //Constant: gpsEpoch
-        //    The posixTime representing the gps epoch
-        static const px::ptime gpsEpoch = px::ptime(boost::gregorian::date(1980, 1, 6));
-
-        //Constant: gpsToUnixEpochDiff
+        //Constant: GPS_TO_UNIX_EPOCH_DIFF
         //    The number of nanoseconds between the unix Epoch and the gps Epoch
-        static const uint64 gpsToUnixEpochDiff = (gpsEpoch - unixEpoch).total_nanoseconds();
-
-
+        static const uint64 GPS_TO_UNIX_EPOCH_DIFF = 315964800000000000;
 
         DataBuffer bytes(field.fieldData());
 
@@ -452,7 +440,7 @@ namespace mscl
         uint64 tsNanoseconds = (tsSeconds * TimeSpan::NANOSECONDS_PER_SECOND) + tsSubSec;
 
         //create a Timestamp, converting to UTC time
-        Timestamp timestamp(tsNanoseconds + gpsToUnixEpochDiff);
+        Timestamp timestamp(tsNanoseconds + GPS_TO_UNIX_EPOCH_DIFF);
 
         //get whether points are valid or invalid from the flags
         bool valid = pointIsValid(timestampStatus, TIMESTAMP_FLAG);

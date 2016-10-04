@@ -30,7 +30,7 @@ namespace mscl
 
         virtual const WirelessTypes::SamplingModes samplingModes() const final;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode) const override;
+        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const override;
 
         virtual bool supportsLimitedDuration() const;
 
@@ -53,6 +53,10 @@ namespace mscl
         virtual bool supportsActivitySense() const final;
 
         virtual bool supportsAutoCal() const;
+
+        virtual bool supportsSensorDelayConfig() const override;
+
+        virtual bool supportsSensorDelayAlwaysOn() const override;
 
         virtual uint8 numDamageAngles() const final;
 

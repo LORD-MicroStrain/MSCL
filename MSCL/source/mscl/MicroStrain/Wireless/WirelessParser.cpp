@@ -11,8 +11,11 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Packets/BufferedLdcPacket.h"
 #include "Packets/BufferedLdcPacket_16ch.h"
 #include "Packets/DiagnosticPacket.h"
+#include "Packets/HclSmartBearing_RawPacket.h"
+#include "Packets/HclSmartBearing_CalPacket.h"
 #include "Packets/LdcPacket.h"
 #include "Packets/LdcPacket_16ch.h"
+#include "Packets/RawAngleStrainPacket.h"
 #include "Packets/RollerPacket.h"
 #include "Packets/SyncSamplingPacket.h"
 #include "Packets/SyncSamplingPacket_16ch.h"
@@ -552,26 +555,40 @@ namespace mscl
         switch(packet.type())
         {
             //get the unique id depending on the type of packet
-            case WirelessPacket::packetType_LDC:                    uniqueId = LdcPacket::getUniqueId(packet);                      break;
-            case WirelessPacket::packetType_SyncSampling:           uniqueId = SyncSamplingPacket::getUniqueId(packet);             break;
-            case WirelessPacket::packetType_BufferedLDC:            uniqueId = BufferedLdcPacket::getUniqueId(packet);              break;
-            case WirelessPacket::packetType_LDC_16ch:               uniqueId = LdcPacket_16ch::getUniqueId(packet);                 break;
-            case WirelessPacket::packetType_SyncSampling_16ch:      uniqueId = SyncSamplingPacket_16ch::getUniqueId(packet);        break;
-            case WirelessPacket::packetType_BufferedLDC_16ch:       uniqueId = BufferedLdcPacket_16ch::getUniqueId(packet);         break;
-            case WirelessPacket::packetType_AsyncDigital:           uniqueId = AsyncDigitalPacket::getUniqueId(packet);             break;
-            case WirelessPacket::packetType_AsyncDigitalAnalog:     uniqueId = AsyncDigitalAnalogPacket::getUniqueId(packet);       break;
-            case WirelessPacket::packetType_diagnostic:             uniqueId = DiagnosticPacket::getUniqueId(packet);               break;
-            case WirelessPacket::packetType_roller:                 uniqueId = RollerPacket::getUniqueId(packet);                   break;
+            case WirelessPacket::packetType_LDC:                        uniqueId = LdcPacket::getUniqueId(packet);                      break;
+            case WirelessPacket::packetType_SyncSampling:               uniqueId = SyncSamplingPacket::getUniqueId(packet);             break;
+            case WirelessPacket::packetType_BufferedLDC:                uniqueId = BufferedLdcPacket::getUniqueId(packet);              break;
+            case WirelessPacket::packetType_AsyncDigital:               uniqueId = AsyncDigitalPacket::getUniqueId(packet);             break;
+            case WirelessPacket::packetType_AsyncDigitalAnalog:         uniqueId = AsyncDigitalAnalogPacket::getUniqueId(packet);       break;
+            case WirelessPacket::packetType_diagnostic:                 uniqueId = DiagnosticPacket::getUniqueId(packet);               break;
+            case WirelessPacket::packetType_LDC_16ch:                   uniqueId = LdcPacket_16ch::getUniqueId(packet);                 break;
+            case WirelessPacket::packetType_SyncSampling_16ch:          uniqueId = SyncSamplingPacket_16ch::getUniqueId(packet);        break;
+            case WirelessPacket::packetType_BufferedLDC_16ch:           uniqueId = BufferedLdcPacket_16ch::getUniqueId(packet);         break;
+            case WirelessPacket::packetType_HclSmartBearing_Calibrated: uniqueId = HclSmartBearing_CalPacket::getUniqueId(packet);      break;
+            case WirelessPacket::packetType_HclSmartBearing_Raw:        uniqueId = HclSmartBearing_RawPacket::getUniqueId(packet);      break;
+            case WirelessPacket::packetType_rawAngleStrain:             uniqueId = RawAngleStrainPacket::getUniqueId(packet);           break;
+            case WirelessPacket::packetType_roller:                     uniqueId = RollerPacket::getUniqueId(packet);                   break;
 
             //isn't a valid data packet that has a unique id, so we can't check for duplicates
+            case WirelessPacket::packetType_nodeCommand:
+            case WirelessPacket::packetType_nodeErrorReply:
             case WirelessPacket::packetType_nodeDiscovery:
+            case WirelessPacket::packetType_TCLinkLDC:
+            case WirelessPacket::packetType_beaconEcho:
             case WirelessPacket::packetType_nodeDiscovery_v2:
             case WirelessPacket::packetType_nodeDiscovery_v3:
             case WirelessPacket::packetType_nodeDiscovery_v4:
-            case WirelessPacket::packetType_SHM:
-            case WirelessPacket::packetType_beaconEcho:
+            case WirelessPacket::packetType_nodeReceived:
+            case WirelessPacket::packetType_nodeSuccessReply:
+            case WirelessPacket::packetType_baseCommand:
+            case WirelessPacket::packetType_baseSuccessReply:
+            case WirelessPacket::packetType_baseErrorReply:
             case WirelessPacket::packetType_rfScanSweep:
+            case WirelessPacket::packetType_SHM:
+                return false;
+
             default:
+                assert(false); //unhandled packet type, need to add a case for it
                 return false;
         }
 

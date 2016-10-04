@@ -55,7 +55,7 @@ namespace mscl
     {
         //build and return the data formats that are supported
         WirelessTypes::DataFormats result;
-        result.push_back(WirelessTypes::dataFormat_4byte_float);
+        result.push_back(WirelessTypes::dataFormat_cal_float);
         return result;
     }
 
@@ -74,17 +74,26 @@ namespace mscl
         return result;
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures_shmlink2::sampleRates(WirelessTypes::SamplingMode samplingMode) const
+    const WirelessTypes::WirelessSampleRates NodeFeatures_shmlink2::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
     {
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
         {
             case WirelessTypes::samplingMode_sync:
             case WirelessTypes::samplingMode_nonSync:
-                return AvailableSampleRates::continuous_shmLink2;
+            {
+                if(m_nodeInfo.firmwareVersion() >= Version(10, 33151))
+                {
+                    return AvailableSampleRates::continuous_shmLink2_2;
+                }
+                else
+                {
+                    return AvailableSampleRates::continuous_shmLink2;
+                }
+            }
 
             default:
-                throw Error("Invalid SamplingMode");
+                throw Error_NotSupported("The sampling mode is not supported by this Node");
         }
     }
 
@@ -141,6 +150,16 @@ namespace mscl
     bool NodeFeatures_shmlink2::supportsAutoCal() const
     {
         return true;
+    }
+
+    bool NodeFeatures_shmlink2::supportsSensorDelayConfig() const
+    {
+        return true;
+    }
+
+    bool NodeFeatures_shmlink2::supportsSensorDelayAlwaysOn() const
+    {
+        return false;
     }
 
     uint8 NodeFeatures_shmlink2::numDamageAngles() const

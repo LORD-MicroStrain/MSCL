@@ -71,7 +71,7 @@ inline StaticType BigEndian(StaticType val);
 template<typename StaticType>
 inline StaticType LittleEndian(StaticType val);
 
-//Function: DeviceEndian_To_SystemEndian
+//Function: BigEndian_To_SystemEndian
 //    Converts the value from Big Endian to System Endian
 //
 //Parameters:
@@ -140,14 +140,14 @@ inline StaticType LittleEndian(StaticType val)
 template<typename StaticType>
 inline StaticType BigEndian_To_SystemEndian(StaticType val)
 {
-    //little endian system, so swap from device (big endian) to little endian
+    //little endian system, so swap from big endian to little endian
     return BigEndian(val);
 }
 
 template<typename StaticType>
 inline StaticType SystemEndian_To_BigEndian(StaticType val)
 {
-    //little endian system, swap to device (big endian)
+    //little endian system, swap to big endian
     return BigEndian(val);
 }
 
@@ -161,7 +161,7 @@ inline StaticType LittleEndian_To_SystemEndian(StaticType val)
 template<typename StaticType>
 inline StaticType SystemEndian_To_LittleEndian(StaticType val)
 {
-    //little endian system,so keep bytes the same
+    //little endian system, so keep bytes the same
     return LittleEndian(val);
 }
 
@@ -187,21 +187,21 @@ inline StaticType LittleEndian(StaticType val)
 template<typename StaticType>
 inline StaticType BigEndian_To_SystemEndian(StaticType val)
 {
-    //big endian system, do not swap
+    //big endian system, so keep bytes the same
     return BigEndian(val);
 }
 
 template<typename StaticType>
 inline StaticType SystemEndian_To_BigEndian(StaticType val)
 {
-    //big endian system, do not swap (device is big endian)
+    //big endian system, so keep bytes the same
     return BigEndian(val);
 }
 
 template<typename StaticType>
 inline StaticType LittleEndian_To_SystemEndian(StaticType val)
 {
-    //big endian system, swap bytes to big endian
+    //big endian system, swap bytes to little endian
     return LittleEndian(val);
 }
 

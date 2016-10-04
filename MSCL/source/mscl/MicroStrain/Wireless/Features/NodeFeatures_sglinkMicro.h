@@ -23,6 +23,8 @@ namespace mscl
         //    Creates a NodeFeatures_sglinkMicro object.
         NodeFeatures_sglinkMicro(const NodeInfo& info);
 
+        virtual bool supportsSensorDelayConfig() const override;
+
         virtual const WirelessTypes::DataCollectionMethods dataCollectionMethods() const final;
 
         virtual const WirelessTypes::DataFormats dataFormats() const override;

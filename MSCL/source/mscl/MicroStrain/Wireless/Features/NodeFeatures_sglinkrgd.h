@@ -22,5 +22,9 @@ namespace mscl
         //Constructor: NodeFeatures_sglinkrgd
         //    Creates a NodeFeatures_sglinkrgd object.
         NodeFeatures_sglinkrgd(const NodeInfo& info);
+
+        virtual bool supportsSensorDelayConfig() const override;
+
+        virtual bool supportsSensorDelayAlwaysOn() const override;
     };
 }

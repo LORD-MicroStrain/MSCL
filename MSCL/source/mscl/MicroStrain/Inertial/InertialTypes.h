@@ -444,7 +444,7 @@ public:
 
     struct ChannelIdHash
     {
-        size_t operator()(InertialTypes::ChannelId channelId) const;
+        size_t operator()(const InertialTypes::ChannelId& channelId) const;
     };
 #endif
 

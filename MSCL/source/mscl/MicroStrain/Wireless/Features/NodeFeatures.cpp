@@ -11,7 +11,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/Exceptions.h"
 
 #include "NodeFeatures.h"
-#include "NodeFeatures_bladeImpactLink.h"
+#include "NodeFeatures_wirelessImpactSensor.h"
 #include "NodeFeatures_cfBearingTempLink.h"
 #include "NodeFeatures_dvrtlink.h"
 #include "NodeFeatures_envlinkMini.h"
@@ -23,7 +23,6 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeFeatures_mvpervlink.h"
 #include "NodeFeatures_rtdlink.h"
 #include "NodeFeatures_sglink.h"
-#include "NodeFeatures_sglink8ch.h"
 #include "NodeFeatures_sglinkoem.h"
 #include "NodeFeatures_sglinkoemHermetic.h"
 #include "NodeFeatures_sglinkoemNoXR.h"
@@ -35,7 +34,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeFeatures_tclink3ch.h"
 #include "NodeFeatures_tclink6ch.h"
 #include "NodeFeatures_torqueLink.h"
-#include "NodeFeatures_vlink2.h"
+#include "NodeFeatures_vlink200.h"
 #include "NodeFeatures_vlink.h"
 #include "NodeFeatures_vlink_legacy.h"
 
@@ -43,9 +42,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "AvailableSampleRates.h"
 #include "mscl/MicroStrain/Wireless/SyncSamplingFormulas.h"
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
-#include "mscl/MicroStrain/Wireless/Configuration/HardwareGain.h"
+#include "mscl/MicroStrain/Wireless/Configuration/InputRange.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromHelper.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
 
 namespace mscl
 {
@@ -53,6 +53,14 @@ namespace mscl
         m_nodeInfo(info)
     {
     }
+
+    const Version NodeFeatures::MIN_NODE_FW_PROTOCOL_1_5(10, 33392);
+    const Version NodeFeatures::MIN_NODE_FW_PORTOCOL_1_4(10, 31758);
+    const Version NodeFeatures::MIN_NODE_FW_PROTOCOL_1_2(10, 0);
+    const Version NodeFeatures::MIN_NODE_FW_PROTOCOL_1_1(8, 21);
+
+    const Version NodeFeatures::MIN_BASE_FW_PROTOCOL_1_3(4, 30448);
+    const Version NodeFeatures::MIN_BASE_FW_PROTOCOL_1_1(4, 0);
 
     std::unique_ptr<NodeFeatures> NodeFeatures::create(const NodeInfo& info)
     {
@@ -91,9 +99,6 @@ namespace mscl
         case WirelessModels::node_sgLink:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglink(info));
 
-        case WirelessModels::node_sgLink_8ch:
-            return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglink8ch(info));
-
         case WirelessModels::node_sgLink_oem:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglinkoem(info));
 
@@ -130,8 +135,14 @@ namespace mscl
         case WirelessModels::node_tcLink_6ch_ip67_rht:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_tclink6ch(info));
 
-        case WirelessModels::node_vLink2:
-            return std::unique_ptr<NodeFeatures>(new NodeFeatures_vlink2(info));
+        case WirelessModels::node_vLink200:
+        case WirelessModels::node_vLink200_qbridge_1K:
+        case WirelessModels::node_vLink200_qbridge_120:
+        case WirelessModels::node_vLink200_qbridge_350:
+        case WirelessModels::node_vLink200_hbridge_1K:
+        case WirelessModels::node_vLink200_hbridge_120:
+        case WirelessModels::node_vLink200_hbridge_350:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_vlink200(info));
 
         case WirelessModels::node_vLink:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_vlink(info));
@@ -142,8 +153,8 @@ namespace mscl
         case WirelessModels::node_mvPerVLink:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_mvpervlink(info));
 
-        case WirelessModels::node_bladeImpactLink:
-            return std::unique_ptr<NodeFeatures>(new NodeFeatures_bladeImpactLink(info));
+        case WirelessModels::node_wirelessImpactSensor:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_wirelessImpactSensor(info));
 
         case WirelessModels::node_cfBearingTempLink:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_cfBearing(info));
@@ -417,6 +428,21 @@ namespace mscl
         return m_channelGroups;
     }
 
+    WirelessTypes::ChannelType NodeFeatures::channelType(uint8 channelNumber) const
+    {
+        //find the channel number in the list of supported channels
+        const auto& chs = channels();
+        for(const auto& ch : chs)
+        {
+            if(ch.channelNumber() == channelNumber)
+            {
+                return ch.type();
+            }
+        }
+
+        throw Error_NotSupported("The requested Channel is not supported by this Node");
+    }
+
     bool NodeFeatures::supportsChannelSetting(WirelessTypes::ChannelGroupSetting setting, const ChannelMask& mask) const
     {
         try
@@ -434,9 +460,9 @@ namespace mscl
         }
     }
 
-    bool NodeFeatures::supportsHardwareGain() const
+    bool NodeFeatures::supportsInputRange() const
     {
-        return anyChannelGroupSupports(WirelessTypes::chSetting_hardwareGain);
+        return anyChannelGroupSupports(WirelessTypes::chSetting_inputRange);
     }
 
     bool NodeFeatures::supportsHardwareOffset() const
@@ -444,9 +470,9 @@ namespace mscl
         return anyChannelGroupSupports(WirelessTypes::chSetting_hardwareOffset);
     }
 
-    bool NodeFeatures::supportsLowPassFilter() const
+    bool NodeFeatures::supportsAntiAliasingFilter() const
     {
-        return anyChannelGroupSupports(WirelessTypes::chSetting_lowPassFilter);
+        return anyChannelGroupSupports(WirelessTypes::chSetting_antiAliasingFilter);
     }
 
     bool NodeFeatures::supportsGaugeFactor() const
@@ -522,6 +548,11 @@ namespace mscl
         return false;
     }
 
+    bool NodeFeatures::supportsAutoShuntCal() const
+    {
+        return anyChannelGroupSupports(WirelessTypes::chSetting_autoShuntCal);
+    }
+
     bool NodeFeatures::supportsLimitedDuration() const
     {
         return true;
@@ -553,14 +584,30 @@ namespace mscl
         return false;
     }
 
+    bool NodeFeatures::supportsSensorDelayConfig() const
+    {
+        return false;
+    }
+
+    bool NodeFeatures::supportsSensorDelayAlwaysOn() const
+    {
+        //most nodes that support sensor delay also support always on
+        if(supportsSensorDelayConfig())
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     bool NodeFeatures::supportsAutoBalance() const
     {
         return anyChannelGroupSupports(WirelessTypes::chSetting_autoBalance);
     }
 
-    bool NodeFeatures::supportsShuntCal() const
+    bool NodeFeatures::supportsLegacyShuntCal() const
     {
-        return anyChannelGroupSupports(WirelessTypes::chSetting_shuntCal);
+        return anyChannelGroupSupports(WirelessTypes::chSetting_legacyShuntCal);
     }
 
     bool NodeFeatures::supportsChannel(uint8 channelNumber) const
@@ -581,23 +628,23 @@ namespace mscl
     bool NodeFeatures::supportsSamplingMode(WirelessTypes::SamplingMode samplingMode) const
     {
         //get the supported sampling modes
-        const WirelessTypes::SamplingModes supportedModes = samplingModes();
+        const WirelessTypes::SamplingModes& supportedModes = samplingModes();
 
         //return the result of trying to find the sampling mode in the vector
         return (std::find(supportedModes.begin(), supportedModes.end(), samplingMode) != supportedModes.end());
     }
 
-    bool NodeFeatures::supportsSampleRate(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::SamplingMode samplingMode) const
+    bool NodeFeatures::supportsSampleRate(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
     {
         try
         {
             //get the supported sample rates
-            const WirelessTypes::WirelessSampleRates supportedRates = sampleRates(samplingMode);
+            const WirelessTypes::WirelessSampleRates& supportedRates = sampleRates(samplingMode, dataCollectionMethod);
 
             //return the result of trying to find the sample rate in the vector
             return (std::find(supportedRates.begin(), supportedRates.end(), sampleRate) != supportedRates.end());
         }
-        catch(Error&)
+        catch(Error_NotSupported&)
         {
             //the sampling mode is not supported
             return false;
@@ -607,7 +654,7 @@ namespace mscl
     bool NodeFeatures::supportsDataFormat(WirelessTypes::DataFormat dataFormat) const
     {
         //get the supported data formats
-        const WirelessTypes::DataFormats supportedFormats = dataFormats();
+        const WirelessTypes::DataFormats& supportedFormats = dataFormats();
 
         //return the result of trying to find the data format in the vector
         return (std::find(supportedFormats.begin(), supportedFormats.end(), dataFormat) != supportedFormats.end());
@@ -616,7 +663,7 @@ namespace mscl
     bool NodeFeatures::supportsDefaultMode(WirelessTypes::DefaultMode mode) const
     {
         //get the supported boot modes
-        const WirelessTypes::DefaultModes supportedModes = defaultModes();
+        const WirelessTypes::DefaultModes& supportedModes = defaultModes();
 
         //return the result of trying to find the boot mode in the vector
         return (std::find(supportedModes.begin(), supportedModes.end(), mode) != supportedModes.end());
@@ -625,7 +672,7 @@ namespace mscl
     bool NodeFeatures::supportsDataCollectionMethod(WirelessTypes::DataCollectionMethod collectionMethod) const
     {
         //get the supported data collection methods
-        const WirelessTypes::DataCollectionMethods supportedMethods = dataCollectionMethods();
+        const WirelessTypes::DataCollectionMethods& supportedMethods = dataCollectionMethods();
 
         //return the result of trying to find the collection method in the vector
         return (std::find(supportedMethods.begin(), supportedMethods.end(), collectionMethod) != supportedMethods.end());
@@ -634,7 +681,7 @@ namespace mscl
     bool NodeFeatures::supportsTransmitPower(WirelessTypes::TransmitPower power) const
     {
         //get the supported powers
-        const WirelessTypes::TransmitPowers supportedPowers = transmitPowers();
+        const WirelessTypes::TransmitPowers& supportedPowers = transmitPowers();
 
         //return the result of trying to find the power in the vector
         return (std::find(supportedPowers.begin(), supportedPowers.end(), power) != supportedPowers.end());
@@ -643,10 +690,17 @@ namespace mscl
     bool NodeFeatures::supportsFatigueMode(WirelessTypes::FatigueMode mode) const
     {
         //get the supported fatigue modes
-        const WirelessTypes::FatigueModes modes = fatigueModes();
+        const WirelessTypes::FatigueModes& modes = fatigueModes();
 
         //result the result of trying to find the mode in the vector
         return (std::find(modes.begin(), modes.end(), mode) != modes.end());
+    }
+
+    bool NodeFeatures::supportsInputRange(WirelessTypes::InputRange range, const ChannelMask& channels) const
+    {
+        const WirelessTypes::InputRanges& ranges = inputRanges(channels);
+
+        return (std::find(ranges.begin(), ranges.end(), range) != ranges.end());
     }
 
     bool NodeFeatures::supportsCentisecondEventDuration() const
@@ -656,10 +710,23 @@ namespace mscl
         return (m_nodeInfo.firmwareVersion() >= MIN_SUB_SECOND_FW);
     }
 
-    WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels) const
+    bool NodeFeatures::supportsGetDiagnosticInfo() const
+    {
+        static const Version MIN_GET_DIAG_INFO_FW(10, 33392);
+
+        return (m_nodeInfo.firmwareVersion() >= MIN_GET_DIAG_INFO_FW);
+    }
+
+    bool NodeFeatures::supportsNonSyncLogWithTimestamps() const
+    {
+        //ASPP v1.5 added support for this
+        return (m_nodeInfo.firmwareVersion() >= MIN_NODE_FW_PROTOCOL_1_5);
+    }
+
+    WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
     {
         //get all the sample rates supported
-        WirelessTypes::WirelessSampleRates rates = sampleRates(samplingMode);
+        WirelessTypes::WirelessSampleRates rates = sampleRates(samplingMode, dataCollectionMethod);
 
         //get the first rate in the sample rates, which should be the fastest
         WirelessTypes::WirelessSampleRate maxRate = rates.front();
@@ -681,7 +748,7 @@ namespace mscl
         return maxRate;
     }
 
-    WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode) const
+    WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
     {
         throw Error_NotSupported("Filter Settling Time is not supported by this Node.");
     }
@@ -780,14 +847,60 @@ namespace mscl
         return SyncSamplingFormulas::minTimeBetweenBursts(dataFormat, channels.count(), sampleRate, sweepsPerBurst);
     }
 
-    double NodeFeatures::minHardwareGain() const
+    uint32 NodeFeatures::minSensorDelay() const
     {
-        return HardwareGain::minGain(m_nodeInfo.model());
+        if(!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+
+        //V1 - Milliseconds
+        //V2 - Microseconds
+        //V3 - Seconds or Milliseconds
+        //V4 - Seconds, Milliseconds, or Microseconds
+        switch(sensorDelayVersion())
+        {
+            case 1:
+            case 3:
+                return 1000;    //1 millisecond
+
+            case 2:
+            case 4:
+                return 1;       //1 microsecond
+
+            default:
+                assert(false);  //need to add a case for a new sensor delay version
+                throw Error_NotSupported("Unknown Sensor Delay Version");
+        }
     }
 
-    double NodeFeatures::maxHardwareGain() const
+    uint32 NodeFeatures::maxSensorDelay() const
     {
-        return HardwareGain::maxGain(m_nodeInfo.model());
+        if(!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+
+        //V1 - Milliseconds
+        //V2 - Microseconds
+        //V3 - Seconds or Milliseconds
+        //V4 - Seconds, Milliseconds, or Microseconds
+        switch(sensorDelayVersion())
+        {
+            case 1:
+                return 500000;      //500 milliseconds
+
+            case 2:
+                return 65535;       //65535 microseconds
+
+            case 3:
+            case 4:
+                return 600000000;   //10 minutes
+
+            default:
+                assert(false);  //need to add a case for a new sensor delay version
+                throw Error_NotSupported("Unknown Sensor Delay Version");
+        }
     }
 
     uint32 NodeFeatures::maxEventTriggerTotalDuration(WirelessTypes::DataFormat dataFormat, const ChannelMask& channels, const SampleRate& sampleRate) const
@@ -824,9 +937,84 @@ namespace mscl
         return result;
     }
 
-    double NodeFeatures::normalizeHardwareGain(double gain) const
+    uint32 NodeFeatures::normalizeSensorDelay(uint32 delay) const
     {
-        return HardwareGain::normalizeGain(gain, m_nodeInfo.model());
+        if(!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+
+        if(delay == 0 || delay == WirelessNodeConfig::SENSOR_DELAY_ALWAYS_ON)
+        {
+            return delay;
+        }
+
+        uint32 result = 0;
+
+        //V1 - Milliseconds
+        //V2 - Microseconds
+        //V3 - Seconds or Milliseconds
+        //V4 - Seconds, Milliseconds, or Microseconds
+        switch(sensorDelayVersion())
+        {
+            //milliseconds only
+            case 1:
+                result = static_cast<uint32>(std::ceil(static_cast<float>(delay / 1000.0f))) * 1000;
+                break;
+
+            //microseconds only
+            case 2:
+                result = delay;
+                break;
+
+            //milliseconds or seconds
+            case 3:
+            {
+                //if less than a 500 milliseconds (max allowed for milliseconds)
+                if(delay <= 500000)
+                {
+                    //attempt to set in milliseconds
+                    result = static_cast<uint32>(std::ceil(static_cast<float>(delay / 1000.0f))) * 1000;
+                    Utils::checkBounds_min(result, static_cast<uint32>(1000));      //1 millisecond
+                    Utils::checkBounds_max(result, static_cast<uint32>(500000));    //500 milliseconds
+                }
+                else
+                {
+                    //attempt to set in seconds (PWUWU)
+                    result = static_cast<uint32>(std::ceil(static_cast<float>(delay / 1000000.0f))) * 1000000;
+                    Utils::checkBounds_min(result, static_cast<uint32>(1000000));   //1 second
+                    Utils::checkBounds_max(result, maxSensorDelay());
+                }
+                break;
+            }
+
+            //microseconds, milliseconds, or seconds
+            case 4:
+            {
+                //if we can represent the value in microseconds
+                if(delay <= 16383)
+                {
+                    result = delay;
+                }
+                //if we can represent the value in milliseconds
+                else if(delay <= 16383000)
+                {
+                    result = static_cast<uint32>(std::ceil(static_cast<float>(delay / 1000.0f))) * 1000;
+                }
+                //if we can only represent the value in seconds
+                else
+                {
+                    result = static_cast<uint32>(std::ceil(static_cast<float>(delay / 1000000.0f))) * 1000000;
+                }
+                break;
+            }
+        }
+
+        //verify the result we calculated is within range
+        Utils::checkBounds_min(result, minSensorDelay());
+        Utils::checkBounds_max(result, maxSensorDelay());
+
+        return result;
     }
 
     uint8 NodeFeatures::numDamageAngles() const
@@ -895,8 +1083,8 @@ namespace mscl
         //build and return the data formats that are supported (all for generic)
         WirelessTypes::DataFormats result;
 
-        result.push_back(WirelessTypes::dataFormat_2byte_uint);
-        result.push_back(WirelessTypes::dataFormat_4byte_float);
+        result.push_back(WirelessTypes::dataFormat_raw_uint16);
+        result.push_back(WirelessTypes::dataFormat_cal_float);
 
         return result;
     }
@@ -914,8 +1102,13 @@ namespace mscl
         return result;
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures::sampleRates(WirelessTypes::SamplingMode samplingMode) const
+    const WirelessTypes::WirelessSampleRates NodeFeatures::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
     {
+        if(!supportsDataCollectionMethod(dataCollectionMethod))
+        {
+            throw Error_NotSupported("The data collection method is not supported by this Node");
+        }
+
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
         {
@@ -932,7 +1125,7 @@ namespace mscl
             return AvailableSampleRates::armedDatalog;
 
         default:
-            throw Error("Invalid SamplingMode");
+            throw Error_NotSupported("Invalid SamplingMode");
         }
     }
 
@@ -986,7 +1179,7 @@ namespace mscl
         return result;
     }
 
-    const WirelessTypes::Filters NodeFeatures::lowPassFilters() const
+    const WirelessTypes::Filters NodeFeatures::antiAliasingFilters() const
     {
         //empty by default
         WirelessTypes::Filters result;
@@ -1001,6 +1194,18 @@ namespace mscl
         if(supportsLoggedData())
         {
             result.push_back(WirelessTypes::storageLimit_stop);
+        }
+
+        return result;
+    }
+
+    const WirelessTypes::InputRanges NodeFeatures::inputRanges(const ChannelMask& channels) const
+    {
+        WirelessTypes::InputRanges result;
+
+        if(supportsInputRange())
+        {
+            InputRange::getRangeVector(m_nodeInfo.model(), channelType(channels.lastChEnabled()), result);
         }
 
         return result;
@@ -1043,6 +1248,11 @@ namespace mscl
 
     bool NodeFeatures::supportsFlashId() const
     {
+        if(!supportsLoggedData())
+        {
+            return false;
+        }
+
         static const Version MIN_FLASH_ID_FW(10, 31758);
 
         return (m_nodeInfo.firmwareVersion() >= MIN_FLASH_ID_FW);
@@ -1058,5 +1268,85 @@ namespace mscl
         static const Version MIN_STORAGE_LIMIT_FW(10, 31758);
 
         return (m_nodeInfo.firmwareVersion() >= MIN_STORAGE_LIMIT_FW);
+    }
+
+    
+    uint8 NodeFeatures::datalogDownloadVersion() const
+    {
+        static const Version DL_V2(10, 31758);
+
+        if(m_nodeInfo.firmwareVersion() < DL_V2)
+        {
+            return 1;
+        }
+        else
+        {
+            return 2;
+        }
+    }
+
+    uint8 NodeFeatures::sensorDelayVersion() const
+    {
+        //V1 - Milliseconds
+        //V2 - Microseconds
+        //V3 - Seconds or Milliseconds
+        //V4 - Seconds, Milliseconds, or Microseconds
+
+        static const Version V4(10, 31758);
+
+        if(m_nodeInfo.firmwareVersion() >= V4)
+        {
+            return 4;
+        }
+        else 
+        {
+            switch(m_nodeInfo.model())
+            {
+                //certain models support Sensor Delay v3 (Seconds or Milliseconds)
+                case WirelessModels::node_vLink:
+                case WirelessModels::node_iepeLink:
+                    return 3;
+
+                //certain models support Sensor Delay v2 (Microseconds)
+                case WirelessModels::node_shmLink:
+                case WirelessModels::node_shmLink2:
+                case WirelessModels::node_shmLink2_cust1:
+                case WirelessModels::node_sgLink_herm:
+                case WirelessModels::node_sgLink_herm_2600:
+                case WirelessModels::node_sgLink_herm_2700:
+                case WirelessModels::node_sgLink_herm_2800:
+                case WirelessModels::node_sgLink_rgd:
+                    return 2;
+
+                //everything else supports Sensor Delay v1 (Milliseconds)
+                default:
+                    return 1;
+            }
+        }
+    }
+
+    bool NodeFeatures::usesLegacySensorDelayAlwaysOn() const
+    {
+        //8.20+ supports 0xFFFF as always on, instead of 10,000
+        static const Version FFFF_ALWAYS_ON(8, 20);
+
+        if(m_nodeInfo.firmwareVersion() < FFFF_ALWAYS_ON)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    bool NodeFeatures::usesFloatEventTriggerVal() const
+    {
+        static const Version FLOAT_EVENT_VAL(10, 31758);
+
+        if(m_nodeInfo.firmwareVersion() >= FLOAT_EVENT_VAL)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -7,6 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include "mscl/Types.h"
+#include "mscl/Utils.h"
 #include <string>
 
 namespace mscl
@@ -21,7 +22,7 @@ namespace mscl
         //
         //Parameters:
         //    bigEndian - Whether this ByteStream contains floating point data in big endian (true) or little endian(false) (default of true)
-        ByteStream(bool bigEndian=true);
+        ByteStream();
 
         //Constructor: ByteStream
         //    Constructor to create a ByteStream object, passing in the bytes to store in the stream
@@ -29,7 +30,7 @@ namespace mscl
         //Parameters:
         //    bytesToCopy - The vector of bytes to copy into the ByteStream
         //    bigEndian - Whether this ByteStream contains floating point data in big endian (true) or little endian(false) (default of true)
-        explicit ByteStream(Bytes bytesToCopy, bool bigEndian=true);
+        explicit ByteStream(Bytes bytesToCopy);
 
         //Destructor: ~ByteStream
         //    Default destructor for the ByteStream object
@@ -39,10 +40,6 @@ namespace mscl
         //Variable: m_bytes
         //    The data stream object that holds all the bytes
         Bytes m_bytes;
-
-        //Variable: m_bigEndian
-        //    Whether the ByteStream is big endian (true) or little endian (false)
-        bool m_bigEndian;
 
     public:
         //Operator: []
@@ -82,35 +79,48 @@ namespace mscl
         //
         //Parameters:
         //    value - The 2-byte int16 to be added to the byte stream
-        void append_int16(int16 value);
+        //    endian - The <Utils::Endianness> to append the bytes in.
+        void append_int16(int16 value, Utils::Endianness endian=Utils::bigEndian);
 
         //Function: append_uint16
         //    Appends a 2-byte unsigned integer to the byte stream
         //
         //Parameters:
         //    value - The 2-byte uint16 to be added to the byte stream
-        void append_uint16(uint16 value);
+        //    endian - The <Utils::Endianness> to append the bytes in.
+        void append_uint16(uint16 value, Utils::Endianness endian = Utils::bigEndian);
 
         //Function: append_uint32
         //    Appends a 4-byte unsigned integer to the byte stream
         //
         //Parameters:
         //    value - The 4-byte uint32 to be added to the byte stream
-        void append_uint32(uint32 value);
+        //    endian - The <Utils::Endianness> to append the bytes in.
+        void append_uint32(uint32 value, Utils::Endianness endian = Utils::bigEndian);
+
+        //Function: append_uint64
+        //    Appends an 8-byte unsigned integer to the byte stream
+        //
+        //Parameters:
+        //    value - The 8-byte uint64 to be added to the byte stream
+        //    endian - The <Utils::Endianness> to append the bytes in.
+        void append_uint64(uint64 value, Utils::Endianness endian = Utils::bigEndian);
 
         //Function: append_float
         //    Appends a 4-byte float to the byte stream
         //
         //Parameters:
-        //    valye - The 4-byte float to be added to the byte stream
-        void append_float(float value);
+        //    value - The 4-byte float to be added to the byte stream
+        //    endian - The <Utils::Endianness> to append the bytes in.
+        void append_float(float value, Utils::Endianness endian = Utils::bigEndian);
 
         //Function: append_double
         //    Appends an 8-byte double to the byte stream
         //
         //Parameters:
-        //    valye - The 8-byte double to be added to the byte stream
-        void append_double(double value);
+        //    value - The 8-byte double to be added to the byte stream
+        //    endian - The <Utils::Endianness> to append the bytes in.
+        void append_double(double value, Utils::Endianness endian = Utils::bigEndian);
 
         //Function: append_string
         //    Appends a string to the byte stream.
@@ -164,78 +174,98 @@ namespace mscl
         //
         //Parameters:
         //    position - The 0-based position to read from
+        //    endian - The <Utils::Endianness> to read the bytes in.
         //
         //Returns:
         //    The int16 at the requested position
         //
         //Exceptions:
         //    - std::out_of_range: The index requested is out of range
-        int16 read_int16(std::size_t position) const;
+        int16 read_int16(std::size_t position, Utils::Endianness endian = Utils::bigEndian) const;
 
         //Function: read_uint16
         //    Reads a 2-byte unsigned integer from the byte stream
         //
         //Parameters:
         //    position - The 0-based position to read from
+        //    endian - The <Utils::Endianness> to read the bytes in.
         //
         //Returns:
         //    The uint16 at the requested position
         //
         //Exceptions:
         //    - std::out_of_range: The index requested is out of range
-        uint16 read_uint16(std::size_t position) const;
+        uint16 read_uint16(std::size_t position, Utils::Endianness endian = Utils::bigEndian) const;
+
+        //Function: read_uint24
+        //    Reads a 3-byte unsigned integer from the byte stream
+        //
+        //Parameters:
+        //    position - The 0-based position to read from
+        //    endian - The <Utils::Endianness> to read the bytes in.
+        //
+        //Returns:
+        //    A uint32 containing the uint24 value at the requested position
+        //
+        //Exceptions:
+        //    - std::out_of_range: The index requested is out of range
+        uint32 read_uint24(std::size_t position, Utils::Endianness endian = Utils::bigEndian) const;
 
         //Function: read_uint32
         //    Reads a 4-byte unsigned integer from the byte stream
         //
         //Parameters:
         //    position - The 0-based position to read from
+        //    endian - The <Utils::Endianness> to read the bytes in.
         //
         //Returns:
         //    The uint32 at the requested position
         //
         //Exceptions:
         //    - std::out_of_range: The index requested is out of range
-        uint32 read_uint32(std::size_t position) const;
+        uint32 read_uint32(std::size_t position, Utils::Endianness endian = Utils::bigEndian) const;
 
         //Function: read_uint64
         //    Reads an 8-byte unsigned integer from the byte stream
         //
         //Parameters:
         //    position - The 0-based position to read from
+        //    endian - The <Utils::Endianness> to read the bytes in.
         //
         //Returns:
         //    The uint64 at the requested position
         //
         //Exceptions:
         //    - std::out_of_range: The index requested is out of range
-        uint64 read_uint64(std::size_t position) const;
+        uint64 read_uint64(std::size_t position, Utils::Endianness endian = Utils::bigEndian) const;
 
         //Function: read_float
         //    Reads a 4-byte float from the byte stream
         //
         //Parameters:
         //    position - The 0-based position to read from
+        //    endian - The <Utils::Endianness> to read the bytes in.
         //
         //Returns:
         //    The float at the requested position
         //
         //Exceptions:
         //    - std::out_of_range: The index requested is out of range
-        float read_float(std::size_t position) const;
+        float read_float(std::size_t position, Utils::Endianness endian = Utils::bigEndian) const;
 
         //Function: read_double
         //    Reads an 8-byte double from the byte stream
         //
         //Parameters:
         //    position - The 0-based position to read from
+        //    endian - The <Utils::Endianness> to read the bytes in.
         //
         //Returns:
         //    The double at the requested position
         //
         //Exceptions:
         //    - std::out_of_range: The index requested is out of range
-        double read_double(std::size_t position) const;
+        double read_double(std::size_t position, Utils::Endianness endian = Utils::bigEndian) const;
 
         //Function: read_string
         //    Reads a string of the specified length from the byte stream
@@ -281,7 +311,7 @@ namespace mscl
         //
         //Returns:
         //    true if the vector is empty (size is 0), false otherwise.
-        bool empty();
+        bool empty() const;
 
         //Function: resize
         //    Resizes the byte stream (equivalent of std::vector.resize())

@@ -20,15 +20,20 @@ namespace mscl
 
         m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential Channels",
                                      ChannelGroup::SettingsMap{
-                                         {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_1},
+                                         {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_1},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1},
                                          {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_1},
-                                         {WirelessTypes::chSetting_shuntCal, NodeEepromMap::CH_ACTION_SLOPE_1}}
+                                         {WirelessTypes::chSetting_legacyShuntCal, NodeEepromMap::CH_ACTION_SLOPE_1}}
         );
 
         //Channels
         m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential);   //full diff
         m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_temperature);        //temperature
+    }
+
+    bool NodeFeatures_torqueLink::supportsSensorDelayConfig() const
+    {
+        return true;
     }
 
     const WirelessTypes::SamplingModes NodeFeatures_torqueLink::samplingModes() const

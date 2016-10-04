@@ -35,7 +35,7 @@ namespace mscl
     {
     }
 
-    bool Erase_v2::Response::match(const WirelessPacket& packet)
+    bool Erase_v2::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
         WirelessPacket::Payload payload = packet.payload();
 
@@ -53,12 +53,56 @@ namespace mscl
 
         m_success = true;
 
-        //we have fully matched the response
-        m_fullyMatched = true;
+        return true;
+    }
 
-        //notify that the response was matched
-        m_matchCondition.notify();
+    bool Erase_v2::Response::matchFailResponse(const WirelessPacket& packet)
+    {
+        WirelessPacket::Payload payload = packet.payload();
+
+        //check the main bytes of the packet
+        if(packet.deliveryStopFlags().toInvertedByte() != 0x07 ||                   //delivery stop flag
+           packet.type() != WirelessPacket::packetType_nodeErrorReply ||            //app data type
+           packet.nodeAddress() != m_nodeAddress ||                                 //node address
+           payload.size() != 3 ||                                                   //payload length
+           payload.read_uint16(0) != WirelessProtocol::cmdId_erase_v2               //command ID
+           )
+        {
+            //failed to match some of the bytes
+            return false;
+        }
+
+        //m_statusCode = payload.read_uint8(2);
+
+        m_success = false;
 
         return true;
+    }
+
+    bool Erase_v2::Response::match(const WirelessPacket& packet)
+    {
+        //if the bytes match the success response
+        if(matchSuccessResponse(packet))
+        {
+            //we have fully matched the response
+            m_fullyMatched = true;
+
+            //notify that the response was matched
+            m_matchCondition.notify();
+            return true;
+        }
+        //if the bytes match the fail response
+        else if(matchFailResponse(packet))
+        {
+            //we have fully matched the response
+            m_fullyMatched = true;
+
+            //notify that the response was matched
+            m_matchCondition.notify();
+            return true;
+        }
+
+        //the bytes don't match any response
+        return false;
     }
 }

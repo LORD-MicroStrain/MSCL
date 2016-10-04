@@ -9,9 +9,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "ActivitySense.h"
 #include "EventTriggerOptions.h"
 #include "FatigueOptions.h"
-#include "HardwareGain.h"
 #include "HistogramOptions.h"
+#include "InputRange.h"
 #include "NodeEepromMap.h"
+#include "WirelessNodeConfig.h"
 #include "mscl/MicroStrain/Wireless/WirelessNode_Impl.h"
 #include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 #include "mscl/MicroStrain/Wireless/Features/FlashInfo.h"
@@ -19,14 +20,6 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    const uint16 NodeEepromHelper::TIME_BETWEEN_BURSTS_MAX_SECS = 0x7FFF;
-    const uint16 NodeEepromHelper::BYTES_PER_DATALOG_PAGE = 264;
-    const uint16 NodeEepromHelper::MIN_SLEEP_INTERVAL_EEVAL = 512;
-    const uint16 NodeEepromHelper::MAX_SLEEP_INTERVAL_EEVAL = 7680;
-    const uint16 NodeEepromHelper::MIN_LOST_BEACON_TIMEOUT = 2;
-    const uint16 NodeEepromHelper::MAX_LOST_BEACON_TIMEOUT = 600;
-    const uint16 NodeEepromHelper::LOST_BEACON_TIMEOUT_DISABLED = 0;
-
     NodeEepromHelper::NodeEepromHelper(WirelessNode_Impl* node):
         m_node(node)
     {
@@ -190,12 +183,17 @@ namespace mscl
     {
         if(m_node->features().supportsFlashId())
         {
-            return FlashInfo::FROM_FLASH_ID(read(NodeEepromMap::FLASH_ID).as_uint16()).storageSize;
+            return read_flashInfo().storageSize;
         }
         else
         {
             return read(NodeEepromMap::MAX_MEMORY).as_uint16() * BYTES_PER_DATALOG_PAGE;
         }
+    }
+
+    FlashInfo NodeEepromHelper::read_flashInfo() const
+    {
+        return FlashInfo::FROM_FLASH_ID(read(NodeEepromMap::FLASH_ID).as_uint16());
     }
 
     WirelessTypes::SettlingTime NodeEepromHelper::read_filter1() const
@@ -334,83 +332,211 @@ namespace mscl
         return static_cast<WirelessTypes::SyncSamplingMode>(read(NodeEepromMap::SYNC_SAMPLE_SETTING).as_uint16());
     }
 
-    void NodeEepromHelper::write_samplingDelay(TimeSpan delay)
+    void NodeEepromHelper::write_sensorDelay(uint32 microseconds)
     {
-        uint64 valueToWrite = 0;
+        uint16 valueToWrite = 0;
 
-        //get the type of node
-        WirelessModels::NodeModel nodeType = m_node->model();
-
-        switch(nodeType)
+        //if the user is setting the value to Always On
+        if(microseconds == WirelessNodeConfig::SENSOR_DELAY_ALWAYS_ON)
         {
-            //these nodes all store the sampling delay in microseconds
-            case WirelessModels::node_shmLink:
-            case WirelessModels::node_shmLink2:
-            case WirelessModels::node_shmLink2_cust1:
-            case WirelessModels::node_sgLink_herm:
-            case WirelessModels::node_sgLink_herm_2600:
-            case WirelessModels::node_sgLink_herm_2700:
-            case WirelessModels::node_sgLink_herm_2800:
-            case WirelessModels::node_sgLink_rgd:
-                valueToWrite = delay.getMicroseconds();
-                break;
+            //check "always on" is supported
+            if(!m_node->features().supportsSensorDelayAlwaysOn())
+            {
+                throw Error_NotSupported("Sensor Delay Always On is not supported.");
+            }
 
-            default:
-                break;
-        }
-
-        //if the delay is 1 second or more
-        if(delay >= TimeSpan::Seconds(1))
-        {
-            //the delay should be stored as seconds
-            valueToWrite = delay.getSeconds();
-            valueToWrite += 32768;    //set the most significant bit on
+            if(m_node->features().usesLegacySensorDelayAlwaysOn())
+            {
+                valueToWrite = 10000;
+            }
+            else
+            {
+                valueToWrite = 0xFFFF;
+            }
         }
         else
         {
-            //the delay should be stored as milliseconds
-            valueToWrite = delay.getMilliseconds();
+            uint8 delayVersion = m_node->features().sensorDelayVersion();
+
+            TimeSpan delay{TimeSpan::MicroSeconds(microseconds)};
+
+            //Milliseconds only
+            if(delayVersion == 1)
+            {
+                valueToWrite = static_cast<uint16>(delay.getMilliseconds());
+            }
+            //Microseconds only
+            else if(delayVersion == 2)
+            {
+                valueToWrite = static_cast<uint16>(delay.getMicroseconds());
+            }
+            //Seconds or Milliseconds
+            else if(delayVersion == 3)
+            {
+                //if the delay is 1 second or more
+                if(delay >= TimeSpan::Seconds(1))
+                {
+                    //the delay needs to be stored as seconds
+                    valueToWrite = static_cast<uint16>(delay.getSeconds());
+
+                    //set the most significant bit on to signify seconds
+                    Utils::setBit(valueToWrite, 15, true);
+                }
+                else
+                {
+                    //the delay needs to be stored as milliseconds
+                    valueToWrite = static_cast<uint16>(delay.getMilliseconds());
+
+                    //set the most significant bit off to signify milliseconds
+                    Utils::setBit(valueToWrite, 15, false);
+                }
+            }
+            //Seconds, Milliseconds, or Microseconds
+            else if(delayVersion == 4)
+            {
+                //if the delay is 1 second or more
+                if(delay >= TimeSpan::Seconds(1))
+                {
+                    //the delay needs to be stored as seconds
+                    valueToWrite = static_cast<uint16>(delay.getSeconds());
+
+                    //0b10 - Seconds
+                    Utils::setBit(valueToWrite, 15, true);
+                    Utils::setBit(valueToWrite, 14, false);
+                }
+                //less than 1 second but more than 1 millisecond
+                else if(delay >= TimeSpan::MilliSeconds(1))
+                {
+                    valueToWrite = static_cast<uint16>(delay.getMilliseconds());
+
+                    //0b01 - Milliseconds
+                    Utils::setBit(valueToWrite, 15, false);
+                    Utils::setBit(valueToWrite, 14, true);
+                }
+                //less than 1 millisecond
+                else
+                {
+                    valueToWrite = static_cast<uint16>(delay.getMicroseconds());
+
+                    //0b00 - Microseconds
+                    Utils::setBit(valueToWrite, 15, false);
+                    Utils::setBit(valueToWrite, 14, false);
+                }
+            }
         }
 
         write(NodeEepromMap::SAMPLING_DELAY, Value::UINT16(static_cast<uint16>(valueToWrite)));
     }
 
-    TimeSpan NodeEepromHelper::read_samplingDelay() const
+    uint32 NodeEepromHelper::read_sensorDelay() const
     {
-        //get the type of node
-        WirelessModels::NodeModel nodeType = m_node->model();
-
         //read the value that is in eeprom
-        uint16 samplingDelay = read(NodeEepromMap::SAMPLING_DELAY).as_uint16();
+        uint16 eeVal = read(NodeEepromMap::SAMPLING_DELAY).as_uint16();
 
-        switch(nodeType)
+        //check for the "always on" value, if supported
+        if(m_node->features().supportsSensorDelayAlwaysOn())
         {
-            //these nodes all read the sampling delay in microseconds
-            case WirelessModels::node_shmLink:
-            case WirelessModels::node_shmLink2:
-            case WirelessModels::node_shmLink2_cust1:
-            case WirelessModels::node_sgLink_herm:
-            case WirelessModels::node_sgLink_herm_2600:
-            case WirelessModels::node_sgLink_herm_2700:
-            case WirelessModels::node_sgLink_herm_2800:
-            case WirelessModels::node_sgLink_rgd:
-                return TimeSpan::MicroSeconds(samplingDelay);
-
-            default:
-                break;
+            if(m_node->features().usesLegacySensorDelayAlwaysOn())
+            {
+                if(eeVal == 10000)
+                {
+                    return WirelessNodeConfig::SENSOR_DELAY_ALWAYS_ON;
+                }
+            }
+            else
+            {
+                if(eeVal == 0xFFFF)
+                {
+                    return WirelessNodeConfig::SENSOR_DELAY_ALWAYS_ON;
+                }
+            }
         }
 
-        //if the most significant bit is set
-        if(Utils::bitIsSet(samplingDelay, 15))
+        uint8 delayVersion = m_node->features().sensorDelayVersion();
+
+        //Milliseconds only
+        if(delayVersion == 1)
         {
-            //the value is in seconds, and we need to subtract out the most significant bit
-            return TimeSpan::Seconds(samplingDelay - 32768);
+            //if outside the max milliseconds range, defaults to 5ms
+            if(eeVal > 500)
+            {
+                eeVal = 5;
+            }
+
+            return static_cast<uint32>(TimeSpan::MilliSeconds(eeVal).getMicroseconds());
         }
-        else
+        //Microseconds only
+        else if(delayVersion == 2)
         {
-            //the value is in milliseconds
-            return TimeSpan::MilliSeconds(samplingDelay);
+            return static_cast<uint32>(eeVal);
         }
+        //Seconds or Milliseconds
+        else if(delayVersion == 3)
+        {
+            //if the most significant bit is set, the value is in Seconds
+            if(Utils::bitIsSet(eeVal, 15))
+            {
+                //ignore the most significant bit
+                Utils::setBit(eeVal, 15, false);
+
+                //if outside the max seconds (10 minutes), defaults to 5ms
+                if(eeVal > 600)
+                {
+                    return static_cast<uint32>(TimeSpan::MilliSeconds(5).getMicroseconds());
+                }
+
+                return static_cast<uint32>(TimeSpan::Seconds(eeVal).getMicroseconds());
+            }
+            else
+            {
+                //the value is in milliseconds
+                return static_cast<uint32>(TimeSpan::MilliSeconds(eeVal).getMicroseconds());
+            }
+        }
+        //Seconds, Milliseconds, or Microseconds
+        else if(delayVersion == 4)
+        {
+            //0b10 - Seconds
+            if(Utils::bitIsSet(eeVal, 15))
+            {
+                //ignore the top 2 bits
+                Utils::setBit(eeVal, 15, false);
+                Utils::setBit(eeVal, 14, false);
+
+                //max of 10 minutes
+                if(eeVal > 600)
+                {
+                    //defaults back to the max
+                    eeVal = 600;
+                }
+
+                return static_cast<uint32>(TimeSpan::Seconds(eeVal).getMicroseconds());
+            }
+            else
+            {
+                //0b01 - Milliseconds
+                if(Utils::bitIsSet(eeVal, 14))
+                {
+                    //ignore the top 2 bits 
+                    Utils::setBit(eeVal, 15, false);
+                    Utils::setBit(eeVal, 14, false);
+
+                    return static_cast<uint32>(TimeSpan::MilliSeconds(eeVal).getMicroseconds());
+                }
+                //0b00 - Microseconds
+                else
+                {
+                    //ignore the top 2 bits
+                    Utils::setBit(eeVal, 15, false);
+                    Utils::setBit(eeVal, 14, false);
+
+                    return static_cast<uint32>(eeVal);
+                }
+            }
+        }
+
+        assert(false);  //should never happen, need to add a new sensor delay version handler
+        throw Error("Unknown Sensor Delay Version!");
     }
 
     void NodeEepromHelper::write_retransmission(WirelessTypes::NodeRetransmission reTx)
@@ -569,7 +695,7 @@ namespace mscl
         write(offsetEeprom, Value::FLOAT(equation.offset()));
     }
 
-    void NodeEepromHelper::read_channelLinearEquation(const ChannelMask& mask, LinearEquation& result)
+    void NodeEepromHelper::read_channelLinearEquation(const ChannelMask& mask, LinearEquation& result) const
     {
         //find the eeproms
         const EepromLocation& slopeEeprom = m_node->features().findEeprom(WirelessTypes::chSetting_linearEquation, mask);
@@ -801,16 +927,21 @@ namespace mscl
         write(NodeEepromMap::MAX_RETRANS_BURST, Value::UINT16(maxReTxPerBurst));
     }
 
-    double NodeEepromHelper::read_hardwareGain(const ChannelMask& mask) const
+    WirelessTypes::InputRange NodeEepromHelper::read_inputRange(const ChannelMask& mask) const
     {
+        //find the type of the last channel enabled in the mask
+        //  TODO: clean this up so that masks can tell you what the type is themselves?
+        uint8 lastCh = mask.lastChEnabled();
+        WirelessTypes::ChannelType chType = m_node->features().channelType(lastCh);
+
         //find the eeprom location
-        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_hardwareGain, mask);
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_inputRange, mask);
 
         //read the bits value stored in eeprom
         uint16 bitsVal = read(eeprom).as_uint16();
 
         //convert the bits value to gain and return
-        return HardwareGain::bitsToGain(bitsVal, m_node->model());
+        return InputRange::eepromValToInputRange(bitsVal, m_node->model(), chType);
     }
 
     uint16 NodeEepromHelper::read_hardwareOffset(const ChannelMask& mask) const
@@ -822,13 +953,18 @@ namespace mscl
         return read(eeprom).as_uint16();
     }
 
-    void NodeEepromHelper::write_hardwareGain(const ChannelMask& mask, double gain)
+    void NodeEepromHelper::write_inputRange(const ChannelMask& mask, WirelessTypes::InputRange range)
     {
+        //find the type of the last channel enabled in the mask
+        //  TODO: clean this up so that masks can tell you what the type is themselves
+        uint8 lastCh = mask.lastChEnabled();
+        WirelessTypes::ChannelType chType = m_node->features().channelType(lastCh);
+
         //find the eeprom location
-        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_hardwareGain, mask);
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_inputRange, mask);
 
         //convert the gain value to bits, which is what gets written to eeprom
-        uint16 bitsVal = HardwareGain::gainToBits(gain, m_node->model());
+        uint16 bitsVal = InputRange::inputRangeToEepromVal(range, m_node->model(), chType);
 
         //write the hardware gain (in bits) to eeprom
         write(eeprom, Value::UINT16(bitsVal));
@@ -843,19 +979,19 @@ namespace mscl
         write(eeprom, Value::UINT16(offset));
     }
 
-    WirelessTypes::Filter NodeEepromHelper::read_lowPassFilter(const ChannelMask& mask) const
+    WirelessTypes::Filter NodeEepromHelper::read_antiAliasingFilter(const ChannelMask& mask) const
     {
         //find the eeprom location
-        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_lowPassFilter, mask);
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_antiAliasingFilter, mask);
 
         //return the result read from eeprom
         return static_cast<WirelessTypes::Filter>(read(eeprom).as_uint16());
     }
 
-    void NodeEepromHelper::write_lowPassFilter(const ChannelMask& mask, WirelessTypes::Filter filter)
+    void NodeEepromHelper::write_antiAliasingFilter(const ChannelMask& mask, WirelessTypes::Filter filter)
     {
         //find the eeprom location
-        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_lowPassFilter, mask);
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_antiAliasingFilter, mask);
 
         //write the hardware gain (in bits) to eeprom
         write(eeprom, Value::UINT16(static_cast<uint16>(filter)));
@@ -1232,25 +1368,57 @@ namespace mscl
         result.preDuration(pre);
         result.postDuration(post);
 
+        bool usesFloatVal = m_node->features().usesFloatEventTriggerVal();
+
         EepromLocation channelEeprom = NodeEepromMap::EVENT_SRC_1;
         EepromLocation typeEeprom = NodeEepromMap::EVENT_OPER_1;
         EepromLocation valueEeprom = NodeEepromMap::EVENT_VAL1_1;
 
         uint8 triggerChannel;
         WirelessTypes::EventTriggerType triggerType;
-        uint16 triggerValue;
+        float triggerValue;
 
         for(uint8 i = 0; i < numTriggers; i++)
         {
             //get the eeproms for this trigger
-            NodeEepromMap::getEventTriggerEeproms(i, channelEeprom, typeEeprom, valueEeprom);
+            NodeEepromMap::getEventTriggerEeproms(i, usesFloatVal, channelEeprom, typeEeprom, valueEeprom);
 
             //build the trigger mask using the one read in above
             result.enableTrigger(i, mask.enabled(i));
 
             triggerChannel = read(channelEeprom).as_uint8();
             triggerType = static_cast<WirelessTypes::EventTriggerType>(read(typeEeprom).as_uint16());
-            triggerValue = read(valueEeprom).as_uint16();
+
+            if(usesFloatVal)
+            {
+                triggerValue = read(valueEeprom).as_float();
+            }
+            else
+            {
+                //this is a legacy node that sets the Event Trigger value as bits.
+                //We need to read it and convert it a floating point value using
+                //the linear calibration coefficents that are applied for the specific channel number.
+                uint16 triggerValInBits = read(valueEeprom).as_uint16();
+
+                LinearEquation eq(1.0f, 0.0f);
+
+                //find the group that contains the channel for this trigger
+                WirelessTypes::ChannelGroupSettings::const_iterator itr;
+                ChannelGroups groups = m_node->features().channelGroups();
+                for(const auto& group : groups)
+                {
+                    if(group.hasSetting(WirelessTypes::ChannelGroupSetting::chSetting_linearEquation) && 
+                       group.channels().enabled(triggerChannel))
+                    {
+                        //read the current linear equation set on the Node
+                        read_channelLinearEquation(group.channels(), eq);
+                        break;
+                    }
+                }
+
+                //convert from bits to calibrated value
+                triggerValue = eq.slope() * triggerValInBits + eq.offset();
+            }
 
             Trigger tempTrigger(triggerChannel, triggerType, triggerValue);
 
@@ -1258,7 +1426,7 @@ namespace mscl
         }
     }
 
-    void NodeEepromHelper::write_eventTriggerOptions(const EventTriggerOptions& options)
+    void NodeEepromHelper::write_eventTriggerOptions(const EventTriggerOptions& options, const std::map<uint8, LinearEquation> calibrations)
     {
         const uint8 numTriggers = m_node->features().numEventTriggers();
 
@@ -1284,18 +1452,19 @@ namespace mscl
         //Post Event Duration
         write(NodeEepromMap::EVENT_POST_DURATION, Value::UINT16(postVal));
 
+        bool usesFloatVal = m_node->features().usesFloatEventTriggerVal();
+
         EepromLocation channelEeprom = NodeEepromMap::EVENT_SRC_1;
         EepromLocation typeEeprom = NodeEepromMap::EVENT_OPER_1;
         EepromLocation valueEeprom = NodeEepromMap::EVENT_VAL1_1;
 
         BitMask mask;
-
         Trigger tempTrigger;
 
         for(uint8 i = 0; i < numTriggers; i++)
         {
             //get the eeproms for this trigger
-            NodeEepromMap::getEventTriggerEeproms(i, channelEeprom, typeEeprom, valueEeprom);
+            NodeEepromMap::getEventTriggerEeproms(i, usesFloatVal, channelEeprom, typeEeprom, valueEeprom);
 
             //build the trigger mask to write
             mask.enable(i, options.triggerEnabled(i));
@@ -1308,8 +1477,19 @@ namespace mscl
             //Trigger Type
             write(typeEeprom, Value::UINT16(static_cast<uint16>(tempTrigger.triggerType())));
 
-            //Trigger Value
-            write(valueEeprom, Value::UINT16(tempTrigger.triggerValue()));
+            if(usesFloatVal)
+            {
+                //Trigger Value
+                write(valueEeprom, Value::FLOAT(tempTrigger.triggerValue()));
+            }
+            else
+            {
+                //convert the value to bits using the provided cal coefficients
+                uint16 valInBits = static_cast<uint16>(((tempTrigger.triggerValue() - calibrations.at(i).offset()) / calibrations.at(i).slope()) + 0.5f);
+
+                //Trigger Value
+                write(valueEeprom, Value::UINT16(valInBits));
+            }
         }
 
         //Trigger Mask

@@ -10,7 +10,8 @@ namespace mscl
 {
     ConfigIssue::ConfigIssue():
         m_optionId(ConfigIssue::CONFIG_SAMPLING_MODE),
-        m_description("")
+        m_description(""),
+        m_isChannelGroupIssue(false)
     {
     }
 

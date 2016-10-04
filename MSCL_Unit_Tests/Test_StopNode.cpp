@@ -42,8 +42,13 @@ BOOST_AUTO_TEST_CASE(SetToIdle_Match_Success_stopped_withAA)
 
     DataBuffer buffer(bytes);
 
-    //check that match returns true
     BOOST_CHECK_EQUAL(response.result(), SetToIdleStatus::setToIdleResult_notCompleted);
+    BOOST_CHECK_EQUAL(response.match(buffer), false);
+    BOOST_CHECK_EQUAL(response.result(), SetToIdleStatus::setToIdleResult_notCompleted);
+
+    buffer.read_uint8();    //move the read position (parser does this normally)
+
+    //check that match returns true
     BOOST_CHECK_EQUAL(response.match(buffer), true);
     BOOST_CHECK_EQUAL(response.result(), SetToIdleStatus::setToIdleResult_success);
 }
@@ -84,6 +89,12 @@ BOOST_AUTO_TEST_CASE(SetToIdle_Match_Success_canceled_withAA)
 
     DataBuffer buffer(bytes);
 
+    BOOST_CHECK_EQUAL(response.result(), SetToIdleStatus::setToIdleResult_notCompleted);
+    BOOST_CHECK_EQUAL(response.match(buffer), false);
+    BOOST_CHECK_EQUAL(response.result(), SetToIdleStatus::setToIdleResult_notCompleted);
+
+    buffer.read_uint8();    //move the read position (parser does this normally)
+
     //check that match returns true
     BOOST_CHECK_EQUAL(response.match(buffer), true);
     BOOST_CHECK_EQUAL(response.result(), SetToIdleStatus::setToIdleResult_canceled);
@@ -121,7 +132,7 @@ BOOST_AUTO_TEST_CASE(SetToIdle_Cancel)
 
     base.timeout(5);
 
-    BOOST_CHECK_THROW(response.cancel(), Error_Communication);    //throws an error because we didn't get the final canceled response
+    response.cancel();
 
     //a canceled stop node response, without the initial 0xAA in the response
     Bytes bytes;

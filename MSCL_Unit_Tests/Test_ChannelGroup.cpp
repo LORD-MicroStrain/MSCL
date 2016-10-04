@@ -33,10 +33,10 @@ BOOST_AUTO_TEST_CASE(ChannelGroup_channelGroups)
     BOOST_CHECK_EQUAL(groups.at(0).channels().toMask(), 1);    //differential channels
     auto diffSettings = groups.at(0).settings();
     BOOST_CHECK_EQUAL(diffSettings.size(), 4);
-    BOOST_CHECK_EQUAL(diffSettings.at(0), WirelessTypes::chSetting_hardwareGain);
+    BOOST_CHECK_EQUAL(diffSettings.at(0), WirelessTypes::chSetting_inputRange);
     BOOST_CHECK_EQUAL(diffSettings.at(1), WirelessTypes::chSetting_hardwareOffset);
     BOOST_CHECK_EQUAL(diffSettings.at(2), WirelessTypes::chSetting_autoBalance);
-    BOOST_CHECK_EQUAL(diffSettings.at(3), WirelessTypes::chSetting_shuntCal);
+    BOOST_CHECK_EQUAL(diffSettings.at(3), WirelessTypes::chSetting_legacyShuntCal);
 
     BOOST_CHECK_EQUAL(groups.at(1).channels().toMask(), 1);    //cal coefficient ch1
     auto ch1Settings = groups.at(1).settings();

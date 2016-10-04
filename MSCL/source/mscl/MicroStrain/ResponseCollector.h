@@ -39,7 +39,8 @@ namespace mscl
 
     private:
         ResponseCollector(const ResponseCollector&);                                //copy constructor disabled
-        std::shared_ptr<ResponseCollector> operator=(const ResponseCollector&);     //assignement operator disabled
+        ResponseCollector& operator=(const ResponseCollector&);                     //disable assignment operator
+        //std::shared_ptr<ResponseCollector> operator=(const ResponseCollector&);     //assignement operator disabled
 
     private:
         //Variable: m_expectedResponses

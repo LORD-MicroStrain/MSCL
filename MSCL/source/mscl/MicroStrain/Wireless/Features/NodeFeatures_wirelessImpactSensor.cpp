@@ -4,7 +4,7 @@ Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
-#include "NodeFeatures_bladeImpactLink.h"
+#include "NodeFeatures_wirelessImpactSensor.h"
 
 #include "mscl/Exceptions.h"
 #include "AvailableSampleRates.h"
@@ -13,7 +13,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    NodeFeatures_bladeImpactLink::NodeFeatures_bladeImpactLink(const NodeInfo& info):
+    NodeFeatures_wirelessImpactSensor::NodeFeatures_wirelessImpactSensor(const NodeInfo& info):
         NodeFeatures(info)
     {
         addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
@@ -24,9 +24,9 @@ namespace mscl
         static const ChannelMask CH1(BOOST_BINARY(00000001)); //ch1
         static const ChannelMask CH2(BOOST_BINARY(00000010)); //ch2
         static const ChannelMask CH3(BOOST_BINARY(00000100)); //ch3
-        m_channelGroups.emplace_back(CH1, "Accel Channel 1", ChannelGroup::SettingsMap{{WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1}});
-        m_channelGroups.emplace_back(CH2, "Accel Channel 2", ChannelGroup::SettingsMap{{WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_2}});
-        m_channelGroups.emplace_back(CH3, "Accel Channel 3", ChannelGroup::SettingsMap{{WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_3}});
+        m_channelGroups.emplace_back(CH1, "Accel Channel 1", ChannelGroup::SettingsMap{{WirelessTypes::chSetting_antiAliasingFilter, NodeEepromMap::ANTI_ALIASING_FILTER_1}});
+        m_channelGroups.emplace_back(CH2, "Accel Channel 2", ChannelGroup::SettingsMap{{WirelessTypes::chSetting_antiAliasingFilter, NodeEepromMap::ANTI_ALIASING_FILTER_2}});
+        m_channelGroups.emplace_back(CH3, "Accel Channel 3", ChannelGroup::SettingsMap{{WirelessTypes::chSetting_antiAliasingFilter, NodeEepromMap::ANTI_ALIASING_FILTER_3}});
 
         //Channels
         m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_acceleration);    //accel x
@@ -35,7 +35,7 @@ namespace mscl
         //m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_temperature);    //internal temp
     }
 
-    const WirelessTypes::SamplingModes NodeFeatures_bladeImpactLink::samplingModes() const
+    const WirelessTypes::SamplingModes NodeFeatures_wirelessImpactSensor::samplingModes() const
     {
         //build and return the sampling modes that are supported
         WirelessTypes::SamplingModes result;
@@ -43,7 +43,6 @@ namespace mscl
         result.push_back(WirelessTypes::samplingMode_sync);
         result.push_back(WirelessTypes::samplingMode_syncBurst);
         result.push_back(WirelessTypes::samplingMode_nonSync);
-        result.push_back(WirelessTypes::samplingMode_nonSyncEvent);
         result.push_back(WirelessTypes::samplingMode_syncEvent);
 
         //no support for armed datalogging
@@ -51,28 +50,28 @@ namespace mscl
         return result;
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures_bladeImpactLink::sampleRates(WirelessTypes::SamplingMode samplingMode) const
+    const WirelessTypes::WirelessSampleRates NodeFeatures_wirelessImpactSensor::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
     {
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
         {
         case WirelessTypes::samplingMode_nonSync:
+            return AvailableSampleRates::continuous_nonSync_impact;
+
         case WirelessTypes::samplingMode_sync:
-            return AvailableSampleRates::continuous_blade;
+            return AvailableSampleRates::continuous_sync_impact;
         
         case WirelessTypes::samplingMode_syncBurst:
-            return AvailableSampleRates::burst_blade;
-
         case WirelessTypes::samplingMode_nonSyncEvent:
         case WirelessTypes::samplingMode_syncEvent:
-            return AvailableSampleRates::event_blade;
+            return AvailableSampleRates::burst_impact;
 
         default:
-            throw Error("Invalid SamplingMode");
+            throw Error_NotSupported("The sampling mode is not supported by this Node");
         }
     }
 
-    const WirelessTypes::Filters NodeFeatures_bladeImpactLink::lowPassFilters() const
+    const WirelessTypes::Filters NodeFeatures_wirelessImpactSensor::antiAliasingFilters() const
     {
         static const WirelessTypes::Filters filters = {
             {WirelessTypes::filter_4096hz},
@@ -85,7 +84,7 @@ namespace mscl
         return filters;
     }
 
-    const WirelessTypes::StorageLimitModes NodeFeatures_bladeImpactLink::storageLimitModes() const
+    const WirelessTypes::StorageLimitModes NodeFeatures_wirelessImpactSensor::storageLimitModes() const
     {
         WirelessTypes::StorageLimitModes modes;
         modes.push_back(WirelessTypes::storageLimit_overwrite);

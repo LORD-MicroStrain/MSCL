@@ -125,6 +125,103 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_2ByteUint)
     BOOST_CHECK_EQUAL(sweep.data()[0].as_uint16(), 254);
 }
 
+BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_uint24)
+{
+    Bytes payloadBytes;
+    payloadBytes.push_back(0);        //channel mask
+    payloadBytes.push_back(1);        //channel mask - 1 channel
+    payloadBytes.push_back(112);    //sample rate
+    payloadBytes.push_back(0x29);    //sample mode / data type - 2 byte uint
+    payloadBytes.push_back(0);        //tick msb
+    payloadBytes.push_back(1);        //tick lsb
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0xFD);   //channel data b1
+    payloadBytes.push_back(0xDF);   //channel data b2
+    payloadBytes.push_back(0x5E);   //channel data b3
+
+    //build a WirelessPacket
+    WirelessPacket packet;
+    packet.nodeAddress(345);
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
+    packet.type(WirelessPacket::packetType_SyncSampling_16ch);
+    packet.nodeRSSI(1);
+    packet.baseRSSI(1);
+    packet.payload(payloadBytes);    //give the packet the payload bytes we created
+
+                                     //call the addDataPacket() function to parse the packet as an LDC Packet
+    WirelessPacketCollector collector;
+    collector.addDataPacket(packet);
+
+    DataSweeps sweeps;
+    collector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 1);
+
+    DataSweep sweep = sweeps.at(0);
+
+    //check that the sweep data matches the packet we added
+    BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
+    BOOST_CHECK_EQUAL(sweep.tick(), 1);
+    BOOST_CHECK_EQUAL(sweep.samplingType(), DataSweep::samplingType_SyncSampling);
+    BOOST_CHECK_EQUAL(sweep.data()[0].storedAs(), valueType_uint32);
+    BOOST_CHECK_EQUAL(sweep.data()[0].as_uint32(), 16637790);
+}
+
+BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_uint16_18bitTrun)
+{
+    Bytes payloadBytes;
+    payloadBytes.push_back(0);        //channel mask
+    payloadBytes.push_back(1);        //channel mask - 1 channel
+    payloadBytes.push_back(112);    //sample rate
+    payloadBytes.push_back(0x2A);    //sample mode / data type - 2 byte uint
+    payloadBytes.push_back(0);        //tick msb
+    payloadBytes.push_back(1);        //tick lsb
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0xB7);   //channel data b1
+    payloadBytes.push_back(0xFF);   //channel data b2
+
+    //188413 (sampled) -> 47103 (truncated sent) -> 188412 (changed back by software)
+
+                                    //build a WirelessPacket
+    WirelessPacket packet;
+    packet.nodeAddress(345);
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
+    packet.type(WirelessPacket::packetType_SyncSampling_16ch);
+    packet.nodeRSSI(1);
+    packet.baseRSSI(1);
+    packet.payload(payloadBytes);    //give the packet the payload bytes we created
+
+                                     //call the addDataPacket() function to parse the packet as an LDC Packet
+    WirelessPacketCollector collector;
+    collector.addDataPacket(packet);
+
+    DataSweeps sweeps;
+    collector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 1);
+
+    DataSweep sweep = sweeps.at(0);
+
+    //check that the sweep data matches the packet we added
+    BOOST_CHECK_EQUAL(sweep.nodeAddress(), 345);
+    BOOST_CHECK_EQUAL(sweep.tick(), 1);
+    BOOST_CHECK_EQUAL(sweep.samplingType(), DataSweep::samplingType_SyncSampling);
+    BOOST_CHECK_EQUAL(sweep.data()[0].storedAs(), valueType_uint32);
+    BOOST_CHECK_EQUAL(sweep.data()[0].as_uint32(), 188412);
+}
+
 BOOST_AUTO_TEST_CASE(Sync16chPacket_Constructor_2ByteUintShifted)
 {
     Bytes payloadBytes;

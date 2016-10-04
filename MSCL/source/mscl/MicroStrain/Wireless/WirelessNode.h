@@ -20,6 +20,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "RadioFeatures.h"
 #include "WirelessModels.h"
 #include "LinearEquation.h"
+#include "WirelessDataPoint.h"
 
 namespace mscl
 {
@@ -27,6 +28,7 @@ namespace mscl
     class WirelessNode_Impl;
     class NodeFeatures;
     class NodeEepromHelper;
+    struct ShuntCalCmdInfo;
     class WirelessNodeConfig;
     class WirelessProtocol;
 
@@ -139,14 +141,24 @@ namespace mscl
         void useGroupRead(bool useGroup);
 
         //API Function: readWriteRetries
-        //    Sets the number of retry attempts for reading and writing with the Node.
+        //    Sets the number of retry attempts for reading and writing config options with the Node.
         //    By default, the number of retries is 0.
-        //    Note:    The timeout that is set per command will be per read and write attempt, meaning
+        //    Note:   The timeout that is set per command will be per read and write attempt, meaning
         //            this retry number is multiplied by the timeout for your overall timeout.
         //
         //Parameters:
-        //    numRetries - The number of retries to set for all reading and writing with the Node.
+        //    numRetries - The number of retries to set for reading and writing config options with the Node.
         void readWriteRetries(uint8 numRetries);
+
+        //API Function: readWriteRetries
+        //    Gets the number of retry attempts for reading and writing config options with the Node.
+        //    By default, the number of retries is 0.
+        //    Note:   The timeout that is set per command will be per read and write attempt, meaning
+        //            this retry number is multiplied by the timeout for your overall timeout.
+        //
+        //Returns:
+        //    The number of retries to set for reading and writing config options with the Node.
+        uint8 readWriteRetries() const;
 
         //API Function: useEepromCache
         //    Sets whether or not to utilize the eeprom cache when configuring this Node (enabled by default). This can be enabled/disabled at any time.
@@ -414,10 +426,27 @@ namespace mscl
         //    The <AutoCalResult_shmLink> containing the result of the auto cal operation.
         //
         //Exceptions:
-        //    - <Error_NotSupported>: Autocal configuration is not supported by the Node or The node is an invalid model for this command.
+        //    - <Error_NotSupported>: Autocal is not supported by the Node or The node is an invalid model for this command.
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         AutoCalResult_shmLink autoCal_shmLink();
+
+        //API Function: autoShuntCal
+        //  Performs automatic shunt calibration for a specified <ChannelMask> on supported Nodes.
+        //
+        //Parameters:
+        //  mask - The <ChannelMask> to perform the auto cal shunt command on.
+        //  commandInfo - The <ShuntCalCmdInfo> to use for the shunt cal operation.
+        //
+        //Returns:
+        //  The <AutoShuntCalResult> containing the result of the auto cal operation.
+        //  Note: The resulting slope and offset is not applied to the Node. You need to manually apply it if desired.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Autocal shunt is not supported by the Node or ChannelMask.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        AutoShuntCalResult autoShuntCal(const ChannelMask& mask, const ShuntCalCmdInfo& commandInfo);
 
         //API Function: readEeprom
         //    Reads a uint16 from the given eeprom location of the node. This may use a page download or a read eeprom command.
@@ -450,6 +479,20 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to write the value to the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void writeEeprom(uint16 location, uint16 value);
+
+        //API Function: getDiagnosticInfo
+        //  Performs an immediate request for the Node's Diagnostic Info.
+        //  Note: Nodes can also be configured to transmit Diagnostic Info data packets at
+        //        a specified Diagnostic Interval via the <WirelessNodeConfig> object.
+        //
+        //Returns:
+        //  A <ChannelData> object containing a <WirelessDataPoint> for each piece of information that was in the Diagnostic Info result.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: The Get Diagnostic Info command is not supported.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Wireless Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        ChannelData getDiagnosticInfo();
 
         //API Function: verifyConfig
         //    Checks whether the settings in the given <WirelessNodeConfig> are ok to be written to the Node.
@@ -665,21 +708,22 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint16 getLostBeaconTimeout() const;
 
-        //API Function: getHardwareGain
-        //    Reads the hardware gain of the specified <ChannelMask> currently set on the Node.
-        //    See Also: <NodeFeatures::channelGroups>, <NodeFeatures::supportsHardwareGain>
+        //API Function: getInputRange
+        //    Reads the Input Range of the specified <ChannelMask> currently set on the Node.
+        //    See Also: <NodeFeatures::channelGroups>, <NodeFeatures::supportsInputRange>
         //
         //Parameters:
-        //    mask - The <ChannelMask> of the hardware gain to read.
+        //    mask - The <ChannelMask> of the Input Range to read.
         //
         //Returns:
-        //    The hardware gain currently set on the Node for the <ChannelMask>.
+        //    The <WirelessTypes::InputRange> currently set on the Node for the <ChannelMask>.
+        //    Note: if the input range in eeprom is not supported, <WirelessTypes::InputRange::range_invalid> will be returned.
         //
         //Exceptions:
-        //    - <Error_NotSupported>: Hardware gain is not supported for the provided <ChannelMask>.
+        //    - <Error_NotSupported>: Input range is not supported for the provided <ChannelMask>.
         //    - <Error_NodeCommunication>: Failed to read from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        double getHardwareGain(const ChannelMask& mask) const;
+        WirelessTypes::InputRange getInputRange(const ChannelMask& mask) const;
 
         //API Function: getHardwareOffset
         //    Reads the hardware offset of the specified <ChannelMask> currently set on the Node.
@@ -697,21 +741,21 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint16 getHardwareOffset(const ChannelMask& mask) const;
 
-        //API Function: getLowPassFilter
-        //    Reads the Low Pass Filter of the specified <ChannelMask> currently set on the Node.
-        //    See Also: <NodeFeatures::channelGroups>, <NodeFeatures::supportsLowPassFilter>
+        //API Function: getAntiAliasingFilter
+        //    Reads the Anti-Aliasing Filter of the specified <ChannelMask> currently set on the Node.
+        //    See Also: <NodeFeatures::channelGroups>, <NodeFeatures::supportsAntiAliasingFilter>
         //
         //Parameters:
-        //    mask - The <ChannelMask> of the low pass filter to read.
+        //    mask - The <ChannelMask> of the anti-aliasing filter to read.
         //
         //Returns:
-        //    The Low Pass <WirelessTypes::Filter> currently set on the Node for the <ChannelMask>.
+        //    The Anti-Aliasing <WirelessTypes::Filter> currently set on the Node for the <ChannelMask>.
         //
         //Exceptions:
-        //    - <Error_NotSupported>: Low Pass Filter is not supported for the provided <ChannelMask>.
+        //    - <Error_NotSupported>: Anti-Aliasing Filter is not supported for the provided <ChannelMask>.
         //    - <Error_NodeCommunication>: Failed to read from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        WirelessTypes::Filter getLowPassFilter(const ChannelMask& mask) const;
+        WirelessTypes::Filter getAntiAliasingFilter(const ChannelMask& mask) const;
 
         //API Function: getGaugeFactor
         //    Reads the gauge factor of the specified <ChannelMask> currently set on the Node.
@@ -873,7 +917,7 @@ namespace mscl
         uint16 getDiagnosticInterval() const;
 
         //API Function: getStorageLimitMode
-        //  Rates the <WirelessTypes::StorageLimitMode> that the Node is configured for.
+        //  Reads the <WirelessTypes::StorageLimitMode> that the Node is configured for.
         //  This determines what happens when the datalogging storage limit is reached on the Node.
         //
         //Returns:
@@ -884,6 +928,20 @@ namespace mscl
         //  - <Error_NodeCommunication>: Failed to read from the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::StorageLimitMode getStorageLimitMode() const;
+
+        //API Function: getSensorDelay
+        //  Reads the sensor delay (in microseconds) that is currently set on the Node.
+        //  Note: A value of <WirelessNodeConfig::SENSOR_DELAY_ALWAYS_ON> indicates that the sensor is always on.
+        //
+        //Returns:
+        //  The sensor delay (in microseconds) that the sensor delay is set for. 
+        //  This will be <WirelessNodeConfig::SENSOR_DELAY_ALWAYS_ON> if the sensor is set to Always On.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Sensor Delay is not supported by this Node.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        uint32 getSensorDelay() const;
     };
 
 }

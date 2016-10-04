@@ -51,7 +51,7 @@ namespace mscl
         uint16 tick = payload.read_uint16();
 
         //set the data type of the packet
-        m_dataType = WirelessTypes::dataType_4ByteFloat;
+        m_dataType = WirelessTypes::dataType_float32;
 
         //build the 1 sweep that we need to add
         DataSweep sweep;
@@ -144,7 +144,7 @@ namespace mscl
         const uint64 TS_INCREMENT = currentRate.samplePeriod().getNanoseconds();
 
         //set the data type of the packet
-        m_dataType = WirelessTypes::dataType_4ByteFloat;
+        m_dataType = WirelessTypes::dataType_float32;
 
         float angle, chVal;
 

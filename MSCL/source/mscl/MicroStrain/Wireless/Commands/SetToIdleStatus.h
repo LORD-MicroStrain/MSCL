@@ -21,15 +21,15 @@ namespace mscl
         //API Enums: SetToIdleResult
         //    The result of the Set To Idle command once the operation has ceased.
         //
-        //setToIdleResult_success        - 0    - The Node has been successfully set to idle.
-        //setToIdleResult_canceled        - 1 - The Set to Idle operation has been canceled by the user.
+        //setToIdleResult_success       - 0 - The Node has been successfully set to idle.
+        //setToIdleResult_canceled      - 1 - The Set to Idle operation has been canceled by the user.
         //setToIdleResult_failed        - 2 - The Set to Idle operation has failed. The state of the Node is unknown.
-        //setToIdleResult_notCompleted    - 3 - The Set to Idle operation has not yet completed.
+        //setToIdleResult_notCompleted  - 3 - The Set to Idle operation has not yet completed.
         enum SetToIdleResult
         {
-            setToIdleResult_success            = 0,
+            setToIdleResult_success         = 0,
             setToIdleResult_canceled        = 1,
-            setToIdleResult_failed            = 2,
+            setToIdleResult_failed          = 2,
             setToIdleResult_notCompleted    = 3
         };
 
@@ -78,10 +78,8 @@ namespace mscl
         //API Function: cancel
         //    Cancels the Stop Node operation that this SetToIdleResult belongs to. 
         //    If the Stop Node operation has already been completed/canceled, this will have no effect.
-        //    Note: This function will block for up to the BaseStation's command timeout to verify that the command was canceled.
         //
         //Exceptions:
-        //    - <Error_Communication>: Failed to cancel the Stop Node operation.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         void cancel();
     };

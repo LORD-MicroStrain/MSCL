@@ -37,9 +37,13 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Commands/AutoBalance.h"
 #include "Commands/AutoBalance_v2.h"
 #include "Commands/AutoCal.h"
+#include "Commands/AutoCalInfo.h"
 #include "Commands/AutoCalResult.h"
 #include "Commands/Erase.h"
 #include "Commands/Erase_v2.h"
+#include "Commands/GetLoggedData.h"
+#include "Commands/GetDatalogSessionInfo.h"
+#include "Commands/GetDiagnosticInfo.h"
 #include "Commands/LongPing.h"
 #include "Commands/PageDownload.h"
 #include "Commands/ReadEeprom.h"
@@ -50,6 +54,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Commands/ShortPing_v2.h"
 #include "Commands/Sleep.h"
 #include "Commands/StartNonSyncSampling.h"
+#include "Commands/StartNonSyncSampling_v2.h"
 #include "Commands/StartSyncSampling.h"
 #include "Commands/TriggerArmedDatalogging.h"
 #include "Commands/WriteEeprom.h"
@@ -99,7 +104,6 @@ namespace mscl
 
         do
         {
-
             //=========================================================================
             // Determine the firmware version by attempting to use multiple protocols
             try
@@ -224,9 +228,14 @@ namespace mscl
         m_eeprom->useCache(useCache);
     }
 
-    void BaseStation_Impl::readWriteRetries(uint8 numRetries)
+    void BaseStation_Impl::setReadWriteRetries(uint8 numRetries)
     {
         m_eeprom->setNumRetries(numRetries);
+    }
+
+    uint8 BaseStation_Impl::getReadWriteRetries() const
+    {
+        return m_eeprom->getNumRetries();
     }
 
     void BaseStation_Impl::clearEepromCache()
@@ -727,6 +736,57 @@ namespace mscl
         return false;
     }
 
+    bool BaseStation_Impl::protocol_node_datalogInfo_v1(NodeAddress nodeAddress, DatalogSessionInfoResult& result)
+    {
+        static const uint64 MIN_TIMEOUT = 200;
+
+        //create the response for the command
+        GetDatalogSessionInfo::Response response(nodeAddress, m_responseCollector);
+
+        ByteStream command = GetDatalogSessionInfo::buildCommand(nodeAddress);
+
+        m_connection.write(command);
+
+        response.wait(std::max(m_nodeCommandsTimeout, MIN_TIMEOUT));
+
+        if(response.success())
+        {
+            result = response.result();
+
+            NodeCommTimes::updateCommTime(nodeAddress);
+
+            return true;
+        }
+
+        //command failed
+        return false;
+    }
+
+    bool BaseStation_Impl::protocol_node_getDatalogData_v1(NodeAddress nodeAddress, uint32 flashAddress, ByteStream& data)
+    {
+        //create the response for the command
+        GetLoggedData::Response response(nodeAddress, flashAddress, m_responseCollector);
+
+        ByteStream command = GetLoggedData::buildCommand(nodeAddress, flashAddress);
+
+        m_connection.write(command);
+
+        response.wait(m_nodeCommandsTimeout);
+
+        if(response.success())
+        {
+            //append the bytes we read to the passed in ByteStream
+            data.appendByteStream(response.data());
+
+            NodeCommTimes::updateCommTime(nodeAddress);
+
+            return true;
+        }
+
+        //command failed
+        return false;
+    }
+
     bool BaseStation_Impl::protocol_node_shortPing_v1(NodeAddress nodeAddress)
     {
         //create the response for the short ping command
@@ -913,6 +973,7 @@ namespace mscl
 
     bool BaseStation_Impl::protocol_node_autoBalance_v2(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result)
     {
+        static const uint64 MIN_TIMEOUT = 1100;
         bool success = false;
 
         //create the response for the AutoBalance_v2 command
@@ -925,7 +986,7 @@ namespace mscl
         m_connection.write(command);
 
         //wait for the response
-        response.wait(m_nodeCommandsTimeout);
+        response.wait( std::max( m_nodeCommandsTimeout, MIN_TIMEOUT ) );
 
         //return the result of the response
         success = response.success();
@@ -969,6 +1030,50 @@ namespace mscl
 
         //send the erase command to the base station
         m_connection.write(Erase_v2::buildCommand(nodeAddress));
+
+        //wait for the response or timeout
+        response.wait(m_nodeCommandsTimeout);
+
+        if(response.success())
+        {
+            //update node last comm time
+            NodeCommTimes::updateCommTime(nodeAddress);
+        }
+
+        //return the result of the response
+        return response.success();
+    }
+
+    bool BaseStation_Impl::protocol_node_startNonSync_v1(NodeAddress nodeAddress)
+    {
+        //build the command to send
+        ByteStream command = StartNonSyncSampling::buildCommand(nodeAddress);
+
+        //send the command to the base station
+        m_connection.write(command);
+
+        //no response for this command
+
+        //send the command a few extra times for good measure
+        Utils::threadSleep(5);
+        m_connection.write(command);
+
+        Utils::threadSleep(10);
+        m_connection.write(command);
+
+        return true;
+    }
+
+    bool BaseStation_Impl::protocol_node_startNonSync_v2(NodeAddress nodeAddress)
+    {
+        //create the response for the command
+        StartNonSyncSampling_v2::Response response(nodeAddress, m_responseCollector);
+
+        //build the command to send
+        ByteStream command = StartNonSyncSampling_v2::buildCommand(nodeAddress);
+
+        //send the command to the base station
+        m_connection.write(command);
 
         //wait for the response or timeout
         response.wait(m_nodeCommandsTimeout);
@@ -1174,9 +1279,12 @@ namespace mscl
 
     SetToIdleStatus BaseStation_Impl::node_setToIdle(NodeAddress nodeAddress, const BaseStation& base)
     {
-        //send a byte to the base station first (helps when a lot of data is coming over the air)
+        //send a byte (a few times) to the base station first (helps when a lot of data is coming over the air)
         static const Bytes alert{0x01};
-        m_connection.write(alert);
+        for(uint8 i = 0; i < 5; i++)
+        {
+            m_connection.write(alert);
+        }
 
         //create the response for the Set to Idle command
         std::shared_ptr<SetToIdle::Response> response(std::make_shared<SetToIdle::Response>(nodeAddress, m_responseCollector, base));
@@ -1214,6 +1322,16 @@ namespace mscl
         return nodeProtocol.m_pageDownload(this, nodeAddress, pageIndex, data);
     }
 
+    bool BaseStation_Impl::node_getDatalogSessionInfo(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, DatalogSessionInfoResult& result)
+    {
+        return nodeProtocol.m_datalogSessionInfo(this, nodeAddress, result);
+    }
+
+    bool BaseStation_Impl::node_getDatalogData(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint32 flashAddress, ByteStream& result)
+    {
+        return nodeProtocol.m_getDatalogData(this, nodeAddress, flashAddress, result);
+    }
+
     bool BaseStation_Impl::node_erase(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress)
     {
         return nodeProtocol.m_erase(this, nodeAddress);
@@ -1243,22 +1361,9 @@ namespace mscl
         return response.success();
     }
 
-    void BaseStation_Impl::node_startNonSyncSampling(NodeAddress nodeAddress)
+    bool BaseStation_Impl::node_startNonSyncSampling(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress)
     {
-        //build the command to send
-        ByteStream command = StartNonSyncSampling::buildCommand(nodeAddress);
-
-        //send the command to the base station
-        m_connection.write(command);
-        
-        //no response for this command
-
-        //send the command a few extra times for good measure
-        Utils::threadSleep(5);
-        m_connection.write(command);
-
-        Utils::threadSleep(10);
-        m_connection.write(command);
+        return nodeProtocol.m_startNonSyncSampling(this, nodeAddress);
     }
 
     bool BaseStation_Impl::node_armForDatalogging(NodeAddress nodeAddress, const std::string& message)
@@ -1301,24 +1406,80 @@ namespace mscl
         return nodeProtocol.m_autoBalance(this, nodeAddress, channelNumber, targetPercent, result);
     }
 
-    bool BaseStation_Impl::node_autocal(NodeAddress nodeAddress, WirelessModels::NodeModel model, const Version& fwVersion, AutoCalResult& result)
+    bool BaseStation_Impl::node_autocal_shm(NodeAddress nodeAddress, AutoCalResult& result)
     {
-        //create the response for the AutoCal command
-        AutoCal::Response response(nodeAddress, model, fwVersion, m_responseCollector);
+        //create the response for the SHM AutoCal command
+        AutoCal::ShmResponse response(nodeAddress, m_responseCollector);
 
         //build the AutoCal command bytes
-        ByteStream cmd;
-        switch(model)
+        ByteStream cmd = AutoCal::buildCommand_shmLink(nodeAddress);
+
+        return node_autocal(nodeAddress, cmd, response, result);
+    }
+
+    bool BaseStation_Impl::node_autoShuntCal(NodeAddress nodeAddress,
+                                             const ShuntCalCmdInfo& commandInfo,
+                                             uint8 chNum,
+                                             WirelessModels::NodeModel nodeType,
+                                             WirelessTypes::ChannelType chType,
+                                             AutoCalResult& result)
+    {
+        //create the response
+        AutoCal::ShuntCalResponse response(nodeAddress, m_responseCollector, chNum);
+
+        ByteStream cmd = AutoCal::buildCommand_shuntCal(nodeAddress, commandInfo, chNum, nodeType, chType);
+
+        return node_autocal(nodeAddress, cmd, response, result);
+    }
+
+    bool BaseStation_Impl::node_readSingleSensor(NodeAddress nodeAddress, uint8 channelNumber, uint16& result)
+    {
+        //create the response for the Erase command
+        ReadSingleSensor::Response response(m_responseCollector);
+
+        //send the erase command to the base station
+        m_connection.write(ReadSingleSensor::buildCommand(nodeAddress, channelNumber));
+
+        //wait for the response or timeout
+        response.wait(m_nodeCommandsTimeout);
+
+        if(response.success())
         {
-            case WirelessModels::node_shmLink2:
-            case WirelessModels::node_shmLink2_cust1:
-            default:
-                cmd = AutoCal::buildCommand_shmLink(nodeAddress);
-                break;
+            result = response.sensorValue();
+
+            //update node last comm time
+            NodeCommTimes::updateCommTime(nodeAddress);
         }
 
+        //return the result of the response
+        return response.success();
+    }
+
+    bool BaseStation_Impl::node_getDiagnosticInfo(NodeAddress nodeAddress, ChannelData& result)
+    {
+        //create the response
+        GetDiagnosticInfo::Response response(nodeAddress, m_responseCollector);
+
         //send the command
-        m_connection.write(cmd);
+        m_connection.write(GetDiagnosticInfo::buildCommand(nodeAddress));
+
+        response.wait(m_nodeCommandsTimeout);
+
+        if(response.success())
+        {
+            result = response.result();
+
+            //update node last comm time
+            NodeCommTimes::updateCommTime(nodeAddress);
+        }
+
+        return response.success();
+    }
+
+    bool BaseStation_Impl::node_autocal(NodeAddress nodeAddress, const ByteStream& command, AutoCal::Response& response, AutoCalResult& result)
+    {
+        //send the command
+        m_connection.write(command);
 
         //wait for the response or timeout
         response.wait(m_nodeCommandsTimeout);
@@ -1347,29 +1508,6 @@ namespace mscl
             result.parse(response.infoBytes());
         }
 
-        return response.success();
-    }
-
-    bool BaseStation_Impl::node_readSingleSensor(NodeAddress nodeAddress, uint8 channelNumber, uint16& result)
-    {
-        //create the response for the Erase command
-        ReadSingleSensor::Response response(m_responseCollector);
-
-        //send the erase command to the base station
-        m_connection.write(ReadSingleSensor::buildCommand(nodeAddress, channelNumber));
-
-        //wait for the response or timeout
-        response.wait(m_nodeCommandsTimeout);
-
-        if(response.success())
-        {
-            result = response.sensorValue();
-
-            //update node last comm time
-            NodeCommTimes::updateCommTime(nodeAddress);
-        }
-
-        //return the result of the response
         return response.success();
     }
 }

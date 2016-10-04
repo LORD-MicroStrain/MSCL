@@ -40,20 +40,20 @@ namespace mscl
     }
 
     DeviceInfo::DeviceInfo():
-        m_status(STATUS_UNKNOWN),
+        m_description(""),
         m_serial("")
     {
     }
 
-    DeviceInfo::DeviceInfo(DeviceStatus status, std::string serial):
-        m_status(status),
+    DeviceInfo::DeviceInfo(std::string description, std::string serial):
+        m_description(description),
         m_serial(serial)
     {
     }
 
-    DeviceInfo::DeviceStatus DeviceInfo::status() const
+    std::string DeviceInfo::description() const
     {
-        return m_status;
+        return m_description;
     }
 
     std::string DeviceInfo::serial() const
@@ -67,70 +67,41 @@ namespace mscl
     {
         DeviceList result;
 
-        const std::string DEVICE_ID = "DeviceID";
-        const std::string PNP_DEV_ID = "PNPDeviceID";
-        const std::string STATUS_INFO = "StatusInfo";
-        const std::string DESCRIP = "Description";
-
-        const std::string NAME = "Name";
-        const std::string IS_BUSY = "IsBusy";
+        static const std::string PNP_DEV_ID = "PNPDeviceID";
+        static const std::string NAME = "Name";
 
 
         try
         {
-            std::map<std::string, bool> serialConfigMap;
-
-            //Note: We first need to request Win32_SerialPortConfiguration because if a device was unplugged
-            //        but a process still has the connection to it open, the Win32_SerialPort request will
-            //        still list it as an available port, which is incorrect.
-            {
-                //create a WMI_Helper object with the namespace and class we want to access
-                WMI_Helper wmi2("root\\CIMV2", "Win32_SerialPortConfiguration");
-
-                //create the values we want to request
-                std::vector<std::string> request2;
-                request2.push_back(NAME);
-                request2.push_back(IS_BUSY);
-
-                //make the request for the given values
-                WMI_Helper::wmiValues entries2 = wmi2.request(request2);
-
-                //loop through all the entries that were found
-                for(WMI_Helper::wmiValue valueMap2 : entries2)
-                {
-                    //get the name (COM Port)
-                    std::string name(Utils_Win32::wstring_to_string(valueMap2[NAME].bstrVal));
-
-                    //add the name and availability to the map
-                    serialConfigMap[name] = (valueMap2[IS_BUSY].boolVal == VARIANT_FALSE);
-                }
-            }
-
-
             //create a WMI_Helper object with the namespace and class we want to access
-            WMI_Helper wmi("root\\CIMV2", "Win32_SerialPort");
+            WMI_Helper wmi("root\\CIMV2", "Win32_PnPEntity");
 
             //create the values we want to request
             std::vector<std::string> request;
-            request.push_back(DEVICE_ID);
             request.push_back(PNP_DEV_ID);
-            request.push_back(STATUS_INFO);
-            request.push_back(DESCRIP);
+            request.push_back(NAME);
 
             //make the request for the given values
             WMI_Helper::wmiValues entries = wmi.request(request);
 
             //loop through all the entries that were found
             for(WMI_Helper::wmiValue valueMap : entries)
-            {                
+            {
+                //make sure we can inspect all the values
+                if(valueMap[PNP_DEV_ID].bstrVal == NULL ||
+                   valueMap[NAME].bstrVal == NULL)
+                {
+                    continue;
+                }
+
                 //get the PNPDeviceID value
                 std::string pnpDevId(Utils_Win32::wstring_to_string(valueMap[PNP_DEV_ID].bstrVal));
 
-                //get the Description value
-                std::string deviceDescription(Utils_Win32::wstring_to_string(valueMap[DESCRIP].bstrVal));
+                //get the Name value
+                std::string deviceName(Utils_Win32::wstring_to_string(valueMap[NAME].bstrVal));
 
                 //if this device matches what we are looking for
-                if(matchesDevice(pnpDevId, deviceDescription, devType))
+                if(matchesDevice(pnpDevId, deviceName, devType))
                 {
                     //find the start position of the serial number
                     size_t serialPos = pnpDevId.find_last_of("/\\") + 1;
@@ -143,29 +114,12 @@ namespace mscl
                     Utils::removeChar(serial, '_');
 
                     //get the DeviceID (COM Port)
-                    std::string deviceId(Utils_Win32::wstring_to_string(valueMap[DEVICE_ID].bstrVal));
-
-                    auto config = serialConfigMap.find(deviceId);
-
-                    //if we didn't find the device in the list found from interrogating Win32_SerialPortConfiguration
-                    if(config == serialConfigMap.end())
-                    {
-                        //move on to the next found device
-                        continue;
-                    }
-
-                    //the config map contains whether the device is available or not
-                    bool available = config->second;
-
-                    //create the DeviceStatus
-                    DeviceInfo::DeviceStatus devStatus = DeviceInfo::STATUS_UNAVAILABLE;
-                    if(available)
-                    {
-                        devStatus = DeviceInfo::STATUS_AVAILABLE;
-                    }
+                    size_t comStartPos = deviceName.find_last_of("(") + 1;
+                    size_t comEndPos = deviceName.find_last_of(")") - 1;
+                    std::string deviceId = deviceName.substr(comStartPos, comEndPos + 1 - comStartPos);
 
                     //create the Device Info
-                    DeviceInfo info(devStatus, serial);
+                    DeviceInfo info(deviceName, serial);
 
                     //add the device and info to the map
                     result[deviceId] = info;
@@ -182,9 +136,15 @@ namespace mscl
         return result;
     }
 
-    bool Devices::matchesDevice(std::string pnpID, std::string description, DeviceType devType)
+    bool Devices::matchesDevice(const std::string& pnpID, const std::string& name, DeviceType devType)
     {
-        //all device types means we should match all devices that we found listed
+        //verify name has '(COM' in it for all cases
+        if(!Utils::containsStr(name, "(COM"))
+        {
+            return false;
+        }
+
+        //all device types
         if(devType == TYPE_ALL)
         {
             return true;
@@ -192,8 +152,8 @@ namespace mscl
         //BaseStation device type
         else if(devType == TYPE_BASESTATION)
         {
-            //check for the basestation description (currently this is all we have to go on, not very strong)
-            if(Utils::containsStr(description, "Silicon Labs CP210x"))
+            //check for the basestation name (currently this is all we have to go on, not very strong)
+            if(Utils::containsStr(name, "Silicon Labs CP210x"))
             {
                 return true;
             }
@@ -225,7 +185,7 @@ namespace mscl
 
 #else //LINUX SPECIFIC CODE
 
-    bool Devices::getDeviceInfo(std::string devicePath, std::string& serial, std::string& manufacturer, std::string& vendorId)
+    bool Devices::getDeviceInfo(const std::string& devicePath, std::string& serial, std::string& manufacturer, std::string& vendorId)
     {
         namespace fs = boost::filesystem;
 
@@ -350,7 +310,7 @@ namespace mscl
                     std::string trueDevicePath = "/dev/" + realDeviceName.substr(pos+1);
 
                     //create the Device Info
-                    DeviceInfo info(DeviceInfo::STATUS_UNKNOWN, serial);
+                    DeviceInfo info("", serial);
 
                     //add the device to the result map
                     result[trueDevicePath] = info;
@@ -362,7 +322,7 @@ namespace mscl
         return result;
     }
 
-    bool Devices::matchesDevice(std::string manufacturer, std::string vendorId, DeviceType devType)
+    bool Devices::matchesDevice(const std::string& manufacturer, const std::string& vendorId, DeviceType devType)
     {
         //all device types means we should match all devices that we found listed
         if(devType == TYPE_ALL)

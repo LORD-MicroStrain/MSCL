@@ -18,18 +18,6 @@ namespace mscl
     class DeviceInfo
     {
     public:
-        //API Enums: DeviceStatus
-        //    STATUS_UNKNOWN        - 0 - Device Status is Unknown, the port may or may not be already open. 
-        //    STATUS_AVAILABLE    - 1 - The Device is available, the port is currently closed.
-        //    STATUS_UNAVAILABLE    - 2 - The Device is unavailable, the port is currently in use.
-        enum DeviceStatus
-        {
-            STATUS_UNKNOWN        = 0,
-            STATUS_AVAILABLE    = 1,
-            STATUS_UNAVAILABLE    = 2
-        };
-
-    public:
         //Constructor: DeviceInfo
         //    Creates a DeviceInfo object
         DeviceInfo();
@@ -38,26 +26,26 @@ namespace mscl
         //    Creates a DeviceInfo object with the given parameters
         //
         //Parameters:
-        //    status - The <DeviceStatus> for the device
+        //    description - The description of the device
         //    serial - The serial address that is issued for this device
-        DeviceInfo(DeviceStatus status, std::string serial);
+        DeviceInfo(std::string description, std::string serial);
 
     private:
-        //Variable: m_status
-        //    The <DeviceStatus> for the device
-        DeviceStatus m_status;
+        //Variable: m_description
+        //    The description of the device
+        std::string m_description;
 
         //Variable: m_serial
         //    The serial address that is issued for this device
         std::string m_serial;
 
     public:
-        //API Function: status
-        //    Gets the <DeviceStatus> for the device
+        //API Function: description
+        //    Gets the description for the device
         //
         //Returns:
-        //    A <DeviceStatus> that represents the connetion status of the device
-        DeviceStatus status() const;
+        //    The description of the device
+        std::string description() const;
 
         //API Function: serial
         //    Gets the serial address for the device
@@ -134,12 +122,12 @@ namespace mscl
         //
         //Parameters:
         //    pnpID - The WMI PNPDeviceID to match
-        //    description - The WMI Description to match
+        //    name - The WMI Name to match
         //    devType - The <DeviceType> to check for
         //
         //Returns:
         //    true if the string matches the given <DeviceType>, false otherwise
-        static bool matchesDevice(std::string pnpID, std::string description, DeviceType devType);
+        static bool matchesDevice(const std::string& pnpID, const std::string& name, DeviceType devType);
 #else
         //Function: matchesDevice
         //    Checks whether the given information, found from searching files in linux, matches the given device
@@ -151,7 +139,7 @@ namespace mscl
         //
         //Returns:
         //    true if the string matches the given <DeviceType>, false otherwise
-        static bool matchesDevice(std::string manufacturer, std::string vendorId, DeviceType devType);
+        static bool matchesDevice(const std::string& manufacturer, const std::string& vendorId, DeviceType devType);
         
         //Function: getDeviceInfo
         //    Gets information about the attached device
@@ -164,7 +152,7 @@ namespace mscl
         //
         //Returns:
         //    true if successfully find the device info, false otherwise
-        static bool getDeviceInfo(std::string devicePath, std::string& serial, std::string& manufacturer, std::string& vendorId);
+        static bool getDeviceInfo(const std::string& devicePath, std::string& serial, std::string& manufacturer, std::string& vendorId);
 #endif
     };
 

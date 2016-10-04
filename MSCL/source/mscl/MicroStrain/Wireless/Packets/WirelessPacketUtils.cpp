@@ -12,6 +12,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "BufferedLdcPacket_16ch.h"
 #include "DiagnosticPacket.h"
 #include "HclSmartBearing_RawPacket.h"
+#include "HclSmartBearing_CalPacket.h"
 #include "LdcPacket.h"
 #include "LdcPacket_16ch.h"
 #include "NodeDiscoveryPacket.h"
@@ -98,6 +99,7 @@ namespace mscl
             case WirelessPacket::packetType_nodeDiscovery_v3:           return NodeDiscoveryPacket_v3::integrityCheck(packet);
             case WirelessPacket::packetType_nodeDiscovery_v4:           return NodeDiscoveryPacket_v4::integrityCheck(packet);
             case WirelessPacket::packetType_SHM:                        return ShmPacket::integrityCheck(packet);
+            case WirelessPacket::packetType_HclSmartBearing_Calibrated: return HclSmartBearing_CalPacket::integrityCheck(packet);
             case WirelessPacket::packetType_HclSmartBearing_Raw:        return HclSmartBearing_RawPacket::integrityCheck(packet);
             case WirelessPacket::packetType_rawAngleStrain:             return RawAngleStrainPacket::integrityCheck(packet);
             case WirelessPacket::packetType_beaconEcho:                 return BeaconEchoPacket::integrityCheck(packet);

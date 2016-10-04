@@ -262,7 +262,7 @@ BOOST_AUTO_TEST_CASE(ByteStream_Append_uint32)
 BOOST_AUTO_TEST_CASE(ByteStream_Append_float)
 {
     ByteStream bytes;
-    ByteStream bytesLittleEndian(false);
+    ByteStream bytesLittleEndian;
 
     //check that the bytestream is empty to begin with
     BOOST_CHECK_EQUAL(bytes.size(), 0);
@@ -280,7 +280,7 @@ BOOST_AUTO_TEST_CASE(ByteStream_Append_float)
 
     BOOST_CHECK_CLOSE(bytes.read_float(0), 123.45678, 0.00001);
 
-    bytesLittleEndian.append_float(123.456787109375f);
+    bytesLittleEndian.append_float(123.456787109375f, Utils::littleEndian);
 
     //check that the bytes are what they should be
     BOOST_CHECK_EQUAL(bytesLittleEndian[0], 0xE0);
@@ -288,13 +288,13 @@ BOOST_AUTO_TEST_CASE(ByteStream_Append_float)
     BOOST_CHECK_EQUAL(bytesLittleEndian[2], 0xF6);
     BOOST_CHECK_EQUAL(bytesLittleEndian[3], 0x42);
 
-    BOOST_CHECK_CLOSE(bytesLittleEndian.read_float(0), 123.45678, 0.00001);
+    BOOST_CHECK_CLOSE(bytesLittleEndian.read_float(0, Utils::littleEndian), 123.45678, 0.00001);
 }
 
 BOOST_AUTO_TEST_CASE(ByteStream_Append_double)
 {
     ByteStream bytes;
-    ByteStream bytesLittleEndian(false);
+    ByteStream bytesLittleEndian;
 
     //check that the bytestream is empty to begin with
     BOOST_CHECK_EQUAL(bytes.size(), 0);
@@ -316,7 +316,7 @@ BOOST_AUTO_TEST_CASE(ByteStream_Append_double)
 
     BOOST_CHECK_CLOSE(bytes.read_double(0), 12.34567, 0.00001);
 
-    bytesLittleEndian.append_double(12.34567);
+    bytesLittleEndian.append_double(12.34567, Utils::littleEndian);
 
     //check that the bytes are what they should be
     BOOST_CHECK_EQUAL(bytesLittleEndian[0], 0xA9);
@@ -328,7 +328,7 @@ BOOST_AUTO_TEST_CASE(ByteStream_Append_double)
     BOOST_CHECK_EQUAL(bytesLittleEndian[6], 0x28);
     BOOST_CHECK_EQUAL(bytesLittleEndian[7], 0x40);
 
-    BOOST_CHECK_CLOSE(bytesLittleEndian.read_double(0), 12.34567, 0.00001);
+    BOOST_CHECK_CLOSE(bytesLittleEndian.read_double(0, Utils::littleEndian), 12.34567, 0.00001);
 }
 
 BOOST_AUTO_TEST_CASE(ByteStream_Append_string)

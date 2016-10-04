@@ -71,6 +71,15 @@ namespace mscl
         return eeprom.read_dataFormat();
     }
 
+    WirelessTypes::DataCollectionMethod WirelessNodeConfig::curDataCollectionMethod(const NodeEepromHelper& eeprom) const
+    {
+        //if its currently set in the config, return the set value
+        if(isSet(m_dataCollectionMethod)) { return *m_dataCollectionMethod; }
+
+        //not set, so read the value from the node
+        return eeprom.read_collectionMode();
+    }
+
     TimeSpan WirelessNodeConfig::curTimeBetweenBursts(const NodeEepromHelper& eeprom) const
     {
         //if its currently set in the config, return the set value
@@ -115,6 +124,18 @@ namespace mscl
             //read the value from eeprom
             return eeprom.read_eventTriggerMask();
         }
+    }
+
+    LinearEquation WirelessNodeConfig::curLinearEquation(const ChannelMask& mask, const NodeEepromHelper& eeprom) const
+    {
+        //if its currently set in the config, return the set value
+        if(isSet(m_linearEquations, mask)) { return m_linearEquations.at(mask); }
+
+        //not set, so read the value from the node
+        LinearEquation result;
+        eeprom.read_channelLinearEquation(mask, result);
+
+        return result;
     }
 
     bool WirelessNodeConfig::verifySupported(const NodeFeatures& features, const NodeEepromHelper& eeprom, ConfigIssues& outIssues) const
@@ -404,18 +425,35 @@ namespace mscl
             }
         }
 
-        //Hardware Gain(s)
-        for(const auto& gain : m_hardwareGains)
+        //Sensor Delay
+        if(isSet(m_sensorDelay))
         {
-            //verify hardware gain is supported for the channel mask
-            if(!features.supportsChannelSetting(WirelessTypes::chSetting_hardwareGain, gain.first))
+            if(!features.supportsSensorDelayConfig())
             {
-                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_HARDWARE_GAIN, "Hardware Gain is not supported for the provided Channel Mask.", gain.first));
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SENSOR_DELAY, "Sensor Delay is not supported by this Node."));
             }
-            //verify hardware gain is normalized
-            else if(gain.second != features.normalizeHardwareGain(gain.second))
+            else if(*m_sensorDelay == WirelessNodeConfig::SENSOR_DELAY_ALWAYS_ON && !features.supportsSensorDelayAlwaysOn())
             {
-                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_HARDWARE_GAIN, "The Hardware Gain needs to be normalized.", gain.first));
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SENSOR_DELAY, "Sensor Delay Always On is not supported by this Node."));
+            }
+            else if(*m_sensorDelay != features.normalizeSensorDelay(*m_sensorDelay))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SENSOR_DELAY, "The Sensor Delay needs to be normalized."));
+            }
+        }
+
+        //Input Range(s)
+        for(const auto& range : m_inputRanges)
+        {
+            //verify input range is supported for the channel mask
+            if(!features.supportsChannelSetting(WirelessTypes::chSetting_inputRange, range.first))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_INPUT_RANGE, "Input Range is not supported for the provided Channel Mask.", range.first));
+            }
+            //verify the specific input range is acceptable for the channel mask
+            else if(!features.supportsInputRange(range.second, range.first))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_INPUT_RANGE, "The provided Input Range is not valid for the provided Channel Mask.", range.first));
             }
         }
 
@@ -429,13 +467,13 @@ namespace mscl
             }
         }
 
-        //Low Pass Filter(s)
-        for(const auto& filter : m_lowPassFilters)
+        //Anti-Aliasing Filter(s)
+        for(const auto& filter : m_antiAliasingFilters)
         {
-            //verify low pass filter is supported for the channel mask
-            if(!features.supportsChannelSetting(WirelessTypes::chSetting_lowPassFilter, filter.first))
+            //verify anti-aliasing filter is supported for the channel mask
+            if(!features.supportsChannelSetting(WirelessTypes::chSetting_antiAliasingFilter, filter.first))
             {
-                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_LOW_PASS_FILTER, "Low Pass Filter is not supported for the provided Channel Mask.", filter.first));
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_ANTI_ALIASING_FILTER, "Anti-Aliasing Filter is not supported for the provided Channel Mask.", filter.first));
             }
         }
 
@@ -492,7 +530,9 @@ namespace mscl
            isSet(m_numSweeps) ||
            isSet(m_dataFormat) ||
            isSet(m_eventTriggerOptions) ||
-           isAnySet(m_settlingTimes))
+           isAnySet(m_settlingTimes)||
+           isSet(m_dataCollectionMethod) ||
+           isSet(m_timeBetweenBursts))
         {
             //read in all of the sampling values, either from the config or from the Node if not set
             WirelessTypes::SamplingMode samplingMode =  curSamplingMode(eeprom);
@@ -537,11 +577,26 @@ namespace mscl
                 }
             }
 
-            //verify Sample Rate with Sampling Mode
-            if(isSet(m_sampleRate) || isSet(m_samplingMode))
+            //verify sampling mode with data collection method
+            if(isSet(m_samplingMode) || isSet(m_dataCollectionMethod))
+            {
+                //Event sampling can't be used with transmit only
+                if(samplingMode == WirelessTypes::samplingMode_nonSyncEvent ||
+                   samplingMode == WirelessTypes::samplingMode_syncEvent)
+                {
+                    if(curDataCollectionMethod(eeprom) == WirelessTypes::collectionMethod_transmitOnly)
+                    {
+                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DATA_COLLECTION_METHOD, "Event Triggered sampling cannot be used with Transmit Only."));
+                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "Event Triggered sampling cannot be used with Transmit Only."));
+                    }
+                }
+            }
+
+            //verify Sample Rate with Sampling Mode and Data collection method
+            if(isSet(m_sampleRate) || isSet(m_samplingMode) || isSet(m_dataCollectionMethod))
             {
                 //verify the sample rate and sampling mode
-                if(!features.supportsSampleRate(sampleRate, samplingMode))
+                if(!features.supportsSampleRate(sampleRate, samplingMode, curDataCollectionMethod(eeprom)))
                 {
                     outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE, "The Sample Rate is not supported for the current Sampling Mode."));
                     outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "The Sample Rate is not supported for the current Sampling Mode."));
@@ -549,10 +604,10 @@ namespace mscl
             }
 
             //verify the max Sample Rate with the mode and active channels
-            if(isSet(m_sampleRate) || isSet(m_samplingMode) || isSet(m_activeChannels))
+            if(isSet(m_sampleRate) || isSet(m_samplingMode) || isSet(m_activeChannels) || isSet(m_dataCollectionMethod))
             {
                 //get the max sample rate that can be set with these settings
-                WirelessTypes::WirelessSampleRate maxRate = features.maxSampleRate(samplingMode, channels);
+                WirelessTypes::WirelessSampleRate maxRate = features.maxSampleRate(samplingMode, channels, curDataCollectionMethod(eeprom));
 
                 //verify the sample rate works with the sampling mode and active channels
                 if(SampleRate::FromWirelessEepromValue(sampleRate) > SampleRate::FromWirelessEepromValue(maxRate))
@@ -643,6 +698,45 @@ namespace mscl
                     }
                 }
             }
+
+            //only check the flash bandwidth if no other errors
+            if(outIssues.size() == 0)
+            {
+                //verify flash bandwidth
+                if(isSet(m_dataFormat) || isSet(m_activeChannels) || isSet(m_numSweeps) || isSet(m_sampleRate) || isSet(m_samplingMode) || isSet(m_timeBetweenBursts))
+                {
+                    if(features.supportsFlashId() &&
+                       samplingMode != WirelessTypes::samplingMode_nonSyncEvent &&
+                       samplingMode != WirelessTypes::samplingMode_syncEvent)
+                    {
+                        //calculate the flash bandwidth used by the current settings
+                        float flashBw = 0.0f;
+                        if(samplingMode == WirelessTypes::samplingMode_syncBurst)
+                        {
+                            flashBw = flashBandwidth_burst(sampleRate, dataFormat, channels.count(), numSweeps, curTimeBetweenBursts(eeprom));
+                        }
+                        else
+                        {
+                            flashBw = flashBandwidth(sampleRate, dataFormat, channels.count());
+                        }
+
+                        //verify we aren't using more flash bandwidth than allowed
+                        if(flashBw > eeprom.read_flashInfo().maxBandwidth)
+                        {
+                            outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DATA_FORMAT, "The current configuration exceeds the flash bandwidth for the Node."));
+                            outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_ACTIVE_CHANNELS, "The current configuration exceeds the flash bandwidth for the Node."));
+                            outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE, "The current configuration exceeds the flash bandwidth for the Node."));
+                            outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "The current configuration exceeds the flash bandwidth for the Node."));
+
+                            if(samplingMode == WirelessTypes::samplingMode_syncBurst)
+                            {
+                                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SWEEPS, "The current configuration exceeds the flash bandwidth for the Node."));
+                                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_TIME_BETWEEN_BURSTS, "The current configuration exceeds the flash bandwidth for the Node."));
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         //return true if no issues
@@ -724,7 +818,41 @@ namespace mscl
         if(isSet(m_activitySense)) { eeprom.write_activitySense(*m_activitySense); }
 
         //write Event Trigger Options
-        if(isSet(m_eventTriggerOptions)) { eeprom.write_eventTriggerOptions(*m_eventTriggerOptions); }
+        if(isSet(m_eventTriggerOptions)) 
+        {
+            const uint8 numTriggers = features.numEventTriggers();
+            std::map<uint8, LinearEquation> equations;
+
+            if(!features.usesFloatEventTriggerVal())
+            {
+                uint8 chNumber;
+                for(uint8 i = 0; i < numTriggers; i++)
+                {
+                    LinearEquation eq(1.0f, 0.0f);
+                    chNumber = m_eventTriggerOptions->trigger(i).channelNumber();
+
+                    //find the group that contains the channel for this trigger
+                    WirelessTypes::ChannelGroupSettings::const_iterator itr;
+                    ChannelGroups groups = features.channelGroups();
+                    for(const auto& group : groups)
+                    {
+                        if(group.hasSetting(WirelessTypes::ChannelGroupSetting::chSetting_linearEquation) &&
+                           group.channels().enabled(chNumber))
+                        {
+                            //legacy node, need to get the currently set (or about to be set) cal coefficients
+                            //for the event trigger's channel so that the value can be converted to bits
+                            eq = curLinearEquation(group.channels(), eeprom);
+                            break;
+                        }
+                    }
+
+                    //add the equation to the map
+                    equations[i] = eq;
+                }
+            }
+
+            eeprom.write_eventTriggerOptions(*m_eventTriggerOptions, equations);
+        }
 
         //write Diagnostic Interval
         if(isSet(m_diagnosticInterval)) { eeprom.write_diagnosticInterval(*m_diagnosticInterval); }
@@ -741,10 +869,13 @@ namespace mscl
             }
         }
 
+        //write Sensor Delay
+        if(isSet(m_sensorDelay)) { eeprom.write_sensorDelay(*m_sensorDelay); }
+
         //write Hardware Gain(s)
-        for(const auto& gain : m_hardwareGains)
+        for(const auto& range : m_inputRanges)
         {
-            eeprom.write_hardwareGain(gain.first, gain.second);
+            eeprom.write_inputRange(range.first, range.second);
         }
 
         //write Hardware Offset(s)
@@ -753,10 +884,10 @@ namespace mscl
             eeprom.write_hardwareOffset(offset.first, offset.second);
         }
 
-        //write low pass filter(s)
-        for(const auto& filter : m_lowPassFilters)
+        //write anti-aliasing filter(s)
+        for(const auto& filter : m_antiAliasingFilters)
         {
-            eeprom.write_lowPassFilter(filter.first, filter.second);
+            eeprom.write_antiAliasingFilter(filter.first, filter.second);
         }
 
         //write Gauge Factor(s)
@@ -868,7 +999,7 @@ namespace mscl
         return *m_activeChannels;
     }
 
-    void WirelessNodeConfig::activeChannels(ChannelMask channels)
+    void WirelessNodeConfig::activeChannels(const ChannelMask& channels)
     {
         m_activeChannels = channels;
     }
@@ -939,14 +1070,14 @@ namespace mscl
         m_lostBeaconTimeout = minutes;
     }
 
-    double WirelessNodeConfig::hardwareGain(const ChannelMask& mask) const
+    WirelessTypes::InputRange WirelessNodeConfig::inputRange(const ChannelMask& mask) const
     {
-        return getChannelMapVal(m_hardwareGains, mask, "Hardware Gain");
+        return getChannelMapVal(m_inputRanges, mask, "Input Range");
     }
 
-    void WirelessNodeConfig::hardwareGain(const ChannelMask& mask, double gain)
+    void WirelessNodeConfig::inputRange(const ChannelMask& mask, WirelessTypes::InputRange range)
     {
-        setChannelMapVal(m_hardwareGains, mask, gain);
+        setChannelMapVal(m_inputRanges, mask, range);
     }
 
     uint16 WirelessNodeConfig::hardwareOffset(const ChannelMask& mask) const
@@ -959,14 +1090,14 @@ namespace mscl
         setChannelMapVal(m_hardwareOffsets, mask, offset);
     }
 
-    WirelessTypes::Filter WirelessNodeConfig::lowPassFilter(const ChannelMask& mask) const
+    WirelessTypes::Filter WirelessNodeConfig::antiAliasingFilter(const ChannelMask& mask) const
     {
-        return getChannelMapVal(m_lowPassFilters, mask, "Low Pass Filter");
+        return getChannelMapVal(m_antiAliasingFilters, mask, "Low Pass Filter");
     }
 
-    void WirelessNodeConfig::lowPassFilter(const ChannelMask& mask, WirelessTypes::Filter filter)
+    void WirelessNodeConfig::antiAliasingFilter(const ChannelMask& mask, WirelessTypes::Filter filter)
     {
-        setChannelMapVal(m_lowPassFilters, mask, filter);
+        setChannelMapVal(m_antiAliasingFilters, mask, filter);
     }
 
     float WirelessNodeConfig::gaugeFactor(const ChannelMask& mask) const
@@ -1093,5 +1224,39 @@ namespace mscl
     void WirelessNodeConfig::storageLimitMode(WirelessTypes::StorageLimitMode mode)
     {
         m_storageLimitMode = mode;
+    }
+
+    uint32 WirelessNodeConfig::sensorDelay() const
+    {
+        checkValue(m_sensorDelay, "Sensor Delay");
+        return *m_sensorDelay;
+    }
+
+    void WirelessNodeConfig::sensorDelay(uint32 delay)
+    {
+        m_sensorDelay = delay;
+    }
+
+
+
+    float WirelessNodeConfig::flashBandwidth(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::DataFormat dataFormat, uint8 numChannels)
+    {
+        uint8 dataSize = WirelessTypes::dataFormatSize(dataFormat);
+        double samplesPerSecond = SampleRate::FromWirelessEepromValue(sampleRate).samplesPerSecond();
+        return static_cast<float>(dataSize * numChannels * samplesPerSecond);
+    }
+
+    float WirelessNodeConfig::flashBandwidth_burst(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::DataFormat dataFormat, uint8 numChannels, uint32 numSweeps, const TimeSpan& timeBetweenBursts)
+    {
+        uint8 dataSize = WirelessTypes::dataFormatSize(dataFormat);
+        double samplesPerSecond = SampleRate::FromWirelessEepromValue(sampleRate).samplesPerSecond();
+        uint64 secondsBetweenBursts = timeBetweenBursts.getSeconds();
+
+        if(samplesPerSecond == 0.0) { samplesPerSecond = 0.1; } //no dividing by 0
+        if(secondsBetweenBursts == 0) { secondsBetweenBursts = 1; } //no dividing by 0
+
+        float dutyCycle = static_cast<float>((static_cast<float>(numSweeps) / samplesPerSecond) / timeBetweenBursts.getSeconds());
+
+        return static_cast<float>(dataSize * numChannels * samplesPerSecond * dutyCycle);
     }
 }

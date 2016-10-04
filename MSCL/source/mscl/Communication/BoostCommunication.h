@@ -66,6 +66,10 @@ namespace mscl
         //    The function to send all the read in data to. If null, the data will be thrown out.
         std::function<void(DataBuffer&)> m_parseDataFunction;
 
+        //Variable: m_debugDataFunction
+        //  The function to send a copy of the data to for debug logging. If null, the data will not be sent to it.
+        std::function<void(const Bytes&, bool)> m_debugDataFunction;
+
         //Variable: m_parseFunctionMutex
         //    The mutex used to access/change the parse data function.
         std::recursive_mutex m_parseFunctionMutex;
@@ -126,6 +130,17 @@ namespace mscl
         //Parameters:
         //    fn - The function to set as the parser function.
         void setParseFunction(std::function<void(DataBuffer&)> fn);
+
+        //Function: enableDebugMode
+        //  Enables debug mode by setting the debug parsing function.
+        //
+        //Parameters:
+        //  fn - The function to set as the debug parser function.
+        void enableDebugMode(std::function<void(const Bytes&, bool)> fn);
+
+        //Function: disableDebugMode
+        //  Disables debug mode.
+        void disableDebugMode();
     };
 
 
@@ -136,7 +151,8 @@ namespace mscl
         m_ioObject(std::move(ioObj)),
         m_readBuffer(1024 * 1000),
         m_bufferWriter(m_readBuffer.getBufferWriter()),
-        m_parseDataFunction(nullptr)
+        m_parseDataFunction(nullptr),
+        m_debugDataFunction(nullptr)
     {
     }
 
@@ -157,7 +173,13 @@ namespace mscl
             //write all the data (blocks until all is written)
             boost::asio::write(
                 *m_ioObject,                                        //the ioObject (serial_port)
-                boost::asio::buffer(data, data.size()));            //the buffer that contains the data to be written;    
+                boost::asio::buffer(data, data.size()));            //the buffer that contains the data to be written;
+
+            if(m_debugDataFunction)
+            {
+                //log the written bytes with the debug log function
+                m_debugDataFunction(data, false);
+            }
         }
         catch(std::exception& e)
         {
@@ -197,6 +219,24 @@ namespace mscl
         rec_mutex_lock_guard lock(m_parseFunctionMutex);
 
         m_parseDataFunction = fn;
+    }
+
+    template <typename IO_Object>
+    void BoostCommunication<IO_Object>::enableDebugMode(std::function<void(const Bytes&, bool)> fn)
+    {
+        //for thread safety
+        rec_mutex_lock_guard lock(m_parseFunctionMutex);
+
+        m_debugDataFunction = fn;
+    }
+
+    template <typename IO_Object>
+    void BoostCommunication<IO_Object>::disableDebugMode()
+    {
+        //for thread safety
+        rec_mutex_lock_guard lock(m_parseFunctionMutex);
+
+        m_debugDataFunction = nullptr;
     }
 
     template <typename IO_Object>
@@ -261,11 +301,20 @@ namespace mscl
             //for thread safety
             rec_mutex_lock_guard lock(m_parseFunctionMutex);
 
-            if(m_parseDataFunction)
+            if(m_debugDataFunction || m_parseDataFunction)
             {
                 //commit any bytes that were read
                 m_bufferWriter.commit(bytes_transferred);
+            }
 
+            if(m_debugDataFunction)
+            {
+                //log the read data bytes with the debug function
+                m_debugDataFunction(m_readBuffer.bytesToRead(), true);
+            }
+
+            if(m_parseDataFunction)
+            {
                 //call the parseFunction to parse any data
                 m_parseDataFunction(m_readBuffer);
             }

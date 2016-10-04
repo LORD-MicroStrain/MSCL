@@ -46,7 +46,7 @@ namespace mscl
         return m_data;
     }
 
-    void LoggedDataSweep::data(ChannelData data)
+    void LoggedDataSweep::data(const ChannelData& data)
     {
         m_data = data;
     }

@@ -10,6 +10,315 @@ The PATCH version is incremented when a bug is fixed.
 ======================================================================================================
 
 -------------------------------------------------------------------------
+13.0.2 - 2016-10-04
+- fix for datalog downloading v2 failing to verify checksum correctly.
+
+-------------------------------------------------------------------------
+13.0.1 - 2016-09-29
+- fix for NodeFeatures::supportsFlashId returning true when the node doesn't support logging.
+
+-------------------------------------------------------------------------
+13.0.0 - 2016-09-27
+- CHANGED NodeFeatures::sampleRates to take a dataCollectionMethod parameter which also affects the list of sample rates available.
+- CHANGED NodeFeatures::supportsSamplingRate to take a dataCollectionMethod parameter as well.
+- CHANGED NodeFeatures::maxSampleRate to take a dataCollectionMethod parameter as well.
+- CHANGED NodeFeatures::maxSampleRateForSettlingTime to take a dataCollectionMethod as well.
+- changed Set to Idle's cancel operation to not throw an exception, but instead to just send a cancel byte a few times if no cancel response was heard.
+- added check for flash bandwidth in WirelessNodeConfig's verifyConfig when applicable.
+- fix for V-Link-200 and Wireless-Impact-Sensor sample rates being incorrect.
+
+-------------------------------------------------------------------------
+12.2.1 - 2016-09-23
+- updated list of V-Link-200 anti-aliasing filters.
+
+-------------------------------------------------------------------------
+12.2.0 - 2016-09-22
+- added a debug mode option to the Connection class to allow getting all bytes read and written to the connection via the MSCL instance.
+
+-------------------------------------------------------------------------
+12.1.1 - 2016-09-21
+- updated v-link-200 available storage limit modes.
+
+-------------------------------------------------------------------------
+12.1.0 - 2016-09-21
+- added 300Hz sample rate.
+- updated SHM-Link-2 features to support 300Hz.
+
+-------------------------------------------------------------------------
+12.0.0 - 2016-09-20
+- CHANGED WirelessTypes::AutoCalErrorFlag to WirelessTypes::AutoCalShmErrorFlag.
+- added WirelessTypes::AutoShuntCalErrorFlag.
+- added baseline and shunt values to the data read from the AutoShuntCal response.
+
+-------------------------------------------------------------------------
+11.0.1 - 2016-09-19
+- fix for using floating point event duration when shouldn't, and vice-versa (inversed logic).
+
+-------------------------------------------------------------------------
+11.0.0 - 2016-09-14
+- MOVED WsdaInfo class outside of the WsdaFinder class (no longer nested).
+
+-------------------------------------------------------------------------
+10.4.2 - 2016-09-13
+- checking that event driven sampling cannot be configured with transmit only when verifying config settings.
+
+-------------------------------------------------------------------------
+10.4.1 - 2016-09-12
+- added missing ShuntCalCmdInfo useInternalShunt field and using in command.
+- added new microcontroller types.
+
+-------------------------------------------------------------------------
+10.4.0 - 2016-09-12
+- added NodeFeatures::supportsNonSyncLogWithTimestamps()
+
+-------------------------------------------------------------------------
+10.3.0 - 2016-09-12
+- support for startNonSyncSampling v2 on supported Nodes.
+- removed Event Driven Non-Sync support from the list of sampling modes for V-Link and Wireless-Impact Sensor.
+
+-------------------------------------------------------------------------
+10.2.0 - 2016-09-09
+- support for the WirelessNode getDiagnosticInfo command.
+- added range_invalid to the input range enum list.
+- added eepromLocation function to the ChannelGroup class.
+
+-------------------------------------------------------------------------
+10.1.0 - 2016-09-08
+- added parsing for new Diagnostic packet channels.
+- fix for SG-Link not working with Input Range.
+- added missing input range to the SHM-Link.
+
+-------------------------------------------------------------------------
+10.0.0 - 2016-09-07
+- added WirelessNode::autoShuntCal functionality for supported Nodes.
+- changed from hardware gain interface to input range interface.
+    - CHANGED ConfigOption::CONFIG_HARDWARE_GAIN to ConfigOption::CONFIG_INPUT_RANGE.
+    - CHANGED WirelessNodeConfig::hardwareGain functions to WirelessNodeConfig::inputRange.
+    - CHANGED WirelessNode::getHardwareGain to WirelessNode::getInputRange.
+    - CHANGED WirelessTypes::ChannelGroupSetting::chSetting_hardwareGain to WirelessTypes::ChannelGroupSetting::chSetting_inputRange.
+    - CHANGED WirelessTypes::ChannelGroupSetting::chSetting_shuntCal to WirelessTypes::ChannelGroupSetting::chSetting_legacyShuntCal.
+    - CHANGED NodeFeatures::supportsHardwareGain to NodeFeatures::supportsInputRange.
+    - DELETED NodeFeatures::minHardwareGain and NodeFeatures::maxHardwareGain.
+    - DELETED NodeFeatures::normalizeHardwareGain.
+- CHANGED NodeFeatures::supportsShuntCal to NodeFeatures::supportsLegacyShuntCal.
+- added Single ended channels to V-Link-200.
+
+-------------------------------------------------------------------------
+9.1.2 - 2016-09-06
+- fix for crash during datalog download.
+
+-------------------------------------------------------------------------
+9.1.1 - 2016-08-31
+- fix for uint24s in datalog data being built incorrectly.
+
+-------------------------------------------------------------------------
+9.1.0 - 2016-08-31
+- added upnp WSDA discovery support (Windows & C++ only for now).
+- removed unused SG-Link-8ch
+
+-------------------------------------------------------------------------
+9.0.1 - 2016-08-29
+- added a minimum timeout of 200ms to the dataloginfo command.
+
+-------------------------------------------------------------------------
+9.0.0 - 2016-08-23
+- CHANGED EventTriggerOptions trigger value's to be floats. (Instead of the bits value, this value is
+  now set using the cal coefficients that are set on the Node, or that will be set if changing together in WirelessNodeConfig).
+
+-------------------------------------------------------------------------
+8.0.2 - 2016-08-22
+- fix for bugs found using PVS-Studio.
+
+-------------------------------------------------------------------------
+8.0.1 - 2016-08-18
+- added more model number for the V-Link 200.
+
+-------------------------------------------------------------------------
+8.0.0 - 2016-08-18
+- support for configuring data format of uint24 for supported Nodes.
+- CHANGED WirelessTypes::DataFormat::dataFormat_2byte_uint to dataFormat_raw_uint16
+- CHANGED WirelessTypes::DataFormat::dataFormat_4byte_float to dataFormat_cal_float
+
+-------------------------------------------------------------------------
+7.4.0 - 2016-08-16
+- support for 256hz sample rate with SHM-Link-2 node with new firmware.
+
+-------------------------------------------------------------------------
+7.3.0 - 2016-08-16
+- support for parsing uint16 (18-bit truncated) data types in Wireless packets.
+
+-------------------------------------------------------------------------
+7.2.0 - 2016-08-16
+- support for parsing uint24 data types in Wireless packets.
+
+-------------------------------------------------------------------------
+7.1.10 - 2016-08-15
+- fix for HCL Calibrated Packet parser storing temperature in incorrect data type
+
+-------------------------------------------------------------------------
+7.1.9 - 2016-08-11
+- updated HCL Calibrated Packet parser.
+
+-------------------------------------------------------------------------
+7.1.8 - 2016-08-11
+- using std::chrono::high_resolution_clock instead of boost::chrono::high_resolution_clock.
+  - can do this now because supposedly Microsoft fixed a bug in VS2015 where high_resolution_clock was compiling as a system_clock.
+- now only dependent on boost/system as a library (for asio). All other boost includes are header only.
+
+-------------------------------------------------------------------------
+7.1.7 - 2016-08-10
+- building with VS2015 (upgraded from 2013)
+
+-------------------------------------------------------------------------
+7.1.6 - 2016-08-09
+- waiting longer after resetting Node radio before continuing
+- adding up to 3 retries to ping before autobalance
+
+-------------------------------------------------------------------------
+7.1.5 - 2016-08-05
+- support for HCL Smart Bearing - Calibrated packet.
+
+-------------------------------------------------------------------------
+7.1.4 - 2016-07-29
+- autobalance command returns a warning if the target percentage is off by more than 5%
+  - Note that this logic is only for autobalance v1, and v2 nodes return this warning themselves
+
+-------------------------------------------------------------------------
+7.1.3 - 2016-07-27
+- added minimum timeout of 600ms for the AutoBalance v2 response.
+
+-------------------------------------------------------------------------
+7.1.2 - 2016-07-26
+- simplified the Wireless SetToIdle response parser.
+
+-------------------------------------------------------------------------
+7.1.1 - 2016-07-26
+- fix for Sensor Delay not writing the Sensor Always On value correctly.
+
+-------------------------------------------------------------------------
+7.1.0 - 2016-07-25
+- added support for Sensor Delay configuration.
+
+-------------------------------------------------------------------------
+7.0.1 - 2016-07-15
+- renamed node to Wireless Impact Sensor.
+
+-------------------------------------------------------------------------
+7.0.0 - 2016-07-14
+- CHANGED ConfigOption::CONFIG_LOW_PASS_FILTER to ConfigOption::CONFIG_ANTI_ALIASING_FILTER.
+- CHANGED WirelessNodeConfig::lowPassFilter functions to WirelessNodeConfig::antiAliasingFilter.
+- CHANGED NodeFeatures::supportsLowPassFilter to NodeFeatures::supportsAntiAliasingFilter.
+- CHANGED WirelessNode::getLowPassFilter to WirelessNode::getAntiAliasingFilter.
+- CHANGED WirelessTypes::ChannelGroupSetting::chSetting_lowPassFilter to WirelessTypes::ChannelGroupSetting::chSetting_antiAliasingFilter
+- CHANGED NodeModel::node_vLink2 to NodeModel::node_vLink200.
+
+-------------------------------------------------------------------------
+6.1.3 - 2016-07-13
+- fixed a bug in Datalog Download not stopping when it should (error calulating bytes remaining).
+- fixed a bug in Datalog Download reading out of range for checksums in some cases.
+
+-------------------------------------------------------------------------
+6.1.2 - 2016-07-13
+- fixed a bug in Datalog Download where cal coefficients would never get updated between sessions.
+
+-------------------------------------------------------------------------
+6.1.1 - 2016-07-12
+- fixed a bug in Sync Sampling logic allowing nodes with 100.1 percent bandwidth to get slots
+  and the network reporting OK.
+- added logic where nodes in a Legacy Sync network cannot get assigned the last 8 slots.
+
+-------------------------------------------------------------------------
+6.1.0 - 2016-07-08
+- updated to new download data packet (102 bytes instead of 100).
+
+-------------------------------------------------------------------------
+6.0.0 - 2016-07-08
+- DELETED DeviceInfo.status() as it was not always reliable and not available for new CP210x driver.
+- DELETED DeviceInfo.DeviceStatus enum.
+- added DeviceInfo.description().
+- changed how devices are discovered on Windows again to support new CP210x driver.
+
+-------------------------------------------------------------------------
+5.4.5 - 2016-07-07
+- fix for incorrectly checking for active channels in DatalogDownloader.
+
+-------------------------------------------------------------------------
+5.4.4 - 2016-07-07
+- fix for accidental commit of non-working device discovery code.
+
+-------------------------------------------------------------------------
+5.4.3 - 2016-07-01
+- fix for datalog download skipping data.
+
+-------------------------------------------------------------------------
+5.4.2 - 2016-06-30
+- changed how devices are discovered on Windows
+  - This is an attempt to fix a bug where devices are not listed in WMI's "Win32_SerialPortConfiguration"
+
+-------------------------------------------------------------------------
+5.4.1 - 2016-06-30
+- more bug fixes for new datalog download parsing.
+
+-------------------------------------------------------------------------
+5.4.0 - 2016-06-28
+- bug fixes for new datalog download parsing.
+- added new eeprom locations to NodeEepromMap.
+- added BaseStation::readWriteRetries getter function.
+- added WirelessNode::readWriteRetries getter function.
+
+-------------------------------------------------------------------------
+5.3.0 - 2016-06-24
+- support for parsing the failure (device busy) packets for the 3 new datalogging commands.
+- fixed bug where new datalog data was being parsed in big endian when should be parsed in little endian.
+
+-------------------------------------------------------------------------
+5.2.0 - 2016-06-24
+- added Endianness functionality. 
+
+-------------------------------------------------------------------------
+5.1.2 - 2016-06-22
+- updated formula for new V-Link hardware gain settings.
+
+-------------------------------------------------------------------------
+5.1.1 - 2016-06-21
+- using Get Datalog Info command when asking for # datalogging sessions for new nodes.
+
+-------------------------------------------------------------------------
+5.1.0 - 2016-06-21
+- support for 4-byte float with no cals applied datatype.
+
+-------------------------------------------------------------------------
+5.0.1 - 2016-06-21
+- fix for parsing of v2 Datalogging headers not being called.
+
+-------------------------------------------------------------------------
+5.0.0 - 2016-06-21
+- initial support for Datalogging v2 download.
+- DELETED DatalogDownloader::triggerType()
+- DELETED DatalogDownloader::totalSweeps()
+
+-------------------------------------------------------------------------
+4.4.1 - 2016-06-17
+- fix for duplicate HclSmartBeacon_RawPackets not being thrown out.
+- fix for duplicate RawAngleStrainPackets not being thrown out.
+
+-------------------------------------------------------------------------
+4.4.0 - 2016-06-16
+- added support for Event Trigger Index channel in Diagnostic Packet.
+
+-------------------------------------------------------------------------
+4.3.4 - 2016-06-14
+- added NodeMemory2 class (internal class) for next gen Node datalog downloading.
+
+-------------------------------------------------------------------------
+4.3.3 - 2016-06-10
+- added Get Datalog Data Node command (internal function).
+
+-------------------------------------------------------------------------
+4.3.2 - 2016-06-10
+- added Datalog Session Info Node command (internal function).
+
+-------------------------------------------------------------------------
 4.3.1 - 2016-06-08
 - fix for parsing packet failures causing crash, now just them throwing out.
 
@@ -127,7 +436,7 @@ The PATCH version is incremented when a bug is fixed.
 
 -------------------------------------------------------------------------
 1.41.1 - 2016-04-26
-- fix for Blade-Impact-Link listing 3 low pass filters for 1 channel.
+- fix for Wireless Impact Sensor listing 3 low pass filters for 1 channel.
 
 -------------------------------------------------------------------------
 1.41.0 - 2016-04-25
@@ -135,7 +444,7 @@ The PATCH version is incremented when a bug is fixed.
 
 -------------------------------------------------------------------------
 1.40.1 - 2016-04-20
-- added uint16 support for the Blade-Impact-Link.
+- added uint16 support for the Wireless Impact Sensor.
 
 -------------------------------------------------------------------------
 1.40.0 - 2016-04-20
@@ -165,11 +474,11 @@ The PATCH version is incremented when a bug is fixed.
 1.39.0 - 2016-04-15
 - added nonSyncEvent and syncEvent WirelessSamplingModes.
 - added logic to the WirelessNodeConfig verify for these new sampling modes.
-- added new sample rates to the Blade-Impact-Link for these new sampling modes.
+- added new sample rates to the Wireless Impact Sensor for these new sampling modes.
 
 -------------------------------------------------------------------------
 1.38.0 - 2016-04-15
-- added basic support for Blade-Impact-Link.
+- added basic support for Wireless Impact Sensor.
 
 -------------------------------------------------------------------------
 1.37.2 - 2016-04-12

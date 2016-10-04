@@ -28,6 +28,7 @@ namespace mscl
         //    Parses the passed in WirelessPacket for all the sweep information and adds a sweep to the sweeps container
         void parseSweeps();
 
+    public:
         //Function: addDataPoint
         //    Adds a <WirelessDataPoint> from the payload to the given <ChannelData> container.
         //
@@ -36,7 +37,7 @@ namespace mscl
         //    payload - The <DataBuffer> containing the payload, moved to the position of the info bytes to read.
         //    infoLength - The number of bytes that make up the info item.
         //    infoId - The id of the info item.
-        void addDataPoint(ChannelData& container, DataBuffer& payload, uint8 infoLength, uint8 infoId) const;
+        static void addDataPoint(ChannelData& container, DataBuffer& payload, uint8 infoLength, uint8 infoId);
 
     public:
         //Function: integrityCheck

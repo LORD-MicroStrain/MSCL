@@ -38,6 +38,10 @@ namespace mscl
 
         virtual bool supportsHistogramEnableConfig() const final;
 
+        virtual bool supportsSensorDelayConfig() const final;
+
+        virtual bool supportsSensorDelayAlwaysOn() const final;
+
         virtual uint8 numDamageAngles() const final;
 
         virtual uint8 numSnCurveSegments() const final;

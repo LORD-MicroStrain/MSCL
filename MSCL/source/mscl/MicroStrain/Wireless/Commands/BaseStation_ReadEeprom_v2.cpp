@@ -33,6 +33,7 @@ namespace mscl
     BaseStation_ReadEeprom_v2::Response::Response(uint16 eepromAddress, std::weak_ptr<ResponseCollector> collector):
         ResponsePattern(collector),
         m_eepromAddress(eepromAddress),
+        m_result(0),
         m_errorCode(WirelessPacket::error_none)
     {
     }

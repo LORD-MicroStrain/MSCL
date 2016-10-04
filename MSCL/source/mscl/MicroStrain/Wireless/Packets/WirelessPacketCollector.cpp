@@ -13,6 +13,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "BufferedLdcPacket.h"
 #include "BufferedLdcPacket_16ch.h"
 #include "DiagnosticPacket.h"
+#include "HclSmartBearing_CalPacket.h"
 #include "HclSmartBearing_RawPacket.h"
 #include "LdcPacket.h"
 #include "LdcPacket_16ch.h"
@@ -94,6 +95,11 @@ namespace mscl
                 //Structural Health Monitor packet
                 case WirelessPacket::packetType_SHM:
                     m_dataPackets.push_back(ShmPacket(packet));
+                    break;
+
+                //HclSmartBearing Calibrated packet
+                case WirelessPacket::packetType_HclSmartBearing_Calibrated:
+                    m_dataPackets.push_back(HclSmartBearing_CalPacket(packet));
                     break;
 
                 //HclSmartBearing Raw packet

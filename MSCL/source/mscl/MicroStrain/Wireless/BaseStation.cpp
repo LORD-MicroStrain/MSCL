@@ -13,6 +13,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Configuration/BaseStationConfig.h"
 #include "Features/BaseStationFeatures.h"
 #include "Commands/AutoCal.h"
+#include "Commands/AutoCalInfo.h"
+#include "Commands/GetDatalogSessionInfo.h"
 
 namespace mscl
 {
@@ -78,7 +80,12 @@ namespace mscl
 
     void BaseStation::readWriteRetries(uint8 numRetries)
     {
-        m_impl->readWriteRetries(numRetries);
+        m_impl->setReadWriteRetries(numRetries);
+    }
+
+    uint8 BaseStation::readWriteRetries() const
+    {
+        return m_impl->getReadWriteRetries();
     }
 
     void BaseStation::clearEepromCache()
@@ -291,6 +298,16 @@ namespace mscl
         return m_impl->node_pageDownload(protocol, nodeAddress, pageIndex, data);
     }
 
+    bool BaseStation::node_getDatalogSessionInfo(const WirelessProtocol& protocol, NodeAddress nodeAddress, DatalogSessionInfoResult& result)
+    {
+        return m_impl->node_getDatalogSessionInfo(protocol, nodeAddress, result);
+    }
+
+    bool BaseStation::node_getDatalogData(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint32 flashAddress, ByteStream& result)
+    {
+        return m_impl->node_getDatalogData(protocol, nodeAddress, flashAddress, result);
+    }
+
     bool BaseStation::node_erase(const WirelessProtocol& protocol, NodeAddress nodeAddress)
     {
         return m_impl->node_erase(protocol, nodeAddress);
@@ -301,9 +318,9 @@ namespace mscl
         return m_impl->node_startSyncSampling(nodeAddress);
     }
 
-    void BaseStation::node_startNonSyncSampling(NodeAddress nodeAddress)
+    bool BaseStation::node_startNonSyncSampling(const WirelessProtocol& protocol, NodeAddress nodeAddress)
     { 
-        return m_impl->node_startNonSyncSampling(nodeAddress);
+        return m_impl->node_startNonSyncSampling(protocol, nodeAddress);
     }
 
     bool BaseStation::node_armForDatalogging(NodeAddress nodeAddress, const std::string& message)
@@ -321,13 +338,28 @@ namespace mscl
         return m_impl->node_autoBalance(protocol, nodeAddress, channelNumber, targetPercent, result);
     }
 
-    bool BaseStation::node_autocal(NodeAddress nodeAddress, WirelessModels::NodeModel model, const Version& fwVersion, AutoCalResult& result)
+    bool BaseStation::node_autocal_shm(NodeAddress nodeAddress, AutoCalResult& result)
     {
-        return m_impl->node_autocal(nodeAddress, model, fwVersion, result);
+        return m_impl->node_autocal_shm(nodeAddress, result);
+    }
+
+    bool BaseStation::node_autoShuntCal(NodeAddress nodeAddress,
+                                        const ShuntCalCmdInfo& commandInfo,
+                                        uint8 chNum,
+                                        WirelessModels::NodeModel nodeType,
+                                        WirelessTypes::ChannelType chType,
+                                        AutoCalResult& result)
+    {
+        return m_impl->node_autoShuntCal(nodeAddress, commandInfo, chNum, nodeType, chType, result);
     }
 
     bool BaseStation::node_readSingleSensor(NodeAddress nodeAddress, uint8 channelNumber, uint16& result)
     {
         return m_impl->node_readSingleSensor(nodeAddress, channelNumber, result);
+    }
+
+    bool BaseStation::node_getDiagnosticInfo(NodeAddress nodeAddress, ChannelData& result)
+    {
+        return m_impl->node_getDiagnosticInfo(nodeAddress, result);
     }
 }

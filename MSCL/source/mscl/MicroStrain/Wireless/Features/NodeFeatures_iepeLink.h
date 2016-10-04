@@ -21,13 +21,15 @@ namespace mscl
         NodeFeatures_iepeLink(const NodeInfo& info);
 
     public:
+        virtual bool supportsSensorDelayConfig() const override;
+
         virtual const WirelessTypes::SamplingModes samplingModes() const override;
 
         virtual const WirelessTypes::DataFormats dataFormats() const override;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode) const override;
+        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const override;
 
-        virtual const WirelessTypes::Filters lowPassFilters() const override;
+        virtual const WirelessTypes::Filters antiAliasingFilters() const override;
 
         virtual uint32 maxSweepsPerBurst(WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const override;
     };

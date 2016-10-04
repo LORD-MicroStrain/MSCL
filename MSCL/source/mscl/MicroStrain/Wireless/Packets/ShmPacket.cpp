@@ -80,7 +80,7 @@ namespace mscl
         angle = static_cast<float>(Utils::radiansToDegrees(angle));
 
         //this packet always stores the bin data as uint32s
-        m_dataType = WirelessTypes::dataType_4byteUInt;
+        m_dataType = WirelessTypes::dataType_uint32;
         const uint16 DATA_SIZE = WirelessTypes::dataTypeSize(m_dataType);
 
         m_sweepSize = 1;
@@ -159,7 +159,7 @@ namespace mscl
         uint16 binSize = m_payload.read_uint16(PAYLOAD_OFFSET_BIN_SIZE);
 
         //this packet always stores the bin data as uint32s
-        m_dataType = WirelessTypes::dataType_4byteUInt;
+        m_dataType = WirelessTypes::dataType_uint32;
         const uint16 DATA_SIZE = WirelessTypes::dataTypeSize(m_dataType);
 
         m_sweepSize = 1;

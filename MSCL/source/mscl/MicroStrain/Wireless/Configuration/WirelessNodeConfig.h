@@ -41,6 +41,10 @@ namespace mscl
         //    Creates a blank WirelessNodeConfig.
         WirelessNodeConfig();
 
+        //API Constant: 
+        //  SENSOR_DELAY_ALWAYS_ON - 0xFFFFFFFF - Value representing that the sensor delay is always on.
+        static const uint32 SENSOR_DELAY_ALWAYS_ON = 0xFFFFFFFF;
+
     private:
         //Variable: m_defaultMode
         //    The <WirelessTypes::DefaultMode> to set.
@@ -118,17 +122,21 @@ namespace mscl
         //  The <WirelessTypes::StorageLimitMode> to set.
         boost::optional<WirelessTypes::StorageLimitMode> m_storageLimitMode;
 
-        //Variable: m_hardwareGains
-        //    The map of <ChannelMask> to hardware gains to set.
-        std::map<ChannelMask, double> m_hardwareGains;
+        //Variable: m_sensorDelay
+        //  The sensor delay to set.
+        boost::optional<uint32> m_sensorDelay;
+
+        //Variable: m_inputRanges
+        //    The map of <ChannelMask> to <WirelessTypes::InputRange> to set.
+        std::map<ChannelMask, WirelessTypes::InputRange> m_inputRanges;
 
         //Variable: m_hardwareOffsets
         //    The map of <ChannelMask> to hardware offsets to set.
         std::map<ChannelMask, uint16> m_hardwareOffsets;
 
-        //Variable: m_lowPassFilters
-        //  The map of <ChannelMask> to low pass filters to set.
-        std::map<ChannelMask, WirelessTypes::Filter> m_lowPassFilters;
+        //Variable: m_antiAliasingFilters
+        //  The map of <ChannelMask> to anti-aliasing filters to set.
+        std::map<ChannelMask, WirelessTypes::Filter> m_antiAliasingFilters;
 
         //Variable: m_gaugeFactors
         //    The map of <ChannelMask> to gauge factors to set.
@@ -179,6 +187,10 @@ namespace mscl
         //    Gets the data format currently set, or from the node if not set.
         WirelessTypes::DataFormat curDataFormat(const NodeEepromHelper& eeprom) const;
 
+        //Function: curDataFormat
+        //    Gets the data collection method currently set, or from the node if not set.
+        WirelessTypes::DataCollectionMethod curDataCollectionMethod(const NodeEepromHelper& eeprom) const;
+
         //Function: curTimeBetweenBursts
         //    Gets the time between bursts currently set, or from the node if not set.
         TimeSpan curTimeBetweenBursts(const NodeEepromHelper& eeprom) const;
@@ -194,6 +206,10 @@ namespace mscl
         //Function: curEventTriggerMask
         //  Gets the event trigger mask currently set, or from the node if not set.
         BitMask curEventTriggerMask(const NodeEepromHelper& eeprom) const;
+
+        //Function: curLinearEquation
+        //  Gets the linear equation currently set for the given <ChannelMask>, or from the node if not set.
+        LinearEquation curLinearEquation(const ChannelMask& mask, const NodeEepromHelper& eeprom) const;
 
     private:
         //Function: checkValue
@@ -449,7 +465,7 @@ namespace mscl
 
         //API Function: activeChannels
         //    Sets the <ChannelMask> value in the Config.
-        void activeChannels(ChannelMask channels);
+        void activeChannels(const ChannelMask& channels);
 
         //API Function: numSweeps
         //    Gets the number of sweeps value in the Config, if set.
@@ -523,20 +539,19 @@ namespace mscl
         //    Note: A value of 0 disables the lost beacon timeout.
         void lostBeaconTimeout(uint16 minutes);
 
-        //API Function: hardwareGain
-        //    Gets the hardware gain for the given <ChannelMask> in the Config, if set.
+        //API Function: inputRange
+        //    Gets the <WirelessTypes::InputRange> for the given <ChannelMask> in the Config, if set.
         //
         //Parameters:
-        //    mask - The <ChannelMask> to set the hardware gain for.
+        //    mask - The <ChannelMask> to set the input range for.
         //
         //Exceptions:
         //    <Error_NoData> - The requested value has not been set.
-        double hardwareGain(const ChannelMask& mask) const;
+        WirelessTypes::InputRange inputRange(const ChannelMask& mask) const;
 
-        //API Function: hardwareGain
-        //    Sets the hardware gain for the given <ChannelMask> in the Config.
-        //    Note: This value should be normalized before it is set, using <NodeFeatures::normalizeHardwareGain>.
-        void hardwareGain(const ChannelMask& mask, double gain);
+        //API Function: inputRange
+        //    Sets the input range for the given <ChannelMask> in the Config.
+        void inputRange(const ChannelMask& mask, WirelessTypes::InputRange range);
 
         //API Function: hardwareOffset
         //    Gets the hardware offset for the given <ChannelMask> in the Config, if set.
@@ -552,19 +567,19 @@ namespace mscl
         //    Sets the hardware offset for the given <ChannelMask> in the Config.
         void hardwareOffset(const ChannelMask& mask, uint16 offset);
 
-        //API Function: lowPassFilter
-        //    Gets the low pass <WirelessTypes::Filter> for the given <ChannelMask> in the Config, if set.
+        //API Function: antiAliasingFilter
+        //    Gets the anti-aliasing <WirelessTypes::Filter> for the given <ChannelMask> in the Config, if set.
         //
         //Parameters:
         //    mask - The <ChannelMask> to set the hardware offset for.
         //
         //Exceptions:
         //    <Error_NoData> - The requested value has not been set.
-        WirelessTypes::Filter lowPassFilter(const ChannelMask& mask) const;
+        WirelessTypes::Filter antiAliasingFilter(const ChannelMask& mask) const;
 
         //API Function: hardwareOffset
         //    Sets the hardware offset for the given <ChannelMask> in the Config.
-        void lowPassFilter(const ChannelMask& mask, WirelessTypes::Filter filter);
+        void antiAliasingFilter(const ChannelMask& mask, WirelessTypes::Filter filter);
 
         //API Function: gaugeFactor
         //    Gets the gauge factor for the given <ChannelMask> in the Config, if set.
@@ -695,7 +710,7 @@ namespace mscl
         void eventTriggerOptions(const EventTriggerOptions& eventTriggerOpts);
 
         //API Function: diagnosticInterval
-        //  Gets the diagnostic info interval currently set in the Config.
+        //  Gets the diagnostic info interval (in seconds) currently set in the Config.
         //  A value of 0 is disabled.
         //
         //Exceptions:
@@ -703,7 +718,7 @@ namespace mscl
         uint16 diagnosticInterval() const;
 
         //API Function: diagnosticInterval
-        //  Sets the diagnostic info interval in the Config.
+        //  Sets the diagnostic info interval (in seconds) in the Config.
         //  A value of 0 disables the diagnostic info.
         void diagnosticInterval(uint16 interval);
 
@@ -717,5 +732,39 @@ namespace mscl
         //API Function: storageLimitMode
         //  Sets the <WirelessTypes::StorageLimitMode> in the Config.
         void storageLimitMode(WirelessTypes::StorageLimitMode mode);
+
+        //API Function: sensorDelay
+        //  Gets the sensor delay (in microseconds) currently set in the Config.
+        //  Note: A value of <WirelessNodeConfig::SENSOR_DELAY_ALWAYS_ON> indicates that the sensor is always on.
+        //
+        //Exceptions:
+        //  <Error_NoData> - The requested value has not been set.
+        uint32 sensorDelay() const;
+
+        //API Function: sensorDelay
+        //  Sets the sensor delay (in microseconds) in the Config.
+        //  Note: Use a value of <WirelessNodeConfig::SENSOR_DELAY_ALWAYS_ON> to set the sensor always on.
+        void sensorDelay(uint32 delay);
+
+    public:
+        //Function: flashBandwidth
+        //  Gets the flash bandwidth that is used by the provided settings.
+        //
+        //Parameters:
+        //  sampleRate - The <WirelessTypes::WirelessSampleRate>.
+        //  dataFormat - The <WirelessTypes::DataFormat>.
+        //  numChannels - The number of active channels.
+        static float flashBandwidth(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::DataFormat dataFormat, uint8 numChannels);
+
+        //Function: flashBandwidth
+        //  Gets the flash bandwidth that is used by the provided settings.
+        //
+        //Parameters:
+        //  sampleRate - The <WirelessTypes::WirelessSampleRate>.
+        //  dataFormat - The <WirelessTypes::DataFormat>.
+        //  numChannels - The number of active channels.
+        //  numSweeps - The number of sweeps per burst.
+        //  timeBetweenBursts - The <TimeSpan> representing the time between bursts.
+        static float flashBandwidth_burst(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::DataFormat dataFormat, uint8 numChannels, uint32 numSweeps, const TimeSpan& timeBetweenBursts);
     };
 }

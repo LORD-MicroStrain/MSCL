@@ -8,10 +8,11 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    FlashInfo::FlashInfo(uint64 storage, uint64 block, uint64 page):
+    FlashInfo::FlashInfo(uint32 storage, uint32 block, uint32 page, uint32 bandwidth):
         storageSize(storage),
         blockSize(block),
-        pageSize(page)
+        pageSize(page),
+        maxBandwidth(bandwidth)
     {
     }
 
@@ -20,7 +21,8 @@ namespace mscl
         //Total Size: 4 MiB
         //Block Size: 64 KiB
         //Page Size: 256 Bytes
-        return FlashInfo((4 * 1049000), (64 * 1024), 256);
+        //Max Bandwidth: 65535 ??
+        return FlashInfo((4 * 1049000), (64 * 1024), 256, 65535);
     }
 
     FlashInfo FlashInfo::FLASH_IS25WP128()
@@ -28,7 +30,8 @@ namespace mscl
         //Total Size: 16 MiB
         //Block Size: 64 KiB
         //Page Size: 256 Bytes
-        return FlashInfo((16 * 1049000), (64 * 1024), 256);
+        //Max Bandwidth: 65535
+        return FlashInfo((16 * 1049000), (64 * 1024), 256, 65535);
     }
 
     FlashInfo FlashInfo::FROM_FLASH_ID(uint16 flashId)
@@ -43,7 +46,7 @@ namespace mscl
 
             //invalid flash id
             default:
-                return FlashInfo(0, 0, 0);
+                return FlashInfo(0, 0, 0, 0);
         }
     }
 }

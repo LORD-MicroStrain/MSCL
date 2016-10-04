@@ -23,9 +23,9 @@ namespace mscl
     //=====================================================
     AutoCalResult_shmLink::AutoCalResult_shmLink():
         AutoCalResult(),
-        m_errorFlagCh1(WirelessTypes::autocalError_none),
-        m_errorFlagCh2(WirelessTypes::autocalError_none),
-        m_errorFlagCh3(WirelessTypes::autocalError_none),
+        m_errorFlagCh1(WirelessTypes::autocalShmError_none),
+        m_errorFlagCh2(WirelessTypes::autocalShmError_none),
+        m_errorFlagCh3(WirelessTypes::autocalShmError_none),
         m_offsetCh1(0.0f),
         m_offsetCh2(0.0f),
         m_offsetCh3(0.0f),
@@ -33,17 +33,17 @@ namespace mscl
     {
     }
 
-    WirelessTypes::AutoCalErrorFlag AutoCalResult_shmLink::errorFlagCh1() const
+    WirelessTypes::AutoCalShmErrorFlag AutoCalResult_shmLink::errorFlagCh1() const
     {
         return m_errorFlagCh1;
     }
 
-    WirelessTypes::AutoCalErrorFlag AutoCalResult_shmLink::errorFlagCh2() const
+    WirelessTypes::AutoCalShmErrorFlag AutoCalResult_shmLink::errorFlagCh2() const
     {
         return m_errorFlagCh2;
     }
 
-    WirelessTypes::AutoCalErrorFlag AutoCalResult_shmLink::errorFlagCh3() const
+    WirelessTypes::AutoCalShmErrorFlag AutoCalResult_shmLink::errorFlagCh3() const
     {
         return m_errorFlagCh3;
     }
@@ -81,18 +81,105 @@ namespace mscl
         DataBuffer data(autoCalInfo);
         
         //Ch1 error flag and offset
-        m_errorFlagCh1 = static_cast<WT::AutoCalErrorFlag>(data.read_uint8());
+        m_errorFlagCh1 = static_cast<WT::AutoCalShmErrorFlag>(data.read_uint8());
         m_offsetCh1 = data.read_float();
 
         //Ch2 error flag and offset
-        m_errorFlagCh2 = static_cast<WT::AutoCalErrorFlag>(data.read_uint8());
+        m_errorFlagCh2 = static_cast<WT::AutoCalShmErrorFlag>(data.read_uint8());
         m_offsetCh2 = data.read_float();
 
         //Ch3 error flag and offset
-        m_errorFlagCh3 = static_cast<WT::AutoCalErrorFlag>(data.read_uint8());
+        m_errorFlagCh3 = static_cast<WT::AutoCalShmErrorFlag>(data.read_uint8());
         m_offsetCh3 = data.read_float();
 
         //temperature at time of cal
         m_temperature = data.read_float();
+    }
+
+
+    //=====================================================
+    //AutoCalResult_shunt
+    //=====================================================
+    AutoShuntCalResult::AutoShuntCalResult():
+        AutoCalResult(),
+        m_errorFlag(WirelessTypes::autoshuntcalError_none),
+        m_slope(1.0f),
+        m_offset(0.0f),
+        m_baseMedian(0.0f),
+        m_baseMin(0.0f),
+        m_baseMax(0.0f),
+        m_shuntMedian(0.0f),
+        m_shuntMin(0.0f),
+        m_shuntMax(0.0f)
+    {
+    }
+
+    WirelessTypes::AutoShuntCalErrorFlag AutoShuntCalResult::errorFlag() const
+    {
+        return m_errorFlag;
+    }
+
+    float AutoShuntCalResult::slope() const
+    {
+        return m_slope;
+    }
+
+    float AutoShuntCalResult::offset() const
+    {
+        return m_offset;
+    }
+
+    float AutoShuntCalResult::baseMedian() const
+    {
+        return m_baseMedian;
+    }
+
+    float AutoShuntCalResult::baseMin() const
+    {
+        return m_baseMin;
+    }
+
+    float AutoShuntCalResult::baseMax() const
+    {
+        return m_baseMax;
+    }
+
+    float AutoShuntCalResult::shuntMedian() const
+    {
+        return m_shuntMedian;
+    }
+
+    float AutoShuntCalResult::shuntMin() const
+    {
+        return m_shuntMin;
+    }
+
+    float AutoShuntCalResult::shuntMax() const
+    {
+        return m_shuntMax;
+    }
+
+    void AutoShuntCalResult::parse(const Bytes& autoCalInfo)
+    {
+        if(autoCalInfo.size() != 34)
+        {
+            assert(false);
+            return;
+        }
+
+        typedef WirelessTypes WT;
+
+        DataBuffer data(autoCalInfo);
+
+        data.skipBytes(1);  //skip the channel number, not important in result
+        m_errorFlag = static_cast<WT::AutoShuntCalErrorFlag>(data.read_uint8());
+        m_slope = data.read_float();
+        m_offset = data.read_float();
+        m_baseMedian = data.read_float();
+        m_baseMin = data.read_float();
+        m_baseMax = data.read_float();
+        m_shuntMedian = data.read_float();
+        m_shuntMin = data.read_float();
+        m_shuntMax = data.read_float();
     }
 }

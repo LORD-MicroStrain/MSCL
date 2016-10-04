@@ -7,6 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include <memory>
 #include "EepromLocation.h"
+#include "mscl/MicroStrain/Wireless/Features/FlashInfo.h"
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/WirelessModels.h"
@@ -33,20 +34,26 @@ namespace mscl
     {
     public:
         //Constants: Eeprom Limits
-        //    TIME_BETWEEN_BURSTS_MAX_SECS    - 32767 - The max number of seconds before we have to switch to saving as minutes (Note: this is because we use the most significant bit to signify seconds or minutes)
-        //    BYTES_PER_DATALOG_PAGE            - 264    - The number of bytes for a single datalogging page on a Wireless Node.
-        //    MIN_SLEEP_INTERVAL_EEVAL        - 512    - The minimum sleep interval eeprom value.
-        //    MAX_SLEEP_INTERVAL_EEVAL        - 7680    - The maximum sleep interval eeprom value.
-        //    MIN_LOST_BEACON_TIMEOUT            - 2        - The minimum lost beacon timeout in minutes.
-        //    MAX_LOST_BEACON_TIMEOUT            - 600    - The maximum lost beacon timeout in minutes.
-        //    LOST_BEACON_TIMEOUT_DISABLED    - 0        - The value to use for disabling the lost beacon timeout.
-        static const uint16 TIME_BETWEEN_BURSTS_MAX_SECS;
-        static const uint16 BYTES_PER_DATALOG_PAGE;
-        static const uint16 MIN_SLEEP_INTERVAL_EEVAL;
-        static const uint16 MAX_SLEEP_INTERVAL_EEVAL;
-        static const uint16 MIN_LOST_BEACON_TIMEOUT;
-        static const uint16 MAX_LOST_BEACON_TIMEOUT;
-        static const uint16 LOST_BEACON_TIMEOUT_DISABLED;
+        //    TIME_BETWEEN_BURSTS_MAX_SECS  - 32767 - The max number of seconds before we have to switch to saving as minutes (Note: this is because we use the most significant bit to signify seconds or minutes)
+        //    BYTES_PER_DATALOG_PAGE        - 264    - The number of bytes for a single datalogging page on a Wireless Node.
+        //    MIN_SLEEP_INTERVAL_EEVAL      - 512    - The minimum sleep interval eeprom value.
+        //    MAX_SLEEP_INTERVAL_EEVAL      - 7680    - The maximum sleep interval eeprom value.
+        //    MIN_LOST_BEACON_TIMEOUT       - 2        - The minimum lost beacon timeout in minutes.
+        //    MAX_LOST_BEACON_TIMEOUT       - 600    - The maximum lost beacon timeout in minutes.
+        //    LOST_BEACON_TIMEOUT_DISABLED  - 0        - The value to use for disabling the lost beacon timeout.
+        static const uint16 TIME_BETWEEN_BURSTS_MAX_SECS = 0x7FFF;
+        static const uint16 BYTES_PER_DATALOG_PAGE = 264;
+        static const uint16 MIN_SLEEP_INTERVAL_EEVAL = 512;
+        static const uint16 MAX_SLEEP_INTERVAL_EEVAL = 7680;
+        static const uint16 MIN_LOST_BEACON_TIMEOUT = 2;
+        static const uint16 MAX_LOST_BEACON_TIMEOUT = 600;
+        static const uint16 LOST_BEACON_TIMEOUT_DISABLED = 0;
+        static const uint16 DEFAULT_SENSOR_DELAY_MILLI = 5;
+        static const uint16 MAX_SENSOR_DELAY_MILLI = 500;
+        static const uint16 DEFAULT_SENSOR_DELAY_MICRO = 5;
+        static const uint16 MAX_SENSOR_DELAY_MICRO = 500;
+        static const uint16 DEFAULT_SENSOR_DELAY_SEC = 5;
+        static const uint16 MAX_SENSOR_DELAY_SEC = 500;
 
     public:
         //Constructor: NodeEepromHelper
@@ -191,6 +198,16 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint64 read_dataStorageSize() const;
+
+        //Function: read_flashInfo
+        //  Gets the <FlashInfo> of the Node.
+        //  This assumes the Node supports the command to get this info.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        FlashInfo read_flashInfo() const;
 
         //Function: read_filter1
         //    Reads the specific filter 1 eeprom location.
@@ -378,29 +395,29 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::SyncSamplingMode read_syncSamplingMode() const;
 
-        //Function: write_samplingDelay
-        //    Writes the sampling delay to the Node.
+        //Function: write_sensorDelay
+        //    Writes the sensor delay to the Node.
         //
         //Parameters:
-        //    delay - The <TimeSpan> representing the sampling delay to write to the Node.
+        //    microseconds - The delay to write, in microseconds
         //
         //Exceptions:
         //    - <Error_NotSupported>: Unsupported eeprom location.
         //    - <Error_NodeCommunication>: Failed to write the value to the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void write_samplingDelay(TimeSpan delay);
+        void write_sensorDelay(uint32 microseconds);
 
-        //Function: read_samplingDelay
-        //    Reads the current sampling delay set on the Node.
+        //Function: read_sensorDelay
+        //    Reads the current sensor delay set on the Node.
         //
         //Returns:
-        //    A <TimeSpan> representing the sampling delay that is currently set on the Node.
+        //    The sensor delay, in microseconds.
         //
         //Exceptions:
         //    - <Error_NotSupported>: Unsupported eeprom location.
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        TimeSpan read_samplingDelay() const;
+        uint32 read_sensorDelay() const;
 
         //Function: write_retransmission
         //    Writes the retransmission option to the Node.
@@ -527,7 +544,7 @@ namespace mscl
         //    - <Error_NotSupported>: Linear Equation is not supported for the given <ChannelMask> or Node.
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void read_channelLinearEquation(const ChannelMask& mask, LinearEquation& result);
+        void read_channelLinearEquation(const ChannelMask& mask, LinearEquation& result) const;
 
         //Function: write_channelUnit
         //    Writes the unit for the specified <ChannelMask> to the Node.
@@ -787,20 +804,20 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_maxRetransPerBurst(uint16 maxReTxPerBurst);
 
-        //Function: read_hardwareGain
-        //    Reads the hardware gain for the specified <ChannelMask> from the Node.
+        //Function: read_inputRange
+        //    Reads the input range for the specified <ChannelMask> from the Node.
         //
         //Parameters:
-        //    mask - The <ChannelMask> to read the hardware gain for.
+        //    mask - The <ChannelMask> to read the input range for.
         //
         //Returns:
-        //    The hardware gain for the given <ChannelMask>.
+        //    The <WirelessTypes::InputRange> for the given <ChannelMask>.
         //
         //Exceptions:
-        //    - <Error_NotSupported>: Hardware gain is not supported for the given <ChannelMask> or Node.
+        //    - <Error_NotSupported>: Input Range is not supported for the given <ChannelMask> or Node.
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        double read_hardwareGain(const ChannelMask& mask) const;
+        WirelessTypes::InputRange read_inputRange(const ChannelMask& mask) const;
 
         //Function: read_hardwareOffset
         //    Reads the hardware offset for the specified <ChannelMask> from the Node.
@@ -817,18 +834,18 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint16 read_hardwareOffset(const ChannelMask& mask) const;
 
-        //Function: write_hardwareGain
-        //    Writes the hardware gain value for the specified <ChannelMask> to the Node.
+        //Function: write_inputRange
+        //    Writes the <WirelessTypes::InputRange> value for the specified <ChannelMask> to the Node.
         //
         //Parameters:
         //    mask - The <ChannelMask> to write the hardware gain for.
-        //    gain - The hardware gain value to write to the Node.
+        //    range - The <WirlessTypes::InputRange> value to write to the Node.
         //
         //Exceptions:
-        //    - <Error_NotSupported>: Hardware gain is not supported for the given <ChannelMask> or Node.
+        //    - <Error_NotSupported>: Input Range is not supported for the given <ChannelMask> or Node.
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void write_hardwareGain(const ChannelMask& mask, double gain);
+        void write_inputRange(const ChannelMask& mask, WirelessTypes::InputRange range);
 
         //Function: write_hardwareOffset
         //    Writes the hardware offset value for the specified <ChannelMask> to the Node.
@@ -843,33 +860,33 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_hardwareOffset(const ChannelMask& mask, uint16 offset);
 
-        //Function: read_lowPassFilter
-        //    Reads the low pass filter for the specified <ChannelMask> from the Node.
+        //Function: read_antiAliasingFilter
+        //    Reads the anti-aliasing filter for the specified <ChannelMask> from the Node.
         //
         //Parameters:
-        //    mask - The <ChannelMask> to read the low pass filter for.
+        //    mask - The <ChannelMask> to read the filter for.
         //
         //Returns:
-        //    The <WirelessTypes::Filter> representing the low pass filter for the given <ChannelMask>.
+        //    The <WirelessTypes::Filter> representing the anti-aliasing filter for the given <ChannelMask>.
         //
         //Exceptions:
-        //    - <Error_NotSupported>: Low Pass Filter is not supported for the given <ChannelMask> or Node.
+        //    - <Error_NotSupported>: Anti-Aliasing Filter is not supported for the given <ChannelMask> or Node.
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        WirelessTypes::Filter read_lowPassFilter(const ChannelMask& mask) const;
+        WirelessTypes::Filter read_antiAliasingFilter(const ChannelMask& mask) const;
 
-        //Function: write_lowPassFilter
-        //    Writes the low pass filter value for the specified <ChannelMask> to the Node.
+        //Function: write_antiAliasingFilter
+        //    Writes the anti-aliasing filter value for the specified <ChannelMask> to the Node.
         //
         //Parameters:
         //    mask - The <ChannelMask> to write the hardware offset for.
-        //    filter - The <WirelessTypes::Filter> representing the low pass filter value to write to the Node.
+        //    filter - The <WirelessTypes::Filter> representing the anti-aliasing filter value to write to the Node.
         //
         //Exceptions:
         //    - <Error_NotSupported>: Low Pass Filter is not supported for the given <ChannelMask> or Node.
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void write_lowPassFilter(const ChannelMask& mask, WirelessTypes::Filter filter);
+        void write_antiAliasingFilter(const ChannelMask& mask, WirelessTypes::Filter filter);
 
         //Function: read_gaugeFactor
         //    Reads the gauge factor for the specified <ChannelMask> from the Node.
@@ -1025,12 +1042,13 @@ namespace mscl
         //
         //Parameters:
         //  options - The <EventTriggerOptions> to write to the Node.
+        //  calibrations - The calibrations to use for legacy nodes when converting back to bits for the trigger value. (ignored for new nodes)
         //
         //Exceptions:
         //  - <Error_NotSupported>: Unsupported eeprom location.
         //  - <Error_NodeCommunication>: Failed to communicate with the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void write_eventTriggerOptions(const EventTriggerOptions& options);
+        void write_eventTriggerOptions(const EventTriggerOptions& options, const std::map<uint8, LinearEquation> calibrations);
 
         //Function: read_eventTriggerDurations
         //  Reads the pre and post durations for event trigger from the Node.

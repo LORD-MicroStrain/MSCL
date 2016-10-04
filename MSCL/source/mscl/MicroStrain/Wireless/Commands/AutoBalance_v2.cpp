@@ -73,6 +73,7 @@ namespace mscl
             case WirelessTypes::autobalance_success:
             case WirelessTypes::autobalance_maybeInvalid:
                 m_success = true;
+                break;
 
             default:
                 m_success = false;

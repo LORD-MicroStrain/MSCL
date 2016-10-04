@@ -214,7 +214,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_writeDataFormat)
     
     expectWrite(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(static_cast<uint16>(2)));
 
-    BOOST_CHECK_NO_THROW(node.eepromHelper().write_dataFormat(WirelessTypes::dataFormat_4byte_float));
+    BOOST_CHECK_NO_THROW(node.eepromHelper().write_dataFormat(WirelessTypes::dataFormat_cal_float));
 }
 
 BOOST_AUTO_TEST_CASE(NodeEepromHelper_readDataFormat)
@@ -230,7 +230,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_readDataFormat)
     uint16 val = 1;
     expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(val));
 
-    BOOST_CHECK_EQUAL(node.eepromHelper().read_dataFormat(), WirelessTypes::dataFormat_2byte_uint);
+    BOOST_CHECK_EQUAL(node.eepromHelper().read_dataFormat(), WirelessTypes::dataFormat_raw_uint16);
 }
 
 BOOST_AUTO_TEST_CASE(NodeEepromHelper_writeCollectionMode)

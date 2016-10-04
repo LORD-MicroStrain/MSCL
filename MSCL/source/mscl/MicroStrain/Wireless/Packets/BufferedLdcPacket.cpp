@@ -90,7 +90,7 @@ namespace mscl
             sweep.baseRssi(m_baseRSSI);
 
             //cals applied if the data type is float
-            sweep.calApplied(m_dataType == WirelessTypes::dataType_4ByteFloat);
+            sweep.calApplied(m_dataType == WirelessTypes::dataType_float32);
         
             ChannelData chData;
 

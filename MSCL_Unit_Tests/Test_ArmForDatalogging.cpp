@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(ArmForDatalogging_buildCommand_nomessage)
 BOOST_AUTO_TEST_CASE(ArmForDatalogging_buildCommand_withShortMessage)
 {
     std::string message = "Hello World";
-    uint16 messageLen = message.length();
+    uint16 messageLen = static_cast<uint16>(message.length());
     ByteStream result = ArmForDatalogging::buildCommand(123, message);
 
     uint8 sop = WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE;
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(ArmForDatalogging_buildCommand_withLongMessage)
 {
     std::string message = "This is a long message that will be truncated before it is sent to the node";
     std::string truncatedMessage = "This is a long message that will be truncated befo";
-    uint16 messageLen = truncatedMessage.length();
+    uint16 messageLen = static_cast<uint16>(truncatedMessage.length());
     ByteStream result = ArmForDatalogging::buildCommand(123, message);
 
     uint8 sop = WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE;

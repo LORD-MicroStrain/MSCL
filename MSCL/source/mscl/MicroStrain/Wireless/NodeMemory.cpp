@@ -9,133 +9,104 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    NodeMemory::NodeMemory(WirelessNode& node, uint16 logPage, uint16 pageOffset) :
+    NodeMemory::NodeMemory(WirelessNode& node) :
         m_node(node),
-        m_logPage(logPage),
-        m_pageOffset(pageOffset),
-        m_totalBytes(0),
-        m_currentPageNumber(0)
+        m_totalBytes(0)
     {
-        //if page offset >= PAGE_SIZE
-        if(m_pageOffset >= PAGE_SIZE)
-        {
-            //need to increment the log page by 1
-            m_logPage += 1;
-
-            //need to reduce the page offset by the PAGE_SIZE
-            m_pageOffset -= PAGE_SIZE;
-        }
-
-        //eeproms take up the first 2 pages
-        uint16 lastPage = 0;
-        if(m_logPage >= START_PAGE)
-        {
-            lastPage = m_logPage - START_PAGE;
-        }
-
-        //each physical page is equal to 1 virtual page. This has no bearing on how we access memory we just need to know this when calculating the size.
-        m_totalBytes = (lastPage * PAGE_SIZE) + (m_pageOffset);
     }
 
-    void NodeMemory::findPageAndOffset(uint64 bytePosition, uint16& page, uint16& offset) const
+    void NodeMemory::skipBytes(uint32 numBytesToSkip)
     {
-        //calculate the page and offset
-        page = static_cast<uint16>((bytePosition / PAGE_SIZE) + START_PAGE);
-        offset = bytePosition % PAGE_SIZE;
+        for(uint32 i = 0; i < numBytesToSkip; i++)
+        {
+            read_uint8();
+        }
     }
 
-    ByteStream* NodeMemory::getByteStream(uint16 page)
+    uint8 NodeMemory::read_uint8()
     {
-        //if the requested data is in the currently downloaded data buffer
-        if(page == m_currentPageNumber && !m_currentPageData.empty())
-        {
-            //just return the address of m_currentPageData
-            return &m_currentPageData;
-        }
-
-        //if the requested data is in the previously downloaded data buffer
-        if(page == m_previousPageNumber && !m_previousPageData.empty())
-        {
-            //just return the address of m_previousPageData
-            return &m_previousPageData;
-        }
-
-        //if we made it here, the page requested is data we don't already have
-
-        //request the current page data
-        ByteStream tempData;
-        if(!m_node.getBaseStation().node_pageDownload(m_node.protocol(), m_node.nodeAddress(), page, tempData))
-        {
-            //the page download failed, throw an exception
-            throw Error_NodeCommunication(m_node.nodeAddress(), "Failed to download data from the Node.");
-        }
-
-        //if there is current data that needs move to previous data
-        if(!m_currentPageData.empty())
-        {
-            //copy the current data into the previous data buffer
-            m_previousPageData.clear();
-            m_previousPageData = m_currentPageData;
-            m_previousPageNumber = m_currentPageNumber;
-        }
-
-        //copy the data that was just read into m_currentPageData
-        m_currentPageData = tempData;
-        m_currentPageNumber = page;
-
-        //we successfully downloaded data that is in m_currentPageData
-        return &m_currentPageData;
+        //read the single byte from Node's memory
+        return nextByte();
     }
 
-    void NodeMemory::findData(uint64 bytePosition, ByteStream** data, uint16& offset)
+    uint16 NodeMemory::read_uint16(Utils::Endianness endian /*= Utils::bigEndian*/)
     {
-        //check if we are trying to read outside the bounds of logged data
-        if(bytePosition > m_totalBytes)
-        {
-            throw Error_NoData("There is no more data available to download from the Node.");
-        }
+        //read single bytes from the Node's memory
+        uint8 b1 = nextByte();
+        uint8 b2 = nextByte();
 
-        //find the page and offset from the byte position
-        uint16 page = 0;
-        findPageAndOffset(bytePosition, page, offset);
-
-        //get the ByteStream data to read
-        *data = getByteStream(page);
+        //build into a uint16 and return
+        return Utils::make_uint16(b1, b2, endian);
     }
 
-    uint8 NodeMemory::at(uint64 bytePosition)
+    uint32 NodeMemory::read_uint24(Utils::Endianness endian /*= Utils::bigEndian*/)
     {
-        ByteStream* data = nullptr;
-        uint16 offset = 0;
+        //read single bytes from the Node's memory
+        uint8 b1 = nextByte();
+        uint8 b2 = nextByte();
+        uint8 b3 = nextByte();
 
-        //find the data to read from
-        findData(bytePosition, &data, offset);
-
-        //read the data starting at the offset
-        return data->read_uint8(offset);
+        //build into a uint32 and return
+        if(endian == Utils::Endianness::bigEndian)
+        {
+            return Utils::make_uint32(0, b1, b2, b3, endian);
+        }
+        else
+        {
+            return Utils::make_uint32(b1, b2, b3, 0, endian);
+        }
     }
 
-    uint64 NodeMemory::bytesRemaining(uint64 currentByte) const
+    uint32 NodeMemory::read_uint32(Utils::Endianness endian /*= Utils::bigEndian*/)
     {
-        //if the current byte is past the end of the total bytes
-        if(currentByte > m_totalBytes)
-        {
-            //no bytes remaining
-            return 0;
-        }
+        //read single bytes from the Node's memory
+        uint8 b1 = nextByte();
+        uint8 b2 = nextByte();
+        uint8 b3 = nextByte();
+        uint8 b4 = nextByte();
 
-        //return the difference between the total bytes and the current byte
-        return m_totalBytes - currentByte;
+        //build into a uint32 and return
+        return Utils::make_uint32(b1, b2, b3, b4, endian);
     }
 
-    float NodeMemory::percentComplete(uint64 currentByte) const
+    uint64 NodeMemory::read_uint64(Utils::Endianness endian /*= Utils::bigEndian*/)
     {
-        //if we have completed
-        if(currentByte > m_totalBytes)
+        //read single bytes from the Node's memory
+        uint8 b1 = nextByte();
+        uint8 b2 = nextByte();
+        uint8 b3 = nextByte();
+        uint8 b4 = nextByte();
+        uint8 b5 = nextByte();
+        uint8 b6 = nextByte();
+        uint8 b7 = nextByte();
+        uint8 b8 = nextByte();
+
+        return Utils::make_uint64(b1, b2, b3, b4, b5, b6, b7, b8, endian);
+    }
+
+    float NodeMemory::read_float(Utils::Endianness endian /*= Utils::bigEndian*/)
+    {
+        //read single bytes from the Node's memory
+        uint8 b1 = nextByte();
+        uint8 b2 = nextByte();
+        uint8 b3 = nextByte();
+        uint8 b4 = nextByte();
+
+        //build into a float and return
+        return Utils::make_float(b1, b2, b3, b4, endian);
+    }
+
+    std::string NodeMemory::read_string(uint32 length)
+    {
+        std::string result;
+
+        //read 1 byte for the length of the string
+        for(uint32 itr = 0; itr < length; ++itr)
         {
-            return 100.0;
+            //append the characters to the string
+            result.append(1, nextByte());
         }
 
-        return (static_cast<float>(currentByte) / static_cast<float>(m_totalBytes)) * 100.0f;
+        return result;
     }
 }

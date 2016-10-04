@@ -12,11 +12,11 @@ namespace mscl
     Trigger::Trigger():
         m_channelNumber(1),
         m_type(WirelessTypes::eventTrigger_floor),
-        m_value(0)
+        m_value(0.0f)
     {
     }
 
-    Trigger::Trigger(uint8 channelNumber, WirelessTypes::EventTriggerType triggerType, uint16 triggerValue):
+    Trigger::Trigger(uint8 channelNumber, WirelessTypes::EventTriggerType triggerType, float triggerValue):
         m_channelNumber(channelNumber),
         m_type(triggerType),
         m_value(triggerValue)
@@ -43,12 +43,12 @@ namespace mscl
         m_type = type;
     }
 
-    uint16 Trigger::triggerValue() const
+    float Trigger::triggerValue() const
     {
         return m_value;
     }
 
-    void Trigger::triggerValue(uint16 value)
+    void Trigger::triggerValue(float value)
     {
         m_value = value;
     }

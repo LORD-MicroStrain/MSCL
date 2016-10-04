@@ -79,7 +79,7 @@ namespace mscl
             //    Attempts to cancel the Stop Node operation.
             //
             //Exceptions:
-            //    - <Error_Communication>: Failed to cancel the Stop Node operation.
+            //    - <Error_Connection>: A connection error has occurred when trying to cancel.
             void cancel();
 
             //Function: result

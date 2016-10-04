@@ -18,7 +18,7 @@ namespace mscl
         cmd.append_uint8(0x00);                              //App Data Type
         cmd.append_uint16(nodeAddress);                      //Node address    (2 bytes)
         cmd.append_uint8(0x02);                              //Payload length
-        cmd.append_uint16(WirelessProtocol::cmdId_startLdc); //Command ID    (2 bytes)
+        cmd.append_uint16(WirelessProtocol::cmdId_startLdc_v1); //Command ID    (2 bytes)
 
         //calculate the checksum of bytes 2-10
         uint16 checksum = cmd.calculateSimpleChecksum(1, 7);

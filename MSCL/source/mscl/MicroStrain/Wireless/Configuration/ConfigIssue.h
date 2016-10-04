@@ -32,7 +32,7 @@ namespace mscl
         //  CONFIG_FILTER_SETTLING_TIME         - 9  - Filter Settling Time
         //  CONFIG_BUTTON                       - 10 - Button configuration (BaseStation)
         //  CONFIG_ANALOG_PAIR                  - 11 - Analog pairing (BaseStation)
-        //  CONFIG_HARDWARE_GAIN                - 12 - Hardware Gain
+        //  CONFIG_INPUT_RANGE                  - 12 - Input Range
         //  CONFIG_INACTIVITY_TIMEOUT           - 13 - Inactivity Timeout
         //  CONFIG_CHECK_RADIO_INTERVAL         - 14 - Check Radio Interval
         //  CONFIG_LOST_BEACON_TIMEOUT          - 15 - Lost Beacon Timeout
@@ -54,8 +54,9 @@ namespace mscl
         //  CONFIG_EVENT_TRIGGER_DURATION       - 31 - Event Trigger - Total Duration
         //  CONFIG_EVENT_TRIGGER_MASK           - 32 - Event Trigger - Trigger Mask
         //  CONFIG_DIAGNOSTIC_INTERVAL          - 33 - Diagnostic Info Interval
-        //  CONFIG_LOW_PASS_FILTER              - 34 - Low Pass Filter
+        //  CONFIG_ANTI_ALIASING_FILTER         - 34 - Anti-Aliasing Filter
         //  CONFIG_STORAGE_LIMIT_MODE           - 35 - Storage Limit Mode
+        //  CONFIG_SENSOR_DELAY                 - 36 - Sensor Delay
         enum ConfigOption
         {
             CONFIG_SAMPLING_MODE               = 0,
@@ -70,7 +71,7 @@ namespace mscl
             CONFIG_FILTER_SETTLING_TIME        = 9,
             CONFIG_BUTTON                      = 10,
             CONFIG_ANALOG_PAIR                 = 11,
-            CONFIG_HARDWARE_GAIN               = 12,
+            CONFIG_INPUT_RANGE                 = 12,
             CONFIG_INACTIVITY_TIMEOUT          = 13,
             CONFIG_CHECK_RADIO_INTERVAL        = 14,
             CONFIG_LOST_BEACON_TIMEOUT         = 15,
@@ -92,8 +93,9 @@ namespace mscl
             CONFIG_EVENT_TRIGGER_DURATION      = 31,
             CONFIG_EVENT_TRIGGER_MASK          = 32,
             CONFIG_DIAGNOSTIC_INTERVAL         = 33,
-            CONFIG_LOW_PASS_FILTER             = 34,
-            CONFIG_STORAGE_LIMIT_MODE          = 35
+            CONFIG_ANTI_ALIASING_FILTER        = 34,
+            CONFIG_STORAGE_LIMIT_MODE          = 35,
+            CONFIG_SENSOR_DELAY                = 36
         };
 
         ConfigIssue();    //default constructor

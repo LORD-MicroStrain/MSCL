@@ -69,40 +69,25 @@ namespace mscl
         //create a lock for thread safety
         mutex_lock_guard lock(m_setToIdleMutex);
 
-        bool done = false;
-        while(!done)
+        uint16 response = data.read_uint16();
+
+        //response of 0x9001 is a success response
+        if(response == 0x9001)
         {
-            uint8 response = data.read_uint8();
-            uint8 response2 = data.peekByte();    //only want to peek in case it isn't right and then the next loop we want to look at it again
-
-            //response of 0x9001 is a success response
-            if(response == 0x90 && (response2 == 0x01))
-            {
-                //consume the byte we peeked at
-                data.read_uint8();
-
-                //success response
-                m_result = SetToIdleStatus::setToIdleResult_success;
-                m_success = true;
-                done = true;
-            }
-            //response of 0x2101 is a canceled response
-            else if(response == 0x21 && (response2 == 0x01))
-            {
-                //fail/canceled response
-                m_result = SetToIdleStatus::setToIdleResult_canceled;
-                done = true;
-            }
-            //some other bytes
-            else
-            {
-                //if we don't have enough bytes left to check
-                if(data.bytesRemaining() < TOTAL_BYTES)
-                {
-                    //no match found, just return
-                    return false;
-                }
-            }
+            //success response
+            m_result = SetToIdleStatus::setToIdleResult_success;
+            m_success = true;
+        }
+        //response of 0x2101 is a canceled response
+        else if(response == 0x2101)
+        {
+            //fail/canceled response
+            m_result = SetToIdleStatus::setToIdleResult_canceled;
+        }
+        else
+        {
+            //no match found, just return
+            return false;
         }
 
         //if we made it this far, the bytes match the expected response (success or fail)
@@ -132,14 +117,14 @@ namespace mscl
         static const Bytes cancel{0x01};
         m_baseStation.connection().write(cancel);
         
-        //wait for the response to be met (trying to match the "canceled" response)
-        if(!wait(m_baseStation.timeout() + 100))
+        //retry to cancel a few times unless the status changes
+        const uint8 MAX_RETRIES = 3;
+        uint8 retryCount = 0;
+        while(m_result == SetToIdleStatus::setToIdleResult_notCompleted && retryCount <= MAX_RETRIES)
         {
-            throw Error_Communication("Failed to cancel the Set to Idle operation.");
-        }
-        else
-        {
-            m_result = SetToIdleStatus::setToIdleResult_canceled;
+            Utils::threadSleep(100);
+            m_baseStation.connection().write(cancel);
+            retryCount++;
         }
     }
 

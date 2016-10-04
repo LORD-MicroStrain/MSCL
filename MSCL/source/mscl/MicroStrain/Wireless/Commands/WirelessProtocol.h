@@ -15,6 +15,8 @@ namespace mscl
 {
     //forward declarations
     class BaseStation_Impl;
+    class Version;
+    struct DatalogSessionInfoResult;
 
     //Class: WirelessProtocol
     //    Class containing protocol information for a device.
@@ -24,96 +26,112 @@ namespace mscl
         friend class NodeEeprom;
 
     private:
-        WirelessProtocol();                                        //default constructor disabled
-        WirelessProtocol(const WirelessProtocol&);                //copy constructor disabled
-        WirelessProtocol& operator=(const WirelessProtocol&);    //assignment operator disabled
+        WirelessProtocol();
+        WirelessProtocol(const WirelessProtocol&) = delete;             //copy constructor disabled
+        WirelessProtocol& operator=(const WirelessProtocol&) = delete;  //assignment operator disabled
 
         //Variable: m_pingBase
-        //    The function pointer for the Ping BaseStation protocol command.
+        //  The function pointer for the Ping BaseStation protocol command.
         std::function<bool(BaseStation_Impl*)> m_pingBase;
 
         //Variable: m_readBaseEeprom
-        //    The function pointer for the Read BaseStation EEPROM protocol command.
+        //  The function pointer for the Read BaseStation EEPROM protocol command.
         std::function<bool(BaseStation_Impl*, uint16, uint16&)> m_readBaseEeprom;
 
         //Variable: m_writeBaseEeprom
-        //    The function pointer for the Write BaseStation EEPROM protocol command.
+        //  The function pointer for the Write BaseStation EEPROM protocol command.
         std::function<bool(BaseStation_Impl*, uint16, uint16)> m_writeBaseEeprom;
 
         //Variable: m_enableBeacon
-        //    The function pointer for the Enable Beacon protocol command.
+        //  The function pointer for the Enable Beacon protocol command.
         std::function<Timestamp(BaseStation_Impl*, uint32)> m_enableBeacon;
 
         //Variable: m_beaconStatus
-        //    The function pointer for the Beacon Status protocol command.
+        //  The function pointer for the Beacon Status protocol command.
         std::function<BeaconStatus(BaseStation_Impl*)> m_beaconStatus;
 
         //Variable: m_startRfSweep
-        //    The function pointer for the Start RF Sweep Mode protocol command.
+        //  The function pointer for the Start RF Sweep Mode protocol command.
         std::function<void(BaseStation_Impl*, uint32, uint32, uint32, uint16)> m_startRfSweep;
 
         //Variable: m_shortPing
-        //    The function pointer for the Short Ping Node protocol command.
+        //  The function pointer for the Short Ping Node protocol command.
         std::function<bool(BaseStation_Impl*, NodeAddress)> m_shortPing;
 
         //Variable: m_readNodeEeprom
-        //    The function pointer for the Read Node Eeprom protocol command.
+        //  The function pointer for the Read Node Eeprom protocol command.
         std::function<bool(BaseStation_Impl*, NodeAddress, uint16, uint16&)> m_readNodeEeprom;
 
         //Variable: m_writeNodeEeprom
-        //    The function pointer for the Write Node Eeprom protocol command.
+        //  The function pointer for the Write Node Eeprom protocol command.
         std::function<bool(BaseStation_Impl*, NodeAddress, uint16, uint16)> m_writeNodeEeprom;
 
         //Variable: m_pageDownload
-        //    The function pointer for the Node Page Download protocol command.
+        //  The function pointer for the Node Page Download protocol command.
         std::function<bool(BaseStation_Impl*, NodeAddress, uint16, ByteStream&)> m_pageDownload;
 
         //Variable: m_autoBalance
-        //    The function pointer for the Node AutoBalance protocol command.
+        //  The function pointer for the Node AutoBalance protocol command.
         std::function<bool(BaseStation_Impl*, NodeAddress, uint8, float, AutoBalanceResult&)> m_autoBalance;
 
         //Variable: m_erase
-        //    The function pointer for the Node Erase protocol command.
+        //  The function pointer for the Node Erase protocol command.
         std::function<bool(BaseStation_Impl*, NodeAddress)> m_erase;
+
+        //Variable: m_datalogSessionInfo
+        //  The function pointer for the Node Datalog Session Info protocol command.
+        std::function<bool(BaseStation_Impl*, NodeAddress, DatalogSessionInfoResult&)> m_datalogSessionInfo;
+
+        //Variable: m_getDatalogData
+        //  The function pointer for the Get Node Datalog Data protocol command.
+        std::function<bool(BaseStation_Impl*, NodeAddress, uint32, ByteStream&)> m_getDatalogData;
+
+        //Variable: m_startNonSyncSampling
+        //  The function pointer for the Start Non Sync Sampling protocol command.
+        std::function<bool(BaseStation_Impl*, NodeAddress)> m_startNonSyncSampling;
 
     public:
         //Constant: BASE_STATION_ADDRESS
-        //    The address of our generic Base Station.
+        //  The address of our generic Base Station.
         static const uint16 BASE_STATION_ADDRESS = 0x1234;
 
         //Function: chooseBaseStationProtocol
-        //    Returns the correct protocol version based on the Base Station's firmware vesrion.
+        //  Returns the correct protocol version based on the Base Station's firmware vesrion.
         //
         //Parameters:
-        //    fwVersion - The firmware version of the Base Station.
+        //  fwVersion - The firmware version of the Base Station.
         static std::unique_ptr<WirelessProtocol> chooseBaseStationProtocol(const Version& fwVersion);
 
         //Function: chooseBaseStationProtocol
-        //    Returns the correct protocol version based on the Wireless Node's firmware vesrion.
+        //  Returns the correct protocol version based on the Wireless Node's firmware vesrion.
         //
         //Parameters:
-        //    fwVersion - The firmware version of the Node.
+        //  fwVersion - The firmware version of the Node.
         static std::unique_ptr<WirelessProtocol> chooseNodeProtocol(const Version& fwVersion);
 
         //Function: v1_0
-        //    Static function to create a WirelessProtocol with version 1.0.
+        //  Static function to create a WirelessProtocol with version 1.0.
         static std::unique_ptr<WirelessProtocol> v1_0();
 
         //Function: v1_1
-        //    Static function to create a WirelessProtocol with version 1.1.
+        //  Static function to create a WirelessProtocol with version 1.1.
         static std::unique_ptr<WirelessProtocol> v1_1();
 
         //Function: v1_2
-        //    Static function to create a WirelessProtocol with version 1.2.
+        //  Static function to create a WirelessProtocol with version 1.2.
         static std::unique_ptr<WirelessProtocol> v1_2();
 
         //Function: v1_3
-        //    Static function to create a WirelessProtocol with version 1.3.
+        //  Static function to create a WirelessProtocol with version 1.3.
         static std::unique_ptr<WirelessProtocol> v1_3();
 
         //Function: v1_4
-        //    Static function to create a WirelessProtocol with version 1.4.
+        //  Static function to create a WirelessProtocol with version 1.4.
         static std::unique_ptr<WirelessProtocol> v1_4();
+
+        //Function: v1_5
+        //  Static function to create a WirelessProtocol with version 1.5.
+        static std::unique_ptr<WirelessProtocol> v1_5();
 
     public:
         //Enums: CommandID
@@ -130,16 +148,18 @@ namespace mscl
         //  cmdId_erase                 - 0x06      - Erase (v1)
         //  cmdId_readEeprom_v2         - 0x0007    - Read Eeprom (v2)
         //  cmdId_writeEeprom_v2        - 0x0008    - Write Eeprom (v2)
+        //  cmdId_getDiagInfo           - 0x0009    - Get Diagnostic Info
         //  cmdId_armForDatalog         - 0x000D    - Arm for Datalogging
         //  cmdId_triggerArmedLog       - 0x000E    - Trigger Armed Datalogging
         //  cmdId_shortPing_v2          - 0x0012    - Short Ping (v2)
-        //  cmdId_logSessionInfo        - 0x0020    - Get the Logged Session Info
-        //  cmdId_getLogData            - 0x0021    - Get Logged Data
-        //  cmdId_erase_v2              - 0x0022    - Erase Logged Data
         //  cmdId_sleep                 - 0x32      - Sleep
         //  cmdId_startStreaming        - 0x38      - Start Streaming
-        //  cmdId_startLdc              - 0x0038    - Start Low Duty Cycle
+        //  cmdId_startLdc_v1           - 0x0038    - Start Low Duty Cycle (v1)
+        //  cmdId_startLdc_v2           - 0x0039    - Start Low Duty Cycle (v2)
         //  cmdId_startSync             - 0x003B    - Start Sync Sampling
+        //  cmdId_logSessionInfo        - 0x0040    - Get the Logged Session Info
+        //  cmdId_getLogData            - 0x0041    - Get Logged Data
+        //  cmdId_erase_v2              - 0x0042    - Erase Logged Data
         //  cmdId_autoBalance_v1        - 0x62      - Auto Balance (v1)
         //  cmdId_autoCal               - 0x0064    - Auto Calibrate
         //  cmdId_autoBalance_v2        - 0x0065    - Auto Balance (v2)
@@ -165,16 +185,18 @@ namespace mscl
             cmdId_erase                 = 0x06,
             cmdId_readEeprom_v2         = 0x0007,
             cmdId_writeEeprom_v2        = 0x0008,
+            cmdId_getDiagInfo           = 0x0009,
             cmdId_armForDatalog         = 0x000D,
             cmdId_triggerArmedLog       = 0x000E,
             cmdId_shortPing_v2          = 0x0012,
-            cmdId_logSessionInfo        = 0x0020,
-            cmdId_getLogData            = 0x0021,
-            cmdId_erase_v2              = 0x0022,
             cmdId_sleep                 = 0x32,
             cmdId_startStreaming        = 0x38,
-            cmdId_startLdc              = 0x0038,
+            cmdId_startLdc_v1           = 0x0038,
+            cmdId_startLdc_v2           = 0x0039,
             cmdId_startSync             = 0x003B,
+            cmdId_logSessionInfo        = 0x0040,
+            cmdId_getLogData            = 0x0041,
+            cmdId_erase_v2              = 0x0042,
             cmdId_autoBalance           = 0x62,
             cmdId_autoCal               = 0x0064,
             cmdId_autoBalance_v2        = 0x0065,

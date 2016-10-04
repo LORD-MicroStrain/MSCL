@@ -69,7 +69,7 @@ namespace mscl
         std::size_t result = (m_appendPosition - m_readPosition);
 
         //make sure not negative
-        assert(result >= 0);
+        assert(m_readPosition <= m_appendPosition);
 
         return result;
     }
@@ -323,16 +323,28 @@ namespace mscl
         }
 
         //create a BufferWriter using the current DataBuffer's information
-        return BufferWriter(    writeBuffer, 
-                                writeBufferSize,
-                                &m_appendPosition
-                            );
+        return BufferWriter(writeBuffer, 
+                            writeBufferSize,
+                            &m_appendPosition);
     }
 
     void DataBuffer::resetBuffer()
     {
         m_appendPosition = 0;
         m_readPosition = 0;
+    }
+
+    Bytes DataBuffer::bytesToRead() const
+    {
+        Bytes result;
+
+        //push all the bytes in the buffer into the circular buffer
+        for(size_t byteItr = m_readPosition; byteItr < m_appendPosition; ++byteItr)
+        {
+            result.push_back(m_data.read_uint8(byteItr));
+        }
+
+        return result;
     }
 
     //============================================================

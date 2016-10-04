@@ -27,7 +27,7 @@ namespace mscl
         DataBuffer bytes(field.fieldData());
 
         //get the filter state
-        uint16 filterState = bytes.read_int16();
+        uint16 filterState = bytes.read_uint16();
 
         //get the dynamics mode
         uint16 dynamicsMode = bytes.read_uint16();

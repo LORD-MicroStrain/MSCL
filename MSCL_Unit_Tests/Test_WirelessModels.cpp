@@ -41,7 +41,6 @@ BOOST_AUTO_TEST_CASE(WirelessModels_nodeFromLegacyModel)
     BOOST_CHECK_EQUAL(WirelessModels::nodeFromLegacyModel(2434), WirelessModels::node_tcLink_6ch_ip67);
     BOOST_CHECK_EQUAL(WirelessModels::nodeFromLegacyModel(2429), WirelessModels::node_shmLink);
     BOOST_CHECK_EQUAL(WirelessModels::nodeFromLegacyModel(2993), WirelessModels::node_envLink_pro);
-    BOOST_CHECK_EQUAL(WirelessModels::nodeFromLegacyModel(2431), WirelessModels::node_sgLink_8ch);
 
     BOOST_CHECK_EQUAL(WirelessModels::nodeFromLegacyModel(0), 0);
 }

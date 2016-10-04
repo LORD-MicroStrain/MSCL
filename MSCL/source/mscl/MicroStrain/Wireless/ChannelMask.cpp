@@ -19,6 +19,26 @@ namespace mscl
     {
     }
 
+    bool ChannelMask::operator==(const ChannelMask& other) const
+    {
+        return BitMask::operator==(other);
+    }
+
+    bool ChannelMask::operator!=(const ChannelMask& other) const
+    {
+        return BitMask::operator!=(other);
+    }
+
+    bool ChannelMask::operator<(const ChannelMask& other) const
+    {
+        return BitMask::operator<(other);
+    }
+
+    bool ChannelMask::operator>(const ChannelMask& other) const
+    {
+        return BitMask::operator>(other);
+    }
+
     void ChannelMask::fromMask(uint16 channelMask)
     {
         BitMask::fromMask(channelMask);

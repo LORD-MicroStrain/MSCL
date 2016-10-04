@@ -26,7 +26,8 @@ namespace mscl
 
 
     BaseStation_ReadEeprom::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        ResponsePattern(collector)
+        ResponsePattern(collector),
+        m_result(0)
     {
     }
 

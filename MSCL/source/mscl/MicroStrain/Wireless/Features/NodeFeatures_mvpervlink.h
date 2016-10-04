@@ -25,12 +25,14 @@ namespace mscl
 
         virtual bool supportsLimitedDuration() const;
 
+        virtual bool supportsSensorDelayConfig() const override;
+
         virtual const WirelessTypes::DataCollectionMethods dataCollectionMethods() const final;
 
         virtual const WirelessTypes::DataFormats dataFormats() const final;
 
         virtual const WirelessTypes::SamplingModes samplingModes() const final;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode) const final;
+        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const final;
     };
 }

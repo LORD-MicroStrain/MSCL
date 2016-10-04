@@ -10,6 +10,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include <string>
 #include <memory>
 #include "mscl/Types.h"
+#include "ConnectionDebugData.h"
 
 namespace mscl
 {
@@ -69,7 +70,7 @@ namespace mscl
         //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
         static Connection TcpIp(const std::string& serverAddress, uint16 serverPort);
         
-#ifdef UNIX_SOCKETS
+#ifdef UNIX_BUILD
         //API Function: UnixSocket
         //    A generator function for <Connection> objects with a <UnixSocketConnection> implementation (Unix builds only).
         //    A connection with the specified path will be established.
@@ -215,6 +216,33 @@ namespace mscl
         //Exceptions:
         //    - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
         std::string getRawBytesStr(uint32 timeout = 0, uint32 maxBytes = 0);
+
+        //API Function: debugMode
+        //  Puts the connection into "Debug Mode." 
+        //  "Debug Mode Mode" adds an additional container that gets filled when any write or read operations occur.
+        //  Once debug mode is enabled, you can access this data with the <getDebugData> function.
+        //  This does not interfere with standard data collection.
+        //
+        //Parameters:
+        //  enable - whether to enable debug mode (true), or disable debug mode (false).
+        //
+        //Exceptions:
+        //  - <Error_Connection>: The connection has been disconnected.
+        void debugMode(bool enable);
+
+        //API Function: getDebugData
+        //  Gets the <ConnectionDebugData> that have been collected when the Connection is in "Debug Mode."
+        //  If the Connection has not been put into "Debug Mode" by calling <debugMode>, no data can be retrieved from this function.
+        //
+        //Parameters:
+        //  timeout - the timeout, in milliseconds, to wait for the data if necessary (default of 0).
+        //
+        //Returns:
+        //  A <ConnectionDebugDataVec> containing all of the <ConnectionDebugData> that is available.
+        //
+        //Exceptions:
+        //  - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
+        ConnectionDebugDataVec getDebugData(uint32 timeout = 0);
     };
 
 }

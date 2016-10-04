@@ -15,15 +15,25 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
     class WirelessPacket;
+    struct ShuntCalCmdInfo;
 
     //Class: AutoCal
     //    Contains logic for the AutoCal Node command.
     class AutoCal
     {
     private:
-        AutoCal();                                //default constructor disabled
+        AutoCal();                              //default constructor disabled
         AutoCal(const AutoCal&);                //copy constructor disabled
-        AutoCal& operator=(const AutoCal&);        //assignment operator disabled 
+        AutoCal& operator=(const AutoCal&);     //assignment operator disabled
+
+    public:
+        //Enum: AutoCalType
+        //  The types of autocal that are available.
+        enum AutoCalType
+        {
+            calType_shm = 0,
+            calType_shunt = 1
+        };
 
     public:
         //Function: buildCommand_shmLink
@@ -36,6 +46,17 @@ namespace mscl
         //    A <ByteStream> containing the command packet.
         static ByteStream buildCommand_shmLink(NodeAddress nodeAddress);
 
+        //Function: buildCommand_shuntCal
+        //  Builds the AutoCal command packet for shunt calibration.
+        //
+        //Parameters:
+        //  nodeAddress - The address of the Node to build the command for.
+        //  info - The <ShuntCalCmdInfo> containing all the data for the command.
+        //
+        //Returns:
+        //    A <ByteStream> containing the command packet.
+        static ByteStream buildCommand_shuntCal(NodeAddress nodeAddress, const ShuntCalCmdInfo& info, uint8 chNum, WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType chType);
+
         //Class: Response
         //    Handles the response to the LongPing Node command
         class Response : public ResponsePattern
@@ -46,23 +67,17 @@ namespace mscl
             //
             //Parameters:
             //    nodeAddress - The node address to check for.
-            //    model - The <WirelessModels::NodeModel> of the Node we are expecting a response for.
-            //    fwVersion - The firmware version of the Node we are expecting a response for.
             //    collector - The <ResponseCollector> used to register and unregister the response.
-            Response(NodeAddress nodeAddress, WirelessModels::NodeModel model, const Version& fwVersion, std::weak_ptr<ResponseCollector> collector);
+            Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, AutoCalType type);
 
-        private:
+        protected:
             //Variable: m_nodeAddress
             //    The node address to look for in the response.
             NodeAddress m_nodeAddress;
 
-            //Variable: m_model
-            //    The <WirelessModels::NodeModel> of the Node we are expecting a response for.
-            WirelessModels::NodeModel m_model;
-
-            //Variable: m_fwVersion
-            //    The firmware version of the Node we are expecting a response for.
-            Version m_fwVersion;
+            //Variable: m_calType
+            //  The type of autocal we are performing.
+            AutoCalType m_calType;
 
             //Variable: m_calStarted
             //    Whether the AutoCal has been successfully started or not (as reported by the Node).
@@ -130,15 +145,45 @@ namespace mscl
             //    true if the packet matches the Node Received packet, false otherwise.
             bool match_nodeReceived(const WirelessPacket& packet);
 
-            //Function: match_shmLink
-            //    Checks if the <WirelessPacket> matches the SHM-Link AutoCal packet.
+        protected:
+            virtual bool match_shmLink(const WirelessPacket& packet);
+            virtual bool match_shuntCal(const WirelessPacket& packet);
+        };
+
+        class ShmResponse : public AutoCal::Response
+        {
+        public:
+            //Constructor: ShmResponse
+            //  Creates an SHM Autocal Response object
             //
             //Parameters:
-            //    packet - The <WirelessPacket> to try to match.
+            //  nodeAddress - The node address to check for.
+            //  collector - The <ResponseCollector> used to register and unregister the response.
+            ShmResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector);
+
+        protected:
+            virtual bool match_shmLink(const WirelessPacket& packet) override;
+        };
+
+        class ShuntCalResponse : public AutoCal::Response
+        {
+        public:
+            //Constructor: ShuntCalResponse
+            //  Creates a Shunt Cal Autocal Response object
             //
-            //Returns:
-            //    true if the packet matches the SHM-Link AutoCal packet, false otherwise.
-            bool match_shmLink(const WirelessPacket& packet);
+            //Parameters:
+            //  nodeAddress - The node address to check for.
+            //  collector - The <ResponseCollector> used to register and unregister the response.
+            //  channelNumber - The channel number to match in the response
+            ShuntCalResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, uint8 channelNumber);
+
+        private:
+            //Variable: m_channelNumber
+            //  The channel number to match in the response.
+            uint8 m_channelNumber;
+
+        protected:
+            virtual bool match_shuntCal(const WirelessPacket& packet) override;
         };
     };
 }

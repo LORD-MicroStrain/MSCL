@@ -40,7 +40,6 @@ namespace mscl
         case 2429:    return node_shmLink;
 
         case 2993:    return node_envLink_pro;
-        case 2431:    return node_sgLink_8ch;
 
         default:
             //don't know the model, just cast to a wireless model and return

@@ -36,6 +36,10 @@ namespace mscl
         //  The default constructor for creating a BitMask object, which sets all the bits to inactive.
         BitMask();
 
+        //API Destructor: ~BitMask
+        //  Destroys a BitMask object.
+        virtual ~BitMask() {};
+
         //API Operator: ==
         //  Equal operator for comparing BitMasks.
         virtual bool operator==(const BitMask& other) const;

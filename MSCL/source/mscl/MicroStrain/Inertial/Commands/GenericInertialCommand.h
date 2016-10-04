@@ -34,7 +34,7 @@ namespace mscl
         //    success - Whether or not the command was a success.
         //    errorCode - The MIP Ack/Nack error code received.
         //    cmdName - The name of the command.
-        //    data - The <ByteStream that holds the result data from the response (if any).
+        //    data - The <ByteStream> that holds the result data from the response (if any).
         GenericInertialCommandResponse(ResponsePattern::State state, bool success, InertialPacket::MipAckNack errorCode, std::string cmdName, ByteStream data);
 
 #ifndef SWIG
@@ -48,7 +48,7 @@ namespace mscl
         //
         //Returns:
         //    A <GenericInertialCommandResponse> representing a success response from the command.
-        static GenericInertialCommandResponse ResponseSuccess(std::string cmdName, ByteStream data = ByteStream());
+        static GenericInertialCommandResponse ResponseSuccess(const std::string& cmdName, ByteStream data = ByteStream());
 
         //Function: ResponseFail
         //    Creates a GenericInertialCommandResponse with a fail response.
@@ -60,7 +60,7 @@ namespace mscl
         //
         //Returns:
         //    A <GenericInertialCommandResponse> representing a failed response from the command.
-        static GenericInertialCommandResponse ResponseFail(ResponsePattern::State errorState, InertialPacket::MipAckNack errorCode, std::string cmdName);
+        static GenericInertialCommandResponse ResponseFail(ResponsePattern::State errorState, InertialPacket::MipAckNack errorCode, const std::string& cmdName);
 #endif
 
     private:
@@ -105,7 +105,7 @@ namespace mscl
         //
         //Returns:
         //    A <ByteStream> containing the Inertial command packet built from the given bytes
-        static ByteStream buildCommand(uint8 descSetByte, uint8 cmdByte, Bytes fieldData = Bytes());
+        static ByteStream buildCommand(uint8 descSetByte, uint8 cmdByte, const Bytes& fieldData = Bytes());
 
         //Function: buildCommand
         //    Builds the command for an Inertial command, and returns a ByteStream containing the bytes to send
@@ -116,7 +116,7 @@ namespace mscl
         //
         //Returns:
         //    A <ByteStream> containing the Inertial command packet built from the given bytes
-        static ByteStream buildCommand(InertialTypes::Command commandId, Bytes fieldData = Bytes());
+        static ByteStream buildCommand(InertialTypes::Command commandId, const Bytes& fieldData = Bytes());
 
         //Class: Response
         //    Handles the response to the Inertial command

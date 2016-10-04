@@ -450,11 +450,6 @@ namespace mscl
         uint16 m_nodeAddress;
 
     public:
-        Error_InvalidNodeConfig() :
-            Error_InvalidConfig()
-        {
-        }
-
         //API Constructor: Error_InvalidNodeConfig
         //    Initializes the Error_InvalidNodeConfig object
         //

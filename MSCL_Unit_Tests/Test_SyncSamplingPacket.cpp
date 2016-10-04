@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE(SyncPacket_Constructor_4ByteFloat)
     payloadBytes.push_back(2);        //app id
     payloadBytes.push_back(1);        //channel mask - 1 channel
     payloadBytes.push_back(112);    //sample rate
-    payloadBytes.push_back(WirelessTypes::dataType_4ByteFloat);    //data type - 4 byte float
+    payloadBytes.push_back(WirelessTypes::dataType_float32);    //data type - 4 byte float
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
     payloadBytes.push_back(0);        
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(SyncPacket_Constructor_2ByteUint)
     payloadBytes.push_back(1);        //app id
     payloadBytes.push_back(1);        //channel mask - 1 channel
     payloadBytes.push_back(112);    //sample rate
-    payloadBytes.push_back(WirelessTypes::dataType_2byteUInt_12bitRes);    //data type - 2 byte uint
+    payloadBytes.push_back(WirelessTypes::dataType_uint16_12bitRes);    //data type - 2 byte uint
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
     payloadBytes.push_back(0);        
@@ -130,7 +130,7 @@ BOOST_AUTO_TEST_CASE(SyncPacket_Constructor_2ByteUintShifted)
     payloadBytes.push_back(2);        //app id
     payloadBytes.push_back(1);        //channel mask - 1 channel
     payloadBytes.push_back(112);    //sample rate
-    payloadBytes.push_back(WirelessTypes::dataType_2byteUInt_shifted);    //data type - 2 byte uint shifted
+    payloadBytes.push_back(WirelessTypes::dataType_uint16_shifted);    //data type - 2 byte uint shifted
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
     payloadBytes.push_back(0);        
@@ -176,7 +176,7 @@ BOOST_AUTO_TEST_CASE(SyncPacket_Constructor_NoChannelMask)
     payloadBytes.push_back(1);        //app id
     payloadBytes.push_back(0);        //channel mask - NO CHANNELS
     payloadBytes.push_back(112);    //sample rate
-    payloadBytes.push_back(WirelessTypes::dataType_2byteUInt_12bitRes);    //data type - 2 byte uint
+    payloadBytes.push_back(WirelessTypes::dataType_uint16_12bitRes);    //data type - 2 byte uint
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
     payloadBytes.push_back(0);        
@@ -240,7 +240,7 @@ BOOST_AUTO_TEST_CASE(SyncPacket_IntegrityCheck_BadAppID)
     payloadBytes.push_back(0xFF);    //app id (INVALID)
     payloadBytes.push_back(1);        //channel mask - 1 channel
     payloadBytes.push_back(112);    //sample rate
-    payloadBytes.push_back(WirelessTypes::dataType_2byteUInt_12bitRes);    //data type - 2 byte uint32 shifted
+    payloadBytes.push_back(WirelessTypes::dataType_uint16_12bitRes);    //data type - 2 byte uint32 shifted
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
     payloadBytes.push_back(0);        
@@ -273,7 +273,7 @@ BOOST_AUTO_TEST_CASE(SyncPacket_IntegrityCheck_BadStopFlags)
     payloadBytes.push_back(2);        //app id
     payloadBytes.push_back(1);        //channel mask - 1 channel
     payloadBytes.push_back(112);    //sample rate
-    payloadBytes.push_back(WirelessTypes::dataType_2byteUInt_12bitRes);    //data type - 2 byte uint32 shifted
+    payloadBytes.push_back(WirelessTypes::dataType_uint16_12bitRes);    //data type - 2 byte uint32 shifted
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
     payloadBytes.push_back(0);        
@@ -340,7 +340,7 @@ BOOST_AUTO_TEST_CASE(SyncPacket_IntegrityCheck_BadPacketType)
     payloadBytes.push_back(2);
     payloadBytes.push_back(1);        //channel mask - 1 channel
     payloadBytes.push_back(112);    //sample rate
-    payloadBytes.push_back(WirelessTypes::dataType_2byteUInt_12bitRes);    //data type - 2 byte uint32 shifted
+    payloadBytes.push_back(WirelessTypes::dataType_uint16_12bitRes);    //data type - 2 byte uint32 shifted
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
     payloadBytes.push_back(0);        
@@ -373,7 +373,7 @@ BOOST_AUTO_TEST_CASE(SyncPacket_IntegrityCheck_NoChannelsActive)
     payloadBytes.push_back(2);
     payloadBytes.push_back(0);        //channel mask (NO CHANNELS)
     payloadBytes.push_back(112);    //sample rate
-    payloadBytes.push_back(WirelessTypes::dataType_2byteUInt_12bitRes);    //data type - 2 byte uint32 shifted
+    payloadBytes.push_back(WirelessTypes::dataType_uint16_12bitRes);    //data type - 2 byte uint32 shifted
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
     payloadBytes.push_back(0);        
@@ -404,7 +404,7 @@ BOOST_AUTO_TEST_CASE(SyncPacket_IntegrityCheck_InvalidPayloadBytes)
     payloadBytes.push_back(2);
     payloadBytes.push_back(3);        //channel mask - 2 channels but not enough data for 2 channels
     payloadBytes.push_back(112);    //sample rate
-    payloadBytes.push_back(WirelessTypes::dataType_2byteUInt_12bitRes);    //data type - 2 byte uint32 shifted
+    payloadBytes.push_back(WirelessTypes::dataType_uint16_12bitRes);    //data type - 2 byte uint32 shifted
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
     payloadBytes.push_back(0);        

@@ -13,7 +13,6 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include <boost/asio.hpp>                                          //for boost asio communication
 #include <boost/circular_buffer.hpp>                               //for boost circular buffer
 #include <boost/date_time.hpp>                                     //for boost::posix_time::from_time_t
-#include <boost/chrono/chrono.hpp>                                 //for boost::chrono
 #include <boost/date_time/posix_time/posix_time_duration.hpp>      //for boost::posix_time::nanosec
 #include <boost/date_time/posix_time/ptime.hpp>                    //for boost ptime    
 #include <boost/detail/endian.hpp>                                 //for endianess

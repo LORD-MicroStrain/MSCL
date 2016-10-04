@@ -196,7 +196,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyFail_dataFormat)
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
     WirelessNodeConfig c;
-    c.dataFormat(WirelessTypes::dataFormat_2byte_uint);    //not a supported data format
+    c.dataFormat(WirelessTypes::dataFormat_raw_uint16);    //not a supported data format
 
     //check that verify fails with the correct issue
     ConfigIssues issues;
@@ -276,7 +276,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyFail_multi)
     chs.enable(1, true);
     chs.enable(2, true);
     c.activeChannels(chs);
-    c.dataFormat(WirelessTypes::dataFormat_2byte_uint);    //not a supported data format
+    c.dataFormat(WirelessTypes::dataFormat_raw_uint16);    //not a supported data format
 
     //check that verify fails with the correct issue
     ConfigIssues issues;
@@ -301,8 +301,9 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyConflictsFail_sampleRate_sampleMod
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(WirelessTypes::samplingMode_syncBurst));
     expectRead(impl, NodeEepromMap::ACTIVE_CHANNEL_MASK, Value::UINT16(0x017));
     expectRead(impl, NodeEepromMap::NUM_SWEEPS, Value::UINT16(40));
-    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(WirelessTypes::dataFormat_4byte_float));
+    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(WirelessTypes::dataFormat_cal_float));
     expectRead(impl, NodeEepromMap::TIME_BETW_SESSIONS, Value::UINT16(4000));
+    expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(WirelessTypes::collectionMethod_transmitOnly));
 
     WirelessNodeConfig c;
     c.sampleRate(WirelessTypes::sampleRate_1Hz);
@@ -332,9 +333,10 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyConflictsFail_sampleRate_channels)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(WirelessTypes::samplingMode_syncBurst));
     expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(WirelessTypes::sampleRate_10kHz));
     expectRead(impl, NodeEepromMap::NUM_SWEEPS, Value::UINT16(40));
-    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(WirelessTypes::dataFormat_4byte_float));
+    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(WirelessTypes::dataFormat_cal_float));
     expectRead(impl, NodeEepromMap::TIME_BETW_SESSIONS, Value::UINT16(4000));
     expectRead(impl, NodeEepromMap::UNLIMITED_SAMPLING, Value::UINT16(0));
+    expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(WirelessTypes::collectionMethod_transmitOnly));
 
     WirelessNodeConfig c;
     ChannelMask chs;
@@ -365,7 +367,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyConflictsFail_sweeps)
     expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(WirelessTypes::sampleRate_1Hz));
     expectRead(impl, NodeEepromMap::ACTIVE_CHANNEL_MASK, Value::UINT16(0x017));
     expectRead(impl, NodeEepromMap::NUM_SWEEPS, Value::UINT16(40));
-    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(WirelessTypes::dataFormat_4byte_float));
+    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(WirelessTypes::dataFormat_cal_float));
     expectRead(impl, NodeEepromMap::TIME_BETW_SESSIONS, Value::UINT16(4000));
     expectRead(impl, NodeEepromMap::UNLIMITED_SAMPLING, Value::UINT16(0));
 
@@ -396,7 +398,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyConflicts_successBcUnlimitedDurati
     expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(WirelessTypes::sampleRate_1Hz));
     expectRead(impl, NodeEepromMap::ACTIVE_CHANNEL_MASK, Value::UINT16(0x017));
     expectRead(impl, NodeEepromMap::NUM_SWEEPS, Value::UINT16(40));
-    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(WirelessTypes::dataFormat_4byte_float));
+    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(WirelessTypes::dataFormat_cal_float));
     expectRead(impl, NodeEepromMap::TIME_BETW_SESSIONS, Value::UINT16(4000));
     expectRead(impl, NodeEepromMap::UNLIMITED_SAMPLING, Value::UINT16(1));    //unlimited duration flag is true
 
@@ -426,7 +428,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyConflictsFail_sweepsWithUnlimitedD
     expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(WirelessTypes::sampleRate_64Hz));
     expectRead(impl, NodeEepromMap::ACTIVE_CHANNEL_MASK, Value::UINT16(0x017));
     expectRead(impl, NodeEepromMap::NUM_SWEEPS, Value::UINT16(40));
-    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(WirelessTypes::dataFormat_4byte_float));
+    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(WirelessTypes::dataFormat_cal_float));
     expectRead(impl, NodeEepromMap::TIME_BETW_SESSIONS, Value::UINT16(4000));
     expectRead(impl, NodeEepromMap::UNLIMITED_SAMPLING, Value::UINT16(1));
 
@@ -534,8 +536,9 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_filterSettlingTime)
         c.filterSettlingTime(ChannelMask(BOOST_BINARY(00111111)), WirelessTypes::settling_60ms); //invalid settling time for sample rate
         c.activeChannels(ChannelMask(1));
         c.numSweeps(100);
-        c.dataFormat(WirelessTypes::dataFormat_4byte_float);
+        c.dataFormat(WirelessTypes::dataFormat_cal_float);
         c.unlimitedDuration(true);
+        c.dataCollectionMethod(WirelessTypes::collectionMethod_transmitOnly);
 
         expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(WirelessTypes::samplingMode_sync));
         expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(WirelessTypes::sampleRate_4Hz));
@@ -591,7 +594,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_filterSettlingTime)
         expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(WirelessTypes::sampleRate_2Hz));
         expectRead(impl, NodeEepromMap::ACTIVE_CHANNEL_MASK, Value::UINT16(1));
         expectRead(impl, NodeEepromMap::NUM_SWEEPS, Value::UINT16(1));
-        expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(WirelessTypes::dataFormat_4byte_float));
+        expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(WirelessTypes::dataFormat_cal_float));
         expectRead(impl, NodeEepromMap::UNLIMITED_SAMPLING, Value::UINT16(1));
 
         //expect the single eeprom write
@@ -754,7 +757,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_eventTrigger)
     node.setImpl(impl);
 
     std::unique_ptr<NodeFeatures> features;
-    expectNodeFeatures(features, impl, WirelessModels::node_bladeImpactLink);
+    expectNodeFeatures(features, impl, WirelessModels::node_wirelessImpactSensor);
 
     EventTriggerOptions opts;
     opts.triggerMask(BitMask(0));
@@ -763,8 +766,9 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_eventTrigger)
     c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
     c.activeChannels(ChannelMask(1));
     c.numSweeps(1000);
-    c.dataFormat(WirelessTypes::dataFormat_4byte_float);
+    c.dataFormat(WirelessTypes::dataFormat_cal_float);
     c.unlimitedDuration(true);
+    c.dataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit);
 
     ConfigIssues issues;
 
@@ -777,8 +781,15 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_eventTrigger)
     //test good sampling mode with triggers enabled
     opts.triggerMask(BitMask(2));
     c.eventTriggerOptions(opts);
-    c.samplingMode(WirelessTypes::samplingMode_nonSyncEvent);
+    c.samplingMode(WirelessTypes::samplingMode_syncEvent);
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
+
+    //test sampling mode with bad collection method
+    c.dataCollectionMethod(WirelessTypes::collectionMethod_transmitOnly);
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+    BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DATA_COLLECTION_METHOD);
+    c.dataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit);
+    issues.clear();
 
     //test bad sampling mode with triggers enabled
     opts.triggerMask(BitMask(1));
@@ -795,6 +806,26 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_eventTrigger)
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
     BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_EVENT_TRIGGER_MASK);
     issues.clear();
+}
+
+BOOST_AUTO_TEST_CASE(WirelessNodeConfig_flashBandwidth)
+{
+    WirelessTypes::DataFormat dataFormat = WirelessTypes::dataFormat_raw_uint24;
+    uint8 numChannels = 8;
+    WirelessTypes::WirelessSampleRate sampleRate = WirelessTypes::sampleRate_4096Hz;
+
+    BOOST_CHECK_EQUAL(WirelessNodeConfig::flashBandwidth(sampleRate, dataFormat, numChannels), 98304);
+}
+
+BOOST_AUTO_TEST_CASE(WirelessNodeConfig_flashBandwidth_burst)
+{
+    WirelessTypes::DataFormat dataFormat = WirelessTypes::dataFormat_raw_uint24;
+    uint8 numChannels = 8;
+    WirelessTypes::WirelessSampleRate sampleRate = WirelessTypes::sampleRate_4096Hz;
+    uint32 numSweeps = 4096;
+    TimeSpan timeBetweenBursts = TimeSpan::Seconds(2);
+
+    BOOST_CHECK_EQUAL(WirelessNodeConfig::flashBandwidth_burst(sampleRate, dataFormat, numChannels, numSweeps, timeBetweenBursts), 49152);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -13,6 +13,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Features/NodeFeatures.h"
 #include "Configuration/NodeEepromHelper.h"
 #include "Configuration/WirelessNodeConfig.h"
+#include "Commands/AutoCalInfo.h"
 
 namespace mscl
 {
@@ -78,7 +79,12 @@ namespace mscl
 
     void WirelessNode::readWriteRetries(uint8 numRetries)
     {
-        m_impl->readWriteRetries(numRetries);
+        m_impl->setReadWriteRetries(numRetries);
+    }
+
+    uint8 WirelessNode::readWriteRetries() const
+    {
+        return m_impl->getReadWriteRetries();
     }
 
     void WirelessNode::useEepromCache(bool useCache)
@@ -161,6 +167,11 @@ namespace mscl
         return m_impl->autoCal_shmLink();
     }
 
+    AutoShuntCalResult WirelessNode::autoShuntCal(const ChannelMask& mask, const ShuntCalCmdInfo& commandInfo)
+    {
+        return m_impl->autoShuntCal(mask, commandInfo);
+    }
+
     uint16 WirelessNode::readEeprom(uint16 location) const
     {
         return m_impl->readEeprom(location);
@@ -169,6 +180,13 @@ namespace mscl
     void WirelessNode::writeEeprom(uint16 location, uint16 value)
     {
         m_impl->writeEeprom(location, value);
+    }
+
+    ChannelData WirelessNode::getDiagnosticInfo()
+    {
+        ChannelData result;
+        m_impl->getDiagnosticInfo(result);
+        return result;
     }
 
     Version WirelessNode::firmwareVersion() const
@@ -291,9 +309,9 @@ namespace mscl
         return m_impl->getLostBeaconTimeout();
     }
 
-    double WirelessNode::getHardwareGain(const ChannelMask& mask) const
+    WirelessTypes::InputRange WirelessNode::getInputRange(const ChannelMask& mask) const
     {
-        return m_impl->getHardwareGain(mask);
+        return m_impl->getInputRange(mask);
     }
 
     uint16 WirelessNode::getHardwareOffset(const ChannelMask& mask) const
@@ -301,9 +319,9 @@ namespace mscl
         return m_impl->getHardwareOffset(mask);
     }
 
-    WirelessTypes::Filter WirelessNode::getLowPassFilter(const ChannelMask& mask) const
+    WirelessTypes::Filter WirelessNode::getAntiAliasingFilter(const ChannelMask& mask) const
     {
-        return m_impl->getLowPassFilter(mask);
+        return m_impl->getAntiAliasingFilter(mask);
     }
 
     float WirelessNode::getGaugeFactor(const ChannelMask& mask) const
@@ -364,5 +382,10 @@ namespace mscl
     WirelessTypes::StorageLimitMode WirelessNode::getStorageLimitMode() const
     {
         return m_impl->getStorageLimitMode();
+    }
+
+    uint32 WirelessNode::getSensorDelay() const
+    {
+        return m_impl->getSensorDelay();
     }
 }

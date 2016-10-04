@@ -27,7 +27,7 @@ namespace mscl
     //Exceptions:
     //    - <Error_InvalidSerialPort>: the specified com port is invalid
     //    - <Error_Connection>: failed to get or set com port parameters
-    boost::asio::serial_port_service::native_type getNativeSerialPort(std::string portName)
+    boost::asio::serial_port_service::native_type getNativeSerialPort(const std::string& portName)
     {
         // For convenience, add a leading \\.\ sequence if not already present.
         std::string name = (portName[0] == '\\') ? portName : "\\\\.\\" + portName;
@@ -94,7 +94,7 @@ namespace mscl
         //get the current comm state
         if (!::GetCommState(handle, &dcb))
         {
-            DWORD last_error = ::GetLastError();
+            last_error = ::GetLastError();
 
             ::CloseHandle(handle);
 
@@ -117,7 +117,7 @@ namespace mscl
         //update the comm state with our new values
         if (!::SetCommState(handle, &dcb))
         {
-            DWORD last_error = ::GetLastError();
+            last_error = ::GetLastError();
 
             ::CloseHandle(handle);
 
@@ -146,7 +146,7 @@ namespace mscl
 
         if (!::SetCommTimeouts(handle, &timeouts))
         {
-            DWORD last_error = ::GetLastError();
+            last_error = ::GetLastError();
 
             ::CloseHandle(handle);
             

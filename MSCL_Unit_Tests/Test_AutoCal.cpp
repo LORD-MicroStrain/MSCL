@@ -61,9 +61,9 @@ BOOST_AUTO_TEST_CASE(AutoCalResult_shmLink_Constructor)
     
     //check that the default constructor initialized correctly
     BOOST_CHECK_EQUAL(r.completionFlag(), WirelessTypes::autocal_notComplete);
-    BOOST_CHECK_EQUAL(r.errorFlagCh1(), WirelessTypes::autocalError_none);
-    BOOST_CHECK_EQUAL(r.errorFlagCh2(), WirelessTypes::autocalError_none);
-    BOOST_CHECK_EQUAL(r.errorFlagCh3(), WirelessTypes::autocalError_none);
+    BOOST_CHECK_EQUAL(r.errorFlagCh1(), WirelessTypes::autocalShmError_none);
+    BOOST_CHECK_EQUAL(r.errorFlagCh2(), WirelessTypes::autocalShmError_none);
+    BOOST_CHECK_EQUAL(r.errorFlagCh3(), WirelessTypes::autocalShmError_none);
     BOOST_CHECK_CLOSE(r.offsetCh1(), 0.0, 0.1);
     BOOST_CHECK_CLOSE(r.offsetCh2(), 0.0, 0.1);
     BOOST_CHECK_CLOSE(r.offsetCh3(), 0.0, 0.1);
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(AutoCal_shmLink_BuildCommand)
 BOOST_AUTO_TEST_CASE(AutoCal_MatchNodeReceived_Success)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    AutoCal::Response response(123, WirelessModels::node_shmLink2, Version(9, 0), rc);
+    AutoCal::ShmResponse response(123, rc);
 
     WirelessPacket packet = buildAutoCalNodeRecResponse(123);
 
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(AutoCal_MatchNodeReceived_Success)
 BOOST_AUTO_TEST_CASE(AutoCal_MatchNodeReceived_Error)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    AutoCal::Response response(123, WirelessModels::node_shmLink2, Version(9, 0), rc);
+    AutoCal::ShmResponse response(123, rc);
 
     ByteStream payload;
     payload.append_uint16(0x0064);    //cmd id
@@ -125,7 +125,7 @@ BOOST_AUTO_TEST_CASE(AutoCal_MatchNodeReceived_Error)
 BOOST_AUTO_TEST_CASE(AutoCal_MatchShmLink_Success)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    AutoCal::Response response(123, WirelessModels::node_shmLink2, Version(9, 0), rc);
+    AutoCal::ShmResponse response(123, rc);
 
     WirelessPacket nodeReceivedPacket = buildAutoCalNodeRecResponse(123);
 

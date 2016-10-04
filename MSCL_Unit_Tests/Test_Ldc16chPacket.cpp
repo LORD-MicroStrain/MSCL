@@ -281,7 +281,7 @@ BOOST_AUTO_TEST_CASE(Ldc16chPacket_IntegrityCheck_BadDataType)
     payloadBytes.push_back(0);        //channel mask
     payloadBytes.push_back(1);        //channel mask - 2 channels active
     payloadBytes.push_back(112);    //sample rate
-    payloadBytes.push_back(0x2A);    //app id / BAD data type
+    payloadBytes.push_back(0x2F);    //app id / BAD data type
     payloadBytes.push_back(0);        //tick msb
     payloadBytes.push_back(1);        //tick lsb
     payloadBytes.push_back(0);        //channel data b1

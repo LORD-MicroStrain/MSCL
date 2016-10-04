@@ -29,14 +29,14 @@ namespace mscl
 
         m_channelGroups.emplace_back(THERMOCPL_CHS, "Thermocouple Channels",
                                      ChannelGroup::SettingsMap{
-                                         {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_1},
+                                         {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_1},
                                          {WirelessTypes::chSetting_filterSettlingTime, NodeEepromMap::FILTER_1},
                                          {WirelessTypes::chSetting_thermocoupleType, NodeEepromMap::THERMOCPL_TYPE}}
         );
 
         m_channelGroups.emplace_back(VOLTAGE_CHS, "Voltage Channels",
                                      ChannelGroup::SettingsMap{
-                                         {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_3},
+                                         {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_3},
                                          {WirelessTypes::chSetting_filterSettlingTime, NodeEepromMap::FILTER_2}}
         );
 
@@ -49,6 +49,11 @@ namespace mscl
         m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_voltage);            //voltage
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_temperature);        //internal temp
         m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_rh);                //% RH
+    }
+
+    bool NodeFeatures_envlinkPro::supportsSensorDelayConfig() const
+    {
+        return true;
     }
 
     const WirelessTypes::SamplingModes NodeFeatures_envlinkPro::samplingModes() const
@@ -70,14 +75,14 @@ namespace mscl
         //build and return the data formats that are supported
         WirelessTypes::DataFormats result;
 
-        result.push_back(WirelessTypes::dataFormat_4byte_float);
+        result.push_back(WirelessTypes::dataFormat_cal_float);
 
         //no support for uint16
 
         return result;
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures_envlinkPro::sampleRates(WirelessTypes::SamplingMode samplingMode) const
+    const WirelessTypes::WirelessSampleRates NodeFeatures_envlinkPro::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
     {
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
@@ -87,7 +92,7 @@ namespace mscl
                 return AvailableSampleRates::continuous_envlink;
 
             default:
-                throw Error("Invalid SamplingMode");
+                throw Error_NotSupported("The sampling mode is not supported by this Node");
         }
     }
 
@@ -96,9 +101,9 @@ namespace mscl
         return maxFilterSettlingTime_A(rate);
     }
 
-    WirelessTypes::WirelessSampleRate NodeFeatures_envlinkPro::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode) const
+    WirelessTypes::WirelessSampleRate NodeFeatures_envlinkPro::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
     {
-        return maxSampleRateForSettlingTime_A(filterSettlingTime, sampleRates(samplingMode));
+        return maxSampleRateForSettlingTime_A(filterSettlingTime, sampleRates(samplingMode, dataCollectionMethod));
     }
 
 }

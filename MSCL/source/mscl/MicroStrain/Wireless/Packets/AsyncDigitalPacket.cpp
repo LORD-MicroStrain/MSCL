@@ -46,7 +46,7 @@ namespace mscl
         ChannelMask channels(channelMask);
 
         //set the data type of the packet (always the same for this packet)
-        m_dataType = WirelessTypes::dataType_2byteUInt_12bitRes;
+        m_dataType = WirelessTypes::dataType_uint16_12bitRes;
 
         //set the size of a single sweep (always 2 bytes of timestamp offset, 2 bytes of digital data)
         m_sweepSize = 4;

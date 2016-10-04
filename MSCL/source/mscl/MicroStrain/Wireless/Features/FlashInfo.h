@@ -16,20 +16,24 @@ namespace mscl
     {
         //Variable: storageSize
         //  The total storage size, in bytes.
-        uint64 storageSize;
+        uint32 storageSize;
 
         //Variable: blockSize
         //  The size of a datalogging Block, in bytes.
-        uint64 blockSize;
+        uint32 blockSize;
 
         //Variable: pageSize
         //  The size of a datalogging Page, in bytes.
-        uint64 pageSize;
+        uint32 pageSize;
+
+        //Variable: maxBandwidth
+        //  The max flash bandwidth (bytes per second) that is supported for logging.
+        uint32 maxBandwidth;
 
     private:
         //Constructor: FlashInfo
         //  Creates a FlashInfo object.
-        FlashInfo(uint64 storage, uint64 block, uint64 page);
+        FlashInfo(uint32 storage, uint32 block, uint32 page, uint32 bandwidth);
 
         FlashInfo();    //disabled default constructor
 

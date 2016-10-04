@@ -50,6 +50,27 @@ namespace mscl
             //    The node address to look for in the response
             NodeAddress m_nodeAddress;
 
+        private:
+            //Function: matchSuccessResponse
+            //    Checks if the <WirelessPacket> passed in matches the success response pattern's bytes
+            //
+            //Parameters:
+            //    packet - The <WirelessPacket> in which to try to find the pattern
+            //
+            //Returns:
+            //    true if the packet matches the success response pattern, false otherwise
+            bool matchSuccessResponse(const WirelessPacket& packet);
+
+            //Function: matchFailResponse
+            //    Checks if the <WirelessPacket> passed in matches the failure response pattern's bytes
+            //
+            //Parameters:
+            //    packet - The <WirelessPacket> in which to try to find the pattern
+            //
+            //Returns:
+            //    true if the packet matches the success response pattern, false otherwise
+            bool matchFailResponse(const WirelessPacket& packet);
+
         public:
             //Function: match
             //    Checks if the <WirelessPacket> passed in matches the expected response pattern's bytes

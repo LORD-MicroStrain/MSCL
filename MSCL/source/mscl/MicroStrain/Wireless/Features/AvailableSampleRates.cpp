@@ -48,6 +48,89 @@ namespace mscl
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::armedDatalog = AvailableSampleRates::burst;    //same as burst
 
 
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_nonSync_gen2 = {
+        {WirelessTypes::sampleRate_512Hz},
+        {WirelessTypes::sampleRate_256Hz},
+        {WirelessTypes::sampleRate_128Hz},
+        {WirelessTypes::sampleRate_64Hz},
+        {WirelessTypes::sampleRate_32Hz},
+        {WirelessTypes::sampleRate_16Hz},
+        {WirelessTypes::sampleRate_8Hz},
+        {WirelessTypes::sampleRate_4Hz},
+        {WirelessTypes::sampleRate_2Hz},
+        {WirelessTypes::sampleRate_1Hz},
+        {WirelessTypes::sampleRate_2Sec},
+        {WirelessTypes::sampleRate_5Sec},
+        {WirelessTypes::sampleRate_10Sec},
+        {WirelessTypes::sampleRate_30Sec},
+        {WirelessTypes::sampleRate_1Min},
+        {WirelessTypes::sampleRate_2Min},
+        {WirelessTypes::sampleRate_5Min},
+        {WirelessTypes::sampleRate_10Min},
+        {WirelessTypes::sampleRate_30Min},
+        {WirelessTypes::sampleRate_60Min}};
+
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_sync_gen2 = {
+        {WirelessTypes::sampleRate_4096Hz},
+        {WirelessTypes::sampleRate_2048Hz},
+        {WirelessTypes::sampleRate_1024Hz},
+        {WirelessTypes::sampleRate_512Hz},
+        {WirelessTypes::sampleRate_256Hz},
+        {WirelessTypes::sampleRate_128Hz},
+        {WirelessTypes::sampleRate_64Hz},
+        {WirelessTypes::sampleRate_32Hz},
+        {WirelessTypes::sampleRate_16Hz},
+        {WirelessTypes::sampleRate_8Hz},
+        {WirelessTypes::sampleRate_4Hz},
+        {WirelessTypes::sampleRate_2Hz},
+        {WirelessTypes::sampleRate_1Hz},
+        {WirelessTypes::sampleRate_2Sec},
+        {WirelessTypes::sampleRate_5Sec},
+        {WirelessTypes::sampleRate_10Sec},
+        {WirelessTypes::sampleRate_30Sec},
+        {WirelessTypes::sampleRate_1Min},
+        {WirelessTypes::sampleRate_2Min},
+        {WirelessTypes::sampleRate_5Min},
+        {WirelessTypes::sampleRate_10Min},
+        {WirelessTypes::sampleRate_30Min},
+        {WirelessTypes::sampleRate_60Min}};
+
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_log_gen2 = {
+        {WirelessTypes::sampleRate_8192Hz},
+        {WirelessTypes::sampleRate_4096Hz},
+        {WirelessTypes::sampleRate_2048Hz},
+        {WirelessTypes::sampleRate_1024Hz},
+        {WirelessTypes::sampleRate_512Hz},
+        {WirelessTypes::sampleRate_256Hz},
+        {WirelessTypes::sampleRate_128Hz},
+        {WirelessTypes::sampleRate_64Hz},
+        {WirelessTypes::sampleRate_32Hz},
+        {WirelessTypes::sampleRate_16Hz},
+        {WirelessTypes::sampleRate_8Hz},
+        {WirelessTypes::sampleRate_4Hz},
+        {WirelessTypes::sampleRate_2Hz},
+        {WirelessTypes::sampleRate_1Hz},
+        {WirelessTypes::sampleRate_2Sec},
+        {WirelessTypes::sampleRate_5Sec},
+        {WirelessTypes::sampleRate_10Sec},
+        {WirelessTypes::sampleRate_30Sec},
+        {WirelessTypes::sampleRate_1Min},
+        {WirelessTypes::sampleRate_2Min},
+        {WirelessTypes::sampleRate_5Min},
+        {WirelessTypes::sampleRate_10Min},
+        {WirelessTypes::sampleRate_30Min},
+        {WirelessTypes::sampleRate_60Min}};
+
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::burst_gen2 = {
+        {WirelessTypes::sampleRate_8192Hz},
+        {WirelessTypes::sampleRate_4096Hz},
+        {WirelessTypes::sampleRate_2048Hz},
+        {WirelessTypes::sampleRate_1024Hz},
+        {WirelessTypes::sampleRate_512Hz},
+        {WirelessTypes::sampleRate_256Hz},
+        {WirelessTypes::sampleRate_128Hz},
+        {WirelessTypes::sampleRate_64Hz},
+        {WirelessTypes::sampleRate_32Hz}};
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_glink2 = {
             {WirelessTypes::sampleRate_512Hz},
@@ -95,49 +178,6 @@ namespace mscl
             {WirelessTypes::sampleRate_32Hz}};
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::armedDatalog_vlink = AvailableSampleRates::burst_vlink;    //same as burst
-
-    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_vlink2 = {
-            {WirelessTypes::sampleRate_4096Hz},
-            {WirelessTypes::sampleRate_2048Hz},
-            {WirelessTypes::sampleRate_1024Hz},
-            {WirelessTypes::sampleRate_512Hz},
-            {WirelessTypes::sampleRate_256Hz},
-            {WirelessTypes::sampleRate_128Hz},
-            {WirelessTypes::sampleRate_64Hz},
-            {WirelessTypes::sampleRate_32Hz},
-            {WirelessTypes::sampleRate_16Hz},
-            {WirelessTypes::sampleRate_8Hz},
-            {WirelessTypes::sampleRate_4Hz},
-            {WirelessTypes::sampleRate_2Hz},
-            {WirelessTypes::sampleRate_1Hz},
-            {WirelessTypes::sampleRate_2Sec},
-            {WirelessTypes::sampleRate_5Sec},
-            {WirelessTypes::sampleRate_10Sec},
-            {WirelessTypes::sampleRate_30Sec},
-            {WirelessTypes::sampleRate_1Min},
-            {WirelessTypes::sampleRate_2Min},
-            {WirelessTypes::sampleRate_5Min},
-            {WirelessTypes::sampleRate_10Min},
-            {WirelessTypes::sampleRate_30Min},
-            {WirelessTypes::sampleRate_60Min}};
-
-    const WirelessTypes::WirelessSampleRates AvailableSampleRates::burst_vlink2 = {
-            {WirelessTypes::sampleRate_8192Hz},
-            {WirelessTypes::sampleRate_4096Hz},
-            {WirelessTypes::sampleRate_2048Hz},
-            {WirelessTypes::sampleRate_1024Hz},
-            {WirelessTypes::sampleRate_512Hz},
-            {WirelessTypes::sampleRate_256Hz},
-            {WirelessTypes::sampleRate_128Hz},
-            {WirelessTypes::sampleRate_64Hz},
-            {WirelessTypes::sampleRate_32Hz},
-            {WirelessTypes::sampleRate_16Hz},
-            {WirelessTypes::sampleRate_8Hz},
-            {WirelessTypes::sampleRate_4Hz},
-            {WirelessTypes::sampleRate_2Hz},
-            {WirelessTypes::sampleRate_1Hz}};
-
-    const WirelessTypes::WirelessSampleRates AvailableSampleRates::armedDatalog_vlink2 = AvailableSampleRates::burst_vlink2;    //same as burst
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::burst_iepeLink = {
             {WirelessTypes::sampleRate_104170Hz},
@@ -213,6 +253,17 @@ namespace mscl
             {WirelessTypes::sampleRate_2Hz},
             {WirelessTypes::sampleRate_1Hz}};
 
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_shmLink2_2 = {
+        {WirelessTypes::sampleRate_300Hz},
+        {WirelessTypes::sampleRate_128Hz},
+        {WirelessTypes::sampleRate_64Hz},
+        {WirelessTypes::sampleRate_32Hz},
+        {WirelessTypes::sampleRate_16Hz},
+        {WirelessTypes::sampleRate_8Hz},
+        {WirelessTypes::sampleRate_4Hz},
+        {WirelessTypes::sampleRate_2Hz},
+        {WirelessTypes::sampleRate_1Hz}};
+
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_cfBearing = {
         {WirelessTypes::sampleRate_16Hz},
         {WirelessTypes::sampleRate_8Hz},
@@ -223,7 +274,14 @@ namespace mscl
         {WirelessTypes::sampleRate_5Sec},
         {WirelessTypes::sampleRate_10Sec}};
 
-    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_blade = {
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_nonSync_impact = {
+        {WirelessTypes::sampleRate_512Hz},
+        {WirelessTypes::sampleRate_256Hz},
+        {WirelessTypes::sampleRate_128Hz},
+        {WirelessTypes::sampleRate_64Hz},
+        {WirelessTypes::sampleRate_32Hz}};
+
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_sync_impact = {
         {WirelessTypes::sampleRate_4096Hz},
         {WirelessTypes::sampleRate_2048Hz},
         {WirelessTypes::sampleRate_1024Hz},
@@ -233,7 +291,7 @@ namespace mscl
         {WirelessTypes::sampleRate_64Hz},
         {WirelessTypes::sampleRate_32Hz}};
 
-    const WirelessTypes::WirelessSampleRates AvailableSampleRates::burst_blade = {
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::burst_impact = {
         {WirelessTypes::sampleRate_8192Hz},
         {WirelessTypes::sampleRate_4096Hz},
         {WirelessTypes::sampleRate_2048Hz},
@@ -243,6 +301,4 @@ namespace mscl
         {WirelessTypes::sampleRate_128Hz},
         {WirelessTypes::sampleRate_64Hz},
         {WirelessTypes::sampleRate_32Hz}};
-
-    const WirelessTypes::WirelessSampleRates AvailableSampleRates::event_blade = burst_blade;   //same as burst
 }

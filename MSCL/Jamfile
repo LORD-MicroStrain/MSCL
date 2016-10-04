@@ -21,20 +21,22 @@ lib pthread ;
 
 #cpp-pch stdafx : source/stdafx.h ; #TODO: Trying to get Precompiled Headers to work
 
-#On Windows (non-gcc), these are empty aliases
+#Windows aliases
 alias unixsocket_cpp ;
+alias upnp_files : source/mscl/Communication/WsdaFinder.h source/mscl/Communication/WsdaFinder.cpp source/mscl/Communication/UpnpService.h source/mscl/Communication/UpnpService.cpp source/mscl/Communication/UpnpDeviceFinderCallback.h source/mscl/Communication/UpnpDeviceFinderCallback.cpp ;
 alias boostLibs ;
 alias boostStaticLibs ;
 
-#On Linux (gcc), define these aliases
-alias unixsocket_cpp : source/mscl/Communication/UnixSocketConnection.cpp : <toolset>gcc ;
-alias boostLibs : boost_system boost_filesystem boost_date_time boost_chrono pthread : <toolset>gcc ;
-alias boostStaticLibs : boost_system/<link>static boost_date_time/<link>static boost_chrono/<link>static : <toolset>gcc ;
+#Linux aliases
+alias unixsocket_cpp : source/mscl/Communication/UnixSocketConnection.cpp : <target-os>linux ;
+alias upnp_files : : <target-os>linux ;
+alias boostLibs : boost_system boost_filesystem boost_date_time boost_chrono pthread : <target-os>linux ;
+alias boostStaticLibs : boost_system/<link>static boost_date_time/<link>static boost_chrono/<link>static : <target-os>linux ;
 
 alias msclSrcs 
 :   [ glob source/*.cpp ]
 	[ glob source/mscl/*.cpp ]
-	[ glob source/mscl/Communication/*.cpp : source/mscl/Communication/UnixSocketConnection.cpp ]
+	[ glob source/mscl/Communication/*.cpp : source/mscl/Communication/UnixSocketConnection.cpp source/mscl/Communication/WsdaFinder.h source/mscl/Communication/WsdaFinder.cpp source/mscl/Communication/UpnpService.h source/mscl/Communication/UpnpService.cpp source/mscl/Communication/UpnpDeviceFinderCallback.h source/mscl/Communication/UpnpDeviceFinderCallback.cpp ]
 	[ glob source/mscl/MicroStrain/*.cpp ]
 	[ glob source/mscl/MicroStrain/Inertial/*.cpp ]
 	[ glob source/mscl/MicroStrain/Inertial/Commands/*.cpp ]
@@ -46,6 +48,7 @@ alias msclSrcs
 	[ glob source/mscl/MicroStrain/Wireless/Features/*.cpp ]
 	[ glob source/mscl/MicroStrain/Wireless/Packets/*.cpp ]
 	unixsocket_cpp
+	upnp_files
 ;
 
 #Define how we build the C++ library
@@ -53,7 +56,7 @@ lib mscl
 :	msclSrcs
 	boostLibs
 :	<include>source
-	<toolset>gcc:<define>UNIX_SOCKETS
+	<target-os>linux:<define>UNIX_BUILD
     ;
 
 #Ensure that the python output folder exists
@@ -73,8 +76,8 @@ python-extension _mscl
 :	<include>source/mscl/Wrapper/
 	<swig-options>-python
 	<swig-options>"-outdir \"$(SWIG_PYTHON)\""
-	<toolset>gcc:<swig-options>-DUNIX_SOCKETS
-	<toolset>gcc:<define>UNIX_SOCKETS
+	<target-os>linux:<swig-options>-DUNIX_BUILD
+	<target-os>linux:<define>UNIX_BUILD
 ;
 
 #Define the python mscl build
@@ -85,8 +88,8 @@ python-extension _mscl-dynamic
 :	<include>source/mscl/Wrapper/
 	<swig-options>-python
 	<swig-options>"-outdir \"$(SWIG_PYTHON)\""
-	<toolset>gcc:<swig-options>-DUNIX_SOCKETS
-	<toolset>gcc:<define>UNIX_SOCKETS
+	<target-os>linux:<swig-options>-DUNIX_BUILD
+	<target-os>linux:<define>UNIX_BUILD
 ;
 
 #Copy all the header files and put them in an output directory

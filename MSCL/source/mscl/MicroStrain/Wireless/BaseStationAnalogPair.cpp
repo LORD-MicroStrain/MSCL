@@ -8,7 +8,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    const float BaseStationAnalogPair::CHANNEL_NOT_FLOAT = Utils::make_float_big_endian(0xFF, 0xFF, 0xFF, 0x7F);
+    const float BaseStationAnalogPair::CHANNEL_NOT_FLOAT = Utils::make_float(0xFF, 0xFF, 0xFF, 0x7F, Utils::bigEndian);
 
     BaseStationAnalogPair::BaseStationAnalogPair():
         m_nodeAddress(0),

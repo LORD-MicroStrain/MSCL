@@ -55,13 +55,15 @@ namespace mscl
         size_t infoByteCounter = 0;
 
         ChannelData chData;
+        uint8 infoLen = 0;
+        uint8 infoId = 0;
 
         //iterate over all of the info bytes
         while(infoByteCounter < numInfoItemBytes)
         {
-            uint8 infoLen = payload.read_uint8();
+            infoLen = payload.read_uint8();
 
-            uint8 infoId = payload.read_uint8();
+            infoId = payload.read_uint8();
 
             addDataPoint(chData, payload, infoLen - 1, infoId);
 
@@ -75,7 +77,7 @@ namespace mscl
         addSweep(sweep);
     }
 
-    void DiagnosticPacket::addDataPoint(ChannelData& container, DataBuffer& payload, uint8 infoLength, uint8 infoId) const
+    void DiagnosticPacket::addDataPoint(ChannelData& container, DataBuffer& payload, uint8 infoLength, uint8 infoId)
     {
         switch(infoId)
         {
@@ -136,14 +138,26 @@ namespace mscl
                 container.emplace_back(WirelessChannel::channel_diag_builtInTestResult, 0, valueType_uint32, anyType(payload.read_uint32()));
                 break;
 
+            //Event Trigger index
+            case 7:
+                container.emplace_back(WirelessChannel::channel_diag_eventIndex, 0, valueType_uint16, anyType(payload.read_uint16()));
+                break;
+
+            //External power
+            case 8:
+                container.emplace_back(WirelessChannel::channel_diag_externalPower, 0, valueType_uint8, anyType(payload.read_uint8()));
+                break;
+
+            //Internal Temperature (C)
+            case 9:
+                container.emplace_back(WirelessChannel::channel_diag_internalTemp, 0, valueType_int16, anyType(static_cast<int16>(payload.read_int8())));
+                break;
+
             //Unknown info
             default:
             {
                 //read past the bytes we don't know about
-                for(uint8 i = 0; i < infoLength; i++)
-                {
-                    payload.read_uint8();
-                }
+                payload.skipBytes(infoLength);
             }
             break;
         }

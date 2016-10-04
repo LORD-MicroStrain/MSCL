@@ -19,7 +19,7 @@ echo Building MSCL for C++
 echo ********************************
 echo.
 echo Running msbuild with msbuildConfig_CPP.xml
-msbuild "msbuildConfig_CPP.xml" /p:VisualStudioVersion=12.0 | find /v "warning MSB4098:" | find /v "warning D9025:"
+"%MSBUILD_14%\msbuild" "msbuildConfig_CPP.xml" /p:VisualStudioVersion=14.0 | find /v "warning MSB4098:" | find /v "warning D9025:"
 
 
 REM ==========================================================================

@@ -36,19 +36,23 @@ namespace mscl
         //API Enums: MicroControllerType
         //    Represents the types of microcontrollers possible on the Wireless Devices.
         //
-        //    microcontroller_18F452             - 31 - 18F452, 20MHz
-        //    microcontroller_18F4620            - 32 - 18F4620, 20MHz
-        //    microcontroller_18F46K20           - 33 - 18F46K20, 40MHz
-        //    microcontroller_18F67K90           - 34 - 18F67K90, 40MHz
-        //    microcontroller_EFM32WG990F256     - 35 - EFM32WG990F256, 48MHz
+        //    microcontroller_18F452                - 31 - 18F452, 20MHz
+        //    microcontroller_18F4620               - 32 - 18F4620, 20MHz
+        //    microcontroller_18F46K20              - 33 - 18F46K20, 40MHz
+        //    microcontroller_18F67K90              - 34 - 18F67K90, 40MHz
+        //    microcontroller_EFM32WG990F256        - 35 - EFM32WG990F256, 48MHz
+        //    microcontroller_EFR32FG1P132F256GM48  - 36 - EFR32FG1P132F256GM48
+        //    microcontroller_EFR32MG1P232F256GM48  - 37 - EFR32MG1P232F256GM48
         //=====================================================================================================
         enum MicroControllerType
         {
-            microcontroller_18F452             = 31,
-            microcontroller_18F4620            = 32,
-            microcontroller_18F46K20           = 33,
-            microcontroller_18F67K90           = 34,
-            microcontroller_EFM32WG990F256     = 35,
+            microcontroller_18F452                  = 31,
+            microcontroller_18F4620                 = 32,
+            microcontroller_18F46K20                = 33,
+            microcontroller_18F67K90                = 34,
+            microcontroller_EFM32WG990F256          = 35,
+            microcontroller_EFR32FG1P132F256GM48    = 36,
+            microcontroller_EFR32MG1P232F256GM48    = 37
         };
 
         //=====================================================================================================
@@ -68,38 +72,48 @@ namespace mscl
 
         //=====================================================================================================
         //Enums: DataType
-        //    dataType_first                     - 1 - The smallest value in the list
-        //    dataType_2byteUInt_shifted         - 1 - 2-byte unsigned integer (bit-shifted)
-        //    dataType_4ByteFloat                - 2 - 4-byte float
-        //    dataType_2byteUInt_12bitRes        - 3 - 2-byte unsigned integer (12-bit resolution)
-        //    dataType_4byteUInt                 - 4 - 4-byte unsigned integer
-        //    dataType_2byteUInt_16bitRes        - 7 - 2-byte unsigned integer (16-bit resolution)
-        //    dataType_last                      - 7 - The largest value in the list
+        //  The types of data that can be transmitted in data packets.
+        //
+        //  dataType_first                - 1 - The smallest value in the list
+        //  dataType_uint16_shifted       - 1 - 2-byte unsigned integer (bit-shifted)
+        //  dataType_float32              - 2 - 4-byte float
+        //  dataType_uint16_12bitRes      - 3 - 2-byte unsigned integer (12-bit resolution)
+        //  dataType_uint32               - 4 - 4-byte unsigned integer
+        //  dataType_uint16               - 7 - 2-byte unsigned integer (16-bit resolution)
+        //  dataType_float32_noCals       - 8 - 4-byte float (no cal coefficients applied)
+        //  dataType_uint24               - 9 - 3-byte unsigned integer
+        //  dataType_uint16_18bitTrunc    - 10 - uint16 from a device with 18-bit resolution (truncated)
+        //  dataType_last                 - 10 - The largest value in the list
         //=====================================================================================================
         enum DataType
         {
-            dataType_first                 = 1,
+            dataType_first              = 1,
 
-            dataType_2byteUInt_shifted     = 1,
-            dataType_4ByteFloat            = 2,
-            dataType_2byteUInt_12bitRes    = 3,
-            dataType_4byteUInt             = 4,
-            dataType_2byteUInt_16bitRes    = 7,
+            dataType_uint16_shifted     = 1,
+            dataType_float32            = 2,
+            dataType_uint16_12bitRes    = 3,
+            dataType_uint32             = 4,
+            dataType_uint16             = 7,
+            dataType_float32_noCals     = 8,
+            dataType_uint24             = 9,
+            dataType_uint16_18bitTrunc  = 10,
 
-            dataType_last                  = 7
+            dataType_last               = 10
         };
 
         //=====================================================================================================
         //API Enums: DataFormat
-        //    Represents the types of data formats that data can be sampled in.
+        //  Represents the types of data formats that Nodes can be configured to send when sampling.
         //
-        //    dataFormat_2byte_uint         - 1 - Data is in a 2-byte unsigned integer format
-        //    dataFormat_4byte_float        - 2 - Data is in a 4-byte float format
+        //  dataFormat_raw_uint16   - 1 - Raw, uint16 data format
+        //  dataFormat_cal_float    - 2 - Calibrated, float data format
+        //  dataFormat_raw_uint24   - 3 - Raw, uint24 data format
         //=====================================================================================================
         enum DataFormat
         {
-            dataFormat_2byte_uint         = 1,
-            dataFormat_4byte_float        = 2
+            dataFormat_raw_uint16       = 1,
+            dataFormat_cal_float        = 2,
+            dataFormat_raw_uint24       = 3
         };
 
         //=====================================================================================================
@@ -571,6 +585,7 @@ namespace mscl
         //    sampleRate_3200Hz          - 49    - 3200 Hz
         //    sampleRate_1600Hz          - 48    - 1600 Hz
         //    sampleRate_800Hz           - 47    - 800 Hz
+        //    sampleRate_300Hz           - 46    - 300 Hz
         //
         //    sampleRate_1kHz            - 62    - 1 kHz
         //    sampleRate_2kHz            - 63    - 2 kHz
@@ -630,6 +645,7 @@ namespace mscl
             sampleRate_3200Hz          = 49,
             sampleRate_1600Hz          = 48,
             sampleRate_800Hz           = 47,
+            sampleRate_300Hz           = 46,
 
             sampleRate_1kHz            = 62,
             sampleRate_2kHz            = 63,
@@ -699,7 +715,7 @@ namespace mscl
         //API Enum: ChannelGroupSetting
         //    The possible settings for ChannelGroups.
         //
-        //    chSetting_hardwareGain            - 0 - Hardware Gain
+        //    chSetting_inputRange              - 0 - Input Range
         //    chSetting_filterSettlingTime      - 1 - Filter Settling Time
         //    chSetting_thermocoupleType        - 2 - Thermocouple Type
         //    chSetting_linearEquation          - 3 - Linear Equation
@@ -708,11 +724,12 @@ namespace mscl
         //    chSetting_hardwareOffset          - 6 - Hardware Offset
         //    chSetting_autoBalance             - 7 - Autobalance Function
         //    chSetting_gaugeFactor             - 8 - Gauge Factor
-        //    chSetting_lowPassFilter           - 9 - Low Pass Filter
-        //    chSetting_shuntCal                - 10 - Shunt Cal (Note: the actual shunt cal operation is not a features in MSCL)
+        //    chSetting_antiAliasingFilter      - 9 - Low Pass Filter
+        //    chSetting_legacyShuntCal          - 10 - Legacy Shunt Cal (Note: the actual shunt cal operation is not a feature in MSCL)
+        //    chSetting_autoShuntCal            - 11 - Auto Shunt Cal
         enum ChannelGroupSetting
         {
-            chSetting_hardwareGain            = 0,
+            chSetting_inputRange              = 0,
             chSetting_filterSettlingTime      = 1,
             chSetting_thermocoupleType        = 2,
             chSetting_linearEquation          = 3,
@@ -721,8 +738,9 @@ namespace mscl
             chSetting_hardwareOffset          = 6,
             chSetting_autoBalance             = 7,
             chSetting_gaugeFactor             = 8,
-            chSetting_lowPassFilter           = 9,
-            chSetting_shuntCal                = 10,
+            chSetting_antiAliasingFilter      = 9,
+            chSetting_legacyShuntCal          = 10,
+            chSetting_autoShuntCal            = 11,
         };
 
         //API Enum: AutoBalanceErrorFlag
@@ -733,6 +751,7 @@ namespace mscl
         //    autobalance_notSupportedByNode     - 2      - AutoBalance is not supported by the Node.
         //    autobalance_notSupportedByCh       - 3      - AutoBalance is not supported by the channel.
         //    autobalance_targetOutOfRange       - 4      - The target balance value is out of range for the channel.
+        //    autobalance_failed                 - 5      - The AutoBalance has failed. No values have been applied.
         //    autobalance_legacyNone             - 998    - The legacy AutoBalance command was used, so no info was returned.
         //    autobalance_notComplete            - 999    - AutoBalance has not yet completed. 
         enum AutoBalanceErrorFlag
@@ -742,6 +761,7 @@ namespace mscl
             autobalance_notSupportedByNode     = 2,
             autobalance_notSupportedByCh       = 3,
             autobalance_targetOutOfRange       = 4,
+            autobalance_failed                 = 5,
             autobalance_legacyNone             = 998,
             autobalance_notComplete            = 999
         };
@@ -749,27 +769,54 @@ namespace mscl
         //API Enum: AutoCalCompletionFlag
         //    The possible completion flags for the AutoCal Wireless Node function.
         //
-        //    autocal_success            - 0        - AutoCal was successful.
-        //    autocal_maybeInvalid       - 1        - AutoCal completed, but the values look suspicious.
-        //    autocal_notComplete        - 999      - AutoCal has not yet completed.
+        //    autocal_success                   - 0        - AutoCal was successful.
+        //    autocal_maybeInvalid              - 1        - AutoCal completed, but the values look suspicious. The results have been applied to the Node.
+        //    autocal_maybeInvalid_notApplied   - 2        - AutoCal completed, but the values look suspicious. No results have been applied to the Node.
+        //    autocal_notComplete               - 999      - AutoCal has not yet completed.
         enum AutoCalCompletionFlag
         {
-            autocal_success            = 0,
-            autocal_maybeInvalid       = 1,
-            autocal_notComplete        = 999
+            autocal_success                 = 0,
+            autocal_maybeInvalid_applied    = 1,
+            autocal_maybeInvalid_notApplied = 2,
+            autocal_notComplete             = 999
         };
 
-        //API Enum: AutoCalErrorFlag
-        //    The possible error flags for the AutoCal Wireless Node function.
+        //API Enum: AutoCalShmErrorFlag
+        //    The possible error flags for the AutoCal SHM Wireless Node function.
         //
-        //    autocalError_none              - 0        - AutoCal showed no sign of errors.
-        //    autocalError_sensorDetached    - 1        - AutoCal indicated the sensor may be detached.
-        //    autocalError_sensorShorted     - 2        - AutoCal indicated the sensor may have shorted.
-        enum AutoCalErrorFlag
+        //    autocalShmError_none              - 0        - AutoCal showed no sign of errors.
+        //    autocalShmError_sensorDetached    - 1        - AutoCal indicated the sensor may be detached.
+        //    autocalShmError_sensorShorted     - 2        - AutoCal indicated the sensor may have shorted.
+        enum AutoCalShmErrorFlag
         {
-            autocalError_none             = 0,
-            autocalError_sensorDetached   = 1,
-            autocalError_sensorShorted    = 2
+            autocalShmError_none             = 0,
+            autocalShmError_sensorDetached   = 1,
+            autocalShmError_sensorShorted    = 2
+        };
+
+        //API Enum: AutoShuntCalErrorFlag
+        //    The possible error flags for the AutoShuntCal Wireless Node function.
+        //
+        //    autoshuntcalError_none               - 0      - AutoCal showed no sign of errors.
+        //    autoshuntcalError_unsupportedChannel - 3      - The provided channel was not supported.
+        //    autoshuntcalError_baseHighRail       - 4      - The baseline data may have railed high.
+        //    autoshuntcalError_baseLowRail        - 5      - The baseline data may have railed low.
+        //    autoshuntcalError_shuntHighRail      - 6      - The shunted data may have railed high.
+        //    autoshuntcalError_shuntLowRail       - 7      - The shunted data may have railed low.
+        //    autoshuntcalError_ramp               - 8      - There was an unexpected slope to the data.
+        //    autoshuntcalError_noShunt            - 9      - No shunt was detected in the data.
+        //    autoshuntcalError_timeout            - 10     - A timeout has occurred.
+        enum AutoShuntCalErrorFlag
+        {
+            autoshuntcalError_none               = 0,
+            autoshuntcalError_unsupportedChannel = 3,
+            autoshuntcalError_baseHighRail       = 4,
+            autoshuntcalError_baseLowRail        = 5,
+            autoshuntcalError_shuntHighRail      = 6,
+            autoshuntcalError_shuntLowRail       = 7,
+            autoshuntcalError_ramp               = 8,
+            autoshuntcalError_noShunt            = 9,
+            autoshuntcalError_timeout            = 10
         };
 
         //API Enum: FatigueMode
@@ -797,13 +844,14 @@ namespace mscl
         };
 
         //API Enum: Filter
-        //  The filter options (used for low pass filter)
+        //  The filter options (used for anti-aliasing filter)
         //
         //  filter_33000hz  - 33000
         //  filter_20000hz  - 20000
         //  filter_10000hz  - 10000
         //  filter_5000hz   - 5000
         //  filter_4096hz   - 4096
+        //  filter_4000hz   - 4000
         //  filter_2048hz   - 2048
         //  filter_2000hz   - 2000
         //  filter_1024hz   - 1024
@@ -823,6 +871,7 @@ namespace mscl
             filter_10000hz = 10000,
             filter_5000hz  = 5000,
             filter_4096hz  = 4096,
+            filter_4000hz  = 4000,
             filter_2048hz  = 2048,
             filter_2000hz  = 2000,
             filter_1024hz  = 1024,
@@ -848,6 +897,123 @@ namespace mscl
             storageLimit_stop       = 1
         };
 
+        //API Enum: InputRange
+        //  The options available for input range on supported Nodes.
+        //
+        //  range_10V           - 0 - +-10 Volts
+        //  range_5V            - 1 - +-5 Volts
+        //  range_2V            - 2 - +-2 Volts
+        //  range_1V            - 3 - +-1 Volt
+        //  range_0to10V        - 4 - 0 Volts to 10 Volts
+        //  range_0to5V         - 5 - 0 Volts to 5 Volts
+        //  range_731mV         - 6 - +-731 milliVolts
+        //  range_585mV         - 7 - +-585 milliVolts
+        //  range_365mV         - 8 - +-365 milliVolts
+        //  range_292mV         - 9 - +-292 milliVolts
+        //  range_182mV         - 10 - +-182 milliVolts
+        //  range_146mV         - 11 - +-146 milliVolts
+        //  range_156mV         - 12 - +-156 milliVolts
+        //  range_91mV          - 13 - +-91 milliVolts
+        //  range_78mV          - 14 - +-78 milliVolts
+        //  range_75mV          - 15 - +-75 milliVolts
+        //  range_73mV          - 16 - +-73 milliVolts
+        //  range_70mV          - 17 - +-70 milliVolts
+        //  range_62mV          - 18 - +-62 milliVolts
+        //  range_50mV          - 19 - +-50 milliVolts
+        //  range_45mV          - 20 - +-45 milliVolts
+        //  range_44mV          - 21 - +-44 milliVolts
+        //  range_39mV          - 22 - +-39 milliVolts
+        //  range_37mV          - 23 - +-37 milliVolts
+        //  range_36mV          - 24 - +-36 milliVolts
+        //  range_35mV          - 25 - +-35 milliVolts
+        //  range_31mV          - 26 - +-31 milliVolts
+        //  range_30mV          - 27 - +-30 milliVolts
+        //  range_20mV          - 28 - +-20 milliVolts
+        //  range_19mV          - 29 - +-19 milliVolts
+        //  range_18mV          - 30 - +-18 milliVolts
+        //  range_17mV          - 31 - +-17 milliVolts
+        //  range_15mV          - 32 - +-15 milliVolts
+        //  range_14mV          - 33 - +-14 milliVolts
+        //  range_10mV          - 34 - +-10 milliVolts
+        //  range_9mV           - 35 - +-9 milliVolts
+        //  range_8mV           - 36 - +-8 milliVolts
+        //  range_7mV           - 37 - +-7 milliVolts
+        //  range_5mV           - 38 - +-5 milliVolts
+        //  range_4mV           - 39 - +-4 milliVolts
+        //  range_3mV           - 40 - +-3 milliVolts
+        //  range_2mV           - 41 - +-2 milliVolts
+        //  range_1mV           - 42 - +-1 milliVolts
+        //  range_976microV     - 43 - +-976 microVolts
+        //  range_600microV     - 44 - +-600 microVolts
+        //  range_586microV     - 45 - +-586 microVolts
+        //  range_547microV     - 46 - +-547 microVolts
+        //  range_488microV     - 47 - +-488 microVolts
+        //  range_350microV     - 48 - +-350 microVolts
+        //  range_300microV     - 49 - +-300 microVolts
+        //  range_100microV     - 50 - +-100 microVolts
+        //  range_1500microV    - 51 - +-1500 microVolts
+        //  range_812microV     - 52 - +-2 microVolts
+        //  range_6mV           - 53 - +-6 milliVolts
+        //  range_invalid       - 65535 - invalid input range
+        enum InputRange
+        {
+            range_10V = 0,           //+-10 Volts
+            range_5V = 1,            //+-5 Volts
+            range_2V = 2,            //+-2 Volts
+            range_1V = 3,            //+-1 Volt
+            range_0to10V = 4,        //0 Volts to 10 Volts
+            range_0to5V = 5,         //0 Volts to 5 Volts
+            range_731mV = 6,         //+-731 milliVolts
+            range_585mV = 7,         //+-585 milliVolts
+            range_365mV = 8,         //+-365 milliVolts
+            range_292mV = 9,         //+-292 milliVolts
+            range_182mV = 10,        //+-182 milliVolts
+            range_146mV = 11,        //+-146 milliVolts
+            range_156mV = 12,        //+-156 milliVolts
+            range_91mV = 13,         //+-91 milliVolts
+            range_78mV = 14,         //+-78 milliVolts
+            range_75mV = 15,         //+-75 milliVolts
+            range_73mV = 16,         //+-73 milliVolts
+            range_70mV = 17,         //+-70 milliVolts
+            range_62mV = 18,         //+-62 milliVolts
+            range_50mV = 19,         //+-50 milliVolts
+            range_45mV = 20,         //+-45 milliVolts
+            range_44mV = 21,         //+-44 milliVolts
+            range_39mV = 22,         //+-39 milliVolts
+            range_37mV = 23,         //+-37 milliVolts
+            range_36mV = 24,         //+-36 milliVolts
+            range_35mV = 25,         //+-35 milliVolts
+            range_31mV = 26,         //+-31 milliVolts
+            range_30mV = 27,         //+-30 milliVolts
+            range_20mV = 28,         //+-20 milliVolts
+            range_19mV = 29,         //+-19 milliVolts
+            range_18mV = 30,         //+-18 milliVolts
+            range_17mV = 31,         //+-17 milliVolts
+            range_15mV = 32,         //+-15 milliVolts
+            range_14mV = 33,         //+-14 milliVolts
+            range_10mV = 34,         //+-10 milliVolts
+            range_9mV = 35,          //+-9 milliVolts
+            range_8mV = 36,          //+-8 milliVolts
+            range_7mV = 37,          //+-7 milliVolts
+            range_5mV = 38,          //+-5 milliVolts
+            range_4mV = 39,          //+-4 milliVolts
+            range_3mV = 40,          //+-3 milliVolts
+            range_2mV = 41,          //+-2 milliVolts
+            range_1mV = 42,          //+-1 milliVolts
+            range_976microV = 43,    //+-976 microVolts
+            range_600microV = 44,    //+-600 microVolts
+            range_586microV = 45,    //+-586 microVolts
+            range_547microV = 46,    //+-547 microVolts
+            range_488microV = 47,    //+-488 microVolts
+            range_350microV = 48,    //+-350 microVolts
+            range_300microV = 49,    //+-300 microVolts
+            range_100microV = 50,    //+-100 microVolts
+            range_1500microV = 51,   //+-1500 microVolts
+            range_812microV = 52,    //+-812 microVolts
+            range_6mV = 53,          //+-6 milliVolts
+            range_invalid = 65535    //invalid input range
+        };
+
     public:
         //API Typedefs:
         //    DataCollectionMethods      - A vector of <DataCollectionMethod> enums.
@@ -859,6 +1025,7 @@ namespace mscl
         //    ChannelGroupSettings       - A vector of <ChannelGroupSetting> enums.
         //    FatigueModes               - A vector of <FatigueMode> enums.
         //    StorageLimitModes          - A vector of <StorageLimitMode> enums.
+        //    InputRanges                - A vector of <InputRange> enums.
         typedef std::vector<DataCollectionMethod> DataCollectionMethods;
         typedef std::vector<DataFormat> DataFormats;
         typedef std::vector<WirelessSampleRate> WirelessSampleRates;
@@ -869,6 +1036,7 @@ namespace mscl
         typedef std::vector<FatigueMode> FatigueModes;
         typedef std::vector<Filter> Filters;
         typedef std::vector<StorageLimitMode> StorageLimitModes;
+        typedef std::vector<InputRange> InputRanges;
 
         //API Constant: UNKNOWN_RSSI = 999
         //    The value given for an unknown RSSI value.

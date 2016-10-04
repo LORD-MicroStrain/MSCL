@@ -5,7 +5,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "WirelessProtocol.h"
+#include "mscl/Version.h"
 #include "mscl/MicroStrain/Wireless/BaseStation_Impl.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
 namespace mscl
 {
@@ -15,15 +17,11 @@ namespace mscl
 
     std::unique_ptr<WirelessProtocol> WirelessProtocol::chooseBaseStationProtocol(const Version& fwVersion)
     {
-        //the BaseStation min fw version for each protocol
-        static const Version MIN_FW_PROTOCOL_1_3(4, 30448);
-        static const Version MIN_FW_PROTOCOL_1_1(4, 0);
-
-        if(fwVersion >= MIN_FW_PROTOCOL_1_3)
+        if(fwVersion >= NodeFeatures::MIN_BASE_FW_PROTOCOL_1_3)
         {
             return v1_3();
         }
-        else if(fwVersion >= MIN_FW_PROTOCOL_1_1)
+        else if(fwVersion >= NodeFeatures::MIN_BASE_FW_PROTOCOL_1_1)
         {
             return v1_1();
         }
@@ -35,20 +33,19 @@ namespace mscl
 
     std::unique_ptr<WirelessProtocol> WirelessProtocol::chooseNodeProtocol(const Version& fwVersion)
     {
-        //the Node min fw version for each protocol
-        static const Version MIN_FW_PORTOCOL_1_4(10, 31758);
-        static const Version MIN_FW_PROTOCOL_1_2(10, 0);
-        static const Version MIN_FW_PROTOCOL_1_1(8, 21);
-
-        if(fwVersion >= MIN_FW_PORTOCOL_1_4)
+        if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_5)
+        {
+            return v1_5();
+        }
+        else if(fwVersion >= NodeFeatures::MIN_NODE_FW_PORTOCOL_1_4)
         {
             return v1_4();
         }
-        else if(fwVersion >= MIN_FW_PROTOCOL_1_2)
+        else if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_2)
         {
             return v1_2();
         }
-        else if(fwVersion >= MIN_FW_PROTOCOL_1_1)
+        else if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_1)
         {
             return v1_1();
         }
@@ -77,6 +74,9 @@ namespace mscl
         result->m_pageDownload          = std::mem_fn(&BaseStation_Impl::protocol_node_pageDownload_v1);
         result->m_autoBalance           = std::mem_fn(&BaseStation_Impl::protocol_node_autoBalance_v1);
         result->m_erase                 = std::mem_fn(&BaseStation_Impl::protocol_node_erase_v1);
+        result->m_startNonSyncSampling  = std::mem_fn(&BaseStation_Impl::protocol_node_startNonSync_v1);
+        result->m_datalogSessionInfo    = nullptr;
+        result->m_getDatalogData        = nullptr;
 
         return result;
     }
@@ -134,6 +134,20 @@ namespace mscl
 
         //Node Commands
         result->m_erase                 = std::mem_fn(&BaseStation_Impl::protocol_node_erase_v2);
+        result->m_datalogSessionInfo    = std::mem_fn(&BaseStation_Impl::protocol_node_datalogInfo_v1);
+        result->m_getDatalogData        = std::mem_fn(&BaseStation_Impl::protocol_node_getDatalogData_v1);
+
+        return result;
+    }
+
+    std::unique_ptr<WirelessProtocol> WirelessProtocol::v1_5()
+    {
+        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_4();
+
+        //changes from v1.4
+
+        //Node Commands
+        result->m_startNonSyncSampling = std::mem_fn(&BaseStation_Impl::protocol_node_startNonSync_v2);
 
         return result;
     }

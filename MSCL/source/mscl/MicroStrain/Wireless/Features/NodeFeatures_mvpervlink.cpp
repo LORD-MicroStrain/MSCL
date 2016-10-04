@@ -19,7 +19,7 @@ namespace mscl
 
         m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential Channels",
                                      ChannelGroup::SettingsMap{
-                                         {WirelessTypes::chSetting_hardwareGain, NodeEepromMap::HW_GAIN_1}}
+                                         {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_1}}
         );
 
         m_channelGroups.emplace_back(DIFFERENTIAL_CH1, "Differential Channel 1",
@@ -43,6 +43,11 @@ namespace mscl
         return false;
     }
 
+    bool NodeFeatures_mvpervlink::supportsSensorDelayConfig() const
+    {
+        return true;
+    }
+
     const WirelessTypes::DataCollectionMethods NodeFeatures_mvpervlink::dataCollectionMethods() const
     {
         //build and return the data collection methods that are supported
@@ -55,7 +60,7 @@ namespace mscl
     {
         //build and return the data formats that are supported
         WirelessTypes::DataFormats result;
-        result.push_back(WirelessTypes::dataFormat_2byte_uint);
+        result.push_back(WirelessTypes::dataFormat_raw_uint16);
         return result;
     }
 
@@ -69,7 +74,7 @@ namespace mscl
         return result;
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures_mvpervlink::sampleRates(WirelessTypes::SamplingMode samplingMode) const
+    const WirelessTypes::WirelessSampleRates NodeFeatures_mvpervlink::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
     {
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
@@ -88,7 +93,7 @@ namespace mscl
             }
 
             default:
-                throw Error("Invalid SamplingMode");
+                throw Error_NotSupported("The sampling mode is not supported by this Node");
         }
     }
 }

@@ -33,12 +33,18 @@ namespace mscl
 
         //perform a timed_wait with the given timeout
         //    this unlocks the lock/mutex that we pass to it
-        bool result = (m_condition.wait_for(lock, std::chrono::milliseconds(timeout)) == std::cv_status::no_timeout);
+        //Note: wait_for returns a std::cv_status of timeout or no_timeout
+        //      however, we cannot rely on this because the clock accuracy isn't great
+        //      and therefore the implementation of the call sometimes returns no_timeout
+        //      when really there likely was a timeout, but the wait didn't get that far.
+        m_condition.wait_for(lock, std::chrono::milliseconds(timeout));
+
+        bool result = m_isNotified;
 
         //set the notified flag to false so that wait can be called again
         m_isNotified = false;
 
-        //return the result of the 
+        //return true if we were notified, false if we timed out
         return result;
     }
 
@@ -48,11 +54,11 @@ namespace mscl
         //    this will lock the mutex automatically
         mutex_lock_guard lock(m_mutex);
 
-        //notify the condition
-        m_condition.notify_one();
-
         //let it be known that we notified already
         //    this is so that timedWait() can return immediately if called after already being notified
         m_isNotified = true;
+
+        //notify the condition
+        m_condition.notify_one();
     }
 }

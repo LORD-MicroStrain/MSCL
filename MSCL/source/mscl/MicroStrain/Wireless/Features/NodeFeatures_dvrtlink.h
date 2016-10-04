@@ -19,5 +19,7 @@ namespace mscl
         //Constructor: NodeFeatures_dvrtlink
         //    Creates a NodeFeatures_dvrtlink object.
         NodeFeatures_dvrtlink(const NodeInfo& info);
+
+        virtual bool supportsSensorDelayConfig() const override;
     };
 }

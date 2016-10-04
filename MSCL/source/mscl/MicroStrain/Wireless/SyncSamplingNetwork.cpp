@@ -10,7 +10,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "WirelessNode.h"
 #include "WirelessTypes.h"
 #include "WirelessModels.h"
-#include "mscl/MicroStrain/Wireless/Configuration/SyncNodeConfig.h"
+#include "Configuration/SyncNodeConfig.h"
+#include "Configuration/WirelessNodeConfig.h"
 #include "SyncSamplingFormulas.h"
 #include "mscl/MicroStrain/SampleUtils.h"
 
@@ -870,8 +871,8 @@ namespace mscl
 
         uint32 samplingDelayCheck = static_cast<uint32>(SyncSamplingFormulas::MAX_SLOTS / sampleRate.samplesPerSecond());
 
-        //check if the node can be assigned slot 1 or not
-        bool canHaveSlot1 = SyncSamplingFormulas::canHaveFirstSlot(model, nodeInfo.syncSamplingVersion());
+        //check if the node can be assigned the first slot
+        bool canHaveFirstSlot = SyncSamplingFormulas::canHaveFirstSlot(model, nodeInfo.syncSamplingVersion());
 
         bool foundTakenSlot = false;
         uint16 resultSlot = 0;
@@ -880,14 +881,31 @@ namespace mscl
         uint16 extraSlotItr;
         uint16 checkSlotsItr;
 
+        //need to reserve the last 8 slots (in each second [16 if high cap]) if we are in legacy mode
+        if(inLegacyMode())
+        {
+            slotItr = 1016;
+            uint16 i = 0;
+            while(slotItr < totalSlots)
+            {
+                for(i = 0; i < slotSize; i++)
+                {
+                    m_slots.at(slotItr + i) = true;
+                }
+
+                slotItr += SyncSamplingFormulas::MAX_SLOTS;
+            }
+
+        }
+
         //loop through all the slots up to a max of the maxAddress
-        for(slotItr = SyncSamplingFormulas::MIN_TDMA; slotItr < totalSlots && slotItr <= maxAddress; slotItr += slotSize)
+        for(slotItr = 0; slotItr < totalSlots && slotItr <= maxAddress - 1; slotItr += slotSize)
         {
             //if this slot is available
-            if(m_slots.at(slotItr - 1) == false)
+            if(m_slots.at(slotItr) == false)
             {
-                //if this is slot 1 and this node is not allowed to have slot 1
-                if(slotItr == 1 && !canHaveSlot1)
+                //if this is the first slot and this node is not allowed to have it
+                if(slotItr == 0 && !canHaveFirstSlot)
                 {
                     //move on to the next slot
                     continue;
@@ -897,7 +915,7 @@ namespace mscl
                 if(checkSamplingDelay)
                 {
                     //check if this slot is ok with the sampling delay
-                    if(slotItr % samplingDelayCheck <= samplingDelay)
+                    if((slotItr + 1) % samplingDelayCheck <= samplingDelay)
                     {
                         //node can't have this slot, move on to the next slot
                         continue;
@@ -906,7 +924,7 @@ namespace mscl
 
                 checkSlotsItr = slotItr;
 
-                while( ((checkSlotsItr - 1 + slotSize) <= slotTotalPerNode) &&        //while there is room to continue looking
+                while( ((checkSlotsItr + slotSize - 1) < slotTotalPerNode) &&    //while there is room to continue looking
                        (numTxFound < totalTxRequired) &&                         //and we haven't found all the transmission slots that are required
                        !foundTakenSlot)                                          //and we haven't found a taken slot
                 {
@@ -914,7 +932,7 @@ namespace mscl
                     for(extraSlotItr = 1; extraSlotItr < slotSize; ++extraSlotItr)
                     {
                         //if we find a taken slot
-                        if(m_slots.at(checkSlotsItr - 1 + extraSlotItr) == true)
+                        if(m_slots.at(checkSlotsItr + extraSlotItr) == true)
                         {
                             //stop looking at this slot
                             foundTakenSlot = true;
@@ -937,18 +955,19 @@ namespace mscl
                 if(!foundTakenSlot && (numTxFound >= totalTxRequired))
                 {
                     //this is the slot that will be assigned to the node
-                    resultSlot = slotItr;
+                    //Note: the Nodes use slots starting at 1 (not 0) so add 1
+                    resultSlot = slotItr + 1;
 
                     //need to fill in all the slots that this node will be using (all the way up the line)
-                    while((slotItr - 1 + slotSize) <= totalSlots)
+                    while((slotItr + slotSize - 1) < totalSlots)
                     {
                         //loop through [slotSize] number of slots
                         for(uint16 writeSlot = 0; writeSlot < slotSize; ++writeSlot)
                         {
-                            assert(m_slots.at(slotItr - 1 + writeSlot) == false);    //none of these slots should already be taken
+                            assert(m_slots.at(slotItr + writeSlot) == false);    //none of these slots should already be taken
 
-                            //set the slot to 1 to signify it is taken
-                            m_slots.at(slotItr - 1 + writeSlot) = true;
+                            //set the slot to true to signify it is taken
+                            m_slots.at(slotItr + writeSlot) = true;
                             m_availableSlotCount--;
                         }
 
@@ -1296,7 +1315,7 @@ namespace mscl
             case WirelessModels::node_sgLink_rgd:
             {
                 //get the sampling delay stored in EEPROM (this node uses this values as microseconds instead of milliseconds).
-                uint16 delayEepromVal = static_cast<uint16>(config.samplingDelay().getMicroseconds());
+                uint16 delayEepromVal = static_cast<uint16>(config.sensorDelay());
 
                 //delay (in microseconds) = (eeprom delay + 5.0) * # active channels
                 float delayInMicrosec = static_cast<float>((delayEepromVal + 5.0) * config.activeChannels().count());
@@ -1309,18 +1328,21 @@ namespace mscl
 
             default:
             {
-                delayResult = static_cast<uint32>(config.samplingDelay().getMilliseconds());
+                uint32 delayInMicrosec = config.sensorDelay();
 
-                //10000 = no delay
-                if(delayResult == 10000)        
-                { 
+                if(delayInMicrosec == WirelessNodeConfig::SENSOR_DELAY_ALWAYS_ON)
+                {
                     //set to no delay
-                    delayResult = 0; 
-                }    
-                else if(delayResult > 1000)    
+                    return 0;
+                }
+
+                //change from microseconds to milliseconds
+                delayResult = static_cast<int>(delayInMicrosec / 1000.0);
+
+                if(delayResult > 1000)    
                 { 
                     //max delay is 1s, default to delay of 5ms
-                    delayResult = 5; 
+                    delayResult = 5;
                 }
 
                 break;

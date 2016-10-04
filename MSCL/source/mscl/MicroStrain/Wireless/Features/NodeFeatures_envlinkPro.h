@@ -20,14 +20,16 @@ namespace mscl
         //    Creates a NodeFeatures_envlinkPro object.
         NodeFeatures_envlinkPro(const NodeInfo& info);
 
+        virtual bool supportsSensorDelayConfig() const override;
+
         virtual const WirelessTypes::SamplingModes samplingModes() const override;
 
         virtual const WirelessTypes::DataFormats dataFormats() const override;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode) const override;
+        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const override;
 
         virtual WirelessTypes::SettlingTime maxFilterSettlingTime(const SampleRate& rate) const override;
 
-        virtual WirelessTypes::WirelessSampleRate maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode) const override;
+        virtual WirelessTypes::WirelessSampleRate maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const override;
     };
 }

@@ -22,5 +22,7 @@ namespace mscl
         //Constructor: NodeFeatures_sglinkoemNoXR
         //    Creates a NodeFeatures_sglinkoemNoXR object.
         NodeFeatures_sglinkoemNoXR(const NodeInfo& info);
+
+        virtual bool supportsSensorDelayConfig() const override;
     };
 }

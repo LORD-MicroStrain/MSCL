@@ -26,8 +26,8 @@ namespace mscl
         //Parameters:
         //  channelNumber - The Wireless Node channel number that the trigger is applied to.
         //  triggerType - The <WirelessTypes::EventTriggerType> for the trigger.
-        //  triggerValue - The value to use for the trigger (in bits).
-        Trigger(uint8 channelNumber, WirelessTypes::EventTriggerType triggerType, uint16 triggerValue);
+        //  triggerValue - The value to use for the trigger, in whatever unit the channel is calibrated for. (Ex. 4 G's if slope and offset calibrated for G's).
+        Trigger(uint8 channelNumber, WirelessTypes::EventTriggerType triggerType, float triggerValue);
 
     private:
         //Variable: m_channelNumber
@@ -39,8 +39,8 @@ namespace mscl
         WirelessTypes::EventTriggerType m_type;
 
         //Variable: m_value
-        //  The value for the trigger (in bits).
-        uint16 m_value;
+        //  The value for the trigger (in whatever unit the channel is calibrated for).
+        float m_value;
 
     public:
         //API Function: channelNumber
@@ -60,12 +60,14 @@ namespace mscl
         void triggerType(WirelessTypes::EventTriggerType type);
 
         //API Function: triggerValue
-        //  Gets the trigger value currently set.
-        uint16 triggerValue() const;
+        //  Gets the trigger value currently set, in whatever unit the channel is calibrated for.
+        //  (Ex. If triggering on channel 1, and channel 1 is calibrated for G's, a value of 4 for this triggerValue would be 4 G's).
+        float triggerValue() const;
 
         //API Function: triggerValue
-        //  Sets the trigger value for the trigger.
-        void triggerValue(uint16 value);
+        //  Sets the trigger value for the trigger, in whatever unit the channel is calibrated for.
+        //  (Ex. If triggering on channel 1, and channel 1 is calibrated for G's, a value of 4 for this triggerValue would be 4 G's).
+        void triggerValue(float value);
     };
 
     //API Typedef: Triggers

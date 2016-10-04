@@ -22,7 +22,7 @@ namespace mscl
         addCalCoeffChannelGroup(4, NodeEepromMap::CH_ACTION_SLOPE_4, NodeEepromMap::CH_ACTION_ID_4);
 
         static const ChannelMask ACCEL_CHS(BOOST_BINARY(00000111)); //ch1 - ch3
-        m_channelGroups.emplace_back(ACCEL_CHS, "Accel Channels", ChannelGroup::SettingsMap{{WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1}});
+        m_channelGroups.emplace_back(ACCEL_CHS, "Accel Channels", ChannelGroup::SettingsMap{{WirelessTypes::chSetting_antiAliasingFilter, NodeEepromMap::ANTI_ALIASING_FILTER_1}});
 
         //Channels
         m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_acceleration);    //accel x
@@ -31,7 +31,7 @@ namespace mscl
         m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_temperature);    //internal temp
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures_glink2Internal::sampleRates(WirelessTypes::SamplingMode samplingMode) const
+    const WirelessTypes::WirelessSampleRates NodeFeatures_glink2Internal::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
     {
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
@@ -47,11 +47,11 @@ namespace mscl
             return AvailableSampleRates::armedDatalog_glink2;
 
         default:
-            throw Error("Invalid SamplingMode");
+            throw Error_NotSupported("The sampling mode is not supported by this Node");
         }
     }
 
-    const WirelessTypes::Filters NodeFeatures_glink2Internal::lowPassFilters() const
+    const WirelessTypes::Filters NodeFeatures_glink2Internal::antiAliasingFilters() const
     {
         static const WirelessTypes::Filters filters = {
             {WirelessTypes::filter_1000hz},

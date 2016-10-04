@@ -23,6 +23,8 @@ namespace mscl
         //    Creates a NodeFeatures_torqueLink object.
         NodeFeatures_torqueLink(const NodeInfo& info);
 
+        virtual bool supportsSensorDelayConfig() const override;
+
         virtual const WirelessTypes::SamplingModes samplingModes() const override;
     };
 }

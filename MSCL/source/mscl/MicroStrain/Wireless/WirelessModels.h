@@ -22,7 +22,6 @@ namespace mscl
         //  node_vLink_legacy               - 2428 - V-Link (legacy)
         //  node_cfBearingTempLink          - 51280096 - CF-Bearing-Temp-Link
         //  node_envLink_pro                - 60000001 - ENV-Link-Pro (NO ACTUAL 6XXX NUMBER, NODE NEEDS TO BE UPDATED!)
-        //  node_sgLink_8ch                 - 60000002 - SG-Link-8CH  (NO ACTUAL 6XXX NUMBER, NODE NEEDS TO BE UPDATED!)
         //  node_gLink_2g                   - 63052000 - G-Link 2G
         //  node_gLink_10g                  - 63053000 - G-Link 10G
         //  node_gLinkII_cust_in            - 63054000 - G-Link II Custom Internal
@@ -44,7 +43,7 @@ namespace mscl
         //  node_tcLink_6ch_ip67            - 63107000 - TC-Link 6CH IP67
         //  node_tcLink_6ch_ip67_rht        - 63108000 - TC-Link 6CH IP67 RHT
         //  node_vLink                      - 63121000 - V-Link
-        //  node_vLink2                     - 63122000 - V-Link 2
+        //  node_vLink200                     - 63122000 - V-Link 2
         //  node_iepeLink                   - 63160010 - IEPE-Link
         //  node_dvrtLink                   - 63181000 - DVRT-Link
         //  node_envLink_mini               - 63220000 - ENV-Link-Mini
@@ -65,14 +64,13 @@ namespace mscl
         //  node_sgLink_herm_2600           - 65011110 - SG-Link-Hermetic 2600 belt assembly
         //  node_sgLink_herm_2700           - 65011210 - SG-Link-Hermetic 2700 belt assembly
         //  node_sgLink_herm_2800           - 65011310 - SG-Link-Hermetic 2800 belt assembly
-        //  node_bladeImpactLink            - 65080000 - Blade-Impact-Link
+        //  node_wirelessImpactSensor            - 65080000 - Wireless Impact Sensor
         //=========================================================================
         enum NodeModel
         {
             node_vLink_legacy               = 2428,        //V-Link (legacy)
             node_cfBearingTempLink          = 51280096,    //CF-Bearing-Temp-Link
             node_envLink_pro                = 60000001,    //ENV-Link-Pro (NO ACTUAL 6XXX NUMBER, NODE NEEDS TO BE UPDATED!)
-            node_sgLink_8ch                 = 60000002,    //SG-Link-8CH  (NO ACTUAL 6XXX NUMBER, NODE NEEDS TO BE UPDATED!)
             node_gLink_2g                   = 63052000,    //G-Link 2G
             node_gLink_10g                  = 63053000,    //G-Link 10G
             node_gLinkII_cust_in            = 63054000,    //G-Link II Custom Internal
@@ -94,7 +92,13 @@ namespace mscl
             node_tcLink_6ch_ip67            = 63107000,    //TC-Link 6CH IP67
             node_tcLink_6ch_ip67_rht        = 63108000,    //TC-Link 6CH IP67 RHT
             node_vLink                      = 63121000,    //V-Link
-            node_vLink2                     = 63122000,    //V-Link 2
+            node_vLink200                   = 63122000,    //V-Link 200 - Full Bridge
+            node_vLink200_qbridge_1K        = 63122110,    //V-Link 200 - Quarter Bridge 1K OHM
+            node_vLink200_qbridge_120       = 63122120,    //V-Link 200 - Quarter Bridge 120 OHM
+            node_vLink200_qbridge_350       = 63122130,    //V-Link 200 - Quarter Bridge 350 OHM
+            node_vLink200_hbridge_1K        = 63122210,    //V-Link 200 - Half Bridge 1K OHM
+            node_vLink200_hbridge_120       = 63122220,    //V-Link 200 - Half Bridge 120 OHM
+            node_vLink200_hbridge_350       = 63122230,    //V-Link 200 - Half Bridge 350 OHM
             node_iepeLink                   = 63160010,    //IEPE-Link
             node_dvrtLink                   = 63181000,    //DVRT-Link
             node_envLink_mini               = 63220000,    //ENV-Link-Mini
@@ -115,7 +119,7 @@ namespace mscl
             node_sgLink_herm_2600           = 65011110,    //SG-Link-Hermetic 2600 belt assembly
             node_sgLink_herm_2700           = 65011210,    //SG-Link-Hermetic 2700 belt assembly
             node_sgLink_herm_2800           = 65011310,    //SG-Link-Hermetic 2800 belt assembly
-            node_bladeImpactLink            = 65080000,    //Blade-Impact-Link
+            node_wirelessImpactSensor       = 65080000,    //Wireless Impact Sensor
         };
 
         //=========================================================================

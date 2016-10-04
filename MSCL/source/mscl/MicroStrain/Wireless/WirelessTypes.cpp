@@ -10,19 +10,21 @@ namespace mscl
 {
     uint16 WirelessTypes::dataTypeSize(DataType type)
     {
-        //check the DataType
         switch(type)
         {
-            //data types that take up 2 bytes
-            case dataType_2byteUInt_12bitRes:
-            case dataType_2byteUInt_16bitRes:
-            case dataType_2byteUInt_shifted:
+            case dataType_uint16_12bitRes:
+            case dataType_uint16:
+            case dataType_uint16_shifted:
+            case dataType_uint16_18bitTrunc:
                 return 2;
 
-                //data types that take up 4 bytes
-            case dataType_4ByteFloat:
-            case dataType_4byteUInt:
+            case dataType_float32:
+            case dataType_float32_noCals:
+            case dataType_uint32:
                 return 4;
+
+            case dataType_uint24:
+                return 3;
 
             default:
                 assert(false);    //need to add support for a new DataType if this assert is hit
@@ -36,16 +38,19 @@ namespace mscl
         switch(type)
         {
             //data types that are unsigned shorts
-            case dataType_2byteUInt_12bitRes:
-            case dataType_2byteUInt_16bitRes:
-            case dataType_2byteUInt_shifted:
+            case dataType_uint16_12bitRes:
+            case dataType_uint16:
+            case dataType_uint16_shifted:
                 return valueType_uint16;
 
-            case dataType_4byteUInt:
+            case dataType_uint32:
+            case dataType_uint24:               //uint24 is stored as a uint32 in mscl
+            case dataType_uint16_18bitTrunc:    //uint16 from 18-bit node is stored as a uint32 in mscl
                 return valueType_uint32;
 
-                //data types that are floats
-            case dataType_4ByteFloat:
+            //data types that are floats
+            case dataType_float32:
+            case dataType_float32_noCals:
                 return valueType_float;
 
             default:
@@ -58,10 +63,13 @@ namespace mscl
     {
         switch(dataFormat)
         {
-        case dataFormat_4byte_float:
+        case dataFormat_cal_float:
             return 4;
 
-        case dataFormat_2byte_uint:
+        case dataFormat_raw_uint24:
+            return 3;
+
+        case dataFormat_raw_uint16:
         default:
             return 2;
         }

@@ -6,7 +6,6 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "stdafx.h"
 #include "Utils.h"
 
-#include <bitset>
 #include <chrono>
 #include <locale>
 #include <thread>
@@ -47,15 +46,11 @@ namespace mscl
             }
         }
 
-        //Function: msb
-        //    gets the Most Significant Byte from the 2-Byte value
         uint8 msb(uint16 value)
         {
             return value >> 8;
         }
 
-        //Function: lsb
-        //    gets the Least Significant Byte from the 2-Byte value
         uint8 lsb(uint16 value)
         {
             return value & 0x00ff;
@@ -73,220 +68,288 @@ namespace mscl
             return value & 0x0f;
         }
 
-        //    gets the 2-byte signed value from the 2 MSB and LSB bytes
-        int16 make_int16(uint8 msb, uint8 lsb)
+        void split_int16(int16 value, uint8& low, uint8& high, Endianness endian /*= bigEndian*/)
         {
-            return (static_cast<int16>(msb) << 8) | static_cast<int16>(lsb);
+            int16 val;
+
+            if(endian == Endianness::bigEndian)
+            {
+                val = SystemEndian_To_BigEndian(value);
+            }
+            else
+            {
+                val = SystemEndian_To_LittleEndian(value);
+            }
+
+            //map the int16 to a byte array
+            uint8* tmp = reinterpret_cast<uint8*>(&val);
+
+            //get each byte of the int16
+            low = tmp[0];
+            high = tmp[1];
         }
 
-        //    Converts the 2 byte value into its 2 bytes
-        void split_uint16(uint16 value, uint8& msb, uint8& lsb)
+        int16 make_int16(uint8 low, uint8 high, Endianness endian /*= bigEndian*/)
         {
-            //Shift 8 bits right, drop the lower byte
-            msb = value >> 8;    
-
-            //Mask out the upper byte
-            lsb = value & 0xFF;
-        }
-
-        //    gets the 2-byte unsigned value from the 2 MSB and LSB bytes
-        uint16 make_uint16(uint8 msb, uint8 lsb)
-        {
-            return (static_cast<uint16>(msb) << 8) | static_cast<uint16>(lsb);
-        }
-
-        //    Converts the 4 byte value into its 4 bytes
-        void split_uint32(uint32 value, uint8& byte1, uint8& byte2, uint8& byte3, uint8& byte4)
-        {
-            //Shift 24 bits right, drop the lower bytes
-            byte1 = value >> 24;    
-
-            //Shift 16 bits right, drop the lower bytes, mask out the upper bytes
-            byte2 = (value >> 16) & 0xFF;
-
-            //Shift 8 bits right, drop the lower byte, mask out the upper bytes
-            byte3 = (value >> 8) & 0xFF;
-
-            //Mask out the upper bytes
-            byte4 = value & 0xFF;
-        }
-
-        void split_uint32(uint32 value, uint16& msw, uint16& lsw)
-        {
-            //Shift 16 bits right, drop the lower bytes
-            msw = value >> 16;
-
-            //Mask out the upper bytes
-            lsw = value & 0xFFFF;
-        }
-
-        //    gets the 4-byte value from the 4 passed in bytes
-        uint32 make_uint32(uint8 byte1, uint8 byte2, uint8 byte3, uint8 byte4)
-        {
-            //Shift msb 8 bits left, OR the lsb in
-            uint16 hiWord = (byte1 << 8) | byte2;
-
-            //Shift lsb 8 bits left, OR the lsb in
-            uint16 loWord = (byte3 << 8) | byte4;
-
-            return make_uint32(hiWord, loWord);
-        }
-
-        uint32 make_uint32(uint16 msw, uint16 lsw)
-        {
-            return (static_cast<uint32>(msw) << 16) | static_cast<uint32>(lsw);
-        }
-
-        uint64 make_uint64(uint8 msb, uint8 byte2, uint8 byte3, uint8 byte4, uint8 byte5, uint8 byte6, uint8 byte7, uint8 lsb)
-        {
-            uint32 high = make_uint32(msb, byte2, byte3, byte4);
-            uint32 low = make_uint32(byte5, byte6, byte7, lsb);
-
-            return (static_cast<uint64>(high) << 32 | static_cast<uint64>(low));
-        }
-
-        void split_float_big_endian(float value, uint8& msb, uint8& byte2, uint8& byte3, uint8& lsb)
-        {
-            //convert the float from system endian to big endian
-            float bigEndianVal = SystemEndian_To_BigEndian(value);
+            int16 result = 0;
 
             //map the float to a byte array
-            uint8* tmp = (uint8*)&bigEndianVal;
+            uint8* temp = reinterpret_cast<uint8*>(&result);
 
-            //get each byte of the float
-            msb        = tmp[0];
-            byte2      = tmp[1];
-            byte3      = tmp[2];
-            lsb        = tmp[3];
+            //set each byte of the int16 via the byte array (in big endian)
+            temp[0] = low;
+            temp[1] = high;
+
+            if(endian == Endianness::bigEndian)
+            {
+                return BigEndian_To_SystemEndian(result);
+            }
+            else
+            {
+                return LittleEndian_To_SystemEndian(result);
+            }
         }
 
-        void split_float_little_endian(float value, uint8& lsb, uint8& byte2, uint8& byte3, uint8& msb)
+        void split_uint16(uint16 value, uint8& low, uint8& high, Endianness endian /*= bigEndian*/)
         {
-            //convert the float from system endian to little endian
-            float littleEndianVal = SystemEndian_To_LittleEndian(value);
+            uint16 val;
+
+            if(endian == Endianness::bigEndian)
+            {
+                val = SystemEndian_To_BigEndian(value);
+            }
+            else
+            {
+                val = SystemEndian_To_LittleEndian(value);
+            }
+
+            //map the uint16 to a byte array
+            uint8* tmp = reinterpret_cast<uint8*>(&val);
+
+            //get each byte of the uint16
+            low = tmp[0];
+            high = tmp[1];
+        }
+
+        uint16 make_uint16(uint8 low, uint8 high, Endianness endian /*= bigEndian*/)
+        {
+            uint16 result = 0;
 
             //map the float to a byte array
-            uint8* tmp = (uint8*)&littleEndianVal;
+            uint8* temp = reinterpret_cast<uint8*>(&result);
 
-            //get each byte of the float
-            lsb        = tmp[0];
-            byte2      = tmp[1];
-            byte3      = tmp[2];
-            msb        = tmp[3];
+            //set each byte of the uint16 via the byte array (in big endian)
+            temp[0] = low;
+            temp[1] = high;
+
+            if(endian == Endianness::bigEndian)
+            {
+                return BigEndian_To_SystemEndian(result);
+            }
+            else
+            {
+                return LittleEndian_To_SystemEndian(result);
+            }
         }
 
-        float make_float_big_endian(uint8 msb, uint8 byte2, uint8 byte3, uint8 lsb)
+        void split_uint32(uint32 value, uint8& low, uint8& byte2, uint8& byte3, uint8& high, Endianness endian /*= bigEndian*/)
+        {
+            uint32 val;
+
+            if(endian == Endianness::bigEndian)
+            {
+                val = SystemEndian_To_BigEndian(value);
+            }
+            else
+            {
+                val = SystemEndian_To_LittleEndian(value);
+            }
+
+            //map the uint32 to a byte array
+            uint8* tmp = reinterpret_cast<uint8*>(&val);
+
+            //get each byte of the uint16
+            low = tmp[0];
+            byte2 = tmp[1];
+            byte3 = tmp[2];
+            high = tmp[3];
+        }
+
+        void split_uint64(uint64 value, uint8& low, uint8& byte2, uint8& byte3, uint8& byte4, uint8& byte5, uint8& byte6, uint8& byte7, uint8& high, Endianness endian /*= bigEndian*/)
+        {
+            uint64 val;
+
+            if(endian == Endianness::bigEndian)
+            {
+                val = SystemEndian_To_BigEndian(value);
+            }
+            else
+            {
+                val = SystemEndian_To_LittleEndian(value);
+            }
+
+            //map the uint64 to a byte array
+            uint8* tmp = reinterpret_cast<uint8*>(&val);
+
+            //get each byte of the uint16
+            low = tmp[0];
+            byte2 = tmp[1];
+            byte3 = tmp[2];
+            byte4 = tmp[3];
+            byte5 = tmp[4];
+            byte6 = tmp[5];
+            byte7 = tmp[6];
+            high = tmp[7];
+        }
+
+        uint32 make_uint32(uint8 low, uint8 byte2, uint8 byte3, uint8 high, Endianness endian /*= bigEndian*/)
+        {
+            uint32 result = 0;
+
+            //map the float to a byte array
+            uint8* temp = reinterpret_cast<uint8*>(&result);
+
+            //set each byte of the uint16 via the byte array (in big endian)
+            temp[0] = low;
+            temp[1] = byte2;
+            temp[2] = byte3;
+            temp[3] = high;
+
+            if(endian == Endianness::bigEndian)
+            {
+                return BigEndian_To_SystemEndian(result);
+            }
+            else
+            {
+                return LittleEndian_To_SystemEndian(result);
+            }
+        }
+
+        uint64 make_uint64(uint8 low, uint8 byte2, uint8 byte3, uint8 byte4, uint8 byte5, uint8 byte6, uint8 byte7, uint8 high, Endianness endian /*= bigEndian*/)
+        {
+            uint64 result = 0;
+
+            //map the float to a byte array
+            uint8* temp = reinterpret_cast<uint8*>(&result);
+
+            //set each byte of the uint16 via the byte array (in big endian)
+            temp[0] = low;
+            temp[1] = byte2;
+            temp[2] = byte3;
+            temp[3] = byte4;
+            temp[4] = byte5;
+            temp[5] = byte6;
+            temp[6] = byte7;
+            temp[7] = high;
+
+            if(endian == Endianness::bigEndian)
+            {
+                return BigEndian_To_SystemEndian(result);
+            }
+            else
+            {
+                return LittleEndian_To_SystemEndian(result);
+            }
+        }
+
+        void split_float(float value, uint8& low, uint8& byte2, uint8& byte3, uint8& high, Endianness endian /*= bigEndian*/)
+        {
+            float val;
+
+            if(endian == Endianness::bigEndian)
+            {
+                val = SystemEndian_To_BigEndian(value);
+            }
+            else
+            {
+                val = SystemEndian_To_LittleEndian(value);
+            }
+
+            //map the float to a byte array
+            uint8* tmp = reinterpret_cast<uint8*>(&val);
+
+            //get each byte of the float
+            low = tmp[0];
+            byte2 = tmp[1];
+            byte3 = tmp[2];
+            high = tmp[3];
+        }
+
+        float make_float(uint8 low, uint8 byte2, uint8 byte3, uint8 high, Endianness endian /*= bigEndian*/)
         {
             float result = 0;
 
             //map the float to a byte array
-            uint8* tmp = (uint8*)&result;
+            uint8* temp = reinterpret_cast<uint8*>(&result);
 
             //set each byte of the float via the byte array (in big endian)
-            tmp[0] = msb;
-            tmp[1] = byte2;
-            tmp[2] = byte3;
-            tmp[3] = lsb;
+            temp[0] = low;
+            temp[1] = byte2;
+            temp[2] = byte3;
+            temp[3] = high;
 
-            //convert the big endian float to a system endian
-            return BigEndian_To_SystemEndian(result);
+            if(endian == Endianness::bigEndian)
+            {
+                return BigEndian_To_SystemEndian(result);
+            }
+            else
+            {
+                return LittleEndian_To_SystemEndian(result);
+            }
         }
 
-        float make_float_little_endian(uint8 lsb, uint8 byte2, uint8 byte3, uint8 msb)
+        void split_double(double value, uint8& low, uint8& byte2, uint8& byte3, uint8& byte4, uint8& byte5, uint8& byte6, uint8& byte7, uint8& high, Endianness endian /*= bigEndian*/)
         {
-            float result = 0;
+            double val;
+
+            if(endian == Endianness::bigEndian)
+            {
+                val = SystemEndian_To_BigEndian(value);
+            }
+            else
+            {
+                val = SystemEndian_To_LittleEndian(value);
+            }
+
+            //map the double to a byte array
+            uint8* tmp = reinterpret_cast<uint8*>(&val);
+
+            //get each byte of the double
+            low = tmp[0];
+            byte2 = tmp[1];
+            byte3 = tmp[2];
+            byte4 = tmp[3];
+            byte5 = tmp[4];
+            byte6 = tmp[5];
+            byte7 = tmp[6];
+            high = tmp[7];
+        }
+
+        double make_double(uint8 low, uint8 byte2, uint8 byte3, uint8 byte4, uint8 byte5, uint8 byte6, uint8 byte7, uint8 high, Endianness endian /*= bigEndian*/)
+        {
+            double result = 0;
 
             //map the float to a byte array
-            uint8* tmp = (uint8*)&result;
+            uint8* temp = reinterpret_cast<uint8*>(&result);
 
-            //set each byte of the float via the byte array (in little endian)
-            tmp[0] = lsb;
-            tmp[1] = byte2;
-            tmp[2] = byte3;
-            tmp[3] = msb;
+            //set each byte of the float via the byte array (in big endian)
+            temp[0] = low;
+            temp[1] = byte2;
+            temp[2] = byte3;
+            temp[3] = byte4;
+            temp[4] = byte5;
+            temp[5] = byte6;
+            temp[6] = byte7;
+            temp[7] = high;
 
-            //convert the little endian float to a system endian
-            return LittleEndian_To_SystemEndian(result);
-        }
-
-        void split_double_big_endian(double value, uint8& msb, uint8& byte2, uint8& byte3, uint8& byte4, uint8& byte5, uint8& byte6, uint8& byte7, uint8& lsb)
-        {
-            //convert the double from system endian to big endian
-            double bigEndianVal = SystemEndian_To_BigEndian(value);
-
-            //map the double to a byte array
-            uint8* tmp = (uint8*)&bigEndianVal;
-
-            //get each byte of the double
-            msb = tmp[0];
-            byte2 = tmp[1];
-            byte3 = tmp[2];
-            byte4 = tmp[3];
-            byte5 = tmp[4];
-            byte6 = tmp[5];
-            byte7 = tmp[6];
-            lsb = tmp[7];
-        }
-
-        void split_double_little_endian(double value, uint8& lsb, uint8& byte2, uint8& byte3, uint8& byte4, uint8& byte5, uint8& byte6, uint8& byte7, uint8& msb)
-        {
-            //convert the double from system endian to little endian
-            double littleEndianVal = SystemEndian_To_LittleEndian(value);
-
-            //map the double to a byte array
-            uint8* tmp = (uint8*)&littleEndianVal;
-
-            //get each byte of the double
-            lsb = tmp[0];
-            byte2 = tmp[1];
-            byte3 = tmp[2];
-            byte4 = tmp[3];
-            byte5 = tmp[4];
-            byte6 = tmp[5];
-            byte7 = tmp[6];
-            msb = tmp[7];
-        }
-
-        double make_double_big_endian(uint8 msb, uint8 byte2, uint8 byte3, uint8 byte4, uint8 byte5, uint8 byte6, uint8 byte7, uint8 lsb)
-        {
-            double result = 0;
-
-            //map the double to a byte array
-            uint8* tmp = (uint8*)&result;
-
-            //set each byte of the double via the byte array
-            tmp[0] = msb;
-            tmp[1] = byte2;
-            tmp[2] = byte3;
-            tmp[3] = byte4;
-            tmp[4] = byte5;
-            tmp[5] = byte6;
-            tmp[6] = byte7;
-            tmp[7] = lsb;
-
-            //convert from big endian to system endian
-            return BigEndian_To_SystemEndian(result);
-        }
-
-        double make_double_little_endian(uint8 lsb, uint8 byte2, uint8 byte3, uint8 byte4, uint8 byte5, uint8 byte6, uint8 byte7, uint8 msb)
-        {
-            double result = 0;
-
-            //map the double to a byte array
-            uint8* tmp = (uint8*)&result;
-
-            //set each byte of the double via the byte array
-            tmp[0] = lsb;
-            tmp[1] = byte2;
-            tmp[2] = byte3;
-            tmp[3] = byte4;
-            tmp[4] = byte5;
-            tmp[5] = byte6;
-            tmp[6] = byte7;
-            tmp[7] = msb;
-
-            //convert from little endian to system endian
-            return LittleEndian_To_SystemEndian(result);
+            if(endian == Endianness::bigEndian)
+            {
+                return BigEndian_To_SystemEndian(result);
+            }
+            else
+            {
+                return LittleEndian_To_SystemEndian(result);
+            }
         }
 
         //Function: getCurrentSystemTime
@@ -324,13 +387,6 @@ namespace mscl
         double radiansToDegrees(float angle)
         {
             return (angle * 180.0 / 3.14159265358979323846);
-        }
-
-        bool bitIsSet(uint32 value, size_t bitPos)
-        {
-            std::bitset<32> bitset(value);
-
-            return bitset.test(bitPos);
         }
 
         void removeChar(std::string& src, char charToRemove)

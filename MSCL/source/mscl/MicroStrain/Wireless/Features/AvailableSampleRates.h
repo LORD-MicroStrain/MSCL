@@ -15,12 +15,22 @@ namespace mscl
     {
     public:
         //Constants: Standard Sample Rates
-        //    continuous        - standard continuous sample rates
-        //    burst            - standard burst sample rates
-        //    armedDatalog    - standard armed datalogging sample rates
+        //    continuous    - standard continuous sample rates
+        //    burst         - standard burst sample rates
+        //    armedDatalog  - standard armed datalogging sample rates
         static const WirelessTypes::WirelessSampleRates continuous;
         static const WirelessTypes::WirelessSampleRates burst;
         static const WirelessTypes::WirelessSampleRates armedDatalog;
+
+        //Constants: Standard Gen2 Sample Rates
+        //  continuous_nonSync_gen2 - standard continuous NonSync sample rates
+        //  continuous_sync_gen2    - standard continuous Sync sample rates
+        //  continuous_log_gen2     - standard continuous Log Only sample rates
+        //  burst_gen2              - standard burst sample rates
+        static const WirelessTypes::WirelessSampleRates continuous_nonSync_gen2;
+        static const WirelessTypes::WirelessSampleRates continuous_sync_gen2;
+        static const WirelessTypes::WirelessSampleRates continuous_log_gen2;
+        static const WirelessTypes::WirelessSampleRates burst_gen2;
 
         //Constants: G-Link-2 Sample Rates
         //    continuous_glink2    - continuous sample rates for the G-Link 2
@@ -61,19 +71,20 @@ namespace mscl
         static const WirelessTypes::WirelessSampleRates continuous_envlink;
 
         //Constants: SHM-Link2 SampleRates
-        //    continuous_envlink - continuous sample rates for the SHM-Link 2 nodes.
+        //    continuous_shmLink2 - continuous sample rates for the SHM-Link 2 nodes.
         static const WirelessTypes::WirelessSampleRates continuous_shmLink2;
+        static const WirelessTypes::WirelessSampleRates continuous_shmLink2_2;
 
         //Constants: CF-Bearing-Temp-Link SampleRates
-        //    continuous_envlink - continuous sample rates for the CF-Bearing-Temp-Link node.
+        //    continuous_cfBearing - continuous sample rates for the CF-Bearing-Temp-Link node.
         static const WirelessTypes::WirelessSampleRates continuous_cfBearing;
 
-        //Constants: Blade-Impact-Link Sample Rates
-        //    continuous_blade   - continuous sample rates for the Blade-Impact-Link
-        //    burst_blade        - burst sample rates for the Blade-Impact-Link
-        //    event_blade        - event trigger sample rates for the Blade-Impact-Link
-        static const WirelessTypes::WirelessSampleRates continuous_blade;
-        static const WirelessTypes::WirelessSampleRates burst_blade;
-        static const WirelessTypes::WirelessSampleRates event_blade;
+        //Constants: Wireless Impact Sensor Sample Rates
+        //    continuous_nonSync_impact - continuous non-sync sample rates for the Wireless Impact Sensor
+        //    continuous_sync_impact    - continuous sync sample rates for the Wireless Impact Sensor
+        //    burst_impact              - burst sample rates for the Wireless Impact Sensor
+        static const WirelessTypes::WirelessSampleRates continuous_nonSync_impact;
+        static const WirelessTypes::WirelessSampleRates continuous_sync_impact;
+        static const WirelessTypes::WirelessSampleRates burst_impact;
     };
 }
