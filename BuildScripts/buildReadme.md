@@ -1,8 +1,7 @@
 # **MSCL build info**
 
 The following information describes how to build MSCL for various platforms and programming languages.
-
-
+Note that the specific versions of libraries may not be needed, however it is recommended to be on the same Major version. For instance, SWIG 3.0.6 is called out below. SWIG 3.0.5 will likely work fine, but SWIG 2.X.X will not.
 
 ## **Windows**
 
@@ -13,7 +12,7 @@ The following information describes how to build MSCL for various platforms and 
 - [SWIG 3.0.6](http://swig.org/) (.NET, Python only)
 - [Turtle 1.2.6](http://turtle.sourceforge.net/) (Unit Tests only)
 - [Boost.Build](http://www.boost.org/build/) (Python only)
-- [Python 2.7](https://www.python.org/download/releases/2.7.6/) (Python only)
+- [Python 2.7.10](https://www.python.org/downloads/) (Python only)
 - Create an environment variable, `LIB_PATH`, that points to a folder containing the above libraries.
 
 Use the master build script to build everything (C++, .NET, Python, Unit Tests, and Documentation):
@@ -23,7 +22,7 @@ BuildScripts/buildAll.cmd
 
 ### C++
 
-**Static Lib (.lib) - (x86, Debug/Release):** 
+**Static Lib (`MSCL.lib`) - (x86, Debug/Release):** 
 
 ```bat
 msbuild "BuildScripts/msbuildConfig_CPP.xml" /p:VisualStudioVersion=14.0
@@ -42,7 +41,7 @@ Building the .NET library involves 3 steps:
 2. build the `MSCL` C++ project to generate a DLL
 3. build the `MSCL_Managed` C# project to generate the managed DLL
 
-**Dynamic Library (.dll) - (x86/x64, Debug/Release):**
+**Dynamic Library (`MSCL.dll` + `MSCL_Managed.dll`) - (x86/x64, Debug/Release):**
 
 ```
 msbuild "BuildScripts/msbuildConfig_DotNet.xml" /p:VisualStudioVersion=14.0
@@ -60,7 +59,7 @@ or
 
 Building the Python library involves using Boost.Build framework, using the `bjam` or `b2` command, and utilizing the provided Jamfiles.
 
-**Python File (.py)**
+**Python File (`mscl.py` + `_mscl.pyd`)**
 
 ```
 mkdir build\swig-python
@@ -72,4 +71,42 @@ bjam MSCL//stage_python runtime-link=static link=static release linkflags=/SUBSY
 move /y Output\Python\_mscl.dll Output\Python\_mscl.pyd
 
 del Output\Python\_mscl.lib
+```
+
+## **Linux**
+
+### Dependencies
+
+- gcc 4.9.1-5
+- libboost1.61-dev
+- libboost1.61-tools-dev
+- python2.7 (Python only)
+- python2.7-dev (Python only)
+
+Use the master build script (run from the MSCL root directory) to build everything (C++, Python, Unit Tests):
+```
+BuildScripts/buildAll.sh
+```
+
+### C++
+
+**Shared Object (`libmscl.so`):** 
+
+```bat
+bjam MSCL//stage_c++ release
+```
+
+### Python
+
+Building the Python library involves using Boost.Build framework, using the `bjam` or `b2` command, and utilizing the provided Jamfiles.
+
+**Python File (`mscl.py` + `_mscl.so`)**
+
+```
+mkdir -p build/swig-python
+
+bjam MSCL//stage_python release
+
+bjam MSCL//stage_python release
+
 ```
