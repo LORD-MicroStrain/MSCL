@@ -82,6 +82,7 @@ del Output\Python\_mscl.lib
 - libboost1.61-tools-dev
 - python2.7 (Python only)
 - python2.7-dev (Python only)
+- swig 3.0.6 (Python only)
 
 Use the master build script (run from the MSCL root directory) to build everything (C++, Python, Unit Tests):
 ```
