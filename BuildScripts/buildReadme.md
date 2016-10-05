@@ -8,8 +8,8 @@ The following information describes how to build MSCL for various platforms and 
 
 ### Dependencies
 
-- Visual Studio 2013 (msvc-12.0)
-- [Boost 1.55](http://www.boost.org/users/history/version_1_55_0.html) (prebuilt can be downloaded [here](http://sourceforge.net/projects/boost/files/boost-binaries/1.55.0-build2/))
+- Visual Studio 2015 (msvc-14.0)
+- [Boost 1.61](http://www.boost.org/users/history/version_1_61_0.html) (prebuilt can be downloaded [here](https://sourceforge.net/projects/boost/files/boost-binaries/1.61.0/))
 - [SWIG 3.0.6](http://swig.org/) (.NET, Python only)
 - [Turtle 1.2.6](http://turtle.sourceforge.net/) (Unit Tests only)
 - [Boost.Build](http://www.boost.org/build/) (Python only)
@@ -26,9 +26,8 @@ BuildScripts/buildAll.cmd
 **Static Lib (.lib) - (x86, Debug/Release):** 
 
 ```bat
-msbuild "BuildScripts/msbuildConfig.xml" /p:VisualStudioVersion=12.0
+msbuild "BuildScripts/msbuildConfig_CPP.xml" /p:VisualStudioVersion=14.0
 ```
-(Note: this command also builds the .NET and Unit Test projects)
 
 or
 
@@ -46,9 +45,8 @@ Building the .NET library involves 3 steps:
 **Dynamic Library (.dll) - (x86/x64, Debug/Release):**
 
 ```
-msbuild "BuildScripts/msbuildConfig.xml" /p:VisualStudioVersion=12.0
+msbuild "BuildScripts/msbuildConfig_DotNet.xml" /p:VisualStudioVersion=14.0
 ```
-(Note: this command also builds the C++ and Unit Test projects)
 
 or
 
@@ -62,7 +60,7 @@ or
 
 Building the Python library involves using Boost.Build framework, using the `bjam` or `b2` command, and utilizing the provided Jamfiles.
 
-**Python File (.py) - (x86, Python 2.7):**
+**Python File (.py)**
 
 ```
 mkdir build\swig-python
