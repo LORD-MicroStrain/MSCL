@@ -22,7 +22,7 @@ namespace mscl
 
     std::unique_ptr<BaseStationFeatures> BaseStationFeatures::create(BaseStationInfo& info)
     {
-        switch(info.model)
+        switch(info.model())
         {
             case WirelessModels::base_wsdaBase_104_usb:
                 return std::unique_ptr<BaseStationFeatures>(new BaseStationFeatures_usb(info));
@@ -43,7 +43,7 @@ namespace mscl
 
             default:
                 //we don't know anything about this node, throw an exception
-                throw Error_NotSupported("The BaseStation model (" + Utils::toStr(info.model) + ") is not supported by MSCL.");
+                throw Error_NotSupported("The BaseStation model (" + Utils::toStr(info.model()) + ") is not supported by MSCL.");
         }
     }
 
@@ -70,14 +70,14 @@ namespace mscl
     {
         static const Version MIN_BEACON_STATUS_FW(4, 0);
 
-        return (m_baseInfo.firmwareVersion >= MIN_BEACON_STATUS_FW);
+        return (m_baseInfo.firmwareVersion() >= MIN_BEACON_STATUS_FW);
     }
 
     bool BaseStationFeatures::supportsRfSweepMode() const
     {
         static const Version MIN_RF_SWEEP_FW(4, 30448);
 
-        return (m_baseInfo.firmwareVersion >= MIN_RF_SWEEP_FW);
+        return (m_baseInfo.firmwareVersion() >= MIN_RF_SWEEP_FW);
     }
 
     uint8 BaseStationFeatures::analogPortCount() const
@@ -95,7 +95,7 @@ namespace mscl
         WirelessTypes::TransmitPowers result;
 
         //find the max transmit power for the node's region code
-        WirelessTypes::TransmitPower maxPower = WirelessTypes::maxTransmitPower(m_baseInfo.regionCode);
+        WirelessTypes::TransmitPower maxPower = WirelessTypes::maxTransmitPower(m_baseInfo.regionCode());
 
         //add the power levels based on the max power we determined above
         if(maxPower >= WirelessTypes::power_20dBm && supportsNewTransmitPowers())
@@ -130,13 +130,13 @@ namespace mscl
     {
         static const Version MIN_NEW_TX_POWER_FW(4, 0);
 
-        return (m_baseInfo.firmwareVersion >= MIN_NEW_TX_POWER_FW);
+        return (m_baseInfo.firmwareVersion() >= MIN_NEW_TX_POWER_FW);
     }
 
     bool BaseStationFeatures::supportsEepromCommitViaRadioReset() const
     {
         static const Version MIN_EEPROM_COMMIT_RADIO_FW(4, 0);
 
-        return (m_baseInfo.firmwareVersion >= MIN_EEPROM_COMMIT_RADIO_FW);
+        return (m_baseInfo.firmwareVersion() >= MIN_EEPROM_COMMIT_RADIO_FW);
     }
 }

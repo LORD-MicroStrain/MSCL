@@ -8,6 +8,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include <memory>
 #include "EepromLocation.h"
 #include "mscl/Value.h"
+#include "mscl/Version.h"
+#include "mscl/MicroStrain/Wireless/WirelessModels.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/BaseStationButton.h"
 #include "mscl/MicroStrain/Wireless/BaseStationAnalogPair.h"
@@ -51,6 +53,46 @@ namespace mscl
         void write(const EepromLocation& location, const Value& val);
 
     public:
+        //Function: read_asppVersion
+        //  Gets the ASPP <Version> of the BaseStation.
+        //
+        //Exceptions:
+        //  - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        Version read_asppVersion() const;
+
+        //Function: read_fwVersion
+        //  Reads the firmware <Version> of the BaseStation.
+        //
+        //Exceptions:
+        //  - <Error_Communication>: Failed to read from the BaseStation.
+        //  - <Error_Connection>: A connection error has occurred with the BaseStation.
+        Version read_fwVersion() const;
+
+        //Function: read_model
+        //  Reads the <WirelessModels::BaseModel> of the BaseStation.
+        //
+        //Exceptions:
+        //  - <Error_Communication>: Failed to read from the BaseStation.
+        //  - <Error_Connection>: A connection error has occurred with the BaseStation.
+        WirelessModels::BaseModel read_model() const;
+
+        //Function: read_serial
+        //  Reads the serial of the BaseStation.
+        //
+        //Exceptions:
+        //  - <Error_Communication>: Failed to read from the BaseStation.
+        //  - <Error_Connection>: A connection error has occurred with the BaseStation.
+        std::string read_serial() const;
+
+        //Function: read_microcontroller
+        //  Reads the <WirelessTypes::MicroControllerType> of the BaseStation.
+        //
+        //Exceptions:
+        //  - <Error_Communication>: Failed to read from the BaseStation.
+        //  - <Error_Connection>: A connection error has occurred with the BaseStation.
+        WirelessTypes::MicroControllerType read_microcontroller() const;
+
         //Function: read_transmitPower
         //    Reads the <WirelessTypes::TransmitPower> that is currently set on the BaseStation.
         //

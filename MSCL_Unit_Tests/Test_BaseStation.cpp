@@ -240,20 +240,6 @@ BOOST_AUTO_TEST_CASE(BaseStation_changeFrequency_success)
     BOOST_CHECK_EQUAL(base.frequency(), WirelessTypes::freq_14);
 }
 
-BOOST_AUTO_TEST_CASE(BaseStation_changeFrequency_fail)
-{
-    std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-    Connection conn(connImpl);
-
-    //create the base station (loads the info)
-    BaseStation base(conn, 1);
-
-    BOOST_CHECK_THROW(base.changeFrequency(WirelessTypes::freq_14), Error);
-
-    connImpl->setResponseBytes(loadBaseInfoResponse());
-    BOOST_CHECK_EQUAL(base.frequency(), WirelessTypes::freq_13);    //verify that it didn't change frequencies
-}
-
 BOOST_AUTO_TEST_SUITE(BaseStation_Test_NodeCommands)
 
 BOOST_AUTO_TEST_CASE(BaseStation_NodeLongPing_Success)

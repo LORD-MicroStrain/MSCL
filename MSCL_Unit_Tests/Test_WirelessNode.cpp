@@ -120,6 +120,8 @@ BOOST_AUTO_TEST_CASE(WirelessNode_readEepromuint16_pageDownload)
     data.append_uint16(45);    //eeprom 8
     data.append_uint16(1);    //eeprom 10
 
+    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 124, mock::assign(0x0105)).returns(true);
+
     //force the page download to take our bytestream
     MOCK_EXPECT(impl->node_pageDownload).with(mock::any, mock::any, mock::any, mock::assign(data)).returns(true);
 
@@ -145,7 +147,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_readEepromuint16_read)
 
     uint16 eepromVal = 876;
 
-    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 108, mock::assign(1)).returns(true);
+    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 124, mock::assign(0x0105)).returns(true);
 
     //force the read eeprom to return our response
     MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, mock::any, mock::assign(eepromVal)).returns(true);
@@ -169,7 +171,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_writeEepromuint16)
 
     //force the page download to fail
     MOCK_EXPECT(impl->node_pageDownload).returns(false);
-    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 108, mock::assign(1)).returns(true);
+    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 124, mock::assign(0x0105)).returns(true);
 
     //force the read eeprom to return our response
     MOCK_EXPECT(impl->node_writeEeprom).once().returns(true);
@@ -285,7 +287,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_frequency)
 
     //force the page download to fail
     MOCK_EXPECT(impl->node_pageDownload).returns(false);
-    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 108, mock::assign(1)).returns(true);
+    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 124, mock::assign(0x0105)).returns(true);
     MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 90, mock::assign(16)).returns(true);
 
     BOOST_CHECK_EQUAL(node.frequency(), WirelessTypes::freq_16);
@@ -748,7 +750,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_erase)
     WirelessNode node(123, base);
     
     MOCK_EXPECT(impl->node_pageDownload).returns(false);
-    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 108, mock::assign(9)).returns(true);
+    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 124, mock::assign(0x0105)).returns(true);
 
     MOCK_EXPECT(impl->node_erase).once().returns(true);
 

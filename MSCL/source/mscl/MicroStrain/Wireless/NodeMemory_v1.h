@@ -110,13 +110,6 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred.
         void findData(uint32 bytePosition, ByteStream** data, uint16& offset);
 
-        //Function: setAddress
-        //  Sets the read address to the specified value.
-        //
-        //Parameters:
-        //  newAddress - The address to set the read address to.
-        void setAddress(uint32 newAddress);
-
     protected:
         //Function: nextByte
         //    Reads the next byte from the datalogging data.
@@ -142,6 +135,13 @@ namespace mscl
         //Function: readIndex
         //  Returns the current read index for the data.
         virtual uint32 readIndex() const override;
+
+        //Function: setAddress
+        //  Sets the read address to the specified value.
+        //
+        //Parameters:
+        //  newAddress - The address to set the read address to.
+        virtual void setAddress(uint32 newAddress) override;
 
         //Function: bytesRemaining
         //    Calculates how many bytes are remaining in the Node's datalogging memory, based on the given byte position.

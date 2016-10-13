@@ -10,6 +10,23 @@ The PATCH version is incremented when a bug is fixed.
 ======================================================================================================
 
 -------------------------------------------------------------------------
+13.1.1 - 2016-10-13
+- fix for datalogging download v1 erroneously parsing data when retrying after a communication exception.
+
+-------------------------------------------------------------------------
+13.1.0 - 2016-10-12
+- attempting to read ASPP version off of Node if available instead of using FW version.
+- clearing internal NodeInfo and NodeFeatures when clearEepromCache is called in case eeproms changed.
+
+-------------------------------------------------------------------------
+13.0.4 - 2016-10-11
+- updated legacy Sync network offset
+
+-------------------------------------------------------------------------
+13.0.3 - 2016-10-06
+- fix for datalog downloading v2 using incorrect flash sizes for Nodes.
+
+-------------------------------------------------------------------------
 13.0.2 - 2016-10-04
 - fix for datalog downloading v2 failing to verify checksum correctly.
 

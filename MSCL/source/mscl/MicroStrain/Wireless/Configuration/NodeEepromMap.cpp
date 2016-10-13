@@ -47,6 +47,7 @@ namespace mscl
     const EepromLocation NodeEepromMap::MAX_MEMORY                      (116, valueType_uint16);
     const EepromLocation NodeEepromMap::MICROCONTROLLER                 (120, valueType_uint16);
     const EepromLocation NodeEepromMap::FW_ARCH_VER                     (122, valueType_uint16);
+    const EepromLocation NodeEepromMap::ASPP_VER                        (124, valueType_uint16);
     const EepromLocation NodeEepromMap::HW_GAIN_1                       (128, valueType_uint16);
     const EepromLocation NodeEepromMap::HW_GAIN_2                       (130, valueType_uint16);
     const EepromLocation NodeEepromMap::HW_GAIN_3                       (132, valueType_uint16);

@@ -75,6 +75,13 @@ namespace mscl
         //  Returns the current read index for the data.
         virtual uint32 readIndex() const = 0;
 
+        //Function: setAddress
+        //  Sets the read address to the specified value.
+        //
+        //Parameters:
+        //  newAddress - The address to set the read address to.
+        virtual void setAddress(uint32 newAddress) = 0;
+
         //Function: bytesRemaining
         //    Calculates how many bytes are remaining in the Node's datalogging memory, based on the current byte position.
         //

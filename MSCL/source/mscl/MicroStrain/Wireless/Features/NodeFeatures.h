@@ -44,7 +44,7 @@ namespace mscl
     private:
         //Wireless Node FW version to ASPP version lookup
         static const Version MIN_NODE_FW_PROTOCOL_1_5;
-        static const Version MIN_NODE_FW_PORTOCOL_1_4;
+        static const Version MIN_NODE_FW_PROTOCOL_1_4;
         static const Version MIN_NODE_FW_PROTOCOL_1_2;
         static const Version MIN_NODE_FW_PROTOCOL_1_1;
 

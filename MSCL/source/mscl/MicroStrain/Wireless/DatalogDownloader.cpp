@@ -355,99 +355,115 @@ namespace mscl
             throw Error_NoData("There is no more data available to download from the Node.");
         }
 
-        //check if the next group of bytes look like the start of a trigger
-        if(m_nodeMemory->isNextByteNewHeader())
-        {
-            //Download Version 1
-            if(m_datalogDownloadVersion == 1)
-            {
-                //parse the trigger header and update all of the trigger session info
-                parseTriggerHeader_v1();
-
-                m_foundFirstTrigger = true;
-            }
-            //Download Version 2
-            else
-            {
-                //parse the trigger header for v2 and update any new trigger session info
-                parseTriggerHeader_v2();
-
-                m_foundFirstTrigger = true;
-            }
-        }
-        else
-        {
-            //if the first trigger hasn't been found yet
-            if(!m_foundFirstTrigger)
-            {
-                //the start of trigger isn't at the first memory location on the Node
-                m_outOfMemory = true;
-                throw Error_NoData("No triggers were found on the Node.");
-            }
-
-            //set the startOfTrigger flag to false
-            m_sessionInfo.startOfTrigger = false;
-        }
-
+        const uint32 startReadIndex = m_nodeMemory->readIndex();
         ChannelData chData;
 
-        uint8 lastActiveCh = m_sessionInfo.activeChannels.lastChEnabled();
-
-        Utils::Endianness dataEndian = Utils::bigEndian;
-        if(m_datalogDownloadVersion == 2)
+        try
         {
-            dataEndian = Utils::littleEndian;
-        }
-
-        //calibrations are applied if floating point data
-        m_sessionInfo.calsApplied = (m_sessionInfo.dataType == WirelessTypes::dataType_float32);
-
-        //loop through all the channels
-        for(uint8 chItr = 1; chItr <= lastActiveCh; ++chItr)
-        {
-            //if the current channel is enabled
-            if(m_sessionInfo.activeChannels.enabled(chItr))
+            //check if the next group of bytes look like the start of a trigger
+            if(m_nodeMemory->isNextByteNewHeader())
             {
-                anyType dataPoint;
-
-                switch(m_sessionInfo.dataType)
+                //Download Version 1
+                if(m_datalogDownloadVersion == 1)
                 {
-                    //4 byte float
-                    case WirelessTypes::dataType_float32:
-                    case WirelessTypes::dataType_float32_noCals:
-                        dataPoint = m_nodeMemory->read_float(dataEndian);
-                        break;
+                    //parse the trigger header and update all of the trigger session info
+                    parseTriggerHeader_v1();
 
-                    //uint32
-                    case WirelessTypes::dataType_uint32:
-                        dataPoint = m_nodeMemory->read_uint32(dataEndian);
-                        break;
+                    m_foundFirstTrigger = true;
+                }
+                //Download Version 2
+                else
+                {
+                    //parse the trigger header for v2 and update any new trigger session info
+                    parseTriggerHeader_v2();
 
-                    //uint24 (get as a uint32)
-                    case WirelessTypes::dataType_uint24:
-                        dataPoint = m_nodeMemory->read_uint24(dataEndian);
-                        break;
-
-                    //uint16 (from a 18-bit device, shift bits)
-                    case WirelessTypes::dataType_uint16_18bitTrunc:
-                    {
-                        uint32 val = m_nodeMemory->read_uint16(dataEndian);
-                        dataPoint = (val << 2);
-                        break;
-                    }
-
-                    //uint16
-                    case WirelessTypes::dataType_uint16_shifted:
-                    case WirelessTypes::dataType_uint16_12bitRes:
-                    case WirelessTypes::dataType_uint16:
-                    default:
-                        dataPoint = m_nodeMemory->read_uint16(dataEndian);
-                        break;
+                    m_foundFirstTrigger = true;
+                }
+            }
+            else
+            {
+                //if the first trigger hasn't been found yet
+                if(!m_foundFirstTrigger)
+                {
+                    //the start of trigger isn't at the first memory location on the Node
+                    m_outOfMemory = true;
+                    throw Error_NoData("No triggers were found on the Node.");
                 }
 
-                //create a WirelessDataPoint and add it to the ChannelData vector
-                chData.push_back(WirelessDataPoint(static_cast<WirelessChannel::ChannelId>(chItr), chItr, m_sessionInfo.valueType, dataPoint));
+                //set the startOfTrigger flag to false
+                m_sessionInfo.startOfTrigger = false;
             }
+
+            uint8 lastActiveCh = m_sessionInfo.activeChannels.lastChEnabled();
+
+            Utils::Endianness dataEndian = Utils::bigEndian;
+            if(m_datalogDownloadVersion == 2)
+            {
+                dataEndian = Utils::littleEndian;
+            }
+
+            //calibrations are applied if floating point data
+            m_sessionInfo.calsApplied = (m_sessionInfo.dataType == WirelessTypes::dataType_float32);
+
+            //loop through all the channels
+            for(uint8 chItr = 1; chItr <= lastActiveCh; ++chItr)
+            {
+                //if the current channel is enabled
+                if(m_sessionInfo.activeChannels.enabled(chItr))
+                {
+                    anyType dataPoint;
+
+                    switch(m_sessionInfo.dataType)
+                    {
+                        //4 byte float
+                        case WirelessTypes::dataType_float32:
+                        case WirelessTypes::dataType_float32_noCals:
+                            dataPoint = m_nodeMemory->read_float(dataEndian);
+                            break;
+
+                        //uint32
+                        case WirelessTypes::dataType_uint32:
+                            dataPoint = m_nodeMemory->read_uint32(dataEndian);
+                            break;
+
+                        //uint24 (get as a uint32)
+                        case WirelessTypes::dataType_uint24:
+                            dataPoint = m_nodeMemory->read_uint24(dataEndian);
+                            break;
+
+                        //uint16 (from a 18-bit device, shift bits)
+                        case WirelessTypes::dataType_uint16_18bitTrunc:
+                        {
+                            uint32 val = m_nodeMemory->read_uint16(dataEndian);
+                            dataPoint = (val << 2);
+                            break;
+                        }
+
+                        //uint16
+                        case WirelessTypes::dataType_uint16_shifted:
+                        case WirelessTypes::dataType_uint16_12bitRes:
+                        case WirelessTypes::dataType_uint16:
+                        default:
+                            dataPoint = m_nodeMemory->read_uint16(dataEndian);
+                            break;
+                    }
+
+                    //create a WirelessDataPoint and add it to the ChannelData vector
+                    chData.push_back(WirelessDataPoint(static_cast<WirelessChannel::ChannelId>(chItr), chItr, m_sessionInfo.valueType, dataPoint));
+                }
+            }
+        }
+        catch(Error_Communication&)
+        {
+            //downloader v1 needs to reset the memory position on comm failure
+            if(m_datalogDownloadVersion == 1)
+            {
+                //set the read address back so that we the user can retry
+                m_nodeMemory->setAddress(startReadIndex);
+            }
+
+            //then rethrow the exception
+            throw;
         }
 
         //calculate the timestamp and tick for the sweep

@@ -12,10 +12,6 @@ namespace mscl
     //read the required information from the node and store in the NodeInfo
     NodeInfo::NodeInfo(const WirelessNode_Impl* node):
         m_node(node)
-        /*m_firmwareVersion(node.firmwareVersion()),
-        m_model(node.model()),
-        m_dataStorageSize(node.dataStorageSize()),
-        m_regionCode(node.regionCode())*/
     {
     }
 

@@ -11,6 +11,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "WirelessTypes.h"
 #include "RadioFeatures.h"
 
+#include <boost/optional.hpp>
+
 namespace mscl
 {
     class BaseStation_Impl;    //forward declarations
@@ -29,7 +31,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_Communication>: Failed to read the value from the BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        BaseStationInfo(const BaseStation_Impl& base);
+        BaseStationInfo(const BaseStation_Impl* base);
         
         //Constructor: BaseStationInfo
         //    Creates a BaseStationInfo object.
@@ -43,17 +45,24 @@ namespace mscl
     private:
         BaseStationInfo();    //disabled default constructor
 
-    public:
-        //Variable: firmwareVersion
+        const BaseStation_Impl* m_basestation;
+
+    private:
+        //Variable: m_firmwareVersion
         //    The firmware <Version> of the BaseStation.
-        Version firmwareVersion;
+        mutable boost::optional<Version> m_firmwareVersion;
 
-        //Variable: model
+        //Variable: m_model
         //    The <WirelessModels::BaseModel> of the BaseStation.
-        WirelessModels::BaseModel model;
+        mutable boost::optional<WirelessModels::BaseModel> m_model;
 
-        //Variable: regionCode
+        //Variable: m_regionCode
         //    The <WirelessTypes::RegionCode> of the BaseStation.
-        WirelessTypes::RegionCode regionCode;
+        mutable boost::optional<WirelessTypes::RegionCode> m_regionCode;
+
+    public:
+        Version firmwareVersion() const;
+        WirelessModels::BaseModel model() const;
+        WirelessTypes::RegionCode regionCode() const;
     };
 }

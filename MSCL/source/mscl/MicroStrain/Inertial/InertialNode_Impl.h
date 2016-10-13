@@ -205,7 +205,7 @@ namespace mscl
         //    timeout - The timeout (in milliseconds) to set for Inertial commands.
         void timeout(uint64 timeout);
 
-        //API Function: timeout
+        //Function: timeout
         //    Gets the timeout to use when waiting for responses from Inertial commands.
         //
         //Returns:

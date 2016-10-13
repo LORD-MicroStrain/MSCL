@@ -95,19 +95,26 @@ namespace mscl
         //  The address of our generic Base Station.
         static const uint16 BASE_STATION_ADDRESS = 0x1234;
 
-        //Function: chooseBaseStationProtocol
-        //  Returns the correct protocol version based on the Base Station's firmware vesrion.
+        //Function: asppVersionFromBaseFw
+        //  Gets the ASPP version from the Base Station firmware version.
         //
         //Parameters:
         //  fwVersion - The firmware version of the Base Station.
-        static std::unique_ptr<WirelessProtocol> chooseBaseStationProtocol(const Version& fwVersion);
+        static Version asppVersionFromBaseFw(const Version& fwVersion);
 
-        //Function: chooseBaseStationProtocol
-        //  Returns the correct protocol version based on the Wireless Node's firmware vesrion.
+        //Function: asppVersionFromNodeFw
+        //  Gets the ASPP version from the Node firmware version.
         //
         //Parameters:
         //  fwVersion - The firmware version of the Node.
-        static std::unique_ptr<WirelessProtocol> chooseNodeProtocol(const Version& fwVersion);
+        static Version asppVersionFromNodeFw(const Version& fwVersion);
+
+        //Function: getProtocol
+        //  Returns the ASPP protocol based on the ASPP version.
+        //
+        //Parameters:
+        //  asppVersion - The <Version> of the ASPP protocol that is supported.
+        static std::unique_ptr<WirelessProtocol> getProtocol(const Version& asppVersion);
 
         //Function: v1_0
         //  Static function to create a WirelessProtocol with version 1.0.

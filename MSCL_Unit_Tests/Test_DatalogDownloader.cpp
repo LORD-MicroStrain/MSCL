@@ -46,6 +46,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v1_0)
 
     uint16 page = 0, offset = 44;
     MOCK_EXPECT(impl->firmwareVersion).returns(Version(8, 0));
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
     MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::CURRENT_LOG_PAGE).returns(Value::UINT16(page));//log page
     MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::CURRENT_PAGE_OFFSET).returns(Value::UINT16(offset));//page offset
 
@@ -122,6 +123,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_0)
 
     uint16 page = 0, offset = 46;
     MOCK_EXPECT(impl->firmwareVersion).returns(Version(8, 0));
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
     MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::CURRENT_LOG_PAGE).returns(Value::UINT16(page));//log page
     MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::CURRENT_PAGE_OFFSET).returns(Value::UINT16(offset));//page offset
 
@@ -205,6 +207,7 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_1)
 
     uint16 page = 0, offset = 46;
     MOCK_EXPECT(impl->firmwareVersion).returns(Version(8, 0));
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
     MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::CURRENT_LOG_PAGE).returns(Value::UINT16(page));//log page
     MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::CURRENT_PAGE_OFFSET).returns(Value::UINT16(offset));//page offset
 

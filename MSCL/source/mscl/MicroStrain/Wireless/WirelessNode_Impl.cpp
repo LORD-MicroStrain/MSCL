@@ -31,10 +31,11 @@ namespace mscl
 
     std::unique_ptr<WirelessProtocol> WirelessNode_Impl::determineProtocol() const
     {
-        Version fwVersion;
+        Version asppVersion;
 
         NodeEepromSettings tempSettings = m_eepromSettings;
         tempSettings.numRetries = 0;
+        tempSettings.useGroupRead = false;
 
         bool success = false;
         uint8 retryCount = 0;
@@ -45,18 +46,18 @@ namespace mscl
             // Determine the firmware version by attempting to use multiple protocols
             try
             {
-                //try reading with protocol v1.1
+                //try reading with protocol v1.1 (has read eeprom v2)
                 m_protocol = WirelessProtocol::v1_1();
 
                 //set the NodeEeprom with the temporary protocol
                 m_eeprom.reset(new NodeEeprom(m_address, m_baseStation, *(m_protocol.get()), tempSettings));
 
-                fwVersion = firmwareVersion();
+                asppVersion = m_eepromHelper->read_asppVersion();
                 success = true;
             }
             catch(Error_Communication&)
             {
-                //Failed reading with protocol v1.1 - Now try v1.0
+                //Failed reading with protocol v1.1 - Now try v1.0 (has read eeprom v1)
 
                 //we know this uses the same group read (page download) as the previous protocol, so skip it
                 tempSettings.useGroupRead = false;
@@ -69,7 +70,7 @@ namespace mscl
                     //set the NodeEeprom with the temporary protocol
                     m_eeprom.reset(new NodeEeprom(m_address, m_baseStation, *(m_protocol.get()), tempSettings));
 
-                    fwVersion = firmwareVersion();
+                    asppVersion = m_eepromHelper->read_asppVersion();
                     success = true;
                 }
                 catch(Error_Communication&)
@@ -91,8 +92,8 @@ namespace mscl
         }
         while(!success && (retryCount++ < m_eepromSettings.numRetries));
 
-        //get the protocol to use for the node's fw version
-        return WirelessProtocol::chooseNodeProtocol(fwVersion);
+        //get the protocol to use for the node
+        return WirelessProtocol::getProtocol(asppVersion);
     }
 
     NodeEeprom& WirelessNode_Impl::eeprom() const
@@ -220,7 +221,19 @@ namespace mscl
         //don't need to clear anything if it doesn't exist
         if(m_eeprom != NULL)
         {
-            eeprom().clearCache();
+            m_eeprom.reset();
+        }
+
+        //features may need to be reset if firmware version or model changed
+        if(m_features != NULL)
+        {
+            m_features.reset();
+        }
+
+        //protocol may need to be reset if ASPP of firmware version changed
+        if(m_protocol != NULL)
+        {
+            m_protocol.reset();
         }
     }
 

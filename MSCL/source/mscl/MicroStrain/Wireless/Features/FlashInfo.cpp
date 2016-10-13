@@ -22,7 +22,7 @@ namespace mscl
         //Block Size: 64 KiB
         //Page Size: 256 Bytes
         //Max Bandwidth: 65535 ??
-        return FlashInfo((4 * 1049000), (64 * 1024), 256, 65535);
+        return FlashInfo((4 * 1024 * 1024), (64 * 1024), 256, 65535);
     }
 
     FlashInfo FlashInfo::FLASH_IS25WP128()
@@ -31,7 +31,7 @@ namespace mscl
         //Block Size: 64 KiB
         //Page Size: 256 Bytes
         //Max Bandwidth: 65535
-        return FlashInfo((16 * 1049000), (64 * 1024), 256, 65535);
+        return FlashInfo((16 * 1024 * 1024), (64 * 1024), 256, 65535);
     }
 
     FlashInfo FlashInfo::FROM_FLASH_ID(uint16 flashId)

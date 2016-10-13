@@ -105,6 +105,7 @@ namespace mscl
         //  MAX_MEMORY                      - The maximum number of pages available on the flash memory
         //  MICROCONTROLLER                 - The ID of the microcontroller
         //  FW_ARCH_VER                     - The firmware architecture version
+        //  ASPP_VER                        - The ASPP version the node supports
         //  HW_GAIN_1                       - The hardware gain of channel 1
         //  HW_GAIN_2                       - The hardware gain of channel 2
         //  HW_GAIN_3                       - The hardware gain of channel 3
@@ -280,6 +281,7 @@ namespace mscl
         static const EepromLocation MAX_MEMORY;
         static const EepromLocation MICROCONTROLLER;
         static const EepromLocation FW_ARCH_VER;
+        static const EepromLocation ASPP_VER;
         static const EepromLocation HW_GAIN_1;
         static const EepromLocation HW_GAIN_2;
         static const EepromLocation HW_GAIN_3;

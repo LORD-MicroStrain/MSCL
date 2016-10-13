@@ -10,17 +10,46 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
     //read the required information from the BaseStation and store in the BaseStationInfo
-    BaseStationInfo::BaseStationInfo(const BaseStation_Impl& base) :
-        firmwareVersion(base.firmwareVersion()),
-        model(base.model()),
-        regionCode(base.regionCode())
+    BaseStationInfo::BaseStationInfo(const BaseStation_Impl* base) :
+        m_basestation(base)
     {
     }
 
     BaseStationInfo::BaseStationInfo(Version fw, WirelessModels::BaseModel model, WirelessTypes::RegionCode region):
-        firmwareVersion(fw),
-        model(model),
-        regionCode(region)
+        m_firmwareVersion(fw),
+        m_model(model),
+        m_regionCode(region)
     {
     }
+
+    Version BaseStationInfo::firmwareVersion() const
+    {
+        if(!static_cast<bool>(m_firmwareVersion))
+        {
+            m_firmwareVersion = m_basestation->firmwareVersion();
+        }
+
+        return *m_firmwareVersion;
+    }
+
+    WirelessModels::BaseModel BaseStationInfo::model() const
+    {
+        if(!static_cast<bool>(m_model))
+        {
+            m_model = m_basestation->model();
+        }
+
+        return *m_model;
+    }
+
+    WirelessTypes::RegionCode BaseStationInfo::regionCode() const
+    {
+        if(!static_cast<bool>(m_regionCode))
+        {
+            m_regionCode = m_basestation->regionCode();
+        }
+
+        return *m_regionCode;
+    }
+
 }

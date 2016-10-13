@@ -104,6 +104,37 @@ namespace mscl
         }
     }
 
+    Version NodeEepromHelper::read_asppVersion() const
+    {
+        uint16 asppValue = 0;
+
+        try
+        {
+            //read the ASPP vesrion eeprom
+            asppValue = read(NodeEepromMap::ASPP_VER).as_uint16();
+        }
+        catch(Error_NotSupported&)
+        {
+            //if the eeprom isn't supported, just leave it as 0
+            //which will then fall back to the firmware version to
+            //determine the ASPP version number
+        }
+
+        //if the aspp version is uninitialized
+        if(asppValue == 0xFFFF || asppValue == 0xAAAA || asppValue == 0)
+        {
+            Version fwVersion = read_fwVersion();
+
+            //convert the firmware version of the ASPP version
+            return WirelessProtocol::asppVersionFromNodeFw(fwVersion);
+        }
+        else
+        {
+            //ASPP version is good in eeprom, just return that version number
+            return Version(Utils::msb(asppValue), Utils::lsb(asppValue));
+        }
+    }
+
     WirelessModels::NodeModel NodeEepromHelper::read_model() const
     {
         //read the model number from eeprom

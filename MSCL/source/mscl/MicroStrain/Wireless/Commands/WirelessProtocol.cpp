@@ -15,44 +15,61 @@ namespace mscl
     {
     }
 
-    std::unique_ptr<WirelessProtocol> WirelessProtocol::chooseBaseStationProtocol(const Version& fwVersion)
+    Version WirelessProtocol::asppVersionFromBaseFw(const Version& fwVersion)
     {
         if(fwVersion >= NodeFeatures::MIN_BASE_FW_PROTOCOL_1_3)
         {
-            return v1_3();
+            return Version(1, 3);
         }
         else if(fwVersion >= NodeFeatures::MIN_BASE_FW_PROTOCOL_1_1)
         {
-            return v1_1();
+            return Version(1, 1);
         }
         else
         {
-            return v1_0();
+            return Version(1, 0);
         }
     }
 
-    std::unique_ptr<WirelessProtocol> WirelessProtocol::chooseNodeProtocol(const Version& fwVersion)
+    Version WirelessProtocol::asppVersionFromNodeFw(const Version& fwVersion)
     {
         if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_5)
         {
-            return v1_5();
+            return Version(1, 5);
         }
-        else if(fwVersion >= NodeFeatures::MIN_NODE_FW_PORTOCOL_1_4)
+        else if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_4)
         {
-            return v1_4();
+            return Version(1, 4);
         }
         else if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_2)
         {
-            return v1_2();
+            return Version(1, 2);
         }
         else if(fwVersion >= NodeFeatures::MIN_NODE_FW_PROTOCOL_1_1)
         {
-            return v1_1();
+            return Version(1, 1);
         }
         else
         {
-            return v1_0();
+            return Version(1, 0);
         }
+    }
+
+    std::unique_ptr<WirelessProtocol> WirelessProtocol::getProtocol(const Version& asppVersion)
+    {
+        static const Version ASPP_1_1 = Version(1, 1);
+        static const Version ASPP_1_2 = Version(1, 2);
+        static const Version ASPP_1_3 = Version(1, 3);
+        static const Version ASPP_1_4 = Version(1, 4);
+        static const Version ASPP_1_5 = Version(1, 5);
+
+        if(asppVersion >= ASPP_1_5) { return v1_5(); }
+        if(asppVersion >= ASPP_1_4) { return v1_4(); }
+        if(asppVersion >= ASPP_1_3) { return v1_3(); }
+        if(asppVersion >= ASPP_1_2) { return v1_2(); }
+        if(asppVersion >= ASPP_1_1) { return v1_1(); }
+
+        return v1_0();
     }
 
     std::unique_ptr<WirelessProtocol> WirelessProtocol::v1_0()

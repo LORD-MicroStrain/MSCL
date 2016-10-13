@@ -55,7 +55,7 @@ namespace mscl
     }
 
     const Version NodeFeatures::MIN_NODE_FW_PROTOCOL_1_5(10, 33392);
-    const Version NodeFeatures::MIN_NODE_FW_PORTOCOL_1_4(10, 31758);
+    const Version NodeFeatures::MIN_NODE_FW_PROTOCOL_1_4(10, 31758);
     const Version NodeFeatures::MIN_NODE_FW_PROTOCOL_1_2(10, 0);
     const Version NodeFeatures::MIN_NODE_FW_PROTOCOL_1_1(8, 21);
 

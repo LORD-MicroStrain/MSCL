@@ -211,6 +211,7 @@ BOOST_AUTO_TEST_CASE(BaseStationConfig_legacyTransmitPower)
 
     //expect the single eeprom write
     expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::legacyPower_10dBm));
+    expectRead(impl, BaseStationEepromMap::ASPP_VER, Value::UINT16((0)));
     expectRead(impl, BaseStationEepromMap::FIRMWARE_VER, Value::UINT16((uint16)(3)));
     expectRead(impl, BaseStationEepromMap::FIRMWARE_VER2, Value::UINT16((uint16)(2)));
     expectCyclePower(impl);

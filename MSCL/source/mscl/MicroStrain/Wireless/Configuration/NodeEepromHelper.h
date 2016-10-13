@@ -138,6 +138,18 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         Version read_fwVersion() const;
 
+        //Function: read_asppVersion
+        //  Gets the ASPP version of the Node.
+        //
+        //Returns:
+        //  A <Version> representing which ASPP version the Node supports.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        Version read_asppVersion() const;
+
         //Function: read_model
         //    Gets the model of the Node.
         //

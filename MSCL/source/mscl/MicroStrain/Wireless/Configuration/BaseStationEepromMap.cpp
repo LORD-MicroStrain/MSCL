@@ -25,6 +25,7 @@ namespace mscl
     const EepromLocation BaseStationEepromMap::RADIO_ID                    (118, valueType_uint16);
     const EepromLocation BaseStationEepromMap::MICROCONTROLLER             (120, valueType_uint16);
     const EepromLocation BaseStationEepromMap::FW_ARCH_VER                 (122, valueType_uint16);
+    const EepromLocation BaseStationEepromMap::ASPP_VER                    (124, valueType_uint16);
     const EepromLocation BaseStationEepromMap::ANALOG_1_NODE_ADDRESS       (128, valueType_uint16);
     const EepromLocation BaseStationEepromMap::ANALOG_1_NODE_CHANNEL       (130, valueType_uint16);
     const EepromLocation BaseStationEepromMap::ANALOG_1_FLOAT_MAX          (132, valueType_float);

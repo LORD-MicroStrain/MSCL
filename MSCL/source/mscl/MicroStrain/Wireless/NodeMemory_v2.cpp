@@ -352,6 +352,13 @@ namespace mscl
         return m_readIndex;
     }
 
+    void NodeMemory_v2::setAddress(uint32 newAddress)
+    {
+        //setAddress is not supported by NodeMemory_v2! (TODO?)
+        assert(false);
+        return;
+    }
+
     uint32 NodeMemory_v2::bytesRemaining()
     {
         size_t bytesLeftToRead = m_nextData.size() + 

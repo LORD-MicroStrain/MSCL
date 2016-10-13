@@ -9,6 +9,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "BaseStationEepromMap.h"
 #include "mscl/MicroStrain/Wireless/BaseStation_Impl.h"
 #include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessProtocol.h"
 
 namespace mscl
 {
@@ -34,6 +35,129 @@ namespace mscl
     void BaseStationEepromHelper::write(const EepromLocation& location, const Value& val)
     {
         m_baseStation->writeEeprom(location, val);
+    }
+
+    Version BaseStationEepromHelper::read_asppVersion() const
+    {
+        uint16 asppValue = 0;
+
+        try
+        {
+            //read the ASPP vesrion eeprom
+            asppValue = read(BaseStationEepromMap::ASPP_VER).as_uint16();
+        }
+        catch(Error_NotSupported&)
+        {
+            //if the eeprom isn't supported, just leave it as 0
+            //which will then fall back to the firmware version to
+            //determine the ASPP version number
+        }
+
+        //if the aspp version is uninitialized
+        if(asppValue == 0xFFFF || asppValue == 0xAAAA || asppValue == 0)
+        {
+            Version fwVersion = read_fwVersion();
+
+            //convert the firmware version of the ASPP version
+            return WirelessProtocol::asppVersionFromBaseFw(fwVersion);
+        }
+        else
+        {
+            //ASPP version is good in eeprom, just return that version number
+            return Version(Utils::msb(asppValue), Utils::lsb(asppValue));
+        }
+    }
+
+    Version BaseStationEepromHelper::read_fwVersion() const
+    {
+        //read the firmware version eeprom
+        uint16 fwValue1 = read(BaseStationEepromMap::FIRMWARE_VER).as_uint16();
+
+        uint8 major = Utils::msb(fwValue1);
+
+        //firmware versions < 4 use the scheme [Major].[Minor]
+        if(major < 4)
+        {
+            uint8 minor = Utils::lsb(fwValue1);
+
+            return Version(major, minor);
+        }
+        //firmware versions >= 4 use the scheme [Major].[svnRevision]
+        else
+        {
+            uint16 fwValue2 = read(BaseStationEepromMap::FIRMWARE_VER2).as_uint16();
+
+            //make the svn revision from the lsb of the first fw value, and the entire second fw value 
+            uint32 svnRevision = Utils::make_uint32(0, Utils::lsb(fwValue1), Utils::msb(fwValue2), Utils::lsb(fwValue2));
+
+            return Version(major, svnRevision);
+        }
+    }
+
+    WirelessModels::BaseModel BaseStationEepromHelper::read_model() const
+    {
+        //read the model number from eeprom
+        uint16 model = read(BaseStationEepromMap::MODEL_NUMBER).as_uint16();
+
+        //if the model stored in eeprom is invalid (uninitialized)
+        if(model == 0xFFFF || model == 0xAAAA || model == 0)
+        {
+            //this basestation uses the legacy model number
+
+            //read the model from the legacy model eeprom location
+            model = read(BaseStationEepromMap::LEGACY_MODEL_NUMBER).as_uint16();
+
+            //convert the legacy model to the new model number and return it
+            return WirelessModels::baseFromLegacyModel(model);
+        }
+        else
+        {
+            //read the model option from eeprom
+            uint16 modelOption = read(BaseStationEepromMap::MODEL_OPTION).as_uint16();
+
+            //build the model and model class together to form the model number
+            return static_cast<WirelessModels::BaseModel>((model * 10000) + modelOption);
+        }
+    }
+
+    std::string BaseStationEepromHelper::read_serial() const
+    {
+        //read the serial number 
+        uint32 serial = read(BaseStationEepromMap::SERIAL_ID).as_uint32();
+
+        //if the serial stored in eeprom is invalid (uninitialized)
+        if(serial == 0xFFFFFFFF || serial == 0xAAAAAAAA || serial == 0)
+        {
+            //this basestation uses the legacy serial number
+
+            //read the serial from the legacy serial id eeprom location
+            serial = read(BaseStationEepromMap::LEGACY_SERIAL_ID).as_uint16();
+        }
+
+        //get the model number of the basestation
+        WirelessModels::BaseModel fullModel = read_model();
+
+        //split the model into its 2 pieces
+        uint16 model = static_cast<uint16>(fullModel / 10000);
+        uint16 modelClass = fullModel % 10000;
+
+        //build the string result
+        std::stringstream modelStr;
+        modelStr << std::setfill('0') << std::setw(4) << model;
+
+        std::stringstream modelClassStr;
+        modelClassStr << std::setfill('0') << std::setw(4) << modelClass;
+
+        std::stringstream serialStr;
+        serialStr << std::setfill('0') << std::setw(5) << serial;
+
+        return modelStr.str() + "-" + modelClassStr.str() + "-" + serialStr.str();
+    }
+
+    WirelessTypes::MicroControllerType BaseStationEepromHelper::read_microcontroller() const
+    {
+        //read the value from eeprom
+        return static_cast<WirelessTypes::MicroControllerType>(read(BaseStationEepromMap::MICROCONTROLLER).as_uint16());
     }
 
     WirelessTypes::TransmitPower BaseStationEepromHelper::read_transmitPower() const

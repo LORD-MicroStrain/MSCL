@@ -247,7 +247,7 @@ namespace mscl
 
     void SyncSamplingNetwork::applyConfiguration()
     {
-        static const uint8 LEGACY_MODE_TDMA_OFFSET = 3;
+        static const uint8 LEGACY_MODE_TDMA_OFFSET = 4;
 
         //loop through each configuration 
         for(auto &nodeItr : m_nodes)
