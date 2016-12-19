@@ -85,6 +85,23 @@ or
 
 Building the Python library involves using Boost.Build framework, using the `bjam` or `b2` command, and utilizing the provided Jamfiles.
 
+Configure bjam by creating a [site-config.jam or user-config.jam file](http://www.boost.org/build/doc/html/bbv2/overview/configuration.html) in your Home path or Boost Build Path. The contents of the file should look like this:
+```
+using msvc
+:
+:
+: <cxxflags>/D"WIN32"
+  <cxxflags>/D"_WINDOWS"
+  <cxxflags>/D"_USRDLL"
+  <cxxflags>/D"NOMINMAX"
+  <cxxflags>/D"_WIN32_WINNT=0x0501"
+  <cxxflags>/D"_USING_V110_SDK71_"
+  <cxxflags>/D"BOOST_ALL_NO_LIB"
+  <cxxflags>/D"_UNICODE"
+  <cxxflags>/D"UNICODE"
+;
+```
+
 Note: Please see the [Note on the bjam bug](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme.md#note).
 
 **Python File (`mscl.py` + `_mscl.pyd`)**
