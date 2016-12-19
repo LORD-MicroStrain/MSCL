@@ -1,7 +1,7 @@
 # **MSCL build info**
 
 The following information describes how to build MSCL for various platforms and programming languages.
-Note that the specific versions of libraries may not be needed, however it is recommended to be on the same Major version. For instance, SWIG 3.0.6 is called out below. SWIG 3.0.5 will likely work fine, but SWIG 2.X.X will not.
+Note that the specific versions of libraries/build tools may not be needed, however it is recommended to be on the same Major version. For instance, SWIG 3.0.6 is called out below. SWIG 3.0.5 will likely work fine, but SWIG 2.X.X will not.
 
 #### Note:
 Unfortunately, it seems there might be an issue in newer versions of bjam using msvc ([see this Stack Overflow](http://stackoverflow.com/questions/29450634/compile-boost-python-tutorial-with-vs-2015-ctp-5-and-python-3-5a-on-windows-10-t)). 
