@@ -3,6 +3,32 @@
 The following information describes how to build MSCL for various platforms and programming languages.
 Note that the specific versions of libraries may not be needed, however it is recommended to be on the same Major version. For instance, SWIG 3.0.6 is called out below. SWIG 3.0.5 will likely work fine, but SWIG 2.X.X will not.
 
+#### Note:
+Unfortunately, it seems there might be an issue in newer versions of bjam using msvc ([see this Stack Overflow](http://stackoverflow.com/questions/29450634/compile-boost-python-tutorial-with-vs-2015-ctp-5-and-python-3-5a-on-windows-10-t)). 
+
+From our internal build (using bjam from boost 1.61), it seems this fixes the issue:
+
+1. Edit the file `D:\boost\boost_1_61_0\tools\build\src\tools\msvc.jam`
+2. Change this (lines 1358-1363) from: 
+``` 
+     generators.register [ new msvc-linking-generator msvc.link.dll :
+         OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : SHARED_LIB IMPORT_LIB :
+         <toolset>msvc <suppress-import-lib>false ] ;
+     generators.register [ new msvc-linking-generator msvc.link.dll :
+         OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : SHARED_LIB :
+         <toolset>msvc <suppress-import-lib>true ] ;
+```
+to this:
+```
+     generators.register [ new msvc-linking-generator msvc.link.dll :
+        OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : SHARED_LIB IMPORT_LIB :
+        <toolset>msvc ] ;
+```
+3. Remove this (line 1479):
+```
+toolset.flags msvc.link.dll LINKFLAGS <suppress-import-lib>true : /NOENTRY ;
+```
+
 ## **Windows**
 
 ### Dependencies
