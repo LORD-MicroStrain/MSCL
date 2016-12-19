@@ -85,6 +85,8 @@ or
 
 Building the Python library involves using Boost.Build framework, using the `bjam` or `b2` command, and utilizing the provided Jamfiles.
 
+Note: Please see the [Note on the bjam bug](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme.md#note).
+
 **Python File (`mscl.py` + `_mscl.pyd`)**
 
 ```
