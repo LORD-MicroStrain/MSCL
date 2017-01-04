@@ -90,7 +90,11 @@ Configure bjam by creating a [site-config.jam or user-config.jam file](http://ww
 using msvc
 :
 :
-: <cxxflags>/D"WIN32"
+: <cxxflags>/I"C:/Lib/boost/boost_1_61_0" 
+  <cxxflags>/I"C:/Python27/include" 
+  <linkflags>/LIBPATH:"C:/Lib/boost/boost_1_61_0/lib32-msvc-14.0"
+  <linkflags>/LIBPATH:"C:/Python27/libs"
+  <cxxflags>/D"WIN32"
   <cxxflags>/D"_WINDOWS"
   <cxxflags>/D"_USRDLL"
   <cxxflags>/D"NOMINMAX"
