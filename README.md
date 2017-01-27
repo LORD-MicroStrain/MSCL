@@ -25,4 +25,4 @@ The library is currently available in:
 #### License
 MIT License - see the LICENSE.txt file in the source distribution.
 
-Copyright (C) 2015-2016 LORD Corporation. All Rights Reserved.
+Copyright (C) 2015-2017 LORD Corporation. All Rights Reserved.
