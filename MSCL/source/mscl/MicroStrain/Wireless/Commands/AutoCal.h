@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -135,6 +135,7 @@ namespace mscl
             //    true if the packet matches a response pattern, false otherwise
             virtual bool match(const WirelessPacket& packet) override;
 
+        protected:
             //Function: match_nodeReceived
             //    Checks if the <WirelessPacket> passed in matches the "Node Received" packet.
             //
@@ -145,7 +146,6 @@ namespace mscl
             //    true if the packet matches the Node Received packet, false otherwise.
             bool match_nodeReceived(const WirelessPacket& packet);
 
-        protected:
             virtual bool match_shmLink(const WirelessPacket& packet);
             virtual bool match_shuntCal(const WirelessPacket& packet);
         };

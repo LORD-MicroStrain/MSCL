@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -176,6 +176,18 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::SettlingTime filter2();
+
+        //Function: dataMode
+        //    Gets the <DataMode> of the node.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        DataMode dataMode();
+
+        SampleRate derivedDataRate();
+
+        ChannelMask derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel);
 
     public:
         //Function: txPerGroup

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -166,6 +166,49 @@ namespace mscl
     {
         //read the value from eeprom
         return m_eepromHelper.read_filter2();
+    }
+
+    DataMode SyncNodeConfig::dataMode()
+    {
+        try
+        {
+            //try to read the value from the pending config
+            return m_networkInfo->getPendingConfig().dataMode();
+        }
+        catch(Error_NoData&)
+        {
+            return m_eepromHelper.read_dataMode();
+        }
+    }
+
+    SampleRate SyncNodeConfig::derivedDataRate()
+    {
+        WirelessTypes::WirelessSampleRate sampleRateVal;
+
+        try
+        {
+            //try to read the value from the pending config
+            sampleRateVal = m_networkInfo->getPendingConfig().derivedDataRate();
+        }
+        catch(Error_NoData&)
+        {
+            sampleRateVal = m_eepromHelper.read_derivedSampleRate();
+        }
+
+        return SampleUtils::convertToSampleRate(sampleRateVal);
+    }
+
+    ChannelMask SyncNodeConfig::derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel)
+    {
+        try
+        {
+            //try to read the value from the pending config
+            return m_networkInfo->getPendingConfig().derivedChannelMask(derivedChannel);
+        }
+        catch(Error_NoData&)
+        {
+            return m_eepromHelper.read_derivedChannelMask(derivedChannel);
+        }
     }
 
     void SyncNodeConfig::txPerGroup(uint32 txPerGroup)

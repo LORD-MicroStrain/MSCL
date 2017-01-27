@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -31,6 +31,16 @@ namespace mscl
         static const WirelessTypes::WirelessSampleRates continuous_sync_gen2;
         static const WirelessTypes::WirelessSampleRates continuous_log_gen2;
         static const WirelessTypes::WirelessSampleRates burst_gen2;
+
+        //Constants: G-Link-200 Sample Rates
+        //  continuous_nonSync_glink200 - continuous NonSync sample rates for the G-Link-200
+        //  continuous_sync_glink200    - continuous Sync sample rates for the G-Link-200
+        //  continuous_log_glink200     - continuous Log Only sample rates for the G-Link-200
+        //  burst_glink200              - burst sample rates for the G-Link-200
+        static const WirelessTypes::WirelessSampleRates continuous_nonSync_glink200;
+        static const WirelessTypes::WirelessSampleRates continuous_sync_glink200;
+        static const WirelessTypes::WirelessSampleRates continuous_log_glink200;
+        static const WirelessTypes::WirelessSampleRates burst_glink200;
 
         //Constants: G-Link-2 Sample Rates
         //    continuous_glink2    - continuous sample rates for the G-Link 2

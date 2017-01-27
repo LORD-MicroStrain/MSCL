@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -57,45 +57,63 @@ namespace mscl
         //  CONFIG_ANTI_ALIASING_FILTER         - 34 - Anti-Aliasing Filter
         //  CONFIG_STORAGE_LIMIT_MODE           - 35 - Storage Limit Mode
         //  CONFIG_SENSOR_DELAY                 - 36 - Sensor Delay
+        //  CONFIG_LOW_PASS_FILTER              - 37 - Low Pass Filter
+        //  CONFIG_DATA_MODE                    - 38 - Data Mode
+        //  CONFIG_DERIVED_DATA_RATE            - 39 - Derived Data Rate
+        //  CONFIG_DERIVED_MASK_RMS             - 40 - Derived RMS Mask
+        //  CONFIG_DERIVED_MASK_P2P             - 41 - Derived Peak to Peak Mask
+        //  CONFIG_DERIVED_MASK_IPS             - 42 - Derived IPS Mask
+        //  CONFIG_DERIVED_MASK_CREST_FACTOR    - 43 - Derived Crest Factor Mask
+        //  CONFIG_HIGH_PASS_FILTER             - 44 - High Pass Filter
+        //  CONFIG_DERIVED_MASK                 - 45 - Derived Mask (all masks issue)
         enum ConfigOption
         {
-            CONFIG_SAMPLING_MODE               = 0,
-            CONFIG_ACTIVE_CHANNELS             = 1,
-            CONFIG_SAMPLE_RATE                 = 2,
-            CONFIG_SWEEPS                      = 3,
-            CONFIG_UNLIMITED_DURATION          = 4,
-            CONFIG_DATA_FORMAT                 = 5,
-            CONFIG_DATA_COLLECTION_METHOD      = 6,
-            CONFIG_TIME_BETWEEN_BURSTS         = 7,
-            CONFIG_THERMOCOUPLE_TYPE           = 8,
-            CONFIG_FILTER_SETTLING_TIME        = 9,
-            CONFIG_BUTTON                      = 10,
-            CONFIG_ANALOG_PAIR                 = 11,
-            CONFIG_INPUT_RANGE                 = 12,
-            CONFIG_INACTIVITY_TIMEOUT          = 13,
-            CONFIG_CHECK_RADIO_INTERVAL        = 14,
-            CONFIG_LOST_BEACON_TIMEOUT         = 15,
-            CONFIG_DEFAULT_MODE                = 16,
-            CONFIG_TRANSMIT_POWER              = 17,
-            CONFIG_LINEAR_EQUATION             = 18,
-            CONFIG_FATIGUE                     = 19,
-            CONFIG_FATIGUE_MODE                = 20,
-            CONFIG_FATIGUE_ANGLE_ID            = 21,
-            CONFIG_FATIGUE_SN_CURVE            = 22,
-            CONFIG_FATIGUE_DIST_NUM_ANGLES     = 23,
-            CONFIG_FATIGUE_DIST_ANGLE          = 24,
-            CONFIG_HISTOGRAM                   = 25,
-            CONFIG_HISTOGRAM_TX_RATE           = 26,
-            CONFIG_HARDWARE_OFFSET             = 27,
-            CONFIG_ACTIVITY_SENSE              = 28,
-            CONFIG_GAUGE_FACTOR                = 29,
-            CONFIG_EVENT_TRIGGER               = 30,
-            CONFIG_EVENT_TRIGGER_DURATION      = 31,
-            CONFIG_EVENT_TRIGGER_MASK          = 32,
-            CONFIG_DIAGNOSTIC_INTERVAL         = 33,
-            CONFIG_ANTI_ALIASING_FILTER        = 34,
-            CONFIG_STORAGE_LIMIT_MODE          = 35,
-            CONFIG_SENSOR_DELAY                = 36
+            CONFIG_SAMPLING_MODE                = 0,
+            CONFIG_ACTIVE_CHANNELS              = 1,
+            CONFIG_SAMPLE_RATE                  = 2,
+            CONFIG_SWEEPS                       = 3,
+            CONFIG_UNLIMITED_DURATION           = 4,
+            CONFIG_DATA_FORMAT                  = 5,
+            CONFIG_DATA_COLLECTION_METHOD       = 6,
+            CONFIG_TIME_BETWEEN_BURSTS          = 7,
+            CONFIG_THERMOCOUPLE_TYPE            = 8,
+            CONFIG_FILTER_SETTLING_TIME         = 9,
+            CONFIG_BUTTON                       = 10,
+            CONFIG_ANALOG_PAIR                  = 11,
+            CONFIG_INPUT_RANGE                  = 12,
+            CONFIG_INACTIVITY_TIMEOUT           = 13,
+            CONFIG_CHECK_RADIO_INTERVAL         = 14,
+            CONFIG_LOST_BEACON_TIMEOUT          = 15,
+            CONFIG_DEFAULT_MODE                 = 16,
+            CONFIG_TRANSMIT_POWER               = 17,
+            CONFIG_LINEAR_EQUATION              = 18,
+            CONFIG_FATIGUE                      = 19,
+            CONFIG_FATIGUE_MODE                 = 20,
+            CONFIG_FATIGUE_ANGLE_ID             = 21,
+            CONFIG_FATIGUE_SN_CURVE             = 22,
+            CONFIG_FATIGUE_DIST_NUM_ANGLES      = 23,
+            CONFIG_FATIGUE_DIST_ANGLE           = 24,
+            CONFIG_HISTOGRAM                    = 25,
+            CONFIG_HISTOGRAM_TX_RATE            = 26,
+            CONFIG_HARDWARE_OFFSET              = 27,
+            CONFIG_ACTIVITY_SENSE               = 28,
+            CONFIG_GAUGE_FACTOR                 = 29,
+            CONFIG_EVENT_TRIGGER                = 30,
+            CONFIG_EVENT_TRIGGER_DURATION       = 31,
+            CONFIG_EVENT_TRIGGER_MASK           = 32,
+            CONFIG_DIAGNOSTIC_INTERVAL          = 33,
+            CONFIG_ANTI_ALIASING_FILTER         = 34,
+            CONFIG_STORAGE_LIMIT_MODE           = 35,
+            CONFIG_SENSOR_DELAY                 = 36,
+            CONFIG_LOW_PASS_FILTER              = 37,
+            CONFIG_DATA_MODE                    = 38,
+            CONFIG_DERIVED_DATA_RATE          = 39,
+            CONFIG_DERIVED_MASK_RMS             = 40,
+            CONFIG_DERIVED_MASK_P2P             = 41,
+            CONFIG_DERIVED_MASK_IPS             = 42,
+            CONFIG_DERIVED_MASK_CREST_FACTOR    = 43,
+            CONFIG_HIGH_PASS_FILTER             = 44,
+            CONFIG_DERIVED_MASK                 = 45
         };
 
         ConfigIssue();    //default constructor

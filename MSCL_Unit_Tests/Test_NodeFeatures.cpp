@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_supportsGaugeFactor)
     std::shared_ptr<NodeFeatures> sglink = NodeFeatures::create(createInfo(WirelessModels::node_sgLink));
     BOOST_CHECK_EQUAL(sglink->supportsGaugeFactor(), false);
 
-    std::shared_ptr<NodeFeatures> shmLink2 = NodeFeatures::create(createInfo(WirelessModels::node_shmLink2));
+    std::shared_ptr<NodeFeatures> shmLink2 = NodeFeatures::create(createInfo(WirelessModels::node_shmLink2_cust1));
     BOOST_CHECK_EQUAL(shmLink2->supportsGaugeFactor(), true);
 }
 

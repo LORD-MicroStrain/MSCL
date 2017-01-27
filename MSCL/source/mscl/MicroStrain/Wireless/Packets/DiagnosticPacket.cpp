@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -82,12 +82,12 @@ namespace mscl
         switch(infoId)
         {
             //Current State
-            case 0:
+            case 0x00:
                 container.emplace_back(WirelessChannel::channel_diag_state, 0, valueType_uint8, anyType(payload.read_uint8()));
                 break;
 
             //Run Time
-            case 1:
+            case 0x01:
                 //idle time
                 container.emplace_back(WirelessChannel::channel_diag_runtime_idle, 0, valueType_uint32, anyType(payload.read_uint32()));
 
@@ -102,17 +102,17 @@ namespace mscl
                 break;
 
             //Reset Counter
-            case 2:
+            case 0x02:
                 container.emplace_back(WirelessChannel::channel_diag_resetCounter, 0, valueType_uint16, anyType(payload.read_uint16()));
                 break;
 
             //Battery flag
-            case 3:
+            case 0x03:
                 container.emplace_back(WirelessChannel::channel_diag_lowBatteryFlag, 0, valueType_uint8, anyType(payload.read_uint8()));
                 break;
 
             //Sample info
-            case 4:
+            case 0x04:
                 //sweep index
                 container.emplace_back(WirelessChannel::channel_diag_sweepIndex, 0, valueType_uint32, anyType(payload.read_uint32()));
 
@@ -121,7 +121,7 @@ namespace mscl
                 break;
 
             //Transmit info
-            case 5:
+            case 0x05:
                 //total transmissions
                 container.emplace_back(WirelessChannel::channel_diag_totalTx, 0, valueType_uint32, anyType(payload.read_uint32()));
 
@@ -133,24 +133,36 @@ namespace mscl
                 break;
 
             //Built in Test result
-            case 6:
+            case 0x06:
                 //BIT
                 container.emplace_back(WirelessChannel::channel_diag_builtInTestResult, 0, valueType_uint32, anyType(payload.read_uint32()));
                 break;
 
             //Event Trigger index
-            case 7:
+            case 0x07:
                 container.emplace_back(WirelessChannel::channel_diag_eventIndex, 0, valueType_uint16, anyType(payload.read_uint16()));
                 break;
 
             //External power
-            case 8:
+            case 0x08:
                 container.emplace_back(WirelessChannel::channel_diag_externalPower, 0, valueType_uint8, anyType(payload.read_uint8()));
                 break;
 
             //Internal Temperature (C)
-            case 9:
+            case 0x09:
                 container.emplace_back(WirelessChannel::channel_diag_internalTemp, 0, valueType_int16, anyType(static_cast<int16>(payload.read_int8())));
+                break;
+
+            //LXRS Synchronization Info
+            case 0x0A:
+                //total transmissions
+                container.emplace_back(WirelessChannel::channel_diag_syncAttempts, 0, valueType_uint32, anyType(payload.read_uint32()));
+
+                //total retransmissions
+                container.emplace_back(WirelessChannel::channel_diag_syncFailures, 0, valueType_uint32, anyType(payload.read_uint32()));
+
+                //total dropped packets
+                container.emplace_back(WirelessChannel::channel_diag_secsSinceLastSync, 0, valueType_uint32, anyType(payload.read_uint32()));
                 break;
 
             //Unknown info

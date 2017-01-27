@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -433,6 +433,23 @@ BOOST_AUTO_TEST_CASE(ByteStream_Read_uint16)
     BOOST_CHECK_THROW(bytes.read_uint16(3), std::out_of_range);
 }
 
+BOOST_AUTO_TEST_CASE(ByteStream_Read_uint24)
+{
+    ByteStream bytes;
+
+    bytes.append_uint8(0x01);
+    bytes.append_uint8(0x23);
+    bytes.append_uint8(0x45);
+    BOOST_CHECK_EQUAL(bytes.read_uint24(0), 0x012345);
+
+    bytes.clear();
+
+    bytes.append_uint8(0x45);
+    bytes.append_uint8(0x23);
+    bytes.append_uint8(0x01);
+    BOOST_CHECK_EQUAL(bytes.read_uint24(0, Utils::littleEndian), 0x012345);
+}
+
 BOOST_AUTO_TEST_CASE(ByteStream_Read_uint32)
 {
     ByteStream bytes;
@@ -453,6 +470,58 @@ BOOST_AUTO_TEST_CASE(ByteStream_Read_uint32)
 
     //check that readDWord outside of the bytestream range throws an exception
     BOOST_CHECK_THROW(bytes.read_uint32(5), std::out_of_range);
+}
+
+BOOST_AUTO_TEST_CASE(ByteStream_Read_int24)
+{
+    ByteStream bytes;
+
+    //29489 (0x7331)
+    bytes.append_uint8(0x00);
+    bytes.append_uint8(0x73);
+    bytes.append_uint8(0x31);
+    BOOST_CHECK_EQUAL(bytes.read_int24(0), 29489);
+
+    bytes.clear();
+
+    //-29489 (0xFF8CCF)
+    bytes.append_uint8(0xFF);
+    bytes.append_uint8(0x8C);
+    bytes.append_uint8(0xCF);
+    BOOST_CHECK_EQUAL(bytes.read_int24(0), -29489);
+
+    bytes.clear();
+
+    //342 (0x0156)
+    bytes.append_uint8(0x00);
+    bytes.append_uint8(0x01);
+    bytes.append_uint8(0x56);
+    BOOST_CHECK_EQUAL(bytes.read_int24(0), 342);
+
+    bytes.clear();
+
+    //-342 (0xFFFEAA)
+    bytes.append_uint8(0xFF);
+    bytes.append_uint8(0xFE);
+    bytes.append_uint8(0xAA);
+    BOOST_CHECK_EQUAL(bytes.read_int24(0), -342);
+
+    bytes.clear();
+
+    //1263096 (0x1345F8)
+    bytes.append_uint8(0x13);
+    bytes.append_uint8(0x45);
+    bytes.append_uint8(0xF8);
+    BOOST_CHECK_EQUAL(bytes.read_int24(0), 1263096);
+
+    bytes.clear();
+
+    //1263096 (LITTLE ENDIAN)
+    bytes.append_uint8(0xF8);
+    bytes.append_uint8(0x45);
+    bytes.append_uint8(0x13);
+
+    BOOST_CHECK_EQUAL(bytes.read_int24(0, Utils::littleEndian), 1263096);
 }
 
 BOOST_AUTO_TEST_CASE(ByteStream_Read_float)

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -210,6 +210,20 @@ namespace mscl
         //Exceptions:
         //    - std::out_of_range: The index requested is out of range
         uint32 read_uint24(std::size_t position, Utils::Endianness endian = Utils::bigEndian) const;
+
+        //Function: read_int24
+        //    Reads a 3-byte signed integer from the byte stream
+        //
+        //Parameters:
+        //    position - The 0-based position to read from
+        //    endian - The <Utils::Endianness> to read the bytes in.
+        //
+        //Returns:
+        //    An int32 containing the int24 value at the requested position
+        //
+        //Exceptions:
+        //    - std::out_of_range: The index requested is out of range
+        int32 read_int24(std::size_t position, Utils::Endianness endian = Utils::bigEndian) const;
 
         //Function: read_uint32
         //    Reads a 4-byte unsigned integer from the byte stream

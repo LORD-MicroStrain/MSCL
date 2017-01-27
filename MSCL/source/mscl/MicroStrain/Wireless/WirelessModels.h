@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -31,6 +31,10 @@ namespace mscl
         //  node_gLinkII_2g_ex              - 63055002 - G-Link II 2g External
         //  node_gLinkII_10g_ex             - 63055010 - G-Link II 10G External
         //  node_gLink_rgd_10g              - 63056010 - G-Link-RGD 10G
+        //  node_gLink_200_8g               - 63056000 - G-Link-200-8g
+        //  node_gLink_200_40g              - 63056001 - G-Link-200-40g
+        //  node_gLink_200_8g_oem           - 63056002 - G-Link-200-8g-OEM
+        //  node_gLink_200_40g_oem          - 63056003 - G-Link-200-40g-OEM
         //  node_sgLink_oem_S               - 63081000 - SG-Link 0EM -S (non-xr)
         //  node_sgLink                     - 63083000 - SG-Link
         //  node_sgLink_oem                 - 63084000 - SG-Link OEM
@@ -43,7 +47,7 @@ namespace mscl
         //  node_tcLink_6ch_ip67            - 63107000 - TC-Link 6CH IP67
         //  node_tcLink_6ch_ip67_rht        - 63108000 - TC-Link 6CH IP67 RHT
         //  node_vLink                      - 63121000 - V-Link
-        //  node_vLink200                     - 63122000 - V-Link 2
+        //  node_vLink200                   - 63122000 - V-Link 2
         //  node_iepeLink                   - 63160010 - IEPE-Link
         //  node_dvrtLink                   - 63181000 - DVRT-Link
         //  node_envLink_mini               - 63220000 - ENV-Link-Mini
@@ -58,13 +62,13 @@ namespace mscl
         //  node_mvPerVLink                 - 63250200 - mV/V-Link
         //  node_rtdLink                    - 63260000 - RTD-Link
         //  node_shmLink2_cust1             - 63290000 - SHM-Link 2 - Custom 1
-        //  node_shmLink2                   - 63290100 - SHM-Link 2
+        //  node_shmLink200                 - 63290100 - SHM-Link 200
         //  node_torqueLink                 - 63309999 - Torque-Link
         //  node_sgLink_herm                - 65010000 - SG-Link-Hermetic
         //  node_sgLink_herm_2600           - 65011110 - SG-Link-Hermetic 2600 belt assembly
         //  node_sgLink_herm_2700           - 65011210 - SG-Link-Hermetic 2700 belt assembly
         //  node_sgLink_herm_2800           - 65011310 - SG-Link-Hermetic 2800 belt assembly
-        //  node_wirelessImpactSensor            - 65080000 - Wireless Impact Sensor
+        //  node_wirelessImpactSensor       - 65080000 - Wireless Impact Sensor
         //=========================================================================
         enum NodeModel
         {
@@ -80,6 +84,10 @@ namespace mscl
             node_gLinkII_2g_ex              = 63055002,    //G-Link II 2g External
             node_gLinkII_10g_ex             = 63055010,    //G-Link II 10G External
             node_gLink_rgd_10g              = 63056010,    //G-Link-RGD 10G
+            node_gLink_200_8g               = 63056000,    //G-Link-200-8g
+            node_gLink_200_40g              = 63056001,    //G-Link-200-40g
+            node_gLink_200_8g_oem           = 63056002,    //G-Link-200-8g-OEM
+            node_gLink_200_40g_oem          = 63056003,    //G-Link-200-40g-OEM
             node_sgLink_oem_S               = 63081000,    //SG-Link 0EM -S (non-xr)
             node_sgLink                     = 63083000,    //SG-Link
             node_sgLink_oem                 = 63084000,    //SG-Link OEM
@@ -113,7 +121,7 @@ namespace mscl
             node_mvPerVLink                 = 63250200,    //mV/V-Link
             node_rtdLink                    = 63260000,    //RTD-Link
             node_shmLink2_cust1             = 63290000,    //SHM-Link 2 - Custom 1
-            node_shmLink2                   = 63290100,    //SHM-Link 2
+            node_shmLink200                 = 63290200,    //SHM-Link 200
             node_torqueLink                 = 63309999,    //Torque-Link
             node_sgLink_herm                = 65010000,    //SG-Link-Hermetic
             node_sgLink_herm_2600           = 65011110,    //SG-Link-Hermetic 2600 belt assembly
@@ -126,25 +134,27 @@ namespace mscl
         //API Enum: BaseModel
         //    The model numbers for each of the Wireless Base Stations
         //
-        //base_wsda_1000               - 63140050    -WSDA-1000
-        //base_wsda_1500               - 63141500    -WSDA-1500
-        //base_wsda_2000               - 63142050    -WSDA-2000
-        //base_wsdaBase_101_analog     - 63071010    -WSDA-Base-101 (Analog)
-        //base_wsdaBase_102_rs232      - 63071020    -WSDA-Base-102 (RS232)
-        //base_wsdaBase_104_usb        - 63071040    -WSDA-Base-104 (USB)
-        //base_wsdaBase_oem            - 63072000    -WSDA-Base-OEM
-        //base_wsdaBase_mini           - 63079999    -WSDA-Base-Mini
+        //base_wsda_1000               - 63140050       -WSDA-1000
+        //base_wsda_1500               - 63141500       -WSDA-1500
+        //base_wsda_2000               - 63142050       -WSDA-2000
+        //base_wsdaBase_200            - 63070200       -WSDA-Base-200 (USB)
+        //base_wsdaBase_101_analog     - 63071010       -WSDA-Base-101 (Analog)
+        //base_wsdaBase_102_rs232      - 63071020       -WSDA-Base-102 (RS232)
+        //base_wsdaBase_104_usb        - 63071040       -WSDA-Base-104 (USB)
+        //base_wsdaBase_oem            - 63072000       -WSDA-Base-OEM
+        //base_wsdaBase_mini           - 63079999       -WSDA-Base-Mini
         //=========================================================================
         enum BaseModel
         {
-            base_wsda_1000                 = 63140050,    //WSDA-1000
-            base_wsda_1500                 = 63141500,    //WSDA-1500
-            base_wsda_2000                 = 63142050,    //WSDA-2000
-            base_wsdaBase_101_analog       = 63071010,    //WSDA-Base-101 (Analog)
-            base_wsdaBase_102_rs232        = 63071020,    //WSDA-Base-102 (RS232)
-            base_wsdaBase_104_usb          = 63071040,    //WSDA-Base-104 (USB)
-            base_wsdaBase_oem              = 63072000,    //WSDA-Base-OEM
-            base_wsdaBase_mini             = 63079999     //WSDA-Base-Mini
+            base_wsda_1000                 = 63140050,      //WSDA-1000
+            base_wsda_1500                 = 63141500,      //WSDA-1500
+            base_wsda_2000                 = 63142050,      //WSDA-2000
+            base_wsdaBase_200              = 63070200,      //WSDA-Base-200 (USB)
+            base_wsdaBase_101_analog       = 63071010,      //WSDA-Base-101 (Analog)
+            base_wsdaBase_102_rs232        = 63071020,      //WSDA-Base-102 (RS232)
+            base_wsdaBase_104_usb          = 63071040,      //WSDA-Base-104 (USB)
+            base_wsdaBase_oem              = 63072000,      //WSDA-Base-OEM
+            base_wsdaBase_mini             = 63079999       //WSDA-Base-Mini
         };
 
 #ifndef SWIG

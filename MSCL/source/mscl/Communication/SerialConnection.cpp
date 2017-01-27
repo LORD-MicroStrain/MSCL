@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -32,6 +32,16 @@ namespace mscl
         using ::boost::asio::serial_port;
         using ::boost::asio::serial_port_base;
 
+        //default flow control of None
+        serial_port_base::flow_control::type flowControl = serial_port_base::flow_control::none;
+
+        //for now we are assuming a buad rate of 3000000 enables hardware flow controls
+        //TODO: we may need to reassess this in the future 
+        if(m_baudRate == 3000000)
+        {
+            flowControl = serial_port_base::flow_control::hardware;
+        }
+
         //if the connection has not been established
         if(!m_established)
         {
@@ -44,11 +54,11 @@ namespace mscl
                 m_ioPort.reset(new serial_port(*m_ioService, getNativeSerialPort(m_port)));
 
                 //create the serial port options
-                const serial_port_base::baud_rate            BAUD(m_baudRate);                                        //Baud Rate
-                const serial_port_base::character_size        CHAR_SIZE(8);                                            //Packet Size (default is 8 bits)
-                const serial_port_base::flow_control        FLOW_CONTROL(serial_port_base::flow_control::none);        //Flow Control (default is none)
-                const serial_port_base::parity                PARITY(serial_port_base::parity::none);                    //Parity (default is none)
-                const serial_port_base::stop_bits            STOP_BITS(serial_port_base::stop_bits::one);            //How many Stop Bits are used (default is one)
+                const serial_port_base::baud_rate           BAUD(m_baudRate);                                       //Baud Rate
+                const serial_port_base::character_size      CHAR_SIZE(8);                                           //Packet Size (default is 8 bits)
+                const serial_port_base::flow_control        FLOW_CONTROL(flowControl);                              //Flow Control
+                const serial_port_base::parity              PARITY(serial_port_base::parity::none);                 //Parity (default is none)
+                const serial_port_base::stop_bits           STOP_BITS(serial_port_base::stop_bits::one);            //How many Stop Bits are used (default is one)
 
                 //set all the serial port options on the port
                 m_ioPort->set_option(BAUD);

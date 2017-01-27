@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -68,6 +68,15 @@ namespace mscl
 
             case InertialModels::node_3dm_rq1_45:
                 return std::unique_ptr<InertialNodeFeatures>(new InertialNodeFeatures_3dm_rq1_45(info));
+
+            //TODO: break these out to use their own NodeFeatures class
+            //      currently just using the gx4-45 until more support is needed
+            case InertialModels::node_3dm_gx5_10:
+            case InertialModels::node_3dm_gx5_15:
+            case InertialModels::node_3dm_gx5_25:
+            case InertialModels::node_3dm_gx5_35:
+            case InertialModels::node_3dm_gx5_45:
+                return std::unique_ptr<InertialNodeFeatures>(new InertialNodeFeatures_3dm_gx4_45(info));
 
             default:
                 //we don't know anything about this node, throw an exception

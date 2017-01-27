@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -7,6 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include <memory>
 #include "EepromLocation.h"
+#include "mscl/MicroStrain/Wireless/Configuration/DataMode.h"
 #include "mscl/MicroStrain/Wireless/Features/FlashInfo.h"
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
@@ -89,6 +90,10 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to write the value to the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write(const EepromLocation& location, const Value& val);
+
+        //Function: findDerivedChannelEeprom
+        //  Gets the <EepromLocation> for the given <WirelessTypes::DerivedChannel>.
+        static EepromLocation findDerivedChannelEeprom(WirelessTypes::DerivedChannel derivedCh);
 
     public:
         //Function: nodeAddress
@@ -900,6 +905,62 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_antiAliasingFilter(const ChannelMask& mask, WirelessTypes::Filter filter);
 
+        //Function: read_lowPassFilter
+        //    Reads the low-pass filter for the specified <ChannelMask> from the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to read the filter for.
+        //
+        //Returns:
+        //    The <WirelessTypes::Filter> representing the low-pass filter for the given <ChannelMask>.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Low-Pass Filter is not supported for the given <ChannelMask> or Node.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::Filter read_lowPassFilter(const ChannelMask& mask) const;
+
+        //Function: write_lowPassFilter
+        //    Writes the low-pass filter value for the specified <ChannelMask> to the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to write the low-pass filter for.
+        //    filter - The <WirelessTypes::Filter> representing the low-pass filter value to write to the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Low Pass Filter is not supported for the given <ChannelMask> or Node.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_lowPassFilter(const ChannelMask& mask, WirelessTypes::Filter filter);
+
+        //Function: read_highPassFilter
+        //    Reads the high-pass filter for the specified <ChannelMask> from the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to read the filter for.
+        //
+        //Returns:
+        //    The <WirelessTypes::Filter> representing the high-pass filter for the given <ChannelMask>.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: High-Pass Filter is not supported for the given <ChannelMask> or Node.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::HighPassFilter read_highPassFilter(const ChannelMask& mask) const;
+
+        //Function: write_highPassFilter
+        //    Writes the high-pass filter value for the specified <ChannelMask> to the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to write the high-pass filter for.
+        //    filter - The <WirelessTypes::HighPassFilter> representing the high-pass filter value to write to the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: High Pass Filter is not supported for the given <ChannelMask> or Node.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_highPassFilter(const ChannelMask& mask, WirelessTypes::HighPassFilter filter);
+
         //Function: read_gaugeFactor
         //    Reads the gauge factor for the specified <ChannelMask> from the Node.
         //
@@ -1177,5 +1238,85 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_storageLimitMode(WirelessTypes::StorageLimitMode mode);
+
+        //Function: read_dataMode
+        //  Reads the <DataMode> from the Node.
+        //
+        //Returns:
+        //  A <DataMode> object representing the data modes currently set on the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        DataMode read_dataMode() const;
+
+        //Function: write_dataMode
+        //  Writes a <DataMode> object to the Node.
+        //
+        //Parameters:
+        //  dataMode - The <DataMode> object to set on the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_dataMode(const DataMode& dataMode);
+
+        //Function: read_derivedSampleRate
+        //  Reads the Derived Sample Rate from the Node.
+        //  This assumes Derived Channels are supported by the Node.
+        //
+        //Returns:
+        //  A <WirelessTypes::WirelessSampleRate> representing the Derived Channels Sample Rate.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::WirelessSampleRate read_derivedSampleRate() const;
+
+        //Function: write_derivedSampleRate
+        //  Writes the Derived Sample Rate to the Node.
+        //  This assumes Derived Channels are supported by the Node.
+        //
+        //Parameters:
+        //  rate - The <WirelessTypes::WirelessSampleRate> to write to the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_derivedSampleRate(WirelessTypes::WirelessSampleRate rate);
+
+        //Function: read_derivedChannelMask
+        //  Reads the Derived Channel Mask from the Node for the specified <WirelessTypes::DerivedChannel>.
+        //  This assumes Derived Channels are supported by the Node, and that the given derivedChannel is supported.
+        //
+        //Parameters:
+        //  derivedChannel - The <WirelessTypes::DerivedChannel> to read the mask for.
+        //
+        //Returns:
+        //  A <ChannelMask> representing the associated Node channels for the requested DerivedChannel.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        ChannelMask read_derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const;
+
+        //Function: write_derivedChannelMask
+        //  Writes a Derived Channel Mask to the Node for the specified <WirelessTypes::MathChannel>.
+        //  This assumes Derived Channels are supported by the Node, and that the given derivedChannel is supported.
+        //
+        //Parameters:
+        //  derivedChannel - The <WirelessTypes::DerivedChannel> to write the mask for.
+        //  mask - The <ChannelMask> representing the associated Node channels to set.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel, const ChannelMask& mask);
     };
 }

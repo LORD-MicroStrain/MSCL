@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -63,7 +63,6 @@ namespace mscl
         static const uint16 PAYLOAD_OFFSET_MAG_CONVERSION = 13;
 
         //read the values from the payload
-        uint8 sensorErrorMask    = m_payload.read_uint8(PAYLOAD_OFFSET_ERROR_MASK);
         uint8 sampleRate        = m_payload.read_uint8(PAYLOAD_OFFSET_SAMPLE_RATE);
         uint16 tick                = m_payload.read_uint16(PAYLOAD_OFFSET_TICK);
         uint64 timestampSeconds    = m_payload.read_uint32(PAYLOAD_OFFSET_TS_SEC);        //the timestamp (UTC) seconds part
@@ -91,8 +90,7 @@ namespace mscl
         static const uint16 DATA_START = 15;
 
         ChannelData chData;
-        chData.reserve(28);
-        chData.emplace_back(WC::channel_error_code, 0, valueType_uint8, anyType(sensorErrorMask));    //Error Mask (not actually in payload)
+        chData.reserve(27);
         chData.emplace_back(WC::channel_hcl_rawBase_mag1_x, 1, valueType_float, getMagChValue(m_payload.read_int16(DATA_START + 0)));    //Mag 1 - X
         chData.emplace_back(WC::channel_hcl_rawBase_mag1_y, 2, valueType_float, getMagChValue(m_payload.read_int16(DATA_START + 2)));    //Mag 1 - Y
         chData.emplace_back(WC::channel_hcl_rawBase_mag1_z, 3, valueType_float, getMagChValue(m_payload.read_int16(DATA_START + 4)));    //Mag 1 - Z
@@ -133,7 +131,6 @@ namespace mscl
         typedef WirelessChannel WC;
 
         //read the values from the payload
-        uint8 sensorErrorMask = m_payload.read_uint8(PAYLOAD_OFFSET_ERROR_MASK);
         uint8 sampleRate = m_payload.read_uint8(PAYLOAD_OFFSET_SAMPLE_RATE);
         uint16 tick = m_payload.read_uint16(PAYLOAD_OFFSET_TICK);
         uint64 timestampSeconds = m_payload.read_uint32(PAYLOAD_OFFSET_TS_SEC);        //the timestamp (UTC) seconds part
@@ -160,8 +157,7 @@ namespace mscl
         static const uint16 DATA_START = 13;
 
         ChannelData chData;
-        chData.reserve(37);
-        chData.emplace_back(WC::channel_error_code, 0, valueType_uint8, anyType(sensorErrorMask));    //Error Mask (not actually in payload)
+        chData.reserve(36);
         chData.emplace_back(WC::channel_hcl_rawStrain_BL30,        1, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 0)));
         chData.emplace_back(WC::channel_hcl_rawStrain_BL120,    2, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 2)));
         chData.emplace_back(WC::channel_hcl_rawStrain_A60,        3, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 4)));
@@ -211,7 +207,6 @@ namespace mscl
         typedef WirelessChannel WC;
 
         //read the values from the payload
-        uint8 sensorErrorMask = m_payload.read_uint8(PAYLOAD_OFFSET_ERROR_MASK);
         uint8 sampleRate = m_payload.read_uint8(PAYLOAD_OFFSET_SAMPLE_RATE);
         uint16 tick = m_payload.read_uint16(PAYLOAD_OFFSET_TICK);
         uint64 timestampSeconds = m_payload.read_uint32(PAYLOAD_OFFSET_TS_SEC);        //the timestamp (UTC) seconds part
@@ -238,8 +233,7 @@ namespace mscl
         static const uint16 DATA_START = 13;
 
         ChannelData chData;
-        chData.reserve(12);
-        chData.emplace_back(WC::channel_error_code, 0, valueType_uint8, anyType(sensorErrorMask));    //Error Mask (not actually in payload)
+        chData.reserve(11);
         chData.emplace_back(WC::channel_hcl_rawInertial_accel1, 1, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 0)));
         chData.emplace_back(WC::channel_hcl_rawInertial_accel2, 2, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 2)));
         chData.emplace_back(WC::channel_hcl_rawInertial_accel3, 3, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 4)));

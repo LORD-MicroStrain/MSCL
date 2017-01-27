@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -37,7 +37,6 @@ namespace mscl
         typedef WirelessChannel WC;
 
         //read the values from the payload
-        uint8 sensorErrorMask = m_payload.read_uint8(PAYLOAD_OFFSET_ERROR_MASK);
         uint8 sampleRate = m_payload.read_uint8(PAYLOAD_OFFSET_SAMPLE_RATE);
         uint16 tick = m_payload.read_uint16(PAYLOAD_OFFSET_TICK);
         uint64 timestampSeconds = m_payload.read_uint32(PAYLOAD_OFFSET_TS_SEC);      //the timestamp (UTC) seconds part
@@ -49,44 +48,63 @@ namespace mscl
         //create a SampleRate object from the sampleRate byte
         SampleRate currentRate = SampleUtils::convertToSampleRate(sampleRate);
 
-        //build the single sweep
-        DataSweep sweep;
-        sweep.samplingType(DataSweep::samplingType_SyncSampling);
-        sweep.frequency(m_frequency);
-        sweep.tick(tick);
-        sweep.nodeAddress(m_nodeAddress);
-        sweep.sampleRate(currentRate);
-        sweep.timestamp(Timestamp(realTimestamp));
-        sweep.nodeRssi(m_nodeRSSI);
-        sweep.baseRssi(m_baseRSSI);
-        sweep.calApplied(true);
+        //the number of bytes in a single sweep
+        m_sweepSize = 29;
 
         static const uint16 DATA_START = 13;
 
-        ChannelData chData;
-        chData.reserve(12);
-        chData.emplace_back(WC::channel_error_code, 0, valueType_uint8, anyType(sensorErrorMask));    //Error Mask (not actually in payload)
-        chData.emplace_back(WC::channel_hcl_axialLoadX, 1, valueType_int16, anyType(m_payload.read_int16(DATA_START + 0)));
-        chData.emplace_back(WC::channel_hcl_axialLoadY, 2, valueType_int16, anyType(m_payload.read_int16(DATA_START + 2)));
-        chData.emplace_back(WC::channel_hcl_axialLoadZ, 3, valueType_float, anyType(static_cast<float>(m_payload.read_int16(DATA_START + 4)) * 10));
-        chData.emplace_back(WC::channel_hcl_bendingMomentFlap, 4, valueType_int16, anyType(m_payload.read_int16(DATA_START + 6)));
-        chData.emplace_back(WC::channel_hcl_bendingMomentLag, 5, valueType_int16, anyType(m_payload.read_int16(DATA_START + 8)));
-        chData.emplace_back(WC::channel_hcl_bendingMomentPitch, 6, valueType_int16, anyType(m_payload.read_int16(DATA_START + 10)));
-        chData.emplace_back(WC::channel_hcl_motionFlap_mag, 7, valueType_float, anyType(static_cast<float>(m_payload.read_int16(DATA_START + 12) / 1000.0)));
-        chData.emplace_back(WC::channel_hcl_motionLag_mag, 8, valueType_float, anyType(static_cast<float>(m_payload.read_int16(DATA_START + 14) / 1000.0)));
-        chData.emplace_back(WC::channel_hcl_motionPitch_mag, 9, valueType_float, anyType(static_cast<float>(m_payload.read_int16(DATA_START + 16) / 1000.0)));
-        chData.emplace_back(WC::channel_hcl_motionFlap_inertial, 10, valueType_float, anyType(static_cast<float>(m_payload.read_int16(DATA_START + 18) / 1000.0)));
-        chData.emplace_back(WC::channel_hcl_motionLag_inertial, 11, valueType_float, anyType(static_cast<float>(m_payload.read_int16(DATA_START + 20) / 1000.0)));
-        chData.emplace_back(WC::channel_hcl_motionPitch_inertial, 12, valueType_float, anyType(static_cast<float>(m_payload.read_int16(DATA_START + 22) / 1000.0)));
-        chData.emplace_back(WC::channel_hcl_cockingStiffness_mag, 13, valueType_int16, anyType(m_payload.read_int16(DATA_START + 24)));
-        chData.emplace_back(WC::channel_hcl_cockingStiffness_inertial, 14, valueType_int16, anyType(m_payload.read_int16(DATA_START + 26)));
-        chData.emplace_back(WC::channel_hcl_temperature, 15, valueType_int16, anyType(static_cast<int16>(m_payload.read_int8(DATA_START + 28))));
+        m_numSweeps = (m_payload.size() - DATA_START) / m_sweepSize;
 
-        //add all of the channel data to the sweep
-        sweep.data(chData);
+        //get the value to increment the timestamp by for each sweep (the timestamp from the packet only applies to the first sweep)
+        const uint64 TS_INCREMENT = currentRate.samplePeriod().getNanoseconds();
 
-        //add the sweep to the container of sweeps
-        addSweep(sweep);
+        //if we still have no sweeps, there was an error in the packet
+        if(m_numSweeps == 0) { throw Error("Invalid Packet"); }
+
+        uint32 readOffset = DATA_START;
+
+        //there are multiple sweeps in this packet
+        for(uint32 sweepItr = 0; sweepItr < m_numSweeps; sweepItr++)
+        {
+            DataSweep sweep;
+            sweep.samplingType(DataSweep::samplingType_SyncSampling);
+            sweep.frequency(m_frequency);
+            sweep.tick(tick++);
+            sweep.nodeAddress(m_nodeAddress);
+            sweep.sampleRate(currentRate);
+            sweep.nodeRssi(m_nodeRSSI);
+            sweep.baseRssi(m_baseRSSI);
+            sweep.calApplied(true);
+
+            //build this sweep's timestamp
+            sweep.timestamp(Timestamp(realTimestamp + (TS_INCREMENT * sweepItr)));
+
+            ChannelData chData;
+            chData.reserve(15);
+            chData.emplace_back(WC::channel_hcl_axialLoadX, 1, valueType_int16, anyType(m_payload.read_int16(readOffset + 0)));
+            chData.emplace_back(WC::channel_hcl_axialLoadY, 2, valueType_int16, anyType(m_payload.read_int16(readOffset + 2)));
+            chData.emplace_back(WC::channel_hcl_axialLoadZ, 3, valueType_float, anyType(static_cast<float>(m_payload.read_int16(readOffset + 4)) * 10));
+            chData.emplace_back(WC::channel_hcl_bendingMomentFlap, 4, valueType_int16, anyType(m_payload.read_int16(readOffset + 6)));
+            chData.emplace_back(WC::channel_hcl_bendingMomentLag, 5, valueType_int16, anyType(m_payload.read_int16(readOffset + 8)));
+            chData.emplace_back(WC::channel_hcl_bendingMomentPitch, 6, valueType_int16, anyType(m_payload.read_int16(readOffset + 10)));
+            chData.emplace_back(WC::channel_hcl_motionFlap_mag, 7, valueType_float, anyType(static_cast<float>(m_payload.read_int16(readOffset + 12) / 1000.0)));
+            chData.emplace_back(WC::channel_hcl_motionLag_mag, 8, valueType_float, anyType(static_cast<float>(m_payload.read_int16(readOffset + 14) / 1000.0)));
+            chData.emplace_back(WC::channel_hcl_motionPitch_mag, 9, valueType_float, anyType(static_cast<float>(m_payload.read_int16(readOffset + 16) / 1000.0)));
+            chData.emplace_back(WC::channel_hcl_motionFlap_inertial, 10, valueType_float, anyType(static_cast<float>(m_payload.read_int16(readOffset + 18) / 1000.0)));
+            chData.emplace_back(WC::channel_hcl_motionLag_inertial, 11, valueType_float, anyType(static_cast<float>(m_payload.read_int16(readOffset + 20) / 1000.0)));
+            chData.emplace_back(WC::channel_hcl_motionPitch_inertial, 12, valueType_float, anyType(static_cast<float>(m_payload.read_int16(readOffset + 22) / 1000.0)));
+            chData.emplace_back(WC::channel_hcl_cockingStiffness_mag, 13, valueType_int16, anyType(m_payload.read_int16(readOffset + 24)));
+            chData.emplace_back(WC::channel_hcl_cockingStiffness_inertial, 14, valueType_int16, anyType(m_payload.read_int16(readOffset + 26)));
+            chData.emplace_back(WC::channel_hcl_temperature, 15, valueType_int16, anyType(static_cast<int16>(m_payload.read_int8(readOffset + 28))));
+
+            readOffset += m_sweepSize;
+
+            //add all of the channel data to the sweep
+            sweep.data(chData);
+
+            //add the sweep to the container of sweeps
+            addSweep(sweep);
+        }
     }
 
     bool HclSmartBearing_CalPacket::integrityCheck(const WirelessPacket& packet)

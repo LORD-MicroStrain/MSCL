@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
                      MSCL Examples Readme
-                Copyright 2016 LORD Corporation
+                Copyright 2017 LORD Corporation
 ----------------------------------------------------------------
 
 Example projects are provided for some use cases for MSCL. This does not encompass all features of MSCL.
@@ -19,23 +19,23 @@ The directory structure for how the libraries should be placed is given inside t
 /dependencies/C++/lib/Debug/MSCL.lib 
 /dependencies/C++/lib/Release/MSCL.lib
 
-Note: The C++ MSCL library depends on boost 1.55. You will need to perform the following steps:
-      1. Download boost 1.55 from boost.org
+Note: The C++ MSCL library depends on boost 1.61. You will need to perform the following steps:
+      1. Download boost 1.61 from boost.org
       2. Install the Prebuilt windows binaries, or build boost from source
       3. Edit the MSCL_PropertySheet_Debug.props and MSCL_PropertySheet_Release.props files, or the property pages of each project
       4. Update the "Additional Include Directories" to include the path to: 
             [boostInstallDir]/boost
       5. Update the "Additional Library Directories" to include the path to:
-            [boostInstallDir]/lib32_msvc-12.0
+            [boostInstallDir]/lib32_msvc-14.0
       6. Update the "Additional Dependencies" to include the following:
          Release:
-            libboost_system-vc120-mt-s-1_55.lib
-            libboost_date_time-vc120-mt-s-1_55.lib
-            libboost_chrono-vc120-mt-s-1_55.lib
+            libboost_system-vc140-mt-s-1_61.lib
+            libboost_date_time-vc140-mt-s-1_61.lib
+            libboost_chrono-vc140-mt-s-1_61.lib
          Debug:
-            libboost_system-vc120-mt-sgd-1_55.lib
-            libboost_date_time-vc120-mt-sgd-1_55.lib
-            libboost_chrono-vc120-mt-sgd-1_55.lib
+            libboost_system-vc140-mt-sgd-1_61.lib
+            libboost_date_time-vc140-mt-sgd-1_61.lib
+            libboost_chrono-vc140-mt-sgd-1_61.lib
 
 
 ----------------------------------------------------------------

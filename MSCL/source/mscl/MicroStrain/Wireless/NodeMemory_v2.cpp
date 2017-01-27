@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -17,8 +17,7 @@ namespace mscl
         m_previousDownloadAddress(startAddress),
         m_readIndex(0),
         m_checksumIndex(0),
-        m_numActiveChs(0),
-        m_dataTypeSize(0),
+        m_sweepSize(0),
         m_partialDownload(false),
         m_doneDownloading(false)
     {
@@ -95,6 +94,7 @@ namespace mscl
 
         //check the header id is ok
         if(headerId != BLOCK_HEADER_ID &&
+           headerId != BLOCK_HEADER_MATH_ID &&
            headerId != REFRESH_HEADER_ID &&
            headerId != SESSION_CHANGE_HEADER_ID)
         {
@@ -146,12 +146,62 @@ namespace mscl
             }
 
             uint8 numSweeps = buffer.read_uint8(3);
-            m_numActiveChs = ChannelMask(buffer.read_uint16(17, Utils::littleEndian)).count();
-            m_dataTypeSize = WirelessTypes::dataTypeSize( static_cast<WirelessTypes::DataType>(buffer.read_uint8(19)) );
+            uint8 numActiveChs = ChannelMask(buffer.read_uint16(17, Utils::littleEndian)).count();
+            uint16 dataTypeSize = WirelessTypes::dataTypeSize( static_cast<WirelessTypes::DataType>(buffer.read_uint8(19)) );
+
+            m_sweepSize = numActiveChs * dataTypeSize;
 
             //calculate the index into buffer where the checksum should be located
             //  3 bytes + bytesBeforeData in header + data
-            checksumPos = 3 + bytesBeforeData + (m_numActiveChs * m_dataTypeSize * numSweeps);
+            checksumPos = 3 + bytesBeforeData + (m_sweepSize * numSweeps);
+        }
+        else if(headerId == BLOCK_HEADER_MATH_ID)
+        {
+            static const uint8 HEADER_CHECK_SIZE = 21;
+            if(buffer.size() < HEADER_CHECK_SIZE)
+            {
+                //not enough bytes in the buffer to verify a block header
+                needMoreData = true;
+                return false;
+            }
+
+            //verify the header version is one we support
+            if(buffer.read_uint8(1) != 0)
+            {
+                return false;
+            }
+
+            static const uint8 MIN_BYTES_B4_DATA = 18;      //the minimum value ever supported for '# bytes before data' (if 1 channel active)
+
+            //verify the # of bytes before channel data value
+            uint8 bytesBeforeData = buffer.read_uint8(2);
+            if(bytesBeforeData < MIN_BYTES_B4_DATA)
+            {
+                return false;
+            }
+
+            //verify the sample rate is a valid rate
+            uint8 sampleRateVal = buffer.read_uint8(16);
+            try
+            {
+                //if it is an armed datalogging rate, we need to convert it to a WirelessSampleRate
+                //Note: if not a datalogging rate, this will just cast it to a WirelessSampleRate without conversion.
+                WirelessTypes::WirelessSampleRate rate = WirelessTypes::dataloggingRateToSampleRate(sampleRateVal);
+
+                //check that we can convert it to a SampleRate object
+                SampleRate::FromWirelessEepromValue(rate);
+            }
+            catch(Error_UnknownSampleRate&)
+            {
+                return false;
+            }
+
+            uint8 numSweeps = buffer.read_uint8(2);
+            m_sweepSize = static_cast<uint16>(buffer.read_uint8(3));
+
+            //calculate the index into buffer where the checksum should be located
+            //  #bytes in header + data
+            checksumPos = 3 + bytesBeforeData + (m_sweepSize * numSweeps);
         }
         else if(headerId == REFRESH_HEADER_ID)
         {
@@ -167,7 +217,7 @@ namespace mscl
 
             //calculate the index into buffer where the checksum should be located
             //  2 bytes in header + data
-            checksumPos = 2 + (m_numActiveChs * m_dataTypeSize * numSweeps);
+            checksumPos = 2 + (m_sweepSize * numSweeps);
         }
         else if(headerId == SESSION_CHANGE_HEADER_ID)
         {
@@ -183,7 +233,7 @@ namespace mscl
 
             //calculate the index into buffer where the checksum should be located
             //  12 bytes in header + data
-            checksumPos = 12 + (m_numActiveChs * m_dataTypeSize * numSweeps);
+            checksumPos = 12 + (m_sweepSize * numSweeps);
         }
 
         //verify we have all the data we need, including the checksum

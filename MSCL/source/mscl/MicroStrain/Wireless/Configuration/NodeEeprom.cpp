@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -172,6 +172,7 @@ namespace mscl
             if(m_baseStation.node_writeEeprom(*m_protocol, m_nodeAddress, location, value))
             {
                 //successfully wrote to the Node, update the cache
+                m_hasWritten = true;
                 updateCache(location, value);
 
                 return;

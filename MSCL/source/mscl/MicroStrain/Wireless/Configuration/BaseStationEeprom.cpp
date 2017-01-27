@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -20,14 +20,20 @@ namespace mscl
     {
         uint16 eepromVal;
 
-        //attempt to read the eeprom from the base station
-        if(m_baseStation->read(location, eepromVal))
-        {
-            //update the map value with the value we read from eeprom
-            updateCache(location, eepromVal);
+        uint8 retryCount = 0;
 
-            return true;
+        do
+        {
+            //attempt to read the eeprom from the base station
+            if(m_baseStation->read(location, eepromVal))
+            {
+                //update the map value with the value we read from eeprom
+                updateCache(location, eepromVal);
+
+                return true;
+            }
         }
+        while(retryCount++ < m_numRetries);
 
         //all the attempts to read the eeprom failed
         return false;
@@ -83,19 +89,26 @@ namespace mscl
 
         //if we made it here, we want to actually write to the device
 
-        //attempt to write the value to the BaseStation
-        if(m_baseStation->write(location, value))
-        {
-            //successfully wrote to the BaseStation, update the cache
-            updateCache(location, value);
-
-            return;
-        }
-
-        //we failed to write the value to the BaseStation
-
         //clear the eeprom cache for this location if we have one, just to be safe
         clearCacheLocation(location);
+
+        uint8 retryCount = 0;
+
+        do
+        {
+            //attempt to write the value to the BaseStation
+            if(m_baseStation->write(location, value))
+            {
+                //successfully wrote to the BaseStation, update the cache
+                m_hasWritten = true;
+                updateCache(location, value);
+
+                return;
+            }
+        }
+        while(retryCount++ < m_numRetries);
+
+        //we failed to write the value to the BaseStation
 
         throw Error_Communication("Failed to write EEPROM " + Utils::toStr(location) + " to the BaseStation.");
     }

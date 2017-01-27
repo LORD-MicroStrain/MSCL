@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -43,6 +43,11 @@ namespace mscl
         //Variable: m_numRetries
         //    The number of retries to use when reading and writing eeproms.
         uint8 m_numRetries;
+
+        //Variable: m_hasWritten
+        //  A flag used by <resetHasWritten> and <didWrite> to help determine when
+        //  an eeprom was actually written, instead of just using the cache.
+        bool m_hasWritten;
 
     public:
         //Function: useCache
@@ -110,6 +115,18 @@ namespace mscl
         virtual bool updateCacheFromDevice(uint16 location) = 0;
 
     public:
+        //Function: resetHasWritten
+        //  Resets the m_hasWritten flag to false.
+        //  It will be changed back to true when a successful write is performed.
+        void resetHasWritten();
+
+        //Function: didWrite
+        //  Gets the m_hasWritten flag indicating if an eeprom has been written on the device (not using the cache).
+        //
+        //Returns:
+        //  true if an eeprom has been written, false if it has not (cache may have been used).
+        bool didWrite() const;
+
         //Function: readEeprom
         //    Attempts to read an eeprom value from a device.
         //    If caching is enabled and there is a previously cached value available, this will 

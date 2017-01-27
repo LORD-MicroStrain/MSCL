@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -203,8 +203,55 @@ namespace mscl
         uint8 b2 = m_bytes.at(position + 1);
         uint8 b3 = m_bytes.at(position + 2);
 
-        //build a uint32 from the 3 bytes
-        return Utils::make_uint32(0, b1, b2, b3, endian);
+        if(endian == Utils::bigEndian)
+        {
+            //build a uint32 from the 3 bytes
+            return Utils::make_uint32(0, b1, b2, b3, endian);
+        }
+        else
+        {
+            //build a uint32 from the 3 bytes
+            return Utils::make_uint32(b1, b2, b3, 0, endian);
+        }
+    }
+
+    int32 ByteStream::read_int24(std::size_t position, Utils::Endianness endian /*= Utils::bigEndian*/) const
+    {
+        //verify that the position being asked for is in range
+        verifyBytesInStream(position, 3);
+
+        uint8 b1 = m_bytes.at(position);
+        uint8 b2 = m_bytes.at(position + 1);
+        uint8 b3 = m_bytes.at(position + 2);
+
+        if(endian == Utils::bigEndian)
+        {
+            //if negative
+            if(Utils::bitIsSet(b1, 7))
+            {
+                //build an int32 from the 3 bytes (flip the upper bytes to make negative)
+                return Utils::make_int32(0xFF, b1, b2, b3, endian);
+            }
+            else
+            {
+                //build an int32 from the 3 bytes (flip the upper bytes to make negative)
+                return Utils::make_int32(0x00, b1, b2, b3, endian);
+            }
+        }
+        else
+        {
+            //if negative
+            if(Utils::bitIsSet(b3, 7))
+            {
+                //build an int32 from the 3 bytes (flip the upper bytes to make negative)
+                return Utils::make_int32(b1, b2, b3, 0xFF, endian);
+            }
+            else
+            {
+                //build an int32 from the 3 bytes (flip the upper bytes to make negative)
+                return Utils::make_int32(b1, b2, b3, 0x00, endian);
+            }
+        }
     }
 
     //read a DWORD (4 bytes) from the bytestream
@@ -377,7 +424,7 @@ namespace mscl
         }
 
         //get the final checksum from the 2 bytes
-        finalChecksum = (static_cast<uint16>(checksumByte1) << 8) | static_cast<uint16>(checksumByte2);//Utils::make_uint16(checksumByte1, checksumByte2);
+        finalChecksum = (static_cast<uint16>(checksumByte1) << 8) | static_cast<uint16>(checksumByte2);
 
         return finalChecksum;
     }

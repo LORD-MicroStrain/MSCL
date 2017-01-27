@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -21,11 +21,6 @@ namespace mscl
     //    Parses all wireless data and stores it in a corresponding container
     class WirelessParser
     {
-    private:
-        //Typedef: DuplicateCheckMap
-        //    A typedef for a map of node addresses to a timestamp or tick value to check for packet duplication
-        typedef std::map<uint32, uint16> DuplicateCheckMap;
-
     public:
         //Enums: ParsePacketResult
         //    parsePacketResult_completePacket        - The packet has been verified as a complete ASPP packet
@@ -40,6 +35,17 @@ namespace mscl
             parsePacketResult_badChecksum,
             parsePacketResult_notEnoughData,
             parsePacketResult_duplicate
+        };
+
+        struct DuplicateCheckKey
+        {
+            uint32 nodeAddress;
+            WirelessPacket::PacketType packetType;
+
+            DuplicateCheckKey(uint32 address, WirelessPacket::PacketType packet):
+                nodeAddress(address),
+                packetType(packet)
+            { }
         };
 
     public:
@@ -57,6 +63,10 @@ namespace mscl
         WirelessParser& operator=(const WirelessParser&);
 
     private:
+        //Typedef: DuplicateCheckMap
+        //    A typedef for a map of <DuplicateCheckKey>s to a timestamp or tick value to check for packet duplication
+        typedef std::map<DuplicateCheckKey, uint16> DuplicateCheckMap;
+
         //Variable: m_packetCollector
         //    The <WirelessPacketCollector> associated with this parser and it's parent base station
         WirelessPacketCollector& m_packetCollector;
@@ -177,4 +187,8 @@ namespace mscl
         //    freq - The <WirelessTypes::Frequency> representing the radio frequency that this data was collected on.
         void parse(DataBuffer& data, WirelessTypes::Frequency freq);
     };
+
+    //Function: operator <
+    //  Less than operator for <WirelessPareser::DuplicateCheckKey> so that it can be used in a map.
+    const bool operator < (const WirelessParser::DuplicateCheckKey& key1, const WirelessParser::DuplicateCheckKey& key2);
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -117,6 +117,21 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred.
         uint8 read_uint8();
 
+        //Function: read_int16
+        //    Reads a 2-byte signed integer from the Node's memory.
+        //
+        //Parameters:
+        //    endian - The <Utils::Endianness> to read the bytes in.
+        //
+        //Returns:
+        //    The int16 at the next position in the Node's memory.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to download data from the Node.
+        //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
+        //    - <Error_Connection>: A connection error has occurred.
+        int16 read_int16(Utils::Endianness endian = Utils::bigEndian);
+
         //Function: read_uint16
         //    Reads a 2-byte unsigned integer from the Node's memory.
         //
@@ -146,6 +161,21 @@ namespace mscl
         //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
         //    - <Error_Connection>: A connection error has occurred.
         uint32 read_uint24(Utils::Endianness endian = Utils::bigEndian);
+
+        //Function: read_int24
+        //    Reads a 3-byte signed integer from the Node's memory.
+        //
+        //Parameters:
+        //    endian - The <Utils::Endianness> to read the bytes in.
+        //
+        //Returns:
+        //    An int32 containing the int24 value at the next position in the Node's memory.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to download data from the Node.
+        //    - <Error_NoData>: The requested bytePosition is outside the range of the datalogged data.
+        //    - <Error_Connection>: A connection error has occurred.
+        int32 read_int24(Utils::Endianness endian = Utils::bigEndian);
 
         //Function: read_uint32
         //    Reads a 4-byte unsigned integer from the Node's memory.

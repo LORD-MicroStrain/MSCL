@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -83,7 +83,9 @@ namespace mscl
         //  dataType_float32_noCals       - 8 - 4-byte float (no cal coefficients applied)
         //  dataType_uint24               - 9 - 3-byte unsigned integer
         //  dataType_uint16_18bitTrunc    - 10 - uint16 from a device with 18-bit resolution (truncated)
-        //  dataType_last                 - 10 - The largest value in the list
+        //  dataType_int24_20bit          - 11 - signed int24 from a device with 20-bit resolution
+        //  dataType_int16_20bitTrunc     - 12 - signed int16 from a device with 20-bit resolution (truncated)
+        //  dataType_last                 - 12 - The largest value in the list
         //=====================================================================================================
         enum DataType
         {
@@ -97,8 +99,10 @@ namespace mscl
             dataType_float32_noCals     = 8,
             dataType_uint24             = 9,
             dataType_uint16_18bitTrunc  = 10,
+            dataType_int24_20bit        = 11,
+            dataType_int16_20bitTrunc   = 12,
 
-            dataType_last               = 10
+            dataType_last               = 12
         };
 
         //=====================================================================================================
@@ -108,12 +112,16 @@ namespace mscl
         //  dataFormat_raw_uint16   - 1 - Raw, uint16 data format
         //  dataFormat_cal_float    - 2 - Calibrated, float data format
         //  dataFormat_raw_uint24   - 3 - Raw, uint24 data format
+        //  dataFormat_raw_int24    - 4 - Raw, int24 data format
+        //  dataFormat_raw_int16    - 5 - Raw, int16 data format
         //=====================================================================================================
         enum DataFormat
         {
             dataFormat_raw_uint16       = 1,
             dataFormat_cal_float        = 2,
-            dataFormat_raw_uint24       = 3
+            dataFormat_raw_uint24       = 3,
+            dataFormat_raw_int24        = 4,
+            dataFormat_raw_int16        = 5
         };
 
         //=====================================================================================================
@@ -724,9 +732,11 @@ namespace mscl
         //    chSetting_hardwareOffset          - 6 - Hardware Offset
         //    chSetting_autoBalance             - 7 - Autobalance Function
         //    chSetting_gaugeFactor             - 8 - Gauge Factor
-        //    chSetting_antiAliasingFilter      - 9 - Low Pass Filter
+        //    chSetting_antiAliasingFilter      - 9 - Anti-Aliasing Filter
         //    chSetting_legacyShuntCal          - 10 - Legacy Shunt Cal (Note: the actual shunt cal operation is not a feature in MSCL)
         //    chSetting_autoShuntCal            - 11 - Auto Shunt Cal
+        //    chSetting_lowPassFilter           - 12 - Low Pass Filter
+        //    chSetting_highPassFilter          - 13 - High Pass Filter
         enum ChannelGroupSetting
         {
             chSetting_inputRange              = 0,
@@ -741,6 +751,8 @@ namespace mscl
             chSetting_antiAliasingFilter      = 9,
             chSetting_legacyShuntCal          = 10,
             chSetting_autoShuntCal            = 11,
+            chSetting_lowPassFilter           = 12,
+            chSetting_highPassFilter          = 13
         };
 
         //API Enum: AutoBalanceErrorFlag
@@ -844,7 +856,7 @@ namespace mscl
         };
 
         //API Enum: Filter
-        //  The filter options (used for anti-aliasing filter)
+        //  The filter options (used for anti-aliasing and low-pass filter)
         //
         //  filter_33000hz  - 33000
         //  filter_20000hz  - 20000
@@ -859,31 +871,50 @@ namespace mscl
         //  filter_512hz    - 512
         //  filter_500hz    - 500
         //  filter_256hz    - 256
+        //  filter_250hz    - 250
         //  filter_200hz    - 200
         //  filter_128hz    - 128
+        //  filter_125hz    - 125
         //  filter_100hz    - 100
+        //  filter_62hz     - 62
         //  filter_50hz     - 50
+        //  filter_31hz     - 31
         //  filter_26hz     - 26
         enum Filter
         {
-            filter_33000hz = 33000,
-            filter_20000hz = 20000,
-            filter_10000hz = 10000,
-            filter_5000hz  = 5000,
-            filter_4096hz  = 4096,
-            filter_4000hz  = 4000,
-            filter_2048hz  = 2048,
-            filter_2000hz  = 2000,
-            filter_1024hz  = 1024,
-            filter_1000hz  = 1000,
-            filter_512hz   = 512,
-            filter_500hz   = 500,
-            filter_256hz   = 256,
-            filter_200hz   = 200,
-            filter_128hz   = 128,
-            filter_100hz   = 100,
-            filter_50hz    = 50,
-            filter_26hz    = 26
+            filter_33000hz  = 33000,
+            filter_20000hz  = 20000,
+            filter_10000hz  = 10000,
+            filter_5000hz   = 5000,
+            filter_4096hz   = 4096,
+            filter_4000hz   = 4000,
+            filter_2048hz   = 2048,
+            filter_2000hz   = 2000,
+            filter_1024hz   = 1024,
+            filter_1000hz   = 1000,
+            filter_512hz    = 512,
+            filter_500hz    = 500,
+            filter_256hz    = 256,
+            filter_250hz    = 250,
+            filter_200hz    = 200,
+            filter_128hz    = 128,
+            filter_125hz    = 125,
+            filter_100hz    = 100,
+            filter_62hz     = 62,
+            filter_50hz     = 50,
+            filter_31hz     = 31,
+            filter_26hz     = 26
+        };
+
+        //API Enum: HighPassFilter
+        //  The high pass filter options.
+        //
+        //highPass_off  - 0     - Disabled
+        //highPass_auto - 65535 - The High Pass Filter will be automatically selected based on other configuration options (such as low pass filter).
+        enum HighPassFilter
+        {
+            highPass_off = 0,
+            highPass_auto = 65535
         };
 
         //API Enum: StorageLimitMode
@@ -954,6 +985,9 @@ namespace mscl
         //  range_1500microV    - 51 - +-1500 microVolts
         //  range_812microV     - 52 - +-2 microVolts
         //  range_6mV           - 53 - +-6 milliVolts
+        //  range_2G            - 54 - +-2 Gs
+        //  range_4G            - 55 - +-4 Gs
+        //  range_8G            - 56 - +-8 Gs
         //  range_invalid       - 65535 - invalid input range
         enum InputRange
         {
@@ -1011,21 +1045,42 @@ namespace mscl
             range_1500microV = 51,   //+-1500 microVolts
             range_812microV = 52,    //+-812 microVolts
             range_6mV = 53,          //+-6 milliVolts
+            range_2G = 54,           //+-2 Gs
+            range_4G = 55,           //+-4 Gs
+            range_8G = 56,           //+-8 Gs
             range_invalid = 65535    //invalid input range
+        };
+
+        //API Enum: DerivedChannel
+        //  Available Derived Channels.
+        //
+        //  derived_rms            - 0 - RMS
+        //  derived_peakToPeak     - 1 - Peak to Peak
+        //  derived_ips            - 2 - Inches per Second
+        //  derived_crestFactor    - 3 - Crest Factor
+        enum DerivedChannel
+        {
+            derived_rms = 0,
+            derived_peakToPeak = 1,
+            derived_ips = 2,
+            derived_crestFactor = 3
         };
 
     public:
         //API Typedefs:
-        //    DataCollectionMethods      - A vector of <DataCollectionMethod> enums.
-        //    DataFormats                - A vector of <DataFormat> enums.
-        //    WirelessSampleRates        - A vector of <WirelessSampleRate> enums.
-        //    SamplingModes              - A vector of <SamplingMode> enums.
-        //    DefaultModes               - A vector of <DefaultMode> enums.
-        //    TransmitPowers             - A vector of <TransmitPower> enums.
-        //    ChannelGroupSettings       - A vector of <ChannelGroupSetting> enums.
-        //    FatigueModes               - A vector of <FatigueMode> enums.
-        //    StorageLimitModes          - A vector of <StorageLimitMode> enums.
-        //    InputRanges                - A vector of <InputRange> enums.
+        //  DataCollectionMethods      - A vector of <DataCollectionMethod> enums.
+        //  DataFormats                - A vector of <DataFormat> enums.
+        //  WirelessSampleRates        - A vector of <WirelessSampleRate> enums.
+        //  SamplingModes              - A vector of <SamplingMode> enums.
+        //  DefaultModes               - A vector of <DefaultMode> enums.
+        //  TransmitPowers             - A vector of <TransmitPower> enums.
+        //  ChannelGroupSettings       - A vector of <ChannelGroupSetting> enums.
+        //  FatigueModes               - A vector of <FatigueMode> enums.
+        //  Filter                     - A vector of <Filter> enums.
+        //  HighPassFilters            - A vector of <HighPassFilter> enums.
+        //  StorageLimitModes          - A vector of <StorageLimitMode> enums.
+        //  InputRanges                - A vector of <InputRange> enums.
+        //  DerivedChannel             - A vector of <DerivedChannel> enums.
         typedef std::vector<DataCollectionMethod> DataCollectionMethods;
         typedef std::vector<DataFormat> DataFormats;
         typedef std::vector<WirelessSampleRate> WirelessSampleRates;
@@ -1035,8 +1090,10 @@ namespace mscl
         typedef std::vector<ChannelGroupSetting> ChannelGroupSettings;
         typedef std::vector<FatigueMode> FatigueModes;
         typedef std::vector<Filter> Filters;
+        typedef std::vector<HighPassFilter> HighPassFilters;
         typedef std::vector<StorageLimitMode> StorageLimitModes;
         typedef std::vector<InputRange> InputRanges;
+        typedef std::vector<DerivedChannel> DerivedChannels;
 
         //API Constant: UNKNOWN_RSSI = 999
         //    The value given for an unknown RSSI value.

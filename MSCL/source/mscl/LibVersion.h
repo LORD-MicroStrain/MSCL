@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -11,9 +11,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #ifndef SWIG
 //update with each release
-#define MSCL_MAJOR 13
-#define MSCL_MINOR 1
-#define MSCL_PATCH 1
+#define MSCL_MAJOR 14
+#define MSCL_MINOR 3
+#define MSCL_PATCH 2
 #endif
 
 namespace mscl

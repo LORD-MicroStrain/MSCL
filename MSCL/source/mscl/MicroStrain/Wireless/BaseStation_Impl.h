@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -106,6 +106,10 @@ namespace mscl
         //Variable: m_features
         //    The <BaseStationFeatures> containing the features for this BaseStation.
         mutable std::unique_ptr<BaseStationFeatures> m_features;
+
+        //Variable: m_protocolMutex
+        //    The mutex used when determining the device protocol.
+        std::recursive_mutex m_protocolMutex;
 
         //Variable: m_protocol
         //    The <WirelessProtocol> containing all of the protocol commands and info for this BaseStation.
@@ -698,6 +702,14 @@ namespace mscl
         //    Performs Version 2 of the Node Short Ping command.
         bool protocol_node_shortPing_v2(NodeAddress nodeAddress);
 
+        //Function: protocol_node_setToIdle_v1
+        //    Performs Version 1 of the Node Set to Idle command.
+        SetToIdleStatus protocol_node_setToIdle_v1(NodeAddress nodeAddress, const BaseStation& base);
+
+        //Function: protocol_node_setToIdle_v2
+        //    Performs Version 2 of the Node Set to Idle command.
+        SetToIdleStatus protocol_node_setToIdle_v2(NodeAddress nodeAddress, const BaseStation& base);
+
         //Function: protocol_node_readEeprom_v1
         //    Performs Version 1 of the Node Read Eeprom command.
         bool protocol_node_readEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue);
@@ -777,6 +789,7 @@ namespace mscl
         //    A <SetToIdleStatus> object that can be queried to get the status of the Set to Idle operation.
         //
         //Exceptions:
+        //    - <Error_Communication>: Failed to communicate with the parent BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         virtual SetToIdleStatus node_setToIdle(NodeAddress nodeAddress, const BaseStation& base);
 

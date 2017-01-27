@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -97,14 +97,29 @@ namespace mscl
         //    Gets the 2-byte signed integer (in system endianness) from 2 individual bytes
         //
         //Parameters:
-        //    msb - the Most Significant Byte
-        //    lsb - the Lease Significant Byte
+        //    low - the low memory location byte
+        //    high - the high memory location byte
         //    endian - The <Endianness> that the passed in bytes are in.
         //             ie. Big endian means low = msb, high = lsb. Little endian means low = lsb, high = msb
         //
         //Returns:
         //    The 2-byte int16 (in system endianness) built from the given bytes.
         int16 make_int16(uint8 low, uint8 high, Endianness endian = bigEndian);
+
+        //Function: make_int32
+        //    Gets the 4-byte signed integer (in system endianness) from 4 individual bytes
+        //
+        //Parameters:
+        //    low - the low memory location byte
+        //    byte2 - the second byte to be used
+        //    byte3 - the third byte to be used
+        //    high - the high memory location byte
+        //    endian - The <Endianness> that the passed in bytes are in.
+        //             ie. Big endian means low = msb, high = lsb. Little endian means low = lsb, high = msb
+        //
+        //Returns:
+        //    The 4-byte int32 (in system endianness) built from the given bytes.
+        int32 make_int32(uint8 low, uint8 byte2, uint8 byte3, uint8 high, Endianness endian = bigEndian);
 
         //Function: split_uint16
         //    Converts the 2-byte unsigned integer into its individual 2 bytes.

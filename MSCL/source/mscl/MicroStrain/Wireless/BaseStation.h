@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -43,10 +43,10 @@ namespace mscl
     public:
         //=====================================================================================================
         //API Constants: Default Timeouts
-        //    BASE_COMMANDS_DEFAULT_TIMEOUT    - 50 ms    - The default timeout for a base station command (in milliseconds)
+        //    BASE_COMMANDS_DEFAULT_TIMEOUT    - 75 ms    - The default timeout for a base station command (in milliseconds)
         //    BROADCAST_NODE_ADDRESS           - 65535      - The address to use for performing Broadcast commands that will be heard by all <WirelessNode>s on the frequency.
         //=====================================================================================================
-        static const uint64 BASE_COMMANDS_DEFAULT_TIMEOUT = 50;
+        static const uint64 BASE_COMMANDS_DEFAULT_TIMEOUT = 75;
         static const NodeAddress BROADCAST_NODE_ADDRESS = 65535;
 
     public:
@@ -261,6 +261,15 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::MicroControllerType microcontroller() const;
 
+        //API Function: regionCode
+        //    Gets the region code currently set on the BaseStation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
+        //    - <Error_Communication>: Failed to read from the BaseStation.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::RegionCode regionCode() const;
+
         //API Function: getData
         //    Gets up to the requested amount of <DataSweep>s of sampled data that was collected by this BaseStation.
         //
@@ -466,6 +475,17 @@ namespace mscl
         //    - <Error_Communication>: Failed to change the frequency.
         void changeFrequency(WirelessTypes::Frequency frequency);
 
+        //API Function: broadcastSetToIdle
+        //  Broadcasts the Set to Idle command (will be heard by all nodes on the BaseStation's frequency).
+        //
+        //Returns:
+        //  A <SetToIdleStatus> object that can be used to cancel the operation.
+        //  Note that this status object will never complete as it is not targeting a specific Node.
+        //
+        //Exceptions:
+        //  - <Error_Connection>: A connection error has occurred with the BaseStation.
+        mscl::SetToIdleStatus broadcastSetToIdle();
+
         //API Function: verifyConfig
         //    Checks whether the settings in the given <BaseStationConfig> are ok to be written to the BaseStation.
         //    Options that are set will also be validated against each other. If an option that needs to be validated isn't
@@ -659,6 +679,7 @@ namespace mscl
         //    A <SetToIdleStatus> object that can be queried to get the status of the Set to Idle operation.
         //
         //Exceptions:
+        //    - <Error_Communication>: Failed to communicate with the parent BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         SetToIdleStatus node_setToIdle(NodeAddress nodeAddress);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -50,6 +50,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Commands/ReadEeprom_v2.h"
 #include "Commands/ReadSingleSensor.h"
 #include "Commands/SetToIdle.h"
+#include "Commands/SetToIdle_v2.h"
 #include "Commands/ShortPing.h"
 #include "Commands/ShortPing_v2.h"
 #include "Commands/Sleep.h"
@@ -98,6 +99,8 @@ namespace mscl
         ScopeHelper writebackRetries(std::bind(&BaseStationEeprom::setNumRetries, m_eeprom.get(), origRetries));
 
         m_eeprom->setNumRetries(0);
+
+        rec_mutex_lock_guard lock(m_protocolMutex);
 
         bool success = false;
         uint8 retryCount = 0;
@@ -188,6 +191,8 @@ namespace mscl
 
     const WirelessProtocol& BaseStation_Impl::protocol()
     {
+        rec_mutex_lock_guard lock(m_protocolMutex);
+
         //if the protocol variable hasn't been set yet
         if(m_protocol == NULL)
         {
@@ -242,6 +247,8 @@ namespace mscl
 
     void BaseStation_Impl::clearEepromCache()
     {
+        rec_mutex_lock_guard lock(m_protocolMutex);
+
         m_eeprom->clearCache();
 
         //features may need to be reset if firmware version or model changed
@@ -767,6 +774,80 @@ namespace mscl
         return response.success();
     }
 
+    SetToIdleStatus BaseStation_Impl::protocol_node_setToIdle_v1(NodeAddress nodeAddress, const BaseStation& base)
+    {
+        //attempt to ping the Base Station before starting set to idle
+        bool pingSuccess = false;
+        static const uint8 MAX_RETRIES = 5;
+        uint8 retries = 0;
+        do
+        {
+            pingSuccess = ping();
+            retries++;
+        }
+        while(!pingSuccess && (retries < MAX_RETRIES));
+
+        if(!pingSuccess)
+        {
+            throw Error_Communication("Failed to communicate with the Base Station.");
+        }
+
+        //create the response for the Set to Idle command
+        std::shared_ptr<SetToIdle::Response> response(std::make_shared<SetToIdle::Response>(nodeAddress, m_responseCollector, base));
+
+        //build the set to idle command to send
+        ByteStream setToIdleCmd = SetToIdle::buildCommand(nodeAddress);
+
+        //send the command to the base station
+        m_connection.write(setToIdleCmd);
+
+        //build the status to return to the user
+        SetToIdleStatus status(response);
+
+        return status;
+    }
+
+    SetToIdleStatus BaseStation_Impl::protocol_node_setToIdle_v2(NodeAddress nodeAddress, const BaseStation& base)
+    {
+        //attempt to ping the Base Station before starting set to idle
+        bool pingSuccess = false;
+        static const uint8 MAX_RETRIES = 5;
+        uint8 retries = 0;
+        do
+        {
+            pingSuccess = ping();
+            retries++;
+        }
+        while(!pingSuccess && (retries < MAX_RETRIES));
+
+        if(!pingSuccess)
+        {
+            throw Error_Communication("Failed to communicate with the Base Station.");
+        }
+
+        //create the response for the Set to Idle command
+        std::shared_ptr<SetToIdle_v2::Response> response(std::make_shared<SetToIdle_v2::Response>(nodeAddress, m_responseCollector, base));
+
+        //build the set to idle command to send
+        ByteStream setToIdleCmd = SetToIdle::buildCommand(nodeAddress);
+
+        //send the command to the base station
+        m_connection.write(setToIdleCmd);
+
+        //wait for the initial response or timeout
+        response->wait(m_baseCommandsTimeout);
+
+        if(!response->started())
+        {
+            throw Error_Communication("Failed to start the Set to Idle process.");
+        }
+
+        //build the status to return to the user
+        SetToIdleStatus status(response);
+
+        return status;
+    }
+
     bool BaseStation_Impl::protocol_node_readEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
     {
         bool success = false;
@@ -993,10 +1074,10 @@ namespace mscl
         //no response for this command
 
         //send the command a few extra times for good measure
-        Utils::threadSleep(5);
+        Utils::threadSleep(50);
         m_connection.write(command);
 
-        Utils::threadSleep(10);
+        Utils::threadSleep(50);
         m_connection.write(command);
 
         return true;
@@ -1118,16 +1199,24 @@ namespace mscl
 
     void BaseStation_Impl::applyConfig(const BaseStationConfig& config)
     {
+        //reset the hasWritten flag so that we can tell if
+        //eeproms were actually changed (and not ignored due to the cache).
+        m_eeprom->resetHasWritten();
+
         config.apply(features(), eeHelper());
 
-        //if we can just reset the radio to commit the changes
-        if(features().supportsEepromCommitViaRadioReset())
+        //if an actual eeprom has been written
+        if(m_eeprom->didWrite())
         {
-            resetRadio();
-        }
-        else
-        {
-            cyclePower();
+            //if we can just reset the radio to commit the changes
+            if(features().supportsEepromCommitViaRadioReset())
+            {
+                resetRadio();
+            }
+            else
+            {
+                cyclePower();
+            }
         }
     }
 
@@ -1217,26 +1306,8 @@ namespace mscl
 
     SetToIdleStatus BaseStation_Impl::node_setToIdle(NodeAddress nodeAddress, const BaseStation& base)
     {
-        //send a byte (a few times) to the base station first (helps when a lot of data is coming over the air)
-        static const Bytes alert{0x01};
-        for(uint8 i = 0; i < 5; i++)
-        {
-            m_connection.write(alert);
-        }
-
-        //create the response for the Set to Idle command
-        std::shared_ptr<SetToIdle::Response> response(std::make_shared<SetToIdle::Response>(nodeAddress, m_responseCollector, base));
-
-        //build the set to idle command to send
-        ByteStream setToIdleCmd = SetToIdle::buildCommand(nodeAddress);
-
-        //send the command to the base station
-        m_connection.write(setToIdleCmd);
-
-        //build the status to return to the user
-        SetToIdleStatus status(response);
-
-        return status;
+        //this just depends on the protocol of the Base Station, not the Node
+        return protocol().m_setToIdle(this, nodeAddress, base);
     }
 
     bool BaseStation_Impl::node_shortPing(NodeAddress nodeAddress)

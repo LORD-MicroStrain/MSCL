@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -193,6 +193,73 @@ namespace mscl
             case channel_diag_eventIndex:           return "diagnostic_eventTriggerIndex";
             case channel_diag_externalPower:        return "diagnostic_externalPower";
             case channel_diag_internalTemp:         return "diagnostic_internalTemp";
+            case channel_diag_syncAttempts:         return "diagnostic_syncAttempts";
+            case channel_diag_syncFailures:         return "diagnostic_syncFailures";
+            case channel_diag_secsSinceLastSync:    return "diagnostic_secsSinceLastSync";
+            case channel_1_rms:                     return "ch1_rms";
+            case channel_2_rms:                     return "ch2_rms";
+            case channel_3_rms:                     return "ch3_rms";
+            case channel_4_rms:                     return "ch4_rms";
+            case channel_5_rms:                     return "ch5_rms";
+            case channel_6_rms:                     return "ch6_rms";
+            case channel_7_rms:                     return "ch7_rms";
+            case channel_8_rms:                     return "ch8_rms";
+            case channel_9_rms:                     return "ch9_rms";
+            case channel_10_rms:                    return "ch10_rms";
+            case channel_11_rms:                    return "ch11_rms";
+            case channel_12_rms:                    return "ch12_rms";
+            case channel_13_rms:                    return "ch13_rms";
+            case channel_14_rms:                    return "ch14_rms";
+            case channel_15_rms:                    return "ch15_rms";
+            case channel_16_rms:                    return "ch16_rms";
+            case channel_1_peakToPeak:              return "ch1_peakToPeak";
+            case channel_2_peakToPeak:              return "ch2_peakToPeak";
+            case channel_3_peakToPeak:              return "ch3_peakToPeak";
+            case channel_4_peakToPeak:              return "ch4_peakToPeak";
+            case channel_5_peakToPeak:              return "ch5_peakToPeak";
+            case channel_6_peakToPeak:              return "ch6_peakToPeak";
+            case channel_7_peakToPeak:              return "ch7_peakToPeak";
+            case channel_8_peakToPeak:              return "ch8_peakToPeak";
+            case channel_9_peakToPeak:              return "ch9_peakToPeak";
+            case channel_10_peakToPeak:             return "ch10_peakToPeak";
+            case channel_11_peakToPeak:             return "ch11_peakToPeak";
+            case channel_12_peakToPeak:             return "ch12_peakToPeak";
+            case channel_13_peakToPeak:             return "ch13_peakToPeak";
+            case channel_14_peakToPeak:             return "ch14_peakToPeak";
+            case channel_15_peakToPeak:             return "ch15_peakToPeak";
+            case channel_16_peakToPeak:             return "ch16_peakToPeak";
+            case channel_1_ips:                     return "ch1_ips";
+            case channel_2_ips:                     return "ch2_ips";
+            case channel_3_ips:                     return "ch3_ips";
+            case channel_4_ips:                     return "ch4_ips";
+            case channel_5_ips:                     return "ch5_ips";
+            case channel_6_ips:                     return "ch6_ips";
+            case channel_7_ips:                     return "ch7_ips";
+            case channel_8_ips:                     return "ch8_ips";
+            case channel_9_ips:                     return "ch9_ips";
+            case channel_10_ips:                    return "ch10_ips";
+            case channel_11_ips:                    return "ch11_ips";
+            case channel_12_ips:                    return "ch12_ips";
+            case channel_13_ips:                    return "ch13_ips";
+            case channel_14_ips:                    return "ch14_ips";
+            case channel_15_ips:                    return "ch15_ips";
+            case channel_16_ips:                    return "ch16_ips";
+            case channel_1_crestFactor:             return "ch1_crestFactor";
+            case channel_2_crestFactor:             return "ch2_crestFactor";
+            case channel_3_crestFactor:             return "ch3_crestFactor";
+            case channel_4_crestFactor:             return "ch4_crestFactor";
+            case channel_5_crestFactor:             return "ch5_crestFactor";
+            case channel_6_crestFactor:             return "ch6_crestFactor";
+            case channel_7_crestFactor:             return "ch7_crestFactor";
+            case channel_8_crestFactor:             return "ch8_crestFactor";
+            case channel_9_crestFactor:             return "ch9_crestFactor";
+            case channel_10_crestFactor:            return "ch10_crestFactor";
+            case channel_11_crestFactor:            return "ch11_crestFactor";
+            case channel_12_crestFactor:            return "ch12_crestFactor";
+            case channel_13_crestFactor:            return "ch13_crestFactor";
+            case channel_14_crestFactor:            return "ch14_crestFactor";
+            case channel_15_crestFactor:            return "ch15_crestFactor";
+            case channel_16_crestFactor:            return "ch16_crestFactor";
 
             default:
                 assert(false);

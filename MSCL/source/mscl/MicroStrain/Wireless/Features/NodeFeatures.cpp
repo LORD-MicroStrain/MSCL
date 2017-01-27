@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -19,6 +19,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeFeatures_glink.h"
 #include "NodeFeatures_glink2External.h"
 #include "NodeFeatures_glink2Internal.h"
+#include "NodeFeatures_glink200.h"
 #include "NodeFeatures_iepeLink.h"
 #include "NodeFeatures_mvpervlink.h"
 #include "NodeFeatures_rtdlink.h"
@@ -30,6 +31,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeFeatures_sglinkrgd.h"
 #include "NodeFeatures_shmlink.h"
 #include "NodeFeatures_shmlink2.h"
+#include "NodeFeatures_shmlink200.h"
 #include "NodeFeatures_tclink1ch.h"
 #include "NodeFeatures_tclink3ch.h"
 #include "NodeFeatures_tclink6ch.h"
@@ -90,6 +92,12 @@ namespace mscl
         case WirelessModels::node_gLinkII_cust_in:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_glink2Internal(info));
 
+        case WirelessModels::node_gLink_200_8g:
+        case WirelessModels::node_gLink_200_8g_oem:
+        case WirelessModels::node_gLink_200_40g:
+        case WirelessModels::node_gLink_200_40g_oem:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_glink200(info));
+
         case WirelessModels::node_iepeLink:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_iepeLink(info));
 
@@ -120,9 +128,11 @@ namespace mscl
         case WirelessModels::node_shmLink:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_shmlink(info));
 
-        case WirelessModels::node_shmLink2:
         case WirelessModels::node_shmLink2_cust1:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_shmlink2(info));
+
+        case WirelessModels::node_shmLink200:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_shmlink200(info));
 
         case WirelessModels::node_tcLink_1ch:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_tclink1ch(info));
@@ -460,6 +470,11 @@ namespace mscl
         }
     }
 
+    bool NodeFeatures::isChannelSettingReadOnly(WirelessTypes::ChannelGroupSetting setting) const
+    {
+        return false;
+    }
+
     bool NodeFeatures::supportsInputRange() const
     {
         return anyChannelGroupSupports(WirelessTypes::chSetting_inputRange);
@@ -473,6 +488,16 @@ namespace mscl
     bool NodeFeatures::supportsAntiAliasingFilter() const
     {
         return anyChannelGroupSupports(WirelessTypes::chSetting_antiAliasingFilter);
+    }
+
+    bool NodeFeatures::supportsLowPassFilter() const
+    {
+        return anyChannelGroupSupports(WirelessTypes::chSetting_lowPassFilter);
+    }
+
+    bool NodeFeatures::supportsHighPassFilter() const
+    {
+        return anyChannelGroupSupports(WirelessTypes::chSetting_highPassFilter);
     }
 
     bool NodeFeatures::supportsGaugeFactor() const
@@ -721,6 +746,25 @@ namespace mscl
     {
         //ASPP v1.5 added support for this
         return (m_nodeInfo.firmwareVersion() >= MIN_NODE_FW_PROTOCOL_1_5);
+    }
+
+    bool NodeFeatures::supportsRawDataMode() const
+    {
+        //all nodes currently support raw data mode
+        return true;
+    }
+
+    bool NodeFeatures::supportsDerivedDataMode() const
+    {
+        return (derivedChannels().size() > 0);
+    }
+
+    bool NodeFeatures::supportsDerivedChannel(WirelessTypes::DerivedChannel derivedChannel) const
+    {
+        WirelessTypes::DerivedChannels chs = derivedChannels();
+
+        //return the result of trying to find the math channel in the vector
+        return (std::find(chs.begin(), chs.end(), derivedChannel) != chs.end());
     }
 
     WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
@@ -1129,6 +1173,31 @@ namespace mscl
         }
     }
 
+    const WirelessTypes::WirelessSampleRates NodeFeatures::derivedDataRates() const
+    {
+        WirelessTypes::WirelessSampleRates derivedRates;
+
+        //as of now, all nodes that support derived have a set list of sample rates
+        if(supportsDerivedDataMode())
+        {
+            derivedRates = {
+                {WirelessTypes::sampleRate_1Hz},
+                {WirelessTypes::sampleRate_2Sec},
+                {WirelessTypes::sampleRate_5Sec},
+                {WirelessTypes::sampleRate_10Sec},
+                {WirelessTypes::sampleRate_30Sec},
+                {WirelessTypes::sampleRate_1Min},
+                {WirelessTypes::sampleRate_2Min},
+                {WirelessTypes::sampleRate_5Min},
+                {WirelessTypes::sampleRate_10Min},
+                {WirelessTypes::sampleRate_30Min},
+                {WirelessTypes::sampleRate_60Min}
+            };
+        }
+
+        return derivedRates;
+    }
+
     const WirelessTypes::TransmitPowers NodeFeatures::transmitPowers() const
     {
         WirelessTypes::TransmitPowers result;
@@ -1186,6 +1255,20 @@ namespace mscl
         return result;
     }
 
+    const WirelessTypes::Filters NodeFeatures::lowPassFilters() const
+    {
+        //empty by default
+        WirelessTypes::Filters result;
+        return result;
+    }
+
+    const WirelessTypes::HighPassFilters NodeFeatures::highPassFilters() const
+    {
+        //empty by default
+        WirelessTypes::HighPassFilters result;
+        return result;
+    }
+
     const WirelessTypes::StorageLimitModes NodeFeatures::storageLimitModes() const
     {
         WirelessTypes::StorageLimitModes result;
@@ -1208,6 +1291,12 @@ namespace mscl
             InputRange::getRangeVector(m_nodeInfo.model(), channelType(channels.lastChEnabled()), result);
         }
 
+        return result;
+    }
+
+    const WirelessTypes::DerivedChannels NodeFeatures::derivedChannels() const
+    {
+        WirelessTypes::DerivedChannels result;
         return result;
     }
 
@@ -1309,7 +1398,7 @@ namespace mscl
 
                 //certain models support Sensor Delay v2 (Microseconds)
                 case WirelessModels::node_shmLink:
-                case WirelessModels::node_shmLink2:
+                case WirelessModels::node_shmLink200:
                 case WirelessModels::node_shmLink2_cust1:
                 case WirelessModels::node_sgLink_herm:
                 case WirelessModels::node_sgLink_herm_2600:
@@ -1348,5 +1437,23 @@ namespace mscl
         }
 
         return false;
+    }
+
+    bool NodeFeatures::onlySupportsRawDataMode() const
+    {
+        //todo: as new modes are added, add them here as well
+        if(!supportsDerivedDataMode())
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    bool NodeFeatures::supportsDataModeEeprom() const
+    {
+        static const Version DATA_MODE_FW(10, 34862);
+
+        return (m_nodeInfo.firmwareVersion() >= DATA_MODE_FW);
     }
 }

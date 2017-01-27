@@ -1,11 +1,12 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "WirelessProtocol.h"
 #include "mscl/Version.h"
+#include "mscl/MicroStrain/Wireless/BaseStation.h"
 #include "mscl/MicroStrain/Wireless/BaseStation_Impl.h"
 #include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 
@@ -81,11 +82,13 @@ namespace mscl
         result->m_readBaseEeprom        = std::mem_fn(&BaseStation_Impl::protocol_read_v1);
         result->m_writeBaseEeprom       = std::mem_fn(&BaseStation_Impl::protocol_write_v1);
         result->m_enableBeacon          = std::mem_fn(&BaseStation_Impl::protocol_enableBeacon_v1);
+        result->m_shortPing             = std::mem_fn(&BaseStation_Impl::protocol_node_shortPing_v1);
+        result->m_setToIdle             = std::mem_fn(&BaseStation_Impl::protocol_node_setToIdle_v1);
         result->m_beaconStatus          = nullptr;
         result->m_startRfSweep          = nullptr;
 
         //Node Commands
-        result->m_shortPing             = std::mem_fn(&BaseStation_Impl::protocol_node_shortPing_v1);
+        
         result->m_readNodeEeprom        = std::mem_fn(&BaseStation_Impl::protocol_node_readEeprom_v1);
         result->m_writeNodeEeprom       = std::mem_fn(&BaseStation_Impl::protocol_node_writeEeprom_v1);
         result->m_pageDownload          = std::mem_fn(&BaseStation_Impl::protocol_node_pageDownload_v1);
@@ -125,7 +128,6 @@ namespace mscl
         //changes from v1.1
 
         //Node Commands
-        result->m_shortPing             = std::mem_fn(&BaseStation_Impl::protocol_node_shortPing_v2);
         result->m_autoBalance           = std::mem_fn(&BaseStation_Impl::protocol_node_autoBalance_v2);
 
         return result;
@@ -165,6 +167,19 @@ namespace mscl
 
         //Node Commands
         result->m_startNonSyncSampling = std::mem_fn(&BaseStation_Impl::protocol_node_startNonSync_v2);
+
+        return result;
+    }
+
+    std::unique_ptr<WirelessProtocol> WirelessProtocol::v1_6()
+    {
+        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_5();
+
+        //changes from v1.5
+
+        //Base Commands
+        result->m_shortPing = std::mem_fn(&BaseStation_Impl::protocol_node_shortPing_v2);
+        result->m_setToIdle = std::mem_fn(&BaseStation_Impl::protocol_node_setToIdle_v2);
 
         return result;
     }

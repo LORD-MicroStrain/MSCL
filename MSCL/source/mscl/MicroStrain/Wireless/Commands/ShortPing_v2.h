@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -62,6 +62,16 @@ namespace mscl
             virtual bool match(const WirelessPacket& packet) override;
 
         private:
+            //Function: matchReceivedResponse
+            //    Checks if the packet passed in matches the Base Station received response.
+            //
+            //Parameters:
+            //    packet - The <WirelessPacket> to try to match.
+            //
+            //Returns:
+            //    true if the success response pattern was found, false otherwise
+            bool matchReceivedResponse(const WirelessPacket& packet);
+
             //Function: matchSuccessResponse
             //    Checks if the packet passed in matches the success response.
             //

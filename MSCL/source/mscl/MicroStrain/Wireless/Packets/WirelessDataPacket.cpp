@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -18,6 +18,22 @@ namespace mscl
         m_numSweeps(0),
         m_payloadOffsetChannelData(0)
     {
+    }
+
+    uint8 WirelessDataPacket::numChannelBytesPerAlgorithm(MathAlgorithmID id)
+    {
+        switch(id)
+        {
+            case mathId_rms:
+            case mathId_peakToPeak:
+            case mathId_ips:
+            case mathId_crestFactor:
+                return 4;
+
+            default:
+                assert(false);  //need to add support for new algorithm ID
+                return 0;
+        }
     }
 
     //    Adds a single DataSweep to the data packet
@@ -73,6 +89,45 @@ namespace mscl
         return static_cast<WirelessChannel::ChannelId>(channelNum);
     }
 
+    WirelessChannel::ChannelId WirelessDataPacket::getMathChannelId(MathAlgorithmID algorithmId, uint8 channelNumber)
+    {
+        uint16 algorithmIdStart = 0;
+
+        if(channelNumber < 1 || channelNumber > 16)
+        {
+            assert(false);
+            throw Error("Invalid channel number");
+        }
+
+        //determine where the start offset is in the enum list
+        switch(algorithmId)
+        {
+            case MathAlgorithmID::mathId_rms:
+                algorithmIdStart = WirelessChannel::channel_1_rms;
+                break;
+
+            case MathAlgorithmID::mathId_peakToPeak:
+                algorithmIdStart = WirelessChannel::channel_1_peakToPeak;
+                break;
+
+            case MathAlgorithmID::mathId_ips:
+                algorithmIdStart = WirelessChannel::channel_1_ips;
+                break;
+
+            case MathAlgorithmID::mathId_crestFactor:
+                algorithmIdStart = WirelessChannel::channel_1_crestFactor;
+                break;
+
+            default:
+                assert(false);  //need to add support for a new algorithm ID
+                throw Error("Invalid Algorithm Id");
+                break;
+        }
+
+        //use the channel number to move to the correct enum offset
+        return static_cast<WirelessChannel::ChannelId>(algorithmIdStart + channelNumber - 1);
+    }
+
     void WirelessDataPacket::getPayloadData(size_t payloadPosition, anyType& result) const
     {
         switch(m_dataType)
@@ -101,6 +156,14 @@ namespace mscl
                 break;
             }
 
+            //int16 value (from 20-bit node, needs shifted left)
+            case WirelessTypes::dataType_int16_20bitTrunc:
+            {
+                int32 val = static_cast<int32>(m_payload.read_int16(payloadPosition));
+                result = (val << 4);
+                break;
+            }
+
             //uint16 value
             case WirelessTypes::dataType_uint16_12bitRes:
             case WirelessTypes::dataType_uint16:
@@ -111,6 +174,11 @@ namespace mscl
             //uint24 value (we store this as a uint32)
             case WirelessTypes::dataType_uint24:
                 result = m_payload.read_uint24(payloadPosition);
+                break;
+
+            //int24 value (we store this as a int32)
+            case WirelessTypes::dataType_int24_20bit:
+                result = m_payload.read_int24(payloadPosition);
                 break;
         }
     }

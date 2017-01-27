@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -27,6 +27,16 @@ namespace mscl
     {
         //read the single byte from Node's memory
         return nextByte();
+    }
+
+    int16 NodeMemory::read_int16(Utils::Endianness endian /*= Utils::bigEndian*/)
+    {
+        //read single bytes from the Node's memory
+        uint8 b1 = nextByte();
+        uint8 b2 = nextByte();
+
+        //build into a uint16 and return
+        return Utils::make_int16(b1, b2, endian);
     }
 
     uint16 NodeMemory::read_uint16(Utils::Endianness endian /*= Utils::bigEndian*/)
@@ -67,6 +77,43 @@ namespace mscl
 
         //build into a uint32 and return
         return Utils::make_uint32(b1, b2, b3, b4, endian);
+    }
+
+    int32 NodeMemory::read_int24(Utils::Endianness endian /*= Utils::bigEndian*/)
+    {
+        //read single bytes from the Node's memory
+        uint8 b1 = nextByte();
+        uint8 b2 = nextByte();
+        uint8 b3 = nextByte();
+
+        if(endian == Utils::bigEndian)
+        {
+            //if negative
+            if(Utils::bitIsSet(b1, 7))
+            {
+                //build an int32 from the 3 bytes (flip the upper bytes to make negative)
+                return Utils::make_int32(0xFF, b1, b2, b3, endian);
+            }
+            else
+            {
+                //build an int32 from the 3 bytes (flip the upper bytes to make negative)
+                return Utils::make_int32(0x00, b1, b2, b3, endian);
+            }
+        }
+        else
+        {
+            //if negative
+            if(Utils::bitIsSet(b3, 7))
+            {
+                //build an int32 from the 3 bytes (flip the upper bytes to make negative)
+                return Utils::make_int32(b1, b2, b3, 0xFF, endian);
+            }
+            else
+            {
+                //build an int32 from the 3 bytes (flip the upper bytes to make negative)
+                return Utils::make_int32(b1, b2, b3, 0x00, endian);
+            }
+        }
     }
 
     uint64 NodeMemory::read_uint64(Utils::Endianness endian /*= Utils::bigEndian*/)

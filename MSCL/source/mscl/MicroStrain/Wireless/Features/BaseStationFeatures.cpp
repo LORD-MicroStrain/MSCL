@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -25,6 +25,7 @@ namespace mscl
         switch(info.model())
         {
             case WirelessModels::base_wsdaBase_104_usb:
+            case WirelessModels::base_wsdaBase_200:
                 return std::unique_ptr<BaseStationFeatures>(new BaseStationFeatures_usb(info));
 
             case WirelessModels::base_wsdaBase_101_analog:

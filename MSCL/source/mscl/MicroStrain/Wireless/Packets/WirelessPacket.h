@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -43,68 +43,74 @@ namespace mscl
 
         //=====================================================================================================
         //Enums: PacketType
-        //    packetType_unknown                         - -1   - Unknown Packet Type
-        //    packetType_nodeCommand                     - 0x00 - Node Command Packet
-        //    packetType_nodeErrorReply                  - 0x02 - Node Command Error Reply Packet
-        //    packetType_LDC                             - 0x04 - Standard Low Duty Cycle Packet
-        //    packetType_nodeDiscovery                   - 0x07 - Node Discovery Packet (version 1)
-        //    packetType_TCLinkLDC                       - 0x09 - TC-Link Low Duty Cycle packet
-        //    packetType_SyncSampling                    - 0x0A - Synchronized Sampling Packet
-        //    packetType_BufferedLDC                     - 0x0D - Buffered LDC Packet
-        //    packetType_AsyncDigital                    - 0x0E - Asynchronous Digital (Event) Packet
-        //    packetType_AsyncDigitalAnalog              - 0x0F - Asynchronous Digital and Analog (Event) Packet
-        //    packetType_beaconEcho                      - 0x10 - Beacon Echo Packet
-        //    packetType_diagnostic                      - 0x11 - Diagnostic Packet
-        //    packetType_LDC_16ch                        - 0x14 - LDC Packet with 16 channel support
-        //    packetType_nodeDiscovery_v4                - 0x16 - Node Discovery Packet (version 4)
-        //    packetType_nodeDiscovery_v2                - 0x17 - Node Discovery Packet (version 2)
-        //    packetType_nodeDiscovery_v3                - 0x18 - Node Discovery Packet (version 3)
-        //    packetType_SyncSampling_16ch               - 0x1A - Synchronized Sampling Packet with 16 channel support
-        //    packetType_BufferedLDC_16ch                - 0x1D - Buffered LDC Packet with 16 channel support
-        //    packetType_NodeReceived                    - 0x20 - Node Received the command
-        //    packetType_nodeSuccessReply                - 0x22 - Node Command Success Reply Packet
-        //    packetType_baseCommand                     - 0x30 - Base Station Command Packet
-        //    packetType_baseSuccessReply                - 0x31 - Base Station Command Reply Packet
-        //    packetType_baseErrorReply                  - 0x32 - Base Station Command Error Reply Packet
-        //    packetType_rfScanSweep                     - 0x33 - RF Sweep Packet sent from the BaseStation in RF Scan Mode
-        //    packetType_SHM                             - 0xA0 - Structural Health Monitoring Packet
-        //    packetType_HclSmartBearing_Calibrated      - 0xA1 - HclSmartBearing Calibrated data Packet
-        //    packetType_HclSmartBearing_Raw             - 0xA2 - HclSmartBearing Raw data Packet
-        //    packetType_rawAngleStrain                  - 0xA3 - Raw Angle Strain data Packet
-        //    packetType_roller                          - 0xA4 - Roller data Packet
+        //  packetType_unknown                      - -1   - Unknown Packet Type
+        //  packetType_nodeCommand                  - 0x00 - Node Command Packet
+        //  packetType_nodeErrorReply               - 0x02 - Node Command Error Reply Packet
+        //  packetType_LDC                          - 0x04 - Standard Low Duty Cycle Packet
+        //  packetType_nodeDiscovery                - 0x07 - Node Discovery Packet (version 1)
+        //  packetType_TCLinkLDC                    - 0x09 - TC-Link Low Duty Cycle packet
+        //  packetType_SyncSampling                 - 0x0A - Synchronized Sampling Packet
+        //  packetType_BufferedLDC                  - 0x0D - Buffered LDC Packet
+        //  packetType_AsyncDigital                 - 0x0E - Asynchronous Digital (Event) Packet
+        //  packetType_AsyncDigitalAnalog           - 0x0F - Asynchronous Digital and Analog (Event) Packet
+        //  packetType_beaconEcho                   - 0x10 - Beacon Echo Packet
+        //  packetType_diagnostic                   - 0x11 - Diagnostic Packet
+        //  packetType_LDC_16ch                     - 0x14 - LDC Packet with 16 channel support
+        //  packetType_LDC_math                     - 0x15 - LDC Math Packet
+        //  packetType_nodeDiscovery_v4             - 0x16 - Node Discovery Packet (version 4)
+        //  packetType_nodeDiscovery_v2             - 0x17 - Node Discovery Packet (version 2)
+        //  packetType_nodeDiscovery_v3             - 0x18 - Node Discovery Packet (version 3)
+        //  packetType_SyncSampling_16ch            - 0x1A - Synchronized Sampling Packet with 16 channel support
+        //  packetType_SyncSampling_math            - 0x1B - Synchronized Sampling Math Packet
+        //  packetType_BufferedLDC_16ch             - 0x1D - Buffered LDC Packet with 16 channel support
+        //  packetType_nodeReceived                 - 0x20 - Initial response from a command targeting a Node
+        //  packetType_nodeSuccessReply             - 0x22 - Node Command Success Reply Packet
+        //  packetType_baseCommand                  - 0x30 - Base Station Command Packet
+        //  packetType_baseSuccessReply             - 0x31 - Base Station Command Reply Packet
+        //  packetType_baseErrorReply               - 0x32 - Base Station Command Error Reply Packet
+        //  packetType_rfScanSweep                  - 0x33 - RF Sweep Packet sent from the BaseStation in RF Scan Mode
+        //  packetType_baseReceived                 - 0x34 - Initial response from a command targeting the Base Station
+        //  packetType_SHM                          - 0xA0 - Structural Health Monitoring Packet
+        //  packetType_HclSmartBearing_Calibrated   - 0xA1 - HclSmartBearing Calibrated data Packet
+        //  packetType_HclSmartBearing_Raw          - 0xA2 - HclSmartBearing Raw data Packet
+        //  packetType_rawAngleStrain               - 0xA3 - Raw Angle Strain data Packet
+        //  packetType_roller                       - 0xA4 - Roller data Packet
         //=====================================================================================================
         enum PacketType
         {
-            packetType_unknown                         = -1,
-            
-            packetType_nodeCommand                     = 0x00,
-            packetType_nodeErrorReply                  = 0x02,
-            packetType_LDC                             = 0x04,
-            packetType_nodeDiscovery                   = 0x07,
-            packetType_TCLinkLDC                       = 0x09,
-            packetType_SyncSampling                    = 0x0A,
-            packetType_BufferedLDC                     = 0x0D,
-            packetType_AsyncDigital                    = 0x0E,
-            packetType_AsyncDigitalAnalog              = 0x0F,
-            packetType_beaconEcho                      = 0x10,
-            packetType_diagnostic                      = 0x11,
-            packetType_LDC_16ch                        = 0x14,
-            packetType_nodeDiscovery_v4                = 0x16,
-            packetType_nodeDiscovery_v2                = 0x17,
-            packetType_nodeDiscovery_v3                = 0x18,
-            packetType_SyncSampling_16ch               = 0x1A,
-            packetType_BufferedLDC_16ch                = 0x1D,
-            packetType_nodeReceived                    = 0x20,
-            packetType_nodeSuccessReply                = 0x22,
-            packetType_baseCommand                     = 0x30,
-            packetType_baseSuccessReply                = 0x31,
-            packetType_baseErrorReply                  = 0x32,
-            packetType_rfScanSweep                     = 0x33,
-            packetType_SHM                             = 0xA0,
-            packetType_HclSmartBearing_Calibrated      = 0xA1,
-            packetType_HclSmartBearing_Raw             = 0xA2,
-            packetType_rawAngleStrain                  = 0xA3,
-            packetType_roller                          = 0xA4,
+            packetType_unknown                      = -1,
+        
+            packetType_nodeCommand                  = 0x00,
+            packetType_nodeErrorReply               = 0x02,
+            packetType_LDC                          = 0x04,
+            packetType_nodeDiscovery                = 0x07,
+            packetType_TCLinkLDC                    = 0x09,
+            packetType_SyncSampling                 = 0x0A,
+            packetType_BufferedLDC                  = 0x0D,
+            packetType_AsyncDigital                 = 0x0E,
+            packetType_AsyncDigitalAnalog           = 0x0F,
+            packetType_beaconEcho                   = 0x10,
+            packetType_diagnostic                   = 0x11,
+            packetType_LDC_16ch                     = 0x14,
+            packetType_LDC_math                     = 0x15,
+            packetType_nodeDiscovery_v4             = 0x16,
+            packetType_nodeDiscovery_v2             = 0x17,
+            packetType_nodeDiscovery_v3             = 0x18,
+            packetType_SyncSampling_16ch            = 0x1A,
+            packetType_SyncSampling_math            = 0x1B,
+            packetType_BufferedLDC_16ch             = 0x1D,
+            packetType_nodeReceived                 = 0x20,
+            packetType_nodeSuccessReply             = 0x22,
+            packetType_baseCommand                  = 0x30,
+            packetType_baseSuccessReply             = 0x31,
+            packetType_baseErrorReply               = 0x32,
+            packetType_rfScanSweep                  = 0x33,
+            packetType_baseReceived                 = 0x34,
+            packetType_SHM                          = 0xA0,
+            packetType_HclSmartBearing_Calibrated   = 0xA1,
+            packetType_HclSmartBearing_Raw          = 0xA2,
+            packetType_rawAngleStrain               = 0xA3,
+            packetType_roller                       = 0xA4,
         };
 
         //===================================================

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -96,6 +96,12 @@ namespace mscl
     const EepromLocation NodeEepromMap::MAX_RETRANS_PACKET              (274, valueType_uint16);
     const EepromLocation NodeEepromMap::MAX_RETRANS_BURST               (276, valueType_uint16);
     const EepromLocation NodeEepromMap::REGION_CODE                     (280, valueType_uint16);
+    const EepromLocation NodeEepromMap::DATA_MODE                       (282, valueType_uint16);
+    const EepromLocation NodeEepromMap::DERIVED_DATA_RATE               (284, valueType_uint16);
+    const EepromLocation NodeEepromMap::DERIVED_RMS_MASK                (286, valueType_uint16);
+    const EepromLocation NodeEepromMap::DERIVED_P2P_MASK                (288, valueType_uint16);
+    const EepromLocation NodeEepromMap::DERIVED_IPS_MASK                (290, valueType_uint16);
+    const EepromLocation NodeEepromMap::DERIVED_CREST_FACTOR_MASK       (294, valueType_uint16);
     const EepromLocation NodeEepromMap::DATA_PACKET_FORMAT              (292, valueType_uint16);
     const EepromLocation NodeEepromMap::DIAGNOSTIC_INTERVAL             (300, valueType_uint16);
     const EepromLocation NodeEepromMap::EVENT_SAMPLE_RATE               (328, valueType_uint16);
@@ -138,10 +144,18 @@ namespace mscl
     const EepromLocation NodeEepromMap::ANTI_ALIASING_FILTER_2          (442, valueType_uint16);
     const EepromLocation NodeEepromMap::ANTI_ALIASING_FILTER_3          (444, valueType_uint16);
     const EepromLocation NodeEepromMap::ANTI_ALIASING_FILTER_4          (446, valueType_uint16);
+    const EepromLocation NodeEepromMap::LOW_PASS_FILTER_1               (448, valueType_uint16);
+    const EepromLocation NodeEepromMap::LOW_PASS_FILTER_2               (450, valueType_uint16);
+    const EepromLocation NodeEepromMap::LOW_PASS_FILTER_3               (452, valueType_uint16);
+    const EepromLocation NodeEepromMap::LOW_PASS_FILTER_4               (454, valueType_uint16);
     const EepromLocation NodeEepromMap::HW_GAIN_5                       (456, valueType_uint16);
     const EepromLocation NodeEepromMap::HW_GAIN_6                       (458, valueType_uint16);
     const EepromLocation NodeEepromMap::HW_GAIN_7                       (460, valueType_uint16);
     const EepromLocation NodeEepromMap::HW_GAIN_8                       (462, valueType_uint16);
+    const EepromLocation NodeEepromMap::HIGH_PASS_FILTER_1              (464, valueType_uint16);
+    const EepromLocation NodeEepromMap::HIGH_PASS_FILTER_2              (466, valueType_uint16);
+    const EepromLocation NodeEepromMap::HIGH_PASS_FILTER_3              (468, valueType_uint16);
+    const EepromLocation NodeEepromMap::HIGH_PASS_FILTER_4              (470, valueType_uint16);
     const EepromLocation NodeEepromMap::MIN_SOFT_VER_MAJOR              (480, valueType_uint16);
     const EepromLocation NodeEepromMap::MIN_SOFT_VER_MINOR              (482, valueType_uint16);
     const EepromLocation NodeEepromMap::HW_OFFSET_5                     (504, valueType_uint16);

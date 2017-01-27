@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -7,7 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "mscl/MicroStrain/ResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/BaseStation.h"
-#include "SetToIdleStatus.h"
+//#include "SetToIdleStatus.h"
 
 namespace mscl
 {
@@ -29,6 +29,7 @@ namespace mscl
         ByteStream buildCommand(NodeAddress nodeAddress);
 
 
+    //public:
         //Class: Response
         //    Handles the response to the SetToIdle command
         class Response : public ResponsePattern
@@ -47,7 +48,7 @@ namespace mscl
             //    Destroys the SetToIdle Response object. This also cancels the SetToIdle operation on the BaseStation, if not already complete or canceled.
             ~Response();
 
-        private:
+        protected:
             //Variable: m_nodeAddress
             //    The node address to look for in the response.
             uint16 m_nodeAddress;
@@ -80,7 +81,7 @@ namespace mscl
             //
             //Exceptions:
             //    - <Error_Connection>: A connection error has occurred when trying to cancel.
-            void cancel();
+            virtual void cancel();
 
             //Function: result
             //    Gets the <SetToIdleResult> of the Stop Node command.

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -9,6 +9,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include <map>
 #include <boost/optional.hpp>
 
+#include "mscl/MicroStrain/Wireless/Configuration/DataMode.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/WirelessModels.h"
 #include "mscl/MicroStrain/Wireless/LinearEquation.h"
@@ -126,6 +127,18 @@ namespace mscl
         //  The sensor delay to set.
         boost::optional<uint32> m_sensorDelay;
 
+        //Variable: m_dataMode
+        //  The <DataMode> to set.
+        boost::optional<DataMode> m_dataMode;
+
+        //Variable: m_derivedDataRate
+        //  The <WirelessTypes::WirelessSampleRate> for all Derived Channels to set.
+        boost::optional<WirelessTypes::WirelessSampleRate> m_derivedDataRate;
+
+        //Variable: m_derivedChannelMasks
+        //  The map of <WirelessTypes::DerivedChannel> to <ChannelMask> to set for Derived Channels' Masks.
+        std::map<WirelessTypes::DerivedChannel, ChannelMask> m_derivedChannelMasks;
+
         //Variable: m_inputRanges
         //    The map of <ChannelMask> to <WirelessTypes::InputRange> to set.
         std::map<ChannelMask, WirelessTypes::InputRange> m_inputRanges;
@@ -137,6 +150,14 @@ namespace mscl
         //Variable: m_antiAliasingFilters
         //  The map of <ChannelMask> to anti-aliasing filters to set.
         std::map<ChannelMask, WirelessTypes::Filter> m_antiAliasingFilters;
+
+        //Variable: m_lowPassFilters
+        //  The map of <ChannelMask> to low-pass filters to set.
+        std::map<ChannelMask, WirelessTypes::Filter> m_lowPassFilters;
+
+        //Variable: m_highPassFilters
+        //  The map of <ChannelMask> to high-pass filters to set.
+        std::map<ChannelMask, WirelessTypes::HighPassFilter> m_highPassFilters;
 
         //Variable: m_gaugeFactors
         //    The map of <ChannelMask> to gauge factors to set.
@@ -187,7 +208,15 @@ namespace mscl
         //    Gets the data format currently set, or from the node if not set.
         WirelessTypes::DataFormat curDataFormat(const NodeEepromHelper& eeprom) const;
 
-        //Function: curDataFormat
+        //Function: curDataMode
+        //    Gets the <DataMode> currently set, or from the node if not set.
+        DataMode curDataMode(const NodeEepromHelper& eeprom) const;
+
+        //Function: curDerivedRate
+        //    Gets the derived <WirelessTypes::WirelessSampleRate> currently set, or from the node if not set.
+        WirelessTypes::WirelessSampleRate curDerivedRate(const NodeEepromHelper& eeprom) const;
+
+        //Function: curDataCollectionMethod
         //    Gets the data collection method currently set, or from the node if not set.
         WirelessTypes::DataCollectionMethod curDataCollectionMethod(const NodeEepromHelper& eeprom) const;
 
@@ -210,6 +239,15 @@ namespace mscl
         //Function: curLinearEquation
         //  Gets the linear equation currently set for the given <ChannelMask>, or from the node if not set.
         LinearEquation curLinearEquation(const ChannelMask& mask, const NodeEepromHelper& eeprom) const;
+
+        //Function: curDerivedMask
+        //  Gets the derived <ChannelMask> currently set for the given <WirelessTypes::DerivedChannel>
+        ChannelMask curDerivedMask(WirelessTypes::DerivedChannel derivedChannel, const NodeEepromHelper& eeprom) const;
+
+        //Function: isDerivedChannelEnabled
+        //  Checks whether any channels are enabled for the <WirelessTypes::DerivedChannel>.
+        //  This first checks the config object, and the Node if not set in the config object.
+        bool isDerivedChannelEnabled(WirelessTypes::DerivedChannel derivedChannel, const NodeEepromHelper& eeprom, const NodeFeatures& features) const;
 
     private:
         //Function: checkValue
@@ -352,6 +390,10 @@ namespace mscl
         //Returns:
         //    true if no issues were found, false otherwise. If false, the outIssues parameter will hold all issues that were found.
         bool verifyConflicts(const NodeFeatures& features, const NodeEepromHelper& eeprom, ConfigIssues& outIssues) const;
+
+        //Function: findDerivedMaskConfigIssue
+        //  Finds the <ConfigIssue::ConfigOption> for the provided <WirelessTypes::DerivedChannel>.
+        static ConfigIssue::ConfigOption findDerivedMaskConfigIssue(WirelessTypes::DerivedChannel channel);
 
     public:
 
@@ -571,15 +613,43 @@ namespace mscl
         //    Gets the anti-aliasing <WirelessTypes::Filter> for the given <ChannelMask> in the Config, if set.
         //
         //Parameters:
-        //    mask - The <ChannelMask> to set the hardware offset for.
+        //    mask - The <ChannelMask> to set the anti-aliasing filter for.
         //
         //Exceptions:
         //    <Error_NoData> - The requested value has not been set.
         WirelessTypes::Filter antiAliasingFilter(const ChannelMask& mask) const;
 
-        //API Function: hardwareOffset
-        //    Sets the hardware offset for the given <ChannelMask> in the Config.
+        //API Function: antiAliasingFilter
+        //    Sets the anti-aliasing filter for the given <ChannelMask> in the Config.
         void antiAliasingFilter(const ChannelMask& mask, WirelessTypes::Filter filter);
+
+        //API Function: lowPassFilter
+        //    Gets the low pass <WirelessTypes::Filter> for the given <ChannelMask> in the Config, if set.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to set the low pass filter for.
+        //
+        //Exceptions:
+        //    <Error_NoData> - The requested value has not been set.
+        WirelessTypes::Filter lowPassFilter(const ChannelMask& mask) const;
+
+        //API Function: lowPassFilter
+        //    Sets the low-pass filter for the given <ChannelMask> in the Config.
+        void lowPassFilter(const ChannelMask& mask, WirelessTypes::Filter filter);
+
+        //API Function: highPassFilter
+        //    Gets the <WirelessTypes::HighPassFilter> for the given <ChannelMask> in the Config, if set.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to set the high pass filter for.
+        //
+        //Exceptions:
+        //    <Error_NoData> - The requested value has not been set.
+        WirelessTypes::HighPassFilter highPassFilter(const ChannelMask& mask) const;
+
+        //API Function: highPassFilter
+        //    Sets the high-pass filter for the given <ChannelMask> in the Config.
+        void highPassFilter(const ChannelMask& mask, WirelessTypes::HighPassFilter filter);
 
         //API Function: gaugeFactor
         //    Gets the gauge factor for the given <ChannelMask> in the Config, if set.
@@ -745,6 +815,39 @@ namespace mscl
         //  Sets the sensor delay (in microseconds) in the Config.
         //  Note: Use a value of <WirelessNodeConfig::SENSOR_DELAY_ALWAYS_ON> to set the sensor always on.
         void sensorDelay(uint32 delay);
+
+        //API Function: dataMode
+        //  Gets the <DataMode> currently set in the Config.
+        //
+        //Exceptions:
+        //  <Error_NoData> - The requested value has not been set.
+        DataMode dataMode() const;
+
+        //API Function: dataMode
+        //  Sets the <DataMode> in the Config.
+        void dataMode(const DataMode& mode);
+
+        //API Function: derivedDataRate
+        //  Gets the <WirelessTypes::WirelessSampleRate> for the Derived Channels currently set in the Config.
+        //
+        //Exceptions:
+        //  <Error_NoData> - The requested value has not been set.
+        WirelessTypes::WirelessSampleRate derivedDataRate() const;
+
+        //API Function: derivedDataRate
+        //  Sets the <WirelessTypes::WirelessSampleRate> for the Derived Channels in the Config.
+        void derivedDataRate(WirelessTypes::WirelessSampleRate rate);
+
+        //API Function: derivedChannelMask
+        //  Gets the <ChannelMask> for a specified <WirelessTypes::DerivedChannel> currently set in the Config.
+        //
+        //Exceptions:
+        //  <Error_NoData> - The requested value has not been set.
+        ChannelMask derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const;
+
+        //API Function: derivedChannelMask
+        //  Sets the <ChannelMask> for a specified <WirelessTypes::DerivedChannel> in the Config.
+        void derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel, const ChannelMask& mask);
 
     public:
         //Function: flashBandwidth

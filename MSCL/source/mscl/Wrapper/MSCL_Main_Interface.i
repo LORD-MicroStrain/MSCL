@@ -109,6 +109,7 @@
 #include "../MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
 #include "../MicroStrain/Wireless/Configuration/ConfigIssue.h"
 #include "../MicroStrain/Wireless/Configuration/ActivitySense.h"
+#include "../MicroStrain/Wireless/Configuration/DataMode.h"
 #include "../MicroStrain/Wireless/Configuration/FatigueOptions.h"
 #include "../MicroStrain/Wireless/Configuration/HistogramOptions.h"
 #include "../MicroStrain/Wireless/Configuration/EventTriggerOptions.h"
@@ -183,6 +184,7 @@
 %include "../MicroStrain/Wireless/ChannelMask.h"
 %include "../MicroStrain/Wireless/Configuration/ConfigIssue.h"
 %include "../MicroStrain/Wireless/Configuration/ActivitySense.h"
+%include "../MicroStrain/Wireless/Configuration/DataMode.h"
 %include "../MicroStrain/Wireless/Configuration/EventTriggerOptions.h"
 %include "../MicroStrain/Wireless/Configuration/FatigueOptions.h"
 %include "../MicroStrain/Wireless/Configuration/HistogramOptions.h"
@@ -247,8 +249,10 @@ namespace std
     %template(ChannelGroupSettings)    vector<mscl::WirelessTypes::ChannelGroupSetting>;
     %template(FatigueModes)            vector<mscl::WirelessTypes::FatigueMode>;
     %template(Filters)                 vector<mscl::WirelessTypes::Filter>;
+    %template(HighPassFilters)         vector<mscl::WirelessTypes::HighPassFilter>;
     %template(StorageLimitModes)       vector<mscl::WirelessTypes::StorageLimitMode>;
     %template(InputRanges)             vector<mscl::WirelessTypes::InputRange>;
+    %template(DerivedChannels)         vector<mscl::WirelessTypes::DerivedChannel>;
     %template(SampleRates)             vector<mscl::SampleRate>;
     %template(ConfigIssues)            vector<mscl::ConfigIssue>;
     %template(ChannelFields)           vector<mscl::InertialTypes::ChannelField>;

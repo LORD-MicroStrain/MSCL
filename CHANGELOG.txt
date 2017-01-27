@@ -10,6 +10,216 @@ The PATCH version is incremented when a bug is fixed.
 ======================================================================================================
 
 -------------------------------------------------------------------------
+14.3.2 - 2017-01-27
+- enabling hardware flow control when needed.
+- fix for Node Quick Ping v2 command packet.
+
+-------------------------------------------------------------------------
+14.3.1 - 2017-01-27
+- fix for SWIG not knowing about WirelessNode::startNonSyncSampling exceptions.
+
+-------------------------------------------------------------------------
+14.3.0 - 2017-01-25
+- support for Synchronization Info diagnostic data.
+
+-------------------------------------------------------------------------
+14.2.1 - 2017-01-24
+- added storage mode configuration to the G-Link-200 nodes.
+
+-------------------------------------------------------------------------
+14.2.0 - 2017-01-24
+- support for the WSDA-200 model number.
+- support for enumerating WSDA-200's via Devices::listBaseStations.
+- added DeviceInfo::baudRate() for getting the suggested baud rate.
+
+-------------------------------------------------------------------------
+14.1.0 - 2017-01-24
+- support for setting up Derived channels in Sync Sampling networks (TDMA logic).
+
+-------------------------------------------------------------------------
+14.0.5 - 2017-01-19
+- adding sync event driven to supported sampling modes for G-Link-200
+
+-------------------------------------------------------------------------
+14.0.4 - 2017-01-17
+- fix for checking derived sample rate when derived mode isn't active.
+
+-------------------------------------------------------------------------
+14.0.3 - 2017-01-17
+- updated model numbers for G-Link-200-8g and G-Link-200-40g (again).
+
+-------------------------------------------------------------------------
+14.0.2 - 2017-01-17
+- added real model numbers for G-Link-200-8g and G-Link-200-40g.
+
+-------------------------------------------------------------------------
+14.0.1 - 2017-01-17
+- fix bug from 13.15.3.
+
+-------------------------------------------------------------------------
+14.0.0 - 2017-01-12
+- RENAMED ConfigIssue::CONFIG_DERIVED_SAMPLE_RATE to CONFIG_DERIVED_DATA_RATE.
+- RENAMED WirelessNodeConfig::derivedChannelsSampleRate to derivedDataRate.
+- RENAMED NodeFeatures::derivedChannelSampleRates to derivedDataRates.
+- RENAMED WirelessNode::getDerivedChannelsSampleRate to getDerivedDataRate.
+- verifying Derived Data rate is 32x slower than raw sample rate.
+
+-------------------------------------------------------------------------
+13.15.5 - 2017-01-12
+- WirelessNodeConfig::verifyConfig checks for non-supported derived channels.
+- WirelessNodeConfig::verifyConfig checks for data modes enabled without active channels.
+
+-------------------------------------------------------------------------
+13.15.4 - 2017-01-10
+- increased duration between sending start LDC v1 retries.
+
+-------------------------------------------------------------------------
+13.15.3 - 2017-01-10
+- fix for different packets with their own tick causing duplicate packet check errors.
+- verification of bytes in Math packets.
+
+-------------------------------------------------------------------------
+13.15.2 - 2017-01-09
+- update for parsing Sync and LDC Math packets.
+
+-------------------------------------------------------------------------
+13.15.1 - 2017-01-06
+- added 3DM-GX5 model numbers.
+- fixed G-Link-200 sample rates to max at 4096hz.
+
+-------------------------------------------------------------------------
+13.15.0 - 2017-01-05
+- added NodeFeatures::supportsRawDataMode.
+- WirelessNodeConfig::verify will no longer given an error if just setting raw mode and raw mode is enabled (legacy Nodes).
+
+-------------------------------------------------------------------------
+13.14.0 - 2017-01-04
+- added support for High-Pass Filter configuration.
+
+-------------------------------------------------------------------------
+13.13.1 - 2017-01-03
+- updated Japan transmit powers for V-Link-200.
+- updated Japan transmit powers for G-Link-200.
+
+-------------------------------------------------------------------------
+13.13.0 - 2017-01-03
+- added support for configuration of DataMode (raw vs derived).
+- added support for configuration of Derived Channels' Sample Rate.
+- added support for configuration of Derived Channels' Channel Masks.
+
+-------------------------------------------------------------------------
+13.12.5 - 2016-12-27
+- fix for parsing g-link 200 int16 ota type
+
+-------------------------------------------------------------------------
+13.12.4 - 2016-12-22
+- expand available g-link 200 sample rates (copied from v-link 200)
+
+-------------------------------------------------------------------------
+13.12.3 - 2016-12-21
+- fix eeprom values for WirelessTypes::InputRange::range_2G/4G/8G to agree with Jeff Tonn
+
+-------------------------------------------------------------------------
+13.12.2 - 2016-12-19
+- updated Japan accepted transmit powers for SHM-Link-2.
+
+-------------------------------------------------------------------------
+13.12.1 - 2016-12-14
+- updated datalog download of Math Channels.
+
+-------------------------------------------------------------------------
+13.12.0 - 2016-12-14
+- support for Set to Idle v2.
+
+-------------------------------------------------------------------------
+13.11.1 - 2016-12-14
+- updated short ping command.
+
+-------------------------------------------------------------------------
+13.11.0 - 2016-12-13
+- added support for low-pass filter configuration.
+- added support for G-Link-200 input range configuration.
+
+-------------------------------------------------------------------------
+13.10.0 - 2016-12-12
+- added support for int24 data type (configuration and data parsing).
+- added support for int16 data type (configuration and data parsing).
+
+-------------------------------------------------------------------------
+13.9.0 - 2016-12-07
+- added support for downloading logged math channel data.
+
+-------------------------------------------------------------------------
+13.8.2 - 2016-12-06
+- added Sync Sampling as supported mode for SHM-Link-200.
+
+-------------------------------------------------------------------------
+13.8.1 - 2016-11-17
+- fix for unused local variable error.
+- added up to 16 channels for math ids.
+
+-------------------------------------------------------------------------
+13.8.0 - 2016-11-17
+- added support for Non-Sync Sampling math data packet.
+
+-------------------------------------------------------------------------
+13.7.0 - 2016-11-16
+- added support for Sync Sampling math data packet.
+
+-------------------------------------------------------------------------
+13.6.0 - 2016-11-14
+- added BaseStation::regionCode function.
+
+-------------------------------------------------------------------------
+13.5.5 - 2016-11-14
+- fix for invalid parsing of HclSmartBearing Cal Packet channel data.
+
+-------------------------------------------------------------------------
+13.5.4 - 2016-11-11
+- supporting multiple sweeps in HclSmartBearing Cal Packet.
+
+-------------------------------------------------------------------------
+13.5.3 - 2016-11-09
+- updated sample rates for SHM-Link-200.
+
+-------------------------------------------------------------------------
+13.5.2 - 2016-11-03
+- fix for BaseStation read/write eeprom never retrying even if specified by user.
+
+-------------------------------------------------------------------------
+13.5.1 - 2016-11-03
+- fix for SHM-Link-200 not using the correct NodeFeatures class.
+
+-------------------------------------------------------------------------
+13.5.0 - 2016-11-02
+- basic support for SHM-Link-200.
+
+-------------------------------------------------------------------------
+13.4.1 - 2016-11-01
+- pinging Base Station before WirelessNode setToIdle.
+    - will now throw Error_Communication exception if ping fails (after 5 retries).
+- extended default Base Station timeout to 75ms from 50ms.
+- reduced amount of time between each byte sent when canceling set to idle.
+
+-------------------------------------------------------------------------
+13.4.0 - 2016-10-25
+- added BaseStation::broadcastSetToIdle command.
+
+-------------------------------------------------------------------------
+13.3.0 - 2016-10-19
+- added WirelessNode::percentFull to get the percent of datalogging memory that is filled.
+
+-------------------------------------------------------------------------
+13.2.1 - 2016-10-18
+- fix for memory exception when WirelessNode or BaseStation reading/writing eeproms while
+  also attempting to determine protocol version (in another thread).
+
+-------------------------------------------------------------------------
+13.2.0 - 2016-10-13
+- WirelessNode::applyConfig no longer cycles power/radio if eeprom's weren't actually changed (due to cache).
+- BaseStation::applyConfig no longer cycles power/radio if eeprom's weren't actually changed (due to cache).
+
+-------------------------------------------------------------------------
 13.1.1 - 2016-10-13
 - fix for datalogging download v1 erroneously parsing data when retrying after a communication exception.
 

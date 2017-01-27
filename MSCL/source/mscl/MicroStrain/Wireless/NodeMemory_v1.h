@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -124,6 +124,17 @@ namespace mscl
         virtual uint8 nextByte() override;
 
     public:
+        //Function: calcTotalBytes
+        //  Calculates the total number of bytes currently logged to memory.
+        //
+        //Parameters:
+        //  logPage - The log page from the Node.
+        //  pageOffset - The log page offset from the Node.
+        //
+        //Returns:
+        //  The total number of bytes currently logged to memory.
+        static uint32 calcTotalBytes(uint16 logPage, uint16 pageOffset);
+
         //Function: isNextByteNewHeader
         //  Checks if the next byte will be the start of a new header.
         //  Note: upon returning from this function, the read position will not have changed.

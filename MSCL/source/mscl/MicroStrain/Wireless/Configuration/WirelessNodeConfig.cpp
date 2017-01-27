@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -71,6 +71,24 @@ namespace mscl
         return eeprom.read_dataFormat();
     }
 
+    DataMode WirelessNodeConfig::curDataMode(const NodeEepromHelper& eeprom) const
+    {
+        //if its currently set in the config, return the set value
+        if(isSet(m_dataMode)) { return *m_dataMode; }
+
+        //not set, so read the value from the node
+        return eeprom.read_dataMode();
+    }
+
+    WirelessTypes::WirelessSampleRate WirelessNodeConfig::curDerivedRate(const NodeEepromHelper& eeprom) const
+    {
+        //if its currently set in the config, return the set value
+        if(isSet(m_derivedDataRate)) { return *m_derivedDataRate; }
+
+        //not set, so read the value from the node
+        return eeprom.read_derivedSampleRate();
+    }
+
     WirelessTypes::DataCollectionMethod WirelessNodeConfig::curDataCollectionMethod(const NodeEepromHelper& eeprom) const
     {
         //if its currently set in the config, return the set value
@@ -136,6 +154,52 @@ namespace mscl
         eeprom.read_channelLinearEquation(mask, result);
 
         return result;
+    }
+
+    ChannelMask WirelessNodeConfig::curDerivedMask(WirelessTypes::DerivedChannel derivedChannel, const NodeEepromHelper& eeprom) const
+    {
+        const auto& mask = m_derivedChannelMasks.find(derivedChannel);
+
+        //if its currently set in the config, return the set value
+        if(mask != m_derivedChannelMasks.end())
+        {
+            return mask->second;
+        }
+
+        //not set, so read the value from the node
+        return eeprom.read_derivedChannelMask(derivedChannel);
+    }
+
+    bool WirelessNodeConfig::isDerivedChannelEnabled(WirelessTypes::DerivedChannel derivedChannel, const NodeEepromHelper& eeprom, const NodeFeatures& features) const
+    {
+        if(!features.supportsDerivedChannel(derivedChannel))
+        {
+            return false;
+        }
+
+        return (curDerivedMask(derivedChannel, eeprom).count() > 0);
+    }
+
+    ConfigIssue::ConfigOption WirelessNodeConfig::findDerivedMaskConfigIssue(WirelessTypes::DerivedChannel channel)
+    {
+        switch(channel)
+        {
+            case WirelessTypes::derived_rms:
+                return ConfigIssue::CONFIG_DERIVED_MASK_RMS;
+
+            case WirelessTypes::derived_peakToPeak:
+                return ConfigIssue::CONFIG_DERIVED_MASK_P2P;
+
+            case WirelessTypes::derived_ips:
+                return ConfigIssue::CONFIG_DERIVED_MASK_IPS;
+
+            case WirelessTypes::derived_crestFactor:
+                return ConfigIssue::CONFIG_DERIVED_MASK_CREST_FACTOR;
+
+            default:
+                assert(false);  //need to add support for new DerivedChannel
+                return ConfigIssue::CONFIG_DERIVED_MASK_RMS;
+        }
     }
 
     bool WirelessNodeConfig::verifySupported(const NodeFeatures& features, const NodeEepromHelper& eeprom, ConfigIssues& outIssues) const
@@ -442,6 +506,83 @@ namespace mscl
             }
         }
 
+        //Data Mode
+        bool dataModeValid = true;
+        if(isSet(m_dataMode))
+        {
+            if(m_dataMode->toMask().enabledCount() == 0)
+            {
+                dataModeValid = false;
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DATA_MODE, "At least one Data Mode must be enabled."));
+            }
+            else if(m_dataMode->derivedModeEnabled() && !features.supportsDerivedDataMode())
+            {
+                dataModeValid = false;
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DATA_MODE, "Derived Data Mode is not supported by this Node."));
+            }
+            else if(m_dataMode->rawModeEnabled() && !features.supportsRawDataMode())
+            {
+                dataModeValid = false;
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DATA_MODE, "Raw Data Mode is not supported by this Node."));
+            }
+        }
+
+        if(dataModeValid)
+        {
+            //Derived Channels Sample Rate
+            if(isSet(m_derivedDataRate))
+            {
+                if(!features.supportsDerivedDataMode())
+                {
+                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DERIVED_DATA_RATE, "Derived Data Mode is not supported by this Node."));
+                }
+                else
+                {
+                    //make sure the sample rate is a valid derived rate
+                    const auto& derivedRates = features.derivedDataRates();
+                    if(std::find(derivedRates.begin(), derivedRates.end(), *m_derivedDataRate) == derivedRates.end())
+                    {
+                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DERIVED_DATA_RATE, "The Derived Data Rate is out of range."));
+                    }
+                }
+            }
+
+            //Derived Channels Masks
+            if(!m_derivedChannelMasks.empty())
+            {
+                //for each derived channel in the map
+                for(auto& mask : m_derivedChannelMasks)
+                {
+                    if(!features.supportsDerivedChannel(mask.first))
+                    {
+                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DERIVED_MASK, "The Derived Channel type is not supported by this Node."));
+                        break;
+                    }
+                }
+
+                //for each derived channel in the map
+                for(auto& mask : m_derivedChannelMasks)
+                {
+                    uint8 lastActiveCh = mask.second.lastChEnabled();
+
+                    uint8 chItr = 0;
+                    for(chItr = 1; chItr <= lastActiveCh; ++chItr)
+                    {
+                        //if this channel is enabled in the derived channel mask
+                        if(mask.second.enabled(chItr))
+                        {
+                            //if this channel is not supported by the Node
+                            if(!features.supportsChannel(chItr))
+                            {
+                                outIssues.push_back(ConfigIssue(findDerivedMaskConfigIssue(mask.first), "The Channel Mask is invalid for the Derived Channel."));
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         //Input Range(s)
         for(const auto& range : m_inputRanges)
         {
@@ -474,6 +615,26 @@ namespace mscl
             if(!features.supportsChannelSetting(WirelessTypes::chSetting_antiAliasingFilter, filter.first))
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_ANTI_ALIASING_FILTER, "Anti-Aliasing Filter is not supported for the provided Channel Mask.", filter.first));
+            }
+        }
+
+        //Low-Pass Filter(s)
+        for(const auto& filter : m_lowPassFilters)
+        {
+            //verify low-pass filter is supported for the channel mask
+            if(!features.supportsChannelSetting(WirelessTypes::chSetting_lowPassFilter, filter.first))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_LOW_PASS_FILTER, "Low-Pass Filter is not supported for the provided Channel Mask.", filter.first));
+            }
+        }
+
+        //High-Pass Filter(s)
+        for(const auto& filter : m_highPassFilters)
+        {
+            //verify high-pass filter is supported for the channel mask
+            if(!features.supportsChannelSetting(WirelessTypes::chSetting_highPassFilter, filter.first))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_HIGH_PASS_FILTER, "High-Pass Filter is not supported for the provided Channel Mask.", filter.first));
             }
         }
 
@@ -523,6 +684,53 @@ namespace mscl
 
     bool WirelessNodeConfig::verifyConflicts(const NodeFeatures& features, const NodeEepromHelper& eeprom, ConfigIssues& outIssues) const
     {
+        if(isSet(m_dataMode) || isSet(m_activeChannels) || !m_derivedChannelMasks.empty())
+        {
+            DataMode mode = curDataMode(eeprom);
+
+            //if raw enabled, verify raw channel mask is set
+            if(mode.rawModeEnabled())
+            {
+                if(curActiveChs(eeprom).count() == 0)
+                {
+                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_ACTIVE_CHANNELS, "Raw Mode is enabled, but no raw channels are active."));
+                }
+            }
+
+            //if derived enabled, verify derived channel mask is set
+            if(mode.derivedModeEnabled())
+            {
+                if(!isDerivedChannelEnabled(WirelessTypes::derived_rms, eeprom, features) &&
+                   !isDerivedChannelEnabled(WirelessTypes::derived_peakToPeak, eeprom, features) &&
+                   !isDerivedChannelEnabled(WirelessTypes::derived_ips, eeprom, features) &&
+                   !isDerivedChannelEnabled(WirelessTypes::derived_crestFactor, eeprom, features)
+                   )
+                {
+                    //no derived channels are enabled
+                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DERIVED_MASK, "Derived Mode is enabled, but no Derived channels are active."));
+                }
+            }
+        }
+
+        //verify derived sample rate is ok with normal sample rate
+        if(features.supportsDerivedDataMode() &&
+           (isSet(m_derivedDataRate) || isSet(m_sampleRate))
+          )
+        {
+            if(curDataMode(eeprom).derivedModeEnabled())
+            {
+                const SampleRate derivedRate = SampleRate::FromWirelessEepromValue(curDerivedRate(eeprom));
+                const SampleRate sampleRate = SampleRate::FromWirelessEepromValue(curSampleRate(eeprom));
+
+                if(derivedRate.samplesPerSecond() > (sampleRate.samplesPerSecond() / 32.0))
+                {
+                    //derived rate must be at least 32x slower than normal sample rate
+                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE, "The Derived Data Rate must be at least 32x slower than the raw sample rate."));
+                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DERIVED_DATA_RATE, "The Derived Data Rate must be at least 32x slower than the raw sample rate."));
+                }
+            }
+        }
+
         //if any sampling options are set
         if(isSet(m_samplingMode) ||
            isSet(m_sampleRate) ||
@@ -540,16 +748,6 @@ namespace mscl
             ChannelMask channels = curActiveChs(eeprom);
             uint32 numSweeps = curNumSweeps(eeprom);
             WirelessTypes::DataFormat dataFormat = curDataFormat(eeprom);
-
-            //verify there is at least 1 channel enabled
-            if(channels.count() == 0)
-            {
-                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_ACTIVE_CHANNELS, "There are no active channels."));
-
-                //need to just return this issue instead of continuing as
-                //other issue checks require the number of channels to be > 0
-                return false;
-            }
 
             //verify sampling mode with event trigger settings
             if(isSet(m_samplingMode) || isSet(m_eventTriggerOptions))
@@ -872,6 +1070,26 @@ namespace mscl
         //write Sensor Delay
         if(isSet(m_sensorDelay)) { eeprom.write_sensorDelay(*m_sensorDelay); }
 
+        //write Data Mode
+        if(isSet(m_dataMode)) 
+        {
+            //if the Node doesn't support this eeprom, the verifyConfig will verify
+            //that only raw mode is selected, and we will just skip writing anything
+            if(features.supportsDataModeEeprom())
+            {
+                eeprom.write_dataMode(*m_dataMode);
+            }
+        }
+
+        //write Derived Channels Sample Rate
+        if(isSet(m_derivedDataRate)) { eeprom.write_derivedSampleRate(*m_derivedDataRate); }
+
+        //write Derived Channel Mask(s)
+        for(const auto& mask : m_derivedChannelMasks)
+        {
+            eeprom.write_derivedChannelMask(mask.first, mask.second);
+        }
+
         //write Hardware Gain(s)
         for(const auto& range : m_inputRanges)
         {
@@ -888,6 +1106,18 @@ namespace mscl
         for(const auto& filter : m_antiAliasingFilters)
         {
             eeprom.write_antiAliasingFilter(filter.first, filter.second);
+        }
+
+        //write low-pass filter(s)
+        for(const auto& filter : m_lowPassFilters)
+        {
+            eeprom.write_lowPassFilter(filter.first, filter.second);
+        }
+
+        //write high-pass filter(s)
+        for(const auto& filter : m_highPassFilters)
+        {
+            eeprom.write_highPassFilter(filter.first, filter.second);
         }
 
         //write Gauge Factor(s)
@@ -1092,12 +1322,32 @@ namespace mscl
 
     WirelessTypes::Filter WirelessNodeConfig::antiAliasingFilter(const ChannelMask& mask) const
     {
-        return getChannelMapVal(m_antiAliasingFilters, mask, "Low Pass Filter");
+        return getChannelMapVal(m_antiAliasingFilters, mask, "Anti-Aliasing Filter");
     }
 
     void WirelessNodeConfig::antiAliasingFilter(const ChannelMask& mask, WirelessTypes::Filter filter)
     {
         setChannelMapVal(m_antiAliasingFilters, mask, filter);
+    }
+
+    WirelessTypes::Filter WirelessNodeConfig::lowPassFilter(const ChannelMask& mask) const
+    {
+        return getChannelMapVal(m_lowPassFilters, mask, "Low Pass Filter");
+    }
+
+    void WirelessNodeConfig::lowPassFilter(const ChannelMask& mask, WirelessTypes::Filter filter)
+    {
+        setChannelMapVal(m_lowPassFilters, mask, filter);
+    }
+
+    WirelessTypes::HighPassFilter WirelessNodeConfig::highPassFilter(const ChannelMask& mask) const
+    {
+        return getChannelMapVal(m_highPassFilters, mask, "High Pass Filter");
+    }
+
+    void WirelessNodeConfig::highPassFilter(const ChannelMask& mask, WirelessTypes::HighPassFilter filter)
+    {
+        setChannelMapVal(m_highPassFilters, mask, filter);
     }
 
     float WirelessNodeConfig::gaugeFactor(const ChannelMask& mask) const
@@ -1235,6 +1485,54 @@ namespace mscl
     void WirelessNodeConfig::sensorDelay(uint32 delay)
     {
         m_sensorDelay = delay;
+    }
+
+    DataMode WirelessNodeConfig::dataMode() const
+    {
+        checkValue(m_dataMode, "Data Mode");
+        return *m_dataMode;
+    }
+
+    void WirelessNodeConfig::dataMode(const DataMode& mode)
+    {
+        m_dataMode = mode;
+    }
+
+    WirelessTypes::WirelessSampleRate WirelessNodeConfig::derivedDataRate() const
+    {
+        checkValue(m_derivedDataRate, "Derived Channels Sample Rate");
+        return *m_derivedDataRate;
+    }
+
+    void WirelessNodeConfig::derivedDataRate(WirelessTypes::WirelessSampleRate rate)
+    {
+        m_derivedDataRate = rate;
+    }
+
+    ChannelMask WirelessNodeConfig::derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const
+    {
+        try
+        {
+            return m_derivedChannelMasks.at(derivedChannel);
+        }
+        catch(std::out_of_range&)
+        {
+            throw Error_NoData("The Derived Channel Mask option has not been set for this DerivedChannel.");
+        }
+    }
+
+    void WirelessNodeConfig::derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel, const ChannelMask& mask)
+    {
+        auto itr = m_derivedChannelMasks.find(derivedChannel);
+
+        if(itr != m_derivedChannelMasks.end())
+        {
+            itr->second = mask;
+        }
+        else
+        {
+            m_derivedChannelMasks.emplace(derivedChannel, mask);
+        }
     }
 
 

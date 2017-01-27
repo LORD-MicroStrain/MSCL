@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("LORD Sensing")]
 [assembly: AssemblyProduct("MSCL")]
-[assembly: AssemblyCopyright("Copyright © 2016 LORD Corporation")]
+[assembly: AssemblyCopyright("Copyright © 2017 LORD Corporation")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -34,5 +34,5 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 //
 //update with each release
-[assembly: AssemblyVersion("13.1.1.0")]
-[assembly: AssemblyFileVersion("13.1.1.0")]
+[assembly: AssemblyVersion("14.3.2.0")]
+[assembly: AssemblyFileVersion("14.3.2.0")]

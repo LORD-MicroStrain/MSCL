@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -93,12 +93,35 @@ namespace mscl
         {
             int16 result = 0;
 
-            //map the float to a byte array
+            //map the int16 to a byte array
             uint8* temp = reinterpret_cast<uint8*>(&result);
 
             //set each byte of the int16 via the byte array (in big endian)
             temp[0] = low;
             temp[1] = high;
+
+            if(endian == Endianness::bigEndian)
+            {
+                return BigEndian_To_SystemEndian(result);
+            }
+            else
+            {
+                return LittleEndian_To_SystemEndian(result);
+            }
+        }
+
+        int32 make_int32(uint8 low, uint8 byte2, uint8 byte3, uint8 high, Endianness endian /*= bigEndian*/)
+        {
+            int32 result = 0;
+
+            //map the int32 to a byte array
+            uint8* temp = reinterpret_cast<uint8*>(&result);
+
+            //set each byte of the uint16 via the byte array (in big endian)
+            temp[0] = low;
+            temp[1] = byte2;
+            temp[2] = byte3;
+            temp[3] = high;
 
             if(endian == Endianness::bigEndian)
             {

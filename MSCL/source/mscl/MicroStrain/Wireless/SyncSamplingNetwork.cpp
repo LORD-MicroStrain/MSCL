@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -414,12 +414,15 @@ namespace mscl
     {
         SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
 
+        const uint8 MAX_BYTES = SyncSamplingFormulas::MAX_DATA_BYTES_PER_PACKET;
+
         try
         {
             SyncNodeConfig config(&nodeInfo);
 
             uint32 groupSize = 0;
             uint32 txPerGroup = 0;
+            double burstSampleDuration = 0.0;
 
             //only use lossless if lossless is enabled for the network AND the node isn't set to "retransmission_disabled"
             bool useLossless = (m_lossless && config.retransmission() != WirelessTypes::retransmission_disabled);
@@ -432,9 +435,16 @@ namespace mscl
 
             //calculate the number of bytes per sweep
             nodeInfo.m_bytesPerSweep = SyncSamplingFormulas::bytesPerSweep(bytesPerSample, totalChannels);
-        
-            //if the sampling mode is Burst
-            if(config.samplingMode() == WirelessTypes::samplingMode_syncBurst)
+
+            float rawPacketsPerGroup = 0.0;
+            float derivedPacketsPerGroup = 0.0;
+
+            DataMode mode = config.dataMode();
+            bool useHighCapacity = false;
+
+            bool isBurstMode = (config.samplingMode() == WirelessTypes::samplingMode_syncBurst);
+
+            if(isBurstMode)
             {
                 //burst mode has a pre-defined group size
                 groupSize = 1;
@@ -446,13 +456,93 @@ namespace mscl
                 nodeInfo.m_bytesPerBurst = totalChannels * sweepsPerSession * bytesPerSample;
 
                 //calculate the sample duration
-                double sampleDuration = SyncSamplingFormulas::sampleDuration(sweepsPerSession, sampleRate);
+                burstSampleDuration = SyncSamplingFormulas::sampleDuration(sweepsPerSession, sampleRate);
 
                 //calculate the maximum number of bytes per packet
                 nodeInfo.m_maxBytesPerPacket = SyncSamplingFormulas::maxBytesPerBurstPacket(nodeInfo.m_bytesPerSweep, useLossless);
+            }
+            //Continuous mode
+            else
+            {
+                //if the network has high capacity enabled
+                if(m_highCapacity)
+                {
+                    //if the sample rate is less than 16hz OR the sample rate is 16Hz with 1 channel active
+                    if((sampleRate < SampleRate::Hertz(16)) ||
+                        (sampleRate == SampleRate::Hertz(16) && totalChannels == 1)
+                       )
+                    {
+                        //we want to use high capacity mode for this node
+                        useHighCapacity = true;
+                    }
+                }
 
-                //calculate the total number of needed transmissions
-                uint32 totalNeededTx = SyncSamplingFormulas::totalNeededBurstTx(nodeInfo.m_bytesPerBurst, nodeInfo.m_maxBytesPerPacket);
+                //calculate the total number of bytes per second
+                nodeInfo.m_bytesPerSecond = SyncSamplingFormulas::bytesPerSecond(sampleRate, totalChannels, bytesPerSample);
+
+                //calculate the maximum bytes per packet
+                nodeInfo.m_maxBytesPerPacket = SyncSamplingFormulas::maxBytesPerPacket(sampleRate, useLossless, optimizeBandwidth, nodeInfo.syncSamplingVersion());
+
+                groupSize = SyncSamplingFormulas::groupSize(nodeInfo.m_bytesPerSecond, nodeInfo.m_maxBytesPerPacket, useHighCapacity);
+
+                if(mode.rawModeEnabled())
+                {
+                    if(nodeInfo.m_bytesPerSweep >(MAX_BYTES / 2))
+                    {
+                        nodeInfo.m_bytesPerSweep = static_cast<uint32>(MAX_BYTES * std::ceil(static_cast<float>(nodeInfo.m_bytesPerSweep) / static_cast<float>(SyncSamplingFormulas::MAX_DATA_BYTES_PER_PACKET)));
+                    }
+
+                    rawPacketsPerGroup = static_cast<float>(sampleRate.samplesPerSecond() * groupSize * nodeInfo.m_bytesPerSweep / MAX_BYTES);
+                }
+            }
+            
+
+            //Derived Channels enabled
+            if(mode.derivedModeEnabled())
+            {
+                uint8 derivedChannelCount = 0;
+                uint8 numDerivedNonChBytes = 0;
+
+                const WirelessTypes::DerivedChannels& chs = nodeInfo.supportedDerivedChannels();
+
+                uint8 count = 0;
+                for(WirelessTypes::DerivedChannel ch : chs)
+                {
+                    count = config.derivedChannelMask(ch).count();
+
+                    if(count > 0)
+                    {
+                        derivedChannelCount += count;
+                        numDerivedNonChBytes += 3;  //3 per Derived Channel (may change based on channel in the future)
+                    }
+                }
+
+                const float DERIVED_MAX_BYTES = 94.0f - numDerivedNonChBytes;
+
+                uint16 derivedSweepSize = 4 * derivedChannelCount;
+
+                if(derivedSweepSize > (DERIVED_MAX_BYTES / 2.0f))
+                {
+                    derivedSweepSize = static_cast<uint16>(DERIVED_MAX_BYTES * std::ceil(derivedSweepSize / DERIVED_MAX_BYTES));
+                }
+
+                derivedPacketsPerGroup = static_cast<float>(config.derivedDataRate().samplesPerSecond()) * groupSize * derivedSweepSize / DERIVED_MAX_BYTES;
+            }
+
+            if(isBurstMode)
+            {
+                uint32 totalNeededTx = 0;
+
+                if(mode.derivedModeEnabled())
+                {
+                    totalNeededTx += static_cast<uint32>(ceil(derivedPacketsPerGroup));
+                }
+
+                if(mode.rawModeEnabled())
+                {
+                    totalNeededTx += SyncSamplingFormulas::totalNeededBurstTx(nodeInfo.m_bytesPerBurst, nodeInfo.m_maxBytesPerPacket);
+                }
+
                 maxRetransmissionPerBurst = totalNeededTx;
 
                 //if there are not bytes per burst
@@ -467,42 +557,16 @@ namespace mscl
                     uint32 timeBetweenBursts = static_cast<uint32>(config.timeBetweenBursts().getSeconds());
 
                     //calculate the number of transmissions per second
-                    uint32 burstTxPerSecond = SyncSamplingFormulas::burstTxPerSecond(totalNeededTx, timeBetweenBursts, sampleDuration, useLossless);
+                    uint32 burstTxPerSecond = SyncSamplingFormulas::burstTxPerSecond(totalNeededTx, timeBetweenBursts, burstSampleDuration, useLossless);
 
                     //calculate the number of transmissions per group
                     txPerGroup = burstTxPerSecond * groupSize;
                 }
             }
-            //if the sampling mode is "Continuous"
             else
             {
-                //default to false
-                bool useHighCapacity = false;
-            
-                //if the network has high capacity enabled
-                if(m_highCapacity)
-                {
-                    //if the sample rate is less than 16hz OR the sample rate is 16Hz with 1 channel active
-                    if( (sampleRate < SampleRate::Hertz(16)) ||
-                        (sampleRate == SampleRate::Hertz(16) && totalChannels == 1)
-                      )
-                    {
-                        //we want to use high capacity mode for this node
-                        useHighCapacity = true;
-                    }
-                }
-
-                //calculate the total number of bytes per second
-                nodeInfo.m_bytesPerSecond = SyncSamplingFormulas::bytesPerSecond(sampleRate, totalChannels, bytesPerSample);
-
-                //calculate the maximum bytes per packet
-                nodeInfo.m_maxBytesPerPacket = SyncSamplingFormulas::maxBytesPerPacket(sampleRate, useLossless, optimizeBandwidth, nodeInfo.syncSamplingVersion());
-
-                //calculate the group size
-                groupSize = SyncSamplingFormulas::groupSize(nodeInfo.m_bytesPerSecond, nodeInfo.m_maxBytesPerPacket, useHighCapacity);
-
-                //calculate the number of transmissions per group
-                txPerGroup = SyncSamplingFormulas::txPerGroup(nodeInfo.m_bytesPerSecond, nodeInfo.m_maxBytesPerPacket, groupSize);
+                //update transmissions per group for continuous mode
+                txPerGroup = Utils::ceilBase2(std::ceil((rawPacketsPerGroup + derivedPacketsPerGroup) * SyncSamplingFormulas::overheadFactor(useLossless, optimizeBandwidth)));
             }
 
             //calculate the maximum TDMA address
@@ -548,7 +612,7 @@ namespace mscl
         catch(Error)
         {
             //if anything throws here, we failed to calculate values for this node
-            
+
             //we need to update the status of the node
             nodeInfo.m_configApplied = false;
             nodeInfo.m_status = SyncNetworkInfo::status_PoorCommunication;
@@ -1306,7 +1370,7 @@ namespace mscl
             }
 
             case WirelessModels::node_shmLink:
-            case WirelessModels::node_shmLink2:
+            case WirelessModels::node_shmLink200:
             case WirelessModels::node_shmLink2_cust1:
             case WirelessModels::node_sgLink_herm:
             case WirelessModels::node_sgLink_herm_2600:

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -11,7 +11,8 @@ namespace mscl
 {
     Eeprom::Eeprom(bool useCache, uint8 numRetries) :
         m_useCache(useCache),
-        m_numRetries(numRetries)
+        m_numRetries(numRetries),
+        m_hasWritten(false)
     { }
 
     void Eeprom::useCache(bool enable)
@@ -84,6 +85,16 @@ namespace mscl
             //update the value in the map
             itr->second = value;
         }
+    }
+
+    void Eeprom::resetHasWritten()
+    {
+        m_hasWritten = false;
+    }
+
+    bool Eeprom::didWrite() const
+    {
+        return m_hasWritten;
     }
 
     Value Eeprom::readEeprom(const EepromLocation& location)

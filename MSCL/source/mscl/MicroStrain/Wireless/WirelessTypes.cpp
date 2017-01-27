@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -16,6 +16,7 @@ namespace mscl
             case dataType_uint16:
             case dataType_uint16_shifted:
             case dataType_uint16_18bitTrunc:
+            case dataType_int16_20bitTrunc:
                 return 2;
 
             case dataType_float32:
@@ -24,6 +25,7 @@ namespace mscl
                 return 4;
 
             case dataType_uint24:
+            case dataType_int24_20bit:
                 return 3;
 
             default:
@@ -48,6 +50,10 @@ namespace mscl
             case dataType_uint16_18bitTrunc:    //uint16 from 18-bit node is stored as a uint32 in mscl
                 return valueType_uint32;
 
+            case dataType_int16_20bitTrunc:     //int16 from 20-bit node is stored as an int32 in mscl
+            case dataType_int24_20bit:          //int24 from 20-bit node is stored as an int32 in mscl
+                return valueType_int32;
+
             //data types that are floats
             case dataType_float32:
             case dataType_float32_noCals:
@@ -67,9 +73,11 @@ namespace mscl
             return 4;
 
         case dataFormat_raw_uint24:
+        case dataFormat_raw_int24:
             return 3;
 
         case dataFormat_raw_uint16:
+        case dataFormat_raw_int16:
         default:
             return 2;
         }

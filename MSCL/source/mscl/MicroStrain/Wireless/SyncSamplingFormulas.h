@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -31,6 +31,7 @@ namespace mscl
         static const uint16 MAX_SLOTS = 1024;
         static const uint16 MAX_SLOTS_HIGH_CAPACITY = 1024 * 16;
         static const uint8 MIN_TDMA = 1;
+        static const uint8 MAX_DATA_BYTES_PER_PACKET = 96;
 
         //Function: bytesPerSecond
         //    Calculates the number of bytes per second
@@ -242,6 +243,8 @@ namespace mscl
         //Returns:
         //    The burst transmissions per second
         uint32 burstTxPerSecond(uint32 totalNeededTx, uint32 timeBetweenBursts, double sampleDuration, bool lossless);
+
+        float overheadFactor(bool lossless, bool optimizeBandwidth);
     }
 #endif
 }

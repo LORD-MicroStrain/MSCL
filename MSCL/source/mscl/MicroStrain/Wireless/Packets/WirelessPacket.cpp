@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -51,7 +51,9 @@ namespace mscl
         case packetType_SyncSampling:
         case packetType_BufferedLDC:
         case packetType_LDC_16ch:
+        case packetType_LDC_math:
         case packetType_SyncSampling_16ch:
+        case packetType_SyncSampling_math:
         case packetType_BufferedLDC_16ch:
         case packetType_AsyncDigital:
         case packetType_AsyncDigitalAnalog:

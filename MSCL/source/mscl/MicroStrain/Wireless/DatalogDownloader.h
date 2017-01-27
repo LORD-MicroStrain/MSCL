@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -21,6 +21,26 @@ namespace mscl
     class NodeMemory;
 
 #ifndef SWIG
+
+    //Struct: MathMetaData
+    //  Information about the Math Channels.
+    struct MathMetaData
+    {
+        //Variable: id
+        //  The identifier of the algorithm used.
+        uint8 id;
+
+        //Variable: sourceChannel
+        //  The zero-indexed channel used to run the math calculation.
+        uint8 sourceChannel;
+
+        MathMetaData(uint8 algorithmId, uint8 source):
+            id(algorithmId),
+            sourceChannel(source)
+        {
+        }
+    };
+
     struct DatalogSessionInfo
     {
         //Variable: startOfTrigger
@@ -37,6 +57,10 @@ namespace mscl
         //Variable: numSweeps
         //    The total number of sweeps that are in the session.
         uint32 numSweeps;
+
+        //Variable: sweepSize
+        //    The size (number of bytes) of the sweeps in the session.
+        uint16 sweepSize;
         
         //Variable: sessionIndex
         //    The datalogging session index. This starts at 1 for the first session,
@@ -83,6 +107,7 @@ namespace mscl
             startOfTrigger(false),
             triggerType(WirelessTypes::trigger_userInit),
             numSweeps(0),
+            sweepSize(0),
             sessionIndex(0),
             activeChannels(0),
             sampleRate(SampleRate::Hertz(0)),
@@ -158,6 +183,14 @@ namespace mscl
         //  The version of the datalog download procedure to use.
         uint8 m_datalogDownloadVersion;
 
+        //Variable: m_isMathData
+        //  Whether the data to parse next is math data (true) or standard channel data (false).
+        bool m_isMathData;
+
+        //Variable: m_mathMetaData
+        //  A vector of the <MathMetaData> for the current data section (gets updated each math block header).
+        std::vector<MathMetaData> m_mathMetaDeta;
+
     private:
         //Function: parseTriggerHeader_v1
         //    Parses a (v1) trigger header from the current byte position. The current datalogging session info in this class is updated.
@@ -174,6 +207,10 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to download data from the Node.
         //    - <Error_Connection>: A connection error has occurred.
         void parseTriggerHeader_v2();
+
+        LoggedDataSweep parseNextSweep();
+
+        LoggedDataSweep parseNextMathSweep();
 
     public:
         //API Function: complete

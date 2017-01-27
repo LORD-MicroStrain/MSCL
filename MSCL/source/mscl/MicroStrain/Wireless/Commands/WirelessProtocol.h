@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -10,11 +10,13 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/Timestamp.h"
 #include "AutoBalanceResult.h"
 #include "BaseStation_BeaconStatus.h"
+#include "SetToIdleStatus.h"
 
 namespace mscl
 {
     //forward declarations
     class BaseStation_Impl;
+    class BaseStation;
     class Version;
     struct DatalogSessionInfoResult;
 
@@ -90,6 +92,10 @@ namespace mscl
         //  The function pointer for the Start Non Sync Sampling protocol command.
         std::function<bool(BaseStation_Impl*, NodeAddress)> m_startNonSyncSampling;
 
+        //Variable: m_setToIdle
+        //  The function pointer for the Set to Idle protocol command.
+        std::function<SetToIdleStatus(BaseStation_Impl*, NodeAddress, const BaseStation&)> m_setToIdle;
+
     public:
         //Constant: BASE_STATION_ADDRESS
         //  The address of our generic Base Station.
@@ -139,6 +145,10 @@ namespace mscl
         //Function: v1_5
         //  Static function to create a WirelessProtocol with version 1.5.
         static std::unique_ptr<WirelessProtocol> v1_5();
+
+        //Function: v1_6
+        //  Static function to create a WirelessProtocol with version 1.6.
+        static std::unique_ptr<WirelessProtocol> v1_6();
 
     public:
         //Enums: CommandID

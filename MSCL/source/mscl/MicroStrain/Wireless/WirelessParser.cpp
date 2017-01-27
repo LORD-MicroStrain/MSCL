@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -14,11 +14,13 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Packets/HclSmartBearing_RawPacket.h"
 #include "Packets/HclSmartBearing_CalPacket.h"
 #include "Packets/LdcPacket.h"
+#include "Packets/LdcMathPacket.h"
 #include "Packets/LdcPacket_16ch.h"
 #include "Packets/RawAngleStrainPacket.h"
 #include "Packets/RollerPacket.h"
 #include "Packets/SyncSamplingPacket.h"
 #include "Packets/SyncSamplingPacket_16ch.h"
+#include "Packets/SyncSamplingMathPacket.h"
 #include "Packets/WirelessPacket.h"
 #include "Packets/WirelessPacketCollector.h"
 #include "Packets/WirelessPacketUtils.h"
@@ -549,7 +551,6 @@ namespace mscl
     bool WirelessParser::isDuplicate(const WirelessPacket& packet)
     {
         uint16 uniqueId;
-        uint32 packetsNode = packet.nodeAddress();
 
         //check the packet type
         switch(packet.type())
@@ -562,7 +563,9 @@ namespace mscl
             case WirelessPacket::packetType_AsyncDigitalAnalog:         uniqueId = AsyncDigitalAnalogPacket::getUniqueId(packet);       break;
             case WirelessPacket::packetType_diagnostic:                 uniqueId = DiagnosticPacket::getUniqueId(packet);               break;
             case WirelessPacket::packetType_LDC_16ch:                   uniqueId = LdcPacket_16ch::getUniqueId(packet);                 break;
+            case WirelessPacket::packetType_LDC_math:                   uniqueId = LdcMathPacket::getUniqueId(packet);                  break;
             case WirelessPacket::packetType_SyncSampling_16ch:          uniqueId = SyncSamplingPacket_16ch::getUniqueId(packet);        break;
+            case WirelessPacket::packetType_SyncSampling_math:          uniqueId = SyncSamplingMathPacket::getUniqueId(packet);         break;
             case WirelessPacket::packetType_BufferedLDC_16ch:           uniqueId = BufferedLdcPacket_16ch::getUniqueId(packet);         break;
             case WirelessPacket::packetType_HclSmartBearing_Calibrated: uniqueId = HclSmartBearing_CalPacket::getUniqueId(packet);      break;
             case WirelessPacket::packetType_HclSmartBearing_Raw:        uniqueId = HclSmartBearing_RawPacket::getUniqueId(packet);      break;
@@ -581,6 +584,7 @@ namespace mscl
             case WirelessPacket::packetType_nodeReceived:
             case WirelessPacket::packetType_nodeSuccessReply:
             case WirelessPacket::packetType_baseCommand:
+            case WirelessPacket::packetType_baseReceived:
             case WirelessPacket::packetType_baseSuccessReply:
             case WirelessPacket::packetType_baseErrorReply:
             case WirelessPacket::packetType_rfScanSweep:
@@ -592,11 +596,13 @@ namespace mscl
                 return false;
         }
 
+        DuplicateCheckKey key(packet.nodeAddress(), packet.type());
+
         //if we found the packet's node address in the lastPacketMap
-        if(m_lastPacketMap.find(packetsNode) != m_lastPacketMap.end())
+        if(m_lastPacketMap.find(key) != m_lastPacketMap.end())
         {
             //if the unique id in the lastPacketMap matches the uniqueId from this packet
-            if(m_lastPacketMap[packetsNode] == uniqueId)
+            if(m_lastPacketMap[key] == uniqueId)
             {
                 //it is a duplicate packet
                 return true;
@@ -604,9 +610,29 @@ namespace mscl
         }
 
         //update or set m_lastPacketMap's uniqueId for this node
-        m_lastPacketMap[packetsNode] = uniqueId;
+        m_lastPacketMap[key] = uniqueId;
 
         //it is not a duplicate packet
-        return false;    
+        return false;
+    }
+
+    const bool operator < (const WirelessParser::DuplicateCheckKey& key1, const WirelessParser::DuplicateCheckKey& key2)
+    {
+        if(key1.nodeAddress < key2.nodeAddress)
+        {
+            return true;
+        }
+
+        if(key1.nodeAddress > key2.nodeAddress)
+        {
+            return false;
+        }
+
+        if(key1.packetType < key2.packetType)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

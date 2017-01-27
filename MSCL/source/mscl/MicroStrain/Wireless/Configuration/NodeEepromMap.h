@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -156,8 +156,14 @@ namespace mscl
         //  MAX_RETRANS_PACKET              - The max retransmits per packet
         //  MAX_RETRANS_BURST               - The max retransmits per burst
         //  REGION_CODE                     - The region code for the device
-        //  DATA_PACKET_FORMAT              - The format of the data packet that will be sent out.
-        //  DIAGNOSTIC_INTERVAL             - The interval at which the Diagnostic Packet is sent.
+        //  DATA_MODE                       - The data mode (raw, math, etc) as a mask
+        //  DERIVED_DATA_RATE               - The sample rate for the Math channels
+        //  DERIVED_RMS_MASK                - Derived - RMS channel mask
+        //  DERIVED_P2P_MASK                - Derived - Peak to Peak channel mask
+        //  DERIVED_IPS_MASK                - Derived - Inches Per Second channel mask
+        //  DERIVED_CREST_FACTOR_MASK       - Derived - Crest Factor channel mask
+        //  DATA_PACKET_FORMAT              - The format of the data packet that will be sent out
+        //  DIAGNOSTIC_INTERVAL             - The interval at which the Diagnostic Packet is sent
         //  EVENT_SAMPLE_RATE               - Event Driven Sampling: Sample Rate
         //  EVENT_TRIGGER_MASK              - Event Driven Sampling: Trigger Mask
         //  EVENT_PRE_DURATION              - Event Driven Sampling: Pre-Event Duration
@@ -198,6 +204,14 @@ namespace mscl
         //  ANTI_ALIASING_FILTER_2          - The anti-aliasing filter for channels (2).
         //  ANTI_ALIASING_FILTER_3          - The anti-aliasing filter for channels (3).
         //  ANTI_ALIASING_FILTER_4          - The anti-aliasing filter for channels (4).
+        //  LOW_PASS_FILTER_1               - The low-pass filter for channels (1).
+        //  LOW_PASS_FILTER_2               - The low-pass filter for channels (2).
+        //  LOW_PASS_FILTER_3               - The low-pass filter for channels (3).
+        //  LOW_PASS_FILTER_4               - The low-pass filter for channels (4).
+        //  HIGH_PASS_FILTER_1              - The high-pass filter for channels (1).
+        //  HIGH_PASS_FILTER_2              - The high-pass filter for channels (2).
+        //  HIGH_PASS_FILTER_3              - The high-pass filter for channels (3).
+        //  HIGH_PASS_FILTER_4              - The high-pass filter for channels (4).
         //  MIN_SOFT_VER_MAJOR              - The minimum software version for support of this device (major)
         //  MIN_SOFT_VER_MINOR              - The minimum software version for support of this device (minor)
         //  GAUGE_FACTOR_1                  - The Gauge Factor (1)
@@ -334,6 +348,12 @@ namespace mscl
         static const EepromLocation MAX_RETRANS_PACKET;
         static const EepromLocation MAX_RETRANS_BURST;
         static const EepromLocation REGION_CODE;
+        static const EepromLocation DATA_MODE;
+        static const EepromLocation DERIVED_DATA_RATE;
+        static const EepromLocation DERIVED_RMS_MASK;
+        static const EepromLocation DERIVED_P2P_MASK;
+        static const EepromLocation DERIVED_IPS_MASK;
+        static const EepromLocation DERIVED_CREST_FACTOR_MASK;
         static const EepromLocation DATA_PACKET_FORMAT;
         static const EepromLocation DIAGNOSTIC_INTERVAL;
         static const EepromLocation EVENT_SAMPLE_RATE;
@@ -376,6 +396,14 @@ namespace mscl
         static const EepromLocation ANTI_ALIASING_FILTER_2;
         static const EepromLocation ANTI_ALIASING_FILTER_3;
         static const EepromLocation ANTI_ALIASING_FILTER_4;
+        static const EepromLocation LOW_PASS_FILTER_1;
+        static const EepromLocation LOW_PASS_FILTER_2;
+        static const EepromLocation LOW_PASS_FILTER_3;
+        static const EepromLocation LOW_PASS_FILTER_4;
+        static const EepromLocation HIGH_PASS_FILTER_1;
+        static const EepromLocation HIGH_PASS_FILTER_2;
+        static const EepromLocation HIGH_PASS_FILTER_3;
+        static const EepromLocation HIGH_PASS_FILTER_4;
         static const EepromLocation MIN_SOFT_VER_MAJOR;
         static const EepromLocation MIN_SOFT_VER_MINOR;
         static const EepromLocation GAUGE_FACTOR_1;

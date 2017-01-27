@@ -1,8 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
+#include "mscl/MicroStrain/Wireless/Configuration/DataMode.h"
 #include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/WirelessNode.h"
@@ -68,6 +69,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_setSingleValue)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+
     //make the features() function return the NodeFeatures we want
     NodeInfo info(Version(9, 9), WirelessModels::node_gLink_2g, 200000, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
@@ -91,6 +94,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_setMultipleValues)
     BaseStation b = makeBaseStationWithMockImpl();
     WirelessNode node(100, b);
     node.setImpl(impl);
+
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
 
     //make the features() function return the NodeFeatures we want
     NodeInfo info(Version(99, 9), WirelessModels::node_gLink_2g, 200000, WirelessTypes::region_usa);
@@ -117,6 +122,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_failVerifyWhenApplying)
     BaseStation b = makeBaseStationWithMockImpl();
     WirelessNode node(100, b);
     node.setImpl(impl);
+
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
 
     //make the features() function return the NodeFeatures we want
     NodeInfo info(Version(9, 9), WirelessModels::node_tcLink_1ch, 200000, WirelessTypes::region_usa);    //note TC-Link
@@ -451,6 +458,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_checkRadioInterval)
     WirelessNode node(123, b);
     node.setImpl(impl);
 
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl, WirelessModels::node_gLink_10g);
@@ -475,6 +484,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_lostBeaconTimeout)
     BaseStation b = makeBaseStationWithMockImpl();
     WirelessNode node(123, b);
     node.setImpl(impl);
+
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
@@ -503,6 +514,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_bootMode)
     WirelessNode node(123, b);
     node.setImpl(impl);
 
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl, WirelessModels::node_iepeLink);
 
@@ -528,6 +541,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_filterSettlingTime)
         BaseStation b = makeBaseStationWithMockImpl();
         WirelessNode node(123, b);
         node.setImpl(impl);
+
+        MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
 
         std::unique_ptr<NodeFeatures> features;
         expectNodeFeatures(features, impl, WirelessModels::node_tcLink_6ch);
@@ -561,6 +576,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_filterSettlingTime)
         WirelessNode node(123, b);
         node.setImpl(impl);
 
+        MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+
         std::unique_ptr<NodeFeatures> features;
         expectNodeFeatures(features, impl, WirelessModels::node_gLink_10g);
 
@@ -583,6 +600,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_filterSettlingTime)
         BaseStation b = makeBaseStationWithMockImpl();
         WirelessNode node(123, b);
         node.setImpl(impl);
+
+        MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
 
         std::unique_ptr<NodeFeatures> features;
         expectNodeFeatures(features, impl, WirelessModels::node_tcLink_6ch);
@@ -620,6 +639,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_thermocoupleType)
         WirelessNode node(123, b);
         node.setImpl(impl);
 
+        MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+
         std::unique_ptr<NodeFeatures> features;
         expectNodeFeatures(features, impl, WirelessModels::node_gLink_10g);
 
@@ -642,6 +663,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_thermocoupleType)
         BaseStation b = makeBaseStationWithMockImpl();
         WirelessNode node(123, b);
         node.setImpl(impl);
+
+        MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
 
         std::unique_ptr<NodeFeatures> features;
         expectNodeFeatures(features, impl, WirelessModels::node_tcLink_6ch);
@@ -669,6 +692,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_linearEquation)
     BaseStation b = makeBaseStationWithMockImpl();
     WirelessNode node(123, b);
     node.setImpl(impl);
+
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl, WirelessModels::node_gLink_10g);
@@ -806,6 +831,309 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_eventTrigger)
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
     BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_EVENT_TRIGGER_MASK);
     issues.clear();
+}
+
+BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_dataMode)
+{
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl());
+    BaseStation b = makeBaseStationWithMockImpl();
+    WirelessNode node(123, b);
+    node.setImpl(impl);
+
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+
+    NodeInfo info(Version(10, 0), WirelessModels::node_sgLink, 200000, WirelessTypes::region_usa);
+    std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
+    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+
+    WirelessNodeConfig c;
+    c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
+    c.activeChannels(ChannelMask(1));
+    c.numSweeps(1000);
+    c.dataFormat(WirelessTypes::dataFormat_cal_float);
+    c.unlimitedDuration(true);
+    c.dataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit);
+    c.samplingMode(WirelessTypes::samplingMode_sync);
+    ConfigIssues issues;
+    
+    //-------------------------------------
+    //Test no data mode enabled
+    DataMode mode(false, false);
+    c.dataMode(mode);
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+    BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DATA_MODE);
+    issues.clear();
+    //-------------------------------------
+
+    //-------------------------------------
+    //Test derived mode not supported
+    mode.enableDerivedMode(true);
+    c.dataMode(mode);
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+    BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DATA_MODE);
+    issues.clear();
+    //-------------------------------------
+
+    //-------------------------------------
+    //Test data mode ok
+    mode.enableDerivedMode(false);
+    mode.enableRawMode(true);
+    c.dataMode(mode);
+    
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
+    //-------------------------------------
+}
+
+BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeRate)
+{
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl());
+    BaseStation b = makeBaseStationWithMockImpl();
+    WirelessNode node(123, b);
+    node.setImpl(impl);
+
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::FLASH_ID).returns(Value::UINT16(0));
+
+    NodeInfo info(Version(10, 34862), WirelessModels::node_gLink_200_8g, 200000, WirelessTypes::region_usa);
+    std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
+    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+
+    WirelessNodeConfig c;
+    c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
+    c.activeChannels(ChannelMask(1));
+    c.numSweeps(1000);
+    c.dataFormat(WirelessTypes::dataFormat_cal_float);
+    c.unlimitedDuration(true);
+    c.dataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit);
+    c.samplingMode(WirelessTypes::samplingMode_sync);
+    DataMode mode(true, true);
+    c.dataMode(mode);
+    c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(1));
+    c.derivedChannelMask(WirelessTypes::derived_peakToPeak, ChannelMask(1));
+    c.derivedChannelMask(WirelessTypes::derived_ips, ChannelMask(1));
+    c.derivedChannelMask(WirelessTypes::derived_crestFactor, ChannelMask(1));
+    EventTriggerOptions opts;
+    opts.triggerMask(BitMask(0));
+    c.eventTriggerOptions(opts);
+
+    ConfigIssues issues;
+
+    //-------------------------------------
+    //Test derived mode not supported
+    c.derivedDataRate(WirelessTypes::sampleRate_256Hz);
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+    BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DERIVED_DATA_RATE);
+    issues.clear();
+    //-------------------------------------
+
+    //-------------------------------------
+    //Test derived data rate is ok
+    c.derivedDataRate(WirelessTypes::sampleRate_30Min);
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
+    //-------------------------------------
+}
+
+BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeMask)
+{
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl());
+    BaseStation b = makeBaseStationWithMockImpl();
+    WirelessNode node(123, b);
+    node.setImpl(impl);
+
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::FLASH_ID).returns(Value::UINT16(0));
+
+    NodeInfo info(Version(10, 34862), WirelessModels::node_gLink_200_8g, 200000, WirelessTypes::region_usa);
+    std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
+    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+
+    WirelessNodeConfig c;
+    c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
+    c.activeChannels(ChannelMask(1));
+    c.numSweeps(1000);
+    c.dataFormat(WirelessTypes::dataFormat_cal_float);
+    c.unlimitedDuration(true);
+    c.dataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit);
+    c.samplingMode(WirelessTypes::samplingMode_sync);
+    DataMode mode(true, true);
+    c.dataMode(mode);
+    c.derivedDataRate(WirelessTypes::sampleRate_30Sec);
+    c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(0));               //invalid ch for G-Link-200
+    c.derivedChannelMask(WirelessTypes::derived_peakToPeak, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derived_ips, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derived_crestFactor, ChannelMask(0));
+    EventTriggerOptions opts;
+    opts.triggerMask(BitMask(0));
+    c.eventTriggerOptions(opts);
+
+    ConfigIssues issues;
+
+    //-------------------------------------
+    //Test invalid derived mask
+    c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(512));             //invalid ch for G-Link-200
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+    BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DERIVED_MASK_RMS);
+    issues.clear();
+    //-------------------------------------
+
+    //-------------------------------------
+    //Test invalid derived mask
+    c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derived_peakToPeak, ChannelMask(512));      //invalid ch for G-Link-200
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+    BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DERIVED_MASK_P2P);
+    issues.clear();
+    //-------------------------------------
+
+    //-------------------------------------
+    //Test invalid derived mask
+    c.derivedChannelMask(WirelessTypes::derived_peakToPeak, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derived_ips, ChannelMask(512));             //invalid ch for G-Link-200
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+    BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DERIVED_MASK_IPS);
+    issues.clear();
+    //-------------------------------------
+
+    //-------------------------------------
+    //Test invalid derived mask
+    c.derivedChannelMask(WirelessTypes::derived_ips, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derived_crestFactor, ChannelMask(513));     //invalid ch for G-Link-200
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+    BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DERIVED_MASK_CREST_FACTOR);
+    issues.clear();
+    //-------------------------------------
+
+    //-------------------------------------
+    //Test derived data rate is ok
+    c.derivedChannelMask(WirelessTypes::derived_crestFactor, ChannelMask(1));
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
+    //-------------------------------------
+}
+
+BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_channelMasks)
+{
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl());
+    BaseStation b = makeBaseStationWithMockImpl();
+    WirelessNode node(123, b);
+    node.setImpl(impl);
+
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::FLASH_ID).returns(Value::UINT16(0));
+
+    NodeInfo info(Version(10, 34862), WirelessModels::node_gLink_200_8g, 200000, WirelessTypes::region_usa);
+    std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
+    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+
+    WirelessNodeConfig c;
+    c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
+    c.numSweeps(1000);
+    c.dataFormat(WirelessTypes::dataFormat_cal_float);
+    c.unlimitedDuration(true);
+    c.dataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit);
+    c.samplingMode(WirelessTypes::samplingMode_sync);
+    DataMode mode(true, true);
+    c.dataMode(mode);
+    c.derivedDataRate(WirelessTypes::sampleRate_30Sec);
+    c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(1));
+    c.derivedChannelMask(WirelessTypes::derived_peakToPeak, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derived_ips, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derived_crestFactor, ChannelMask(0));
+    EventTriggerOptions opts;
+    opts.triggerMask(BitMask(0));
+    c.eventTriggerOptions(opts);
+
+    ConfigIssues issues;
+
+    //-------------------------------------
+    //Test no raw channels
+    c.activeChannels(ChannelMask(0));
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+    BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_ACTIVE_CHANNELS);
+    issues.clear();
+    //-------------------------------------
+
+    //-------------------------------------
+    //Test invalid derived mask
+    c.activeChannels(ChannelMask(1));
+    c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(0));
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+    BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DERIVED_MASK);
+    issues.clear();
+    //-------------------------------------
+
+    //-------------------------------------
+    //Test derived data rate is ok
+    c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(1));
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
+    //-------------------------------------
+}
+
+BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedSampleRate)
+{
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl());
+    BaseStation b = makeBaseStationWithMockImpl();
+    WirelessNode node(123, b);
+    node.setImpl(impl);
+
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::FLASH_ID).returns(Value::UINT16(0));
+
+    NodeInfo info(Version(10, 34862), WirelessModels::node_gLink_200_8g, 200000, WirelessTypes::region_usa);
+    std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
+    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+
+    WirelessNodeConfig c;
+    c.numSweeps(1000);
+    c.activeChannels(ChannelMask(1));
+    c.dataFormat(WirelessTypes::dataFormat_cal_float);
+    c.unlimitedDuration(true);
+    c.dataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit);
+    c.samplingMode(WirelessTypes::samplingMode_sync);
+    DataMode mode(true, true);
+    c.dataMode(mode);
+    c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(1));
+    c.derivedChannelMask(WirelessTypes::derived_peakToPeak, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derived_ips, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derived_crestFactor, ChannelMask(0));
+    EventTriggerOptions opts;
+    opts.triggerMask(BitMask(0));
+    c.eventTriggerOptions(opts);
+
+    ConfigIssues issues;
+
+    //-------------------------------------
+    //Test too fast (1)
+    c.sampleRate(WirelessTypes::sampleRate_16Hz);
+    c.derivedDataRate(WirelessTypes::sampleRate_1Hz);
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+    BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_SAMPLE_RATE);
+    BOOST_CHECK_EQUAL(issues.at(1).id(), ConfigIssue::CONFIG_DERIVED_DATA_RATE);
+    issues.clear();
+    //-------------------------------------
+
+    //-------------------------------------
+    //Test too fast (2)
+    c.sampleRate(WirelessTypes::sampleRate_1Hz);
+    c.derivedDataRate(WirelessTypes::sampleRate_30Sec);
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+    BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_SAMPLE_RATE);
+    BOOST_CHECK_EQUAL(issues.at(1).id(), ConfigIssue::CONFIG_DERIVED_DATA_RATE);
+    issues.clear();
+    //-------------------------------------
+
+    //-------------------------------------
+    //Test ok rate (1)
+    c.sampleRate(WirelessTypes::sampleRate_1Hz);
+    c.derivedDataRate(WirelessTypes::sampleRate_1Min);
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
+    //-------------------------------------
+
+    //-------------------------------------
+    //Test ok rate (2)
+    c.sampleRate(WirelessTypes::sampleRate_32Hz);
+    c.derivedDataRate(WirelessTypes::sampleRate_1Hz);
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
+    //-------------------------------------
 }
 
 BOOST_AUTO_TEST_CASE(WirelessNodeConfig_flashBandwidth)

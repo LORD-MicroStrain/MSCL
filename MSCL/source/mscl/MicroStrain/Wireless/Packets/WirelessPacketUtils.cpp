@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -14,6 +14,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "HclSmartBearing_RawPacket.h"
 #include "HclSmartBearing_CalPacket.h"
 #include "LdcPacket.h"
+#include "LdcMathPacket.h"
 #include "LdcPacket_16ch.h"
 #include "NodeDiscoveryPacket.h"
 #include "NodeDiscoveryPacket_v2.h"
@@ -25,6 +26,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "ShmPacket.h"
 #include "SyncSamplingPacket.h"
 #include "SyncSamplingPacket_16ch.h"
+#include "SyncSamplingMathPacket.h"
 #include "WirelessPacketUtils.h"
 
 namespace mscl
@@ -90,7 +92,9 @@ namespace mscl
             case WirelessPacket::packetType_SyncSampling:               return SyncSamplingPacket::integrityCheck(packet);
             case WirelessPacket::packetType_BufferedLDC:                return BufferedLdcPacket::integrityCheck(packet);
             case WirelessPacket::packetType_LDC_16ch:                   return LdcPacket_16ch::integrityCheck(packet);
+            case WirelessPacket::packetType_LDC_math:                   return LdcMathPacket::integrityCheck(packet);
             case WirelessPacket::packetType_SyncSampling_16ch:          return SyncSamplingPacket_16ch::integrityCheck(packet);
+            case WirelessPacket::packetType_SyncSampling_math:          return SyncSamplingMathPacket::integrityCheck(packet);
             case WirelessPacket::packetType_BufferedLDC_16ch:           return BufferedLdcPacket_16ch::integrityCheck(packet);
             case WirelessPacket::packetType_AsyncDigital:               return AsyncDigitalPacket::integrityCheck(packet);
             case WirelessPacket::packetType_AsyncDigitalAnalog:         return AsyncDigitalAnalogPacket::integrityCheck(packet);
@@ -112,6 +116,7 @@ namespace mscl
             case WirelessPacket::packetType_nodeErrorReply:
             case WirelessPacket::packetType_nodeReceived:
             case WirelessPacket::packetType_baseCommand:
+            case WirelessPacket::packetType_baseReceived:
             case WirelessPacket::packetType_baseSuccessReply:
             case WirelessPacket::packetType_baseErrorReply:
                 return true;

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -10,6 +10,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Commands/LongPing.h"
 #include "Configuration/ActivitySense.h"
 #include "Configuration/ConfigIssue.h"
+#include "Configuration/DataMode.h"
 #include "Configuration/EventTriggerOptions.h"
 #include "Configuration/FatigueOptions.h"
 #include "Configuration/HistogramOptions.h"
@@ -357,7 +358,7 @@ namespace mscl
         //    Attempts to set the Node to the Idle state.
         //    This will stop the node from sampling or sleeping, and put it into an idle state
         //    so that it may be communicated with (configured, started sampling, etc).
-        //    This command may take up to 2 minutes. The returned <SetToIdleStatus> object
+        //    This operation may take several seconds to complete. The returned <SetToIdleStatus> object
         //    may be used to determine the current status of the Set to Idle operation.
         //
         //Returns:
@@ -365,6 +366,7 @@ namespace mscl
         //    ongoing Set to Idle operation, as well as cancel the operation altogether.
         //
         //Exceptions:
+        //    - <Error_Communication>: Failed to communicate with the parent BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         SetToIdleStatus setToIdle();
 
@@ -540,6 +542,18 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to read from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint16 getNumDatalogSessions() const;
+
+        //API Function: percentFull
+        //  Gets the internal datalogging memory percentage that is currently stored on the Node.
+        //
+        //Returns:
+        //  The percentage (0.0 to 100.0) of datalogging memory that is currently used.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        float percentFull() const;
 
         //API Function: getDefaultMode
         //    Reads the <WirelessTypes::DefaultMode> that is currently set on the Node.
@@ -757,6 +771,38 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::Filter getAntiAliasingFilter(const ChannelMask& mask) const;
 
+        //API Function: getLowPassFilter
+        //    Reads the Low-Pass Filter of the specified <ChannelMask> currently set on the Node.
+        //    See Also: <NodeFeatures::channelGroups>, <NodeFeatures::supportsLowPassFilter>
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> of the low-pass filter to read.
+        //
+        //Returns:
+        //    The Low-Pass <WirelessTypes::Filter> currently set on the Node for the <ChannelMask>.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Low-Pass Filter is not supported for the provided <ChannelMask>.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::Filter getLowPassFilter(const ChannelMask& mask) const;
+
+        //API Function: getHighPassFilter
+        //    Reads the High-Pass Filter of the specified <ChannelMask> currently set on the Node.
+        //    See Also: <NodeFeatures::channelGroups>, <NodeFeatures::supportsHighPassFilter>
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> of the high-pass filter to read.
+        //
+        //Returns:
+        //    The <WirelessTypes::HighPassFilter> currently set on the Node for the <ChannelMask>.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: High-Pass Filter is not supported for the provided <ChannelMask>.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::HighPassFilter getHighPassFilter(const ChannelMask& mask) const;
+
         //API Function: getGaugeFactor
         //    Reads the gauge factor of the specified <ChannelMask> currently set on the Node.
         //    See Also: <NodeFeatures::channelGroups>, <NodeFeatures::supportsGaugeFactor>
@@ -942,6 +988,45 @@ namespace mscl
         //  - <Error_NodeCommunication>: Failed to read from the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint32 getSensorDelay() const;
-    };
 
+        //API Function: getDataMode
+        //  Reads the <DataMode> that is currently set on the Node.
+        //
+        //Returns:
+        //  A <DataMode> object representing the Data Modes currently set on the Node.
+        //
+        //Exceptions:
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        DataMode getDataMode() const;
+
+        //API Function: getDerivedDataRate
+        //  Reads the <WirelessTypes::WirelessSampleRate> for all Derived Data Channels that is currently set on the Node.
+        //
+        //Returns:
+        //  A <WirelessTypes::WirelessSampleRate> for all Derived Data Channels that is currently set on the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Derived Channels are not supported by this Node.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::WirelessSampleRate getDerivedDataRate() const;
+
+        //API Function: getDerivedChannelMask
+        //  Reads the <ChannelMask> for an individual <WirelessTypes::DerivedChannel> that is currently set on the Node.
+        //  This represents which of the actual Node's channels are set to be mapped to derived channels.
+        //  For example, if the mask for RMS has ch1 and ch3 active, ch1RMS and ch3RMS channels will be output.
+        //
+        //Parameters:
+        //  derivedChannel - The <WirelessTypes::DerivedChannel> to read the channel mask for.
+        //
+        //Returns:
+        //  A <ChannelMask> that is currently set on the Node for the requested <WirelessTypes::DerivedChannel>.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Derived Channels are not supported by this Node.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        ChannelMask getDerivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const;
+    };
 }

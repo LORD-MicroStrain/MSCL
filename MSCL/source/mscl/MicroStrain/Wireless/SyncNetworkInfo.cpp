@@ -1,11 +1,12 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "SyncNetworkInfo.h"
 #include "Configuration/WirelessNodeConfig.h"
+#include "Features/NodeFeatures.h"
 #include "mscl/Version.h"
 
 namespace mscl
@@ -93,6 +94,11 @@ namespace mscl
     void SyncNetworkInfo::dutyCycle(float percent)
     {
         m_txPerGroup = Utils::ceilBase2(percent * m_bytesPerSecond / m_maxBytesPerPacket);
+    }
+
+    WirelessTypes::DerivedChannels SyncNetworkInfo::supportedDerivedChannels() const
+    {
+        return m_node.features().derivedChannels();
     }
 
     void SyncNetworkInfo::setPendingConfig(const WirelessNodeConfig& config)

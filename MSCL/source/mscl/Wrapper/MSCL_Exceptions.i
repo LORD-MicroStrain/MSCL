@@ -781,6 +781,7 @@
 %catches(mscl::Error_Connection, mscl::Error_Communication, mscl::Error)                                            mscl::BaseStation::cyclePower();
 %catches(mscl::Error_Connection, mscl::Error_Communication, mscl::Error)                                            mscl::BaseStation::resetRadio();
 %catches(mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error_Communication, mscl::Error)                  mscl::BaseStation::changeFrequency(WirelessTypes::Frequency frequency);
+%catches(mscl::Error_Connection)                                                                                    mscl::BaseStation::broadcastSetToIdle();
 %catches(mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error_Communication)                               mscl::BaseStation::verifyConfig(const BaseStationConfig& config, ConfigIssues& outIssues) const;
 %catches(mscl::Error_NotSupported, mscl::Error_InvalidConfig, mscl::Error_Communication, mscl::Error_Connection)    mscl::BaseStation::applyConfig(const BaseStationConfig& config);
 %catches(mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error_Communication)                               mscl::BaseStation::frequency() const;
@@ -789,6 +790,7 @@
 %catches(mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error_Communication)                               mscl::BaseStation::serial() const;
 %catches(mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error_Communication)                               mscl::BaseStation::name() const;
 %catches(mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error_Communication)                               mscl::BaseStation::microcontroller() const;
+%catches(mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error_Communication)                               mscl::BaseStation::regionCode() const;
 %catches(mscl::Error_Connection)                                                                                    mscl::BaseStation::getData();
 %catches(mscl::Error_Connection)                                                                                    mscl::BaseStation::getData(uint32 timeout);
 %catches(mscl::Error_Connection)                                                                                    mscl::BaseStation::getData(uint32 timeout, uint32 maxSweeps);
@@ -829,6 +831,8 @@
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::inputRange(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::hardwareOffset(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::antiAliasingFilter(const ChannelMask& mask) const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::lowPassFilter(const ChannelMask& mask) const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::highPassFilter(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::gaugeFactor(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::filterSettlingTime(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::thermocoupleType(const ChannelMask& mask) const;
@@ -842,6 +846,9 @@
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::diagnosticInterval() const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::storageLimitMode() const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::sensorDelay() const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::dataMode() const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::derivedDataRate() const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::derivedChannelMask() const;
 
 //WirelessNode
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::features() const;
@@ -862,10 +869,11 @@
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::microcontroller() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::radioFeatures() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::dataStorageSize() const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::percentFull() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::regionCode() const;
-%catches(mscl::Error_Connection)                                                                                            mscl::WirelessNode::setToIdle();
+%catches(mscl::Error_Communication, mscl::Error_Connection)                                                                 mscl::WirelessNode::setToIdle();
 %catches(mscl::Error_NodeCommunication, mscl::Error_Connection)                                                             mscl::WirelessNode::erase();
-%catches(mscl::Error_InvalidNodeConfig, mscl::Error_Connection)                                                             mscl::WirelessNode::startNonSyncSampling();
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_InvalidNodeConfig, mscl::Error_Connection)    mscl::WirelessNode::startNonSyncSampling();
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::clearHistogram();
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::autoBalance(const ChannelMask& mask, float targetPercent);
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::autoCal_shmLink();
@@ -889,6 +897,8 @@
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getInputRange(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getHardwareOffset(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getAntiAliasingFilter(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getLowPassFilter(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getHighPassFilter(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getGaugeFactor(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getFilterSettlingTime(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getThermocoupleType(const ChannelMask& mask) const;
@@ -902,6 +912,9 @@
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getDiagnosticInterval() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getStorageLimitMode() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getSensorDelay() const;
+%catches(mscl::Error_NodeCommunication, mscl::Error_Connection)                                                             mscl::WirelessNode::getDataMode() const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getDerivedDataRate() const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getDerivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const;
 
 //NodeFeatures
 %catches(mscl::Error_NotSupported)      mscl::NodeFeatures::channelType(uint8 channelNumber) const;

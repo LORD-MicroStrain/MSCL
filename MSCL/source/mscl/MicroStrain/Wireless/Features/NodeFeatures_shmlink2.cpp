@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -42,6 +42,21 @@ namespace mscl
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration);        //accel z
         m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_temperature);        //temp
     }
+
+    const WirelessTypes::TransmitPowers NodeFeatures_shmlink2::transmitPowers() const
+    {
+        if(m_nodeInfo.regionCode() == WirelessTypes::region_japan)
+        {
+            WirelessTypes::TransmitPowers result;
+            result.push_back(WirelessTypes::power_16dBm);
+            result.push_back(WirelessTypes::power_10dBm);
+            return result;
+        }
+        else
+        {
+            return NodeFeatures::transmitPowers();
+        }
+    }
     
     const WirelessTypes::DataCollectionMethods NodeFeatures_shmlink2::dataCollectionMethods() const
     {
@@ -63,14 +78,7 @@ namespace mscl
     {
         //build and return the sampling modes that are supported
         WirelessTypes::SamplingModes result;
-
-        if(m_nodeInfo.model() == WirelessModels::node_shmLink2)
-        {
-            result.push_back(WirelessTypes::samplingMode_sync);
-        }
-
         result.push_back(WirelessTypes::samplingMode_nonSync);
-
         return result;
     }
 
@@ -79,7 +87,6 @@ namespace mscl
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
         {
-            case WirelessTypes::samplingMode_sync:
             case WirelessTypes::samplingMode_nonSync:
             {
                 if(m_nodeInfo.firmwareVersion() >= Version(10, 33151))

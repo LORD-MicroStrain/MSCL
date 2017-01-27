@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -428,6 +428,8 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setBootMode)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
     
@@ -437,7 +439,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setBootMode)
     WirelessNodeConfig c;
     c.defaultMode(WirelessTypes::defaultMode_sync);
 
-    BOOST_CHECK_NO_THROW(node.applyConfig(c));//node.setBootMode(WirelessTypes::bootMode_sync));
+    BOOST_CHECK_NO_THROW(node.applyConfig(c));
 }
 
 BOOST_AUTO_TEST_CASE(NodeConfig_getInactivityTimeout)
@@ -461,6 +463,8 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setInactivityTimeout)
     BaseStation b = makeBaseStationWithMockImpl();
     WirelessNode node(100, b);
     node.setImpl(impl);
+
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
@@ -520,6 +524,8 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setTransmitPower)
     BaseStation b = makeBaseStationWithMockImpl();
     WirelessNode node(100, b);
     node.setImpl(impl);
+
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
@@ -629,11 +635,11 @@ BOOST_AUTO_TEST_CASE(WirelessNode_getFatigueOptions)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    NodeInfo info(Version(10, 9), WirelessModels::node_shmLink2, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(10, 9), WirelessModels::node_shmLink2_cust1, 0, WirelessTypes::region_usa);
 
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    expectNodeFeatures(features, impl, WirelessModels::node_shmLink2);
+    expectNodeFeatures(features, impl, WirelessModels::node_shmLink2_cust1);
 
     expectRead(impl, NodeEepromMap::PEAK_VALLEY_THRES, Value::UINT16(64318));        //peak/valley
     expectRead(impl, NodeEepromMap::YOUNGS_MODULUS, Value::FLOAT(123.5f));            //youngs modulus
@@ -707,11 +713,11 @@ BOOST_AUTO_TEST_CASE(WirelessNode_getHistogramOptions)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    NodeInfo info(Version(9, 9), WirelessModels::node_shmLink2, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(9, 9), WirelessModels::node_shmLink2_cust1, 0, WirelessTypes::region_usa);
 
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    expectNodeFeatures(features, impl, WirelessModels::node_shmLink2);
+    expectNodeFeatures(features, impl, WirelessModels::node_shmLink2_cust1);
 
     expectRead(impl, NodeEepromMap::HISTOGRAM_SAMPLE_RATE, Value::UINT16(118));        //histogram rate
     expectRead(impl, NodeEepromMap::BIN_START, Value::UINT16(12));        //bin start
@@ -731,11 +737,11 @@ BOOST_AUTO_TEST_CASE(WirelessNode_clearHistogram)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    NodeInfo info(Version(9, 9), WirelessModels::node_shmLink2, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(9, 9), WirelessModels::node_shmLink2_cust1, 0, WirelessTypes::region_usa);
 
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    expectNodeFeatures(features, impl, WirelessModels::node_shmLink2);
+    expectNodeFeatures(features, impl, WirelessModels::node_shmLink2_cust1);
 
     expectCyclePower(impl);
     expectWrite(impl, NodeEepromMap::RESET_BINS, Value::UINT16(1));

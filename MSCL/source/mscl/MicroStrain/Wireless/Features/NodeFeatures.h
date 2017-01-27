@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -214,6 +214,16 @@ namespace mscl
         //    true if the <WirelessTypes::ChannelGroupSetting> is supported for the <ChannelMask>, false otherwise.
         bool supportsChannelSetting(WirelessTypes::ChannelGroupSetting setting, const ChannelMask& mask) const;
 
+        //API Function: isChannelSettingReadOnly
+        //  Checks if the <WirelessTypes::ChannelGroupSetting> is read only.
+        //
+        //Parameters:
+        //  setting - The <WirelessTypes::ChannelGroupSetting> to check for.
+        //
+        //Returns:
+        //  true if the <WirelessTypes::ChannelGroupSetting> is read only, false otherwise.
+        virtual bool isChannelSettingReadOnly(WirelessTypes::ChannelGroupSetting setting) const;
+
         //API Function: supportsInputRange
         //    Checks if the Node supports Input Range for any of its <ChannelGroups>.
         //    
@@ -234,6 +244,20 @@ namespace mscl
         //Returns:
         //  true if the Node supports Anti-Aliasing Filter for at least one <ChannelGroup>, false otherwise.
         bool supportsAntiAliasingFilter() const;
+
+        //API Function: supportsLowPassFilter
+        //  Checks if the Node supports Low-Pass Filter for any of its <ChannelGroups>.
+        //
+        //Returns:
+        //  true if the Node supports Low-Pass Filter for at least one <ChannelGroup>, false otherwise.
+        bool supportsLowPassFilter() const;
+
+        //API Function: supportsHighPassFilter
+        //  Checks if the Node supports High-Pass Filter for any of its <ChannelGroups>.
+        //
+        //Returns:
+        //  true if the Node supports High-Pass Filter for at least one <ChannelGroup>, false otherwise.
+        bool supportsHighPassFilter() const;
 
         //API Function: supportsGaugeFactor
         //    Checks if the Node supports Gauge Factor for any of its <ChannelGroups>.
@@ -511,6 +535,30 @@ namespace mscl
         //  true if the Node supports Non-Sync logging with timestamps.
         virtual bool supportsNonSyncLogWithTimestamps() const;
 
+        //API Function: supportsRawDataMode
+        //  Checks if the Node supports the Raw Data Mode.
+        //
+        //Returns:
+        //  true if the Node supports Raw Data Mode.
+        virtual bool supportsRawDataMode() const;
+
+        //API Function: supportsDerivedDataMode
+        //  Checks if the Node supports the Derived Data Mode.
+        //
+        //Returns:
+        //  true if the Node supports Derived Data Mode.
+        bool supportsDerivedDataMode() const;
+
+        //API Function: supportsDerivedChannel
+        //  Checks if the Node supports a specific <WirelessTypes::DerivedChannel>.
+        //
+        //Parameters:
+        //  derivedChannel - The <WirelessTypes::DerivedChannel> to check if it is supported.
+        //
+        //Returns:
+        //  true if the specific derived channel is supported, false otherwise.
+        bool supportsDerivedChannel(WirelessTypes::DerivedChannel derivedChannel) const;
+
         //API Function: maxSampleRate
         //    Gets the maximum <SampleRate> value that is supported by this Node with the given <SamplingMode>, <ChannelMask>, and <WirelessTypes::DataCollectionMethod>.
         //
@@ -762,6 +810,13 @@ namespace mscl
         //                            The <WirelessTypes::DataCollectionMethod> is not supported by this Node.
         virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const;
 
+        //API Function: derivedDataRates
+        //  Gets a list of the <WirelessTypes::WirelessSampleRate>s that are supported by this Node for Derived Channels.
+        //
+        //Returns:
+        //  A vector of <WirelessTypes::WirelessSampleRate>s that are supported by this Node for Derived Channels.
+        virtual const WirelessTypes::WirelessSampleRates derivedDataRates() const;
+
         //API Function: transmitPowers
         //    Gets a list of the <WirelessTypes::TransmitPowers> that are supported by this Node.
         //
@@ -790,6 +845,20 @@ namespace mscl
         //    A vector of Anti-Aliasing <WirelessTypes::Filters> supported by the Node.
         virtual const WirelessTypes::Filters antiAliasingFilters() const;
 
+        //API Function: lowPassFilters
+        //    Gets a list of the Low-Pass <WirelessTypes::Filter>s that are supported by this Node.
+        //
+        //Returns:
+        //    A vector of Low-Pass <WirelessTypes::Filters> supported by the Node.
+        virtual const WirelessTypes::Filters lowPassFilters() const;
+
+        //API Function: highPassFilters
+        //    Gets a list of the High-Pass <WirelessTypes::Filter>s that are supported by this Node.
+        //
+        //Returns:
+        //    A vector of <WirelesTypes::HighPassFilters> supported by the Node.
+        virtual const WirelessTypes::HighPassFilters highPassFilters() const;
+
         //API Function: storageLimitModes
         //  Gets a list of the <WirelessTypes::StorageLimitModes> that are supported by this Node.
         //
@@ -806,6 +875,13 @@ namespace mscl
         //Returns:
         //  A vector of <WirelessTypes::InputRanges> that are supported by this Node.
         virtual const WirelessTypes::InputRanges inputRanges(const ChannelMask& channels) const;
+
+        //API Function: derivedChannels
+        //  Gets a list of <WirelessTypes::DerivedChannels> that are supported by this Node.
+        //
+        //Returns:
+        //  A vector of <WirelessTypes::DerivedChannels> supported by the Node.
+        virtual const WirelessTypes::DerivedChannels derivedChannels() const;
 
     protected:
         //Function: supportsNewTransmitPowers
@@ -849,5 +925,13 @@ namespace mscl
         //  Checks if the Node uses floating point for event trigger values.
         //  Older nodes used uint16 (bits).
         virtual bool usesFloatEventTriggerVal() const;
+
+        //Function: onlySupportsRawDataMode
+        //  Checks if the raw data mode is the only data mode supported.
+        bool onlySupportsRawDataMode() const;
+
+        //Function: supportsDataModeEeprom
+        //  Checks if the Data Mode eeprom location is supported.
+        bool supportsDataModeEeprom() const;
     };
 }

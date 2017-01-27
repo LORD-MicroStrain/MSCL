@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -64,11 +64,11 @@ BOOST_AUTO_TEST_CASE(ChannelGroup_getGaugeFactor)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    NodeInfo info(Version(10, 0), WirelessModels::node_shmLink2, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(10, 0), WirelessModels::node_shmLink2_cust1, 0, WirelessTypes::region_usa);
 
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
-    expectNodeFeatures(features, impl, WirelessModels::node_shmLink2);
+    expectNodeFeatures(features, impl, WirelessModels::node_shmLink2_cust1);
 
     expectRead(impl, NodeEepromMap::GAUGE_FACTOR_1, Value::FLOAT(1.2345f));
     expectRead(impl, NodeEepromMap::GAUGE_FACTOR_2, Value::FLOAT(713.45101f));

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -139,6 +139,19 @@ namespace mscl
         {7, WirelessTypes::range_488microV}
     };
 
+    const InputRange::InputRangeMap InputRange::RANGES_GLINK200 = {
+        {1, WirelessTypes::range_2G},
+        {2, WirelessTypes::range_4G},
+        {3, WirelessTypes::range_8G}
+    };
+
+    //TODO: update these with the real values once we solidified them
+    const InputRange::InputRangeMap InputRange::RANGES_GLINK200_40G = {
+        {1, WirelessTypes::range_2G},
+        {2, WirelessTypes::range_4G},
+        {3, WirelessTypes::range_8G}
+    };
+
     const InputRange::InputRangeMap& InputRange::getRangeMap(WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType channelType)
     {
         switch(nodeType)
@@ -205,6 +218,14 @@ namespace mscl
 
             case WirelessModels::node_mvPerVLink:
                 return RANGES_MVPVLINK;
+
+            case WirelessModels::node_gLink_200_8g:
+            case WirelessModels::node_gLink_200_8g_oem:
+                return RANGES_GLINK200;
+
+            case WirelessModels::node_gLink_200_40g:
+            case WirelessModels::node_gLink_200_40g_oem:
+                return RANGES_GLINK200_40G;
         }
 
         throw Error_NotSupported("Invalid Node Type");

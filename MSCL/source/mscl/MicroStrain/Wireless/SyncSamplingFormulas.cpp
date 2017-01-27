@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -147,7 +147,7 @@ namespace SyncSamplingFormulas
             //if the sample rate is 16hz or slower, or the 32hz or faster and a tclink1ch or rtdlink, or the model is SHM-Link
             if( (sampleRate <= SampleRate::Hertz(16)) ||
                 (sampleRate >= SampleRate::Hertz(32) && (nodeModel == WirelessModels::node_tcLink_1ch || nodeModel == WirelessModels::node_rtdLink)) ||
-                (nodeModel == WirelessModels::node_shmLink || nodeModel == WirelessModels::node_shmLink2 || nodeModel == WirelessModels::node_shmLink2_cust1)
+                (nodeModel == WirelessModels::node_shmLink || nodeModel == WirelessModels::node_shmLink200 || nodeModel == WirelessModels::node_shmLink2_cust1)
               )
             {
                 return true;
@@ -255,6 +255,21 @@ namespace SyncSamplingFormulas
         }
 
         return txPerSec;
+    }
+
+    float overheadFactor(bool lossless, bool optimizeBandwidth)
+    {
+        if(optimizeBandwidth)
+        {
+            return 2.0f;
+        }
+
+        if(lossless)
+        {
+            return 1.5f;
+        }
+        
+        return 1.0f;
     }
 }
 #endif

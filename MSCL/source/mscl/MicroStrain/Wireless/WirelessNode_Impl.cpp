@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -19,6 +19,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Configuration/NodeEepromMap.h"
 #include "Configuration/WirelessNodeConfig.h"
 #include "NodeCommTimes.h"
+#include "NodeMemory_v1.h"
 
 namespace mscl
 {
@@ -39,6 +40,8 @@ namespace mscl
 
         bool success = false;
         uint8 retryCount = 0;
+
+        rec_mutex_lock_guard lock(m_protocolMutex);
 
         do
         {
@@ -98,6 +101,8 @@ namespace mscl
 
     NodeEeprom& WirelessNode_Impl::eeprom() const
     {
+        rec_mutex_lock_guard lock(m_protocolMutex);
+
         //if the eeprom variable hasn't been set yet
         if(m_eeprom == NULL)
         {
@@ -131,6 +136,8 @@ namespace mscl
 
     const WirelessProtocol& WirelessNode_Impl::protocol() const
     {
+        rec_mutex_lock_guard lock(m_protocolMutex);
+
         //if the protocol variable hasn't been set yet
         if(m_protocol == NULL)
         {
@@ -161,6 +168,8 @@ namespace mscl
         //update this Node's base station
         m_baseStation = basestation;
 
+        rec_mutex_lock_guard lock(m_protocolMutex);
+
         if(m_eeprom != NULL)
         {
             //update the base station in the eeprom object
@@ -183,6 +192,8 @@ namespace mscl
         //will be cached for later in case m_eeprom is null
         m_eepromSettings.useGroupRead = useGroup;
 
+        rec_mutex_lock_guard lock(m_protocolMutex);
+
         if(m_eeprom != NULL)
         {
             eeprom().updateSettings(m_eepromSettings);
@@ -193,6 +204,8 @@ namespace mscl
     {
         //will be cached for later in case m_eeprom is null
         m_eepromSettings.numRetries = numRetries;
+
+        rec_mutex_lock_guard lock(m_protocolMutex);
 
         if(m_eeprom != NULL)
         {
@@ -210,6 +223,8 @@ namespace mscl
         //will be cached for later in case m_eeprom is null
         m_eepromSettings.useEepromCache = useCache;
 
+        rec_mutex_lock_guard lock(m_protocolMutex);
+
         if(m_eeprom != NULL)
         {
             eeprom().updateSettings(m_eepromSettings);
@@ -218,6 +233,8 @@ namespace mscl
 
     void WirelessNode_Impl::clearEepromCache()
     {
+        rec_mutex_lock_guard lock(m_protocolMutex);
+
         //don't need to clear anything if it doesn't exist
         if(m_eeprom != NULL)
         {
@@ -289,11 +306,19 @@ namespace mscl
 
     void WirelessNode_Impl::applyConfig(const WirelessNodeConfig& config)
     {
+        //reset the hasWritten flag so that we can tell if
+        //eeproms were actually changed (and not ignored due to the cache).
+        eeprom().resetHasWritten();
+
         config.apply(features(), eeHelper());
 
-        //if the apply succeeded, we need to cycle the power
-        //for some eeproms to actually take the changes
-        m_eepromHelper->applyEepromChanges();
+        //if an actual eeprom has been written
+        if(eeprom().didWrite())
+        {
+            //if the apply succeeded, we need to cycle the power
+            //for some eeproms to actually take the changes
+            m_eepromHelper->applyEepromChanges();
+        }
     }
 
     uint16 WirelessNode_Impl::getNumDatalogSessions()
@@ -315,6 +340,41 @@ namespace mscl
 
             return info.sessionCount;
         }
+    }
+
+    float WirelessNode_Impl::percentFull()
+    {
+        uint32 numBytesLogged = 0;
+        uint64 dataStorageSize = m_eepromHelper->read_dataStorageSize();
+
+        if(dataStorageSize == 0)
+        {
+            return 0.0f;
+        }
+
+        if(features().datalogDownloadVersion() == 1)
+        {
+            numBytesLogged = NodeMemory_v1::calcTotalBytes(m_eepromHelper->read_logPage(), m_eepromHelper->read_logPageOffset());
+        }
+        else
+        {
+            //use the getDatalogSessionInfo command to obtain this information
+            DatalogSessionInfoResult info;
+            if(!m_baseStation.node_getDatalogSessionInfo(protocol(), m_address, info))
+            {
+                throw Error_NodeCommunication(nodeAddress(), "Failed to get the Datalogging Session Info");
+            }
+
+            numBytesLogged = info.maxLoggedBytes;
+        }
+
+        float result = (static_cast<float>(numBytesLogged) / static_cast<float>(dataStorageSize)) * 100.0f;
+
+        //make sure it is within 0 to 100 %
+        Utils::checkBounds_min(result, 0.0f);
+        Utils::checkBounds_max(result, 100.0f);
+
+        return result;
     }
 
     WirelessTypes::DefaultMode WirelessNode_Impl::getDefaultMode() const
@@ -413,6 +473,16 @@ namespace mscl
     WirelessTypes::Filter WirelessNode_Impl::getAntiAliasingFilter(const ChannelMask& mask) const
     {
         return m_eepromHelper->read_antiAliasingFilter(mask);
+    }
+
+    WirelessTypes::Filter WirelessNode_Impl::getLowPassFilter(const ChannelMask& mask) const
+    {
+        return m_eepromHelper->read_lowPassFilter(mask);
+    }
+
+    WirelessTypes::HighPassFilter WirelessNode_Impl::getHighPassFilter(const ChannelMask& mask) const
+    {
+        return m_eepromHelper->read_highPassFilter(mask);
     }
 
     float WirelessNode_Impl::getGaugeFactor(const ChannelMask& mask) const
@@ -534,6 +604,36 @@ namespace mscl
         }
 
         return m_eepromHelper->read_sensorDelay();
+    }
+
+    DataMode WirelessNode_Impl::getDataMode() const
+    {
+        return m_eepromHelper->read_dataMode();
+    }
+
+    WirelessTypes::WirelessSampleRate WirelessNode_Impl::getDerivedDataRate() const
+    {
+        if(!features().supportsDerivedDataMode())
+        {
+            throw Error_NotSupported("Derived Data Channels are not supported by this Node.");
+        }
+
+        return m_eepromHelper->read_derivedSampleRate();
+    }
+
+    ChannelMask WirelessNode_Impl::getDerivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const
+    {
+        if(!features().supportsDerivedDataMode())
+        {
+            throw Error_NotSupported("Derived Data Channels are not supported by this Node.");
+        }
+
+        if(!features().supportsDerivedChannel(derivedChannel))
+        {
+            throw Error_NotSupported("The given Derived Data Channel (" + Utils::toStr(derivedChannel) + ") is not supported by this Node.");
+        }
+
+        return m_eepromHelper->read_derivedChannelMask(derivedChannel);
     }
 
     /*
@@ -781,7 +881,7 @@ namespace mscl
         }
 
         //verify the node is the correct model
-        if(nodeModel != WirelessModels::node_shmLink2 &&
+        if(nodeModel != WirelessModels::node_shmLink200 &&
            nodeModel != WirelessModels::node_shmLink2_cust1)
         {
             throw Error_NotSupported("autoCal_shmLink is not supported by this Node's model.");

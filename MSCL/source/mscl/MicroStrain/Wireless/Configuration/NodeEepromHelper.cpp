@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -803,6 +803,9 @@ namespace mscl
 
     WirelessTypes::TransmitPower NodeEepromHelper::read_transmitPower() const
     {
+        //TODO: this is currently defined as an int16 so that negative dBm values
+        //      can be supported in the future. 
+
         int16 val = read(NodeEepromMap::TX_POWER_LEVEL).as_int16();
 
         if(m_node->features().supportsNewTransmitPowers())
@@ -1006,7 +1009,7 @@ namespace mscl
         //find the eeprom location
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_hardwareOffset, mask);
 
-        //write the hardware gain (in bits) to eeprom
+        //write the hardware offset to eeprom
         write(eeprom, Value::UINT16(offset));
     }
 
@@ -1024,7 +1027,43 @@ namespace mscl
         //find the eeprom location
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_antiAliasingFilter, mask);
 
-        //write the hardware gain (in bits) to eeprom
+        //write the filter to eeprom
+        write(eeprom, Value::UINT16(static_cast<uint16>(filter)));
+    }
+
+    WirelessTypes::Filter NodeEepromHelper::read_lowPassFilter(const ChannelMask& mask) const
+    {
+        //find the eeprom location
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_lowPassFilter, mask);
+
+        //return the result read from eeprom
+        return static_cast<WirelessTypes::Filter>(read(eeprom).as_uint16());
+    }
+
+    void NodeEepromHelper::write_lowPassFilter(const ChannelMask& mask, WirelessTypes::Filter filter)
+    {
+        //find the eeprom location
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_lowPassFilter, mask);
+
+        //write the low pass filter to eeprom
+        write(eeprom, Value::UINT16(static_cast<uint16>(filter)));
+    }
+
+    WirelessTypes::HighPassFilter NodeEepromHelper::read_highPassFilter(const ChannelMask& mask) const
+    {
+        //find the eeprom location
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_highPassFilter, mask);
+
+        //return the result read from eeprom
+        return static_cast<WirelessTypes::HighPassFilter>(read(eeprom).as_uint16());
+    }
+
+    void NodeEepromHelper::write_highPassFilter(const ChannelMask& mask, WirelessTypes::HighPassFilter filter)
+    {
+        //find the eeprom location
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_highPassFilter, mask);
+
+        //write the high pass filter to eeprom
         write(eeprom, Value::UINT16(static_cast<uint16>(filter)));
     }
 
@@ -1617,5 +1656,68 @@ namespace mscl
     void NodeEepromHelper::write_storageLimitMode(WirelessTypes::StorageLimitMode mode)
     {
         write(NodeEepromMap::STORAGE_LIMIT_MODE, Value::UINT16(static_cast<uint16>(mode)));
+    }
+
+    DataMode NodeEepromHelper::read_dataMode() const
+    {
+        if(m_node->features().onlySupportsRawDataMode())
+        {
+            //return a data mode with just raw mode enabled (read-only-like setting)
+            return DataMode(true, false);
+        }
+
+        BitMask mask(read(NodeEepromMap::DATA_MODE).as_uint16());
+        return DataMode::FromMask(mask);
+    }
+
+    void NodeEepromHelper::write_dataMode(const DataMode& dataMode)
+    {
+        write(NodeEepromMap::DATA_MODE, Value::UINT16(dataMode.toMask().toMask()));
+    }
+
+    EepromLocation NodeEepromHelper::findDerivedChannelEeprom(WirelessTypes::DerivedChannel derivedChannel)
+    {
+        switch(derivedChannel)
+        {
+            case WirelessTypes::derived_rms:
+                return NodeEepromMap::DERIVED_RMS_MASK;
+
+            case WirelessTypes::derived_peakToPeak:
+                return NodeEepromMap::DERIVED_P2P_MASK;
+
+            case WirelessTypes::derived_ips:
+                return NodeEepromMap::DERIVED_IPS_MASK;
+
+            case WirelessTypes::derived_crestFactor:
+                return NodeEepromMap::DERIVED_CREST_FACTOR_MASK;
+
+            default:
+                assert(false);  //need to add another derived channel type
+                throw Error("Invalid WirelessTypes::DerivedChannel.");
+        }
+    }
+
+    WirelessTypes::WirelessSampleRate NodeEepromHelper::read_derivedSampleRate() const
+    {
+        return static_cast<WirelessTypes::WirelessSampleRate>(read(NodeEepromMap::DERIVED_DATA_RATE).as_uint16());
+    }
+
+    void NodeEepromHelper::write_derivedSampleRate(WirelessTypes::WirelessSampleRate rate)
+    {
+        write(NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(static_cast<uint16>(rate)));
+    }
+
+    ChannelMask NodeEepromHelper::read_derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const
+    {
+        const EepromLocation eeprom = findDerivedChannelEeprom(derivedChannel);
+
+        return ChannelMask(read(eeprom).as_uint16());
+    }
+
+    void NodeEepromHelper::write_derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel, const ChannelMask& mask)
+    {
+        const EepromLocation eeprom = findDerivedChannelEeprom(derivedChannel);
+
+        write(eeprom, Value::UINT16(mask.toMask()));
     }
 }

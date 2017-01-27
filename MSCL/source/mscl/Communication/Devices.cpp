@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -41,13 +41,15 @@ namespace mscl
 
     DeviceInfo::DeviceInfo():
         m_description(""),
-        m_serial("")
+        m_serial(""),
+        m_baudRate(0)
     {
     }
 
-    DeviceInfo::DeviceInfo(std::string description, std::string serial):
+    DeviceInfo::DeviceInfo(std::string description, std::string serial, uint32 baudRate):
         m_description(description),
-        m_serial(serial)
+        m_serial(serial),
+        m_baudRate(baudRate)
     {
     }
 
@@ -59,6 +61,11 @@ namespace mscl
     std::string DeviceInfo::serial() const
     {
         return m_serial;
+    }
+
+    uint32 DeviceInfo::baudRate() const
+    {
+        return m_baudRate;
     }
 
 #ifdef _WIN32
@@ -100,8 +107,10 @@ namespace mscl
                 //get the Name value
                 std::string deviceName(Utils_Win32::wstring_to_string(valueMap[NAME].bstrVal));
 
+                uint32 baudRate = 0;
+
                 //if this device matches what we are looking for
-                if(matchesDevice(pnpDevId, deviceName, devType))
+                if(matchesDevice(pnpDevId, deviceName, devType, baudRate))
                 {
                     //find the start position of the serial number
                     size_t serialPos = pnpDevId.find_last_of("/\\") + 1;
@@ -119,7 +128,7 @@ namespace mscl
                     std::string deviceId = deviceName.substr(comStartPos, comEndPos + 1 - comStartPos);
 
                     //create the Device Info
-                    DeviceInfo info(deviceName, serial);
+                    DeviceInfo info(deviceName, serial, baudRate);
 
                     //add the device and info to the map
                     result[deviceId] = info;
@@ -136,7 +145,7 @@ namespace mscl
         return result;
     }
 
-    bool Devices::matchesDevice(const std::string& pnpID, const std::string& name, DeviceType devType)
+    bool Devices::matchesDevice(const std::string& pnpID, const std::string& name, DeviceType devType, uint32& baudRate)
     {
         //verify name has '(COM' in it for all cases
         if(!Utils::containsStr(name, "(COM"))
@@ -144,40 +153,54 @@ namespace mscl
             return false;
         }
 
-        //all device types
-        if(devType == TYPE_ALL)
-        {
-            return true;
-        }
         //BaseStation device type
-        else if(devType == TYPE_BASESTATION)
+        if(devType == TYPE_BASESTATION || devType == TYPE_ALL)
         {
             //check for the basestation name (currently this is all we have to go on, not very strong)
             if(Utils::containsStr(name, "Silicon Labs CP210x"))
             {
+                baudRate = 921600;
                 return true;
             }
 
             //check for the micro usb base station
             if(Utils::containsStr(pnpID, "VID_199B&PID_BA2E"))
             {
+                baudRate = 921600;
+                return true;
+            }
+
+            //check for the WSDA-Base-200
+            if(Utils::containsStr(pnpID, "VID_199B&PID_BA30"))
+            {
+                baudRate = 3000000;
                 return true;
             }
         }
+
         //InertialDevice device type
-        else if(devType == TYPE_INERTIALDEVICE)
+        if(devType == TYPE_INERTIALDEVICE || devType == TYPE_ALL)
         {
             //check for the STM vendor ID (this is the best we can do right now for GX4's)
             if(Utils::containsStr(pnpID, "VID_0483&PID_5740"))
             {
+                baudRate = 921600;
                 return true;
             }
 
             //check for the inertial VID
             if(Utils::containsStr(pnpID, "VID_199B"))
             {
+                baudRate = 921600;
                 return true;
             }
+        }
+
+        if(devType == TYPE_ALL)
+        {
+            //anything with "COM" in the name we are returning true
+            baudRate = 0;
+            return true;
         }
 
         return false;
@@ -296,8 +319,10 @@ namespace mscl
                 std::string serial, manufacturer, vendorId;
                 getDeviceInfo(deviceItemPath, serial, manufacturer, vendorId);
 
+                uint32 baudRate = 0;
+
                 //if this matches the device we are looking for
-                if(matchesDevice(manufacturer, vendorId, devType))
+                if(matchesDevice(manufacturer, vendorId, devType, baudRate))
                 {
                     //get the first directory in this directory (should be the only one?)
                     fs::directory_iterator ttyItr(ttyPath);
@@ -310,7 +335,7 @@ namespace mscl
                     std::string trueDevicePath = "/dev/" + realDeviceName.substr(pos+1);
 
                     //create the Device Info
-                    DeviceInfo info("", serial);
+                    DeviceInfo info("", serial, baudRate);
 
                     //add the device to the result map
                     result[trueDevicePath] = info;
@@ -322,15 +347,13 @@ namespace mscl
         return result;
     }
 
-    bool Devices::matchesDevice(const std::string& manufacturer, const std::string& vendorId, DeviceType devType)
+    bool Devices::matchesDevice(const std::string& manufacturer, const std::string& vendorId, DeviceType devType, uint32& baudRate)
     {
-        //all device types means we should match all devices that we found listed
-        if(devType == TYPE_ALL)
-        {
-            return true;
-        }
+        //TODO: set baud rate based on found device type on linux (need PID)
+        baudRate = 0;
+
         //BaseStation device type
-        else if(devType == TYPE_BASESTATION)
+        if(devType == TYPE_BASESTATION || devType == TYPE_ALL)
         {
             //currently, checking the base station information isn't a very strong search
             if(Utils::containsStr(manufacturer, "Silicon Labs") && Utils::containsStr(vendorId, "10c4"))
@@ -338,8 +361,9 @@ namespace mscl
                 return true;
             }
         }
+
         //InertialDevice device type
-        else if(devType == TYPE_INERTIALDEVICE)
+        if(devType == TYPE_INERTIALDEVICE || devType == TYPE_ALL)
         {
             //check for the STM vendor ID (this is the best we can do right now for GX4's)
             if( Utils::containsStr(manufacturer, "Lord Microstrain") && Utils::containsStr(vendorId, "0483"))
@@ -352,6 +376,12 @@ namespace mscl
             {
                 return true;
             }
+        }
+
+        //all device types means we should match all devices that we found listed
+        if(devType == TYPE_ALL)
+        {
+            return true;
         }
 
         return false;

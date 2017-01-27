@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -50,7 +50,7 @@ namespace mscl
         //    Gets the percentage that the channel was balanced to from the response.
         //
         //Returns:
-        //    The new sampled channel value after the autobalance.
+        //    The the percentage that the channel was balanced to.
         float percentAchieved() const;
 
         //API Function: hardwareOffset

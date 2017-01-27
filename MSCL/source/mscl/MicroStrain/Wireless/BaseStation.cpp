@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -123,6 +123,11 @@ namespace mscl
         return m_impl->microcontroller();
     }
 
+    WirelessTypes::RegionCode BaseStation::regionCode() const
+    {
+        return m_impl->regionCode();
+    }
+
     uint32 BaseStation::totalData()
     { 
         return m_impl->totalData(); 
@@ -208,6 +213,11 @@ namespace mscl
     void BaseStation::changeFrequency(WirelessTypes::Frequency frequency)
     { 
         m_impl->changeFrequency(frequency);
+    }
+
+    SetToIdleStatus BaseStation::broadcastSetToIdle()
+    {
+        return node_setToIdle(BROADCAST_NODE_ADDRESS);
     }
 
     bool BaseStation::verifyConfig(const BaseStationConfig& config, ConfigIssues& outIssues) const

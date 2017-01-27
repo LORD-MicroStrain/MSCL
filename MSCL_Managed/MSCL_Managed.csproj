@@ -119,10 +119,12 @@
     <Compile Include="mscl\DataCollectionMethods.cs" />
     <Compile Include="mscl\DataFormats.cs" />
     <Compile Include="mscl\DatalogDownloader.cs" />
+    <Compile Include="mscl\DataMode.cs" />
     <Compile Include="mscl\DataPoint.cs" />
     <Compile Include="mscl\DataSweep.cs" />
     <Compile Include="mscl\DataSweeps.cs" />
     <Compile Include="mscl\DefaultModes.cs" />
+    <Compile Include="mscl\DerivedChannels.cs" />
     <Compile Include="mscl\DeviceInfo.cs" />
     <Compile Include="mscl\DeviceList.cs" />
     <Compile Include="mscl\Devices.cs" />
@@ -134,6 +136,7 @@
     <Compile Include="mscl\FatigueModes.cs" />
     <Compile Include="mscl\FatigueOptions.cs" />
     <Compile Include="mscl\Filters.cs" />
+    <Compile Include="mscl\HighPassFilters.cs" />
     <Compile Include="mscl\Histogram.cs" />
     <Compile Include="mscl\HistogramOptions.cs" />
     <Compile Include="mscl\InertialChannel.cs" />

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -18,25 +18,30 @@ namespace mscl
         m_currentPageNumber(0),
         m_previousPageNumber(0)
     {
+        m_totalBytes = calcTotalBytes(m_logPage, m_pageOffset);
+    }
+
+    uint32 NodeMemory_v1::calcTotalBytes(uint16 logPage, uint16 pageOffset)
+    {
         //if page offset >= PAGE_SIZE
-        if(m_pageOffset >= PAGE_SIZE)
+        if(pageOffset >= PAGE_SIZE)
         {
             //need to increment the log page by 1
-            m_logPage += 1;
+            logPage += 1;
 
             //need to reduce the page offset by the PAGE_SIZE
-            m_pageOffset -= PAGE_SIZE;
+            pageOffset -= PAGE_SIZE;
         }
 
         //eeproms take up the first 2 pages
         uint16 lastPage = 0;
-        if(m_logPage >= START_PAGE)
+        if(logPage >= START_PAGE)
         {
-            lastPage = m_logPage - START_PAGE;
+            lastPage = logPage - START_PAGE;
         }
 
-        //each physical page is equal to 1 virtual page. This has no bearing on how we access memory we just need to know this when calculating the size.
-        m_totalBytes = (lastPage * PAGE_SIZE) + (m_pageOffset);
+        //each physical page is equal to 1 virtual page.
+        return (lastPage * PAGE_SIZE) + (pageOffset);
     }
 
     void NodeMemory_v1::findPageAndOffset(uint32 bytePosition, uint16& page, uint16& offset) const

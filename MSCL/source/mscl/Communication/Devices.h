@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -19,25 +19,30 @@ namespace mscl
     {
     public:
         //Constructor: DeviceInfo
-        //    Creates a DeviceInfo object
+        //  Creates a DeviceInfo object
         DeviceInfo();
 
         //Constructor: DeviceInfo
-        //    Creates a DeviceInfo object with the given parameters
+        //  Creates a DeviceInfo object with the given parameters
         //
         //Parameters:
-        //    description - The description of the device
-        //    serial - The serial address that is issued for this device
-        DeviceInfo(std::string description, std::string serial);
+        //  description - The description of the device
+        //  serial - The serial address that is issued for this device
+        //  baudRate - The suspected baud rate of the device
+        DeviceInfo(std::string description, std::string serial, uint32 baudRate);
 
     private:
         //Variable: m_description
-        //    The description of the device
+        //  The description of the device.
         std::string m_description;
 
         //Variable: m_serial
-        //    The serial address that is issued for this device
+        //  The serial address that is issued for this device.
         std::string m_serial;
+
+        //Variable: m_baudRate
+        //  The suspected baud rate of the device.
+        uint32 m_baudRate;
 
     public:
         //API Function: description
@@ -53,6 +58,15 @@ namespace mscl
         //Returns:
         //    The serial number of the device
         std::string serial() const;
+
+        //API Function: baudRate
+        //  Gets the suspected baud rate at which to open a Connection with the device.
+        //
+        //Returns:
+        //  The suspected baud rate to open the connection with the device.
+        //  This is not gauranteed to be correct as it is basing this value on the
+        //  driver info available, which doesn't always have uniquely identifiable information.
+        uint32 baudRate() const;
     };
     
 
@@ -124,10 +138,11 @@ namespace mscl
         //    pnpID - The WMI PNPDeviceID to match
         //    name - The WMI Name to match
         //    devType - The <DeviceType> to check for
+        //    baudRate - Resulting suspected baud rate based on the device information
         //
         //Returns:
         //    true if the string matches the given <DeviceType>, false otherwise
-        static bool matchesDevice(const std::string& pnpID, const std::string& name, DeviceType devType);
+        static bool matchesDevice(const std::string& pnpID, const std::string& name, DeviceType devType, uint32& baudRate);
 #else
         //Function: matchesDevice
         //    Checks whether the given information, found from searching files in linux, matches the given device
@@ -136,10 +151,11 @@ namespace mscl
         //    manufacturer - The manufacturer of the device
         //    vendorId - The vendor id of the device
         //    devType - The <DeviceType> to check for
+        //    baudRate - Resulting suspected baud rate based on the device information
         //
         //Returns:
         //    true if the string matches the given <DeviceType>, false otherwise
-        static bool matchesDevice(const std::string& manufacturer, const std::string& vendorId, DeviceType devType);
+        static bool matchesDevice(const std::string& manufacturer, const std::string& vendorId, DeviceType devType, uint32& baudRate);
         
         //Function: getDeviceInfo
         //    Gets information about the attached device

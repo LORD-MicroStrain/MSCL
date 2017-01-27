@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -9,6 +9,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/Types.h"
 #include "WirelessModels.h"
 #include "WirelessNode.h"
+#include "WirelessTypes.h"
 #include "Configuration/WirelessNodeConfig.h"
 
 #include <memory>
@@ -205,6 +206,8 @@ namespace mscl
         //Parameters:
         //  percent - The duty cycle percentage (0.0 - 1.0).
         void dutyCycle(float percent);
+
+        WirelessTypes::DerivedChannels supportedDerivedChannels() const;
 
         //Function: hasPendingConfig
         //    Gets whether or not this network info has a pending configuration set.

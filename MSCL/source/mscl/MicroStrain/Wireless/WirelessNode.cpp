@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -244,6 +244,11 @@ namespace mscl
         return m_impl->getNumDatalogSessions();
     }
 
+    float WirelessNode::percentFull() const
+    {
+        return m_impl->percentFull();
+    }
+
     WirelessTypes::DefaultMode WirelessNode::getDefaultMode() const
     {
         return m_impl->getDefaultMode();
@@ -324,6 +329,16 @@ namespace mscl
         return m_impl->getAntiAliasingFilter(mask);
     }
 
+    WirelessTypes::Filter WirelessNode::getLowPassFilter(const ChannelMask& mask) const
+    {
+        return m_impl->getLowPassFilter(mask);
+    }
+
+    WirelessTypes::HighPassFilter WirelessNode::getHighPassFilter(const ChannelMask& mask) const
+    {
+        return m_impl->getHighPassFilter(mask);
+    }
+
     float WirelessNode::getGaugeFactor(const ChannelMask& mask) const
     {
         return m_impl->getGaugeFactor(mask);
@@ -387,5 +402,20 @@ namespace mscl
     uint32 WirelessNode::getSensorDelay() const
     {
         return m_impl->getSensorDelay();
+    }
+
+    DataMode WirelessNode::getDataMode() const
+    {
+        return m_impl->getDataMode();
+    }
+
+    WirelessTypes::WirelessSampleRate WirelessNode::getDerivedDataRate() const
+    {
+        return m_impl->getDerivedDataRate();
+    }
+
+    ChannelMask WirelessNode::getDerivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const
+    {
+        return m_impl->getDerivedChannelMask(derivedChannel);
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -16,6 +16,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Commands/WirelessProtocol.h"
 #include "Configuration/ActivitySense.h"
 #include "Configuration/ConfigIssue.h"
+#include "Configuration/DataMode.h"
 #include "Configuration/EventTriggerOptions.h"
 #include "Configuration/FatigueOptions.h"
 #include "Configuration/HistogramOptions.h"
@@ -63,6 +64,10 @@ namespace mscl
         //Variable: m_eepromSettings
         //    The eeprom settings to use for the <NodeEeprom> object.
         NodeEepromSettings m_eepromSettings;
+
+        //Variable: m_protocolMutex
+        //    The mutex used when determining the device protocol.
+        mutable std::recursive_mutex m_protocolMutex;
 
         //Variable: m_protocol
         //    The <WirelessProtocol> containing all of the protocol commands and info for this Node.
@@ -291,6 +296,15 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint16 getNumDatalogSessions();
 
+        //Function: percentFull
+        //  Gets the internal datalogging memory percentage that is currently stored on the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        float percentFull();
+
         //Function: getDefaultMode
         //    Reads the <WirelessTypes::DefaultMode> that is currently set on the Node.
         //
@@ -446,6 +460,30 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::Filter getAntiAliasingFilter(const ChannelMask& mask) const;
 
+        //Function: getLowPassFilter
+        //    Reads the Low-Pass Filter of the specified <ChannelMask> currently set on the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> of the low-pass filter to read.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Low-Pass Filter is not supported for the provided <ChannelMask>.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::Filter getLowPassFilter(const ChannelMask& mask) const;
+
+        //Function: getHighPassFilter
+        //    Reads the High-Pass Filter of the specified <ChannelMask> currently set on the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> of the high-pass filter to read.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: High-Pass Filter is not supported for the provided <ChannelMask>.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::HighPassFilter getHighPassFilter(const ChannelMask& mask) const;
+
         //Function: getGaugeFactor
         //    Reads the gauge factor of the specified <ChannelMask> currently set on the Node.
         //
@@ -579,6 +617,40 @@ namespace mscl
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint32 getSensorDelay() const;
 
+        //Function: getDataMode
+        //  Reads the <DataMode> that is currently set on the Node.
+        //
+        //Exceptions:
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        DataMode getDataMode() const;
+
+        //Function: getDerivedDataRate
+        //  Reads the <WirelessTypes::WirelessSampleRate> for all Derived Data Channels that is currently set on the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Derived Channels are not supported by this Node.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::WirelessSampleRate getDerivedDataRate() const;
+
+        //Function: getDerivedChannelMask
+        //  Reads the <ChannelMask> for an individual <WirelessTypes::DerivedChannel> that is currently set on the Node.
+        //  This represents which of the actual Node's channels are set to be mapped to derived channels.
+        //  For example, if the mask for RMS has ch1 and ch3 active, ch1RMS and ch3RMS channels will be output.
+        //
+        //Parameters:
+        //  derivedChannel - The <WirelessTypes::DerivedChannel> to read the channel mask for.
+        //
+        //Returns:
+        //  A <ChannelMask> that is currently set on the Node for the requested <WirelessTypes::DerivedChannel>.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Derived Channels are not supported by this Node.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        ChannelMask getDerivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const;
+
     public:
         //Function: quickPing
         //    Performs a Quick Ping (Short Ping) command on the Node.
@@ -645,6 +717,7 @@ namespace mscl
         //    A <SetToIdleStatus> object that can be queried to get the status of the Set to Idle operation.
         //
         //Exceptions:
+        //    - <Error_Communication>: Failed to communicate with the parent BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         virtual SetToIdleStatus setToIdle();
 

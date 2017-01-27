@@ -75,6 +75,7 @@ python-extension _mscl
 	boostLibs
 :	<include>source/mscl/Wrapper/
 	<swig-options>-python
+	<swig-options>-modern
 	<swig-options>"-outdir \"$(SWIG_PYTHON)\""
 	<target-os>linux:<swig-options>-DUNIX_BUILD
 	<target-os>linux:<define>UNIX_BUILD
@@ -87,6 +88,7 @@ python-extension _mscl-dynamic
 	boostLibs
 :	<include>source/mscl/Wrapper/
 	<swig-options>-python
+	<swig-options>-modern
 	<swig-options>"-outdir \"$(SWIG_PYTHON)\""
 	<target-os>linux:<swig-options>-DUNIX_BUILD
 	<target-os>linux:<define>UNIX_BUILD

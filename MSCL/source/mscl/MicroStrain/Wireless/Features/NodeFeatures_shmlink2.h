@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -24,6 +24,8 @@ namespace mscl
         NodeFeatures_shmlink2(const NodeInfo& info);
 
     public:
+        virtual const WirelessTypes::TransmitPowers transmitPowers() const;
+
         virtual const WirelessTypes::DataCollectionMethods dataCollectionMethods() const final;
 
         virtual const WirelessTypes::DataFormats dataFormats() const final;

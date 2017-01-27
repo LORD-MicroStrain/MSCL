@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -37,9 +37,11 @@ namespace mscl
         //  BLOCK_HEADER_ID             - 0xBB  - Block Header ID
         //  REFRESH_HEADER_ID           - 0xBA  - Refresh Header ID
         //  SESSION_CHANGE_HEADER_ID    - 0xBC  - Session Change Header ID
-        static const uint8 BLOCK_HEADER_ID = 0xBB;
-        static const uint8 REFRESH_HEADER_ID = 0xBA;
+        //  BLOCK_HEADER_MATH_ID        - 0xBD  - Math Block Header ID
+        static const uint8 BLOCK_HEADER_ID          = 0xBB;
+        static const uint8 REFRESH_HEADER_ID        = 0xBA;
         static const uint8 SESSION_CHANGE_HEADER_ID = 0xBC;
+        static const uint8 BLOCK_HEADER_MATH_ID     = 0xBD;
 
     private:
         NodeMemory_v2() = delete;                                   //disabled default constructor
@@ -83,13 +85,9 @@ namespace mscl
         //  The index of the first checksum byte in the current data buffer.
         uint32 m_checksumIndex;
 
-        //Variable: m_numActiveChs
-        //  The number of active channels found in the data header (used for small header parsing).
-        uint8 m_numActiveChs;
-
-        //Variable: m_dataTypeSize
-        //  The size of the data type found in the data header (used for small header parsing).
-        uint16 m_dataTypeSize;
+        //Variable: m_sweepSize
+        //  The size of a single sweep of data (used for smaller header parsing).
+        uint16 m_sweepSize;
 
         //Variable: m_partialDownload
         //  Flag used to know if a download of data has been started, but not fully completed.

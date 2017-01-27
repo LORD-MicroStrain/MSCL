@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -122,7 +122,7 @@ namespace mscl
         uint8 retryCount = 0;
         while(m_result == SetToIdleStatus::setToIdleResult_notCompleted && retryCount <= MAX_RETRIES)
         {
-            Utils::threadSleep(100);
+            Utils::threadSleep(50);
             m_baseStation.connection().write(cancel);
             retryCount++;
         }

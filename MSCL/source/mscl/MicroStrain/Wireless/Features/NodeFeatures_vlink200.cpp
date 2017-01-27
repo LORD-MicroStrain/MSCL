@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2016 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -104,6 +104,22 @@ namespace mscl
     bool NodeFeatures_vlink200::supportsSensorDelayConfig() const
     {
         return true;
+    }
+
+    const WirelessTypes::TransmitPowers NodeFeatures_vlink200::transmitPowers() const
+    {
+        if(m_nodeInfo.regionCode() == WirelessTypes::region_japan)
+        {
+            WirelessTypes::TransmitPowers result;
+            result.push_back(WirelessTypes::power_16dBm);
+            result.push_back(WirelessTypes::power_10dBm);
+            result.push_back(WirelessTypes::power_5dBm);
+            return result;
+        }
+        else
+        {
+            return NodeFeatures::transmitPowers();
+        }
     }
 
     const WirelessTypes::DataFormats NodeFeatures_vlink200::dataFormats() const
