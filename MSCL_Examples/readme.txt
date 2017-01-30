@@ -30,12 +30,8 @@ Note: The C++ MSCL library depends on boost 1.61. You will need to perform the f
       6. Update the "Additional Dependencies" to include the following:
          Release:
             libboost_system-vc140-mt-s-1_61.lib
-            libboost_date_time-vc140-mt-s-1_61.lib
-            libboost_chrono-vc140-mt-s-1_61.lib
          Debug:
             libboost_system-vc140-mt-sgd-1_61.lib
-            libboost_date_time-vc140-mt-sgd-1_61.lib
-            libboost_chrono-vc140-mt-sgd-1_61.lib
 
 
 ----------------------------------------------------------------
