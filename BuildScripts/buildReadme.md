@@ -38,13 +38,8 @@ toolset.flags msvc.link.dll LINKFLAGS <suppress-import-lib>true : /NOENTRY ;
 - [SWIG 3.0.6](http://swig.org/) (.NET, Python only)
 - [Turtle 1.2.6](http://turtle.sourceforge.net/) (Unit Tests only)
 - [Boost.Build](http://www.boost.org/build/) (Python only)
-- [Python 2.7.10](https://www.python.org/downloads/) (Python only)
+- [Python 2.7 or 3.6](https://www.python.org/downloads/) (Python only)
 - Create an environment variable, `LIB_PATH`, that points to a folder containing the above libraries.
-
-Use the master build script to build everything (C++, .NET, Python, Unit Tests, and Documentation):
-```
-BuildScripts/buildAll.cmd
-```
 
 ### C++
 
