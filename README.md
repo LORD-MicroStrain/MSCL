@@ -1,6 +1,6 @@
-In most cases, you don't need to build MSCL from source. Simply [download the latest pre-built binaries (19.3.0)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v19.3.0/MSCL_19.3.0.zip). 
+[Download the MSCL Binaries (19.3.0)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v19.3.0/MSCL_19.3.0.zip) (Windows)
 
-If you want to build MSCL from source, see the [Build ReadMe](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme.md).
+[How to build MSCL from source](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme.md)
 
 ### What is MSCL?
 MSCL is the MicroStrain Communication Library, developed by [LORD Sensing - Microstrain](http://microstrain.com) in Williston, VT. It was created to make it simple to interact with our [Wireless](http://www.microstrain.com/wireless) and [Inertial](http://www.microstrain.com/inertial) sensors.
@@ -9,7 +9,7 @@ MSCL is the MicroStrain Communication Library, developed by [LORD Sensing - Micr
 MSCL is written in C++, but by using [SWIG](http://swig.org/) we are able to wrap it into a variety of languages.
 The library is currently available in:
 * C++
-* Python
+* Python (2.7 and 3.6)
 * .NET (C#, VB, MATLAB, LabVIEW)
 
 ### Documentation
@@ -17,7 +17,7 @@ The library is currently available in:
 
 [Public Documentation](http://lord-microstrain.github.io/MSCL/Documentation/MSCL%20API%20Documentation/index.html) - Documentation for all of the public functionality of MSCL.
 
-[Full Documentation](http://lord-microstrain.github.io/MSCL/Documentation/MSCL%20Documentation/index.html) - Full Documentation of everything in MSCL.
+[Full Documentation](http://lord-microstrain.github.io/MSCL/Documentation/MSCL%20Documentation/index.html) - Full Documentation of everything in MSCL (useful when editing the source).
 
 [Example Code](https://github.com/LORD-MicroStrain/MSCL/tree/master/MSCL_Examples)
   * Note: LabVIEW example code is provided in the [LabVIEW-MSCL VI package](https://github.com/LORD-MicroStrain/LabVIEW-MSCL).
