@@ -178,16 +178,28 @@ namespace mscl
         WirelessTypes::SettlingTime filter2();
 
         //Function: dataMode
-        //    Gets the <DataMode> of the node.
+        //    Gets the <DataModeMask> of the node.
         //
         //Exceptions:
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        DataMode dataMode();
+        DataModeMask dataMode();
 
+        //Function: derivedDataRate
+        //  Gets the derived data rate as a <SampleRate> object.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         SampleRate derivedDataRate();
 
-        ChannelMask derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel);
+        //Function: derivedChannelMask
+        //  Gets the channel mask for the specified <WirelessTypes::DerivedChannelType> as a <ChannelMask>.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        ChannelMask derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel);
 
     public:
         //Function: txPerGroup

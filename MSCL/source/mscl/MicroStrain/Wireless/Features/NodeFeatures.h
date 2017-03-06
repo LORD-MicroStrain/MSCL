@@ -163,6 +163,10 @@ namespace mscl
         //    true if at least 1 channel group supports the setting, false otherwise.
         bool anyChannelGroupSupports(WirelessTypes::ChannelGroupSetting setting) const;
 
+        //Function: ramBufferSize
+        //  Gets the RAM buffer size (in bytes) for the Node.
+        virtual uint32 ramBufferSize() const;
+
     protected:
         //Function: anyChannelGroupSupports
         //    Checks if any channel group, with the specified channel number, supports the given <WirelessTypes::ChannelGroupSetting>.
@@ -447,10 +451,11 @@ namespace mscl
         //    sampleRate - The <WirelessTypes::WirelessSampleRate> to check if supported.
         //    samplingMode - The <WirelessTypes::SamplingMode> to check if the sample rate is supported for.
         //    dataCollectionMethod - The <WirelessTypes::DataCollectionMethod dataCollectionMethod> to check if the sample rate is supported for.
+        //    dataMode - The <WirelessTypes::DataMode> to check if the sample rate is supported for
         //
         //Returns:
         //    true if the sample rate is supported for the given sampling mode, false otherwise.
-        bool supportsSampleRate(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const;
+        bool supportsSampleRate(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const;
 
         //API Function: supportsDataFormat
         //    Checks if a <WirelessTypes::DataFormat> is supported by this Node.
@@ -491,6 +496,16 @@ namespace mscl
         //Returns:
         //    true if the transmit power is supported, false otherwise.
         bool supportsTransmitPower(WirelessTypes::TransmitPower power) const;
+
+        //API Function: supportsDataMode
+        //    Checks if a <WirelessTypes::DataMode> is supported by this Node.
+        //
+        //Parameters:
+        //    power - The <WirelessTypes::DataMode> to check if supported.
+        //
+        //Returns:
+        //    true if the data mode is supported, false otherwise.
+        bool supportsDataMode(WirelessTypes::DataMode dataMode) const;
 
         //API Function: supportsFatigueMode
         //    Checks if a <WirelessTypes::FatigueMode> is supported by this Node.
@@ -535,29 +550,29 @@ namespace mscl
         //  true if the Node supports Non-Sync logging with timestamps.
         virtual bool supportsNonSyncLogWithTimestamps() const;
 
-        //API Function: supportsRawDataMode
-        //  Checks if the Node supports the Raw Data Mode.
-        //
-        //Returns:
-        //  true if the Node supports Raw Data Mode.
-        virtual bool supportsRawDataMode() const;
-
-        //API Function: supportsDerivedDataMode
-        //  Checks if the Node supports the Derived Data Mode.
-        //
-        //Returns:
-        //  true if the Node supports Derived Data Mode.
-        bool supportsDerivedDataMode() const;
-
-        //API Function: supportsDerivedChannel
+        //API Function: supportsDerivedChannelType
         //  Checks if the Node supports a specific <WirelessTypes::DerivedChannel>.
         //
         //Parameters:
-        //  derivedChannel - The <WirelessTypes::DerivedChannel> to check if it is supported.
+        //  derivedChannelType - The <WirelessTypes::DerivedChannelType> to check if it is supported.
         //
         //Returns:
         //  true if the specific derived channel is supported, false otherwise.
-        bool supportsDerivedChannel(WirelessTypes::DerivedChannel derivedChannel) const;
+        bool supportsDerivedChannelType(WirelessTypes::DerivedChannelType derivedChannelType) const;
+
+        //API Function: supportsRawDataMode
+        //  Checks if the Node supports any form of the Raw Data Mode (raw only, raw + derived, etc).
+        //
+        //Returns:
+        //  true if the Node supports any form of the Raw Data Mode.
+        bool supportsRawDataMode() const;
+
+        //API Function: supportsDerivedDataMode
+        //  Checks if the Node supports any form of the Derived Data Mode (derived only, raw + derived, etc).
+        //
+        //Returns:
+        //  true if the Node supports any form of the Derived Data Mode.
+        bool supportsDerivedDataMode() const;
 
         //API Function: maxSampleRate
         //    Gets the maximum <SampleRate> value that is supported by this Node with the given <SamplingMode>, <ChannelMask>, and <WirelessTypes::DataCollectionMethod>.
@@ -566,6 +581,7 @@ namespace mscl
         //    samplingMode - The <WirelessTypes::SamplingMode> to check the max sample rate for.
         //    channels - The <ChannelMask> to check the max sample rate for.
         //    dataCollectionMethod - The <WirelessTypes::DataCollectionMethod> to check the max sample rate for.
+        //    dataMode - The <WirelessTypes::DataMode> to check the max sample rate for.
         //
         //Returns:
         //    The max <WirelessTypes::WirelessSampleRate> that is supported by this Node with the given <WirelessTypes::SamplingMode> and <ChannelMask>.
@@ -573,7 +589,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_NotSupported>: The <WirelessTypes::SamplingMode> is not supported by this Node.
         //                            The <WirelessTypes::DataCollectionMethod> is not supported by this Node.
-        virtual WirelessTypes::WirelessSampleRate maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod) const;
+        virtual WirelessTypes::WirelessSampleRate maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const;
 
         //API Function: maxSampleRateForSettlingTime
         //  Gets the maximum <SampleRate> value that is supported by this Node with the given <WirelessTypes::SettlingTime>.
@@ -582,13 +598,14 @@ namespace mscl
         //  filterSettlingTime - The <WirelessTypes::SettlingTime> to check the max sample rate for.
         //  samplingMode - The <WirelessTypes::SamplingMode> that the Node will be in for determining sample rates.
         //  dataCollectionMethod - The <WirelessTypes::DataCollectionMethod> that the Node will be set for in determining sample rates.
+        //  dataMode - The <WirelessTypes::DataMode> that the Node will be set for in determining sampling rates.
         //
         //Returns:
         //    The max <WirelessTypes::WirelessSampleRate> that is supported by this Node with the given <WirelessTypes::SettlingTime>.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The Filter Settling Time feature is not supported by this Node.
-        virtual WirelessTypes::WirelessSampleRate maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const;
+        virtual WirelessTypes::WirelessSampleRate maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const;
 
         //API Function: maxFilterSettlingTime
         //    Gets the maximum <WirelessTypes::SettlingTime> available for the given <SampleRate>.
@@ -652,47 +669,45 @@ namespace mscl
         //
         //Parameters:
         //    samplingMode - The <WirelessTypes::SamplingMode> of the sampling session.
+        //    dataMode - The <WirelessTypes::DataMode> of the sampling session.
         //    dataFormat - The <WirelessTypes::DataFormat> of the sampling session.
-        //    numChannels - The number of active channels for the sampling session.
+        //    channels - The <ChannelMask> of the raw channels for the sampling session.
         //
         //Returns:
         //    The maximum number of sweeps, or sweeps per burst, for a sampling session.
-        uint32 maxSweeps(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const;
-        
-        //API Function: maxSweeps
-        //    Gets the maximum number of sweeps that can be assigned for the duration of a continuous sampling session.
-        //
-        //Parameters:
-        //    dataFormat - The <WirelessTypes::DataFormat> of the sampling session.
-        //    numChannels - The number of active channels for the sampling session.
-        //
-        //Returns:
-        //    The maximum number of sweeps for a sampling session.
-        uint32 maxSweeps(WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const;
+        uint32 maxSweeps(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataMode dataMode, WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const;
 
         //API Function: maxSweepsPerBurst
         //    Gets the maximum number of sweeps per burst that can be assigned for a Burst Sync Sampling session.
         //
         //Parameters:
+        //    dataMode - The <WirelessTypes::DataMode> of the sampling session.
         //    dataFormat - The <WirelessTypes::DataFormat> of the sampling session.
-        //    numChannels - The number of active channels for the sampling session.
+        //    channels - The <ChannelMask> of the raw channels for the sampling session.
         //
         //Returns:
         //    The maximum number of sweeps per burst for a Burst Sync Sampling session.
-        virtual uint32 maxSweepsPerBurst(WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const;
+        virtual uint32 maxSweepsPerBurst(WirelessTypes::DataMode dataMode, WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const;
 
         //API Function: minTimeBetweenBursts
         //    Gets the minimum time that can be assigned for a Burst Sync Sampling session.
         //
         //Parameters:
+        //    dataMode - The <WirelessTypes::DataMode> of the sampling session.
         //    dataFormat - The <WirelessTypes::DataFormat> of the sampling session.
-        //    numChannels - The number of active channels for the sampling session.
-        //    sampleRate - The <SampleRate> for the sampling session.
+        //    rawChannels - The <ChannelMask> representing active raw channels for the sampling session.
+        //    derivedChannelMasks - The <WirelessTypes::DerivedChannelMasks> containing ALL enabled derived channels for the sampling session.
+        //    rawSampleRate - The <SampleRate> of the raw channels for the sampling session.
         //    sweepsPerBurst - The number of sweeps per burst for the sampling session.
         //
         //Returns:
         //    A <TimeSpan> representing the minimum time that can be assigned for a Burst Sync Sampling session.
-        TimeSpan minTimeBetweenBursts(WirelessTypes::DataFormat dataFormat, const ChannelMask& channels, const SampleRate& sampleRate, uint32 sweepsPerBurst) const;
+        virtual TimeSpan minTimeBetweenBursts(WirelessTypes::DataMode dataMode,
+                                              WirelessTypes::DataFormat dataFormat,
+                                              const ChannelMask& rawChannels,
+                                              WirelessTypes::DerivedChannelMasks derivedChannelMasks,
+                                              const SampleRate& rawSampleRate,
+                                              uint32 sweepsPerBurst) const;
 
         //API Function: minSensorDelay
         //  Gets the minimum sensor delay value (in microseconds) that is supported.
@@ -718,10 +733,21 @@ namespace mscl
         //  Gets the max event trigger duration (in milliseconds) that can be applied for both the pre and post event durations (combined).
         //
         //Parameters:
+        //  dataMode - The <WirelessTypes::DataMode> of the sampling session.
         //  dataFormat - The <WirelessTypes::DataFormat> of the sampling session.
-        //  numChannels - The number of active channels for the sampling session.
-        //  sampleRate - The <SampleRate> for the sampling session.
-        uint32 maxEventTriggerTotalDuration(WirelessTypes::DataFormat dataFormat, const ChannelMask& channels, const SampleRate& sampleRate) const;
+        //  rawChannels - The <ChannelMask> representing active raw channels for the sampling session.
+        //  derivedChannelMasks - The <WirelessTypes::DerivedChannelMasks> containing ALL enabled derived channels for the sampling session.
+        //  rawSampleRate - The raw <SampleRate> for the sampling session.
+        //  derivedSampleRate - The <SampleRate> representing the derived data rate for the sampling session.
+        //
+        //Returns:
+        //  The max event trigger total duration, in milliseconds.
+        uint32 maxEventTriggerTotalDuration(WirelessTypes::DataMode dataMode,
+                                            WirelessTypes::DataFormat dataFormat,
+                                            const ChannelMask& rawChannels,
+                                            WirelessTypes::DerivedChannelMasks derivedChannelMasks,
+                                            const SampleRate& rawSampleRate,
+                                            const SampleRate& derivedDataRate) const;
 
         //API Function: normalizeEventDuration
         //  Normalizes the Event Trigger duration so that it is an acceptable value.
@@ -801,6 +827,7 @@ namespace mscl
         //Parameters:
         //    samplingMode - The <WirelessTypes::SamplingMode> to get the sample rates for.
         //    dataCollectionMethod - The <WirelessTypes::DataCollectionMethod> to get the sample rates for.
+        //    dataMode - The <WirelessTypes::DataMode> to get the sample rates for.
         //
         //Returns:
         //    A vector of <WirelessTypes::WirelessSampleRate>s that are supported by this Node for the given sampling mode and data collection method.
@@ -808,10 +835,12 @@ namespace mscl
         //Exceptions:
         //    - <Error_NotSupported>: The <WirelessTypes::SamplingMode> is not supported by this Node.
         //                            The <WirelessTypes::DataCollectionMethod> is not supported by this Node.
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const;
+        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const;
 
         //API Function: derivedDataRates
         //  Gets a list of the <WirelessTypes::WirelessSampleRate>s that are supported by this Node for Derived Channels.
+        //  These are the rates that the Derived Data will be calculated/sent. The standard <sampleRates> still apply
+        //  in derived mode and control the sample rate of the raw channels used in the derived data calculations.
         //
         //Returns:
         //  A vector of <WirelessTypes::WirelessSampleRate>s that are supported by this Node for Derived Channels.
@@ -876,12 +905,19 @@ namespace mscl
         //  A vector of <WirelessTypes::InputRanges> that are supported by this Node.
         virtual const WirelessTypes::InputRanges inputRanges(const ChannelMask& channels) const;
 
-        //API Function: derivedChannels
-        //  Gets a list of <WirelessTypes::DerivedChannels> that are supported by this Node.
+        //API Function: dataModes
+        //  Gets a list of <WirelessTypes::DataModes> that are supported by this Node.
         //
         //Returns:
-        //  A vector of <WirelessTypes::DerivedChannels> supported by the Node.
-        virtual const WirelessTypes::DerivedChannels derivedChannels() const;
+        //  A vector of <WirelessTypes::DataModes> supported by the Node.
+        virtual const WirelessTypes::DataModes dataModes() const;
+
+        //API Function: derivedChannelTypes
+        //  Gets a list of <WirelessTypes::DerivedChannelTypes> that are supported by this Node.
+        //
+        //Returns:
+        //  A vector of <WirelessTypes::DerivedChannelTypes> supported by the Node.
+        virtual const WirelessTypes::DerivedChannelTypes derivedChannelTypes() const;
 
     protected:
         //Function: supportsNewTransmitPowers

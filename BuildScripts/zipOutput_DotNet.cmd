@@ -10,7 +10,6 @@ SET DIR_TO_ZIP="..\Output\MSCL"
 
 REM Paths/FileNames of the resulting zip files
 SET DOTNET_ZIP_OUT="..\Output\DotNet.zip"
-SET OUTPUT_ZIP="..\Output\MSCL.zip"
 
 REM set the current directory to this file's directory
 cd /d %~dp0
@@ -27,16 +26,13 @@ xcopy "..\Output\DotNet\x64\*.dll" %DOTNET64_OUTPUT_DIR% /i /s
 REM remove old .zip files if they already exist
 echo (zipOutput_DotNet.cmd) Deleting zip files if they already exist
 del %DOTNET_ZIP_OUT%
-del %OUTPUT_ZIP%
 
 REM zip the output that we just created
 echo (zipOutput_DotNet.cmd) Zipping Output files
-7z a %OUTPUT_ZIP% %DIR_TO_ZIP% 
 7z a %DOTNET_ZIP_OUT% %DOTNET_TO_ZIP% 
 
 REM remove the temporary directory that we created, since it is now zipped
 echo (zipOutput_DotNet.cmd) Removing temp directory that was zipped
-rmdir %DIR_TO_ZIP% /S /Q
 
 echo.
 echo (zipOutput_DotNet.cmd) DONE

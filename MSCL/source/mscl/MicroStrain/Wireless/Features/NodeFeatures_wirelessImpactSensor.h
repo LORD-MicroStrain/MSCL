@@ -20,10 +20,13 @@ namespace mscl
         //    Creates a NodeFeatures_wirelessImpactSensor object.
         NodeFeatures_wirelessImpactSensor(const NodeInfo& info);
 
+    private:
+        virtual uint32 ramBufferSize() const override;
+
     public:
         virtual const WirelessTypes::SamplingModes samplingModes() const override;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const override;
+        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
         virtual const WirelessTypes::Filters antiAliasingFilters() const override;
 

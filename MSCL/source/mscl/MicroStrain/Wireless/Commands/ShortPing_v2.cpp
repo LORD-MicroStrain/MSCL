@@ -17,12 +17,13 @@ namespace mscl
         cmd.append_uint8(0xAA);                                     //Start of Packet
         cmd.append_uint8(0x0E);                                     //Delivery Stop Flag
         cmd.append_uint8(WirelessPacket::packetType_baseCommand);   //App Data Type
+        cmd.append_uint16(WirelessProtocol::BASE_STATION_ADDRESS);  //Base Station Address
         cmd.append_uint8(0x04);                                     //Payload length
         cmd.append_uint16(WirelessProtocol::cmdId_shortPing_v2);    //Command ID    (2 bytes)
         cmd.append_uint16(nodeAddress);                             //Node address    (2 bytes)
 
-        //calculate the checksum of bytes 2-8
-        uint16 checksum = cmd.calculateSimpleChecksum(1, 7);
+        //calculate the checksum of bytes 2-10
+        uint16 checksum = cmd.calculateSimpleChecksum(1, 9);
 
         cmd.append_uint16(checksum);    //Checksum        (2 bytes)
 

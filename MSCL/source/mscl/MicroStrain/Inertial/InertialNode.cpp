@@ -29,11 +29,6 @@ namespace mscl
     {
     }
 
-    const InertialNodeInfo& InertialNode::info()
-    {
-        return m_impl->info();
-    }
-
     const InertialNodeFeatures& InertialNode::features()
     {
         return m_impl->features();
@@ -60,9 +55,39 @@ namespace mscl
         return m_impl->lastCommunicationTime();
     }
 
-    const SampleRates& InertialNode::supportedSampleRates(InertialTypes::InertialCategory type)
-    { 
-        return m_impl->supportedSampleRates(type); 
+    Version InertialNode::firmwareVersion() const
+    {
+        return m_impl->firmwareVersion();
+    }
+
+    InertialModels::NodeModel InertialNode::model() const
+    {
+        return m_impl->model();
+    }
+
+    std::string InertialNode::modelName() const
+    {
+        return m_impl->modelName();
+    }
+
+    std::string InertialNode::modelNumber() const
+    {
+        return m_impl->modelNumber();
+    }
+
+    std::string InertialNode::serialNumber() const
+    {
+        return m_impl->serialNumber();
+    }
+
+    std::string InertialNode::lotNumber() const
+    {
+        return m_impl->lotNumber();
+    }
+
+    std::string InertialNode::deviceOptions() const
+    {
+        return m_impl->deviceOptions();
     }
 
     uint32 InertialNode::totalPackets()                                                            
@@ -82,7 +107,7 @@ namespace mscl
 
     std::string InertialNode::name()
     {
-        return deviceName(info().serialNumber());
+        return deviceName(serialNumber());
     }
 
     bool InertialNode::ping()                                                        

@@ -111,7 +111,7 @@ namespace mscl
         //
         //Parameters:
         //    data - vector of data to be written
-        void write(const ByteStream& data);
+        void write(const ByteStream& data) const;
 
         //Function: throwIfError
         //    Throws an exception if a connection error has occurred.
@@ -150,7 +150,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-        void write(const Bytes& bytes);
+        void write(const Bytes& bytes) const;
 
         //API Function: writeStr
         //    Writes the given string (containing bytes) to the connection.
@@ -160,18 +160,27 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-        void writeStr(const std::string& bytes);
+        void writeStr(const std::string& bytes) const;
 
         //Function: clearBuffer
         //    Resets the read buffer.
+        //
+        //Exceptions:
+        //  - <Error_Connection>: The connection has been disconnected.
         void clearBuffer();
 
         //Function: byteReadPos
         //    Gets the read position from the byte buffer.
+        //
+        //Exceptions:
+        //  - <Error_Connection>: The connection has been disconnected.
         std::size_t byteReadPos() const;
 
         //Function: byteAppendPos
         //    Gets the append position from the byte buffer.
+        //
+        //Exceptions:
+        //  - <Error_Connection>: The connection has been disconnected.
         std::size_t byteAppendPos() const;
 
         //API Function: rawByteMode

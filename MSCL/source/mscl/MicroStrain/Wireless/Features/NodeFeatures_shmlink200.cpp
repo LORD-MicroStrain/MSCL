@@ -67,6 +67,7 @@ namespace mscl
         if(m_nodeInfo.firmwareVersion() >= Version(10, 34589))
         {
             result.push_back(WirelessTypes::samplingMode_sync);
+            result.push_back(WirelessTypes::samplingMode_syncEvent);
         }
 
         result.push_back(WirelessTypes::samplingMode_nonSync);
@@ -74,12 +75,13 @@ namespace mscl
         return result;
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures_shmlink200::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
+    const WirelessTypes::WirelessSampleRates NodeFeatures_shmlink200::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
         {
             case WirelessTypes::samplingMode_sync:
+            case WirelessTypes::samplingMode_syncEvent:
             {
                 return AvailableSampleRates::continuous_shmLink2;
             }
@@ -94,8 +96,6 @@ namespace mscl
                 {
                     return AvailableSampleRates::continuous_shmLink2;
                 }
-
-                
             }
 
             default:

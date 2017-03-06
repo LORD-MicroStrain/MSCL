@@ -77,9 +77,13 @@ namespace mscl
         return result;
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures_glink200::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
+    const WirelessTypes::WirelessSampleRates NodeFeatures_glink200::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
-        //TODO: these sample rates copied from v-link 200 -- make needed adjustments before final release
+        //special rates for derived mode only
+        if(dataMode == WirelessTypes::dataMode_derived)
+        {
+            return AvailableSampleRates::derivedOnly_glink200;
+        }
 
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
@@ -125,15 +129,13 @@ namespace mscl
 
     const WirelessTypes::Filters NodeFeatures_glink200::lowPassFilters() const
     {
-        //TODO: update these filters
-
         static const WirelessTypes::Filters filters = {
-            {WirelessTypes::filter_1000hz},
-            {WirelessTypes::filter_500hz},
-            {WirelessTypes::filter_250hz},
-            {WirelessTypes::filter_125hz},
-            {WirelessTypes::filter_62hz},
-            {WirelessTypes::filter_31hz}
+            {WirelessTypes::filter_800hz},
+            {WirelessTypes::filter_418hz},
+            {WirelessTypes::filter_209hz},
+            {WirelessTypes::filter_104hz},
+            {WirelessTypes::filter_52hz},
+            {WirelessTypes::filter_26hz}
         };
         return filters;
     }
@@ -147,9 +149,9 @@ namespace mscl
         return filters;
     }
 
-    const WirelessTypes::DerivedChannels NodeFeatures_glink200::derivedChannels() const
+    const WirelessTypes::DerivedChannelTypes NodeFeatures_glink200::derivedChannelTypes() const
     {
-        static const WirelessTypes::DerivedChannels channels = {
+        static const WirelessTypes::DerivedChannelTypes channels = {
             {WirelessTypes::derived_rms},
             {WirelessTypes::derived_peakToPeak},
             {WirelessTypes::derived_ips},

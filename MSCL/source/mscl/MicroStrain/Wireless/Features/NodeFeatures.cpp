@@ -428,6 +428,16 @@ namespace mscl
         return false;
     }
 
+    uint32 NodeFeatures::ramBufferSize() const
+    {
+        if(m_nodeInfo.firmwareVersion() >= Version(10, 0))
+        {
+            return 131072;  // 2^17
+        }
+
+        return 262144;  // 2^18
+    }
+
     const WirelessChannels& NodeFeatures::channels() const
     {
         return m_channels;
@@ -659,12 +669,12 @@ namespace mscl
         return (std::find(supportedModes.begin(), supportedModes.end(), samplingMode) != supportedModes.end());
     }
 
-    bool NodeFeatures::supportsSampleRate(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
+    bool NodeFeatures::supportsSampleRate(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
         try
         {
             //get the supported sample rates
-            const WirelessTypes::WirelessSampleRates& supportedRates = sampleRates(samplingMode, dataCollectionMethod);
+            const WirelessTypes::WirelessSampleRates& supportedRates = sampleRates(samplingMode, dataCollectionMethod, dataMode);
 
             //return the result of trying to find the sample rate in the vector
             return (std::find(supportedRates.begin(), supportedRates.end(), sampleRate) != supportedRates.end());
@@ -712,6 +722,15 @@ namespace mscl
         return (std::find(supportedPowers.begin(), supportedPowers.end(), power) != supportedPowers.end());
     }
 
+    bool NodeFeatures::supportsDataMode(WirelessTypes::DataMode dataMode) const
+    {
+        //get the supported data modes
+        const WirelessTypes::DataModes& supportedModes = dataModes();
+
+        //return the result of trying to find the mode in the vector
+        return (std::find(supportedModes.begin(), supportedModes.end(), dataMode) != supportedModes.end());
+    }
+
     bool NodeFeatures::supportsFatigueMode(WirelessTypes::FatigueMode mode) const
     {
         //get the supported fatigue modes
@@ -748,29 +767,38 @@ namespace mscl
         return (m_nodeInfo.firmwareVersion() >= MIN_NODE_FW_PROTOCOL_1_5);
     }
 
+    bool NodeFeatures::supportsDerivedChannelType(WirelessTypes::DerivedChannelType derivedChannelType) const
+    {
+        WirelessTypes::DerivedChannelTypes chs = derivedChannelTypes();
+
+        //return the result of trying to find the math channel in the vector
+        return (std::find(chs.begin(), chs.end(), derivedChannelType) != chs.end());
+    }
+
     bool NodeFeatures::supportsRawDataMode() const
     {
-        //all nodes currently support raw data mode
-        return true;
+        const WirelessTypes::DataModes modes = dataModes();
+
+        //check if any raw mode is available
+        if(std::find(modes.begin(), modes.end(), WirelessTypes::dataMode_raw) != modes.end() ||
+           std::find(modes.begin(), modes.end(), WirelessTypes::dataMode_raw_derived) != modes.end())
+        {
+            return true;
+        }
+
+        return false;
     }
 
     bool NodeFeatures::supportsDerivedDataMode() const
     {
-        return (derivedChannels().size() > 0);
+        //if any derived channels are avaiable, derived data mode should be available
+        return (derivedChannelTypes().size() > 0);
     }
 
-    bool NodeFeatures::supportsDerivedChannel(WirelessTypes::DerivedChannel derivedChannel) const
-    {
-        WirelessTypes::DerivedChannels chs = derivedChannels();
-
-        //return the result of trying to find the math channel in the vector
-        return (std::find(chs.begin(), chs.end(), derivedChannel) != chs.end());
-    }
-
-    WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
+    WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
         //get all the sample rates supported
-        WirelessTypes::WirelessSampleRates rates = sampleRates(samplingMode, dataCollectionMethod);
+        WirelessTypes::WirelessSampleRates rates = sampleRates(samplingMode, dataCollectionMethod, dataMode);
 
         //get the first rate in the sample rates, which should be the fastest
         WirelessTypes::WirelessSampleRate maxRate = rates.front();
@@ -792,7 +820,7 @@ namespace mscl
         return maxRate;
     }
 
-    WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
+    WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
         throw Error_NotSupported("Filter Settling Time is not supported by this Node.");
     }
@@ -804,7 +832,7 @@ namespace mscl
 
     uint16 NodeFeatures::minInactivityTimeout() const
     {
-        return 5;
+        return 30;
     }
 
     uint16 NodeFeatures::minLostBeaconTimeout() const
@@ -837,7 +865,7 @@ namespace mscl
         return 100;
     }
 
-    uint32 NodeFeatures::maxSweeps(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const
+    uint32 NodeFeatures::maxSweeps(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataMode dataMode, WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const
     {
         if(!supportsLimitedDuration())
         {
@@ -848,47 +876,63 @@ namespace mscl
         if(samplingMode == WirelessTypes::samplingMode_syncBurst)
         {
             //get the max sweeps per burst
-            return maxSweepsPerBurst(dataFormat, channels);
+            return maxSweepsPerBurst(dataMode, dataFormat, channels);
         }
         else
         {
-            //get the max sweeps (total duration)
-            return maxSweeps(dataFormat, channels);
+            return 6553400;
         }
     }
 
-    uint32 NodeFeatures::maxSweeps(WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const
+    uint32 NodeFeatures::maxSweepsPerBurst(WirelessTypes::DataMode dataMode, WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const
     {
-        if(!supportsLimitedDuration())
+        uint32 maxBytes = ramBufferSize();
+
+        //TODO?: bytesPerSample could be reduced to 3 for float when G-Link-200 or V-Link-200 if needed
+        uint8 bytesPerSample = WirelessTypes::dataFormatSize(dataFormat);
+
+        uint32 bytesPerSweep = bytesPerSample * static_cast<uint16>(channels.count());
+
+        if(m_nodeInfo.firmwareVersion() >= Version(10, 0))
         {
-            return 0;
+            DataModeMask mode(dataMode);
+            if(mode.rawModeEnabled)
+            {
+                return static_cast<uint32>((maxBytes - 300) / bytesPerSweep);
+            }
+            else //if(mode.derivedModeEnabled)
+            {
+                return 6553400;
+            }
+        }
+        else
+        {
+            //calculate and return the max number of sweeps per burst
+            return static_cast<uint32>(maxBytes / bytesPerSweep);
+        }
+    }
+
+    TimeSpan NodeFeatures::minTimeBetweenBursts(WirelessTypes::DataMode dataMode,
+                                                WirelessTypes::DataFormat dataFormat,
+                                                const ChannelMask& rawChannels,
+                                                WirelessTypes::DerivedChannelMasks derivedChannelMasks,
+                                                const SampleRate& rawSampleRate,
+                                                uint32 sweepsPerBurst) const
+    {
+        uint32 rawBytesPerSweep = 0;
+        uint32 derivedBytesPerSweep = 0;
+
+        DataModeMask mode(dataMode);
+        if(mode.rawModeEnabled)
+        {
+            rawBytesPerSweep = WirelessTypes::dataFormatSize(dataFormat) * static_cast<uint16>(rawChannels.count());
+        }
+        if(mode.derivedModeEnabled)
+        {
+            derivedBytesPerSweep = WirelessTypes::derivedBytesPerSweep(derivedChannelMasks);
         }
 
-        //get the max number of bytes this node can store to memory
-        uint64 maxBytes = m_nodeInfo.dataStorageSize();
-
-        //get the number of bytes per sample
-        uint8 bytesPerSample = WirelessTypes::dataFormatSize(dataFormat);
-
-        //calculate and return the max number of sweeps
-        return static_cast<uint32>(maxBytes / (bytesPerSample * static_cast<uint16>(channels.count())));
-    }
-
-    uint32 NodeFeatures::maxSweepsPerBurst(WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const
-    {
-        //the max number of bytes per burst
-        static const uint32 maxBytes = 260000;
-
-        //get the number of bytes per sample
-        uint8 bytesPerSample = WirelessTypes::dataFormatSize(dataFormat);
-
-        //calculate and return the max number of sweeps per burst
-        return static_cast<uint32>(maxBytes / (bytesPerSample * static_cast<uint16>(channels.count())));
-    }
-
-    TimeSpan NodeFeatures::minTimeBetweenBursts(WirelessTypes::DataFormat dataFormat, const ChannelMask& channels, const SampleRate& sampleRate, uint32 sweepsPerBurst) const
-    {
-        return SyncSamplingFormulas::minTimeBetweenBursts(dataFormat, channels.count(), sampleRate, sweepsPerBurst);
+        return SyncSamplingFormulas::minTimeBetweenBursts(rawBytesPerSweep, derivedBytesPerSweep, rawSampleRate, sweepsPerBurst);
     }
 
     uint32 NodeFeatures::minSensorDelay() const
@@ -947,14 +991,48 @@ namespace mscl
         }
     }
 
-    uint32 NodeFeatures::maxEventTriggerTotalDuration(WirelessTypes::DataFormat dataFormat, const ChannelMask& channels, const SampleRate& sampleRate) const
+    uint32 NodeFeatures::maxEventTriggerTotalDuration(WirelessTypes::DataMode dataMode,
+                                                      WirelessTypes::DataFormat dataFormat,
+                                                      const ChannelMask& rawChannels,
+                                                      WirelessTypes::DerivedChannelMasks derivedChannelMasks,
+                                                      const SampleRate& rawSampleRate,
+                                                      const SampleRate& derivedDataRate) const
     {
-        static const uint32 TOTAL_FRAM_BYTES = 220000;
+        uint32 ramSize = ramBufferSize();
 
-        //get the number of bytes per sample
+        //TODO?: bytesPerSample could be reduced to 3 for float when G-Link-200 or V-Link-200 if needed
         uint8 bytesPerSample = WirelessTypes::dataFormatSize(dataFormat);
 
-        return static_cast<uint32>(TOTAL_FRAM_BYTES / (sampleRate.samplesPerSecond() * (channels.count() * bytesPerSample + 1) + 4) * 1000);
+        uint32 rawBytesPerSweep = bytesPerSample * static_cast<uint16>(rawChannels.count());
+
+        uint32 mathBytesPerSweep = WirelessTypes::derivedBytesPerSweep(derivedChannelMasks);
+
+        switch(dataMode)
+        {
+            //Raw Only
+            case WirelessTypes::dataMode_raw:
+                return static_cast<uint32>((ramSize - 300) / (rawBytesPerSweep * rawSampleRate.samplesPerSecond()) * 1000);
+
+            //Derived Only
+            case WirelessTypes::dataMode_derived:
+            {
+                uint32 mathSweeps = (ramSize - 300) / mathBytesPerSweep;
+                return static_cast<uint32>((mathSweeps / derivedDataRate.samplesPerSecond()) * 1000);
+            }
+
+            //Raw + Derived
+            case WirelessTypes::dataMode_raw_derived:
+            {
+                double superSweepSize = (1 / derivedDataRate.samplesPerSecond()) * rawBytesPerSweep * rawSampleRate.samplesPerSecond() + 26 + mathBytesPerSweep;
+                double superSweepsPerBuffer = (ramSize - 300) / superSweepSize;
+                double numSweeps = std::floor(superSweepsPerBuffer * rawSampleRate.samplesPerSecond() / derivedDataRate.samplesPerSecond());
+                return static_cast<uint32>(numSweeps / rawSampleRate.samplesPerSecond() * 1000);
+            }
+
+            default:
+                assert(false);  //Need to add case for new derived type
+                return 0;
+        }
     }
 
     uint32 NodeFeatures::normalizeEventDuration(uint32 duration) const
@@ -1146,11 +1224,22 @@ namespace mscl
         return result;
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
+    const WirelessTypes::WirelessSampleRates NodeFeatures::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
         if(!supportsDataCollectionMethod(dataCollectionMethod))
         {
             throw Error_NotSupported("The data collection method is not supported by this Node");
+        }
+
+        if(!supportsDataMode(dataMode))
+        {
+            throw Error_NotSupported("The data mode is not supported by this Node");
+        }
+
+        //derived only has a higher list of rates
+        if(dataMode == WirelessTypes::dataMode_derived)
+        {
+            return AvailableSampleRates::derivedOnly;
         }
 
         //the list of sample rates varies for each sampling mode
@@ -1294,9 +1383,27 @@ namespace mscl
         return result;
     }
 
-    const WirelessTypes::DerivedChannels NodeFeatures::derivedChannels() const
+    const WirelessTypes::DerivedChannelTypes NodeFeatures::derivedChannelTypes() const
     {
-        WirelessTypes::DerivedChannels result;
+        WirelessTypes::DerivedChannelTypes result;
+        return result;
+    }
+
+    const WirelessTypes::DataModes NodeFeatures::dataModes() const
+    {
+        WirelessTypes::DataModes result;
+
+        //all nodes currently support raw data mode
+        result.push_back(WirelessTypes::dataMode_raw);
+
+        if(derivedChannelTypes().size() > 0)
+        {
+            result.push_back(WirelessTypes::dataMode_derived);
+
+            //all nodes that currently support derived, also support raw + derived
+            result.push_back(WirelessTypes::dataMode_raw_derived);
+        }
+
         return result;
     }
 
@@ -1441,10 +1548,14 @@ namespace mscl
 
     bool NodeFeatures::onlySupportsRawDataMode() const
     {
-        //todo: as new modes are added, add them here as well
-        if(!supportsDerivedDataMode())
+        const WirelessTypes::DataModes modes = dataModes();
+
+        if(modes.size() == 1)
         {
-            return true;
+            if(modes.at(0) == WirelessTypes::dataMode_raw)
+            {
+                return true;
+            }
         }
 
         return false;

@@ -32,7 +32,7 @@ namespace mscl
 
         virtual const WirelessTypes::SamplingModes samplingModes() const final;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const override;
+        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
         virtual bool supportsLimitedDuration() const;
 

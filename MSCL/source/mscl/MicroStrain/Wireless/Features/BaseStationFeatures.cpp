@@ -81,6 +81,11 @@ namespace mscl
         return (m_baseInfo.firmwareVersion() >= MIN_RF_SWEEP_FW);
     }
 
+    bool BaseStationFeatures::supportsCustomRfSweepMode() const
+    {
+        return false;
+    }
+
     uint8 BaseStationFeatures::analogPortCount() const
     {
         return 0;

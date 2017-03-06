@@ -784,7 +784,6 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_PageDownload)
     BOOST_CHECK_EQUAL(response.success(), true);
 }
 
-
 BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()

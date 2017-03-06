@@ -404,7 +404,7 @@ namespace mscl
         return m_impl->getSensorDelay();
     }
 
-    DataMode WirelessNode::getDataMode() const
+    WirelessTypes::DataMode WirelessNode::getDataMode() const
     {
         return m_impl->getDataMode();
     }
@@ -414,8 +414,8 @@ namespace mscl
         return m_impl->getDerivedDataRate();
     }
 
-    ChannelMask WirelessNode::getDerivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const
+    ChannelMask WirelessNode::getDerivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType) const
     {
-        return m_impl->getDerivedChannelMask(derivedChannel);
+        return m_impl->getDerivedChannelMask(derivedChannelType);
     }
 }

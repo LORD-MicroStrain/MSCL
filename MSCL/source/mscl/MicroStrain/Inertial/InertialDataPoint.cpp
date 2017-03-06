@@ -44,9 +44,4 @@ namespace mscl
     {
         return InertialTypes::channelName(m_field, m_qualifier);
     }
-
-    std::string InertialDataPoint::str() const
-    {
-        return InertialTypes::channelFieldToStr(m_field) + "-" + InertialTypes::channelQualifierToStr(m_qualifier);
-    }
 }

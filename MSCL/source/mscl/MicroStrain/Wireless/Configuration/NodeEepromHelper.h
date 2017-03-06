@@ -7,7 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include <memory>
 #include "EepromLocation.h"
-#include "mscl/MicroStrain/Wireless/Configuration/DataMode.h"
+#include "mscl/MicroStrain/Wireless/Configuration/DataModeMask.h"
 #include "mscl/MicroStrain/Wireless/Features/FlashInfo.h"
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
@@ -92,8 +92,8 @@ namespace mscl
         void write(const EepromLocation& location, const Value& val);
 
         //Function: findDerivedChannelEeprom
-        //  Gets the <EepromLocation> for the given <WirelessTypes::DerivedChannel>.
-        static EepromLocation findDerivedChannelEeprom(WirelessTypes::DerivedChannel derivedCh);
+        //  Gets the <EepromLocation> for the given <WirelessTypes::DerivedChannelType>.
+        static EepromLocation findDerivedChannelEeprom(WirelessTypes::DerivedChannelType derivedCh);
 
     public:
         //Function: nodeAddress
@@ -1249,19 +1249,19 @@ namespace mscl
         //    - <Error_NotSupported>: Unsupported eeprom location.
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        DataMode read_dataMode() const;
+        WirelessTypes::DataMode read_dataMode() const;
 
         //Function: write_dataMode
-        //  Writes a <DataMode> object to the Node.
+        //  Writes the <WirelessTypes::DataMode> to the Node.
         //
         //Parameters:
-        //  dataMode - The <DataMode> object to set on the Node.
+        //  dataMode - The <WirelessTypes::DataMode> to set on the Node.
         //
         //Exceptions:
         //    - <Error_NotSupported>: Unsupported eeprom location.
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void write_dataMode(const DataMode& dataMode);
+        void write_dataMode(WirelessTypes::DataMode dataMode);
 
         //Function: read_derivedSampleRate
         //  Reads the Derived Sample Rate from the Node.
@@ -1294,7 +1294,7 @@ namespace mscl
         //  This assumes Derived Channels are supported by the Node, and that the given derivedChannel is supported.
         //
         //Parameters:
-        //  derivedChannel - The <WirelessTypes::DerivedChannel> to read the mask for.
+        //  derivedChannel - The <WirelessTypes::DerivedChannelType> to read the mask for.
         //
         //Returns:
         //  A <ChannelMask> representing the associated Node channels for the requested DerivedChannel.
@@ -1303,20 +1303,20 @@ namespace mscl
         //  - <Error_NotSupported>: Unsupported eeprom location.
         //  - <Error_NodeCommunication>: Failed to communicate with the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        ChannelMask read_derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const;
+        ChannelMask read_derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel) const;
 
         //Function: write_derivedChannelMask
         //  Writes a Derived Channel Mask to the Node for the specified <WirelessTypes::MathChannel>.
         //  This assumes Derived Channels are supported by the Node, and that the given derivedChannel is supported.
         //
         //Parameters:
-        //  derivedChannel - The <WirelessTypes::DerivedChannel> to write the mask for.
+        //  derivedChannel - The <WirelessTypes::DerivedChannelType> to write the mask for.
         //  mask - The <ChannelMask> representing the associated Node channels to set.
         //
         //Exceptions:
         //  - <Error_NotSupported>: Unsupported eeprom location.
         //  - <Error_NodeCommunication>: Failed to communicate with the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void write_derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel, const ChannelMask& mask);
+        void write_derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel, const ChannelMask& mask);
     };
 }

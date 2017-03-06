@@ -96,9 +96,9 @@ namespace mscl
         m_txPerGroup = Utils::ceilBase2(percent * m_bytesPerSecond / m_maxBytesPerPacket);
     }
 
-    WirelessTypes::DerivedChannels SyncNetworkInfo::supportedDerivedChannels() const
+    WirelessTypes::DerivedChannelTypes SyncNetworkInfo::supportedDerivedChannelTypes() const
     {
-        return m_node.features().derivedChannels();
+        return m_node.features().derivedChannelTypes();
     }
 
     void SyncNetworkInfo::setPendingConfig(const WirelessNodeConfig& config)

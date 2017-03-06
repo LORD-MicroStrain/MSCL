@@ -10,7 +10,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Commands/LongPing.h"
 #include "Configuration/ActivitySense.h"
 #include "Configuration/ConfigIssue.h"
-#include "Configuration/DataMode.h"
+#include "Configuration/DataModeMask.h"
 #include "Configuration/EventTriggerOptions.h"
 #include "Configuration/FatigueOptions.h"
 #include "Configuration/HistogramOptions.h"
@@ -990,15 +990,15 @@ namespace mscl
         uint32 getSensorDelay() const;
 
         //API Function: getDataMode
-        //  Reads the <DataMode> that is currently set on the Node.
+        //  Reads the <WirelessTypes::DataMode> that is currently set on the Node.
         //
         //Returns:
-        //  A <DataMode> object representing the Data Modes currently set on the Node.
+        //  The <WirelessTypes::DataMode> currently set on the Node.
         //
         //Exceptions:
         //  - <Error_NodeCommunication>: Failed to read from the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        DataMode getDataMode() const;
+        WirelessTypes::DataMode getDataMode() const;
 
         //API Function: getDerivedDataRate
         //  Reads the <WirelessTypes::WirelessSampleRate> for all Derived Data Channels that is currently set on the Node.
@@ -1018,7 +1018,7 @@ namespace mscl
         //  For example, if the mask for RMS has ch1 and ch3 active, ch1RMS and ch3RMS channels will be output.
         //
         //Parameters:
-        //  derivedChannel - The <WirelessTypes::DerivedChannel> to read the channel mask for.
+        //  derivedChannelType - The <WirelessTypes::DerivedChannelType> to read the channel mask for.
         //
         //Returns:
         //  A <ChannelMask> that is currently set on the Node for the requested <WirelessTypes::DerivedChannel>.
@@ -1027,6 +1027,6 @@ namespace mscl
         //  - <Error_NotSupported>: Derived Channels are not supported by this Node.
         //  - <Error_NodeCommunication>: Failed to read from the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        ChannelMask getDerivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const;
+        ChannelMask getDerivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType) const;
     };
 }

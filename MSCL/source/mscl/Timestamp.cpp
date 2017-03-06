@@ -53,6 +53,36 @@ namespace mscl
         return TimeSpan::NanoSeconds(diff);
     }
 
+    bool Timestamp::operator==(const Timestamp& other) const
+    {
+        return m_nanoseconds == other.m_nanoseconds;
+    }
+
+    bool Timestamp::operator!=(const Timestamp& other) const
+    {
+        return m_nanoseconds != other.m_nanoseconds;
+    }
+
+    bool Timestamp::operator<(const Timestamp& other) const
+    {
+        return m_nanoseconds < other.m_nanoseconds;
+    }
+
+    bool Timestamp::operator<=(const Timestamp& other) const
+    {
+        return m_nanoseconds <= other.m_nanoseconds;
+    }
+
+    bool Timestamp::operator>(const Timestamp& other) const
+    {
+        return m_nanoseconds > other.m_nanoseconds;
+    }
+
+    bool Timestamp::operator>=(const Timestamp& other) const
+    {
+        return m_nanoseconds >= other.m_nanoseconds;
+    }
+
     //get the number of nanoseconds since epoch
     uint64 Timestamp::nanoseconds() const
     {

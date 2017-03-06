@@ -18,9 +18,11 @@ namespace mscl
         //    continuous    - standard continuous sample rates
         //    burst         - standard burst sample rates
         //    armedDatalog  - standard armed datalogging sample rates
+        //    derivedOnly   - standard sample rates when derived only mode is active
         static const WirelessTypes::WirelessSampleRates continuous;
         static const WirelessTypes::WirelessSampleRates burst;
         static const WirelessTypes::WirelessSampleRates armedDatalog;
+        static const WirelessTypes::WirelessSampleRates derivedOnly;
 
         //Constants: Standard Gen2 Sample Rates
         //  continuous_nonSync_gen2 - standard continuous NonSync sample rates
@@ -37,10 +39,12 @@ namespace mscl
         //  continuous_sync_glink200    - continuous Sync sample rates for the G-Link-200
         //  continuous_log_glink200     - continuous Log Only sample rates for the G-Link-200
         //  burst_glink200              - burst sample rates for the G-Link-200
+        //  derivedOnly_glink200        - derived only sample rates for the G-Link-200
         static const WirelessTypes::WirelessSampleRates continuous_nonSync_glink200;
         static const WirelessTypes::WirelessSampleRates continuous_sync_glink200;
         static const WirelessTypes::WirelessSampleRates continuous_log_glink200;
         static const WirelessTypes::WirelessSampleRates burst_glink200;
+        static const WirelessTypes::WirelessSampleRates derivedOnly_glink200;
 
         //Constants: G-Link-2 Sample Rates
         //    continuous_glink2    - continuous sample rates for the G-Link 2

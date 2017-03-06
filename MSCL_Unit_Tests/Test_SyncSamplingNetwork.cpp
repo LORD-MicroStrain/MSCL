@@ -195,6 +195,61 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous)
     BOOST_CHECK_EQUAL(info.tdmaAddress(), 9);
 }
 
+BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_2)
+{
+    //this tests adds a single node in continuous mode
+
+    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
+    WirelessNode node100(100, b);
+    node100.setImpl(impl);
+
+    SyncSamplingNetwork nwk(b);
+
+    std::unique_ptr<NodeFeatures> features;
+    expectNodeFeatures(features, impl);
+
+    //eeprom reads performed by the SyncSamplingNetwork
+    uint16 retx = WirelessTypes::retransmission_on,
+        chs = 1,
+        rate = WirelessTypes::sampleRate_512Hz,
+        syncMode = WirelessTypes::syncMode_continuous,
+        dataFormat = WirelessTypes::dataFormat_raw_uint16,
+        collectionMode = WirelessTypes::collectionMethod_transmitOnly,
+        samplingDelay = 5,
+        samplingMode = WirelessTypes::samplingMode_sync;
+
+    expectRead(impl, NodeEepromMap::NODE_RETRANSMIT, Value::UINT16(retx));              //retransmission        (on)
+    expectRead(impl, NodeEepromMap::ACTIVE_CHANNEL_MASK, Value::UINT16(chs));           //active channels mask  (channel 1)
+    expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(rate));                  //sample rate           (1Hz)
+    expectRead(impl, NodeEepromMap::SYNC_SAMPLE_SETTING, Value::UINT16(syncMode));      //sync sampling mode    (continuous)
+    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(dataFormat));            //data format           (2 byte uint)
+    expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));    //collection mode       (transmit)
+    expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));      //sampling delay        (5)
+    expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+
+    expectReadModel(impl, WirelessModels::node_gLink_2g);
+    expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
+
+    //add the node to the network
+    BOOST_CHECK_NO_THROW(nwk.addNode(node100));
+
+    //verify the network information
+    BOOST_CHECK_EQUAL(nwk.ok(), true);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 25.024, 0.1);
+
+    //verify the networkInfo for the nodes in the network
+    const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
+    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
+    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
+    BOOST_CHECK_CLOSE(info.percentBandwidth(), 25.024, 0.1);
+    BOOST_CHECK_EQUAL(info.groupSize(), 1);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 32);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 24);
+    BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
+}
+
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_noChannelMask)
 {
     //this tests adds a single node with no active channels

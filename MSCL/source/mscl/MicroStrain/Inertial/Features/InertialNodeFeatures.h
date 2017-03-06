@@ -9,6 +9,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include <memory>
 
 #include "mscl/MicroStrain/Inertial/InertialNodeInfo.h"
+#include "mscl/MicroStrain/Inertial/InertialTypes.h"
+#include "mscl/MicroStrain/SampleRate.h"
 
 namespace mscl
 {    
@@ -51,5 +53,70 @@ namespace mscl
         //    - <Error_NotSupported>: The Node model is not supported by MSCL.
         static std::unique_ptr<InertialNodeFeatures> create(const InertialNodeInfo& info);
 #endif
+
+    private:
+        //Function: isChannelField
+        //  Checks if the uint16 descriptor value is a Channel field or not.
+        //
+        //Returns:
+        //  true if the descriptor is a data channel field, false otherwise.
+        static bool isChannelField(uint16 descriptor);
+
+    public:
+        //API Function: supportsCategory
+        //    Checks whether or not a given <InertialTypes::InertialCategory> is supported by the InertialNode.
+        //
+        //Parameters:
+        //    category - The <InertialTypes::InertialCategory> to check if supported.
+        bool supportsCategory(InertialTypes::InertialCategory category) const;
+
+        //API Function: supportsCommand
+        //    Checks whether or not the given <InertialTypes::Command> is supported by the InertialNode.
+        //
+        //Parameters:
+        //    commandId - The <InertialTypes::Command> to check if supported.
+        //
+        //Returns:
+        //    true if the <InertialFieldId::ID> is supported by the InertialNode, false otherwise.
+        bool supportsCommand(InertialTypes::Command commandId) const;
+
+        //API Function: supportedCommands
+        //  Gets a list of the supported <InertialTypes::InertialCommands> that are supported by the InertialNode.
+        //
+        //Returns:
+        //  The <InertialTypes::InertialCommands> supported by the InertialNode.
+        InertialTypes::InertialCommands supportedCommands() const;
+
+        //API Function: supportedChannelFields
+        //    Gets a list of the supported channel fields for a given <InertialTypes::InertialCategory>.
+        //
+        //Parameters:
+        //    category - The <InertialTypes::InertialCategory> to get the list of supported channels for.
+        //
+        //Returns:
+        //    A <InertialTypes::ChannelFields> object containing the list of supported channel fields.
+        //
+        //Exceptions:
+        //    - <Error_InertialCmdFailed>: The command has failed.
+        //    - <Error_Communication>: Timed out waiting for a response.
+        //    - <Error_NotSupported>: The <InertialTypes::InertialCategory> is not supported by this node.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        InertialTypes::InertialChannelFields supportedChannelFields(InertialTypes::InertialCategory category) const;
+
+        //API Function: supportedSampleRates
+        //    Gets a list of the supported sample rates for a given <InertialTypes::InertialCategory>.
+        //
+        //Parameters:
+        //    category - The <InertialTypes::InertialCategory> to get the sample rate list for.
+        //
+        //Returns:
+        //    A <SampleRates> list containing all the supported sample rates for the provided channel.
+        //
+        //Exceptions:
+        //    - <Error_InertialCmdFailed>: The command has failed.
+        //    - <Error_Communication>: Timed out waiting for a response.
+        //    - <Error_NotSupported>: The <InertialTypes::InertialCategory> is not supported by this node.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        const SampleRates& supportedSampleRates(InertialTypes::InertialCategory category) const;
     };
 }

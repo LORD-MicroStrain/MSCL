@@ -78,7 +78,7 @@ namespace mscl
         return true;
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures_vlink::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
+    const WirelessTypes::WirelessSampleRates NodeFeatures_vlink::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
@@ -98,7 +98,7 @@ namespace mscl
         }
     }
 
-    WirelessTypes::WirelessSampleRate NodeFeatures_vlink::maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
+    WirelessTypes::WirelessSampleRate NodeFeatures_vlink::maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
         uint16 channelCount = channels.count();
 
@@ -152,7 +152,7 @@ namespace mscl
         else
         {
             //just return the result of the parent class' function
-            return NodeFeatures::maxSampleRate(samplingMode, channels, dataCollectionMethod);
+            return NodeFeatures::maxSampleRate(samplingMode, channels, dataCollectionMethod, dataMode);
         }
     }
 }

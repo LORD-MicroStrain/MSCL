@@ -7,6 +7,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include "mscl/Types.h"
+#include "ChannelMask.h"
+#include <map>
+#include <vector>
 
 namespace mscl
 {
@@ -374,6 +377,7 @@ namespace mscl
         //    unit_torque_newtonMeter             - 77  - Newton Meter
         //    unit_torque_footPounds              - 78  - Foot Pounds
         //    unit_torque_inchPounds              - 79  - Inch Pounds
+        //    unit_velocity_inchesPerSec          - 95  - Inches per Second
         //    unit_velocity_metersPerSec          - 66  - Meters per Second
         //    unit_velocity_kilometersPerSec      - 67  - Kilometers per Second
         //    unit_velocity_kilometersPerHr       - 68  - Kilometers per Hour
@@ -483,7 +487,8 @@ namespace mscl
             unit_other_secsPerSec               = 91,
             unit_rssi_dBHz                      = 92,
             unit_density_kgPerMeter3            = 93,
-            unit_other_unitless                 = 94
+            unit_other_unitless                 = 94,
+            unit_velocity_inchesPerSec          = 95
 
             //170 (0xAA) needs to be reserved - treated as none
             //255 (0xFF) needs to be reserved - treated as none
@@ -858,28 +863,33 @@ namespace mscl
         //API Enum: Filter
         //  The filter options (used for anti-aliasing and low-pass filter)
         //
-        //  filter_33000hz  - 33000
-        //  filter_20000hz  - 20000
-        //  filter_10000hz  - 10000
-        //  filter_5000hz   - 5000
-        //  filter_4096hz   - 4096
-        //  filter_4000hz   - 4000
-        //  filter_2048hz   - 2048
-        //  filter_2000hz   - 2000
-        //  filter_1024hz   - 1024
-        //  filter_1000hz   - 1000
-        //  filter_512hz    - 512
-        //  filter_500hz    - 500
-        //  filter_256hz    - 256
-        //  filter_250hz    - 250
-        //  filter_200hz    - 200
-        //  filter_128hz    - 128
-        //  filter_125hz    - 125
-        //  filter_100hz    - 100
-        //  filter_62hz     - 62
-        //  filter_50hz     - 50
-        //  filter_31hz     - 31
-        //  filter_26hz     - 26
+        //  filter_33000hz - 33000 - 33000 hz
+        //  filter_20000hz - 20000 - 20000 hz
+        //  filter_10000hz - 10000 - 10000 hz
+        //  filter_5000hz  - 5000 - 5000 hz
+        //  filter_4096hz  - 4096 - 4096 hz
+        //  filter_4000hz  - 4000 - 4000 hz
+        //  filter_2048hz  - 2048 - 2048 hz
+        //  filter_2000hz  - 2000 - 2000 hz
+        //  filter_1024hz  - 1024 - 1024 hz
+        //  filter_1000hz  - 1000 - 1000 hz
+        //  filter_800hz   - 800 - 800 hz
+        //  filter_512hz   - 512 - 512 hz
+        //  filter_500hz   - 500 - 500 hz
+        //  filter_418hz   - 418 - 418 hz
+        //  filter_256hz   - 256 - 256 hz
+        //  filter_250hz   - 250 - 250 hz
+        //  filter_209hz   - 209 - 209 hz
+        //  filter_200hz   - 200 - 200 hz
+        //  filter_128hz   - 128 - 128 hz
+        //  filter_125hz   - 125 - 125 hz
+        //  filter_104hz   - 104 - 104 hz
+        //  filter_100hz   - 100 - 100 hz
+        //  filter_62hz    - 62 - 62 hz
+        //  filter_52hz    - 52 - 52 hz
+        //  filter_50hz    - 50 - 50 hz
+        //  filter_31hz    - 31 - 31 hz
+        //  filter_26hz    - 26 - 26 hz
         enum Filter
         {
             filter_33000hz  = 33000,
@@ -892,15 +902,20 @@ namespace mscl
             filter_2000hz   = 2000,
             filter_1024hz   = 1024,
             filter_1000hz   = 1000,
+            filter_800hz    = 800,
             filter_512hz    = 512,
             filter_500hz    = 500,
+            filter_418hz    = 418,
             filter_256hz    = 256,
             filter_250hz    = 250,
+            filter_209hz    = 209,
             filter_200hz    = 200,
             filter_128hz    = 128,
             filter_125hz    = 125,
+            filter_104hz    = 104,
             filter_100hz    = 100,
             filter_62hz     = 62,
+            filter_52hz     = 52,
             filter_50hz     = 50,
             filter_31hz     = 31,
             filter_26hz     = 26
@@ -1051,14 +1066,29 @@ namespace mscl
             range_invalid = 65535    //invalid input range
         };
 
-        //API Enum: DerivedChannel
-        //  Available Derived Channels.
+        //API Enum: DataMode
+        //  Available Data Modes.
+        //
+        //  dataMode_none           - 0 - No Data Modes enabled
+        //  dataMode_raw            - 1 - Raw Only Data Mode
+        //  dataMode_derived        - 2 - Derived Only Data Mode
+        //  dataMode_raw_derived    - 3 - Raw and Derived Data Mode
+        enum DataMode
+        {
+            dataMode_none = 0,
+            dataMode_raw = 1,
+            dataMode_derived = 2,
+            dataMode_raw_derived = 3
+        };
+
+        //API Enum: DerivedChannelType
+        //  Available Derived Channel Types.
         //
         //  derived_rms            - 0 - RMS
         //  derived_peakToPeak     - 1 - Peak to Peak
         //  derived_ips            - 2 - Inches per Second
         //  derived_crestFactor    - 3 - Crest Factor
-        enum DerivedChannel
+        enum DerivedChannelType
         {
             derived_rms = 0,
             derived_peakToPeak = 1,
@@ -1080,7 +1110,9 @@ namespace mscl
         //  HighPassFilters            - A vector of <HighPassFilter> enums.
         //  StorageLimitModes          - A vector of <StorageLimitMode> enums.
         //  InputRanges                - A vector of <InputRange> enums.
-        //  DerivedChannel             - A vector of <DerivedChannel> enums.
+        //  DataModes                  - A vector of <DataMode> enums.
+        //  DerivedChannelTypes        - A vector of <DerivedChannelType> enums.
+        //  DerivedChannelMasks        - A map of <DerivedChannelType> to <ChannelMask> pairs.
         typedef std::vector<DataCollectionMethod> DataCollectionMethods;
         typedef std::vector<DataFormat> DataFormats;
         typedef std::vector<WirelessSampleRate> WirelessSampleRates;
@@ -1093,7 +1125,12 @@ namespace mscl
         typedef std::vector<HighPassFilter> HighPassFilters;
         typedef std::vector<StorageLimitMode> StorageLimitModes;
         typedef std::vector<InputRange> InputRanges;
-        typedef std::vector<DerivedChannel> DerivedChannels;
+        typedef std::vector<DataMode> DataModes;
+        typedef std::vector<DerivedChannelType> DerivedChannelTypes;
+
+        //API Typedef: DerivedChannelMasks
+        //  Typedef for a map of <DerivedChannelType> to <ChannelMask> pairs.
+        typedef std::map<DerivedChannelType, ChannelMask> DerivedChannelMasks;
 
         //API Constant: UNKNOWN_RSSI = 999
         //    The value given for an unknown RSSI value.
@@ -1209,6 +1246,30 @@ namespace mscl
         //Exceptions:
         //    - <Error>: Invalid transmit power.
         static WirelessTypes::LegacyTransmitPower transmitPowerToLegacy(WirelessTypes::TransmitPower power);
+
+        //Function: bytesPerDerivedChannel
+        //  Gets the number of bytes that make up a derived channel.
+        //  For example, derived_rms is a single float, so this will return 4.
+        //
+        //Parameters:
+        //  id - The <DerivedChannelType> to get the byte count for.
+        //
+        //Returns:
+        //  The number of bytes that make up a derived channel's data.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Invalid Derived Channel
+        static uint8 bytesPerDerivedChannel(DerivedChannelType id);
+
+        //Function: derivedBytesPerSweep
+        //  Gets the number of derived bytes in a sweep for the given <WirelessTypes::DerivedChannelMasks>.
+        //
+        //Parameters:
+        //  derivedChannelMasks - The <WirelessTypes::DerivedChannelMasks> to calculated the number of derived bytes for.
+        //
+        //Returns:
+        //  The number of derived bytes in a sweep for all the derived channels given.
+        static uint32 derivedBytesPerSweep(const WirelessTypes::DerivedChannelMasks& derivedChannelMasks);
 #endif
     };
 }

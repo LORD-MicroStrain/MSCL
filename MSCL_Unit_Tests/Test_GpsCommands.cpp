@@ -3,7 +3,7 @@ Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-#include "mscl/MicroStrain/Inertial/Commands/GPS_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/GNSS_Commands.h"
 #include "mscl/MicroStrain/Inertial/InertialDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 
@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_SUITE(GpsCommands_GetGpsDataRateBase)
 
 BOOST_AUTO_TEST_CASE(GetGpsDataRateBase_buildCommand)
 {
-    ByteStream b = GetGpsDataRateBase::buildCommand();
+    ByteStream b = GetGnssDataRateBase::buildCommand();
 
     //Check all the bytes in the ByteStream
     BOOST_CHECK_EQUAL(b.read_uint8(0), 0x75);
@@ -35,7 +35,7 @@ BOOST_AUTO_TEST_CASE(GetGpsDataRateBase_parseData)
     data.append_uint16(1000);
 
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    GetGpsDataRateBase::Response response(rc);
+    GetGnssDataRateBase::Response response(rc);
 
     BOOST_CHECK_EQUAL(response.parseResponse(GenericInertialCommandResponse::ResponseSuccess("", data)), 1000);
 }
@@ -43,7 +43,7 @@ BOOST_AUTO_TEST_CASE(GetGpsDataRateBase_parseData)
 BOOST_AUTO_TEST_CASE(GetGpsDataRateBase_Match_Success)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    GetGpsDataRateBase::Response response(rc);
+    GetGnssDataRateBase::Response response(rc);
 
     Bytes ackData;
     ackData.push_back(0x07);
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_SUITE(GpsCommands_GpsMessageFormat)
 
 BOOST_AUTO_TEST_CASE(GpsMessageFormat_buildCommand_get)
 {
-    ByteStream b = GpsMessageFormat::buildCommand_get();
+    ByteStream b = GnssMessageFormat::buildCommand_get();
 
     //Check all the bytes in the ByteStream
     BOOST_CHECK_EQUAL(b.read_uint8(0), 0x75);
@@ -89,10 +89,10 @@ BOOST_AUTO_TEST_CASE(GpsMessageFormat_buildCommand_get)
 BOOST_AUTO_TEST_CASE(GpsMessageFormat_buildCommand_set)
 {
     InertialChannels chs;
-    chs.push_back(InertialChannel(InertialTypes::CH_FIELD_GPS_LLH_POSITION, SampleRate::Hertz(2)));
-    chs.push_back(InertialChannel(InertialTypes::CH_FIELD_GPS_NED_VELOCITY, SampleRate::Hertz(4)));
+    chs.push_back(InertialChannel(InertialTypes::CH_FIELD_GNSS_LLH_POSITION, SampleRate::Hertz(2)));
+    chs.push_back(InertialChannel(InertialTypes::CH_FIELD_GNSS_NED_VELOCITY, SampleRate::Hertz(4)));
 
-    ByteStream b = GpsMessageFormat::buildCommand_set(chs, 4);
+    ByteStream b = GnssMessageFormat::buildCommand_set(chs, 4);
 
     //Check all the bytes in the ByteStream
     BOOST_CHECK_EQUAL(b.read_uint8(0), 0x75);
@@ -121,14 +121,14 @@ BOOST_AUTO_TEST_CASE(GpsMessageFormat_parseData)
     data.append_uint16(4);        //rate decimation
 
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    GpsMessageFormat::Response response(rc, true);
+    GnssMessageFormat::Response response(rc, true);
 
     uint16 sampleRateBase = 1000;
 
     InertialChannels chs = response.parseResponse(GenericInertialCommandResponse::ResponseSuccess("", data), sampleRateBase);
 
     BOOST_CHECK_EQUAL(chs.size(), 1);
-    BOOST_CHECK_EQUAL(chs.at(0).channelField(), InertialTypes::CH_FIELD_GPS_UTC_TIME);
+    BOOST_CHECK_EQUAL(chs.at(0).channelField(), InertialTypes::CH_FIELD_GNSS_UTC_TIME);
     BOOST_CHECK_EQUAL(chs.at(0).rateDecimation(sampleRateBase), 4);
     BOOST_CHECK_EQUAL(chs.at(0).sampleRate().samplesPerSecond(), SampleRate::Hertz(250).samplesPerSecond());
 }

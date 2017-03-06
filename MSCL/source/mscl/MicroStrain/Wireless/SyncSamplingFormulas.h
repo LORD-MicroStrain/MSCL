@@ -222,14 +222,14 @@ namespace mscl
         //    Gets the minimum time that can be assigned for a Burst Sync Sampling session.
         //
         //Parameters:
-        //    dataFormat - The <WirelessTypes::DataFormat> of the sampling session.
-        //    numChannels - The number of active channels for the sampling session.
-        //    sampleRate - The <SampleRate> that for the sampling session.
+        //    numRawBytesPerSweep - The number of raw bytes per sweep.
+        //    numDerivedBytesPerSweep - The number of derived bytes per sweep.
+        //    rawSampleRate - The <SampleRate> for Raw Data for the sampling session.
         //    sweepsPerBurst - The number of sweeps per burst for the sampling session.
         //
         //Returns:
         //    A <TimeSpan> representing the minimum time that can be assigned for a Burst Sync Sampling session.
-        TimeSpan minTimeBetweenBursts(WirelessTypes::DataFormat dataFormat, uint8 numActiveChs, const mscl::SampleRate& sampleRate, uint32 sweepsPerBurst);
+        TimeSpan minTimeBetweenBursts(uint32 numRawBytesPerSweep, uint32 numDerivedBytesPerSweep, const mscl::SampleRate& rawSampleRate, uint32 sweepsPerBurst);
 
         //Function: burstTxPerSecond
         //    Calculates the burst transmissions per second
@@ -244,7 +244,9 @@ namespace mscl
         //    The burst transmissions per second
         uint32 burstTxPerSecond(uint32 totalNeededTx, uint32 timeBetweenBursts, double sampleDuration, bool lossless);
 
-        float overheadFactor(bool lossless, bool optimizeBandwidth);
+        //Function: overheadFactor
+        //  Gets the overhead factor used in TDMA calculations.
+        float overheadFactor(bool lossless, bool optimizeBandwidth, const SampleRate& sampleRate, uint8 syncFormulaVersion);
     }
 #endif
 }

@@ -6,7 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Inertial/Packets/InertialFieldParser.h"
 #include "mscl/MicroStrain/Inertial/Packets/InertialDataPacket.h"
 #include "mscl/MicroStrain/Inertial/InertialDataPoint.h"
-#include "mscl/MicroStrain/Inertial/Packets/InertialFieldParser_GPS.h"
+#include "mscl/MicroStrain/Inertial/Packets/InertialFieldParser_GNSS.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_LLHPosition_parse)
     bytes.append_uint16(29);        //valid flags (0001 1101)
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_GPS_LLH_POSITION, bytes.data());
+    InertialDataField field(InertialTypes::CH_FIELD_GNSS_LLH_POSITION, bytes.data());
 
     InertialDataPoints data;
 
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_LLHPosition_parse)
     BOOST_CHECK_EQUAL(data.size(), 6);
 
     //Latitude
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GPS_LLH_POSITION);
+    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GNSS_LLH_POSITION);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_LATITUDE);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_double);
     BOOST_CHECK_EQUAL(data.at(0).valid(), true);
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_LLHPosition_parse)
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
     //Longitude
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GPS_LLH_POSITION);
+    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GNSS_LLH_POSITION);
     BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_LONGITUDE);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_double);
     BOOST_CHECK_EQUAL(data.at(1).valid(), true);
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_LLHPosition_parse)
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
     //Height Above Ellipsoid
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GPS_LLH_POSITION);
+    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GNSS_LLH_POSITION);
     BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_HEIGHT_ABOVE_ELLIPSOID);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_double);
     BOOST_CHECK_EQUAL(data.at(2).valid(), false);
@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_LLHPosition_parse)
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
 
     //Height Above MSL
-    BOOST_CHECK_EQUAL(data.at(3).field(), InertialTypes::CH_FIELD_GPS_LLH_POSITION);
+    BOOST_CHECK_EQUAL(data.at(3).field(), InertialTypes::CH_FIELD_GNSS_LLH_POSITION);
     BOOST_CHECK_EQUAL(data.at(3).qualifier(), InertialTypes::CH_HEIGHT_ABOVE_MSL);
     BOOST_CHECK_EQUAL(data.at(3).storedAs(), valueType_double);
     BOOST_CHECK_EQUAL(data.at(3).valid(), true);
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_LLHPosition_parse)
     BOOST_CHECK_NO_THROW(data.at(3).channelName());
 
     //Horizontal Accuracy
-    BOOST_CHECK_EQUAL(data.at(4).field(), InertialTypes::CH_FIELD_GPS_LLH_POSITION);
+    BOOST_CHECK_EQUAL(data.at(4).field(), InertialTypes::CH_FIELD_GNSS_LLH_POSITION);
     BOOST_CHECK_EQUAL(data.at(4).qualifier(), InertialTypes::CH_HORIZONTAL_ACCURACY);
     BOOST_CHECK_EQUAL(data.at(4).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(4).valid(), true);
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_LLHPosition_parse)
     BOOST_CHECK_NO_THROW(data.at(4).channelName());
 
     //Vertical Accuracy
-    BOOST_CHECK_EQUAL(data.at(5).field(), InertialTypes::CH_FIELD_GPS_LLH_POSITION);
+    BOOST_CHECK_EQUAL(data.at(5).field(), InertialTypes::CH_FIELD_GNSS_LLH_POSITION);
     BOOST_CHECK_EQUAL(data.at(5).qualifier(), InertialTypes::CH_VERTICAL_ACCURACY);
     BOOST_CHECK_EQUAL(data.at(5).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(5).valid(), true);
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ECEFPosition_parse)
     bytes.append_uint16(2);            //valid flags (0000 0010)
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_GPS_ECEF_POSITION, bytes.data());
+    InertialDataField field(InertialTypes::CH_FIELD_GNSS_ECEF_POSITION, bytes.data());
 
     InertialDataPoints data;
 
@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ECEFPosition_parse)
     BOOST_CHECK_EQUAL(data.size(), 4);
 
     //x position
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GPS_ECEF_POSITION);
+    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GNSS_ECEF_POSITION);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_X);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_double);
     BOOST_CHECK_EQUAL(data.at(0).valid(), false);
@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ECEFPosition_parse)
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
     //y position
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GPS_ECEF_POSITION);
+    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GNSS_ECEF_POSITION);
     BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_Y);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_double);
     BOOST_CHECK_EQUAL(data.at(1).valid(), false);
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ECEFPosition_parse)
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
     //z position
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GPS_ECEF_POSITION);
+    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GNSS_ECEF_POSITION);
     BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_Z);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_double);
     BOOST_CHECK_EQUAL(data.at(2).valid(), false);
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ECEFPosition_parse)
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
 
     //position accuracy
-    BOOST_CHECK_EQUAL(data.at(3).field(), InertialTypes::CH_FIELD_GPS_ECEF_POSITION);
+    BOOST_CHECK_EQUAL(data.at(3).field(), InertialTypes::CH_FIELD_GNSS_ECEF_POSITION);
     BOOST_CHECK_EQUAL(data.at(3).qualifier(), InertialTypes::CH_POSITION_ACCURACY);
     BOOST_CHECK_EQUAL(data.at(3).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(3).valid(), true);
@@ -156,7 +156,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_NEDVelocity_parse)
     bytes.append_uint16(41);    //valid flags (0010 1001)
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_GPS_NED_VELOCITY, bytes.data());
+    InertialDataField field(InertialTypes::CH_FIELD_GNSS_NED_VELOCITY, bytes.data());
 
     InertialDataPoints data;
 
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_NEDVelocity_parse)
     BOOST_CHECK_EQUAL(data.size(), 8);
 
     //north
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GPS_NED_VELOCITY);
+    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GNSS_NED_VELOCITY);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_NORTH);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(0).valid(), true);
@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_NEDVelocity_parse)
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
     //east
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GPS_NED_VELOCITY);
+    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GNSS_NED_VELOCITY);
     BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_EAST);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(1).valid(), true);
@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_NEDVelocity_parse)
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
     //down
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GPS_NED_VELOCITY);
+    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GNSS_NED_VELOCITY);
     BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_DOWN);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(2).valid(), true);
@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_NEDVelocity_parse)
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
 
     //speed
-    BOOST_CHECK_EQUAL(data.at(3).field(), InertialTypes::CH_FIELD_GPS_NED_VELOCITY);
+    BOOST_CHECK_EQUAL(data.at(3).field(), InertialTypes::CH_FIELD_GNSS_NED_VELOCITY);
     BOOST_CHECK_EQUAL(data.at(3).qualifier(), InertialTypes::CH_SPEED);
     BOOST_CHECK_EQUAL(data.at(3).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(3).valid(), false);
@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_NEDVelocity_parse)
     BOOST_CHECK_NO_THROW(data.at(3).channelName());
 
     //ground speed
-    BOOST_CHECK_EQUAL(data.at(4).field(), InertialTypes::CH_FIELD_GPS_NED_VELOCITY);
+    BOOST_CHECK_EQUAL(data.at(4).field(), InertialTypes::CH_FIELD_GNSS_NED_VELOCITY);
     BOOST_CHECK_EQUAL(data.at(4).qualifier(), InertialTypes::CH_GROUND_SPEED);
     BOOST_CHECK_EQUAL(data.at(4).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(4).valid(), false);
@@ -206,7 +206,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_NEDVelocity_parse)
     BOOST_CHECK_NO_THROW(data.at(4).channelName());
 
     //heading
-    BOOST_CHECK_EQUAL(data.at(5).field(), InertialTypes::CH_FIELD_GPS_NED_VELOCITY);
+    BOOST_CHECK_EQUAL(data.at(5).field(), InertialTypes::CH_FIELD_GNSS_NED_VELOCITY);
     BOOST_CHECK_EQUAL(data.at(5).qualifier(), InertialTypes::CH_HEADING);
     BOOST_CHECK_EQUAL(data.at(5).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(5).valid(), true);
@@ -214,7 +214,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_NEDVelocity_parse)
     BOOST_CHECK_NO_THROW(data.at(5).channelName());
 
     //speed accuracy
-    BOOST_CHECK_EQUAL(data.at(6).field(), InertialTypes::CH_FIELD_GPS_NED_VELOCITY);
+    BOOST_CHECK_EQUAL(data.at(6).field(), InertialTypes::CH_FIELD_GNSS_NED_VELOCITY);
     BOOST_CHECK_EQUAL(data.at(6).qualifier(), InertialTypes::CH_SPEED_ACCURACY);
     BOOST_CHECK_EQUAL(data.at(6).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(6).valid(), false);
@@ -222,7 +222,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_NEDVelocity_parse)
     BOOST_CHECK_NO_THROW(data.at(6).channelName());
 
     //heading accuracy
-    BOOST_CHECK_EQUAL(data.at(7).field(), InertialTypes::CH_FIELD_GPS_NED_VELOCITY);
+    BOOST_CHECK_EQUAL(data.at(7).field(), InertialTypes::CH_FIELD_GNSS_NED_VELOCITY);
     BOOST_CHECK_EQUAL(data.at(7).qualifier(), InertialTypes::CH_HEADING_ACCURACY);
     BOOST_CHECK_EQUAL(data.at(7).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(7).valid(), true);
@@ -242,7 +242,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ECEFVelocity_parse)
     bytes.append_uint16(1);        //valid flags (0000 0001)
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_GPS_ECEF_VELOCITY, bytes.data());
+    InertialDataField field(InertialTypes::CH_FIELD_GNSS_ECEF_VELOCITY, bytes.data());
 
     InertialDataPoints data;
 
@@ -252,7 +252,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ECEFVelocity_parse)
     BOOST_CHECK_EQUAL(data.size(), 4);
 
     //X
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GPS_ECEF_VELOCITY);
+    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GNSS_ECEF_VELOCITY);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_X);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(0).valid(), true);
@@ -260,7 +260,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ECEFVelocity_parse)
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
     //Y
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GPS_ECEF_VELOCITY);
+    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GNSS_ECEF_VELOCITY);
     BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_Y);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(1).valid(), true);
@@ -268,7 +268,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ECEFVelocity_parse)
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
     //Z
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GPS_ECEF_VELOCITY);
+    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GNSS_ECEF_VELOCITY);
     BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_Z);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(2).valid(), true);
@@ -276,7 +276,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ECEFVelocity_parse)
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
 
     //ACCURACY
-    BOOST_CHECK_EQUAL(data.at(3).field(), InertialTypes::CH_FIELD_GPS_ECEF_VELOCITY);
+    BOOST_CHECK_EQUAL(data.at(3).field(), InertialTypes::CH_FIELD_GNSS_ECEF_VELOCITY);
     BOOST_CHECK_EQUAL(data.at(3).qualifier(), InertialTypes::CH_VELOCITY_ACCURACY);
     BOOST_CHECK_EQUAL(data.at(3).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(3).valid(), false);
@@ -299,7 +299,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DOP_parse)
     bytes.append_uint16(112);    //valid flags (0111 0000)
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_GPS_DOP, bytes.data());
+    InertialDataField field(InertialTypes::CH_FIELD_GNSS_DOP, bytes.data());
 
     InertialDataPoints data;
 
@@ -309,7 +309,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DOP_parse)
     BOOST_CHECK_EQUAL(data.size(), 7);
 
     //GEOMETRIC
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GPS_DOP);
+    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GNSS_DOP);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_GEOMETRIC_DOP);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(0).valid(), false);
@@ -317,7 +317,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DOP_parse)
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
     //position
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GPS_DOP);
+    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GNSS_DOP);
     BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_POSITION_DOP);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(1).valid(), false);
@@ -325,7 +325,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DOP_parse)
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
     //horizontal
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GPS_DOP);
+    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GNSS_DOP);
     BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_HORIZONTAL_DOP);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(2).valid(), false);
@@ -333,7 +333,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DOP_parse)
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
 
     //vertical
-    BOOST_CHECK_EQUAL(data.at(3).field(), InertialTypes::CH_FIELD_GPS_DOP);
+    BOOST_CHECK_EQUAL(data.at(3).field(), InertialTypes::CH_FIELD_GNSS_DOP);
     BOOST_CHECK_EQUAL(data.at(3).qualifier(), InertialTypes::CH_VERTICAL_DOP);
     BOOST_CHECK_EQUAL(data.at(3).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(3).valid(), false);
@@ -341,7 +341,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DOP_parse)
     BOOST_CHECK_NO_THROW(data.at(3).channelName());
 
     //time
-    BOOST_CHECK_EQUAL(data.at(4).field(), InertialTypes::CH_FIELD_GPS_DOP);
+    BOOST_CHECK_EQUAL(data.at(4).field(), InertialTypes::CH_FIELD_GNSS_DOP);
     BOOST_CHECK_EQUAL(data.at(4).qualifier(), InertialTypes::CH_TIME_DOP);
     BOOST_CHECK_EQUAL(data.at(4).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(4).valid(), true);
@@ -349,7 +349,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DOP_parse)
     BOOST_CHECK_NO_THROW(data.at(4).channelName());
 
     //northing
-    BOOST_CHECK_EQUAL(data.at(5).field(), InertialTypes::CH_FIELD_GPS_DOP);
+    BOOST_CHECK_EQUAL(data.at(5).field(), InertialTypes::CH_FIELD_GNSS_DOP);
     BOOST_CHECK_EQUAL(data.at(5).qualifier(), InertialTypes::CH_NORTHING_DOP);
     BOOST_CHECK_EQUAL(data.at(5).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(5).valid(), true);
@@ -357,7 +357,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DOP_parse)
     BOOST_CHECK_NO_THROW(data.at(5).channelName());
 
     //easting
-    BOOST_CHECK_EQUAL(data.at(6).field(), InertialTypes::CH_FIELD_GPS_DOP);
+    BOOST_CHECK_EQUAL(data.at(6).field(), InertialTypes::CH_FIELD_GNSS_DOP);
     BOOST_CHECK_EQUAL(data.at(6).qualifier(), InertialTypes::CH_EASTING_DOP);
     BOOST_CHECK_EQUAL(data.at(6).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(6).valid(), true);
@@ -381,7 +381,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_UTCTime_parse)
     bytes.append_uint16(3);        //flags (0000 0011)
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_GPS_UTC_TIME, bytes.data());
+    InertialDataField field(InertialTypes::CH_FIELD_GNSS_UTC_TIME, bytes.data());
 
     InertialDataPoints data;
 
@@ -391,7 +391,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_UTCTime_parse)
     BOOST_CHECK_EQUAL(data.size(), 2);
 
     //timestamp
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GPS_UTC_TIME);
+    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GNSS_UTC_TIME);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_TIMESTAMP);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_Timestamp);
     BOOST_CHECK_EQUAL(data.at(0).valid(), true);
@@ -399,7 +399,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_UTCTime_parse)
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
     //flags
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GPS_UTC_TIME);
+    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GNSS_UTC_TIME);
     BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_FLAGS);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_uint16);
     BOOST_CHECK_EQUAL(data.at(1).valid(), true);
@@ -417,7 +417,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_GPSTime_parse)
     bytes.append_uint16(1);            //flags (0000 0001)
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_GPS_GPS_TIME, bytes.data());
+    InertialDataField field(InertialTypes::CH_FIELD_GNSS_GPS_TIME, bytes.data());
 
     InertialDataPoints data;
 
@@ -427,7 +427,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_GPSTime_parse)
     BOOST_CHECK_EQUAL(data.size(), 2);
 
     //timestamp
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GPS_GPS_TIME);
+    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GNSS_GPS_TIME);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_TIME_OF_WEEK);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_double);
     BOOST_CHECK_EQUAL(data.at(0).valid(), true);
@@ -435,7 +435,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_GPSTime_parse)
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
     //week number
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GPS_GPS_TIME);
+    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GNSS_GPS_TIME);
     BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_WEEK_NUMBER);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_uint16);
     BOOST_CHECK_EQUAL(data.at(1).valid(), false);
@@ -454,7 +454,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ClockInfo_parse)
     bytes.append_uint16(3);            //flags (0000 0011)
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_GPS_CLOCK_INFO, bytes.data());
+    InertialDataField field(InertialTypes::CH_FIELD_GNSS_CLOCK_INFO, bytes.data());
 
     InertialDataPoints data;
 
@@ -464,7 +464,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ClockInfo_parse)
     BOOST_CHECK_EQUAL(data.size(), 3);
 
     //clock bias
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GPS_CLOCK_INFO);
+    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GNSS_CLOCK_INFO);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_BIAS);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_double);
     BOOST_CHECK_EQUAL(data.at(0).valid(), true);
@@ -472,7 +472,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ClockInfo_parse)
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
     //clock drift
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GPS_CLOCK_INFO);
+    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GNSS_CLOCK_INFO);
     BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_DRIFT);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_double);
     BOOST_CHECK_EQUAL(data.at(1).valid(), true);
@@ -480,7 +480,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ClockInfo_parse)
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
     //accuracy estimate
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GPS_CLOCK_INFO);
+    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GNSS_CLOCK_INFO);
     BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_ACCURACY_ESTIMATE);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_double);
     BOOST_CHECK_EQUAL(data.at(2).valid(), false);
@@ -499,7 +499,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_GPSFixInfo_parse)
     bytes.append_uint16(7);        //flags (0000 0111)
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_GPS_FIX_INFO, bytes.data());
+    InertialDataField field(InertialTypes::CH_FIELD_GNSS_FIX_INFO, bytes.data());
 
     InertialDataPoints data;
 
@@ -509,7 +509,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_GPSFixInfo_parse)
     BOOST_CHECK_EQUAL(data.size(), 3);
 
     //fix type
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GPS_FIX_INFO);
+    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GNSS_FIX_INFO);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_FIX_TYPE);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_uint8);
     BOOST_CHECK_EQUAL(data.at(0).valid(), true);
@@ -517,7 +517,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_GPSFixInfo_parse)
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
     //number of SVs used for solution
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GPS_FIX_INFO);
+    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GNSS_FIX_INFO);
     BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_SV_COUNT);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_uint8);
     BOOST_CHECK_EQUAL(data.at(1).valid(), true);
@@ -525,7 +525,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_GPSFixInfo_parse)
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
     //fix flags
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GPS_FIX_INFO);
+    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GNSS_FIX_INFO);
     BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_FLAGS);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_uint16);
     BOOST_CHECK_EQUAL(data.at(2).valid(), true);
@@ -547,7 +547,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_SpaceVehicleInfo_parse)
     bytes.append_uint16(45);    //flags (0010 1101)
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_GPS_SPACE_VEHICLE_INFO, bytes.data());
+    InertialDataField field(InertialTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO, bytes.data());
 
     InertialDataPoints data;
 
@@ -557,7 +557,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_SpaceVehicleInfo_parse)
     BOOST_CHECK_EQUAL(data.size(), 6);
 
     //channel
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GPS_SPACE_VEHICLE_INFO);
+    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_CHANNEL);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_uint8);
     BOOST_CHECK_EQUAL(data.at(0).valid(), true);
@@ -565,7 +565,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_SpaceVehicleInfo_parse)
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
     //space vehicle id
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GPS_SPACE_VEHICLE_INFO);
+    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO);
     BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_ID);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_uint8);
     BOOST_CHECK_EQUAL(data.at(1).valid(), false);
@@ -573,7 +573,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_SpaceVehicleInfo_parse)
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
     //carrier to noise ratio
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GPS_SPACE_VEHICLE_INFO);
+    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO);
     BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_CARRIER_TO_NOISE_RATIO);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_uint16);
     BOOST_CHECK_EQUAL(data.at(2).valid(), true);
@@ -581,7 +581,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_SpaceVehicleInfo_parse)
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
 
     //azimuth
-    BOOST_CHECK_EQUAL(data.at(3).field(), InertialTypes::CH_FIELD_GPS_SPACE_VEHICLE_INFO);
+    BOOST_CHECK_EQUAL(data.at(3).field(), InertialTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO);
     BOOST_CHECK_EQUAL(data.at(3).qualifier(), InertialTypes::CH_AZIMUTH);
     BOOST_CHECK_EQUAL(data.at(3).storedAs(), valueType_int16);
     BOOST_CHECK_EQUAL(data.at(3).valid(), true);
@@ -589,7 +589,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_SpaceVehicleInfo_parse)
     BOOST_CHECK_NO_THROW(data.at(3).channelName());
 
     //elevation
-    BOOST_CHECK_EQUAL(data.at(4).field(), InertialTypes::CH_FIELD_GPS_SPACE_VEHICLE_INFO);
+    BOOST_CHECK_EQUAL(data.at(4).field(), InertialTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO);
     BOOST_CHECK_EQUAL(data.at(4).qualifier(), InertialTypes::CH_ELEVATION);
     BOOST_CHECK_EQUAL(data.at(4).storedAs(), valueType_int16);
     BOOST_CHECK_EQUAL(data.at(4).valid(), false);
@@ -597,7 +597,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_SpaceVehicleInfo_parse)
     BOOST_CHECK_NO_THROW(data.at(4).channelName());
 
     //space vehicle flags
-    BOOST_CHECK_EQUAL(data.at(5).field(), InertialTypes::CH_FIELD_GPS_SPACE_VEHICLE_INFO);
+    BOOST_CHECK_EQUAL(data.at(5).field(), InertialTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO);
     BOOST_CHECK_EQUAL(data.at(5).qualifier(), InertialTypes::CH_FLAGS);
     BOOST_CHECK_EQUAL(data.at(5).storedAs(), valueType_uint16);
     BOOST_CHECK_EQUAL(data.at(5).valid(), true);
@@ -616,7 +616,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_HardwareStatus_parse)
     bytes.append_uint16(7);        //flags (0000 0111)
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_GPS_HARDWARE_STATUS, bytes.data());
+    InertialDataField field(InertialTypes::CH_FIELD_GNSS_HARDWARE_STATUS, bytes.data());
 
     InertialDataPoints data;
 
@@ -626,7 +626,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_HardwareStatus_parse)
     BOOST_CHECK_EQUAL(data.size(), 3);
 
     //sensor state
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GPS_HARDWARE_STATUS);
+    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GNSS_HARDWARE_STATUS);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_SENSOR_STATE);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_uint8);
     BOOST_CHECK_EQUAL(data.at(0).valid(), true);
@@ -634,7 +634,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_HardwareStatus_parse)
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
     //antenna state
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GPS_HARDWARE_STATUS);
+    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GNSS_HARDWARE_STATUS);
     BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_ANTENNA_STATE);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_uint8);
     BOOST_CHECK_EQUAL(data.at(1).valid(), true);
@@ -642,7 +642,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_HardwareStatus_parse)
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
     //antenna power
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GPS_HARDWARE_STATUS);
+    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GNSS_HARDWARE_STATUS);
     BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_ANTENNA_POWER);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_uint8);
     BOOST_CHECK_EQUAL(data.at(2).valid(), true);
@@ -662,7 +662,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DgpsInfo_parse)
     bytes.append_uint16(7);        //flags (0000 0111)
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_GPS_DGPS_INFO, bytes.data());
+    InertialDataField field(InertialTypes::CH_FIELD_GNSS_DGNSS_INFO, bytes.data());
 
     InertialDataPoints data;
 
@@ -671,28 +671,28 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DgpsInfo_parse)
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 4);
 
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GPS_DGPS_INFO);
+    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GNSS_DGNSS_INFO);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_AGE);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(0).valid(), true);
     BOOST_CHECK_CLOSE(data.at(0).as_float(), 5.4, 0.001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GPS_DGPS_INFO);
+    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GNSS_DGNSS_INFO);
     BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_ID);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_int16);
     BOOST_CHECK_EQUAL(data.at(1).valid(), true);
     BOOST_CHECK_EQUAL(data.at(1).as_int16(), 1);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GPS_DGPS_INFO);
+    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GNSS_DGNSS_INFO);
     BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_STATUS);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_int16);
     BOOST_CHECK_EQUAL(data.at(2).valid(), true);
     BOOST_CHECK_EQUAL(data.at(2).as_int16(), 2);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(3).field(), InertialTypes::CH_FIELD_GPS_DGPS_INFO);
+    BOOST_CHECK_EQUAL(data.at(3).field(), InertialTypes::CH_FIELD_GNSS_DGNSS_INFO);
     BOOST_CHECK_EQUAL(data.at(3).qualifier(), InertialTypes::CH_NUM_CHANNELS);
     BOOST_CHECK_EQUAL(data.at(3).storedAs(), valueType_uint16);
     BOOST_CHECK_EQUAL(data.at(3).valid(), false);
@@ -712,7 +712,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DgpsChannelStatus_parse)
     bytes.append_uint16(15);    //flags (0000 1111)
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_GPS_DGPS_CHANNEL_STATUS, bytes.data());
+    InertialDataField field(InertialTypes::CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS, bytes.data());
 
     InertialDataPoints data;
 
@@ -721,28 +721,28 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DgpsChannelStatus_parse)
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 4);
 
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GPS_DGPS_CHANNEL_STATUS);
+    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_ID);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_uint8);
     BOOST_CHECK_EQUAL(data.at(0).valid(), true);
     BOOST_CHECK_EQUAL(data.at(0).as_uint8(), 1);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GPS_DGPS_CHANNEL_STATUS);
+    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS);
     BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_AGE);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(1).valid(), true);
     BOOST_CHECK_CLOSE(data.at(1).as_float(), 1.23, 0.001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GPS_DGPS_CHANNEL_STATUS);
+    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS);
     BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_CORRECTION);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(2).valid(), true);
     BOOST_CHECK_CLOSE(data.at(2).as_float(), 7.125, 0.001);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(3).field(), InertialTypes::CH_FIELD_GPS_DGPS_CHANNEL_STATUS);
+    BOOST_CHECK_EQUAL(data.at(3).field(), InertialTypes::CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS);
     BOOST_CHECK_EQUAL(data.at(3).qualifier(), InertialTypes::CH_RATE_CORRECTION);
     BOOST_CHECK_EQUAL(data.at(3).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(3).valid(), true);

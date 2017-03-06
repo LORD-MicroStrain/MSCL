@@ -55,7 +55,7 @@ namespace mscl
         m_impl->unregisterParser(); 
     }
 
-    void Connection::write(const ByteStream& data)
+    void Connection::write(const ByteStream& data) const
     { 
         m_impl->write(data); 
     }
@@ -75,7 +75,7 @@ namespace mscl
         m_impl->reconnect();
     }
 
-    void Connection::write(const Bytes& bytes)
+    void Connection::write(const Bytes& bytes) const
     { 
         m_impl->write(bytes); 
     }
@@ -85,7 +85,7 @@ namespace mscl
         m_impl->throwIfError();
     }
 
-    void Connection::writeStr(const std::string& bytes)                                        
+    void Connection::writeStr(const std::string& bytes) const
     {
         //convert the string to a Bytes vector
         Bytes data(bytes.begin(), bytes.end());
@@ -111,7 +111,7 @@ namespace mscl
 
     void Connection::rawByteMode(bool enable)
     { 
-        m_impl->rawByteMode(enable); 
+        m_impl->rawByteMode(enable);
     }
 
     Bytes Connection::getRawBytes(uint32 timeout, uint32 maxBytes)

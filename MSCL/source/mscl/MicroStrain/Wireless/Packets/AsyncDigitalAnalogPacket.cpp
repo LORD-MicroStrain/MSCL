@@ -46,6 +46,11 @@ namespace mscl
         //build the full nanosecond resolution timestamp from the seconds and nanoseconds values read above
         uint64 packetTimestamp = (timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND) + timestampNanos;
 
+        if(!timestampWithinRange(Timestamp(packetTimestamp)))
+        {
+            throw Error("Timestamp is out of range");
+        }
+
         //build the ChannelMask from the channel mask
         ChannelMask channels(channelMask);
 

@@ -195,9 +195,14 @@ namespace mscl
         return m_impl->beaconStatus();
     }
 
-    void BaseStation::cyclePower()
+    void BaseStation::cyclePower(bool checkComm)
     { 
-        m_impl->cyclePower();
+        m_impl->cyclePower(checkComm);
+    }
+
+    void BaseStation::startRfSweepMode()
+    {
+        m_impl->startRfSweepMode();
     }
 
     void BaseStation::startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options)

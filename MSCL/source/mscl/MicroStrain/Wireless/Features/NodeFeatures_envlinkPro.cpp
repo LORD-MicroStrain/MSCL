@@ -82,7 +82,7 @@ namespace mscl
         return result;
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures_envlinkPro::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
+    const WirelessTypes::WirelessSampleRates NodeFeatures_envlinkPro::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
@@ -101,9 +101,9 @@ namespace mscl
         return maxFilterSettlingTime_A(rate);
     }
 
-    WirelessTypes::WirelessSampleRate NodeFeatures_envlinkPro::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
+    WirelessTypes::WirelessSampleRate NodeFeatures_envlinkPro::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
-        return maxSampleRateForSettlingTime_A(filterSettlingTime, sampleRates(samplingMode, dataCollectionMethod));
+        return maxSampleRateForSettlingTime_A(filterSettlingTime, sampleRates(samplingMode, dataCollectionMethod, dataMode));
     }
 
 }

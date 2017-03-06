@@ -87,7 +87,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-        virtual void write(const ByteStream& data) = 0;
+        virtual void write(const ByteStream& data) const = 0;
 
         //Function: write
         //    Writes the given bytes to the port via the BoostCommunication object.
@@ -97,7 +97,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-        virtual void write(const Bytes& bytes) = 0;
+        virtual void write(const Bytes& bytes) const = 0;
 
         //Function: clearBuffer
         //    Resets the read buffer.
@@ -230,15 +230,15 @@ namespace mscl
 
         //Variable: m_connectionError
         //    true if an error has occurred with the connection, false otherwise.
-        bool m_connectionError;
+        mutable bool m_connectionError;
 
         //Variable: m_errorCode
         //    The error code of the connection error, if there was a connection error.
-        int m_errorCode;
+        mutable int m_errorCode;
 
         //Variable: m_errorMsg
         //    The error message of the connection error, if there was a connection error.
-        std::string m_errorMsg;
+        mutable std::string m_errorMsg;
 
         //Variable: m_rawByteMode
         //    true if the connection is in "Raw Byte Mode", false otherwise.
@@ -306,7 +306,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-        virtual void write(const ByteStream& data) final;
+        virtual void write(const ByteStream& data) const final;
 
         //Function: write
         //    Writes the given bytes to the port via the BoostCommunication object.
@@ -316,7 +316,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-        virtual void write(const Bytes& bytes) final;
+        virtual void write(const Bytes& bytes) const final;
 
         //Function: clearBuffer
         //    Clears the read buffer.
@@ -435,14 +435,14 @@ namespace mscl
     }
 
     template <typename Comm_Object>
-    void Connection_Impl<Comm_Object>::write(const ByteStream& data)
+    void Connection_Impl<Comm_Object>::write(const ByteStream& data) const
     {
         //get the Bytes and call the other write function
         write(data.data());
     }
 
     template <typename Comm_Object>
-    void Connection_Impl<Comm_Object>::write(const Bytes& bytes)
+    void Connection_Impl<Comm_Object>::write(const Bytes& bytes) const
     {
         //if there has been a connection error, or the comm object is invalid
         if(m_connectionError || !m_comm)
@@ -471,18 +471,39 @@ namespace mscl
     template <typename Comm_Object>
     void Connection_Impl<Comm_Object>::clearBuffer()
     {
+        //if there has been a connection error, or the comm object is invalid
+        if(m_connectionError || !m_comm)
+        {
+            //throw a communication exception
+            throw Error_Connection(m_errorMsg, m_errorCode);
+        }
+
         m_comm->clearBuffer();
     }
 
     template <typename Comm_Object>
     std::size_t Connection_Impl<Comm_Object>::byteReadPos() const
     {
+        //if there has been a connection error, or the comm object is invalid
+        if(m_connectionError || !m_comm)
+        {
+            //throw a communication exception
+            throw Error_Connection(m_errorMsg, m_errorCode);
+        }
+
         return m_comm->byteReadPos();
     }
 
     template <typename Comm_Object>
     std::size_t Connection_Impl<Comm_Object>::byteAppendPos() const
     {
+        //if there has been a connection error, or the comm object is invalid
+        if(m_connectionError || !m_comm)
+        {
+            //throw a communication exception
+            throw Error_Connection(m_errorMsg, m_errorCode);
+        }
+
         return m_comm->byteAppendPos();
     }
 

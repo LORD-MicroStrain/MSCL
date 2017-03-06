@@ -5,7 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 
-#include "InertialFieldParser_GPS.h"
+#include "InertialFieldParser_GNSS.h"
 #include "InertialDataPacket.h"
 #include "mscl/MicroStrain/DataBuffer.h"
 
@@ -15,11 +15,11 @@ namespace mscl
     //linker will not include this compilation unit when statically 
     //linking to an executable. Defining this variable, and then using it
     //elsewhere, will force this file to be included
-    bool _forceLibraryToIncludeCompilationUnit_GPS;
+    bool _forceLibraryToIncludeCompilationUnit_GNSS;
 
     //=====================================================================================================================================================
     //                                                        FieldParser_LLHPosition
-    const InertialTypes::ChannelField FieldParser_LLHPosition::FIELD_TYPE = InertialTypes::CH_FIELD_GPS_LLH_POSITION;
+    const InertialTypes::ChannelField FieldParser_LLHPosition::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_LLH_POSITION;
     const bool FieldParser_LLHPosition::REGISTERED = FieldParser_LLHPosition::registerParser();    //register the parser immediately
 
     void FieldParser_LLHPosition::parse(const InertialDataField& field, InertialDataPoints& result) const
@@ -55,19 +55,14 @@ namespace mscl
 
     bool FieldParser_LLHPosition::registerParser()
     {
-        //create a static parser object
         static FieldParser_LLHPosition p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
-
-
     //=====================================================================================================================================================
     //                                                        FieldParser_ECEFPosition
-    const InertialTypes::ChannelField FieldParser_ECEFPosition::FIELD_TYPE = InertialTypes::CH_FIELD_GPS_ECEF_POSITION;
+    const InertialTypes::ChannelField FieldParser_ECEFPosition::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_ECEF_POSITION;
     const bool FieldParser_ECEFPosition::REGISTERED = FieldParser_ECEFPosition::registerParser();    //register the parser immediately
 
     void FieldParser_ECEFPosition::parse(const InertialDataField& field, InertialDataPoints& result) const
@@ -96,19 +91,14 @@ namespace mscl
 
     bool FieldParser_ECEFPosition::registerParser()
     {
-        //create a static parser object
         static FieldParser_ECEFPosition p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
-
-
     //=====================================================================================================================================================
     //                                                        FieldParser_NEDVelocity
-    const InertialTypes::ChannelField FieldParser_NEDVelocity::FIELD_TYPE = InertialTypes::CH_FIELD_GPS_NED_VELOCITY;
+    const InertialTypes::ChannelField FieldParser_NEDVelocity::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_NED_VELOCITY;
     const bool FieldParser_NEDVelocity::REGISTERED = FieldParser_NEDVelocity::registerParser();    //register the parser immediately
 
     void FieldParser_NEDVelocity::parse(const InertialDataField& field, InertialDataPoints& result) const
@@ -149,19 +139,14 @@ namespace mscl
 
     bool FieldParser_NEDVelocity::registerParser()
     {
-        //create a static parser object
         static FieldParser_NEDVelocity p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
-
-
     //=====================================================================================================================================================
     //                                                        FieldParser_ECEFVelocity
-    const InertialTypes::ChannelField FieldParser_ECEFVelocity::FIELD_TYPE = InertialTypes::CH_FIELD_GPS_ECEF_VELOCITY;
+    const InertialTypes::ChannelField FieldParser_ECEFVelocity::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_ECEF_VELOCITY;
     const bool FieldParser_ECEFVelocity::REGISTERED = FieldParser_ECEFVelocity::registerParser();    //register the parser immediately
 
     void FieldParser_ECEFVelocity::parse(const InertialDataField& field, InertialDataPoints& result) const
@@ -190,19 +175,14 @@ namespace mscl
 
     bool FieldParser_ECEFVelocity::registerParser()
     {
-        //create a static parser object
         static FieldParser_ECEFVelocity p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
-
-
     //=====================================================================================================================================================
     //                                                        FieldParser_DOP
-    const InertialTypes::ChannelField FieldParser_DOP::FIELD_TYPE = InertialTypes::CH_FIELD_GPS_DOP;
+    const InertialTypes::ChannelField FieldParser_DOP::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_DOP;
     const bool FieldParser_DOP::REGISTERED = FieldParser_DOP::registerParser();    //register the parser immediately
 
     void FieldParser_DOP::parse(const InertialDataField& field, InertialDataPoints& result) const
@@ -242,19 +222,14 @@ namespace mscl
 
     bool FieldParser_DOP::registerParser()
     {
-        //create a static parser object
         static FieldParser_DOP p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
-
-
     //=====================================================================================================================================================
     //                                                        FieldParser_UTCTime
-    const InertialTypes::ChannelField FieldParser_UTCTime::FIELD_TYPE = InertialTypes::CH_FIELD_GPS_UTC_TIME;
+    const InertialTypes::ChannelField FieldParser_UTCTime::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_UTC_TIME;
     const bool FieldParser_UTCTime::REGISTERED = FieldParser_UTCTime::registerParser();    //register the parser immediately
 
     void FieldParser_UTCTime::parse(const InertialDataField& field, InertialDataPoints& result) const
@@ -290,19 +265,14 @@ namespace mscl
 
     bool FieldParser_UTCTime::registerParser()
     {
-        //create a static parser object
         static FieldParser_UTCTime p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
-
-
     //=====================================================================================================================================================
     //                                                        FieldParser_GPSTime
-    const InertialTypes::ChannelField FieldParser_GPSTime::FIELD_TYPE = InertialTypes::CH_FIELD_GPS_GPS_TIME;
+    const InertialTypes::ChannelField FieldParser_GPSTime::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_GPS_TIME;
     const bool FieldParser_GPSTime::REGISTERED = FieldParser_GPSTime::registerParser();    //register the parser immediately
 
     void FieldParser_GPSTime::parse(const InertialDataField& field, InertialDataPoints& result) const
@@ -327,19 +297,14 @@ namespace mscl
 
     bool FieldParser_GPSTime::registerParser()
     {
-        //create a static parser object
         static FieldParser_GPSTime p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
-
-
     //=====================================================================================================================================================
     //                                                        FieldParser_ClockInfo
-    const InertialTypes::ChannelField FieldParser_ClockInfo::FIELD_TYPE = InertialTypes::CH_FIELD_GPS_CLOCK_INFO;
+    const InertialTypes::ChannelField FieldParser_ClockInfo::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_CLOCK_INFO;
     const bool FieldParser_ClockInfo::REGISTERED = FieldParser_ClockInfo::registerParser();    //register the parser immediately
 
     void FieldParser_ClockInfo::parse(const InertialDataField& field, InertialDataPoints& result) const
@@ -367,19 +332,14 @@ namespace mscl
 
     bool FieldParser_ClockInfo::registerParser()
     {
-        //create a static parser object
         static FieldParser_ClockInfo p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
-
-
     //=====================================================================================================================================================
     //                                                        FieldParser_GPSFixInfo
-    const InertialTypes::ChannelField FieldParser_GPSFixInfo::FIELD_TYPE = InertialTypes::CH_FIELD_GPS_FIX_INFO;
+    const InertialTypes::ChannelField FieldParser_GPSFixInfo::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_FIX_INFO;
     const bool FieldParser_GPSFixInfo::REGISTERED = FieldParser_GPSFixInfo::registerParser();    //register the parser immediately
 
     void FieldParser_GPSFixInfo::parse(const InertialDataField& field, InertialDataPoints& result) const
@@ -407,19 +367,14 @@ namespace mscl
 
     bool FieldParser_GPSFixInfo::registerParser()
     {
-        //create a static parser object
         static FieldParser_GPSFixInfo p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
-
-
     //=====================================================================================================================================================
     //                                                        FieldParser_SpaceVehicleInfo
-    const InertialTypes::ChannelField FieldParser_SpaceVehicleInfo::FIELD_TYPE = InertialTypes::CH_FIELD_GPS_SPACE_VEHICLE_INFO;
+    const InertialTypes::ChannelField FieldParser_SpaceVehicleInfo::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO;
     const bool FieldParser_SpaceVehicleInfo::REGISTERED = FieldParser_SpaceVehicleInfo::registerParser();    //register the parser immediately
 
     void FieldParser_SpaceVehicleInfo::parse(const InertialDataField& field, InertialDataPoints& result) const
@@ -457,19 +412,14 @@ namespace mscl
 
     bool FieldParser_SpaceVehicleInfo::registerParser()
     {
-        //create a static parser object
         static FieldParser_SpaceVehicleInfo p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
-
-
     //=====================================================================================================================================================
     //                                                        FieldParser_HardwareStatus
-    const InertialTypes::ChannelField FieldParser_HardwareStatus::FIELD_TYPE = InertialTypes::CH_FIELD_GPS_HARDWARE_STATUS;
+    const InertialTypes::ChannelField FieldParser_HardwareStatus::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_HARDWARE_STATUS;
     const bool FieldParser_HardwareStatus::REGISTERED = FieldParser_HardwareStatus::registerParser();    //register the parser immediately
 
     void FieldParser_HardwareStatus::parse(const InertialDataField& field, InertialDataPoints& result) const
@@ -497,21 +447,17 @@ namespace mscl
 
     bool FieldParser_HardwareStatus::registerParser()
     {
-        //create a static parser object
         static FieldParser_HardwareStatus p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
-
     //=====================================================================================================================================================
-    //                                                        FieldParser_DGPSInfo
-    const InertialTypes::ChannelField FieldParser_DGPSInfo::FIELD_TYPE = InertialTypes::CH_FIELD_GPS_DGPS_INFO;
-    const bool FieldParser_DGPSInfo::REGISTERED = FieldParser_DGPSInfo::registerParser();    //register the parser immediately
+    //                                                        FieldParser_DGNSSInfo
+    const InertialTypes::ChannelField FieldParser_DGNSSInfo::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_DGNSS_INFO;
+    const bool FieldParser_DGNSSInfo::REGISTERED = FieldParser_DGNSSInfo::registerParser();    //register the parser immediately
 
-    void FieldParser_DGPSInfo::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_DGNSSInfo::parse(const InertialDataField& field, InertialDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -537,23 +483,20 @@ namespace mscl
         result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_NUM_CHANNELS, valueType_uint16, anyType(numChs), numChsValid));
     }
 
-    bool FieldParser_DGPSInfo::registerParser()
+    bool FieldParser_DGNSSInfo::registerParser()
     {
-        //create a static parser object
-        static FieldParser_DGPSInfo p;
-
-        //register the parser
+        static FieldParser_DGNSSInfo p;
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
 
     //=====================================================================================================================================================
-    //                                                        FieldParser_DGPSChannelStatus
-    const InertialTypes::ChannelField FieldParser_DGPSChannelStatus::FIELD_TYPE = InertialTypes::CH_FIELD_GPS_DGPS_CHANNEL_STATUS;
-    const bool FieldParser_DGPSChannelStatus::REGISTERED = FieldParser_DGPSChannelStatus::registerParser();    //register the parser immediately
+    //                                                        FieldParser_DGNSSChannelStatus
+    const InertialTypes::ChannelField FieldParser_DGNSSChannelStatus::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS;
+    const bool FieldParser_DGNSSChannelStatus::REGISTERED = FieldParser_DGNSSChannelStatus::registerParser();    //register the parser immediately
 
-    void FieldParser_DGPSChannelStatus::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_DGNSSChannelStatus::parse(const InertialDataField& field, InertialDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -579,12 +522,9 @@ namespace mscl
         result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_RATE_CORRECTION, valueType_float, anyType(rateCorrection), rateCorrectionValid));
     }
 
-    bool FieldParser_DGPSChannelStatus::registerParser()
+    bool FieldParser_DGNSSChannelStatus::registerParser()
     {
-        //create a static parser object
-        static FieldParser_DGPSChannelStatus p;
-
-        //register the parser
+        static FieldParser_DGNSSChannelStatus p;
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================

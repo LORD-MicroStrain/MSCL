@@ -223,19 +223,28 @@ namespace SyncSamplingFormulas
         return static_cast<uint32>( std::ceil( (static_cast<float>(totalNeededTx) / txPerSec ) + 4 + sampleDuration ) );
     }
 
-    TimeSpan minTimeBetweenBursts(WirelessTypes::DataFormat dataFormat, uint8 numActiveChs, const mscl::SampleRate& sampleRate, uint32 sweepsPerBurst)
+    TimeSpan minTimeBetweenBursts(uint32 numRawBytesPerSweep, uint32 numDerivedBytesPerSweep, const mscl::SampleRate& rawSampleRate, uint32 sweepsPerBurst)
     {
-        uint32 bytesPerSweep = WirelessTypes::dataFormatSize(dataFormat) * static_cast<uint16>(numActiveChs);
+        uint32 totalNeededTx_raw = 0;
+        uint32 totalNeededTx_derived = 0;
 
-        uint32 bytesPerBurst = totalBytesPerBurst(bytesPerSweep, sweepsPerBurst);
+        if(numRawBytesPerSweep > 0)
+        {
+            uint32 bytesPerBurst = totalBytesPerBurst(numRawBytesPerSweep, sweepsPerBurst);
 
-        uint32 maxBytesPerPacket = maxBytesPerBurstPacket(bytesPerSweep, true);
+            uint32 maxBytesPerPacket = maxBytesPerBurstPacket(numRawBytesPerSweep, true);
 
-        uint32 totalNeededTx = totalNeededBurstTx(bytesPerBurst, maxBytesPerPacket);
+            totalNeededTx_raw = totalNeededBurstTx(bytesPerBurst, maxBytesPerPacket);
+        }
 
-        double duration = sampleDuration(sweepsPerBurst, sampleRate);
+        if(numDerivedBytesPerSweep > 0)
+        {
+            totalNeededTx_derived = static_cast<uint32>(2 * std::ceil(static_cast<float>(numDerivedBytesPerSweep) / 96.0f));
+        }
 
-        return TimeSpan::Seconds(minTimeBetweenBursts(totalNeededTx, duration, true));
+        double duration = sampleDuration(sweepsPerBurst, rawSampleRate);
+
+        return TimeSpan::Seconds(minTimeBetweenBursts((totalNeededTx_raw + totalNeededTx_derived), duration, true));
     }
 
     uint32 burstTxPerSecond(uint32 totalNeededTx, uint32 timeBetweenBursts, double sampleDuration, bool lossless)
@@ -257,8 +266,17 @@ namespace SyncSamplingFormulas
         return txPerSec;
     }
 
-    float overheadFactor(bool lossless, bool optimizeBandwidth)
+    float overheadFactor(bool lossless, bool optimizeBandwidth, const SampleRate& sampleRate, uint8 syncFormulaVersion)
     {
+        //special cases for sync version 1
+        if(syncFormulaVersion == 1)
+        {
+            if(sampleRate >= SampleRate::Hertz(512))
+            {
+                return 2.0f;
+            }
+        }
+
         if(optimizeBandwidth)
         {
             return 2.0f;

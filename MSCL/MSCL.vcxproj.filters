@@ -170,9 +170,6 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser.h">
       <Filter>MicroStrain\Inertial\Packets</Filter>
     </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GPS.h">
-      <Filter>MicroStrain\Inertial\Packets</Filter>
-    </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacket.h">
       <Filter>MicroStrain\Inertial\Packets</Filter>
     </ClInclude>
@@ -268,9 +265,6 @@
       <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GenericInertialCommand.h">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GPS_Commands.h">
       <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialChannel.h">
@@ -751,8 +745,17 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\SetToIdle_v2.h">
       <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\DataMode.h">
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\DataModeMask.h">
       <Filter>MicroStrain\Wireless\Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GetExtendedDeviceDescriptorSets.h">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_Commands.h">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GNSS.h">
+      <Filter>MicroStrain\Inertial\Packets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -862,9 +865,6 @@
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser.cpp">
       <Filter>MicroStrain\Inertial\Packets</Filter>
     </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GPS.cpp">
-      <Filter>MicroStrain\Inertial\Packets</Filter>
-    </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacketCollector.cpp">
       <Filter>MicroStrain\Inertial\Packets</Filter>
     </ClCompile>
@@ -951,9 +951,6 @@
       <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GenericInertialCommand.cpp">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GPS_Commands.cpp">
       <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialChannel.cpp">
@@ -1428,8 +1425,17 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\SetToIdle_v2.cpp">
       <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\DataMode.cpp">
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\DataModeMask.cpp">
       <Filter>MicroStrain\Wireless\Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GetExtendedDeviceDescriptorSets.cpp">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_Commands.cpp">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GNSS.cpp">
+      <Filter>MicroStrain\Inertial\Packets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -777,8 +777,10 @@
 %catches(mscl::Error_Connection, mscl::Error_Communication, mscl::Error)                                            mscl::BaseStation::enableBeacon(uint32 utcTime);
 %catches(mscl::Error_Connection, mscl::Error_Communication, mscl::Error)                                            mscl::BaseStation::disableBeacon();
 %catches(mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error_Communication, mscl::Error)                  mscl::BaseStation::beaconStatus();
+%catches(mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error_Communication, mscl::Error)                  mscl::BaseStation::startRfSweepMode();
 %catches(mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error_Communication, mscl::Error)                  mscl::BaseStation::startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval);
 %catches(mscl::Error_Connection, mscl::Error_Communication, mscl::Error)                                            mscl::BaseStation::cyclePower();
+%catches(mscl::Error_Connection, mscl::Error_Communication, mscl::Error)                                            mscl::BaseStation::cyclePower(bool checkComm);
 %catches(mscl::Error_Connection, mscl::Error_Communication, mscl::Error)                                            mscl::BaseStation::resetRadio();
 %catches(mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error_Communication, mscl::Error)                  mscl::BaseStation::changeFrequency(WirelessTypes::Frequency frequency);
 %catches(mscl::Error_Connection)                                                                                    mscl::BaseStation::broadcastSetToIdle();
@@ -914,7 +916,7 @@
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getSensorDelay() const;
 %catches(mscl::Error_NodeCommunication, mscl::Error_Connection)                                                             mscl::WirelessNode::getDataMode() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getDerivedDataRate() const;
-%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getDerivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getDerivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType) const;
 
 //NodeFeatures
 %catches(mscl::Error_NotSupported)      mscl::NodeFeatures::channelType(uint8 channelNumber) const;
@@ -928,12 +930,17 @@
 
 //InertialNode
 %catches(mscl::Error_Communication, mscl::Error_Connection, mscl::Error)                                                                mscl::InertialNode::InertialNode(Connection connection);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error)       mscl::InertialNode::supportedSampleRates(InertialTypes::ChannelField channelId);
 %catches(mscl::Error_Connection, mscl::Error)                                                                                           mscl::InertialNode::getDataPackets();
 %catches(mscl::Error_Connection, mscl::Error)                                                                                           mscl::InertialNode::getDataPackets(uint32 maxPackets);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection, mscl::Error)                                 mscl::InertialNode::info();
 %catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection, mscl::Error_NotSupported, mscl::Error)       mscl::InertialNode::features();
 %catches(mscl::Error_NoData)                                                                                                            mscl::InertialNode::lastCommunicationTime();
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNode::firmwareVersion() const;
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNode::model() const;
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNode::modelName() const;
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNode::modelNumber() const;
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNode::serialNumber() const;
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNode::lotNumber() const;
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNode::deviceOptions() const;
 %catches(mscl::Error_Connection)                                                                                                        mscl::InertialNode::ping();
 %catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getDataRateBase(InertialTypes::InertialCategory category);
 %catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getActiveChannelFields(InertialTypes::InertialCategory category);
@@ -952,42 +959,52 @@
 %catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getSensorToVehicleTransformation();
 %catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setSensorToVehicleTransformation(const EulerAngles& angles);
 
+//InertialNodeFeatures
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNodeFeatures::supportedChannelFields(InertialTypes::InertialCategory category) const;
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNodeFeatures::supportedSampleRates(InertialTypes::InertialCategory category) const;
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNodeFeatures::supportsCategory(InertialTypes::InertialCategory category) const;
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNodeFeatures::supportsCommand(InertialTypes::Command commandId) const;
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNodeFeatures::supportedCommands() const;
 
 //Value
-%catches(mscl::Error_BadDataType)                    mscl::Value::as_float() const;
-%catches(mscl::Error_BadDataType)                    mscl::Value::as_double() const;
-%catches(mscl::Error_BadDataType)                    mscl::Value::as_uint8() const;
-%catches(mscl::Error_BadDataType)                    mscl::Value::as_uint16() const;
-%catches(mscl::Error_BadDataType)                    mscl::Value::as_uint32() const;
-%catches(mscl::Error_BadDataType)                    mscl::Value::as_int16() const;
-%catches(mscl::Error_BadDataType)                    mscl::Value::as_int32() const;
-%catches(mscl::Error_BadDataType)                    mscl::Value::as_bool() const;
-%catches(mscl::Error_BadDataType)                    mscl::Value::as_string() const;
+%catches(mscl::Error_BadDataType)                   mscl::Value::as_float() const;
+%catches(mscl::Error_BadDataType)                   mscl::Value::as_double() const;
+%catches(mscl::Error_BadDataType)                   mscl::Value::as_uint8() const;
+%catches(mscl::Error_BadDataType)                   mscl::Value::as_uint16() const;
+%catches(mscl::Error_BadDataType)                   mscl::Value::as_uint32() const;
+%catches(mscl::Error_BadDataType)                   mscl::Value::as_int16() const;
+%catches(mscl::Error_BadDataType)                   mscl::Value::as_int32() const;
+%catches(mscl::Error_BadDataType)                   mscl::Value::as_bool() const;
+%catches(mscl::Error_BadDataType)                   mscl::Value::as_ChannelMask() const;
+%catches(mscl::Error_BadDataType)                   mscl::Value::as_string() const;
 
 //DataPoint
-%catches(mscl::Error_BadDataType)                    mscl::DataPoint::as_float() const;
-%catches(mscl::Error_BadDataType)                    mscl::DataPoint::as_double() const;
-%catches(mscl::Error_BadDataType)                    mscl::DataPoint::as_uint8() const;
-%catches(mscl::Error_BadDataType)                    mscl::DataPoint::as_uint16() const;
-%catches(mscl::Error_BadDataType)                    mscl::DataPoint::as_uint32() const;
-%catches(mscl::Error_BadDataType)                    mscl::DataPoint::as_int16() const;
-%catches(mscl::Error_BadDataType)                    mscl::DataPoint::as_int32() const;
-%catches(mscl::Error_BadDataType)                    mscl::DataPoint::as_bool() const;
-%catches(mscl::Error_BadDataType)                    mscl::DataPoint::as_string() const;
-%catches(mscl::Error_BadDataType)                    mscl::DataPoint::as_Vector() const;
-%catches(mscl::Error_BadDataType)                    mscl::DataPoint::as_Matrix() const;
-%catches(mscl::Error_BadDataType)                    mscl::DataPoint::as_Timestamp() const;
-%catches(mscl::Error_BadDataType)                    mscl::DataPoint::as_Bytes() const;
-%catches(mscl::Error_BadDataType)                    mscl::DataPoint::as_StructuralHealth() const;
-%catches(mscl::Error_BadDataType)                    mscl::DataPoint::as_RfSweep() const;
+%catches(mscl::Error_BadDataType)                   mscl::DataPoint::as_float() const;
+%catches(mscl::Error_BadDataType)                   mscl::DataPoint::as_double() const;
+%catches(mscl::Error_BadDataType)                   mscl::DataPoint::as_uint8() const;
+%catches(mscl::Error_BadDataType)                   mscl::DataPoint::as_uint16() const;
+%catches(mscl::Error_BadDataType)                   mscl::DataPoint::as_uint32() const;
+%catches(mscl::Error_BadDataType)                   mscl::DataPoint::as_int16() const;
+%catches(mscl::Error_BadDataType)                   mscl::DataPoint::as_int32() const;
+%catches(mscl::Error_BadDataType)                   mscl::DataPoint::as_bool() const;
+%catches(mscl::Error_BadDataType)                   mscl::DataPoint::as_string() const;
+%catches(mscl::Error_BadDataType)                   mscl::DataPoint::as_Vector() const;
+%catches(mscl::Error_BadDataType)                   mscl::DataPoint::as_Matrix() const;
+%catches(mscl::Error_BadDataType)                   mscl::DataPoint::as_Timestamp() const;
+%catches(mscl::Error_BadDataType)                   mscl::DataPoint::as_Bytes() const;
+%catches(mscl::Error_BadDataType)                   mscl::DataPoint::as_StructuralHealth() const;
+%catches(mscl::Error_BadDataType)                   mscl::DataPoint::as_RfSweep() const;
+
+//WirelessDataPoint
+%catches(mscl::Error_NotSupported)                  mscl::WirelessDataPoint::channelProperty() const;
 
 //Vector / Matrix
-%catches(std::out_of_range)                            mscl::Vector::as_floatAt(uint16 index) const;
-%catches(std::out_of_range)                            mscl::Vector::as_uint16At(uint16 index)const;
-%catches(std::out_of_range)                            mscl::Vector::as_uint8At(uint16 index)const;
-%catches(std::out_of_range)                            mscl::Matrix::as_floatAt(uint16 row, uint16 column) const;
-%catches(std::out_of_range)                            mscl::Matrix::as_uint16At(uint16 row, uint16 column) const;
-%catches(std::out_of_range)                            mscl::Matrix::as_uint8At(uint16 row, uint16 column) const;
+%catches(std::out_of_range)                         mscl::Vector::as_floatAt(uint16 index) const;
+%catches(std::out_of_range)                         mscl::Vector::as_uint16At(uint16 index)const;
+%catches(std::out_of_range)                         mscl::Vector::as_uint8At(uint16 index)const;
+%catches(std::out_of_range)                         mscl::Matrix::as_floatAt(uint16 row, uint16 column) const;
+%catches(std::out_of_range)                         mscl::Matrix::as_uint16At(uint16 row, uint16 column) const;
+%catches(std::out_of_range)                         mscl::Matrix::as_uint8At(uint16 row, uint16 column) const;
 
 //SyncSamplingNetwork
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_InvalidNodeConfig, mscl::Error_Connection, mscl::Error_UnknownSampleRate, mscl::Error)    mscl::SyncSamplingNetwork::addNode(WirelessNode& node);
@@ -1012,10 +1029,10 @@
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_NoData, mscl::Error_Connection)            mscl::DatalogDownloader::getNextData();
 
 //SampleRate
-%catches(mscl::Error_UnknownSampleRate)                                                        mscl::SampleRate::FromWirelessEepromValue(WirelessTypes::SampleRate eepromValue);
+%catches(mscl::Error_UnknownSampleRate) mscl::SampleRate::FromWirelessEepromValue(WirelessTypes::SampleRate eepromValue);
 
 //SetToIdleStatus
-%catches(mscl::Error_Connection)                                    mscl::SetToIdleStatus::cancel();
+%catches(mscl::Error_Connection)        mscl::SetToIdleStatus::cancel();
 
 //FatigueOptions
 %catches(mscl::Error_NoData)            mscl::FatigueOptions::snCurveSegment(uint8 segmentId) const;

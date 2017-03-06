@@ -8,6 +8,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "GenericInertialCommand.h"
 #include "mscl/Version.h"
 #include "mscl/MicroStrain/Inertial/Commands/InertialCmdResponse.h"
+#include "mscl/MicroStrain/Inertial/InertialModels.h"
 
 #include <string>
 
@@ -20,27 +21,31 @@ namespace mscl
     struct InertialDeviceInfo
     {
     public:
-        //Variable: m_fwVersion
+        //Variable: fwVersion
         //    The firmware <Version>.
         Version fwVersion;
 
-        //Variable: m_modelName
+        //Variable: model
+        //    The <InertialModels::NodeModel>.
+        InertialModels::NodeModel model;
+
+        //Variable: modelName
         //    The model name.
         std::string modelName;
 
-        //Variable: m_modelNumber
+        //Variable: modelNumber
         //    The model number.
         std::string modelNumber;
 
-        //Variable: m_serialNumber
+        //Variable: serialNumber
         //    The serial number.
         std::string serialNumber;
 
-        //Variable: m_lotNumber
+        //Variable: lotNumber
         //    The lot number.
         std::string lotNumber;
 
-        //Variable: m_deviceOptions
+        //Variable: deviceOptions
         //    The device options.
         std::string deviceOptions;
     };

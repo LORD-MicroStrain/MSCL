@@ -431,4 +431,47 @@ BOOST_AUTO_TEST_CASE(SyncPacket_IntegrityCheck_InvalidPayloadBytes)
     BOOST_CHECK_EQUAL(SyncSamplingPacket::integrityCheck(packet), false);
 }
 
+BOOST_AUTO_TEST_CASE(SyncPacket_futureTimestamp)
+{
+    //build the bytes for the timestamp 2 hours in the future
+    uint8 b1, b2, b3, b4, b5, b6, b7, b8;
+    uint64 timestamp = Utils::getCurrentSystemTime() + 7200000000000;
+    uint32 seconds = static_cast<uint32>(timestamp / 1000000000L);
+    uint32 nanosPart = static_cast<uint32>(timestamp - seconds);
+    Utils::split_uint32(seconds, b1, b2, b3, b4);
+    Utils::split_uint32(nanosPart, b5, b6, b7, b8);
+
+    Bytes payloadBytes;
+    payloadBytes.push_back(1);        //app id
+    payloadBytes.push_back(1);        //channel mask - 1 channel
+    payloadBytes.push_back(112);    //sample rate
+    payloadBytes.push_back(WirelessTypes::dataType_uint16_12bitRes);    //data type - 2 byte uint
+    payloadBytes.push_back(0);        //tick msb
+    payloadBytes.push_back(1);        //tick lsb
+    payloadBytes.push_back(b1);
+    payloadBytes.push_back(b2);
+    payloadBytes.push_back(b3);
+    payloadBytes.push_back(b4);
+    payloadBytes.push_back(b5);
+    payloadBytes.push_back(b6);
+    payloadBytes.push_back(b7);
+    payloadBytes.push_back(b8);
+    payloadBytes.push_back(0);        //channel data b1
+    payloadBytes.push_back(254);    //channel data b2
+
+    WirelessPacket packet;
+    packet.nodeAddress(345);
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
+    packet.type(WirelessPacket::packetType_SyncSampling);
+    packet.nodeRSSI(1);
+    packet.baseRSSI(1);
+    packet.payload(payloadBytes);    //give the packet the payload bytes we created
+
+    //call the addDataPacket() function to parse the packet as an LDC Packet
+    WirelessPacketCollector collector;
+    collector.addDataPacket(packet);
+
+    BOOST_CHECK_THROW(new SyncSamplingPacket(packet), Error);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

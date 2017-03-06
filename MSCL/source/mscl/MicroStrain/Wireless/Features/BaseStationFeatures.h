@@ -86,11 +86,20 @@ namespace mscl
         bool supportsBeaconStatus() const;
 
         //API Function: supportsRfSweepMode
-        //    Checks if the BaseStation supports RF Sweep Mode.
+        //  Checks if the BaseStation supports RF Sweep Mode.
+        //  Note: This checks if the standard RF sweep mode across the BaseStation's supported operating frequencies is supported.
+        //        Use <supportsCustomRfSweepMode> to check if customizing the frequencies to be scanned is supported.
         //
         //Returns:
-        //    true if the BaseStation supports RF Sweep Mode, false otherwise.
+        //  true if the BaseStation supports RF Sweep Mode, false otherwise.
         bool supportsRfSweepMode() const;
+
+        //API Function: supportsCustomRfSweepMode
+        //  Checks if the BaseStation supports the Custom RF Sweep Mode (providing custom frequency ranges).
+        //
+        //Returns:
+        //  true if the BaseStation supports Custom RF Sweep Mode, false otherwise.
+        bool supportsCustomRfSweepMode() const;
 
         //API Function: buttonCount
         //    Gets the total number of buttons that are supported.

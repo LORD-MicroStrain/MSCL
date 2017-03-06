@@ -71,6 +71,24 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release %28Java%29|AnyCPU'">
+    <OutputPath>bin\Release %28Java%29\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release %28Java%29|x64'">
+    <OutputPath>bin\x64\Release %28Java%29\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -105,7 +123,6 @@
     <Compile Include="mscl\CalCoefficients.cs" />
     <Compile Include="mscl\ChannelCalMap.cs" />
     <Compile Include="mscl\ChannelData.cs" />
-    <Compile Include="mscl\ChannelFields.cs" />
     <Compile Include="mscl\ChannelGroup.cs" />
     <Compile Include="mscl\ChannelGroups.cs" />
     <Compile Include="mscl\ChannelGroupSettings.cs" />
@@ -119,12 +136,13 @@
     <Compile Include="mscl\DataCollectionMethods.cs" />
     <Compile Include="mscl\DataFormats.cs" />
     <Compile Include="mscl\DatalogDownloader.cs" />
-    <Compile Include="mscl\DataMode.cs" />
+    <Compile Include="mscl\DataModes.cs" />
     <Compile Include="mscl\DataPoint.cs" />
     <Compile Include="mscl\DataSweep.cs" />
     <Compile Include="mscl\DataSweeps.cs" />
     <Compile Include="mscl\DefaultModes.cs" />
-    <Compile Include="mscl\DerivedChannels.cs" />
+    <Compile Include="mscl\DerivedChannelMasks.cs" />
+    <Compile Include="mscl\DerivedChannelTypes.cs" />
     <Compile Include="mscl\DeviceInfo.cs" />
     <Compile Include="mscl\DeviceList.cs" />
     <Compile Include="mscl\Devices.cs" />
@@ -140,7 +158,9 @@
     <Compile Include="mscl\Histogram.cs" />
     <Compile Include="mscl\HistogramOptions.cs" />
     <Compile Include="mscl\InertialChannel.cs" />
+    <Compile Include="mscl\InertialChannelFields.cs" />
     <Compile Include="mscl\InertialChannels.cs" />
+    <Compile Include="mscl\InertialCommands.cs" />
     <Compile Include="mscl\InertialDataEnums.cs" />
     <Compile Include="mscl\InertialDataPacket.cs" />
     <Compile Include="mscl\InertialDataPackets.cs" />
@@ -149,7 +169,6 @@
     <Compile Include="mscl\InertialModels.cs" />
     <Compile Include="mscl\InertialNode.cs" />
     <Compile Include="mscl\InertialNodeFeatures.cs" />
-    <Compile Include="mscl\InertialNodeInfo.cs" />
     <Compile Include="mscl\InertialPacket.cs" />
     <Compile Include="mscl\InertialTypes.cs" />
     <Compile Include="mscl\InputRanges.cs" />

@@ -11,7 +11,11 @@ namespace mscl
 {
     //read the required information from the node and store in the NodeInfo
     NodeInfo::NodeInfo(const WirelessNode_Impl* node):
-        m_node(node)
+        m_node(node),
+        m_firmwareVersion(std::bind(&WirelessNode_Impl::firmwareVersion, m_node)),
+        m_model(std::bind(&WirelessNode_Impl::model, m_node)),
+        m_dataStorageSize(std::bind(&WirelessNode_Impl::dataStorageSize, m_node)),
+        m_regionCode(std::bind(&WirelessNode_Impl::regionCode, m_node))
     {
     }
 
@@ -26,43 +30,21 @@ namespace mscl
 
     Version NodeInfo::firmwareVersion() const
     {
-        if(!static_cast<bool>(m_firmwareVersion))
-        {
-            m_firmwareVersion = m_node->firmwareVersion();
-        }
-        
         return *m_firmwareVersion;
     }
 
     WirelessModels::NodeModel NodeInfo::model() const
     {
-        if(!static_cast<bool>(m_model))
-        {
-            m_model = m_node->model();
-        }
-
         return *m_model;
     }
 
     uint64 NodeInfo::dataStorageSize() const
     {
-        if(!static_cast<bool>(m_dataStorageSize))
-        {
-            m_dataStorageSize = m_node->dataStorageSize();
-
-        }
-
         return *m_dataStorageSize;
     }
 
     WirelessTypes::RegionCode NodeInfo::regionCode() const
     {
-        if(!static_cast<bool>(m_regionCode))
-        {
-            m_regionCode = m_node->regionCode();
-
-        }
-
         return *m_regionCode;
     }
 }

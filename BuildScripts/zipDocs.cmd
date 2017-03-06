@@ -9,12 +9,10 @@ SET EX_OUTPUT_DIR="..\Output\MSCL\Examples\"
 REM Paths to the folders that need to be zipped up
 SET DOCS_TO_ZIP="..\Output\MSCL\Documentation"
 SET EX_TO_ZIP="..\Output\MSCL\Examples"
-SET DIR_TO_ZIP="..\Output\MSCL"
 
 REM Paths/FileNames of the resulting zip files
 SET DOCS_ZIP_OUT="..\Output\Documentation.zip"
 SET EX_ZIP_OUT="..\Output\Examples.zip"
-SET OUTPUT_ZIP="..\Output\MSCL.zip"
 
 REM set the current directory to this file's directory
 cd /d %~dp0
@@ -48,17 +46,14 @@ REM remove old .zip files if they already exist
 echo (zipDocs.cmd) Deleting zip files if they already exist
 del %DOCS_ZIP_OUT%
 del %EX_ZIP_OUT%
-del %OUTPUT_ZIP%
 
 REM zip the output that we just created
 echo (zipDocs.cmd) Zipping Output files
-7z a %OUTPUT_ZIP% %DIR_TO_ZIP% 
 7z a %DOCS_ZIP_OUT% %DOCS_TO_ZIP% 
 7z a %EX_ZIP_OUT% %EX_TO_ZIP%
 
 REM remove the temporary directory that we created, since it is now zipped
 echo (zipDocs.cmd) Removing temp directory that was zipped
-rmdir %DIR_TO_ZIP% /S /Q
 
 echo.
 echo (zipDocs.cmd) DONE

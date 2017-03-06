@@ -492,6 +492,15 @@ namespace mscl
         virtual BeaconStatus beaconStatus();
 
         //Function: startRfSweepMode
+        //  Starts the BaseStation in a fixed RF Sweep Mode, which will sweep over all the supported operating frequencies of the BaseStation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: RF Sweep Mode is not supported by this BaseStation.
+        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
+        //    - <Error_Communication>: The beacon status command has failed.
+        void startRfSweepMode();
+
+        //Function: startRfSweepMode
         //    Starts the BaseStation in RF Sweep Mode.
         //
         //Exceptions:
@@ -503,11 +512,14 @@ namespace mscl
         //Function: cyclePower
         //    Cycles the power on the base station.
         //
+        //Parameters:
+        //  checkComm - Whether to check for communication (ping) after cycling power before returning from this function.
+        //
         //Exceptions:
         //    - <Error_NotSupported>: Attempted to write an unsupported option. The device firmware is not compatible with this version of MSCL.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         //    - <Error_Communication>: Failed to cycle the power on the BaseStation.
-        void cyclePower();
+        void cyclePower(bool checkComm=true);
 
         //Function: resetRadio
         //    Resets the radio on the base station.

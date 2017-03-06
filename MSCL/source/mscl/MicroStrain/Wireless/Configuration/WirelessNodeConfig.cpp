@@ -71,13 +71,16 @@ namespace mscl
         return eeprom.read_dataFormat();
     }
 
-    DataMode WirelessNodeConfig::curDataMode(const NodeEepromHelper& eeprom) const
+    DataModeMask WirelessNodeConfig::curDataModeMask(const NodeEepromHelper& eeprom) const
     {
         //if its currently set in the config, return the set value
-        if(isSet(m_dataMode)) { return *m_dataMode; }
+        if(isSet(m_dataMode)) 
+        { 
+            return DataModeMask(*m_dataMode); 
+        }
 
         //not set, so read the value from the node
-        return eeprom.read_dataMode();
+        return DataModeMask(eeprom.read_dataMode());
     }
 
     WirelessTypes::WirelessSampleRate WirelessNodeConfig::curDerivedRate(const NodeEepromHelper& eeprom) const
@@ -156,7 +159,7 @@ namespace mscl
         return result;
     }
 
-    ChannelMask WirelessNodeConfig::curDerivedMask(WirelessTypes::DerivedChannel derivedChannel, const NodeEepromHelper& eeprom) const
+    ChannelMask WirelessNodeConfig::curDerivedMask(WirelessTypes::DerivedChannelType derivedChannel, const NodeEepromHelper& eeprom) const
     {
         const auto& mask = m_derivedChannelMasks.find(derivedChannel);
 
@@ -170,9 +173,21 @@ namespace mscl
         return eeprom.read_derivedChannelMask(derivedChannel);
     }
 
-    bool WirelessNodeConfig::isDerivedChannelEnabled(WirelessTypes::DerivedChannel derivedChannel, const NodeEepromHelper& eeprom, const NodeFeatures& features) const
+    WirelessTypes::DerivedChannelMasks WirelessNodeConfig::curDerivedChannelMasks(const NodeEepromHelper& eeprom, const NodeFeatures& features) const
     {
-        if(!features.supportsDerivedChannel(derivedChannel))
+        WirelessTypes::DerivedChannelMasks derivedChMasks;
+        const WirelessTypes::DerivedChannelTypes& derivedChs = features.derivedChannelTypes();
+        for(WirelessTypes::DerivedChannelType dc : derivedChs)
+        {
+            derivedChMasks.emplace(dc, curDerivedMask(dc, eeprom));
+        }
+
+        return derivedChMasks;
+    }
+
+    bool WirelessNodeConfig::isDerivedChannelEnabled(WirelessTypes::DerivedChannelType derivedChannel, const NodeEepromHelper& eeprom, const NodeFeatures& features) const
+    {
+        if(!features.supportsDerivedChannelType(derivedChannel))
         {
             return false;
         }
@@ -180,7 +195,7 @@ namespace mscl
         return (curDerivedMask(derivedChannel, eeprom).count() > 0);
     }
 
-    ConfigIssue::ConfigOption WirelessNodeConfig::findDerivedMaskConfigIssue(WirelessTypes::DerivedChannel channel)
+    ConfigIssue::ConfigOption WirelessNodeConfig::findDerivedMaskConfigIssue(WirelessTypes::DerivedChannelType channel)
     {
         switch(channel)
         {
@@ -510,17 +525,19 @@ namespace mscl
         bool dataModeValid = true;
         if(isSet(m_dataMode))
         {
-            if(m_dataMode->toMask().enabledCount() == 0)
+            DataModeMask dataModeMask(*m_dataMode);
+
+            if(dataModeMask.toMask().enabledCount() == 0)
             {
                 dataModeValid = false;
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DATA_MODE, "At least one Data Mode must be enabled."));
             }
-            else if(m_dataMode->derivedModeEnabled() && !features.supportsDerivedDataMode())
+            else if(dataModeMask.derivedModeEnabled && !features.supportsDerivedDataMode())
             {
                 dataModeValid = false;
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DATA_MODE, "Derived Data Mode is not supported by this Node."));
             }
-            else if(m_dataMode->rawModeEnabled() && !features.supportsRawDataMode())
+            else if(dataModeMask.rawModeEnabled && !features.supportsRawDataMode())
             {
                 dataModeValid = false;
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DATA_MODE, "Raw Data Mode is not supported by this Node."));
@@ -553,7 +570,7 @@ namespace mscl
                 //for each derived channel in the map
                 for(auto& mask : m_derivedChannelMasks)
                 {
-                    if(!features.supportsDerivedChannel(mask.first))
+                    if(!features.supportsDerivedChannelType(mask.first))
                     {
                         outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DERIVED_MASK, "The Derived Channel type is not supported by this Node."));
                         break;
@@ -686,10 +703,10 @@ namespace mscl
     {
         if(isSet(m_dataMode) || isSet(m_activeChannels) || !m_derivedChannelMasks.empty())
         {
-            DataMode mode = curDataMode(eeprom);
+            DataModeMask mode = curDataModeMask(eeprom);
 
             //if raw enabled, verify raw channel mask is set
-            if(mode.rawModeEnabled())
+            if(mode.rawModeEnabled)
             {
                 if(curActiveChs(eeprom).count() == 0)
                 {
@@ -698,7 +715,7 @@ namespace mscl
             }
 
             //if derived enabled, verify derived channel mask is set
-            if(mode.derivedModeEnabled())
+            if(mode.derivedModeEnabled)
             {
                 if(!isDerivedChannelEnabled(WirelessTypes::derived_rms, eeprom, features) &&
                    !isDerivedChannelEnabled(WirelessTypes::derived_peakToPeak, eeprom, features) &&
@@ -717,7 +734,7 @@ namespace mscl
            (isSet(m_derivedDataRate) || isSet(m_sampleRate))
           )
         {
-            if(curDataMode(eeprom).derivedModeEnabled())
+            if(curDataModeMask(eeprom).derivedModeEnabled)
             {
                 const SampleRate derivedRate = SampleRate::FromWirelessEepromValue(curDerivedRate(eeprom));
                 const SampleRate sampleRate = SampleRate::FromWirelessEepromValue(curSampleRate(eeprom));
@@ -740,7 +757,9 @@ namespace mscl
            isSet(m_eventTriggerOptions) ||
            isAnySet(m_settlingTimes)||
            isSet(m_dataCollectionMethod) ||
-           isSet(m_timeBetweenBursts))
+           isSet(m_timeBetweenBursts) ||
+           isSet(m_dataMode) ||
+           !m_derivedChannelMasks.empty())
         {
             //read in all of the sampling values, either from the config or from the Node if not set
             WirelessTypes::SamplingMode samplingMode =  curSamplingMode(eeprom);
@@ -748,6 +767,7 @@ namespace mscl
             ChannelMask channels = curActiveChs(eeprom);
             uint32 numSweeps = curNumSweeps(eeprom);
             WirelessTypes::DataFormat dataFormat = curDataFormat(eeprom);
+            DataModeMask mode = curDataModeMask(eeprom);
 
             //verify sampling mode with event trigger settings
             if(isSet(m_samplingMode) || isSet(m_eventTriggerOptions))
@@ -791,10 +811,10 @@ namespace mscl
             }
 
             //verify Sample Rate with Sampling Mode and Data collection method
-            if(isSet(m_sampleRate) || isSet(m_samplingMode) || isSet(m_dataCollectionMethod))
+            if(isSet(m_sampleRate) || isSet(m_samplingMode) || isSet(m_dataCollectionMethod) || isSet(m_dataMode))
             {
                 //verify the sample rate and sampling mode
-                if(!features.supportsSampleRate(sampleRate, samplingMode, curDataCollectionMethod(eeprom)))
+                if(!features.supportsSampleRate(sampleRate, samplingMode, curDataCollectionMethod(eeprom), mode.toDataModeEnum()))
                 {
                     outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE, "The Sample Rate is not supported for the current Sampling Mode."));
                     outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "The Sample Rate is not supported for the current Sampling Mode."));
@@ -802,10 +822,10 @@ namespace mscl
             }
 
             //verify the max Sample Rate with the mode and active channels
-            if(isSet(m_sampleRate) || isSet(m_samplingMode) || isSet(m_activeChannels) || isSet(m_dataCollectionMethod))
+            if(isSet(m_sampleRate) || isSet(m_samplingMode) || isSet(m_activeChannels) || isSet(m_dataCollectionMethod) || isSet(m_dataMode))
             {
                 //get the max sample rate that can be set with these settings
-                WirelessTypes::WirelessSampleRate maxRate = features.maxSampleRate(samplingMode, channels, curDataCollectionMethod(eeprom));
+                WirelessTypes::WirelessSampleRate maxRate = features.maxSampleRate(samplingMode, channels, curDataCollectionMethod(eeprom), mode.toDataModeEnum());
 
                 //verify the sample rate works with the sampling mode and active channels
                 if(SampleRate::FromWirelessEepromValue(sampleRate) > SampleRate::FromWirelessEepromValue(maxRate))
@@ -826,7 +846,7 @@ namespace mscl
                     if(!unlimitedDuration || samplingMode == WirelessTypes::samplingMode_syncBurst)
                     {
                         //verify the number of sweeps works with the other sampling settings
-                        if(numSweeps > features.maxSweeps(samplingMode, dataFormat, channels))
+                        if(numSweeps > features.maxSweeps(samplingMode, mode.toDataModeEnum(), dataFormat, channels))
                         {
                             outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SWEEPS, "The number of Sweeps exceeds the max for this Configuration."));
                         }
@@ -837,8 +857,16 @@ namespace mscl
             //if the sampling mode is burst
             if(samplingMode == WirelessTypes::samplingMode_syncBurst)
             {
+                //build up the DerivedChannelMasks
+                WirelessTypes::DerivedChannelMasks derivedChMasks;
+                if(DataModeMask(mode).derivedModeEnabled)
+                {
+                    //leave default so we don't unnecessarily read eeproms (they won't be used if derived off)
+                    derivedChMasks = curDerivedChannelMasks(eeprom, features);
+                }
+
                 //verify the time between bursts is within range with all the other settings
-                if(curTimeBetweenBursts(eeprom) < features.minTimeBetweenBursts(dataFormat, channels, SampleRate::FromWirelessEepromValue(sampleRate), numSweeps))
+                if(curTimeBetweenBursts(eeprom) < features.minTimeBetweenBursts(mode.toDataModeEnum(), dataFormat, channels, derivedChMasks, SampleRate::FromWirelessEepromValue(sampleRate), numSweeps))
                 {
                     outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_TIME_BETWEEN_BURSTS, "The Time Between Bursts is less than the min for this Configuration."));
                 }
@@ -876,7 +904,13 @@ namespace mscl
 
             //verify Event Trigger settings
             if(features.supportsEventTrigger() && 
-               (isSet(m_eventTriggerOptions) || isSet(m_sampleRate) || isSet(m_activeChannels) || isSet(m_dataFormat)))
+               (isSet(m_eventTriggerOptions) ||
+                isSet(m_sampleRate) ||
+                isSet(m_activeChannels) ||
+                isSet(m_dataFormat) ||
+                isSet(m_dataMode) ||
+                !m_derivedChannelMasks.empty() ||
+                isSet(m_derivedDataRate)))
             {
                 //only verify event trigger settings if a trigger is enabled
                 if(curEventTriggerMask(eeprom).enabledCount() > 0)
@@ -887,7 +921,23 @@ namespace mscl
                     //get the current durations
                     curEventTriggerDurations(eeprom, preDuration, postDuration);
 
-                    uint32 maxDuration = features.maxEventTriggerTotalDuration(dataFormat, channels, SampleRate::FromWirelessEepromValue(sampleRate));
+                    //build up the DerivedChannelMasks
+                    WirelessTypes::DerivedChannelMasks derivedChMasks;
+                    WirelessTypes::WirelessSampleRate derivedRate = WirelessTypes::sampleRate_1Hz;
+
+                    if(DataModeMask(mode).derivedModeEnabled)
+                    {
+                        //leave these default so we don't unnecessarily read eeproms (they won't be used if derived off)
+                        derivedChMasks = curDerivedChannelMasks(eeprom, features);
+                        derivedRate = curDerivedRate(eeprom);
+                    }
+
+                    uint32 maxDuration = features.maxEventTriggerTotalDuration(mode.toDataModeEnum(),
+                                                                               dataFormat,
+                                                                               channels,
+                                                                               derivedChMasks,
+                                                                               SampleRate::FromWirelessEepromValue(sampleRate),
+                                                                               SampleRate::FromWirelessEepromValue(derivedRate));
 
                     //verify the pre+post duration is within range
                     if((preDuration + postDuration) > maxDuration)
@@ -901,21 +951,37 @@ namespace mscl
             if(outIssues.size() == 0)
             {
                 //verify flash bandwidth
-                if(isSet(m_dataFormat) || isSet(m_activeChannels) || isSet(m_numSweeps) || isSet(m_sampleRate) || isSet(m_samplingMode) || isSet(m_timeBetweenBursts))
+                if(isSet(m_dataFormat) ||
+                   isSet(m_activeChannels) ||
+                   isSet(m_numSweeps) ||
+                   isSet(m_sampleRate) ||
+                   isSet(m_samplingMode) ||
+                   isSet(m_timeBetweenBursts) ||
+                   isSet(m_dataMode) ||
+                   !m_derivedChannelMasks.empty() ||
+                   isSet(m_derivedDataRate))
                 {
                     if(features.supportsFlashId() &&
                        samplingMode != WirelessTypes::samplingMode_nonSyncEvent &&
                        samplingMode != WirelessTypes::samplingMode_syncEvent)
                     {
+                        uint32 derivedBytesPerSweep = 0;
+                        WirelessTypes::WirelessSampleRate derivedDataRate = WirelessTypes::sampleRate_1Hz;
+                        if(DataModeMask(mode).derivedModeEnabled)
+                        {
+                            derivedBytesPerSweep = WirelessTypes::derivedBytesPerSweep(curDerivedChannelMasks(eeprom, features));
+                            derivedDataRate = curDerivedRate(eeprom);
+                        }
+
                         //calculate the flash bandwidth used by the current settings
                         float flashBw = 0.0f;
                         if(samplingMode == WirelessTypes::samplingMode_syncBurst)
                         {
-                            flashBw = flashBandwidth_burst(sampleRate, dataFormat, channels.count(), numSweeps, curTimeBetweenBursts(eeprom));
+                            flashBw = flashBandwidth_burst(sampleRate, dataFormat, channels.count(), derivedBytesPerSweep, numSweeps, curTimeBetweenBursts(eeprom));
                         }
                         else
                         {
-                            flashBw = flashBandwidth(sampleRate, dataFormat, channels.count());
+                            flashBw = flashBandwidth(sampleRate, dataFormat, channels.count(), derivedBytesPerSweep, derivedDataRate);
                         }
 
                         //verify we aren't using more flash bandwidth than allowed
@@ -1487,13 +1553,13 @@ namespace mscl
         m_sensorDelay = delay;
     }
 
-    DataMode WirelessNodeConfig::dataMode() const
+    WirelessTypes::DataMode WirelessNodeConfig::dataMode() const
     {
         checkValue(m_dataMode, "Data Mode");
         return *m_dataMode;
     }
 
-    void WirelessNodeConfig::dataMode(const DataMode& mode)
+    void WirelessNodeConfig::dataMode(WirelessTypes::DataMode mode)
     {
         m_dataMode = mode;
     }
@@ -1509,21 +1575,21 @@ namespace mscl
         m_derivedDataRate = rate;
     }
 
-    ChannelMask WirelessNodeConfig::derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const
+    ChannelMask WirelessNodeConfig::derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType) const
     {
         try
         {
-            return m_derivedChannelMasks.at(derivedChannel);
+            return m_derivedChannelMasks.at(derivedChannelType);
         }
         catch(std::out_of_range&)
         {
-            throw Error_NoData("The Derived Channel Mask option has not been set for this DerivedChannel.");
+            throw Error_NoData("The Derived Channel Mask option has not been set for this DerivedChannelType.");
         }
     }
 
-    void WirelessNodeConfig::derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel, const ChannelMask& mask)
+    void WirelessNodeConfig::derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType, const ChannelMask& mask)
     {
-        auto itr = m_derivedChannelMasks.find(derivedChannel);
+        auto itr = m_derivedChannelMasks.find(derivedChannelType);
 
         if(itr != m_derivedChannelMasks.end())
         {
@@ -1531,23 +1597,26 @@ namespace mscl
         }
         else
         {
-            m_derivedChannelMasks.emplace(derivedChannel, mask);
+            m_derivedChannelMasks.emplace(derivedChannelType, mask);
         }
     }
 
-
-
-    float WirelessNodeConfig::flashBandwidth(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::DataFormat dataFormat, uint8 numChannels)
+    float WirelessNodeConfig::flashBandwidth(WirelessTypes::WirelessSampleRate rawSampleRate, WirelessTypes::DataFormat dataFormat, uint8 numChannels, uint32 derivedBytesPerSweep, WirelessTypes::WirelessSampleRate derivedRate)
     {
         uint8 dataSize = WirelessTypes::dataFormatSize(dataFormat);
-        double samplesPerSecond = SampleRate::FromWirelessEepromValue(sampleRate).samplesPerSecond();
-        return static_cast<float>(dataSize * numChannels * samplesPerSecond);
+        double samplesPerSecond = SampleRate::FromWirelessEepromValue(rawSampleRate).samplesPerSecond();
+        return static_cast<float>((dataSize * numChannels * samplesPerSecond) + (derivedBytesPerSweep * SampleRate::FromWirelessEepromValue(derivedRate).samplesPerSecond()));
     }
 
-    float WirelessNodeConfig::flashBandwidth_burst(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::DataFormat dataFormat, uint8 numChannels, uint32 numSweeps, const TimeSpan& timeBetweenBursts)
+    float WirelessNodeConfig::flashBandwidth_burst(WirelessTypes::WirelessSampleRate rawSampleRate,
+                                                   WirelessTypes::DataFormat dataFormat,
+                                                   uint8 numRawChannels,
+                                                   uint32 derivedBytesPerSweep,
+                                                   uint32 numSweeps,
+                                                   const TimeSpan& timeBetweenBursts)
     {
         uint8 dataSize = WirelessTypes::dataFormatSize(dataFormat);
-        double samplesPerSecond = SampleRate::FromWirelessEepromValue(sampleRate).samplesPerSecond();
+        double samplesPerSecond = SampleRate::FromWirelessEepromValue(rawSampleRate).samplesPerSecond();
         uint64 secondsBetweenBursts = timeBetweenBursts.getSeconds();
 
         if(samplesPerSecond == 0.0) { samplesPerSecond = 0.1; } //no dividing by 0
@@ -1555,6 +1624,6 @@ namespace mscl
 
         float dutyCycle = static_cast<float>((static_cast<float>(numSweeps) / samplesPerSecond) / timeBetweenBursts.getSeconds());
 
-        return static_cast<float>(dataSize * numChannels * samplesPerSecond * dutyCycle);
+        return static_cast<float>((dataSize * numRawChannels * samplesPerSecond * dutyCycle) + (derivedBytesPerSweep / timeBetweenBursts.getSeconds()));
     }
 }

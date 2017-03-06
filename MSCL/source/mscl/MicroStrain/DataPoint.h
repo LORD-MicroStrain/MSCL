@@ -24,7 +24,6 @@ namespace mscl
     //    Typedef for a map of uint32 to int16 values.
     typedef std::map<uint32, int16> RfSweep;
 
-
     //API Class: DataPoint
     //    Base class representing common functionality between Wireless and Inertial data points
     //
@@ -38,6 +37,23 @@ namespace mscl
         DataPoint();        //default constructor disabled
 
     public:
+        //API Enum: ChannelPropertyId
+        //  Available channel properties that can be stored with the WirelessDataPoint.
+        //
+        //  channelPropertyId_angle                 - 0 - The angle (float) that the channel is from.
+        //  channelPropertyId_derivedFrom           - 1 - The <ChannelMask> that a derived channel is representing.
+        //  channelPropertyId_derivedChannelType    - 2 - The <WirelessTypes::DerivedChannelType> of the derived channel.
+        enum ChannelPropertyId
+        {
+            channelPropertyId_angle = 0,
+            channelPropertyId_derivedFrom = 1,
+            channelPropertyId_derivedChannelType = 2,
+        };
+
+        //Typedef: ChannelProperties
+        //  Typedef for a map of <ChannelPropertyId> to <Value> pairs.
+        typedef std::map<ChannelPropertyId, Value> ChannelProperties;
+
 #ifndef SWIG
         //Constructor: DataPoint
         //    Creates a DataPoint object
@@ -45,12 +61,30 @@ namespace mscl
         //Parameters:
         //    type - The <ValueType> of the data that is stored
         //    value - The data that is to be stored
-        DataPoint(ValueType type, const anyType& value);
+        DataPoint(ValueType type, const anyType& value, const ChannelProperties& channelProperties = ChannelProperties());
 #endif
 
         virtual ~DataPoint(){}
 
+    protected:
+        //Variable: m_channelProperties
+        //  The <ChannelProperties> associated with the data point (if any).
+        ChannelProperties m_channelProperties;
+
     public:
+        //API Function: channelProperty
+        //  Gets the channel property for the specified <ChannelPropertyId> associated with the data point.
+        //
+        //Parameters:
+        //  id - The <ChannelPropertyId> to request.
+        //
+        //Returns:
+        //  A <Value> representing the channel property.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: The provided <ChannelPropertyId> is not supported for this data point.
+        const Value& channelProperty(ChannelPropertyId id) const;
+
         //API Function: as_Vector
         //    Gets the data value as a <Vector> object
         //
@@ -123,6 +157,6 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_BadDataType>: The type in which the value was stored could not be converted to a string.
-        std::string as_string() const;
+        std::string as_string() const override;
     };
 }

@@ -7,7 +7,206 @@ MAJOR.MINOR.PATCH
 The MAJOR version is incremented when changes are made (to the public interface) that are not backwards compatible.
 The MINOR version is incremented when a new feature is added (to the public interface) or a current feature is improved upon.
 The PATCH version is incremented when a bug is fixed.
+
+Major revisions will specify what caused the non-backwards compatible change. These will be specified like so:
+CHANGED - A non-backwards compatible change was made to an existing function/class.
+RENAMED - A function/class has been renamed.
+DELETED - A function/class has been removed.
 ======================================================================================================
+
+-------------------------------------------------------------------------
+19.3.0 - 2017-03-03
+- verification of Timestamp bytes in Wireless Data Packets.
+- verification of Angle bytes in Wireless Data Packets.
+
+-------------------------------------------------------------------------
+19.2.4 - 2017-03-02
+- fix for WirelessDataPoint initialization bug.
+
+-------------------------------------------------------------------------
+19.2.3 - 2017-03-02
+- added Sync Event sampling mode to SHM-Link-200.
+
+-------------------------------------------------------------------------
+19.2.2 - 2017-03-02
+- fix for datalogging download sometimes causing out of range exception.
+
+-------------------------------------------------------------------------
+19.2.1 - 2017-02-28
+- changed DataPoint::ChannelProperties to a map instead of an unordered_map, which
+  seems to fix a crash when receiving a ShmPacket and requesting a channel property.
+  This is still a mystery as to why it was crashing, as it was on the map->find() line
+  which is not suppossed to throw an exception, but threw a vector::out_of_range
+
+-------------------------------------------------------------------------
+19.2.0 - 2017-02-27
+- support for the new Internal Temperature field in Diagnostic Packets.
+
+-------------------------------------------------------------------------
+19.1.0 - 2017-02-24
+- added BaseStationFeatures::supportsCustomRfSweepMode
+- added overloaded BaseStation::startRfSweepMode function
+
+-------------------------------------------------------------------------
+19.0.1 - 2017-02-23
+- updated min user inactivity timeout to 30s.
+
+-------------------------------------------------------------------------
+19.0.0 - 2017-02-22
+- RENAMED InertialDataEnums::GpsFixType to GnssFixType
+- RENAMED InertialTypes::CATEGORY_GPS to CATEGORY_GNSS
+- RENAMED InertialTypes::CMD_POLL_GPS_DATA to CMD_POLL_GNSS_DATA
+- RENAMED InertialTypes::CMD_GET_GPS_RATE_BASE to CMD_GET_GNSS_RATE_BASE
+- RENAMED InertialTypes::CMD_GPS_MESSAGE_FORMAT to CMD_GNSS_MESSAGE_FORMAT
+- RENAMED InertialTypes::CMD_EF_GPS_SRC_CTRL to CMD_EF_GNSS_SRC_CTRL
+- RENAMED InertialTypes::CMD_EF_EXTERN_GPU_UPDATE to CMD_EF_EXTERN_GNSS_UPDATE
+- RENAMED InertialTypes::CH_FIELD_GPS_LLH_POSITION to CH_FIELD_GNSS_LLH_POSITION
+- RENAMED InertialTypes::CH_FIELD_GPS_ECEF_POSITION to CH_FIELD_GNSS_ECEF_POSITION
+- RENAMED InertialTypes::CH_FIELD_GPS_NED_VELOCITY to CH_FIELD_GNSS_NED_VELOCITY
+- RENAMED InertialTypes::CH_FIELD_GPS_ECEF_VELOCITY to CH_FIELD_GNSS_ECEF_VELOCITY
+- RENAMED InertialTypes::CH_FIELD_GPS_DOP to CH_FIELD_GNSS_DOP
+- RENAMED InertialTypes::CH_FIELD_GPS_UTC_TIME to CH_FIELD_GNSS_UTC_TIME
+- RENAMED InertialTypes::CH_FIELD_GPS_GPS_TIME to CH_FIELD_GNSS_GPS_TIME
+- RENAMED InertialTypes::CH_FIELD_GPS_CLOCK_INFO to CH_FIELD_GNSS_CLOCK_INFO
+- RENAMED InertialTypes::CH_FIELD_GPS_FIX_INFO to CH_FIELD_GNSS_FIX_INFO
+- RENAMED InertialTypes::CH_FIELD_GPS_SPACE_VEHICLE_INFO to CH_FIELD_GNSS_SPACE_VEHICLE_INFO
+- RENAMED InertialTypes::CH_FIELD_GPS_HARDWARE_STATUS to CH_FIELD_GNSS_HARDWARE_STATUS
+- RENAMED InertialTypes::CH_FIELD_GPS_DGPS_INFO to CH_FIELD_GNSS_DGNSS_INFO
+- RENAMED InertialTypes::CH_FIELD_GPS_DGPS_CHANNEL_STATUS to CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS
+- RENAMED InertialTypes::CH_FIELD_ESTFILTER_GPS_ANTENNA_CORRECTION to CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION
+- RENAMED InertialTypes::CH_FIELD_ESTFILTER_GPS_ANTENNA_CORRECTION_UNCERT to CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION_UNCERT
+
+-------------------------------------------------------------------------
+18.0.0 - 2017-02-22
+- DELETED InertialDataPoint::str()
+- DELETED InertialTypes::channelFieldToStr()
+- DELETED InertialTypes::channelQualifierToStr()
+- support for parsing more Inertial Data channels:
+  - Mag Auto Hard Iron Offset (0x8225)
+  - Mag Auto Hard Iron Offset Uncertainty (0x8228)
+  - Mag Auto Soft Iron Matrix (0x8226)
+  - Mag Auto Soft Iron Matrix Uncertainty (0x8229)
+
+-------------------------------------------------------------------------
+17.1.1 - 2017-02-22
+- fix for channelPropertyId_derivedChannelType throwing an invalid data type exception.
+
+-------------------------------------------------------------------------
+17.1.0 - 2017-02-21
+- added DataPoint::channelPropertyId_derivedChannelType for getting the DerivedChannelType for a derived data point.
+
+-------------------------------------------------------------------------
+17.0.0 - 2017-02-21
+- RENAMED WirelessTypes::DerivedChannel to DerivedChannelType.
+- RENAMED NodeFeatures::supportsDerivedChannel to supportsDerivedChannelType.
+- RENAMED NodeFeatures::derivedChannels to derivedChannelTypes.
+- CHANGED NodeFeatures::maxSweeps to take an additional WirelessTypes::DataMode parameter.
+- CHANGED NodeFeatures::maxSweepsPerBurst to take an additional WirelessTypes::DataMode parameter.
+- CHANGED NodeFeatures::minTimeBetweenBursts to take additional WirelessTypes::DataMode and WirelessTypes::DerivedChannelMasks parameters.
+- CHANGED NodeFeatures::maxEventTriggerTotalDuration to take additional WirelessTypes::DataMode, WirelessTypes::DerivedChannelMasks, and derived data rate parameters.
+- fix for WirelessNodeConfig::verify not taking into account Derived channels for some verifications.
+- added unit_velocity_inchesPerSec to WirelessTypes::CalCoef_Unit enums.
+- added dataMode_none to WirelessTypes::DataMode enums.
+
+-------------------------------------------------------------------------
+16.0.7 - 2017-02-20
+- fix for exception when applying EventTrigger configuration if not all triggers set.
+
+-------------------------------------------------------------------------
+16.0.6 - 2017-02-17
+- updated list of InertialTypes::Command enums.
+
+-------------------------------------------------------------------------
+16.0.5 - 2017-02-17
+- using the Get Extended Device Descriptor Sets call when supported by the Inertial device.
+
+-------------------------------------------------------------------------
+16.0.4 - 2017-02-16
+- fix for interacting with a BaseStation object after calling disconnect() on
+  its connection causing a null pointer exception.
+
+-------------------------------------------------------------------------
+16.0.3 - 2017-02-16
+- not performing retries when cycling power on the BaseStation (no response)
+- added checkComm boolean to BaseStation::cyclePower to allow not pinging after a cycle power.
+
+-------------------------------------------------------------------------
+16.0.2 - 2017-02-16
+- updated list of low pass filters for G-Link-200.
+
+-------------------------------------------------------------------------
+16.0.1 - 2017-02-16
+- moved WirelessDataPoint::channelProperty into its base class (DataPoint).
+
+-------------------------------------------------------------------------
+16.0.0 - 2017-02-15
+- DELETED InertialNode::info()
+    - (functionality moved to InertialNode)
+- DELETED public version of InertialNodeInfo class 
+- DELETED InertialNode::supportedSampleRates()
+    - (moved to InertialNodeFeatures)
+- added InertialNode::firmwareVersion()
+- added InertialNode::model()
+- added InertialNode::modelName()
+- added InertialNode::modelNumber()
+- added InertialNode::serialNumber()
+- added InertialNode::lotNumber()
+- added InertialNode::deviceOptions()
+- added InertialNodeFeatures::supportsCategory()
+- added InertialNodeFeatures::supportsCommand()
+- added InertialNodeFeatures::supportedCommands()
+- added InertialNodeFeatures::supportedChannelFields()
+- added InertialNodeFeatures::supportedSampleRates()
+
+-------------------------------------------------------------------------
+15.2.0 - 2017-02-13
+- added channelPropertyId_derivedFrom to be used with the WirelessDataPoint::channelProperty
+  which provides the ChannelMask that math channels are derived from.
+
+-------------------------------------------------------------------------
+15.1.1 - 2017-02-09
+- fix for not checking some config cases for Data Mode in some scenarios.
+
+-------------------------------------------------------------------------
+15.1.0 - 2017-02-09
+- added NodeFeatures function for checking if any of the raw data modes are available.
+- added NodeFeatures function for checking if any of the derived data modes are available.
+
+-------------------------------------------------------------------------
+15.0.0 - 2017-02-08
+- DELETED DataMode class.
+- CHANGED WirelessNode::getDataMode function to return a WirelessTypes::DataMode enum.
+- CHANGED WirelessNodeConfig::dataMode functions to take/return a WirelessTypes::DataMode enum.
+- CHANGED NodeFeatures::sampleRates to take an additional DataMode parameter.
+- CHANGED NodeFeatures::supportsSampleRate to take an additional DataMode parameter.
+- CHANGED NodeFeatures::maxSampleRate to take an additional DataMode parameter.
+- CHANGED NodeFeatures::maxSampleRateForSettlingTime to take an additional DataMode parameter.
+- DELETED NodeFeatures::supportsRawDataMode function.
+- DELETED NodeFeatures::supportsDerivedDataMode function.
+- added the WirelessTypes::dataMode enum.
+- added NodeFeatures::dataModes function.
+- added NodeFeatures::supportsDataMode function.
+
+-------------------------------------------------------------------------
+14.4.2 - 2017-02-07
+- same bit shifting fix as below, but with datalogging.
+
+-------------------------------------------------------------------------
+14.4.1 - 2017-02-07
+- fix for shifting bits for int16 values from a 20-bit (really 22-bit) data type.
+
+-------------------------------------------------------------------------
+14.4.0 - 2017-02-01
+- support for Derived + Raw channel downloading.
+
+-------------------------------------------------------------------------
+14.3.4 - 2017-01-31
+- update for Set to Idle v2 command.
+- fix for Quick Ping v2 command.
+
+-------------------------------------------------------------------------
+14.3.3 - 2017-01-30
+- fix for TDMA calculations for Nodes with 512Hz sample rate.
 
 -------------------------------------------------------------------------
 14.3.2 - 2017-01-27

@@ -21,8 +21,8 @@ namespace mscl
         extern bool _forceLibraryToIncludeCompilationUnit_AHRS;
         _forceLibraryToIncludeCompilationUnit_AHRS = true;
 
-        extern bool _forceLibraryToIncludeCompilationUnit_GPS;
-        _forceLibraryToIncludeCompilationUnit_GPS = true;
+        extern bool _forceLibraryToIncludeCompilationUnit_GNSS;
+        _forceLibraryToIncludeCompilationUnit_GNSS = true;
 
         extern bool _forceLibraryToIncludeCompilationUnit_NAV;
         _forceLibraryToIncludeCompilationUnit_NAV = true;

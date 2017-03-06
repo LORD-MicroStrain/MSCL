@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(InertialPacketCollector_getDataPackets_multiplePackets_all)
     InertialPacketCollector collector;
 
     InertialPacket p;
-    p.descriptorSet(DescriptorSet::DESC_SET_DATA_GPS);
+    p.descriptorSet(DescriptorSet::DESC_SET_DATA_GNSS);
 
     InertialPacket p2;
     p2.descriptorSet(DescriptorSet::DESC_SET_DATA_EST_FILTER);
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(InertialPacketCollector_getDataPackets_multiplePackets_limi
     InertialPacketCollector collector;
 
     InertialPacket p;
-    p.descriptorSet(DescriptorSet::DESC_SET_DATA_GPS);
+    p.descriptorSet(DescriptorSet::DESC_SET_DATA_GNSS);
 
     InertialPacket p2;
     p2.descriptorSet(DescriptorSet::DESC_SET_DATA_EST_FILTER);
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(InertialPacketCollector_getDataPackets_multiplePackets_limi
     std::vector<InertialDataPacket> packets;
     collector.getDataPackets(packets, 0, 1);
     BOOST_CHECK_EQUAL(packets.size(), 1);
-    BOOST_CHECK_EQUAL(packets.at(0).descriptorSet(), DescriptorSet::DESC_SET_DATA_GPS);
+    BOOST_CHECK_EQUAL(packets.at(0).descriptorSet(), DescriptorSet::DESC_SET_DATA_GNSS);
 
     //check that calling getDataPackets returns 1 packet
     packets.clear();

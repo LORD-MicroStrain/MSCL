@@ -13,9 +13,22 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    DataPoint::DataPoint(ValueType type, const anyType& value):
-        Value(type, value)
+    DataPoint::DataPoint(ValueType type, const anyType& value, const ChannelProperties& channelProperties):
+        Value(type, value),
+        m_channelProperties(channelProperties)
     {
+    }
+
+    const Value& DataPoint::channelProperty(ChannelPropertyId id) const
+    {
+        auto iter = m_channelProperties.find(id);
+
+        if(iter == m_channelProperties.end())
+        {
+            throw Error_NotSupported("The provided ChannelPropertyId is not supported for this data point.");
+        }
+
+        return iter->second;
     }
 
 

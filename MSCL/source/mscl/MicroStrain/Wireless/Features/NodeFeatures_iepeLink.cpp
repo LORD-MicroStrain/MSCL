@@ -60,7 +60,7 @@ namespace mscl
         return result;
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures_iepeLink::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
+    const WirelessTypes::WirelessSampleRates NodeFeatures_iepeLink::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
@@ -89,17 +89,5 @@ namespace mscl
             {WirelessTypes::filter_26hz}
         };
         return filters;
-    }
-
-    uint32 NodeFeatures_iepeLink::maxSweepsPerBurst(WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const
-    {
-        //the max number of bytes per burst
-        static const uint32 maxBytes = 600000;
-
-        //get the number of bytes per sample
-        uint8 bytesPerSample = WirelessTypes::dataFormatSize(dataFormat);
-
-        //calculate and return the max number of sweeps per burst
-        return (maxBytes / (bytesPerSample * channels.count()));
     }
 }

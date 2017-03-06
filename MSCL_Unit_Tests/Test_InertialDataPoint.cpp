@@ -42,40 +42,6 @@ BOOST_AUTO_TEST_CASE(InertialDataPoint_Constructor)
     BOOST_CHECK_CLOSE(p.as_float(), 1.234, 0.0001);
 }
 
-BOOST_AUTO_TEST_CASE(InertialDataPoint_str_ahrs)
-{
-    InertialDataPoint p(InertialTypes::CH_FIELD_SENSOR_RAW_ACCEL_VEC, InertialTypes::CH_X, valueType_float, anyType(0), true);
-    BOOST_CHECK_EQUAL(p.str(), "Raw Accelerometer Vector-X");
-    BOOST_CHECK_EQUAL(p.channelName(), "rawAccelX");
-
-    InertialDataPoint p2(InertialTypes::CH_FIELD_SENSOR_EULER_ANGLES, InertialTypes::CH_ROLL, valueType_float, anyType(0), true);
-    BOOST_CHECK_EQUAL(p2.str(), "Euler Angles-Roll");    
-    BOOST_CHECK_EQUAL(p2.channelName(), "roll");
-
-    InertialDataPoint pUnknown((InertialTypes::ChannelField)9999, InertialTypes::CH_UNKNOWN, valueType_int32, anyType(1), true);
-    BOOST_CHECK_EQUAL(pUnknown.str(), "9999-Unknown");
-}
-
-BOOST_AUTO_TEST_CASE(InertialDataPoint_str_gps)
-{
-    InertialDataPoint p(InertialTypes::CH_FIELD_GPS_LLH_POSITION, InertialTypes::CH_LATITUDE, valueType_bool, anyType(0), true);
-    BOOST_CHECK_EQUAL(p.str(), "LLH Position-Latitude");
-    BOOST_CHECK_EQUAL(p.channelName(), "latitude");
-
-    InertialDataPoint p2(InertialTypes::CH_FIELD_GPS_LLH_POSITION, InertialTypes::CH_LONGITUDE, valueType_bool, anyType(0), true);
-    BOOST_CHECK_EQUAL(p2.str(), "LLH Position-Longitude");
-    BOOST_CHECK_EQUAL(p2.channelName(), "longitude");
-}
-
-BOOST_AUTO_TEST_CASE(InertialDataPoint_str_nav)
-{
-    InertialDataPoint p(InertialTypes::CH_FIELD_ESTFILTER_FILTER_STATUS, InertialTypes::CH_FILTER_STATE, valueType_bool, anyType(0), true);
-    BOOST_CHECK_EQUAL(p.str(), "Filter Status-Filter State");
-
-    InertialDataPoint p2(InertialTypes::CH_FIELD_ESTFILTER_FILTER_STATUS, InertialTypes::CH_DYNAMICS_MODE, valueType_bool, anyType(0), true);
-    BOOST_CHECK_EQUAL(p2.str(), "Filter Status-Dynamics Mode");
-}
-
 BOOST_AUTO_TEST_CASE(InertialDataPoint_asVector)
 {
     ByteStream bytes;

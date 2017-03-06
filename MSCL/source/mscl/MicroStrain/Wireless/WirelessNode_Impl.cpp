@@ -606,7 +606,7 @@ namespace mscl
         return m_eepromHelper->read_sensorDelay();
     }
 
-    DataMode WirelessNode_Impl::getDataMode() const
+    WirelessTypes::DataMode WirelessNode_Impl::getDataMode() const
     {
         return m_eepromHelper->read_dataMode();
     }
@@ -621,19 +621,19 @@ namespace mscl
         return m_eepromHelper->read_derivedSampleRate();
     }
 
-    ChannelMask WirelessNode_Impl::getDerivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const
+    ChannelMask WirelessNode_Impl::getDerivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType) const
     {
         if(!features().supportsDerivedDataMode())
         {
             throw Error_NotSupported("Derived Data Channels are not supported by this Node.");
         }
 
-        if(!features().supportsDerivedChannel(derivedChannel))
+        if(!features().supportsDerivedChannelType(derivedChannelType))
         {
-            throw Error_NotSupported("The given Derived Data Channel (" + Utils::toStr(derivedChannel) + ") is not supported by this Node.");
+            throw Error_NotSupported("The given DerivedChannelType (" + Utils::toStr(derivedChannelType) + ") is not supported by this Node.");
         }
 
-        return m_eepromHelper->read_derivedChannelMask(derivedChannel);
+        return m_eepromHelper->read_derivedChannelMask(derivedChannelType);
     }
 
     /*

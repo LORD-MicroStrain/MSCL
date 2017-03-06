@@ -58,7 +58,7 @@ namespace mscl
         metaData.reserve(numAlgorithms);
         for(uint8 i = 0; i < numAlgorithms; ++i)
         {
-            metaData.emplace_back(static_cast<WirelessDataPacket::MathAlgorithmID>(payload.read_uint8()),
+            metaData.emplace_back(static_cast<WirelessTypes::DerivedChannelType>(payload.read_uint8()),
                                   ChannelMask(payload.read_uint16())
             );
         }
@@ -95,7 +95,16 @@ namespace mscl
 
                 //add channel data
                 WirelessChannel::ChannelId channelId = WirelessDataPacket::getMathChannelId(alg.algorithmId, chItr);
-                chData.emplace_back(channelId, chItr, valueType_float, anyType(payload.read_float()));
+
+                //create the ChannelMask property indicating which channel it was derived from
+                ChannelMask propertyChMask;
+                propertyChMask.enable(chItr);
+                WirelessDataPoint::ChannelProperties properties({
+                    {std::make_pair(WirelessDataPoint::channelPropertyId_derivedFrom, Value(valueType_ChannelMask, propertyChMask))},
+                    {std::make_pair(WirelessDataPoint::channelPropertyId_derivedChannelType, Value(valueType_uint8, static_cast<uint8>(alg.algorithmId)))}
+                });
+                
+                chData.emplace_back(channelId, chItr, valueType_float, anyType(payload.read_float()), properties);
             }
         }
 
@@ -135,16 +144,16 @@ namespace mscl
         const uint8 numAlgorithms = payload.read_uint8(7);
         uint8 readPos = 8;
         uint8 expectedChannelBytes = 0;
-        MathAlgorithmID tempId;
+        WirelessTypes::DerivedChannelType tempId;
         ChannelMask tempMask;
         for(uint8 i = 0; i < numAlgorithms; ++i)
         {
-            tempId = static_cast<WirelessDataPacket::MathAlgorithmID>(payload.read_uint8(readPos));
+            tempId = static_cast<WirelessTypes::DerivedChannelType>(payload.read_uint8(readPos));
             readPos += 1;
             tempMask.fromMask(payload.read_uint16(readPos));
             readPos += 2;
 
-            expectedChannelBytes += tempMask.count() * WirelessDataPacket::numChannelBytesPerAlgorithm(tempId);
+            expectedChannelBytes += tempMask.count() * WirelessTypes::bytesPerDerivedChannel(tempId);
         }
 
         //verify we have the expected number of channel bytes

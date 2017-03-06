@@ -9,13 +9,15 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/Utils.h"
 #include "InertialParser.h"
 #include "InertialNodeInfo.h"
-#include "Commands/Sensor_Commands.h"
-#include "Commands/GPS_Commands.h"
-#include "Commands/EstFilter_Commands.h"
-#include "Commands/System_Commands.h"
 #include "Commands/ContinuousDataStream.h"
+#include "Commands/EstFilter_Commands.h"
+#include "Commands/GetDeviceDescriptorSets.h"
+#include "Commands/GetExtendedDeviceDescriptorSets.h"
+#include "Commands/GNSS_Commands.h"
 #include "Commands/Inertial_SetToIdle.h"
 #include "Commands/Resume.h"
+#include "Commands/Sensor_Commands.h"
+#include "Commands/System_Commands.h"
 #include "Features/InertialNodeFeatures.h"
 
 namespace mscl
@@ -24,7 +26,7 @@ namespace mscl
         m_connection(connection),
         m_inertialCommandsTimeout(COMMANDS_DEFAULT_TIMEOUT),
         m_sensorRateBase(0),
-        m_gpsRateBase(0),
+        m_gnssRateBase(0),
         m_estfilterRateBase(0)
     {
         //create the response collector
@@ -55,25 +57,53 @@ namespace mscl
         return m_lastCommTime;
     }
 
-    const InertialNodeInfo& InertialNode_Impl::info()
+    Version InertialNode_Impl::firmwareVersion() const
+    {
+        return info().deviceInfo().fwVersion;
+    }
+
+    InertialModels::NodeModel InertialNode_Impl::model() const
+    {
+        return info().deviceInfo().model;
+    }
+
+    std::string InertialNode_Impl::modelName() const
+    {
+        return info().deviceInfo().modelName;
+    }
+
+    std::string InertialNode_Impl::modelNumber() const
+    {
+        return info().deviceInfo().modelNumber;
+    }
+
+    std::string InertialNode_Impl::serialNumber() const
+    {
+        return info().deviceInfo().serialNumber;
+    }
+
+    std::string InertialNode_Impl::lotNumber() const
+    {
+        return info().deviceInfo().lotNumber;
+    }
+
+    std::string InertialNode_Impl::deviceOptions() const
+    {
+        return info().deviceInfo().deviceOptions;
+    }
+
+    const InertialNodeInfo& InertialNode_Impl::info() const
     {
         //if we haven't initialized the InertialNodeInfo
         if(!m_nodeInfo)
         {
-            //send the GetDeviceInfo command
-            InertialDeviceInfo deviceInfo = getDeviceInfo();
-
-            //send the GetDeviceDescriptorSets command
-            std::vector<uint16> sets = getDescriptorSets();
-
-            //create an InertialNodeInfo object 
-            m_nodeInfo.reset(new InertialNodeInfo(deviceInfo, sets));
+            m_nodeInfo.reset(new InertialNodeInfo(this));
         }
 
         return (*m_nodeInfo);
     }
 
-    const InertialNodeFeatures& InertialNode_Impl::features()
+    const InertialNodeFeatures& InertialNode_Impl::features() const
     {
         //if the features variable hasn't been set yet
         if(m_features == NULL)
@@ -85,48 +115,24 @@ namespace mscl
         return *(m_features.get());
     }
 
-    const SampleRates& InertialNode_Impl::supportedSampleRates(InertialTypes::InertialCategory category)
+    SampleRates InertialNode_Impl::supportedSampleRates(InertialTypes::InertialCategory category) const
     {
-        SampleRates* rates = NULL;
+        SampleRates result;
 
-        //set the SampleRates pointer depending on the category that is being asked for
-        switch(category)
+        //get the sample rate's base rate for this category from the Node
+        uint16 baseRate = getDataRateBase(category);
+
+        for(uint16 decimator = baseRate; decimator > 0; --decimator)
         {
-            case InertialTypes::CATEGORY_SENSOR:
-                rates = &m_sensorSampleRates;
-                break;
-
-            case InertialTypes::CATEGORY_GPS:
-                rates = &m_gpsSampleRates;
-                break;
-
-            case InertialTypes::CATEGORY_ESTFILTER:
-                rates = &m_estfilterSampleRates;
-                break;
-
-            default:
-                throw Error("Invalid InertialCategory.");
-        }
-
-        //if we haven't created this sample rates vector before
-        if(rates->empty())
-        {
-            //get the sample rate's base rate for this category from the Node
-            uint16 baseRate = getDataRateBase(category);
-
-            for(uint16 decimator = baseRate; decimator > 0; --decimator)
+            //if this decimator divides evenly into the base rate
+            if(baseRate % decimator == 0)
             {
-                //if this decimator divides evenly into the base rate
-                if(baseRate % decimator == 0)
-                {
-                    //add the Sample Rate to the list of supported rates
-                    rates->push_back(SampleRate::Hertz(baseRate / decimator));
-                }
+                //add the Sample Rate to the list of supported rates
+                result.push_back(SampleRate::Hertz(baseRate / decimator));
             }
         }
 
-        //return the sample rates that we built
-        return *rates;
+        return result;
     }
 
     void InertialNode_Impl::parseData(DataBuffer& data)
@@ -170,12 +176,12 @@ namespace mscl
         return m_inertialCommandsTimeout;
     }
 
-    GenericInertialCommandResponse InertialNode_Impl::doInertialCmd(GenericInertialCommand::Response& response, const ByteStream& command, InertialTypes::Command commandId, bool verifySupported)
+    GenericInertialCommandResponse InertialNode_Impl::doInertialCmd(GenericInertialCommand::Response& response, const ByteStream& command, InertialTypes::Command commandId, bool verifySupported) const
     {
         if(verifySupported)
         {
             //verify that this command is supported
-            if(!info().supportsCommand(commandId))
+            if(!features().supportsCommand(commandId))
             {
                 throw Error_NotSupported("The command (" + Utils::toStr(commandId) + ") is not supported.");
             }
@@ -236,7 +242,7 @@ namespace mscl
         doInertialCmd(r, Resume::buildCommand(), Resume::CMD_ID, false);
     }
 
-    InertialDeviceInfo InertialNode_Impl::getDeviceInfo()
+    InertialDeviceInfo InertialNode_Impl::getDeviceInfo() const
     {
         //create the response for the GetDeviceInfo command
         GetDeviceInfo::Response r(m_responseCollector);
@@ -245,16 +251,30 @@ namespace mscl
         return r.parseResponse(doInertialCmd(r, GetDeviceInfo::buildCommand(), GetDeviceInfo::CMD_ID, false));
     }
 
-    std::vector<uint16> InertialNode_Impl::getDescriptorSets()
+    std::vector<uint16> InertialNode_Impl::getDescriptorSets() const
     {
-        //create the response for the GetDeviceInfo command
+        std::vector<uint16> descriptors;
+
+        //create the response for the GetDeviceDescriptorSets command
         GetDeviceDescriptorSets::Response r(m_responseCollector);
 
+        //append the descriptors to the container
+        r.parseResponse(doInertialCmd(r, GetDeviceDescriptorSets::buildCommand(), GetDeviceDescriptorSets::CMD_ID, false), descriptors);
+
+        if(std::find(descriptors.begin(), descriptors.end(), InertialTypes::CMD_GET_EXT_DESCRIPTOR_SETS) != descriptors.end())
+        {
+            //create the response for the GetExtendedDeviceDescriptorSets command
+            GetExtendedDeviceDescriptorSets::Response r2(m_responseCollector);
+
+            //append the extended descriptors to the container
+            r2.parseResponse(doInertialCmd(r2, GetExtendedDeviceDescriptorSets::buildCommand(), GetExtendedDeviceDescriptorSets::CMD_ID, false), descriptors);
+        }
+
         //send the command, wait for the response, and parse the result
-        return r.parseResponse(doInertialCmd(r, GetDeviceDescriptorSets::buildCommand(), GetDeviceDescriptorSets::CMD_ID, false));
+        return descriptors;
     }
 
-    uint16 InertialNode_Impl::getDataRateBase(InertialTypes::InertialCategory category)
+    uint16 InertialNode_Impl::getDataRateBase(InertialTypes::InertialCategory category) const
     {
         switch(category)
         {
@@ -273,19 +293,19 @@ namespace mscl
                 return m_sensorRateBase;
             }
 
-            case InertialTypes::CATEGORY_GPS:
+            case InertialTypes::CATEGORY_GNSS:
             {
                 //if we don't already have it stored
-                if(m_gpsRateBase == 0)
+                if(m_gnssRateBase == 0)
                 {
                     //set the expected response
-                    GetGpsDataRateBase::Response r(m_responseCollector);
+                    GetGnssDataRateBase::Response r(m_responseCollector);
 
                     //send the command, wait for the response, and parse the result
-                    m_gpsRateBase = r.parseResponse(doInertialCmd(r, GetGpsDataRateBase::buildCommand(), GetGpsDataRateBase::CMD_ID));
+                    m_gnssRateBase = r.parseResponse(doInertialCmd(r, GetGnssDataRateBase::buildCommand(), GetGnssDataRateBase::CMD_ID));
                 }
 
-                return m_gpsRateBase;
+                return m_gnssRateBase;
             }
 
             case InertialTypes::CATEGORY_ESTFILTER:
@@ -322,13 +342,13 @@ namespace mscl
                 return r.parseResponse(doInertialCmd(r, SensorMessageFormat::buildCommand_get(), SensorMessageFormat::CMD_ID), sampleRateBase);
             }
 
-            case InertialTypes::CATEGORY_GPS:
+            case InertialTypes::CATEGORY_GNSS:
             {
                 //set the expected response
-                GpsMessageFormat::Response r(m_responseCollector, true);
+                GnssMessageFormat::Response r(m_responseCollector, true);
 
                 //send the command, wait for the response, and parse the result
-                return r.parseResponse(doInertialCmd(r, GpsMessageFormat::buildCommand_get(), GpsMessageFormat::CMD_ID), sampleRateBase);
+                return r.parseResponse(doInertialCmd(r, GnssMessageFormat::buildCommand_get(), GnssMessageFormat::CMD_ID), sampleRateBase);
             }
 
             case InertialTypes::CATEGORY_ESTFILTER:
@@ -360,13 +380,13 @@ namespace mscl
                 break;
             }
 
-            case InertialTypes::CATEGORY_GPS:
+            case InertialTypes::CATEGORY_GNSS:
             {
                 //set the expected response
-                GpsMessageFormat::Response r(m_responseCollector, false);
+                GnssMessageFormat::Response r(m_responseCollector, false);
 
                 //send the command and wait for the response
-                doInertialCmd(r, GpsMessageFormat::buildCommand_set(channels, sampleRateBase), GpsMessageFormat::CMD_ID);
+                doInertialCmd(r, GnssMessageFormat::buildCommand_set(channels, sampleRateBase), GnssMessageFormat::CMD_ID);
                 break;
             }
 

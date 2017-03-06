@@ -184,7 +184,8 @@ namespace mscl
         //  cmdId_base_readEeprom_v2    - 0x0073    - Read Base Station Eeprom (v2)
         //  cmdId_base_writeEeprom_v1   - 0x78      - Write Base Station Eeprom (v1)
         //  cmdId_base_writeEeprom_v2   - 0x0078    - Write Base Station Eeprom (v2)
-        //  cmdId_stopNode              - 0x0090    - Stop Node
+        //  cmdId_stopNode              - 0x0090    - Set Node to Idle (v1)
+        //  cmdId_stopNode_v2           - 0x0091    - Set Node to Idle (v2)
         //  cmdId_base_rfScan           - 0x00ED    - Base Station Rf Energy Frequency Scan
         //  cmdId_base_setBeaconTime    - 0xBEAB    - Base Station Set Beacon Timestamp
         //  cmdId_base_setBeacon        - 0xBEAC    - Base Station Enable/Disable Beacon
@@ -222,6 +223,7 @@ namespace mscl
             cmdId_base_writeEeprom      = 0x78,
             cmdId_base_writeEeprom_v2   = 0x0078,
             cmdId_stopNode              = 0x0090,
+            cmdId_stopNode_v2           = 0x0091,
             cmdId_base_rfScan           = 0x00ED,
             cmdId_base_setBeaconTime    = 0xBEAB,
             cmdId_base_setBeacon        = 0xBEAC,

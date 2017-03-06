@@ -9,10 +9,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "InertialChannel.h"
 #include "InertialTypes.h"
+#include "InertialModels.h"
 #include "Commands/Ping.h"
 #include "Commands/GenericInertialCommand.h"
 #include "Commands/GetDeviceInfo.h"
-#include "Commands/GetDeviceDescriptorSets.h"
 #include "Packets/InertialPacketCollector.h"
 #include "mscl/Communication/Connection.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
@@ -76,39 +76,27 @@ namespace mscl
 
         //Variable: m_nodeInfo
         //    The <InertialNodeInfo> object that gives access to information of the Inertial Node
-        std::unique_ptr<InertialNodeInfo> m_nodeInfo;
+        mutable std::unique_ptr<InertialNodeInfo> m_nodeInfo;
+
+        //Variable: m_features
+        //    The <InertialNodeFeatures> containing the features for this device.
+        mutable std::unique_ptr<InertialNodeFeatures> m_features;
 
         //Variable: m_sensorRateBase
         //    The Sensor sample rate base (if any).
-        uint16 m_sensorRateBase;
+        mutable uint16 m_sensorRateBase;
 
-        //Variable: m_gpsRateBase
-        //    The GPS sample rate base (if any).
-        uint16 m_gpsRateBase;
+        //Variable: m_gnssRateBase
+        //    The GNSS sample rate base (if any).
+        mutable uint16 m_gnssRateBase;
 
         //Variable: m_sensorRateBase
         //    The Estimation Filter sample rate base (if any).
-        uint16 m_estfilterRateBase;
-
-        //Variable: m_sensorSampleRates
-        //    Contains the sample rates for the Sensor group.
-        SampleRates m_sensorSampleRates;
-
-        //Variable: m_gpsSampleRates
-        //    Contains the sample rates for the GPS group.
-        SampleRates m_gpsSampleRates;
-
-        //Variable: m_estfilterSampleRates
-        //    Contains the sample rates for the Estimation Filter group.
-        SampleRates m_estfilterSampleRates;
+        mutable uint16 m_estfilterRateBase;
 
         //Variable: m_lastCommTime
         //    A <Timestamp> representing the last time communication was achieved with the InertialNode.
         Timestamp m_lastCommTime;
-
-        //Variable: m_features
-        //    The <InertialNodeFeatures> containing the features for this device.
-        std::unique_ptr<InertialNodeFeatures> m_features;
 
     private:
         //Function: parseData
@@ -133,9 +121,8 @@ namespace mscl
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_InertialCmdFailed>: The command has failed.
-        virtual GenericInertialCommandResponse doInertialCmd(GenericInertialCommand::Response& response, const ByteStream& command, InertialTypes::Command commandId, bool verifySupported = true);
+        virtual GenericInertialCommandResponse doInertialCmd(GenericInertialCommand::Response& response, const ByteStream& command, InertialTypes::Command commandId, bool verifySupported = true) const;
 
-    public:
         //Function: info
         //    Gets the <InertialNodeInfo> for this Node. 
         //    The first time this function is called, it will send multiple commands to the device to get all required information.
@@ -147,7 +134,10 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: Information failed to be loaded for this Node.
-        const InertialNodeInfo& info();
+        const InertialNodeInfo& info() const;
+
+    public:
+        
 
         //Function: features
         //    Gets a reference to the <InertialNodeFeatures> for this device.
@@ -157,7 +147,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: Information failed to be loaded for this Node.
-        virtual const InertialNodeFeatures& features();
+        virtual const InertialNodeFeatures& features() const;
 
         //Function: lastCommunicationTime
         //    Gets the <Timestamp> for the last time we communicated with the InertialNode.
@@ -165,6 +155,36 @@ namespace mscl
         //Exceptions:
         //  - <Error_NoData>: There is no communication time logged for this device.
         const Timestamp& lastCommunicationTime() const;
+
+        //Function: firmwareVersion
+        //    Gets the firmware <Version> of the InertialNode.
+        Version firmwareVersion() const;
+
+        //Function: model
+        //    Gets the <InertialModels::NodeModel> of the InertialNode.
+        InertialModels::NodeModel model() const;
+
+        //Function: modelName
+        //    Gets the model name of the InertialNode (ie. "3DM-GX3-45").
+        std::string modelName() const;
+
+        //Function: modelNumber
+        //    Gets the model number of the InertialNode (ie. "6225-4220").
+        std::string modelNumber() const;
+
+        //Function: serialNumber
+        //    Gets the serial number of the InertialNode (ie. "6225-01319").
+        std::string serialNumber() const;
+
+        //Function: lotNumber
+        //    Gets the lot number of the InertialNode (ie. "I042Y").
+        std::string lotNumber() const;
+
+        //Function: deviceOptions
+        //    Gets the device options of the InertialNode (ie. "5g, 300d/s").
+        std::string deviceOptions() const;
+
+
 
         //Function: supportedSampleRates
         //    Gets a list of the supported sample rates for an <InertialTypes::InertialCategory>.
@@ -177,7 +197,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error>: The <InertialTypes::InertialCategory> is invalid.
-        const SampleRates& supportedSampleRates(InertialTypes::InertialCategory category);
+        SampleRates supportedSampleRates(InertialTypes::InertialCategory category) const;
 
         //Function: getDataPackets
         //    Gets up to the requested amount of data packets that have been collected.
@@ -212,7 +232,6 @@ namespace mscl
         //    The timeout (in milliseconds) used for Inertial commands.
         uint64 timeout();
 
-    private:
         //Function: getDeviceInfo
         //    Gets information about the InertialNode.
         //    Sends the "Get Device Information" command to the device.
@@ -224,7 +243,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        virtual InertialDeviceInfo getDeviceInfo();
+        virtual InertialDeviceInfo getDeviceInfo() const;
 
         //Function: getDescriptorSets
         //    Gets the supported descriptor sets for this node, representing which commands and data sets are available.
@@ -237,7 +256,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        virtual std::vector<uint16> getDescriptorSets();
+        virtual std::vector<uint16> getDescriptorSets() const;
 
     public:
         //Function: ping
@@ -285,7 +304,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        virtual uint16 getDataRateBase(InertialTypes::InertialCategory category);
+        virtual uint16 getDataRateBase(InertialTypes::InertialCategory category) const;
 
         //Function: getMessageFormat
         //    Gets the current message format of the specified <InertialTypes::InertialCategory>'s data packet. 

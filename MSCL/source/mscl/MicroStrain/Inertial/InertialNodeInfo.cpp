@@ -6,98 +6,62 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "stdafx.h"
 #include "InertialNodeInfo.h"
 
-#include "InertialNode.h"
-#include "Commands/GetDeviceInfo.h"
+#include "InertialNode_Impl.h"
 #include "mscl/Utils.h"
 
 #include <string>
 
 namespace mscl
 {
-    InertialNodeInfo::InertialNodeInfo(const InertialDeviceInfo& info, const std::vector<uint16>& supportedDescriptors) :
-        m_firmwareVersion(info.fwVersion),
-        m_model(InertialModels::nodeFromModelString(info.modelNumber)),
-        m_modelName(info.modelName),
-        m_modelNumber(info.modelNumber),
-        m_serialNumber(info.serialNumber),
-        m_lotNumber(info.lotNumber),
-        m_deviceOptions(info.deviceOptions),
-        m_supportedDescriptors(supportedDescriptors)
+    InertialNodeInfo::InertialNodeInfo(const InertialNode_Impl* node):
+        m_node(node),
+        m_deviceInfo(std::bind(&InertialNode_Impl::getDeviceInfo, m_node)),
+        m_descriptors(std::bind(&InertialNode_Impl::getDescriptorSets, m_node)),
+        m_sensorSampleRates(std::bind(&InertialNode_Impl::supportedSampleRates, m_node, InertialTypes::CATEGORY_SENSOR)),
+        m_gnssSampleRates(std::bind(&InertialNode_Impl::supportedSampleRates, m_node, InertialTypes::CATEGORY_GNSS)),
+        m_estfilterSampleRates(std::bind(&InertialNode_Impl::supportedSampleRates, m_node, InertialTypes::CATEGORY_ESTFILTER))
     {
     }
 
-    Version InertialNodeInfo::firmwareVersion() const
+    InertialNodeInfo::InertialNodeInfo(const InertialDeviceInfo& info,
+                                       const std::vector<uint16>& supportedDescriptors,
+                                       const SampleRates& sensorRates,
+                                       const SampleRates& gnssRates, 
+                                       const SampleRates& estFilterRates) :
+        m_deviceInfo(info),
+        m_descriptors(supportedDescriptors),
+        m_sensorSampleRates(sensorRates),
+        m_gnssSampleRates(gnssRates),
+        m_estfilterSampleRates(estFilterRates)
     {
-        return m_firmwareVersion;
     }
 
-    InertialModels::NodeModel InertialNodeInfo::model() const
+    const InertialDeviceInfo& InertialNodeInfo::deviceInfo() const
     {
-        return m_model;
+        return *m_deviceInfo;
     }
 
-    std::string InertialNodeInfo::modelName() const
+    const std::vector<uint16>& InertialNodeInfo::descriptors() const
     {
-        return m_modelName;
+        return *m_descriptors;
     }
 
-    std::string InertialNodeInfo::modelNumber() const
+    const SampleRates& InertialNodeInfo::supportedSampleRates(InertialTypes::InertialCategory category) const
     {
-        return m_modelNumber;
-    }
-
-    std::string InertialNodeInfo::serialNumber() const
-    {
-        return m_serialNumber;
-    }
-
-    std::string InertialNodeInfo::lotNumber() const
-    {
-        return m_lotNumber;
-    }
-
-    std::string InertialNodeInfo::deviceOptions() const
-    {
-        return m_deviceOptions;
-    }
-
-    InertialTypes::ChannelFields InertialNodeInfo::supportedChannelFields(InertialTypes::InertialCategory type) const
-    {
-        InertialTypes::ChannelFields result;
-
-        //loop over all the descriptors we have
-        for(auto desc : m_supportedDescriptors)
+        //set the SampleRates pointer depending on the category that is being asked for
+        switch(category)
         {
-            //if ths MSB of the descriptor matches the InertialCategory being requested
-            if(Utils::msb(static_cast<uint16>(desc)) == static_cast<uint16>(type))
-            {
-                //cast the descriptor to a ChannelField, and add it to the result container
-                result.push_back(static_cast<InertialTypes::ChannelField>(desc));
-            }
+            case InertialTypes::CATEGORY_SENSOR:
+                return *m_sensorSampleRates;
+
+            case InertialTypes::CATEGORY_GNSS:
+                return *m_gnssSampleRates;
+
+            case InertialTypes::CATEGORY_ESTFILTER:
+                return *m_estfilterSampleRates;
+
+            default:
+                throw Error("Invalid InertialCategory.");
         }
-
-        return result;
-    }
-
-    bool InertialNodeInfo::supportsCategory(InertialTypes::InertialCategory type) const
-    {
-        //loop over all the descriptors we have
-        for(auto desc : m_supportedDescriptors)
-        {
-            //if ths MSB of the descriptor matches the InertialCategory being requested
-            if(Utils::msb(static_cast<uint16>(desc)) == static_cast<uint16>(type))
-            {
-                //the device supports this category
-                return true;
-            }
-        }
-
-        //no descriptors found that match the requested category
-        return false;
-    }
-
-    bool InertialNodeInfo::supportsCommand(InertialTypes::Command commandId) const
-    {
-        return (std::find(m_supportedDescriptors.begin(), m_supportedDescriptors.end(), static_cast<uint16>(commandId)) != m_supportedDescriptors.end());
     }
 }

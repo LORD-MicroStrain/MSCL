@@ -165,6 +165,12 @@ namespace mscl
                 container.emplace_back(WirelessChannel::channel_diag_secsSinceLastSync, 0, valueType_uint32, anyType(payload.read_uint32()));
                 break;
 
+            //Internal Temperature (C)
+            case 0x0B:
+                //this field is just an updated version of the previous Internal Temperature (0x09) field
+                container.emplace_back(WirelessChannel::channel_diag_internalTemp, 0, valueType_float, anyType(static_cast<float>(payload.read_int16() / 100.0f)));
+                break;
+
             //Unknown info
             default:
             {

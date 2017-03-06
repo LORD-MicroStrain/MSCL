@@ -47,6 +47,8 @@ namespace mscl
         result.modelNumber = fieldData.read_string(MODELNUM_POS, 16);
         Utils::strTrimLeft(result.modelNumber);
 
+        result.model = InertialModels::nodeFromModelString(result.modelNumber);
+
         //load the serial number and trim any whitespace
         result.serialNumber = fieldData.read_string(SERIALNUM_POS, 16);
         Utils::strTrimLeft(result.serialNumber);

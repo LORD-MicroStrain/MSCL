@@ -109,12 +109,19 @@ install stage_c++
 ;
 explicit stage_c++ ;
 
-#Copy the python directory
-install stage_python
+#Copy the python (x86) directory
+install stage_python_x86
 	: _mscl [ path.glob-tree $(SWIG_PYTHON) : *.py ]
-	: <location>$(STAGING_DIR)/Python
+	: <location>$(STAGING_DIR)/Python/x86
 ;
-explicit stage_python ;
+explicit stage_python_x86 ;
+
+#Copy the python directory
+install stage_python_x64
+	: _mscl [ path.glob-tree $(SWIG_PYTHON) : *.py ]
+	: <location>$(STAGING_DIR)/Python/x64
+;
+explicit stage_python_x64 ;
 
 install stage_python_dynamic
 :	_mscl-dynamic [ path.glob-tree $(SWIG_PYTHON) : *.py ]
@@ -124,6 +131,6 @@ explicit stage_python_dynamic ;
 
 #Make an alias for all of the copying
 alias stage_all
-	: stage_c++ stage_python #stage_headers 
+	: stage_c++ stage_python_x86 stage_python_x64 #stage_headers 
 ;
 explicit stage_all ;

@@ -249,140 +249,189 @@ namespace mscl
             //read the session index
             m_sessionInfo.sessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
         }
+        else if(headerId == NodeMemory_v2::SESSION_CHANGE_HEADER_ID_V2)
+        {
+            //reset the sweep count
+            m_sweepCount = 0;
+
+            m_nodeMemory->skipBytes(1); //skip sweep count
+
+            NodeMemory_v2::SweepType sweepType = static_cast<NodeMemory_v2::SweepType>(m_nodeMemory->read_uint8());
+            if(sweepType == NodeMemory_v2::sweepType_raw)
+            {
+                m_isMathData = false;
+            }
+            else if(sweepType == NodeMemory_v2::sweepType_derived)
+            {
+                m_isMathData = true;
+            }
+
+            //read the timestamp
+            m_sessionInfo.timestamp = m_nodeMemory->read_uint64(Utils::littleEndian);
+
+            //read the session index
+            m_sessionInfo.sessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
+        }
         else if(headerId == NodeMemory_v2::BLOCK_HEADER_ID)
         {
             //reset the sweep count
             m_sweepCount = 0;
 
-            m_isMathData = false;
-
-            m_nodeMemory->skipBytes(5); //skip version number, header size, sweep count, and block index
-
-            m_sessionInfo.sessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);;
-
             //set the startOfTrigger flag to true
             m_sessionInfo.startOfTrigger = true;
 
-            m_sessionInfo.timestamp = m_nodeMemory->read_uint64(Utils::littleEndian);
+            uint8 version = m_nodeMemory->read_uint8();
 
-            //read the sample rate
-            uint8 sampleRateVal = m_nodeMemory->read_uint8();
-
-            //if it is an armed datalogging rate, we need to convert it to a WirelessSampleRate
-            //Note: if not a datalogging rate, this will just cast it to a WirelessSampleRate without conversion.
-            WirelessTypes::WirelessSampleRate rate = WirelessTypes::dataloggingRateToSampleRate(sampleRateVal);
-            m_sessionInfo.sampleRate = SampleRate::FromWirelessEepromValue(rate);
-            m_sessionInfo.timeBetweenSweeps = m_sessionInfo.sampleRate.samplePeriod().getNanoseconds();
-
-            //read the active channel mask
-            m_sessionInfo.activeChannels = ChannelMask(m_nodeMemory->read_uint16(Utils::littleEndian));
-
-            //read the data type
-            m_sessionInfo.dataType = static_cast<WirelessTypes::DataType>(m_nodeMemory->read_uint8());
-            m_sessionInfo.valueType = WirelessTypes::dataTypeToValueType(m_sessionInfo.dataType);
-
-            //loop through all of the active channels to get channel action information
-            uint8 channelItr = 0;
-            uint8 lastChannel = m_sessionInfo.activeChannels.lastChEnabled();
-
-            WirelessChannel::ChannelId chId;
-            WirelessTypes::CalCoef_EquationType equation;
-            WirelessTypes::CalCoef_Unit unit;
-            float slope;
-            float offset;
-
-            for(channelItr = 1; channelItr <= lastChannel; ++channelItr)
+            if(version == 0)
             {
-                //only contains channel action info if the channel is in the data
-                if(m_sessionInfo.activeChannels.enabled(channelItr))
-                {
-                    chId = static_cast<WirelessChannel::ChannelId>(channelItr);
+                m_isMathData = false;
 
-                    //read the channel action equation
-                    equation = static_cast<WirelessTypes::CalCoef_EquationType>(m_nodeMemory->read_uint8());
+                m_nodeMemory->skipBytes(4); //skip header size, sweep count, and block index
 
-                    //read the channel action unit
-                    unit = static_cast<WirelessTypes::CalCoef_Unit>(m_nodeMemory->read_uint8());
+                m_sessionInfo.sessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
 
-                    //check for uninitialized value
-                    if(unit == 0xAA || unit == 0xFF)
-                    {
-                        unit = WirelessTypes::unit_none;
-                    }
+                m_sessionInfo.timestamp = m_nodeMemory->read_uint64(Utils::littleEndian);
 
-                    //read the channel action slope
-                    slope = m_nodeMemory->read_float(Utils::littleEndian);
+                //read the sample rate
+                WirelessTypes::WirelessSampleRate rate = static_cast<WirelessTypes::WirelessSampleRate>(m_nodeMemory->read_uint8());
 
-                    //read the channel action offset
-                    offset = m_nodeMemory->read_float(Utils::littleEndian);
+                m_sessionInfo.sampleRate = SampleRate::FromWirelessEepromValue(rate);
+                m_sessionInfo.timeBetweenSweeps = m_sessionInfo.sampleRate.samplePeriod().getNanoseconds();
 
-                    //add the cal coefficients to the session info
-                    m_sessionInfo.calCoefficients[chId] = CalCoefficients(equation, unit, LinearEquation(slope, offset));
-                }
+                //read the active channel mask
+                m_sessionInfo.activeChannels = ChannelMask(m_nodeMemory->read_uint16(Utils::littleEndian));
+
+                //read the data type
+                m_sessionInfo.dataType = static_cast<WirelessTypes::DataType>(m_nodeMemory->read_uint8());
+                m_sessionInfo.valueType = WirelessTypes::dataTypeToValueType(m_sessionInfo.dataType);
+
+                //parse the raw calibration data
+                parseRawCalData();
             }
-        }
-        else if(headerId == NodeMemory_v2::BLOCK_HEADER_MATH_ID)
-        {
-            //reset the sweep count
-            m_sweepCount = 0;
-
-            m_isMathData = true;
-            m_mathMetaDeta.clear();
-
-            m_nodeMemory->skipBytes(1); //skip version number
-            
-            uint8 headerSize = m_nodeMemory->read_uint8();
-
-            m_nodeMemory->skipBytes(1); //skip sweep count
-
-            m_sessionInfo.sweepSize = m_nodeMemory->read_uint8();
-
-            m_nodeMemory->skipBytes(2); //skip block index
-
-            m_sessionInfo.sessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
-
-            //set the startOfTrigger flag to true
-            m_sessionInfo.startOfTrigger = true;
-
-            m_sessionInfo.timestamp = m_nodeMemory->read_uint64(Utils::littleEndian);
-
-            m_nodeMemory->skipBytes(1); //skip sample rate for now
-
-            //read the transmission rate (math calculation rate)
-            uint8 transmissionRate = m_nodeMemory->read_uint8();
-
-            //if it is an armed datalogging rate, we need to convert it to a WirelessSampleRate
-            //Note: if not a datalogging rate, this will just cast it to a WirelessSampleRate without conversion.
-            WirelessTypes::WirelessSampleRate rate = WirelessTypes::dataloggingRateToSampleRate(transmissionRate);
-            m_sessionInfo.sampleRate = SampleRate::FromWirelessEepromValue(rate);
-            m_sessionInfo.timeBetweenSweeps = m_sessionInfo.sampleRate.samplePeriod().getNanoseconds();
-
-            //set the channel mask to no channels (math channels don't get enumerated this way)
-            m_sessionInfo.activeChannels = ChannelMask(0);
-            m_sessionInfo.dataType = WirelessTypes::dataType_float32;
-            m_sessionInfo.valueType = mscl::valueType_float;
-            //m_sessionInfo.calCoefficients
-
-            const uint8 META_DATA_SIZE = headerSize - 16;
-            uint8 byteItr = 0;
-            uint8 id = 0;
-            uint8 source = 0;
-
-            //read and store all the math meta data
-            while(byteItr < META_DATA_SIZE)
+            else if(version == 1)
             {
-                id = m_nodeMemory->read_uint8();
-                source = m_nodeMemory->read_uint8();
+                m_nodeMemory->skipBytes(2); //skip header size and sweep count
 
-                m_mathMetaDeta.emplace_back(id, source);
+                NodeMemory_v2::SweepType sweepType = static_cast<NodeMemory_v2::SweepType>(m_nodeMemory->read_uint8());
+                if(sweepType == NodeMemory_v2::sweepType_raw)
+                {
+                    m_isMathData = false;
+                }
+                else if(sweepType == NodeMemory_v2::sweepType_derived)
+                {
+                    m_isMathData = true;
+                }
 
-                byteItr += 2;
+                m_nodeMemory->skipBytes(2); //skip block index
+
+                m_sessionInfo.sessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
+
+                m_sessionInfo.timestamp = m_nodeMemory->read_uint64(Utils::littleEndian);
+
+                //read the raw sample rate
+                WirelessTypes::WirelessSampleRate rawRate = static_cast<WirelessTypes::WirelessSampleRate>(m_nodeMemory->read_uint8());
+
+                m_sessionInfo.sampleRate = SampleRate::FromWirelessEepromValue(rawRate);
+                m_sessionInfo.timeBetweenSweeps = m_sessionInfo.sampleRate.samplePeriod().getNanoseconds();
+
+                //read the active channel mask
+                m_sessionInfo.activeChannels = ChannelMask(m_nodeMemory->read_uint16(Utils::littleEndian));
+
+                //read the data type
+                m_sessionInfo.dataType = static_cast<WirelessTypes::DataType>(m_nodeMemory->read_uint8());
+                m_sessionInfo.valueType = WirelessTypes::dataTypeToValueType(m_sessionInfo.dataType);
+
+                uint8 numActiveAlgorithms = m_nodeMemory->read_uint8();
+
+                uint32 calculationRate = m_nodeMemory->read_uint32(Utils::littleEndian);
+
+                //the upper bit determines hz (1) vs seconds (0)
+                bool isHertz = Utils::bitIsSet(calculationRate, 31);
+                if(isHertz)
+                {
+                    //turn off the bit to get the real value
+                    Utils::setBit(calculationRate, 31, false);
+                    m_sessionInfo.derivedRate = SampleRate::Hertz(calculationRate);
+                }
+                else
+                {
+                    m_sessionInfo.derivedRate = SampleRate::Seconds(calculationRate);
+                }
+
+                m_sessionInfo.derivedTimeBetweenSweeps = m_sessionInfo.derivedRate.samplePeriod().getNanoseconds();
+
+                //parse the raw calibration data
+                parseRawCalData();
+
+                //parse the derived meta data
+                parseDerivedMetaData(numActiveAlgorithms);
             }
         }
         else
         {
             //shouldn't be parsing invalid headers at this point
             assert(false);
+        }
+    }
+
+    void DatalogDownloader::parseRawCalData()
+    {
+        //loop through all of the active channels to get channel action information
+        uint8 channelItr = 0;
+        uint8 lastChannel = m_sessionInfo.activeChannels.lastChEnabled();
+
+        WirelessChannel::ChannelId chId;
+        WirelessTypes::CalCoef_EquationType equation;
+        WirelessTypes::CalCoef_Unit unit;
+        float slope;
+        float offset;
+
+        for(channelItr = 1; channelItr <= lastChannel; ++channelItr)
+        {
+            //only contains channel action info if the channel is in the data
+            if(m_sessionInfo.activeChannels.enabled(channelItr))
+            {
+                chId = static_cast<WirelessChannel::ChannelId>(channelItr);
+
+                //read the channel action equation
+                equation = static_cast<WirelessTypes::CalCoef_EquationType>(m_nodeMemory->read_uint8());
+
+                //read the channel action unit
+                unit = static_cast<WirelessTypes::CalCoef_Unit>(m_nodeMemory->read_uint8());
+
+                //check for uninitialized value
+                if(unit == 0xAA || unit == 0xFF)
+                {
+                    unit = WirelessTypes::unit_none;
+                }
+
+                //read the channel action slope
+                slope = m_nodeMemory->read_float(Utils::littleEndian);
+
+                //read the channel action offset
+                offset = m_nodeMemory->read_float(Utils::littleEndian);
+
+                //add the cal coefficients to the session info
+                m_sessionInfo.calCoefficients[chId] = CalCoefficients(equation, unit, LinearEquation(slope, offset));
+            }
+        }
+    }
+
+    void DatalogDownloader::parseDerivedMetaData(uint8 numActiveAlgorithms)
+    {
+        m_mathMetaDeta.clear();
+        
+        WirelessTypes::DerivedChannelType id;
+        uint16 channelMask = 0;
+        uint8 algItr = 0;
+
+        //read and store all the math meta data
+        for(algItr = 0; algItr < numActiveAlgorithms; ++algItr)
+        {
+            id = static_cast<WirelessTypes::DerivedChannelType>(m_nodeMemory->read_uint8());
+            channelMask = m_nodeMemory->read_uint16(Utils::littleEndian);
+
+            m_mathMetaDeta.emplace_back(id, ChannelMask(channelMask));
         }
     }
 
@@ -463,7 +512,7 @@ namespace mscl
                     case WirelessTypes::dataType_int16_20bitTrunc:
                     {
                         int32 val = static_cast<int32>(m_nodeMemory->read_int16(dataEndian));
-                        dataPoint = (val << 4);
+                        dataPoint = (val << 6);
                         break;
                     }
 
@@ -510,27 +559,37 @@ namespace mscl
         //calibrations are applied if floating point data
         m_sessionInfo.calsApplied = true;
 
-        //for(uint8 byteItr = 0; byteItr < m_sessionInfo.sweepSize; ++byteItr)
-        uint8 byteItr = 0;
-        uint8 metaDataItr = 0;
-        while(byteItr < m_sessionInfo.sweepSize)
+        uint8 lastChEnabled = 0;
+        uint8 chNum = 0;
+        for(auto& meta : m_mathMetaDeta)
         {
-            //get the meta data for this loop
-            MathMetaData meta = m_mathMetaDeta.at(metaDataItr);
+            lastChEnabled = meta.channelMask.lastChEnabled();
 
-            //TODO: once we get math channels that have different data than float, will need to parse different based on the meta id
-            float value = m_nodeMemory->read_float(dataEndian);
-            byteItr += 4;
+            for(chNum = 1; chNum <= lastChEnabled; ++chNum)
+            {
+                if(meta.channelMask.enabled(chNum))
+                {
+                    //TODO: once we get math channels that have different data than float, will need to parse different based on the meta id
+                    float value = m_nodeMemory->read_float(dataEndian);
 
-            //create a WirelessDataPoint and add it to the ChannelData vector
-            WirelessChannel::ChannelId channelId = WirelessDataPacket::getMathChannelId(static_cast<WirelessDataPacket::MathAlgorithmID>(meta.id), meta.sourceChannel + 1);
-            chData.push_back(WirelessDataPoint(channelId, meta.sourceChannel + 1, valueType_float, anyType(value)));
+                    //create a WirelessDataPoint and add it to the ChannelData vector
+                    WirelessChannel::ChannelId channelId = WirelessDataPacket::getMathChannelId(static_cast<WirelessTypes::DerivedChannelType>(meta.algorithmId), chNum);
 
-            metaDataItr++;
+                    //create the ChannelMask property indicating which channel it was derived from
+                    ChannelMask propertyChMask;
+                    propertyChMask.enable(chNum);
+                    WirelessDataPoint::ChannelProperties properties({
+                        {std::make_pair(WirelessDataPoint::channelPropertyId_derivedFrom, Value(valueType_ChannelMask, propertyChMask))},
+                        {std::make_pair(WirelessDataPoint::channelPropertyId_derivedChannelType, Value(valueType_uint8, static_cast<uint8>(meta.algorithmId)))}
+                    });
+
+                    chData.push_back(WirelessDataPoint(channelId, chNum, valueType_float, anyType(value), properties));
+                }
+            }
         }
 
         //calculate the timestamp and tick for the sweep
-        uint64 sweepTime = m_sessionInfo.timestamp + (m_sessionInfo.timeBetweenSweeps * m_sweepCount);
+        uint64 sweepTime = m_sessionInfo.timestamp + (m_sessionInfo.derivedTimeBetweenSweeps * m_sweepCount);
         uint64 sweepTick = m_sweepCount;
 
         //increment the sweep count
@@ -621,7 +680,14 @@ namespace mscl
 
     const SampleRate& DatalogDownloader::sampleRate() const
     {
-        return m_sessionInfo.sampleRate;
+        if(m_isMathData)
+        {
+            return m_sessionInfo.derivedRate;
+        }
+        else
+        {
+            return m_sessionInfo.sampleRate;
+        }
     }
 
     const std::string& DatalogDownloader::userString() const

@@ -35,6 +35,11 @@ namespace mscl
         //m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_temperature);    //internal temp
     }
 
+    uint32 NodeFeatures_wirelessImpactSensor::ramBufferSize() const
+    {
+        return 524288;  // 2^19
+    }
+
     const WirelessTypes::SamplingModes NodeFeatures_wirelessImpactSensor::samplingModes() const
     {
         //build and return the sampling modes that are supported
@@ -50,7 +55,7 @@ namespace mscl
         return result;
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures_wirelessImpactSensor::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
+    const WirelessTypes::WirelessSampleRates NodeFeatures_wirelessImpactSensor::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)

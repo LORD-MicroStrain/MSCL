@@ -27,7 +27,7 @@ namespace mscl
 
         virtual const WirelessTypes::SamplingModes samplingModes() const override;
 
-        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const override;
+        virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
         virtual const WirelessTypes::DataFormats dataFormats() const override;
 
@@ -35,7 +35,7 @@ namespace mscl
 
         virtual const WirelessTypes::HighPassFilters highPassFilters() const override;
 
-        virtual const WirelessTypes::DerivedChannels derivedChannels() const override;
+        virtual const WirelessTypes::DerivedChannelTypes derivedChannelTypes() const override;
 
         virtual const WirelessTypes::StorageLimitModes storageLimitModes() const;
     };

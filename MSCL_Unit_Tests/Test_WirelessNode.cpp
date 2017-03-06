@@ -469,7 +469,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setInactivityTimeout)
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
     
-    expectWrite(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(5));    //min of 5
+    expectWrite(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(30));    //min of 30
     expectCyclePower(impl);
 
     uint16 timeout = 2;

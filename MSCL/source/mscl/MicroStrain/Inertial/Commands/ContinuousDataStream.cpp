@@ -19,7 +19,7 @@ namespace mscl
             case InertialTypes::CATEGORY_SENSOR:
                 return 0x01;
 
-            case InertialTypes::CATEGORY_GPS:
+            case InertialTypes::CATEGORY_GNSS:
                 return 0x02;
 
             case InertialTypes::CATEGORY_ESTFILTER:

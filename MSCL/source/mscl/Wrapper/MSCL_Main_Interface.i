@@ -109,7 +109,6 @@
 #include "../MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
 #include "../MicroStrain/Wireless/Configuration/ConfigIssue.h"
 #include "../MicroStrain/Wireless/Configuration/ActivitySense.h"
-#include "../MicroStrain/Wireless/Configuration/DataMode.h"
 #include "../MicroStrain/Wireless/Configuration/FatigueOptions.h"
 #include "../MicroStrain/Wireless/Configuration/HistogramOptions.h"
 #include "../MicroStrain/Wireless/Configuration/EventTriggerOptions.h"
@@ -147,7 +146,6 @@
 #include "../MicroStrain/Inertial/InertialDataField.h"
 #include "../MicroStrain/Inertial/Packets/InertialDataPacket.h"
 #include "../MicroStrain/Inertial/InertialDataPoint.h"
-#include "../MicroStrain/Inertial/InertialNodeInfo.h"
 #include "../MicroStrain/Inertial/Features/InertialNodeFeatures.h"
 #include "../MicroStrain/Inertial/InertialNode.h"
 #include "../MicroStrain/Inertial/Packets/InertialPacket.h"
@@ -160,10 +158,11 @@
 //Note: these files must be defined in a certain order. Ex. If FileA needs to include FileB, FileB must be "%include"-ed before FileA
 //DO NOT CHANGE THE ORDER OF THESE!!!
 %include "../Types.h"
+%include "../BitMask.h"
 %include "../LibVersion.h"
+%include "../MicroStrain/Wireless/ChannelMask.h"
 %include "../Value.h"
 %include "../Bin.h"
-%include "../BitMask.h"
 %include "../Histogram.h"
 %include "../Timestamp.h"
 %include "../TimeSpan.h"
@@ -181,10 +180,8 @@
 %include "../MicroStrain/Matrix.h"
 %include "../MicroStrain/Wireless/StructuralHealth.h"
 %include "../MicroStrain/DataPoint.h"
-%include "../MicroStrain/Wireless/ChannelMask.h"
 %include "../MicroStrain/Wireless/Configuration/ConfigIssue.h"
 %include "../MicroStrain/Wireless/Configuration/ActivitySense.h"
-%include "../MicroStrain/Wireless/Configuration/DataMode.h"
 %include "../MicroStrain/Wireless/Configuration/EventTriggerOptions.h"
 %include "../MicroStrain/Wireless/Configuration/FatigueOptions.h"
 %include "../MicroStrain/Wireless/Configuration/HistogramOptions.h"
@@ -225,51 +222,53 @@
 %include "../MicroStrain/Inertial/Packets/InertialPacket.h"
 %include "../MicroStrain/Inertial/InertialDataPoint.h"
 %include "../MicroStrain/Inertial/Packets/InertialDataPacket.h"
-%include "../MicroStrain/Inertial/InertialNodeInfo.h"
 %include "../MicroStrain/Inertial/Features/InertialNodeFeatures.h"
 %include "../MicroStrain/Inertial/InertialNode.h"
 
 namespace std
 {
-    %template(ChannelData)             vector<mscl::WirelessDataPoint>;
-    %template(InertialDataPoints)      vector<mscl::InertialDataPoint>;
-    %template(Bytes)                   vector<unsigned char>;
-    %template(DeviceList)              map<string, mscl::DeviceInfo>;
-    %template(NodeDiscoveries)         vector<mscl::NodeDiscovery>;
-    %template(DataSweeps)              vector<mscl::DataSweep>;
-    %template(LoggedDataSweeps)        vector<mscl::LoggedDataSweep>;
-    %template(InertialDataPackets)     vector<mscl::InertialDataPacket>;
-    %template(InertialChannels)        vector<mscl::InertialChannel>;
-    %template(DataCollectionMethods)   vector<mscl::WirelessTypes::DataCollectionMethod>;
-    %template(DataFormats)             vector<mscl::WirelessTypes::DataFormat>;
-    %template(WirelessSampleRates)     vector<mscl::WirelessTypes::WirelessSampleRate>;
-    %template(SamplingModes)           vector<mscl::WirelessTypes::SamplingMode>;
-    %template(DefaultModes)            vector<mscl::WirelessTypes::DefaultMode>;
-    %template(TransmitPowers)          vector<mscl::WirelessTypes::TransmitPower>;
-    %template(ChannelGroupSettings)    vector<mscl::WirelessTypes::ChannelGroupSetting>;
-    %template(FatigueModes)            vector<mscl::WirelessTypes::FatigueMode>;
-    %template(Filters)                 vector<mscl::WirelessTypes::Filter>;
-    %template(HighPassFilters)         vector<mscl::WirelessTypes::HighPassFilter>;
-    %template(StorageLimitModes)       vector<mscl::WirelessTypes::StorageLimitMode>;
-    %template(InputRanges)             vector<mscl::WirelessTypes::InputRange>;
-    %template(DerivedChannels)         vector<mscl::WirelessTypes::DerivedChannel>;
-    %template(SampleRates)             vector<mscl::SampleRate>;
-    %template(ConfigIssues)            vector<mscl::ConfigIssue>;
-    %template(ChannelFields)           vector<mscl::InertialTypes::ChannelField>;
-    %template(ChannelGroups)           vector<mscl::ChannelGroup>;
-    %template(WirelessChannels)        vector<mscl::WirelessChannel>;
-    %template(DamageAngles)            map<uint8_t, float>;
-    %template(SnCurveSegments)         map<uint8_t, mscl::SnCurveSegment>;
-    %template(RfSweep)                 map<uint32_t, int16_t>;
-    %template(Triggers)                map<uint8_t, mscl::Trigger>;
-    %template(ChannelCalMap)           map<mscl::WirelessChannel::ChannelId, mscl::CalCoefficients>;
-    %template(ConnectionDebugDataVec)  vector<mscl::ConnectionDebugData>;
+    %template(ChannelData)              vector<mscl::WirelessDataPoint>;
+    %template(InertialDataPoints)       vector<mscl::InertialDataPoint>;
+    %template(Bytes)                    vector<unsigned char>;
+    %template(DeviceList)               map<string, mscl::DeviceInfo>;
+    %template(NodeDiscoveries)          vector<mscl::NodeDiscovery>;
+    %template(DataSweeps)               vector<mscl::DataSweep>;
+    %template(LoggedDataSweeps)         vector<mscl::LoggedDataSweep>;
+    %template(InertialDataPackets)      vector<mscl::InertialDataPacket>;
+    %template(InertialChannels)         vector<mscl::InertialChannel>;
+    %template(DataCollectionMethods)    vector<mscl::WirelessTypes::DataCollectionMethod>;
+    %template(DataFormats)              vector<mscl::WirelessTypes::DataFormat>;
+    %template(WirelessSampleRates)      vector<mscl::WirelessTypes::WirelessSampleRate>;
+    %template(SamplingModes)            vector<mscl::WirelessTypes::SamplingMode>;
+    %template(DefaultModes)             vector<mscl::WirelessTypes::DefaultMode>;
+    %template(TransmitPowers)           vector<mscl::WirelessTypes::TransmitPower>;
+    %template(ChannelGroupSettings)     vector<mscl::WirelessTypes::ChannelGroupSetting>;
+    %template(FatigueModes)             vector<mscl::WirelessTypes::FatigueMode>;
+    %template(Filters)                  vector<mscl::WirelessTypes::Filter>;
+    %template(HighPassFilters)          vector<mscl::WirelessTypes::HighPassFilter>;
+    %template(StorageLimitModes)        vector<mscl::WirelessTypes::StorageLimitMode>;
+    %template(InputRanges)              vector<mscl::WirelessTypes::InputRange>;
+    %template(DataModes)                vector<mscl::WirelessTypes::DataMode>;
+    %template(DerivedChannelTypes)      vector<mscl::WirelessTypes::DerivedChannelType>;
+    %template(DerivedChannelMasks)      map<mscl::WirelessTypes::DerivedChannelType, mscl::ChannelMask>;
+    %template(SampleRates)              vector<mscl::SampleRate>;
+    %template(ConfigIssues)             vector<mscl::ConfigIssue>;
+    %template(InertialChannelFields)    vector<mscl::InertialTypes::ChannelField>;
+    %template(InertialCommands)         vector<mscl::InertialTypes::Command>;
+    %template(ChannelGroups)            vector<mscl::ChannelGroup>;
+    %template(WirelessChannels)         vector<mscl::WirelessChannel>;
+    %template(DamageAngles)             map<uint8_t, float>;
+    %template(SnCurveSegments)          map<uint8_t, mscl::SnCurveSegment>;
+    %template(RfSweep)                  map<uint32_t, int16_t>;
+    %template(Triggers)                 map<uint8_t, mscl::Trigger>;
+    %template(ChannelCalMap)            map<mscl::WirelessChannel::ChannelId, mscl::CalCoefficients>;
+    %template(ConnectionDebugDataVec)   vector<mscl::ConnectionDebugData>;
 
 #ifndef UNIX_BUILD
-    %template(WsdaMap)                 map<string, mscl::WsdaInfo>;
+    %template(WsdaMap)                  map<string, mscl::WsdaInfo>;
 #endif
 
-    %ignore vector<mscl::Bin>::vector(size_type);        //no default constructor
+    %ignore vector<mscl::Bin>::vector(size_type);   //no default constructor
     %ignore vector<mscl::Bin>::resize;              //no default constructor
     %template(Bins) vector<mscl::Bin>;
 };

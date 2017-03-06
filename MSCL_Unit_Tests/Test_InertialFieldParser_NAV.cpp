@@ -1181,7 +1181,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_GpsAntennaOffsetCorrection_parse)
     bytes.append_uint16(0);        //flags
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_ESTFILTER_GPS_ANTENNA_CORRECTION, bytes.data());
+    InertialDataField field(InertialTypes::CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION, bytes.data());
 
     InertialDataPoints data;
 
@@ -1190,21 +1190,21 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_GpsAntennaOffsetCorrection_parse)
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 3);
 
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_ESTFILTER_GPS_ANTENNA_CORRECTION);
+    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_X);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(0).valid(), false);
     BOOST_CHECK_CLOSE(data.at(0).as_float(), 1.978, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_ESTFILTER_GPS_ANTENNA_CORRECTION);
+    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION);
     BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_Y);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(1).valid(), false);
     BOOST_CHECK_CLOSE(data.at(1).as_float(), 4.789, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_ESTFILTER_GPS_ANTENNA_CORRECTION);
+    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION);
     BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_Z);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(2).valid(), false);
@@ -1223,7 +1223,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_GpsAntennaOffsetCorrectionUncert_parse)
     bytes.append_uint16(0);        //flags
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_ESTFILTER_GPS_ANTENNA_CORRECTION_UNCERT, bytes.data());
+    InertialDataField field(InertialTypes::CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION_UNCERT, bytes.data());
 
     InertialDataPoints data;
 
@@ -1232,21 +1232,21 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_GpsAntennaOffsetCorrectionUncert_parse)
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 3);
 
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_ESTFILTER_GPS_ANTENNA_CORRECTION_UNCERT);
+    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION_UNCERT);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_X);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(0).valid(), false);
     BOOST_CHECK_CLOSE(data.at(0).as_float(), 1.978, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_ESTFILTER_GPS_ANTENNA_CORRECTION_UNCERT);
+    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION_UNCERT);
     BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_Y);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(1).valid(), false);
     BOOST_CHECK_CLOSE(data.at(1).as_float(), 4.789, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_ESTFILTER_GPS_ANTENNA_CORRECTION_UNCERT);
+    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION_UNCERT);
     BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_Z);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(2).valid(), false);

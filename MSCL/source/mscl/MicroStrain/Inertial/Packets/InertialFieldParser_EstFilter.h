@@ -51,9 +51,6 @@ namespace mscl
 
     //Class: FieldParser_NAV_GPS_Timestamp
     //    The field parser for NAV GPS Timestamp data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_NAV_GPS_Timestamp : public InertialFieldParser
     {
     private:
@@ -75,9 +72,6 @@ namespace mscl
 
     //Class: FieldParser_EstimatedLLHPosition
     //    The field parser for Estimated LLH Position data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_EstimatedLLHPosition : public InertialFieldParser
     {
     private:
@@ -99,9 +93,6 @@ namespace mscl
 
     //Class: FieldParser_EstimatedNEDVelocity
     //    The field parser for Estimated NED Velocity data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_EstimatedNEDVelocity : public InertialFieldParser
     {
     private:
@@ -123,9 +114,6 @@ namespace mscl
 
     //Class: FieldParser_EstimatedQuaternion
     //    The field parser for Estimated Orientation Quaternion data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_EstimatedQuaternion : public InertialFieldParser
     {
     private:
@@ -147,9 +135,6 @@ namespace mscl
 
     //Class: FieldParser_EstimatedMatrix
     //    The field parser for Estimated Orientation Matrix data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_EstimatedMatrix : public InertialFieldParser
     {
     private:
@@ -171,9 +156,6 @@ namespace mscl
 
     //Class: FieldParser_EstimatedEulerAngles
     //    The field parser for Estimated Orientation Euler Angles data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_EstimatedEulerAngles : public InertialFieldParser
     {
     private:
@@ -195,9 +177,6 @@ namespace mscl
 
     //Class: FieldParser_EstimatedGyroBias
     //    The field parser for Estimated Gyro Bias data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_EstimatedGyroBias : public InertialFieldParser
     {
     private:
@@ -240,9 +219,6 @@ namespace mscl
 
     //Class: FieldParser_EstimatedLLHPosUncertainty
     //    The field parser for Estimated LLH Position Uncertainty data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_EstimatedLLHPosUncertainty : public InertialFieldParser
     {
     private:
@@ -264,9 +240,6 @@ namespace mscl
 
     //Class: FieldParser_EstimatedNEDUncertainty
     //    The field parser for Estimated NED Velocity Uncertainty data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_EstimatedNEDUncertainty : public InertialFieldParser
     {
     private:
@@ -288,9 +261,6 @@ namespace mscl
 
     //Class: FieldParser_EstimatedAttEulerUncertainty
     //    The field parser for Estimated Attitude Euler Angles Uncertainty data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_EstimatedAttEulerUncertainty : public InertialFieldParser
     {
     private:
@@ -312,9 +282,6 @@ namespace mscl
 
     //Class: FieldParser_EstimatedGyroBiasUncertainty
     //    The field parser for Estimated Gyro Bias Uncertainty data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_EstimatedGyroBiasUncertainty : public InertialFieldParser
     {
     private:
@@ -357,9 +324,6 @@ namespace mscl
 
     //Class: FieldParser_EstimatedLinearAccel
     //    The field parser for Estimated Linear Acceleration data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_EstimatedLinearAccel : public InertialFieldParser
     {
     private:
@@ -381,9 +345,6 @@ namespace mscl
 
     //Class: FieldParser_EstimatedAngularRate
     //    The field parser for Estimated Angular Rate data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_EstimatedAngularRate : public InertialFieldParser
     {
     private:
@@ -405,9 +366,6 @@ namespace mscl
 
     //Class: FieldParser_WGS84LocalGravMagnitude
     //    The field parser for WGS84 Local Gravity Magnitude data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_WGS84LocalGravMagnitude : public InertialFieldParser
     {
     private:
@@ -429,9 +387,6 @@ namespace mscl
 
     //Class: FieldParser_EstimatedAttQuaternUncertainty
     //    The field parser for Estimated Attitude Uncertainty, Quaternion Elements data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_EstimatedAttQuaternUncertainty : public InertialFieldParser
     {
     private:
@@ -453,9 +408,6 @@ namespace mscl
 
     //Class: FieldParser_EstimatedGravityVector
     //    The field parser for Estimated Gravity Vector data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_EstimatedGravityVector : public InertialFieldParser
     {
     private:
@@ -477,9 +429,6 @@ namespace mscl
 
     //Class: FieldParser_HeadingUpdateSource
     //    The field parser for Heading Update Source State data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_HeadingUpdateSource : public InertialFieldParser
     {
     private:
@@ -501,9 +450,6 @@ namespace mscl
 
     //Class: FieldParser_MagneticModelSolution
     //    The field parser for Magnetic Model Solution data
-    //
-    //See Also:
-    //    <FieldParser_FilterStatus>
     class FieldParser_MagneticModelSolution : public InertialFieldParser
     {
     private:
@@ -670,17 +616,17 @@ namespace mscl
         static const bool REGISTERED;
     };
 
-    //Class: FieldParser_GpsAntennaOffsetCorrection
-    //    The field parser for GPS Antenna Offset Correction data
-    class FieldParser_GpsAntennaOffsetCorrection : public InertialFieldParser
+    //Class: FieldParser_MagAutoHardIronOffset
+    //    The field parser for Estimated Mag Auto Hard Iron Offset data
+    class FieldParser_MagAutoHardIronOffset: public InertialFieldParser
     {
     private:
         //Constants: Valid Flags
-        //    VALID_FLAG        - b00000001 - The flag position for checking the Estimated Gyro Scale Factor flag
-        static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
+        //    VECTOR_FLAG        - b00000001 - The flag position for checking the Vector flag
+        static const uint16 VECTOR_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_GpsAntennaOffsetCorrection() {};        //default constructor disabled
+        FieldParser_MagAutoHardIronOffset() {};        //default constructor disabled
 
     public:
         virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
@@ -691,9 +637,72 @@ namespace mscl
         static const bool REGISTERED;
     };
 
-    //Class: FieldParser_GpsAntennaOffsetCorrectionUncert
-    //    The field parser for GPS Antenna Offset Correction Uncertainty data
-    class FieldParser_GpsAntennaOffsetCorrectionUncert : public InertialFieldParser
+    //Class: FieldParser_MagAutoSoftIronMatrix
+    //    The field parser for Estimated Mag Auto Soft Iron Matrix data
+    class FieldParser_MagAutoSoftIronMatrix: public InertialFieldParser
+    {
+    private:
+        //Constants: Valid Flags
+        //    MATRIX_FLAG        - b00000001 - The flag position for checking the Matrix flag
+        static const uint16 MATRIX_FLAG = BOOST_BINARY(00000001);
+
+    private:
+        FieldParser_MagAutoSoftIronMatrix() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_MagAutoHardIronOffsetUncert
+    //    The field parser for Estimated Mag Auto Hard Iron Offset Uncertainty data
+    class FieldParser_MagAutoHardIronOffsetUncert: public InertialFieldParser
+    {
+    private:
+        //Constants: Valid Flags
+        //    VECTOR_FLAG        - b00000001 - The flag position for checking the Vector flag
+        static const uint16 VECTOR_FLAG = BOOST_BINARY(00000001);
+
+    private:
+        FieldParser_MagAutoHardIronOffsetUncert() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_MagAutoSoftIronMatrixUncert
+    //    The field parser for Estimated Mag Auto Soft Iron Matrix Uncertainty data
+    class FieldParser_MagAutoSoftIronMatrixUncert: public InertialFieldParser
+    {
+    private:
+        //Constants: Valid Flags
+        //    MATRIX_FLAG        - b00000001 - The flag position for checking the Matrix flag
+        static const uint16 MATRIX_FLAG = BOOST_BINARY(00000001);
+
+    private:
+        FieldParser_MagAutoSoftIronMatrixUncert() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_GnssAntennaOffsetCorrection
+    //    The field parser for GNSS Antenna Offset Correction data
+    class FieldParser_GnssAntennaOffsetCorrection: public InertialFieldParser
     {
     private:
         //Constants: Valid Flags
@@ -701,7 +710,28 @@ namespace mscl
         static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
 
     private:
-        FieldParser_GpsAntennaOffsetCorrectionUncert() {};        //default constructor disabled
+        FieldParser_GnssAntennaOffsetCorrection() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_GnssAntennaOffsetCorrectionUncert
+    //    The field parser for GNSS Antenna Offset Correction Uncertainty data
+    class FieldParser_GnssAntennaOffsetCorrectionUncert: public InertialFieldParser
+    {
+    private:
+        //Constants: Valid Flags
+        //    VALID_FLAG        - b00000001 - The flag position for checking the Estimated Gyro Scale Factor flag
+        static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
+
+    private:
+        FieldParser_GnssAntennaOffsetCorrectionUncert() {};        //default constructor disabled
 
     public:
         virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;

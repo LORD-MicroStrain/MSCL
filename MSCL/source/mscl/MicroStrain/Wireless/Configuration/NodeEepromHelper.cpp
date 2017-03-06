@@ -1529,33 +1529,34 @@ namespace mscl
         EepromLocation valueEeprom = NodeEepromMap::EVENT_VAL1_1;
 
         BitMask mask;
-        Trigger tempTrigger;
+        uint8 triggerId;
+        //Trigger tempTrigger;
 
-        for(uint8 i = 0; i < numTriggers; i++)
+        for(const auto& trig : options.triggers())
         {
+            triggerId = trig.first;
+
             //get the eeproms for this trigger
-            NodeEepromMap::getEventTriggerEeproms(i, usesFloatVal, channelEeprom, typeEeprom, valueEeprom);
+            NodeEepromMap::getEventTriggerEeproms(triggerId, usesFloatVal, channelEeprom, typeEeprom, valueEeprom);
 
             //build the trigger mask to write
-            mask.enable(i, options.triggerEnabled(i));
-
-            tempTrigger = options.trigger(i);
+            mask.enable(triggerId, options.triggerEnabled(triggerId));
 
             //Trigger Channel
-            write(channelEeprom, Value::UINT16(tempTrigger.channelNumber()));
+            write(channelEeprom, Value::UINT16(trig.second.channelNumber()));
 
             //Trigger Type
-            write(typeEeprom, Value::UINT16(static_cast<uint16>(tempTrigger.triggerType())));
+            write(typeEeprom, Value::UINT16(static_cast<uint16>(trig.second.triggerType())));
 
             if(usesFloatVal)
             {
                 //Trigger Value
-                write(valueEeprom, Value::FLOAT(tempTrigger.triggerValue()));
+                write(valueEeprom, Value::FLOAT(trig.second.triggerValue()));
             }
             else
             {
                 //convert the value to bits using the provided cal coefficients
-                uint16 valInBits = static_cast<uint16>(((tempTrigger.triggerValue() - calibrations.at(i).offset()) / calibrations.at(i).slope()) + 0.5f);
+                uint16 valInBits = static_cast<uint16>(((trig.second.triggerValue() - calibrations.at(triggerId).offset()) / calibrations.at(triggerId).slope()) + 0.5f);
 
                 //Trigger Value
                 write(valueEeprom, Value::UINT16(valInBits));
@@ -1658,24 +1659,25 @@ namespace mscl
         write(NodeEepromMap::STORAGE_LIMIT_MODE, Value::UINT16(static_cast<uint16>(mode)));
     }
 
-    DataMode NodeEepromHelper::read_dataMode() const
+    WirelessTypes::DataMode NodeEepromHelper::read_dataMode() const
     {
         if(m_node->features().onlySupportsRawDataMode())
         {
             //return a data mode with just raw mode enabled (read-only-like setting)
-            return DataMode(true, false);
+            //Note: this is required for legacy nodes that didn't support this eeprom location
+            return WirelessTypes::dataMode_raw;
         }
 
         BitMask mask(read(NodeEepromMap::DATA_MODE).as_uint16());
-        return DataMode::FromMask(mask);
+        return DataModeMask(mask).toDataModeEnum();
     }
 
-    void NodeEepromHelper::write_dataMode(const DataMode& dataMode)
+    void NodeEepromHelper::write_dataMode(WirelessTypes::DataMode dataMode)
     {
-        write(NodeEepromMap::DATA_MODE, Value::UINT16(dataMode.toMask().toMask()));
+        write(NodeEepromMap::DATA_MODE, Value::UINT16(DataModeMask(dataMode).toMask().toMask()));
     }
 
-    EepromLocation NodeEepromHelper::findDerivedChannelEeprom(WirelessTypes::DerivedChannel derivedChannel)
+    EepromLocation NodeEepromHelper::findDerivedChannelEeprom(WirelessTypes::DerivedChannelType derivedChannel)
     {
         switch(derivedChannel)
         {
@@ -1707,14 +1709,14 @@ namespace mscl
         write(NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(static_cast<uint16>(rate)));
     }
 
-    ChannelMask NodeEepromHelper::read_derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const
+    ChannelMask NodeEepromHelper::read_derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel) const
     {
         const EepromLocation eeprom = findDerivedChannelEeprom(derivedChannel);
 
         return ChannelMask(read(eeprom).as_uint16());
     }
 
-    void NodeEepromHelper::write_derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel, const ChannelMask& mask)
+    void NodeEepromHelper::write_derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel, const ChannelMask& mask)
     {
         const EepromLocation eeprom = findDerivedChannelEeprom(derivedChannel);
 

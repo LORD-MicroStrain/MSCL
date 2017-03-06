@@ -51,9 +51,6 @@ namespace mscl
 
     //Class: FieldParser_RawGyroVector
     //    The field parser for raw gyro data
-    //
-    //See Also:
-    //    <FieldParser_RawAccelVector>
     class FieldParser_RawGyroVector : public InertialFieldParser
     {
     private:
@@ -70,9 +67,6 @@ namespace mscl
 
     //Class: FieldParser_RawMagVector
     //    The field parser for raw magnetometer data
-    //
-    //See Also:
-    //    <FieldParser_RawAccelVector>
     class FieldParser_RawMagVector : public InertialFieldParser
     {
     private:
@@ -89,9 +83,6 @@ namespace mscl
 
     //Class: FieldParser_ScaledAccelVector
     //    The field parser for scaled accelerometer data
-    //
-    //See Also:
-    //    <FieldParser_RawAccelVector>
     class FieldParser_ScaledAccelVector : public InertialFieldParser
     {
     private:
@@ -108,9 +99,6 @@ namespace mscl
 
     //Class: FieldParser_ScaledGyroVector
     //    The field parser for scaled gyro data
-    //
-    //See Also:
-    //    <FieldParser_RawAccelVector>
     class FieldParser_ScaledGyroVector : public InertialFieldParser
     {
     private:
@@ -127,9 +115,6 @@ namespace mscl
 
     //Class: FieldParser_ScaledMagVector
     //    The field parser for scaled magnetometer data
-    //
-    //See Also:
-    //    <FieldParser_RawAccelVector>
     class FieldParser_ScaledMagVector : public InertialFieldParser
     {
     private:
@@ -146,9 +131,6 @@ namespace mscl
 
     //Class: FieldParser_DeltaThetaVector
     //    The field parser for delta theta data
-    //
-    //See Also:
-    //    <FieldParser_RawAccelVector>
     class FieldParser_DeltaThetaVector : public InertialFieldParser
     {
     private:
@@ -165,9 +147,6 @@ namespace mscl
 
     //Class: FieldParser_DeltaVelocityVector
     //    The field parser for delta velocity data
-    //
-    //See Also:
-    //    <FieldParser_RawAccelVector>
     class FieldParser_DeltaVelocityVector : public InertialFieldParser
     {
     private:
@@ -184,9 +163,6 @@ namespace mscl
 
     //Class: FieldParser_OrientationMatrix
     //    The field parser for orientation matrix data
-    //
-    //See Also:
-    //    <FieldParser_RawAccelVector>
     class FieldParser_OrientationMatrix : public InertialFieldParser
     {
     private:
@@ -203,9 +179,6 @@ namespace mscl
 
     //Class: FieldParser_Quaternion
     //    The field parser for quaternion data
-    //
-    //See Also:
-    //    <FieldParser_RawAccelVector>
     class FieldParser_Quaternion : public InertialFieldParser
     {
     private:
@@ -222,9 +195,6 @@ namespace mscl
 
     //Class: FieldParser_OrientationUpdateMatrix
     //    The field parser for orientation matrix data
-    //
-    //See Also:
-    //    <FieldParser_RawAccelVector>
     class FieldParser_OrientationUpdateMatrix : public InertialFieldParser
     {
     private:
@@ -241,9 +211,6 @@ namespace mscl
 
     //Class: FieldParser_EulerAngles
     //    The field parser for Euler Angles data
-    //
-    //See Also:
-    //    <FieldParser_RawAccelVector>
     class FieldParser_EulerAngles : public InertialFieldParser
     {
     private:
@@ -260,9 +227,6 @@ namespace mscl
 
     //Class: FieldParser_InternalTimestamp
     //    The field parser for Internal Timestamp data
-    //
-    //See Also:
-    //    <FieldParser_RawAccelVector>
     class FieldParser_InternalTimestamp : public InertialFieldParser
     {
     private:
@@ -279,9 +243,6 @@ namespace mscl
 
     //Class: FieldParser_BeaconedTimestamp
     //    The field parser for Beaconed Timestamp data
-    //
-    //See Also:
-    //    <FieldParser_RawAccelVector>
     class FieldParser_BeaconedTimestamp : public InertialFieldParser
     {
     private:
@@ -302,9 +263,6 @@ namespace mscl
 
     //Class: FieldParser_StabilizedMagVector
     //    The field parser for Stabilized Mag Vector (North)
-    //
-    //See Also:
-    //    <FieldParser_RawAccelVector>
     class FieldParser_StabilizedMagVector : public InertialFieldParser
     {
     private:
@@ -321,9 +279,6 @@ namespace mscl
 
     //Class: FieldParser_StabilizedAccelVector
     //    The field parser for Stabilized Accel Vector (Up)
-    //
-    //See Also:
-    //    <FieldParser_RawAccelVector>
     class FieldParser_StabilizedAccelVector : public InertialFieldParser
     {
     private:
@@ -340,9 +295,6 @@ namespace mscl
 
     //Class: FieldParser_GpsCorrelationTimestamp
     //    The field parser for GPS Correlation Timestamp
-    //
-    //See Also:
-    //    <FieldParser_RawAccelVector>
     class FieldParser_GpsCorrelationTimestamp : public InertialFieldParser
     {
     private:

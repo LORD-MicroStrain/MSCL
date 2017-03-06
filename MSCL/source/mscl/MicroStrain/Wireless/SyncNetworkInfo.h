@@ -207,7 +207,7 @@ namespace mscl
         //  percent - The duty cycle percentage (0.0 - 1.0).
         void dutyCycle(float percent);
 
-        WirelessTypes::DerivedChannels supportedDerivedChannels() const;
+        WirelessTypes::DerivedChannelTypes supportedDerivedChannelTypes() const;
 
         //Function: hasPendingConfig
         //    Gets whether or not this network info has a pending configuration set.

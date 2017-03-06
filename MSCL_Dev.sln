@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6774763C-6C1F-42EF-89B8-47D897DA4B94}"
 	ProjectSection(SolutionItems) = preProject
@@ -42,6 +42,10 @@ Global
 		Release (C++)|Mixed Platforms = Release (C++)|Mixed Platforms
 		Release (C++)|Win32 = Release (C++)|Win32
 		Release (C++)|x64 = Release (C++)|x64
+		Release (Java)|Any CPU = Release (Java)|Any CPU
+		Release (Java)|Mixed Platforms = Release (Java)|Mixed Platforms
+		Release (Java)|Win32 = Release (Java)|Win32
+		Release (Java)|x64 = Release (Java)|x64
 		Release x64 (.NET)|Any CPU = Release x64 (.NET)|Any CPU
 		Release x64 (.NET)|Mixed Platforms = Release x64 (.NET)|Mixed Platforms
 		Release x64 (.NET)|Win32 = Release x64 (.NET)|Win32
@@ -84,6 +88,14 @@ Global
 		{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}.Release (C++)|Win32.Build.0 = Release (C++)|Win32
 		{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}.Release (C++)|x64.ActiveCfg = Release (C++)|x64
 		{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}.Release (C++)|x64.Build.0 = Release (C++)|x64
+		{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}.Release (Java)|Any CPU.ActiveCfg = Release (Java)|Win32
+		{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}.Release (Java)|Any CPU.Build.0 = Release (Java)|Win32
+		{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}.Release (Java)|Mixed Platforms.ActiveCfg = Release (Java)|Win32
+		{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}.Release (Java)|Mixed Platforms.Build.0 = Release (Java)|Win32
+		{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}.Release (Java)|Win32.ActiveCfg = Release (Java)|Win32
+		{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}.Release (Java)|Win32.Build.0 = Release (Java)|Win32
+		{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}.Release (Java)|x64.ActiveCfg = Release (Java)|x64
+		{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}.Release (Java)|x64.Build.0 = Release (Java)|x64
 		{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}.Release x64 (.NET)|Any CPU.ActiveCfg = Release x64 (.NET)|x64
 		{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}.Release x64 (.NET)|Any CPU.Build.0 = Release x64 (.NET)|x64
 		{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}.Release x64 (.NET)|Mixed Platforms.ActiveCfg = Release x64 (.NET)|Win32
@@ -124,6 +136,11 @@ Global
 		{B790E57F-D57C-48B4-8FDF-84FD2F4219AC}.Release (C++)|Win32.ActiveCfg = Release (.NET)|Any CPU
 		{B790E57F-D57C-48B4-8FDF-84FD2F4219AC}.Release (C++)|x64.ActiveCfg = Release (.NET)|x64
 		{B790E57F-D57C-48B4-8FDF-84FD2F4219AC}.Release (C++)|x64.Build.0 = Release (.NET)|x64
+		{B790E57F-D57C-48B4-8FDF-84FD2F4219AC}.Release (Java)|Any CPU.ActiveCfg = Release (Java)|Any CPU
+		{B790E57F-D57C-48B4-8FDF-84FD2F4219AC}.Release (Java)|Mixed Platforms.ActiveCfg = Release (Java)|Any CPU
+		{B790E57F-D57C-48B4-8FDF-84FD2F4219AC}.Release (Java)|Mixed Platforms.Build.0 = Release (Java)|Any CPU
+		{B790E57F-D57C-48B4-8FDF-84FD2F4219AC}.Release (Java)|Win32.ActiveCfg = Release (Java)|Any CPU
+		{B790E57F-D57C-48B4-8FDF-84FD2F4219AC}.Release (Java)|x64.ActiveCfg = Release (Java)|x64
 		{B790E57F-D57C-48B4-8FDF-84FD2F4219AC}.Release x64 (.NET)|Any CPU.ActiveCfg = Release x64 (.NET)|Any CPU
 		{B790E57F-D57C-48B4-8FDF-84FD2F4219AC}.Release x64 (.NET)|Any CPU.Build.0 = Release x64 (.NET)|Any CPU
 		{B790E57F-D57C-48B4-8FDF-84FD2F4219AC}.Release x64 (.NET)|Mixed Platforms.ActiveCfg = Release x64 (.NET)|Any CPU
@@ -162,6 +179,11 @@ Global
 		{50B79FA8-35FA-40A4-866C-559719455197}.Release (C++)|Win32.Build.0 = Release (C++)|Win32
 		{50B79FA8-35FA-40A4-866C-559719455197}.Release (C++)|x64.ActiveCfg = Release (C++)|x64
 		{50B79FA8-35FA-40A4-866C-559719455197}.Release (C++)|x64.Build.0 = Release (C++)|x64
+		{50B79FA8-35FA-40A4-866C-559719455197}.Release (Java)|Any CPU.ActiveCfg = Release (Java)|Win32
+		{50B79FA8-35FA-40A4-866C-559719455197}.Release (Java)|Mixed Platforms.ActiveCfg = Release (Java)|Win32
+		{50B79FA8-35FA-40A4-866C-559719455197}.Release (Java)|Mixed Platforms.Build.0 = Release (Java)|Win32
+		{50B79FA8-35FA-40A4-866C-559719455197}.Release (Java)|Win32.ActiveCfg = Release (Java)|Win32
+		{50B79FA8-35FA-40A4-866C-559719455197}.Release (Java)|x64.ActiveCfg = Release (Java)|x64
 		{50B79FA8-35FA-40A4-866C-559719455197}.Release x64 (.NET)|Any CPU.ActiveCfg = Release x64 (.NET)|Win32
 		{50B79FA8-35FA-40A4-866C-559719455197}.Release x64 (.NET)|Mixed Platforms.ActiveCfg = Release x64 (.NET)|Win32
 		{50B79FA8-35FA-40A4-866C-559719455197}.Release x64 (.NET)|Mixed Platforms.Build.0 = Release x64 (.NET)|Win32
@@ -199,6 +221,11 @@ Global
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (C++)|Win32.ActiveCfg = Release (C++)|Win32
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (C++)|Win32.Build.0 = Release (C++)|Win32
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (C++)|x64.ActiveCfg = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (Java)|Any CPU.ActiveCfg = Release (Java)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (Java)|Mixed Platforms.ActiveCfg = Release (Java)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (Java)|Mixed Platforms.Build.0 = Release (Java)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (Java)|Win32.ActiveCfg = Release (Java)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (Java)|x64.ActiveCfg = Release (Java)|Win32
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release x64 (.NET)|Any CPU.ActiveCfg = Release (C++)|Win32
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release x64 (.NET)|Mixed Platforms.ActiveCfg = Release (C++)|Win32
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release x64 (.NET)|Mixed Platforms.Build.0 = Release (C++)|Win32
@@ -235,6 +262,11 @@ Global
 		{40F258AD-6F12-477A-8F79-8C4BB9BE760C}.Release (C++)|Mixed Platforms.Build.0 = Release|Any CPU
 		{40F258AD-6F12-477A-8F79-8C4BB9BE760C}.Release (C++)|Win32.ActiveCfg = Release|Any CPU
 		{40F258AD-6F12-477A-8F79-8C4BB9BE760C}.Release (C++)|x64.ActiveCfg = Release|Any CPU
+		{40F258AD-6F12-477A-8F79-8C4BB9BE760C}.Release (Java)|Any CPU.ActiveCfg = Release (Java)|Any CPU
+		{40F258AD-6F12-477A-8F79-8C4BB9BE760C}.Release (Java)|Mixed Platforms.ActiveCfg = Release (Java)|Any CPU
+		{40F258AD-6F12-477A-8F79-8C4BB9BE760C}.Release (Java)|Mixed Platforms.Build.0 = Release (Java)|Any CPU
+		{40F258AD-6F12-477A-8F79-8C4BB9BE760C}.Release (Java)|Win32.ActiveCfg = Release (Java)|Any CPU
+		{40F258AD-6F12-477A-8F79-8C4BB9BE760C}.Release (Java)|x64.ActiveCfg = Release (Java)|Any CPU
 		{40F258AD-6F12-477A-8F79-8C4BB9BE760C}.Release x64 (.NET)|Any CPU.ActiveCfg = Release|Any CPU
 		{40F258AD-6F12-477A-8F79-8C4BB9BE760C}.Release x64 (.NET)|Any CPU.Build.0 = Release|Any CPU
 		{40F258AD-6F12-477A-8F79-8C4BB9BE760C}.Release x64 (.NET)|Mixed Platforms.ActiveCfg = Release|Any CPU

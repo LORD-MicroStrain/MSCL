@@ -168,16 +168,16 @@ namespace mscl
         return m_eepromHelper.read_filter2();
     }
 
-    DataMode SyncNodeConfig::dataMode()
+    DataModeMask SyncNodeConfig::dataMode()
     {
         try
         {
             //try to read the value from the pending config
-            return m_networkInfo->getPendingConfig().dataMode();
+            return DataModeMask(m_networkInfo->getPendingConfig().dataMode());
         }
         catch(Error_NoData&)
         {
-            return m_eepromHelper.read_dataMode();
+            return DataModeMask(m_eepromHelper.read_dataMode());
         }
     }
 
@@ -198,7 +198,7 @@ namespace mscl
         return SampleUtils::convertToSampleRate(sampleRateVal);
     }
 
-    ChannelMask SyncNodeConfig::derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel)
+    ChannelMask SyncNodeConfig::derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel)
     {
         try
         {

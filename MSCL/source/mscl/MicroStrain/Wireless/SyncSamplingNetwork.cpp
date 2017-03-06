@@ -439,7 +439,7 @@ namespace mscl
             float rawPacketsPerGroup = 0.0;
             float derivedPacketsPerGroup = 0.0;
 
-            DataMode mode = config.dataMode();
+            DataModeMask mode = config.dataMode();
             bool useHighCapacity = false;
 
             bool isBurstMode = (config.samplingMode() == WirelessTypes::samplingMode_syncBurst);
@@ -485,7 +485,7 @@ namespace mscl
 
                 groupSize = SyncSamplingFormulas::groupSize(nodeInfo.m_bytesPerSecond, nodeInfo.m_maxBytesPerPacket, useHighCapacity);
 
-                if(mode.rawModeEnabled())
+                if(mode.rawModeEnabled)
                 {
                     if(nodeInfo.m_bytesPerSweep >(MAX_BYTES / 2))
                     {
@@ -498,15 +498,15 @@ namespace mscl
             
 
             //Derived Channels enabled
-            if(mode.derivedModeEnabled())
+            if(mode.derivedModeEnabled)
             {
                 uint8 derivedChannelCount = 0;
                 uint8 numDerivedNonChBytes = 0;
 
-                const WirelessTypes::DerivedChannels& chs = nodeInfo.supportedDerivedChannels();
+                const WirelessTypes::DerivedChannelTypes& chs = nodeInfo.supportedDerivedChannelTypes();
 
                 uint8 count = 0;
-                for(WirelessTypes::DerivedChannel ch : chs)
+                for(WirelessTypes::DerivedChannelType ch : chs)
                 {
                     count = config.derivedChannelMask(ch).count();
 
@@ -533,12 +533,12 @@ namespace mscl
             {
                 uint32 totalNeededTx = 0;
 
-                if(mode.derivedModeEnabled())
+                if(mode.derivedModeEnabled)
                 {
                     totalNeededTx += static_cast<uint32>(ceil(derivedPacketsPerGroup));
                 }
 
-                if(mode.rawModeEnabled())
+                if(mode.rawModeEnabled)
                 {
                     totalNeededTx += SyncSamplingFormulas::totalNeededBurstTx(nodeInfo.m_bytesPerBurst, nodeInfo.m_maxBytesPerPacket);
                 }
@@ -566,7 +566,8 @@ namespace mscl
             else
             {
                 //update transmissions per group for continuous mode
-                txPerGroup = Utils::ceilBase2(std::ceil((rawPacketsPerGroup + derivedPacketsPerGroup) * SyncSamplingFormulas::overheadFactor(useLossless, optimizeBandwidth)));
+                float overheadFactor = SyncSamplingFormulas::overheadFactor(useLossless, optimizeBandwidth, sampleRate, nodeInfo.syncSamplingVersion());
+                txPerGroup = Utils::ceilBase2(std::ceil((rawPacketsPerGroup + derivedPacketsPerGroup) * overheadFactor));
             }
 
             //calculate the maximum TDMA address

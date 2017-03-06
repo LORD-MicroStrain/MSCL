@@ -9,30 +9,30 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    //Class: GetDeviceDescriptorSets
-    //    Contains the logic for the Inertial "Get Device Descriptor Sets" command
-    class GetDeviceDescriptorSets
+    //Class: GetExtendedDeviceDescriptorSets
+    //    Contains the logic for the Inertial "Get Extended Device Descriptor Sets" command
+    class GetExtendedDeviceDescriptorSets
     {
     public:
         //Constants: Packet Bytes
-        //    CMD_ID                = CMD_GET_DESCRIPTOR_SETS    - The <InertialTypes::Command> for this command
-        //  FIELD_DATA_BYTE        = 0x82                        - The Data Field Descriptor byte
-        static const InertialTypes::Command CMD_ID = InertialTypes::CMD_GET_DESCRIPTOR_SETS;
-        static const uint8 FIELD_DATA_BYTE            = 0x82;
+        //  CMD_ID              - CMD_GET_EXT_DESCRIPTOR_SETS   - The <InertialTypes::Command> for this command
+        //  FIELD_DATA_BYTE     - 0x86                          - The Data Field Descriptor byte
+        static const InertialTypes::Command CMD_ID = InertialTypes::CMD_GET_EXT_DESCRIPTOR_SETS;
+        static const uint8 FIELD_DATA_BYTE            = 0x86;
 
     private:
-        GetDeviceDescriptorSets();        //default constructor disabled
+        GetExtendedDeviceDescriptorSets();        //default constructor disabled
 
     public:
         //Function: buildCommand
         //    Builds the command packet
         //
         //Returns:
-        //    A <ByteStream> containing the Inertial GetDeviceDescriptorSets command packet
+        //    A <ByteStream> containing the Inertial GetExtendedDeviceDescriptorSets command packet
         static ByteStream buildCommand();
 
         //Class: Response
-        //    Handles the response to the GetDeviceDescriptorSets command
+        //    Handles the response to the GetExtendedDeviceDescriptorSets command
         class Response : public GenericInertialCommand::Response
         {
         protected:
@@ -56,11 +56,11 @@ namespace mscl
             virtual bool match_data(const InertialDataField& field) override;
 
             //Function: parseResponse
-            //    Parses a successfully matched response for the GetDeviceDescriptorSets command.
+            //    Parses a successfully matched response for the GetExtendedDeviceDescriptorSets command.
             //
             //Parameters:
             //    response - The <GenericInertialCommandResponse> that matches the data field for this response.
-            //    descriptors - The container to insert the descriptors into.
+            //    descriptors - The container to insert the extended descriptors into.
             //
             //Returns:
             //    The descriptor sets parsed from the response.

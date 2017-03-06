@@ -8,6 +8,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "mscl/Types.h"
 #include "mscl/MicroStrain/ByteStream.h"
+#include "mscl/MicroStrain/Inertial/InertialTypes.h"
 
 namespace mscl
 {
@@ -102,31 +103,23 @@ namespace mscl
     {
         //=====================================================================================================
         //Enums: Inertial Packet Bytes
-        //    INERTIAL_PACKET_START_OF_PACKET    - 0x7565    - The full start of packet value of any inertial packet
-        //    INERTIAL_PACKET_SOP1            - 0x75        - The first (start of packet) byte of any inertial packet
-        //    INERTIAL_PACKET_SOP2            - 0x65        - The second (start of packet) byte of any inertial packet
-        //    COMMAND_SET_BASE                - 0x01        - The Base command set is common to many MicroStrain devices.  With the Base command set it is possible to
-        //                                                  identify many properties and do basic functions on a device even if you do not recognize its specialized 
-        //                                                  functionality or data.  The commands work the same way on all devices that implement this set.
-        //    COMMAND_SET_3DM                    - 0x0C        - The 3DM command set is common to the MicroStrain Inertial sensors that support the MIP packet protocol.  
-        //                                                  Because of the unified set of commands, it is easy to migrate code from one inertial sensor to another.
-        //    COMMAND_SET_NAV_FILTER            - 0x0D        - The Navigation Filter command set is specific to MicroStrain Inertial Navigation sensors.
-        //    COMMAND_SET_SYSTEM                - 0x7F        - The System Command set provides a set of advanced commands that are specific to devices such as the 3DMGX3-35
-        //                                                  that have multiple intelligent internal sensor blocks.  These commands allow special mode such as talking
-        //                                                  directly to the native protocols of the embedded sensor blocks.  For example, with the 3DM-GX3-35, you 
-        //                                                  may switch into a mode that talks directly to the internal u-blox chip or directly to the embedded 3DM-GX3-25 
-        //                                                  AHRS.  This allows you to use code or utilities written specifically for the native u-blox protocols (NMEA or UBX) 
-        //                                                  and 3DM-GX3-25 protocols (original single byte commands or ASPP packet protocol).
+        //    INERTIAL_PACKET_START_OF_PACKET   - 0x7565    - The full start of packet value of any inertial packet
+        //    INERTIAL_PACKET_SOP1              - 0x75      - The first (start of packet) byte of any inertial packet
+        //    INERTIAL_PACKET_SOP2              - 0x65      - The second (start of packet) byte of any inertial packet
+        //    COMMAND_SET_BASE                  - 0x01      - The Base command set is common to many MicroStrain devices.
+        //    COMMAND_SET_3DM                   - 0x0C      - The 3DM command set is common to the MicroStrain Inertial sensors that support the MIP packet protocol.  
+        //    COMMAND_SET_NAV_FILTER            - 0x0D      - The Navigation Filter command set is specific to MicroStrain Inertial Navigation sensors.
+        //    COMMAND_SET_SYSTEM                - 0x7F      - The System Command set provides a set of advanced commands that are specific to devices.
         //=====================================================================================================
         enum
         {
-            INERTIAL_PACKET_START_OF_PACKET = 0x7565,
-            INERTIAL_PACKET_SOP1            = 0x75,
-            INERTIAL_PACKET_SOP2            = 0x65,
-            COMMAND_SET_BASE                = 0x01,
+            INERTIAL_PACKET_START_OF_PACKET    = 0x7565,
+            INERTIAL_PACKET_SOP1               = 0x75,
+            INERTIAL_PACKET_SOP2               = 0x65,
+            COMMAND_SET_BASE                   = 0x01,
             COMMAND_SET_3DM                    = 0x0C,
-            COMMAND_SET_NAV_FILTER            = 0x0D,
-            COMMAND_SET_SYSTEM                = 0x7F
+            COMMAND_SET_NAV_FILTER             = 0x0D,
+            COMMAND_SET_SYSTEM                 = 0x7F
         };
 
         //=====================================================================================================
@@ -150,23 +143,23 @@ namespace mscl
     public:
         //=====================================================================================================
         //Enums: Inertial Packet Descriptor Sets
-        //    DESC_SET_CMD_BASE            - 0x01    - Command Packet, Base Set
-        //    DESC_SET_CMD_3DM            - 0x0C    - Command Packet, 3DM Set
-        //    DESC_SET_CMD_NAV            - 0x0D    - Command Packet, Navigation Filter Set
-        //    DESC_SET_CMD_SYS            - 0x7F    - Command Packet, System Set
-        //    DESC_SET_DATA_SENSOR        - 0x80    - Data Packet, Sensor Set
-        //    DESC_SET_DATA_GPS            - 0x81    - Data Packet, GPS Set
-        //    DESC_SET_DATA_EST_FILTER    - 0x82    - Data Packet, Estimation Filter Set
+        //    DESC_SET_CMD_BASE         - 0x01    - Command Packet, Base Set
+        //    DESC_SET_CMD_3DM          - 0x0C    - Command Packet, 3DM Set
+        //    DESC_SET_CMD_NAV          - 0x0D    - Command Packet, Navigation Filter Set
+        //    DESC_SET_CMD_SYS          - 0x7F    - Command Packet, System Set
+        //    DESC_SET_DATA_SENSOR      - 0x80    - Data Packet, Sensor Set
+        //    DESC_SET_DATA_GNSS        - 0x81    - Data Packet, GNSS Set
+        //    DESC_SET_DATA_EST_FILTER  - 0x82    - Data Packet, Estimation Filter Set
         //=====================================================================================================
         enum
         {
             DESC_SET_CMD_BASE            = InertialPacketInfo::COMMAND_SET_BASE,
-            DESC_SET_CMD_3DM            = InertialPacketInfo::COMMAND_SET_3DM,
-            DESC_SET_CMD_NAV            = InertialPacketInfo::COMMAND_SET_NAV_FILTER,
-            DESC_SET_CMD_SYS            = InertialPacketInfo::COMMAND_SET_SYSTEM,
-            DESC_SET_DATA_SENSOR        = 0x80,
-            DESC_SET_DATA_GPS            = 0x81,
-            DESC_SET_DATA_EST_FILTER    = 0x82
+            DESC_SET_CMD_3DM             = InertialPacketInfo::COMMAND_SET_3DM,
+            DESC_SET_CMD_NAV             = InertialPacketInfo::COMMAND_SET_NAV_FILTER,
+            DESC_SET_CMD_SYS             = InertialPacketInfo::COMMAND_SET_SYSTEM,
+            DESC_SET_DATA_SENSOR         = InertialTypes::CATEGORY_SENSOR,
+            DESC_SET_DATA_GNSS           = InertialTypes::CATEGORY_GNSS,
+            DESC_SET_DATA_EST_FILTER     = InertialTypes::CATEGORY_ESTFILTER
         };
     };
 #endif

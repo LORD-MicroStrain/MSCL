@@ -34,9 +34,9 @@ public:
     }
 
 private:
-    std::function<void(DataBuffer&)> parseFunc;
-    std::vector<DataBuffer> writeResponses;
-    size_t responseItr;
+    mutable std::function<void(DataBuffer&)> parseFunc;
+    mutable std::vector<DataBuffer> writeResponses;
+    mutable size_t responseItr;
     uint16_t delay;    //in ms
     bool useDelay;
 
@@ -50,12 +50,12 @@ private:
     virtual void throwIfError(){}
     virtual std::string description(){return "";}
 
-    virtual void write(const ByteStream& data)
+    virtual void write(const ByteStream& data) const
     {
         parseNextResponse();
     }
 
-    virtual void write(const Bytes& bytes)
+    virtual void write(const Bytes& bytes) const
     {
         parseNextResponse();
     }
@@ -105,7 +105,7 @@ public:
         setResponseBytes(responses);
     }
 
-    void parseNextResponse()
+    void parseNextResponse() const
     {
         if((responseItr + 1) <= writeResponses.size())
         {

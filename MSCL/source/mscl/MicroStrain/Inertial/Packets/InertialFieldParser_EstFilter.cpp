@@ -43,15 +43,10 @@ namespace mscl
 
     bool FieldParser_FilterStatus::registerParser()
     {
-        //create a static parser object
         static FieldParser_FilterStatus p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_NAV_GPS_Timestamp
@@ -81,15 +76,10 @@ namespace mscl
 
     bool FieldParser_NAV_GPS_Timestamp::registerParser()
     {
-        //create a static parser object
         static FieldParser_NAV_GPS_Timestamp p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedLLHPosition
@@ -123,15 +113,10 @@ namespace mscl
 
     bool FieldParser_EstimatedLLHPosition::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedLLHPosition p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedNEDVelocity
@@ -165,15 +150,10 @@ namespace mscl
 
     bool FieldParser_EstimatedNEDVelocity::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedNEDVelocity p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedQuaternion
@@ -198,15 +178,10 @@ namespace mscl
 
     bool FieldParser_EstimatedQuaternion::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedQuaternion p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedMatrix
@@ -231,15 +206,10 @@ namespace mscl
 
     bool FieldParser_EstimatedMatrix::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedMatrix p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedEulerAngles
@@ -269,15 +239,10 @@ namespace mscl
 
     bool FieldParser_EstimatedEulerAngles::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedEulerAngles p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedGyroBias
@@ -307,14 +272,10 @@ namespace mscl
 
     bool FieldParser_EstimatedGyroBias::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedGyroBias p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedAccelBias
@@ -344,14 +305,10 @@ namespace mscl
 
     bool FieldParser_EstimatedAccelBias::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedAccelBias p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedLLHPosUncertainty
@@ -381,15 +338,10 @@ namespace mscl
 
     bool FieldParser_EstimatedLLHPosUncertainty::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedLLHPosUncertainty p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedNEDUncertainty
@@ -419,15 +371,10 @@ namespace mscl
 
     bool FieldParser_EstimatedNEDUncertainty::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedNEDUncertainty p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedAttEulerUncertainty
@@ -457,15 +404,10 @@ namespace mscl
 
     bool FieldParser_EstimatedAttEulerUncertainty::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedAttEulerUncertainty p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedGyroBiasUncertainty
@@ -495,14 +437,10 @@ namespace mscl
 
     bool FieldParser_EstimatedGyroBiasUncertainty::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedGyroBiasUncertainty p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedAccelBiasUncertainty
@@ -532,14 +470,10 @@ namespace mscl
 
     bool FieldParser_EstimatedAccelBiasUncertainty::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedAccelBiasUncertainty p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedLinearAccel
@@ -569,15 +503,10 @@ namespace mscl
 
     bool FieldParser_EstimatedLinearAccel::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedLinearAccel p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedAngularRate
@@ -607,15 +536,10 @@ namespace mscl
 
     bool FieldParser_EstimatedAngularRate::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedAngularRate p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_WGS84LocalGravMagnitude
@@ -641,15 +565,10 @@ namespace mscl
 
     bool FieldParser_WGS84LocalGravMagnitude::registerParser()
     {
-        //create a static parser object
         static FieldParser_WGS84LocalGravMagnitude p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedAttQuaternUncertainty
@@ -674,15 +593,10 @@ namespace mscl
 
     bool FieldParser_EstimatedAttQuaternUncertainty::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedAttQuaternUncertainty p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedGravityVector
@@ -712,15 +626,10 @@ namespace mscl
 
     bool FieldParser_EstimatedGravityVector::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedGravityVector p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_HeadingUpdateSource
@@ -754,15 +663,10 @@ namespace mscl
 
     bool FieldParser_HeadingUpdateSource::registerParser()
     {
-        //create a static parser object
         static FieldParser_HeadingUpdateSource p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_MagneticModelSolution
@@ -796,14 +700,10 @@ namespace mscl
 
     bool FieldParser_MagneticModelSolution::registerParser()
     {
-        //create a static parser object
         static FieldParser_MagneticModelSolution p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedGyroScaleFactor
@@ -833,15 +733,10 @@ namespace mscl
 
     bool FieldParser_EstimatedGyroScaleFactor::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedGyroScaleFactor p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedAccelScaleFactor
@@ -871,15 +766,10 @@ namespace mscl
 
     bool FieldParser_EstimatedAccelScaleFactor::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedAccelScaleFactor p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EstimatedGyroScaleFactorUncertainty
@@ -909,10 +799,7 @@ namespace mscl
 
     bool FieldParser_EstimatedGyroScaleFactorUncertainty::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedGyroScaleFactorUncertainty p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
@@ -947,10 +834,7 @@ namespace mscl
 
     bool FieldParser_EstimatedAccelScaleFactorUncertainty::registerParser()
     {
-        //create a static parser object
         static FieldParser_EstimatedAccelScaleFactorUncertainty p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
@@ -984,10 +868,7 @@ namespace mscl
 
     bool FieldParser_CompensatedAccel::registerParser()
     {
-        //create a static parser object
         static FieldParser_CompensatedAccel p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
@@ -1025,10 +906,7 @@ namespace mscl
 
     bool FieldParser_StdAtmModel::registerParser()
     {
-        //create a static parser object
         static FieldParser_StdAtmModel p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
@@ -1057,21 +935,139 @@ namespace mscl
 
     bool FieldParser_PressureAlt::registerParser()
     {
-        //create a static parser object
         static FieldParser_PressureAlt p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
+    //=====================================================================================================================================================
+    //                                                        FieldParser_MagAutoHardIronOffset
+    const InertialTypes::ChannelField FieldParser_MagAutoHardIronOffset::FIELD_TYPE = InertialTypes::CH_FIELD_ESTFILTER_MAG_AUTO_HARD_IRON_OFFSET;
+    const bool FieldParser_MagAutoHardIronOffset::REGISTERED = FieldParser_MagAutoHardIronOffset::registerParser();    //register the parser immediately
+
+    void FieldParser_MagAutoHardIronOffset::parse(const InertialDataField& field, InertialDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the values
+        float x = bytes.read_float();
+        float y = bytes.read_float();
+        float z = bytes.read_float();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool valid = pointIsValid(flags, VECTOR_FLAG);
+
+        //create the data points and add them to the result container
+        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_X, valueType_float, anyType(x), valid));
+        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_Y, valueType_float, anyType(y), valid));
+        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_Z, valueType_float, anyType(z), valid));
+    }
+
+    bool FieldParser_MagAutoHardIronOffset::registerParser()
+    {
+        static FieldParser_MagAutoHardIronOffset p;
+        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
 
     //=====================================================================================================================================================
-    //                                                        FieldParser_GpsAntennaOffsetCorrection
-    const InertialTypes::ChannelField FieldParser_GpsAntennaOffsetCorrection::FIELD_TYPE = InertialTypes::CH_FIELD_ESTFILTER_GPS_ANTENNA_CORRECTION;
-    const bool FieldParser_GpsAntennaOffsetCorrection::REGISTERED = FieldParser_GpsAntennaOffsetCorrection::registerParser();    //register the parser immediately
+    //                                                        FieldParser_MagAutoSoftIronMatrix
+    const InertialTypes::ChannelField FieldParser_MagAutoSoftIronMatrix::FIELD_TYPE = InertialTypes::CH_FIELD_ESTFILTER_MAG_AUTO_SOFT_IRON_MATRIX;
+    const bool FieldParser_MagAutoSoftIronMatrix::REGISTERED = FieldParser_MagAutoSoftIronMatrix::registerParser();    //register the parser immediately
 
-    void FieldParser_GpsAntennaOffsetCorrection::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_MagAutoSoftIronMatrix::parse(const InertialDataField& field, InertialDataPoints& result) const
+    {
+        //create a Matrix to store as the data point
+        Matrix data(3, 3, valueType_float, field.fieldData());
+
+        //read the flags value
+        const uint16 FLAG_BYTE_POS = 36;
+        uint16 flags = field.fieldData().read_uint16(FLAG_BYTE_POS);
+
+        //get whether points are valid or invalid from the flags
+        bool valid = pointIsValid(flags, MATRIX_FLAG);
+
+        //create a Matrix object with the Orientation Matrix data and create an InertialDataPoint from it
+        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_MATRIX, valueType_Matrix, anyType(data), valid));
+    }
+
+    bool FieldParser_MagAutoSoftIronMatrix::registerParser()
+    {
+        static FieldParser_MagAutoSoftIronMatrix p;
+        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_MagAutoHardIronOffsetUncert
+    const InertialTypes::ChannelField FieldParser_MagAutoHardIronOffsetUncert::FIELD_TYPE = InertialTypes::CH_FIELD_ESTFILTER_MAG_AUTO_HARD_IRON_OFFSET_UNCERT;
+    const bool FieldParser_MagAutoHardIronOffsetUncert::REGISTERED = FieldParser_MagAutoHardIronOffsetUncert::registerParser();    //register the parser immediately
+
+    void FieldParser_MagAutoHardIronOffsetUncert::parse(const InertialDataField& field, InertialDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the values
+        float x = bytes.read_float();
+        float y = bytes.read_float();
+        float z = bytes.read_float();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool valid = pointIsValid(flags, VECTOR_FLAG);
+
+        //create the data points and add them to the result container
+        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_X, valueType_float, anyType(x), valid));
+        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_Y, valueType_float, anyType(y), valid));
+        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_Z, valueType_float, anyType(z), valid));
+    }
+
+    bool FieldParser_MagAutoHardIronOffsetUncert::registerParser()
+    {
+        static FieldParser_MagAutoHardIronOffsetUncert p;
+        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_MagAutoSoftIronMatrixUncert
+    const InertialTypes::ChannelField FieldParser_MagAutoSoftIronMatrixUncert::FIELD_TYPE = InertialTypes::CH_FIELD_ESTFILTER_MAG_AUTO_SOFT_IRON_MATRIX_UNCERT;
+    const bool FieldParser_MagAutoSoftIronMatrixUncert::REGISTERED = FieldParser_MagAutoSoftIronMatrixUncert::registerParser();    //register the parser immediately
+
+    void FieldParser_MagAutoSoftIronMatrixUncert::parse(const InertialDataField& field, InertialDataPoints& result) const
+    {
+        //create a Matrix to store as the data point
+        Matrix data(3, 3, valueType_float, field.fieldData());
+
+        //read the flags value
+        const uint16 FLAG_BYTE_POS = 36;
+        uint16 flags = field.fieldData().read_uint16(FLAG_BYTE_POS);
+
+        //get whether points are valid or invalid from the flags
+        bool valid = pointIsValid(flags, MATRIX_FLAG);
+
+        //create a Matrix object with the Orientation Matrix data and create an InertialDataPoint from it
+        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_MATRIX, valueType_Matrix, anyType(data), valid));
+    }
+
+    bool FieldParser_MagAutoSoftIronMatrixUncert::registerParser()
+    {
+        static FieldParser_MagAutoSoftIronMatrixUncert p;
+        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_GnssAntennaOffsetCorrection
+    const InertialTypes::ChannelField FieldParser_GnssAntennaOffsetCorrection::FIELD_TYPE = InertialTypes::CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION;
+    const bool FieldParser_GnssAntennaOffsetCorrection::REGISTERED = FieldParser_GnssAntennaOffsetCorrection::registerParser();    //register the parser immediately
+
+    void FieldParser_GnssAntennaOffsetCorrection::parse(const InertialDataField& field, InertialDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -1092,22 +1088,19 @@ namespace mscl
         result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_Z, valueType_float, anyType(z), valid));
     }
 
-    bool FieldParser_GpsAntennaOffsetCorrection::registerParser()
+    bool FieldParser_GnssAntennaOffsetCorrection::registerParser()
     {
-        //create a static parser object
-        static FieldParser_GpsAntennaOffsetCorrection p;
-
-        //register the parser
+        static FieldParser_GnssAntennaOffsetCorrection p;
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
-    //                                                        FieldParser_GpsAntennaOffsetCorrectionUncert
-    const InertialTypes::ChannelField FieldParser_GpsAntennaOffsetCorrectionUncert::FIELD_TYPE = InertialTypes::CH_FIELD_ESTFILTER_GPS_ANTENNA_CORRECTION_UNCERT;
-    const bool FieldParser_GpsAntennaOffsetCorrectionUncert::REGISTERED = FieldParser_GpsAntennaOffsetCorrectionUncert::registerParser();    //register the parser immediately
+    //                                                        FieldParser_GnssAntennaOffsetCorrectionUncert
+    const InertialTypes::ChannelField FieldParser_GnssAntennaOffsetCorrectionUncert::FIELD_TYPE = InertialTypes::CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION_UNCERT;
+    const bool FieldParser_GnssAntennaOffsetCorrectionUncert::REGISTERED = FieldParser_GnssAntennaOffsetCorrectionUncert::registerParser();    //register the parser immediately
 
-    void FieldParser_GpsAntennaOffsetCorrectionUncert::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_GnssAntennaOffsetCorrectionUncert::parse(const InertialDataField& field, InertialDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -1128,12 +1121,9 @@ namespace mscl
         result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_Z, valueType_float, anyType(z), valid));
     }
 
-    bool FieldParser_GpsAntennaOffsetCorrectionUncert::registerParser()
+    bool FieldParser_GnssAntennaOffsetCorrectionUncert::registerParser()
     {
-        //create a static parser object
-        static FieldParser_GpsAntennaOffsetCorrectionUncert p;
-
-        //register the parser
+        static FieldParser_GnssAntennaOffsetCorrectionUncert p;
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================

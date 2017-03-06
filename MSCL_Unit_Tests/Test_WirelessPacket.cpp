@@ -4,6 +4,7 @@ Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
 
 #include <boost/test/unit_test.hpp>
@@ -105,5 +106,23 @@ BOOST_AUTO_TEST_CASE(ChannelMask_Constructor)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_CASE(WirelessDataPacket_timestampWithinRange)
+{
+    Timestamp ts(Utils::getCurrentSystemTime() + 1800000000000);    //half hour in the future
+    BOOST_CHECK_EQUAL(WirelessDataPacket::timestampWithinRange(ts), true);
+
+    Timestamp ts4(Utils::getCurrentSystemTime());
+    BOOST_CHECK_EQUAL(WirelessDataPacket::timestampWithinRange(ts4), true);
+
+    Timestamp ts5(Utils::getCurrentSystemTime() + 60000000000);      //1 minute in the future
+    BOOST_CHECK_EQUAL(WirelessDataPacket::timestampWithinRange(ts5), true);
+
+    Timestamp ts2(Utils::getCurrentSystemTime() + 7200000000000);    //2 hours in the future
+    BOOST_CHECK_EQUAL(WirelessDataPacket::timestampWithinRange(ts2), false);
+
+    Timestamp ts3(Utils::getCurrentSystemTime() - 7200000000000);    //2 hours in the past
+    BOOST_CHECK_EQUAL(WirelessDataPacket::timestampWithinRange(ts3), true);
+}
 
 BOOST_AUTO_TEST_SUITE_END()

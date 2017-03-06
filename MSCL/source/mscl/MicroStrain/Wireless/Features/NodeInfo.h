@@ -6,12 +6,11 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #pragma once
 
+#include "mscl/Utils.h"
 #include "mscl/Version.h"
 #include "mscl/MicroStrain/Wireless/WirelessModels.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/RadioFeatures.h"
-
-#include <boost/optional.hpp>
 
 namespace mscl
 {
@@ -22,7 +21,6 @@ namespace mscl
     struct NodeInfo
     {
     public:
-#ifndef SWIG
         //Constructor: NodeInfo
         //    Creates a NodeInfo object from a <WirelessNode>.
         //
@@ -43,34 +41,46 @@ namespace mscl
         //    storageSize - The maximum number of bytes that can be stored to the Node.
         //    region - The <WirelessTypes::RegionCode> of the Node.
         NodeInfo(const Version& fw, WirelessModels::NodeModel model, uint64 storageSize, WirelessTypes::RegionCode region);
-#endif
 
     private:
         NodeInfo();        //disabled default constructor
 
+        //Variable: m_node
+        //  The <WirelessNode_Impl> to use for lazy loading of values.
         const WirelessNode_Impl* m_node;
 
     private:
-        //Variable: firmwareVersion
-        //    The firmware <Version> of the node.
-        mutable boost::optional<Version> m_firmwareVersion;
+        //Variable: m_firmwareVersion
+        //    The firmware <Version> of the node (lazy loaded).
+        Utils::Lazy<Version> m_firmwareVersion;
 
-        //Variable: model
-        //    The <WirelessModels::NodeModel> of the node.
-        mutable boost::optional<WirelessModels::NodeModel> m_model;
+        //Variable: m_model
+        //    The <WirelessModels::NodeModel> of the node (lazy loaded).
+        Utils::Lazy<WirelessModels::NodeModel> m_model;
 
-        //Variable: dataStorageSize
-        //    The maximum number of bytes that can be stored to the node.
-        mutable boost::optional<uint64> m_dataStorageSize;
+        //Variable: m_dataStorageSize
+        //    The maximum number of bytes that can be stored to the node (lazy loaded).
+        Utils::Lazy<uint64> m_dataStorageSize;
 
-        //Variable: regionCode
-        //    The <WirelessTypes::RegionCode> of the node.
-        mutable boost::optional<WirelessTypes::RegionCode> m_regionCode;
+        //Variable: m_regionCode
+        //    The <WirelessTypes::RegionCode> of the node (lazy loaded).
+        Utils::Lazy<WirelessTypes::RegionCode> m_regionCode;
 
     public:
+        //Function: firmwareVersion
+        //  Gets the firmware <Version> of the Node.
         Version firmwareVersion() const;
+
+        //Function: model
+        //  Gets the <WirelessModels::NodeModel> of the Node.
         WirelessModels::NodeModel model() const;
+
+        //Function: dataStorageSize
+        //  Gets the maximum number of bytes that can be stored to the node.
         uint64 dataStorageSize() const;
+
+        //Function: regionCode
+        //  Gets the <WirelessTypes::RegionCode> of the Node.
         WirelessTypes::RegionCode regionCode() const;
     };
 }

@@ -498,22 +498,31 @@ namespace mscl
         public:
           template<typename LoadFn>
           Lazy(LoadFn loadFn) :
-          m_loadFn(loadFn),
-          m_loaded(false)
+            m_loadFn(loadFn),
+            m_loaded(false)
           {}
 
-          const T& operator*()
+          Lazy(T value):
+            m_loadFn(nullptr),
+            m_value(value),
+            m_loaded(true)
+          {
+          }
+
+          const T& operator*() const
           {
             if(!m_loaded)
-              m_value = m_loadFn();
+            {
+                m_value = m_loadFn();
+            }
             m_loaded = true;
             return m_value;
           }
 
         private:
           std::function<T()> m_loadFn;
-          T m_value;
-          bool m_loaded;
+          mutable T m_value;
+          mutable bool m_loaded;
         };
     }
 #endif

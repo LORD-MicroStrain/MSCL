@@ -18,6 +18,8 @@ namespace mscl
         m_readIndex(0),
         m_checksumIndex(0),
         m_sweepSize(0),
+        m_derivedSweepSize(0),
+        m_isMathData(false),
         m_partialDownload(false),
         m_doneDownloading(false)
     {
@@ -94,9 +96,9 @@ namespace mscl
 
         //check the header id is ok
         if(headerId != BLOCK_HEADER_ID &&
-           headerId != BLOCK_HEADER_MATH_ID &&
            headerId != REFRESH_HEADER_ID &&
-           headerId != SESSION_CHANGE_HEADER_ID)
+           headerId != SESSION_CHANGE_HEADER_ID &&
+           headerId != SESSION_CHANGE_HEADER_ID_V2)
         {
             return false;
         }
@@ -104,104 +106,164 @@ namespace mscl
         //verify more Block Header bytes
         if(headerId == BLOCK_HEADER_ID)
         {
-            static const uint8 HEADER_CHECK_SIZE = 20;
-            if(buffer.size() < HEADER_CHECK_SIZE)
+            //make sure we can at least read the version number
+            if(buffer.size() < 2)
             {
-                //not enough bytes in the buffer to verify a block header
-                needMoreData = true;
                 return false;
             }
 
-            static const uint8 MIN_BYTES_B4_DATA = 27;      //the minimum value ever supported for '# bytes before data' (if 1 channel active)
-            static const uint8 MAX_BYTES_B4_DATA = 177;     //the maximum value ever supported for '# bytes before data' (if 16 channels active)
+            uint8 version = buffer.read_uint8(1);
 
             //verify the header version is one we support
-            if(buffer.read_uint8(1) != 0)
+            if(version > 1)
             {
                 return false;
             }
 
-            //verify the # of bytes before channel data value
-            uint8 bytesBeforeData = buffer.read_uint8(2);
-            if(bytesBeforeData < MIN_BYTES_B4_DATA ||
-               bytesBeforeData > MAX_BYTES_B4_DATA)
+            if(version == 0)
             {
-                return false;
-            }
+                m_isMathData = false;
 
-            //verify the sample rate is a valid rate
-            uint8 sampleRateVal = buffer.read_uint8(16);
-            try
+                //Verify Block Header version 0
+
+                static const uint8 HEADER_CHECK_SIZE = 20;
+                if(buffer.size() < HEADER_CHECK_SIZE)
+                {
+                    //not enough bytes in the buffer to verify a block header
+                    needMoreData = true;
+                    return false;
+                }
+
+                static const uint8 MIN_BYTES_B4_DATA = 27;      //the minimum value ever supported for '# bytes before data' (if 1 channel active)
+                static const uint8 MAX_BYTES_B4_DATA = 177;     //the maximum value ever supported for '# bytes before data' (if 16 channels active)
+
+                //verify the # of bytes before channel data value
+                uint8 bytesBeforeData = buffer.read_uint8(2);
+                if(bytesBeforeData < MIN_BYTES_B4_DATA ||
+                   bytesBeforeData > MAX_BYTES_B4_DATA)
+                {
+                    return false;
+                }
+
+                //verify the sample rate is a valid rate
+                WirelessTypes::WirelessSampleRate sampleRateVal = static_cast<WirelessTypes::WirelessSampleRate>(buffer.read_uint8(16));
+                try
+                {
+                    //check that we can convert it to a SampleRate object
+                    SampleRate::FromWirelessEepromValue(sampleRateVal);
+                }
+                catch(Error_UnknownSampleRate&)
+                {
+                    return false;
+                }
+
+                uint8 numSweeps = buffer.read_uint8(3);
+                uint8 numActiveChs = ChannelMask(buffer.read_uint16(17, Utils::littleEndian)).count();
+                uint16 dataTypeSize = WirelessTypes::dataTypeSize(static_cast<WirelessTypes::DataType>(buffer.read_uint8(19)));
+
+                m_sweepSize = numActiveChs * dataTypeSize;
+
+                //calculate the index into buffer where the checksum should be located
+                //  3 bytes + bytesBeforeData in header + data
+                checksumPos = 3 + bytesBeforeData + (m_sweepSize * numSweeps);
+            }
+            else if(version == 1)
             {
-                //if it is an armed datalogging rate, we need to convert it to a WirelessSampleRate
-                //Note: if not a datalogging rate, this will just cast it to a WirelessSampleRate without conversion.
-                WirelessTypes::WirelessSampleRate rate = WirelessTypes::dataloggingRateToSampleRate(sampleRateVal);
+                //Verify Block Header version 1
 
-                //check that we can convert it to a SampleRate object
-                SampleRate::FromWirelessEepromValue(rate);
+                static const uint8 HEADER_CHECK_SIZE = 26;
+                if(buffer.size() < HEADER_CHECK_SIZE)
+                {
+                    //not enough bytes in the buffer to verify a block header
+                    needMoreData = true;
+                    return false;
+                }
+
+                static const uint8 MIN_BYTES_B4_DATA = 26;      //the minimum value ever supported for '# bytes before data' (if 1 math channel active)
+
+                //verify the # of bytes before channel data value
+                uint8 bytesBeforeData = buffer.read_uint8(2);
+                if(bytesBeforeData < MIN_BYTES_B4_DATA)
+                {
+                    return false;
+                }
+
+                //verify the sample rate is a valid rate
+                WirelessTypes::WirelessSampleRate sampleRateVal = static_cast<WirelessTypes::WirelessSampleRate>(buffer.read_uint8(17));
+                try
+                {
+                    //check that we can convert it to a SampleRate object
+                    SampleRate::FromWirelessEepromValue(sampleRateVal);
+                }
+                catch(Error_UnknownSampleRate&)
+                {
+                    return false;
+                }
+
+                //verify the sweep type is one we know how to parse
+                SweepType sweepType = static_cast<SweepType>(buffer.read_uint8(4));
+                if(sweepType != sweepType_raw &&
+                   sweepType != sweepType_derived)
+                {
+                    return false;
+                }
+
+                uint8 numSweeps = buffer.read_uint8(3);
+                uint8 numRawChs = ChannelMask(buffer.read_uint16(18, Utils::littleEndian)).count();
+
+                uint16 dataTypeSize = WirelessTypes::dataTypeSize(static_cast<WirelessTypes::DataType>(buffer.read_uint8(20)));
+                m_sweepSize = numRawChs * dataTypeSize;
+
+                uint8 numActiveAlgorithms = buffer.read_uint8(21);
+                const uint8 NUM_RAW_CAL_INFO_BYTES = numRawChs * 10;    //10 bytes per raw active channel
+                const uint8 ALG_META_OFFSET = 26 + NUM_RAW_CAL_INFO_BYTES;
+                uint16 numAlgChannelBytes = 0;
+
+                if(numActiveAlgorithms > 0)
+                {
+                    if(static_cast<uint64>(buffer.size()) < (ALG_META_OFFSET + (numActiveAlgorithms * 3)))
+                    {
+                        //not enough bytes in the buffer to verify a block header
+                        needMoreData = true;
+                        return false;
+                    }
+                }
+
+                uint8 i = 0;
+                uint8 algorithmId;
+                ChannelMask chMask;
+                for(i = 0; i < numActiveAlgorithms; ++i)
+                {
+                    algorithmId = buffer.read_uint8(ALG_META_OFFSET + (i * 3));       //3 bytes per derived active channel
+                    chMask.fromMask(buffer.read_uint16(ALG_META_OFFSET + (i * 3) + 1, Utils::littleEndian));
+
+                    try
+                    {
+                        //add up the number of bytes for all the active algorithms
+                        //  (# of bytes for the algorithm type) * (# of channels that are active)
+                        numAlgChannelBytes += WirelessTypes::bytesPerDerivedChannel(static_cast<WirelessTypes::DerivedChannelType>(algorithmId)) * chMask.count();
+                    }
+                    catch(Error_NotSupported&)
+                    {
+                        //invalid algorithm ID
+                        return false;
+                    }
+                }
+                m_derivedSweepSize = numAlgChannelBytes;
+
+                //calculate the index into buffer where the checksum should be located
+                //  3 bytes + bytesBeforeData in header + data
+                if(sweepType == sweepType_raw)
+                {
+                    m_isMathData = false;
+                    checksumPos = 3 + bytesBeforeData + (m_sweepSize * numSweeps);
+                }
+                else if(sweepType == sweepType_derived)
+                {
+                    m_isMathData = true;
+                    checksumPos = 3 + bytesBeforeData + (m_derivedSweepSize * numSweeps);
+                }
             }
-            catch(Error_UnknownSampleRate&)
-            {
-                return false;
-            }
-
-            uint8 numSweeps = buffer.read_uint8(3);
-            uint8 numActiveChs = ChannelMask(buffer.read_uint16(17, Utils::littleEndian)).count();
-            uint16 dataTypeSize = WirelessTypes::dataTypeSize( static_cast<WirelessTypes::DataType>(buffer.read_uint8(19)) );
-
-            m_sweepSize = numActiveChs * dataTypeSize;
-
-            //calculate the index into buffer where the checksum should be located
-            //  3 bytes + bytesBeforeData in header + data
-            checksumPos = 3 + bytesBeforeData + (m_sweepSize * numSweeps);
-        }
-        else if(headerId == BLOCK_HEADER_MATH_ID)
-        {
-            static const uint8 HEADER_CHECK_SIZE = 21;
-            if(buffer.size() < HEADER_CHECK_SIZE)
-            {
-                //not enough bytes in the buffer to verify a block header
-                needMoreData = true;
-                return false;
-            }
-
-            //verify the header version is one we support
-            if(buffer.read_uint8(1) != 0)
-            {
-                return false;
-            }
-
-            static const uint8 MIN_BYTES_B4_DATA = 18;      //the minimum value ever supported for '# bytes before data' (if 1 channel active)
-
-            //verify the # of bytes before channel data value
-            uint8 bytesBeforeData = buffer.read_uint8(2);
-            if(bytesBeforeData < MIN_BYTES_B4_DATA)
-            {
-                return false;
-            }
-
-            //verify the sample rate is a valid rate
-            uint8 sampleRateVal = buffer.read_uint8(16);
-            try
-            {
-                //if it is an armed datalogging rate, we need to convert it to a WirelessSampleRate
-                //Note: if not a datalogging rate, this will just cast it to a WirelessSampleRate without conversion.
-                WirelessTypes::WirelessSampleRate rate = WirelessTypes::dataloggingRateToSampleRate(sampleRateVal);
-
-                //check that we can convert it to a SampleRate object
-                SampleRate::FromWirelessEepromValue(rate);
-            }
-            catch(Error_UnknownSampleRate&)
-            {
-                return false;
-            }
-
-            uint8 numSweeps = buffer.read_uint8(2);
-            m_sweepSize = static_cast<uint16>(buffer.read_uint8(3));
-
-            //calculate the index into buffer where the checksum should be located
-            //  #bytes in header + data
-            checksumPos = 3 + bytesBeforeData + (m_sweepSize * numSweeps);
         }
         else if(headerId == REFRESH_HEADER_ID)
         {
@@ -217,11 +279,18 @@ namespace mscl
 
             //calculate the index into buffer where the checksum should be located
             //  2 bytes in header + data
-            checksumPos = 2 + (m_sweepSize * numSweeps);
+            if(m_isMathData)
+            {
+                checksumPos = 2 + (m_derivedSweepSize * numSweeps);
+            }
+            else
+            {
+                checksumPos = 2 + (m_sweepSize * numSweeps);
+            }
         }
         else if(headerId == SESSION_CHANGE_HEADER_ID)
         {
-            static const uint8 HEADER_CHECK_SIZE = 2;
+            static const uint8 HEADER_CHECK_SIZE = 12;
             if(buffer.size() < HEADER_CHECK_SIZE)
             {
                 //not enough bytes in the buffer to verify a session header
@@ -234,6 +303,47 @@ namespace mscl
             //calculate the index into buffer where the checksum should be located
             //  12 bytes in header + data
             checksumPos = 12 + (m_sweepSize * numSweeps);
+        }
+        else if(headerId == SESSION_CHANGE_HEADER_ID_V2)
+        {
+            static const uint8 HEADER_CHECK_SIZE = 13;
+            if(buffer.size() < HEADER_CHECK_SIZE)
+            {
+                //not enough bytes in the buffer to verify a session header
+                needMoreData = true;
+                return false;
+            }
+
+            //verify the sweep type is one we know how to parse
+            SweepType sweepType = static_cast<SweepType>(buffer.read_uint8(2));
+            if(sweepType == sweepType_raw)
+            {
+                m_isMathData = false;
+            }
+            else if(sweepType == sweepType_derived)
+            {
+                m_isMathData = true;
+            }
+            else
+            {
+                //unsupported sweep type
+                return false;
+            }
+
+            uint8 numSweeps = buffer.read_uint8(1);
+
+            if(m_isMathData)
+            {
+                //calculate the index into buffer where the checksum should be located
+                //  13 bytes in header + data
+                checksumPos = 13 + (m_derivedSweepSize * numSweeps);
+            }
+            else
+            {
+                //calculate the index into buffer where the checksum should be located
+                //  13 bytes in header + data
+                checksumPos = 13 + (m_sweepSize * numSweeps);
+            }
         }
 
         //verify we have all the data we need, including the checksum

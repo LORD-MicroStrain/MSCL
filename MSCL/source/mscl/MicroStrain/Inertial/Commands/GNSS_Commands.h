@@ -10,21 +10,21 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    //Title: GPS_Commands
+    //Title: GNSS_Commands
 
-    //Class: GetGpsDataRateBase
-    //    Contains the logic for the "Get GPS Data Rate Base" command
-    class GetGpsDataRateBase
+    //Class: GetGnssDataRateBase
+    //    Contains the logic for the "Get GNSS Data Rate Base" command
+    class GetGnssDataRateBase
     {
     public:
         //Constants: Packet Bytes
-        //    CMD_ID                - CMD_GET_GPS_RATE_BASE        - The <InertialTypes::Command> for this command
+        //    CMD_ID               - CMD_GET_GPS_RATE_BASE        - The <InertialTypes::Command> for this command
         //  FIELD_DATA_BYTE        - 0x84                        - The Data Field Descriptor byte
-        static const InertialTypes::Command CMD_ID    = InertialTypes::CMD_GET_GPS_RATE_BASE;
+        static const InertialTypes::Command CMD_ID    = InertialTypes::CMD_GET_GNSS_RATE_BASE;
         static const uint8 FIELD_DATA_BYTE            = 0x84;
 
     private:
-        GetGpsDataRateBase();    //private default constructor
+        GetGnssDataRateBase();    //private default constructor
 
     public:
         //Function: buildCommand
@@ -67,19 +67,19 @@ namespace mscl
         };
     };
 
-    //Class: GpsMessageFormat
+    //Class: GnssMessageFormat
     //    Contains the logic for the "GPS Message Format" command
-    class GpsMessageFormat
+    class GnssMessageFormat
     {
     public:
         //Constants: Packet Bytes
-        //    CMD_ID                - CMD_GPS_MESSAGE_FORMAT    - The <InertialTypes::Command> for this command
-        //  FIELD_DATA_BYTE        - 0x81                        - The Data Field Descriptor byte
-        static const InertialTypes::Command CMD_ID = InertialTypes::CMD_GPS_MESSAGE_FORMAT;
+        //  CMD_ID                - CMD_GNSS_MESSAGE_FORMAT    - The <InertialTypes::Command> for this command
+        //  FIELD_DATA_BYTE       - 0x81                       - The Data Field Descriptor byte
+        static const InertialTypes::Command CMD_ID = InertialTypes::CMD_GNSS_MESSAGE_FORMAT;
         static const uint8 FIELD_DATA_BYTE            = 0x81;
 
     private:
-        GpsMessageFormat();    //disabled default constructor
+        GnssMessageFormat();    //disabled default constructor
 
     public:
         //Function: buildCommand_get

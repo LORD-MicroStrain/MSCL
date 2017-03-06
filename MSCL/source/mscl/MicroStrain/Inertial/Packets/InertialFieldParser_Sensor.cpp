@@ -46,15 +46,10 @@ namespace mscl
 
     bool FieldParser_RawAccelVector::registerParser()
     {
-        //create a static parser object
         static FieldParser_RawAccelVector p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_RawGyroVector
@@ -78,15 +73,10 @@ namespace mscl
 
     bool FieldParser_RawGyroVector::registerParser()
     {
-        //create a static parser object
         static FieldParser_RawGyroVector p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_RawMagVector
@@ -110,15 +100,10 @@ namespace mscl
 
     bool FieldParser_RawMagVector::registerParser()
     {
-        //create a static parser object
         static FieldParser_RawMagVector p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_ScaledAccelVector
@@ -142,15 +127,10 @@ namespace mscl
 
     bool FieldParser_ScaledAccelVector::registerParser()
     {
-        //create a static parser object
         static FieldParser_ScaledAccelVector p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_ScaledGyroVector
@@ -174,10 +154,7 @@ namespace mscl
 
     bool FieldParser_ScaledGyroVector::registerParser()
     {
-        //create a static parser object
         static FieldParser_ScaledGyroVector p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
@@ -206,15 +183,10 @@ namespace mscl
 
     bool FieldParser_ScaledMagVector::registerParser()
     {
-        //create a static parser object
         static FieldParser_ScaledMagVector p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_DeltaThetaVector
@@ -238,15 +210,10 @@ namespace mscl
 
     bool FieldParser_DeltaThetaVector::registerParser()
     {
-        //create a static parser object
         static FieldParser_DeltaThetaVector p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_DeltaVelocityVector
@@ -270,15 +237,10 @@ namespace mscl
 
     bool FieldParser_DeltaVelocityVector::registerParser()
     {
-        //create a static parser object
         static FieldParser_DeltaVelocityVector p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_OrientationMatrix
@@ -296,15 +258,10 @@ namespace mscl
 
     bool FieldParser_OrientationMatrix::registerParser()
     {
-        //create a static parser object
         static FieldParser_OrientationMatrix p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_Quaternion
@@ -322,15 +279,10 @@ namespace mscl
 
     bool FieldParser_Quaternion::registerParser()
     {
-        //create a static parser object
         static FieldParser_Quaternion p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_OrientationUpdateMatrix
@@ -348,15 +300,10 @@ namespace mscl
 
     bool FieldParser_OrientationUpdateMatrix::registerParser()
     {
-        //create a static parser object
         static FieldParser_OrientationUpdateMatrix p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_EulerAngles
@@ -380,15 +327,10 @@ namespace mscl
 
     bool FieldParser_EulerAngles::registerParser()
     {
-        //create a static parser object
         static FieldParser_EulerAngles p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_InternalTimestamp
@@ -406,15 +348,10 @@ namespace mscl
 
     bool FieldParser_InternalTimestamp::registerParser()
     {
-        //create a static parser object
         static FieldParser_InternalTimestamp p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_BeaconedTimestamp
@@ -451,15 +388,10 @@ namespace mscl
 
     bool FieldParser_BeaconedTimestamp::registerParser()
     {
-        //create a static parser object
         static FieldParser_BeaconedTimestamp p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_StabilizedMagVector
@@ -483,10 +415,7 @@ namespace mscl
 
     bool FieldParser_StabilizedMagVector::registerParser()
     {
-        //create a static parser object
         static FieldParser_StabilizedMagVector p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
@@ -515,15 +444,10 @@ namespace mscl
 
     bool FieldParser_StabilizedAccelVector::registerParser()
     {
-        //create a static parser object
         static FieldParser_StabilizedAccelVector p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_GpsCorrelationTimestamp
@@ -549,10 +473,7 @@ namespace mscl
 
     bool FieldParser_GpsCorrelationTimestamp::registerParser()
     {
-        //create a static parser object
         static FieldParser_GpsCorrelationTimestamp p;
-
-        //register the parser
         return InertialFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================

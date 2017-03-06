@@ -222,4 +222,36 @@ namespace mscl
                 throw Error("Attempting to convert a transmit power (" + Utils::toStr(power) + ") without a legacy equivalent.");
         }
     }
+
+    uint8 WirelessTypes::bytesPerDerivedChannel(DerivedChannelType id)
+    {
+        switch(id)
+        {
+            case WirelessTypes::derived_rms:
+            case WirelessTypes::derived_peakToPeak:
+            case WirelessTypes::derived_ips:
+            case WirelessTypes::derived_crestFactor:
+                return 4;
+
+            default:
+                throw Error_NotSupported("Invalid Derived Channel ID ( " + Utils::toStr(id) + ")");
+        }
+    }
+
+    uint32 WirelessTypes::derivedBytesPerSweep(const WirelessTypes::DerivedChannelMasks& derivedChannelMasks)
+    {
+        uint32 sweepSize = 0;
+        uint8 count = 0;
+        for(const auto& ch : derivedChannelMasks)
+        {
+            count = ch.second.count();
+
+            if(count > 0)
+            {
+                sweepSize += (count * bytesPerDerivedChannel(ch.first));
+            }
+        }
+
+        return sweepSize;
+    }
 }

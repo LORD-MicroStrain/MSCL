@@ -10,8 +10,6 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/DataPoint.h"
 #include "mscl/Utils.h"
 
-#include <unordered_map>
-
 namespace mscl
 {
     //API Class: WirelessDataPoint
@@ -22,13 +20,6 @@ namespace mscl
     class WirelessDataPoint : public DataPoint
     {
     public:
-        enum ChannelPropertyId
-        {
-          channelPropertyId_angle
-        };
-
-        typedef std::unordered_map<ChannelPropertyId, Value, std::hash<int>> ChannelProperties;
-
         //Default Constructor: WirelessDataPoint
         //    Builds a WirelessDataPoint object
         WirelessDataPoint();
@@ -83,8 +74,6 @@ namespace mscl
         //    The channel name associated with the data point (as a lazy load function).
         mutable Utils::Lazy<std::string> m_channelName;
 
-        ChannelProperties m_channelProperties;
-
     public:
         //API Function: channelId
         //    Gets the <WirelessChannel::ChannelId> associated with the data point.
@@ -110,12 +99,7 @@ namespace mscl
         //
         //Returns:
         //    The name of the channel.
-        //
-        //Exceptions:
-        //    - <Error>: Unknown channel.
         const std::string& channelName() const;
-
-        const Value& channelProperty(ChannelPropertyId id) const;
     };
 
     //API Typedef: ChannelData

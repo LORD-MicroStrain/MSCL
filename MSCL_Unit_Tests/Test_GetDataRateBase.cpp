@@ -6,7 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Inertial/InertialDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/Commands/Sensor_Commands.h"
-#include "mscl/MicroStrain/Inertial/Commands/GPS_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/GNSS_Commands.h"
 #include "mscl/MicroStrain/Inertial/Commands/EstFilter_Commands.h"
 #include "mscl/Exceptions.h"
 
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_SUITE(GetDataRateBase_Test_GPS)
 BOOST_AUTO_TEST_CASE(GetDataRateBase_BuildCommand_GPS)
 {
     //create the GetDeviceInfo command
-    ByteStream b = GetGpsDataRateBase::buildCommand();
+    ByteStream b = GetGnssDataRateBase::buildCommand();
 
     BOOST_CHECK_EQUAL(b.read_uint8(0), 0x75);
     BOOST_CHECK_EQUAL(b.read_uint8(1), 0x65);
@@ -192,7 +192,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_BuildCommand_GPS)
 BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Fail_DescSet)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    GetGpsDataRateBase::Response response(rc);
+    GetGnssDataRateBase::Response response(rc);
 
     Bytes fieldData1;
     fieldData1.push_back(0x07);
@@ -206,7 +206,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Fail_DescSet)
 BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Fail_FieldDataLen)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    GetGpsDataRateBase::Response response(rc);
+    GetGnssDataRateBase::Response response(rc);
 
     Bytes fieldData;
     fieldData.push_back(0x07);
@@ -219,7 +219,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Fail_FieldDataLen)
 BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Fail_FieldDesc)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    GetGpsDataRateBase::Response response(rc);
+    GetGnssDataRateBase::Response response(rc);
 
     Bytes fieldData;
     fieldData.push_back(0x07);
@@ -233,7 +233,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Fail_FieldDesc)
 BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Fail_CommandEcho)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    GetGpsDataRateBase::Response response(rc);
+    GetGnssDataRateBase::Response response(rc);
 
     Bytes fieldData;
     fieldData.push_back(0x01);    //bad command echo
@@ -247,7 +247,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Fail_CommandEcho)
 BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_FailWithErrorCode)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    GetGpsDataRateBase::Response response(rc);
+    GetGnssDataRateBase::Response response(rc);
 
     Bytes fieldData;
     fieldData.push_back(0x07);
@@ -263,7 +263,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_FailWithErrorCode)
 BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Success_NotFullyMatched)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    GetGpsDataRateBase::Response response(rc);
+    GetGnssDataRateBase::Response response(rc);
 
     Bytes fieldData1;
     fieldData1.push_back(0x07);
@@ -279,7 +279,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Success_NotFullyMatched)
 BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Success_OnlyData)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    GetGpsDataRateBase::Response response(rc);
+    GetGnssDataRateBase::Response response(rc);
 
     ByteStream bytes;
     bytes.append_uint16(2000);
@@ -297,7 +297,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Success_OnlyData)
 BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Success)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    GetGpsDataRateBase::Response response(rc);
+    GetGnssDataRateBase::Response response(rc);
 
     ByteStream bytes;
     bytes.append_uint16(40);

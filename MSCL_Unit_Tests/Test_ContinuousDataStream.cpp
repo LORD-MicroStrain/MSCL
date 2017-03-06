@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_SUITE(ContinuousDataStream_Test)
 BOOST_AUTO_TEST_CASE(ContinuousDataStream_BuildCommand_Sensor)
 {
     //create the "get" command
-    ByteStream b = ContinuousDataStream::buildCommand_get(InertialTypes::CATEGORY_GPS);
+    ByteStream b = ContinuousDataStream::buildCommand_get(InertialTypes::CATEGORY_GNSS);
     BOOST_CHECK_EQUAL(b.read_uint8(0), 0x75);
     BOOST_CHECK_EQUAL(b.read_uint8(1), 0x65);
     BOOST_CHECK_EQUAL(b.read_uint8(2), 0x0C);
@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE(ContinuousDataStream_BuildCommand_Sensor)
     BOOST_CHECK_EQUAL(b.read_uint8(10), 0x1e);
 
     //create the "set" command
-    ByteStream b2 = ContinuousDataStream::buildCommand_set(InertialTypes::CATEGORY_GPS, true);
+    ByteStream b2 = ContinuousDataStream::buildCommand_set(InertialTypes::CATEGORY_GNSS, true);
     BOOST_CHECK_EQUAL(b2.read_uint8(0), 0x75);
     BOOST_CHECK_EQUAL(b2.read_uint8(1), 0x65);
     BOOST_CHECK_EQUAL(b2.read_uint8(2), 0x0C);
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(ContinuousDataStream_BuildCommand_Sensor)
 BOOST_AUTO_TEST_CASE(ContinuousDataStream_get_Match_Success)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    ContinuousDataStream::Response response(rc, true, InertialTypes::CATEGORY_GPS);
+    ContinuousDataStream::Response response(rc, true, InertialTypes::CATEGORY_GNSS);
 
     Bytes dataField;
     dataField.push_back(0x02);
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(ContinuousDataStream_get_Match_Success)
 BOOST_AUTO_TEST_CASE(ContinuousDataStream_set_Match_Success)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    ContinuousDataStream::Response response(rc, false, InertialTypes::CATEGORY_GPS);
+    ContinuousDataStream::Response response(rc, false, InertialTypes::CATEGORY_GNSS);
 
     Bytes ackField;
     ackField.push_back(0x11);
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(ContinuousDataStream_set_Match_Success)
 BOOST_AUTO_TEST_CASE(ContinuousDataStream_get_Match_Success_OnlyData)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    ContinuousDataStream::Response response(rc, true, InertialTypes::CATEGORY_GPS);
+    ContinuousDataStream::Response response(rc, true, InertialTypes::CATEGORY_GNSS);
 
     Bytes fieldData1;
     fieldData1.push_back(0x02);
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(ContinuousDataStream_get_Match_Success_OnlyData)
 BOOST_AUTO_TEST_CASE(ContinuousDataStream_get_Match_Fail_WrongDeviceSelector)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    ContinuousDataStream::Response response(rc, true, InertialTypes::CATEGORY_GPS);
+    ContinuousDataStream::Response response(rc, true, InertialTypes::CATEGORY_GNSS);
 
     Bytes fieldData1;
     fieldData1.push_back(0x01);    //invalid device selector (device category)
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(ContinuousDataStream_get_Match_Fail_WrongDeviceSelector)
 BOOST_AUTO_TEST_CASE(ContinuousDataStream_get_Match_Fail_SmallFieldData)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    ContinuousDataStream::Response response(rc, true, InertialTypes::CATEGORY_GPS);
+    ContinuousDataStream::Response response(rc, true, InertialTypes::CATEGORY_GNSS);
 
     Bytes fieldData1;
     fieldData1.push_back(0x02);    //missing a byte

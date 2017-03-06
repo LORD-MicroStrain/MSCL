@@ -25,11 +25,10 @@ namespace mscl
                                          ValueType type,
                                          const anyType& value,
                                          const ChannelProperties& channelProperties):
-        DataPoint(type, value),
+        DataPoint(type, value, channelProperties),
         m_channelId(channelId),
         m_channelNumber(channelNumber),
-        m_channelName(std::bind(WirelessChannel::channelName, m_channelId)),
-        m_channelProperties(channelProperties)
+        m_channelName(std::bind(WirelessChannel::channelName, m_channelId))
     {
     }
 
@@ -40,11 +39,10 @@ namespace mscl
                                          ValueType type,
                                          const anyType& value,
                                          const ChannelProperties& channelProperties):
-        DataPoint(type, value),
+        DataPoint(type, value, channelProperties),
         m_channelId(channelId),
         m_channelNumber(channelNumber),
-        m_channelName(channelName),
-        m_channelProperties(channelProperties)
+        m_channelName(channelName)
     {
     }
 
@@ -62,13 +60,5 @@ namespace mscl
     const std::string& WirelessDataPoint::channelName() const
     {
         return *m_channelName;
-    }
-
-    const Value& WirelessDataPoint::channelProperty(ChannelPropertyId id) const
-    {
-        auto iter = m_channelProperties.find(id);
-        if(iter == m_channelProperties.end())
-          throw std::runtime_error("invalid property");
-        return iter->second;
     }
 }

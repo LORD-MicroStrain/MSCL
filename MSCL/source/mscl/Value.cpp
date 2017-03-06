@@ -56,15 +56,15 @@ namespace mscl
     {
         switch(m_storedAs)
         {
-            case valueType_float:    return as_float() == other.as_float();
-            case valueType_double:    return as_double() == other.as_double();
-            case valueType_uint16:    return as_uint16() == other.as_uint16();
-            case valueType_uint32:    return as_uint32() == other.as_uint32();
-            case valueType_int16:    return as_int16() == other.as_int16();
-            case valueType_int32:    return as_int32() == other.as_int32();
-            case valueType_uint8:    return as_uint8() == other.as_uint8();
-            case valueType_bool:    return as_bool() == other.as_bool();
-            case valueType_string:    return as_string() == other.as_string();
+            case valueType_float:       return as_float() == other.as_float();
+            case valueType_double:      return as_double() == other.as_double();
+            case valueType_uint16:      return as_uint16() == other.as_uint16();
+            case valueType_uint32:      return as_uint32() == other.as_uint32();
+            case valueType_int16:       return as_int16() == other.as_int16();
+            case valueType_int32:       return as_int32() == other.as_int32();
+            case valueType_uint8:       return as_uint8() == other.as_uint8();
+            case valueType_bool:        return as_bool() == other.as_bool();
+            case valueType_string:      return as_string() == other.as_string();
 
             default:
                 return false;
@@ -83,15 +83,15 @@ namespace mscl
         {
             switch(m_storedAs)
             {
-                case valueType_float:    return (any_cast<float>(m_value));
-                case valueType_double:    return static_cast<float>(any_cast<double>(m_value));
-                case valueType_uint16:    return static_cast<float>(any_cast<uint16>(m_value));
-                case valueType_uint32:    return static_cast<float>(any_cast<uint32>(m_value));
-                case valueType_int16:    return static_cast<float>(any_cast<short>(m_value));
-                case valueType_int32:    return static_cast<float>(any_cast<int>(m_value));
-                case valueType_uint8:    return static_cast<float>(any_cast<uint8>(m_value));
-                case valueType_bool:    return static_cast<float>(any_cast<bool>(m_value));
-                case valueType_string:    return std::stof(any_cast<std::string>(m_value));
+                case valueType_float:       return (any_cast<float>(m_value));
+                case valueType_double:      return static_cast<float>(any_cast<double>(m_value));
+                case valueType_uint16:      return static_cast<float>(any_cast<uint16>(m_value));
+                case valueType_uint32:      return static_cast<float>(any_cast<uint32>(m_value));
+                case valueType_int16:       return static_cast<float>(any_cast<short>(m_value));
+                case valueType_int32:       return static_cast<float>(any_cast<int>(m_value));
+                case valueType_uint8:       return static_cast<float>(any_cast<uint8>(m_value));
+                case valueType_bool:        return static_cast<float>(any_cast<bool>(m_value));
+                case valueType_string:      return std::stof(any_cast<std::string>(m_value));
 
                 default:
                     throw Error_BadDataType();
@@ -110,15 +110,15 @@ namespace mscl
         {
             switch(m_storedAs)
             {
-                case valueType_double:    return (any_cast<double>(m_value));
-                case valueType_float:    return static_cast<double>(any_cast<float>(m_value));
-                case valueType_uint16:    return static_cast<double>(any_cast<uint16>(m_value));
-                case valueType_uint32:    return static_cast<double>(any_cast<uint32>(m_value));
-                case valueType_int16:    return static_cast<double>(any_cast<short>(m_value));
-                case valueType_int32:    return static_cast<double>(any_cast<int>(m_value));
-                case valueType_uint8:    return static_cast<double>(any_cast<uint8>(m_value));
-                case valueType_bool:    return static_cast<double>(any_cast<bool>(m_value));
-                case valueType_string:    return std::stod(any_cast<std::string>(m_value));
+                case valueType_double:      return (any_cast<double>(m_value));
+                case valueType_float:       return static_cast<double>(any_cast<float>(m_value));
+                case valueType_uint16:      return static_cast<double>(any_cast<uint16>(m_value));
+                case valueType_uint32:      return static_cast<double>(any_cast<uint32>(m_value));
+                case valueType_int16:       return static_cast<double>(any_cast<short>(m_value));
+                case valueType_int32:       return static_cast<double>(any_cast<int>(m_value));
+                case valueType_uint8:       return static_cast<double>(any_cast<uint8>(m_value));
+                case valueType_bool:        return static_cast<double>(any_cast<bool>(m_value));
+                case valueType_string:      return std::stod(any_cast<std::string>(m_value));
 
                 default:
                     throw Error_BadDataType();
@@ -137,15 +137,15 @@ namespace mscl
         {
             switch(m_storedAs)
             {
-                case valueType_uint8:    return any_cast<uint8>(m_value);
-                case valueType_uint32:    return static_cast<uint8>(any_cast<uint32>(m_value));
-                case valueType_int16:    return static_cast<uint8>(any_cast<short>(m_value));
-                case valueType_int32:    return static_cast<uint8>(any_cast<int>(m_value));
-                case valueType_float:    return static_cast<uint8>(any_cast<float>(m_value));
-                case valueType_double:    return static_cast<uint8>(any_cast<double>(m_value));
-                case valueType_uint16:    return static_cast<uint8>(any_cast<uint16>(m_value));
-                case valueType_bool:    return static_cast<uint8>(any_cast<bool>(m_value));
-                case valueType_string:    return static_cast<uint8>(std::stoi(any_cast<std::string>(m_value)));
+                case valueType_uint8:       return any_cast<uint8>(m_value);
+                case valueType_uint32:      return static_cast<uint8>(any_cast<uint32>(m_value));
+                case valueType_int16:       return static_cast<uint8>(any_cast<short>(m_value));
+                case valueType_int32:       return static_cast<uint8>(any_cast<int>(m_value));
+                case valueType_float:       return static_cast<uint8>(any_cast<float>(m_value));
+                case valueType_double:      return static_cast<uint8>(any_cast<double>(m_value));
+                case valueType_uint16:      return static_cast<uint8>(any_cast<uint16>(m_value));
+                case valueType_bool:        return static_cast<uint8>(any_cast<bool>(m_value));
+                case valueType_string:      return static_cast<uint8>(std::stoi(any_cast<std::string>(m_value)));
 
                 default:
                     throw Error_BadDataType();
@@ -164,15 +164,15 @@ namespace mscl
         {
             switch(m_storedAs)
             {
-                case valueType_uint16:    return any_cast<uint16>(m_value);
-                case valueType_uint32:    return static_cast<uint16>(any_cast<uint32>(m_value));
-                case valueType_int16:    return static_cast<uint16>(any_cast<short>(m_value));
-                case valueType_int32:    return static_cast<uint16>(any_cast<int>(m_value));
-                case valueType_float:    return static_cast<uint16>(any_cast<float>(m_value));
-                case valueType_double:    return static_cast<uint16>(any_cast<double>(m_value));
-                case valueType_uint8:    return static_cast<uint16>(any_cast<uint8>(m_value));
-                case valueType_bool:    return static_cast<uint16>(any_cast<bool>(m_value));
-                case valueType_string:    return static_cast<uint16>(std::stoi(any_cast<std::string>(m_value)));
+                case valueType_uint16:      return any_cast<uint16>(m_value);
+                case valueType_uint32:      return static_cast<uint16>(any_cast<uint32>(m_value));
+                case valueType_int16:       return static_cast<uint16>(any_cast<short>(m_value));
+                case valueType_int32:       return static_cast<uint16>(any_cast<int>(m_value));
+                case valueType_float:       return static_cast<uint16>(any_cast<float>(m_value));
+                case valueType_double:      return static_cast<uint16>(any_cast<double>(m_value));
+                case valueType_uint8:       return static_cast<uint16>(any_cast<uint8>(m_value));
+                case valueType_bool:        return static_cast<uint16>(any_cast<bool>(m_value));
+                case valueType_string:      return static_cast<uint16>(std::stoi(any_cast<std::string>(m_value)));
 
                 default:
                     throw Error_BadDataType();
@@ -191,15 +191,15 @@ namespace mscl
         {
             switch(m_storedAs)
             {
-                case valueType_uint32:    return any_cast<uint32>(m_value);
-                case valueType_uint16:    return static_cast<uint32>(any_cast<uint16>(m_value));
-                case valueType_int16:    return static_cast<uint32>(any_cast<short>(m_value));
-                case valueType_int32:    return static_cast<uint32>(any_cast<int>(m_value));
-                case valueType_float:    return static_cast<uint32>(any_cast<float>(m_value));
-                case valueType_double:    return static_cast<uint32>(any_cast<double>(m_value));
-                case valueType_uint8:    return static_cast<uint32>(any_cast<uint8>(m_value));
-                case valueType_bool:    return static_cast<uint32>(any_cast<bool>(m_value));
-                case valueType_string:    return static_cast<uint32>(std::stoul(any_cast<std::string>(m_value)));
+                case valueType_uint32:      return any_cast<uint32>(m_value);
+                case valueType_uint16:      return static_cast<uint32>(any_cast<uint16>(m_value));
+                case valueType_int16:       return static_cast<uint32>(any_cast<short>(m_value));
+                case valueType_int32:       return static_cast<uint32>(any_cast<int>(m_value));
+                case valueType_float:       return static_cast<uint32>(any_cast<float>(m_value));
+                case valueType_double:      return static_cast<uint32>(any_cast<double>(m_value));
+                case valueType_uint8:       return static_cast<uint32>(any_cast<uint8>(m_value));
+                case valueType_bool:        return static_cast<uint32>(any_cast<bool>(m_value));
+                case valueType_string:      return static_cast<uint32>(std::stoul(any_cast<std::string>(m_value)));
 
                 default:
                     throw Error_BadDataType();
@@ -218,15 +218,15 @@ namespace mscl
         {
             switch(m_storedAs)
             {
-                case valueType_int16:    return(any_cast<short>(m_value));
-                case valueType_int32:    return static_cast<short>(any_cast<int>(m_value));
-                case valueType_uint32:    return static_cast<short>(any_cast<uint32>(m_value));
-                case valueType_uint16:    return static_cast<short>(any_cast<uint16>(m_value));
-                case valueType_float:    return static_cast<short>(any_cast<float>(m_value));
-                case valueType_double:    return static_cast<short>(any_cast<double>(m_value));
-                case valueType_uint8:    return static_cast<short>(any_cast<uint8>(m_value));
-                case valueType_bool:    return static_cast<short>(any_cast<bool>(m_value));
-                case valueType_string:    return static_cast<short>(std::stoi(any_cast<std::string>(m_value)));
+                case valueType_int16:       return(any_cast<short>(m_value));
+                case valueType_int32:       return static_cast<short>(any_cast<int>(m_value));
+                case valueType_uint32:      return static_cast<short>(any_cast<uint32>(m_value));
+                case valueType_uint16:      return static_cast<short>(any_cast<uint16>(m_value));
+                case valueType_float:       return static_cast<short>(any_cast<float>(m_value));
+                case valueType_double:      return static_cast<short>(any_cast<double>(m_value));
+                case valueType_uint8:       return static_cast<short>(any_cast<uint8>(m_value));
+                case valueType_bool:        return static_cast<short>(any_cast<bool>(m_value));
+                case valueType_string:      return static_cast<short>(std::stoi(any_cast<std::string>(m_value)));
 
                 default:
                     throw Error_BadDataType();
@@ -245,15 +245,15 @@ namespace mscl
         {
             switch(m_storedAs)
             {
-                case valueType_int32:    return any_cast<int>(m_value);
-                case valueType_int16:    return static_cast<int>(any_cast<short>(m_value));
-                case valueType_uint32:    return static_cast<int>(any_cast<uint32>(m_value));
-                case valueType_uint16:    return static_cast<int>(any_cast<uint16>(m_value));
-                case valueType_float:    return static_cast<int>(any_cast<float>(m_value));
-                case valueType_double:    return static_cast<int>(any_cast<double>(m_value));
-                case valueType_uint8:    return static_cast<int>(any_cast<uint8>(m_value));
-                case valueType_bool:    return static_cast<int>(any_cast<bool>(m_value));
-                case valueType_string:    return static_cast<int>(std::stoi(any_cast<std::string>(m_value)));
+                case valueType_int32:       return any_cast<int>(m_value);
+                case valueType_int16:       return static_cast<int>(any_cast<short>(m_value));
+                case valueType_uint32:      return static_cast<int>(any_cast<uint32>(m_value));
+                case valueType_uint16:      return static_cast<int>(any_cast<uint16>(m_value));
+                case valueType_float:       return static_cast<int>(any_cast<float>(m_value));
+                case valueType_double:      return static_cast<int>(any_cast<double>(m_value));
+                case valueType_uint8:       return static_cast<int>(any_cast<uint8>(m_value));
+                case valueType_bool:        return static_cast<int>(any_cast<bool>(m_value));
+                case valueType_string:      return static_cast<int>(std::stoi(any_cast<std::string>(m_value)));
 
                 default:
                     throw Error_BadDataType();
@@ -296,6 +296,17 @@ namespace mscl
         }
     }
 
+    ChannelMask Value::as_ChannelMask() const
+    {
+        if(m_storedAs == valueType_ChannelMask)
+        {
+            ChannelMask result = any_cast<ChannelMask>(m_value);
+            return result;
+        }
+
+        throw Error_BadDataType();
+    }
+
     std::string Value::as_string() const
     {
         //if the data is stored as a string
@@ -314,14 +325,14 @@ namespace mscl
         //build the string depending on how the value is stored
         switch(m_storedAs)
         {
-        case valueType_uint8:    return Utils::toStr(static_cast<uint16>(as_uint8()));
-        case valueType_uint16:    return Utils::toStr(as_uint16());
-        case valueType_uint32:    return Utils::toStr(as_uint32());
-        case valueType_int16:    return Utils::toStr(as_int16());
-        case valueType_int32:    return Utils::toStr(as_int32());
-        case valueType_float:    return Utils::toStr(as_float());
-        case valueType_double:    return Utils::toStr(as_double());
-        case valueType_bool:    return Utils::toStr(as_bool());
+        case valueType_uint8:       return Utils::toStr(static_cast<uint16>(as_uint8()));
+        case valueType_uint16:      return Utils::toStr(as_uint16());
+        case valueType_uint32:      return Utils::toStr(as_uint32());
+        case valueType_int16:       return Utils::toStr(as_int16());
+        case valueType_int32:       return Utils::toStr(as_int32());
+        case valueType_float:       return Utils::toStr(as_float());
+        case valueType_double:      return Utils::toStr(as_double());
+        case valueType_bool:        return Utils::toStr(as_bool());
 
         default:
             throw Error_BadDataType();

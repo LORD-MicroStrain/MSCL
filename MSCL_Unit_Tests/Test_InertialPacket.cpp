@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(InertialPacket_isDataPacket)
     BOOST_CHECK_EQUAL(p.isDataPacket(), true);
 
     //set the descriptor set to a data set, check that isDataPacket returns true
-    p.descriptorSet(DescriptorSet::DESC_SET_DATA_GPS);
+    p.descriptorSet(DescriptorSet::DESC_SET_DATA_GNSS);
     BOOST_CHECK_EQUAL(p.isDataPacket(), true);
 
     //set the descriptor set to a data set, check that isDataPacket returns true

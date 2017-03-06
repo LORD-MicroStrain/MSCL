@@ -13,6 +13,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "LoggedDataSweep.h"
 #include "WirelessNode.h"
 #include "WirelessTypes.h"
+#include "Packets/WirelessDataPacket.h"
 #include "mscl/Version.h"
 #include "mscl/MicroStrain/SampleRate.h"
 
@@ -24,22 +25,22 @@ namespace mscl
 
     //Struct: MathMetaData
     //  Information about the Math Channels.
-    struct MathMetaData
+    /*struct MathMetaData
     {
         //Variable: id
         //  The identifier of the algorithm used.
         uint8 id;
 
-        //Variable: sourceChannel
-        //  The zero-indexed channel used to run the math calculation.
-        uint8 sourceChannel;
+        //Variable: sourceChannelMask
+        //  The <ChannelMask> of the source channels for this algorithm.
+        ChannelMask sourceChannelMask;
 
-        MathMetaData(uint8 algorithmId, uint8 source):
+        MathMetaData(uint8 algorithmId, uint16 channelMaskValue):
             id(algorithmId),
-            sourceChannel(source)
+            sourceChannelMask(ChannelMask(channelMaskValue))
         {
         }
-    };
+    };*/
 
     struct DatalogSessionInfo
     {
@@ -57,10 +58,6 @@ namespace mscl
         //Variable: numSweeps
         //    The total number of sweeps that are in the session.
         uint32 numSweeps;
-
-        //Variable: sweepSize
-        //    The size (number of bytes) of the sweeps in the session.
-        uint16 sweepSize;
         
         //Variable: sessionIndex
         //    The datalogging session index. This starts at 1 for the first session,
@@ -75,9 +72,17 @@ namespace mscl
         //    The <SampleRate> for the session.
         SampleRate sampleRate;
 
+        //Variable: derivedRate
+        //    The <SampleRate> of any derived data.
+        SampleRate derivedRate;
+
         //Variable: timeBetweenSweeps
         //    The number of nanoseconds between each sweep, determined by the sample rate.
         uint64 timeBetweenSweeps;
+
+        //Variable: derivedTimeBetweenSweeps
+        //    The number of nanoseconds between each derived sweep, determined by the derived sample rate.
+        uint64 derivedTimeBetweenSweeps;
 
         //Variable: dataType
         //    The <WirelessTypes::DataType> of the session.
@@ -107,11 +112,12 @@ namespace mscl
             startOfTrigger(false),
             triggerType(WirelessTypes::trigger_userInit),
             numSweeps(0),
-            sweepSize(0),
             sessionIndex(0),
             activeChannels(0),
             sampleRate(SampleRate::Hertz(0)),
+            derivedRate(SampleRate::Hertz(0)),
             timeBetweenSweeps(0),
+            derivedTimeBetweenSweeps(0),
             dataType(WirelessTypes::dataType_uint16),
             valueType(valueType_uint16),
             userString(""),
@@ -188,8 +194,8 @@ namespace mscl
         bool m_isMathData;
 
         //Variable: m_mathMetaData
-        //  A vector of the <MathMetaData> for the current data section (gets updated each math block header).
-        std::vector<MathMetaData> m_mathMetaDeta;
+        //  A vector of the <WirelessDataPacket::AlgorithmMetaData> for the current data section (gets updated each math block header).
+        std::vector<WirelessDataPacket::AlgorithmMetaData> m_mathMetaDeta;
 
     private:
         //Function: parseTriggerHeader_v1
@@ -208,9 +214,19 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred.
         void parseTriggerHeader_v2();
 
+        void parseRawCalData();
+
+        void parseDerivedMetaData(uint8 numActiveAlgorithms);
+
+        //Function: parseNextSweep
+        //  Parses the next Raw Data Sweep from the current byte position.
         LoggedDataSweep parseNextSweep();
 
+        //Function: parseNextMathSweep
+        //  Parses the next Math/Derived Data Sweep from the current byte position.
         LoggedDataSweep parseNextMathSweep();
+
+
 
     public:
         //API Function: complete

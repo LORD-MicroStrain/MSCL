@@ -5,6 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "mscl/Communication/SerialConnection.h"
 #include "mscl/MicroStrain/Inertial/InertialNode.h"
+#include "mscl/MicroStrain/Inertial/Features/InertialNodeFeatures.h"
 #include "mscl/MicroStrain/Inertial/Packets/InertialDataPacket.h"
 #include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/ChecksumBuilder.h"
@@ -14,22 +15,25 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mock_InertialNode.h"
 #include "mock_Connection.h"
 
+#include <string>
+
 using namespace mscl;
 
-void expectNodeInfo_InertialNode(std::shared_ptr<mock_InertialNodeImpl> node)
+void expectNodeInfo_InertialNode(std::shared_ptr<mock_InertialNodeImpl> node, const std::string& modelNumber="6251-12345")
 {
     //========================================================================================
     //BUILD THE RESPONSE TO THE getDeviceInfo COMMAND
     InertialDeviceInfo info;
     info.fwVersion = Version(1, 1, 17);
     info.modelName = "ABCDABCDABCDABCD";
-    info.modelNumber = "ABCDABCDABCDABCD";
+    info.modelNumber = modelNumber;
+    info.model = InertialModels::nodeFromModelString(modelNumber);
     info.serialNumber = "ABCDABCDABCDABCD";
     info.lotNumber = "ABCDABCDABCDABCD";
     info.deviceOptions = "ABCDABCDABCDABCD";
 
     //make the getDeviceInfo command return the response we created
-    MOCK_EXPECT(node->getDeviceInfo).once().returns(info);    
+    MOCK_EXPECT(node->getDeviceInfo).returns(info);    
     //========================================================================================
 
     //========================================================================================
@@ -37,10 +41,10 @@ void expectNodeInfo_InertialNode(std::shared_ptr<mock_InertialNodeImpl> node)
     std::vector<uint16> fields;
     fields.push_back(InertialTypes::CMD_GET_SENSOR_RATE_BASE);
     fields.push_back(InertialTypes::CMD_GET_EF_RATE_BASE);
-    fields.push_back(InertialTypes::CMD_GET_GPS_RATE_BASE);
+    fields.push_back(InertialTypes::CMD_GET_GNSS_RATE_BASE);
     
     //make the getDescriptorSets command return the response we created
-    MOCK_EXPECT(node->getDescriptorSets).once().returns(fields);
+    MOCK_EXPECT(node->getDescriptorSets).returns(fields);
     //========================================================================================
 }
 
@@ -157,13 +161,13 @@ BOOST_AUTO_TEST_CASE(InertialNode_info)
     expectNodeInfo_InertialNode(impl);
 
     //verify the result is good
-    BOOST_CHECK_EQUAL(node.info().firmwareVersion().str(), "1.1.17");
-    BOOST_CHECK_EQUAL(node.info().modelName(), "ABCDABCDABCDABCD");
-    BOOST_CHECK_EQUAL(node.info().modelNumber(), "ABCDABCDABCDABCD");
-    BOOST_CHECK_EQUAL(node.info().serialNumber(), "ABCDABCDABCDABCD");
-    BOOST_CHECK_EQUAL(node.info().lotNumber(), "ABCDABCDABCDABCD");
-    BOOST_CHECK_EQUAL(node.info().deviceOptions(), "ABCDABCDABCDABCD");
-    BOOST_CHECK_EQUAL(node.info().supportsCommand(InertialTypes::CMD_GET_EF_RATE_BASE), true);
+    BOOST_CHECK_EQUAL(node.firmwareVersion().str(), "1.1.17");
+    BOOST_CHECK_EQUAL(node.modelName(), "ABCDABCDABCDABCD");
+    BOOST_CHECK_EQUAL(node.modelNumber(), "6251-12345");
+    BOOST_CHECK_EQUAL(node.model(), InertialModels::node_3dm_gx5_45);
+    BOOST_CHECK_EQUAL(node.serialNumber(), "ABCDABCDABCDABCD");
+    BOOST_CHECK_EQUAL(node.lotNumber(), "ABCDABCDABCDABCD");
+    BOOST_CHECK_EQUAL(node.deviceOptions(), "ABCDABCDABCDABCD");
 }
 
 BOOST_AUTO_TEST_CASE(InertialNode_getDataRateBase_Sensor)
@@ -193,7 +197,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataRateBase_Gps)
     MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
 
     //verify that getGpsDataRateBase() returns the correct value
-    BOOST_CHECK_EQUAL(node.getDataRateBase(InertialTypes::CATEGORY_GPS), 100);
+    BOOST_CHECK_EQUAL(node.getDataRateBase(InertialTypes::CATEGORY_GNSS), 100);
 }
 
 BOOST_AUTO_TEST_CASE(InertialNode_getDataRateBase_EstFilter)
@@ -297,11 +301,11 @@ BOOST_AUTO_TEST_CASE(InertialNode_getMessageFormat_Gps)
     //make the doInertialCmd function return the response that we want
     MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
 
-    InertialChannels chs = node.getActiveChannelFields(InertialTypes::CATEGORY_GPS);
+    InertialChannels chs = node.getActiveChannelFields(InertialTypes::CATEGORY_GNSS);
 
     //verify that the command returned the correct value
     BOOST_CHECK_EQUAL(chs.size(), 1);
-    BOOST_CHECK_EQUAL(chs.at(0).channelField(), InertialTypes::CH_FIELD_GPS_LLH_POSITION);
+    BOOST_CHECK_EQUAL(chs.at(0).channelField(), InertialTypes::CH_FIELD_GNSS_LLH_POSITION);
     BOOST_CHECK_EQUAL(chs.at(0).rateDecimation(sampleRateBase), 2);
     BOOST_CHECK_EQUAL(chs.at(0).sampleRate().samplesPerSecond(), SampleRate::Hertz(2).samplesPerSecond());
     BOOST_CHECK_EQUAL(chs.at(0).descriptorSet(), 0x81);
@@ -367,7 +371,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_InvalidChannels_Sensor)
 
     InertialChannels chs;
     chs.push_back(InertialChannel(InertialTypes::CH_FIELD_SENSOR_EULER_ANGLES, SampleRate::Hertz(10)));
-    chs.push_back(InertialChannel(InertialTypes::CH_FIELD_GPS_ECEF_VELOCITY, SampleRate::Hertz(20)));    //not a Sensor channel
+    chs.push_back(InertialChannel(InertialTypes::CH_FIELD_GNSS_ECEF_VELOCITY, SampleRate::Hertz(20)));    //not a Sensor channel
 
     ByteStream dataRateBase;
     dataRateBase.append_uint16(100);
@@ -384,8 +388,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_Gps)
     InertialNode node(impl);
 
     InertialChannels chs;
-    chs.push_back(InertialChannel(InertialTypes::CH_FIELD_GPS_GPS_TIME, SampleRate::Hertz(10)));
-    chs.push_back(InertialChannel(InertialTypes::CH_FIELD_GPS_UTC_TIME, SampleRate::Hertz(20)));
+    chs.push_back(InertialChannel(InertialTypes::CH_FIELD_GNSS_GPS_TIME, SampleRate::Hertz(10)));
+    chs.push_back(InertialChannel(InertialTypes::CH_FIELD_GNSS_UTC_TIME, SampleRate::Hertz(20)));
 
     ByteStream dataRateBase;
     dataRateBase.append_uint16(100);
@@ -395,7 +399,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_Gps)
 
     MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess(""));
 
-    BOOST_CHECK_NO_THROW(node.setActiveChannelFields(InertialTypes::CATEGORY_GPS, chs));
+    BOOST_CHECK_NO_THROW(node.setActiveChannelFields(InertialTypes::CATEGORY_GNSS, chs));
 }
 
 BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_InvalidChannels_Gps)
@@ -404,7 +408,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_InvalidChannels_Gps)
     InertialNode node(impl);
 
     InertialChannels chs;
-    chs.push_back(InertialChannel(InertialTypes::CH_FIELD_GPS_GPS_TIME, SampleRate::Hertz(10)));
+    chs.push_back(InertialChannel(InertialTypes::CH_FIELD_GNSS_GPS_TIME, SampleRate::Hertz(10)));
     chs.push_back(InertialChannel(InertialTypes::CH_FIELD_SENSOR_EULER_ANGLES, SampleRate::Hertz(20)));    //not a gps channel
 
     ByteStream dataRateBase;
@@ -413,7 +417,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_InvalidChannels_Gps)
     //expect the getDataRateBase command
     MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
 
-    BOOST_CHECK_THROW(node.setActiveChannelFields(InertialTypes::CATEGORY_GPS, chs), Error);
+    BOOST_CHECK_THROW(node.setActiveChannelFields(InertialTypes::CATEGORY_GNSS, chs), Error);
 }
 
 BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_EstFilter)
@@ -460,10 +464,13 @@ BOOST_AUTO_TEST_CASE(InertialNode_supportedSampleRates_1000)
     ByteStream dataRateBase;
     dataRateBase.append_uint16(1000);
 
+    //setup the node info mock expections
+    expectNodeInfo_InertialNode(impl);
+
     //expect the getDataRateBase command
     MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
 
-    SampleRates rates_1000 = node.supportedSampleRates(InertialTypes::CATEGORY_ESTFILTER);
+    SampleRates rates_1000 = node.features().supportedSampleRates(InertialTypes::CATEGORY_ESTFILTER);
 
     BOOST_CHECK_EQUAL(rates_1000.size(), 16);
     BOOST_CHECK(rates_1000.at(0) == SampleRate::Hertz(1));
@@ -492,10 +499,13 @@ BOOST_AUTO_TEST_CASE(InertialNode_supportedSampleRates_4)
     ByteStream dataRateBase;
     dataRateBase.append_uint16(4);
 
+    //setup the node info mock expections
+    expectNodeInfo_InertialNode(impl);
+
     //expect the getDataRateBase command
     MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
 
-    SampleRates rates_4 = node.supportedSampleRates(InertialTypes::CATEGORY_ESTFILTER);
+    SampleRates rates_4 = node.features().supportedSampleRates(InertialTypes::CATEGORY_ESTFILTER);
 
     BOOST_CHECK_EQUAL(rates_4.size(), 3);
     BOOST_CHECK(rates_4.at(0) == SampleRate::Hertz(1));
@@ -513,7 +523,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_enableDataStream_success)
     //expect a success response
     MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
 
-    BOOST_CHECK_NO_THROW(node.enableDataStream(InertialTypes::CATEGORY_GPS));
+    BOOST_CHECK_NO_THROW(node.enableDataStream(InertialTypes::CATEGORY_GNSS));
 }
 
 BOOST_AUTO_TEST_CASE(InertialNode_enableDataStream_fail)
@@ -526,7 +536,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_enableDataStream_fail)
     //expect a fail response
     MOCK_EXPECT(impl->doInertialCmd).once().throws(Error_InertialCmdFailed());
 
-    BOOST_CHECK_THROW(node.enableDataStream(InertialTypes::CATEGORY_GPS), Error_InertialCmdFailed);
+    BOOST_CHECK_THROW(node.enableDataStream(InertialTypes::CATEGORY_GNSS), Error_InertialCmdFailed);
 }
 
 BOOST_AUTO_TEST_CASE(InertialNode_setToIdle_success)

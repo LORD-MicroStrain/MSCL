@@ -48,11 +48,35 @@ namespace mscl
         //    Gets the <TimeSpan> representing the distance (always positive) between two Timestamps. 
         //
         //Returns:
-        //    A <TimeSpan> representing the difference between the 2 Timestamps
+        //    A <TimeSpan> representing the difference between the 2 Timestamps.
         TimeSpan operator-(const Timestamp& other) const;
 
         friend std::istream& operator>> (std::istream &in, Timestamp& t);
         friend std::ostream& operator<< (std::ostream &out, const Timestamp& t);
+
+        //Operator: ==
+        //  Equal operator for comparing Timestamps.
+        virtual bool operator==(const Timestamp& other) const;
+
+        //Operator: !=
+        //  Not Equal operator for comparing Timestamps.
+        virtual bool operator!=(const Timestamp& other) const;
+
+        //Operator: <
+        //  Less Than operator for comparing Timestamps.
+        virtual bool operator<(const Timestamp& other) const;
+
+        //Operator: <=
+        //  Less Than or Equal To operator for comparing Timestamps.
+        virtual bool operator<=(const Timestamp& other) const;
+
+        //Operator: >
+        //  Greater Than operator for comparing Timestamps.
+        virtual bool operator>(const Timestamp& other) const;
+
+        //Operator: >=
+        //  Greater Than or Equal To operator for comparing Timestamps.
+        virtual bool operator>=(const Timestamp& other) const;
 #endif
 
     public:

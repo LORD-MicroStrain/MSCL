@@ -51,20 +51,16 @@ namespace mscl
         //    The <InertialNode_Impl> class that contains all the implementation logic for the InertialNode class.
         std::shared_ptr<InertialNode_Impl> m_impl;
 
-    public:
-        //API Function: info
-        //    Gets <InertialNodeInfo> for this Node. 
-        //    The first time this function is called, it will send multiple commands to the device to get all required information.
-        //    Note: This will be invalid when the InertialNode is destroyed.
+    public:        
+        //API Function: deviceName
+        //    Static function for creating the universal sensor name that should be used for SensorCloud.
+        //
+        //Parameters:
+        //    serial - The serial number of the inertial node. This should be identical to calling the <serialNumber> function on an <InertialNodeInfo> object (see <InertialNode::info>).
         //
         //Returns:
-        //    A reference to the <InertialNodeInfo> for this Node.
-        //
-        //Exceptions:
-        //    - <Error_Communication>: There was no response to the command. The command timed out.
-        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
-        //    - <Error_Connection>: Information failed to be loaded for this Node.
-        const InertialNodeInfo& info();
+        //    The universal sensor name.
+        static std::string deviceName(const std::string& serial);
 
         //API Function: features
         //    Gets a reference to the <InertialNodeFeatures> for this device.
@@ -77,16 +73,6 @@ namespace mscl
         //    - <Error_Connection>: Information failed to be loaded for this Node.
         const InertialNodeFeatures& features();
 
-        //API Function: deviceName
-        //    Static function for creating the universal sensor name that should be used for SensorCloud.
-        //
-        //Parameters:
-        //    serial - The serial number of the inertial node. This should be identical to calling the <serialNumber> function on an <InertialNodeInfo> object (see <InertialNode::info>).
-        //
-        //Returns:
-        //    The universal sensor name.
-        static std::string deviceName(const std::string& serial);
-
         //API Function: lastCommunicationTime
         //    Gets the <Timestamp> for the last time MSCL communicated with the InertialNode.
         //
@@ -97,22 +83,89 @@ namespace mscl
         //  - <Error_NoData>: There is no communication time logged for this device.
         const Timestamp& lastCommunicationTime() const;
 
-        //API Function: supportedSampleRates
-        //    Gets a list of the supported sample rates for an <InertialTypes::InertialCategory>.
-        //
-        //Parameters:
-        //    category - The <InertialTypes::InertialCategory> to get the sample rate list for.
+        //API Function: firmwareVersion
+        //    Gets the firmware <Version> of the InertialNode.
         //
         //Returns:
-        //    A <SampleRates> list containing all the supported sample rates for the provided channel.
+        //    The firmware <Version> of the InertialNode.
         //
         //Exceptions:
-        //    - <Error_InertialCmdFailed>: The command has failed.
-        //    - <Error_Communication>: Timed out waiting for a response.
-        //    - <Error_NotSupported>: The <InertialTypes::InertialCategory> is not supported by this node.
-        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        //    - <Error>: The <InertialTypes::ChannelField> is invalid.
-        const SampleRates& supportedSampleRates(InertialTypes::InertialCategory category);
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: Information failed to be loaded for this Node.
+        Version firmwareVersion() const;
+
+        //API Function: model
+        //    Gets the <InertialModels::NodeModel> of the InertialNode.
+        //
+        //Returns:
+        //    The <InertialModels::NodeModel> of the InertialNode.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: Information failed to be loaded for this Node.
+        InertialModels::NodeModel model() const;
+
+        //API Function: modelName
+        //    Gets the model name of the InertialNode (ie. "3DM-GX3-45").
+        //
+        //Returns:
+        //    The model name of the InertialNode.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: Information failed to be loaded for this Node.
+        std::string modelName() const;
+
+        //API Function: modelNumber
+        //    Gets the model number of the InertialNode (ie. "6225-4220").
+        //
+        //Returns:
+        //    The model number of the InertialNode.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: Information failed to be loaded for this Node.
+        std::string modelNumber() const;
+
+        //API Function: serialNumber
+        //    Gets the serial number of the InertialNode (ie. "6225-01319").
+        //
+        //Returns:
+        //    The serial number of the InertialNode.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: Information failed to be loaded for this Node.
+        std::string serialNumber() const;
+
+        //API Function: lotNumber
+        //    Gets the lot number of the InertialNode (ie. "I042Y").
+        //
+        //Returns:
+        //    The lot number of the InertialNode.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: Information failed to be loaded for this Node.
+        std::string lotNumber() const;
+
+        //API Function: deviceOptions
+        //    Gets the device options of the InertialNode (ie. "5g, 300d/s").
+        //
+        //Returns:
+        //    The device options of the InertialNode.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: Information failed to be loaded for this Node.
+        std::string deviceOptions() const;
 
         //API Function: getDataPackets
         //    Gets up to the requested amount of data packets that have been collected.

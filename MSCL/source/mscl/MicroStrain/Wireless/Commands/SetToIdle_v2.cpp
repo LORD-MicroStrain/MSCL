@@ -16,16 +16,17 @@ namespace mscl
         //build the command ByteStream
         ByteStream cmd;
         cmd.append_uint8(0xAA);                                     //Start of Packet
-        cmd.append_uint8(0xFE);                                     //Delivery Stop Flag
-        cmd.append_uint8(0x00);                                     //App Data Type
-        cmd.append_uint16(nodeAddress);                             //Node address    (2 bytes)
-        cmd.append_uint8(0x02);                                     //Payload Length
-        cmd.append_uint16(WirelessProtocol::cmdId_stopNode);        //Command ID    (2 bytes)
+        cmd.append_uint8(0x0E);                                     //Delivery Stop Flag
+        cmd.append_uint8(0x30);                                     //App Data Type
+        cmd.append_uint16(WirelessProtocol::BASE_STATION_ADDRESS);  //Base Station Address
+        cmd.append_uint8(0x04);                                     //Payload Length
+        cmd.append_uint16(WirelessProtocol::cmdId_stopNode_v2);     //Command ID
+        cmd.append_uint16(nodeAddress);                             //Node address
 
-        //calculate the checksum of bytes 2-8
-        uint16 checksum = cmd.calculateSimpleChecksum(1, 7);
+        //calculate the checksum of bytes 2-10
+        uint16 checksum = cmd.calculateSimpleChecksum(1, 9);
 
-        cmd.append_uint16(checksum);    //Checksum        (2 bytes)
+        cmd.append_uint16(checksum);    //Checksum
 
         return cmd;
     }
@@ -87,8 +88,9 @@ namespace mscl
         if((packet.deliveryStopFlags().toInvertedByte() != 0x07) ||             //delivery stop flag
            packet.type() != WirelessPacket::packetType_baseReceived ||          //app data type
            payload.size() != 9 ||                                               //payload length
-           payload.read_uint16(0) != WirelessProtocol::cmdId_stopNode ||        //command ID
-           payload.read_uint16(7) != m_nodeAddress                              //eeprom address
+           payload.read_uint16(0) != WirelessProtocol::cmdId_stopNode_v2 ||     //command ID
+           payload.read_uint32(3) != 0x7F800000 ||                              //infinite time until completion (indefinite)
+           payload.read_uint16(7) != m_nodeAddress                              //node address
            )
         {
             //failed to match some of the bytes
@@ -108,7 +110,7 @@ namespace mscl
         if((packet.deliveryStopFlags().toInvertedByte() != 0x07) ||             //delivery stop flag
            packet.type() != WirelessPacket::packetType_baseSuccessReply ||      //app data type
            payload.size() != 5 ||                                               //payload length
-           payload.read_uint16(0) != WirelessProtocol::cmdId_stopNode ||        //command ID
+           payload.read_uint16(0) != WirelessProtocol::cmdId_stopNode_v2 ||     //command ID
            payload.read_uint16(2) != m_nodeAddress                              //eeprom address
            )
         {

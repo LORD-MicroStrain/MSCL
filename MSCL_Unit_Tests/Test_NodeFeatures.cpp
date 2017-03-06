@@ -170,13 +170,26 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_minTimeBetweenBursts)
 
     ChannelMask chs4(15);
     ChannelMask chs2(3);
+    WirelessTypes::DerivedChannelMasks derivedMasks;
 
-    BOOST_CHECK(features->minTimeBetweenBursts(WirelessTypes::dataFormat_raw_uint16, chs4, SampleRate::Hertz(256), 100) == TimeSpan::Seconds(5));
-    BOOST_CHECK(features->minTimeBetweenBursts(WirelessTypes::dataFormat_raw_uint16, chs4, SampleRate::Hertz(32), 100) == TimeSpan::Seconds(8));
-    BOOST_CHECK(features->minTimeBetweenBursts(WirelessTypes::dataFormat_raw_uint16, chs4, SampleRate::Hertz(32), 200) == TimeSpan::Seconds(11));
-    BOOST_CHECK(features->minTimeBetweenBursts(WirelessTypes::dataFormat_cal_float, chs4, SampleRate::Hertz(32), 200) == TimeSpan::Seconds(12));
-    BOOST_CHECK(features->minTimeBetweenBursts(WirelessTypes::dataFormat_raw_uint16, chs4, SampleRate::Hertz(2048), 100) == TimeSpan::Seconds(5));
-    BOOST_CHECK(features->minTimeBetweenBursts(WirelessTypes::dataFormat_raw_uint16, chs2, SampleRate::Hertz(64), 100) == TimeSpan::Seconds(6));
+    WirelessTypes::DataFormat format_uint16 = WirelessTypes::dataFormat_raw_uint16;
+    WirelessTypes::DataFormat format_float = WirelessTypes::dataFormat_cal_float;
+    WirelessTypes::DataMode mode_raw = WirelessTypes::dataMode_raw;
+    WirelessTypes::DataMode mode_derived = WirelessTypes::dataMode_derived;
+    WirelessTypes::DataMode mode_rawDerived = WirelessTypes::dataMode_raw_derived;
+
+    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs4, derivedMasks, SampleRate::Hertz(256), 100) == TimeSpan::Seconds(5));
+    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs4, derivedMasks, SampleRate::Hertz(32), 100) == TimeSpan::Seconds(8));
+    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs4, derivedMasks, SampleRate::Hertz(32), 200) == TimeSpan::Seconds(11));
+    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_float, chs4, derivedMasks, SampleRate::Hertz(32), 200) == TimeSpan::Seconds(12));
+    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs4, derivedMasks, SampleRate::Hertz(2048), 100) == TimeSpan::Seconds(5));
+    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs2, derivedMasks, SampleRate::Hertz(64), 100) == TimeSpan::Seconds(6));
+
+    derivedMasks.emplace(WirelessTypes::derived_rms, ChannelMask(255));
+    derivedMasks.emplace(WirelessTypes::derived_peakToPeak, ChannelMask(255));
+    derivedMasks.emplace(WirelessTypes::derived_ips, ChannelMask(255));
+    derivedMasks.emplace(WirelessTypes::derived_crestFactor, ChannelMask(255));
+    BOOST_CHECK(features->minTimeBetweenBursts(mode_derived, format_uint16, chs4, derivedMasks, SampleRate::Hertz(32), 100) == TimeSpan::Seconds(8));
 }
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_maxSampleRate_vLink)
@@ -187,17 +200,18 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_maxSampleRate_vLink)
 
     ChannelMask chs(1);
     WirelessTypes::DataCollectionMethod method = WirelessTypes::collectionMethod_transmitOnly;
+    WirelessTypes::DataMode mode = WirelessTypes::dataMode_raw;
 
-    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method), WirelessTypes::sampleRate_10kHz);
+    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method, mode), WirelessTypes::sampleRate_10kHz);
 
     chs.enable(2, true);
 
-    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method), WirelessTypes::sampleRate_9kHz);
+    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method, mode), WirelessTypes::sampleRate_9kHz);
 
     chs.enable(7, true);
     chs.enable(8, true);
 
-    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method), WirelessTypes::sampleRate_6kHz);
+    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method, mode), WirelessTypes::sampleRate_6kHz);
 }
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_maxSampleRate_gLink2)
@@ -208,17 +222,18 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_maxSampleRate_gLink2)
 
     ChannelMask chs(1);
     WirelessTypes::DataCollectionMethod method = WirelessTypes::collectionMethod_transmitOnly;
+    WirelessTypes::DataMode mode = WirelessTypes::dataMode_raw;
 
-    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method), WirelessTypes::sampleRate_10kHz);
+    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method, mode), WirelessTypes::sampleRate_10kHz);
 
     chs.enable(2, true);
 
-    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method), WirelessTypes::sampleRate_10kHz);
+    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method, mode), WirelessTypes::sampleRate_10kHz);
 
     chs.enable(7, true);
     chs.enable(8, true);
 
-    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method), WirelessTypes::sampleRate_10kHz);
+    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method, mode), WirelessTypes::sampleRate_10kHz);
 }
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_maxSampleRate_gLink)
@@ -229,19 +244,20 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_maxSampleRate_gLink)
 
     ChannelMask chs(1);
     WirelessTypes::DataCollectionMethod method = WirelessTypes::collectionMethod_transmitOnly;
+    WirelessTypes::DataMode mode = WirelessTypes::dataMode_raw;
 
-    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method), WirelessTypes::sampleRate_4096Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method, mode), WirelessTypes::sampleRate_4096Hz);
 
     chs.enable(2, true);
 
-    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method), WirelessTypes::sampleRate_2048Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method, mode), WirelessTypes::sampleRate_2048Hz);
 
     chs.enable(7, true);
     chs.enable(8, true);
 
-    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method), WirelessTypes::sampleRate_2048Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_syncBurst, chs, method, mode), WirelessTypes::sampleRate_2048Hz);
 
-    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_nonSync, chs, method), WirelessTypes::sampleRate_512Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRate(WirelessTypes::samplingMode_nonSync, chs, method, mode), WirelessTypes::sampleRate_512Hz);
 }
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeNumSweeps)
@@ -403,13 +419,14 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_filterSettlingTime_a)
 
     WirelessTypes::SamplingMode mode = WirelessTypes::samplingMode_nonSync;
     WirelessTypes::DataCollectionMethod method = WirelessTypes::collectionMethod_transmitOnly;
-    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_4ms, mode, method), WirelessTypes::sampleRate_8Hz);
-    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_8ms, mode, method), WirelessTypes::sampleRate_4Hz);
-    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_16ms, mode, method), WirelessTypes::sampleRate_2Hz);
-    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_40ms, mode, method), WirelessTypes::sampleRate_1Hz);
-    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_60ms, mode, method), WirelessTypes::sampleRate_1Hz);
-    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_101ms_90db, mode, method), WirelessTypes::sampleRate_2Sec);
-    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_120ms_65db, mode, method), WirelessTypes::sampleRate_2Sec);
+    WirelessTypes::DataMode dataMode = WirelessTypes::dataMode_raw;
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_4ms, mode, method, dataMode), WirelessTypes::sampleRate_8Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_8ms, mode, method, dataMode), WirelessTypes::sampleRate_4Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_16ms, mode, method, dataMode), WirelessTypes::sampleRate_2Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_40ms, mode, method, dataMode), WirelessTypes::sampleRate_1Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_60ms, mode, method, dataMode), WirelessTypes::sampleRate_1Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_101ms_90db, mode, method, dataMode), WirelessTypes::sampleRate_2Sec);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_120ms_65db, mode, method, dataMode), WirelessTypes::sampleRate_2Sec);
 }
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_filterSettlingTime_b)
@@ -427,13 +444,14 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_filterSettlingTime_b)
 
     WirelessTypes::SamplingMode mode = WirelessTypes::samplingMode_nonSync;
     WirelessTypes::DataCollectionMethod method = WirelessTypes::collectionMethod_transmitOnly;
-    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_4ms, mode, method), WirelessTypes::sampleRate_64Hz);
-    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_8ms, mode, method), WirelessTypes::sampleRate_32Hz);
-    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_16ms, mode, method), WirelessTypes::sampleRate_16Hz);
-    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_32ms, mode, method), WirelessTypes::sampleRate_8Hz);
-    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_60ms, mode, method), WirelessTypes::sampleRate_4Hz);
-    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_101ms_90db, mode, method), WirelessTypes::sampleRate_4Hz);
-    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_120ms_65db, mode, method), WirelessTypes::sampleRate_4Hz);
+    WirelessTypes::DataMode dataMode = WirelessTypes::dataMode_raw;
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_4ms, mode, method, dataMode), WirelessTypes::sampleRate_64Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_8ms, mode, method, dataMode), WirelessTypes::sampleRate_32Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_16ms, mode, method, dataMode), WirelessTypes::sampleRate_16Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_32ms, mode, method, dataMode), WirelessTypes::sampleRate_8Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_60ms, mode, method, dataMode), WirelessTypes::sampleRate_4Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_101ms_90db, mode, method, dataMode), WirelessTypes::sampleRate_4Hz);
+    BOOST_CHECK_EQUAL(features->maxSampleRateForSettlingTime(WirelessTypes::settling_120ms_65db, mode, method, dataMode), WirelessTypes::sampleRate_4Hz);
 }
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeSensorDelay_v1)

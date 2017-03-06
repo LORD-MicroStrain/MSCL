@@ -13,9 +13,9 @@ bjam MSCL//stage_c++ release
 
 #have to do this twice to copy the mscl.py (BUG)
 echo '(buildAll.sh) Running BJAM (Python)'
-bjam MSCL//stage_python release
+bjam MSCL//stage_python_x86 release
 echo '(buildAll.sh) Running BJAM (Python) (2)'
-bjam MSCL//stage_python release
+bjam MSCL//stage_python_x86 release
 
 #build the Unit Tests
 echo '(buildAll.sh) Building Unit Tests'

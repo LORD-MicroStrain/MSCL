@@ -20,7 +20,7 @@ namespace mscl
         {
         //actual Data packets
         case DescriptorSet::DESC_SET_DATA_SENSOR:
-        case DescriptorSet::DESC_SET_DATA_GPS:
+        case DescriptorSet::DESC_SET_DATA_GNSS:
         case DescriptorSet::DESC_SET_DATA_EST_FILTER:
             return true;
 

@@ -437,12 +437,23 @@ namespace mscl
         return protocol().m_beaconStatus(this);
     }
 
-    void BaseStation_Impl::startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options)
+    void BaseStation_Impl::startRfSweepMode()
     {
         //verify rf sweep mode is supported
         if(!features().supportsRfSweepMode())
         {
             throw Error_NotSupported("RF Sweep Mode is not supported by this BaseStation.");
+        }
+
+        return protocol().m_startRfSweep(this, 0, 0, 0, 0);
+    }
+
+    void BaseStation_Impl::startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options)
+    {
+        //verify rf sweep mode is supported
+        if(!features().supportsCustomRfSweepMode())
+        {
+            throw Error_NotSupported("Custom RF Sweep Mode is not supported by this BaseStation.");
         }
 
         return protocol().m_startRfSweep(this, minFreq, maxFreq, interval, options);
@@ -829,7 +840,7 @@ namespace mscl
         std::shared_ptr<SetToIdle_v2::Response> response(std::make_shared<SetToIdle_v2::Response>(nodeAddress, m_responseCollector, base));
 
         //build the set to idle command to send
-        ByteStream setToIdleCmd = SetToIdle::buildCommand(nodeAddress);
+        ByteStream setToIdleCmd = SetToIdle_v2::buildCommand(nodeAddress);
 
         //send the command to the base station
         m_connection.write(setToIdleCmd);
@@ -1127,15 +1138,19 @@ namespace mscl
         m_eeprom->writeEeprom(eepromAddress, value);
     }
 
-    void BaseStation_Impl::cyclePower()
+    void BaseStation_Impl::cyclePower(bool checkComm)
     {
         static const uint16 RESET_BASE = 0x01;
 
         //store the original timeout that is currently set
         uint64 originalTimeout = timeout();
+        uint8 originalRetries = getReadWriteRetries();
 
         //when this goes out of scope, it will write back the original timeout (need cast for overloaded ambiguity)
         ScopeHelper writebackTimeout(std::bind(static_cast<void(BaseStation_Impl::*)(uint64)>(&BaseStation_Impl::timeout), this, originalTimeout));
+
+        //when this goes out of scope, it will write back the original retries
+        ScopeHelper writebackRetries(std::bind(&BaseStation_Impl::setReadWriteRetries, this, originalRetries));
 
         //force determining of the protocol if it hasn't been already
         //Note: this is so that we can set the timeout short and write eeprom without worrying about reading
@@ -1143,8 +1158,9 @@ namespace mscl
 
         try
         {
-            //this command doesn't have a response, change to a quick timeout
+            //this command doesn't have a response, change to a quick timeout and no retries
             timeout(0);
+            setReadWriteRetries(0);
 
             //write a 0x01 to the CYCLE_POWER eeprom location on the base station
             writeEeprom(BaseStationEepromMap::CYCLE_POWER, Value::UINT16(RESET_BASE));
@@ -1154,15 +1170,18 @@ namespace mscl
             //an exception will be thrown due to no response, just continue on
         }
 
-        Utils::threadSleep(100);
-
-        //attempt to ping the node a few times to see if its back online
-        bool pingSuccess = false;
-        uint8 retries = 0;
-        while(!pingSuccess && retries <= 5)
+        if(checkComm)
         {
-            pingSuccess = ping();
-            retries++;
+            Utils::threadSleep(100);
+
+            //attempt to ping the base a few times to see if its back online
+            bool pingSuccess = false;
+            uint8 retries = 0;
+            while(!pingSuccess && retries <= 5)
+            {
+                pingSuccess = ping();
+                retries++;
+            }
         }
     }
 

@@ -3,7 +3,7 @@ Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-#include "mscl/MicroStrain/Wireless/Configuration/DataMode.h"
+#include "mscl/MicroStrain/Wireless/Configuration/DataModeMask.h"
 #include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/WirelessNode.h"
@@ -794,6 +794,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_eventTrigger)
     c.dataFormat(WirelessTypes::dataFormat_cal_float);
     c.unlimitedDuration(true);
     c.dataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit);
+    c.dataMode(WirelessTypes::dataMode_raw);
 
     ConfigIssues issues;
 
@@ -855,20 +856,10 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_dataMode)
     c.dataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit);
     c.samplingMode(WirelessTypes::samplingMode_sync);
     ConfigIssues issues;
-    
-    //-------------------------------------
-    //Test no data mode enabled
-    DataMode mode(false, false);
-    c.dataMode(mode);
-    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
-    BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DATA_MODE);
-    issues.clear();
-    //-------------------------------------
 
     //-------------------------------------
     //Test derived mode not supported
-    mode.enableDerivedMode(true);
-    c.dataMode(mode);
+    c.dataMode(WirelessTypes::dataMode_derived);
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
     BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DATA_MODE);
     issues.clear();
@@ -876,10 +867,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_dataMode)
 
     //-------------------------------------
     //Test data mode ok
-    mode.enableDerivedMode(false);
-    mode.enableRawMode(true);
-    c.dataMode(mode);
-    
+    c.dataMode(WirelessTypes::dataMode_raw);
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
     //-------------------------------------
 }
@@ -906,8 +894,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeRate)
     c.unlimitedDuration(true);
     c.dataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit);
     c.samplingMode(WirelessTypes::samplingMode_sync);
-    DataMode mode(true, true);
-    c.dataMode(mode);
+    c.dataMode(WirelessTypes::dataMode_raw_derived);
     c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(1));
     c.derivedChannelMask(WirelessTypes::derived_peakToPeak, ChannelMask(1));
     c.derivedChannelMask(WirelessTypes::derived_ips, ChannelMask(1));
@@ -955,8 +942,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeMask)
     c.unlimitedDuration(true);
     c.dataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit);
     c.samplingMode(WirelessTypes::samplingMode_sync);
-    DataMode mode(true, true);
-    c.dataMode(mode);
+    c.dataMode(WirelessTypes::dataMode_raw_derived);
     c.derivedDataRate(WirelessTypes::sampleRate_30Sec);
     c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(0));               //invalid ch for G-Link-200
     c.derivedChannelMask(WirelessTypes::derived_peakToPeak, ChannelMask(0));
@@ -1031,8 +1017,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_channelMasks)
     c.unlimitedDuration(true);
     c.dataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit);
     c.samplingMode(WirelessTypes::samplingMode_sync);
-    DataMode mode(true, true);
-    c.dataMode(mode);
+    c.dataMode(WirelessTypes::dataMode_raw_derived);
     c.derivedDataRate(WirelessTypes::sampleRate_30Sec);
     c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(1));
     c.derivedChannelMask(WirelessTypes::derived_peakToPeak, ChannelMask(0));
@@ -1089,8 +1074,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedSampleRate)
     c.unlimitedDuration(true);
     c.dataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit);
     c.samplingMode(WirelessTypes::samplingMode_sync);
-    DataMode mode(true, true);
-    c.dataMode(mode);
+    c.dataMode(WirelessTypes::dataMode_raw_derived);
     c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(1));
     c.derivedChannelMask(WirelessTypes::derived_peakToPeak, ChannelMask(0));
     c.derivedChannelMask(WirelessTypes::derived_ips, ChannelMask(0));
@@ -1141,8 +1125,10 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_flashBandwidth)
     WirelessTypes::DataFormat dataFormat = WirelessTypes::dataFormat_raw_uint24;
     uint8 numChannels = 8;
     WirelessTypes::WirelessSampleRate sampleRate = WirelessTypes::sampleRate_4096Hz;
+    WirelessTypes::WirelessSampleRate derivedRate = WirelessTypes::sampleRate_1Hz;
+    uint32 derivedBytesPerSweep = 0;
 
-    BOOST_CHECK_EQUAL(WirelessNodeConfig::flashBandwidth(sampleRate, dataFormat, numChannels), 98304);
+    BOOST_CHECK_EQUAL(WirelessNodeConfig::flashBandwidth(sampleRate, dataFormat, numChannels, derivedBytesPerSweep, derivedRate), 98304);
 }
 
 BOOST_AUTO_TEST_CASE(WirelessNodeConfig_flashBandwidth_burst)
@@ -1152,8 +1138,9 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_flashBandwidth_burst)
     WirelessTypes::WirelessSampleRate sampleRate = WirelessTypes::sampleRate_4096Hz;
     uint32 numSweeps = 4096;
     TimeSpan timeBetweenBursts = TimeSpan::Seconds(2);
+    uint32 derivedBytesPerSweep = 0;
 
-    BOOST_CHECK_EQUAL(WirelessNodeConfig::flashBandwidth_burst(sampleRate, dataFormat, numChannels, numSweeps, timeBetweenBursts), 49152);
+    BOOST_CHECK_EQUAL(WirelessNodeConfig::flashBandwidth_burst(sampleRate, dataFormat, numChannels, derivedBytesPerSweep, numSweeps, timeBetweenBursts), 49152);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -36,12 +36,18 @@ namespace mscl
         //Constants: Node Memory Constants
         //  BLOCK_HEADER_ID             - 0xBB  - Block Header ID
         //  REFRESH_HEADER_ID           - 0xBA  - Refresh Header ID
-        //  SESSION_CHANGE_HEADER_ID    - 0xBC  - Session Change Header ID
-        //  BLOCK_HEADER_MATH_ID        - 0xBD  - Math Block Header ID
-        static const uint8 BLOCK_HEADER_ID          = 0xBB;
-        static const uint8 REFRESH_HEADER_ID        = 0xBA;
-        static const uint8 SESSION_CHANGE_HEADER_ID = 0xBC;
-        static const uint8 BLOCK_HEADER_MATH_ID     = 0xBD;
+        //  SESSION_CHANGE_HEADER_ID    - 0xBC  - Session Change Header ID (Version 1)
+        //  SESSION_CHANGE_HEADER_ID_V2 - 0xBD  - Session Change Header ID (Version 2)
+        static const uint8 BLOCK_HEADER_ID              = 0xBB;
+        static const uint8 REFRESH_HEADER_ID            = 0xBA;
+        static const uint8 SESSION_CHANGE_HEADER_ID     = 0xBC;
+        static const uint8 SESSION_CHANGE_HEADER_ID_V2  = 0xBD;
+
+        enum SweepType
+        {
+            sweepType_raw,
+            sweepType_derived
+        };
 
     private:
         NodeMemory_v2() = delete;                                   //disabled default constructor
@@ -88,6 +94,14 @@ namespace mscl
         //Variable: m_sweepSize
         //  The size of a single sweep of data (used for smaller header parsing).
         uint16 m_sweepSize;
+
+        //Variable: m_derivedSweepSize
+        //  The size of a single sweep of derived data (used for smaller header parsing).
+        uint16 m_derivedSweepSize;
+
+        //Variable: m_isMathData
+        //  True if the current data being parsed is math data, false if it is raw data.
+        bool m_isMathData;
 
         //Variable: m_partialDownload
         //  Flag used to know if a download of data has been started, but not fully completed.

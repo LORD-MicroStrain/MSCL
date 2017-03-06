@@ -33,6 +33,14 @@
       <Configuration>Release (C++)</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Release (Java)|Win32">
+      <Configuration>Release (Java)</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release (Java)|x64">
+      <Configuration>Release (Java)</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release x64 (.NET)|Win32">
       <Configuration>Release x64 (.NET)</Configuration>
       <Platform>Win32</Platform>
@@ -54,9 +62,16 @@
     <ProjectGuid>{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}</ProjectGuid>
     <RootNamespace>MSCL</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -70,13 +85,19 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -87,7 +108,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|Win32'" Label="Configuration">
@@ -97,7 +118,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'" Label="Configuration">
@@ -108,7 +129,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -120,7 +141,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release(Python)|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -130,10 +151,16 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'" Label="PropertySheets">
@@ -223,6 +250,14 @@
     <IncludePath>$(LIB_PATH)\boost\boost_1_61_0;$(IncludePath)</IncludePath>
     <LibraryPath>$(LIB_PATH)\boost\boost_1_61_0\lib32-msvc-14.0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|Win32'">
+    <OutDir>..\Output\Java\x86\</OutDir>
+    <IntDir>build\$(Configuration)\</IntDir>
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_61_0;C:\Program Files\Java\jdk1.8.0_121\include;C:\Program Files\Java\jdk1.8.0_121\include\win32;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_61_0\lib32-msvc-14.0;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'">
     <OutDir>..\Output\DotNet\</OutDir>
     <IntDir>build\$(Configuration)\</IntDir>
@@ -237,11 +272,19 @@
     <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
     <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib64-msvc-12.0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|x64'">
+    <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_61_0;C:\Program Files\Java\jdk1.8.0_121\include;C:\Program Files\Java\jdk1.8.0_121\include\win32;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_61_0\lib64-msvc-14.0;$(LibraryPath)</LibraryPath>
+    <OutDir>..\Output\Java\x64\</OutDir>
+    <IntDir>build\$(Configuration)\</IntDir>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'">
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(LIB_PATH)\boost\boost_1_55_0;$(IncludePath)</IncludePath>
-    <LibraryPath>$(LIB_PATH)\boost\boost_1_55_0\lib64-msvc-12.0;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_61_0;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_61_0\lib64-msvc-14.0;$(LibraryPath)</LibraryPath>
     <OutDir>..\Output\DotNet\x64\</OutDir>
     <IntDir>build\$(Configuration)\</IntDir>
   </PropertyGroup>
@@ -523,6 +566,40 @@
       <Command />
     </PostBuildEvent>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|Win32'">
+    <PreBuildEvent>
+      <Message>SWIG: Java Interface</Message>
+      <Command>"swig.exe" -Wall -c++ -java -package mscl -outdir "..\MSCL_Java\mscl" -o "..\MSCL\source\mscl\Wrapper\MSCL_Wrap.cpp" "..\MSCL\source\mscl\Wrapper\MSCL_Main_Interface.i"</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NOMINMAX;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4290;4127;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <AdditionalOptions>/Zm150 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <OutputFile>..\Output\Java\x86\$(ProjectName).dll</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <NoEntryPoint>false</NoEntryPoint>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'">
     <PreBuildEvent>
       <Message>SWIG: CSharp Interface</Message>
@@ -589,6 +666,38 @@
       </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|x64'">
+    <PreBuildEvent>
+      <Message>SWIG: Java Interface</Message>
+      <Command>"swig.exe" -Wall -c++ -java -package mscl -outdir "..\MSCL_Java\mscl" -o "..\MSCL\source\mscl\Wrapper\MSCL_Wrap.cpp" "..\MSCL\source\mscl\Wrapper\MSCL_Main_Interface.i"</Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;NOMINMAX;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4290;4127;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <OutputFile>..\Output\Java\x64\$(ProjectName).dll</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <NoEntryPoint>false</NoEntryPoint>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'">
     <PreBuildEvent>
       <Message>SWIG: CSharp Interface</Message>
@@ -640,12 +749,14 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (Java)|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release(Python)|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (Java)|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|x64'">true</ExcludedFromBuild>
     </ClInclude>
@@ -661,7 +772,8 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GenericInertialCommand.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceDescriptorSets.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceInfo.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GPS_Commands.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GetExtendedDeviceDescriptorSets.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_Commands.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\InertialCmdResponse.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_Commands.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_SetToIdle.h" />
@@ -693,8 +805,8 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialDataPoint.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_EstFilter.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GPS.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialNode.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GNSS.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Sensor.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacketBuilder.h" />
@@ -748,7 +860,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\BaseStationEepromHelper.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\BaseStationEepromMap.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\ConfigIssue.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\DataMode.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\DataModeMask.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\Eeprom.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\EepromLocation.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\EventTriggerOptions.h" />
@@ -891,12 +1003,14 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (Java)|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release(Python)|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (Java)|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug (.NET)|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -911,7 +1025,8 @@
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GenericInertialCommand.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceDescriptorSets.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceInfo.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GPS_Commands.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GetExtendedDeviceDescriptorSets.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_Commands.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\InertialCmdResponse.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_Commands.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_SetToIdle.cpp" />
@@ -943,8 +1058,8 @@
     <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialDataPoint.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_EstFilter.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GPS.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialNode.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GNSS.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Sensor.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacketBuilder.cpp" />
@@ -997,7 +1112,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\BaseStationEepromHelper.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\BaseStationEepromMap.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\ConfigIssue.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\DataMode.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\DataModeMask.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\Eeprom.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\EepromLocation.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\EventTriggerOptions.cpp" />
@@ -1135,15 +1250,21 @@
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (Java)|Win32'">
+      </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'">
       </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (Java)|x64'">
+      </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'">
       </PrecompiledHeader>
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release (Java)|Win32'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release (Java)|x64'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'">4702;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">true</ExcludedFromBuild>
@@ -1166,8 +1287,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (Java)|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (.NET)|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (Java)|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release x64 (.NET)|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">Create</PrecompiledHeader>

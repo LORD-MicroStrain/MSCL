@@ -82,6 +82,11 @@ namespace mscl
             for(uint8 i = 0; i < numAngles; ++i)
             {
                 angle = payload.read_float();
+                if(!angleWithinRange(angle))
+                {
+                    throw Error("Angle is out of range");
+                }
+
                 chVal = payload.read_float();
                 auto chName = bind(RawAngleStrainPacket::buildChannelName, angle);
 
@@ -107,6 +112,10 @@ namespace mscl
             for(uint8 i = 0; i < angles.size(); ++i)
             {
                 angle = angles.at(i);
+                if(!angleWithinRange(angle))
+                {
+                    throw Error("Angle is out of range");
+                }
 
                 //read the channel value from the payload
                 chVal = payload.read_float();
@@ -136,6 +145,11 @@ namespace mscl
         uint8 sampleRate = payload.read_uint8();
         uint16 tick = payload.read_uint16();
         uint64 timestamp = payload.read_uint64();
+
+        if(!timestampWithinRange(Timestamp(timestamp)))
+        {
+            throw Error("Timestamp is out of range");
+        }
 
         //create a SampleRate object from the sampleRate byte
         SampleRate currentRate = SampleUtils::convertToSampleRate(sampleRate);
@@ -198,6 +212,11 @@ namespace mscl
                 for(uint8 i = 0; i < numAngles; ++i)
                 {
                     angle = angles.at(i);
+                    if(!angleWithinRange(angle))
+                    {
+                        throw Error("Angle is out of range");
+                    }
+
                     chVal = payload.read_float();
                     auto chName = bind(RawAngleStrainPacket::buildChannelName, angle);
 
@@ -261,6 +280,10 @@ namespace mscl
                 for(uint8 i = 0; i < angles.size(); ++i)
                 {
                     angle = angles.at(i);
+                    if(!angleWithinRange(angle))
+                    {
+                        throw Error("Angle is out of range");
+                    }
 
                     //read the channel value from the payload
                     chVal = payload.read_float();

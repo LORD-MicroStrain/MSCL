@@ -78,6 +78,10 @@ namespace mscl
 
         //the angle is in radians, convert to degrees
         angle = static_cast<float>(Utils::radiansToDegrees(angle));
+        if(!angleWithinRange(angle))
+        {
+            throw Error("Angle is out of range");
+        }
 
         //this packet always stores the bin data as uint32s
         m_dataType = WirelessTypes::dataType_uint32;
@@ -157,6 +161,11 @@ namespace mscl
         float damage = m_payload.read_float(PAYLOAD_OFFSET_DAMAGE);
         uint16 binStart = m_payload.read_uint16(PAYLOAD_OFFSET_BIN_START);
         uint16 binSize = m_payload.read_uint16(PAYLOAD_OFFSET_BIN_SIZE);
+
+        if(!angleWithinRange(angle))
+        {
+            throw Error("Angle is out of range");
+        }
 
         //this packet always stores the bin data as uint32s
         m_dataType = WirelessTypes::dataType_uint32;

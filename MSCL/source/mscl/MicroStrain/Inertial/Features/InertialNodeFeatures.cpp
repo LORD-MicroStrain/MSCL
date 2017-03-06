@@ -31,7 +31,7 @@ namespace mscl
 
     std::unique_ptr<InertialNodeFeatures> InertialNodeFeatures::create(const InertialNodeInfo& info)
     {
-        switch(info.model())
+        switch(info.deviceInfo().model)
         {
             case InertialModels::node_3dm:
                 return std::unique_ptr<InertialNodeFeatures>(new InertialNodeFeatures_3dm(info));
@@ -80,7 +80,97 @@ namespace mscl
 
             default:
                 //we don't know anything about this node, throw an exception
-                throw Error_NotSupported("The Inertial Node model (" + Utils::toStr(info.model()) + ", " + info.modelName() + " ) is not supported by MSCL.");
+                throw Error_NotSupported("The Inertial Node model (" + Utils::toStr(info.deviceInfo().model) + ", " + info.deviceInfo().modelName + " ) is not supported by MSCL.");
         }
+    }
+
+    bool InertialNodeFeatures::isChannelField(uint16 descriptor)
+    {
+        uint8 msb = Utils::msb(descriptor);
+
+        switch(msb)
+        {
+            //if the descriptor has any of these for the MSB, it is a channel field
+            case InertialTypes::CATEGORY_SENSOR:
+            case InertialTypes::CATEGORY_GNSS:
+            case InertialTypes::CATEGORY_ESTFILTER:
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    bool InertialNodeFeatures::supportsCategory(InertialTypes::InertialCategory category) const
+    {
+        const auto& descriptors = m_nodeInfo.descriptors();
+
+        //loop over all the descriptors we have
+        for(auto desc : descriptors)
+        {
+            //if ths MSB of the descriptor matches the InertialCategory being requested
+            if(Utils::msb(static_cast<uint16>(desc)) == static_cast<uint16>(category))
+            {
+                //the device supports this category
+                return true;
+            }
+        }
+
+        //no descriptors found that match the requested category
+        return false;
+    }
+
+    InertialTypes::InertialChannelFields InertialNodeFeatures::supportedChannelFields(InertialTypes::InertialCategory category) const
+    {
+        InertialTypes::InertialChannelFields result;
+
+        const auto& descriptors = m_nodeInfo.descriptors();
+
+        //loop over all the descriptors we have
+        for(auto desc : descriptors)
+        {
+            //if ths MSB of the descriptor matches the InertialCategory being requested
+            if(Utils::msb(static_cast<uint16>(desc)) == static_cast<uint16>(category))
+            {
+                //cast the descriptor to a ChannelField, and add it to the result container
+                result.push_back(static_cast<InertialTypes::ChannelField>(desc));
+            }
+        }
+
+        if(result.size() == 0)
+        {
+            throw Error_NotSupported("The requested InertialCategory is not supported by this Node.");
+        }
+
+        return result;
+    }
+
+    bool InertialNodeFeatures::supportsCommand(InertialTypes::Command commandId) const
+    {
+        const auto& descriptors = m_nodeInfo.descriptors();
+        return (std::find(descriptors.begin(), descriptors.end(), static_cast<uint16>(commandId)) != descriptors.end());
+    }
+
+    InertialTypes::InertialCommands InertialNodeFeatures::supportedCommands() const
+    {
+        InertialTypes::InertialCommands result;
+
+        auto& descriptors = m_nodeInfo.descriptors();
+
+        for(const auto& desc : descriptors)
+        {
+            //anything that isn't a channel field, should be a command
+            if(!isChannelField(desc))
+            {
+                result.push_back(static_cast<InertialTypes::Command>(desc));
+            }
+        }
+
+        return result;
+    }
+
+    const SampleRates& InertialNodeFeatures::supportedSampleRates(InertialTypes::InertialCategory category) const
+    {
+        return m_nodeInfo.supportedSampleRates(category);
     }
 }

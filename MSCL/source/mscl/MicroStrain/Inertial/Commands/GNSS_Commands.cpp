@@ -4,7 +4,7 @@ Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
-#include "GPS_Commands.h"
+#include "GNSS_Commands.h"
 
 #include "Inertial_Commands.h"
 #include "mscl/Exceptions.h"
@@ -12,24 +12,24 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    ByteStream GetGpsDataRateBase::buildCommand()
+    ByteStream GetGnssDataRateBase::buildCommand()
     {
         //return the result of the Generic buildCommand function
         return GenericInertialCommand::buildCommand(CMD_ID);
     }
 
-    GetGpsDataRateBase::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        GenericInertialCommand::Response(collector, true, true, "Get GPS Data Rate Base")
+    GetGnssDataRateBase::Response::Response(std::weak_ptr<ResponseCollector> collector):
+        GenericInertialCommand::Response(collector, true, true, "Get GNSS Data Rate Base")
     {}
 
-    uint16 GetGpsDataRateBase::Response::parseResponse(const GenericInertialCommandResponse& response) const
+    uint16 GetGnssDataRateBase::Response::parseResponse(const GenericInertialCommandResponse& response) const
     {
         return Inertial_Commands::parseData_DataRateBase(response);
     }
 
     //==========================================================================================
-    //GPS MESSAGE FORMAT
-    ByteStream GpsMessageFormat::buildCommand_get()
+    //GNSS MESSAGE FORMAT
+    ByteStream GnssMessageFormat::buildCommand_get()
     {
         //container to hold the command's field data
         ByteStream fieldData;
@@ -44,7 +44,7 @@ namespace mscl
         return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    ByteStream GpsMessageFormat::buildCommand_set(const InertialChannels& channels, uint16 sampleRateBase)
+    ByteStream GnssMessageFormat::buildCommand_set(const InertialChannels& channels, uint16 sampleRateBase)
     {
         //container to hold the command's field data
         ByteStream fieldData;
@@ -59,9 +59,9 @@ namespace mscl
         for(InertialChannel ch : channels)
         {
             //if we find a channel not in the Sensor descriptor set
-            if(ch.descriptorSet() != DescriptorSet::DESC_SET_DATA_GPS)
+            if(ch.descriptorSet() != DescriptorSet::DESC_SET_DATA_GNSS)
             {
-                throw Error("InertialChannel (" + Utils::toStr(ch.channelField()) +") is not in the GPS descriptor set");
+                throw Error("InertialChannel (" + Utils::toStr(ch.channelField()) +") is not in the GNSS descriptor set");
             }
 
             //validate the sample rate for the channel
@@ -76,11 +76,11 @@ namespace mscl
         return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    GpsMessageFormat::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
-        GenericInertialCommand::Response(collector, true, dataResponse, "GPS Message Format")
+    GnssMessageFormat::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
+        GenericInertialCommand::Response(collector, true, dataResponse, "GNSS Message Format")
     {}
 
-    InertialChannels GpsMessageFormat::Response::parseResponse(const GenericInertialCommandResponse& response, uint16 sampleRateBase) const
+    InertialChannels GnssMessageFormat::Response::parseResponse(const GenericInertialCommandResponse& response, uint16 sampleRateBase) const
     {
         return Inertial_Commands::parseData_MessageFormat(response, fieldDataByte(), sampleRateBase);
     }

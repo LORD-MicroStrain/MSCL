@@ -7,6 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include "Types.h"
+#include "MicroStrain/Wireless/ChannelMask.h"
 
 namespace mscl
 {
@@ -36,8 +37,34 @@ namespace mscl
         Value& operator=(const Value& other);
         bool operator==(const Value& other) const;
 
+        //Function: UINT16
+        //  Static helper function for making a Value object from a uint16.
+        //
+        //Parameters:
+        //  value - The uint16 value.
+        //
+        //Returns:
+        //  A <Value> object holding the uint16.
         static Value UINT16(uint16 value);
+
+        //Function: UINT32
+        //  Static helper function for making a Value object from a uint32.
+        //
+        //Parameters:
+        //  value - The uint32 value.
+        //
+        //Returns:
+        //  A <Value> object holding the uint32.
         static Value UINT32(uint32 value);
+
+        //Function: FLOAT
+        //  Static helper function for making a Value object from a float.
+        //
+        //Parameters:
+        //  value - The float value.
+        //
+        //Returns:
+        //  A <Value> object holding the float.
         static Value FLOAT(float value);
 #endif
 
@@ -141,6 +168,16 @@ namespace mscl
         //Exceptions:
         //    - <Error_BadDataType>: The type in which the value was stored could not be converted to a bool
         virtual bool as_bool() const;
+
+        //API Function: as_ChannelMask
+        //  Gets the data value as a <ChannelMask> object.
+        //
+        //Returns:
+        //  The data value as a <ChannelMask>.
+        //
+        //Exceptions:
+        //  - <Error_BadDataType>: The value was not stored as a <ChannelMask>.
+        virtual ChannelMask as_ChannelMask() const;
 
         //API Function: as_string
         //    Gets the data value as a string

@@ -47,6 +47,21 @@ namespace mscl
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::armedDatalog = AvailableSampleRates::burst;    //same as burst
 
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::derivedOnly = {
+            {WirelessTypes::sampleRate_4096Hz},
+            {WirelessTypes::sampleRate_2048Hz},
+            {WirelessTypes::sampleRate_1024Hz},
+            {WirelessTypes::sampleRate_512Hz},
+            {WirelessTypes::sampleRate_256Hz},
+            {WirelessTypes::sampleRate_128Hz},
+            {WirelessTypes::sampleRate_64Hz},
+            {WirelessTypes::sampleRate_32Hz},
+            {WirelessTypes::sampleRate_16Hz},
+            {WirelessTypes::sampleRate_8Hz},
+            {WirelessTypes::sampleRate_4Hz},
+            {WirelessTypes::sampleRate_2Hz},
+            {WirelessTypes::sampleRate_1Hz}};
+
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_nonSync_gen2 = {
         {WirelessTypes::sampleRate_512Hz},
@@ -213,6 +228,31 @@ namespace mscl
         {WirelessTypes::sampleRate_128Hz},
         {WirelessTypes::sampleRate_64Hz},
         {WirelessTypes::sampleRate_32Hz}};
+
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::derivedOnly_glink200 = {
+        {WirelessTypes::sampleRate_4096Hz},
+        {WirelessTypes::sampleRate_2048Hz},
+        {WirelessTypes::sampleRate_1024Hz},
+        {WirelessTypes::sampleRate_512Hz},
+        {WirelessTypes::sampleRate_256Hz},
+        {WirelessTypes::sampleRate_128Hz},
+        {WirelessTypes::sampleRate_64Hz},
+        {WirelessTypes::sampleRate_32Hz},
+        {WirelessTypes::sampleRate_16Hz},
+        {WirelessTypes::sampleRate_8Hz},
+        {WirelessTypes::sampleRate_4Hz},
+        {WirelessTypes::sampleRate_2Hz},
+        {WirelessTypes::sampleRate_1Hz},
+        {WirelessTypes::sampleRate_2Sec},
+        {WirelessTypes::sampleRate_5Sec},
+        {WirelessTypes::sampleRate_10Sec},
+        {WirelessTypes::sampleRate_30Sec},
+        {WirelessTypes::sampleRate_1Min},
+        {WirelessTypes::sampleRate_2Min},
+        {WirelessTypes::sampleRate_5Min},
+        {WirelessTypes::sampleRate_10Min},
+        {WirelessTypes::sampleRate_30Min},
+        {WirelessTypes::sampleRate_60Min}};
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_glink2 = {
             {WirelessTypes::sampleRate_512Hz},

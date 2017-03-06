@@ -9,7 +9,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include <map>
 #include <boost/optional.hpp>
 
-#include "mscl/MicroStrain/Wireless/Configuration/DataMode.h"
+#include "mscl/MicroStrain/Wireless/Configuration/DataModeMask.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/WirelessModels.h"
 #include "mscl/MicroStrain/Wireless/LinearEquation.h"
@@ -129,15 +129,15 @@ namespace mscl
 
         //Variable: m_dataMode
         //  The <DataMode> to set.
-        boost::optional<DataMode> m_dataMode;
+        boost::optional<WirelessTypes::DataMode> m_dataMode;
 
         //Variable: m_derivedDataRate
         //  The <WirelessTypes::WirelessSampleRate> for all Derived Channels to set.
         boost::optional<WirelessTypes::WirelessSampleRate> m_derivedDataRate;
 
         //Variable: m_derivedChannelMasks
-        //  The map of <WirelessTypes::DerivedChannel> to <ChannelMask> to set for Derived Channels' Masks.
-        std::map<WirelessTypes::DerivedChannel, ChannelMask> m_derivedChannelMasks;
+        //  The map of <WirelessTypes::DerivedChannelType> to <ChannelMask> to set for Derived Channels' Masks.
+        std::map<WirelessTypes::DerivedChannelType, ChannelMask> m_derivedChannelMasks;
 
         //Variable: m_inputRanges
         //    The map of <ChannelMask> to <WirelessTypes::InputRange> to set.
@@ -208,9 +208,9 @@ namespace mscl
         //    Gets the data format currently set, or from the node if not set.
         WirelessTypes::DataFormat curDataFormat(const NodeEepromHelper& eeprom) const;
 
-        //Function: curDataMode
-        //    Gets the <DataMode> currently set, or from the node if not set.
-        DataMode curDataMode(const NodeEepromHelper& eeprom) const;
+        //Function: curDataModeMask
+        //    Gets the <DataModeMask> currently set, or from the node if not set.
+        DataModeMask curDataModeMask(const NodeEepromHelper& eeprom) const;
 
         //Function: curDerivedRate
         //    Gets the derived <WirelessTypes::WirelessSampleRate> currently set, or from the node if not set.
@@ -241,13 +241,17 @@ namespace mscl
         LinearEquation curLinearEquation(const ChannelMask& mask, const NodeEepromHelper& eeprom) const;
 
         //Function: curDerivedMask
-        //  Gets the derived <ChannelMask> currently set for the given <WirelessTypes::DerivedChannel>
-        ChannelMask curDerivedMask(WirelessTypes::DerivedChannel derivedChannel, const NodeEepromHelper& eeprom) const;
+        //  Gets the derived <ChannelMask> currently set for the given <WirelessTypes::DerivedChannelType>
+        ChannelMask curDerivedMask(WirelessTypes::DerivedChannelType derivedChannel, const NodeEepromHelper& eeprom) const;
+
+        //Function: curDerivedChannelMasks
+        //  Gets the <WirelessTypes::DerivedChannelMasks> for all supported derived channel types.
+        WirelessTypes::DerivedChannelMasks curDerivedChannelMasks(const NodeEepromHelper& eeprom, const NodeFeatures& features) const;
 
         //Function: isDerivedChannelEnabled
-        //  Checks whether any channels are enabled for the <WirelessTypes::DerivedChannel>.
+        //  Checks whether any channels are enabled for the <WirelessTypes::DerivedChannelType>.
         //  This first checks the config object, and the Node if not set in the config object.
-        bool isDerivedChannelEnabled(WirelessTypes::DerivedChannel derivedChannel, const NodeEepromHelper& eeprom, const NodeFeatures& features) const;
+        bool isDerivedChannelEnabled(WirelessTypes::DerivedChannelType derivedChannel, const NodeEepromHelper& eeprom, const NodeFeatures& features) const;
 
     private:
         //Function: checkValue
@@ -392,8 +396,8 @@ namespace mscl
         bool verifyConflicts(const NodeFeatures& features, const NodeEepromHelper& eeprom, ConfigIssues& outIssues) const;
 
         //Function: findDerivedMaskConfigIssue
-        //  Finds the <ConfigIssue::ConfigOption> for the provided <WirelessTypes::DerivedChannel>.
-        static ConfigIssue::ConfigOption findDerivedMaskConfigIssue(WirelessTypes::DerivedChannel channel);
+        //  Finds the <ConfigIssue::ConfigOption> for the provided <WirelessTypes::DerivedChannelType>.
+        static ConfigIssue::ConfigOption findDerivedMaskConfigIssue(WirelessTypes::DerivedChannelType channel);
 
     public:
 
@@ -817,15 +821,15 @@ namespace mscl
         void sensorDelay(uint32 delay);
 
         //API Function: dataMode
-        //  Gets the <DataMode> currently set in the Config.
+        //  Gets the <WirelessTypes::DataMode> currently set in the Config.
         //
         //Exceptions:
         //  <Error_NoData> - The requested value has not been set.
-        DataMode dataMode() const;
+        WirelessTypes::DataMode dataMode() const;
 
         //API Function: dataMode
-        //  Sets the <DataMode> in the Config.
-        void dataMode(const DataMode& mode);
+        //  Sets the <WirelessTypes::DataMode> in the Config.
+        void dataMode(WirelessTypes::DataMode mode);
 
         //API Function: derivedDataRate
         //  Gets the <WirelessTypes::WirelessSampleRate> for the Derived Channels currently set in the Config.
@@ -839,35 +843,40 @@ namespace mscl
         void derivedDataRate(WirelessTypes::WirelessSampleRate rate);
 
         //API Function: derivedChannelMask
-        //  Gets the <ChannelMask> for a specified <WirelessTypes::DerivedChannel> currently set in the Config.
+        //  Gets the <ChannelMask> for a specified <WirelessTypes::DerivedChannelType> currently set in the Config.
         //
         //Exceptions:
         //  <Error_NoData> - The requested value has not been set.
-        ChannelMask derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel) const;
+        ChannelMask derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType) const;
 
         //API Function: derivedChannelMask
-        //  Sets the <ChannelMask> for a specified <WirelessTypes::DerivedChannel> in the Config.
-        void derivedChannelMask(WirelessTypes::DerivedChannel derivedChannel, const ChannelMask& mask);
+        //  Sets the <ChannelMask> for a specified <WirelessTypes::DerivedChannelType> in the Config.
+        void derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType, const ChannelMask& mask);
 
     public:
         //Function: flashBandwidth
         //  Gets the flash bandwidth that is used by the provided settings.
         //
         //Parameters:
-        //  sampleRate - The <WirelessTypes::WirelessSampleRate>.
+        //  rawSampleRate - The <WirelessTypes::WirelessSampleRate>.
         //  dataFormat - The <WirelessTypes::DataFormat>.
-        //  numChannels - The number of active channels.
-        static float flashBandwidth(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::DataFormat dataFormat, uint8 numChannels);
+        //  numRawChannels - The number of active channels.
+        static float flashBandwidth(WirelessTypes::WirelessSampleRate rawSampleRate, WirelessTypes::DataFormat dataFormat, uint8 numRawChannels, uint32 derivedBytesPerSweep, WirelessTypes::WirelessSampleRate derivedRate);
 
         //Function: flashBandwidth
         //  Gets the flash bandwidth that is used by the provided settings.
         //
         //Parameters:
-        //  sampleRate - The <WirelessTypes::WirelessSampleRate>.
+        //  rawSampleRate - The <WirelessTypes::WirelessSampleRate>.
         //  dataFormat - The <WirelessTypes::DataFormat>.
-        //  numChannels - The number of active channels.
+        //  numRawChannels - The number of active channels.
         //  numSweeps - The number of sweeps per burst.
         //  timeBetweenBursts - The <TimeSpan> representing the time between bursts.
-        static float flashBandwidth_burst(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::DataFormat dataFormat, uint8 numChannels, uint32 numSweeps, const TimeSpan& timeBetweenBursts);
+        static float flashBandwidth_burst(WirelessTypes::WirelessSampleRate rawSampleRate,
+                                          WirelessTypes::DataFormat dataFormat,
+                                          uint8 numRawChannels,
+                                          uint32 derivedBytesPerSweep,
+                                          uint32 numSweeps,
+                                          const TimeSpan& timeBetweenBursts);
     };
 }

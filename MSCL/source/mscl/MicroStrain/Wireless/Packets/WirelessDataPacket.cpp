@@ -5,6 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "WirelessDataPacket.h"
+#include "mscl/Timestamp.h"
 
 #include <assert.h>
 #include <boost/numeric/conversion/cast.hpp>
@@ -18,22 +19,6 @@ namespace mscl
         m_numSweeps(0),
         m_payloadOffsetChannelData(0)
     {
-    }
-
-    uint8 WirelessDataPacket::numChannelBytesPerAlgorithm(MathAlgorithmID id)
-    {
-        switch(id)
-        {
-            case mathId_rms:
-            case mathId_peakToPeak:
-            case mathId_ips:
-            case mathId_crestFactor:
-                return 4;
-
-            default:
-                assert(false);  //need to add support for new algorithm ID
-                return 0;
-        }
     }
 
     //    Adds a single DataSweep to the data packet
@@ -89,7 +74,7 @@ namespace mscl
         return static_cast<WirelessChannel::ChannelId>(channelNum);
     }
 
-    WirelessChannel::ChannelId WirelessDataPacket::getMathChannelId(MathAlgorithmID algorithmId, uint8 channelNumber)
+    WirelessChannel::ChannelId WirelessDataPacket::getMathChannelId(WirelessTypes::DerivedChannelType algorithmId, uint8 channelNumber)
     {
         uint16 algorithmIdStart = 0;
 
@@ -102,19 +87,19 @@ namespace mscl
         //determine where the start offset is in the enum list
         switch(algorithmId)
         {
-            case MathAlgorithmID::mathId_rms:
+            case WirelessTypes::derived_rms:
                 algorithmIdStart = WirelessChannel::channel_1_rms;
                 break;
 
-            case MathAlgorithmID::mathId_peakToPeak:
+            case WirelessTypes::derived_peakToPeak:
                 algorithmIdStart = WirelessChannel::channel_1_peakToPeak;
                 break;
 
-            case MathAlgorithmID::mathId_ips:
+            case WirelessTypes::derived_ips:
                 algorithmIdStart = WirelessChannel::channel_1_ips;
                 break;
 
-            case MathAlgorithmID::mathId_crestFactor:
+            case WirelessTypes::derived_crestFactor:
                 algorithmIdStart = WirelessChannel::channel_1_crestFactor;
                 break;
 
@@ -126,6 +111,26 @@ namespace mscl
 
         //use the channel number to move to the correct enum offset
         return static_cast<WirelessChannel::ChannelId>(algorithmIdStart + channelNumber - 1);
+    }
+
+    bool WirelessDataPacket::timestampWithinRange(const Timestamp& timestamp)
+    {
+        //timestamp is out of range if it is over an hour in the future
+        static const uint64 NANOS_IN_1_HOUR = 3600000000000;
+        Timestamp now = Timestamp::timeNow();
+
+        if(timestamp <= now)
+        {
+            //we aren't checking for past timestamps
+            return true;
+        }
+
+        return ((now - timestamp).getNanoseconds() < NANOS_IN_1_HOUR);
+    }
+
+    bool WirelessDataPacket::angleWithinRange(float angle)
+    {
+        return (angle >= 0.0f && angle <= 360.0f);
     }
 
     void WirelessDataPacket::getPayloadData(size_t payloadPosition, anyType& result) const
@@ -160,7 +165,7 @@ namespace mscl
             case WirelessTypes::dataType_int16_20bitTrunc:
             {
                 int32 val = static_cast<int32>(m_payload.read_int16(payloadPosition));
-                result = (val << 4);
+                result = (val << 6);
                 break;
             }
 

@@ -19,7 +19,7 @@ namespace mscl
         //    Creates an ShmPacket from the passed in <WirelessPacket>.
         //
         //Parameters:
-        //    packet - A <WirelessPacket> determined to be a SyncSamplingPacket.
+        //    packet - A <WirelessPacket> determined to be a ShmPacket.
         explicit ShmPacket(const WirelessPacket& packet);
 
     private:

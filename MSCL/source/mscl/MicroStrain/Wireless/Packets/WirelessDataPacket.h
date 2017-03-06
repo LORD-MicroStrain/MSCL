@@ -17,6 +17,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
+    class Timestamp;
+
 #ifndef SWIG
     //Class: WirelessDataPacket
     //    A class representing a Wireless Data Packet.
@@ -29,37 +31,23 @@ namespace mscl
 
         virtual ~WirelessDataPacket() {};
 
-        //Enum: MathAlgorithmID
-        //  The math algorithm IDs that can be transmitted in a math data packet.
-        enum MathAlgorithmID
-        {
-            mathId_rms = 0,
-            mathId_peakToPeak = 1,
-            mathId_ips = 2,
-            mathId_crestFactor = 3
-        };
-
         //Struct: AlgorithmMetaData
         //  Represents meta data about Math Data Packets.
         struct AlgorithmMetaData
         {
             //Variable: algorithmId
-            //  The <MathAlgorithmID>.
-            MathAlgorithmID algorithmId;
+            //  The <WirelessTypes::DerivedChannelType>.
+            WirelessTypes::DerivedChannelType algorithmId;
 
             //Variable: channelMask
             //  The <ChannelMask> to which the algorithm is applied.
             ChannelMask channelMask;
 
-            AlgorithmMetaData(MathAlgorithmID id, const ChannelMask& mask):
+            AlgorithmMetaData(WirelessTypes::DerivedChannelType id, const ChannelMask& mask):
                 algorithmId(id),
                 channelMask(mask)
             {}
         };
-
-        //Function: numChannelBytesPerAlgorithm
-        //  Gets the number of channel bytes for the specified <MathAlgorithmID>.
-        static uint8 numChannelBytesPerAlgorithm(MathAlgorithmID id);
 
     private:
         //Variable: m_dataSweeps
@@ -125,16 +113,36 @@ namespace mscl
         void getPayloadData(size_t payloadPosition, anyType& result) const;
 
     public:
+        //Function: timestampWithinRange
+        //  Checks if a timestamp is within the valid range that MSCL accepts.
+        //  
+        //Parameters:
+        //  timestamp - The <Timestamp> to check for valid range.
+        //
+        //Returns:
+        //  true if the timestamp is within the valid range, false otherwise.
+        static bool timestampWithinRange(const Timestamp& timestamp);
+
+        //Function: angleWithinRange
+        //  Checks if an angle from a Wireless Packet is within the valid range that MSCL accepts.
+        //  
+        //Parameters:
+        //  angle - The angle (in degrees) to check if its within range.
+        //
+        //Returns:
+        //  true if the timestamp is within the valid range, false otherwise.
+        static bool angleWithinRange(float angle);
+
         //Function: getMathChannelId
         //  Takes a math algorithm ID and a channel number (1 = ch1, 8 = ch8) and determines the <WirelessChannel::ChannelId>.
         //
         //Parameters:
-        //  algorithmId - The <MathAlgorithmID>.
+        //  algorithmId - The <WirelessTypes::DerivedChannelType>.
         //  channelNumber - The channel number (1 = ch1, 8 = ch8) which the math applies to.
         //
         //Returns:
         //  The <WirelessChannel::ChannelId> representing the math channel.
-        static WirelessChannel::ChannelId getMathChannelId(MathAlgorithmID algorithmId, uint8 channelNumber);
+        static WirelessChannel::ChannelId getMathChannelId(WirelessTypes::DerivedChannelType algorithmId, uint8 channelNumber);
 
         //Function: getNextSweep
         //    Gets the next <DataSweep> in the packet

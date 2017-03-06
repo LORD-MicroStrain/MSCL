@@ -27,7 +27,7 @@ namespace mscl
         m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_temperature);    //temp
     }
 
-    const WirelessTypes::WirelessSampleRates NodeFeatures_glink2External::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const
+    const WirelessTypes::WirelessSampleRates NodeFeatures_glink2External::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
         //the list of sample rates varies for each sampling mode
         switch(samplingMode)
