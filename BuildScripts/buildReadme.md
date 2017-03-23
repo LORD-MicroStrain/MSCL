@@ -128,6 +128,8 @@ del Output\Python\_mscl.lib
 - python2.7-dev (Python only)
 - swig 3.0.6 (Python only)
 
+**Note:** if using a version of GCC that does not fully support C++11, you may need to add the `-std=C++11` option for the cxx flags when building.
+
 Use the master build script (run from the MSCL root directory) to build everything (C++, Python, Unit Tests):
 ```
 BuildScripts/buildAll.sh
