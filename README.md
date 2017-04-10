@@ -21,6 +21,8 @@ The library is currently available in:
 
 [Example Code](https://github.com/LORD-MicroStrain/MSCL/tree/master/MSCL_Examples)
   * Note: LabVIEW example code is provided in the [LabVIEW-MSCL VI package](https://github.com/LORD-MicroStrain/LabVIEW-MSCL).
+  
+[FAQs](https://github.com/LORD-MicroStrain/MSCL/blob/master/FAQs.md)
 
 #### License
 MIT License - see the LICENSE.txt file in the source distribution.
