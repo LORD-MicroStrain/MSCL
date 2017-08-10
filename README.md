@@ -1,4 +1,4 @@
-[Download the MSCL Binaries (19.3.0)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v19.3.0/MSCL_19.3.0.zip) (Windows)
+[Download the MSCL Binaries (29.5.0)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v29.5.0/MSCL_29.5.0.zip) (Windows)
 
 [How to build MSCL from source](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme.md) (Can be compiled for Windows, Linux, etc.)
 
