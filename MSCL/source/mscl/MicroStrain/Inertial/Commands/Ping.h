@@ -36,9 +36,6 @@ namespace mscl
         //    Handles the response to the Ping command.
         class Response : public GenericInertialCommand::Response
         {
-        protected:
-            virtual InertialTypes::Command commandId() const override { return CMD_ID; }
-
         public:
             //Constructor: Response
             //    Creates a Ping Response object

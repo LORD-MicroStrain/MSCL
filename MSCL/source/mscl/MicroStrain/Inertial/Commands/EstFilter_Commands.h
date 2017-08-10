@@ -110,7 +110,7 @@ namespace mscl
         class Response : public GenericInertialCommand::Response
         {
         protected:
-            virtual InertialTypes::Command commandId() const { return CMD_ID; }
+//            virtual InertialTypes::Command commandId() const { return CMD_ID; }
             virtual uint8 fieldDataByte() const { return FIELD_DATA_BYTE; }
 
         public:
@@ -138,8 +138,8 @@ namespace mscl
 
         class Response: public GenericInertialCommand::Response
         {
-        protected:
-            virtual InertialTypes::Command commandId() const { return CMD_ID; }
+        //protected:
+        //    virtual InertialTypes::Command commandId() const { return CMD_ID; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector);
@@ -168,8 +168,8 @@ namespace mscl
 
         class Response: public GenericInertialCommand::Response
         {
-        protected:
-            virtual InertialTypes::Command commandId() const { return CMD_ID; }
+        //protected:
+        //    virtual InertialTypes::Command commandId() const { return CMD_ID; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector);

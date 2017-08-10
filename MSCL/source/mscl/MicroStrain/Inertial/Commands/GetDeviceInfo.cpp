@@ -29,7 +29,7 @@ namespace mscl
 
 
     GetDeviceInfo::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        GenericInertialCommand::Response(collector, true, true, "Get Device Info")
+        GenericInertialCommand::Response(InertialTypes::CMD_GET_DEVICE_INFO, collector, true, true, "Get Device Info")
     {
     }
 

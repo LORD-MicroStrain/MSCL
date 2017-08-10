@@ -7,6 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "Connection.h"
 #include "Connection_Impl.h"
+#include "Devices.h"
 
 #include "SerialConnection.h"
 #include "TcpIpConnection.h"
@@ -22,10 +23,39 @@ namespace mscl
     {
     }
 
-    Connection Connection::Serial(const std::string& port, uint32 baudRate)//baudRate=921600
+    Connection Connection::Serial(const std::string& port, uint32 baudRate)
     {
         std::shared_ptr<Connection_Impl_Base> serial(new SerialConnection(port, baudRate));
         return Connection(serial);
+    }
+
+    Connection Connection::Serial(const std::string& port)
+    {
+        //attempt to automatically discover the baud rate setting
+        auto ports = Devices::listPorts();
+        uint32 baudRate = 921600;
+        bool foundPort = false;
+
+        for(auto i : ports)
+        {
+            if(i.first == port)
+            {
+                foundPort = true;
+                baudRate = i.second.baudRate();
+                if(baudRate == 0)
+                {
+                    baudRate = 921600;
+                }
+                break;
+            }
+        }
+
+        if(!foundPort)
+        {
+            throw Error_InvalidSerialPort(-999);
+        }
+
+        return Connection::Serial(port, baudRate);
     }
 
     Connection Connection::TcpIp(const std::string& serverAddress, uint16 serverPort)
@@ -114,21 +144,28 @@ namespace mscl
         m_impl->rawByteMode(enable);
     }
 
-    Bytes Connection::getRawBytes(uint32 timeout, uint32 maxBytes)
+    Bytes Connection::getRawBytes(uint32 timeout, uint32 maxBytes, uint32 minBytes)
     {
         Bytes result;
-        m_impl->getRawBytes(result, timeout, maxBytes);
+        m_impl->getRawBytes(result, timeout, maxBytes, minBytes);
         return result;
     }
 
-    std::string Connection::getRawBytesStr(uint32 timeout, uint32 maxBytes)
+    std::string Connection::getRawBytesStr(uint32 timeout, uint32 maxBytes, uint32 minBytes)
     {
         //get the raw bytes in a Bytes vector
         Bytes bytes;
-        m_impl->getRawBytes(bytes, timeout, maxBytes);
+        m_impl->getRawBytes(bytes, timeout, maxBytes, minBytes);
 
         //convert the Bytes to a string
         std::string result(bytes.begin(), bytes.end());
+        return result;
+    }
+
+    Bytes Connection::getRawBytesWithPattern(const Bytes& pattern, uint32 timeout)
+    {
+        Bytes result;
+        m_impl->getRawBytesWithPattern(result, pattern.data(), pattern.size(), timeout);
         return result;
     }
 

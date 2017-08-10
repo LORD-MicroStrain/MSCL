@@ -18,6 +18,7 @@ namespace mscl
     {
         friend class BaseStationEepromHelper;
         friend class BaseStation_Impl;
+        friend class BaseStationEeprom;
 
     public:
         virtual ~BaseStationFeatures() {};
@@ -62,28 +63,38 @@ namespace mscl
         //
         //Returns:
         //    true if the transmit power is supported, false otherwise.
-        bool supportsTransmitPower(WirelessTypes::TransmitPower power) const;
+        virtual bool supportsTransmitPower(WirelessTypes::TransmitPower power) const;
+
+        //API Function: supportsCommunicationProtocol
+        //  Checks if a <WirelessTypes::CommProtocol> is supported by this BaseStation.
+        //
+        //Parameters:
+        //  protocol - The <WirelessTypes::CommProtocol> to check if supported.
+        //
+        //Returns:
+        //  true if the protocol is supported, false otherwise.
+        virtual bool supportsCommunicationProtocol(WirelessTypes::CommProtocol protocol) const;
 
         //API Function: supportsButtons
         //    Checks if the BaseStation supports Button configuration.
         //    
         //Returns:
         //    true if the BaseStation supports Button configuration, false otherwise.
-        bool supportsButtons() const;
+        virtual bool supportsButtons() const;
 
         //API Function: supportsAnalogPairing
         //    Checks if the BaseStation supports Analog Pairing configuration.
         //
         //Returns:
         //    true if the BaseStation supports Analog Pairing, false otherwise.
-        bool supportsAnalogPairing() const;
+        virtual bool supportsAnalogPairing() const;
 
         //API Function: supportsBeaconStatus
         //    Checks if the BaseStation supports the beaconStatus command.
         //
         //Returns:
         //    true if the BaseStation supports the beacon status command, false otherwise.
-        bool supportsBeaconStatus() const;
+        virtual bool supportsBeaconStatus() const;
 
         //API Function: supportsRfSweepMode
         //  Checks if the BaseStation supports RF Sweep Mode.
@@ -92,14 +103,14 @@ namespace mscl
         //
         //Returns:
         //  true if the BaseStation supports RF Sweep Mode, false otherwise.
-        bool supportsRfSweepMode() const;
+        virtual bool supportsRfSweepMode() const;
 
         //API Function: supportsCustomRfSweepMode
         //  Checks if the BaseStation supports the Custom RF Sweep Mode (providing custom frequency ranges).
         //
         //Returns:
         //  true if the BaseStation supports Custom RF Sweep Mode, false otherwise.
-        bool supportsCustomRfSweepMode() const;
+        virtual bool supportsCustomRfSweepMode() const;
 
         //API Function: buttonCount
         //    Gets the total number of buttons that are supported.
@@ -122,6 +133,13 @@ namespace mscl
         //    A vector of <WirelessTypes::TransmitPowers> that are supported by this BaseStation.
         virtual const WirelessTypes::TransmitPowers transmitPowers() const;
 
+        //API Function: commProtocols
+        //  Gets a list of <WirelessTypes::CommProtocols> that are supported by this BaseStation.
+        //
+        //Returns:
+        //  A vector of <WirelessTypes::CommProtocols> that are supported by this BaseStation.
+        virtual const WirelessTypes::CommProtocols commProtocols() const;
+
     protected:
         //Function: supportsNewTransmitPowers
         //    Checks if the BaseStation supports the new transmit powers (true), or the old ones (false).
@@ -130,5 +148,13 @@ namespace mscl
         //Function: supportsEepromCommitViaRadioReset
         //    Checks if eeprom changes can be committed by only cycling the radio, instead of cycling power.
         virtual bool supportsEepromCommitViaRadioReset() const;
+
+        //Function: supportsEeprom1024AndAbove
+        //  Checks if the Node supports reading eeprom location 1024 and above.
+        virtual bool supportsEeprom1024AndAbove() const;
+
+        //Function: supportsCommProtocolEeprom
+        //  Checks if the Communication Protocol eeprom location is supported.
+        virtual bool supportsCommProtocolEeprom() const;
     };
 }

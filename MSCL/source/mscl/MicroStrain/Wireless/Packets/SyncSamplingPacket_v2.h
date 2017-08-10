@@ -10,9 +10,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
 
-    //Class: SyncSamplingPacket_16ch
+    //Class: SyncSamplingPacket_v2
     //    A <WirelessDataPacket> derived class representing a Synchronized Sampling 16 channel packet
-    class SyncSamplingPacket_16ch : public WirelessDataPacket
+    class SyncSamplingPacket_v2 : public WirelessDataPacket
     {
     private:
         //=====================================================================================================
@@ -54,15 +54,15 @@ namespace mscl
         };
 
     public:
-        //Constructor: SyncSamplingPacket_16ch
-        //    Creates a SyncSamplingPacket_16ch from the passed in <WirelessPacket>
+        //Constructor: SyncSamplingPacket_v2
+        //    Creates a SyncSamplingPacket_v2 from the passed in <WirelessPacket>
         //
         //Parameters:
-        //    packet - A <WirelessPacket> determined to be a SyncSamplingPacket_16ch
-        explicit SyncSamplingPacket_16ch(const WirelessPacket& packet);
+        //    packet - A <WirelessPacket> determined to be a SyncSamplingPacket_v2
+        explicit SyncSamplingPacket_v2(const WirelessPacket& packet);
 
     private:
-        SyncSamplingPacket_16ch();    //default constructor disabled
+        SyncSamplingPacket_v2();    //default constructor disabled
 
         //Function: parseSweeps
         //    Parses the passed in WirelessPacket for all the sweep information and adds a sweep to the sweeps container

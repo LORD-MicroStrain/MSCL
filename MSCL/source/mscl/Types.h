@@ -52,7 +52,7 @@ namespace mscl
 
     //API Typedef: NodeAddress
     //    typedef for a Node's node address.
-    typedef std::uint16_t NodeAddress;
+    typedef std::uint32_t NodeAddress;
 
 #ifndef SWIG
     
@@ -103,8 +103,7 @@ namespace mscl
         if( value < min || value > max)
         {
             std::stringstream error;
-            error << valueName << " must be in the range [";
-            error << min << "," << max << "]";
+            error << valueName << " must be in the range [" << min << "," << max << "]";
 
             throw std::out_of_range(error.str().c_str());
         }

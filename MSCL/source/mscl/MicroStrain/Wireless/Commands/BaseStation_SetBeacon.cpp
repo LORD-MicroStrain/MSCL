@@ -16,7 +16,7 @@ namespace mscl
 
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint16(WirelessProtocol::cmdId_base_setBeacon);
+        cmd.append_uint16(WirelessProtocol::cmdId_base_setBeacon_v1);
         cmd.append_uint32(beaconTime);                    
 
         return cmd;
@@ -24,12 +24,12 @@ namespace mscl
 
 
     BaseStation_SetBeacon::Response::Response(uint64 utcTime, std::weak_ptr<ResponseCollector> collector):
-        ResponsePattern(collector),
+        WirelessResponsePattern(collector, WirelessProtocol::cmdId_base_setBeacon_v1, WirelessProtocol::BASE_STATION_ADDRESS),
         m_beaconStartTime(utcTime * TimeSpan::NANOSECONDS_PER_SECOND)
     {
     }
 
-    bool BaseStation_SetBeacon::Response::match(DataBuffer& data)
+    bool BaseStation_SetBeacon::Response::matchSuccessResponse(DataBuffer& data)
     {
         const uint16 TOTAL_SUCCESS_BYTES = 2;
 
@@ -43,7 +43,7 @@ namespace mscl
         }
 
         //if it doesn't match the command Id
-        if(data.read_uint16() != WirelessProtocol::cmdId_base_setBeacon)
+        if(data.read_uint16() != WirelessProtocol::cmdId_base_setBeacon_v1)
         { 
             return false; 
         }
@@ -52,15 +52,6 @@ namespace mscl
 
         //commit the current read position
         savePoint.commit();
-
-        //set the result to success
-        m_success = true;
-
-        //we have fully matched the response
-        m_fullyMatched = true;
-
-        //notify that the response was matched
-        m_matchCondition.notify();
 
         return true;
     }

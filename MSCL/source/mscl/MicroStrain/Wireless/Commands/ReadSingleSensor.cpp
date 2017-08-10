@@ -15,7 +15,7 @@ namespace mscl
         //build the command ByteStream
         ByteStream cmd;
         cmd.append_uint8(WirelessProtocol::cmdId_readSingleSensor); //Command ID
-        cmd.append_uint16(nodeAddress);                             //Node address    (2 bytes)
+        cmd.append_uint16(static_cast<uint16>(nodeAddress));        //Node address    (2 bytes)
         cmd.append_uint8(0x01);                                     //Command Byte
         cmd.append_uint8(channelNumber);                            //Channel number
 
@@ -23,12 +23,12 @@ namespace mscl
     }
 
     ReadSingleSensor::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        ResponsePattern(collector),
+        WirelessResponsePattern(collector, WirelessProtocol::cmdId_readSingleSensor, 0),    //note: passing 0 because this response doesn't check node address :(
         m_sensorValue(0)
     {
     }
 
-    bool ReadSingleSensor::Response::match(DataBuffer& data)
+    bool ReadSingleSensor::Response::matchSuccessResponse(DataBuffer& data)
     {
         const uint16 TOTAL_BYTES = 5;
 
@@ -66,18 +66,10 @@ namespace mscl
 
         //if we made it this far, the bytes match the expected response
 
-        m_success = true;
-
         m_sensorValue = sensorVal;
 
         //commit the current read position
         savePoint.commit();
-
-        //we have fully matched the response
-        m_fullyMatched = true;
-
-        //notify that the response was matched
-        m_matchCondition.notify();
 
         return true;
     }

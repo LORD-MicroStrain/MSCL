@@ -32,8 +32,6 @@ try:
 
             #iterate over all the data points in the packet
             for dataPoint in packet.data():
-                print dataPoint,
-                print ": ",
                 print dataPoint.as_string() + " ",  #Just printing this out as a string. Other methods (ie. as_float, as_uint16, as_Vector) are also available.
                 
                 #if the dataPoint is invalid

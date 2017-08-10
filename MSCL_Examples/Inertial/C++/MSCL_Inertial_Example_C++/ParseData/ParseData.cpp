@@ -46,7 +46,6 @@ int main(int argc, char **argv)
           dataPoint = data[itr];
 
           //print out the channel data
-          cout << dataPoint.str() << ": ";
           cout << dataPoint.as_string() << " "; //Just printing this out as a string. Other methods (ie. as_float, as_uint16, as_Vector) are also available.
 
           //if the dataPoint is invalid

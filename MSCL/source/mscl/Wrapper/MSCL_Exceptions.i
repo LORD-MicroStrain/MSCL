@@ -759,6 +759,8 @@
 %catches(mscl::Error_Connection)                                                                                                            mscl::Connection::getRawBytesStr(uint32 timeout, uint32 maxBytes);
 %catches(mscl::Error_Connection)                                                                                                            mscl::Connection::getRawBytesStr(uint32 timeout);
 %catches(mscl::Error_Connection)                                                                                                            mscl::Connection::getRawBytesStr();
+%catches(mscl::Error_Connection)                                                                                                            mscl::Connection::getRawBytesWithPattern(const Bytes& pattern);
+%catches(mscl::Error_Connection)                                                                                                            mscl::Connection::getRawBytesWithPattern(const Bytes& pattern, uint32 timeout);
 %catches(mscl::Error_Connection)                                                                                                            mscl::Connection::rawByteMode(bool enable);
 %catches(mscl::Error_Connection)                                                                                                            mscl::Connection::getDebugData(uint32 timeout);
 %catches(mscl::Error_Connection)                                                                                                            mscl::Connection::getDebugData();
@@ -787,6 +789,7 @@
 %catches(mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error_Communication)                               mscl::BaseStation::verifyConfig(const BaseStationConfig& config, ConfigIssues& outIssues) const;
 %catches(mscl::Error_NotSupported, mscl::Error_InvalidConfig, mscl::Error_Communication, mscl::Error_Connection)    mscl::BaseStation::applyConfig(const BaseStationConfig& config);
 %catches(mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error_Communication)                               mscl::BaseStation::frequency() const;
+%catches(mscl::Error_Connection, mscl::Error_Communication)                                                         mscl::BaseStation::communicationProtocol() const;
 %catches(mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error_Communication)                               mscl::BaseStation::firmwareVersion() const;
 %catches(mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error_Communication)                               mscl::BaseStation::model() const;
 %catches(mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error_Communication)                               mscl::BaseStation::serial() const;
@@ -851,11 +854,11 @@
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::dataMode() const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::derivedDataRate() const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::derivedChannelMask() const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::communicationProtocol() const;
 
 //WirelessNode
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::features() const;
 %catches(mscl::Error_NoData)                                                                                                mscl::WirelessNode::lastCommunicationTime() const;
-%catches(mscl::Error_Connection, mscl::Error_Communication)                                                                 mscl::WirelessNode::quickPing();
 %catches(mscl::Error_Connection)                                                                                            mscl::WirelessNode::ping();
 %catches(mscl::Error_Connection)                                                                                            mscl::WirelessNode::sleep();
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::readEeprom(uint16 location) const;
@@ -865,6 +868,7 @@
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::resetRadio();
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::changeFrequency(WirelessTypes::Frequency frequency);
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::frequency() const;
+%catches(mscl::Error_NodeCommunication, mscl::Error_Connection)                                                             mscl::WirelessNode::communicationProtocol() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::firmwareVersion() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::model() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::serial() const;
@@ -880,6 +884,7 @@
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::autoBalance(const ChannelMask& mask, float targetPercent);
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::autoCal_shmLink();
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::autoShuntCal(const ChannelMask& mask, const ShuntCalCmdInfo& commandInfo);
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::testCommunicationProtocol(WirelessTypes::CommProtocol protocol);
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::verifyConfig(const WirelessNodeConfig& config, ConfigIssues& outIssues) const;
 %catches(mscl::Error_NotSupported, mscl::Error_InvalidNodeConfig, mscl::Error_NodeCommunication, mscl::Error_Connection)    mscl::WirelessNode::applyConfig(const WirelessNodeConfig& config);
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getNumDatalogSessions() const;
@@ -955,9 +960,28 @@
 %catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setInitialAttitude(const EulerAngles& attitude);
 %catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setInitialHeading(float heading);
 %catches(mscl::Error_Communication, mscl::Error_InertialCmdFailed, mscl::Error_Connection)                                              mscl::InertialNode::setToIdle();
+%catches(mscl::Error_Communication, mscl::Error_InertialCmdFailed, mscl::Error_Connection)                                              mscl::InertialNode::cyclePower();
 %catches(mscl::Error_Communication, mscl::Error_InertialCmdFailed, mscl::Error_Connection)                                              mscl::InertialNode::resume();
+%catches(mscl::Error_Communication, mscl::Error_InertialCmdFailed, mscl::Error_Connection)                                              mscl::InertialNode::saveSettingsAsStartup();
+%catches(mscl::Error_Communication, mscl::Error_InertialCmdFailed, mscl::Error_Connection)                                              mscl::InertialNode::loadStartupSettings();
+%catches(mscl::Error_Communication, mscl::Error_InertialCmdFailed, mscl::Error_Connection)                                              mscl::InertialNode::loadFactoryDefaultSettings();
 %catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getSensorToVehicleTransformation();
 %catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setSensorToVehicleTransformation(const EulerAngles& angles);
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getGNSSAssistedFixControl();
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setGNSSAssistedFixControl(bool enableAssistedFix);
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getGNSSAssistTimeUpdate();
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setGNSSAssistTimeUpdate(const TimeUpdate& timeUpdate);
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getGPSTimeUpdate(InertialTypes::TimeFrame timeFrame);
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setGPSTimeUpdate(InertialTypes::TimeFrame, mscl::uint32 timeData);
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getSBASSettings();
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setSBASSettings(const SBASSettingsData& dataToUse);
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getConstellationSettings();
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setConstellationSettings(const ConstellationSettingsData& dataToUse);
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getAccelerometerBias();
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setAccelerometerBias(const GeometricVector& biasVector);
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getGyroBias();
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setGyroBias(const GeometricVector& biasVector);
+%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::captureGyroBias(const uint16& samplingTime);
 
 //InertialNodeFeatures
 %catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNodeFeatures::supportedChannelFields(InertialTypes::InertialCategory category) const;
@@ -1007,11 +1031,12 @@
 %catches(std::out_of_range)                         mscl::Matrix::as_uint8At(uint16 row, uint16 column) const;
 
 //SyncSamplingNetwork
+%catches(mscl::Error_Communication, mscl::Error_Connection)                                                                                                             mscl::SyncSamplingNetwork::SyncSamplingNetwork(const BaseStation& networkBaseStation);
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_InvalidNodeConfig, mscl::Error_Connection, mscl::Error_UnknownSampleRate, mscl::Error)    mscl::SyncSamplingNetwork::addNode(WirelessNode& node);
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_InvalidNodeConfig, mscl::Error_Connection, mscl::Error_UnknownSampleRate, mscl::Error)    mscl::SyncSamplingNetwork::addNode(WirelessNode& node, const WirelessNodeConfig& pendingConfig);
 %catches(mscl::Error_NodeCommunication, mscl::Error_Connection, mscl::Error)                                                                                            mscl::SyncSamplingNetwork::removeNode(uint16 nodeAddress);
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection, mscl::Error_UnknownSampleRate)                                                mscl::SyncSamplingNetwork::lossless(bool enable);
-%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection, mscl::Error_UnknownSampleRate)                                                mscl::SyncSamplingNetwork::highCapacity(bool enable);
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection, mscl::Error_UnknownSampleRate)                                                mscl::SyncSamplingNetwork::communicationProtocol(WirelessTypes::CommProtocol protocol);
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection, mscl::Error)                                                                  mscl::SyncSamplingNetwork::applyConfiguration();
 %catches(mscl::Error_Communication, mscl::Error_Connection, mscl::Error)                                                                                                mscl::SyncSamplingNetwork::startSampling();
 %catches(mscl::Error_Communication, mscl::Error_Connection, mscl::Error)                                                                                                mscl::SyncSamplingNetwork::startSampling(Timestamp startTime);
@@ -1025,8 +1050,9 @@
 %catches(mscl::Error_NodeCommunication, mscl::Error_Connection, mscl::Error)                                                                        mscl::ArmedDataloggingNetwork::startSampling();
 
 //DatalogDownloader
-%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                mscl::DatalogDownloader::DatalogDownloader(const WirelessNode& node);
-%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_NoData, mscl::Error_Connection)            mscl::DatalogDownloader::getNextData();
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection, mscl::Error)                                mscl::DatalogDownloader::DatalogDownloader(const WirelessNode& node);
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection, mscl::Error)                                mscl::DatalogDownloader::DatalogDownloader(const WirelessNode& node, uint16 startAddress, uint32 size);
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_NoData, mscl::Error_Connection, mscl::Error)            mscl::DatalogDownloader::getNextData();
 
 //SampleRate
 %catches(mscl::Error_UnknownSampleRate) mscl::SampleRate::FromWirelessEepromValue(WirelessTypes::SampleRate eepromValue);
@@ -1042,5 +1068,7 @@
 
 %catches(mscl::Error_NotSupported)      mscl::ChannelGroup::eepromLocation(WirelessTypes::ChannelGroupSetting setting) const;
 
+%catches(mscl::Error)                   mscl::WsdaFinder::WsdaFinder();
 
-//=========================================================================================================================================================
+
+//================================================================================================================================================Running Swig: ========

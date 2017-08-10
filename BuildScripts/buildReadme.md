@@ -1,33 +1,7 @@
 # **MSCL build info**
 
 The following information describes how to build MSCL for various platforms and programming languages.
-Note that the specific versions of libraries/build tools may not be needed, however it is recommended to be on the same Major version. For instance, SWIG 3.0.6 is called out below. SWIG 3.0.5 will likely work fine, but SWIG 2.X.X will not.
-
-#### Note:
-Unfortunately, it seems there might be an issue in newer versions of bjam using msvc ([see this Stack Overflow](http://stackoverflow.com/questions/29450634/compile-boost-python-tutorial-with-vs-2015-ctp-5-and-python-3-5a-on-windows-10-t)). 
-
-From our internal build (using bjam from boost 1.61), it seems this fixes the issue:
-
-1. Edit the file `D:\boost\boost_1_61_0\tools\build\src\tools\msvc.jam`
-2. Change this (lines 1358-1363) from: 
-``` 
-     generators.register [ new msvc-linking-generator msvc.link.dll :
-         OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : SHARED_LIB IMPORT_LIB :
-         <toolset>msvc <suppress-import-lib>false ] ;
-     generators.register [ new msvc-linking-generator msvc.link.dll :
-         OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : SHARED_LIB :
-         <toolset>msvc <suppress-import-lib>true ] ;
-```
-to this:
-```
-     generators.register [ new msvc-linking-generator msvc.link.dll :
-        OBJ SEARCHED_LIB STATIC_LIB IMPORT_LIB : SHARED_LIB IMPORT_LIB :
-        <toolset>msvc ] ;
-```
-3. Remove this (line 1479):
-```
-toolset.flags msvc.link.dll LINKFLAGS <suppress-import-lib>true : /NOENTRY ;
-```
+Note that the specific versions of libraries may not be needed, however it is recommended to be on the same Major version. For instance, SWIG 3.0.6 is called out below. SWIG 3.0.5 will likely work fine, but SWIG 2.X.X will not.
 
 ## **Windows**
 
@@ -38,8 +12,13 @@ toolset.flags msvc.link.dll LINKFLAGS <suppress-import-lib>true : /NOENTRY ;
 - [SWIG 3.0.6](http://swig.org/) (.NET, Python only)
 - [Turtle 1.2.6](http://turtle.sourceforge.net/) (Unit Tests only)
 - [Boost.Build](http://www.boost.org/build/) (Python only)
-- [Python 2.7 or 3.6](https://www.python.org/downloads/) (Python only)
+- [Python 2.7.10](https://www.python.org/downloads/) (Python only)
 - Create an environment variable, `LIB_PATH`, that points to a folder containing the above libraries.
+
+Use the master build script to build everything (C++, .NET, Python, Unit Tests, and Documentation):
+```
+BuildScripts/buildAll.cmd
+```
 
 ### C++
 
@@ -80,29 +59,6 @@ or
 
 Building the Python library involves using Boost.Build framework, using the `bjam` or `b2` command, and utilizing the provided Jamfiles.
 
-Configure bjam by creating a [site-config.jam or user-config.jam file](http://www.boost.org/build/doc/html/bbv2/overview/configuration.html) in your Home path or Boost Build Path. The contents of the file should look like this:
-```
-using msvc
-:
-:
-: <cxxflags>/I"C:/Lib/boost/boost_1_61_0" 
-  <cxxflags>/I"C:/Python27/include" 
-  <linkflags>/LIBPATH:"C:/Lib/boost/boost_1_61_0/lib32-msvc-14.0"
-  <linkflags>/LIBPATH:"C:/Python27/libs"
-  <cxxflags>/D"WIN32"
-  <cxxflags>/D"_WINDOWS"
-  <cxxflags>/D"_USRDLL"
-  <cxxflags>/D"NOMINMAX"
-  <cxxflags>/D"_WIN32_WINNT=0x0501"
-  <cxxflags>/D"_USING_V110_SDK71_"
-  <cxxflags>/D"BOOST_ALL_NO_LIB"
-  <cxxflags>/D"_UNICODE"
-  <cxxflags>/D"UNICODE"
-;
-```
-
-Note: Please see the [Note on the bjam bug](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme.md#note).
-
 **Python File (`mscl.py` + `_mscl.pyd`)**
 
 ```
@@ -128,8 +84,6 @@ del Output\Python\_mscl.lib
 - python2.7-dev (Python only)
 - swig 3.0.6 (Python only)
 
-**Note:** if using a version of GCC that does not fully support C++11, you may need to add the `-std=C++11` option for the cxx flags when building.
-
 Use the master build script (run from the MSCL root directory) to build everything (C++, Python, Unit Tests):
 ```
 BuildScripts/buildAll.sh
@@ -146,18 +100,6 @@ bjam MSCL//stage_c++ release
 ### Python
 
 Building the Python library involves using Boost.Build framework, using the `bjam` or `b2` command, and utilizing the provided Jamfiles.
-
-Configure bjam by creating a [site-config.jam or user-config.jam file](http://www.boost.org/build/doc/html/bbv2/overview/configuration.html) in your Home path or Boost Build Path. The contents of the file should look like this:
-```
-using gcc
-:	host
-:	g++
-:	<cxxflags>-I/usr/include/python2.7
-;
-```
-
-Note: Please see the [Note on the bjam bug](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme.md#note).
-
 
 **Python File (`mscl.py` + `_mscl.so`)**
 

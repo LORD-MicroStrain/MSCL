@@ -32,6 +32,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeFeatures_shmlink.h"
 #include "NodeFeatures_shmlink2.h"
 #include "NodeFeatures_shmlink200.h"
+#include "NodeFeatures_shmlink201.h"
 #include "NodeFeatures_tclink1ch.h"
 #include "NodeFeatures_tclink3ch.h"
 #include "NodeFeatures_tclink6ch.h"
@@ -128,11 +129,15 @@ namespace mscl
         case WirelessModels::node_shmLink:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_shmlink(info));
 
+        case WirelessModels::node_shmLink2_cust1_oldNumber:
         case WirelessModels::node_shmLink2_cust1:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_shmlink2(info));
 
         case WirelessModels::node_shmLink200:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_shmlink200(info));
+
+        case WirelessModels::node_shmLink201:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_shmlink201(info));
 
         case WirelessModels::node_tcLink_1ch:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_tclink1ch(info));
@@ -686,6 +691,12 @@ namespace mscl
         }
     }
 
+    bool NodeFeatures::supportsCommunicationProtocol(WirelessTypes::CommProtocol protocol) const
+    {
+        const WirelessTypes::CommProtocols& supportedProtocols = commProtocols();
+        return (std::find(supportedProtocols.begin(), supportedProtocols.end(), protocol) != supportedProtocols.end());
+    }
+
     bool NodeFeatures::supportsDataFormat(WirelessTypes::DataFormat dataFormat) const
     {
         //get the supported data formats
@@ -893,6 +904,12 @@ namespace mscl
 
         uint32 bytesPerSweep = bytesPerSample * static_cast<uint16>(channels.count());
 
+        //don't allow divide by 0
+        if(bytesPerSweep == 0)
+        {
+            bytesPerSweep = 1;
+        }
+
         if(m_nodeInfo.firmwareVersion() >= Version(10, 0))
         {
             DataModeMask mode(dataMode);
@@ -917,7 +934,8 @@ namespace mscl
                                                 const ChannelMask& rawChannels,
                                                 WirelessTypes::DerivedChannelMasks derivedChannelMasks,
                                                 const SampleRate& rawSampleRate,
-                                                uint32 sweepsPerBurst) const
+                                                uint32 sweepsPerBurst,
+                                                WirelessTypes::CommProtocol commProtocol) const
     {
         uint32 rawBytesPerSweep = 0;
         uint32 derivedBytesPerSweep = 0;
@@ -932,7 +950,7 @@ namespace mscl
             derivedBytesPerSweep = WirelessTypes::derivedBytesPerSweep(derivedChannelMasks);
         }
 
-        return SyncSamplingFormulas::minTimeBetweenBursts(rawBytesPerSweep, derivedBytesPerSweep, rawSampleRate, sweepsPerBurst);
+        return SyncSamplingFormulas::minTimeBetweenBursts(rawBytesPerSweep, derivedBytesPerSweep, rawSampleRate, sweepsPerBurst, commProtocol);
     }
 
     uint32 NodeFeatures::minSensorDelay() const
@@ -1004,6 +1022,12 @@ namespace mscl
         uint8 bytesPerSample = WirelessTypes::dataFormatSize(dataFormat);
 
         uint32 rawBytesPerSweep = bytesPerSample * static_cast<uint16>(rawChannels.count());
+
+        //don't allow divide by 0
+        if(rawBytesPerSweep == 0)
+        {
+            rawBytesPerSweep = 1;
+        }
 
         uint32 mathBytesPerSweep = WirelessTypes::derivedBytesPerSweep(derivedChannelMasks);
 
@@ -1323,6 +1347,21 @@ namespace mscl
         return result;
     }
 
+    const WirelessTypes::CommProtocols NodeFeatures::commProtocols() const
+    {
+        WirelessTypes::CommProtocols result;
+
+        result.push_back(WirelessTypes::commProtocol_lxrs);
+
+        static const Version MIN_LXRS_PLUS_FW(11, 0);
+        if(m_nodeInfo.firmwareVersion() >= MIN_LXRS_PLUS_FW)
+        {
+            result.push_back(WirelessTypes::commProtocol_lxrsPlus);
+        }
+
+        return result;
+    }
+
     const WirelessTypes::WirelessSampleRates NodeFeatures::histogramTransmitRates() const
     {
         //empty by default
@@ -1506,6 +1545,8 @@ namespace mscl
                 //certain models support Sensor Delay v2 (Microseconds)
                 case WirelessModels::node_shmLink:
                 case WirelessModels::node_shmLink200:
+                case WirelessModels::node_shmLink201:
+                case WirelessModels::node_shmLink2_cust1_oldNumber:
                 case WirelessModels::node_shmLink2_cust1:
                 case WirelessModels::node_sgLink_herm:
                 case WirelessModels::node_sgLink_herm_2600:
@@ -1566,5 +1607,19 @@ namespace mscl
         static const Version DATA_MODE_FW(10, 34862);
 
         return (m_nodeInfo.firmwareVersion() >= DATA_MODE_FW);
+    }
+
+    bool NodeFeatures::supportsCommProtocolEeprom() const
+    {
+        static const Version COMM_PROTOCOL_FW(11, 0);
+
+        return (m_nodeInfo.firmwareVersion() >= COMM_PROTOCOL_FW);
+    }
+
+    bool NodeFeatures::supportsEeprom1024AndAbove() const
+    {
+        static const Version HIGH_EEPROM_FW(10, 0);
+
+        return (m_nodeInfo.firmwareVersion() >= HIGH_EEPROM_FW);
     }
 }

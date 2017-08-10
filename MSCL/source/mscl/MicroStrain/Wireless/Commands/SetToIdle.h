@@ -5,9 +5,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/BaseStation.h"
-//#include "SetToIdleStatus.h"
 
 namespace mscl
 {
@@ -32,7 +31,7 @@ namespace mscl
     //public:
         //Class: Response
         //    Handles the response to the SetToIdle command
-        class Response : public ResponsePattern
+        class Response : public WirelessResponsePattern
         {
         public:
             //Constructor: Response
@@ -46,12 +45,12 @@ namespace mscl
 
             //Destructor: Response
             //    Destroys the SetToIdle Response object. This also cancels the SetToIdle operation on the BaseStation, if not already complete or canceled.
-            ~Response();
+            virtual ~Response();
 
         protected:
             //Variable: m_nodeAddress
             //    The node address to look for in the response.
-            uint16 m_nodeAddress;
+            NodeAddress m_nodeAddress;
 
             //Variable: m_result
             //    The <SetToIdleResult> detailing the result of the Set to Idle command.

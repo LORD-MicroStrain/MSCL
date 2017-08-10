@@ -353,7 +353,7 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_ResponsePacket_NoMatch)
     LongPing::Response response(123, rc);
 
     //build the long ping command to send
-    ByteStream pingCommand = LongPing::buildCommand(123);
+    ByteStream pingCommand = LongPing::buildCommand(WirelessPacket::aspp_v1, 123);
 
     WirelessPacketCollector packetCollector;
     WirelessParser parser(packetCollector, rc);
@@ -393,7 +393,7 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_ResponsePacket_Match_Packet)
     LongPing::Response response(367, rc);
 
     //build the long ping command to send
-    ByteStream pingCommand = LongPing::buildCommand(367);
+    ByteStream pingCommand = LongPing::buildCommand(WirelessPacket::aspp_v1, 367);
 
     WirelessPacketCollector packetCollector;
     WirelessParser parser(packetCollector, rc);

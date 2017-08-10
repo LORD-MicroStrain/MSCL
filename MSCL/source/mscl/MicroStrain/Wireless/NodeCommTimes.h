@@ -26,7 +26,7 @@ namespace mscl
     private:
         //Variable: m_nodesLastCommTime
         //  A map of node address to <Timestamp> objects, holding the last communication time for nodes with this BaseStation.
-        static std::map<uint32, Timestamp> m_nodesLastCommTime;
+        static std::map<NodeAddress, Timestamp> m_nodesLastCommTime;
 
     public:
         //Function: updateCommTime
@@ -34,7 +34,7 @@ namespace mscl
         //
         //Parameters:
         //  nodeAddress - The node address to update the last communication time for.
-        static void updateCommTime(uint32 nodeAddress);
+        static void updateCommTime(NodeAddress nodeAddress);
 
         //Function: getLastCommTime
         //  Gets the last communication time for the given node address.
@@ -44,6 +44,6 @@ namespace mscl
         //
         //Exceptions:
         //  - <Error_NoData>: There is no communication time logged for the given node address.
-        static const Timestamp& getLastCommTime(uint32 nodeAddress);
+        static const Timestamp& getLastCommTime(NodeAddress nodeAddress);
     };
 }

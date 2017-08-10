@@ -32,17 +32,17 @@ namespace mscl
         );
 
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_diffTemperature);    //temp (thermocouple)
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_diffTemperature);    //temp (thermocouple)
-        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_diffTemperature);    //temp (thermocouple)
-        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_diffTemperature);    //temp (thermocouple)
-        m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_diffTemperature);    //temp (thermocouple)
-        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_diffTemperature);    //temp (thermocouple)
-        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_temperature);        //cjc temp
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_diffTemperature, "Thermocouple 1");
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_diffTemperature, "Thermocouple 2");
+        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_diffTemperature, "Thermocouple 3");
+        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_diffTemperature, "Thermocouple 4");
+        m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_diffTemperature, "Thermocouple 5");
+        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_diffTemperature, "Thermocouple 6");
+        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_temperature, "CJC Temperature");
         
         if(info.model() != WirelessModels::node_tcLink_6ch_ip67)
         {
-            m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_rh);            //% RH
+            m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_rh, "Relative Humidity");
 
             addCalCoeffChannelGroup(8, NodeEepromMap::CH_ACTION_SLOPE_8, NodeEepromMap::CH_ACTION_ID_8);
         }

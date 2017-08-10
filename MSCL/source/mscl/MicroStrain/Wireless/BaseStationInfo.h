@@ -10,6 +10,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "WirelessModels.h"
 #include "WirelessTypes.h"
 #include "RadioFeatures.h"
+#include "Commands/WirelessProtocol.h"
 
 #include <boost/optional.hpp>
 
@@ -40,7 +41,9 @@ namespace mscl
         //    fw - The firmware <Version> of the BaseStation.
         //    model - The <WirelessModels::BaseModel> of the BaseStation.
         //    region - The <WirelessTypes::RegionCode> of the BaseStation.
-        BaseStationInfo(Version fw, WirelessModels::BaseModel model, WirelessTypes::RegionCode region);
+        //    protocol_lxrs - The <WirelessProtocol> of the BaseStation for the LXRS Radio Configuration.
+        //    protocol_lxrsPlus - The <WirelessProtocol> of the BaseStation for the LXSR+ Radio Configuration.
+        BaseStationInfo(Version fw, WirelessModels::BaseModel model, WirelessTypes::RegionCode region, const Version& asppVer_lxrs, const Version& asppVer_lxrsPlus);
 
     private:
         BaseStationInfo();    //disabled default constructor
@@ -60,9 +63,18 @@ namespace mscl
         //    The <WirelessTypes::RegionCode> of the BaseStation.
         mutable boost::optional<WirelessTypes::RegionCode> m_regionCode;
 
+        //Variable: m_protocol_lxrs
+        //  The <WirelessProtocol> of the BaseStation for the LXRS Radio Configuration.
+        mutable boost::optional<WirelessProtocol> m_protocol_lxrs;
+
+        //Variable: m_protocol_lxrsPlus
+        //  The <WirelessProtocol> of the BaseStation for the LXRS+ Radio Configuration.
+        mutable boost::optional<WirelessProtocol> m_protocol_lxrsPlus;
+
     public:
         Version firmwareVersion() const;
         WirelessModels::BaseModel model() const;
         WirelessTypes::RegionCode regionCode() const;
+        const WirelessProtocol& protocol(WirelessTypes::CommProtocol commProtocol) const;
     };
 }

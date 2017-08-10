@@ -14,16 +14,14 @@ namespace mscl
         m_node(node),
         m_firmwareVersion(std::bind(&WirelessNode_Impl::firmwareVersion, m_node)),
         m_model(std::bind(&WirelessNode_Impl::model, m_node)),
-        m_dataStorageSize(std::bind(&WirelessNode_Impl::dataStorageSize, m_node)),
         m_regionCode(std::bind(&WirelessNode_Impl::regionCode, m_node))
     {
     }
 
-    NodeInfo::NodeInfo(const Version& fw, WirelessModels::NodeModel model, uint64 storageSize, WirelessTypes::RegionCode region):
+    NodeInfo::NodeInfo(const Version& fw, WirelessModels::NodeModel model, WirelessTypes::RegionCode region):
         m_node(nullptr),
         m_firmwareVersion(fw),
         m_model(model),
-        m_dataStorageSize(storageSize),
         m_regionCode(region)
     {
     }
@@ -36,11 +34,6 @@ namespace mscl
     WirelessModels::NodeModel NodeInfo::model() const
     {
         return *m_model;
-    }
-
-    uint64 NodeInfo::dataStorageSize() const
-    {
-        return *m_dataStorageSize;
     }
 
     WirelessTypes::RegionCode NodeInfo::regionCode() const

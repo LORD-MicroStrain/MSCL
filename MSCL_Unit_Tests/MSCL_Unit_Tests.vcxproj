@@ -37,6 +37,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{50B79FA8-35FA-40A4-866C-559719455197}</ProjectGuid>
     <RootNamespace>MSCLUnitTesting</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'" Label="Configuration">
@@ -59,7 +60,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -82,7 +83,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -117,8 +118,8 @@
     <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'">
-    <OutDir>$(ProjectDir)\build\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)\build\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)\build\x86\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)\build\x86\$(Configuration)\</IntDir>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
     <IncludePath>$(LIB_PATH)\boost\boost_1_61_0;$(LIB_PATH)\turtle\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(LIB_PATH)\boost\boost_1_61_0\lib32-msvc-14.0;$(LibraryPath)</LibraryPath>
@@ -126,10 +127,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'">
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <OutDir>$(ProjectDir)\build\x64\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)\build\x64\$(Configuration)\</IntDir>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_61_0;$(LIB_PATH)\turtle\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_61_0\lib64-msvc-14.0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'">
-    <OutDir>$(ProjectDir)\build\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)\build\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)\build\x86\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)\build\x86\$(Configuration)\</IntDir>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
     <IncludePath>$(LIB_PATH)\boost\boost_1_61_0;$(LIB_PATH)\turtle\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(LIB_PATH)\boost\boost_1_61_0\lib32-msvc-14.0;$(LibraryPath)</LibraryPath>
@@ -148,6 +153,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <OutDir>$(ProjectDir)\build\x64\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)\build\x64\$(Configuration)\</IntDir>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_61_0;$(LIB_PATH)\turtle\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_61_0\lib64-msvc-14.0;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|x64'">
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
@@ -208,10 +217,11 @@
       <NoEntryPoint>false</NoEntryPoint>
       <SubSystem>Console</SubSystem>
       <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>libboost_system-vc140-mt-sgd-1_61.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Message>*****RUNNING MSCL UNIT TESTS*****</Message>
-      <Command>IF NOT '%ISHUDSONBUILD%'=='True' "$(TargetPath)" --log_level=all --report_level=no</Command>
+      <Command>IF NOT '%ISHUDSONBUILD%'=='True' "$(TargetPath)" --log_level=test_suite --report_level=no</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'">
@@ -226,6 +236,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <AdditionalDependencies>libboost_system-vc140-mt-s-1_61.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -309,7 +320,7 @@
       <DisableSpecificWarnings>4290;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\Output\C++\Release\MSCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libboost_system-vc140-mt-sgd-1_61.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -317,7 +328,7 @@
     </Link>
     <PostBuildEvent>
       <Message>*****RUNNING MSCL UNIT TESTS*****</Message>
-      <Command>IF NOT '%ISHUDSONBUILD%'=='True' "$(TargetPath)" --log_level=all --report_level=no</Command>
+      <Command>IF NOT '%ISHUDSONBUILD%'=='True' "$(TargetPath)" --log_level=test_suite --report_level=no</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|x64'">
@@ -451,7 +462,6 @@
     <ClCompile Include="Test_SerialConnection.cpp" />
     <ClCompile Include="Test_SetToIdle.cpp" />
     <ClCompile Include="Test_ShmPacket.cpp" />
-    <ClCompile Include="Test_ShortPing.cpp" />
     <ClCompile Include="Test_simple_any.cpp" />
     <ClCompile Include="Test_StartNonSyncSampling.cpp" />
     <ClCompile Include="Test_StartSyncSampling.cpp" />

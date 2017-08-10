@@ -28,9 +28,9 @@ namespace mscl
         addCalCoeffChannelGroup(4, NodeEepromMap::CH_ACTION_SLOPE_4, NodeEepromMap::CH_ACTION_ID_4);
 
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential);    //full diff
-        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_temperature);        //internal temp
-        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_voltage);            //voltage
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential");
+        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_temperature, "Internal Temperature");
+        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_singleEnded, "Single-ended");
     }
 
     bool NodeFeatures_sglink::supportsSensorDelayConfig() const

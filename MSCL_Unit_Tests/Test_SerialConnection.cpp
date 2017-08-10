@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_SUITE(SerialConnection_Test)
 BOOST_AUTO_TEST_CASE(SerialConnection_EstablishConnection_InvalidPort)
 {
     //check that the connection throws an exception of an invalid com port
-    BOOST_CHECK_THROW(Connection::Serial("ABC123"), Error_InvalidSerialPort);
+    BOOST_CHECK_THROW(Connection::Serial("ABC123", 921600), Error_InvalidSerialPort);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

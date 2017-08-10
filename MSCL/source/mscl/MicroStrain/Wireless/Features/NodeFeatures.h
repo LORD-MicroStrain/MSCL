@@ -32,6 +32,7 @@ namespace mscl
         friend class WirelessNodeConfig;
         friend class WirelessNode_Impl;
         friend class WirelessProtocol;
+        friend class NodeEeprom;
 
     private:
         NodeFeatures();                                    //disabled default constructor
@@ -205,7 +206,7 @@ namespace mscl
         //
         //Exceptions:
         //  - <Error_NotSupported>: The channel number is not supported by this Node.
-        WirelessTypes::ChannelType channelType(uint8 channelNumber) const;
+        virtual WirelessTypes::ChannelType channelType(uint8 channelNumber) const;
 
         //API Function: supportsChannelSetting
         //    Checks if the Node supports a given <WirelessTypes::ChannelGroupSetting> for the given <ChannelMask>.
@@ -216,7 +217,7 @@ namespace mscl
         //
         //Returns:
         //    true if the <WirelessTypes::ChannelGroupSetting> is supported for the <ChannelMask>, false otherwise.
-        bool supportsChannelSetting(WirelessTypes::ChannelGroupSetting setting, const ChannelMask& mask) const;
+        virtual bool supportsChannelSetting(WirelessTypes::ChannelGroupSetting setting, const ChannelMask& mask) const;
 
         //API Function: isChannelSettingReadOnly
         //  Checks if the <WirelessTypes::ChannelGroupSetting> is read only.
@@ -233,42 +234,42 @@ namespace mscl
         //    
         //Returns:
         //    true if the Node supports Input Range for at least one <ChannelGroup>, false otherwise.
-        bool supportsInputRange() const;
+        virtual bool supportsInputRange() const;
 
         //API Function: supportsHardwareOffset
         //    Checks if the Node supports Hardware Offset for any of its <ChannelGroups>.
         //    
         //Returns:
         //    true if the Node supports Hardware Offset for at least one <ChannelGroup>, false otherwise.
-        bool supportsHardwareOffset() const;
+        virtual bool supportsHardwareOffset() const;
 
         //API Function: supportsAntiAliasingFilter
         //  Checks if the Node supports Anti-Aliasing Filter for any of its <ChannelGroups>.
         //
         //Returns:
         //  true if the Node supports Anti-Aliasing Filter for at least one <ChannelGroup>, false otherwise.
-        bool supportsAntiAliasingFilter() const;
+        virtual bool supportsAntiAliasingFilter() const;
 
         //API Function: supportsLowPassFilter
         //  Checks if the Node supports Low-Pass Filter for any of its <ChannelGroups>.
         //
         //Returns:
         //  true if the Node supports Low-Pass Filter for at least one <ChannelGroup>, false otherwise.
-        bool supportsLowPassFilter() const;
+        virtual bool supportsLowPassFilter() const;
 
         //API Function: supportsHighPassFilter
         //  Checks if the Node supports High-Pass Filter for any of its <ChannelGroups>.
         //
         //Returns:
         //  true if the Node supports High-Pass Filter for at least one <ChannelGroup>, false otherwise.
-        bool supportsHighPassFilter() const;
+        virtual bool supportsHighPassFilter() const;
 
         //API Function: supportsGaugeFactor
         //    Checks if the Node supports Gauge Factor for any of its <ChannelGroups>.
         //
         //Returns:
         //    true if the Node support Gauge Factor for at least on <ChannelGroup>, false otherwise.
-        bool supportsGaugeFactor() const;
+        virtual bool supportsGaugeFactor() const;
 
         //API Function: supportsLostBeaconTimeout
         //    Checks if the Node supports the Lost Beacon Timeout option.
@@ -282,7 +283,7 @@ namespace mscl
         //
         //Returns:
         //    true if the Node supports Filter Settling Time for at least one <ChannelGroup>, false otherwise.
-        bool supportsFilterSettlingTime() const;
+        virtual bool supportsFilterSettlingTime() const;
 
         //API Function: supportsThermocoupleType
         //    Checks if the Node supports the Thermocouple Type for any of its <ChannelGroups>.
@@ -432,7 +433,7 @@ namespace mscl
         //
         //Returns:
         //    true if the channel is supported, false otherwise.
-        bool supportsChannel(uint8 channelNumber) const;
+        virtual bool supportsChannel(uint8 channelNumber) const;
 
         //API Function: supportsSamplingMode
         //    Checks if a <WirelessTypes::SamplingMode> is supported by this Node.
@@ -442,7 +443,7 @@ namespace mscl
         //
         //Returns:
         //    true if the sampling mode is supported, false otherwise.
-        bool supportsSamplingMode(WirelessTypes::SamplingMode samplingMode) const;
+        virtual bool supportsSamplingMode(WirelessTypes::SamplingMode samplingMode) const;
 
         //API Function: supportsSampleRate
         //    Checks if a sample rate is supported by the Node for the given <WirelessTypes::SamplingMode>.
@@ -455,7 +456,17 @@ namespace mscl
         //
         //Returns:
         //    true if the sample rate is supported for the given sampling mode, false otherwise.
-        bool supportsSampleRate(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const;
+        virtual bool supportsSampleRate(WirelessTypes::WirelessSampleRate sampleRate, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const;
+
+        //API Function: supportsCommunicationProtocol
+        //    Checks if a <WirelessTypes::CommProtocol> is supported by this Node.
+        //
+        //Parameters:
+        //    protocol - The <WirelessTypes::CommProtocol> to check if supported.
+        //
+        //Returns:
+        //    true if the protocol is supported, false otherwise.
+        virtual bool supportsCommunicationProtocol(WirelessTypes::CommProtocol protocol) const;
 
         //API Function: supportsDataFormat
         //    Checks if a <WirelessTypes::DataFormat> is supported by this Node.
@@ -465,7 +476,7 @@ namespace mscl
         //
         //Returns:
         //    true if the data format is supported, false otherwise.
-        bool supportsDataFormat(WirelessTypes::DataFormat dataFormat) const;
+        virtual bool supportsDataFormat(WirelessTypes::DataFormat dataFormat) const;
 
         //API Function: supportsDefaultMode
         //    Checks if a <WirelessTypes::DefaultMode> is supported by this Node.
@@ -475,7 +486,7 @@ namespace mscl
         //
         //Returns:
         //    true if the default is supported, false otherwise.
-        bool supportsDefaultMode(WirelessTypes::DefaultMode mode) const;
+        virtual bool supportsDefaultMode(WirelessTypes::DefaultMode mode) const;
 
         //API Function: supportsDataCollectionMethod
         //    Checks if a <WirelessTypes::DataCollectionMethod> is supported by this Node.
@@ -485,7 +496,7 @@ namespace mscl
         //
         //Returns:
         //    true if the data collection method is supported, false otherwise.
-        bool supportsDataCollectionMethod(WirelessTypes::DataCollectionMethod collectionMethod) const;
+        virtual bool supportsDataCollectionMethod(WirelessTypes::DataCollectionMethod collectionMethod) const;
 
         //API Function: supportsTransmitPower
         //    Checks if a <WirelessTypes::TransmitPower> is supported by this Node.
@@ -495,7 +506,7 @@ namespace mscl
         //
         //Returns:
         //    true if the transmit power is supported, false otherwise.
-        bool supportsTransmitPower(WirelessTypes::TransmitPower power) const;
+        virtual bool supportsTransmitPower(WirelessTypes::TransmitPower power) const;
 
         //API Function: supportsDataMode
         //    Checks if a <WirelessTypes::DataMode> is supported by this Node.
@@ -505,7 +516,7 @@ namespace mscl
         //
         //Returns:
         //    true if the data mode is supported, false otherwise.
-        bool supportsDataMode(WirelessTypes::DataMode dataMode) const;
+        virtual bool supportsDataMode(WirelessTypes::DataMode dataMode) const;
 
         //API Function: supportsFatigueMode
         //    Checks if a <WirelessTypes::FatigueMode> is supported by this Node.
@@ -515,7 +526,7 @@ namespace mscl
         //
         //Returns:
         //    true if the fatigue mode is supported, false otherwise.
-        bool supportsFatigueMode(WirelessTypes::FatigueMode mode) const;
+        virtual bool supportsFatigueMode(WirelessTypes::FatigueMode mode) const;
 
         //API function: supportsInputRange
         //  Checks if a <WirelessTypes::InputRange> is supported by this Node for the given <ChannelMask>.
@@ -526,7 +537,7 @@ namespace mscl
         //
         //Returns:
         //  true if the input range is supported, false if it is not.
-        bool supportsInputRange(WirelessTypes::InputRange range, const ChannelMask& channels) const;
+        virtual bool supportsInputRange(WirelessTypes::InputRange range, const ChannelMask& channels) const;
 
         //API Function: supportsCentisecondEventDuration
         //  Checks if the Node configures event duration in 10s of milliseconds or not.
@@ -558,21 +569,21 @@ namespace mscl
         //
         //Returns:
         //  true if the specific derived channel is supported, false otherwise.
-        bool supportsDerivedChannelType(WirelessTypes::DerivedChannelType derivedChannelType) const;
+        virtual bool supportsDerivedChannelType(WirelessTypes::DerivedChannelType derivedChannelType) const;
 
         //API Function: supportsRawDataMode
         //  Checks if the Node supports any form of the Raw Data Mode (raw only, raw + derived, etc).
         //
         //Returns:
         //  true if the Node supports any form of the Raw Data Mode.
-        bool supportsRawDataMode() const;
+        virtual bool supportsRawDataMode() const;
 
         //API Function: supportsDerivedDataMode
         //  Checks if the Node supports any form of the Derived Data Mode (derived only, raw + derived, etc).
         //
         //Returns:
         //  true if the Node supports any form of the Derived Data Mode.
-        bool supportsDerivedDataMode() const;
+        virtual bool supportsDerivedDataMode() const;
 
         //API Function: maxSampleRate
         //    Gets the maximum <SampleRate> value that is supported by this Node with the given <SamplingMode>, <ChannelMask>, and <WirelessTypes::DataCollectionMethod>.
@@ -625,7 +636,7 @@ namespace mscl
         //
         //Returns:
         //    The min inactivity timeout in seconds.
-        uint16 minInactivityTimeout() const;
+        virtual uint16 minInactivityTimeout() const;
 
         //API Function: minLostBeaconTimeout
         //    Gets the minimum lost beacon timeout (in minutes) that is supported.
@@ -633,35 +644,35 @@ namespace mscl
         //
         //Returns:
         //    The min lost beacon timeout in minutes.
-        uint16 minLostBeaconTimeout() const;
+        virtual uint16 minLostBeaconTimeout() const;
 
         //API Function: maxLostBeaconTimeout
         //    Gets the maximum lost beacon timeout (in minutes) that is supported.
         //
         //Returns:
         //    The max lost beacon timeout in minutes.
-        uint16 maxLostBeaconTimeout() const;
+        virtual uint16 maxLostBeaconTimeout() const;
 
         //API Function: minCheckRadioInterval
         //    Gets the minimum check radio interval (in seconds) that is supported.
         //
         //Returns:
         //    The min check radio interval in seconds.
-        uint8 minCheckRadioInterval() const;
+        virtual uint8 minCheckRadioInterval() const;
 
         //API Function: maxCheckRadioInterval
         //    Gets the maximum check radio interval (in seconds) that is supported.
         //
         //Returns:
         //    The maximum check radio interval in seconds.
-        uint8 maxCheckRadioInterval() const;
+        virtual uint8 maxCheckRadioInterval() const;
 
         //API Function: minSweeps
         //    Gets the minimum number of sweeps that can be assigned for the duration of a continuous sampling session.
         //
         //Returns:
         //    The minimum number of sweeps for a sampling session.
-        uint32 minSweeps() const;
+        virtual uint32 minSweeps() const;
 
         //API Function: maxSweeps
         //    Gets the maximum number of sweeps that can be assigned for a given <WirelessTypes::SamplingMode>. 
@@ -675,7 +686,7 @@ namespace mscl
         //
         //Returns:
         //    The maximum number of sweeps, or sweeps per burst, for a sampling session.
-        uint32 maxSweeps(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataMode dataMode, WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const;
+        virtual uint32 maxSweeps(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataMode dataMode, WirelessTypes::DataFormat dataFormat, const ChannelMask& channels) const;
 
         //API Function: maxSweepsPerBurst
         //    Gets the maximum number of sweeps per burst that can be assigned for a Burst Sync Sampling session.
@@ -699,6 +710,7 @@ namespace mscl
         //    derivedChannelMasks - The <WirelessTypes::DerivedChannelMasks> containing ALL enabled derived channels for the sampling session.
         //    rawSampleRate - The <SampleRate> of the raw channels for the sampling session.
         //    sweepsPerBurst - The number of sweeps per burst for the sampling session.
+        //    commProtocol - The <WirelessTypes::CommProtocol> that the Node will use for sampling.
         //
         //Returns:
         //    A <TimeSpan> representing the minimum time that can be assigned for a Burst Sync Sampling session.
@@ -707,7 +719,8 @@ namespace mscl
                                               const ChannelMask& rawChannels,
                                               WirelessTypes::DerivedChannelMasks derivedChannelMasks,
                                               const SampleRate& rawSampleRate,
-                                              uint32 sweepsPerBurst) const;
+                                              uint32 sweepsPerBurst,
+                                              WirelessTypes::CommProtocol commProtocol) const;
 
         //API Function: minSensorDelay
         //  Gets the minimum sensor delay value (in microseconds) that is supported.
@@ -717,7 +730,7 @@ namespace mscl
         //
         //Exceptions:
         //  - <Error_NotSupported>: The sensor delay feature is not supported by this Node.
-        uint32 minSensorDelay() const;
+        virtual uint32 minSensorDelay() const;
 
         //API Function: maxSensorDelay
         //  Gets the maximum sensor delay value (in microseconds) that is supported.
@@ -727,7 +740,7 @@ namespace mscl
         //
         //Exceptions:
         //  - <Error_NotSupported>: The sensor delay feature is not supported by this Node.
-        uint32 maxSensorDelay() const;
+        virtual uint32 maxSensorDelay() const;
 
         //API Function: maxEventTriggerTotalDuration
         //  Gets the max event trigger duration (in milliseconds) that can be applied for both the pre and post event durations (combined).
@@ -742,7 +755,7 @@ namespace mscl
         //
         //Returns:
         //  The max event trigger total duration, in milliseconds.
-        uint32 maxEventTriggerTotalDuration(WirelessTypes::DataMode dataMode,
+        virtual uint32 maxEventTriggerTotalDuration(WirelessTypes::DataMode dataMode,
                                             WirelessTypes::DataFormat dataFormat,
                                             const ChannelMask& rawChannels,
                                             WirelessTypes::DerivedChannelMasks derivedChannelMasks,
@@ -757,7 +770,7 @@ namespace mscl
         //
         //Returns:
         //  The normalized event duration (in milliseconds) that can be stored on the Node.
-        uint32 normalizeEventDuration(uint32 duration) const;
+        virtual uint32 normalizeEventDuration(uint32 duration) const;
 
         //API Function: normalizeSensorDelay
         //  Normalizes the sensor delay so that it is an acceptable value.
@@ -770,7 +783,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: The sensor delay feature is not supported by this Node.
-        uint32 normalizeSensorDelay(uint32 delay) const;
+        virtual uint32 normalizeSensorDelay(uint32 delay) const;
 
         //API Function: numDamageAngles
         //    Gets the number of damage angles (see <FatigueOptions>) on this Node.
@@ -852,6 +865,13 @@ namespace mscl
         //Returns:
         //    A vector of <WirelessTypes::TransmitPowers> that are supported by this Node.
         virtual const WirelessTypes::TransmitPowers transmitPowers() const;
+
+        //API Function: commProtocols
+        //  Gets a list of <WirelessTypes::CommProtocols> that are supported by this Node.
+        //
+        //Returns:
+        //  A vector of <WirelessTypes::CommProtocols> that are supported by this Node.
+        virtual const WirelessTypes::CommProtocols commProtocols() const;
 
         //API Function: histogramTransmitRates
         //    Gets a list of the Histogram Transmit Rates that are supported by this Node.
@@ -964,10 +984,18 @@ namespace mscl
 
         //Function: onlySupportsRawDataMode
         //  Checks if the raw data mode is the only data mode supported.
-        bool onlySupportsRawDataMode() const;
+        virtual bool onlySupportsRawDataMode() const;
 
         //Function: supportsDataModeEeprom
         //  Checks if the Data Mode eeprom location is supported.
-        bool supportsDataModeEeprom() const;
+        virtual bool supportsDataModeEeprom() const;
+
+        //Function: supportsCommProtocolEeprom
+        //  Checks if the Communication Protocol eeprom location is supported.
+        virtual bool supportsCommProtocolEeprom() const;
+
+        //Function: supportsEeprom1024AndAbove
+        //  Checks if the Node supports reading eeprom location 1024 and above.
+        virtual bool supportsEeprom1024AndAbove() const;
     };
 }

@@ -38,12 +38,13 @@ MOCK_BASE_CLASS(mock_baseStationImpl, BaseStation_Impl)
     MOCK_METHOD_EXT(enableBeacon, 1, mscl::Timestamp(uint32), enableBeacon_withTime);
     MOCK_METHOD(disableBeacon, 0);
     MOCK_METHOD(features, 0);
+    MOCK_METHOD(protocol, 1);
 
-    MOCK_METHOD(node_ping, 1);
+    MOCK_METHOD(node_ping, 2);
     MOCK_METHOD(node_pageDownload, 4);
     MOCK_METHOD(node_readEeprom, 4);
     MOCK_METHOD(node_writeEeprom, 4);
-    MOCK_METHOD(node_startSyncSampling, 1);
+    MOCK_METHOD(node_startSyncSampling, 2);
     MOCK_METHOD(node_armForDatalogging, 2);
     MOCK_METHOD(node_triggerArmedDatalogging, 1);
     MOCK_METHOD(node_erase, 2);
@@ -80,7 +81,11 @@ static BaseStation makeBaseStationWithMockImpl()
 
 static void expectBaseFeatures(std::unique_ptr<BaseStationFeatures>& features, std::shared_ptr<mock_baseStationImpl> impl, WirelessModels::BaseModel model = WirelessModels::base_wsdaBase_104_usb)
 {
-    BaseStationInfo info(Version(9, 9), model, WirelessTypes::region_usa);
+    //WirelessProtocol p = *(WirelessProtocol::getProtocol(Version(1, 7)).get());
+    //WirelessProtocol p2 = *(WirelessProtocol::getProtocol(Version(3, 0)).get());
+    Version asppVer_lxrs(1, 7);
+    Version asppVer_lxrsPlus(3, 0);
+    BaseStationInfo info(Version(9, 9), model, WirelessTypes::region_usa, asppVer_lxrs, asppVer_lxrsPlus);//p, p2);
 
     features = BaseStationFeatures::create(info);
 

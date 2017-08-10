@@ -36,7 +36,7 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_getCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::READ_BACK_CURRENT_SETTINGS));
 
         //add the device selector
         fieldData.append_uint8(getDeviceSelector(type));
@@ -54,7 +54,7 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_setCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::USE_NEW_SETTINGS));
 
         //add the device selector
         fieldData.append_uint8(getDeviceSelector(type));
@@ -67,7 +67,7 @@ namespace mscl
     }
 
     ContinuousDataStream::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse, InertialTypes::InertialCategory type):
-        GenericInertialCommand::Response(collector, true, dataResponse, "Continuous Data Stream"),
+        GenericInertialCommand::Response(InertialTypes::CMD_CONTINUOUS_DATA_STREAM, collector, true, dataResponse, "Continuous Data Stream"),
         m_deviceSelector(getDeviceSelector(type))
     {}
 

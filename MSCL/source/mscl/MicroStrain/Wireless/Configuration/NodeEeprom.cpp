@@ -5,6 +5,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "NodeEeprom.h"
+#include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
+#include "mscl/MicroStrain/Wireless/WirelessNode_Impl.h"
 #include "mscl/MicroStrain/Wireless/BaseStation.h"
 #include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/Utils.h"
@@ -12,12 +14,11 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    NodeEeprom::NodeEeprom(NodeAddress nodeAddress, const BaseStation& base, const WirelessProtocol& protocol, const NodeEepromSettings& settings):
+    NodeEeprom::NodeEeprom(const WirelessNode_Impl* node, const BaseStation& base, const NodeEepromSettings& settings):
         Eeprom(settings.useEepromCache, settings.numRetries),
-        m_nodeAddress(nodeAddress),
+        m_node(node),
         m_baseStation(base),
-        m_useGroupRead(settings.useGroupRead),
-        m_protocol(&protocol)
+        m_useGroupRead(settings.useGroupRead)
     { }
 
     bool NodeEeprom::updateCacheFromDevice(uint16 location)
@@ -25,31 +26,48 @@ namespace mscl
         //if we can use the page download command
         if(m_useGroupRead)
         {
-            //if the location is able to be read via a page download command
-            if(location <= PAGE_1_MAX_EEPROM)
+            const WirelessProtocol& nodeProtocol = m_node->protocol(m_baseStation.communicationProtocol());
+
+            //use Batch EEPROM read if supported
+            if(nodeProtocol.supportsBatchEepromRead())
             {
-                uint16 pageIndex;
-
-                //if the eeprom value can be found in downloading page 0
-                if(location <= PAGE_0_MAX_EEPROM)
+                std::map<uint16, uint16> eepromMap;
+                if(m_baseStation.node_batchEepromRead(nodeProtocol, m_node->nodeAddress(), location, eepromMap))
                 {
-                    pageIndex = 0;
-                }
-                //if the eeprom value can be found in downloading page 1
-                else
-                {
-                    pageIndex = 1;
-                }
-
-                //attempt to download the page from the Node
-                ByteStream downloadResult;
-                if(m_baseStation.node_pageDownload(*m_protocol, m_nodeAddress, pageIndex, downloadResult))
-                {
-                    //parse the info out of the eeprom page, which updates the map values
-                    parseEepromPage(downloadResult, pageIndex);
+                    parseBatchEepromResult(eepromMap);
 
                     //successfully got the value
                     return true;
+                }
+            }
+            else
+            {
+                //if the location is able to be read via a page download command
+                if(location <= PAGE_1_MAX_EEPROM)
+                {
+                    uint16 pageIndex;
+
+                    //if the eeprom value can be found in downloading page 0
+                    if(location <= PAGE_0_MAX_EEPROM)
+                    {
+                        pageIndex = 0;
+                    }
+                    //if the eeprom value can be found in downloading page 1
+                    else
+                    {
+                        pageIndex = 1;
+                    }
+
+                    //attempt to download the page from the Node (use the protocol mode the BaseStation is currently in)
+                    ByteStream downloadResult;
+                    if(m_baseStation.node_pageDownload(nodeProtocol, m_node->nodeAddress(), pageIndex, downloadResult))
+                    {
+                        //parse the info out of the eeprom page, which updates the map values
+                        parseEepromPage(downloadResult, pageIndex);
+
+                        //successfully got the value
+                        return true;
+                    }
                 }
             }
         }
@@ -61,8 +79,8 @@ namespace mscl
 
         do
         {
-            //attempt to read the individual eeprom from the node
-            if(m_baseStation.node_readEeprom(*m_protocol, m_nodeAddress, location, eepromVal))
+            //attempt to read the individual eeprom from the node (use the protocol mode the BaseStation is currently in)
+            if(m_baseStation.node_readEeprom(m_node->protocol(m_baseStation.communicationProtocol()), m_node->nodeAddress(), location, eepromVal))
             {
                 //update the map value with the value we read from eeprom
                 updateCache(location, eepromVal);
@@ -96,6 +114,15 @@ namespace mscl
         }
     }
 
+    void NodeEeprom::parseBatchEepromResult(const std::map<uint16, uint16> eepromMap)
+    {
+        //loop through all eeprom locations and values and update the cache
+        for(const auto& i : eepromMap)
+        {
+            updateCache(i.first, i.second);
+        }
+    }
+
     void NodeEeprom::updateSettings(const NodeEepromSettings& settings)
     {
         //update all of the provided settings
@@ -112,6 +139,15 @@ namespace mscl
     uint16 NodeEeprom::readEeprom(uint16 location)
     {
         uint16 result;
+
+        if(location >= 1024)
+        {
+            //verify we can read eeproms 1024 and above (otherwise Node will wrap around)
+            if(!m_node->features().supportsEeprom1024AndAbove())
+            {
+                throw Error_NotSupported("EEPROM " + Utils::toStr(location) + " is not supported.");
+            }
+        }
 
         bool canCacheEeprom = NodeEepromMap::canUseCache_read(location);
 
@@ -132,17 +168,27 @@ namespace mscl
         if(updateCacheFromDevice(location))
         {
             //successfully read from the device, the cache has been updated so read from it
-            readCache(location, result);
-
-            return result;
+            if(readCache(location, result))
+            {
+                return result;
+            }
         }
 
         //we failed to read the eeprom value from the cache or the device
-        throw Error_NodeCommunication(m_nodeAddress, "Failed to read EEPROM " + Utils::toStr(location) + " from Node " + Utils::toStr(m_nodeAddress));
+        throw Error_NodeCommunication(m_node->nodeAddress(), "Failed to read EEPROM " + Utils::toStr(location) + " from Node " + Utils::toStr(m_node->nodeAddress()));
     }
 
     void NodeEeprom::writeEeprom(uint16 location, uint16 value)
     {
+        if(location >= 1024)
+        {
+            //verify we can read eeproms 1024 and above (otherwise Node will wrap around)
+            if(!m_node->features().supportsEeprom1024AndAbove())
+            {
+                throw Error_NotSupported("EEPROM " + Utils::toStr(location) + " is not supported.");
+            }
+        }
+
         //if we want to check the cache
         if(m_useCache && NodeEepromMap::canUseCache_write(location))
         {
@@ -161,27 +207,38 @@ namespace mscl
 
         //if we made it here, we want to actually write to the device
         
-        //clear the eeprom cache for this location if we have one, just to be safe
-        clearCacheLocation(location);
-
-        uint8 retryCount = 0;
-
-        do
+        try
         {
-            //attempt to write the value to the Node
-            if(m_baseStation.node_writeEeprom(*m_protocol, m_nodeAddress, location, value))
-            {
-                //successfully wrote to the Node, update the cache
-                m_hasWritten = true;
-                updateCache(location, value);
+            uint8 retryCount = 0;
 
-                return;
+            do
+            {
+                //attempt to write the value to the Node (use the protocol mode the BaseStation is currently in)
+                if(m_baseStation.node_writeEeprom(m_node->protocol(m_baseStation.communicationProtocol()), m_node->nodeAddress(), location, value))
+                {
+                    //successfully wrote to the Node, update the cache
+                    m_hasWritten = true;
+                    updateCache(location, value);
+
+                    return;
+                }
             }
+            while(retryCount++ < m_numRetries);
         }
-        while(retryCount++ < m_numRetries);
+        catch(...)
+        {
+            //clear the eeprom cache for this location if we have one, just to be safe
+            clearCacheLocation(location);
+
+            //rethrow the exception
+            throw;
+        }
 
         //we failed to write the value to the Node
 
-        throw Error_NodeCommunication(m_nodeAddress, "Failed to write EEPROM " + Utils::toStr(location) + " to Node " + Utils::toStr(m_nodeAddress));
+        //clear the eeprom cache for this location if we have one, just to be safe
+        clearCacheLocation(location);
+
+        throw Error_NodeCommunication(m_node->nodeAddress(), "Failed to write EEPROM " + Utils::toStr(location) + " to Node " + Utils::toStr(m_node->nodeAddress()));
     }
 }

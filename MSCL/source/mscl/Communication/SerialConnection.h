@@ -30,12 +30,12 @@ namespace mscl
         //
         //Parameters:
         //    port - The actual string name of the COM port (ex. "COM26")
-        //    baudRate - The baud rate at which to open the COM port (default of 921600)
+        //    baudRate - The baud rate at which to open the COM port.
         //
         //Exceptions:
         //    - <Error_InvalidSerialPort>: the specified com port is invalid
         //    - <Error_Connection>: failed to get or set com port parameters
-        explicit SerialConnection(const std::string& port, uint32 baudRate = 921600);
+        explicit SerialConnection(const std::string& port, uint32 baudRate);
 
     public:
         //Destructor: ~SerialConnection

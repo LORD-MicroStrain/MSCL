@@ -9,8 +9,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "BaseStationFeatures_analog.h"
 #include "BaseStationFeatures_rs232.h"
 #include "BaseStationFeatures_usb.h"
+#include "BaseStationFeatures_usb200.h"
 #include "BaseStationFeatures_wsda.h"
-#include "BaseStationFeatures_oem.h"
 #include "mscl/MicroStrain/Wireless/WirelessModels.h"
 
 namespace mscl
@@ -24,8 +24,13 @@ namespace mscl
     {
         switch(info.model())
         {
-            case WirelessModels::base_wsdaBase_104_usb:
+            case WirelessModels::base_wsdaBase_200_legacy:    // (TODO: remove)
             case WirelessModels::base_wsdaBase_200:
+            case WirelessModels::base_wsdaBase_200_extAntenna:
+            case WirelessModels::base_wsi_104:
+                return std::unique_ptr<BaseStationFeatures>(new BaseStationFeatures_usb200(info));
+
+            case WirelessModels::base_wsdaBase_104_usb:
                 return std::unique_ptr<BaseStationFeatures>(new BaseStationFeatures_usb(info));
 
             case WirelessModels::base_wsdaBase_101_analog:
@@ -33,9 +38,6 @@ namespace mscl
 
             case WirelessModels::base_wsdaBase_102_rs232:
                 return std::unique_ptr<BaseStationFeatures>(new BaseStationFeatures_rs232(info));
-
-            case WirelessModels::base_wsdaBase_oem:
-                return std::unique_ptr<BaseStationFeatures>(new BaseStationFeatures_oem(info));
 
             case WirelessModels::base_wsda_1000:
             case WirelessModels::base_wsda_1500:
@@ -57,6 +59,12 @@ namespace mscl
         return (std::find(supportedPowers.begin(), supportedPowers.end(), power) != supportedPowers.end());
     }
 
+    bool BaseStationFeatures::supportsCommunicationProtocol(WirelessTypes::CommProtocol protocol) const
+    {
+        const WirelessTypes::CommProtocols supportedProtocols = commProtocols();
+        return (std::find(supportedProtocols.begin(), supportedProtocols.end(), protocol) != supportedProtocols.end());
+    }
+
     bool BaseStationFeatures::supportsButtons() const
     {
         return (buttonCount() > 0);
@@ -69,9 +77,9 @@ namespace mscl
 
     bool BaseStationFeatures::supportsBeaconStatus() const
     {
-        static const Version MIN_BEACON_STATUS_FW(4, 0);
-
-        return (m_baseInfo.firmwareVersion() >= MIN_BEACON_STATUS_FW);
+        //just checking if beacon status is supported for one of the radio modes
+        //all other modes should follow suit
+        return m_baseInfo.protocol(WirelessTypes::commProtocol_lxrs).supportsBeaconStatus();
     }
 
     bool BaseStationFeatures::supportsRfSweepMode() const
@@ -132,6 +140,21 @@ namespace mscl
         return result;
     }
 
+    const WirelessTypes::CommProtocols BaseStationFeatures::commProtocols() const
+    {
+        WirelessTypes::CommProtocols result;
+
+        result.push_back(WirelessTypes::commProtocol_lxrs);
+
+        static const Version MIN_LXRS_PLUS_FW(5, 0);
+        if(m_baseInfo.firmwareVersion() >= MIN_LXRS_PLUS_FW)
+        {
+            result.push_back(WirelessTypes::commProtocol_lxrsPlus);
+        }
+
+        return result;
+    }
+
     bool BaseStationFeatures::supportsNewTransmitPowers() const
     {
         static const Version MIN_NEW_TX_POWER_FW(4, 0);
@@ -144,5 +167,19 @@ namespace mscl
         static const Version MIN_EEPROM_COMMIT_RADIO_FW(4, 0);
 
         return (m_baseInfo.firmwareVersion() >= MIN_EEPROM_COMMIT_RADIO_FW);
+    }
+
+    bool BaseStationFeatures::supportsEeprom1024AndAbove() const
+    {
+        static const Version HIGH_EEPROM_FW(4, 0);
+
+        return (m_baseInfo.firmwareVersion() >= HIGH_EEPROM_FW);
+    }
+
+    bool BaseStationFeatures::supportsCommProtocolEeprom() const
+    {
+        static const Version MIN_LXRS_PLUS_FW(5, 0);
+
+        return (m_baseInfo.firmwareVersion() >= MIN_LXRS_PLUS_FW);
     }
 }

@@ -5,7 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
 
 namespace mscl
 {
@@ -34,7 +34,7 @@ namespace mscl
 
         //Class: Response
         //    Handles the response to the base station write eeprom command
-        class Response : public ResponsePattern
+        class Response : public WirelessResponsePattern
         {
         public:
             //Constructor: Response
@@ -50,18 +50,7 @@ namespace mscl
             //    The value that is expected to be written to eeprom from the associated command
             uint16 m_valueWritten;
 
-        public:
-            //Function: match
-            //    Checks if the bytes passed in match the response pattern from their current read position
-            //
-            //Parameters:
-            //    data - The <DataBuffer> containing the bytes in which to try to find the pattern
-            //
-            //Returns:
-            //    true if the response pattern was found, false otherwise
-            virtual bool match(DataBuffer& data) override;
-
-        private:
+        protected:
             //Function: matchSuccessResponse
             //    Checks if the bytes passed in match the success response pattern from their current read position
             //
@@ -70,7 +59,7 @@ namespace mscl
             //
             //Returns:
             //    true if the success response pattern was found, false otherwise
-            bool matchSuccessResponse(DataBuffer& data);
+            bool matchSuccessResponse(DataBuffer& data) override;
 
             //Function: matchFailResponse
             //    Checks if the bytes passed in match the failure response pattern from their current read position
@@ -80,7 +69,7 @@ namespace mscl
             //
             //Returns:
             //    true if the failure response pattern was found, false otherwise
-            bool matchFailResponse(DataBuffer& data);
+            bool matchFailResponse(DataBuffer& data) override;
         };
     };
 

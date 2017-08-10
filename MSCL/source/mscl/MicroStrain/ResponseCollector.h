@@ -84,7 +84,6 @@ namespace mscl
         //    true if the response collector has any response patterns to match, false otherwise
         bool waitingForResponse();
 
-        //Function: 
         void adjustResponsesMinBytePos(std::size_t bytesToSubtract);
 
         //Function: matchExpected

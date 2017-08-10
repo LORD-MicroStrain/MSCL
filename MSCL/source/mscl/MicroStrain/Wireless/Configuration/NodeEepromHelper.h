@@ -101,7 +101,7 @@ namespace mscl
         //
         //Returns:
         //    The node address of the Node.
-        uint16 nodeAddress() const;
+        NodeAddress nodeAddress() const;
 
         //Function: applyEepromChanges
         //    Resets the radio/power on the Node to apply eeprom changes that have been made.
@@ -144,7 +144,10 @@ namespace mscl
         Version read_fwVersion() const;
 
         //Function: read_asppVersion
-        //  Gets the ASPP version of the Node.
+        //  Gets the ASPP version of the Node for the specified <WirelesTypes::RadioMode>.
+        //
+        //Parameters:
+        //  commProtocol - The <WirelessTypes::CommProtocol> to get the ASPP version for.
         //
         //Returns:
         //  A <Version> representing which ASPP version the Node supports.
@@ -153,7 +156,27 @@ namespace mscl
         //  - <Error_NotSupported>: Unsupported eeprom location.
         //  - <Error_NodeCommunication>: Failed to read the value from the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        Version read_asppVersion() const;
+        Version read_asppVersion(WirelessTypes::CommProtocol commProtocol) const;
+
+        //Function: read_commProtocol
+        //  Gets the <WirelessTypes::CommProtocol> of the Node.
+        //
+        //Exceptions:
+        //  - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::CommProtocol read_commProtocol() const;
+
+        //Function: write_commProtocol
+        //    Writes the <WirelessTypes::CommProtocol> to the Node.
+        //
+        //Parameters:
+        //    protocol - The <WirelessTypes::CommProtocol> to write to the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to write the value to the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_commProtocol(WirelessTypes::CommProtocol protocol);
 
         //Function: read_model
         //    Gets the model of the Node.

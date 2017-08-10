@@ -7,6 +7,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "ResponsePattern.h"
 
 #include "mscl/Exceptions.h"
+#include "mscl/Types.h"
+#include "Wireless/Commands/WirelessProtocol.h"
 #include "Wireless/Packets/WirelessPacket.h"
 #include "Inertial/InertialDataField.h"
 #include "DataBuffer.h"
@@ -55,7 +57,6 @@ namespace mscl
         if(!m_collector.expired())
         {
             //not allowing the response collector to get reassigned (shouldn't be needed)
-            assert(false);
             return;
         }
 
@@ -86,13 +87,105 @@ namespace mscl
         }
     }
 
+    bool ResponsePattern::matchSuccessResponse(DataBuffer& data)
+    {
+        return false;
+    }
+
+    bool ResponsePattern::matchSuccessResponse(const WirelessPacket& packet)
+    {
+        return false;
+    }
+
+    bool ResponsePattern::matchFailResponse(DataBuffer& data)
+    {
+        return false;
+    }
+
+    bool ResponsePattern::matchFailResponse(const WirelessPacket& packet)
+    {
+        return false;
+    }
+
+    bool ResponsePattern::matchBaseReceivedResponse(const WirelessPacket& packet)
+    {
+        return false;
+    }
+
     bool ResponsePattern::match(DataBuffer& data)
     {
+        //get a lock on the parsing mutex
+        mutex_lock_guard lock(m_parsingMutex);
+
+        //if the bytes match the success response
+        if(matchSuccessResponse(data))
+        {
+            //we have fully matched the response
+            m_fullyMatched = true;
+
+            m_success = true;
+
+            //notify that the response was matched
+            m_matchCondition.notify();
+            return true;
+        }
+        //if the bytes match the fail response
+        else if(matchFailResponse(data))
+        {
+            //we have fully matched the response
+            m_fullyMatched = true;
+
+            m_success = false;
+
+            //notify that the response was matched
+            m_matchCondition.notify();
+            return true;
+        }
+
+        //the bytes don't match any response
         return false;
     }
 
     bool ResponsePattern::match(const WirelessPacket& packet)
     {
+        //get a lock on the parsing mutex
+        mutex_lock_guard lock(m_parsingMutex);
+
+        if(matchBaseReceivedResponse(packet))
+        {
+            //successfully started, not complete so don't set the fullyMatched flag
+
+            //notify that the response was matched
+            m_matchCondition.notify();
+            return true;
+        }
+
+        //if the bytes match the success response
+        if(matchSuccessResponse(packet))
+        {
+            //we have fully matched the response
+            m_fullyMatched = true;
+
+            m_success = true;
+
+            //notify that the response was matched
+            m_matchCondition.notify();
+            return true;
+        }
+        //if the bytes match the fail response
+        else if(matchFailResponse(packet))
+        {
+            //we have fully matched the response
+            m_fullyMatched = true;
+
+            m_success = false;
+
+            //notify that the response was matched
+            m_matchCondition.notify();
+            return true;
+        }
+
+        //the bytes don't match any response
         return false;
     }
 
@@ -103,11 +196,17 @@ namespace mscl
 
     bool ResponsePattern::fullyMatched() const
     {
+        //get a lock on the parsing mutex
+        mutex_lock_guard lock(m_parsingMutex);
+
         return m_fullyMatched;
     }
 
     bool ResponsePattern::success() const
     {
+        //get a lock on the parsing mutex
+        mutex_lock_guard lock(m_parsingMutex);
+
         return m_success;
     }
 }

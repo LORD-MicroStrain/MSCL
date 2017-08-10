@@ -6,7 +6,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
@@ -16,10 +17,10 @@ namespace mscl
     //    Contains logic for the base station Ping command (v2).
     class BaseStation_Ping_v2
     {
-    private:
-        BaseStation_Ping_v2();                                            //default constructor disabled
-        BaseStation_Ping_v2(const BaseStation_Ping_v2&);                //copy constuctor disabled
-        BaseStation_Ping_v2& operator=(const BaseStation_Ping_v2&);        //assignement operator disabled
+    public:
+        BaseStation_Ping_v2() = delete;                                         //default constructor disabled
+        BaseStation_Ping_v2(const BaseStation_Ping_v2&) = delete;               //copy constuctor disabled
+        BaseStation_Ping_v2& operator=(const BaseStation_Ping_v2&) = delete;    //assignement operator disabled
 
     public:
         //Function: buildCommand
@@ -27,11 +28,11 @@ namespace mscl
         //
         //Returns:
         //    A <ByteStream> containing the base station Ping command.
-        static ByteStream buildCommand();
+        static ByteStream buildCommand(WirelessPacket::AsppVersion asppVer);
 
         //Class: Response
         //    Handles the response to the base station Ping command.
-        class Response : public ResponsePattern
+        class Response : public WirelessResponsePattern
         {
         public:
             //Constructor: Response
@@ -41,8 +42,8 @@ namespace mscl
             //    collector - The <ResponseCollector> used to register and unregister the response.
             explicit Response(std::weak_ptr<ResponseCollector> collector);
 
-        public:
-            //Function: match
+        protected:
+            //Function: matchSuccessResponse
             //    Checks if the packet passed in matches any response to the Ping command.
             //
             //Parameters:
@@ -50,7 +51,7 @@ namespace mscl
             //
             //Returns:
             //    true if the response pattern was found, false otherwise.
-            virtual bool match(const WirelessPacket& packet) override;
+            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
 

@@ -119,9 +119,9 @@ namespace mscl
                     {
                         //unregister the response
                         m_expectedResponses.erase(itr);
-
-                        return true;
                     }
+
+                    return true;
                 }
 
                 //if any match function moved the data pointer, we don't want to move it back here
@@ -163,9 +163,9 @@ namespace mscl
                 {
                     //unregister the response
                     m_expectedResponses.erase(itr);
-
-                    return true;
                 }
+
+                return true;
             }
         }
 
@@ -187,9 +187,9 @@ namespace mscl
                 {
                     //unregister the response
                     m_expectedResponses.erase(itr);
-
-                    return true;
                 }
+
+                return true;
             }
         }
 

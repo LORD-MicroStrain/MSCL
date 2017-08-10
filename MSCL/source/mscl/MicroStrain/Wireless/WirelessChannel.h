@@ -230,6 +230,7 @@ namespace mscl
         //  channel_diag_syncAttempts               - 207 - Diagnostic - Synchronization Attempts
         //  channel_diag_syncFailures               - 208 - Diagnostic - Synchronization Failures
         //  channel_diag_secsSinceLastSync          - 209 - Diagnostic - Seconds since last synchronization
+        //  channel_beaconConflict                  - 210 - Conflicting Beacon
         //=====================================================================================================
         enum ChannelId
         {
@@ -443,6 +444,7 @@ namespace mscl
             channel_diag_syncAttempts               = 207,
             channel_diag_syncFailures               = 208,
             channel_diag_secsSinceLastSync          = 209,
+            channel_beaconConflict                  = 210,
         };
 
         WirelessChannel();    //default constructor
@@ -454,7 +456,8 @@ namespace mscl
         //    chNumber - The channel number (ch1 = 1) of the channel.
         //    id - The <WirelessChannel::ChannelId> of the channel.
         //    type - The <WirelessTypes::ChannelType> of the channel.
-        WirelessChannel(uint8 chNumber, WirelessChannel::ChannelId id, WirelessTypes::ChannelType type);
+        //    description - The description of the channel.
+        WirelessChannel(uint8 chNumber, WirelessChannel::ChannelId id, WirelessTypes::ChannelType type, const std::string& description);
 
     private:
         //Variable: m_chNumber
@@ -468,6 +471,10 @@ namespace mscl
         //Variable: m_type
         //    The <WirelessTypes::ChannelType> of the channel.
         WirelessTypes::ChannelType m_type;
+
+        //Variable: m_description
+        //  The description of the channel.
+        std::string m_description;
 
     public:
         //API Function: channelNumber
@@ -490,6 +497,13 @@ namespace mscl
         //Returns:
         //    The <WirelessTypes::ChannelType> of this channel.
         WirelessTypes::ChannelType type() const;
+
+        //API Function: description
+        //  Gets the description of this channel (ex. "Acceleration X" or "CJC Temperature").
+        //
+        //Returns:
+        //  A string description of the channel.
+        std::string description() const;
 
         //API Function: name
         //    Gets the name of this channel. 

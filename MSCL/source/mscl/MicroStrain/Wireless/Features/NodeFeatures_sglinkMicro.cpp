@@ -27,8 +27,8 @@ namespace mscl
         );
 
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential);    //full diff
-        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_temperature);        //temperature
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential");
+        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_temperature, "Internal Temperature");
     }
 
     bool NodeFeatures_sglinkMicro::supportsSensorDelayConfig() const

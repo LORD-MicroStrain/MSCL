@@ -6,7 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
 #include "mscl/Types.h"
 
 namespace mscl
@@ -38,7 +38,7 @@ namespace mscl
 
         //Class: Response
         //    Handles the response to the PageDownload Node command
-        class Response : public ResponsePattern
+        class Response : public WirelessResponsePattern
         {
         public:
             //Constructor: Response
@@ -94,7 +94,7 @@ namespace mscl
             //
             //Returns:
             //    true if the bytes match the success response pattern, false otherwise
-            bool matchSuccessResponse(DataBuffer& data);
+            bool matchSuccessResponse(DataBuffer& data) override;
 
             //Function: matchSuccessResponse
             //    Checks if the <DataBuffer> passed in matches the fail response bytes
@@ -104,7 +104,7 @@ namespace mscl
             //
             //Returns:
             //    true if the bytes match the fail response pattern, false otherwise
-            bool matchFailResponse(DataBuffer& data);
+            bool matchFailResponse(DataBuffer& data) override;
         };
     };
 

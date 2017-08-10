@@ -6,7 +6,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
@@ -17,10 +18,10 @@ namespace mscl
     //    Contains logic for the Start Sync Sampling Node command
     class StartSyncSampling
     {
-    private:
-        StartSyncSampling();                                    //disabled default constructor
-        StartSyncSampling(const StartSyncSampling&);            //disabled copy constructor
-        StartSyncSampling& operator=(const StartSyncSampling&);    //disabled assignment operator
+    public:
+        StartSyncSampling() = delete;                                       //disabled default constructor
+        StartSyncSampling(const StartSyncSampling&) = delete;               //disabled copy constructor
+        StartSyncSampling& operator=(const StartSyncSampling&) = delete;    //disabled assignment operator
 
     public:
         //Function: buildCommand
@@ -31,11 +32,11 @@ namespace mscl
         //
         //Returns:
         //    A <ByteStream> containing the command packet
-        static ByteStream buildCommand(NodeAddress nodeAddress);
+        static ByteStream buildCommand(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress);
 
         //Class: Response
         //    Handles the response to the Start Sync Sampling Node command
-        class Response : public ResponsePattern
+        class Response : public WirelessResponsePattern
         {
         public:
             //Constructor: Response
@@ -51,8 +52,8 @@ namespace mscl
             //    The node address to look for in the response
             NodeAddress m_nodeAddress;
 
-        public:
-            //Function: match
+        protected:
+            //Function: matchSuccessResponse
             //    Checks if the <WirelessPacket> passed in matches the expected response pattern's bytes
             //
             //Parameters:
@@ -60,7 +61,7 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches a response pattern, false otherwise
-            virtual bool match(const WirelessPacket& packet) override;
+            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
 

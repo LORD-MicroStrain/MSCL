@@ -17,8 +17,6 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-
-
     ShmPacket::ShmPacket(const WirelessPacket& packet):
         m_binCount(21)    //always 21 histogram bins in this packet
     {

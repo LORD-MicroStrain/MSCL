@@ -77,7 +77,8 @@ private:
     }
 
     virtual void rawByteMode(bool enable){}
-    virtual void getRawBytes(Bytes& bytes, uint32 timeout = 0, uint32 maxBytes = 0) {};
+    virtual void getRawBytes(Bytes& bytes, uint32 timeout = 0, uint32 maxBytes = 0, uint32 minBytes = 0) {};
+    virtual void getRawBytesWithPattern(Bytes& bytes, const uint8* pattern, size_t length, uint32 timeout = 0) {};
     virtual void debugMode(bool enable) {};
     virtual void getDebugData(ConnectionDebugDataVec& data, uint32 timeout) {};
 

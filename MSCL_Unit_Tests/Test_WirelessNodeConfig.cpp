@@ -69,10 +69,10 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_setSingleValue)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
 
     //make the features() function return the NodeFeatures we want
-    NodeInfo info(Version(9, 9), WirelessModels::node_gLink_2g, 200000, WirelessTypes::region_usa);
+    NodeInfo info(Version(9, 9), WirelessModels::node_gLink_2g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_setSingleValue)
 
     //expect the single eeprom write
     expectWrite(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(4500));
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
 
     BOOST_CHECK_NO_THROW(node.applyConfig(c));
 }
@@ -95,10 +95,10 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_setMultipleValues)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
 
     //make the features() function return the NodeFeatures we want
-    NodeInfo info(Version(99, 9), WirelessModels::node_gLink_2g, 200000, WirelessTypes::region_usa);
+    NodeInfo info(Version(99, 9), WirelessModels::node_gLink_2g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -123,10 +123,10 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_failVerifyWhenApplying)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
 
     //make the features() function return the NodeFeatures we want
-    NodeInfo info(Version(9, 9), WirelessModels::node_tcLink_1ch, 200000, WirelessTypes::region_usa);    //note TC-Link
+    NodeInfo info(Version(9, 9), WirelessModels::node_tcLink_1ch, WirelessTypes::region_usa);    //note TC-Link
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -147,7 +147,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyFail_activeChannels)
     node.setImpl(impl);
 
     //make the features() function return the NodeFeatures we want
-    NodeInfo info(Version(9, 9), WirelessModels::node_tcLink_1ch, 200000, WirelessTypes::region_usa);    //note TC-Link
+    NodeInfo info(Version(9, 9), WirelessModels::node_tcLink_1ch, WirelessTypes::region_usa);    //note TC-Link
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyFail_numSweeps)
     node.setImpl(impl);
 
     //make the features() function return the NodeFeatures we want
-    NodeInfo info(Version(9, 9), WirelessModels::node_gLink_10g, 200000, WirelessTypes::region_usa);
+    NodeInfo info(Version(9, 9), WirelessModels::node_gLink_10g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyFail_dataFormat)
     node.setImpl(impl);
 
     //make the features() function return the NodeFeatures we want
-    NodeInfo info(Version(9, 9), WirelessModels::node_tcLink_3ch, 200000, WirelessTypes::region_usa);    //note TC-Link
+    NodeInfo info(Version(9, 9), WirelessModels::node_tcLink_3ch, WirelessTypes::region_usa);    //note TC-Link
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -222,7 +222,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyFail_timeBetweenBursts)
     node.setImpl(impl);
 
     //make the features() function return the NodeFeatures we want
-    NodeInfo info(Version(9, 9), WirelessModels::node_gLink_10g, 200000, WirelessTypes::region_usa);
+    NodeInfo info(Version(9, 9), WirelessModels::node_gLink_10g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -247,7 +247,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyFail_timeBetweenBursts_notSupporte
     node.setImpl(impl);
 
     //make the features() function return the NodeFeatures we want
-    NodeInfo info(Version(9, 9), WirelessModels::node_tcLink_1ch, 200000, WirelessTypes::region_usa);    //tc-link doesn't support burst
+    NodeInfo info(Version(9, 9), WirelessModels::node_tcLink_1ch, WirelessTypes::region_usa);    //tc-link doesn't support burst
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -274,7 +274,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyFail_multi)
     node.setImpl(impl);
 
     //make the features() function return the NodeFeatures we want
-    NodeInfo info(Version(9, 9), WirelessModels::node_tcLink_1ch, 200000, WirelessTypes::region_usa);    //note TC-Link
+    NodeInfo info(Version(9, 9), WirelessModels::node_tcLink_1ch, WirelessTypes::region_usa);    //note TC-Link
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -311,6 +311,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyConflictsFail_sampleRate_sampleMod
     expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(WirelessTypes::dataFormat_cal_float));
     expectRead(impl, NodeEepromMap::TIME_BETW_SESSIONS, Value::UINT16(4000));
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(WirelessTypes::collectionMethod_transmitOnly));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     WirelessNodeConfig c;
     c.sampleRate(WirelessTypes::sampleRate_1Hz);
@@ -333,7 +334,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyConflictsFail_sampleRate_channels)
     node.setImpl(impl);
 
     //make the features() function return the NodeFeatures we want
-    NodeInfo info(Version(9, 9), WirelessModels::node_vLink, 200000, WirelessTypes::region_usa);    //note V-Link
+    NodeInfo info(Version(9, 9), WirelessModels::node_vLink, WirelessTypes::region_usa);    //note V-Link
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -344,6 +345,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyConflictsFail_sampleRate_channels)
     expectRead(impl, NodeEepromMap::TIME_BETW_SESSIONS, Value::UINT16(4000));
     expectRead(impl, NodeEepromMap::UNLIMITED_SAMPLING, Value::UINT16(0));
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(WirelessTypes::collectionMethod_transmitOnly));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     WirelessNodeConfig c;
     ChannelMask chs;
@@ -438,6 +440,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyConflictsFail_sweepsWithUnlimitedD
     expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(WirelessTypes::dataFormat_cal_float));
     expectRead(impl, NodeEepromMap::TIME_BETW_SESSIONS, Value::UINT16(4000));
     expectRead(impl, NodeEepromMap::UNLIMITED_SAMPLING, Value::UINT16(1));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     WirelessNodeConfig c;
     c.numSweeps(2000000000);
@@ -458,7 +461,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_checkRadioInterval)
     WirelessNode node(123, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
 
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features;
@@ -473,7 +476,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_checkRadioInterval)
     BOOST_CHECK_THROW(node.applyConfig(c), Error_InvalidNodeConfig);
 
     expectWrite(impl, NodeEepromMap::SLEEP_INTERVAL, Value::UINT16(284));
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
     c.checkRadioInterval(27);
     BOOST_CHECK_NO_THROW(node.applyConfig(c));
 }
@@ -485,7 +488,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_lostBeaconTimeout)
     WirelessNode node(123, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
@@ -499,7 +502,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_lostBeaconTimeout)
     //check the beacon timeout success
     c.lostBeaconTimeout(45);
     expectWrite(impl, NodeEepromMap::LOST_BEACON_TIMEOUT, Value::UINT16(45));
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
     BOOST_CHECK_NO_THROW(node.applyConfig(c));
 
     //check the beacon timeout maximum failing
@@ -514,7 +517,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_bootMode)
     WirelessNode node(123, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl, WirelessModels::node_iepeLink);
@@ -529,7 +532,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_bootMode)
     expectNodeFeatures(features, impl, WirelessModels::node_gLink_10g);
 
     expectWrite(impl, NodeEepromMap::DEFAULT_MODE, Value::UINT16(WirelessTypes::defaultMode_ldc));
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
     BOOST_CHECK_NO_THROW(node.applyConfig(c));
 }
 
@@ -542,7 +545,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_filterSettlingTime)
         WirelessNode node(123, b);
         node.setImpl(impl);
 
-        MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+        MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
 
         std::unique_ptr<NodeFeatures> features;
         expectNodeFeatures(features, impl, WirelessModels::node_tcLink_6ch);
@@ -576,7 +579,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_filterSettlingTime)
         WirelessNode node(123, b);
         node.setImpl(impl);
 
-        MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+        MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
 
         std::unique_ptr<NodeFeatures> features;
         expectNodeFeatures(features, impl, WirelessModels::node_gLink_10g);
@@ -601,7 +604,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_filterSettlingTime)
         WirelessNode node(123, b);
         node.setImpl(impl);
 
-        MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+        MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
 
         std::unique_ptr<NodeFeatures> features;
         expectNodeFeatures(features, impl, WirelessModels::node_tcLink_6ch);
@@ -618,7 +621,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_filterSettlingTime)
 
         //expect the single eeprom write
         expectWrite(impl, NodeEepromMap::FILTER_1, Value::UINT16(3));
-        expectCyclePower(impl);
+        MOCK_EXPECT(impl->cyclePower);
 
         //check the settling time succeeds to apply
         BOOST_CHECK_NO_THROW(node.applyConfig(c));
@@ -639,7 +642,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_thermocoupleType)
         WirelessNode node(123, b);
         node.setImpl(impl);
 
-        MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+        MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
 
         std::unique_ptr<NodeFeatures> features;
         expectNodeFeatures(features, impl, WirelessModels::node_gLink_10g);
@@ -664,7 +667,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_thermocoupleType)
         WirelessNode node(123, b);
         node.setImpl(impl);
 
-        MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+        MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
 
         std::unique_ptr<NodeFeatures> features;
         expectNodeFeatures(features, impl, WirelessModels::node_tcLink_6ch);
@@ -674,7 +677,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_thermocoupleType)
 
         //expect the single eeprom write
         expectWrite(impl, NodeEepromMap::THERMOCPL_TYPE, Value::UINT16(2));
-        expectCyclePower(impl);
+        MOCK_EXPECT(impl->cyclePower);
 
         //check the settling time succeeds to apply
         BOOST_CHECK_NO_THROW(node.applyConfig(c));
@@ -693,7 +696,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_linearEquation)
     WirelessNode node(123, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl, WirelessModels::node_gLink_10g);
@@ -706,7 +709,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_linearEquation)
     //expect the single eeprom write
     expectWrite(impl, NodeEepromMap::CH_ACTION_SLOPE_4, Value::FLOAT(64.78f));
     expectWrite(impl, NodeEepromMap::CH_ACTION_OFFSET_4, Value::FLOAT(142.23f));
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
 
     BOOST_CHECK_NO_THROW(node.applyConfig(c));
 
@@ -841,9 +844,9 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_dataMode)
     WirelessNode node(123, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER_LXRS).returns(Value::UINT16(0x0105));
 
-    NodeInfo info(Version(10, 0), WirelessModels::node_sgLink, 200000, WirelessTypes::region_usa);
+    NodeInfo info(Version(10, 0), WirelessModels::node_sgLink, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -879,10 +882,10 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeRate)
     WirelessNode node(123, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER_LXRS).returns(Value::UINT16(0x0105));
     MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::FLASH_ID).returns(Value::UINT16(0));
 
-    NodeInfo info(Version(10, 34862), WirelessModels::node_gLink_200_8g, 200000, WirelessTypes::region_usa);
+    NodeInfo info(Version(10, 34862), WirelessModels::node_gLink_200_8g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -927,10 +930,10 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeMask)
     WirelessNode node(123, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER_LXRS).returns(Value::UINT16(0x0105));
     MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::FLASH_ID).returns(Value::UINT16(0));
 
-    NodeInfo info(Version(10, 34862), WirelessModels::node_gLink_200_8g, 200000, WirelessTypes::region_usa);
+    NodeInfo info(Version(10, 34862), WirelessModels::node_gLink_200_8g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -1003,10 +1006,10 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_channelMasks)
     WirelessNode node(123, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER_LXRS).returns(Value::UINT16(0x0105));
     MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::FLASH_ID).returns(Value::UINT16(0));
 
-    NodeInfo info(Version(10, 34862), WirelessModels::node_gLink_200_8g, 200000, WirelessTypes::region_usa);
+    NodeInfo info(Version(10, 34862), WirelessModels::node_gLink_200_8g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -1060,10 +1063,10 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedSampleRate)
     WirelessNode node(123, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER_LXRS).returns(Value::UINT16(0x0105));
     MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::FLASH_ID).returns(Value::UINT16(0));
 
-    NodeInfo info(Version(10, 34862), WirelessModels::node_gLink_200_8g, 200000, WirelessTypes::region_usa);
+    NodeInfo info(Version(10, 34862), WirelessModels::node_gLink_200_8g, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 

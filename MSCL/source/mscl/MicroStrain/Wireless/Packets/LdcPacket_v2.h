@@ -10,9 +10,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
 
-    //Class: LdcPacket_16ch
+    //Class: LdcPacket_v2
     //    A <WirelessDataPacket> derived class representing a Low Duty Cycle packet
-    class LdcPacket_16ch : public WirelessDataPacket
+    class LdcPacket_v2 : public WirelessDataPacket
     {
     private:
         //=====================================================================================================
@@ -29,22 +29,16 @@ namespace mscl
         static const uint16 PAYLOAD_OFFSET_TICK                    = 4;
         static const uint16 PAYLOAD_OFFSET_CHANNEL_DATA            = 6;
 
-        //=====================================================================================================
-        //Constants: Packet values
-        //    APP_ID_VAL    - 0x02    - The App ID of the Packet
-        //=====================================================================================================
-        static const uint16 APP_ID_VAL    = 0x00;
-
     public:
-        //Constructor: LdcPacket_16ch
-        //    Creates an LdcPacket_16ch from the passed in <WirelessPacket>
+        //Constructor: LdcPacket_v2
+        //    Creates an LdcPacket_v2 from the passed in <WirelessPacket>
         //
         //Parameters:
-        //    packet - A <WirelessPacket> determined to be an LdcPacket_16ch
-        explicit LdcPacket_16ch(const WirelessPacket& packet);
+        //    packet - A <WirelessPacket> determined to be an LdcPacket_v2
+        explicit LdcPacket_v2(const WirelessPacket& packet);
 
     private:
-        LdcPacket_16ch();        //default constructor disabled
+        LdcPacket_v2();        //default constructor disabled
 
         //Function: parseSweeps
         //    Parses the passed in WirelessPacket for all the sweep information and adds a sweep to the sweeps container

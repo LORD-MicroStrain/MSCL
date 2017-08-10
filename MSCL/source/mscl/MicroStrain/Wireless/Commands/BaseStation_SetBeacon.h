@@ -5,7 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
 #include "mscl/Timestamp.h"
 
 namespace mscl
@@ -34,7 +34,7 @@ namespace mscl
 
         //Class: Response
         //    Handles the response to the base station write eeprom command
-        class Response : public ResponsePattern
+        class Response : public WirelessResponsePattern
         {
         public:
             //Constructor: Response
@@ -51,7 +51,7 @@ namespace mscl
             Timestamp m_beaconStartTime;
 
         public:
-            //Function: match
+            //Function: matchSuccessResponse
             //    Checks if the bytes passed in match the response pattern from their current read position
             //
             //Parameters:
@@ -59,7 +59,7 @@ namespace mscl
             //
             //Returns:
             //    true if the response pattern was found, false otherwise
-            virtual bool match(DataBuffer& data) override;
+            virtual bool matchSuccessResponse(DataBuffer& data) override;
 
             //Function: beaconStartTime
             //    Gets the start time that was sent to enable the beacon 

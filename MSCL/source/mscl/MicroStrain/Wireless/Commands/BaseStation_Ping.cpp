@@ -21,11 +21,11 @@ namespace mscl
     }
 
     BaseStation_Ping::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        ResponsePattern(collector)
+        WirelessResponsePattern(collector, WirelessProtocol::cmdId_basePing, WirelessProtocol::BASE_STATION_ADDRESS)
     {
     }
 
-    bool BaseStation_Ping::Response::match(DataBuffer& data)
+    bool BaseStation_Ping::Response::matchSuccessResponse(DataBuffer& data)
     {
         const uint16 TOTAL_BYTES = 1;
 
@@ -52,15 +52,6 @@ namespace mscl
 
         //commit the current read position
         savePoint.commit();
-
-        //the ping was a success
-        m_success = true;
-
-        //we have fully matched the response
-        m_fullyMatched = true;
-
-        //notify that the response was matched
-        m_matchCondition.notify();
 
         return true;
     }

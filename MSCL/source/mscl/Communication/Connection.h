@@ -41,11 +41,12 @@ namespace mscl
 
         //API Function: Serial
         //    A static function for creating a Connection object with a <SerialConnection> implementation.
+        //    Use this function if you know the specific baud rate you want to connect at.
         //    A connection with the specified port will be established.
         //
         //Parameters:
         //    port - The actual string name of the COM port (ex. "COM26")
-        //    baudRate - The baud rate at which to open the COM port (default of 921600)
+        //    baudRate - The baud rate at which to open the COM port (ex. 921600).
         //
         //Returns:
         //    A <Connection> object created with a <SerialConnection> implementation.
@@ -53,7 +54,23 @@ namespace mscl
         //Exceptions:
         //    - <Error_InvalidSerialPort>: the specified com port is invalid
         //    - <Error_Connection>: failed to get or set com port parameters
-        static Connection Serial(const std::string& port, uint32 baudRate = 921600);
+        static Connection Serial(const std::string& port, uint32 baudRate);
+
+        //API Function: Serial
+        //    A static function for creating a Connection object with a <SerialConnection> implementation,
+        //    and attempting to automatically determine/use the baud rate by utilizing <Devices::listPorts>.
+        //    A connection with the specified port will be established.
+        //
+        //Parameters:
+        //    port - The actual string name of the COM port (ex. "COM26")
+        //
+        //Returns:
+        //    A <Connection> object created with a <SerialConnection> implementation.
+        //
+        //Exceptions:
+        //    - <Error_InvalidSerialPort>: the specified com port is invalid
+        //    - <Error_Connection>: failed to get or set com port parameters
+        static Connection Serial(const std::string& port);
 
         //API Function: TcpIp
         //    A static function for creating a Connection object with a <TcpIpConnection> implementation.
@@ -209,7 +226,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-        Bytes getRawBytes(uint32 timeout = 0, uint32 maxBytes = 0);
+        Bytes getRawBytes(uint32 timeout = 0, uint32 maxBytes = 0, uint32 minBytes = 0);
 
         //API Function: getRawBytesStr
         //    Gets the raw bytes that are available that have been collected when the Connection is in "Raw Byte Mode" as a string.
@@ -224,7 +241,19 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
-        std::string getRawBytesStr(uint32 timeout = 0, uint32 maxBytes = 0);
+        std::string getRawBytesStr(uint32 timeout = 0, uint32 maxBytes = 0, uint32 minBytes = 0);
+
+        //API Function: getRawBytesWithPattern
+        //  Gets the raw bytes that are available that have been collected when the Connection is in "Raw Byte Mode", if a byte pattern is found.
+        //  If the Connection has not been put into "Raw Byte Mode" by calling <rawByteMode>, no data can be retrieved from this function.
+        //
+        //Patameters:
+        //  pattern - The <Bytes> containing the pattern of bytes to match.
+        //  timeout - The timeout, in milliseconds, to wait for the data if necessary (default of 0).
+        //
+        //Returns:
+        //  A <Bytes> container with all of the bytes before and including the pattern bytes if the pattern was found, or an empty <Bytes> container otherwise.
+        Bytes getRawBytesWithPattern(const Bytes& pattern, uint32 timeout = 0);
 
         //API Function: debugMode
         //  Puts the connection into "Debug Mode." 

@@ -87,7 +87,10 @@ namespace mscl
         static const uint8 FIELD_ACK_NACK_BYTE = 0xF1;
 
     protected:
-        GenericInertialCommand();                                            //disabled default constructor
+        GenericInertialCommand(InertialTypes::Command commandId);           // constructor taking the command ID
+        GenericInertialCommand() {}                                            //disabled default constructor
+
+    private:
         GenericInertialCommand(const GenericInertialCommand&);                //disabled copy constructor
         GenericInertialCommand& operator=(const GenericInertialCommand&);    //disabled assignment operator
 
@@ -118,10 +121,26 @@ namespace mscl
         //    A <ByteStream> containing the Inertial command packet built from the given bytes
         static ByteStream buildCommand(InertialTypes::Command commandId, const Bytes& fieldData = Bytes());
 
+        //Function: buildCommand
+        //    Builds the command for a derived Inertial command, and returns a ByteStream containing the bytes to send
+        //
+        //Parameters:
+        //    fieldData - A vector of bytes that make up the field data to be sent in the command (defaults to empty)
+        //
+        //Returns:
+        //    A <ByteStream> containing the Inertial command packet built from the given bytes
+        ByteStream buildCommand(const Bytes& fieldData = Bytes());
+
+        //Function: fieldId
+        //    Gets the <InertialTypes::Command>
+        virtual InertialTypes::Command commandId() const = 0;
+
         //Class: Response
         //    Handles the response to the Inertial command
         class Response : public ResponsePattern
         {
+            friend class InertialNode_Impl;
+
         protected:
             //Variable: m_ackNackResponse
             //    Whether or not an ack/nack response field is expected
@@ -131,9 +150,17 @@ namespace mscl
             //    Whether or not a data response field is expected
             bool m_dataResponse;
 
+            //Variable: m_command
+            //    The command enumeration
+            const InertialTypes::Command m_command;
+
             //Variable: m_commandName
             //    The name of the command
             std::string m_commandName;
+
+            //Variable: m_fieldDataByte
+            //    The field data byte.
+            uint8 m_fieldDataByte;
 
             //Variable: m_result
             //    The <GenericInertialCommandResponse> that holds the result of the GenericInertialCommand
@@ -142,7 +169,7 @@ namespace mscl
         protected:
             //Function: commandId
             //    Gets the <InertialTypes::Command> for the Inertial command
-            virtual InertialTypes::Command commandId() const = 0;
+            virtual InertialTypes::Command commandId() const { return m_command; }
 
             //Function: fieldDataByte
             //    Gets the data field byte that should be received with the data field (if any)
@@ -161,15 +188,26 @@ namespace mscl
             uint8 fieldAckNackByte() const;
 
         public:
+            //Default Constructor: Response
+            //    Creates a default constructor Response.
+            //    Note: You will need to use the <setResponseCollector> function before being used.
+            //
+            //Parameters:
+            //    ackNackResponse - Whether or not an ack/nack response field is expected
+            //    dataResponse - Whether or not a data response field is expected
+            //    cmdName - The name of the command (to be used in exceptions that may be thrown)
+            Response(const InertialTypes::Command&, bool ackNackResponse, bool dataResponse, std::string cmdName);
+
             //Constructor: Response
-            //    Creates a Ping Response object
+            //    Creates a Response object
             //
             //Parameters:
             //    collector - The <ResponseCollector> used to register and unregister the response
             //    ackNackResponse - Whether or not an ack/nack response field is expected
             //    dataResponse - Whether or not a data response field is expected
             //    cmdName - The name of the command (to be used in exceptions that may be thrown)
-            Response(std::weak_ptr<ResponseCollector> collector, bool ackNackResponse, bool dataResponse, std::string cmdName);
+            Response(const InertialTypes::Command&, std::weak_ptr<ResponseCollector> collector, bool ackNackResponse,
+                     bool dataResponse, const std::string& cmdName, uint8 fieldDataByte = 0);
 
             virtual ~Response(){};
 

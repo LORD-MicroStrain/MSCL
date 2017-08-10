@@ -29,10 +29,10 @@ namespace mscl
         );
 
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential);    //full diff
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_battery);            //battery
-        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_temperature);        //temp
-        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_voltage);            //voltage
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential");
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_battery, "Battery");
+        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_temperature, "Internal Temperature");
+        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_singleEnded, "Single-ended");
     }
 
     bool NodeFeatures_sglinkoemHermetic::supportsSensorDelayConfig() const

@@ -386,6 +386,27 @@ namespace mscl
         {WirelessTypes::sampleRate_2Hz},
         {WirelessTypes::sampleRate_1Hz}};
 
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_shmLink201 = {
+        {WirelessTypes::sampleRate_1024Hz},
+        {WirelessTypes::sampleRate_512Hz},
+        {WirelessTypes::sampleRate_256Hz},
+        {WirelessTypes::sampleRate_128Hz},
+        {WirelessTypes::sampleRate_64Hz},
+        {WirelessTypes::sampleRate_32Hz},
+        {WirelessTypes::sampleRate_16Hz},
+        {WirelessTypes::sampleRate_8Hz},
+        {WirelessTypes::sampleRate_4Hz},
+        {WirelessTypes::sampleRate_2Hz},
+        {WirelessTypes::sampleRate_1Hz}};
+
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::burst_shmLink201 = {
+        {WirelessTypes::sampleRate_1024Hz},
+        {WirelessTypes::sampleRate_512Hz},
+        {WirelessTypes::sampleRate_256Hz},
+        {WirelessTypes::sampleRate_128Hz},
+        {WirelessTypes::sampleRate_64Hz},
+        {WirelessTypes::sampleRate_32Hz}};
+
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_cfBearing = {
         {WirelessTypes::sampleRate_16Hz},
         {WirelessTypes::sampleRate_8Hz},

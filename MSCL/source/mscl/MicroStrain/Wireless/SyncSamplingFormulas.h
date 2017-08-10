@@ -31,7 +31,6 @@ namespace mscl
         static const uint16 MAX_SLOTS = 1024;
         static const uint16 MAX_SLOTS_HIGH_CAPACITY = 1024 * 16;
         static const uint8 MIN_TDMA = 1;
-        static const uint8 MAX_DATA_BYTES_PER_PACKET = 96;
 
         //Function: bytesPerSecond
         //    Calculates the number of bytes per second
@@ -53,19 +52,15 @@ namespace mscl
         //    lossless - Whether the network is using lossless or not
         //    highBandwidth - Whether we are attempting to optimize bandwidth or not
         //    syncFormulaVersion - The version of the Sync Sampling formula to use
-        uint32 maxBytesPerPacket(const SampleRate& sampleRate, bool lossless, bool highBandwidth, uint8 syncFormulaVersion);
+        //    commProtocol - The <WirelessTypes::CommProtocol> the Node will use for sampling
+        uint32 maxBytesPerPacket(const SampleRate& sampleRate, bool lossless, bool highBandwidth, uint8 syncFormulaVersion, WirelessTypes::CommProtocol commProtocol);
 
         //Function: groupSize
         //    Calculates the group size
         //
-        //Parameters:
-        //    bytesPerSecond - The number of bytes per second
-        //    maxBytesPerPacket - The maximum number of bytes per packet
-        //    highCapacity - Whether the network is using high capacity mode or not
-        //
         //Returns:
         //    The group size for the network
-        uint32 groupSize(double bytesPerSecond, uint32 maxBytesPerPacket, bool highCapacity);
+        uint32 groupSize();
 
         //Function: txPerGroup
         //    Calculates the transmissions per group
@@ -93,27 +88,30 @@ namespace mscl
         //Function: slotSpacing
         //    Gets the slot spacing for the network
         //
+        //protocol - The <WirelessTypes::CommProtocol>.
+        //
         //Returns:
         //    The slot spacing for the network
-        uint16 slotSpacing();
+        uint16 slotSpacing(WirelessTypes::CommProtocol protocol);
 
         //Function: maxTdmaAddress
         //    Gets the maximum TDMA address that is allowed
         //
         //Returns:
         //    The maximum TDMA address that is allowed
-        uint32 maxTdmaAddress(uint32 txPerGroup, uint32 groupSize, bool legacyNwk);
+        uint32 maxTdmaAddress(uint32 txPerGroup, uint32 groupSize, bool legacyNwk, WirelessTypes::CommProtocol protocol);
 
         //Function: percentBandwidth
         //    Calculates the percent of bandwidth for a single node
         //
         //Parametesr:
-        //    txPerSecond - The number of transmissions per second
+        //    txPerSecond - The number of transmissions per second.
         //    legacyNwk - Whether the network has legacy nodes or not.
+        //    protocol - The <WirelessTypes::CommProtocol>.
         //
         //Returns:
         //    The percent of bandwidth
-        float percentBandwidth(float txPerSecond, bool legacyNwk);
+        float percentBandwidth(float txPerSecond, bool legacyNwk, WirelessTypes::CommProtocol protocol);
 
         //Function: sampleDuration
         //    Calculates the sample duration for a given sample rate and number of sweeps
@@ -190,10 +188,11 @@ namespace mscl
         //Parameters:
         //    bytesPerSweep - The total number of bytes per data sweep
         //    lossless - Whether the network is using lossless or not
+        //    commProtocol - The <WirelessTypes::CommProtocol> the Node will use for sampling
         //
         //Returns:
         //    The maximum number of bytes per packet
-        uint32 maxBytesPerBurstPacket(uint32 bytesPerSweep, bool lossless);
+        uint32 maxBytesPerBurstPacket(uint32 bytesPerSweep, bool lossless, WirelessTypes::CommProtocol commProtocol);
 
         //Function: totalNeededBurstTx
         //    Calculates the total needed transmissions for bursts
@@ -219,17 +218,18 @@ namespace mscl
         uint32 minTimeBetweenBursts(uint32 totalNeededTx, double sampleDuration, bool lossless);
 
         //Function: minTimeBetweenBursts
-        //    Gets the minimum time that can be assigned for a Burst Sync Sampling session.
+        //    Calculates the minimum amount of time allowed between bursts.
         //
         //Parameters:
         //    numRawBytesPerSweep - The number of raw bytes per sweep.
         //    numDerivedBytesPerSweep - The number of derived bytes per sweep.
         //    rawSampleRate - The <SampleRate> for Raw Data for the sampling session.
         //    sweepsPerBurst - The number of sweeps per burst for the sampling session.
+        //    commProtocol - The <WirelessTypes::CommProtocol> that the Node is currently using.
         //
         //Returns:
         //    A <TimeSpan> representing the minimum time that can be assigned for a Burst Sync Sampling session.
-        TimeSpan minTimeBetweenBursts(uint32 numRawBytesPerSweep, uint32 numDerivedBytesPerSweep, const mscl::SampleRate& rawSampleRate, uint32 sweepsPerBurst);
+        TimeSpan minTimeBetweenBursts(uint32 numRawBytesPerSweep, uint32 numDerivedBytesPerSweep, const mscl::SampleRate& rawSampleRate, uint32 sweepsPerBurst, WirelessTypes::CommProtocol commProtocol);
 
         //Function: burstTxPerSecond
         //    Calculates the burst transmissions per second

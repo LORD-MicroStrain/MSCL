@@ -10,14 +10,16 @@ namespace mscl
 {
     LoggedDataSweep::LoggedDataSweep() :
         m_timestamp(0),
-        m_tick(0)
+        m_tick(0),
+        m_calsApplied(false)
     {
     }
 
-    LoggedDataSweep::LoggedDataSweep(const Timestamp& timestamp, uint64 tick, const ChannelData& data) :
+    LoggedDataSweep::LoggedDataSweep(const Timestamp& timestamp, uint64 tick, const ChannelData& data, bool calsApplied) :
         m_timestamp(timestamp),
         m_tick(tick),
-        m_data(data)
+        m_data(data),
+        m_calsApplied(calsApplied)
     {
     }
 
@@ -26,19 +28,9 @@ namespace mscl
         return m_timestamp;
     }
 
-    void LoggedDataSweep::timestamp(const Timestamp& time)
-    {
-        m_timestamp = time;
-    }
-
     uint64 LoggedDataSweep::tick() const
     {
         return m_tick;
-    }
-
-    void LoggedDataSweep::tick(uint64 tick)
-    {
-        m_tick = tick;
     }
 
     const ChannelData& LoggedDataSweep::data() const
@@ -46,8 +38,8 @@ namespace mscl
         return m_data;
     }
 
-    void LoggedDataSweep::data(const ChannelData& data)
+    bool LoggedDataSweep::calApplied() const
     {
-        m_data = data;
+        return m_calsApplied;
     }
 }

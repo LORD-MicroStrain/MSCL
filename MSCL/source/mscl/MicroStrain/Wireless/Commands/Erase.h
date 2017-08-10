@@ -6,7 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
 #include "mscl/Types.h"
 
 namespace mscl
@@ -36,7 +36,7 @@ namespace mscl
 
         //Class: Response
         //    Handles the response to the Erase node command
-        class Response : public ResponsePattern
+        class Response : public WirelessResponsePattern
         {
         public:
             //Constructor: Response

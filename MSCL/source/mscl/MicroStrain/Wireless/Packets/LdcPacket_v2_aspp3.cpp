@@ -5,7 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 
-#include "LdcPacket_16ch.h"
+#include "LdcPacket_v2_aspp3.h"
 #include "mscl/MicroStrain/SampleUtils.h"
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
 #include "mscl/Utils.h"
@@ -13,30 +13,30 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-
-    LdcPacket_16ch::LdcPacket_16ch(const WirelessPacket& packet)
+    LdcPacket_v2_aspp3::LdcPacket_v2_aspp3(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
-        m_nodeAddress        = packet.nodeAddress();
-        m_deliveryStopFlags = packet.deliveryStopFlags();
-        m_type                = packet.type();
-        m_nodeRSSI            = WirelessTypes::UNKNOWN_RSSI;
-        m_baseRSSI            = packet.baseRSSI();
-        m_frequency            = packet.frequency();
-        m_payload            = packet.payload();
+        m_nodeAddress              = packet.nodeAddress();
+        m_deliveryStopFlags        = packet.deliveryStopFlags();
+        m_type                     = packet.type();
+        m_nodeRSSI                 = WirelessTypes::UNKNOWN_RSSI;
+        m_baseRSSI                 = packet.baseRSSI();
+        m_frequency                = packet.frequency();
+        m_payload                  = packet.payload();
         m_payloadOffsetChannelData = PAYLOAD_OFFSET_CHANNEL_DATA;
 
         //parse the data sweeps in the packet
         parseSweeps();
     }
 
-    void LdcPacket_16ch::parseSweeps()
+    void LdcPacket_v2_aspp3::parseSweeps()
     {
         //read the values from the payload
-        uint16 channelMask    = m_payload.read_uint16(PAYLOAD_OFFSET_CHANNEL_MASK);
-        uint8 sampleRate    = m_payload.read_uint8(PAYLOAD_OFFSET_SAMPLE_RATE);
-        uint8 dataType        = Utils::lsNibble( m_payload.read_uint8(PAYLOAD_OFFSET_APPID_AND_DATA_TYPE) );
-        uint16 tick            = m_payload.read_uint16(PAYLOAD_OFFSET_TICK);
+        //uint32 model = m_payload.read_uint32(0);
+        uint16 channelMask = m_payload.read_uint16(PAYLOAD_OFFSET_CHANNEL_MASK);
+        uint8 sampleRate = m_payload.read_uint8(PAYLOAD_OFFSET_SAMPLE_RATE);
+        uint8 dataType = m_payload.read_uint8(PAYLOAD_OFFSET_DATA_TYPE);
+        uint16 tick = m_payload.read_uint16(PAYLOAD_OFFSET_TICK);
 
         //set the data type of the packet
         m_dataType = static_cast<WirelessTypes::DataType>(dataType);
@@ -95,7 +95,7 @@ namespace mscl
         addSweep(sweep);
     }
 
-    bool LdcPacket_16ch::integrityCheck(const WirelessPacket& packet)
+    bool LdcPacket_v2_aspp3::integrityCheck(const WirelessPacket& packet)
     {
         WirelessPacket::Payload payload = packet.payload();
 
@@ -114,7 +114,7 @@ namespace mscl
         }
 
         //read the data type
-        uint8 dataType = Utils::lsNibble(payload.read_uint8(PAYLOAD_OFFSET_APPID_AND_DATA_TYPE));
+        uint8 dataType = payload.read_uint8(PAYLOAD_OFFSET_DATA_TYPE);
 
         //verify the data type
         if(dataType < WirelessTypes::dataType_first || dataType > WirelessTypes::dataType_last)
@@ -152,7 +152,7 @@ namespace mscl
         return true;
     }
 
-    UniqueWirelessPacketId LdcPacket_16ch::getUniqueId(const WirelessPacket& packet)
+    UniqueWirelessPacketId LdcPacket_v2_aspp3::getUniqueId(const WirelessPacket& packet)
     {
         //return the tick value
         return packet.payload().read_uint16(PAYLOAD_OFFSET_TICK);

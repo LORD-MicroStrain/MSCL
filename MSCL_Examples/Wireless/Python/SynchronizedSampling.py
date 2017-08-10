@@ -1,7 +1,7 @@
 # MSCL Example: SynchronizedSampling
 #   This example shows how to create and start a Synchronized Sampling network.
 #
-# Updated: 02/26/2015
+# Updated: 05/16/2017
 
 # import the mscl library
 import sys
@@ -38,7 +38,6 @@ try:
     print "Network OK: ", network.ok()
     print "Percent of Bandwidth: ", network.percentBandwidth()
     print "Lossless Enabled: ", network.lossless()
-    print "High Capacity Mode: ", network.highCapacity()
 
     # apply the network configuration to every node in the network
     print "Applying network configuration",
@@ -58,7 +57,6 @@ try:
     # Many other functions are available for the SyncSamplingNetwork:
     #
     # network.lossless()			//enable or disable "lossless" mode for the network (default of enabled).
-    # network.highCapacity()		//enable or disable "high capacity" mode for the network (default of disabled).
     # network.ok()					//check whether or not the network is "OK" meaning all nodes fit in the network and have communicated successfully.
     # network.percentBandwidth()	//get the percent of bandwidth for the entire network.
     # network.refresh()				//refreshes the entire network. Should be called any time a change is made to the node after it has been added to the network.

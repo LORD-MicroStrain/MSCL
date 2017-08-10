@@ -15,7 +15,7 @@ namespace mscl
     }
 
     Resume::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        GenericInertialCommand::Response(collector, true, false, "Resume")
+        GenericInertialCommand::Response(InertialTypes::CMD_RESUME, collector, true, false, "Resume")
     {
     }
 }

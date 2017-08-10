@@ -14,7 +14,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Features/NodeFeatures.h"
 #include "Commands/AutoCalInfo.h"
 #include "Commands/WirelessProtocol.h"
-#include "Commands/GetDatalogSessionInfo.h"
+#include "Commands/DatalogSessionInfoResult.h"
 #include "Configuration/NodeEeprom.h"
 #include "Configuration/NodeEepromMap.h"
 #include "Configuration/WirelessNodeConfig.h"
@@ -23,16 +23,17 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    WirelessNode_Impl::WirelessNode_Impl(uint16 nodeAddress, const BaseStation& basestation):
-        m_address(checked_cast<NodeAddress>(nodeAddress, "Node Address")),
+    WirelessNode_Impl::WirelessNode_Impl(NodeAddress nodeAddress, const BaseStation& basestation):
+        m_address(nodeAddress),
         m_baseStation(basestation),
         m_eepromHelper(new NodeEepromHelper(this))
     {
     }
 
-    std::unique_ptr<WirelessProtocol> WirelessNode_Impl::determineProtocol() const
+    void WirelessNode_Impl::determineProtocols() const
     {
-        Version asppVersion;
+        Version asppVersion_lxrs;
+        Version asppVersion_lxrsPlus;
 
         NodeEepromSettings tempSettings = m_eepromSettings;
         tempSettings.numRetries = 0;
@@ -50,30 +51,27 @@ namespace mscl
             try
             {
                 //try reading with protocol v1.1 (has read eeprom v2)
-                m_protocol = WirelessProtocol::v1_1();
+                m_protocol_lxrs = WirelessProtocol::v1_1();
+                m_protocol_lxrsPlus = WirelessProtocol::v1_1();
 
-                //set the NodeEeprom with the temporary protocol
-                m_eeprom.reset(new NodeEeprom(m_address, m_baseStation, *(m_protocol.get()), tempSettings));
+                eeprom().updateSettings(tempSettings);
 
-                asppVersion = m_eepromHelper->read_asppVersion();
+                asppVersion_lxrs = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrs);
+                asppVersion_lxrsPlus = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrsPlus);
                 success = true;
             }
             catch(Error_Communication&)
             {
                 //Failed reading with protocol v1.1 - Now try v1.0 (has read eeprom v1)
 
-                //we know this uses the same group read (page download) as the previous protocol, so skip it
-                tempSettings.useGroupRead = false;
-
                 try
                 {
                     //try reading with protocol v1.0
-                    m_protocol = WirelessProtocol::v1_0();
+                    m_protocol_lxrs = WirelessProtocol::v1_0();
+                    m_protocol_lxrsPlus = WirelessProtocol::v1_0();
 
-                    //set the NodeEeprom with the temporary protocol
-                    m_eeprom.reset(new NodeEeprom(m_address, m_baseStation, *(m_protocol.get()), tempSettings));
-
-                    asppVersion = m_eepromHelper->read_asppVersion();
+                    asppVersion_lxrs = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrs);
+                    asppVersion_lxrsPlus = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrsPlus);
                     success = true;
                 }
                 catch(Error_Communication&)
@@ -83,8 +81,11 @@ namespace mscl
                     {
                         //we failed to determine the protocol
                         //need to clear out the protocol and eeprom variables
-                        m_protocol.reset();
-                        m_eeprom.reset();
+                        m_protocol_lxrs.reset();
+                        m_protocol_lxrsPlus.reset();
+
+                        //set back the original eeprom settings
+                        eeprom().updateSettings(m_eepromSettings);
 
                         //rethrow the exception
                         throw;
@@ -95,8 +96,11 @@ namespace mscl
         }
         while(!success && (retryCount++ < m_eepromSettings.numRetries));
 
-        //get the protocol to use for the node
-        return WirelessProtocol::getProtocol(asppVersion);
+        //set back the original eeprom settings
+        eeprom().updateSettings(m_eepromSettings);
+
+        m_protocol_lxrs = WirelessProtocol::getProtocol(asppVersion_lxrs);
+        m_protocol_lxrsPlus = WirelessProtocol::getProtocol(asppVersion_lxrsPlus);
     }
 
     NodeEeprom& WirelessNode_Impl::eeprom() const
@@ -107,11 +111,17 @@ namespace mscl
         if(m_eeprom == NULL)
         {
             //create the eeprom variable
-            //Note that this requires communicating with the Node via the protocol() function
-            m_eeprom.reset(new NodeEeprom(m_address, m_baseStation, protocol(), m_eepromSettings));
+            m_eeprom.reset(new NodeEeprom(this, m_baseStation, m_eepromSettings));
         }
 
         return *(m_eeprom.get());
+    }
+
+    const WirelessProtocol& WirelessNode_Impl::wirelessProtocol()
+    {
+        //use the BaseStation's current comm protocol setting as we always will talk
+        //to the Node using whatever the BaseStation's protocol is set to.
+        return protocol(m_baseStation.communicationProtocol());
     }
 
     NodeEepromHelper& WirelessNode_Impl::eeHelper() const
@@ -134,21 +144,31 @@ namespace mscl
         return *(m_features.get());
     }
 
-    const WirelessProtocol& WirelessNode_Impl::protocol() const
+    const WirelessProtocol& WirelessNode_Impl::protocol(WirelessTypes::CommProtocol commProtocol) const
     {
         rec_mutex_lock_guard lock(m_protocolMutex);
 
         //if the protocol variable hasn't been set yet
-        if(m_protocol == NULL)
+        if(m_protocol_lxrs == NULL || m_protocol_lxrsPlus == NULL)
         {
-            //determine and assign the protocol for this BaseStation
-            m_protocol = determineProtocol();
+            //determine and assign the protocols for this Node
+            determineProtocols();
 
             //protocol was updated so set m_eeprom as well
-            m_eeprom.reset(new NodeEeprom(m_address, m_baseStation, *(m_protocol.get()), m_eepromSettings));
+            //m_eeprom.reset(new NodeEeprom(this, m_baseStation, m_eepromSettings));
         }
 
-        return *(m_protocol.get());
+        switch(commProtocol)
+        {
+            case WirelessTypes::commProtocol_lxrsPlus:
+                return *(m_protocol_lxrsPlus.get());
+
+            case WirelessTypes::commProtocol_lxrs:
+                return *(m_protocol_lxrs.get());
+
+            default:
+                throw Error("Invalid RadioMode");
+        }
     }
 
     const Timestamp& WirelessNode_Impl::lastCommunicationTime() const
@@ -247,14 +267,18 @@ namespace mscl
             m_features.reset();
         }
 
-        //protocol may need to be reset if ASPP of firmware version changed
-        if(m_protocol != NULL)
+        //protocols may need to be reset if ASPP of firmware version changed
+        if(m_protocol_lxrs != NULL)
         {
-            m_protocol.reset();
+            m_protocol_lxrs.reset();
+        }
+        if(m_protocol_lxrsPlus != NULL)
+        {
+            m_protocol_lxrsPlus.reset();
         }
     }
 
-    uint16 WirelessNode_Impl::nodeAddress() const
+    NodeAddress WirelessNode_Impl::nodeAddress() const
     {
         return m_address;
     }
@@ -262,6 +286,11 @@ namespace mscl
     WirelessTypes::Frequency WirelessNode_Impl::frequency() const
     {
         return m_eepromHelper->read_frequency();
+    }
+
+    WirelessTypes::CommProtocol WirelessNode_Impl::communicationProtocol() const
+    {
+        return m_eepromHelper->read_commProtocol();
     }
 
     Version WirelessNode_Impl::firmwareVersion() const
@@ -333,7 +362,7 @@ namespace mscl
 
             //use the getDatalogSessionInfo command to obtain this information
             DatalogSessionInfoResult info;
-            if(!m_baseStation.node_getDatalogSessionInfo(protocol(), m_address, info))
+            if(!m_baseStation.node_getDatalogSessionInfo(wirelessProtocol(), m_address, info))
             {
                 throw Error_NodeCommunication(nodeAddress(), "Failed to get the Datalogging Session Info");
             }
@@ -360,7 +389,7 @@ namespace mscl
         {
             //use the getDatalogSessionInfo command to obtain this information
             DatalogSessionInfoResult info;
-            if(!m_baseStation.node_getDatalogSessionInfo(protocol(), m_address, info))
+            if(!m_baseStation.node_getDatalogSessionInfo(wirelessProtocol(), m_address, info))
             {
                 throw Error_NodeCommunication(nodeAddress(), "Failed to get the Datalogging Session Info");
             }
@@ -598,11 +627,6 @@ namespace mscl
 
     uint32 WirelessNode_Impl::getSensorDelay() const
     {
-        if(!features().supportsSensorDelayConfig())
-        {
-            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
-        }
-
         return m_eepromHelper->read_sensorDelay();
     }
 
@@ -636,41 +660,42 @@ namespace mscl
         return m_eepromHelper->read_derivedChannelMask(derivedChannelType);
     }
 
-    /*
-    bool WirelessNode_Impl::shortPing()
-    {
-        if(m_baseStation == NULL)
-        {
-            throw mscl::Error("No Base Station");
-        }
-
-        return m_baseStation.node_shortPing(m_address);
-    }
-    */
-
-    bool WirelessNode_Impl::quickPing()
-    {
-        return m_baseStation.node_shortPing(m_address);
-    }
-
     PingResponse WirelessNode_Impl::ping()
     {
-        //send the node_ping command to this node's parent base station
-        return m_baseStation.node_ping(m_address);
+        PingResponse result;
+
+        try
+        {
+            //send the node_ping command to this node's parent base station
+            result = m_baseStation.node_ping(wirelessProtocol(), m_address);
+        }
+        catch(Error&) 
+        { 
+            //treat errors (such as failing to determine protocol) as if it failed to ping
+        }
+
+        return result;
     }
 
     bool WirelessNode_Impl::sleep()
     {
         //send the sleep command to this node's parent base station
-        return m_baseStation.node_sleep(m_address);
+        return m_baseStation.node_sleep(wirelessProtocol(), m_address);
     }
 
     void WirelessNode_Impl::cyclePower()
     {
-        static const uint16 RESET_NODE = 0x01;
+        if(wirelessProtocol().supportsNodeHardReset())
+        {
+            m_baseStation.node_hardReset(wirelessProtocol(), m_address);
+        }
+        else
+        {
+            static const uint16 RESET_NODE = 0x01;
 
-        //cycle the power on the node by writing a 1 to the CYCLE_POWER location
-        writeEeprom(NodeEepromMap::CYCLE_POWER, Value::UINT16(RESET_NODE));
+            //cycle the power on the node by writing a 1 to the CYCLE_POWER location
+            writeEeprom(NodeEepromMap::CYCLE_POWER, Value::UINT16(RESET_NODE));
+        }
 
         Utils::threadSleep(250);
 
@@ -686,10 +711,17 @@ namespace mscl
 
     void WirelessNode_Impl::resetRadio()
     {
-        static const uint16 RESET_RADIO = 0x02;
+        if(wirelessProtocol().supportsNodeSoftReset())
+        {
+            m_baseStation.node_softReset(wirelessProtocol(), m_address);
+        }
+        else
+        {
+            static const uint16 RESET_RADIO = 0x02;
 
-        //cycle the radio on the node by writing a 2 to the CYCLE_POWER location
-        writeEeprom(NodeEepromMap::CYCLE_POWER, Value::UINT16(RESET_RADIO));
+            //cycle the radio on the node by writing a 2 to the CYCLE_POWER location
+            writeEeprom(NodeEepromMap::CYCLE_POWER, Value::UINT16(RESET_RADIO));
+        }
 
         Utils::threadSleep(200);
     }
@@ -716,7 +748,7 @@ namespace mscl
     void WirelessNode_Impl::erase()
     {
         //call the node_erase command from the parent BaseStation
-        bool success = m_baseStation.node_erase(protocol(), m_address);
+        bool success = m_baseStation.node_erase(wirelessProtocol(), m_address);
 
         //if the erase command failed
         if(!success)
@@ -739,7 +771,7 @@ namespace mscl
         }
 
         //call the node_startNonSyncSampling command from the parent BaseStation
-        m_baseStation.node_startNonSyncSampling(protocol(), m_address);
+        m_baseStation.node_startNonSyncSampling(wirelessProtocol(), m_address);
     }
 
     void WirelessNode_Impl::clearHistogram()
@@ -786,7 +818,7 @@ namespace mscl
         AutoBalanceResult result;
 
         //perform the autobalance command with the parent base station
-        m_baseStation.node_autoBalance(protocol(), m_address, channelNumber, targetPercent, result);
+        m_baseStation.node_autoBalance(wirelessProtocol(), m_address, channelNumber, targetPercent, result);
 
         //clear the cache of the hardware offset eeprom location we adjusted
         eeprom().clearCacheLocation(eepromLoc.location());
@@ -882,6 +914,8 @@ namespace mscl
 
         //verify the node is the correct model
         if(nodeModel != WirelessModels::node_shmLink200 &&
+           nodeModel != WirelessModels::node_shmLink201 &&
+           nodeModel != WirelessModels::node_shmLink2_cust1_oldNumber &&
            nodeModel != WirelessModels::node_shmLink2_cust1)
         {
             throw Error_NotSupported("autoCal_shmLink is not supported by this Node's model.");
@@ -889,7 +923,7 @@ namespace mscl
 
         //perform the autocal command by the base station
         AutoCalResult_shmLink result;
-        bool success = m_baseStation.node_autocal_shm(m_address, result);
+        bool success = m_baseStation.node_autocal_shm(wirelessProtocol(), m_address, result);
 
         if(!success)
         {
@@ -917,7 +951,7 @@ namespace mscl
         WirelessTypes::ChannelType chType = features().channelType(channel);
 
         AutoShuntCalResult result;
-        bool success = m_baseStation.node_autoShuntCal(m_address, commandInfo, channel, model(), chType, result);
+        bool success = m_baseStation.node_autoShuntCal(wirelessProtocol(), m_address, commandInfo, channel, model(), chType, result);
 
         if(!success)
         {
@@ -955,11 +989,26 @@ namespace mscl
             throw Error_NotSupported("The Get Diagnostic Info command is not supported by this Node.");
         }
 
-        bool success = m_baseStation.node_getDiagnosticInfo(m_address, result);
+        bool success = m_baseStation.node_getDiagnosticInfo(wirelessProtocol(), m_address, result);
 
         if(!success)
         {
             throw Error_NodeCommunication(m_address, "Get Diagnostic Info has failed.");
         }
+    }
+
+    bool WirelessNode_Impl::testCommProtocol(WirelessTypes::CommProtocol commProtocol)
+    {
+        if(!features().supportsCommunicationProtocol(commProtocol))
+        {
+            throw Error_NotSupported("The Communication Protocol is not supported by this Node.");
+        }
+
+        if(!(wirelessProtocol().supportsTestCommProtocol()))
+        {
+            throw Error_NotSupported("The Test Communication Protocol is not supported by this Node.");
+        }
+
+        return m_baseStation.node_testCommProtocol(m_address, commProtocol);
     }
 }

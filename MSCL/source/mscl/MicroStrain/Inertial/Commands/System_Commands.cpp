@@ -17,7 +17,7 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_getCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::READ_BACK_CURRENT_SETTINGS));
 
         //"get" has no data, so add 0 
         fieldData.append_uint8(0);
@@ -32,7 +32,7 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_setCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::USE_NEW_SETTINGS));
 
         //add the communication mode
         fieldData.append_uint8(communicationMode);
@@ -42,7 +42,7 @@ namespace mscl
     }
 
     CommunicationMode::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
-        GenericInertialCommand::Response(collector, true, dataResponse, "Communication Mode")
+        GenericInertialCommand::Response(InertialTypes::CMD_COMMUNICATION_MODE, collector, true, dataResponse, "Communication Mode")
     {}
 
     uint8 CommunicationMode::Response::parseResponse(const GenericInertialCommandResponse& response) const

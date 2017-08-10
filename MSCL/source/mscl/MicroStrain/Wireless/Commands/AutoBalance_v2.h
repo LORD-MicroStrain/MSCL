@@ -6,8 +6,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/Types.h"
 #include "AutoBalanceResult.h"
 
@@ -17,10 +18,10 @@ namespace mscl
     //    Contains logic for the Auto Balance Node command (Version 2).
     class AutoBalance_v2
     {
-    private:
-        AutoBalance_v2();                                //default constructor disabled
-        AutoBalance_v2(const AutoBalance_v2&);            //copy constructor disabled
-        AutoBalance_v2& operator=(const AutoBalance_v2&);    //assignment operator disabled
+    public:
+        AutoBalance_v2() = delete;                                  //default constructor disabled
+        AutoBalance_v2(const AutoBalance_v2&) = delete;             //copy constructor disabled
+        AutoBalance_v2& operator=(const AutoBalance_v2&) = delete;  //assignment operator disabled
 
     public:
         //Function: buildCommand
@@ -33,15 +34,15 @@ namespace mscl
         //
         //Returns:
         //    A <ByteStream> containing the command packet.
-        static ByteStream buildCommand(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent);
+        static ByteStream buildCommand(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, uint8 channelNumber, float targetPercent);
 
         //Class: Response
-        //    Handles the response to the LongPing Node command
-        class Response: public ResponsePattern
+        //    Handles the response to the AutoBalance Node command
+        class Response: public WirelessResponsePattern
         {
         public:
             //Constructor: Response
-            //    Creates a LongPing Response object
+            //    Creates an AutoBalance Response object
             //
             //Parameters:
             //    nodeAddress - the node address to check for in the response.

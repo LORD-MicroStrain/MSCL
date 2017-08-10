@@ -23,23 +23,31 @@ namespace mscl
 
         //=====================================================================================================
         //Constants: Wireless Packet Bytes
-        //    ASPP_V1_START_OF_PACKET_BYTE      - 0xAA      - The "Start of Packet" byte for the ASPP v1 packets
-        //    ASPP_V1_START_OF_PACKET_BYTE      - 0xAB      - The "Start of Packet" byte for the ASPP v2 packets
+        //    ASPP_V1_SOP      - 0xAA      - The "Start of Packet" byte for the ASPP v1 packets
+        //    ASPP_V2_SOP      - 0xAB      - The "Start of Packet" byte for the ASPP v2 packets
+        //    ASPP_V3_SOP      - 0xAC      - The "Start of Packet" byte for the ASPP v3 packets
         //=====================================================================================================
-        static const uint8 ASPP_V1_START_OF_PACKET_BYTE       = 0xAA;
-        static const uint8 ASPP_V2_START_OF_PACKET_BYTE       = 0xAB;
+        static const uint8 ASPP_V1_SOP       = 0xAA;
+        static const uint8 ASPP_V2_SOP       = 0xAB;
+        static const uint8 ASPP_V3_SOP       = 0xAC;
 
         //=====================================================================================================
         //Constants: Wireless Packet Information
         //    ASPP_MIN_RESPONSE_PACKET_SIZE     - 10    - The minimum number of bytes to make a valid ASPP Response packet (Payload len + NODE RSSI + BASE RSSI + Checksum)
-        //    ASPP_V1_NUM_BYTES_BEFORE_PAYLOAD  - 6     - The number of bytes in the ASPP packets before the payload
-        //    ASPP_V1_NUM_BYTES_AFTER_PAYLOAD   - 4     - The number of bytes in the ASPP packets after the payload
+        //    ASPP_V1_NUM_BYTES_BEFORE_PAYLOAD  - 6     - The number of bytes in the ASPPv1 packets before the payload
+        //    ASPP_V1_NUM_BYTES_AFTER_PAYLOAD   - 4     - The number of bytes in the ASPPv1 packets after the payload
+        //    ASPP_V2_NUM_BYTES_BEFORE_PAYLOAD  - 9     - The number of bytes in the ASPPv2 packets before the payload
+        //    ASPP_V2_NUM_BYTES_AFTER_PAYLOAD   - 4     - The number of bytes in the ASPPv2 packets after the payload
+        //    ASPP_V3_NUM_BYTES_BEFORE_PAYLOAD  - 9     - The number of bytes in the ASPPv3 packets before the payload
+        //    ASPP_V3_NUM_BYTES_AFTER_PAYLOAD   - 6     - The number of bytes in the ASPPv3 packets after the payload
         //=====================================================================================================
         static const uint16 ASPP_MIN_RESPONSE_PACKET_SIZE       = 10;
         static const uint16 ASPP_V1_NUM_BYTES_BEFORE_PAYLOAD    = 6;
         static const uint16 ASPP_V1_NUM_BYTES_AFTER_PAYLOAD     = 4;
         static const uint16 ASPP_V2_NUM_BYTES_BEFORE_PAYLOAD    = 9;
         static const uint16 ASPP_V2_NUM_BYTES_AFTER_PAYLOAD     = 4;
+        static const uint16 ASPP_V3_NUM_BYTES_BEFORE_PAYLOAD    = 9;
+        static const uint16 ASPP_V3_NUM_BYTES_AFTER_PAYLOAD     = 6;
 
         //=====================================================================================================
         //Enums: PacketType
@@ -62,6 +70,7 @@ namespace mscl
         //  packetType_nodeDiscovery_v3             - 0x18 - Node Discovery Packet (version 3)
         //  packetType_SyncSampling_16ch            - 0x1A - Synchronized Sampling Packet with 16 channel support
         //  packetType_SyncSampling_math            - 0x1B - Synchronized Sampling Math Packet
+        //  packetType_nodeDiscovery_v5             - 0x1C - Node Discovery Packet (version 5)
         //  packetType_BufferedLDC_16ch             - 0x1D - Buffered LDC Packet with 16 channel support
         //  packetType_nodeReceived                 - 0x20 - Initial response from a command targeting a Node
         //  packetType_nodeSuccessReply             - 0x22 - Node Command Success Reply Packet
@@ -98,6 +107,7 @@ namespace mscl
             packetType_nodeDiscovery_v3             = 0x18,
             packetType_SyncSampling_16ch            = 0x1A,
             packetType_SyncSampling_math            = 0x1B,
+            packetType_nodeDiscovery_v5             = 0x1C,
             packetType_BufferedLDC_16ch             = 0x1D,
             packetType_nodeReceived                 = 0x20,
             packetType_nodeSuccessReply             = 0x22,
@@ -111,6 +121,19 @@ namespace mscl
             packetType_HclSmartBearing_Raw          = 0xA2,
             packetType_rawAngleStrain               = 0xA3,
             packetType_roller                       = 0xA4,
+        };
+
+        //Enum: AsppVersion
+        //  The possible ASPP versions
+        //
+        //  aspp_v1 - 0 - ASPP v1.X
+        //  aspp_v2 - 1 - ASPP v2.X
+        //  aspp_v3 - 2 - ASPP v3.X
+        enum AsppVersion
+        {
+            aspp_v1 = 0,
+            aspp_v2 = 1,
+            aspp_v3 = 2
         };
 
         //===================================================
@@ -152,6 +175,10 @@ namespace mscl
         static void throwEepromResponseError(ResponseErrorCode errorCode, uint16 location);
 
     protected:
+        //Variable: m_asppVersion
+        //  The <AsppVersion> for the packet.
+        AsppVersion m_asppVersion;
+
         //Variable: m_deliveryStopFlags
         //    The delivery stop flags of the packet
         DeliveryStopFlags m_deliveryStopFlags;
@@ -162,7 +189,7 @@ namespace mscl
 
         //Variable: m_nodeAddress
         //    The node address in the packet
-        uint32 m_nodeAddress;
+        NodeAddress m_nodeAddress;
 
         //Variable: m_nodeRSSI
         //    The node received signal strength indicator (strength of which the node received the command from the base station).
@@ -195,6 +222,14 @@ namespace mscl
         //Returns:
         //    true if the packet is a discovery packet, false otherwise.
         bool isDiscoveryPacket() const;
+
+        //Function: asppVersion
+        //  Gets the ASPP version of the packet.
+        AsppVersion asppVersion() const;
+
+        //Function: asppVersion
+        //  Sets the ASPP version of the packet.
+        void asppVersion(AsppVersion ver);
 
         //Function: deliveryStopFlags
         //    Gets the delivery stop flags for the packet
@@ -229,14 +264,14 @@ namespace mscl
         //
         //Returns:
         //    The node address of the packet
-        uint32 nodeAddress() const;
+        NodeAddress nodeAddress() const;
 
         //Function: nodeAddress
         //    Sets the node address of the packet
         //
         //Parameters:
         //    address - The node address to set 
-        void nodeAddress(uint32 address);
+        void nodeAddress(NodeAddress address);
 
         //Function: nodeRSSI
         //    Gets the node RSSI of the packet

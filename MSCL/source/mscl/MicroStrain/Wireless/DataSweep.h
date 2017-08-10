@@ -67,7 +67,7 @@ namespace mscl
 
         //Variable: m_nodeAddress
         //    The node address that was contained in the packet (identifies the node this packet came from)
-        uint32 m_nodeAddress;
+        NodeAddress m_nodeAddress;
 
         //Variable: m_data
         //    Contains one or more <WirelessDataPoint>s, corresponding to each channel's data for this sweep
@@ -120,7 +120,7 @@ namespace mscl
         //
         //Returns:
         //    The node address this sweep is associated with
-        uint32 nodeAddress() const;
+        NodeAddress nodeAddress() const;
 
         //API Function: data
         //    Gets the channel data in this sweep as a <WirelessDataPoint::ChannelData> container.
@@ -191,7 +191,7 @@ namespace mscl
         //
         //Parameters:
         //    address - The node address to set
-        void nodeAddress(uint32 address);
+        void nodeAddress(NodeAddress address);
 
         //Function: data
         //    Sets the data of the sweep

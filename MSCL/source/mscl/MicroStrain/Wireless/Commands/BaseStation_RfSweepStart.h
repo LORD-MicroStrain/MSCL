@@ -5,7 +5,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/Timestamp.h"
 
 namespace mscl
@@ -15,10 +16,10 @@ namespace mscl
     //    Contains logic for the base station Start RF Sweep command.
     class BaseStation_RfSweepStart
     {
-    private:
-        BaseStation_RfSweepStart();                                             //default constructor disabled
-        BaseStation_RfSweepStart(const BaseStation_RfSweepStart&);              //copy constructor disabled
-        BaseStation_RfSweepStart& operator=(const BaseStation_RfSweepStart&);   //assignement operator disabled
+    public:
+        BaseStation_RfSweepStart() = delete;                                             //default constructor disabled
+        BaseStation_RfSweepStart(const BaseStation_RfSweepStart&) = delete;              //copy constructor disabled
+        BaseStation_RfSweepStart& operator=(const BaseStation_RfSweepStart&) = delete;   //assignement operator disabled
 
     public:
         //Function: buildCommand
@@ -32,11 +33,11 @@ namespace mscl
         //
         //Returns:
         //    A <ByteStream> containing the base station beacon status command.        
-        static ByteStream buildCommand(uint32 min, uint32 max, uint32 interval, uint16 options);
+        static ByteStream buildCommand(WirelessPacket::AsppVersion asppVer, uint32 min, uint32 max, uint32 interval, uint16 options);
 
         //Class: Response
         //    Handles the response to the command
-        class Response : public ResponsePattern
+        class Response : public WirelessResponsePattern
         {
         private:
             //Variable: m_min;
@@ -67,18 +68,7 @@ namespace mscl
             //    options - The advanced options to match.
             Response(std::weak_ptr<ResponseCollector> collector, uint32 min, uint32 max, uint32 interval, uint16 options);
 
-        public:
-            //Function: match
-            //    Checks if the packet passed in matches either the success or failure response.
-            //
-            //Parameters:
-            //    packet - The <WirelessPacket> to try to match.
-            //
-            //Returns:
-            //    true if the response pattern was found, false otherwise.
-            virtual bool match(const WirelessPacket& packet) override;
-
-        private:
+        protected:
             //Function: matchSuccessResponse
             //    Checks if the packet passed in matches the success response.
             //
@@ -87,7 +77,7 @@ namespace mscl
             //
             //Returns:
             //    true if the success response pattern was found, false otherwise
-            bool matchSuccessResponse(const WirelessPacket& packet);
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
 

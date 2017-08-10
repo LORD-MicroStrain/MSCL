@@ -15,7 +15,7 @@ namespace mscl
     }
 
     Inertial_SetToIdle::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        GenericInertialCommand::Response(collector, true, false, "Set to Idle")
+        GenericInertialCommand::Response(InertialTypes::CMD_SET_IDLE, collector, true, false, "Set to Idle")
     {
     }
 }

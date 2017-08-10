@@ -47,7 +47,8 @@ namespace mscl
     const EepromLocation NodeEepromMap::MAX_MEMORY                      (116, valueType_uint16);
     const EepromLocation NodeEepromMap::MICROCONTROLLER                 (120, valueType_uint16);
     const EepromLocation NodeEepromMap::FW_ARCH_VER                     (122, valueType_uint16);
-    const EepromLocation NodeEepromMap::ASPP_VER                        (124, valueType_uint16);
+    const EepromLocation NodeEepromMap::ASPP_VER_LXRS                   (124, valueType_uint16);
+    const EepromLocation NodeEepromMap::ASPP_VER_LXRS_PLUS              (126, valueType_uint16);
     const EepromLocation NodeEepromMap::HW_GAIN_1                       (128, valueType_uint16);
     const EepromLocation NodeEepromMap::HW_GAIN_2                       (130, valueType_uint16);
     const EepromLocation NodeEepromMap::HW_GAIN_3                       (132, valueType_uint16);
@@ -201,6 +202,7 @@ namespace mscl
     const EepromLocation NodeEepromMap::ACT_SENSE_ACTIVE_TIME           (844, valueType_float);
     const EepromLocation NodeEepromMap::ACT_SENSE_INACTIVE_THRES        (848, valueType_float);
     const EepromLocation NodeEepromMap::HISTOGRAM_ENABLE                (852, valueType_uint16);
+    const EepromLocation NodeEepromMap::COMM_PROTOCOL                   (1024, valueType_uint16);
     const EepromLocation NodeEepromMap::BOOTLOADER_VER                  (1030, valueType_uint16);
     const EepromLocation NodeEepromMap::FIRMWARE_UPGRADE_FLAGS          (1032, valueType_uint16);
     const EepromLocation NodeEepromMap::BOOTLOADER_FLASH_ADDRESS        (1036, valueType_uint32);
@@ -233,6 +235,7 @@ namespace mscl
             case 250:    //CYCLE_POWER
             case 90:     //FREQUENCY
             case 684:    //RESET_BINS
+            case 1024:   //RADIO_MODE
             case 1030:
                 return false;
 

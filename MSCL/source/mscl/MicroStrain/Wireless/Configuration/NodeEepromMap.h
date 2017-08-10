@@ -251,6 +251,7 @@ namespace mscl
         //  ACT_SENSE_ACTIVE_TIME           - Activity Sense activity time.
         //  ACT_SENSE_INACTIVE_THRES        - Activity Sense inactivity threshold.
         //  HISTOGRAM_ENABLE                - Histogram enable/disable.
+        //  COMM_PROTOCOL                   - Communication Protocol.
         //  BOOTLOADER_VER                  - The bootloader version.
         //  FIRMWARE_UPGRADE_FLAGS          - The firmware upgrade flags.
         //  BOOTLOADER_FLASH_ADDRESS        - The bootloader flash address to store firmware upgrades.
@@ -295,7 +296,8 @@ namespace mscl
         static const EepromLocation MAX_MEMORY;
         static const EepromLocation MICROCONTROLLER;
         static const EepromLocation FW_ARCH_VER;
-        static const EepromLocation ASPP_VER;
+        static const EepromLocation ASPP_VER_LXRS;
+        static const EepromLocation ASPP_VER_LXRS_PLUS;
         static const EepromLocation HW_GAIN_1;
         static const EepromLocation HW_GAIN_2;
         static const EepromLocation HW_GAIN_3;
@@ -443,6 +445,7 @@ namespace mscl
         static const EepromLocation ACT_SENSE_ACTIVE_TIME;
         static const EepromLocation ACT_SENSE_INACTIVE_THRES;
         static const EepromLocation HISTOGRAM_ENABLE;
+        static const EepromLocation COMM_PROTOCOL;
         static const EepromLocation BOOTLOADER_VER;
         static const EepromLocation FIRMWARE_UPGRADE_FLAGS;
         static const EepromLocation BOOTLOADER_FLASH_ADDRESS;

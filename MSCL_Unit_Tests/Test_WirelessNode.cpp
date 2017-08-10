@@ -27,12 +27,20 @@ BOOST_AUTO_TEST_CASE(WirelessNode_Ping_success)
 {
     std::shared_ptr<mock_baseStationImpl> impl(new mock_baseStationImpl);
     BaseStation base(impl);
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, impl);
+    expectRead(impl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+
     WirelessNode node(123, base);
 
     PingResponse r = PingResponse::ResponseSuccess(-20, -30);
     
     //make the BaseStation's node_ping() function return our PingResponse object we created
     MOCK_EXPECT(impl->node_ping).once().returns(r);
+
+    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 124, mock::assign(0x0105)).returns(true);
+    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 126, mock::assign(0x0300)).returns(true);
     
     PingResponse result = node.ping();
 
@@ -110,6 +118,11 @@ BOOST_AUTO_TEST_CASE(WirelessNode_readEepromuint16_pageDownload)
 {
     std::shared_ptr<mock_baseStationImpl> impl(new mock_baseStationImpl);
     BaseStation base(impl);
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, impl);
+    expectRead(impl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+
     WirelessNode node(123, base);
 
     ByteStream data;
@@ -121,6 +134,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_readEepromuint16_pageDownload)
     data.append_uint16(1);    //eeprom 10
 
     MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 124, mock::assign(0x0105)).returns(true);
+    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 126, mock::assign(0x0300)).returns(true);
 
     //force the page download to take our bytestream
     MOCK_EXPECT(impl->node_pageDownload).with(mock::any, mock::any, mock::any, mock::assign(data)).returns(true);
@@ -140,6 +154,11 @@ BOOST_AUTO_TEST_CASE(WirelessNode_readEepromuint16_read)
 {
     std::shared_ptr<mock_baseStationImpl> impl(new mock_baseStationImpl);
     BaseStation base(impl);
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, impl);
+    expectRead(impl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+
     WirelessNode node(123, base);
 
     //force the page download to fail
@@ -148,6 +167,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_readEepromuint16_read)
     uint16 eepromVal = 876;
 
     MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 124, mock::assign(0x0105)).returns(true);
+    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 126, mock::assign(0x0300)).returns(true);
 
     //force the read eeprom to return our response
     MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, mock::any, mock::assign(eepromVal)).returns(true);
@@ -167,11 +187,17 @@ BOOST_AUTO_TEST_CASE(WirelessNode_writeEepromuint16)
 {
     std::shared_ptr<mock_baseStationImpl> impl(new mock_baseStationImpl);
     BaseStation base(impl);
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, impl);
+    expectRead(impl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+
     WirelessNode node(123, base);
 
     //force the page download to fail
     MOCK_EXPECT(impl->node_pageDownload).returns(false);
     MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 124, mock::assign(0x0105)).returns(true);
+    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 126, mock::assign(0x0300)).returns(true);
 
     //force the read eeprom to return our response
     MOCK_EXPECT(impl->node_writeEeprom).once().returns(true);
@@ -265,22 +291,14 @@ BOOST_AUTO_TEST_CASE(WirelessNode_nodeAddress)
     BOOST_CHECK_EQUAL(node.nodeAddress(), 44651);
 }
 
-BOOST_AUTO_TEST_CASE(WirelessNode_cyclePower)
-{
-    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl());
-    BaseStation b = makeBaseStationWithMockImpl();
-    WirelessNode node(123, b);
-    node.setImpl(impl);
-
-    expectCyclePower(impl);
-
-    BOOST_CHECK_NO_THROW(node.cyclePower());
-}
-
 BOOST_AUTO_TEST_CASE(WirelessNode_frequency)
 {
     std::shared_ptr<mock_baseStationImpl> impl(new mock_baseStationImpl);
     BaseStation base(impl);
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, impl);
+    expectRead(impl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
 
     //call the create function
     WirelessNode node(123, base);
@@ -288,6 +306,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_frequency)
     //force the page download to fail
     MOCK_EXPECT(impl->node_pageDownload).returns(false);
     MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 124, mock::assign(0x0105)).returns(true);
+    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 126, mock::assign(0x0300)).returns(true);
     MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 90, mock::assign(16)).returns(true);
 
     BOOST_CHECK_EQUAL(node.frequency(), WirelessTypes::freq_16);
@@ -428,13 +447,15 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setBootMode)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+
+    //MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
     
     expectWrite(impl, NodeEepromMap::DEFAULT_MODE, Value::UINT16(6));
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
 
     WirelessNodeConfig c;
     c.defaultMode(WirelessTypes::defaultMode_sync);
@@ -464,13 +485,13 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setInactivityTimeout)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
     
     expectWrite(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(30));    //min of 30
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
 
     uint16 timeout = 2;
     Utils::checkBounds_min(timeout, features->minInactivityTimeout());
@@ -481,7 +502,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setInactivityTimeout)
     BOOST_CHECK_NO_THROW(node.applyConfig(c));
 
     expectWrite(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(400));
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
 
     c.inactivityTimeout(400);
 
@@ -525,13 +546,13 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setTransmitPower)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
 
     expectWrite(impl, NodeEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)25619));
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
 
     WirelessNodeConfig c;
     c.transmitPower(WirelessTypes::power_16dBm);
@@ -588,7 +609,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_getFatigueOptions_legacy)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    NodeInfo info(Version(9, 9), WirelessModels::node_shmLink, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(9, 9), WirelessModels::node_shmLink, WirelessTypes::region_usa);
 
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
@@ -635,7 +656,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_getFatigueOptions)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    NodeInfo info(Version(10, 9), WirelessModels::node_shmLink2_cust1, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(10, 9), WirelessModels::node_shmLink2_cust1, WirelessTypes::region_usa);
 
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
@@ -690,7 +711,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_getHistogramOptions_legacy)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    NodeInfo info(Version(9, 9), WirelessModels::node_shmLink, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(9, 9), WirelessModels::node_shmLink, WirelessTypes::region_usa);
 
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
@@ -713,7 +734,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_getHistogramOptions)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    NodeInfo info(Version(9, 9), WirelessModels::node_shmLink2_cust1, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(9, 9), WirelessModels::node_shmLink2_cust1, WirelessTypes::region_usa);
 
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
@@ -737,13 +758,13 @@ BOOST_AUTO_TEST_CASE(WirelessNode_clearHistogram)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    NodeInfo info(Version(9, 9), WirelessModels::node_shmLink2_cust1, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(9, 9), WirelessModels::node_shmLink2_cust1, WirelessTypes::region_usa);
 
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
     expectNodeFeatures(features, impl, WirelessModels::node_shmLink2_cust1);
 
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
     expectWrite(impl, NodeEepromMap::RESET_BINS, Value::UINT16(1));
 
     BOOST_CHECK_NO_THROW(node.clearHistogram());
@@ -753,10 +774,16 @@ BOOST_AUTO_TEST_CASE(WirelessNode_erase)
 {
     std::shared_ptr<mock_baseStationImpl> impl(new mock_baseStationImpl);
     BaseStation base(impl);
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, impl);
+    expectRead(impl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+
     WirelessNode node(123, base);
     
     MOCK_EXPECT(impl->node_pageDownload).returns(false);
     MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 124, mock::assign(0x0105)).returns(true);
+    MOCK_EXPECT(impl->node_readEeprom).once().with(mock::any, mock::any, 126, mock::assign(0x0105)).returns(true);
 
     MOCK_EXPECT(impl->node_erase).once().returns(true);
 

@@ -17,6 +17,15 @@ namespace mscl
     {
     }
 
+    WirelessTypes::CommProtocol WirelessNodeConfig::curCommProtocol(const NodeEepromHelper& eeprom) const
+    {
+        //if its currently set in the config, return the set value
+        if(isSet(m_commProtocol)) { return *m_commProtocol; }
+
+        //not set, so read the value from the node
+        return eeprom.read_commProtocol();
+    }
+
     WirelessTypes::SamplingMode WirelessNodeConfig::curSamplingMode(const NodeEepromHelper& eeprom) const
     {
         //if its currently set in the config, return the set value
@@ -219,6 +228,15 @@ namespace mscl
 
     bool WirelessNodeConfig::verifySupported(const NodeFeatures& features, const NodeEepromHelper& eeprom, ConfigIssues& outIssues) const
     {
+        //Communication Protocol
+        if(isSet(m_commProtocol))
+        {
+            if(!features.supportsCommunicationProtocol(*m_commProtocol))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_COMM_PROTOCOL, "The Communication Protocol is not supported by this Node."));
+            }
+        }
+
         //Default Mode
         if(isSet(m_defaultMode))
         {
@@ -509,7 +527,7 @@ namespace mscl
         {
             if(!features.supportsSensorDelayConfig())
             {
-                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SENSOR_DELAY, "Sensor Delay is not supported by this Node."));
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SENSOR_DELAY, "Sensor Delay configuration is not supported by this Node."));
             }
             else if(*m_sensorDelay == WirelessNodeConfig::SENSOR_DELAY_ALWAYS_ON && !features.supportsSensorDelayAlwaysOn())
             {
@@ -865,8 +883,16 @@ namespace mscl
                     derivedChMasks = curDerivedChannelMasks(eeprom, features);
                 }
 
+                auto minTime = features.minTimeBetweenBursts(mode.toDataModeEnum(),
+                                                             dataFormat,
+                                                             channels,
+                                                             derivedChMasks,
+                                                             SampleRate::FromWirelessEepromValue(sampleRate),
+                                                             numSweeps,
+                                                             curCommProtocol(eeprom));
+
                 //verify the time between bursts is within range with all the other settings
-                if(curTimeBetweenBursts(eeprom) < features.minTimeBetweenBursts(mode.toDataModeEnum(), dataFormat, channels, derivedChMasks, SampleRate::FromWirelessEepromValue(sampleRate), numSweeps))
+                if(curTimeBetweenBursts(eeprom) < minTime)
                 {
                     outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_TIME_BETWEEN_BURSTS, "The Time Between Bursts is less than the min for this Configuration."));
                 }
@@ -1221,6 +1247,9 @@ namespace mscl
         {
             eeprom.write_thermoType(type.first, type.second);
         }
+
+        //write Communication Protocol
+        if(isSet(m_commProtocol)) { eeprom.write_commProtocol(*m_commProtocol); }
     }
 
     WirelessTypes::DefaultMode WirelessNodeConfig::defaultMode() const
@@ -1599,6 +1628,17 @@ namespace mscl
         {
             m_derivedChannelMasks.emplace(derivedChannelType, mask);
         }
+    }
+
+    WirelessTypes::CommProtocol WirelessNodeConfig::communicationProtocol() const
+    {
+        checkValue(m_commProtocol, "Communication Protocol");
+        return *m_commProtocol;
+    }
+
+    void WirelessNodeConfig::communicationProtocol(WirelessTypes::CommProtocol commProtocol)
+    {
+        m_commProtocol = commProtocol;
     }
 
     float WirelessNodeConfig::flashBandwidth(WirelessTypes::WirelessSampleRate rawSampleRate, WirelessTypes::DataFormat dataFormat, uint8 numChannels, uint32 derivedBytesPerSweep, WirelessTypes::WirelessSampleRate derivedRate)

@@ -5,7 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
 #include "mscl/MicroStrain/ByteStream.h"
 
 namespace mscl
@@ -36,7 +36,7 @@ namespace mscl
 
         //Class: Response
         //    Handles the response to the ArmForDatalogging Node command
-        class Response : public ResponsePattern
+        class Response : public WirelessResponsePattern
         {
         public:
             //Constructor: Response
@@ -52,7 +52,7 @@ namespace mscl
             //    The node address to look for in the response
             NodeAddress m_nodeAddress;
 
-        public:
+        protected:
             //Function: match
             //    Checks if the <WirelessPacket> passed in matches the expected response pattern's bytes
             //
@@ -61,7 +61,7 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches a response pattern, false otherwise
-            virtual bool match(const WirelessPacket& packet) override;
+            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
 

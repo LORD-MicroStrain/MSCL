@@ -1,7 +1,7 @@
 //MSCL Example: SynchronizedSampling
 //	This example shows how to create and start a Synchronized Sampling network.
 //
-//Updated: 09/30/2014
+//Updated: 05/16/2017
 
 #include <iostream>
 using namespace std;
@@ -44,7 +44,6 @@ int main(int argc, char **argv)
 		cout << "Network OK: " << network.ok() << endl;
 		cout << "Percent of Bandwidth: " << network.percentBandwidth() << "%" << endl;
 		cout << "Lossless Enabled: " << network.lossless() << endl;
-		cout << "High Capacity Mode: " << network.highCapacity() << endl;
 
 		//apply the network configuration to every node in the network
 		cout << "Applying network configuration...";
@@ -62,7 +61,6 @@ int main(int argc, char **argv)
 		//Many other functions are available for the SyncSamplingNetwork:
 		//
 		//network.lossless()			//enable or disable "lossless" mode for the network (default of enabled).
-		//network.highCapacity()		//enable or disable "high capacity" mode for the network (default of disabled).
 		//network.ok()					//check whether or not the network is "OK" meaning all nodes fit in the network and have communicated successfully.
 		//network.percentBandwidth()	//get the percent of bandwidth for the entire network.
 		//network.refresh()				//refreshes the entire network. Should be called any time a change is made to the node after it has been added to the network.

@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(PingResponse_Constructor)
 BOOST_AUTO_TEST_CASE(LongPing_BuildCommand)
 {
     //create a LongPing command
-    ByteStream b = LongPing::buildCommand(4794);
+    ByteStream b = LongPing::buildCommand(WirelessPacket::aspp_v1, 4794);
 
     //Check all the bytes in the ByteStream
     BOOST_CHECK_EQUAL(b.read_uint8(0), 0xAA);
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(LongPing_Match_Fail_DSF)
     //build the correct packet response first
     WirelessPacket packet = buildLongPingResponse(123);
 
-    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x00));    //wrong DSF
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0x08));    //wrong DSF
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(packet), false);

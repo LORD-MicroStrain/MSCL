@@ -15,18 +15,35 @@ namespace mscl
     {
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint8(0xAA);                                     //Start of Packet
+        cmd.append_uint8(WirelessPacket::ASPP_V1_SOP);              //Start of Packet
         cmd.append_uint8(0x0E);                                     //Delivery Stop Flag
-        cmd.append_uint8(0x30);                                     //App Data Type
+        cmd.append_uint8(WirelessPacket::packetType_baseCommand);   //App Data Type
         cmd.append_uint16(WirelessProtocol::BASE_STATION_ADDRESS);  //Base Station Address
         cmd.append_uint8(0x04);                                     //Payload Length
         cmd.append_uint16(WirelessProtocol::cmdId_stopNode_v2);     //Command ID
-        cmd.append_uint16(nodeAddress);                             //Node address
+        cmd.append_uint16(static_cast<uint16>(nodeAddress));        //Node address
 
         //calculate the checksum of bytes 2-10
         uint16 checksum = cmd.calculateSimpleChecksum(1, 9);
 
         cmd.append_uint16(checksum);    //Checksum
+
+        return cmd;
+    }
+
+    ByteStream SetToIdle_v2::buildCommand_aspp3(NodeAddress nodeAddress)
+    {
+        //build the command ByteStream
+        ByteStream cmd;
+        cmd.append_uint8(WirelessPacket::ASPP_V3_SOP);              //Start of Packet
+        cmd.append_uint8(0x01);                                     //Delivery Stop Flag
+        cmd.append_uint8(WirelessPacket::packetType_baseCommand);   //App Data Type
+        cmd.append_uint32(WirelessProtocol::BASE_STATION_ADDRESS);  //Base Station Address
+        cmd.append_uint16(0x0006);                                  //Payload Length
+        cmd.append_uint16(WirelessProtocol::cmdId_stopNode_v2);     //Command ID
+        cmd.append_uint32(nodeAddress);                             //Node address
+        cmd.append_uint16(0x7F7F);                                  //dummy rssi bytes
+        cmd.append_uint32(cmd.calculateCrcChecksum());              //checksum
 
         return cmd;
     }
@@ -39,19 +56,14 @@ namespace mscl
 
     SetToIdle_v2::Response::~Response()
     {
-        try
-        {
-            //cancel the set to idle command if needed
-            cancel();
-        }
-        catch(...)
-        {
-            //make sure desctructor doesn't throw an exception
-        }
+        //will be canceled in the parent class's destructor
     }
 
     bool SetToIdle_v2::Response::match(const WirelessPacket& packet)
     {
+        //get a lock on the parsing mutex
+        mutex_lock_guard lock(m_parsingMutex);
+
         //if the BaseStation hasn't reported that the operation has started
         if(!m_started)
         {
@@ -85,16 +97,35 @@ namespace mscl
         WirelessPacket::Payload payload = packet.payload();
 
         //check the main bytes of the packet
-        if((packet.deliveryStopFlags().toInvertedByte() != 0x07) ||             //delivery stop flag
-           packet.type() != WirelessPacket::packetType_baseReceived ||          //app data type
-           payload.size() != 9 ||                                               //payload length
-           payload.read_uint16(0) != WirelessProtocol::cmdId_stopNode_v2 ||     //command ID
-           payload.read_uint32(3) != 0x7F800000 ||                              //infinite time until completion (indefinite)
-           payload.read_uint16(7) != m_nodeAddress                              //node address
+        if(!packet.deliveryStopFlags().pc ||                                    //delivery stop flag
+           packet.type() != WirelessPacket::packetType_baseReceived             //app data type
            )
         {
             //failed to match some of the bytes
             return false;
+        }
+
+        if(packet.asppVersion() == mscl::WirelessPacket::aspp_v3)
+        {
+            if(payload.size() != 11 ||
+               payload.read_uint16(0) != WirelessProtocol::cmdId_stopNode_v2 ||     //command ID
+               payload.read_uint32(3) != 0x7F800000 ||                              //infinite time until completion (indefinite)
+               payload.read_uint32(7) != m_nodeAddress                              //node address
+               )
+            {
+                return false;
+            }
+        }
+        else
+        {
+            if(payload.size() != 9 ||
+               payload.read_uint16(0) != WirelessProtocol::cmdId_stopNode_v2 ||     //command ID
+               payload.read_uint32(3) != 0x7F800000 ||                              //infinite time until completion (indefinite)
+               payload.read_uint16(7) != m_nodeAddress                              //node address
+               )
+            {
+                return false;
+            }
         }
 
         m_started = true;
@@ -105,17 +136,40 @@ namespace mscl
     bool SetToIdle_v2::Response::match_completion(const WirelessPacket& packet)
     {
         WirelessPacket::Payload payload = packet.payload();
+        uint8 status;
 
         //check the main bytes of the packet
-        if((packet.deliveryStopFlags().toInvertedByte() != 0x07) ||             //delivery stop flag
-           packet.type() != WirelessPacket::packetType_baseSuccessReply ||      //app data type
-           payload.size() != 5 ||                                               //payload length
-           payload.read_uint16(0) != WirelessProtocol::cmdId_stopNode_v2 ||     //command ID
-           payload.read_uint16(2) != m_nodeAddress                              //eeprom address
+        if(!packet.deliveryStopFlags().pc ||                                    //delivery stop flag
+           packet.type() != WirelessPacket::packetType_baseSuccessReply         //app data type
            )
         {
             //failed to match some of the bytes
             return false;
+        }
+
+        if(packet.asppVersion() == mscl::WirelessPacket::aspp_v3)
+        {
+            if(payload.size() != 7 ||                                               //payload length
+               payload.read_uint16(0) != WirelessProtocol::cmdId_stopNode_v2 ||     //command ID
+               payload.read_uint32(2) != m_nodeAddress                              //eeprom address
+               )
+            {
+                return false;
+            }
+
+            status = payload.read_uint8(6);
+        }
+        else
+        {
+            if(payload.size() != 5 ||                                               //payload length
+               payload.read_uint16(0) != WirelessProtocol::cmdId_stopNode_v2 ||     //command ID
+               payload.read_uint16(2) != m_nodeAddress                              //eeprom address
+               )
+            {
+                return false;
+            }
+
+            status = payload.read_uint8(4);
         }
 
         //create a lock for thread safety
@@ -124,7 +178,6 @@ namespace mscl
         //check the status flag for the result
         static const uint8 SUCCESS = 0;
         static const uint8 CANCELED = 1;
-        uint8 status = payload.read_uint8(4);
 
         if(status == SUCCESS)
         {

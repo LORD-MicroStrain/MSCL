@@ -22,7 +22,7 @@ namespace mscl
     }
 
     GetEstFilterDataRateBase::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        GenericInertialCommand::Response(collector, true, true, "Get Estimation Filter Data Rate Base")
+        GenericInertialCommand::Response(InertialTypes::CMD_GET_EF_RATE_BASE, collector, true, true, "Get Estimation Filter Data Rate Base")
     {}
 
     uint16 GetEstFilterDataRateBase::Response::parseResponse(const GenericInertialCommandResponse& response) const
@@ -39,7 +39,7 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_getCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::READ_BACK_CURRENT_SETTINGS));
 
         //"get" has no channels, so add 0 
         fieldData.append_uint8(0);
@@ -54,7 +54,7 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_setCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::USE_NEW_SETTINGS));
 
         //add the number of channels
         fieldData.append_uint8(static_cast<uint8>(channels.size()));
@@ -81,7 +81,7 @@ namespace mscl
     }
 
     EstFilterMessageFormat::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
-        GenericInertialCommand::Response(collector, true, dataResponse, "Estimation Filter Message Format")
+        GenericInertialCommand::Response(InertialTypes::CMD_EF_MESSAGE_FORMAT, collector, true, dataResponse, "Estimation Filter Message Format")
     {}
 
     InertialChannels EstFilterMessageFormat::Response::parseResponse(const GenericInertialCommandResponse& response, uint16 sampleRateBase) const
@@ -98,14 +98,14 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_setCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::USE_NEW_SETTINGS));
 
         //build and return the command bytes
         return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
     ResetFilter::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        GenericInertialCommand::Response(collector, true, false, "Reset Filter")
+        GenericInertialCommand::Response(InertialTypes::CMD_EF_RESET_FILTER, collector, true, false, "Reset Filter")
     {
     }
     //==========================================================================================
@@ -127,7 +127,7 @@ namespace mscl
     }
 
     SetInitialAttitude::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        GenericInertialCommand::Response(collector, true, false, "Set Initial Attitude")
+        GenericInertialCommand::Response(InertialTypes::CMD_EF_INIT_ATTITUDE, collector, true, false, "Set Initial Attitude")
     {
     }
     //==========================================================================================
@@ -147,7 +147,7 @@ namespace mscl
     }
 
     SetInitialHeading::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        GenericInertialCommand::Response(collector, true, false, "Set Initial Heading")
+        GenericInertialCommand::Response(InertialTypes::CMD_EF_INIT_HEADING, collector, true, false, "Set Initial Heading")
     {
     }
     //==========================================================================================
@@ -160,7 +160,7 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_getCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::READ_BACK_CURRENT_SETTINGS));
 
         //build and return the command bytes
         return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
@@ -172,7 +172,7 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_setCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::USE_NEW_SETTINGS));
 
         //add the enable/disable flag
         fieldData.append_uint8(static_cast<uint8>(enable));
@@ -182,7 +182,7 @@ namespace mscl
     }
 
     AutoInitializeControl::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
-        GenericInertialCommand::Response(collector, true, dataResponse, "Auto-Initialization Control")
+        GenericInertialCommand::Response(InertialTypes::CMD_EF_AUTO_INIT_CTRL, collector, true, dataResponse, "Auto-Initialization Control")
     {
     }
 
@@ -200,7 +200,7 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_getCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::READ_BACK_CURRENT_SETTINGS));
 
         //build and return the command bytes
         return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
@@ -212,7 +212,7 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_setCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::USE_NEW_SETTINGS));
 
         //add the roll, pitch, yaw data
         fieldData.append_float(angles.roll());
@@ -224,7 +224,7 @@ namespace mscl
     }
 
     SensorToVehicFrameTrans::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
-        GenericInertialCommand::Response(collector, true, dataResponse, "Sensor to Vehicle Frame Transformation")
+        GenericInertialCommand::Response(InertialTypes::CMD_EF_SENS_VEHIC_FRAME_TRANS, collector, true, dataResponse, "Sensor to Vehicle Frame Transformation")
     {
     }
 
@@ -242,10 +242,10 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_getCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::READ_BACK_CURRENT_SETTINGS));
 
         //build and return the command bytes
-        return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
+        return GenericInertialCommand::buildCommand(InertialTypes::CMD_EF_SENS_VEHIC_FRAME_OFFSET, fieldData.data());
     }
 
     ByteStream SensorToVehicFrameOffset::buildCommand_set(const PositionOffset& offset)
@@ -254,7 +254,7 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_setCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::USE_NEW_SETTINGS));
 
         //add the x, y, z data
         fieldData.append_float(offset.x());
@@ -262,11 +262,11 @@ namespace mscl
         fieldData.append_float(offset.z());
 
         //build and return the command bytes
-        return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
+        return GenericInertialCommand::buildCommand(InertialTypes::CMD_EF_SENS_VEHIC_FRAME_OFFSET, fieldData.data());
     }
 
     SensorToVehicFrameOffset::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
-        GenericInertialCommand::Response(collector, true, dataResponse, "Sensor to Vehicle Frame Offset")
+        GenericInertialCommand::Response(InertialTypes::CMD_EF_SENS_VEHIC_FRAME_OFFSET, collector, true, dataResponse, "Sensor to Vehicle Frame Offset")
     {
     }
 
@@ -284,7 +284,7 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_getCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::READ_BACK_CURRENT_SETTINGS));
 
         //build and return the command bytes
         return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
@@ -296,7 +296,7 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_setCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::USE_NEW_SETTINGS));
 
         //add the x, y, z data
         fieldData.append_float(offset.x());
@@ -308,7 +308,7 @@ namespace mscl
     }
 
     AntennaOffset::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
-        GenericInertialCommand::Response(collector, true, dataResponse, "Antenna Offset")
+        GenericInertialCommand::Response(InertialTypes::CMD_EF_ANTENNA_OFFSET, collector, true, dataResponse, "Antenna Offset")
     {
     }
 

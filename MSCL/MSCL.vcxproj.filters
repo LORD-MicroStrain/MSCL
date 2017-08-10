@@ -46,6 +46,12 @@
     <Filter Include="MicroStrain\Inertial\Features">
       <UniqueIdentifier>{7096baca-9884-49f7-87b9-4807409caabc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MicroStrain\Inertial\Commands\Base_Commands">
+      <UniqueIdentifier>{50aff87c-1bdc-4970-b584-8a801e2547eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MicroStrain\Inertial\Commands\3DM_Commands">
+      <UniqueIdentifier>{1793bf1c-8cdc-4bfa-ab53-dba1ed6d4381}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\mscl\Exceptions.h" />
@@ -92,9 +98,6 @@
       <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\LongPing.h">
-      <Filter>MicroStrain\Wireless\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ShortPing.h">
       <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStation.h">
@@ -185,22 +188,13 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\BufferedLdcPacket.h">
       <Filter>MicroStrain\Wireless\Packets</Filter>
     </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\BufferedLdcPacket_16ch.h">
-      <Filter>MicroStrain\Wireless\Packets</Filter>
-    </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket.h">
-      <Filter>MicroStrain\Wireless\Packets</Filter>
-    </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket_16ch.h">
       <Filter>MicroStrain\Wireless\Packets</Filter>
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket.h">
       <Filter>MicroStrain\Wireless\Packets</Filter>
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket.h">
-      <Filter>MicroStrain\Wireless\Packets</Filter>
-    </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket_16ch.h">
       <Filter>MicroStrain\Wireless\Packets</Filter>
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\WirelessDataPacket.h">
@@ -230,9 +224,6 @@
     <ClInclude Include="source\mscl\WMI_Helper.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Ping.h">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
-    </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacketBuilder.h">
       <Filter>MicroStrain\Inertial\Packets</Filter>
     </ClInclude>
@@ -255,13 +246,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialNodeInfo.h">
       <Filter>MicroStrain\Inertial</Filter>
     </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceInfo.h">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
-    </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\InertialCmdResponse.h">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceDescriptorSets.h">
       <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GenericInertialCommand.h">
@@ -370,9 +355,6 @@
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\LoggedDataSweep.h">
       <Filter>MicroStrain\Wireless</Filter>
-    </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Resume.h">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialModels.h">
       <Filter>MicroStrain\Inertial</Filter>
@@ -563,9 +545,6 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_SetBeacon_v2.h">
       <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_oem.h">
-      <Filter>MicroStrain\Wireless\Features\BaseStations</Filter>
-    </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_BeaconStatus.h">
       <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClInclude>
@@ -637,9 +616,6 @@
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkMicro.h">
       <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
-    </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ShortPing_v2.h">
-      <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\RawAngleStrainPacket.h">
       <Filter>MicroStrain\Wireless\Packets</Filter>
@@ -748,14 +724,119 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\DataModeMask.h">
       <Filter>MicroStrain\Wireless\Configuration</Filter>
     </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GetExtendedDeviceDescriptorSets.h">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_Commands.h">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
-    </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GNSS.h">
       <Filter>MicroStrain\Inertial\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\DeviceStartupSettings.h">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\PingResponse.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\DatalogSessionInfoResult.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_usb200.h">
+      <Filter>MicroStrain\Wireless\Features\BaseStations</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\Reset_v2.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BeaconStatus.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_Reset_v2.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket_v5.h">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BatchEepromRead.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\WirelessResponsePattern.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\TestNodeCommProtocol.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket_v2.h">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket_v2_aspp3.h">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\BufferedLdcPacket_v2.h">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket_v2.h">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket_v2_aspp3.h">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingMathPacket_aspp3.h">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\LdcMathPacket_aspp3.h">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\ShmPacket_v2_aspp3.h">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink201.h">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialReturnTypes.h">
+      <Filter>MicroStrain\Inertial</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_AssistedFixControl.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_AssistTimeUpdate.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_Commands.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_SBASSettings.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\InertialCommand.h">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceInfo.h">
+      <Filter>MicroStrain\Inertial\Commands\Base_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceDescriptorSets.h">
+      <Filter>MicroStrain\Inertial\Commands\Base_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GPSTimeUpdate.h">
+      <Filter>MicroStrain\Inertial\Commands\Base_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GetExtendedDeviceDescriptorSets.h">
+      <Filter>MicroStrain\Inertial\Commands\Base_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_CyclePower.h">
+      <Filter>MicroStrain\Inertial\Commands\Base_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Ping.h">
+      <Filter>MicroStrain\Inertial\Commands\Base_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Resume.h">
+      <Filter>MicroStrain\Inertial\Commands\Base_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_ConstellationSettings.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\AccelBias.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GyroBias.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\CaptureGyroBias.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -802,9 +883,6 @@
       <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\LongPing.cpp">
-      <Filter>MicroStrain\Wireless\Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ShortPing.cpp">
       <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStation.cpp">
@@ -877,22 +955,13 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\BufferedLdcPacket.cpp">
       <Filter>MicroStrain\Wireless\Packets</Filter>
     </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\BufferedLdcPacket_16ch.cpp">
-      <Filter>MicroStrain\Wireless\Packets</Filter>
-    </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket.cpp">
-      <Filter>MicroStrain\Wireless\Packets</Filter>
-    </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket_16ch.cpp">
       <Filter>MicroStrain\Wireless\Packets</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket.cpp">
       <Filter>MicroStrain\Wireless\Packets</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket.cpp">
-      <Filter>MicroStrain\Wireless\Packets</Filter>
-    </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket_16ch.cpp">
       <Filter>MicroStrain\Wireless\Packets</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\WirelessDataPacket.cpp">
@@ -922,9 +991,6 @@
     <ClCompile Include="source\mscl\WMI_Helper.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Ping.cpp">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
-    </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacketBuilder.cpp">
       <Filter>MicroStrain\Inertial\Packets</Filter>
     </ClCompile>
@@ -941,13 +1007,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialNodeInfo.cpp">
       <Filter>MicroStrain\Inertial</Filter>
     </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceInfo.cpp">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
-    </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\InertialCmdResponse.cpp">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceDescriptorSets.cpp">
       <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GenericInertialCommand.cpp">
@@ -1053,9 +1113,6 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\LoggedDataSweep.cpp">
       <Filter>MicroStrain\Wireless</Filter>
-    </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Resume.cpp">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialModels.cpp">
       <Filter>MicroStrain\Inertial</Filter>
@@ -1246,9 +1303,6 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_SetBeacon_v2.cpp">
       <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_oem.cpp">
-      <Filter>MicroStrain\Wireless\Features\BaseStations</Filter>
-    </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_BeaconStatus.cpp">
       <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClCompile>
@@ -1320,9 +1374,6 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkMicro.cpp">
       <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
-    </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ShortPing_v2.cpp">
-      <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\RawAngleStrainPacket.cpp">
       <Filter>MicroStrain\Wireless\Packets</Filter>
@@ -1428,14 +1479,116 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\DataModeMask.cpp">
       <Filter>MicroStrain\Wireless\Configuration</Filter>
     </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GetExtendedDeviceDescriptorSets.cpp">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_Commands.cpp">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
-    </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GNSS.cpp">
       <Filter>MicroStrain\Inertial\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\DeviceStartupSettings.cpp">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\PingResponse.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_usb200.cpp">
+      <Filter>MicroStrain\Wireless\Features\BaseStations</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\Reset_v2.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BeaconStatus.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_Reset_v2.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket_v5.cpp">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BatchEepromRead.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\WirelessResponsePattern.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\TestNodeCommProtocol.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket_v2.cpp">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\LdcPacket_v2_aspp3.cpp">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\BufferedLdcPacket_v2.cpp">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket_v2.cpp">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingPacket_v2_aspp3.cpp">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\SyncSamplingMathPacket_aspp3.cpp">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\LdcMathPacket_aspp3.cpp">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\ShmPacket_v2_aspp3.cpp">
+      <Filter>MicroStrain\Wireless\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink201.cpp">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialReturnTypes.cpp">
+      <Filter>MicroStrain\Inertial</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_AssistedFixControl.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_AssistTimeUpdate.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_Commands.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_SBASSettings.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\InertialCommand.cpp">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceInfo.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Base_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceDescriptorSets.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Base_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GPSTimeUpdate.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Base_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GetExtendedDeviceDescriptorSets.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Base_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_CyclePower.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Base_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Ping.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Base_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Resume.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Base_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_ConstellationSettings.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\AccelBias.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GyroBias.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\CaptureGyroBias.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

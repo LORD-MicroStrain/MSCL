@@ -22,5 +22,5 @@ MOCK_BASE_CLASS(mock_InertialNodeImpl, InertialNode_Impl)
 
     MOCK_METHOD_EXT(getDeviceInfo, 0, mscl::InertialDeviceInfo(), getDeviceInfo);
     MOCK_METHOD_EXT(getDescriptorSets, 0, std::vector<uint16>(), getDescriptorSets);
-    MOCK_METHOD_EXT(doInertialCmd, 4, mscl::GenericInertialCommandResponse(mscl::GenericInertialCommand::Response&, const mscl::ByteStream&, mscl::InertialTypes::Command, bool), doInertialCmd);
+    MOCK_METHOD_EXT(doCommand, 3, mscl::GenericInertialCommandResponse(mscl::GenericInertialCommand::Response&, const mscl::ByteStream&, bool), doCommand);
 };

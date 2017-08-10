@@ -35,22 +35,37 @@ namespace mscl
         m_node->writeEeprom(location, val);
     }
 
-    uint16 NodeEepromHelper::nodeAddress() const
+    NodeAddress NodeEepromHelper::nodeAddress() const
     {
         return m_node->nodeAddress();
     }
 
     void NodeEepromHelper::applyEepromChanges()
     {
-        //if we can just reset the radio to commit the changes
-        if(m_node->features().supportsEepromCommitViaRadioReset())
+        uint8 retries = 0;
+        bool success = false;
+        while(!success && retries <= 3)
         {
-            m_node->resetRadio();
+            try
+            {
+                //if we can just reset the radio to commit the changes
+                if(m_node->features().supportsEepromCommitViaRadioReset())
+                {
+                    m_node->resetRadio();
+                    success = true;
+                }
+                else
+                {
+                    m_node->cyclePower();
+                    success = true;
+                }
+            }
+            catch(Error_NodeCommunication&)
+            {
+                retries++;
+            }
         }
-        else
-        {
-            m_node->cyclePower();
-        }
+        
     }
 
     WirelessTypes::Frequency NodeEepromHelper::read_frequency() const
@@ -104,14 +119,22 @@ namespace mscl
         }
     }
 
-    Version NodeEepromHelper::read_asppVersion() const
+    Version NodeEepromHelper::read_asppVersion(WirelessTypes::CommProtocol commProtocol) const
     {
         uint16 asppValue = 0;
 
         try
         {
-            //read the ASPP vesrion eeprom
-            asppValue = read(NodeEepromMap::ASPP_VER).as_uint16();
+            if(commProtocol == WirelessTypes::commProtocol_lxrsPlus)
+            {
+                //read the ASPP LXRS+ version eeprom
+                asppValue = read(NodeEepromMap::ASPP_VER_LXRS_PLUS).as_uint16();
+            }
+            else
+            {
+                //read the ASPP LXRS version eeprom
+                asppValue = read(NodeEepromMap::ASPP_VER_LXRS).as_uint16();
+            }
         }
         catch(Error_NotSupported&)
         {
@@ -123,16 +146,82 @@ namespace mscl
         //if the aspp version is uninitialized
         if(asppValue == 0xFFFF || asppValue == 0xAAAA || asppValue == 0)
         {
-            Version fwVersion = read_fwVersion();
+            //if the ASPP version isn't supported in EEPROM, and we are looking for 250kpbs aspp version
+            if(commProtocol == WirelessTypes::commProtocol_lxrs)
+            {
+                //determine the ASPP version based on the firmware version of the Node
+                Version fwVersion = read_fwVersion();
 
-            //convert the firmware version of the ASPP version
-            return WirelessProtocol::asppVersionFromNodeFw(fwVersion);
+                //convert the firmware version of the ASPP version
+                return WirelessProtocol::asppVersionFromNodeFw(fwVersion);
+            }
+
+            //if we have an invalid value (or not supported) and we are looking for lxrs+
+            if(commProtocol == WirelessTypes::commProtocol_lxrsPlus)
+            {
+                return Version(3, 0);
+            }
+            else
+            {
+                assert(false);  //need to add support for a new radio mode
+                return Version(1, 0);
+            }
         }
         else
         {
             //ASPP version is good in eeprom, just return that version number
             return Version(Utils::msb(asppValue), Utils::lsb(asppValue));
         }
+    }
+
+    WirelessTypes::CommProtocol NodeEepromHelper::read_commProtocol() const
+    {
+        uint16 commProtocol = 0;
+
+        if(!m_node->features().supportsCommProtocolEeprom())
+        {
+            return WirelessTypes::commProtocol_lxrs;
+        }
+        
+        try
+        {
+            commProtocol = read(NodeEepromMap::COMM_PROTOCOL).as_uint16();
+        }
+        catch(Error_NotSupported&)
+        {
+            //if the device doesn't support the radio config eeprom, it supports LXRS only
+            return WirelessTypes::commProtocol_lxrs;
+        }
+
+        switch(commProtocol)
+        {
+            case WirelessTypes::commProtocol_lxrsPlus:
+            case 2:
+                return WirelessTypes::commProtocol_lxrsPlus;
+
+            case WirelessTypes::commProtocol_lxrs:
+            case 0xFFFF:
+            case 0xAAAA:
+            case 250:
+            default:
+                return WirelessTypes::commProtocol_lxrs;
+        }
+    }
+
+    void NodeEepromHelper::write_commProtocol(WirelessTypes::CommProtocol protocol)
+    {
+        if(!m_node->features().supportsCommProtocolEeprom())
+        {
+            if(m_node->features().supportsCommunicationProtocol(protocol))
+            {
+                //cannot write the eeprom, but the Node supports the given protocol, just silently return
+                return;
+            }
+
+            throw Error_NotSupported("The Communication Protocol cannot be written to the Node.");
+        }
+
+        write(NodeEepromMap::COMM_PROTOCOL, Value::UINT16(static_cast<uint16>(protocol)));
     }
 
     WirelessModels::NodeModel NodeEepromHelper::read_model() const
@@ -1498,8 +1587,6 @@ namespace mscl
 
     void NodeEepromHelper::write_eventTriggerOptions(const EventTriggerOptions& options, const std::map<uint8, LinearEquation> calibrations)
     {
-        const uint8 numTriggers = m_node->features().numEventTriggers();
-
         uint16 preVal;
         uint16 postVal;
 

@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_writeNumSweeps)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    NodeInfo info(Version(9, 9), WirelessModels::node_gLink_2g, 200000, WirelessTypes::region_usa);
+    NodeInfo info(Version(9, 9), WirelessModels::node_gLink_2g, WirelessTypes::region_usa);
 
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);

@@ -15,10 +15,12 @@ namespace mscl
     {
     }
 
-    BaseStationInfo::BaseStationInfo(Version fw, WirelessModels::BaseModel model, WirelessTypes::RegionCode region):
+    BaseStationInfo::BaseStationInfo(Version fw, WirelessModels::BaseModel model, WirelessTypes::RegionCode region, const Version& asppVer_lxrs, const Version& asppVer_lxrsPlus):
         m_firmwareVersion(fw),
         m_model(model),
-        m_regionCode(region)
+        m_regionCode(region),
+        m_protocol_lxrs(*WirelessProtocol::getProtocol(asppVer_lxrs)),
+        m_protocol_lxrsPlus(*WirelessProtocol::getProtocol(asppVer_lxrsPlus))
     {
     }
 
@@ -52,4 +54,27 @@ namespace mscl
         return *m_regionCode;
     }
 
+    const WirelessProtocol& BaseStationInfo::protocol(WirelessTypes::CommProtocol commProtocol) const
+    {
+        if(commProtocol == WirelessTypes::commProtocol_lxrs)
+        {
+            if(!static_cast<bool>(m_protocol_lxrs))
+            {
+                m_protocol_lxrs = m_basestation->protocol(commProtocol);
+            }
+
+            return *m_protocol_lxrs;
+        }
+        else if(commProtocol == WirelessTypes::commProtocol_lxrsPlus)
+        {
+            if(!static_cast<bool>(m_protocol_lxrsPlus))
+            {
+                m_protocol_lxrsPlus = m_basestation->protocol(commProtocol);
+            }
+
+            return *m_protocol_lxrsPlus;
+        }
+
+        throw Error("Invalid CommProtocol (" + Utils::toStr(commProtocol) + ")");
+    }
 }

@@ -37,6 +37,8 @@ namespace mscl
         //    millisecond - The milliseconds of the timestamp (ex. 123)
         Timestamp(uint16 year, uint16 month, uint16 day, uint16 hour, uint16 minute, uint16 second, uint32 milli);
 
+        virtual ~Timestamp() {};
+
     private:
         //Variable: m_nanoseconds
         //    The number of nanoseconds since the unix epoch

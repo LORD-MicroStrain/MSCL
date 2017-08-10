@@ -97,6 +97,16 @@ namespace mscl
             }
         }
 
+        //Communication Protocol
+        if(isSet(m_commProtocol))
+        {
+            //verify the communication protocol is supported
+            if(!features.supportsCommunicationProtocol(*m_commProtocol))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_COMM_PROTOCOL, "The Communication Protocol is not supported by this BaseStation."));
+            }
+        }
+
         //return true if no issues
         return outIssues.size() == 0;
     }
@@ -113,6 +123,9 @@ namespace mscl
 
         //write transmit power
         if(isSet(m_transmitPower)) { eeprom.write_transmitPower(*m_transmitPower); }
+
+        //write comm protocol
+        if(isSet(m_commProtocol)) { eeprom.write_commProtocol(*m_commProtocol); }
 
         //write all of the long press buttons that are set
         for(auto& btn : m_btnsLongPress)
@@ -154,6 +167,17 @@ namespace mscl
     void BaseStationConfig::transmitPower(WirelessTypes::TransmitPower power)
     {
         m_transmitPower = power;
+    }
+
+    WirelessTypes::CommProtocol BaseStationConfig::communicationProtocol() const
+    {
+        checkValue(m_commProtocol, "Communication Protocol");
+        return *m_commProtocol;
+    }
+
+    void BaseStationConfig::communicationProtocol(WirelessTypes::CommProtocol commProtocol)
+    {
+        m_commProtocol = commProtocol;
     }
 
     BaseStationButton BaseStationConfig::buttonLongPress(uint8 buttonNumber) const

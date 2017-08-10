@@ -68,12 +68,16 @@ BOOST_AUTO_TEST_SUITE(SyncSamplingNetwork_Test)
 
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_constructor)
 {
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+
+    std::unique_ptr<BaseStationFeatures> features;
+    expectBaseFeatures(features, baseImpl, WirelessModels::base_wsdaBase_104_usb);
 
     SyncSamplingNetwork nwk(b);
 
     BOOST_CHECK_EQUAL(nwk.lossless(), true);
-    BOOST_CHECK_EQUAL(nwk.highCapacity(), false);
     BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.0, 0.1);
     BOOST_CHECK_EQUAL(nwk.ok(), true);
 }
@@ -82,7 +86,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst)
 {
     //this test adds a single node in burst mode
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -107,6 +117,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst)
     s.samplingMode = WirelessTypes::samplingMode_syncBurst;
 
     expectSampling_Burst(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -144,7 +155,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous)
 {
     //this tests adds a single node in continuous mode
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -172,6 +189,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));    //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));        //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
     
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -199,7 +217,134 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_2)
 {
     //this tests adds a single node in continuous mode
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
+    WirelessNode node100(100, b);
+    node100.setImpl(impl);
+
+    SyncSamplingNetwork nwk(b);
+
+    std::unique_ptr<NodeFeatures> features;
+    expectNodeFeatures(features, impl);
+
+    //eeprom reads performed by the SyncSamplingNetwork
+    uint16 retx = WirelessTypes::retransmission_on,
+        chs = 15,
+        rate = static_cast<uint16>(WirelessTypes::sampleRate_128Hz),
+        syncMode = WirelessTypes::syncMode_continuous,
+        dataFormat = WirelessTypes::dataFormat_raw_uint16,
+        collectionMode = WirelessTypes::collectionMethod_logAndTransmit,
+        samplingDelay = 5,
+        samplingMode = WirelessTypes::samplingMode_sync;
+
+    expectRead(impl, NodeEepromMap::NODE_RETRANSMIT, Value::UINT16(retx));                //retransmission        (on)
+    expectRead(impl, NodeEepromMap::ACTIVE_CHANNEL_MASK, Value::UINT16(chs));            //active channels mask    (channels 1, 2, 3, 4)
+    expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(rate));                    //sample rate            (128Hz)
+    expectRead(impl, NodeEepromMap::SYNC_SAMPLE_SETTING, Value::UINT16(syncMode));        //sync sampling mode    (continuous)
+    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(dataFormat));            //data format            (2 byte uint)
+    expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));    //collection mode        (log and transmit)
+    expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));        //sampling delay        (5)
+    expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
+
+    expectReadModel(impl, WirelessModels::node_gLink_2g);
+    expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(10, 0));
+
+    //add the node to the network
+    BOOST_CHECK_NO_THROW(nwk.addNode(node100));
+
+    //verify the network information
+    BOOST_CHECK_EQUAL(nwk.ok(), true);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 12.5, 0.1);
+
+    //verify the networkInfo for the nodes in the network
+    const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
+    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
+    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
+    BOOST_CHECK_CLOSE(info.percentBandwidth(), 12.5, 0.1);
+    BOOST_CHECK_EQUAL(info.groupSize(), 1);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 32);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 32);
+    BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
+}
+/* TODO: reenable
+BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_2_lxrsPlus)
+{
+    //this tests adds a single node in continuous mode
+
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrsPlus)));
+
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
+    WirelessNode node100(100, b);
+    node100.setImpl(impl);
+
+    SyncSamplingNetwork nwk(b);
+
+    std::unique_ptr<NodeFeatures> features;
+    expectNodeFeatures(features, impl);
+
+    //eeprom reads performed by the SyncSamplingNetwork
+    uint16 retx = WirelessTypes::retransmission_on,
+        chs = 15,
+        rate = static_cast<uint16>(WirelessTypes::sampleRate_128Hz),
+        syncMode = WirelessTypes::syncMode_continuous,
+        dataFormat = WirelessTypes::dataFormat_raw_uint16,
+        collectionMode = WirelessTypes::collectionMethod_logAndTransmit,
+        samplingDelay = 5,
+        samplingMode = WirelessTypes::samplingMode_sync;
+
+    expectRead(impl, NodeEepromMap::NODE_RETRANSMIT, Value::UINT16(retx));                //retransmission        (on)
+    expectRead(impl, NodeEepromMap::ACTIVE_CHANNEL_MASK, Value::UINT16(chs));            //active channels mask    (channels 1, 2, 3, 4)
+    expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(rate));                    //sample rate            (128Hz)
+    expectRead(impl, NodeEepromMap::SYNC_SAMPLE_SETTING, Value::UINT16(syncMode));        //sync sampling mode    (continuous)
+    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(dataFormat));            //data format            (2 byte uint)
+    expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));    //collection mode        (log and transmit)
+    expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));        //sampling delay        (5)
+    expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrsPlus));
+
+    expectReadModel(impl, WirelessModels::node_gLink_2g);
+    expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(10, 0));
+
+    //add the node to the network
+    BOOST_CHECK_NO_THROW(nwk.addNode(node100));
+
+    //verify the network information
+    BOOST_CHECK_EQUAL(nwk.ok(), true);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 1.5625, 0.1);
+
+    //verify the networkInfo for the nodes in the network
+    const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
+    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
+    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
+    BOOST_CHECK_CLOSE(info.percentBandwidth(), 1.5625, 0.1);
+    BOOST_CHECK_EQUAL(info.groupSize(), 1);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 8);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 128);
+    BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
+}
+*/
+BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_3)
+{
+    //this tests adds a single node in continuous mode
+
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -221,40 +366,106 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_2)
 
     expectRead(impl, NodeEepromMap::NODE_RETRANSMIT, Value::UINT16(retx));              //retransmission        (on)
     expectRead(impl, NodeEepromMap::ACTIVE_CHANNEL_MASK, Value::UINT16(chs));           //active channels mask  (channel 1)
-    expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(rate));                  //sample rate           (1Hz)
+    expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(rate));                  //sample rate           (512Hz)
     expectRead(impl, NodeEepromMap::SYNC_SAMPLE_SETTING, Value::UINT16(syncMode));      //sync sampling mode    (continuous)
     expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(dataFormat));            //data format           (2 byte uint)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));    //collection mode       (transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));      //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
-    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(10, 0));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
 
     //verify the network information
     BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 25.024, 0.1);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 12.5, 0.1);
 
     //verify the networkInfo for the nodes in the network
     const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
     BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
     BOOST_CHECK_EQUAL(info.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info.percentBandwidth(), 25.024, 0.1);
+    BOOST_CHECK_CLOSE(info.percentBandwidth(), 12.5, 0.1);
     BOOST_CHECK_EQUAL(info.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 32);
-    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 24);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 16);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 64);
     BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
 }
+/* TODO: reenable
+BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_3_lxrsPlus)
+{
+    //this tests adds a single node in continuous mode
 
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrsPlus)));
+
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
+    WirelessNode node100(100, b);
+    node100.setImpl(impl);
+
+    SyncSamplingNetwork nwk(b);
+
+    std::unique_ptr<NodeFeatures> features;
+    expectNodeFeatures(features, impl);
+
+    //eeprom reads performed by the SyncSamplingNetwork
+    uint16 retx = WirelessTypes::retransmission_on,
+        chs = 5,
+        rate = WirelessTypes::sampleRate_512Hz,
+        syncMode = WirelessTypes::syncMode_continuous,
+        dataFormat = WirelessTypes::dataFormat_raw_uint16,
+        collectionMode = WirelessTypes::collectionMethod_transmitOnly,
+        samplingDelay = 5,
+        samplingMode = WirelessTypes::samplingMode_sync;
+
+    expectRead(impl, NodeEepromMap::NODE_RETRANSMIT, Value::UINT16(retx));              //retransmission        (on)
+    expectRead(impl, NodeEepromMap::ACTIVE_CHANNEL_MASK, Value::UINT16(chs));           //active channels mask  (channel 1, 3)
+    expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(rate));                  //sample rate           (512Hz)
+    expectRead(impl, NodeEepromMap::SYNC_SAMPLE_SETTING, Value::UINT16(syncMode));      //sync sampling mode    (continuous)
+    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(dataFormat));            //data format           (2 byte uint)
+    expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));    //collection mode       (transmit)
+    expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));      //sampling delay        (5)
+    expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrsPlus));
+
+    expectReadModel(impl, WirelessModels::node_gLink_2g);
+    expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(10, 0));
+
+    //add the node to the network
+    BOOST_CHECK_NO_THROW(nwk.addNode(node100));
+
+    //verify the network information
+    BOOST_CHECK_EQUAL(nwk.ok(), true);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 3.125, 0.1);
+
+    //verify the networkInfo for the nodes in the network
+    const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
+    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
+    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
+    BOOST_CHECK_CLOSE(info.percentBandwidth(), 3.125, 0.1);
+    BOOST_CHECK_EQUAL(info.groupSize(), 1);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 8);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 128);
+    BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
+}
+*/
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_noChannelMask)
 {
     //this tests adds a single node with no active channels
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -283,6 +494,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_noChannelMask)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));    //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));        //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -310,7 +522,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst_noChannelMask)
 {
     //this test adds a single node in burst mode, with no active channels
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -343,6 +561,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst_noChannelMask)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));    //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));        //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -370,7 +589,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_logOnly)
 {
     //this tests adds a single node with log only
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -399,6 +624,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_logOnly)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));    //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));        //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -426,7 +652,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_losslessDisabled_burst)
 {
     //this test adds a single node in burst mode, with lossless disabled
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -459,6 +691,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_losslessDisabled_burst)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));    //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));        //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
     
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -486,7 +719,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_losslessDisabled_continuous)
 {
     //this tests adds a single node in continuous mode, with lossless disabled
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -516,6 +755,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_losslessDisabled_continuous)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));    //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));        //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -539,131 +779,17 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_losslessDisabled_continuous)
     BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
 }
 
-BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_highCapacity)
-{
-    //this tests adds a single node in continuous mode, with high capacity enabled
-
-    BaseStation b = makeBaseStationWithMockImpl();
-    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
-    WirelessNode node100(100, b);
-    node100.setImpl(impl);
-
-    std::unique_ptr<NodeFeatures> features;
-    expectNodeFeatures(features, impl);
-    
-
-    SyncSamplingNetwork nwk(b);
-    nwk.lossless(false);    //disable lossless
-    nwk.highCapacity(true);    //enable high capacity
-
-    //eeprom reads performed by the SyncSamplingNetwork
-    uint16 retx = WirelessTypes::retransmission_on,
-        chs = 7,
-        rate = 110,
-        syncMode = WirelessTypes::syncMode_continuous,
-        dataFormat = WirelessTypes::dataFormat_raw_uint16,
-        collectionMode = WirelessTypes::collectionMethod_transmitOnly,
-        samplingDelay = 5,
-        samplingMode = WirelessTypes::samplingMode_sync;
-
-    expectRead(impl, NodeEepromMap::NODE_RETRANSMIT, Value::UINT16(retx));                //retransmission        (on)
-    expectRead(impl, NodeEepromMap::ACTIVE_CHANNEL_MASK, Value::UINT16(chs));            //active channels mask    (channels 1 2 and 3)
-    expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(rate));                    //sample rate            (256Hz)
-    expectRead(impl, NodeEepromMap::SYNC_SAMPLE_SETTING, Value::UINT16(syncMode));        //sync sampling mode    (burst)
-    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(dataFormat));            //data format            (2 byte uint)
-    expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));    //collection mode        (log and transmit)
-    expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));        //sampling delay        (5)
-    expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
-
-    expectReadModel(impl, WirelessModels::node_gLink_2g);
-    expectGoodPing(impl);
-    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
-
-    //add the node to the network
-    BOOST_CHECK_NO_THROW(nwk.addNode(node100));
-
-    //verify the network information
-    BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_EQUAL(nwk.highCapacity(), true);
-    BOOST_CHECK_EQUAL(nwk.lossless(), false);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.391, 0.1);
-
-    //verify the networkInfo for the nodes in the network
-    const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
-    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
-    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info.percentBandwidth(), 0.391, 0.1);
-    BOOST_CHECK_EQUAL(info.groupSize(), 2);
-    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 1);
-    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 2040);
-    BOOST_CHECK_EQUAL(info.tdmaAddress(), 9);
-}
-
-BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_highCapacity2)
-{
-    //this tests adds a single node in continuous mode, with high capacity enabled, with 16hz 1ch
-
-    BaseStation b = makeBaseStationWithMockImpl();
-    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
-    WirelessNode node100(100, b);
-    node100.setImpl(impl);
-
-    std::unique_ptr<NodeFeatures> features;
-    expectNodeFeatures(features, impl);
-    
-
-    SyncSamplingNetwork nwk(b);
-    nwk.lossless(false);    //disable lossless
-    nwk.highCapacity(true);    //enable high capacity
-
-    //eeprom reads performed by the SyncSamplingNetwork
-    uint16 retx = WirelessTypes::retransmission_on,
-        chs = 1,
-        rate = 109,
-        syncMode = WirelessTypes::syncMode_continuous,
-        dataFormat = WirelessTypes::dataFormat_raw_uint16,
-        collectionMode = WirelessTypes::collectionMethod_transmitOnly,
-        samplingDelay = 5,
-        samplingMode = WirelessTypes::samplingMode_sync;
-
-    expectRead(impl, NodeEepromMap::NODE_RETRANSMIT, Value::UINT16(retx));                //retransmission        (on)
-    expectRead(impl, NodeEepromMap::ACTIVE_CHANNEL_MASK, Value::UINT16(chs));            //active channels mask    (channel 1)
-    expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(rate));                    //sample rate            (16Hz)
-    expectRead(impl, NodeEepromMap::SYNC_SAMPLE_SETTING, Value::UINT16(syncMode));        //sync sampling mode    (burst)
-    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(dataFormat));            //data format            (2 byte uint)
-    expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));    //collection mode        (log and transmit)
-    expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));        //sampling delay        (5)
-    expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
-
-    expectReadModel(impl, WirelessModels::node_gLink_2g);
-    expectGoodPing(impl);
-    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
-
-    //add the node to the network
-    BOOST_CHECK_NO_THROW(nwk.addNode(node100));
-
-    //verify the network information
-    BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_EQUAL(nwk.highCapacity(), true);
-    BOOST_CHECK_EQUAL(nwk.lossless(), false);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.391, 0.1);
-
-    //verify the networkInfo for the nodes in the network
-    const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
-    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
-    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info.percentBandwidth(), 0.391, 0.1);
-    BOOST_CHECK_EQUAL(info.groupSize(), 2);
-    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 1);
-    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 2040);
-    BOOST_CHECK_EQUAL(info.tdmaAddress(), 9);
-}
-
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_multiple)
 {
     //this tests adds a single node in continuous mode
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -692,6 +818,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_multiple)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));    //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));        //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -736,7 +863,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_failCommunication)
 {
     //this tests adding a node that fails to communicate
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -768,7 +901,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_failCommunication_thenSucceed)
 {
     //this tests adding a node that fails to communicate, and then adding it again and succeeding
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -812,6 +951,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_failCommunication_thenSucceed)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));    //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));        //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -838,7 +978,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_removeNode)
 {
     //this tests removing a single node
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -867,6 +1013,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_removeNode)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));    //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));        //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -907,7 +1054,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_refresh)
 {
     //this tests adding a node, changing its configuration, and then calling refresh
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -929,6 +1082,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_refresh)
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -969,6 +1123,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_refresh)
     sb.sweeps = 256;
     sb.timebetwburst = 350;
     expectSampling_Burst(impl, sb);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -995,7 +1150,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_disableLosslessAfterwards)
 {
     //this tests adds a single node in continuous mode, with lossless disabled
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -1017,6 +1178,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_disableLosslessAfterwards)
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -1065,14 +1227,19 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addMultipleNodes)
 {
     //this test adds multiple nodes to the network
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
 
     SyncSamplingNetwork nwk(b);
 
@@ -1087,6 +1254,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addMultipleNodes)
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -1111,9 +1279,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addMultipleNodes)
 
 
     //create another node to add
-    BaseStation b2 = makeBaseStationWithMockImpl();
-    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b2, 200));
-    WirelessNode node200(200, b2);
+    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b, 200));
+    WirelessNode node200(200, b);
     node200.setImpl(impl2);
 
     std::unique_ptr<NodeFeatures> features2;
@@ -1132,6 +1299,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addMultipleNodes)
     sb.samplingDelay = 5;
     sb.samplingMode = WirelessTypes::samplingMode_syncBurst;
     expectSampling_Burst(impl2, sb);
+    expectRead(impl2, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl2, WirelessModels::node_gLink_2g);
     expectGoodPing(impl2);
@@ -1154,85 +1322,17 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addMultipleNodes)
     BOOST_CHECK_EQUAL(info2.tdmaAddress(), 1);
 }
 
-BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_enablehighCapacityAfterwards)
-{
-    //this tests enabling high capacity after a node was added
-
-    BaseStation b = makeBaseStationWithMockImpl();
-    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
-    WirelessNode node100(100, b);
-    node100.setImpl(impl);
-
-    std::unique_ptr<NodeFeatures> features;
-    expectNodeFeatures(features, impl);
-    
-
-    SyncSamplingNetwork nwk(b);
-
-    //eeprom reads performed by the SyncSamplingNetwork
-    Sampling_Continuous s;
-    s.retx = WirelessTypes::retransmission_on;
-    s.chs = 7;
-    s.rate = 110;
-    s.syncMode = WirelessTypes::syncMode_continuous;
-    s.dataFormat = WirelessTypes::dataFormat_raw_uint16;
-    s.collectionMode = WirelessTypes::collectionMethod_transmitOnly;
-    s.samplingDelay = 5;
-    s.samplingMode = WirelessTypes::samplingMode_sync;
-    expectSampling_Continuous(impl, s);
-
-    expectReadModel(impl, WirelessModels::node_gLink_2g);
-    expectGoodPing(impl);
-    MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
-
-    //add the node to the network
-    BOOST_CHECK_NO_THROW(nwk.addNode(node100));
-
-    //verify the network information
-    BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_EQUAL(nwk.highCapacity(), false);
-    BOOST_CHECK_EQUAL(nwk.lossless(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.782, 0.1);
-
-    //verify the networkInfo for the nodes in the network
-    const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
-    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
-    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info.percentBandwidth(), 0.782, 0.1);
-    BOOST_CHECK_EQUAL(info.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 1);
-    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 1016);
-    BOOST_CHECK_EQUAL(info.tdmaAddress(), 9);
-
-    //now turn off lossless and enable high capacity
-    nwk.lossless(false);    //disable lossless
-    nwk.highCapacity(true);    //enable high capacity
-
-    //verify the network information
-    BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_EQUAL(nwk.highCapacity(), true);
-    BOOST_CHECK_EQUAL(nwk.lossless(), false);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.391, 0.1);
-
-    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
-    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info.percentBandwidth(), 0.391, 0.1);
-    BOOST_CHECK_EQUAL(info.groupSize(), 2);
-    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 1);
-    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 2040);
-    BOOST_CHECK_EQUAL(info.tdmaAddress(), 9);
-
-    MOCK_RESET(impl->readEeprom_uint16);//reset all expections
-
-    //enable high capacity again, and with no expections set, this will verify that nothing gets changed in the network
-    BOOST_CHECK_NO_THROW(nwk.highCapacity(true));
-}
-
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_applyConfiguration_continuous)
 {
     //this tests applying the configuration with a single continuous node
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -1254,16 +1354,18 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_applyConfiguration_continuous)
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
     MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
     //expectResetRadio(impl);
 
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::TX_PER_GROUP, Value::UINT16((uint16)1)); //tx per group (should be 1)
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::GROUP_SIZE, Value::UINT16((uint16)1)); //group size (should be 1)
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::TDMA_ADDRESS, Value::UINT16((uint16)9)); //TDMA address (should be 9)
+    MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::NODE_RETRANSMIT, Value::UINT16((uint16)1));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node100));
@@ -1288,7 +1390,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_applyConfiguration_burst)
 {
     //this tests applying the configuration with a single continuous node
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -1312,10 +1420,11 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_applyConfiguration_burst)
     sb.samplingDelay = 5;
     sb.samplingMode = WirelessTypes::samplingMode_syncBurst;
     expectSampling_Burst(impl, sb);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
     MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
@@ -1348,7 +1457,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_applyConfiguration_again)
 {
     //this tests applying the configuration twice, which should do nothing if nothing changed
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -1370,10 +1485,11 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_applyConfiguration_again)
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
     MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
@@ -1392,6 +1508,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_applyConfiguration_again)
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::TX_PER_GROUP, Value::UINT16(static_cast<uint16>(1))); //tx per group
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::GROUP_SIZE, Value::UINT16(static_cast<uint16>(1))); //group size
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::TDMA_ADDRESS, Value::UINT16(static_cast<uint16>(9))); //TDMA address
+    MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::NODE_RETRANSMIT, Value::UINT16((uint16)1));
 
     //apply the configuration
     BOOST_CHECK_NO_THROW(nwk.applyConfiguration());
@@ -1411,7 +1528,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_apply_networkNotOk)
 {
     //this tests calling applyConfiguration() when the network is not "ok"
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -1433,6 +1556,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_apply_networkNotOk)
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -1478,9 +1602,15 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_pcTime)
     std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
     BaseStation baseForNode(baseImpl);
 
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(baseForNode));
     WirelessNode node(123, baseForNode);
     node.setImpl(impl);
+
+    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_0().get()));
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
@@ -1498,10 +1628,11 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_pcTime)
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
-
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
+    
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
     MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
@@ -1510,12 +1641,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_pcTime)
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::TX_PER_GROUP, Value::UINT16(static_cast<uint16>(1))); //tx per group
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::GROUP_SIZE, Value::UINT16(static_cast<uint16>(1))); //group size
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::TDMA_ADDRESS, Value::UINT16(static_cast<uint16>(9))); //TDMA address
+    MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::NODE_RETRANSMIT, Value::UINT16((uint16)1));
 
     //apply the configuration
     BOOST_CHECK_NO_THROW(nwk.applyConfiguration());
 
     MOCK_EXPECT(baseImpl->disableBeacon).once();                                    //disable the beacon on the master base
-    MOCK_EXPECT(baseImpl->node_startSyncSampling).with(123).returns(true);            //send the start sync sampling command to node 123
+    MOCK_EXPECT(baseImpl->node_startSyncSampling).returns(true);            //send the start sync sampling command to node 123
     MOCK_EXPECT(baseImpl->enableBeacon_pctime).returns(Timestamp(0));                //enable the beacon on the base station
 
     BOOST_CHECK_NO_THROW(nwk.startSampling());
@@ -1523,7 +1655,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_pcTime)
 
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_pcTime_configNotApplied)
 {
-    BaseStation baseForNode = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation baseForNode(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(baseForNode));
     WirelessNode node(123, baseForNode);
     node.setImpl(impl);
@@ -1544,6 +1682,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_pcTime_configNot
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -1560,12 +1699,18 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_timestamp)
     std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
     BaseStation baseForNode(baseImpl);
 
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(baseForNode));
     WirelessNode node(123, baseForNode);
     node.setImpl(impl);
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
+
+    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_0().get()));
 
     SyncSamplingNetwork nwk(baseForNode);
 
@@ -1580,10 +1725,11 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_timestamp)
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
     MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
@@ -1592,12 +1738,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_timestamp)
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::TX_PER_GROUP, Value::UINT16(static_cast<uint16>(1))); //tx per group
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::GROUP_SIZE, Value::UINT16(static_cast<uint16>(1))); //group size
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::TDMA_ADDRESS, Value::UINT16(static_cast<uint16>(9))); //TDMA address
+    MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::NODE_RETRANSMIT, Value::UINT16((uint16)1));
 
     //apply the configuration
     BOOST_CHECK_NO_THROW(nwk.applyConfiguration());
 
     MOCK_EXPECT(baseImpl->disableBeacon).once();                                        //disable the beacon on the master base
-    MOCK_EXPECT(baseImpl->node_startSyncSampling).with(123).returns(true);                //send the start sync sampling command to node 123
+    MOCK_EXPECT(baseImpl->node_startSyncSampling).returns(true);                //send the start sync sampling command to node 123
     MOCK_EXPECT(baseImpl->enableBeacon_withTime).returns(Timestamp(123456));            //enable the beacon on the base station
 
     BOOST_CHECK_NO_THROW(nwk.startSampling(Timestamp(123456)));
@@ -1605,7 +1752,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_timestamp)
 
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_timestamp_configNotApplied)
 {
-    BaseStation baseForNode = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation baseForNode(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(baseForNode));
     WirelessNode node(123, baseForNode);
     node.setImpl(impl);
@@ -1630,6 +1783,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_withBase_timestamp_config
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
     MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     //add the node to the network
     BOOST_CHECK_NO_THROW(nwk.addNode(node));
@@ -1642,12 +1796,18 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_noBase)
     std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
     BaseStation baseForNode(baseImpl);
 
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(baseForNode));
     WirelessNode node(123, baseForNode);
     node.setImpl(impl);
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
+
+    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_0().get()));
 
     SyncSamplingNetwork nwk(baseForNode);
 
@@ -1662,10 +1822,11 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_noBase)
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
     MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
@@ -1674,18 +1835,25 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_noBase)
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::TX_PER_GROUP, Value::UINT16(static_cast<uint16>(1))); //tx per group
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::GROUP_SIZE, Value::UINT16(static_cast<uint16>(1))); //group size
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::TDMA_ADDRESS, Value::UINT16(static_cast<uint16>(9))); //TDMA address
+    MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::NODE_RETRANSMIT, Value::UINT16((uint16)1));
 
     //apply the configuration
     BOOST_CHECK_NO_THROW(nwk.applyConfiguration());
 
-    MOCK_EXPECT(baseImpl->node_startSyncSampling).with(123).returns(true);    //send the start sync sampling command to node 123
+    MOCK_EXPECT(baseImpl->node_startSyncSampling).returns(true);    //send the start sync sampling command to node 123
 
     BOOST_CHECK_NO_THROW(nwk.startSampling_noBeacon());
 }
 
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_noBase_configNotApplied)
 {
-    BaseStation baseForNode = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation baseForNode(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(baseForNode));
     WirelessNode node(123, baseForNode);
     node.setImpl(impl);
@@ -1706,6 +1874,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_noBase_configNotApplied)
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -1722,12 +1891,18 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_failSendStart)
     std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
     BaseStation baseForNode(baseImpl);
 
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(baseForNode));
     WirelessNode node(123, baseForNode);
     node.setImpl(impl);
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
+
+    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_0().get()));
 
     SyncSamplingNetwork nwk(baseForNode);
 
@@ -1742,10 +1917,11 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_failSendStart)
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
     MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
@@ -1754,11 +1930,12 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_failSendStart)
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::TX_PER_GROUP, Value::UINT16(static_cast<uint16>(1))); //tx per group
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::GROUP_SIZE, Value::UINT16(static_cast<uint16>(1))); //group size
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::TDMA_ADDRESS, Value::UINT16(static_cast<uint16>(9))); //TDMA address
+    MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::NODE_RETRANSMIT, Value::UINT16((uint16)1));
 
     //apply the configuration
     BOOST_CHECK_NO_THROW(nwk.applyConfiguration());
 
-    MOCK_EXPECT(baseImpl->node_startSyncSampling).with(123).returns(false);    //send the start sync sampling command to node 123
+    MOCK_EXPECT(baseImpl->node_startSyncSampling).returns(false);    //send the start sync sampling command to node 123
 
     BOOST_CHECK_NO_THROW(nwk.startSampling_noBeacon());    //changed to not throwing exception
 }
@@ -1768,12 +1945,18 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_retry)
     std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
     BaseStation baseForNode(baseImpl);
 
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(baseForNode));
     WirelessNode node(123, baseForNode);
     node.setImpl(impl);
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
+
+    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_0().get()));
 
     SyncSamplingNetwork nwk(baseForNode);
 
@@ -1788,10 +1971,11 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_retry)
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
-    expectCyclePower(impl);
+    MOCK_EXPECT(impl->cyclePower);
     MOCK_EXPECT(impl->firmwareVersion).returns(Version(7, 0));
 
     //add the node to the network
@@ -1804,6 +1988,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_retry)
     std::unique_ptr<NodeFeatures> features2;
     expectNodeFeatures(features2, impl2, WirelessModels::node_vLink);
 
+    MOCK_EXPECT(impl2->protocol).returns(*(WirelessProtocol::v1_0().get()));
+
     //eeprom reads performed by the SyncSamplingNetwork
     Sampling_Continuous s2;
     s2.retx = WirelessTypes::retransmission_on;
@@ -1815,10 +2001,11 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_retry)
     s2.samplingDelay = 10;
     s2.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl2, s2);
+    expectRead(impl2, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl2, WirelessModels::node_vLink);
     expectGoodPing(impl2);
-    expectCyclePower(impl2);
+    MOCK_EXPECT(impl2->cyclePower);
     MOCK_EXPECT(impl2->firmwareVersion).returns(Version(7, 0));
 
     //add another node to the network
@@ -1827,22 +2014,24 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_startSampling_retry)
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::TX_PER_GROUP, Value::UINT16(static_cast<uint16>(1))); //tx per group
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::GROUP_SIZE, Value::UINT16(static_cast<uint16>(1))); //group size
     MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::TDMA_ADDRESS, Value::UINT16(static_cast<uint16>(9))); //TDMA address
+    MOCK_EXPECT(impl->writeEeprom).with(NodeEepromMap::NODE_RETRANSMIT, Value::UINT16((uint16)1));
 
     MOCK_EXPECT(impl2->writeEeprom).with(NodeEepromMap::TX_PER_GROUP, mock::any); //tx per group
     MOCK_EXPECT(impl2->writeEeprom).with(NodeEepromMap::GROUP_SIZE, mock::any); //group size
     MOCK_EXPECT(impl2->writeEeprom).with(NodeEepromMap::TDMA_ADDRESS, mock::any); //TDMA address
+    MOCK_EXPECT(impl2->writeEeprom).with(NodeEepromMap::NODE_RETRANSMIT, Value::UINT16((uint16)1));
 
     //apply the configuration
     BOOST_CHECK_NO_THROW(nwk.applyConfiguration());
 
-    MOCK_EXPECT(baseImpl->node_startSyncSampling).with(123).returns(false);    //FAIL SENDING START TO NODE 123
-    MOCK_EXPECT(baseImpl->node_startSyncSampling).with(2).returns(true);    //send the start sync sampling command to node 2
+    MOCK_EXPECT(baseImpl->node_startSyncSampling).with(mock::any, 123).returns(false);    //FAIL SENDING START TO NODE 123
+    MOCK_EXPECT(baseImpl->node_startSyncSampling).with(mock::any, 2).returns(true);    //send the start sync sampling command to node 2
 
     BOOST_CHECK_NO_THROW(nwk.startSampling_noBeacon()); //changed to not throwing exception
 
     MOCK_RESET(baseImpl->node_startSyncSampling);//reset all expections
-    MOCK_EXPECT(baseImpl->node_startSyncSampling).with(123).returns(true);    //NOW SUCCEED SENDING START TO NODE 2
-    MOCK_EXPECT(baseImpl->node_startSyncSampling).with(2).returns(false);    //THIS SHOULDN'T MATTER BC IT SHOULDNT BE CALLED AS IT WAS ALREADY STARTED PREVIOUSLY
+    MOCK_EXPECT(baseImpl->node_startSyncSampling).with(mock::any, 123).returns(true);    //NOW SUCCEED SENDING START TO NODE 2
+    MOCK_EXPECT(baseImpl->node_startSyncSampling).with(mock::any, 2).returns(false);    //THIS SHOULDN'T MATTER BC IT SHOULDNT BE CALLED AS IT WAS ALREADY STARTED PREVIOUSLY
 
     BOOST_CHECK_NO_THROW(nwk.startSampling_noBeacon());
 }
@@ -1851,7 +2040,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_tooMuchBandwidth)
 {
     //this tests adds a single node in continuous mode
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -1873,6 +2068,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_tooMuchBandwidth)
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -1895,9 +2091,9 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_tooMuchBandwidth)
     BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 8);
     BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
 
-    BaseStation b2 = makeBaseStationWithMockImpl();
-    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b2, 200));
-    WirelessNode node200(200, b2);
+
+    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b, 200));
+    WirelessNode node200(200, b);
     node200.setImpl(impl2);
     
     std::unique_ptr<NodeFeatures> features2;
@@ -1914,6 +2110,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_tooMuchBandwidth)
     s2.samplingDelay = 5;
     s2.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl2, s2);
+    expectRead(impl2, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl2, WirelessModels::node_gLink_2g);
     expectGoodPing(impl2);
@@ -1938,7 +2135,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_tooMuchBandwidth)
 
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_legacyMixedNetwork_tooMuchBandwidth)
 {
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -1959,6 +2162,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_legacyMixedNetwork_tooMuchBandw
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -1981,10 +2185,10 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_legacyMixedNetwork_tooMuchBandw
     BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 8);
     BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
 
-    BaseStation b2 = makeBaseStationWithMockImpl();
-    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b2, 200));
-    WirelessNode node200(200, b2);
+    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b, 200));
+    WirelessNode node200(200, b);
     node200.setImpl(impl2);
+    expectRead(impl2, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     std::unique_ptr<NodeFeatures> features2;
     expectNodeFeatures_fw10(features2, impl2);       //network will contain old (<10.0) and new (>10.0) nodes
@@ -2027,7 +2231,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_gen2_bandwidthNowFit
     //the previous test barely didn't fit the nodes in the network
     //gen 2 nodes (fw 10.0+) fix this problem, which this tests
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -2049,6 +2259,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_gen2_bandwidthNowFit
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -2071,9 +2282,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_gen2_bandwidthNowFit
     BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 32);
     BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
 
-    BaseStation b2 = makeBaseStationWithMockImpl();
-    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b2, 200));
-    WirelessNode node200(200, b2);
+    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b, 200));
+    WirelessNode node200(200, b);
     node200.setImpl(impl2);
 
     std::unique_ptr<NodeFeatures> features2;
@@ -2090,6 +2300,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_gen2_bandwidthNowFit
     s2.samplingDelay = 5;
     s2.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl2, s2);
+    expectRead(impl2, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl2, WirelessModels::node_gLink_2g);
     expectGoodPing(impl2);
@@ -2128,7 +2339,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     //this tests adding multiple nodes until a node fails to be added due to not
     //finding a slot even though the percent of bandwidth looks like it should be ok. (network contention)
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 1));
     WirelessNode node1(1, b);
     node1.setImpl(impl); 
@@ -2150,6 +2367,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     s.samplingDelay = 10;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_vLink);
     expectGoodPing(impl);
@@ -2172,9 +2390,9 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 8);
     BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
 
-    BaseStation b2 = makeBaseStationWithMockImpl();
-    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b2, 2));
-    WirelessNode node2(2, b2);
+
+    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b, 2));
+    WirelessNode node2(2, b);
     node2.setImpl(impl2);
 
     std::unique_ptr<NodeFeatures> features2;
@@ -2191,6 +2409,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     s2.samplingDelay = 10;
     s2.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl2, s2);
+    expectRead(impl2, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl2, WirelessModels::node_vLink);
     expectGoodPing(impl2);
@@ -2213,9 +2432,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     BOOST_CHECK_EQUAL(info2.tdmaAddress(), 9);
 
 
-    BaseStation b3 = makeBaseStationWithMockImpl();
-    std::shared_ptr<mock_WirelessNodeImpl> impl3(new mock_WirelessNodeImpl(b3, 3));
-    WirelessNode node3(3, b3);
+    std::shared_ptr<mock_WirelessNodeImpl> impl3(new mock_WirelessNodeImpl(b, 3));
+    WirelessNode node3(3, b);
     node3.setImpl(impl3);
 
     std::unique_ptr<NodeFeatures> features3;
@@ -2232,6 +2450,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     s3.samplingDelay = 10;
     s3.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl3, s3);
+    expectRead(impl3, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl3, WirelessModels::node_vLink);
     expectGoodPing(impl3);
@@ -2254,10 +2473,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     BOOST_CHECK_EQUAL(info3.tdmaAddress(), 25);
 
 
-
-    BaseStation b4 = makeBaseStationWithMockImpl();
-    std::shared_ptr<mock_WirelessNodeImpl> impl4(new mock_WirelessNodeImpl(b4, 4));
-    WirelessNode node4(4, b4);
+    std::shared_ptr<mock_WirelessNodeImpl> impl4(new mock_WirelessNodeImpl(b, 4));
+    WirelessNode node4(4, b);
     node4.setImpl(impl4);
 
     std::unique_ptr<NodeFeatures> features4;
@@ -2274,6 +2491,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     s4.samplingDelay = 5;
     s4.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl4, s4);
+    expectRead(impl4, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl4, WirelessModels::node_gLink_2g);
     expectGoodPing(impl4);
@@ -2296,9 +2514,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     BOOST_CHECK_EQUAL(info4.tdmaAddress(), 57);
 
 
-    BaseStation b5 = makeBaseStationWithMockImpl();
-    std::shared_ptr<mock_WirelessNodeImpl> impl5(new mock_WirelessNodeImpl(b5, 5));
-    WirelessNode node5(5, b5);
+    std::shared_ptr<mock_WirelessNodeImpl> impl5(new mock_WirelessNodeImpl(b, 5));
+    WirelessNode node5(5, b);
     node5.setImpl(impl5);
 
     std::unique_ptr<NodeFeatures> features5;
@@ -2316,6 +2533,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     s5.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl5, s5);
     expectRead(impl5, NodeEepromMap::FILTER_1, Value::UINT16(static_cast<uint16>(1)));    //filter type
+    expectRead(impl5, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl5, WirelessModels::node_tcLink_6ch);
     expectGoodPing(impl5);
@@ -2340,9 +2558,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
 
 
     //ADDING THIS LAST NODE SHOULD CAUSE NETWORK CONTENTION    
-    BaseStation b6 = makeBaseStationWithMockImpl();
-    std::shared_ptr<mock_WirelessNodeImpl> impl6(new mock_WirelessNodeImpl(b6, 6));
-    WirelessNode node6(6, b6);
+    std::shared_ptr<mock_WirelessNodeImpl> impl6(new mock_WirelessNodeImpl(b, 6));
+    WirelessNode node6(6, b);
     node6.setImpl(impl6);
 
     std::unique_ptr<NodeFeatures> features6;
@@ -2360,6 +2577,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_networkContention)
     s6.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl6, s6);
     expectRead(impl6, NodeEepromMap::FILTER_1, Value::UINT16(static_cast<uint16>(1)));    //filter type
+    expectRead(impl6, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl6, WirelessModels::node_tcLink_6ch_ip67);
     expectGoodPing(impl6);
@@ -2386,7 +2604,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_tcLink6ch)
 {
     //this tests adding a tcLink 6ch to the network
 
-    BaseStation b6 = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b6(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b6, 6));
     WirelessNode node6(6, b6);
     node6.setImpl(impl);
@@ -2408,6 +2632,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_tcLink6ch)
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectRead(impl, NodeEepromMap::FILTER_1, Value::UINT16(static_cast<uint16>(1)));    //filter type
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_tcLink_6ch);
     expectGoodPing(impl);
@@ -2434,7 +2659,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_tcLink1ch)
 {
     //this tests adding a tcLink 6ch to the network
 
-    BaseStation b6 = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b6(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b6, 6));
     WirelessNode node6(6, b6);
     node6.setImpl(impl);
@@ -2456,6 +2687,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_tcLink1ch)
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectRead(impl, NodeEepromMap::FILTER_1, Value::UINT16(static_cast<uint16>(1)));    //filter type
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_tcLink_1ch);
     expectGoodPing(impl);
@@ -2482,7 +2714,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_envLinkPro)
 {
     //this tests adding an env-link pro
 
-    BaseStation b6 = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b6(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b6, 6));
     WirelessNode node6(6, b6);
     node6.setImpl(impl);
@@ -2505,6 +2743,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_envLinkPro)
     expectRead(impl, NodeEepromMap::FILTER_1, Value::UINT16(static_cast<uint16>(1)));    //filter 1
     expectRead(impl, NodeEepromMap::FILTER_2, Value::UINT16(static_cast<uint16>(1)));    //filter 1
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_envLink_pro);
     expectGoodPing(impl);
@@ -2531,7 +2770,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_envLinkMini)
 {
     //this tests adding an envLink mini
 
-    BaseStation b6 = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b6(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b6, 6));
     WirelessNode node6(6, b6);
     node6.setImpl(impl);
@@ -2553,6 +2798,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_envLinkMini)
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectRead(impl, NodeEepromMap::FILTER_1, Value::UINT16(static_cast<uint16>(1)));    //filter type
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_envLink_mini);
     expectGoodPing(impl);
@@ -2579,7 +2825,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_sgLinkHermetic)
 {
     //this tests adding an sg-link hermetic
 
-    BaseStation b6 = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b6(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b6, 6));
     WirelessNode node6(6, b6);
     node6.setImpl(impl);
@@ -2600,6 +2852,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNodes_sgLinkHermetic)
     s.samplingDelay = 10;
     s.samplingMode = WirelessTypes::samplingMode_sync;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_sgLink_herm_2700);
     expectGoodPing(impl);
@@ -2626,14 +2879,19 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_invalidConfig)
 {
     //this tests adding a node that has a config set to something other than sync sampling
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
 
     std::unique_ptr<NodeFeatures> features;
     expectNodeFeatures(features, impl);
-    
 
     SyncSamplingNetwork nwk(b);
 
@@ -2661,7 +2919,12 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_event)
 {
     //this tests adds a single node in event driven sync mode
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
 
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
@@ -2682,6 +2945,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_event)
     s.samplingDelay = 5;
     s.samplingMode = WirelessTypes::samplingMode_syncEvent;
     expectSampling_Continuous(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_wirelessImpactSensor);
     expectGoodPing(impl);
@@ -2722,6 +2986,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_event)
     s2.samplingDelay = 5;
     s2.samplingMode = WirelessTypes::samplingMode_syncEvent;
     expectSampling_Continuous(impl2, s2);
+    expectRead(impl2, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl2, WirelessModels::node_wirelessImpactSensor);
     expectGoodPing(impl2);
@@ -2757,7 +3022,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_event)
 
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_1)
 {
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -2780,12 +3051,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_1)
 
     expectRead(impl, NodeEepromMap::NODE_RETRANSMIT, Value::UINT16(retx));                  //retransmission        (on)
     expectRead(impl, NodeEepromMap::ACTIVE_CHANNEL_MASK, Value::UINT16(chs));               //active channels mask    (channels 1, 2, and 3)
-    expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(rate));                      //sample rate            (2Hz)
+    expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(rate));                      //sample rate            (256Hz)
     expectRead(impl, NodeEepromMap::SYNC_SAMPLE_SETTING, Value::UINT16(syncMode));          //sync sampling mode    (continuous)
     expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(dataFormat));                //data format            (2 byte uint)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));        //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));          //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectRead(impl, NodeEepromMap::DATA_MODE, Value::UINT16(3));                           //derived and raw mode enabled
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
@@ -2815,12 +3087,83 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_1)
     BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 16);
     BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
 }
+/* TODO: reenable
+BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_1_lxrsPlus)
+{
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrsPlus)));
 
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
+    WirelessNode node100(100, b);
+    node100.setImpl(impl);
+
+    SyncSamplingNetwork nwk(b);
+
+    std::unique_ptr<NodeFeatures> features;
+    expectNodeFeatures(features, impl, WirelessModels::node_gLink_200_8g);
+
+    //eeprom reads performed by the SyncSamplingNetwork
+    uint16  retx           = WirelessTypes::retransmission_on,
+            chs            = 5,
+            rate           = WirelessTypes::sampleRate_256Hz,
+            syncMode       = WirelessTypes::syncMode_continuous,
+            dataFormat     = WirelessTypes::dataFormat_raw_uint16,
+            collectionMode = WirelessTypes::collectionMethod_logAndTransmit,
+            samplingDelay  = 5,
+            samplingMode   = WirelessTypes::samplingMode_sync,
+            derivedRate    = WirelessTypes::sampleRate_1Hz;
+
+    expectRead(impl, NodeEepromMap::NODE_RETRANSMIT, Value::UINT16(retx));                  //retransmission        (on)
+    expectRead(impl, NodeEepromMap::ACTIVE_CHANNEL_MASK, Value::UINT16(chs));               //active channels mask    (channels 1 and 3)
+    expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(rate));                      //sample rate            (256Hz)
+    expectRead(impl, NodeEepromMap::SYNC_SAMPLE_SETTING, Value::UINT16(syncMode));          //sync sampling mode    (continuous)
+    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(dataFormat));                //data format            (2 byte uint)
+    expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));        //collection mode        (log and transmit)
+    expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));          //sampling delay        (5)
+    expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrsPlus));
+
+    expectRead(impl, NodeEepromMap::DATA_MODE, Value::UINT16(3));                           //derived and raw mode enabled
+    expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
+    expectRead(impl, NodeEepromMap::DERIVED_RMS_MASK, Value::UINT16(15));
+    expectRead(impl, NodeEepromMap::DERIVED_P2P_MASK, Value::UINT16(15));
+    expectRead(impl, NodeEepromMap::DERIVED_IPS_MASK, Value::UINT16(15));
+    expectRead(impl, NodeEepromMap::DERIVED_CREST_FACTOR_MASK, Value::UINT16(15));
+
+    expectReadModel(impl, WirelessModels::node_gLink_200_8g);
+    expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(10, 40000));
+
+    //add the node to the network
+    BOOST_CHECK_NO_THROW(nwk.addNode(node100));
+
+    //verify the network information
+    BOOST_CHECK_EQUAL(nwk.ok(), true);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 1.5625, 0.1);
+
+    //verify the networkInfo for the nodes in the network
+    const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
+    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
+    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
+    BOOST_CHECK_CLOSE(info.percentBandwidth(), 1.5625, 0.1);
+    BOOST_CHECK_EQUAL(info.groupSize(), 1);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 8);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 128);
+    BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
+}
+*/
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_2)
 {
     //same as previous test (continuous_derived_1), but with raw sample rate and channel mask changed
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -2849,6 +3192,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_2)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));        //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));          //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectRead(impl, NodeEepromMap::DATA_MODE, Value::UINT16(3));                           //derived and raw mode enabled
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
@@ -2883,7 +3227,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_3)
 {
     //same as previous test (continuous_derived_2), but with raw data format changed
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -2912,6 +3262,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_3)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));        //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));          //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectRead(impl, NodeEepromMap::DATA_MODE, Value::UINT16(3));                           //derived and raw mode enabled
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
@@ -2946,7 +3297,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_4)
 {
     //same as previous test (continuous_derived_3), but with more derived channels
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -2975,6 +3332,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_4)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));        //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));          //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectRead(impl, NodeEepromMap::DATA_MODE, Value::UINT16(3));                           //derived and raw mode enabled
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
@@ -3007,7 +3365,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_4)
 
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_1)
 {
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -3036,6 +3400,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_1)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));        //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));          //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectRead(impl, NodeEepromMap::DATA_MODE, Value::UINT16(2));                           //only derived mode enabled (no raw)
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
@@ -3066,11 +3431,85 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_1)
     BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
 }
 
+BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_1_lxrsPlus)
+{
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrsPlus)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
+    WirelessNode node100(100, b);
+    node100.setImpl(impl);
+
+    SyncSamplingNetwork nwk(b);
+
+    std::unique_ptr<NodeFeatures> features;
+    expectNodeFeatures(features, impl, WirelessModels::node_gLink_200_8g);
+
+    //eeprom reads performed by the SyncSamplingNetwork
+    uint16  retx = WirelessTypes::retransmission_on,
+        chs = 5,
+        rate = WirelessTypes::sampleRate_256Hz,
+        syncMode = WirelessTypes::syncMode_continuous,
+        dataFormat = WirelessTypes::dataFormat_raw_uint16,
+        collectionMode = WirelessTypes::collectionMethod_logAndTransmit,
+        samplingDelay = 5,
+        samplingMode = WirelessTypes::samplingMode_sync,
+        derivedRate = WirelessTypes::sampleRate_1Hz;
+
+    expectRead(impl, NodeEepromMap::NODE_RETRANSMIT, Value::UINT16(retx));                  //retransmission        (on)
+    expectRead(impl, NodeEepromMap::ACTIVE_CHANNEL_MASK, Value::UINT16(chs));               //active channels mask    (channels 1 and 3)
+    expectRead(impl, NodeEepromMap::SAMPLE_RATE, Value::UINT16(rate));                      //sample rate            (256Hz)
+    expectRead(impl, NodeEepromMap::SYNC_SAMPLE_SETTING, Value::UINT16(syncMode));          //sync sampling mode    (continuous)
+    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(dataFormat));                //data format            (2 byte uint)
+    expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));        //collection mode        (log and transmit)
+    expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));          //sampling delay        (5)
+    expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrsPlus));
+
+    expectRead(impl, NodeEepromMap::DATA_MODE, Value::UINT16(2));                           //only derived mode enabled (no raw)
+    expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
+    expectRead(impl, NodeEepromMap::DERIVED_RMS_MASK, Value::UINT16(7));                    //rms ch1, ch2, ch3
+    expectRead(impl, NodeEepromMap::DERIVED_P2P_MASK, Value::UINT16(0));
+    expectRead(impl, NodeEepromMap::DERIVED_IPS_MASK, Value::UINT16(0));
+    expectRead(impl, NodeEepromMap::DERIVED_CREST_FACTOR_MASK, Value::UINT16(0));
+
+    expectReadModel(impl, WirelessModels::node_gLink_200_8g);
+    expectGoodPing(impl);
+    MOCK_EXPECT(impl->firmwareVersion).returns(Version(10, 40000));
+
+    //add the node to the network
+    BOOST_CHECK_NO_THROW(nwk.addNode(node100));
+
+    //verify the network information
+    BOOST_CHECK_EQUAL(nwk.ok(), true);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.390625, 0.1);
+
+    //verify the networkInfo for the nodes in the network
+    const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
+    BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
+    BOOST_CHECK_EQUAL(info.configurationApplied(), false);
+    BOOST_CHECK_CLOSE(info.percentBandwidth(), 0.390625, 0.1);
+    BOOST_CHECK_EQUAL(info.groupSize(), 1);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 1);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 1024);
+    BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
+}
+
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_2)
 {
     //same as previous test (continuous_derivedOnly_1), but with more derived channels
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -3099,6 +3538,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_2)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));        //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));          //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectRead(impl, NodeEepromMap::DATA_MODE, Value::UINT16(2));                           //only derived mode enabled (no raw)
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
@@ -3133,7 +3573,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_3)
 {
     //same as previous test (continuous_derivedOnly_2), but with more derived channels
 
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+    
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -3162,6 +3608,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_3)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));        //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));          //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectRead(impl, NodeEepromMap::DATA_MODE, Value::UINT16(2));                           //only derived mode enabled (no raw)
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
@@ -3194,7 +3641,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_3)
 
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst_derived1)
 {
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -3219,6 +3672,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst_derived1)
     s.samplingMode = WirelessTypes::samplingMode_syncBurst;
 
     expectSampling_Burst(impl, s);
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectReadModel(impl, WirelessModels::node_gLink_2g);
     expectGoodPing(impl);
@@ -3261,7 +3715,13 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst_derived1)
 
 BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_nolossless)
 {
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl);
+    BaseStation b(baseImpl);
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(WirelessTypes::commProtocol_lxrs)));
+
+    std::unique_ptr<BaseStationFeatures> baseFeatures;
+    expectBaseFeatures(baseFeatures, baseImpl, WirelessModels::base_wsdaBase_104_usb);
+
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b, 100));
     WirelessNode node100(100, b);
     node100.setImpl(impl);
@@ -3290,6 +3750,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_nolossless)
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(collectionMode));        //collection mode        (log and transmit)
     expectRead(impl, NodeEepromMap::SAMPLING_DELAY, Value::UINT16(samplingDelay));          //sampling delay        (5)
     expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16(samplingMode));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
 
     expectRead(impl, NodeEepromMap::DATA_MODE, Value::UINT16(3));                           //derived and raw mode enabled
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));

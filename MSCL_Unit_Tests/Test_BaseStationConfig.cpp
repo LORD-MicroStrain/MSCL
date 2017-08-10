@@ -202,7 +202,9 @@ BOOST_AUTO_TEST_CASE(BaseStationConfig_legacyTransmitPower)
     std::unique_ptr<BaseStationFeatures> features;
     
     //3.2 fw doesn't support the new transmit power values
-    BaseStationInfo info(Version(3, 2), WirelessModels::base_wsdaBase_104_usb, WirelessTypes::region_usa);
+    Version asppVer_lxrs(1, 7);
+    Version asppVer_lxrsPlus(3, 0);
+    BaseStationInfo info(Version(3, 2), WirelessModels::base_wsdaBase_104_usb, WirelessTypes::region_usa, asppVer_lxrs, asppVer_lxrsPlus);
     features = BaseStationFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -211,7 +213,7 @@ BOOST_AUTO_TEST_CASE(BaseStationConfig_legacyTransmitPower)
 
     //expect the single eeprom write
     expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::legacyPower_10dBm));
-    expectRead(impl, BaseStationEepromMap::ASPP_VER, Value::UINT16((0)));
+    expectRead(impl, BaseStationEepromMap::ASPP_VER_LXRS, Value::UINT16((0)));
     expectRead(impl, BaseStationEepromMap::FIRMWARE_VER, Value::UINT16((uint16)(3)));
     expectRead(impl, BaseStationEepromMap::FIRMWARE_VER2, Value::UINT16((uint16)(2)));
     expectCyclePower(impl);

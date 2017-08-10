@@ -45,9 +45,6 @@ namespace mscl
         //Function: sampleRate
         //    Gets the <SampleRate> of the node.
         //
-        //Returns:
-        //    A <SampleRate> object representing the sample rate of the node.
-        //
         //Exceptions:
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
@@ -77,6 +74,14 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint16 activeChannelCount();
+
+        //Function: commProtocol
+        //  Gets the <WirelessTypes::CommProtocol> of the Node.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::CommProtocol commProtocol();
 
         //Function: dataFormat
         //    Gets the <WirelessTypes::DataFormat> of the node.
@@ -144,38 +149,19 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         TimeSpan timeBetweenBursts();
 
-        //Function: retransmission
-        //    Gets the <WirelessTypes::NodeRetransmission> of the node.
+        //Function: filterSettlingTime
+        //  Gets the <WirelessTypes::SettlingTime> of the node for a specific channel number.
+        //
+        //Parameters:
+        //  channelNumber - The channel number to get the settling time for (ch1 = 1, ch8 = 8).
         //
         //Returns:
-        //    The <WirelessTypes::NodeRetransmission> of the node.
+        //  A <WirelessTypes::SettlingTime>.
         //
         //Exceptions:
-        //    - <Error_NodeCommunication>: Failed to read the value from the Node.
-        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        WirelessTypes::NodeRetransmission retransmission();
-
-        //Function: 
-        //    Gets the first filter of the node.
-        //
-        //Returns:
-        //    A <WirelessTypes::SettlingTime> representing the first filter of the node.
-        //
-        //Exceptions:
-        //    - <Error_NodeCommunication>: Failed to read the value from the Node.
-        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        WirelessTypes::SettlingTime filter1();
-
-        //Function: filter2
-        //    Gets the second filter of the node.
-        //
-        //Returns:
-        //    A <WirelessTypes::SettlingTime> representing the second filter of the node.
-        //
-        //Exceptions:
-        //    - <Error_NodeCommunication>: Failed to read the value from the Node.
-        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        WirelessTypes::SettlingTime filter2();
+        //  - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::SettlingTime filterSettlingTime(uint8 channelNumber);
 
         //Function: dataMode
         //    Gets the <DataModeMask> of the node.

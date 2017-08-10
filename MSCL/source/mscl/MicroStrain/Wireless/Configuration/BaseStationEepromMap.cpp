@@ -25,7 +25,8 @@ namespace mscl
     const EepromLocation BaseStationEepromMap::RADIO_ID                    (118, valueType_uint16);
     const EepromLocation BaseStationEepromMap::MICROCONTROLLER             (120, valueType_uint16);
     const EepromLocation BaseStationEepromMap::FW_ARCH_VER                 (122, valueType_uint16);
-    const EepromLocation BaseStationEepromMap::ASPP_VER                    (124, valueType_uint16);
+    const EepromLocation BaseStationEepromMap::ASPP_VER_LXRS               (124, valueType_uint16);
+    const EepromLocation BaseStationEepromMap::ASPP_VER_LXRS_PLUS          (126, valueType_uint16);
     const EepromLocation BaseStationEepromMap::ANALOG_1_NODE_ADDRESS       (128, valueType_uint16);
     const EepromLocation BaseStationEepromMap::ANALOG_1_NODE_CHANNEL       (130, valueType_uint16);
     const EepromLocation BaseStationEepromMap::ANALOG_1_FLOAT_MAX          (132, valueType_float);
@@ -78,6 +79,7 @@ namespace mscl
     const EepromLocation BaseStationEepromMap::ANALOG_EXCEED_ENABLE        (356, valueType_uint16);
     const EepromLocation BaseStationEepromMap::MIN_SOFT_VER_MAJOR          (480, valueType_uint16);
     const EepromLocation BaseStationEepromMap::MIN_SOFT_VER_MINOR          (482, valueType_uint16);
+    const EepromLocation BaseStationEepromMap::COMM_PROTOCOL               (1024, valueType_uint16);
 
     bool BaseStationEepromMap::canUseCache_read(uint16 eepromLocation)
     {
@@ -98,6 +100,7 @@ namespace mscl
             //eeprom locations that should always be written to the device, never using the cache to check if its the same value
             case 90:    //FREQUENCY
             case 250:   //CYCLE_POWER
+            case 1024:  //RADIO_CONFIG
             case 1030:
                 return false;
 

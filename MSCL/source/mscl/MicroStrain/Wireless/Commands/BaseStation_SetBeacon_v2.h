@@ -5,7 +5,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/Timestamp.h"
 
 namespace mscl
@@ -16,10 +17,10 @@ namespace mscl
     //    Contains logic for the base station set (enable/disable) beacon command (v2)
     class BaseStation_SetBeacon_v2
     {
-    private:
-        BaseStation_SetBeacon_v2();                                                //default constructor disabled
-        BaseStation_SetBeacon_v2(const BaseStation_SetBeacon_v2&);                //copy constructor disabled
-        BaseStation_SetBeacon_v2& operator=(const BaseStation_SetBeacon_v2&);    //assignement operator disabled
+    public:
+        BaseStation_SetBeacon_v2() = delete;                                                //default constructor disabled
+        BaseStation_SetBeacon_v2(const BaseStation_SetBeacon_v2&) = delete;                //copy constructor disabled
+        BaseStation_SetBeacon_v2& operator=(const BaseStation_SetBeacon_v2&) = delete;    //assignement operator disabled
 
     public:
         //Function: buildCommand
@@ -30,11 +31,11 @@ namespace mscl
         //
         //Returns:
         //    A <ByteStream> containing the base station set beacon command
-        static ByteStream buildCommand(uint32 utcTime);
+        static ByteStream buildCommand(WirelessPacket::AsppVersion asppVer, uint32 utcTime);
 
         //Class: Response
         //    Handles the response to the base station write eeprom command
-        class Response : public ResponsePattern
+        class Response : public WirelessResponsePattern
         {
         public:
             //Constructor: Response
@@ -51,16 +52,6 @@ namespace mscl
             uint32 m_beaconStartTime;
 
         public:
-            //Function: match
-            //    Checks if the packet passed in matches either the success or failure response.
-            //
-            //Parameters:
-            //    packet - The <WirelessPacket> to try to match.
-            //
-            //Returns:
-            //    true if the response pattern was found, false otherwise.
-            virtual bool match(const WirelessPacket& packet) override;
-
             //Function: beaconStartTime
             //    Gets the start time that was sent to enable the beacon 
             //
@@ -68,7 +59,7 @@ namespace mscl
             //    a <Timestamp> representing the start time that was sent to enable the beacon
             Timestamp beaconStartTime() const;
 
-        private:
+        protected:
             //Function: matchSuccessResponse
             //    Checks if the packet passed in matches the success response.
             //
@@ -77,7 +68,7 @@ namespace mscl
             //
             //Returns:
             //    true if the success response pattern was found, false otherwise
-            bool matchSuccessResponse(const WirelessPacket& packet);
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
 
             //Function: matchFailResponse
             //    Checks if the packet passed in matches the failure response.
@@ -87,7 +78,7 @@ namespace mscl
             //
             //Returns:
             //    true if the failure response pattern was found, false otherwise
-            bool matchFailResponse(const WirelessPacket& packet);
+            bool matchFailResponse(const WirelessPacket& packet) override;
         };
     };
 

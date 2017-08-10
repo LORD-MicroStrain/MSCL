@@ -70,6 +70,20 @@ namespace mscl
         return totalChannelCount;
     }
 
+    WirelessTypes::CommProtocol SyncNodeConfig::commProtocol()
+    {
+        try
+        {
+            //try to read the value from the pending config
+            return m_networkInfo->getPendingConfig().communicationProtocol();
+        }
+        catch(Error_NoData&)
+        {
+            //not set in the config, read the value from eeprom
+            return m_eepromHelper.read_commProtocol();
+        }
+    }
+
     WirelessTypes::DataFormat SyncNodeConfig::dataFormat()
     {
         try
@@ -128,10 +142,16 @@ namespace mscl
 
     uint32 SyncNodeConfig::sensorDelay()
     {
-        //not part of sampling configuration
-
-        //read the value from eeprom
-        return m_eepromHelper.read_sensorDelay();
+        try
+        {
+            //try to read the value from the pending config
+            return m_networkInfo->getPendingConfig().sensorDelay();
+        }
+        catch(Error_NoData&)
+        {
+            //read the value from eeprom
+            return m_eepromHelper.read_sensorDelay();
+        }
     }
 
     TimeSpan SyncNodeConfig::timeBetweenBursts()
@@ -148,24 +168,33 @@ namespace mscl
         }
     }
 
-    WirelessTypes::NodeRetransmission SyncNodeConfig::retransmission()
+    WirelessTypes::SettlingTime SyncNodeConfig::filterSettlingTime(uint8 channelNumber)
     {
-        //not part of sampling configuration
+        ChannelMask mask;
+        
+        //find the ChannelMask for the filterSettlingTime that contains the requested channel number
+        auto groups = m_networkInfo->channelGroups();
+        for(auto i : groups)
+        {
+            if(i.hasSetting(mscl::WirelessTypes::chSetting_filterSettlingTime))
+            {
+                if(i.channels().enabled(channelNumber))
+                {
+                    mask = i.channels();
+                }
+            }
+        }
 
-        //read the value from eeprom
-        return m_eepromHelper.read_retransmission();
-    }
-
-    WirelessTypes::SettlingTime SyncNodeConfig::filter1()
-    {
-        //read the value from eeprom
-        return m_eepromHelper.read_filter1();
-    }
-
-    WirelessTypes::SettlingTime SyncNodeConfig::filter2()
-    {
-        //read the value from eeprom
-        return m_eepromHelper.read_filter2();
+        try
+        {
+            //try to read the value from the pending config
+            return m_networkInfo->getPendingConfig().filterSettlingTime(mask);
+        }
+        catch(Error_NoData&)
+        {
+            //read the value from eeprom
+            return m_eepromHelper.read_settlingTime(mask);
+        }
     }
 
     DataModeMask SyncNodeConfig::dataMode()

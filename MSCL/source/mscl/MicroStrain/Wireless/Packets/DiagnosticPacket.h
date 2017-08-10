@@ -41,13 +41,13 @@ namespace mscl
 
     public:
         //Function: integrityCheck
-        //    Verifies that the packet is a well formed BeaconEchoPacket packet.
+        //    Verifies that the packet is a well formed Diagnostic packet.
         //
         //Parameters:
         //    packet - The fully formed Wireless Packet to check the integrity of.
         //
         //Returns:
-        //    true if the packet is a well formed BeaconEchoPacket, false otherwise
+        //    true if the packet is a well formed Diagnostic, false otherwise
         static bool integrityCheck(const WirelessPacket& packet);
 
         //Function: getUniqueId

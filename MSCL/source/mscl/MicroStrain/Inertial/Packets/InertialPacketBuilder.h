@@ -25,7 +25,7 @@ namespace mscl
         //Parameters:
         //    descriptorSet - The 1-byte Descriptor Set
         //    field - The initial <InertialDataField> to add
-        InertialPacketBuilder(uint8 descriptorSet, const InertialDataField& field);
+        InertialPacketBuilder(const uint8 descriptorSet, const InertialDataField& field);
 
     private:
         InertialPacketBuilder();                                        //default constructor disabled

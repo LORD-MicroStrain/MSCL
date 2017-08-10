@@ -22,9 +22,9 @@ public:
     //API Enums: InertialCategory
     //    The enums for all the different types/categories of Inertial commands and data.
     //
-    //CATEGORY_SENSOR         - 0x80 - The Sensor Inertial category
-    //CATEGORY_GNSS           - 0x81 - The GNSS Inertial category
-    //CATEGORY_ESTFILTER      - 0x82 - The Estimation Filter Inertial category
+    //      CATEGORY_SENSOR         - 0x80 - The Sensor Inertial category
+    //      CATEGORY_GNSS           - 0x81 - The GNSS Inertial category
+    //      CATEGORY_ESTFILTER      - 0x82 - The Estimation Filter Inertial category
     enum InertialCategory
     {
         CATEGORY_SENSOR        = 0x80,
@@ -32,7 +32,43 @@ public:
         CATEGORY_ESTFILTER     = 0x82
     };
 
-    //API Enums: Command
+    //Enums: FunctionSelector
+    //    The enums for all the different types/categories of Inertial commands and data.
+    //
+    //      USE_NEW_SETTINGS            - 0x01  set command, requiring data to set.
+    //      READ_BACK_CURRENT_SETTINGS  - 0x02  retrieves current data from device.
+    //      SAVE_CURRENT_SETTINGS       - 0x03  saves current data to use at startup.
+    //      LOAD_STARTUP_SETTINGS       - 0x04  sets current settings to startup.
+    //      RESET_TO_DEFAULT            - 0x05  resets current to factory default.
+    enum FunctionSelector {
+        USE_NEW_SETTINGS = 0x01,
+        READ_BACK_CURRENT_SETTINGS = 0x02,
+        SAVE_CURRENT_SETTINGS = 0x03,
+        LOAD_STARTUP_SETTINGS = 0x04,
+        RESET_TO_DEFAULT = 0x05
+    };
+
+    //API Enums: EnableSetting
+    //    The enums for enable or disable of data.
+    //
+    //      DISABLED    - 0x00
+    //      ENABLED     - 0x01
+        enum EnableSetting {
+        DISABLED = 0,
+        ENABLED = 1
+    };
+
+    //API Enums: TimeFrame
+    //    The enums to represent different time categories.
+    //
+    //      TIME_FRAME_WEEKS    - 0x00
+    //      TIME_FRAME_SECONDS  - 0x01
+        enum TimeFrame {
+        TIME_FRAME_WEEKS = 0,
+        TIME_FRAME_SECONDS = 1
+    };
+
+    //Enums: Command
     //    The enums for all of the different Inertial commands.
     //
     //  CMD_PING                                    - 0x0101    - Ping

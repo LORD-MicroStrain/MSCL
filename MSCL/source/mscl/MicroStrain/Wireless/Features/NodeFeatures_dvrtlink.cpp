@@ -17,8 +17,8 @@ namespace mscl
         addCalCoeffChannelGroup(4, NodeEepromMap::CH_ACTION_SLOPE_4, NodeEepromMap::CH_ACTION_ID_4);
 
         //Channels
-        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_temperature);    //temperature
-        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_displacement);    //displacement
+        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_temperature, "Internal Temperature");
+        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_displacement, "Displacement");
     }
 
     bool NodeFeatures_dvrtlink::supportsSensorDelayConfig() const

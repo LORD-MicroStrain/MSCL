@@ -232,8 +232,14 @@ BOOST_AUTO_TEST_CASE(BaseStation_changeFrequency_success)
     std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl());
     BaseStation base(baseImpl);
 
+    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+    MOCK_EXPECT(baseImpl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+    //expectRead(baseImpl, BaseStationEepromMap::ASPP_VER_LXRS, Value::UINT16((uint16)(0x0100)));
     expectWrite(baseImpl, BaseStationEepromMap::FREQUENCY, Value::UINT16(14));
     expectWrite(baseImpl, BaseStationEepromMap::CYCLE_POWER, Value::UINT16(2));
+
+    std::unique_ptr<BaseStationFeatures> features;
+    expectBaseFeatures(features, baseImpl, WirelessModels::base_wsdaBase_101_analog);
 
     //check that the command doesn't throw an exception (succeeded)
     BOOST_CHECK_NO_THROW(base.changeFrequency(WirelessTypes::freq_14));
@@ -264,7 +270,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeLongPing_Success)
     connImpl->setResponseBytes(data);
 
     //send the node_ping command
-    PingResponse result = base.node_ping(327);
+    PingResponse result = base.node_ping(*(WirelessProtocol::v1_0().get()), 327);
 
     BOOST_CHECK_EQUAL(result.success(), true);
     BOOST_CHECK_EQUAL(result.nodeRssi(), 1);
@@ -286,7 +292,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_NodeLongPing_Fail_Timeout)
     connImpl->setResponseBytes(data);
 
     //call the node_ping command
-    PingResponse result = base.node_ping(327);
+    PingResponse result = base.node_ping(*(WirelessProtocol::v1_0().get()), 327);
 
     int unknownRssi = WirelessTypes::UNKNOWN_RSSI;
 
@@ -462,10 +468,10 @@ BOOST_AUTO_TEST_CASE(BaseStation_node_startSyncSampling)
     data.append_uint16(data.calculateSimpleChecksum(1, 8));    //checksum
     connImpl->setResponseBytes(data);
     
-    BOOST_CHECK_EQUAL(base.node_startSyncSampling(327), true);
+    BOOST_CHECK_EQUAL(base.node_startSyncSampling(*(WirelessProtocol::v1_0().get()), 327), true);
 
     //send the command again, but fail this time
-    BOOST_CHECK_EQUAL(base.node_startSyncSampling(400), false);
+    BOOST_CHECK_EQUAL(base.node_startSyncSampling(*(WirelessProtocol::v1_0().get()), 400), false);
 }
 
 BOOST_AUTO_TEST_CASE(BaseStation_getButtonLongPress)
@@ -535,7 +541,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_node_autocal_fail)
     connImpl->setResponseBytes(data);
 
     AutoCalResult_shmLink result;
-    BOOST_CHECK_EQUAL(base.node_autocal_shm(327, result), false);
+    BOOST_CHECK_EQUAL(base.node_autocal_shm(*(WirelessProtocol::v1_2().get()), 327, result), false);
 
     BOOST_CHECK_EQUAL(result.completionFlag(), WirelessTypes::autocal_notComplete);
 }
@@ -589,7 +595,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_node_autocal_success)
     connImpl->setResponseBytesWithDelay(responses, 2000);
 
     AutoCalResult_shmLink result;
-    BOOST_CHECK_EQUAL(base.node_autocal_shm(327, result), true);
+    BOOST_CHECK_EQUAL(base.node_autocal_shm(*(WirelessProtocol::v1_2().get()), 327, result), true);
 
     BOOST_CHECK_EQUAL(result.completionFlag(), WirelessTypes::autocal_success);
 }

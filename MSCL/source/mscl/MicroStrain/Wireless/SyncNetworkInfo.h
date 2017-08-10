@@ -11,6 +11,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "WirelessNode.h"
 #include "WirelessTypes.h"
 #include "Configuration/WirelessNodeConfig.h"
+#include "mscl/MicroStrain/Wireless/Features/ChannelGroup.h"
 
 #include <memory>
 
@@ -234,6 +235,10 @@ namespace mscl
         //Returns:
         //    The <WirelessNodeConfig> pointer that is currently set.
         const WirelessNodeConfig& getPendingConfig() const;
+
+        //Function: channelGroups
+        //  Gets the <ChannelGroups> for the Wireless Node.
+        ChannelGroups channelGroups() const;
     };
 
 }

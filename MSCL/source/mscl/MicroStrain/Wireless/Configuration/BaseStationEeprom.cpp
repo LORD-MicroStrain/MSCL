@@ -6,6 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "stdafx.h"
 #include "BaseStationEeprom.h"
 #include "BaseStationEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Features/BaseStationFeatures.h"
 #include "mscl/MicroStrain/Wireless/BaseStation_Impl.h"
 #include "mscl/Utils.h"
 
@@ -43,6 +44,15 @@ namespace mscl
     {
         uint16 result;
 
+        if(location >= 1024)
+        {
+            //verify we can read eeproms 1024 and above (otherwise Node will wrap around)
+            if(!m_baseStation->features().supportsEeprom1024AndAbove())
+            {
+                throw Error_NotSupported("EEPROM " + Utils::toStr(location) + " is not supported.");
+            }
+        }
+
         //if we want to pull from the cache
         if(m_useCache && BaseStationEepromMap::canUseCache_read(location))
         {
@@ -71,6 +81,15 @@ namespace mscl
 
     void BaseStationEeprom::writeEeprom(uint16 location, uint16 value)
     {
+        if(location >= 1024)
+        {
+            //verify we can read eeproms 1024 and above (otherwise Node will wrap around)
+            if(!m_baseStation->features().supportsEeprom1024AndAbove())
+            {
+                throw Error_NotSupported("EEPROM " + Utils::toStr(location) + " is not supported.");
+            }
+        }
+
         //if we want to check the cache
         if(m_useCache && BaseStationEepromMap::canUseCache_write(location))
         {
@@ -89,26 +108,37 @@ namespace mscl
 
         //if we made it here, we want to actually write to the device
 
-        //clear the eeprom cache for this location if we have one, just to be safe
-        clearCacheLocation(location);
-
-        uint8 retryCount = 0;
-
-        do
+        try
         {
-            //attempt to write the value to the BaseStation
-            if(m_baseStation->write(location, value))
-            {
-                //successfully wrote to the BaseStation, update the cache
-                m_hasWritten = true;
-                updateCache(location, value);
+            uint8 retryCount = 0;
 
-                return;
+            do
+            {
+                //attempt to write the value to the BaseStation
+                if(m_baseStation->write(location, value))
+                {
+                    //successfully wrote to the BaseStation, update the cache
+                    m_hasWritten = true;
+                    updateCache(location, value);
+
+                    return;
+                }
             }
+            while(retryCount++ < m_numRetries);
         }
-        while(retryCount++ < m_numRetries);
+        catch(...)
+        {
+            //clear the eeprom cache for this location if we have one, just to be safe
+            clearCacheLocation(location);
+
+            //rethrow the exception
+            throw;
+        }
 
         //we failed to write the value to the BaseStation
+
+        //clear the eeprom cache for this location if we have one
+        clearCacheLocation(location);
 
         throw Error_Communication("Failed to write EEPROM " + Utils::toStr(location) + " to the BaseStation.");
     }

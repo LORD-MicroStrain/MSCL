@@ -16,8 +16,8 @@ namespace mscl
         NodeFeatures(info)
     {
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_temperature);    //temp
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_temperature);    //temp
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_temperature, "Temperature 1");
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_temperature, "Temperature 2");
     }
 
     const WirelessTypes::SamplingModes NodeFeatures_cfBearing::samplingModes() const

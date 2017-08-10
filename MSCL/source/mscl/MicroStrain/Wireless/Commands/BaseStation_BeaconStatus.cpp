@@ -11,48 +11,39 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    BeaconStatus::BeaconStatus():
-        m_enabled(false),
-        m_timestamp(0)
-    {
-    }
-
-    BeaconStatus::BeaconStatus(bool beaconEnabled, const Timestamp& currentTimestamp):
-        m_enabled(beaconEnabled),
-        m_timestamp(currentTimestamp)
-    {
-    }
-
-    bool BeaconStatus::enabled()
-    {
-        return m_enabled;
-    }
-
-    const Timestamp& BeaconStatus::timestamp()
-    {
-        return m_timestamp;
-    }
-
-    ByteStream BaseStation_BeaconStatus::buildCommand()
+    ByteStream BaseStation_BeaconStatus::buildCommand(WirelessPacket::AsppVersion asppVer)
     {
         //build the command ByteStream
         ByteStream cmd;
 
-        cmd.append_uint8(0xAA);                                                     //Start of packet
-        cmd.append_uint8(0x0E);                                                     //Delivery Stop Flag
-        cmd.append_uint8(0x30);                                                     //App Data Type
-        cmd.append_uint16(WirelessProtocol::BASE_STATION_ADDRESS);                  //Base Station Address
-        cmd.append_uint8(0x02);                                                     //Payload length
-        cmd.append_uint16(WirelessProtocol::cmdId_base_getBeaconStatus);            //Command ID
-        cmd.append_uint16(cmd.calculateSimpleChecksum(1, 7));                       //checksum
+        if(asppVer == WirelessPacket::aspp_v3)
+        {
+            cmd.append_uint8(WirelessPacket::ASPP_V3_SOP);                              //Start of packet
+            cmd.append_uint8(0x01);                                                     //Delivery Stop Flag
+            cmd.append_uint8(WirelessPacket::packetType_baseCommand);                   //App Data Type
+            cmd.append_uint32(WirelessProtocol::BASE_STATION_ADDRESS);                  //Base Station Address
+            cmd.append_uint16(0x0002);                                                  //Payload length
+            cmd.append_uint16(WirelessProtocol::cmdId_base_getBeaconStatus_v1);         //Command ID
+            cmd.append_uint16(0x7F7F);                                                  //dummy rssi bytes
+            cmd.append_uint32(cmd.calculateCrcChecksum());                              //checksum
+        }
+        else
+        {
+            cmd.append_uint8(WirelessPacket::ASPP_V1_SOP);                              //Start of packet
+            cmd.append_uint8(0x0E);                                                     //Delivery Stop Flag
+            cmd.append_uint8(0x30);                                                     //App Data Type
+            cmd.append_uint16(WirelessProtocol::BASE_STATION_ADDRESS);                  //Base Station Address
+            cmd.append_uint8(0x02);                                                     //Payload length
+            cmd.append_uint16(WirelessProtocol::cmdId_base_getBeaconStatus_v1);         //Command ID
+            cmd.append_uint16(cmd.calculateSimpleChecksum(1, 7));                       //checksum
+        }
 
         //return the built command bytes
         return cmd;
     }
 
-
     BaseStation_BeaconStatus::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        ResponsePattern(collector)
+        WirelessResponsePattern(collector, WirelessProtocol::cmdId_base_getBeaconStatus_v1, WirelessProtocol::BASE_STATION_ADDRESS)
     {
     }
 
@@ -61,11 +52,11 @@ namespace mscl
         WirelessPacket::Payload payload = packet.payload();
 
         //check the main bytes of the packet
-        if(packet.deliveryStopFlags().toInvertedByte() != 0x07 ||                   //delivery stop flag
+        if(!packet.deliveryStopFlags().pc ||                                         //delivery stop flag
            packet.type() != WirelessPacket::packetType_baseSuccessReply ||          //app data type
            packet.nodeAddress() != WirelessProtocol::BASE_STATION_ADDRESS ||        //node address
            payload.size() != 11 ||                                                  //payload length
-           payload.read_uint16(0) != WirelessProtocol::cmdId_base_getBeaconStatus   //command ID
+           payload.read_uint16(0) != WirelessProtocol::cmdId_base_getBeaconStatus_v1//command ID
            )
         {
             //failed to match some of the bytes
@@ -83,9 +74,6 @@ namespace mscl
         //build the BeaconStatus result object
         m_result = BeaconStatus(enabled, time);
 
-        //set the result to success
-        m_success = true;
-
         return true;
     }
 
@@ -94,11 +82,11 @@ namespace mscl
         WirelessPacket::Payload payload = packet.payload();
 
         //check the main bytes of the packet
-        if(packet.deliveryStopFlags().toInvertedByte() != 0x07 ||                   //delivery stop flag
+        if(!packet.deliveryStopFlags().pc ||                                         //delivery stop flag
            packet.type() != WirelessPacket::packetType_baseErrorReply ||            //app data type
            packet.nodeAddress() != WirelessProtocol::BASE_STATION_ADDRESS ||        //node address
            payload.size() != 3 ||                                                   //payload length
-           payload.read_uint16(0) != WirelessProtocol::cmdId_base_getBeaconStatus   //command ID
+           payload.read_uint16(0) != WirelessProtocol::cmdId_base_getBeaconStatus_v1//command ID
            )
         {
             //failed to match some of the bytes
@@ -108,37 +96,7 @@ namespace mscl
         //Not doing anything with the error code as of now
         //uint8 errorCode = payload.read_uint8(2);
 
-        //set the result to failure
-        m_success = false;
-
         return true;
-    }
-
-    bool BaseStation_BeaconStatus::Response::match(const WirelessPacket& packet)
-    {
-        //if the bytes match the success response
-        if(matchSuccessResponse(packet))
-        {
-            //we have fully matched the response
-            m_fullyMatched = true;
-
-            //notify that the response was matched
-            m_matchCondition.notify();
-            return true;
-        }
-        //if the bytes match the fail response
-        else if(matchFailResponse(packet))
-        {
-            //we have fully matched the response
-            m_fullyMatched = true;
-
-            //notify that the response was matched
-            m_matchCondition.notify();
-            return true;
-        }
-
-        //the bytes don't match any response
-        return false;
     }
 
     BeaconStatus BaseStation_BeaconStatus::Response::result()

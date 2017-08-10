@@ -34,7 +34,7 @@ BOOST_AUTO_TEST_CASE(ArmForDatalogging_buildCommand_nomessage)
 {
     ByteStream result = ArmForDatalogging::buildCommand(123);
 
-    uint8 sop = WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE;
+    uint8 sop = WirelessPacket::ASPP_V1_SOP;
 
     BOOST_CHECK_EQUAL(result.read_uint8(0), sop);
     BOOST_CHECK_EQUAL(result.read_uint8(1), 0x05);
@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(ArmForDatalogging_buildCommand_withShortMessage)
     uint16 messageLen = static_cast<uint16>(message.length());
     ByteStream result = ArmForDatalogging::buildCommand(123, message);
 
-    uint8 sop = WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE;
+    uint8 sop = WirelessPacket::ASPP_V1_SOP;
 
     BOOST_CHECK_EQUAL(result.read_uint8(0), sop);
     BOOST_CHECK_EQUAL(result.read_uint8(1), 0x05);
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(ArmForDatalogging_buildCommand_withLongMessage)
     uint16 messageLen = static_cast<uint16>(truncatedMessage.length());
     ByteStream result = ArmForDatalogging::buildCommand(123, message);
 
-    uint8 sop = WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE;
+    uint8 sop = WirelessPacket::ASPP_V1_SOP;
 
     BOOST_CHECK_EQUAL(result.read_uint8(0), sop);
     BOOST_CHECK_EQUAL(result.read_uint8(1), 0x05);

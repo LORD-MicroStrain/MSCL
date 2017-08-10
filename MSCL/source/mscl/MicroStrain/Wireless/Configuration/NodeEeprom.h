@@ -14,6 +14,7 @@ namespace mscl
     //Title: NodeEeprom
 
     class ByteStream;
+    class WirelessNode_Impl;
 
     //Struct: NodeEepromSettings
     //    The settings for the <NodeEeprom> object.
@@ -55,16 +56,13 @@ namespace mscl
         //Parameters:
         //    nodeAddress - The address of the Node to access the Eeprom of.
         //    base - The <BaseStation> to use for communicating with the Node.
-        //    protocol - The <WirelessProtocol> that is supported by the Node.
         //    setttings - The <NodeEepromSettings> to use.
-        NodeEeprom(NodeAddress nodeAddress, const BaseStation& base, const WirelessProtocol& protocol, const NodeEepromSettings& settings);
+        NodeEeprom(const WirelessNode_Impl* node, const BaseStation& base, const NodeEepromSettings& settings);
 
         virtual ~NodeEeprom() {};
 
     private:
-        //Variable: m_nodeAddress
-        //    The address of the <WirelessNode> to access the eeprom of.
-        NodeAddress m_nodeAddress;
+        const WirelessNode_Impl* m_node;
 
         //Variable: m_baseStation
         //    The <BaseStation> to use for communication with the Node.
@@ -73,10 +71,6 @@ namespace mscl
         //Variable: m_useGroupRead
         //    Whether we can use a group eeprom read when reading from eeprom.
         bool m_useGroupRead;
-
-        //Variable: m_protocol
-        //    The <WirelessProtocol> that is supported by the Node.
-        const WirelessProtocol* m_protocol;
 
     protected:
         //Function: updateCacheFromDevice
@@ -102,6 +96,14 @@ namespace mscl
         //    pageData - The <ByteStream> that contains the data read from the page download command
         //    pageIndex - The 0-based index that was used to download the page
         virtual void parseEepromPage(const ByteStream& pageData, uint16 pageIndex);
+
+        //Function: parseBatchEepromResult
+        //  Parses the response from a Batch Node Eeprom Read command.
+        //  The eeprom cache will be updated with all the parsed values.
+        //
+        //Parameters:
+        //  eepromMap - The eeprom location/value map read from the batch node eeprom read command.
+        virtual void parseBatchEepromResult(const std::map<uint16, uint16> eepromMap);
 
     public:
         using Eeprom::readEeprom;

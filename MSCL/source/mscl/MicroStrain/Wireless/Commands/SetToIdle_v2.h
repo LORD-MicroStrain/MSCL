@@ -28,6 +28,7 @@ namespace mscl
         //Returns:
         //    A <ByteStream> containing the SetToIdle command packet
         ByteStream buildCommand(NodeAddress nodeAddress);
+        ByteStream buildCommand_aspp3(NodeAddress nodeAddress);
 
 
         //Class: Response

@@ -7,18 +7,29 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "InertialNode_Impl.h"
 
 #include "mscl/Utils.h"
+#include "mscl/ScopeHelper.h"
 #include "InertialParser.h"
 #include "InertialNodeInfo.h"
 #include "Commands/ContinuousDataStream.h"
 #include "Commands/EstFilter_Commands.h"
+#include "Commands/DeviceStartupSettings.h"
 #include "Commands/GetDeviceDescriptorSets.h"
 #include "Commands/GetExtendedDeviceDescriptorSets.h"
 #include "Commands/GNSS_Commands.h"
+#include "Commands/Inertial_CyclePower.h"
 #include "Commands/Inertial_SetToIdle.h"
 #include "Commands/Resume.h"
 #include "Commands/Sensor_Commands.h"
 #include "Commands/System_Commands.h"
 #include "Features/InertialNodeFeatures.h"
+#include "Commands/GNSS_AssistedFixControl.h"
+#include "Commands/GNSS_AssistTimeUpdate.h"
+#include "Commands/GPSTimeUpdate.h"
+#include "mscl/MicroStrain/Inertial/Commands/GNSS_SBASSettings.h"
+#include "mscl/MicroStrain/Inertial/Commands/GNSS_ConstellationSettings.h"
+#include "mscl/MicroStrain/Inertial/Commands/AccelBias.h"
+#include "mscl/MicroStrain/Inertial/Commands/GyroBias.h"
+#include "mscl/MicroStrain/Inertial/Commands/CaptureGyroBias.h"
 
 namespace mscl
 {
@@ -115,6 +126,11 @@ namespace mscl
         return *(m_features.get());
     }
 
+    Connection& InertialNode_Impl::connection()
+    {
+        return m_connection;
+    }
+
     SampleRates InertialNode_Impl::supportedSampleRates(InertialTypes::InertialCategory category) const
     {
         SampleRates result;
@@ -176,14 +192,16 @@ namespace mscl
         return m_inertialCommandsTimeout;
     }
 
-    GenericInertialCommandResponse InertialNode_Impl::doInertialCmd(GenericInertialCommand::Response& response, const ByteStream& command, InertialTypes::Command commandId, bool verifySupported) const
+    GenericInertialCommandResponse InertialNode_Impl::doCommand(GenericInertialCommand::Response& response, const ByteStream& command, bool verifySupported) const
     {
+        response.setResponseCollector(m_responseCollector);
+        
         if(verifySupported)
         {
             //verify that this command is supported
-            if(!features().supportsCommand(commandId))
+            if(!features().supportsCommand(response.m_command))
             {
-                throw Error_NotSupported("The command (" + Utils::toStr(commandId) + ") is not supported.");
+                throw Error_NotSupported("The command (" + Utils::toStr(response.m_command) + ") is not supported.");
             }
         }
 
@@ -191,7 +209,7 @@ namespace mscl
         m_connection.write(command);
 
         //wait for the response
-        response.wait(m_inertialCommandsTimeout);
+        response.wait(m_inertialCommandsTimeout); // m_inertialCommandsTimeout));
 
         //get the result from the response
         GenericInertialCommandResponse result = response.result();
@@ -207,18 +225,18 @@ namespace mscl
     bool InertialNode_Impl::ping()
     {
         //create the response for the Ping command
-        Ping::Response r(m_responseCollector);
+        Ping::Response response (m_responseCollector);
 
         try
         {
             //send the command and wait for the response
-            return doInertialCmd(r, Ping::buildCommand(), Ping::CMD_ID, false).success();
+            return doCommand(response, Ping::buildCommand(), false).success();
         }
-        catch(Error_InertialCmdFailed&)
+        catch (Error_InertialCmdFailed&)
         {
             return false;
         }
-        catch(Error_Communication&)
+        catch (Error_Communication&)
         {
             return false;
         }
@@ -230,8 +248,27 @@ namespace mscl
         Inertial_SetToIdle::Response r(m_responseCollector);
 
         //send the command and wait for the response
-        doInertialCmd(r, Inertial_SetToIdle::buildCommand(), Inertial_SetToIdle::CMD_ID, false);
+        doCommand(r, Inertial_SetToIdle::buildCommand(), false);
     }
+
+    bool InertialNode_Impl::cyclePower()
+    {
+        Inertial_CyclePower::Response response (m_responseCollector);
+
+        try
+        {
+            //send the command and wait for the response
+            return doCommand(response, Inertial_CyclePower::buildCommand(), false).success();
+        }
+        catch (Error_InertialCmdFailed&)
+        {
+            return false;
+        }
+        catch (Error_Communication&)
+        {
+            return false;
+        }
+	}
 
     void InertialNode_Impl::resume()
     {
@@ -239,7 +276,38 @@ namespace mscl
         Resume::Response r(m_responseCollector);
 
         //send the command and wait for the resposne
-        doInertialCmd(r, Resume::buildCommand(), Resume::CMD_ID, false);
+        doCommand(r, Resume::buildCommand(), false);
+    }
+
+    void InertialNode_Impl::saveSettingsAsStartup()
+    {
+        DeviceStartupSettings::Response r(m_responseCollector);
+
+        doCommand(r, DeviceStartupSettings::buildCommand_saveAsStartup(), false);
+    }
+
+    void InertialNode_Impl::loadStartupSettings()
+    {
+        uint64 originalTimeout = timeout();
+
+        //when this goes out of scope, it will write back the original timeout (need cast for overloaded ambiguity)
+        ScopeHelper writebackTimeout(std::bind(static_cast<void(InertialNode_Impl::*)(uint64)>(&InertialNode_Impl::timeout), this, originalTimeout));
+
+        //change the timeout to a minimum of 1200
+        uint64 newTimeout = originalTimeout;
+        Utils::checkBounds_min(newTimeout, static_cast<uint64>(1200));
+        timeout(newTimeout);
+
+        DeviceStartupSettings::Response r(m_responseCollector);
+
+        doCommand(r, DeviceStartupSettings::buildCommand_loadStartup(), false);
+    }
+
+    void InertialNode_Impl::loadFactoryDefaultSettings()
+    {
+        DeviceStartupSettings::Response r(m_responseCollector);
+
+        doCommand(r, DeviceStartupSettings::buildCommand_loadDefault(), false);
     }
 
     InertialDeviceInfo InertialNode_Impl::getDeviceInfo() const
@@ -248,7 +316,7 @@ namespace mscl
         GetDeviceInfo::Response r(m_responseCollector);
 
         //send the command, wait for the response, and parse the result
-        return r.parseResponse(doInertialCmd(r, GetDeviceInfo::buildCommand(), GetDeviceInfo::CMD_ID, false));
+        return r.parseResponse(doCommand(r, GetDeviceInfo::buildCommand(), false));
     }
 
     std::vector<uint16> InertialNode_Impl::getDescriptorSets() const
@@ -259,7 +327,7 @@ namespace mscl
         GetDeviceDescriptorSets::Response r(m_responseCollector);
 
         //append the descriptors to the container
-        r.parseResponse(doInertialCmd(r, GetDeviceDescriptorSets::buildCommand(), GetDeviceDescriptorSets::CMD_ID, false), descriptors);
+        r.parseResponse(doCommand(r, GetDeviceDescriptorSets::buildCommand(), false), descriptors);
 
         if(std::find(descriptors.begin(), descriptors.end(), InertialTypes::CMD_GET_EXT_DESCRIPTOR_SETS) != descriptors.end())
         {
@@ -267,7 +335,7 @@ namespace mscl
             GetExtendedDeviceDescriptorSets::Response r2(m_responseCollector);
 
             //append the extended descriptors to the container
-            r2.parseResponse(doInertialCmd(r2, GetExtendedDeviceDescriptorSets::buildCommand(), GetExtendedDeviceDescriptorSets::CMD_ID, false), descriptors);
+            r2.parseResponse(doCommand(r2, GetExtendedDeviceDescriptorSets::buildCommand(), false), descriptors);
         }
 
         //send the command, wait for the response, and parse the result
@@ -287,7 +355,7 @@ namespace mscl
                     GetSensorDataRateBase::Response r(m_responseCollector);
 
                     //send the command, wait for the response, and parse the result
-                    m_sensorRateBase = r.parseResponse(doInertialCmd(r, GetSensorDataRateBase::buildCommand(), GetSensorDataRateBase::CMD_ID));
+                    m_sensorRateBase = r.parseResponse(doCommand(r, GetSensorDataRateBase::buildCommand()));
                 }
 
                 return m_sensorRateBase;
@@ -302,7 +370,7 @@ namespace mscl
                     GetGnssDataRateBase::Response r(m_responseCollector);
 
                     //send the command, wait for the response, and parse the result
-                    m_gnssRateBase = r.parseResponse(doInertialCmd(r, GetGnssDataRateBase::buildCommand(), GetGnssDataRateBase::CMD_ID));
+                    m_gnssRateBase = r.parseResponse(doCommand(r, GetGnssDataRateBase::buildCommand()));
                 }
 
                 return m_gnssRateBase;
@@ -318,7 +386,7 @@ namespace mscl
                     GetEstFilterDataRateBase::Response r(m_responseCollector);
 
                     //send the command, wait for the response, and parse the result
-                    m_estfilterRateBase = r.parseResponse(doInertialCmd(r, GetEstFilterDataRateBase::buildCommand(), GetEstFilterDataRateBase::CMD_ID));
+                    m_estfilterRateBase = r.parseResponse(doCommand(r, GetEstFilterDataRateBase::buildCommand()));
                 }
 
                 return m_estfilterRateBase;
@@ -339,7 +407,7 @@ namespace mscl
                 SensorMessageFormat::Response r(m_responseCollector, true);
 
                 //send the command, wait for the response, and parse the result
-                return r.parseResponse(doInertialCmd(r, SensorMessageFormat::buildCommand_get(), SensorMessageFormat::CMD_ID), sampleRateBase);
+                return r.parseResponse(doCommand(r, SensorMessageFormat::buildCommand_get()), sampleRateBase);
             }
 
             case InertialTypes::CATEGORY_GNSS:
@@ -348,7 +416,7 @@ namespace mscl
                 GnssMessageFormat::Response r(m_responseCollector, true);
 
                 //send the command, wait for the response, and parse the result
-                return r.parseResponse(doInertialCmd(r, GnssMessageFormat::buildCommand_get(), GnssMessageFormat::CMD_ID), sampleRateBase);
+                return r.parseResponse(doCommand(r, GnssMessageFormat::buildCommand_get()), sampleRateBase);
             }
 
             case InertialTypes::CATEGORY_ESTFILTER:
@@ -358,7 +426,7 @@ namespace mscl
                 EstFilterMessageFormat::Response r(m_responseCollector, true);
 
                 //send the command, wait for the response, and parse the result
-                return r.parseResponse(doInertialCmd(r, EstFilterMessageFormat::buildCommand_get(), EstFilterMessageFormat::CMD_ID), sampleRateBase);
+                return r.parseResponse(doCommand(r, EstFilterMessageFormat::buildCommand_get()), sampleRateBase);
             }
         }
     }
@@ -376,7 +444,7 @@ namespace mscl
                 SensorMessageFormat::Response r(m_responseCollector, false);
 
                 //send the command and wait for the response
-                doInertialCmd(r, SensorMessageFormat::buildCommand_set(channels, sampleRateBase), SensorMessageFormat::CMD_ID);
+                doCommand(r, SensorMessageFormat::buildCommand_set(channels, sampleRateBase));
                 break;
             }
 
@@ -386,7 +454,7 @@ namespace mscl
                 GnssMessageFormat::Response r(m_responseCollector, false);
 
                 //send the command and wait for the response
-                doInertialCmd(r, GnssMessageFormat::buildCommand_set(channels, sampleRateBase), GnssMessageFormat::CMD_ID);
+                doCommand(r, GnssMessageFormat::buildCommand_set(channels, sampleRateBase));
                 break;
             }
 
@@ -397,7 +465,7 @@ namespace mscl
                 EstFilterMessageFormat::Response r(m_responseCollector, false);
 
                 //send the command and wait for the response
-                doInertialCmd(r, EstFilterMessageFormat::buildCommand_set(channels, sampleRateBase), EstFilterMessageFormat::CMD_ID);
+                doCommand(r, EstFilterMessageFormat::buildCommand_set(channels, sampleRateBase));
                 break;
             }
         }
@@ -409,7 +477,7 @@ namespace mscl
         CommunicationMode::Response r(m_responseCollector, true);
 
         //send the command, wait for the response, and parse the result
-        return r.parseResponse(doInertialCmd(r, CommunicationMode::buildCommand_get(), CommunicationMode::CMD_ID));
+        return r.parseResponse(doCommand(r, CommunicationMode::buildCommand_get()));
     }
 
     void InertialNode_Impl::setCommunicationMode(uint8 communicationMode)
@@ -418,7 +486,7 @@ namespace mscl
         CommunicationMode::Response r(m_responseCollector, false);
 
         //send the command and wait for the response
-        doInertialCmd(r, CommunicationMode::buildCommand_set(communicationMode), CommunicationMode::CMD_ID, false);
+        doCommand(r, CommunicationMode::buildCommand_set(communicationMode), false);
 
         //reset the node info because we are switching contexts
         m_nodeInfo.reset();
@@ -430,84 +498,220 @@ namespace mscl
         ContinuousDataStream::Response r(m_responseCollector, false, category);
 
         //send the command and wait for the response
-        doInertialCmd(r, ContinuousDataStream::buildCommand_set(category, enable), ContinuousDataStream::CMD_ID);
+        doCommand(r, ContinuousDataStream::buildCommand_set(category, enable));
     }
 
     void InertialNode_Impl::resetFilter()
     {
         ResetFilter::Response r(m_responseCollector);
 
-        doInertialCmd(r, ResetFilter::buildCommand(), ResetFilter::CMD_ID);
+        doCommand(r, ResetFilter::buildCommand());
     }
 
     bool InertialNode_Impl::getAutoInitialization()
     {
         AutoInitializeControl::Response r(m_responseCollector, true);
 
-        return r.parseResponse(doInertialCmd(r, AutoInitializeControl::buildCommand_get(), AutoInitializeControl::CMD_ID));
+        return r.parseResponse(doCommand(r, AutoInitializeControl::buildCommand_get()));
     }
 
     void InertialNode_Impl::setAutoInitialization(bool enable)
     {
         AutoInitializeControl::Response r(m_responseCollector, false);
 
-        doInertialCmd(r, AutoInitializeControl::buildCommand_set(enable), AutoInitializeControl::CMD_ID);
+        doCommand(r, AutoInitializeControl::buildCommand_set(enable));
     }
 
     void InertialNode_Impl::setInitialAttitude(const EulerAngles& attitude)
     {
         SetInitialAttitude::Response r(m_responseCollector);
 
-        doInertialCmd(r, SetInitialAttitude::buildCommand(attitude), SetInitialAttitude::CMD_ID);
+        doCommand(r, SetInitialAttitude::buildCommand(attitude));
     }
 
     void InertialNode_Impl::setInitialHeading(float heading)
     {
         SetInitialHeading::Response r(m_responseCollector);
 
-        doInertialCmd(r, SetInitialHeading::buildCommand(heading), SetInitialHeading::CMD_ID);
+        doCommand(r, SetInitialHeading::buildCommand(heading));
     }
 
     EulerAngles InertialNode_Impl::getSensorToVehicleTransformation()
     {
         SensorToVehicFrameTrans::Response r(m_responseCollector, true);
 
-        return r.parseResponse(doInertialCmd(r, SensorToVehicFrameTrans::buildCommand_get(), SensorToVehicFrameTrans::CMD_ID));
+        return r.parseResponse(doCommand(r, SensorToVehicFrameTrans::buildCommand_get()));
     }
 
     void InertialNode_Impl::setSensorToVehicleTransformation(const EulerAngles& angles)
     {
         SensorToVehicFrameTrans::Response r(m_responseCollector, false);
 
-        doInertialCmd(r, SensorToVehicFrameTrans::buildCommand_set(angles), SensorToVehicFrameTrans::CMD_ID);
+        doCommand(r, SensorToVehicFrameTrans::buildCommand_set(angles));
     }
 
     PositionOffset InertialNode_Impl::getSensorToVehicleOffset()
     {
         SensorToVehicFrameOffset::Response r(m_responseCollector, true);
 
-        return r.parseResponse(doInertialCmd(r, SensorToVehicFrameOffset::buildCommand_get(), SensorToVehicFrameOffset::CMD_ID));
+        return r.parseResponse(doCommand(r, SensorToVehicFrameOffset::buildCommand_get()));
     }
 
     void InertialNode_Impl::setSensorToVehicleOffset(const PositionOffset& offset)
     {
         SensorToVehicFrameOffset::Response r(m_responseCollector, false);
 
-        doInertialCmd(r, SensorToVehicFrameOffset::buildCommand_set(offset), SensorToVehicFrameOffset::CMD_ID);
+        doCommand(r, SensorToVehicFrameOffset::buildCommand_set(offset));
     }
 
     PositionOffset InertialNode_Impl::getAntennaOffset()
     {
         AntennaOffset::Response r(m_responseCollector, true);
 
-        return r.parseResponse(doInertialCmd(r, AntennaOffset::buildCommand_get(), AntennaOffset::CMD_ID));
+        return r.parseResponse(doCommand(r, AntennaOffset::buildCommand_get()));
     }
 
     void InertialNode_Impl::setAntennaOffset(const PositionOffset& offset)
     {
         AntennaOffset::Response r(m_responseCollector, false);
 
-        doInertialCmd(r, AntennaOffset::buildCommand_set(offset), AntennaOffset::CMD_ID);
+        doCommand(r, AntennaOffset::buildCommand_set(offset));
     }
-//============================================================================
+
+    bool InertialNode_Impl::getGNSSAssistedFixControl()
+    {
+        GNSS_AssistedFixControl::Response response(m_responseCollector, true, true);
+
+        return response.parseResponse(doCommand(response, GNSS_AssistedFixControl::buildCommand_get()));
+    }
+
+    void InertialNode_Impl::setGNSSAssistedFixControl(bool enableAssistedFix)
+    {
+        GNSS_AssistedFixControl::Response response(m_responseCollector, true, false);
+
+        doCommand(response, GNSS_AssistedFixControl::buildCommand_set(enableAssistedFix));
+    }
+
+    TimeUpdate InertialNode_Impl::getGNSSAssistTimeUpdate()
+    {
+        GNSS_AssistTimeUpdate assistTimeUpdate;
+        GNSS_AssistTimeUpdate::Response response(m_responseCollector, true, true);
+
+        return response.parseResponse(doCommand(response, assistTimeUpdate.buildCommand_get()));
+    }
+
+    void InertialNode_Impl::setGNSSAssistTimeUpdate(TimeUpdate update)
+    {
+        GNSS_AssistTimeUpdate assistTimeUpdate;
+        GNSS_AssistTimeUpdate::Response response(m_responseCollector, true, false);
+
+        doCommand(response, assistTimeUpdate.buildCommand_set(update));
+    }
+
+    uint32 InertialNode_Impl::getGPSTimeUpdateWeeks()
+    {
+        GPSTimeUpdate gpsTimeUpdate;
+        GPSTimeUpdate::Response weekResponse(GPSTimeUpdate::FIELD_DATA_BYTE_WEEKS, m_responseCollector, true, true);
+
+        return weekResponse.parseResponse(doCommand(weekResponse, gpsTimeUpdate.GetWeekValue()));
+    }
+
+    uint32 InertialNode_Impl::getGPSTimeUpdateSeconds()
+    {
+        GPSTimeUpdate gpsTimeUpdate;
+        GPSTimeUpdate::Response secondsResponse(GPSTimeUpdate::FIELD_DATA_BYTE_SECONDS, m_responseCollector, true, true);
+
+        return secondsResponse.parseResponse(doCommand(secondsResponse, gpsTimeUpdate.GetSecondsValue()));
+    }
+
+    void InertialNode_Impl::setGPSTimeUpdate(InertialTypes::TimeFrame timeFrame, uint32 timeData)
+    {
+        if (timeFrame == InertialTypes::TIME_FRAME_WEEKS)
+        {
+            GPSTimeUpdate gpsTimeUpdate;
+            GPSTimeUpdate::Response response(GPSTimeUpdate::FIELD_DATA_BYTE_WEEKS, m_responseCollector, true, false);
+            doCommand(response, gpsTimeUpdate.SetWeekValue (timeData));
+        }
+        else
+        {
+            GPSTimeUpdate gpsTimeUpdate;
+            GPSTimeUpdate::Response response(GPSTimeUpdate::FIELD_DATA_BYTE_SECONDS, m_responseCollector, true, false);
+            doCommand(response, gpsTimeUpdate.SetSecondsValue (timeData));
+        }
+    }
+
+    void InertialNode_Impl::setConstellationSettings(const ConstellationSettingsData& dataToUse)
+    {
+        GNSS_ConstellationSettings constellationSettings = GNSS_ConstellationSettings::MakeSetCommand(dataToUse);
+        SendCommand(constellationSettings);
+    }
+
+    ConstellationSettingsData InertialNode_Impl::getConstellationSettings()
+    {
+        GNSS_ConstellationSettings constellationSettings = GNSS_ConstellationSettings::MakeGetCommand();
+        GenericInertialCommandResponse response = SendCommand(constellationSettings);
+        return constellationSettings.getResponseData(response);
+    }
+
+    void InertialNode_Impl::setSBASSettings(const SBASSettingsData& dataToUse)
+    {
+        SBASSettings sbasSettings = SBASSettings::MakeSetCommand(dataToUse);
+        SendCommand(sbasSettings);
+    }
+
+    SBASSettingsData InertialNode_Impl::getSBASSettings()
+    {
+        SBASSettings sbasSettings = SBASSettings::MakeGetCommand();
+        GenericInertialCommandResponse response = SendCommand(sbasSettings);
+        return sbasSettings.getResponseData(response);
+    }
+
+    void InertialNode_Impl::setAccelerometerBias(const GeometricVector& biasVector)
+    {
+        AccelBias accelBiasSettings = AccelBias::MakeSetCommand(biasVector);
+        SendCommand(accelBiasSettings);
+    }
+
+    GeometricVector InertialNode_Impl::getAccelerometerBias()
+    {
+        AccelBias accelBiasCmd = AccelBias::MakeGetCommand();
+        GenericInertialCommandResponse response = SendCommand(accelBiasCmd);
+        return accelBiasCmd.getResponseData(response);
+    }
+
+    GeometricVector InertialNode_Impl::getGyroBias()
+    {
+        GyroBias gyroBiasCmd = GyroBias::MakeGetCommand();
+        GenericInertialCommandResponse response = SendCommand(gyroBiasCmd);
+        return gyroBiasCmd.getResponseData(response);
+    }
+
+    void InertialNode_Impl::setGyroBias(const GeometricVector& biasVector)
+    {
+        GyroBias gyroBiasSettings = GyroBias::MakeSetCommand(biasVector);
+        SendCommand(gyroBiasSettings);
+    }
+
+    GeometricVector InertialNode_Impl::captureGyroBias(const uint16& samplingTime)
+    {
+        // 5 second response timeout for this command, to allow for 1-3 sec processing on device.
+        const uint64 originalTimeout = timeout();
+        const uint64 temporaryTimeout = 5000;
+
+        CaptureGyroBias captureGyroBiasCmd = CaptureGyroBias::MakeCommand(samplingTime);
+        std::shared_ptr<GenericInertialCommand::Response> responsePtr = captureGyroBiasCmd.createResponse(m_responseCollector);
+        timeout(temporaryTimeout);
+        GenericInertialCommandResponse response = doCommand(*responsePtr, captureGyroBiasCmd);
+        timeout(originalTimeout);
+        return captureGyroBiasCmd.getResponseData(response);
+    }
+
+    GenericInertialCommandResponse InertialNode_Impl::SendCommand(InertialCommand& command)
+    {
+       std::shared_ptr<GenericInertialCommand::Response> responsePtr = command.createResponse(m_responseCollector);
+
+        return doCommand(*responsePtr, command);
+    }
+
+    //============================================================================
 }

@@ -7,7 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
 #include "mscl/Types.h"
 
 namespace mscl
@@ -19,10 +19,10 @@ namespace mscl
     //    Contains logic for the base station read eeprom command (v2).
     class BaseStation_ReadEeprom_v2
     {
-    private:
-        BaseStation_ReadEeprom_v2();                                            //default constructor disabled
-        BaseStation_ReadEeprom_v2(const BaseStation_ReadEeprom_v2&);            //copy constructor disabled
-        BaseStation_ReadEeprom_v2& operator=(const BaseStation_ReadEeprom_v2&);    //assignement operator disabled
+    public:
+        BaseStation_ReadEeprom_v2() = delete;                                               //default constructor disabled
+        BaseStation_ReadEeprom_v2(const BaseStation_ReadEeprom_v2&) = delete;               //copy constructor disabled
+        BaseStation_ReadEeprom_v2& operator=(const BaseStation_ReadEeprom_v2&) = delete;    //assignement operator disabled
 
     public:
         //Function: buildCommand
@@ -33,11 +33,11 @@ namespace mscl
         //
         //Returns:
         //    A <ByteStream> containing the base station read eeprom command
-        static ByteStream buildCommand(uint16 eepromAddress);
+        static ByteStream buildCommand(WirelessPacket::AsppVersion asppVer, uint16 eepromAddress);
 
         //Class: Response
         //    Handles the response to the base station read eeprom command.
-        class Response : public ResponsePattern
+        class Response : public WirelessResponsePattern
         {
         public:
             //Constructor: Response
@@ -62,16 +62,6 @@ namespace mscl
             WirelessPacket::ResponseErrorCode m_errorCode;
 
         public:
-            //Function: match
-            //    Checks if the packet passed in matches either the success or failure response.
-            //
-            //Parameters:
-            //    packet - The <WirelessPacket> to try to match.
-            //
-            //Returns:
-            //    true if the response pattern was found, false otherwise.
-            virtual bool match(const WirelessPacket& packet) override;
-
             //Function: result
             //    Gets the result value of the response.
             //
@@ -89,7 +79,7 @@ namespace mscl
             //    The error code from the response.
             WirelessPacket::ResponseErrorCode errorCode() const;
 
-        private:
+        protected:
             //Function: matchSuccessResponse
             //    Checks if the packet passed in matches the success response.
             //
@@ -98,7 +88,7 @@ namespace mscl
             //
             //Returns:
             //    true if the success response pattern was found, false otherwise
-            bool matchSuccessResponse(const WirelessPacket& packet);
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
 
             //Function: matchFailResponse
             //    Checks if the packet passed in matches the failure response.
@@ -108,7 +98,7 @@ namespace mscl
             //
             //Returns:
             //    true if the failure response pattern was found, false otherwise
-            bool matchFailResponse(const WirelessPacket& packet);
+            bool matchFailResponse(const WirelessPacket& packet) override;
         };
     };
 

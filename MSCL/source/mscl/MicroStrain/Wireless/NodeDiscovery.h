@@ -37,7 +37,7 @@ namespace mscl
     private:
         //Variable: m_nodeAddress
         //    The node address of the node that sent the Node Discovery packet.
-        uint32 m_nodeAddress;
+        NodeAddress m_nodeAddress;
 
         //Variable: m_radioChannel
         //    The radio channel (<WirelessTypes::Frequency>) that the node was on that sent the Node Discovery packet.
@@ -62,6 +62,18 @@ namespace mscl
         //Variable: m_defaultMode
         //    The <WirelessTypes::DefaultMode> of the node that sent the Node Discovery packet.
         WirelessTypes::DefaultMode m_defaultMode;
+
+        //Variable: m_commProtocol
+        //  The <WirelessTypes::CommProtocol> of the node that sent the Node Discovery packet.
+        WirelessTypes::CommProtocol m_commProtocol;
+
+        //Variable: m_asppVersionLxrs
+        //  The ASPP <Version> of the node when in LXRS mode.
+        Version m_asppVersionLxrs;
+
+        //Variable: m_asppVersionLxrsPlus
+        //  The ASPP <Version> of the node when in LXRS+ mode.
+        Version m_asppVersionLxrsPlus;
 
         //Variable: m_bitResult
         //    The Built In Test result that was sent in the packet.
@@ -104,13 +116,20 @@ namespace mscl
         //    packet - The <WirelessPacket> which is a version 4 Node Discovery packet.
         void initFromPacket_v4(const WirelessPacket& packet);
 
+        //Function: initFromPacket_v5
+        //    Initializes the NodeDiscovery object from a version 5 Node Discovery packet.
+        //
+        //Parameters:
+        //    packet - The <WirelessPacket> which is a version 5 Node Discovery packet.
+        void initFromPacket_v5(const WirelessPacket& packet);
+
     public:
         //API Function: nodeAddress
         //    Gets the node address of the discovered Node.
         //
         //Returns:
         //    The node address of the discovered Node.
-        uint32 nodeAddress() const;
+        NodeAddress nodeAddress() const;
 
         //API Function: frequency
         //    Gets the <WirelessTypes::Frequency> of the discovered Node.
@@ -156,14 +175,29 @@ namespace mscl
         //
         //Returns:
         //    The <WirelessTypes::DefaultMode> of the discovered Node.
-        WirelessTypes::DefaultMode defaultMode();
+        WirelessTypes::DefaultMode defaultMode() const;
 
         //API Function: builtInTestResult
         //    Gets the result bitmask of the built in test.
         //
         //Returns:
         //  A uint32 bitmask representing the result of the built in test.
-        uint32 builtInTestResult();
+        uint32 builtInTestResult() const;
+
+        //API Function: communicationProtocol
+        //  Gets the <WirelessTypes::CommProtocol> of the discovered Node.
+        //
+        //Returns:
+        //  The <WirelessTypes::CommProtocol> that the Node is currently in.
+        WirelessTypes::CommProtocol communicationProtocol() const;
+
+        //API Function: asppVersion_lxrs
+        //  Gets the ASPP protocol <Version> of the Node when it is in LXRS RadioMode.
+        Version asppVersion_lxrs() const;
+
+        //API Function: asppVersion_lxrsPlus
+        //  Gets the ASPP protocol <Version> of the Node when it is in LXRS+ RadioMode.
+        Version asppVersion_lxrsPlus() const;
 
         //API Function: baseRssi
         //    Gets the base station rssi of the discovered Node.

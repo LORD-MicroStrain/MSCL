@@ -8,6 +8,12 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "ByteStream.h"
 #include "mscl/Utils.h"
 
+#pragma warning(push)
+#pragma warning(disable: 4245)  //intializing conversion from int to boost::detail::mask_uint_t<8>::least, signed/unsigned mismatch
+#pragma warning(disable: 4244)  //return conversion from unsigned int to unsigned char
+#include <boost/crc.hpp>
+#pragma warning(pop)
+
 #include <numeric>    //for std::accumulate
 
 namespace mscl
@@ -379,8 +385,6 @@ namespace mscl
         return m_bytes.end();
     }
 
-    //Function: calculateSimpleChecksum
-    //    Calculates the simple checksum (simple addition of bytes) of the current bytestream
     uint16 ByteStream::calculateSimpleChecksum(std::size_t from, std::size_t to) const
     {
         assert(from <= to);                //Start position is after the End position
@@ -398,8 +402,6 @@ namespace mscl
         return checksum;
     }
 
-    //Function: calculateFletcherChecksum
-    //    Calculates the Fletcher checksum (position dependent checksum) of the current bytestream
     uint16 ByteStream::calculateFletcherChecksum(std::size_t from, std::size_t to) const
     {
         assert(from < to);                //Start position is after the End position
@@ -429,8 +431,25 @@ namespace mscl
         return finalChecksum;
     }
 
-    //verifyBytesInStream
-    //verifies that the position asked for exists in the ByteStream
+    uint32 ByteStream::calculateCrcChecksum(std::size_t from, std::size_t to) const
+    {
+        assert(from < to);                //Start position is after the End position
+
+        std::size_t numBytesToRead = (to + 1) - from;
+
+        //check for out of bounds
+        verifyBytesInStream(from, numBytesToRead);
+
+        boost::crc_32_type crc;
+        crc.process_bytes((m_bytes.data() + from), numBytesToRead);
+        return crc.checksum();
+    }
+
+    uint32 ByteStream::calculateCrcChecksum() const
+    {
+        return calculateCrcChecksum(0, size() - 1);
+    }
+
     void ByteStream::verifyBytesInStream(std::size_t position, std::size_t length) const
     {
         //the last position we need to check for given the asking position and length

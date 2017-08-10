@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_SUITE(ChannelGroup_Test)
 
 NodeInfo createInfo(WirelessModels::NodeModel node)
 {
-    return NodeInfo(Version(9, 9), node, 0, WirelessTypes::region_usa);
+    return NodeInfo(Version(9, 9), node, WirelessTypes::region_usa);
 }
 
 BOOST_AUTO_TEST_CASE(ChannelGroup_channelGroups)
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(ChannelGroup_getGaugeFactor)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    NodeInfo info(Version(10, 0), WirelessModels::node_shmLink2_cust1, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(10, 0), WirelessModels::node_shmLink2_cust1, WirelessTypes::region_usa);
 
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_getLinearEquation)
     WirelessNode node(100, b);
     node.setImpl(impl);
 
-    NodeInfo info(Version(9, 9), WirelessModels::node_gLink_2g, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(9, 9), WirelessModels::node_gLink_2g, WirelessTypes::region_usa);
 
     //make the features() function return the NodeFeatures we want
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE(ChannelGroup_getThermocoupleType)
         WirelessNode node(100, b);
         node.setImpl(impl);
 
-        NodeInfo info(Version(9, 9), WirelessModels::node_gLink_2g, 0, WirelessTypes::region_usa);
+        NodeInfo info(Version(9, 9), WirelessModels::node_gLink_2g, WirelessTypes::region_usa);
 
         //make the features() function return the NodeFeatures we want
         std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);

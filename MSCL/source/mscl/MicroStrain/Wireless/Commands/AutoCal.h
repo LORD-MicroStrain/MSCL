@@ -8,9 +8,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/Types.h"
 #include "mscl/Version.h"
 #include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/WirelessModels.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
@@ -21,12 +22,11 @@ namespace mscl
     //    Contains logic for the AutoCal Node command.
     class AutoCal
     {
-    private:
-        AutoCal();                              //default constructor disabled
-        AutoCal(const AutoCal&);                //copy constructor disabled
-        AutoCal& operator=(const AutoCal&);     //assignment operator disabled
-
     public:
+        AutoCal() = delete;                              //default constructor disabled
+        AutoCal(const AutoCal&) = delete;                //copy constructor disabled
+        AutoCal& operator=(const AutoCal&) = delete;     //assignment operator disabled
+
         //Enum: AutoCalType
         //  The types of autocal that are available.
         enum AutoCalType
@@ -44,7 +44,7 @@ namespace mscl
         //
         //Returns:
         //    A <ByteStream> containing the command packet.
-        static ByteStream buildCommand_shmLink(NodeAddress nodeAddress);
+        static ByteStream buildCommand_shmLink(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress);
 
         //Function: buildCommand_shuntCal
         //  Builds the AutoCal command packet for shunt calibration.
@@ -55,11 +55,11 @@ namespace mscl
         //
         //Returns:
         //    A <ByteStream> containing the command packet.
-        static ByteStream buildCommand_shuntCal(NodeAddress nodeAddress, const ShuntCalCmdInfo& info, uint8 chNum, WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType chType);
+        static ByteStream buildCommand_shuntCal(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, const ShuntCalCmdInfo& info, uint8 chNum, WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType chType);
 
         //Class: Response
-        //    Handles the response to the LongPing Node command
-        class Response : public ResponsePattern
+        //    Handles the response to the AutoBalance Node command
+        class Response : public WirelessResponsePattern
         {
         public:
             //Constructor: Response
@@ -145,9 +145,6 @@ namespace mscl
             //Returns:
             //    true if the packet matches the Node Received packet, false otherwise.
             bool match_nodeReceived(const WirelessPacket& packet);
-
-            virtual bool match_shmLink(const WirelessPacket& packet);
-            virtual bool match_shuntCal(const WirelessPacket& packet);
         };
 
         class ShmResponse : public AutoCal::Response
@@ -162,7 +159,7 @@ namespace mscl
             ShmResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector);
 
         protected:
-            virtual bool match_shmLink(const WirelessPacket& packet) override;
+            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
 
         class ShuntCalResponse : public AutoCal::Response
@@ -183,7 +180,7 @@ namespace mscl
             uint8 m_channelNumber;
 
         protected:
-            virtual bool match_shuntCal(const WirelessPacket& packet) override;
+            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
         };
     };
 }

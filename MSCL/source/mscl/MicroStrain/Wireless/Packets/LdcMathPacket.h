@@ -15,11 +15,11 @@ namespace mscl
     class LdcMathPacket : public WirelessDataPacket
     {
     public:
-        //Constructor: LdcPacket_16ch
-        //    Creates an LdcPacket_16ch from the passed in <WirelessPacket>
+        //Constructor: LdcMathPacket
+        //    Creates an LdcMathPacket from the passed in <WirelessPacket>
         //
         //Parameters:
-        //    packet - A <WirelessPacket> determined to be an LdcPacket_16ch
+        //    packet - A <WirelessPacket> determined to be an LdcMathPacket
         explicit LdcMathPacket(const WirelessPacket& packet);
 
     private:

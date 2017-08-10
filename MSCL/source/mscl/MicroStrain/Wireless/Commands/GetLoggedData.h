@@ -6,7 +6,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
@@ -31,11 +32,11 @@ namespace mscl
         //
         //Returns:
         //    A <ByteStream> containing the GetLoggedData command packet.
-        static ByteStream buildCommand(NodeAddress nodeAddress, uint32 flashAddress);
+        static ByteStream buildCommand(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, uint32 flashAddress);
 
         //Class: Response
         //    Handles the response to the GetLoggedData Node command.
-        class Response : public ResponsePattern
+        class Response : public WirelessResponsePattern
         {
         public:
             //Constructor: Response
@@ -60,7 +61,7 @@ namespace mscl
             //  The <ByteStream> containing the resulting data on success.
             ByteStream m_data;
 
-        private:
+        protected:
             //Function: matchSuccessResponse
             //    Checks if the <WirelessPacket> passed in matches the success response pattern's bytes
             //
@@ -69,7 +70,7 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches the success response pattern, false otherwise
-            bool matchSuccessResponse(const WirelessPacket& packet);
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
 
             //Function: matchFailResponse
             //    Checks if the <WirelessPacket> passed in matches the failure response pattern's bytes
@@ -79,19 +80,9 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches the success response pattern, false otherwise
-            bool matchFailResponse(const WirelessPacket& packet);
+            bool matchFailResponse(const WirelessPacket& packet) override;
 
         public:
-            //Function: match
-            //    Checks if the <WirelessPacket> passed in matches the expected response pattern's bytes
-            //
-            //Parameters:
-            //    packet - The <WirelessPacket> in which to try to find the pattern
-            //
-            //Returns:
-            //    true if the packet matches a response pattern, false otherwise
-            virtual bool match(const WirelessPacket& packet) override;
-
             //Function: data
             //  Gets the <ByteStream> containing the data from a successful response.
             const ByteStream& data() const;

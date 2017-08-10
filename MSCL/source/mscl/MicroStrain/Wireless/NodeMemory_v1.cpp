@@ -69,9 +69,11 @@ namespace mscl
 
         //if we made it here, the page requested is data we don't already have
 
+        BaseStation& base = m_node.getBaseStation();
+
         //request the current page data
         ByteStream tempData;
-        if(!m_node.getBaseStation().node_pageDownload(m_node.protocol(), m_node.nodeAddress(), page, tempData))
+        if(!base.node_pageDownload(m_node.protocol(base.communicationProtocol()), m_node.nodeAddress(), page, tempData))
         {
             //the page download failed, throw an exception
             throw Error_NodeCommunication(m_node.nodeAddress(), "Failed to download data from the Node.");

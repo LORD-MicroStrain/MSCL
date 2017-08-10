@@ -17,7 +17,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    WirelessNode::WirelessNode(uint16 nodeAddress, const BaseStation& basestation):
+    WirelessNode::WirelessNode(NodeAddress nodeAddress, const BaseStation& basestation):
         m_impl(std::make_shared<WirelessNode_Impl>(nodeAddress, basestation))
     {
     }
@@ -32,12 +32,12 @@ namespace mscl
         return m_impl->eeHelper();
     }
 
-    const WirelessProtocol& WirelessNode::protocol() const
+    const WirelessProtocol& WirelessNode::protocol(WirelessTypes::CommProtocol commProtocol) const
     {
-        return m_impl->protocol();
+        return m_impl->protocol(commProtocol);
     }
 
-    std::string WirelessNode::deviceName(uint16 nodeAddress)
+    std::string WirelessNode::deviceName(NodeAddress nodeAddress)
     {
         //replace any unsupported sensorcloud characters
         std::string sensorcloudFilteredName = Utils::toStr(nodeAddress);
@@ -97,7 +97,7 @@ namespace mscl
         m_impl->clearEepromCache();
     }
 
-    uint16 WirelessNode::nodeAddress() const
+    NodeAddress WirelessNode::nodeAddress() const
     {
         return m_impl->nodeAddress();
     }
@@ -107,9 +107,9 @@ namespace mscl
         return m_impl->frequency();
     }
 
-    bool WirelessNode::quickPing()
+    WirelessTypes::CommProtocol WirelessNode::communicationProtocol() const
     {
-        return m_impl->quickPing();
+        return m_impl->communicationProtocol();
     }
 
     PingResponse WirelessNode::ping()
@@ -187,6 +187,11 @@ namespace mscl
         ChannelData result;
         m_impl->getDiagnosticInfo(result);
         return result;
+    }
+
+    bool WirelessNode::testCommunicationProtocol(WirelessTypes::CommProtocol protocol)
+    {
+        return m_impl->testCommProtocol(protocol);
     }
 
     Version WirelessNode::firmwareVersion() const

@@ -115,7 +115,7 @@ namespace mscl
         static DeviceList listInertialDevices();
 
         //API Function: listPorts
-        //    Gets a simple list of all serial ports and their availability. This function does not tell you which device is on which port, but can be useful for listing actual serial ports.
+        //    Gets a simple list of all serial ports and their availability.
         //
         //Returns:
         //    A <DeviceList> representing the ports that were found and their availability. 

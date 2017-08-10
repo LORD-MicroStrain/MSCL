@@ -12,14 +12,16 @@ namespace mscl
     WirelessChannel::WirelessChannel():
         m_chNumber(0),
         m_id(WirelessChannel::channel_unknown),
-        m_type(WirelessTypes::chType_none)
+        m_type(WirelessTypes::chType_none),
+        m_description("")
     {
     }
 
-    WirelessChannel::WirelessChannel(uint8 chNumber, WirelessChannel::ChannelId id, WirelessTypes::ChannelType type):
+    WirelessChannel::WirelessChannel(uint8 chNumber, WirelessChannel::ChannelId id, WirelessTypes::ChannelType type, const std::string& description):
         m_chNumber(chNumber),
         m_id(id),
-        m_type(type)
+        m_type(type),
+        m_description(description)
     {
     }
 
@@ -41,6 +43,11 @@ namespace mscl
     std::string WirelessChannel::name() const
     {
         return channelName(id());
+    }
+
+    std::string WirelessChannel::description() const
+    {
+        return m_description;
     }
 
     std::string WirelessChannel::channelName(WirelessChannel::ChannelId channelId)
@@ -175,6 +182,7 @@ namespace mscl
 
             case channel_rawAngleStrain:            return "rawAngleStrain";
             case channel_beaconEcho:                return "beaconEcho";
+            case channel_beaconConflict:            return "beaconConflict";
             case channel_rfSweep:                   return "rfSweep";
             case channel_error_code:                return "errorCode";
             case channel_diag_state:                return "diagnostic_state";

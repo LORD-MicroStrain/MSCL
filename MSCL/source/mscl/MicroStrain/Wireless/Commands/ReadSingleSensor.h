@@ -6,7 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
 #include "mscl/Types.h"
 
 namespace mscl
@@ -36,7 +36,7 @@ namespace mscl
 
         //Class: Response
         //    Handles the response to the ReadSingleSensor node command
-        class Response : public ResponsePattern
+        class Response : public WirelessResponsePattern
         {
         private:
             //Variable: m_sensorValue
@@ -51,7 +51,7 @@ namespace mscl
             //    collector - The <ResponseCollector> used to register and unregister the response
             explicit Response(std::weak_ptr<ResponseCollector> collector);
 
-        public:
+        protected:
             //Function: match
             //    Checks if the bytes passed in match the response pattern from their current read position
             //
@@ -60,8 +60,9 @@ namespace mscl
             //
             //Returns:
             //    true if the response pattern was found, false otherwise
-            virtual bool match(DataBuffer& data) override;
+            virtual bool matchSuccessResponse(DataBuffer& data) override;
 
+        public:
             //Function: sensorValue
             //    Gets the sensor value that was in the response to the read single sensor command.
             uint16 sensorValue() const;

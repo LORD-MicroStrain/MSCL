@@ -14,19 +14,22 @@ namespace mscl
         //build the command ByteStream
         ByteStream cmd;
         cmd.append_uint8(WirelessProtocol::cmdId_erase);    //Command ID
-        cmd.append_uint16(nodeAddress);                     //Node address  (2 bytes)
+        cmd.append_uint16(static_cast<uint16>(nodeAddress));//Node address  (2 bytes)
         cmd.append_uint32(0x08100CFF);                      //Command Bytes (4 bytes)
 
         return cmd;
     }
 
     Erase::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        ResponsePattern(collector)
+        WirelessResponsePattern(collector, WirelessProtocol::cmdId_erase, 0)    //note: passing 0 since this response doesn't check node address :(
     {
     }
 
     bool Erase::Response::match(DataBuffer& data)
     {
+        //get a lock on the parsing mutex
+        mutex_lock_guard lock(m_parsingMutex);
+
         const uint16 TOTAL_BYTES = 1;
 
         //if there aren't enough bytes in the buffer to match the response

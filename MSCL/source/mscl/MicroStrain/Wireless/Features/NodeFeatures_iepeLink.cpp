@@ -25,8 +25,8 @@ namespace mscl
         //Channels
         //    Note: Channel 4 is unique in that it doesn't follow the sample rate of the node. 
         //          Instead, it is sent once every burst, with a provided sample rate of once every 24 hours.
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_acceleration);   //accel
-        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_temperature);    //temp    
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_acceleration, "Acceleration");
+        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_temperature, "Internal Temperature");
     }
 
     bool NodeFeatures_iepeLink::supportsSensorDelayConfig() const

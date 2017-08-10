@@ -9,7 +9,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    InertialPacketBuilder::InertialPacketBuilder(uint8 descriptorSet, const InertialDataField& field):
+    InertialPacketBuilder::InertialPacketBuilder(const uint8 descriptorSet, const InertialDataField& field):
         m_descriptorSet(descriptorSet)
     {
         //add the field to the vector of fields

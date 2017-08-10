@@ -34,6 +34,8 @@ MOCK_BASE_CLASS(mock_WirelessNodeImpl, WirelessNode_Impl)
     }
 
     MOCK_METHOD(ping, 0);
+    MOCK_METHOD(cyclePower, 0);
+    MOCK_METHOD(resetRadio, 0);
     MOCK_METHOD_EXT(readEeprom, 1, Value(const EepromLocation&), readEeprom);
     MOCK_METHOD_EXT(writeEeprom, 2, void(const EepromLocation&, const Value&), writeEeprom);
     MOCK_METHOD_EXT(readEeprom, 1, uint16(uint16), readEeprom_uint16);
@@ -41,6 +43,7 @@ MOCK_BASE_CLASS(mock_WirelessNodeImpl, WirelessNode_Impl)
     MOCK_METHOD(changeFrequency, 1);
     MOCK_METHOD(features, 0);
     MOCK_METHOD(firmwareVersion, 0);
+    MOCK_METHOD(protocol, 1);
 };
 
 MOCK_BASE_CLASS(mock_WirelessNodeImpl_Basic, WirelessNode_Impl)
@@ -100,7 +103,7 @@ static void expectGoodPing(std::shared_ptr<mock_WirelessNodeImpl> impl)
 
 static void expectNodeFeatures(std::unique_ptr<NodeFeatures>& features, std::shared_ptr<mock_WirelessNodeImpl> impl, WirelessModels::NodeModel model = WirelessModels::node_gLink_2g)
 {
-    NodeInfo info(Version(9, 9), model, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(9, 9), model, WirelessTypes::region_usa);
 
     features = NodeFeatures::create(info);
 
@@ -109,7 +112,7 @@ static void expectNodeFeatures(std::unique_ptr<NodeFeatures>& features, std::sha
 
 static void expectNodeFeatures_fw10(std::unique_ptr<NodeFeatures>& features, std::shared_ptr<mock_WirelessNodeImpl> impl, WirelessModels::NodeModel model = WirelessModels::node_gLink_2g)
 {
-    NodeInfo info(Version(10, 0), model, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(10, 0), model, WirelessTypes::region_usa);
 
     features = NodeFeatures::create(info);
 
@@ -119,12 +122,6 @@ static void expectNodeFeatures_fw10(std::unique_ptr<NodeFeatures>& features, std
 static void expectResetRadio(std::shared_ptr<mock_WirelessNodeImpl> impl)
 {
     expectWrite(impl, NodeEepromMap::CYCLE_POWER, Value::UINT16(2));
-}
-
-static void expectCyclePower(std::shared_ptr<mock_WirelessNodeImpl> impl)
-{
-    expectWrite(impl, NodeEepromMap::CYCLE_POWER, Value::UINT16(1));
-    expectGoodPing(impl);
 }
 
 static void expectRead(std::shared_ptr<mock_WirelessNodeImpl_Basic> impl, const EepromLocation& loc, const Value& returnVal)

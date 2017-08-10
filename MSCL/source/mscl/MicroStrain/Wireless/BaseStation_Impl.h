@@ -6,12 +6,13 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include <map>
+#include <boost/optional.hpp>
 
 #include "WirelessParser.h"
 #include "WirelessModels.h"
 #include "Commands/AutoBalance_v2.h"
 #include "Commands/AutoCal.h"
-#include "Commands/BaseStation_BeaconStatus.h"
+#include "Commands/BeaconStatus.h"
 #include "Commands/LongPing.h"
 #include "Commands/SetToIdleStatus.h"
 #include "Configuration/BaseStationEeprom.h"
@@ -21,6 +22,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/Communication/Connection.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/Timestamp.h"
+#include "mscl/Types.h"
 
 namespace mscl
 {
@@ -31,7 +33,7 @@ namespace mscl
     class BaseStationFeatures;
     class BaseStationConfig;
     struct DatalogSessionInfoResult;
-    class ResponsePattern;
+    class WirelessResponsePattern;
     struct ShuntCalCmdInfo;
     class WirelessProtocol;
 
@@ -95,6 +97,10 @@ namespace mscl
         //    The last known radio frequency (<WirelessTypes::Frequency>) that the BaseStation was known to be on
         mutable WirelessTypes::Frequency m_frequency;
 
+        //Variable: m_commProtocol
+        //  The last known state of the <WirelessTypes::CommProtocol> for the BaseStation.
+        mutable std::unique_ptr<WirelessTypes::CommProtocol> m_commProtocol;
+
         //Variable: m_eeprom
         //    The <BaseStationEeprom> that handles reading and writing eeprom values with the BaseStation and eeprom cache.
         mutable std::unique_ptr<BaseStationEeprom> m_eeprom;
@@ -109,11 +115,15 @@ namespace mscl
 
         //Variable: m_protocolMutex
         //    The mutex used when determining the device protocol.
-        std::recursive_mutex m_protocolMutex;
+        mutable std::recursive_mutex m_protocolMutex;
 
-        //Variable: m_protocol
-        //    The <WirelessProtocol> containing all of the protocol commands and info for this BaseStation.
-        std::unique_ptr<WirelessProtocol> m_protocol;
+        //Variable: m_protocol_lxrs
+        //    The <WirelessProtocol> containing all of the protocol commands for the LXRS Radio Configuration.
+        mutable std::unique_ptr<WirelessProtocol> m_protocol_lxrs;
+
+        //Variable: m_protocol_lxrsPlus
+        //    The <WirelessProtocol> containing all of the protocol commands for the LXRS+ Radio Configuration.
+        mutable std::unique_ptr<WirelessProtocol> m_protocol_lxrsPlus;
 
         //Variable: m_lastCommTime
         //    A <Timestamp> representing the last time communication was achieved with the BaseStation.
@@ -134,17 +144,15 @@ namespace mscl
         //    data - The <DataBuffer> containing all the data to be parsed
         void parseData(DataBuffer& data);
 
-        //Function: determineProtocol
-        //    Determines the <WirelessProtocol> to use based on the BaseStation's firmware version.
-        //
-        //Returns:
-        //    A unique_ptr containing the <WirelessProtocol> to use.
+        //Function: determineProtocols
+        //    Determines the <WirelessProtocol> to use based on the BaseStation's ASPP version.
+        //    All <WirelessProtocol> member variables will be updated.
         //
         //Exceptions:
         //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
         //    - <Error_Communication>: Failed to communicate with the BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        std::unique_ptr<WirelessProtocol> determineProtocol();
+        void determineProtocols() const;
 
     public:
         //Function: eeHelper
@@ -158,13 +166,13 @@ namespace mscl
         //    Performs a custom command and waits for the response.
         //
         //Parameters:
-        //    response - A reference to a custom class that was inherited from the <ResponsePattern> base class.
+        //    response - A reference to a custom class that was inherited from the <WirelessResponsePattern> base class.
         //    cmdBytes - The <ByteStream> containing the command bytes to send.
         //    timeout - The maximum timeout to use for waiting for the response.
         //
         //Returns:
         //    true if the command was successful (response.success() is true), false otherwise.
-        bool doCommand(ResponsePattern& response, const ByteStream& cmdBytes, uint64 timeout);
+        bool doCommand(WirelessResponsePattern& response, const ByteStream& cmdBytes, uint64 timeout);
 
         //Function: connection
         //    Gets the <Connection> object that this BaseStation is using.
@@ -187,11 +195,14 @@ namespace mscl
         //    Note: This requires communicating to the BaseStation if
         //          creating the protocol for the first time.
         //
+        //Parameters:
+        //  commProtocol - The <WirelessTypes::CommProtocol> to get the protocol for.
+        //
         //Exceptions:
         //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
         //    - <Error_Communication>: Failed to communicate with the BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        virtual const WirelessProtocol& protocol();
+        virtual const WirelessProtocol& protocol(WirelessTypes::CommProtocol commProtocol) const;
 
         //Function: lastCommunicationTime
         //    Gets the <Timestamp> for the last time we communicated with the BaseStation.
@@ -268,6 +279,17 @@ namespace mscl
         //    - <Error_Communication>: Failed to read the value from the BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         WirelessTypes::Frequency frequency() const;
+
+        //API Function: communicationProtocol
+        //  Gets the <WirelessTypes::CommProtocol> that the BaseStation is currently set to use.
+        //
+        //Returns:
+        //  The <WirelessTypes::CommProtocol> that the BaseStation is currently set to use.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: Failed to read the value from the BaseStation.
+        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
+        WirelessTypes::CommProtocol communicationProtocol() const;
 
         //Function: regionCode
         //    Gets the <WirelessTypes::RegionCode> representing the region of this BaseStation.
@@ -372,13 +394,6 @@ namespace mscl
         //Returns:
         //    The timeout (in milliseconds) set.
         uint64 timeout() const;
-
-        //Function: nodeCommandsTimeout
-        //    Gets the current timeout to use when waiting for responses from node commands
-        //
-        //Returns:
-        //    A <TimeSpan> representing the timeout set for node commands
-        uint64 nodeCommandsTimeout() const;
 
         //Function: ping
         //    Pings the base station
@@ -654,13 +669,29 @@ namespace mscl
         BaseStationAnalogPair getAnalogPair(uint8 portNumber) const;
 
     private:
+        //Function: doBaseCommand
+        //  Performs a BaseStation command with the given parameters.
+        bool doBaseCommand(const ByteStream& command, WirelessResponsePattern& response, uint64 minTimeout = 0);
+
+        //Function: doNodeCommand
+        //  Performs a Wireless Node command with the given parameters.
+        bool doNodeCommand(NodeAddress nodeAddress, const ByteStream& command, WirelessResponsePattern& response, uint64 minTimeout = 0);
+
         //Function: protocol_ping_v1
         //    Performs version 1 of the Ping BaseStation command.
         bool protocol_ping_v1();
 
         //Function: protocol_ping_v2
         //    Performs version 2 of the Ping BaseStation command.
-        bool protocol_ping_v2();
+        bool protocol_ping_v2(WirelessPacket::AsppVersion asppVer);
+
+        //Function: protocol_hardReset_v2
+        //  Performs Version 2 of the Hard BaseStation Reset command.
+        void protocol_hardReset_v2();
+
+        //Function: protocol_softReset_v2
+        //  Performs Version 2 of the Soft BaseStation Reset command.
+        void protocol_softReset_v2();
 
         //Function: protocol_read_v1
         //    Performs version 1 of the Read BaseStation EEPROM command.
@@ -668,7 +699,7 @@ namespace mscl
 
         //Function: protocol_read_v2
         //    Performs version 2 of the Read BaseStation EEPROM command.
-        bool protocol_read_v2(uint16 eepromAddress, uint16& result);
+        bool protocol_read_v2(WirelessPacket::AsppVersion asppVer, uint16 eepromAddress, uint16& result);
 
         //Function: protocol_write_v1
         //    Performs version 1 of the Write BaseStation EEPROM command.
@@ -676,7 +707,7 @@ namespace mscl
 
         //Function: protocol_write_v2
         //    Performs version 2 of the Write BaseStation EEPROM command.
-        bool protocol_write_v2(uint16 eepromAddress, uint16 value);
+        bool protocol_write_v2(WirelessPacket::AsppVersion asppVer, uint16 eepromAddress, uint16 value);
 
         //Function: protocol_enableBeacon_v1
         //    Performs version 1 of the Enable Beacon command.
@@ -684,15 +715,15 @@ namespace mscl
 
         //Function: protocol_enableBeacon_v2
         //    Performs version 2 of the Enable Beacon command.
-        Timestamp protocol_enableBeacon_v2(uint32 utcTime);
+        Timestamp protocol_enableBeacon_v2(WirelessPacket::AsppVersion asppVer, uint32 utcTime);
 
         //Function: protocol_beaconStatus_v1
         //    Performs version 1 of the Beacon Status command.
-        BeaconStatus protocol_beaconStatus_v1();
+        BeaconStatus protocol_beaconStatus_v1(WirelessPacket::AsppVersion asppVer);
 
-        //Function: protocol_startRfSweepMode
+        //Function: protocol_startRfSweepMode_v1
         //    Starts the BaseStation in RF Sweep Mode.
-        void protocol_startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options);
+        void protocol_startRfSweepMode_v1(WirelessPacket::AsppVersion asppVer, uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options);
 
         //Function: protocol_node_pageDownload_v1
         //    Performs Version 1 of the Node Page Download command.
@@ -700,19 +731,27 @@ namespace mscl
 
         //Function: protocol_node_datalogInfo_v1
         //  Performs Version 1 of the Get Datalog Session Info command.
-        bool protocol_node_datalogInfo_v1(NodeAddress nodeAddress, DatalogSessionInfoResult& result);
+        bool protocol_node_datalogInfo_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, DatalogSessionInfoResult& result);
 
         //Function: protocol_node_getDatalogData_v1
         //  Performs Version 1 of the Get Datalog Data command.
-        bool protocol_node_getDatalogData_v1(NodeAddress nodeAddress, uint32 flashAddress, ByteStream& data);
+        bool protocol_node_getDatalogData_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, uint32 flashAddress, ByteStream& data, uint16& numBytesDownloaded);
 
-        //Function: protocol_node_shortPing_v1
-        //    Performs Version 1 of the Node Short Ping command.
-        bool protocol_node_shortPing_v1(NodeAddress nodeAddress);
+        //Function: protocol_node_longPing_v1
+        //  Performs Version 1 of the Node Long Ping command.
+        PingResponse protocol_node_longPing_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress);
 
-        //Function: protocol_node_shortPing_v2
-        //    Performs Version 2 of the Node Short Ping command.
-        bool protocol_node_shortPing_v2(NodeAddress nodeAddress);
+        //Function: protocol_node_hardReset_v2
+        //  Performs Version 2 of the Node Hard Reset command.
+        void protocol_node_hardReset_v2(NodeAddress nodeAddress);
+
+        //Function: protocol_node_softReset_v2
+        //  Performs Version 2 of the Node Soft Reset command.
+        void protocol_node_softReset_v2(NodeAddress nodeAddress);
+
+        //Function: protocol_node_sleep_v1
+        //  Performs Version 1 of the Node Sleep command.
+        bool protocol_node_sleep_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress);
 
         //Function: protocol_node_setToIdle_v1
         //    Performs Version 1 of the Node Set to Idle command.
@@ -720,7 +759,7 @@ namespace mscl
 
         //Function: protocol_node_setToIdle_v2
         //    Performs Version 2 of the Node Set to Idle command.
-        SetToIdleStatus protocol_node_setToIdle_v2(NodeAddress nodeAddress, const BaseStation& base);
+        SetToIdleStatus protocol_node_setToIdle_v2(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, const BaseStation& base);
 
         //Function: protocol_node_readEeprom_v1
         //    Performs Version 1 of the Node Read Eeprom command.
@@ -728,7 +767,7 @@ namespace mscl
 
         //Function: protocol_node_readEeprom_v2
         //    Performs Version 2 of the Node Read Eeprom command.
-        bool protocol_node_readEeprom_v2(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue);
+        bool protocol_node_readEeprom_v2(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue);
 
         //Function: protocol_node_writeEeprom_v1
         //    Performs Version 1 of the Node Write Eeprom command.
@@ -736,7 +775,7 @@ namespace mscl
 
         //Function: protocol_node_writeEeprom_v2
         //    Performs Version 2 of the Node Write Eeprom command.
-        bool protocol_node_writeEeprom_v2(NodeAddress nodeAddress, uint16 eepromAddress, uint16 value);
+        bool protocol_node_writeEeprom_v2(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, uint16 eepromAddress, uint16 value);
 
         //Function: protocol_node_autoBalance_v1
         //    Performs Version 1 of the Node AutoBalance command.
@@ -744,7 +783,19 @@ namespace mscl
 
         //Function: protocol_node_autoBalance_v2
         //    Performs Version 2 of the Node AutoBalance command.
-        bool protocol_node_autoBalance_v2(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result);
+        bool protocol_node_autoBalance_v2(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result);
+
+        //Function: protocol_node_autocal_shm_v1
+        //  Performs Version 1 of the Node AutoCal SHM command.
+        bool protocol_node_autocal_shm_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, AutoCalResult& result);
+
+        //Function: protocol_node_autoshuntcal_v1
+        //  Performs Version 1 of the Node AutoShuntCal command.
+        bool protocol_node_autoshuntcal_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, const ShuntCalCmdInfo& commandInfo, uint8 chNum, WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType chType, AutoCalResult& result);
+
+        //Function: protocol_node_getDiagnosticInfo_v1
+        //  Performs Version 1 of the Node Get Diagnostic Info command.
+        bool protocol_node_getDiagnosticInfo_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, ChannelData& result);
 
         //Function: protocol_node_erase_v1
         //    Performs Version 1 of the Node erase command.
@@ -752,7 +803,11 @@ namespace mscl
 
         //Function: protocol_node_erase_v2
         //    Performs Version 2 of the Node erase command.
-        bool protocol_node_erase_v2(NodeAddress nodeAddress);
+        bool protocol_node_erase_v2(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress);
+
+        //Function: protocol_node_startSync_v1
+        //  Performs Version 1 of the Node Start Sync Sampling command.
+        bool protocol_node_startSync_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress);
 
         //Function: protocol_node_startNonSync_v1
         //  Performs Version 1 of the Start Non Sync Sampling command.
@@ -760,13 +815,22 @@ namespace mscl
 
         //Function: protocol_node_startNonSync_v2
         //  Performs Version 2 of the Start Non Sync Sampling command.
-        bool protocol_node_startNonSync_v2(NodeAddress nodeAddress);
+        bool protocol_node_startNonSync_v2(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress);
+
+        //Function: protocol_node_batchEepromRead_v1
+        //    Performs Version 1 of the Node Batch Eeprom Read command.
+        bool protocol_node_batchEepromRead_v1(NodeAddress nodeAddress, uint16 startEeprom, std::map<uint16, uint16>& result);
+
+        //Function: protocol_node_testCommProtocol
+        //    Performs Version 1 of the Node Test Communication Protocol command.
+        bool protocol_node_testCommProtocol(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, WirelessTypes::CommProtocol protocol);
 
     public:
         //Function: node_ping
         //    Pings the specified Node.
         //
         //Parameters:
+        //    nodeProtocol - the <WirelessProtocol> for the Node.
         //    nodeAddress - the node address of the Node to ping.
         //
         //Returns:
@@ -774,13 +838,41 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        virtual PingResponse node_ping(NodeAddress nodeAddress);
+        virtual PingResponse node_ping(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress);
+
+        //Function: node_hardReset
+        //    Performs a hard reset on the specified Node.
+        //
+        //Parameters:
+        //    nodeProtocol - the <WirelessProtocol> for the Node.
+        //    nodeAddress - the node address to perform the hard reset on
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to reset the Node.
+        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
+        void node_hardReset(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress);
+
+        //Function: node_softReset
+        //    Performs a soft reset on the specified Node.
+        //
+        //Parameters:
+        //    nodeProtocol - the <WirelessProtocol> for the Node.
+        //    nodeAddress - the node address to perform the soft reset on
+        //
+        //Returns:
+        //    true if the reset was successful, false otherwise.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to reset the Node.
+        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
+        void node_softReset(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress);
 
         //Function: node_sleep
         //    Puts the Node into a low power, sleep mode.
         //    This command attempts to ping the node before sending the sleep command, to verify communication.
         //
         //Parameters:
+        //    nodeProtocol - the <WirelessProtocol> for the Node.
         //    nodeAddress - The node adderss of the Node to put to sleep.
         //
         //Returns:
@@ -788,7 +880,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        virtual bool node_sleep(NodeAddress nodeAddress);
+        virtual bool node_sleep(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress);
 
         //Function: node_setToIdle
         //    Attempts to set the node to idle so that it can be communicated with.
@@ -804,19 +896,6 @@ namespace mscl
         //    - <Error_Communication>: Failed to communicate with the parent BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         virtual SetToIdleStatus node_setToIdle(NodeAddress nodeAddress, const BaseStation& base);
-
-        //Function: node_shortPing
-        //    Pings a specific node.
-        //
-        //Parameters:
-        //    nodeAddress - the node address of the node to ping.
-        //
-        //Returns:
-        //    true if successfully pinged the node, false otherwise
-        //
-        //Exceptions:
-        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool node_shortPing(NodeAddress nodeAddress);
 
         //Function: node_readEeprom
         //    Reads a value from EEPROM on the specified Node.
@@ -868,6 +947,19 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         virtual bool node_pageDownload(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint16 pageIndex, ByteStream& data);
 
+        //Function: node_batchEepromRead
+        //  Reads a batch of eeprom values from the Node
+        //
+        //Parameters:
+        //  nodeProtocol - The <WirelessProtocol> for the Node.
+        //  nodeAddress - The node address of the Node to download data from.
+        //  startEeprom - The eeprom address to start the batch eeprom read from.
+        //  result - The eeprom location/value map that will hold the result.
+        //
+        //Exceptions:
+        //  - <Error_Connection>: A connection error has occurred with the BaseStation.
+        virtual bool node_batchEepromRead(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint16 startEeprom, std::map<uint16, uint16>& result);
+
         //Function: node_getDatalogSessionInfo
         //  Gets info about the datalog sessions on the Node.
         //
@@ -891,13 +983,14 @@ namespace mscl
         //  nodeAddress - The node address of the Node to download data from.
         //  flashAddress - The flash address to read from.
         //  result - The <ByteStream> containing the resulting data bytes from the Node on success.
+        //  numBytesRead - The number of bytes that were read from the command and appended to the result <ByteStream>. 
         //
         //Returns:
         //  true if the command succeded, false otherwise
         //
         //Exceptions:
         //  - <Error_Connection>: A connection error has occurred with the BaseStation.
-        virtual bool node_getDatalogData(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint32 flashAddress, ByteStream& result);
+        virtual bool node_getDatalogData(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint32 flashAddress, ByteStream& result, uint16& numBytesRead);
 
         //Function: node_erase
         //    Sends the Erase command to a Node.
@@ -914,6 +1007,7 @@ namespace mscl
         //    Sends the Start Synchronized Sampling command to a Node.
         //
         //Parameters:
+        //    nodeProtocol - The <WirelessProtocol> for the Node.
         //    nodeAddress - The node address of the Node to send the command to.
         //
         //Returns:
@@ -921,9 +1015,9 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        virtual bool node_startSyncSampling(NodeAddress nodeAddress);
+        virtual bool node_startSyncSampling(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress);
 
-        //Function: node_startSyncSampling
+        //Function: node_startNonSyncSampling
         //    Sends the Start Non-Synchronized Sampling command to a Node.
         //
         //Parameters:
@@ -982,6 +1076,7 @@ namespace mscl
         //    Performs automatic calibration for a Wireless Node.
         //
         //Parameters:
+        //    nodeProtocol - The <WirelessProtocol> for the Node.
         //    nodeAddress - The node address of the Node to send the command to.
         //    result - The <AutoCalResult> reference to hold the result.
         //
@@ -990,12 +1085,13 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool node_autocal_shm(NodeAddress nodeAddress, AutoCalResult& result);
+        bool node_autocal_shm(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, AutoCalResult& result);
 
         //Function: node_autoShuntCal
         //  Performs automatic shunt calibration for a Wireless Node.
         //
         //Parameters:
+        //  nodeProtocol - The <WirelessProtocol> for the Node.
         //  nodeAddress - The node address of the Node to send the command to.
         //  commandInfo - The <ShuntCalCmdInfo> to use in the command.
         //  chNum - The channel number to calibrated.
@@ -1008,7 +1104,8 @@ namespace mscl
         //
         //Exceptions:
         //  - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool node_autoShuntCal(NodeAddress nodeAddress,
+        bool node_autoShuntCal(const WirelessProtocol& nodeProtocol,
+                               NodeAddress nodeAddress,
                                const ShuntCalCmdInfo& commandInfo,
                                uint8 chNum,
                                WirelessModels::NodeModel nodeType,
@@ -1034,6 +1131,7 @@ namespace mscl
         //  Performs an immediate request for the Node's Diagnostic Info.
         //
         //Parameters:
+        //  nodeProtocol - The <WirelessProtocol> for the Node.
         //  nodeAddress - The node address of the Node to send the command to.
         //  result - The <ChannelData> container that will be filled with the result upon success.
         //
@@ -1042,7 +1140,22 @@ namespace mscl
         //
         //Exceptions:
         //  - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool node_getDiagnosticInfo(NodeAddress nodeAddress, ChannelData& result);
+        bool node_getDiagnosticInfo(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, ChannelData& result);
+
+        //Function: node_testCommProtocol
+        //  Tests if a Node will still be able to communicate after changing the Node's communication protocol.
+        //
+        //Parameters:
+        //  nodeAddress - The node address of the Node to send the command to.
+        //  commProtocol - The <WirelessTypes::CommProtocol> to test.
+        //
+        //Returns:
+        //  true if communication in the new protocol mode was successful, false otherwise.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: The given communication protocol is not supported by the BaseStation.
+        //  - <Error_Connection>: A connection error has occurred with the BaseStation.
+        bool node_testCommProtocol(NodeAddress nodeAddress, WirelessTypes::CommProtocol commProtocol);
 
     private:
         //Function: node_autocal

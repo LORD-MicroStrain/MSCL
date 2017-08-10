@@ -38,9 +38,8 @@ namespace mscl
         //Parameters:
         //    fw - The firmware <Version> of the Node.
         //    model - The <WirelessModels::NodeModel> of the Node.
-        //    storageSize - The maximum number of bytes that can be stored to the Node.
         //    region - The <WirelessTypes::RegionCode> of the Node.
-        NodeInfo(const Version& fw, WirelessModels::NodeModel model, uint64 storageSize, WirelessTypes::RegionCode region);
+        NodeInfo(const Version& fw, WirelessModels::NodeModel model, WirelessTypes::RegionCode region);
 
     private:
         NodeInfo();        //disabled default constructor
@@ -58,10 +57,6 @@ namespace mscl
         //    The <WirelessModels::NodeModel> of the node (lazy loaded).
         Utils::Lazy<WirelessModels::NodeModel> m_model;
 
-        //Variable: m_dataStorageSize
-        //    The maximum number of bytes that can be stored to the node (lazy loaded).
-        Utils::Lazy<uint64> m_dataStorageSize;
-
         //Variable: m_regionCode
         //    The <WirelessTypes::RegionCode> of the node (lazy loaded).
         Utils::Lazy<WirelessTypes::RegionCode> m_regionCode;
@@ -74,10 +69,6 @@ namespace mscl
         //Function: model
         //  Gets the <WirelessModels::NodeModel> of the Node.
         WirelessModels::NodeModel model() const;
-
-        //Function: dataStorageSize
-        //  Gets the maximum number of bytes that can be stored to the node.
-        uint64 dataStorageSize() const;
 
         //Function: regionCode
         //  Gets the <WirelessTypes::RegionCode> of the Node.

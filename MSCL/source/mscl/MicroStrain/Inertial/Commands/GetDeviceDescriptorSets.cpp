@@ -30,7 +30,7 @@ namespace mscl
 
 
     GetDeviceDescriptorSets::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        GenericInertialCommand::Response(collector, true, true, "Get Device Descriptor Sets")
+        GenericInertialCommand::Response(InertialTypes::CMD_GET_DESCRIPTOR_SETS, collector, true, true, "Get Device Descriptor Sets")
     {}
 
     bool GetDeviceDescriptorSets::Response::match_data(const InertialDataField& field)

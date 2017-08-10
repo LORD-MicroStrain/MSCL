@@ -68,6 +68,9 @@ namespace mscl
     public:
         //API Default Constructor: WsdaFinder
         //  Creates a WsdaFinder object, starting the thread to search for WSDAs.
+        //
+        //Exceptions:
+        //  - <Error>: The Wsda Finder upnp service could not be started.
         WsdaFinder();
 
         //API Destructor: ~WsdaFinder

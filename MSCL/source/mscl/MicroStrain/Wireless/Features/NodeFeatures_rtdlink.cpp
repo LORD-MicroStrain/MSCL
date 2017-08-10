@@ -29,10 +29,10 @@ namespace mscl
         );
 
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_diffTemperature);    //4-wire
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_diffTemperature);    //2-wire
-        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_temperature);        //internal temp
-        m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_rh);                //% RH
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_diffTemperature, "RTD (4-wire)");    //4-wire
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_diffTemperature, "RTD (2-wire)");    //2-wire
+        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_temperature, "Internal Temperature");
+        m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_rh, "Relative Humidity");
     }
 
     const WirelessTypes::SamplingModes NodeFeatures_rtdlink::samplingModes() const

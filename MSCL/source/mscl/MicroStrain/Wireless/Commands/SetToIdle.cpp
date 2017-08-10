@@ -18,7 +18,7 @@ namespace mscl
         cmd.append_uint8(0xAA);                                     //Start of Packet
         cmd.append_uint8(0xFE);                                     //Delivery Stop Flag
         cmd.append_uint8(0x00);                                     //App Data Type
-        cmd.append_uint16(nodeAddress);                             //Node address    (2 bytes)
+        cmd.append_uint16(static_cast<uint16>(nodeAddress));        //Node address    (2 bytes)
         cmd.append_uint8(0x02);                                     //Payload Length
         cmd.append_uint16(WirelessProtocol::cmdId_stopNode);        //Command ID    (2 bytes)
 
@@ -31,7 +31,7 @@ namespace mscl
     }
 
     SetToIdle::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, const BaseStation& baseStation):
-        ResponsePattern(collector),
+        WirelessResponsePattern(collector, WirelessProtocol::cmdId_stopNode, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_result(SetToIdleStatus::setToIdleResult_notCompleted),
         m_baseStation(baseStation)

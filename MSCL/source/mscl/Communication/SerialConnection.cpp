@@ -13,7 +13,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
     //The constructor that sets up the SerialConnection
-    SerialConnection::SerialConnection(const std::string& port, uint32 baudRate /*=921600*/):
+    SerialConnection::SerialConnection(const std::string& port, uint32 baudRate):
         m_port(port),                    //set the port
         m_baudRate(baudRate)            //set the baud rate
     {

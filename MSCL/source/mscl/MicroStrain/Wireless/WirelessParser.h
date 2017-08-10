@@ -39,10 +39,10 @@ namespace mscl
 
         struct DuplicateCheckKey
         {
-            uint32 nodeAddress;
+            NodeAddress nodeAddress;
             WirelessPacket::PacketType packetType;
 
-            DuplicateCheckKey(uint32 address, WirelessPacket::PacketType packet):
+            DuplicateCheckKey(NodeAddress address, WirelessPacket::PacketType packet):
                 nodeAddress(address),
                 packetType(packet)
             { }
@@ -57,10 +57,9 @@ namespace mscl
         //    responseCollector - the <ResponseCollector> to be associated with this parser
         WirelessParser(WirelessPacketCollector& packetCollector, std::weak_ptr<ResponseCollector> responseCollector);
 
-    private:
-        WirelessParser();
-        WirelessParser(const WirelessParser&);
-        WirelessParser& operator=(const WirelessParser&);
+        WirelessParser() = delete;
+        WirelessParser(const WirelessParser&) = delete;
+        WirelessParser& operator=(const WirelessParser&) = delete;
 
     private:
         //Typedef: DuplicateCheckMap
@@ -87,7 +86,10 @@ namespace mscl
         //Parameters:
         //    packet - A verified, valid <WirelessPacket>
         //    lastReadPos - The last read position where the packet was parsed from.
-        void processPacket(const WirelessPacket& packet, std::size_t lastReadPos);
+        //
+        //Returns:
+        //  true if the packet was processed successfully (was data or a response we expected), false if it failed to be processed.
+        bool processPacket(const WirelessPacket& packet, std::size_t lastReadPos);
 
         //Function: findMatchingResponse
         //    Takes a <DataBuffer> of bytes and checks if the packet collector has any responses it is waiting on.
@@ -122,7 +124,7 @@ namespace mscl
         //    true if the packet is a duplicate, false otherwise.
         bool isDuplicate(const WirelessPacket& packet);
 
-        //Function: parseAsPacket_ASPP_1
+        //Function: parseAsPacket_ASPP_v1
         //    Takes a DataBuffer that has had its read position moved to the start of a packet 
         //    and verifies that the bytes form a valid ASPP v1 packet.
         //
@@ -135,7 +137,7 @@ namespace mscl
         //    A <ParsePacketResult> describing if the packet was verified, or why it failed verification.
         WirelessParser::ParsePacketResult parseAsPacket_ASPP_v1(DataBuffer& data, WirelessPacket& packet, WirelessTypes::Frequency freq);
 
-        //Function: parseAsPacket_ASPP_1
+        //Function: parseAsPacket_ASPP_v2
         //    Takes a DataBuffer that has had its read position moved to the start of a packet 
         //    and verifies that the bytes form a valid ASPP v2 packet.
         //
@@ -147,6 +149,19 @@ namespace mscl
         //Returns:
         //    A <ParsePacketResult> describing if the packet was verified, or why it failed verification.
         WirelessParser::ParsePacketResult parseAsPacket_ASPP_v2(DataBuffer& data, WirelessPacket& packet, WirelessTypes::Frequency freq);
+
+        //Function: parseAsPacket_ASPP_v3
+        //    Takes a DataBuffer that has had its read position moved to the start of a packet 
+        //    and verifies that the bytes form a valid ASPP v3 packet.
+        //
+        //Parameters:
+        //    data - A <DataBuffer> with its read position at the start of a an ASPP v3 packet (0xAC).
+        //    packet - A <WirelessPacket> to hold all the packet information if the packet is verified from the DataBuffer.
+        //    freq - A <WirelessTypes::Frequency> representing the frequency that this data was collected on.
+        //
+        //Returns:
+        //    A <ParsePacketResult> describing if the packet was verified, or why it failed verification.
+        WirelessParser::ParsePacketResult parseAsPacket_ASPP_v3(DataBuffer& data, WirelessPacket& packet, WirelessTypes::Frequency freq);
 
     public:
         //Function: parseAsPacket

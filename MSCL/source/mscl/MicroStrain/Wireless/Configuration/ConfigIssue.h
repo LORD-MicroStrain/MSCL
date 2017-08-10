@@ -66,6 +66,7 @@ namespace mscl
         //  CONFIG_DERIVED_MASK_CREST_FACTOR    - 43 - Derived Crest Factor Mask
         //  CONFIG_HIGH_PASS_FILTER             - 44 - High Pass Filter
         //  CONFIG_DERIVED_MASK                 - 45 - Derived Mask (all masks issue)
+        //  CONFIG_COMM_PROTOCOL                - 46 - Communication Protocol
         enum ConfigOption
         {
             CONFIG_SAMPLING_MODE                = 0,
@@ -107,13 +108,14 @@ namespace mscl
             CONFIG_SENSOR_DELAY                 = 36,
             CONFIG_LOW_PASS_FILTER              = 37,
             CONFIG_DATA_MODE                    = 38,
-            CONFIG_DERIVED_DATA_RATE          = 39,
+            CONFIG_DERIVED_DATA_RATE            = 39,
             CONFIG_DERIVED_MASK_RMS             = 40,
             CONFIG_DERIVED_MASK_P2P             = 41,
             CONFIG_DERIVED_MASK_IPS             = 42,
             CONFIG_DERIVED_MASK_CREST_FACTOR    = 43,
             CONFIG_HIGH_PASS_FILTER             = 44,
-            CONFIG_DERIVED_MASK                 = 45
+            CONFIG_DERIVED_MASK                 = 45,
+            CONFIG_COMM_PROTOCOL                = 46,
         };
 
         ConfigIssue();    //default constructor

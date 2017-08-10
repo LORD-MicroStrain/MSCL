@@ -76,6 +76,10 @@ namespace mscl
             case InertialModels::node_3dm_gx5_25:
             case InertialModels::node_3dm_gx5_35:
             case InertialModels::node_3dm_gx5_45:
+            case InertialModels::node_3dm_cv5_10:
+            case InertialModels::node_3dm_cv5_15:
+            case InertialModels::node_3dm_cv5_25:
+            case InertialModels::node_3dm_cv5_45:
                 return std::unique_ptr<InertialNodeFeatures>(new InertialNodeFeatures_3dm_gx4_45(info));
 
             default:

@@ -27,6 +27,9 @@ namespace mscl
 
     void BeaconEchoPacket::parseSweeps()
     {
+        static const uint16 BEACON_ECHO = 0;
+        static const uint16 BEACON_CONFLICT = 1;
+
         m_numSweeps = 1;
 
         //build the 1 sweep that we need to add
@@ -49,13 +52,28 @@ namespace mscl
 
         ChannelData chData;
 
+        //determine if it was a beacon from this BaseStation, or another Base on the same frequency
+        WirelessChannel::ChannelId chId;
+        uint16 beaconType = m_payload.read_uint16(0);
+        switch(beaconType)
+        {
+            case BEACON_CONFLICT:
+                chId = WirelessChannel::channel_beaconConflict;
+                break;
+
+            case BEACON_ECHO:
+            default:
+                chId = WirelessChannel::channel_beaconEcho;
+                break;
+        }
+
         //build the current beacon timestamp
         uint64 timestampSec = m_payload.read_uint32(2);
         Timestamp time((timestampSec * TimeSpan::NANOSECONDS_PER_SECOND)); //no nanoseconds provided in this packet
 
-        static const auto chName = std::bind(WirelessChannel::channelName, WirelessChannel::channel_beaconEcho);
+        static const auto chName = std::bind(WirelessChannel::channelName, chId);
 
-        chData.emplace_back(WirelessChannel::channel_beaconEcho, 1, chName, valueType_Timestamp, anyType(time));
+        chData.emplace_back(chId, 1, chName, valueType_Timestamp, anyType(time));
 
         //add the channel data to the sweep
         sweep.data(chData);
@@ -70,12 +88,6 @@ namespace mscl
 
         //verify the payload size
         if(payload.size() != 6)
-        {
-            return false;
-        }
-
-        //verify the app id
-        if(payload.read_uint16(0) != 0xBEAC)
         {
             return false;
         }

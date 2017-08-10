@@ -18,6 +18,7 @@ namespace mscl
     class AutoBalanceResult
     {
         friend class AutoBalance_v2;
+        friend class AutoBalance_v3;
         friend class BaseStation_Impl;
         friend class WirelessNode_Impl;
 

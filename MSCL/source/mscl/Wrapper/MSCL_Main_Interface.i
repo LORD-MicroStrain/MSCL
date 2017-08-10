@@ -1,10 +1,11 @@
 %include "MSCL_Exceptions.i" //our MSCL Exceptions interface file
 
-%include "stdint.i"        // SWIG file needed for standard fixed-width types
-%include "std_string.i"      // SWIG file needed for std::string
-%include "std_vector.i"      // SWIG file needed for std::vector
-%include "std_map.i"      // SWIG file needed for std::map
-%include "std_shared_ptr.i"    // SWIG file needed for std::shared_ptr
+%include "stdint.i"         // SWIG file needed for standard fixed-width types
+%include "std_string.i"     // SWIG file needed for std::string
+%include "std_vector.i"     // SWIG file needed for std::vector
+%include "std_map.i"        // SWIG file needed for std::map
+%include "std_shared_ptr.i" // SWIG file needed for std::shared_ptr
+//%include "std_array.i"      // SWIG file needed for std::array
 
 #ifdef SWIGCSHARP
 //fix operator functions for C#
@@ -100,6 +101,7 @@
 #include "../MicroStrain/DataPoint.h"
 #include "../MicroStrain/Vector.h"
 #include "../MicroStrain/Matrix.h"
+//#include "../MicroStrain/ResponseCollector.h"
 #include "../MicroStrain/Wireless/ChannelMask.h"
 #include "../MicroStrain/Wireless/ArmedDataloggingNetwork.h"
 #include "../MicroStrain/Wireless/Configuration/BaseStationConfig.h"
@@ -132,12 +134,13 @@
 #include "../MicroStrain/Wireless/Commands/AutoBalanceResult.h"
 #include "../MicroStrain/Wireless/Commands/AutoCalInfo.h"
 #include "../MicroStrain/Wireless/Commands/AutoCalResult.h"
-#include "../MicroStrain/Wireless/Commands/BaseStation_BeaconStatus.h"
-#include "../MicroStrain/Wireless/Commands/LongPing.h"
+#include "../MicroStrain/Wireless/Commands/BeaconStatus.h"
+#include "../MicroStrain/Wireless/Commands/PingResponse.h"
 #include "../MicroStrain/Wireless/Commands/SetToIdleStatus.h"
 #include "../MicroStrain/Wireless/Features/ChannelGroup.h"
 #include "../MicroStrain/Wireless/Features/NodeFeatures.h"
 #include "../MicroStrain/Wireless/Features/BaseStationFeatures.h"
+#include "../MicroStrain/Inertial/InertialReturnTypes.h"
 #include "../MicroStrain/Inertial/EulerAngles.h"
 #include "../MicroStrain/Inertial/PositionOffset.h"
 #include "../MicroStrain/Inertial/InertialModels.h"
@@ -149,6 +152,7 @@
 #include "../MicroStrain/Inertial/Features/InertialNodeFeatures.h"
 #include "../MicroStrain/Inertial/InertialNode.h"
 #include "../MicroStrain/Inertial/Packets/InertialPacket.h"
+#include "../MicroStrain/Inertial/Commands/GNSS_SBASSettings.h"
 %}
 
 // Need to tell SWIG that the following classes are not abstract (thinks they are by default and doesn't generate constructors)
@@ -174,6 +178,7 @@
 #ifndef UNIX_BUILD
     %include "../Communication/WsdaFinder.h"
 #endif
+//%include "../MicroStrain/ResponseCollector.h"
 %include "../MicroStrain/Wireless/WirelessTypes.h"
 %include "../MicroStrain/SampleRate.h"
 %include "../MicroStrain/Vector.h"
@@ -196,7 +201,7 @@
 %include "../MicroStrain/Wireless/BaseStationAnalogPair.h"
 %include "../MicroStrain/Wireless/BaseStationButton.h"
 %include "../MicroStrain/Wireless/Configuration/BaseStationConfig.h"
-%include "../MicroStrain/Wireless/Commands/BaseStation_BeaconStatus.h"
+%include "../MicroStrain/Wireless/Commands/BeaconStatus.h"
 %include "../MicroStrain/Wireless/BaseStation.h"
 %include "../MicroStrain/Wireless/LoggedDataSweep.h"
 %include "../MicroStrain/Wireless/RadioFeatures.h"
@@ -204,7 +209,7 @@
 %include "../MicroStrain/Wireless/Commands/AutoBalanceResult.h"
 %include "../MicroStrain/Wireless/Commands/AutoCalInfo.h"
 %include "../MicroStrain/Wireless/Commands/AutoCalResult.h"
-%include "../MicroStrain/Wireless/Commands/LongPing.h"
+%include "../MicroStrain/Wireless/Commands/PingResponse.h"
 %include "../MicroStrain/Wireless/Commands/SetToIdleStatus.h"
 %include "../MicroStrain/Wireless/WirelessNode.h"
 %include "../MicroStrain/Wireless/DatalogDownloader.h"
@@ -213,6 +218,7 @@
 %include "../MicroStrain/Wireless/SyncSamplingNetwork.h"
 %include "../MicroStrain/Wireless/Features/NodeFeatures.h"
 %include "../MicroStrain/Wireless/Features/BaseStationFeatures.h"
+%include "../MicroStrain/Inertial/InertialReturnTypes.h"
 %include "../MicroStrain/Inertial/EulerAngles.h"
 %include "../MicroStrain/Inertial/PositionOffset.h"
 %include "../MicroStrain/Inertial/InertialModels.h"
@@ -224,6 +230,7 @@
 %include "../MicroStrain/Inertial/Packets/InertialDataPacket.h"
 %include "../MicroStrain/Inertial/Features/InertialNodeFeatures.h"
 %include "../MicroStrain/Inertial/InertialNode.h"
+%include "../MicroStrain/Inertial/Commands/GNSS_SBASSettings.h"
 
 namespace std
 {
@@ -249,6 +256,7 @@ namespace std
     %template(StorageLimitModes)        vector<mscl::WirelessTypes::StorageLimitMode>;
     %template(InputRanges)              vector<mscl::WirelessTypes::InputRange>;
     %template(DataModes)                vector<mscl::WirelessTypes::DataMode>;
+    %template(CommProtocols)            vector<mscl::WirelessTypes::CommProtocol>;
     %template(DerivedChannelTypes)      vector<mscl::WirelessTypes::DerivedChannelType>;
     %template(DerivedChannelMasks)      map<mscl::WirelessTypes::DerivedChannelType, mscl::ChannelMask>;
     %template(SampleRates)              vector<mscl::SampleRate>;
@@ -263,6 +271,9 @@ namespace std
     %template(Triggers)                 map<uint8_t, mscl::Trigger>;
     %template(ChannelCalMap)            map<mscl::WirelessChannel::ChannelId, mscl::CalCoefficients>;
     %template(ConnectionDebugDataVec)   vector<mscl::ConnectionDebugData>;
+    %template(SatellitePRNs)            vector<uint16_t>;
+    %template(Constellations)           vector<mscl::Constellation>;
+    %template(GeometricVector)  std::vector<float>;
 
 #ifndef UNIX_BUILD
     %template(WsdaMap)                  map<string, mscl::WsdaInfo>;

@@ -50,4 +50,10 @@ namespace mscl
         //calculate the fletcher checkum of all the bytes that are in m_bytes
         return m_bytes.calculateFletcherChecksum(0, m_bytes.size() - 1);
     }
+
+    uint32 ChecksumBuilder::crcChecksum() const
+    {
+        //calcualte the CRC checksum of all the bytes that are in m_bytes
+        return m_bytes.calculateCrcChecksum(0, m_bytes.size() - 1);
+    }
 }

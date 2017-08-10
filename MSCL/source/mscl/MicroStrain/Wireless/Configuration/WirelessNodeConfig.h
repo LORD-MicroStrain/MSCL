@@ -37,6 +37,8 @@ namespace mscl
     //    <WirelessNode::applyConfig>
     class WirelessNodeConfig
     {
+        friend class WirelessNode_Impl;
+
     public:
         //API Constructor: WirelessNodeConfig
         //    Creates a blank WirelessNodeConfig.
@@ -135,6 +137,10 @@ namespace mscl
         //  The <WirelessTypes::WirelessSampleRate> for all Derived Channels to set.
         boost::optional<WirelessTypes::WirelessSampleRate> m_derivedDataRate;
 
+        //Variable: m_commProtocol
+        //  The <WirelessTypes::CommProtocol> to set.
+        boost::optional<WirelessTypes::CommProtocol> m_commProtocol;
+
         //Variable: m_derivedChannelMasks
         //  The map of <WirelessTypes::DerivedChannelType> to <ChannelMask> to set for Derived Channels' Masks.
         std::map<WirelessTypes::DerivedChannelType, ChannelMask> m_derivedChannelMasks;
@@ -184,6 +190,10 @@ namespace mscl
         std::map<ChannelMask, WirelessTypes::CalCoef_EquationType> m_equationTypes;
 
     private:
+        //Function: curCommProtocol
+        //    Gets the communication protocol currently set, or from the node if not set.
+        WirelessTypes::CommProtocol curCommProtocol(const NodeEepromHelper& eeprom) const;
+
         //Function: curSamplingMode
         //    Gets the sampling mode currently set, or from the node if not set.
         WirelessTypes::SamplingMode curSamplingMode(const NodeEepromHelper& eeprom) const;
@@ -399,9 +409,6 @@ namespace mscl
         //  Finds the <ConfigIssue::ConfigOption> for the provided <WirelessTypes::DerivedChannelType>.
         static ConfigIssue::ConfigOption findDerivedMaskConfigIssue(WirelessTypes::DerivedChannelType channel);
 
-    public:
-
-#ifndef SWIG
         //Function: apply
         //    Writes all of the configuration values that are set to a WirelessNode.
         //
@@ -430,7 +437,6 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         bool verify(const NodeFeatures& features, const NodeEepromHelper& eeprom, ConfigIssues& outIssues) const;
-#endif
 
     public:
         //API Function: defaultMode
@@ -852,6 +858,17 @@ namespace mscl
         //API Function: derivedChannelMask
         //  Sets the <ChannelMask> for a specified <WirelessTypes::DerivedChannelType> in the Config.
         void derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType, const ChannelMask& mask);
+
+        //API Function: communicationProtocol
+        //  Gets the <WirelessTypes::CommProtocol> currently set in the Config.
+        //
+        //Exceptions:
+        //  <Error_NoData> - The requested value has not been set.
+        WirelessTypes::CommProtocol communicationProtocol() const;
+
+        //API Function: communicationProtocol
+        //  Sets the <WirelessTypes::CommProtocol> in the Config.
+        void communicationProtocol(WirelessTypes::CommProtocol commProtocol);
 
     public:
         //Function: flashBandwidth

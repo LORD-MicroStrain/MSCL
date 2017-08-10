@@ -11,20 +11,25 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "AsyncDigitalPacket.h"
 #include "BeaconEchoPacket.h"
 #include "BufferedLdcPacket.h"
-#include "BufferedLdcPacket_16ch.h"
+#include "BufferedLdcPacket_v2.h"
 #include "DiagnosticPacket.h"
 #include "HclSmartBearing_CalPacket.h"
 #include "HclSmartBearing_RawPacket.h"
 #include "LdcPacket.h"
 #include "LdcMathPacket.h"
-#include "LdcPacket_16ch.h"
+#include "LdcMathPacket_aspp3.h"
+#include "LdcPacket_v2.h"
+#include "LdcPacket_v2_aspp3.h"
 #include "RawAngleStrainPacket.h"
 #include "RfSweepPacket.h"
 #include "RollerPacket.h"
 #include "ShmPacket.h"
+#include "ShmPacket_v2_aspp3.h"
 #include "SyncSamplingPacket.h"
 #include "SyncSamplingMathPacket.h"
-#include "SyncSamplingPacket_16ch.h"
+#include "SyncSamplingMathPacket_aspp3.h"
+#include "SyncSamplingPacket_v2.h"
+#include "SyncSamplingPacket_v2_aspp3.h"
 #include "WirelessPacketCollector.h"
 #include "mscl/MicroStrain/Wireless/NodeCommTimes.h"
 
@@ -51,84 +56,58 @@ namespace mscl
 
         try
         {
-            //add a different packet depending on its type
-            switch(packet.type())
+            if(packet.asppVersion() == WirelessPacket::aspp_v3)
             {
-                case WirelessPacket::packetType_LDC:
-                    m_dataPackets.push_back(LdcPacket(packet));
-                    break;
+                //ASPP v3 Packets
 
-                case WirelessPacket::packetType_SyncSampling:
-                    m_dataPackets.push_back(SyncSamplingPacket(packet));
-                    break;
+                //add a different packet depending on its type
+                switch(packet.type())
+                {
+                    case WirelessPacket::packetType_LDC_16ch:                   m_dataPackets.push_back(LdcPacket_v2_aspp3(packet));            break;
+                    case WirelessPacket::packetType_LDC_math:                   m_dataPackets.push_back(LdcMathPacket_aspp3(packet));           break;
+                    case WirelessPacket::packetType_SyncSampling_16ch:          m_dataPackets.push_back(SyncSamplingPacket_v2_aspp3(packet));   break;
+                    case WirelessPacket::packetType_SyncSampling_math:          m_dataPackets.push_back(SyncSamplingMathPacket_aspp3(packet));  break;
+                    case WirelessPacket::packetType_SHM:                        m_dataPackets.push_back(ShmPacket_v2_aspp3(packet));            break;
+                    case WirelessPacket::packetType_rawAngleStrain:             m_dataPackets.push_back(RawAngleStrainPacket(packet));          break;  //same payload, no new parser
+                    case WirelessPacket::packetType_diagnostic:                 m_dataPackets.push_back(DiagnosticPacket(packet));              break;  //same payload, no new parser
+                    case WirelessPacket::packetType_rfScanSweep:                m_dataPackets.push_back(RfSweepPacket(packet));                 break;  //same payload, no new parser
+                    case WirelessPacket::packetType_beaconEcho:                 m_dataPackets.push_back(BeaconEchoPacket(packet));              break;  //same payload, no new parser
 
-                case WirelessPacket::packetType_BufferedLDC:
-                    m_dataPackets.push_back(BufferedLdcPacket(packet));
-                    break;
+                    //bad packet type, this function shouldn't have been called
+                    default:
+                        throw Error("Unknown Packet Type");
+                }
+            }
+            else
+            {
+                //ASPP v1 and v2 Packets
 
-                case WirelessPacket::packetType_LDC_math:
-                    m_dataPackets.push_back(LdcMathPacket(packet));
-                    break;
+                //add a different packet depending on its type
+                switch(packet.type())
+                {
+                    case WirelessPacket::packetType_LDC:                        m_dataPackets.push_back(LdcPacket(packet));                 break;
+                    case WirelessPacket::packetType_SyncSampling:               m_dataPackets.push_back(SyncSamplingPacket(packet));        break;
+                    case WirelessPacket::packetType_BufferedLDC:                m_dataPackets.push_back(BufferedLdcPacket(packet));         break;
+                    case WirelessPacket::packetType_LDC_math:                   m_dataPackets.push_back(LdcMathPacket(packet));             break;
+                    case WirelessPacket::packetType_LDC_16ch:                   m_dataPackets.push_back(LdcPacket_v2(packet));              break;
+                    case WirelessPacket::packetType_SyncSampling_16ch:          m_dataPackets.push_back(SyncSamplingPacket_v2(packet));     break;
+                    case WirelessPacket::packetType_SyncSampling_math:          m_dataPackets.push_back(SyncSamplingMathPacket(packet));    break;
+                    case WirelessPacket::packetType_BufferedLDC_16ch:           m_dataPackets.push_back(BufferedLdcPacket_v2(packet));      break;
+                    case WirelessPacket::packetType_AsyncDigital:               m_dataPackets.push_back(AsyncDigitalPacket(packet));        break;
+                    case WirelessPacket::packetType_AsyncDigitalAnalog:         m_dataPackets.push_back(AsyncDigitalAnalogPacket(packet));  break;
+                    case WirelessPacket::packetType_SHM:                        m_dataPackets.push_back(ShmPacket(packet));                 break;
+                    case WirelessPacket::packetType_HclSmartBearing_Calibrated: m_dataPackets.push_back(HclSmartBearing_CalPacket(packet)); break;
+                    case WirelessPacket::packetType_HclSmartBearing_Raw:        m_dataPackets.push_back(HclSmartBearing_RawPacket(packet)); break;
+                    case WirelessPacket::packetType_rawAngleStrain:             m_dataPackets.push_back(RawAngleStrainPacket(packet));      break;
+                    case WirelessPacket::packetType_beaconEcho:                 m_dataPackets.push_back(BeaconEchoPacket(packet));          break;
+                    case WirelessPacket::packetType_rfScanSweep:                m_dataPackets.push_back(RfSweepPacket(packet));             break;
+                    case WirelessPacket::packetType_diagnostic:                 m_dataPackets.push_back(DiagnosticPacket(packet));          break;
+                    case WirelessPacket::packetType_roller:                     m_dataPackets.push_back(RollerPacket(packet));              break;
 
-                case WirelessPacket::packetType_LDC_16ch:
-                    m_dataPackets.push_back(LdcPacket_16ch(packet));
-                    break;
-
-                case WirelessPacket::packetType_SyncSampling_16ch:
-                    m_dataPackets.push_back(SyncSamplingPacket_16ch(packet));
-                    break;
-
-                case WirelessPacket::packetType_SyncSampling_math:
-                    m_dataPackets.push_back(SyncSamplingMathPacket(packet));
-                    break;
-
-                case WirelessPacket::packetType_BufferedLDC_16ch:
-                    m_dataPackets.push_back(BufferedLdcPacket_16ch(packet));
-                    break;
-
-                case WirelessPacket::packetType_AsyncDigital:
-                    m_dataPackets.push_back(AsyncDigitalPacket(packet));
-                    break;
-
-                case WirelessPacket::packetType_AsyncDigitalAnalog:
-                    m_dataPackets.push_back(AsyncDigitalAnalogPacket(packet));
-                    break;
-
-                case WirelessPacket::packetType_SHM:
-                    m_dataPackets.push_back(ShmPacket(packet));
-                    break;
-
-                case WirelessPacket::packetType_HclSmartBearing_Calibrated:
-                    m_dataPackets.push_back(HclSmartBearing_CalPacket(packet));
-                    break;
-
-                case WirelessPacket::packetType_HclSmartBearing_Raw:
-                    m_dataPackets.push_back(HclSmartBearing_RawPacket(packet));
-                    break;
-
-                case WirelessPacket::packetType_rawAngleStrain:
-                    m_dataPackets.push_back(RawAngleStrainPacket(packet));
-                    break;
-
-                case WirelessPacket::packetType_beaconEcho:
-                    m_dataPackets.push_back(BeaconEchoPacket(packet));
-                    break;
-                    
-                case WirelessPacket::packetType_rfScanSweep:
-                    m_dataPackets.push_back(RfSweepPacket(packet));
-                    break;
-
-                case WirelessPacket::packetType_diagnostic:
-                    m_dataPackets.push_back(DiagnosticPacket(packet));
-                    break;
-
-                case WirelessPacket::packetType_roller:
-                    m_dataPackets.push_back(RollerPacket(packet));
-                    break;
-
-                //bad packet type, this function shouldn't have been called
-                default:
-                    throw Error("Unknown Packet Type");
+                        //bad packet type, this function shouldn't have been called
+                    default:
+                        throw Error("Unknown Packet Type");
+                }
             }
 
             //notify the read thread, if it is waiting for data to be put into the buffer

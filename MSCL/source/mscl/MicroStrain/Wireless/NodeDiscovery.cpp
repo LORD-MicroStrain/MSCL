@@ -10,6 +10,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Packets/NodeDiscoveryPacket_v2.h"
 #include "Packets/NodeDiscoveryPacket_v3.h"
 #include "Packets/NodeDiscoveryPacket_v4.h"
+#include "Packets/NodeDiscoveryPacket_v5.h"
 
 namespace mscl
 {
@@ -21,6 +22,9 @@ namespace mscl
         m_serialNumber(0),
         m_firmwareVersion(0, 0, 0),
         m_defaultMode(static_cast<WirelessTypes::DefaultMode>(999)),
+        m_commProtocol(WirelessTypes::commProtocol_lxrs),
+        m_asppVersionLxrs(0, 0),
+        m_asppVersionLxrsPlus(0, 0),
         m_bitResult(0),
         m_baseRssi(WirelessTypes::UNKNOWN_RSSI),
         m_timestamp(0)
@@ -29,6 +33,16 @@ namespace mscl
 
     NodeDiscovery::NodeDiscovery(const WirelessPacket& packet):
         m_nodeAddress(packet.nodeAddress()),
+        m_radioChannel(WirelessTypes::freq_unknown),
+        m_panId(0),
+        m_model(static_cast<WirelessModels::NodeModel>(0)),
+        m_serialNumber(0),
+        m_firmwareVersion(0, 0, 0),
+        m_defaultMode(static_cast<WirelessTypes::DefaultMode>(999)),
+        m_commProtocol(WirelessTypes::commProtocol_lxrs),
+        m_asppVersionLxrs(0, 0),
+        m_asppVersionLxrsPlus(0, 0),
+        m_bitResult(0),
         m_baseRssi(packet.baseRSSI()),
         m_timestamp(Timestamp::timeNow())
     {
@@ -50,6 +64,18 @@ namespace mscl
                 initFromPacket_v4(packet);
                 break;
 
+            case WirelessPacket::packetType_nodeDiscovery_v5:
+            {
+                //we've added a version to this packet from here on out
+                uint8 version = packet.payload().read_uint8(0);
+
+                if(version == 5)
+                {
+                    initFromPacket_v5(packet);
+                }
+            }  
+            break;
+
             default:
                 break;
         }
@@ -66,13 +92,6 @@ namespace mscl
 
         //Model (convert from legacy to current model number)
         m_model = WirelessModels::nodeFromLegacyModel(payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_NUMBER));
-
-        //unknown info we don't get in this packet
-        m_panId = 0;
-        m_serialNumber = 0;
-        m_firmwareVersion = Version(0, 0, 0);
-        m_defaultMode = static_cast<WirelessTypes::DefaultMode>(999);
-        m_bitResult = 0;
     }
 
     void NodeDiscovery::initFromPacket_v2(const WirelessPacket& packet)
@@ -98,10 +117,6 @@ namespace mscl
         //Firmware Version
         uint16 fwVersion = payload.read_uint16(Info::PAYLOAD_OFFSET_FIRMWARE_VER);
         m_firmwareVersion = Version(Utils::msb(fwVersion), Utils::lsb(fwVersion));
-
-        //unknown info we don't get in this packet
-        m_defaultMode = static_cast<WirelessTypes::DefaultMode>(999);
-        m_bitResult = 0;
     }
 
     void NodeDiscovery::initFromPacket_v3(const WirelessPacket& packet)
@@ -135,9 +150,6 @@ namespace mscl
 
         //Default Mode
         m_defaultMode = static_cast<WirelessTypes::DefaultMode>(payload.read_uint16(Info::PAYLOAD_OFFSET_DEFAULT_MODE));
-
-        //unknown info we don't get in this packet
-        m_bitResult = 0;
     }
 
     void NodeDiscovery::initFromPacket_v4(const WirelessPacket& packet)
@@ -148,7 +160,50 @@ namespace mscl
         m_bitResult = packet.payload().read_uint32(NodeDiscoveryPacket_v4::PAYLOAD_OFFSET_BUILT_IN_TEST);
     }
 
-    uint32 NodeDiscovery::nodeAddress() const
+    void NodeDiscovery::initFromPacket_v5(const WirelessPacket& packet)
+    {
+        typedef NodeDiscoveryPacket_v5 Info;
+
+        const WirelessPacket::Payload& payload = packet.payload();
+
+        //Radio Mode
+        m_commProtocol = static_cast<WirelessTypes::CommProtocol>(payload.read_uint8(Info::PAYLOAD_OFFSET_RADIO_MODE));
+
+        //Frequency
+        m_radioChannel = static_cast<WirelessTypes::Frequency>(payload.read_uint8(Info::PAYLOAD_OFFSET_RADIO_CHANNEL));
+
+        //PAN Id
+        m_panId = payload.read_uint16(Info::PAYLOAD_OFFSET_PAN_ID);
+
+        //Model
+        uint16 model = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_NUMBER);
+        uint16 modelOption = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_OPTION);
+        m_model = static_cast<WirelessModels::NodeModel>((model * 10000) + modelOption);
+
+        //Serial
+        m_serialNumber = payload.read_uint32(Info::PAYLOAD_OFFSET_SERIAL_NUMBER);
+
+        //Firmware Version
+        uint16 fwVersion1 = payload.read_uint16(Info::PAYLOAD_OFFSET_FIRMWARE_VER);
+        uint16 fwVersion2 = payload.read_uint16(Info::PAYLOAD_OFFSET_FIRMWARE_VER2);
+
+        //make the svn revision from the lsb of the first fw value, and the entire second fw value
+        uint32 svnRevision = Utils::make_uint32(0, Utils::lsb(fwVersion1), Utils::msb(fwVersion2), Utils::lsb(fwVersion2));
+
+        m_firmwareVersion = Version(Utils::msb(fwVersion1), svnRevision);
+
+        //ASPP versions
+        uint16 asppVersionLxrs = payload.read_uint16(Info::PAYLOAD_OFFSET_ASPP_LXRS);
+        uint16 asppVersionLxrsPlus = payload.read_uint16(Info::PAYLOAD_OFFSET_ASPP_LXRS_PLUS);
+
+        m_asppVersionLxrs = Version(Utils::msb(asppVersionLxrs), Utils::lsb(asppVersionLxrs));
+        m_asppVersionLxrsPlus = Version(Utils::msb(asppVersionLxrsPlus), Utils::lsb(asppVersionLxrsPlus));
+
+        //Default Mode
+        m_defaultMode = static_cast<WirelessTypes::DefaultMode>(payload.read_uint16(Info::PAYLOAD_OFFSET_DEFAULT_MODE));
+    }
+
+    NodeAddress NodeDiscovery::nodeAddress() const
     {
         return m_nodeAddress;
     }
@@ -178,14 +233,29 @@ namespace mscl
         return m_firmwareVersion;
     }
 
-    WirelessTypes::DefaultMode NodeDiscovery::defaultMode()
+    WirelessTypes::DefaultMode NodeDiscovery::defaultMode() const
     {
         return m_defaultMode;
     }
 
-    uint32 NodeDiscovery::builtInTestResult()
+    uint32 NodeDiscovery::builtInTestResult() const
     {
         return m_bitResult;
+    }
+
+    WirelessTypes::CommProtocol NodeDiscovery::communicationProtocol() const
+    {
+        return m_commProtocol;
+    }
+
+    Version NodeDiscovery::asppVersion_lxrs() const
+    {
+        return m_asppVersionLxrs;
+    }
+
+    Version NodeDiscovery::asppVersion_lxrsPlus() const
+    {
+        return m_asppVersionLxrsPlus;
     }
 
     int16 NodeDiscovery::baseRssi() const

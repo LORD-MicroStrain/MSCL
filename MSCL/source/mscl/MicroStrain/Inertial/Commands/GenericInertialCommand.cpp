@@ -61,29 +61,49 @@ namespace mscl
         return buildCommand(Utils::msb(field), Utils::lsb(field), fieldData);
     }
 
-    GenericInertialCommand::Response::Response(std::weak_ptr<ResponseCollector> collector, bool ackNackResponse, bool dataResponse, std::string cmdName):
+    ByteStream GenericInertialCommand::buildCommand(const Bytes& fieldData) //fieldData=Bytes())
+    {
+        uint16 field = static_cast<uint16>(commandId());
+
+        //split the field id and call the other buildCommand function
+        return buildCommand(Utils::msb(field), Utils::lsb(field), fieldData);
+    }
+
+    GenericInertialCommand::Response::Response(const InertialTypes::Command& command, bool ackNackResponse, bool dataResponse, std::string cmdName):
+        ResponsePattern(),
+        m_ackNackResponse(ackNackResponse),
+        m_dataResponse(dataResponse),
+        m_command(command),
+        m_commandName(cmdName)
+    {
+    }
+
+    GenericInertialCommand::Response::Response(const InertialTypes::Command& command, std::weak_ptr<ResponseCollector> collector,
+                                               bool ackNackResponse, bool dataResponse, const std::string& cmdName, uint8 fieldDataByte):
         ResponsePattern(collector),
         m_ackNackResponse(ackNackResponse),
         m_dataResponse(dataResponse),
-        m_commandName(cmdName)
+        m_command(command),
+        m_commandName(cmdName),
+        m_fieldDataByte(fieldDataByte)
     {
     }
 
     uint8 GenericInertialCommand::Response::fieldDataByte() const
     {
-        return 0;
+        return m_fieldDataByte;
     }
 
     uint8 GenericInertialCommand::Response::descSetByte() const
     { 
         //the descriptor set byte is the MSB of the commandId value
-        return Utils::msb(static_cast<uint16>(commandId())); 
+        return Utils::msb(static_cast<uint16>(m_command));
     }
 
     uint8 GenericInertialCommand::Response::cmdByte() const
     { 
         //the command byte is the LSB of the commandId value
-        return Utils::lsb(static_cast<uint16>(commandId()));
+        return Utils::lsb(static_cast<uint16>(m_command));
     }
 
     uint8 GenericInertialCommand::Response::fieldAckNackByte() const 
@@ -132,8 +152,8 @@ namespace mscl
         //get the field bytes
         InertialPacket::Payload fieldBytes(field.fieldData());
 
-        //check the main bytes of the packet
-        if(field.descriptorSet()    != this->descSetByte()        ||    //descriptor set
+		//check the main bytes of the packet
+		if(field.descriptorSet()    != this->descSetByte()        ||    //descriptor set
            fieldBytes.size()         < FIELD_DATA_LEN            ||    //field data length
            fieldBytes.read_uint8(0) != this->cmdByte()                //command echo
           )

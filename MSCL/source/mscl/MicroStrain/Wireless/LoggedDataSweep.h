@@ -31,7 +31,8 @@ namespace mscl
         //    timestamp - The <Timestamp> of the sweep.
         //    tick - The tick of the sweep.
         //    data - The <ChannelData> containing the actual data points.
-        LoggedDataSweep(const Timestamp& timestamp, uint64 tick, const ChannelData& data);
+        //    calsApplied - Whether calibration coefficients have already been applied to the data or not.
+        LoggedDataSweep(const Timestamp& timestamp, uint64 tick, const ChannelData& data, bool calsApplied);
 
     private:
         //Variable: m_timestamp
@@ -45,6 +46,10 @@ namespace mscl
         //Variable: m_data
         //    Contains one or more <WirelessDataPoint>s, corresponding to each channel's data for this sweep.
         ChannelData m_data;
+
+        //Variable: m_calsApplied
+        //  Whether calibration coefficients have been applied to the data or not.
+        bool m_calsApplied;
 
     public:
         //API Function: timestamp
@@ -68,28 +73,12 @@ namespace mscl
         //    A <WirelessDataPoint::ChannelData> container holding the data for the sweep.
         const ChannelData& data() const;
 
-#ifndef SWIG
-        //Function: timestamp
-        //    Sets the timestamp of the sweep
+        //API Function: calApplied
+        //  Gets whether calibration coefficients have been applied to the data already.
         //
-        //Parameters:
-        //    time - The <Timestamp> to set
-        void timestamp(const Timestamp& time);
-
-        //Function: tick
-        //    Sets the tick of the sweep
-        //
-        //Parameters:
-        //    tick - The tick to set
-        void tick(uint64 tick);
-
-        //Function: data
-        //    Sets the data of the sweep
-        //
-        //Parameters:
-        //    data - The <ChannelData> to set
-        void data(const ChannelData& data);
-#endif
+        //Returns:
+        //  true if the data already has cal coefficients applied to it, false if it does not have any cal coefficients applied.
+        bool calApplied() const;
     };
 
     //API Typedef: LoggedDataSweeps

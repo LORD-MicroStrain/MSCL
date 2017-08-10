@@ -6,7 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "stdafx.h"
 
 #include "mscl/Exceptions.h"
-#include "SyncSamplingPacket_16ch.h"
+#include "SyncSamplingPacket_v2_aspp3.h"
 #include "mscl/MicroStrain/SampleUtils.h"
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
 #include "mscl/TimeSpan.h"
@@ -17,41 +17,34 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
 
-    SyncSamplingPacket_16ch::SyncSamplingPacket_16ch(const WirelessPacket& packet)
+    SyncSamplingPacket_v2_aspp3::SyncSamplingPacket_v2_aspp3(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
-        m_nodeAddress        = packet.nodeAddress();
-        m_deliveryStopFlags = packet.deliveryStopFlags();
-        m_type                = packet.type();
-        m_nodeRSSI            = packet.nodeRSSI();
-        m_baseRSSI            = packet.baseRSSI();
-        m_frequency            = packet.frequency();
-        m_payload            = packet.payload();
+        m_nodeAddress              = packet.nodeAddress();
+        m_deliveryStopFlags        = packet.deliveryStopFlags();
+        m_type                     = packet.type();
+        m_nodeRSSI                 = packet.nodeRSSI();
+        m_baseRSSI                 = packet.baseRSSI();
+        m_frequency                = packet.frequency();
+        m_payload                  = packet.payload();
         m_payloadOffsetChannelData = PAYLOAD_OFFSET_CHANNEL_DATA;
 
         //parse the data sweeps in the packet
         parseSweeps();
     }
 
-    void SyncSamplingPacket_16ch::parseSweeps()
+    void SyncSamplingPacket_v2_aspp3::parseSweeps()
     {
         //read the values from the payload
-        uint8 sampleMode_dataType_byte    = m_payload.read_uint8(PAYLOAD_OFFSET_SAMPLEMODE_AND_DATA_TYPE);
-        uint16 channelMask                = m_payload.read_uint16(PAYLOAD_OFFSET_CHANNEL_MASK);
-        uint8 sampleRate                = m_payload.read_uint8(PAYLOAD_OFFSET_SAMPLE_RATE);
-        uint8 dataType                    = Utils::lsNibble(sampleMode_dataType_byte);
-        uint8 sampleMode                = Utils::msNibble(sampleMode_dataType_byte);
-        uint16 tick                        = m_payload.read_uint16(PAYLOAD_OFFSET_TICK);
-        uint64 timestampSeconds            = m_payload.read_uint32(PAYLOAD_OFFSET_TS_SEC);        //the timestamp (UTC) seconds part
-        uint64 timestampNanos            = m_payload.read_uint32(PAYLOAD_OFFSET_TS_NANOSEC);    //the timestamp (UTC) nanoseconds part
+        //model number
+        uint16 channelMask          = m_payload.read_uint16(PAYLOAD_OFFSET_CHANNEL_MASK);
+        uint8 sampleRate            = m_payload.read_uint8(PAYLOAD_OFFSET_SAMPLE_RATE);
+        uint16 tick                 = m_payload.read_uint16(PAYLOAD_OFFSET_TICK);
+        uint64 timestamp            = m_payload.read_uint64(PAYLOAD_OFFSET_TS);
 
-        //set the data type of the packet
-        m_dataType = static_cast<WirelessTypes::DataType>(dataType);
+        m_dataType = static_cast<WirelessTypes::DataType>(m_payload.read_uint8(PAYLOAD_OFFSET_DATA_TYPE));
 
-        //build the full nanosecond resolution timestamp from the seconds and nanoseconds values read above
-        uint64 realTimestamp = (timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND) + timestampNanos;
-
-        if(!timestampWithinRange(Timestamp(realTimestamp)))
+        if(!timestampWithinRange(Timestamp(timestamp)))
         {
             throw Error("Timestamp is out of range");
         }
@@ -83,27 +76,19 @@ namespace mscl
         //get the value to increment the timestamp by for each sweep (the timestamp from the packet only applies to the first sweep)
         const uint64 TS_INCREMENT = currentRate.samplePeriod().getNanoseconds();
 
-        //get the sampling mode for all sweeps in this packet
-        DataSweep::SamplingType mode = DataSweep::samplingType_SyncSampling;
-        if(sampleMode == sampleMode_burst)
-        {
-            //the sampling mode is sync sampling with burst
-            mode = DataSweep::samplingType_SyncSampling_Burst;
-        }
-
         //there are multiple sweeps in a Sync Sampling (buffered) packet
         for(uint32 sweepItr = 0; sweepItr < m_numSweeps; sweepItr++)
         {
             //build a sweep to add
             DataSweep sweep;
-            sweep.samplingType(mode);
+            sweep.samplingType(DataSweep::samplingType_SyncSampling);
             sweep.frequency(m_frequency);
             sweep.tick(tick++);
             sweep.nodeAddress(m_nodeAddress);
             sweep.sampleRate(currentRate);
 
             //build this sweep's timestamp
-            sweep.timestamp(Timestamp(realTimestamp + (TS_INCREMENT * sweepItr)));
+            sweep.timestamp(Timestamp(timestamp + (TS_INCREMENT * sweepItr)));
 
             //get this sweep's node and base rssi values
             sweep.nodeRssi(m_nodeRSSI);
@@ -140,7 +125,7 @@ namespace mscl
         }
     }
 
-    bool SyncSamplingPacket_16ch::integrityCheck(const WirelessPacket& packet)
+    bool SyncSamplingPacket_v2_aspp3::integrityCheck(const WirelessPacket& packet)
     {
         WirelessPacket::Payload payload = packet.payload();
 
@@ -148,16 +133,6 @@ namespace mscl
         if(payload.size() < PAYLOAD_OFFSET_CHANNEL_DATA)
         {
             //payload must have at least 14 bytes to be valid
-            return false;
-        }
-
-        //read the sample mode (the app id byte)
-        uint8 sampleMode = Utils::msNibble(payload.read_uint8(PAYLOAD_OFFSET_SAMPLEMODE_AND_DATA_TYPE));
-
-        //verify the sample mode
-        if(sampleMode < sampleMode_first || sampleMode > sampleMode_last)
-        {
-            //application id must be in range
             return false;
         }
 
@@ -169,7 +144,7 @@ namespace mscl
         }
 
         //read the data type
-        uint8 dataType = Utils::lsNibble(payload.read_uint8(PAYLOAD_OFFSET_SAMPLEMODE_AND_DATA_TYPE));
+        uint8 dataType = payload.read_uint8(PAYLOAD_OFFSET_DATA_TYPE);
 
         //verify the data type
         if(dataType < WirelessTypes::dataType_first || dataType > WirelessTypes::dataType_last)
@@ -218,7 +193,7 @@ namespace mscl
         return true;
     }
 
-    UniqueWirelessPacketId SyncSamplingPacket_16ch::getUniqueId(const WirelessPacket& packet)
+    UniqueWirelessPacketId SyncSamplingPacket_v2_aspp3::getUniqueId(const WirelessPacket& packet)
     {
         //return the tick value
         return packet.payload().read_uint16(PAYLOAD_OFFSET_TICK);

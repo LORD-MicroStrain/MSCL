@@ -184,7 +184,7 @@ namespace mscl
     protected:
         //Variable: m_nodeAddress
         //    The node address of the <WirelessNode> that failed to communicate.
-        uint16 m_nodeAddress;
+        NodeAddress m_nodeAddress;
 
     private:
         Error_NodeCommunication();    //disabled default constructor
@@ -195,7 +195,7 @@ namespace mscl
         //
         //Parameters:
         //    nodeAddress - The node address of the <WirelessNode> that failed to communicate.
-        Error_NodeCommunication(uint16 nodeAddress):
+        Error_NodeCommunication(NodeAddress nodeAddress):
             Error_Communication("Failed to communicate with the Wireless Node."),
             m_nodeAddress(nodeAddress)
         {}
@@ -206,14 +206,14 @@ namespace mscl
         //Parameters:
         //    nodeAddress - The node address of the <WirelessNode> that failed to communicate.
         //    description - the description to set
-        Error_NodeCommunication(uint16 nodeAddress, const std::string& description):
+        Error_NodeCommunication(NodeAddress nodeAddress, const std::string& description):
             Error_Communication(description),
             m_nodeAddress(nodeAddress)
         {}
 
         //API Function: nodeAddress
         //    gets the node address of the <WirelessNode> that failed to communicate
-        const uint16 nodeAddress() const throw ()
+        const NodeAddress nodeAddress() const throw ()
         {
             return m_nodeAddress;
         }
@@ -365,8 +365,16 @@ namespace mscl
         //API Constructor: Error_InertialCmdFailed
         //    Initializes the Error_InertialCmdFailed object,
         //    sets the error code to a default of -1
-        Error_InertialCmdFailed():
+        Error_InertialCmdFailed() :
             Error("The Inertial command has failed."),
+            m_code(-1)
+        {}
+
+        //API Constructor: Error_InertialCmdFailed
+        //    Initializes the Error_InertialCmdFailed object,
+        //    sets the error code to a default of -1
+        Error_InertialCmdFailed(const std::string& description) :
+            Error(description),
             m_code(-1)
         {}
 
@@ -425,9 +433,18 @@ namespace mscl
         //Parameters:
         //    issues - The <ConfigIssues> that caused the invalid configuration exception.
         Error_InvalidConfig(const ConfigIssues& issues):
-            Error("Invalid Configuration."),
+            Error("Invalid Configuration:"),
             m_issues(issues)
-        {}
+        {
+            for(auto i : m_issues)
+            {
+                //some issues show duplicate descriptions, filter those out
+                if(m_description.find(i.description()) == std::string::npos)
+                {
+                    m_description += " " + i.description();
+                }
+            }
+        }
 
         virtual ~Error_InvalidConfig() throw ()
         {}
@@ -447,7 +464,7 @@ namespace mscl
     private:
         //Variable: m_nodeAddress
         //    The node address of the <WirelessNode> that the exception pertains to.
-        uint16 m_nodeAddress;
+        NodeAddress m_nodeAddress;
 
     public:
         //API Constructor: Error_InvalidNodeConfig
@@ -455,7 +472,7 @@ namespace mscl
         //
         //Parameters:
         //    issues - The <ConfigIssues> that caused the invalid configuration exception.
-        Error_InvalidNodeConfig(const ConfigIssues& issues, uint16 nodeAddress) :
+        Error_InvalidNodeConfig(const ConfigIssues& issues, NodeAddress nodeAddress) :
             Error_InvalidConfig(issues),
             m_nodeAddress(nodeAddress)
         {
@@ -467,7 +484,7 @@ namespace mscl
 
         //API Function: nodeAddress
         //    Gets the node address of the Node that this exception pertains to.
-        const uint16 nodeAddress() const throw ()
+        const NodeAddress nodeAddress() const throw ()
         {
             return m_nodeAddress;
         }

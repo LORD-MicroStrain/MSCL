@@ -38,10 +38,10 @@ namespace mscl
     {
         friend class WirelessProtocol;
 
-    private:
-        WirelessNode_Impl();                                        //default constructor disabled
-        WirelessNode_Impl(const WirelessNode_Impl&);                //copy constructor disabled
-        WirelessNode_Impl& operator=(const WirelessNode_Impl&);        //assignment operator disabled
+    public:
+        WirelessNode_Impl() = delete;                                       //default constructor disabled
+        WirelessNode_Impl(const WirelessNode_Impl&) = delete;               //copy constructor disabled
+        WirelessNode_Impl& operator=(const WirelessNode_Impl&) = delete;    //assignment operator disabled
 
     public:
         //Constructor: WirelessNode_Impl
@@ -50,7 +50,7 @@ namespace mscl
         //Parameters:
         //    nodeAddress - the node address of the node
         //    basestation - the node's parent Base Station
-        WirelessNode_Impl(uint16 nodeAddress, const BaseStation& basestation);
+        WirelessNode_Impl(NodeAddress nodeAddress, const BaseStation& basestation);
 
     private:
         //Variable: m_address
@@ -69,9 +69,13 @@ namespace mscl
         //    The mutex used when determining the device protocol.
         mutable std::recursive_mutex m_protocolMutex;
 
-        //Variable: m_protocol
-        //    The <WirelessProtocol> containing all of the protocol commands and info for this Node.
-        mutable std::unique_ptr<WirelessProtocol> m_protocol;
+        //Variable: m_protocol_lxrs
+        //    The <WirelessProtocol> containing all of the protocol commands and info for this Node when the Node is in LXRS radio mode.
+        mutable std::unique_ptr<WirelessProtocol> m_protocol_lxrs;
+
+        //Variable: m_protocol_lxrsPlus
+        //    The <WirelessProtocol> containing all of the protocol commands and info for this Node when the Node is in LXRS+ radio mode.
+        mutable std::unique_ptr<WirelessProtocol> m_protocol_lxrsPlus;
 
         //Variable: m_eeprom
         //    The <NodeEeprom> that handles reading and writing eeprom values with the Node and eeprom cache.
@@ -86,16 +90,18 @@ namespace mscl
         mutable std::unique_ptr<NodeFeatures> m_features;
 
     private:
-        //Function: determineProtocol
-        //    Determines the <WirelessProtocol> to use based on the Node's firmware version.
-        //
-        //Returns:
-        //    A unique_ptr containing the <WirelessProtocol> to use.
-        std::unique_ptr<WirelessProtocol> determineProtocol() const;
+        //Function: determineProtocols
+        //    Determines the <WirelessProtocol>s to use based on the Node's ASPP version.
+        //    All <WirelessProtocol> member variables will be updated.
+        void determineProtocols() const;
 
         //Function: eeprom
         //    Gets a reference to the <NodeEeprom> for this Node.
         NodeEeprom& eeprom() const;
+
+        //Function: wirelessProtocol
+        //  Gets a reference to the <WirelessProtocol> for this Node for the parent BaseStation's current comm protocol setting.
+        const WirelessProtocol& wirelessProtocol();
 
     public:
         //Function: eeHelper
@@ -113,14 +119,16 @@ namespace mscl
 
         //Function: protocol
         //    Gets a reference to the <WirelessProtocol> for this Node.
-        //    Note: This requires communicating to the Node if
-        //          creating the protocol for the first time.
+        //    Note: This requires communicating to the Node if creating the protocol for the first time.
+        //
+        //Parameters:
+        //  commProtocol - The <WirelessTypes::CommProtocol> to get the protocol for.
         //
         //Exceptions:
         //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        virtual const WirelessProtocol& protocol() const;
+        virtual const WirelessProtocol& protocol(WirelessTypes::CommProtocol commProtocol) const;
 
         //Function: lastCommunicationTime
         //    Gets the <Timestamp> for the last time MSCL communicated with the Node.
@@ -181,7 +189,7 @@ namespace mscl
         //
         //Returns:
         //    The node address of the Node.
-        uint16 nodeAddress() const;
+        NodeAddress nodeAddress() const;
 
         //Function: frequency
         //    Gets the <WirelessTypes::Frequency> that the Node is believed to be on.
@@ -192,6 +200,14 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to read from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::Frequency frequency() const;
+
+        //Function: communicationProtocol
+        //  Gets the <WirelessTypes::CommProtocol> that the Node is currently set to use.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::CommProtocol communicationProtocol() const;
 
         //Function: firmwareVersion
         //    Gets the firmware <Version> of the Node. 
@@ -612,7 +628,6 @@ namespace mscl
         //  Reads the sensor delay (in microseconds) that is currently set on the Node.
         //
         //Exceptions:
-        //  - <Error_NotSupported>: Sensor Delay is not supported by this Node.
         //  - <Error_NodeCommunication>: Failed to read from the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint32 getSensorDelay() const;
@@ -652,13 +667,6 @@ namespace mscl
         ChannelMask getDerivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel) const;
 
     public:
-        //Function: quickPing
-        //    Performs a Quick Ping (Short Ping) command on the Node.
-        //
-        //Returns:
-        //    true if the quick ping was successful, false otherwise.
-        bool quickPing();
-
         //Function: ping
         //    Performs a Long Ping command on the Node to check the communication between the Base Station and the Node.
         //
@@ -686,17 +694,17 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: Attempted to write an unsupported option. The device firmware is not compatible with this version of MSCL.
-        //    - <Error_NodeCommunication>: Failed to write the value to the Node.
+        //    - <Error_NodeCommunication>: Failed to reset the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void cyclePower();
+        virtual void cyclePower();
 
         //Function: resetRadio
         //    Resets the radio on the Node. 
         //
         //Exceptions:
-        //    - <Error_NodeCommunication>: Failed to write the value to the Node.
+        //    - <Error_NodeCommunication>: Failed to reset the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void resetRadio();
+        virtual void resetRadio();
 
         //Function: changeFrequency
         //    Changes the radio frequency of the Node.
@@ -855,6 +863,28 @@ namespace mscl
         //
         //Parameters:
         //  result - The <ChannelData> container that will be filled with the result upon success.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: The Get Diagnostic Info command is not supported.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Wireless Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void getDiagnosticInfo(ChannelData& result);
+
+        //Function: testCommProtocol
+        //  Tests if the Node will still be able to communicate after changing the Node's communication protocol.
+        //  This is recommended to be used before changing communication protocol as the range can change between protocol modes.
+        //  Note: Both the Node and BaseStation will return to the current protocol after this test.
+        //
+        //Parameters:
+        //  commProtocol - The <WirelessTypes::CommProtocol> to test.
+        //
+        //Returns:
+        //  true if the Node had good communication (responded to pings) in the new protocol.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: The given communication protocol is not supported by the Node or BaseStation.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Wireless Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        bool testCommProtocol(WirelessTypes::CommProtocol commProtocol);
     };
 }

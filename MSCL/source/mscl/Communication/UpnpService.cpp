@@ -72,12 +72,18 @@ namespace mscl
             }
             else
             {
-                m_deviceFinder->Release();
+                if(m_deviceFinder)
+                {
+                    m_deviceFinder->Release();
+                }
             }
         }
         else
         {
-            m_deviceFinderCallback->Release();
+            if(m_deviceFinderCallback)
+            {
+                m_deviceFinderCallback->Release();
+            }
         }
 
         return success;
@@ -85,38 +91,46 @@ namespace mscl
 
     void UpnpService::findDevices()
     {
-        MSG message;
-
-        //loop until asked to shut down
-        while(!m_shutdown)
+        try
         {
-            //if there isn't a search already in progress
-            if(!m_searching)
+            MSG message;
+
+            //loop until asked to shut down
+            while(!m_shutdown)
             {
-                if(startSearch())
+                //if there isn't a search already in progress
+                if(!m_searching)
                 {
-                    m_searching = true;
+                    if(startSearch())
+                    {
+                        m_searching = true;
+                    }
+                    else
+                    {
+                        //TODO: failed to start upnpservice, do something else here?
+                        return;
+                    }
                 }
-                else
+
+                if(m_searchComplete)
                 {
-                    throw("Failed to start UPnP search");
+                    cancelFindDevices();
                 }
+
+                // STA threads must pump messages
+                while(PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
+                {
+                    DispatchMessage(&message);
+                }
+                Utils::threadSleep(250);
             }
 
-            if(m_searchComplete)
-            {
-                cancelFindDevices();
-            }
-
-            // STA threads must pump messages
-            while(PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
-            {
-                DispatchMessage(&message);
-            }
-            Utils::threadSleep(250);
+            CoUninitialize();
         }
-
-        CoUninitialize();
+        catch(...)
+        {
+            return;
+        }
     }
 
     void UpnpService::setSearchComplete()
@@ -128,9 +142,17 @@ namespace mscl
 
     void UpnpService::cancelFindDevices()
     {
-        m_deviceFinder->CancelAsyncFind(m_findDataIndex);
-        m_deviceFinder->Release();
-        m_deviceFinderCallback->Release();
+        if(m_deviceFinder)
+        {
+            m_deviceFinder->CancelAsyncFind(m_findDataIndex);
+            m_deviceFinder->Release();
+        }
+        
+        if(m_deviceFinderCallback)
+        {
+            m_deviceFinderCallback->Release();
+        }
+
         m_searchComplete = false;
         m_searching = false;
     }

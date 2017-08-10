@@ -14,7 +14,7 @@ namespace mscl
         //build the command ByteStream
         ByteStream cmd;
         cmd.append_uint8(WirelessProtocol::cmdId_autoBalance);      //Command ID
-        cmd.append_uint16(nodeAddress);                             //Node address    (2 bytes)
+        cmd.append_uint16(static_cast<uint16>(nodeAddress));        //Node address    (2 bytes)
         cmd.append_uint8(channelNumber);                            //channel number
         cmd.append_uint16(targetValue);                             //target balance value
 

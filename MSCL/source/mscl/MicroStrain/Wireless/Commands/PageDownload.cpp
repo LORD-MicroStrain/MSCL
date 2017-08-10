@@ -18,20 +18,23 @@ namespace mscl
         //build the command ByteStream
         ByteStream cmd;
         cmd.append_uint8(WirelessProtocol::cmdId_pageDownload);        //Command ID
-        cmd.append_uint16(nodeAddress);                                //Node address    (2 bytes)
+        cmd.append_uint16(static_cast<uint16>(nodeAddress));           //Node address    (2 bytes)
         cmd.append_uint16(pageIndex);                                  //Page index    (2 bytes)
 
         return cmd;
     }
 
     PageDownload::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        ResponsePattern(collector),
+        WirelessResponsePattern(collector, WirelessProtocol::cmdId_pageDownload, 0),    //note: passing 0 since this response doesn't check node address :(
         m_matchedPart1(false)
     {
     }
 
     bool PageDownload::Response::match(DataBuffer& data)
     {
+        //get a lock on the parsing mutex
+        mutex_lock_guard lock(m_parsingMutex);
+
         //===============================================================================================================
         //Note: The Page Download command is unique in that the node sends 3 separate packets to the
         //        base station, which get concatenated and sent back. Unfortunately, this is not an ASPP
@@ -82,6 +85,9 @@ namespace mscl
 
     ByteStream PageDownload::Response::dataPoints()
     {
+        //get a lock on the parsing mutex
+        mutex_lock_guard lock(m_parsingMutex);
+
         return m_dataPoints;
     }
 

@@ -6,7 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
 #include "mscl/Types.h"
 
 namespace mscl
@@ -37,7 +37,7 @@ namespace mscl
 
         //Class: Response
         //    Handles the response to the ReadEeprom Node command
-        class Response : public ResponsePattern
+        class Response : public WirelessResponsePattern
         {
         public:
             //Constructor: Response
@@ -57,7 +57,7 @@ namespace mscl
             //    The result eeprom value from the command.
             uint16 m_eepromValue;
 
-        public:
+        protected:
             //Function: match
             //    Checks if the <WirelessPacket> passed in matches the expected response pattern's bytes
             //
@@ -66,8 +66,9 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches a response pattern, false otherwise
-            virtual bool match(const WirelessPacket& packet) override;
+            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
 
+        public:
             //Function: eepromValue
             //    Gets the result eeprom value that was read from the Node.
             //

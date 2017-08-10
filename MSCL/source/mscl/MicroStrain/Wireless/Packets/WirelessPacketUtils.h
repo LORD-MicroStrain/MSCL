@@ -13,7 +13,6 @@ namespace mscl
     //    Contains useful utility functions for interfacing with MicroStrain's Wireless packets 
     class WirelessPacketUtils
     {
-
     public:
         //Function: correctPacketType
         //    Some packets are not properly identified. 

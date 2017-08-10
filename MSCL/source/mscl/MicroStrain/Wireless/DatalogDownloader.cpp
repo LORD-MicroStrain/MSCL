@@ -7,7 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "DatalogDownloader.h"
 
 #include "Configuration/NodeEepromHelper.h"
-#include "Commands/GetDatalogSessionInfo.h"
+#include "Commands/DatalogSessionInfoResult.h"
 #include "Features/NodeFeatures.h"
 #include "Packets/WirelessDataPacket.h"
 #include "NodeMemory_v1.h"
@@ -47,9 +47,11 @@ namespace mscl
         }
         else
         {
+            BaseStation& base = m_node.getBaseStation();
+
             //get the datalogging session info
             DatalogSessionInfoResult dlInfo;
-            if(!m_node.getBaseStation().node_getDatalogSessionInfo(node.protocol(), node.nodeAddress(), dlInfo))
+            if(!base.node_getDatalogSessionInfo(node.protocol(base.communicationProtocol()), node.nodeAddress(), dlInfo))
             {
                 throw Error_NodeCommunication(m_node.nodeAddress(), "Failed to get the Datalog Session Info");
             }
@@ -59,6 +61,40 @@ namespace mscl
 
             //create the Node Memory object (v2)
             m_nodeMemory.reset(new NodeMemory_v2(m_node, flashInfo, dlInfo.startAddress, dlInfo.maxLoggedBytes));
+        }
+    }
+
+    DatalogDownloader::DatalogDownloader(const WirelessNode& node, uint16 startAddress, uint32 size):
+        m_node(node),
+        m_foundFirstTrigger(false),
+        m_outOfMemory(false),
+        m_sweepCount(0),
+        m_isMathData(false)
+    {
+        //verify the node supports logged data
+        if(!node.features().supportsLoggedData())
+        {
+            throw Error_NotSupported("Logging is not supported by this Node.");
+        }
+
+        m_datalogDownloadVersion = m_node.features().datalogDownloadVersion();
+
+        if(m_datalogDownloadVersion == 1)
+        {
+            //get the datalogging information from the Node
+            uint16 logPage = m_node.eepromHelper().read_logPage();
+            uint16 pageOffset = m_node.eepromHelper().read_logPageOffset();
+
+            //create the NodeMemory object (v1)
+            m_nodeMemory.reset(new NodeMemory_v1(m_node, logPage, pageOffset));
+        }
+        else
+        {
+            //get the FlashInfo
+            FlashInfo flashInfo = m_node.eepromHelper().read_flashInfo();
+
+            //create the Node Memory object (v2)
+            m_nodeMemory.reset(new NodeMemory_v2(m_node, flashInfo, startAddress, size));
         }
     }
 
@@ -167,6 +203,8 @@ namespace mscl
         float slope;
         float offset;
 
+        m_sessionInfo.calCoefficients.clear();
+
         for(channelItr = 1; channelItr <= lastChannel; ++channelItr)
         {
             //only contains channel action info if the channel is in the data
@@ -223,6 +261,8 @@ namespace mscl
 
         //set the startOfTrigger flag to true
         m_sessionInfo.startOfTrigger = true;
+
+        m_sessionInfo.sessionInfoUpdated = true;
     }
 
     void DatalogDownloader::parseTriggerHeader_v2()
@@ -247,7 +287,15 @@ namespace mscl
             m_sessionInfo.timestamp = m_nodeMemory->read_uint64(Utils::littleEndian);
 
             //read the session index
-            m_sessionInfo.sessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
+            uint16 newSessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
+
+            //only update sessionInfoUpdated flag if index has changed
+            if(m_sessionInfo.sessionIndex != newSessionIndex)
+            {
+                m_sessionInfo.sessionIndex = newSessionIndex;
+                m_sessionInfo.startOfTrigger = true;
+                m_sessionInfo.sessionInfoUpdated = true;
+            }
         }
         else if(headerId == NodeMemory_v2::SESSION_CHANGE_HEADER_ID_V2)
         {
@@ -259,10 +307,24 @@ namespace mscl
             NodeMemory_v2::SweepType sweepType = static_cast<NodeMemory_v2::SweepType>(m_nodeMemory->read_uint8());
             if(sweepType == NodeMemory_v2::sweepType_raw)
             {
+                //if we are switching from math to raw sweeps
+                if(m_isMathData)
+                {
+                    //set the sessionInfoUpdated flag to true
+                    m_sessionInfo.sessionInfoUpdated = true;
+                }
+
                 m_isMathData = false;
             }
             else if(sweepType == NodeMemory_v2::sweepType_derived)
             {
+                //if we are switching from raw to math sweeps
+                if(!m_isMathData)
+                {
+                    //set the sessionInfoUpdated flag to true
+                    m_sessionInfo.sessionInfoUpdated = true;
+                }
+
                 m_isMathData = true;
             }
 
@@ -270,15 +332,22 @@ namespace mscl
             m_sessionInfo.timestamp = m_nodeMemory->read_uint64(Utils::littleEndian);
 
             //read the session index
-            m_sessionInfo.sessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
+            uint16 newSessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
+
+            //only update sessionInfoUpdated flag if index has changed
+            if(m_sessionInfo.sessionIndex != newSessionIndex)
+            {
+                m_sessionInfo.sessionIndex = newSessionIndex;
+                m_sessionInfo.startOfTrigger = true;
+                m_sessionInfo.sessionInfoUpdated = true;
+            }
         }
         else if(headerId == NodeMemory_v2::BLOCK_HEADER_ID)
         {
             //reset the sweep count
             m_sweepCount = 0;
 
-            //set the startOfTrigger flag to true
-            m_sessionInfo.startOfTrigger = true;
+            m_sessionInfo.sessionInfoUpdated = true;
 
             uint8 version = m_nodeMemory->read_uint8();
 
@@ -288,7 +357,14 @@ namespace mscl
 
                 m_nodeMemory->skipBytes(4); //skip header size, sweep count, and block index
 
-                m_sessionInfo.sessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
+                uint16 newSessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
+
+                //only update sessionInfoUpdated flag if index has changed
+                if(!m_foundFirstTrigger || m_sessionInfo.sessionIndex != newSessionIndex)
+                {
+                    m_sessionInfo.sessionIndex = newSessionIndex;
+                    m_sessionInfo.startOfTrigger = true;
+                }
 
                 m_sessionInfo.timestamp = m_nodeMemory->read_uint64(Utils::littleEndian);
 
@@ -324,7 +400,14 @@ namespace mscl
 
                 m_nodeMemory->skipBytes(2); //skip block index
 
-                m_sessionInfo.sessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
+                uint16 newSessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
+
+                //only update sessionInfoUpdated flag if index has changed
+                if(!m_foundFirstTrigger || m_sessionInfo.sessionIndex != newSessionIndex)
+                {
+                    m_sessionInfo.sessionIndex = newSessionIndex;
+                    m_sessionInfo.startOfTrigger = true;
+                }
 
                 m_sessionInfo.timestamp = m_nodeMemory->read_uint64(Utils::littleEndian);
 
@@ -385,6 +468,8 @@ namespace mscl
         WirelessTypes::CalCoef_Unit unit;
         float slope;
         float offset;
+
+        m_sessionInfo.calCoefficients.clear();
 
         for(channelItr = 1; channelItr <= lastChannel; ++channelItr)
         {
@@ -472,7 +557,7 @@ namespace mscl
         }
 
         //calibrations are applied if floating point data
-        m_sessionInfo.calsApplied = (m_sessionInfo.dataType == WirelessTypes::dataType_float32);
+        bool calsApplied = (m_sessionInfo.dataType == WirelessTypes::dataType_float32);
 
         //loop through all the channels
         for(uint8 chItr = 1; chItr <= lastActiveCh; ++chItr)
@@ -543,7 +628,7 @@ namespace mscl
         m_sweepCount++;
 
         //return the LoggedDataSweep object containing the data that was downloaded
-        return LoggedDataSweep(Timestamp(sweepTime), sweepTick, chData);
+        return LoggedDataSweep(Timestamp(sweepTime), sweepTick, chData, calsApplied);
     }
 
     LoggedDataSweep DatalogDownloader::parseNextMathSweep()
@@ -555,9 +640,6 @@ namespace mscl
         {
             dataEndian = Utils::littleEndian;
         }
-
-        //calibrations are applied if floating point data
-        m_sessionInfo.calsApplied = true;
 
         uint8 lastChEnabled = 0;
         uint8 chNum = 0;
@@ -596,7 +678,8 @@ namespace mscl
         m_sweepCount++;
 
         //return the LoggedDataSweep object containing the data that was downloaded
-        return LoggedDataSweep(Timestamp(sweepTime), sweepTick, chData);
+        //(Note: calibrations are always applied already for Math data)
+        return LoggedDataSweep(Timestamp(sweepTime), sweepTick, chData, true);
     }
 
     LoggedDataSweep DatalogDownloader::getNextData()
@@ -643,6 +726,8 @@ namespace mscl
 
                 //set the startOfTrigger flag to false
                 m_sessionInfo.startOfTrigger = false;
+
+                m_sessionInfo.sessionInfoUpdated = false;
             }
 
             if(m_isMathData)
@@ -666,6 +751,11 @@ namespace mscl
             //then rethrow the exception
             throw;
         }
+    }
+
+    bool DatalogDownloader::metaDataUpdated() const
+    {
+        return m_sessionInfo.sessionInfoUpdated;
     }
 
     bool DatalogDownloader::startOfSession() const
@@ -698,10 +788,5 @@ namespace mscl
     const ChannelCalMap& DatalogDownloader::calCoefficients() const
     {
         return m_sessionInfo.calCoefficients;
-    }
-
-    bool DatalogDownloader::calsApplied() const
-    {
-        return m_sessionInfo.calsApplied;
     }
 }

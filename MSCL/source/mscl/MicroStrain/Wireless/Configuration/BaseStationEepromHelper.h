@@ -17,7 +17,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
     //forward declarations
-    class BaseStation_Impl;    
+    class BaseStation_Impl;
 
     //Class: BaseStationEepromHelper
     //    A helper class for reading and writing to a BaseStation's Eeprom.
@@ -56,10 +56,32 @@ namespace mscl
         //Function: read_asppVersion
         //  Gets the ASPP <Version> of the BaseStation.
         //
+        //Parameters:
+        //  commProtocol - The <WirelessTypes::CommProtocol> to get the ASPP version for.
+        //
         //Exceptions:
         //  - <Error_NodeCommunication>: Failed to read the value from the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        Version read_asppVersion() const;
+        Version read_asppVersion(WirelessTypes::CommProtocol commProtocol) const;
+
+        //Function: read_commProtocol
+        //  Gets the <WirelessTypes::CommProtocol> of the BaseStation.
+        //
+        //Exceptions:
+        //  - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::CommProtocol read_commProtocol() const;
+
+        //Function: write_commProtocol
+        //  Changes the <WirelessTypes::CommProtocol> of the BaseStation.
+        //
+        //Parameters:
+        //    commProtocol - The <WirelessTypes::CommProtocol> to write to the BaseStation.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: Failed to write to the BaseStation.
+        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
+        void write_commProtocol(WirelessTypes::CommProtocol commProtocol);
 
         //Function: read_fwVersion
         //  Reads the firmware <Version> of the BaseStation.

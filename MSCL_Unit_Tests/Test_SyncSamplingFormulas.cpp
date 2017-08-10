@@ -31,23 +31,14 @@ BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_maxBytesPerPacket)
     SampleRate hz_256 = SampleRate::Hertz(256);
     SampleRate hz_512 = SampleRate::Hertz(512);
     SampleRate sec_10 = SampleRate::Seconds(10);
+    WirelessTypes::CommProtocol lxrs = WirelessTypes::commProtocol_lxrs;
 
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_256, true, true, 1), 32);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_256, true, false, 1), 64);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_256, false, false, 1), 96);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_512, true, true, 1), 32);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_512, true, false, 1), 48);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(sec_10, true, false, 1), 64);
-}
-
-BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_groupSize)
-{
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::groupSize(128.0, 200, true), 1);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::groupSize(128.0, 400, true), 2);
-
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::groupSize(128.0, 400, false), 1);
-
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::groupSize(2.0, 400, true), 16);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_256, true, true, 1, lxrs), 32);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_256, true, false, 1, lxrs), 64);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_256, false, false, 1, lxrs), 96);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_512, true, true, 1, lxrs), 32);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(hz_512, true, false, 1, lxrs), 48);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerPacket(sec_10, true, false, 1, lxrs), 64);
 }
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_txPerGroup)
@@ -69,24 +60,25 @@ BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_txPerSecond)
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_slotSpacing)
 {
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::slotSpacing(), 8);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::slotSpacing(WirelessTypes::commProtocol_lxrs), 8);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::slotSpacing(WirelessTypes::commProtocol_lxrsPlus), 4);
 }
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_maxTdmaAddress)
 {
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxTdmaAddress(4, 1, true), 248);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxTdmaAddress(16, 2, true), 120);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxTdmaAddress(128, 1, true), 1);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxTdmaAddress(128, 1, false), 8);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxTdmaAddress(4, 1, true, WirelessTypes::commProtocol_lxrs), 248);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxTdmaAddress(16, 2, true, WirelessTypes::commProtocol_lxrs), 120);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxTdmaAddress(128, 1, true, WirelessTypes::commProtocol_lxrs), 1);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxTdmaAddress(128, 1, false, WirelessTypes::commProtocol_lxrs), 8);
 }
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_percentBandwidth)
 {
-    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(0.0f, true), 0.0, 0.1);
-    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(4.0f, true), 3.128, 0.1);
-    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(8.0f, true), 6.256, 0.1);
-    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(128.0f, true), 100.097, 0.1);
-    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(128.0f, false), 100.0, 0.1);
+    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(0.0f, true, WirelessTypes::commProtocol_lxrs), 0.0, 0.1);
+    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(4.0f, true, WirelessTypes::commProtocol_lxrs), 3.128, 0.1);
+    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(8.0f, true, WirelessTypes::commProtocol_lxrs), 6.256, 0.1);
+    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(128.0f, true, WirelessTypes::commProtocol_lxrs), 100.097, 0.1);
+    BOOST_CHECK_CLOSE(SyncSamplingFormulas::percentBandwidth(128.0f, false, WirelessTypes::commProtocol_lxrs), 100.0, 0.1);
 }
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_sampleDuration)
@@ -140,10 +132,12 @@ BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_totalBytesPerBurst)
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_maxDataBytesPerPacket)
 {
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerBurstPacket(20, true), 80);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerBurstPacket(256, true), 0);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerBurstPacket(20, false), 80);
-    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerBurstPacket(256, false), 0);
+    WirelessTypes::CommProtocol lxrs = WirelessTypes::commProtocol_lxrs;
+
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerBurstPacket(20, true, lxrs), 80);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerBurstPacket(256, true, lxrs), 0);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerBurstPacket(20, false, lxrs), 80);
+    BOOST_CHECK_EQUAL(SyncSamplingFormulas::maxBytesPerBurstPacket(256, false, lxrs), 0);
 }
 
 BOOST_AUTO_TEST_CASE(SyncSamplingFormulas_totalNeededBurstTx)

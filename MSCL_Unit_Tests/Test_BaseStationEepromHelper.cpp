@@ -20,6 +20,14 @@ BOOST_AUTO_TEST_CASE(BaseStationEepromHelper_readTransmitPower)
     BaseStation base(impl);
 
     //make the features() function return the BaseStationFeatures we want
+    /*WirelessProtocol p = *(WirelessProtocol::getProtocol(Version(1, 7)).get());
+    WirelessProtocol p2 = *(WirelessProtocol::getProtocol(Version(3, 0)).get());
+    BaseStationInfo info(Version(9, 9), WirelessModels::base_wsdaBase_104_usb, WirelessTypes::region_usa, p, p2);
+
+    std::unique_ptr<BaseStationFeatures> features = BaseStationFeatures::create(info);
+
+    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));*/
+
     std::unique_ptr<BaseStationFeatures> features;
     expectBaseFeatures(features, impl);
 
@@ -38,7 +46,9 @@ BOOST_AUTO_TEST_CASE(BaseStationEepromHelper_readTransmitPower_legacy)
     //make the features() function return the BaseStationFeatures we want
     std::unique_ptr<BaseStationFeatures> features;
     //3.2 fw doesn't support the new transmit power values
-    BaseStationInfo info(Version(3, 2), WirelessModels::base_wsdaBase_104_usb, WirelessTypes::region_usa);
+    Version asppVer_lxrs(1, 0);
+    Version asppVer_lxrsPlus(3, 0);
+    BaseStationInfo info(Version(3, 2), WirelessModels::base_wsdaBase_104_usb, WirelessTypes::region_usa, asppVer_lxrs, asppVer_lxrsPlus);
     features = BaseStationFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 
@@ -71,7 +81,9 @@ BOOST_AUTO_TEST_CASE(BaseStationEepromHelper_writeTransmitPower_legacy)
     //make the features() function return the BaseStationFeatures we want
     std::unique_ptr<BaseStationFeatures> features;
     //3.2 fw doesn't support the new transmit power values
-    BaseStationInfo info(Version(3, 2), WirelessModels::base_wsdaBase_104_usb, WirelessTypes::region_usa);
+    Version asppVer_lxrs(1, 0);
+    Version asppVer_lxrsPlus(3, 0);
+    BaseStationInfo info(Version(3, 2), WirelessModels::base_wsdaBase_104_usb, WirelessTypes::region_usa, asppVer_lxrs, asppVer_lxrsPlus);
     features = BaseStationFeatures::create(info);
     MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
 

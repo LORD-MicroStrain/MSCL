@@ -23,32 +23,14 @@ namespace mscl
 
 #ifndef SWIG
 
-    //Struct: MathMetaData
-    //  Information about the Math Channels.
-    /*struct MathMetaData
-    {
-        //Variable: id
-        //  The identifier of the algorithm used.
-        uint8 id;
-
-        //Variable: sourceChannelMask
-        //  The <ChannelMask> of the source channels for this algorithm.
-        ChannelMask sourceChannelMask;
-
-        MathMetaData(uint8 algorithmId, uint16 channelMaskValue):
-            id(algorithmId),
-            sourceChannelMask(ChannelMask(channelMaskValue))
-        {
-        }
-    };*/
-
     struct DatalogSessionInfo
     {
+        //Variable: sessionInfoUpdated
+        //  Indicates whether the session info has been updated since the last time <getNextData> was called.
+        bool sessionInfoUpdated;
+
         //Variable: startOfTrigger
-        //    Whether the current data point is the start of a new trigger.
-        //    This will be true for a single data point, in which case all
-        //    of this DatalogSessionInfo will have been updated with new information.
-        //    When moved to the next datapoint, startOfTrigger will be reset to false.
+        //    Whether the current data point is the start of a new trigger/session.
         bool startOfTrigger;
 
         //Variable: triggerType
@@ -100,15 +82,12 @@ namespace mscl
         //    The starting timestamp for the session, in nanoseconds.
         uint64 timestamp;
 
-        //Variable: calsApplied;
-        //  Whether the cal coefficients are applied to the data or not.
-        bool calsApplied;
-
         //Variable: calCoefficients
         //    A map of <WirelessChannel::ChannelId> to <CalCoefficients>.
         ChannelCalMap calCoefficients;
 
         DatalogSessionInfo():
+            sessionInfoUpdated(false),
             startOfTrigger(false),
             triggerType(WirelessTypes::trigger_userInit),
             numSweeps(0),
@@ -121,8 +100,7 @@ namespace mscl
             dataType(WirelessTypes::dataType_uint16),
             valueType(valueType_uint16),
             userString(""),
-            timestamp(0),
-            calsApplied(true)
+            timestamp(0)
         {
         }
     };
@@ -145,12 +123,27 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         explicit DatalogDownloader(const WirelessNode& node);
 
+        //API Constructor: DatalogDownloader
+        //  Advanced Constructor for creating a DatalogDownloader object with known parameters (not compatible with datalog version 1).
+        //  Note: In most cases, you should use the standard DatalogDownloader constructor instead of this one,
+        //        which will automatically determine the start and end positions for you.
+        //
+        //Parameters:
+        //  node - The <WirelessNode> to download the data from.
+        //  startAddress - The flash address of the first log header.
+        //  size - The max number of logged bytes.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Logged data is not supported by the Node.
+        //    - <Error_NodeCommunication>: Failed to read info from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        DatalogDownloader(const WirelessNode& node, uint16 startAddress, uint32 size);
+
         ~DatalogDownloader();
 
-    private:
-        DatalogDownloader();                                    //disabled default constructor
-        DatalogDownloader(const DatalogDownloader&);            //disabled copy constructor
-        DatalogDownloader& operator=(const DatalogDownloader&);    //disabled assignment operator
+        DatalogDownloader() = delete;                                       //disabled default constructor
+        DatalogDownloader(const DatalogDownloader&) = delete;               //disabled copy constructor
+        DatalogDownloader& operator=(const DatalogDownloader&) = delete;    //disabled assignment operator
 
     private:
         //Constants: Datalogging Header Versions
@@ -226,18 +219,18 @@ namespace mscl
         //  Parses the next Math/Derived Data Sweep from the current byte position.
         LoggedDataSweep parseNextMathSweep();
 
-
-
     public:
         //API Function: complete
-        //    Checks if all of the data has been downloaded (no more data available).
+        //  Checks if all of the data has been downloaded (no more data available).
+        //  Note: This may be updated each time <getNextData> is called.
         //
         //Returns:
-        //    true if all the data has been downloaded, false if there is still more data to download.
+        //  true if all the data has been downloaded, false if there is still more data to download.
         bool complete();
 
         //API Function: percentComplete
-        //    Gets the percent completion of the download.
+        //  Gets the percent completion of the download.
+        //  Note: This will be updated each time <getNextData> is called.
         //
         //Returns:
         //  The percent completion of the download (0 - 100).
@@ -255,32 +248,43 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred.
         LoggedDataSweep getNextData();
 
-        //API Function: startOfSession
-        //    Gets whether a new datalogging session has been found (after calling <getNextData>).
-        //    This will be true for a single <LoggedDataSweep>, signifying that all of the DatalogDownloader's 
-        //    info has been updated with new information (sample rate, session index, etc.) about this sweep.
+        //API Function: metaDataUpdated
+        //  Gets whether the meta data (sample rate, cal coefficients, etc) has been updated since the last call to <getNextData>.
+        //  This will be true for a single <LoggedDataSweep> (after calling <getNextData>), signifying that you should interrogate
+        //  all of the meta data on this DatalogDownloader object again to get updated information which may have changed.
         //
         //Returns:
-        //    true if a new datalogging session has been found, false otherwise.
+        //  true if the meta data has been updated, false otherwise.
+        bool metaDataUpdated() const;
+
+        //API Function: startOfSession
+        //  Gets whether a new datalogging session has been found (after calling <getNextData>). This will be true for a single <LoggedDataSweep>.
+        //  Note: May be changed whenever <metaDataUpdated> returns true.
+        //
+        //Returns:
+        //  true if a new datalogging session has been found, false otherwise.
         bool startOfSession() const;
 
         //API Function: sessionIndex
-        //    Gets the index of the current datalogging session. 
-        //    This starts at 1 for the first session, and is incremented for each additional session.
+        //  Gets the index of the current datalogging session.
+        //  Note: May be changed whenever <startOfSession> returns true.
         //
         //Returns:
-        //    The index of the current datalogging session. 
+        //  The index of the current datalogging session.
         uint16 sessionIndex() const;
 
         //API Function: sampleRate
-        //    Gets the <SampleRate> of the current datalogging session.
+        //  Gets the <SampleRate> of the current datalogging session.
+        //  Note: May be changed whenever <metaDataUpdated> returns true.
         //
         //Returns:
-        //    The <SampleRate> of the current datalogging session.
+        //  The <SampleRate> of the current datalogging session.
         const SampleRate& sampleRate() const;
 
         //API Function: userString
-        //    Gets the user entered string of the current datalogging session (if any).
+        //  Gets the user entered string of the current datalogging session (if any).
+        //  Note: A user string can only be provided with Armed Datalogging, which is a legacy sampling mode not supported on new products.
+        //  Note: May be changed whenever <metaDataUpdated> returns true.
         //
         //Returns:
         //    The user entered string of the current datalogging session, or an empty string if none was provided.
@@ -288,16 +292,10 @@ namespace mscl
 
         //API Function: calCoefficients
         //  Gets the <ChannelCalMap> of the current datalogging session.
+        //  Note: May be changed whenever <metaDataUpdated> returns true.
         //
         //Returns:
         //  The <ChannelCalMap> of <WirelessChannel::ChannelId>s to <CalCoefficients>. 
         const ChannelCalMap& calCoefficients() const;
-
-        //API Function: calsApplied
-        //  Gets whether all of the given cal coefficients are already applied to the data or not.
-        //
-        //Returns:
-        //  true if the cal coefficients are already applied, false if they are not already applied.
-        bool calsApplied() const;
     };
 }

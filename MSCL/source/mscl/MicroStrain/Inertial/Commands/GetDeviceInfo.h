@@ -77,7 +77,6 @@ namespace mscl
         class Response : public GenericInertialCommand::Response
         {
         protected:
-            virtual InertialTypes::Command commandId() const override { return CMD_ID; }
             virtual uint8 fieldDataByte() const override { return FIELD_DATA_BYTE; }
 
         public:

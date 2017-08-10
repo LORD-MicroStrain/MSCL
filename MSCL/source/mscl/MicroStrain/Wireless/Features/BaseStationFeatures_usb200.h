@@ -9,18 +9,21 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {    
-    //Class: BaseStationFeatures_oem
-    //    Contains information on features for the oem BaseStation.
-    class BaseStationFeatures_oem : public BaseStationFeatures
+    //Class: BaseStationFeatures_usb200
+    //    Contains information on features for the WSDA-200 USB BaseStation.
+    class BaseStationFeatures_usb200 : public BaseStationFeatures
     {
     public:
-        virtual ~BaseStationFeatures_oem() {}
+        virtual ~BaseStationFeatures_usb200() {}
 
-        //Constructor: BaseStationFeatures_oem
-        //    Creates a BaseStationFeatures_oem object.
+        //Constructor: BaseStationFeatures_usb200
+        //    Creates a BaseStationFeatures_usb200 object.
         //
         //Parameters:
         //    info - A <BaseStationInfo> object representing standard information of the <BaseStation>.
-        BaseStationFeatures_oem(BaseStationInfo& info);
+        BaseStationFeatures_usb200(BaseStationInfo& info);
+
+        virtual bool supportsRfSweepMode() const final;
+        virtual bool supportsCustomRfSweepMode() const final;
     };
 }

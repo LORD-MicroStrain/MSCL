@@ -38,9 +38,6 @@ namespace mscl
         //    Handles the response to the Inertial_SetToIdle command.
         class Response : public GenericInertialCommand::Response
         {
-        protected:
-            virtual InertialTypes::Command commandId() const override { return CMD_ID; }
-
         public:
             //Constructor: Response
             //    Creates the Inertial_SetToIdle::Response object.

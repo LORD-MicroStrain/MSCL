@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(AutoCalResult_shmLink_Constructor)
 
 BOOST_AUTO_TEST_CASE(AutoCal_shmLink_BuildCommand)
 {
-    ByteStream b = AutoCal::buildCommand_shmLink(824);
+    ByteStream b = AutoCal::buildCommand_shmLink(WirelessPacket::aspp_v1, 824);
 
     //Check all the bytes in the ByteStream
     BOOST_CHECK_EQUAL(b.read_uint8(0), 0xAA);

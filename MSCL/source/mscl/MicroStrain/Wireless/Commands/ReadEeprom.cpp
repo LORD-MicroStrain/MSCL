@@ -18,7 +18,7 @@ namespace mscl
         cmd.append_uint8(0xAA);                                 //Start of Packet
         cmd.append_uint8(0x05);                                 //Delivery Stop Flag
         cmd.append_uint8(0x00);                                 //App Data Type
-        cmd.append_uint16(nodeAddress);                         //Node address    (2 bytes)
+        cmd.append_uint16(static_cast<uint16>(nodeAddress));    //Node address    (2 bytes)
         cmd.append_uint8(0x04);                                 //Payload length
         cmd.append_uint16(WirelessProtocol::cmdId_readEeprom);  //Command ID    (2 bytes)
         cmd.append_uint16(eepromAddress);                       //EEPROM Address (2 bytes)
@@ -32,13 +32,13 @@ namespace mscl
     }
 
     ReadEeprom::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
-        ResponsePattern(collector),
+        WirelessResponsePattern(collector, WirelessProtocol::cmdId_readEeprom, nodeAddress),
         m_nodeAddress(nodeAddress),
         m_eepromValue(0)
     {
     }
 
-    bool ReadEeprom::Response::match(const WirelessPacket& packet)
+    bool ReadEeprom::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
         WirelessPacket::Payload payload = packet.payload();
 
@@ -56,14 +56,7 @@ namespace mscl
         //if we made it here, the packet matches the response pattern
 
         //get the eeprom value from the response
-        m_success = true;
         m_eepromValue = payload.read_uint16(0);
-
-        //we have fully matched the response
-        m_fullyMatched = true;
-
-        //notify that the response was matched
-        m_matchCondition.notify();
 
         return true;
     }

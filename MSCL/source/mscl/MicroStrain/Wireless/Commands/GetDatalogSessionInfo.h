@@ -5,36 +5,14 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
+#include "DatalogSessionInfoResult.h"
 #include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "WirelessResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 
 namespace mscl
 {
     class WirelessPacket;
-
-    //Struct: DatalogSessionInfoResult
-    //  Object to represent the result of a DatalogSessionInfo request.
-    struct DatalogSessionInfoResult
-    {
-    public:
-        //Variable: sessionCount
-        //  The total number of sessions logged on the Node.
-        uint16 sessionCount;
-
-        //Variable: startAddress
-        //  The flash address of the first log header.
-        uint32 startAddress;
-
-        //Variable: maxLoggedBytes
-        //  The max number of logged bytes.
-        uint32 maxLoggedBytes;
-
-        DatalogSessionInfoResult() :
-            sessionCount(0),
-            startAddress(0),
-            maxLoggedBytes(0)
-        {}
-    };
 
     //Class: GetDatalogSessionInfo
     //  Contains logic for the Get Datalog Session Info Node command.
@@ -54,11 +32,11 @@ namespace mscl
         //
         //Returns:
         //    A <ByteStream> containing the GetDatalogSessionInfo command packet.
-        static ByteStream buildCommand(NodeAddress nodeAddress);
+        static ByteStream buildCommand(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress);
 
         //Class: Response
         //    Handles the response to the GetDatalogSessionInfo Node command.
-        class Response : public ResponsePattern
+        class Response : public WirelessResponsePattern
         {
         public:
             //Constructor: Response
@@ -78,7 +56,7 @@ namespace mscl
             //  The <DatalogSessionInfoResult> to hold the result on success.
             DatalogSessionInfoResult m_result;
 
-        private:
+        protected:
             //Function: matchSuccessResponse
             //    Checks if the <WirelessPacket> passed in matches the success response pattern's bytes
             //
@@ -87,7 +65,7 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches the success response pattern, false otherwise
-            bool matchSuccessResponse(const WirelessPacket& packet);
+            bool matchSuccessResponse(const WirelessPacket& packet) override;
 
             //Function: matchFailResponse
             //    Checks if the <WirelessPacket> passed in matches the failure response pattern's bytes
@@ -97,19 +75,9 @@ namespace mscl
             //
             //Returns:
             //    true if the packet matches the success response pattern, false otherwise
-            bool matchFailResponse(const WirelessPacket& packet);
+            bool matchFailResponse(const WirelessPacket& packet) override;
 
         public:
-            //Function: match
-            //    Checks if the <WirelessPacket> passed in matches the expected response pattern's bytes
-            //
-            //Parameters:
-            //    packet - The <WirelessPacket> in which to try to find the pattern
-            //
-            //Returns:
-            //    true if the packet matches a response pattern, false otherwise
-            virtual bool match(const WirelessPacket& packet) override;
-
             //Function: result
             //  Gets the <DatalogSessionInfoResult> from a successful response.
             const DatalogSessionInfoResult& result() const;

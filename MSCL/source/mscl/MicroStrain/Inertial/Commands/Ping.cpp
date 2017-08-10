@@ -21,7 +21,7 @@ namespace mscl
         //create the field to add to the packet
         InertialDataField field(Utils::make_uint16(DESC_SET, FIELD_DESC));
 
-        //create a packet builder with with field
+        //create a packet builder with field
         InertialPacketBuilder builder(DESC_SET, field);
 
         //build the packet and return the ByteStream result
@@ -29,7 +29,7 @@ namespace mscl
     }
 
     Ping::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        GenericInertialCommand::Response(collector, true, false, "Ping")
+        GenericInertialCommand::Response(InertialTypes::CMD_PING, collector, true, false, "Ping")
     {
     }
 }

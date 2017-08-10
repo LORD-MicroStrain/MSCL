@@ -32,9 +32,9 @@ BOOST_AUTO_TEST_SUITE(StartSyncSampling_Test)
 
 BOOST_AUTO_TEST_CASE(StartSyncSampling_buildCommand)
 {
-    ByteStream result = StartSyncSampling::buildCommand(123);
+    ByteStream result = StartSyncSampling::buildCommand(WirelessPacket::aspp_v1, 123);
 
-    uint8 sop = WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE;
+    uint8 sop = WirelessPacket::ASPP_V1_SOP;
 
     BOOST_CHECK_EQUAL(result.read_uint8(0), sop);
     BOOST_CHECK_EQUAL(result.read_uint8(1), 0x05);

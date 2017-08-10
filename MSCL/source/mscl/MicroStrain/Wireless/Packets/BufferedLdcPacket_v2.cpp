@@ -6,7 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "stdafx.h"
 
 #include "mscl/Exceptions.h"
-#include "BufferedLdcPacket_16ch.h"
+#include "BufferedLdcPacket_v2.h"
 #include "mscl/MicroStrain/SampleUtils.h"
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
 #include "mscl/Types.h"
@@ -16,7 +16,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
 
-    BufferedLdcPacket_16ch::BufferedLdcPacket_16ch(const WirelessPacket& packet)
+    BufferedLdcPacket_v2::BufferedLdcPacket_v2(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
         m_nodeAddress        = packet.nodeAddress();
@@ -32,7 +32,7 @@ namespace mscl
         parseSweeps();
     }
 
-    void BufferedLdcPacket_16ch::parseSweeps()
+    void BufferedLdcPacket_v2::parseSweeps()
     {
         //read the values from the payload
         uint16 channelMask    = m_payload.read_uint16(PAYLOAD_OFFSET_CHANNEL_MASK);
@@ -122,7 +122,7 @@ namespace mscl
         }
     }
 
-    bool BufferedLdcPacket_16ch::integrityCheck(const WirelessPacket& packet)
+    bool BufferedLdcPacket_v2::integrityCheck(const WirelessPacket& packet)
     {
         WirelessPacket::Payload payload = packet.payload();
 
@@ -198,7 +198,7 @@ namespace mscl
         return true;
     }
 
-    UniqueWirelessPacketId BufferedLdcPacket_16ch::getUniqueId(const WirelessPacket& packet)
+    UniqueWirelessPacketId BufferedLdcPacket_v2::getUniqueId(const WirelessPacket& packet)
     {
         //return the tick value
         return packet.payload().read_uint16(PAYLOAD_OFFSET_TICK);

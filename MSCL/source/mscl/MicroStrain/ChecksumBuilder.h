@@ -63,16 +63,23 @@ namespace mscl
         //Function: simpleChecksum
         //    Returns a simple checksum of all the bytes in the ChecksumBuilder
         //
-        //Returns
+        //Returns:
         //    The simple checksum of all the bytes in the ChecksumBuilder
         uint16 simpleChecksum() const;
 
         //Function: fletcherChecksum
         //    Returns the Fletcher checksum of all the bytes in the ChecksumBuilder
         //
-        //Returns
+        //Returns:
         //    The Fletcher checksum of all the bytes in the ChecksumBuilder
         uint16 fletcherChecksum() const;
+
+        //Function: crcChecksum
+        //  Returns the 32-bit CRC with polynomial 0x04C11DB7, an initial value of 0xFFFFFFFF, and inverted output.
+        //
+        //Returns:
+        //  The CRC checksum of all bytes in the ChecksumBuilder.
+        uint32 crcChecksum() const;
     };
 
 }

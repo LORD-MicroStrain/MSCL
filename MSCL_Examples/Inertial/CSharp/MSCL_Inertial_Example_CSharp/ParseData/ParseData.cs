@@ -44,7 +44,6 @@ namespace ParseData
                         foreach (mscl.InertialDataPoint dataPoint in packet.data())
                         {
                             //print out the channel data
-                            Console.Write(dataPoint.ToString() + ": ");
                             Console.Write(dataPoint.as_string() + " "); //Just printing this out as a string. Other methods (ie. as_float, as_uint16, as_Vector) are also available.
 
                             //if the dataPoint is invalid

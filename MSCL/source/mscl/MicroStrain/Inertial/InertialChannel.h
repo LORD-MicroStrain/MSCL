@@ -6,7 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #pragma once
 
-#include "InertialTypes.h"
+#include "mscl/MicroStrain/Inertial/InertialTypes.h"
 #include "mscl/MicroStrain/SampleRate.h"
 
 namespace mscl

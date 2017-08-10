@@ -323,6 +323,7 @@ namespace mscl
         //    unit_energy_kiloWattHour            - 55  - Kilowatt-Hour
         //    unit_flowRate_cubicMetersPerSec     - 75  - Cubic Meters Per Second
         //    unit_flowRate_cubicFtPerSec         - 76  - Cubic Feet Per Second
+        //    unit_force_kg                       - 96  - kiloGrams
         //    unit_force_lbf                      - 15  - pound force
         //    unit_force_newtons                  - 16  - Newtons
         //    unit_force_kiloNewtons              - 17  - kiloNewtons
@@ -488,7 +489,8 @@ namespace mscl
             unit_rssi_dBHz                      = 92,
             unit_density_kgPerMeter3            = 93,
             unit_other_unitless                 = 94,
-            unit_velocity_inchesPerSec          = 95
+            unit_velocity_inchesPerSec          = 95,
+            unit_force_kg                       = 96,
 
             //170 (0xAA) needs to be reserved - treated as none
             //255 (0xFF) needs to be reserved - treated as none
@@ -1003,6 +1005,9 @@ namespace mscl
         //  range_2G            - 54 - +-2 Gs
         //  range_4G            - 55 - +-4 Gs
         //  range_8G            - 56 - +-8 Gs
+        //  range_10G           - 58 - +-10 Gs
+        //  range_20G           - 59 - +-20 Gs
+        //  range_40G           - 60 - +-40 Gs
         //  range_invalid       - 65535 - invalid input range
         enum InputRange
         {
@@ -1063,6 +1068,9 @@ namespace mscl
             range_2G = 54,           //+-2 Gs
             range_4G = 55,           //+-4 Gs
             range_8G = 56,           //+-8 Gs
+            range_10G = 58,          //+-10 Gs
+            range_20G = 59,          //+-20 Gs
+            range_40G = 60,          //+-40 Gs
             range_invalid = 65535    //invalid input range
         };
 
@@ -1096,6 +1104,17 @@ namespace mscl
             derived_crestFactor = 3
         };
 
+        //API Enum: CommProtocol
+        //  Available Communication Protocol types.
+        //
+        //  commProtocol_lxrs       - 0 - LXRS, 250kbps, 802.15.4
+        //  commProtocol_lxrsPlus   - 1 - LXRS+, 2Mbps, Proprietary
+        enum CommProtocol
+        {
+            commProtocol_lxrs = 0,
+            commProtocol_lxrsPlus = 1,
+        };
+
     public:
         //API Typedefs:
         //  DataCollectionMethods      - A vector of <DataCollectionMethod> enums.
@@ -1112,7 +1131,7 @@ namespace mscl
         //  InputRanges                - A vector of <InputRange> enums.
         //  DataModes                  - A vector of <DataMode> enums.
         //  DerivedChannelTypes        - A vector of <DerivedChannelType> enums.
-        //  DerivedChannelMasks        - A map of <DerivedChannelType> to <ChannelMask> pairs.
+        //  CommProtocols              - A vector of <CommProtocol> enums.
         typedef std::vector<DataCollectionMethod> DataCollectionMethods;
         typedef std::vector<DataFormat> DataFormats;
         typedef std::vector<WirelessSampleRate> WirelessSampleRates;
@@ -1127,6 +1146,7 @@ namespace mscl
         typedef std::vector<InputRange> InputRanges;
         typedef std::vector<DataMode> DataModes;
         typedef std::vector<DerivedChannelType> DerivedChannelTypes;
+        typedef std::vector<CommProtocol> CommProtocols;
 
         //API Typedef: DerivedChannelMasks
         //  Typedef for a map of <DerivedChannelType> to <ChannelMask> pairs.

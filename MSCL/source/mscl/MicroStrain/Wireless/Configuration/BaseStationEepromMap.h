@@ -67,7 +67,8 @@ namespace mscl
         //    RADIO_ID                   -The id of the radio on the base station
         //    MICROCONTROLLER            -The id of the microcontroller
         //    FW_ARCH_VER                -The firmware architecture version
-        //    ASPP_VER                   -The ASPP version of the device
+        //    ASPP_VER_LXRS              -The ASPP version of the device for the LXRS Radio Configuration
+        //    ASPP_VER_LXRS_PLUS         -The ASPP version of the device for the LXRS+ Radio Configuration
         //    ANALOG_1_NODE_ADDRESS      -The Node Address to Pair to Analog Port 1
         //    ANALOG_1_NODE_CHANNEL      -The Node Channel to Pair to Analog Port 1
         //    ANALOG_1_FLOAT_MAX         -The Maximum Float value (3V output) for Analog Port 1
@@ -120,6 +121,7 @@ namespace mscl
         //    ANALOG_EXCEED_ENABLE       -Enable/Disable analog exceedance
         //    MIN_SOFT_VER_MAJOR         -The minimum software version for support of this device (major)
         //    MIN_SOFT_VER_MINOR         -The minimum software version for support of this device (minor)
+        //    COMM_PROTOCOL              -The communication protocol of the device.
         //=======================================================================================================================
         static const EepromLocation SERIAL_ID;                 // The serial ID for the base station. Combine with the model number for the full serial number
         static const EepromLocation BEACON_CONFIG;             // Configuration of the beacon
@@ -135,7 +137,8 @@ namespace mscl
         static const EepromLocation RADIO_ID;                  // The id of the radio on the base station
         static const EepromLocation MICROCONTROLLER;           // The id of the microcontroller
         static const EepromLocation FW_ARCH_VER;               // The firmware architecture version
-        static const EepromLocation ASPP_VER;                  // The ASPP version of the device
+        static const EepromLocation ASPP_VER_LXRS;             // The ASPP version of the device for the LXRS Radio Configuration
+        static const EepromLocation ASPP_VER_LXRS_PLUS;        // The ASPP version of the device for the LXRS+ Radio Configuration
         static const EepromLocation ANALOG_1_NODE_ADDRESS;     // The Node Address to Pair to Analog Port 1
         static const EepromLocation ANALOG_1_NODE_CHANNEL;     // The Node Channel to Pair to Analog Port 1
         static const EepromLocation ANALOG_1_FLOAT_MAX;        // The Maximum Float value (3V output) for Analog Port 1
@@ -186,7 +189,8 @@ namespace mscl
         static const EepromLocation ANALOG_EXCEED_MAX;         // The maximum value for the Analog Exceedance setting
         static const EepromLocation ANALOG_EXCEED_MIN;         // The minimum value for the Analog Exceedance setting
         static const EepromLocation ANALOG_EXCEED_ENABLE;      // Enable/Disable analog exceedance
-        static const EepromLocation MIN_SOFT_VER_MAJOR;        //The minimum software version for support of this device (major).
-        static const EepromLocation MIN_SOFT_VER_MINOR;        //The minimum software version for support of this device (minor).
+        static const EepromLocation MIN_SOFT_VER_MAJOR;        // The minimum software version for support of this device (major).
+        static const EepromLocation MIN_SOFT_VER_MINOR;        // The minimum software version for support of this device (minor).
+        static const EepromLocation COMM_PROTOCOL;             // The communication protocol of the device.
     };
 }

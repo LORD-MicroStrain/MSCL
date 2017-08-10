@@ -52,12 +52,12 @@ namespace mscl
         m_sampleRate = rate;
     }
 
-    uint32 DataSweep::nodeAddress() const
+    NodeAddress DataSweep::nodeAddress() const
     {
         return m_nodeAddress;
     }
 
-    void DataSweep::nodeAddress(uint32 address)
+    void DataSweep::nodeAddress(NodeAddress address)
     {
         m_nodeAddress = address;
     }

@@ -117,7 +117,7 @@ namespace mscl
             {
                 //nodes must have their configuration be in Sync Sampling mode.
                 ConfigIssues issues;
-                issues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "Configuration is not set for Synchronized Sampling mode."));
+                issues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "Pending configuration is not set for Synchronized Sampling mode."));
                 throw Error_InvalidNodeConfig(issues, m_nodeAddress);
             }
         }
@@ -135,5 +135,10 @@ namespace mscl
     {
         //return the pending configuration
         return m_pendingConfig;
+    }
+
+    ChannelGroups SyncNetworkInfo::channelGroups() const
+    {
+        return m_node.features().channelGroups();
     }
 }

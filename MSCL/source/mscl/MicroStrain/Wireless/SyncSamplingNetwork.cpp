@@ -20,7 +20,7 @@ namespace mscl
     SyncSamplingNetwork::SyncSamplingNetwork(const BaseStation& networkBaseStation):
         m_networkBase(networkBaseStation),
         m_lossless(true),
-        m_highCapacity(false),
+        m_commProtocol(m_networkBase.communicationProtocol()),
         m_percentBandwidth(0.0f),
         m_networkOk(true),
         m_configApplied(false),
@@ -226,22 +226,22 @@ namespace mscl
         refresh();
     }
 
-    bool SyncSamplingNetwork::highCapacity() const
+    WirelessTypes::CommProtocol SyncSamplingNetwork::communicationProtocol() const
     {
-        return m_highCapacity;
+        return m_commProtocol;
     }
 
-    void SyncSamplingNetwork::highCapacity(bool enable)
+    void SyncSamplingNetwork::communicationProtocol(WirelessTypes::CommProtocol protocol)
     {
         //if we aren't changing anything, just return
-        if(m_highCapacity == enable)
+        if(m_commProtocol == protocol)
         {
             return;
         }
 
-        m_highCapacity = enable;
+        m_commProtocol = protocol;
 
-        //refresh the network, now using the updated high capacity option
+        //refresh the network, now using the updated comm protocol
         refresh();
     }
 
@@ -249,7 +249,20 @@ namespace mscl
     {
         static const uint8 LEGACY_MODE_TDMA_OFFSET = 4;
 
-        //loop through each configuration 
+        if(m_networkBase.communicationProtocol() != m_commProtocol)
+        {
+            throw Error("The BaseStation is configured for a different Communication Protocol than the network is set to.");
+        }
+
+        for(auto &nodeItr : m_nodes)
+        {
+            SyncNodeConfig config(nodeItr.second.get());
+            if(config.commProtocol() != m_commProtocol)
+            {
+                throw Error("A Node is configured for a different Communication Protocol than the network is set to.");
+            }
+        }
+
         for(auto &nodeItr : m_nodes)
         {
             if(nodeItr.second->hasPendingConfig())
@@ -306,19 +319,8 @@ namespace mscl
                 config.tdmaAddress(nodeInfo.m_tdmaAddress);
             }
 
-            //get the node's current retransmission (lossless) value
-            WirelessTypes::NodeRetransmission reTx = config.retransmission();
-
-            //if retransmission (lossless) is not set to "disabled (do not touch)" on the node
-            if(reTx != WirelessTypes::retransmission_disabled)
-            {
-                //if the node needs to change its retransmission value (not already set to what we want)
-                if(reTx != reTx_toWrite)
-                {
-                    //write the retransmission value 
-                    config.retransmission(reTx_toWrite);
-                }
-            }
+            //write the retransmission value 
+            config.retransmission(reTx_toWrite);
 
             //if lossless is enabled and we are in burst mode
             if(m_lossless && config.samplingMode() == WirelessTypes::samplingMode_syncBurst)
@@ -396,7 +398,7 @@ namespace mscl
         sendStartToAllNodes();
     }
 
-    SyncNetworkInfo& SyncSamplingNetwork::getNodeNetworkInfo(uint16 nodeAddress)
+    SyncNetworkInfo& SyncSamplingNetwork::getNodeNetworkInfo(NodeAddress nodeAddress)
     {
         //find the node in the map
         auto result = m_nodes.find(nodeAddress);
@@ -414,8 +416,6 @@ namespace mscl
     {
         SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
 
-        const uint8 MAX_BYTES = SyncSamplingFormulas::MAX_DATA_BYTES_PER_PACKET;
-
         try
         {
             SyncNodeConfig config(&nodeInfo);
@@ -423,9 +423,6 @@ namespace mscl
             uint32 groupSize = 0;
             uint32 txPerGroup = 0;
             double burstSampleDuration = 0.0;
-
-            //only use lossless if lossless is enabled for the network AND the node isn't set to "retransmission_disabled"
-            bool useLossless = (m_lossless && config.retransmission() != WirelessTypes::retransmission_disabled);
 
             uint16 totalChannels = config.activeChannelCount();
             SampleRate sampleRate = config.sampleRate();
@@ -440,9 +437,24 @@ namespace mscl
             float derivedPacketsPerGroup = 0.0;
 
             DataModeMask mode = config.dataMode();
-            bool useHighCapacity = false;
 
             bool isBurstMode = (config.samplingMode() == WirelessTypes::samplingMode_syncBurst);
+
+            uint16 maxBytes;
+            float derivedMaxBytes;
+            switch(m_commProtocol)
+            {
+                case WirelessTypes::commProtocol_lxrsPlus:
+                    maxBytes = 207;//432;
+                    derivedMaxBytes = 207.0f;//432.0f;
+                    break;
+
+                case WirelessTypes::commProtocol_lxrs:
+                default:
+                    maxBytes = 96;
+                    derivedMaxBytes = 94.0f;
+                    break;
+            }
 
             if(isBurstMode)
             {
@@ -459,40 +471,27 @@ namespace mscl
                 burstSampleDuration = SyncSamplingFormulas::sampleDuration(sweepsPerSession, sampleRate);
 
                 //calculate the maximum number of bytes per packet
-                nodeInfo.m_maxBytesPerPacket = SyncSamplingFormulas::maxBytesPerBurstPacket(nodeInfo.m_bytesPerSweep, useLossless);
+                nodeInfo.m_maxBytesPerPacket = SyncSamplingFormulas::maxBytesPerBurstPacket(nodeInfo.m_bytesPerSweep, m_lossless, m_commProtocol);
             }
             //Continuous mode
             else
             {
-                //if the network has high capacity enabled
-                if(m_highCapacity)
-                {
-                    //if the sample rate is less than 16hz OR the sample rate is 16Hz with 1 channel active
-                    if((sampleRate < SampleRate::Hertz(16)) ||
-                        (sampleRate == SampleRate::Hertz(16) && totalChannels == 1)
-                       )
-                    {
-                        //we want to use high capacity mode for this node
-                        useHighCapacity = true;
-                    }
-                }
-
                 //calculate the total number of bytes per second
                 nodeInfo.m_bytesPerSecond = SyncSamplingFormulas::bytesPerSecond(sampleRate, totalChannels, bytesPerSample);
 
                 //calculate the maximum bytes per packet
-                nodeInfo.m_maxBytesPerPacket = SyncSamplingFormulas::maxBytesPerPacket(sampleRate, useLossless, optimizeBandwidth, nodeInfo.syncSamplingVersion());
+                nodeInfo.m_maxBytesPerPacket = SyncSamplingFormulas::maxBytesPerPacket(sampleRate, m_lossless, optimizeBandwidth, nodeInfo.syncSamplingVersion(), m_commProtocol);
 
-                groupSize = SyncSamplingFormulas::groupSize(nodeInfo.m_bytesPerSecond, nodeInfo.m_maxBytesPerPacket, useHighCapacity);
+                groupSize = SyncSamplingFormulas::groupSize();
 
                 if(mode.rawModeEnabled)
                 {
-                    if(nodeInfo.m_bytesPerSweep >(MAX_BYTES / 2))
+                    if(nodeInfo.m_bytesPerSweep > (maxBytes / 2u))
                     {
-                        nodeInfo.m_bytesPerSweep = static_cast<uint32>(MAX_BYTES * std::ceil(static_cast<float>(nodeInfo.m_bytesPerSweep) / static_cast<float>(SyncSamplingFormulas::MAX_DATA_BYTES_PER_PACKET)));
+                        nodeInfo.m_bytesPerSweep = static_cast<uint32>(maxBytes * std::ceil(static_cast<float>(nodeInfo.m_bytesPerSweep) / static_cast<float>(maxBytes)));
                     }
 
-                    rawPacketsPerGroup = static_cast<float>(sampleRate.samplesPerSecond() * groupSize * nodeInfo.m_bytesPerSweep / MAX_BYTES);
+                    rawPacketsPerGroup = static_cast<float>(sampleRate.samplesPerSecond() * groupSize * nodeInfo.m_bytesPerSweep / maxBytes);
                 }
             }
             
@@ -517,16 +516,16 @@ namespace mscl
                     }
                 }
 
-                const float DERIVED_MAX_BYTES = 94.0f - numDerivedNonChBytes;
+                derivedMaxBytes -= numDerivedNonChBytes;
 
                 uint16 derivedSweepSize = 4 * derivedChannelCount;
 
-                if(derivedSweepSize > (DERIVED_MAX_BYTES / 2.0f))
+                if(derivedSweepSize > (derivedMaxBytes / 2.0f))
                 {
-                    derivedSweepSize = static_cast<uint16>(DERIVED_MAX_BYTES * std::ceil(derivedSweepSize / DERIVED_MAX_BYTES));
+                    derivedSweepSize = static_cast<uint16>(derivedMaxBytes * std::ceil(derivedSweepSize / derivedMaxBytes));
                 }
 
-                derivedPacketsPerGroup = static_cast<float>(config.derivedDataRate().samplesPerSecond()) * groupSize * derivedSweepSize / DERIVED_MAX_BYTES;
+                derivedPacketsPerGroup = static_cast<float>(config.derivedDataRate().samplesPerSecond()) * groupSize * derivedSweepSize / derivedMaxBytes;
             }
 
             if(isBurstMode)
@@ -546,7 +545,7 @@ namespace mscl
                 maxRetransmissionPerBurst = totalNeededTx;
 
                 //if there are not bytes per burst
-                if(nodeInfo.m_bytesPerBurst == 0)
+                if(nodeInfo.m_bytesPerBurst == 0 && !mode.derivedModeEnabled)
                 {
                     //the transmissions per group is 0
                     txPerGroup = 0;
@@ -557,7 +556,7 @@ namespace mscl
                     uint32 timeBetweenBursts = static_cast<uint32>(config.timeBetweenBursts().getSeconds());
 
                     //calculate the number of transmissions per second
-                    uint32 burstTxPerSecond = SyncSamplingFormulas::burstTxPerSecond(totalNeededTx, timeBetweenBursts, burstSampleDuration, useLossless);
+                    uint32 burstTxPerSecond = SyncSamplingFormulas::burstTxPerSecond(totalNeededTx, timeBetweenBursts, burstSampleDuration, m_lossless);
 
                     //calculate the number of transmissions per group
                     txPerGroup = burstTxPerSecond * groupSize;
@@ -566,12 +565,12 @@ namespace mscl
             else
             {
                 //update transmissions per group for continuous mode
-                float overheadFactor = SyncSamplingFormulas::overheadFactor(useLossless, optimizeBandwidth, sampleRate, nodeInfo.syncSamplingVersion());
+                float overheadFactor = SyncSamplingFormulas::overheadFactor(m_lossless, optimizeBandwidth, sampleRate, nodeInfo.syncSamplingVersion());
                 txPerGroup = Utils::ceilBase2(std::ceil((rawPacketsPerGroup + derivedPacketsPerGroup) * overheadFactor));
             }
 
             //calculate the maximum TDMA address
-            uint32 maxTdma = SyncSamplingFormulas::maxTdmaAddress(txPerGroup, groupSize, inLegacyMode());
+            uint32 maxTdma = SyncSamplingFormulas::maxTdmaAddress(txPerGroup, groupSize, inLegacyMode(), m_commProtocol);
 
             //calculate the transmissions per second
             float txPerSecond = SyncSamplingFormulas::txPerSecond(txPerGroup, groupSize);
@@ -579,7 +578,7 @@ namespace mscl
             float percentBandwidth = 0.0f;
 
             //if there are no active channels or the node is set to log only
-            if(totalChannels == 0 || config.collectionMethod() == WirelessTypes::collectionMethod_logOnly)
+            if(config.collectionMethod() == WirelessTypes::collectionMethod_logOnly)
             {
                 //takes up 0% bandwidth
                 percentBandwidth = 0.0f;
@@ -587,14 +586,14 @@ namespace mscl
             else
             {
                 //calculate the percent of total bandwidth
-                percentBandwidth = SyncSamplingFormulas::percentBandwidth(txPerSecond, inLegacyMode());
+                percentBandwidth = SyncSamplingFormulas::percentBandwidth(txPerSecond, inLegacyMode(), m_commProtocol);
             }
 
             //if the configuration was previously applied, it isn't any longer
             nodeInfo.m_configApplied = false;
 
             //store the calculated values in the nodeInfo
-            nodeInfo.m_slotSize = SyncSamplingFormulas::slotSpacing();
+            nodeInfo.m_slotSize = SyncSamplingFormulas::slotSpacing(m_commProtocol);
             nodeInfo.m_maxTdmaAddress = maxTdma;
             nodeInfo.m_txPerGroup = txPerGroup;
             nodeInfo.m_groupSize = groupSize;
@@ -631,7 +630,7 @@ namespace mscl
         }
 
         //convert the "mini-slots" to real slots
-        uint16 largeSlotsLeft = m_availableSlotCount / SyncSamplingFormulas::slotSpacing();
+        uint16 largeSlotsLeft = m_availableSlotCount / SyncSamplingFormulas::slotSpacing(m_commProtocol);
 
         //if all nodes only have 1 slot available to them, make sure they can still fit
         if(m_eventNodes.size() > largeSlotsLeft)
@@ -710,8 +709,8 @@ namespace mscl
             {
                 txPerSecond = SyncSamplingFormulas::txPerSecond(nodeInfo.m_txPerGroup, nodeInfo.m_groupSize);
 
-                nodeInfo.m_maxTdmaAddress = SyncSamplingFormulas::maxTdmaAddress(nodeInfo.m_txPerGroup, nodeInfo.m_groupSize, legacyMode);
-                nodeInfo.m_percentBandwidth = SyncSamplingFormulas::percentBandwidth(txPerSecond, legacyMode);
+                nodeInfo.m_maxTdmaAddress = SyncSamplingFormulas::maxTdmaAddress(nodeInfo.m_txPerGroup, nodeInfo.m_groupSize, legacyMode, m_commProtocol);
+                nodeInfo.m_percentBandwidth = SyncSamplingFormulas::percentBandwidth(txPerSecond, legacyMode, m_commProtocol);
                 nodeInfo.m_percentBandwidth_optimized = nodeInfo.m_percentBandwidth;
             }
         }
@@ -824,11 +823,6 @@ namespace mscl
 
         //find the correct number of total slots that we should use
         uint16 totalSlots = SyncSamplingFormulas::MAX_SLOTS;
-        if(m_highCapacity)
-        {
-            //high capacity has more slots
-            totalSlots = SyncSamplingFormulas::MAX_SLOTS_HIGH_CAPACITY;
-        }
 
         //clear, than resize the slots container to the total slots
         m_slots.clear();
@@ -887,7 +881,11 @@ namespace mscl
         }
         
         //find the sampling delay for this node
-        uint32 samplingDelay = findSamplingDelay(nodeAddress);
+        uint32 samplingDelay = 0;
+        if(checkSamplingDelay)
+        {
+            samplingDelay = findSamplingDelay(nodeAddress);
+        }
 
         //get the txPerGroup and groupSize from the SyncNetworkInfo list
         uint32 txPerGroup = nodeInfo.m_txPerGroup;
@@ -1106,8 +1104,7 @@ namespace mscl
                 if( config.samplingMode() == WirelessTypes::samplingMode_syncBurst ||
                     config.samplingMode() == WirelessTypes::samplingMode_syncEvent ||
                     config.sampleRate() >= HIGH_SAMPLERATE ||
-                    SyncSamplingFormulas::txPerSecond(nodeInfo.m_txPerGroup, nodeInfo.m_groupSize) >= 64.0f ||
-                    config.retransmission() == WirelessTypes::retransmission_disabled
+                    SyncSamplingFormulas::txPerSecond(nodeInfo.m_txPerGroup, nodeInfo.m_groupSize) >= 64.0f
                   )
                 {
                     //set this node to optimized so we don't attempt it again, and move to the next node
@@ -1212,7 +1209,8 @@ namespace mscl
                             //this is a thermocouple channel
                             addThermoExtra = true;
 
-                            settlingTime = WirelessTypes::settlingTime(config.filter1());
+                            //settlingTime = WirelessTypes::settlingTime(config.filter1());
+                            settlingTime = WirelessTypes::settlingTime(config.filterSettlingTime(chanItr));
 
                             //certain nodes need special delays
                             if(useSampleRate)
@@ -1272,7 +1270,8 @@ namespace mscl
                             addThermoExtra = true;
 
                             //first filter (thermocouple)
-                            settlingTime = WirelessTypes::settlingTime(config.filter1());
+                            //settlingTime = WirelessTypes::settlingTime(config.filter1());
+                            settlingTime = WirelessTypes::settlingTime(config.filterSettlingTime(chanItr));
 
                             delayResult += settlingTime + 3;
                         }
@@ -1282,7 +1281,8 @@ namespace mscl
                             addVoltageExtra = true;
 
                             //second filter (voltage)
-                            settlingTime = WirelessTypes::settlingTime(config.filter2());
+                            //settlingTime = WirelessTypes::settlingTime(config.filter2());
+                            settlingTime = WirelessTypes::settlingTime(config.filterSettlingTime(chanItr));
 
                             delayResult += settlingTime + 8;
                         }
@@ -1330,7 +1330,8 @@ namespace mscl
                             addVoltageExtra = true;
 
                             //first filter (voltage)
-                            settlingTime = WirelessTypes::settlingTime(config.filter1());
+                            //settlingTime = WirelessTypes::settlingTime(config.filter1());
+                            settlingTime = WirelessTypes::settlingTime(config.filterSettlingTime(chanItr));
 
                             delayResult += settlingTime + 8;
                         }
@@ -1372,6 +1373,8 @@ namespace mscl
 
             case WirelessModels::node_shmLink:
             case WirelessModels::node_shmLink200:
+            case WirelessModels::node_shmLink201:
+            case WirelessModels::node_shmLink2_cust1_oldNumber:
             case WirelessModels::node_shmLink2_cust1:
             case WirelessModels::node_sgLink_herm:
             case WirelessModels::node_sgLink_herm_2600:
@@ -1437,7 +1440,7 @@ namespace mscl
                 //send the start sync sampling command to the node (with retries)
                 do
                 {
-                    nodeSuccess = m_networkBase.node_startSyncSampling(nodeAddress);
+                    nodeSuccess = m_networkBase.node_startSyncSampling(nodeInfo.m_node.protocol(m_networkBase.communicationProtocol()), nodeAddress);
                     retryCount++;
                 }
                 while(!nodeSuccess && retryCount <= MAX_RETRIES);

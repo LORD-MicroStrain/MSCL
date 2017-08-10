@@ -24,15 +24,13 @@ namespace mscl
         NodeFeatures_shmlink200(const NodeInfo& info);
 
     public:
-        virtual const WirelessTypes::DataCollectionMethods dataCollectionMethods() const final;
+        virtual bool isChannelSettingReadOnly(WirelessTypes::ChannelGroupSetting setting) const override;
 
         virtual const WirelessTypes::DataFormats dataFormats() const final;
 
         virtual const WirelessTypes::SamplingModes samplingModes() const final;
 
         virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
-
-        virtual bool supportsLimitedDuration() const;
 
         virtual bool supportsHistogramConfig() const final;
 

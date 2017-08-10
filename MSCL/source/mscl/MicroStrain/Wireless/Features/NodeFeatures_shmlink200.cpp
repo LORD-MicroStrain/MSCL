@@ -14,6 +14,14 @@ namespace mscl
     NodeFeatures_shmlink200::NodeFeatures_shmlink200(const NodeInfo& info):
         NodeFeatures(info)
     {
+        addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
+        addCalCoeffChannelGroup(2, NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
+        addCalCoeffChannelGroup(3, NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);
+        addCalCoeffChannelGroup(5, NodeEepromMap::CH_ACTION_SLOPE_5, NodeEepromMap::CH_ACTION_ID_5);
+        addCalCoeffChannelGroup(6, NodeEepromMap::CH_ACTION_SLOPE_6, NodeEepromMap::CH_ACTION_ID_6);
+        addCalCoeffChannelGroup(7, NodeEepromMap::CH_ACTION_SLOPE_7, NodeEepromMap::CH_ACTION_ID_7);
+        addCalCoeffChannelGroup(8, NodeEepromMap::CH_ACTION_SLOPE_8, NodeEepromMap::CH_ACTION_ID_8);
+
         static const ChannelMask DIFF_CH1(BOOST_BINARY(00000001));    //ch1
         static const ChannelMask DIFF_CH2(BOOST_BINARY(00000010));    //ch2
         static const ChannelMask DIFF_CH3(BOOST_BINARY(00000100));    //ch3
@@ -34,21 +42,25 @@ namespace mscl
         );
 
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential);    //full diff
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential);    //full diff
-        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_fullDifferential);    //full diff
-        m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_acceleration);        //accel x
-        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_acceleration);        //accel y
-        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration);        //accel z
-        m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_temperature);         //temp
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential 1");
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential, "Differential 2");
+        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_fullDifferential, "Differential 3");
+        m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_acceleration, "Acceleration X");
+        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_acceleration, "Acceleration Y");
+        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration, "Acceleration Z");
+        m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_temperature, "Internal Temperature");
     }
-    
-    const WirelessTypes::DataCollectionMethods NodeFeatures_shmlink200::dataCollectionMethods() const
+
+    bool NodeFeatures_shmlink200::isChannelSettingReadOnly(WirelessTypes::ChannelGroupSetting setting) const
     {
-        //build and return the data collection methods that are supported
-        WirelessTypes::DataCollectionMethods result;
-        result.push_back(WirelessTypes::collectionMethod_transmitOnly);
-        return result;
+        if(setting == WirelessTypes::chSetting_linearEquation ||
+           setting == WirelessTypes::chSetting_equationType ||
+           setting == WirelessTypes::chSetting_unit)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     const WirelessTypes::DataFormats NodeFeatures_shmlink200::dataFormats() const
@@ -101,11 +113,6 @@ namespace mscl
             default:
                 throw Error_NotSupported("The sampling mode is not supported by this Node");
         }
-    }
-
-    bool NodeFeatures_shmlink200::supportsLimitedDuration() const
-    {
-        return false;
     }
 
     bool NodeFeatures_shmlink200::supportsHistogramConfig() const

@@ -31,10 +31,10 @@ namespace mscl
 
         //build the command ByteStream
         ByteStream cmd;
-        cmd.append_uint8(WirelessPacket::ASPP_V1_START_OF_PACKET_BYTE); //Start of Packet
+        cmd.append_uint8(WirelessPacket::ASPP_V1_SOP); //Start of Packet
         cmd.append_uint8(0x05);                                         //Delivery Stop Flag
         cmd.append_uint8(0x00);                                         //App Data Type
-        cmd.append_uint16(nodeAddress);                                 //Node Address
+        cmd.append_uint16(static_cast<uint16>(nodeAddress));            //Node Address
         cmd.append_uint8(0x02 + static_cast<uint8>(messageLen));        //Payload Length
         cmd.append_uint16(WirelessProtocol::cmdId_armForDatalog);       //Command ID
         cmd.append_string(messageCpy);                                  //User Message
@@ -48,12 +48,12 @@ namespace mscl
     }
 
     ArmForDatalogging::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
-        ResponsePattern(collector),
+        WirelessResponsePattern(collector, WirelessProtocol::cmdId_armForDatalog, nodeAddress),
         m_nodeAddress(nodeAddress)
     {
     }
 
-    bool ArmForDatalogging::Response::match(const WirelessPacket& packet)
+    bool ArmForDatalogging::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
         WirelessPacket::Payload payload = packet.payload();
 

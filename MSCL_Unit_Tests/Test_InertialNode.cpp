@@ -178,8 +178,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataRateBase_Sensor)
     ByteStream data;
     data.append_uint16(2000);
 
-    //make the doInertialCmd function return the response that we want
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
+    //make the doCommand function return the response that we want
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
 
     //verify that getSensorDataRateBase() returns the correct value
     BOOST_CHECK_EQUAL(node.getDataRateBase(InertialTypes::CATEGORY_SENSOR), 2000);
@@ -193,8 +193,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataRateBase_Gps)
     ByteStream data;
     data.append_uint16(100);
 
-    //make the doInertialCmd function return the response that we want
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
+    //make the doCommand function return the response that we want
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
 
     //verify that getGpsDataRateBase() returns the correct value
     BOOST_CHECK_EQUAL(node.getDataRateBase(InertialTypes::CATEGORY_GNSS), 100);
@@ -208,8 +208,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataRateBase_EstFilter)
     ByteStream data;
     data.append_uint16(4000);
 
-    //make the doInertialCmd function return the response that we want
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
+    //make the doCommand function return the response that we want
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
 
     //verify that getEstFilterDataRateBase() returns the correct value
     BOOST_CHECK_EQUAL(node.getDataRateBase(InertialTypes::CATEGORY_ESTFILTER), 4000);
@@ -220,8 +220,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataRateBase_notSupported_EstFilter)
     std::shared_ptr<mock_InertialNodeImpl> impl(new mock_InertialNodeImpl());
     InertialNode node(impl);
 
-    //make the doInertialCmd function throw an exception
-    MOCK_EXPECT(impl->doInertialCmd).once().throws(Error_NotSupported());
+    //make the doCommand function throw an exception
+    MOCK_EXPECT(impl->doCommand).once().throws(Error_NotSupported());
 
     //verify that getEstFilterDataRateBase() throws an exception
     BOOST_CHECK_THROW(node.getDataRateBase(InertialTypes::CATEGORY_ESTFILTER), Error_NotSupported);
@@ -232,9 +232,9 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataRateBase_error_EstFilter)
     std::shared_ptr<mock_InertialNodeImpl> impl(new mock_InertialNodeImpl());
     InertialNode node(impl);
 
-    //make the doInertialCmd function throw an exception
-    MOCK_EXPECT(impl->doInertialCmd).once().throws(Error_InertialCmdFailed());
-    //MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseFail(ResponsePattern::STATE_FAIL, InertialPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND, ""));
+    //make the doCommand function throw an exception
+    MOCK_EXPECT(impl->doCommand).once().throws(Error_InertialCmdFailed());
+    //MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseFail(ResponsePattern::STATE_FAIL, InertialPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND, ""));
 
     //verify that getEstFilterDataRateBase() throws an exception
     BOOST_CHECK_THROW(node.getDataRateBase(InertialTypes::CATEGORY_ESTFILTER), Error_InertialCmdFailed);
@@ -258,10 +258,10 @@ BOOST_AUTO_TEST_CASE(InertialNode_getMessageFormat_Sensor)
     dataRateBase.append_uint16(sampleRateBase);
 
     //expect the getDataRateBase command
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
 
     //expect the getMessageFormat command
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
 
 
     InertialChannels chs = node.getActiveChannelFields(InertialTypes::CATEGORY_SENSOR);
@@ -296,10 +296,10 @@ BOOST_AUTO_TEST_CASE(InertialNode_getMessageFormat_Gps)
     dataRateBase.append_uint16(sampleRateBase);
 
     //expect the getDataRateBase command
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
 
-    //make the doInertialCmd function return the response that we want
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
+    //make the doCommand function return the response that we want
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
 
     InertialChannels chs = node.getActiveChannelFields(InertialTypes::CATEGORY_GNSS);
 
@@ -328,10 +328,10 @@ BOOST_AUTO_TEST_CASE(InertialNode_getMessageFormat_EstFilter)
     dataRateBase.append_uint16(sampleRateBase);
 
     //expect the getDataRateBase command
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
 
-    //make the doInertialCmd function return the response that we want
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
+    //make the doCommand function return the response that we want
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
 
     InertialChannels chs = node.getActiveChannelFields(InertialTypes::CATEGORY_ESTFILTER);
 
@@ -357,9 +357,9 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_Sensor)
     dataRateBase.append_uint16(100);
 
     //expect the getDataRateBase command
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
 
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess(""));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess(""));
 
     BOOST_CHECK_NO_THROW(node.setActiveChannelFields(InertialTypes::CATEGORY_SENSOR, chs));
 }
@@ -377,7 +377,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_InvalidChannels_Sensor)
     dataRateBase.append_uint16(100);
 
     //expect the getDataRateBase command
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
 
     BOOST_CHECK_THROW(node.setActiveChannelFields(InertialTypes::CATEGORY_SENSOR, chs), Error);
 }
@@ -395,9 +395,9 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_Gps)
     dataRateBase.append_uint16(100);
 
     //expect the getDataRateBase command
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
 
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess(""));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess(""));
 
     BOOST_CHECK_NO_THROW(node.setActiveChannelFields(InertialTypes::CATEGORY_GNSS, chs));
 }
@@ -415,7 +415,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_InvalidChannels_Gps)
     dataRateBase.append_uint16(100);
 
     //expect the getDataRateBase command
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
 
     BOOST_CHECK_THROW(node.setActiveChannelFields(InertialTypes::CATEGORY_GNSS, chs), Error);
 }
@@ -432,9 +432,9 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_EstFilter)
     dataRateBase.append_uint16(100);
 
     //expect the getDataRateBase command
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
 
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess(""));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess(""));
 
     BOOST_CHECK_NO_THROW(node.setActiveChannelFields(InertialTypes::CATEGORY_ESTFILTER, chs));
 }
@@ -451,7 +451,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_InvalidChannels_EstFilter)
     dataRateBase.append_uint16(100);
 
     //expect the getDataRateBase command
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
 
     BOOST_CHECK_THROW(node.setActiveChannelFields(InertialTypes::CATEGORY_ESTFILTER, chs), Error);
 }
@@ -468,7 +468,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_supportedSampleRates_1000)
     expectNodeInfo_InertialNode(impl);
 
     //expect the getDataRateBase command
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
 
     SampleRates rates_1000 = node.features().supportedSampleRates(InertialTypes::CATEGORY_ESTFILTER);
 
@@ -503,7 +503,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_supportedSampleRates_4)
     expectNodeInfo_InertialNode(impl);
 
     //expect the getDataRateBase command
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", dataRateBase));
 
     SampleRates rates_4 = node.features().supportedSampleRates(InertialTypes::CATEGORY_ESTFILTER);
 
@@ -521,7 +521,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_enableDataStream_success)
     ByteStream data;
 
     //expect a success response
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
 
     BOOST_CHECK_NO_THROW(node.enableDataStream(InertialTypes::CATEGORY_GNSS));
 }
@@ -534,7 +534,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_enableDataStream_fail)
     ByteStream data;
 
     //expect a fail response
-    MOCK_EXPECT(impl->doInertialCmd).once().throws(Error_InertialCmdFailed());
+    MOCK_EXPECT(impl->doCommand).once().throws(Error_InertialCmdFailed());
 
     BOOST_CHECK_THROW(node.enableDataStream(InertialTypes::CATEGORY_GNSS), Error_InertialCmdFailed);
 }
@@ -547,7 +547,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_setToIdle_success)
     ByteStream data;
 
     //expect a success response
-    MOCK_EXPECT(impl->doInertialCmd).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
+    MOCK_EXPECT(impl->doCommand).once().returns(GenericInertialCommandResponse::ResponseSuccess("", data));
 
     BOOST_CHECK_NO_THROW(node.setToIdle());
 }
@@ -560,7 +560,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_setToIdle_fail)
     ByteStream data;
 
     //expect a fail response
-    MOCK_EXPECT(impl->doInertialCmd).once().throws(Error_InertialCmdFailed());
+    MOCK_EXPECT(impl->doCommand).once().throws(Error_InertialCmdFailed());
 
     BOOST_CHECK_THROW(node.setToIdle(), Error_InertialCmdFailed);
 }

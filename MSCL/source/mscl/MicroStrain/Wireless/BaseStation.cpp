@@ -8,13 +8,13 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "BaseStation.h"
 #include "BaseStation_Impl.h"
 #include "mscl/MicroStrain/ByteStream.h"
-#include "mscl/MicroStrain/ResponsePattern.h"
+#include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "Configuration/BaseStationEepromHelper.h"
 #include "Configuration/BaseStationConfig.h"
 #include "Features/BaseStationFeatures.h"
 #include "Commands/AutoCal.h"
 #include "Commands/AutoCalInfo.h"
-#include "Commands/GetDatalogSessionInfo.h"
+#include "Commands/DatalogSessionInfoResult.h"
 
 namespace mscl
 {
@@ -34,7 +34,7 @@ namespace mscl
         return m_impl->eeHelper();
     }
 
-    bool BaseStation::doCommand(ResponsePattern& response, const ByteStream& cmdBytes, uint64 timeout)
+    bool BaseStation::doCommand(WirelessResponsePattern& response, const ByteStream& cmdBytes, uint64 timeout)
     {
         return m_impl->doCommand(response, cmdBytes, timeout);
     }
@@ -58,7 +58,7 @@ namespace mscl
         return sensorcloudFilteredName;
     }
 
-    Connection& BaseStation::connection()
+    Connection& BaseStation::connection() const
     {
         return m_impl->connection();
     }
@@ -96,6 +96,11 @@ namespace mscl
     WirelessTypes::Frequency BaseStation::frequency() const
     { 
         return m_impl->frequency(); 
+    }
+
+    WirelessTypes::CommProtocol BaseStation::communicationProtocol() const
+    {
+        return m_impl->communicationProtocol();
     }
 
     Version BaseStation::firmwareVersion() const
@@ -222,7 +227,13 @@ namespace mscl
 
     SetToIdleStatus BaseStation::broadcastSetToIdle()
     {
-        return node_setToIdle(BROADCAST_NODE_ADDRESS);
+        NodeAddress broadcastAddress = BROADCAST_NODE_ADDRESS;
+        if(communicationProtocol() == WirelessTypes::commProtocol_lxrsPlus)
+        {
+            broadcastAddress = BROADCAST_NODE_ADDRESS_ASPP3;
+        }
+
+        return node_setToIdle(broadcastAddress);
     }
 
     bool BaseStation::verifyConfig(const BaseStationConfig& config, ConfigIssues& outIssues) const
@@ -278,19 +289,25 @@ namespace mscl
     //================================================================================================
     //                                        NODE COMMANDS
     //================================================================================================
-    bool BaseStation::node_shortPing(NodeAddress nodeAddress)
+
+    PingResponse BaseStation::node_ping(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress)
     { 
-        return m_impl->node_shortPing(nodeAddress);
+        return m_impl->node_ping(nodeProtocol, nodeAddress);
     }
 
-    PingResponse BaseStation::node_ping(NodeAddress nodeAddress)
-    { 
-        return m_impl->node_ping(nodeAddress);
+    void BaseStation::node_hardReset(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress)
+    {
+        m_impl->node_hardReset(nodeProtocol, nodeAddress);
     }
 
-    bool BaseStation::node_sleep(NodeAddress nodeAddress)
+    void BaseStation::node_softReset(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress)
+    {
+        m_impl->node_softReset(nodeProtocol, nodeAddress);
+    }
+
+    bool BaseStation::node_sleep(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress)
     { 
-        return m_impl->node_sleep(nodeAddress);
+        return m_impl->node_sleep(nodeProtocol, nodeAddress);
     }
 
     SetToIdleStatus BaseStation::node_setToIdle(NodeAddress nodeAddress)
@@ -313,14 +330,19 @@ namespace mscl
         return m_impl->node_pageDownload(protocol, nodeAddress, pageIndex, data);
     }
 
+    bool BaseStation::node_batchEepromRead(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint16 startEeprom, std::map<uint16, uint16>& result)
+    {
+        return m_impl->node_batchEepromRead(nodeProtocol, nodeAddress, startEeprom, result);
+    }
+
     bool BaseStation::node_getDatalogSessionInfo(const WirelessProtocol& protocol, NodeAddress nodeAddress, DatalogSessionInfoResult& result)
     {
         return m_impl->node_getDatalogSessionInfo(protocol, nodeAddress, result);
     }
 
-    bool BaseStation::node_getDatalogData(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint32 flashAddress, ByteStream& result)
+    bool BaseStation::node_getDatalogData(const WirelessProtocol& protocol, NodeAddress nodeAddress, uint32 flashAddress, ByteStream& result, uint16& numBytesRead)
     {
-        return m_impl->node_getDatalogData(protocol, nodeAddress, flashAddress, result);
+        return m_impl->node_getDatalogData(protocol, nodeAddress, flashAddress, result, numBytesRead);
     }
 
     bool BaseStation::node_erase(const WirelessProtocol& protocol, NodeAddress nodeAddress)
@@ -328,9 +350,9 @@ namespace mscl
         return m_impl->node_erase(protocol, nodeAddress);
     }
 
-    bool BaseStation::node_startSyncSampling(NodeAddress nodeAddress)
+    bool BaseStation::node_startSyncSampling(const WirelessProtocol& protocol, NodeAddress nodeAddress)
     { 
-        return m_impl->node_startSyncSampling(nodeAddress);
+        return m_impl->node_startSyncSampling(protocol, nodeAddress);
     }
 
     bool BaseStation::node_startNonSyncSampling(const WirelessProtocol& protocol, NodeAddress nodeAddress)
@@ -353,19 +375,20 @@ namespace mscl
         return m_impl->node_autoBalance(protocol, nodeAddress, channelNumber, targetPercent, result);
     }
 
-    bool BaseStation::node_autocal_shm(NodeAddress nodeAddress, AutoCalResult& result)
+    bool BaseStation::node_autocal_shm(const WirelessProtocol& protocol, NodeAddress nodeAddress, AutoCalResult& result)
     {
-        return m_impl->node_autocal_shm(nodeAddress, result);
+        return m_impl->node_autocal_shm(protocol, nodeAddress, result);
     }
 
-    bool BaseStation::node_autoShuntCal(NodeAddress nodeAddress,
+    bool BaseStation::node_autoShuntCal(const WirelessProtocol& protocol,
+                                        NodeAddress nodeAddress,
                                         const ShuntCalCmdInfo& commandInfo,
                                         uint8 chNum,
                                         WirelessModels::NodeModel nodeType,
                                         WirelessTypes::ChannelType chType,
                                         AutoCalResult& result)
     {
-        return m_impl->node_autoShuntCal(nodeAddress, commandInfo, chNum, nodeType, chType, result);
+        return m_impl->node_autoShuntCal(protocol, nodeAddress, commandInfo, chNum, nodeType, chType, result);
     }
 
     bool BaseStation::node_readSingleSensor(NodeAddress nodeAddress, uint8 channelNumber, uint16& result)
@@ -373,8 +396,13 @@ namespace mscl
         return m_impl->node_readSingleSensor(nodeAddress, channelNumber, result);
     }
 
-    bool BaseStation::node_getDiagnosticInfo(NodeAddress nodeAddress, ChannelData& result)
+    bool BaseStation::node_getDiagnosticInfo(const WirelessProtocol& protocol, NodeAddress nodeAddress, ChannelData& result)
     {
-        return m_impl->node_getDiagnosticInfo(nodeAddress, result);
+        return m_impl->node_getDiagnosticInfo(protocol, nodeAddress, result);
+    }
+
+    bool BaseStation::node_testCommProtocol(NodeAddress nodeAddress, WirelessTypes::CommProtocol protocol)
+    {
+        return m_impl->node_testCommProtocol(nodeAddress, protocol);
     }
 }

@@ -14,6 +14,7 @@ namespace mscl
 
     //default constructor for WirelessPacket
     WirelessPacket::WirelessPacket() :
+        m_asppVersion(aspp_v1),
         m_type(packetType_unknown),
         m_nodeAddress(0),
         m_nodeRSSI(WirelessTypes::UNKNOWN_RSSI),
@@ -81,11 +82,22 @@ namespace mscl
             case packetType_nodeDiscovery_v2:
             case packetType_nodeDiscovery_v3:
             case packetType_nodeDiscovery_v4:
+            case packetType_nodeDiscovery_v5:
                 return true;
 
             default:
                 return false;
         }
+    }
+
+    WirelessPacket::AsppVersion WirelessPacket::asppVersion() const
+    {
+        return m_asppVersion;
+    }
+
+    void WirelessPacket::asppVersion(WirelessPacket::AsppVersion ver)
+    {
+        m_asppVersion = ver;
     }
 
     //delivery Stop Flags getter
@@ -113,13 +125,13 @@ namespace mscl
     }
 
     //node address getter
-    uint32 WirelessPacket::nodeAddress() const
+    NodeAddress WirelessPacket::nodeAddress() const
     {
         return m_nodeAddress;
     }
 
     //node address setter
-    void WirelessPacket::nodeAddress(uint32 address)
+    void WirelessPacket::nodeAddress(NodeAddress address)
     {
         m_nodeAddress = address;
     }

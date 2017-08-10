@@ -11,6 +11,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/TimedCondition.h"
 #include "mscl/TimeSpan.h"
 #include <memory>
+#include <mutex>
 
 namespace mscl
 {
@@ -35,7 +36,6 @@ namespace mscl
         //=====================================================================================================
         //Enums: Response State
         //    STATE_WAITING            - The response has not yet been received.
-        //    STATE_FAIL_SHORTPING    - The initial short ping has failed
         //    STATE_FAIL_TIMEOUT        - The response has timed out
         //    STATE_FAIL                - The response was a fail response
         //    STATE_SUCCESS            - The response was successfully received
@@ -43,7 +43,6 @@ namespace mscl
         enum State
         {
             STATE_WAITING,
-            STATE_FAIL_SHORTPING,
             STATE_FAIL_TIMEOUT,
             STATE_FAIL,
             STATE_SUCCESS
@@ -87,6 +86,10 @@ namespace mscl
         //    The <TimedCondition> for matching the response pattern
         TimedCondition m_matchCondition;
 
+        //Variable: m_parsingMutex
+        //    A mutex used for parsing data, which may modify the fullMatched and success flags
+        mutable std::mutex m_parsingMutex;
+
         //Variable: m_fullyMatched
         //    Whether or not the ResponsePattern has been fully matched. 
         //    Some commands have multiple parts to their response. This will not be true until all required parts have been matched.
@@ -104,6 +107,12 @@ namespace mscl
         //Parameters:
         //    commandName - The name of the command to put in the exception if necessary.
         void throwIfFailed(const std::string& commandName) const;
+
+        virtual bool matchSuccessResponse(DataBuffer& data);
+        virtual bool matchSuccessResponse(const WirelessPacket& packet);
+        virtual bool matchFailResponse(DataBuffer& data);
+        virtual bool matchFailResponse(const WirelessPacket& packet);
+        virtual bool matchBaseReceivedResponse(const WirelessPacket& packet);
 
     public:
         //Function: match

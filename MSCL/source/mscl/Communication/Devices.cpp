@@ -188,8 +188,10 @@ namespace mscl
                 return true;
             }
 
-            //check for the inertial VID
-            if(Utils::containsStr(pnpID, "VID_199B"))
+            //check for the inertial VID/PIDs
+            if(Utils::containsStr(pnpID, "VID_199B&PID_3065") ||    //Inertial
+               Utils::containsStr(pnpID, "VID_199B&PID_3A65") ||    //3DM-GX3-45
+               Utils::containsStr(pnpID, "VID_199B&PID_3D65"))      //Inertial in DFU (usb updater) mode
             {
                 baudRate = 921600;
                 return true;

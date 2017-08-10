@@ -18,7 +18,7 @@ namespace mscl
         cmd.append_uint8(0xAA);                                 //Start of Packet
         cmd.append_uint8(0x05);                                 //Delivery Stop Flag
         cmd.append_uint8(0x00);                                 //App Data Type
-        cmd.append_uint16(nodeAddress);                         //Node address    (2 bytes)
+        cmd.append_uint16(static_cast<uint16>(nodeAddress));    //Node address    (2 bytes)
         cmd.append_uint8(0x06);                                 //Payload length
         cmd.append_uint16(WirelessProtocol::cmdId_writeEeprom); //Command ID    (2 bytes)
         cmd.append_uint16(eepromAddress);                       //EEPROM Address (2 bytes)
@@ -33,12 +33,12 @@ namespace mscl
     }
 
     WriteEeprom::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
-        ResponsePattern(collector),
+        WirelessResponsePattern(collector, WirelessProtocol::cmdId_writeEeprom, nodeAddress),
         m_nodeAddress(nodeAddress)
     {
     }
 
-    bool WriteEeprom::Response::match(const WirelessPacket& packet)
+    bool WriteEeprom::Response::matchSuccessResponse(const WirelessPacket& packet)
     {
         WirelessPacket::Payload payload = packet.payload();
 
@@ -55,16 +55,6 @@ namespace mscl
         }
 
         //if we made it here, the packet matches the response pattern
-
-        //set the result
-        m_success = true;
-
-        //we have fully matched the response
-        m_fullyMatched = true;
-
-        //notify that the response was matched
-        m_matchCondition.notify();
-
         return true;
     }
 }

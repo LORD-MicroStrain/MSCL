@@ -8,14 +8,14 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    std::map<uint32, Timestamp> NodeCommTimes::m_nodesLastCommTime;
+    std::map<NodeAddress, Timestamp> NodeCommTimes::m_nodesLastCommTime;
 
-    void NodeCommTimes::updateCommTime(uint32 nodeAddress)
+    void NodeCommTimes::updateCommTime(NodeAddress nodeAddress)
     {
         m_nodesLastCommTime[nodeAddress].setTimeNow();
     }
 
-    const Timestamp& NodeCommTimes::getLastCommTime(uint32 nodeAddress)
+    const Timestamp& NodeCommTimes::getLastCommTime(NodeAddress nodeAddress)
     {
         try
         {

@@ -145,11 +145,10 @@ namespace mscl
         {3, WirelessTypes::range_8G}
     };
 
-    //TODO: update these with the real values once we solidified them
     const InputRange::InputRangeMap InputRange::RANGES_GLINK200_40G = {
-        {1, WirelessTypes::range_2G},
-        {2, WirelessTypes::range_4G},
-        {3, WirelessTypes::range_8G}
+        {1, WirelessTypes::range_10G},
+        {2, WirelessTypes::range_20G},
+        {3, WirelessTypes::range_40G}
     };
 
     const InputRange::InputRangeMap& InputRange::getRangeMap(WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType channelType)
@@ -226,6 +225,9 @@ namespace mscl
             case WirelessModels::node_gLink_200_40g:
             case WirelessModels::node_gLink_200_40g_oem:
                 return RANGES_GLINK200_40G;
+
+            default:
+                break;
         }
 
         throw Error_NotSupported("Invalid Node Type");

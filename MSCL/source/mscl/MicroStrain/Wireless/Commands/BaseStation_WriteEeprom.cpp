@@ -26,7 +26,7 @@ namespace mscl
 
 
     BaseStation_WriteEeprom::Response::Response(uint16 valueToWrite, std::weak_ptr<ResponseCollector> collector):
-        ResponsePattern(collector),
+        WirelessResponsePattern(collector, WirelessProtocol::cmdId_base_writeEeprom, WirelessProtocol::BASE_STATION_ADDRESS),
         m_valueWritten(valueToWrite)
     {
     }
@@ -76,9 +76,6 @@ namespace mscl
         //commit the current read position
         savePoint.commit();
 
-        //set the result to success
-        m_success = true;
-
         return true;
     }
 
@@ -106,36 +103,6 @@ namespace mscl
         //commit the current read position
         savePoint.commit();
 
-        //set the result to a failure
-        m_success = false;
-
         return true;
-    }
-
-    bool BaseStation_WriteEeprom::Response::match(DataBuffer& data)
-    {
-        //if the bytes match the success response
-        if(matchSuccessResponse(data))
-        {
-            //we have fully matched the response
-            m_fullyMatched = true;
-
-            //notify that the response was matched
-            m_matchCondition.notify();
-            return true;
-        }
-        //if the bytes match the fail response
-        else if(matchFailResponse(data))
-        {
-            //we have fully matched the response
-            m_fullyMatched = true;
-
-            //notify that the response was matched
-            m_matchCondition.notify();
-            return true;
-        }
-
-        //the bytes don't match any response
-        return false;
     }
 }

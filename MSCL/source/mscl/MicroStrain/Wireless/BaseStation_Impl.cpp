@@ -6,6 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "stdafx.h"
 #include "BaseStation_Impl.h"
 
+#include "Commands/WirelessResponsePattern.h"
 #include "Configuration/EepromLocation.h"
 #include "Configuration/BaseStationEeprom.h"
 #include "Configuration/BaseStationEepromMap.h"
@@ -26,11 +27,12 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Commands/BaseStation_Ping_v2.h"
 #include "Commands/BaseStation_ReadEeprom.h"
 #include "Commands/BaseStation_ReadEeprom_v2.h"
-#include "Commands/BaseStation_WriteEeprom.h"
-#include "Commands/BaseStation_WriteEeprom_v2.h"
+#include "Commands/BaseStation_Reset_v2.h"
 #include "Commands/BaseStation_RfSweepStart.h"
 #include "Commands/BaseStation_SetBeacon.h"
 #include "Commands/BaseStation_SetBeacon_v2.h"
+#include "Commands/BaseStation_WriteEeprom.h"
+#include "Commands/BaseStation_WriteEeprom_v2.h"
 
 //Node commands
 #include "Commands/ArmForDatalogging.h"
@@ -39,6 +41,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Commands/AutoCal.h"
 #include "Commands/AutoCalInfo.h"
 #include "Commands/AutoCalResult.h"
+#include "Commands/BatchEepromRead.h"
 #include "Commands/Erase.h"
 #include "Commands/Erase_v2.h"
 #include "Commands/GetLoggedData.h"
@@ -49,14 +52,14 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Commands/ReadEeprom.h"
 #include "Commands/ReadEeprom_v2.h"
 #include "Commands/ReadSingleSensor.h"
+#include "Commands/Reset_v2.h"
 #include "Commands/SetToIdle.h"
 #include "Commands/SetToIdle_v2.h"
-#include "Commands/ShortPing.h"
-#include "Commands/ShortPing_v2.h"
 #include "Commands/Sleep.h"
 #include "Commands/StartNonSyncSampling.h"
 #include "Commands/StartNonSyncSampling_v2.h"
 #include "Commands/StartSyncSampling.h"
+#include "Commands/TestNodeCommProtocol.h"
 #include "Commands/TriggerArmedDatalogging.h"
 #include "Commands/WriteEeprom.h"
 #include "Commands/WriteEeprom_v2.h"
@@ -89,9 +92,10 @@ namespace mscl
         m_connection.unregisterParser();
     }
 
-    std::unique_ptr<WirelessProtocol> BaseStation_Impl::determineProtocol()
+    void BaseStation_Impl::determineProtocols() const
     {
-        Version asppVersion;
+        Version asppVersion_lxrs;
+        Version asppVersion_lxrsPlus;
 
         uint8 origRetries = m_eeprom->getNumRetries();
 
@@ -112,19 +116,28 @@ namespace mscl
             try
             {
                 //try reading with protocol v1.1 (has read eeprom v2)
-                m_protocol = WirelessProtocol::v1_1();
+                m_protocol_lxrs = WirelessProtocol::v1_1();
+                m_protocol_lxrsPlus = WirelessProtocol::v1_1();
+                m_commProtocol.reset(new WirelessTypes::CommProtocol(WirelessTypes::commProtocol_lxrs));
 
-                asppVersion = m_eepromHelper->read_asppVersion();
+                asppVersion_lxrs = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrs);
+                asppVersion_lxrsPlus = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrsPlus);
+                m_commProtocol.reset(new WirelessTypes::CommProtocol(m_eepromHelper->read_commProtocol()));
                 success = true;
             }
             catch(Error_Communication&)
             {
+                //Failed reading with protocol v1.1 - Now try v1.0 (has read eeprom v1)
+
                 try
                 {
-                    //try reading with protocol v1.0 (has read eeprom v1)
-                    m_protocol = WirelessProtocol::v1_0();
+                    //try reading with protocol v1.0
+                    m_protocol_lxrs = WirelessProtocol::v1_0();
+                    m_protocol_lxrsPlus = WirelessProtocol::v1_0();
 
-                    asppVersion = m_eepromHelper->read_asppVersion();
+                    asppVersion_lxrs = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrs);
+                    asppVersion_lxrsPlus = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrsPlus);
+                    m_commProtocol.reset(new WirelessTypes::CommProtocol(m_eepromHelper->read_commProtocol()));
                     success = true;
                 }
                 catch(Error_Communication&)
@@ -134,7 +147,9 @@ namespace mscl
                     {
                         //we failed to determine the protocol
                         //need to clear out the protocol
-                        m_protocol.reset();
+                        m_protocol_lxrs.reset();
+                        m_protocol_lxrsPlus.reset();
+                        m_commProtocol.reset();
 
                         //rethrow the exception
                         throw;
@@ -145,8 +160,8 @@ namespace mscl
         }
         while(!success && (retryCount++ < origRetries));
 
-        //get the protocol to use for the base station
-        return WirelessProtocol::getProtocol(asppVersion);
+        m_protocol_lxrs = WirelessProtocol::getProtocol(asppVersion_lxrs);
+        m_protocol_lxrsPlus = WirelessProtocol::getProtocol(asppVersion_lxrsPlus);
     }
 
     BaseStationEepromHelper& BaseStation_Impl::eeHelper() const
@@ -154,13 +169,19 @@ namespace mscl
         return *(m_eepromHelper.get());
     }
 
-    bool BaseStation_Impl::doCommand(ResponsePattern& response, const ByteStream& cmdBytes, uint64 timeout)
+    bool BaseStation_Impl::doCommand(WirelessResponsePattern& response, const ByteStream& cmdBytes, uint64 timeout)
     {
         //set the response collector of the ResponsePattern (registers response as well)
         response.setResponseCollector(m_responseCollector);
 
         //send the command to the base station
         m_connection.write(cmdBytes);
+
+        if(response.baseReceived() && !response.fullyMatched())
+        {
+            //base received the command and sent to node, wait for the new timeout for the Node's response
+            response.wait(response.baseReceivedWaitTime());
+        }
 
         //wait for the response or a timeout
         response.wait(timeout);
@@ -189,18 +210,28 @@ namespace mscl
         return m_connection;
     }
 
-    const WirelessProtocol& BaseStation_Impl::protocol()
+    const WirelessProtocol& BaseStation_Impl::protocol(WirelessTypes::CommProtocol commProtocol) const
     {
         rec_mutex_lock_guard lock(m_protocolMutex);
 
         //if the protocol variable hasn't been set yet
-        if(m_protocol == NULL)
+        if(m_protocol_lxrs == NULL || m_protocol_lxrsPlus == NULL)
         {
-            //determine and assign the protocol for this BaseStation
-            m_protocol = determineProtocol();
+            //determine and assign the protocols for this BaseStation
+            determineProtocols();
         }
 
-        return *(m_protocol.get());
+        switch(commProtocol)
+        {
+            case WirelessTypes::commProtocol_lxrsPlus:
+                return *(m_protocol_lxrsPlus.get());
+
+            case WirelessTypes::commProtocol_lxrs:
+                return *(m_protocol_lxrs.get());
+
+            default:
+                throw Error("Invalid CommProtocol (" + Utils::toStr(commProtocol) + ")");
+        }
     }
 
     const Timestamp& BaseStation_Impl::lastCommunicationTime() const
@@ -257,10 +288,19 @@ namespace mscl
             m_features.reset();
         }
 
-        //protocol may need to be reset if ASPP of firmware version changed
-        if(m_protocol != NULL)
+        //protocol may need to be reset if ASPP or firmware version changed
+        if(m_protocol_lxrs != NULL)
         {
-            m_protocol.reset();
+            m_protocol_lxrs.reset();
+        }
+        if(m_protocol_lxrsPlus != NULL)
+        {
+            m_protocol_lxrsPlus.reset();
+        }
+
+        if(m_commProtocol != nullptr)
+        {
+            m_commProtocol.reset();
         }
     }
 
@@ -274,6 +314,14 @@ namespace mscl
         }
 
         return m_frequency;
+    }
+
+    WirelessTypes::CommProtocol BaseStation_Impl::communicationProtocol() const
+    {
+        rec_mutex_lock_guard lock(m_protocolMutex);
+
+        m_commProtocol.reset(new WirelessTypes::CommProtocol(m_eepromHelper->read_commProtocol()));
+        return *m_commProtocol;
     }
 
     WirelessTypes::RegionCode BaseStation_Impl::regionCode() const
@@ -388,28 +436,50 @@ namespace mscl
 
     bool BaseStation_Impl::ping()
     {
-        return protocol().m_pingBase(this);
+        try
+        {
+            return protocol(communicationProtocol()).m_pingBase(this);
+        }
+        catch(Error&)
+        {
+            //treat errors (such as failing to determine protocol) as if it failed to ping
+            return false;
+        }
     }
 
     bool BaseStation_Impl::read(uint16 eepromAddress, uint16& result)
     {
-        return protocol().m_readBaseEeprom(this, eepromAddress, result);
+        rec_mutex_lock_guard lock(m_protocolMutex);
+
+        //if the radioMode value hasn't been set yet
+        if(m_commProtocol == nullptr)
+        {
+            determineProtocols();
+        }
+
+        //always use the cached radioMode value here so that we don't get in an infinite loop:
+        //  protocol( communicationProtocol() )
+        //      read_communicationProtocol()
+        //          readEeprom()
+        //              protocol( communicationProtocol() )
+
+        return protocol(*m_commProtocol).m_readBaseEeprom(this, eepromAddress, result);
     }
 
     bool BaseStation_Impl::write(uint16 eepromAddress, uint16 value)
     {
-        return protocol().m_writeBaseEeprom(this, eepromAddress, value);
+        return protocol(communicationProtocol()).m_writeBaseEeprom(this, eepromAddress, value);
     }
 
     Timestamp BaseStation_Impl::enableBeacon()
     {
         //return the result of the enableBeacon function given the current system time as the start time
-        return protocol().m_enableBeacon(this, getTimeForBeacon());
+        return protocol(communicationProtocol()).m_enableBeacon(this, getTimeForBeacon());
     }
 
     Timestamp BaseStation_Impl::enableBeacon(uint32 utcTime)
     {
-        return protocol().m_enableBeacon(this, utcTime);
+        return protocol(communicationProtocol()).m_enableBeacon(this, utcTime);
     }
 
     void BaseStation_Impl::disableBeacon()
@@ -417,7 +487,7 @@ namespace mscl
         try
         {
             //call the enableBeacon command with 0xFFFFFFFF for the timestamp to disable it
-            protocol().m_enableBeacon(this, 0xFFFFFFFF);
+            protocol(communicationProtocol()).m_enableBeacon(this, 0xFFFFFFFF);
         }
         catch(Error_Communication&)
         {
@@ -434,7 +504,7 @@ namespace mscl
             throw Error_NotSupported("The Beacon Status command is not supported by this BaseStation.");
         }
 
-        return protocol().m_beaconStatus(this);
+        return protocol(communicationProtocol()).m_beaconStatus(this);
     }
 
     void BaseStation_Impl::startRfSweepMode()
@@ -445,7 +515,7 @@ namespace mscl
             throw Error_NotSupported("RF Sweep Mode is not supported by this BaseStation.");
         }
 
-        return protocol().m_startRfSweep(this, 0, 0, 0, 0);
+        return protocol(communicationProtocol()).m_startRfSweep(this, 0, 0, 0, 0);
     }
 
     void BaseStation_Impl::startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options)
@@ -456,7 +526,43 @@ namespace mscl
             throw Error_NotSupported("Custom RF Sweep Mode is not supported by this BaseStation.");
         }
 
-        return protocol().m_startRfSweep(this, minFreq, maxFreq, interval, options);
+        return protocol(communicationProtocol()).m_startRfSweep(this, minFreq, maxFreq, interval, options);
+    }
+
+    bool BaseStation_Impl::doBaseCommand(const ByteStream& command, WirelessResponsePattern& response, uint64 minTimeout)
+    {
+        //write the command
+        m_connection.write(command);
+
+        //wait for the response
+        response.wait(std::max(m_baseCommandsTimeout, minTimeout));
+
+        return response.success();
+    }
+
+    bool BaseStation_Impl::doNodeCommand(NodeAddress nodeAddress, const ByteStream& command, WirelessResponsePattern& response, uint64 minTimeout)
+    {
+        //write the command
+        m_connection.write(command);
+
+        //wait for the response
+        response.wait(std::max(m_nodeCommandsTimeout, minTimeout));
+
+        if(response.baseReceived() && !response.fullyMatched())
+        {
+            //base received the command and sent to node, wait for the new timeout for the Node's response
+            response.wait(response.baseReceivedWaitTime() + 100);
+        }
+
+        if(response.success())
+        {
+            //update node last comm time
+            NodeCommTimes::updateCommTime(nodeAddress);
+
+            return true;
+        }
+
+        return false;
     }
 
     bool BaseStation_Impl::protocol_ping_v1()
@@ -464,29 +570,43 @@ namespace mscl
         //create the response for the BaseStation_Ping command
         BaseStation_Ping::Response response(m_responseCollector);
 
-        //send the ping command to the base station
-        m_connection.write(BaseStation_Ping::buildCommand());
+        ByteStream command = BaseStation_Ping::buildCommand();
 
-        //wait for the response or a timeout
-        response.wait(m_baseCommandsTimeout);
-
-        //return the result of the response
-        return response.success();
+        return doBaseCommand(command, response);
     }
 
-    bool BaseStation_Impl::protocol_ping_v2()
+    bool BaseStation_Impl::protocol_ping_v2(WirelessPacket::AsppVersion asppVer)
     {
         //create the response for the BaseStation_Ping command
         BaseStation_Ping_v2::Response response(m_responseCollector);
 
-        //send the ping command to the base station
-        m_connection.write(BaseStation_Ping_v2::buildCommand());
+        ByteStream command = BaseStation_Ping_v2::buildCommand(asppVer);
 
-        //wait for the response or a timeout
-        response.wait(m_baseCommandsTimeout);
+        return doBaseCommand(command, response);
+    }
 
-        //return the result of the response
-        return response.success();
+    void BaseStation_Impl::protocol_hardReset_v2()
+    {
+        BaseStation_Reset_v2::Response response(BaseStation_Reset_v2::resetType_hard, m_responseCollector);
+
+        ByteStream command = BaseStation_Reset_v2::buildCommand(BaseStation_Reset_v2::resetType_hard);
+
+        if(!doBaseCommand(command, response))
+        {
+            throw Error_Communication("Failed to reset the BaseStation");
+        }
+    }
+
+    void BaseStation_Impl::protocol_softReset_v2()
+    {
+        BaseStation_Reset_v2::Response response(BaseStation_Reset_v2::resetType_soft, m_responseCollector);
+
+        ByteStream command = BaseStation_Reset_v2::buildCommand(BaseStation_Reset_v2::resetType_soft);
+
+        if(!doBaseCommand(command, response))
+        {
+            throw Error_Communication("Failed to reset the BaseStation");
+        }
     }
 
     bool BaseStation_Impl::protocol_read_v1(uint16 eepromAddress, uint16& result)
@@ -494,14 +614,9 @@ namespace mscl
         //create the response for the BaseStation_ReadEeprom command
         BaseStation_ReadEeprom::Response response(m_responseCollector);
 
-        //send the command to the base station
-        m_connection.write(BaseStation_ReadEeprom::buildCommand(eepromAddress));
+        ByteStream command = BaseStation_ReadEeprom::buildCommand(eepromAddress);
 
-        //wait for the response or a timeout
-        response.wait(m_baseCommandsTimeout);
-
-        //if the command was a success
-        if(response.success())
+        if(doBaseCommand(command, response))
         {
             //get the eeprom value that we read
             result = response.result();
@@ -512,31 +627,22 @@ namespace mscl
         return false;
     }
 
-    bool BaseStation_Impl::protocol_read_v2(uint16 eepromAddress, uint16& result)
+    bool BaseStation_Impl::protocol_read_v2(WirelessPacket::AsppVersion asppVer, uint16 eepromAddress, uint16& result)
     {
         //create the response for the BaseStation_ReadEeprom command
         BaseStation_ReadEeprom_v2::Response response(eepromAddress, m_responseCollector);
 
-        //send the command to the base station
-        m_connection.write(BaseStation_ReadEeprom_v2::buildCommand(eepromAddress));
-
-        //wait for the response or a timeout
-        response.wait(m_baseCommandsTimeout);
-
-        //if the command was a success
-        if(response.success())
+        ByteStream command = BaseStation_ReadEeprom_v2::buildCommand(asppVer, eepromAddress);
+        if(doBaseCommand(command, response))
         {
             //get the eeprom value that we read
             result = response.result();
 
             return true;
         }
-        else
-        {
-            //throw an exception if we need to
-            WirelessPacket::throwEepromResponseError(response.errorCode(), eepromAddress);
-        }
 
+        //throw an exception if we need to
+        WirelessPacket::throwEepromResponseError(response.errorCode(), eepromAddress);
         return false;
     }
 
@@ -545,32 +651,21 @@ namespace mscl
         //create the response for the BaseStation_WriteEeprom command
         BaseStation_WriteEeprom::Response response(value, m_responseCollector);
 
-        //send the command to the base station
-        m_connection.write(BaseStation_WriteEeprom::buildCommand(eepromAddress, value));
+        ByteStream command = BaseStation_WriteEeprom::buildCommand(eepromAddress, value);
 
-        //wait for the response or a timeout
-        response.wait(m_baseCommandsTimeout);
-
-        return response.success();
+        return doBaseCommand(command, response);
     }
 
-    bool BaseStation_Impl::protocol_write_v2(uint16 eepromAddress, uint16 value)
+    bool BaseStation_Impl::protocol_write_v2(WirelessPacket::AsppVersion asppVer, uint16 eepromAddress, uint16 value)
     {
         //create the response for the BaseStation_WriteEeprom command
         BaseStation_WriteEeprom_v2::Response response(value, eepromAddress, m_responseCollector);
 
-        //send the command to the base station
-        m_connection.write(BaseStation_WriteEeprom_v2::buildCommand(eepromAddress, value));
-
-        //wait for the response or a timeout
-        response.wait(m_baseCommandsTimeout);
-
-        //if the write command failed
-        if(!response.success())
+        ByteStream command = BaseStation_WriteEeprom_v2::buildCommand(asppVer, eepromAddress, value);;
+        if(!doBaseCommand(command, response))
         {
             //throw an exception if we need to
             WirelessPacket::throwEepromResponseError(response.errorCode(), eepromAddress);
-
             return false;
         }
 
@@ -584,78 +679,57 @@ namespace mscl
         //create the response for the BaseStation_SetBeacon command
         BaseStation_SetBeacon::Response response(utcTime, m_responseCollector);
 
-        //send the command to the base station
-        m_connection.write(BaseStation_SetBeacon::buildCommand(utcTime));
+        ByteStream command = BaseStation_SetBeacon::buildCommand(utcTime);
 
-        //wait for the response or a timeout
-        response.wait( std::max(m_baseCommandsTimeout, MIN_TIMEOUT) );
-
-        //if the enable beacon command failed
-        if(!response.success())
+        if(doBaseCommand(command, response, MIN_TIMEOUT))
         {
-            //throw an exception so that the user cannot ignore a failure
-            throw Error_Communication("The Enable Beacon command has failed");
+            return response.beaconStartTime();
         }
 
-        return response.beaconStartTime();
+        //throw an exception so that the user cannot ignore a failure
+        throw Error_Communication("The Enable Beacon command has failed");
     }
 
-    Timestamp BaseStation_Impl::protocol_enableBeacon_v2(uint32 utcTime)
+    Timestamp BaseStation_Impl::protocol_enableBeacon_v2(WirelessPacket::AsppVersion asppVer, uint32 utcTime)
     {
+        static const uint64 MIN_TIMEOUT = 1100;
+
         //create the response for the BaseStation_SetBeacon command
         BaseStation_SetBeacon_v2::Response response(utcTime, m_responseCollector);
 
-        //send the command to the base station
-        m_connection.write(BaseStation_SetBeacon_v2::buildCommand(utcTime));
-
-        //wait for the response or a timeout
-        response.wait(m_baseCommandsTimeout);
-
-        //if the enable beacon command failed
-        if(!response.success())
+        ByteStream command = BaseStation_SetBeacon_v2::buildCommand(asppVer, utcTime);
+        if(doBaseCommand(command, response, MIN_TIMEOUT))
         {
-            //throw an exception so that the user cannot ignore a failure
-            throw Error_Communication("The Enable Beacon command has failed");
+            return response.beaconStartTime();
         }
 
-        return response.beaconStartTime();
+        //throw an exception so that the user cannot ignore a failure
+        throw Error_Communication("The Enable Beacon command has failed");
     }
 
-    BeaconStatus BaseStation_Impl::protocol_beaconStatus_v1()
+    BeaconStatus BaseStation_Impl::protocol_beaconStatus_v1(WirelessPacket::AsppVersion asppVer)
     {
         //create the response for the command
         BaseStation_BeaconStatus::Response response(m_responseCollector);
 
-        //send the long ping command to the base station
-        m_connection.write(BaseStation_BeaconStatus::buildCommand());
-
-        //wait for the response or timeout
-        response.wait(m_baseCommandsTimeout);
-
-        //if the beacon status command failed
-        if(!response.success())
+        ByteStream command = BaseStation_BeaconStatus::buildCommand(asppVer);
+        if(doBaseCommand(command, response))
         {
-            //throw an exception so that the user cannot ignore a failure
-            throw Error_Communication("The Beacon Status command has failed");
+            //return the result of the response
+            return response.result();
         }
 
-        //return the result of the response
-        return response.result();
+        //throw an exception so that the user cannot ignore a failure
+        throw Error_Communication("The Beacon Status command has failed");
     }
 
-    void BaseStation_Impl::protocol_startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options)
+    void BaseStation_Impl::protocol_startRfSweepMode_v1(WirelessPacket::AsppVersion asppVersion, uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options)
     {
         //create the response for the BaseStation_Ping command
         BaseStation_RfSweepStart::Response response(m_responseCollector, minFreq, maxFreq, interval, options);
 
-        //send the ping command to the base station
-        m_connection.write(BaseStation_RfSweepStart::buildCommand(minFreq, maxFreq, interval, options));
-
-        //wait for the response or a timeout
-        response.wait(m_baseCommandsTimeout);
-
-        //if the enable beacon command failed
-        if(!response.success())
+        ByteStream command = BaseStation_RfSweepStart::buildCommand(asppVersion, minFreq, maxFreq, interval, options);
+        if(!doBaseCommand(command, response))
         {
             //throw an exception so that the user cannot ignore a failure
             throw Error_Communication("Failed to start RF Sweep Mode.");
@@ -667,122 +741,113 @@ namespace mscl
         //create the response for the PageDownload command
         PageDownload::Response response(m_responseCollector);
 
-        //build the command to send
-        ByteStream pageDownloadCommand = PageDownload::buildCommand(nodeAddress, pageIndex);
+        ByteStream command = PageDownload::buildCommand(nodeAddress, pageIndex);
 
-        //send the command to the base station
-        m_connection.write(pageDownloadCommand);
-
-        //wait for the response
-        response.wait(m_nodeCommandsTimeout);
-
-        //if the page download was a success
-        if(response.success())
+        if(doNodeCommand(nodeAddress, command, response))
         {
             //get the data points and store them in the data parameter
             data = response.dataPoints();
-
-            //update node last comm time
-            NodeCommTimes::updateCommTime(nodeAddress);
-
             return true;
         }
 
-        //page download command failed
         return false;
     }
 
-    bool BaseStation_Impl::protocol_node_datalogInfo_v1(NodeAddress nodeAddress, DatalogSessionInfoResult& result)
+    bool BaseStation_Impl::protocol_node_datalogInfo_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, DatalogSessionInfoResult& result)
     {
         static const uint64 MIN_TIMEOUT = 200;
 
         //create the response for the command
         GetDatalogSessionInfo::Response response(nodeAddress, m_responseCollector);
 
-        ByteStream command = GetDatalogSessionInfo::buildCommand(nodeAddress);
+        ByteStream command = GetDatalogSessionInfo::buildCommand(asppVer, nodeAddress);
 
-        m_connection.write(command);
-
-        response.wait(std::max(m_nodeCommandsTimeout, MIN_TIMEOUT));
-
-        if(response.success())
+        if(doNodeCommand(nodeAddress, command, response, MIN_TIMEOUT))
         {
             result = response.result();
-
-            NodeCommTimes::updateCommTime(nodeAddress);
-
             return true;
         }
 
-        //command failed
         return false;
     }
 
-    bool BaseStation_Impl::protocol_node_getDatalogData_v1(NodeAddress nodeAddress, uint32 flashAddress, ByteStream& data)
+    bool BaseStation_Impl::protocol_node_getDatalogData_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, uint32 flashAddress, ByteStream& data, uint16& numBytesDownloaded)
     {
+        numBytesDownloaded = 0;
+
         //create the response for the command
         GetLoggedData::Response response(nodeAddress, flashAddress, m_responseCollector);
 
-        ByteStream command = GetLoggedData::buildCommand(nodeAddress, flashAddress);
+        ByteStream command = GetLoggedData::buildCommand(asppVer, nodeAddress, flashAddress);
 
-        m_connection.write(command);
-
-        response.wait(m_nodeCommandsTimeout);
-
-        if(response.success())
+        if(doNodeCommand(nodeAddress, command, response))
         {
+            numBytesDownloaded = static_cast<uint16>(response.data().size());
+
             //append the bytes we read to the passed in ByteStream
             data.appendByteStream(response.data());
-
-            NodeCommTimes::updateCommTime(nodeAddress);
 
             return true;
         }
 
-        //command failed
         return false;
     }
 
-    bool BaseStation_Impl::protocol_node_shortPing_v1(NodeAddress nodeAddress)
+    PingResponse BaseStation_Impl::protocol_node_longPing_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress)
     {
-        //create the response for the short ping command
-        ShortPing::Response response(m_responseCollector);
+        //create the response for the LongPing command with the node address
+        LongPing::Response response(nodeAddress, m_responseCollector);
 
-        //send the short ping command to the base station
-        m_connection.write(ShortPing::buildCommand(nodeAddress));
+        ByteStream command = LongPing::buildCommand(asppVer, nodeAddress);
 
-        //wait for the response
-        response.wait(m_nodeCommandsTimeout);
-
-        if(response.success())
-        {
-            //update node last comm time
-            NodeCommTimes::updateCommTime(nodeAddress);
-        }
+        doNodeCommand(nodeAddress, command, response);
 
         //return the result of the response
-        return response.success();
+        return response.result();
     }
 
-    bool BaseStation_Impl::protocol_node_shortPing_v2(NodeAddress nodeAddress)
+    void BaseStation_Impl::protocol_node_hardReset_v2(NodeAddress nodeAddress)
     {
-        //create the response for the short ping command
-        ShortPing_v2::Response response(nodeAddress, m_responseCollector);
+        Reset_v2::Response response(nodeAddress, Reset_v2::resetType_hard, m_responseCollector);
 
-        //send the short ping command to the base station
-        m_connection.write(ShortPing_v2::buildCommand(nodeAddress));
+        ByteStream command = Reset_v2::buildCommand(nodeAddress, Reset_v2::resetType_hard);
 
-        //wait for the response
-        response.wait(m_nodeCommandsTimeout);
-
-        if(response.success())
+        if(!doNodeCommand(nodeAddress, command, response))
         {
-            //update node last comm time
-            NodeCommTimes::updateCommTime(nodeAddress);
+            throw Error_NodeCommunication(nodeAddress, "Failed to reset the Node");
         }
+    }
 
-        //return the result of the response
-        return response.success();
+    void BaseStation_Impl::protocol_node_softReset_v2(NodeAddress nodeAddress)
+    {
+        Reset_v2::Response response(nodeAddress, Reset_v2::resetType_soft, m_responseCollector);
+
+        ByteStream command = Reset_v2::buildCommand(nodeAddress, Reset_v2::resetType_soft);
+
+        if(!doNodeCommand(nodeAddress, command, response))
+        {
+            throw Error_NodeCommunication(nodeAddress, "Failed to reset the Node");
+        }
+    }
+
+    bool BaseStation_Impl::protocol_node_sleep_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress)
+    {
+        ByteStream command = Sleep::buildCommand(asppVer, nodeAddress);
+
+        if(asppVer == WirelessPacket::aspp_v3)
+        {
+            Sleep::Response response(nodeAddress, m_responseCollector);
+
+            return doNodeCommand(nodeAddress, command, response);
+        }
+        else
+        {
+            //send the sleep command to the base station
+            m_connection.write(command);
+
+            //we don't have a success packet for this command
+            return true;
+        }
     }
 
     SetToIdleStatus BaseStation_Impl::protocol_node_setToIdle_v1(NodeAddress nodeAddress, const BaseStation& base)
@@ -818,7 +883,7 @@ namespace mscl
         return status;
     }
 
-    SetToIdleStatus BaseStation_Impl::protocol_node_setToIdle_v2(NodeAddress nodeAddress, const BaseStation& base)
+    SetToIdleStatus BaseStation_Impl::protocol_node_setToIdle_v2(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, const BaseStation& base)
     {
         //attempt to ping the Base Station before starting set to idle
         bool pingSuccess = false;
@@ -840,7 +905,18 @@ namespace mscl
         std::shared_ptr<SetToIdle_v2::Response> response(std::make_shared<SetToIdle_v2::Response>(nodeAddress, m_responseCollector, base));
 
         //build the set to idle command to send
-        ByteStream setToIdleCmd = SetToIdle_v2::buildCommand(nodeAddress);
+        ByteStream setToIdleCmd;
+        
+        switch(asppVer)
+        {
+            case WirelessPacket::aspp_v3:
+                setToIdleCmd = SetToIdle_v2::buildCommand_aspp3(nodeAddress);
+                break;
+
+            default:
+                setToIdleCmd = SetToIdle_v2::buildCommand(nodeAddress);
+                break;
+        }
 
         //send the command to the base station
         m_connection.write(setToIdleCmd);
@@ -861,126 +937,69 @@ namespace mscl
 
     bool BaseStation_Impl::protocol_node_readEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
     {
-        bool success = false;
-
         //create the response for the ReadEeprom command
         ReadEeprom::Response response(nodeAddress, m_responseCollector);
 
         //build the command to send
         ByteStream readCommand = ReadEeprom::buildCommand(nodeAddress, eepromAddress);
 
-        //send the command to the base station
-        m_connection.write(readCommand);
-
-        //wait for the response
-        response.wait(m_nodeCommandsTimeout);
-
-        success = response.success();
-        if(success)
+        if(doNodeCommand(nodeAddress, readCommand, response))
         {
             //set the eeprom value to the result
             eepromValue = response.eepromValue();
-
-            //update node last comm time
-            NodeCommTimes::updateCommTime(nodeAddress);
+            return true;
         }
 
-        return success;
+        return false;
     }
 
-    bool BaseStation_Impl::protocol_node_readEeprom_v2(NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
+    bool BaseStation_Impl::protocol_node_readEeprom_v2(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
     {
-        bool success = false;
-
         //create the response for the ReadEeprom command
         ReadEeprom_v2::Response response(nodeAddress, eepromAddress, m_responseCollector);
 
         //build the command to send
-        ByteStream readCommand = ReadEeprom_v2::buildCommand(nodeAddress, eepromAddress);
+        ByteStream readCommand = ReadEeprom_v2::buildCommand(asppVer, nodeAddress, eepromAddress);
 
-        //send the command to the base station
-        m_connection.write(readCommand);
-
-        //wait for the response
-        response.wait(m_nodeCommandsTimeout);
-
-        success = response.success();
-        if(success)
+        if(doNodeCommand(nodeAddress, readCommand, response))
         {
             //set the eeprom value to the result
             eepromValue = response.eepromValue();
-
-            //update node last comm time
-            NodeCommTimes::updateCommTime(nodeAddress);
-        }
-        else
-        {
-            //throw an exception if we need to
-            WirelessPacket::throwEepromResponseError(response.errorCode(), eepromAddress);
+            return true;
         }
 
-        return success;
+        //throw an exception if we need to
+        WirelessPacket::throwEepromResponseError(response.errorCode(), eepromAddress);
+        return false;
     }
 
     bool BaseStation_Impl::protocol_node_writeEeprom_v1(NodeAddress nodeAddress, uint16 eepromAddress, uint16 value)
     {
-        bool success = false;
-
         //create the response for the WriteEeprom command
         WriteEeprom::Response response(nodeAddress, m_responseCollector);
 
         //build the command to send
         ByteStream writeCommand = WriteEeprom::buildCommand(nodeAddress, eepromAddress, value);
 
-        //send the command to the base station
-        m_connection.write(writeCommand);
-
-        //wait for the response
-        response.wait(m_nodeCommandsTimeout);
-
-        //return the result of the response
-        success = response.success();
-
-        if(success)
-        {
-            //update node last comm time
-            NodeCommTimes::updateCommTime(nodeAddress);
-        }
-
-        return success;
+        return doNodeCommand(nodeAddress, writeCommand, response);
     }
 
-    bool BaseStation_Impl::protocol_node_writeEeprom_v2(NodeAddress nodeAddress, uint16 eepromAddress, uint16 value)
+    bool BaseStation_Impl::protocol_node_writeEeprom_v2(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, uint16 eepromAddress, uint16 value)
     {
-        bool success = false;
-
         //create the response for the WriteEeprom_v2 command
         WriteEeprom_v2::Response response(nodeAddress, eepromAddress, value, m_responseCollector);
 
         //build the command to send
-        ByteStream writeCommand = WriteEeprom_v2::buildCommand(nodeAddress, eepromAddress, value);
+        ByteStream writeCommand = WriteEeprom_v2::buildCommand(asppVer, nodeAddress, eepromAddress, value);
 
-        //send the command to the base station
-        m_connection.write(writeCommand);
-
-        //wait for the response
-        response.wait(m_nodeCommandsTimeout);
-
-        //return the result of the response
-        success = response.success();
-
-        if(success)
-        {
-            //update node last comm time
-            NodeCommTimes::updateCommTime(nodeAddress);
-        }
-        else
+        if(!doNodeCommand(nodeAddress, writeCommand, response))
         {
             //throw an exception if we need to
             WirelessPacket::throwEepromResponseError(response.errorCode(), eepromAddress);
+            return false;
         }
 
-        return success;
+        return true;
     }
 
     bool BaseStation_Impl::protocol_node_autoBalance_v1(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result)
@@ -1001,35 +1020,58 @@ namespace mscl
         return true;
     }
 
-    bool BaseStation_Impl::protocol_node_autoBalance_v2(NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result)
+    bool BaseStation_Impl::protocol_node_autoBalance_v2(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result)
     {
         static const uint64 MIN_TIMEOUT = 1100;
-        bool success = false;
 
         //create the response for the AutoBalance_v2 command
         AutoBalance_v2::Response response(nodeAddress, channelNumber, targetPercent, m_responseCollector);
 
         //build the command to send
-        ByteStream command = AutoBalance_v2::buildCommand(nodeAddress, channelNumber, targetPercent);
+        ByteStream command = AutoBalance_v2::buildCommand(asppVer, nodeAddress, channelNumber, targetPercent);
 
-        //send the command to the base station
-        m_connection.write(command);
-
-        //wait for the response
-        response.wait( std::max( m_nodeCommandsTimeout, MIN_TIMEOUT ) );
-
-        //return the result of the response
-        success = response.success();
-
-        if(success)
-        {
-            //update node last comm time
-            NodeCommTimes::updateCommTime(nodeAddress);
-        }
+        bool success = doNodeCommand(nodeAddress, command, response, MIN_TIMEOUT);
 
         result = response.result();
 
         return success;
+    }
+
+    bool BaseStation_Impl::protocol_node_autocal_shm_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, AutoCalResult& result)
+    {
+        //create the response for the SHM AutoCal command
+        AutoCal::ShmResponse response(nodeAddress, m_responseCollector);
+
+        //build the AutoCal command bytes
+        ByteStream cmd = AutoCal::buildCommand_shmLink(asppVer, nodeAddress);
+
+        return node_autocal(nodeAddress, cmd, response, result);
+    }
+
+    bool BaseStation_Impl::protocol_node_autoshuntcal_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, const ShuntCalCmdInfo& commandInfo, uint8 chNum, WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType chType, AutoCalResult& result)
+    {
+        //create the response
+        AutoCal::ShuntCalResponse response(nodeAddress, m_responseCollector, chNum);
+
+        ByteStream cmd = AutoCal::buildCommand_shuntCal(asppVer, nodeAddress, commandInfo, chNum, nodeType, chType);
+
+        return node_autocal(nodeAddress, cmd, response, result);
+    }
+
+    bool BaseStation_Impl::protocol_node_getDiagnosticInfo_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, ChannelData& result)
+    {
+        //create the response
+        GetDiagnosticInfo::Response response(nodeAddress, m_responseCollector);
+
+        ByteStream command = GetDiagnosticInfo::buildCommand(asppVer, nodeAddress);
+
+        if(doNodeCommand(nodeAddress, command, response))
+        {
+            result = response.result();
+            return true;
+        }
+
+        return false;
     }
 
     bool BaseStation_Impl::protocol_node_erase_v1(NodeAddress nodeAddress)
@@ -1037,41 +1079,30 @@ namespace mscl
         //create the response for the Erase command
         Erase::Response response(m_responseCollector);
 
-        //send the erase command to the base station
-        m_connection.write(Erase::buildCommand(nodeAddress));
+        ByteStream command = Erase::buildCommand(nodeAddress);
 
-        //wait for the response or timeout
-        response.wait(m_nodeCommandsTimeout);
-
-        if(response.success())
-        {
-            //update node last comm time
-            NodeCommTimes::updateCommTime(nodeAddress);
-        }
-
-        //return the result of the response
-        return response.success();
+        return doNodeCommand(nodeAddress, command, response);
     }
 
-    bool BaseStation_Impl::protocol_node_erase_v2(NodeAddress nodeAddress)
+    bool BaseStation_Impl::protocol_node_erase_v2(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress)
     {
         //create the response for the Erase command
         Erase_v2::Response response(nodeAddress, m_responseCollector);
 
-        //send the erase command to the base station
-        m_connection.write(Erase_v2::buildCommand(nodeAddress));
+        ByteStream command = Erase_v2::buildCommand(asppVer, nodeAddress);
 
-        //wait for the response or timeout
-        response.wait(m_nodeCommandsTimeout);
+        return doNodeCommand(nodeAddress, command, response);
+    }
 
-        if(response.success())
-        {
-            //update node last comm time
-            NodeCommTimes::updateCommTime(nodeAddress);
-        }
+    bool BaseStation_Impl::protocol_node_startSync_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress)
+    {
+        //create the response for the StartSyncSampling command
+        StartSyncSampling::Response response(nodeAddress, m_responseCollector);
 
-        //return the result of the response
-        return response.success();
+        //build the command to send
+        ByteStream command = StartSyncSampling::buildCommand(asppVer, nodeAddress);
+
+        return doNodeCommand(nodeAddress, command, response);
     }
 
     bool BaseStation_Impl::protocol_node_startNonSync_v1(NodeAddress nodeAddress)
@@ -1094,28 +1125,40 @@ namespace mscl
         return true;
     }
 
-    bool BaseStation_Impl::protocol_node_startNonSync_v2(NodeAddress nodeAddress)
+    bool BaseStation_Impl::protocol_node_startNonSync_v2(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress)
     {
         //create the response for the command
         StartNonSyncSampling_v2::Response response(nodeAddress, m_responseCollector);
 
         //build the command to send
-        ByteStream command = StartNonSyncSampling_v2::buildCommand(nodeAddress);
+        ByteStream command = StartNonSyncSampling_v2::buildCommand(asppVer, nodeAddress);
 
-        //send the command to the base station
-        m_connection.write(command);
+        return doNodeCommand(nodeAddress, command, response);
+    }
 
-        //wait for the response or timeout
-        response.wait(m_nodeCommandsTimeout);
+    bool BaseStation_Impl::protocol_node_batchEepromRead_v1(NodeAddress nodeAddress, uint16 startEeprom, std::map<uint16, uint16>& result)
+    {
+        BatchEepromRead::Response response(nodeAddress, m_responseCollector);
 
-        if(response.success())
+        ByteStream command = BatchEepromRead::buildCommand(nodeAddress, startEeprom);
+
+        if(doNodeCommand(nodeAddress, command, response))
         {
-            //update node last comm time
-            NodeCommTimes::updateCommTime(nodeAddress);
+            //get the data points and store them in the data parameter
+            result = response.eepromMap();
+            return true;
         }
 
-        //return the result of the response
-        return response.success();
+        return false;
+    }
+
+    bool BaseStation_Impl::protocol_node_testCommProtocol(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, WirelessTypes::CommProtocol protocol)
+    {
+        TestNodeCommProtocol::Response response(nodeAddress, protocol, m_responseCollector);
+
+        ByteStream command = TestNodeCommProtocol::buildCommand(asppVer, nodeAddress, protocol);
+
+        return doNodeCommand(nodeAddress, command, response);
     }
 
     Value BaseStation_Impl::readEeprom(const EepromLocation& location) const
@@ -1140,34 +1183,43 @@ namespace mscl
 
     void BaseStation_Impl::cyclePower(bool checkComm)
     {
-        static const uint16 RESET_BASE = 0x01;
-
-        //store the original timeout that is currently set
-        uint64 originalTimeout = timeout();
-        uint8 originalRetries = getReadWriteRetries();
-
-        //when this goes out of scope, it will write back the original timeout (need cast for overloaded ambiguity)
-        ScopeHelper writebackTimeout(std::bind(static_cast<void(BaseStation_Impl::*)(uint64)>(&BaseStation_Impl::timeout), this, originalTimeout));
-
-        //when this goes out of scope, it will write back the original retries
-        ScopeHelper writebackRetries(std::bind(&BaseStation_Impl::setReadWriteRetries, this, originalRetries));
-
-        //force determining of the protocol if it hasn't been already
-        //Note: this is so that we can set the timeout short and write eeprom without worrying about reading
-        protocol();
-
-        try
+        if(protocol(communicationProtocol()).supportsBaseHardReset())
         {
-            //this command doesn't have a response, change to a quick timeout and no retries
-            timeout(0);
-            setReadWriteRetries(0);
-
-            //write a 0x01 to the CYCLE_POWER eeprom location on the base station
-            writeEeprom(BaseStationEepromMap::CYCLE_POWER, Value::UINT16(RESET_BASE));
+            protocol(communicationProtocol()).m_hardBaseReset(this);
         }
-        catch(mscl::Error_Communication&)
+        else
         {
-            //an exception will be thrown due to no response, just continue on
+            static const uint16 RESET_BASE = 0x01;
+
+            //store the original timeout that is currently set
+            uint64 originalTimeout = timeout();
+            uint8 originalRetries = getReadWriteRetries();
+
+            //when this goes out of scope, it will write back the original timeout (need cast for overloaded ambiguity)
+            ScopeHelper writebackTimeout(std::bind(static_cast<void(BaseStation_Impl::*)(uint64)>(&BaseStation_Impl::timeout), this, originalTimeout));
+
+            //when this goes out of scope, it will write back the original retries
+            ScopeHelper writebackRetries(std::bind(&BaseStation_Impl::setReadWriteRetries, this, originalRetries));
+
+            try
+            {
+                //this command doesn't have a response, change to a quick timeout and no retries
+                timeout(0);
+                setReadWriteRetries(0);
+
+                //write a 0x01 to the CYCLE_POWER eeprom location on the base station
+                writeEeprom(BaseStationEepromMap::CYCLE_POWER, Value::UINT16(RESET_BASE));
+            }
+            catch(mscl::Error_Communication&)
+            {
+                //an exception will be thrown due to no response, just continue on
+            }
+
+            //change the original timeout/retries back (and cancel the scope helpers)
+            timeout(originalTimeout);
+            writebackTimeout.cancel();
+            setReadWriteRetries(originalRetries);
+            writebackRetries.cancel();
         }
 
         if(checkComm)
@@ -1187,10 +1239,17 @@ namespace mscl
 
     void BaseStation_Impl::resetRadio()
     {
-        static const uint16 RESET_RADIO = 0x02;
+        if(protocol(communicationProtocol()).supportsBaseSoftReset())
+        {
+            protocol(communicationProtocol()).m_softBaseReset(this);
+        }
+        else
+        {
+            static const uint16 RESET_RADIO = 0x02;
 
-        //write a 0x02 to the CYCLE_POWER eeprom location on the base station
-        writeEeprom(BaseStationEepromMap::CYCLE_POWER, Value::UINT16(RESET_RADIO));
+            //write a 0x02 to the CYCLE_POWER eeprom location on the base station
+            writeEeprom(BaseStationEepromMap::CYCLE_POWER, Value::UINT16(RESET_RADIO));
+        }
 
         Utils::threadSleep(100);
     }
@@ -1227,14 +1286,28 @@ namespace mscl
         //if an actual eeprom has been written
         if(m_eeprom->didWrite())
         {
-            //if we can just reset the radio to commit the changes
-            if(features().supportsEepromCommitViaRadioReset())
+            uint8 retries = 0;
+            bool success = false;
+            while(!success && retries <= 3)
             {
-                resetRadio();
-            }
-            else
-            {
-                cyclePower();
+                try
+                {
+                    //if we can just reset the radio to commit the changes
+                    if(features().supportsEepromCommitViaRadioReset())
+                    {
+                        resetRadio();
+                        success = true;
+                    }
+                    else
+                    {
+                        cyclePower();
+                        success = true;
+                    }
+                }
+                catch(Error_Communication&)
+                {
+                    retries++;
+                }
             }
         }
     }
@@ -1283,56 +1356,37 @@ namespace mscl
     //                                        NODE COMMANDS
     //================================================================================================
 
-    PingResponse BaseStation_Impl::node_ping(NodeAddress nodeAddress)
+    PingResponse BaseStation_Impl::node_ping(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress)
     {
-        //create the response for the LongPing command with the node address
-        LongPing::Response response(nodeAddress, m_responseCollector);
-        
-        //TODO: perform a short ping first
-        //TODO: if short ping fails, create and return a PingResponse with ResponseFail() and short ping fail status
-
-        //send the long ping command to the base station
-        m_connection.write(LongPing::buildCommand(nodeAddress));
-
-        //wait for the response or timeout
-        response.wait(m_nodeCommandsTimeout);
-
-        if(response.result().success())
-        {
-            //update node last comm time
-            NodeCommTimes::updateCommTime(nodeAddress);
-        }
-
-        //return the result of the response
-        return response.result();
+        return nodeProtocol.m_longPing(this, nodeAddress);
     }
 
-    bool BaseStation_Impl::node_sleep(NodeAddress nodeAddress)
+    void BaseStation_Impl::node_hardReset(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress)
+    {
+        nodeProtocol.m_hardReset(this, nodeAddress);
+    }
+
+    void BaseStation_Impl::node_softReset(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress)
+    {
+        nodeProtocol.m_softReset(this, nodeAddress);
+    }
+
+    bool BaseStation_Impl::node_sleep(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress)
     {
         //make sure we have good node communication by attempting to ping the node
-        if(!node_ping(nodeAddress).success())
+        if(!node_ping(nodeProtocol, nodeAddress).success())
         {
             //don't attempt a sleep command
             return false;
         }
 
-        //send the sleep command to the base station
-        m_connection.write(Sleep::buildCommand(nodeAddress));
-
-        //we don't have a success packet for this command
-        return true;
+        return nodeProtocol.m_sleep(this, nodeAddress);
     }
 
     SetToIdleStatus BaseStation_Impl::node_setToIdle(NodeAddress nodeAddress, const BaseStation& base)
     {
         //this just depends on the protocol of the Base Station, not the Node
-        return protocol().m_setToIdle(this, nodeAddress, base);
-    }
-
-    bool BaseStation_Impl::node_shortPing(NodeAddress nodeAddress)
-    {
-        //this just depends on the protocol of the Base Station, not the Node
-        return protocol().m_shortPing(this, nodeAddress);
+        return protocol(communicationProtocol()).m_setToIdle(this, nodeAddress, base);
     }
 
     bool BaseStation_Impl::node_readEeprom(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint16 eepromAddress, uint16& eepromValue)
@@ -1350,14 +1404,19 @@ namespace mscl
         return nodeProtocol.m_pageDownload(this, nodeAddress, pageIndex, data);
     }
 
+    bool BaseStation_Impl::node_batchEepromRead(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint16 startEeprom, std::map<uint16, uint16>& result)
+    {
+        return nodeProtocol.m_batchEepromRead(this, nodeAddress, startEeprom, result);
+    }
+
     bool BaseStation_Impl::node_getDatalogSessionInfo(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, DatalogSessionInfoResult& result)
     {
         return nodeProtocol.m_datalogSessionInfo(this, nodeAddress, result);
     }
 
-    bool BaseStation_Impl::node_getDatalogData(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint32 flashAddress, ByteStream& result)
+    bool BaseStation_Impl::node_getDatalogData(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint32 flashAddress, ByteStream& result, uint16& numBytesRead)
     {
-        return nodeProtocol.m_getDatalogData(this, nodeAddress, flashAddress, result);
+        return nodeProtocol.m_getDatalogData(this, nodeAddress, flashAddress, result, numBytesRead);
     }
 
     bool BaseStation_Impl::node_erase(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress)
@@ -1365,28 +1424,9 @@ namespace mscl
         return nodeProtocol.m_erase(this, nodeAddress);
     }
 
-    bool BaseStation_Impl::node_startSyncSampling(NodeAddress nodeAddress)
+    bool BaseStation_Impl::node_startSyncSampling(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress)
     {
-        //create the response for the StartSyncSampling command
-        StartSyncSampling::Response response(nodeAddress, m_responseCollector);
-
-        //build the command to send
-        ByteStream command = StartSyncSampling::buildCommand(nodeAddress);
-
-        //send the command to the base station
-        m_connection.write(command);
-
-        //wait for the response
-        response.wait(m_nodeCommandsTimeout);
-
-        if(response.success())
-        {
-            //update node last comm time
-            NodeCommTimes::updateCommTime(nodeAddress);
-        }
-
-        //return the result of the response
-        return response.success();
+        return nodeProtocol.m_startSyncSampling(this, nodeAddress);
     }
 
     bool BaseStation_Impl::node_startNonSyncSampling(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress)
@@ -1396,6 +1436,8 @@ namespace mscl
 
     bool BaseStation_Impl::node_armForDatalogging(NodeAddress nodeAddress, const std::string& message)
     {
+        //arm for datalogging only has 1 version (doesn't need to check protocol)
+
         //create the response for the ArmForDatalogging command
         ArmForDatalogging::Response response(nodeAddress, m_responseCollector);
 
@@ -1407,6 +1449,12 @@ namespace mscl
 
         //wait for the response
         response.wait(m_nodeCommandsTimeout);
+
+        if(response.baseReceived() && !response.fullyMatched())
+        {
+            //base received the command and sent to node, wait for the new timeout for the Node's response
+            response.wait(response.baseReceivedWaitTime());
+        }
 
         if(response.success())
         {
@@ -1420,6 +1468,8 @@ namespace mscl
 
     void BaseStation_Impl::node_triggerArmedDatalogging(NodeAddress nodeAddress)
     {
+        //trigger armed datalogging only has 1 version (doesn't need to check protocol)
+
         //build the command to send
         ByteStream command = TriggerArmedDatalogging::buildCommand(nodeAddress);
 
@@ -1434,34 +1484,26 @@ namespace mscl
         return nodeProtocol.m_autoBalance(this, nodeAddress, channelNumber, targetPercent, result);
     }
 
-    bool BaseStation_Impl::node_autocal_shm(NodeAddress nodeAddress, AutoCalResult& result)
+    bool BaseStation_Impl::node_autocal_shm(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, AutoCalResult& result)
     {
-        //create the response for the SHM AutoCal command
-        AutoCal::ShmResponse response(nodeAddress, m_responseCollector);
-
-        //build the AutoCal command bytes
-        ByteStream cmd = AutoCal::buildCommand_shmLink(nodeAddress);
-
-        return node_autocal(nodeAddress, cmd, response, result);
+        return nodeProtocol.m_autoCal_shm(this, nodeAddress, result);
     }
 
-    bool BaseStation_Impl::node_autoShuntCal(NodeAddress nodeAddress,
+    bool BaseStation_Impl::node_autoShuntCal(const WirelessProtocol& nodeProtocol,
+                                             NodeAddress nodeAddress,
                                              const ShuntCalCmdInfo& commandInfo,
                                              uint8 chNum,
                                              WirelessModels::NodeModel nodeType,
                                              WirelessTypes::ChannelType chType,
                                              AutoCalResult& result)
     {
-        //create the response
-        AutoCal::ShuntCalResponse response(nodeAddress, m_responseCollector, chNum);
-
-        ByteStream cmd = AutoCal::buildCommand_shuntCal(nodeAddress, commandInfo, chNum, nodeType, chType);
-
-        return node_autocal(nodeAddress, cmd, response, result);
+        return nodeProtocol.m_autoShuntCal(this, nodeAddress, commandInfo, chNum, nodeType, chType, result);
     }
 
     bool BaseStation_Impl::node_readSingleSensor(NodeAddress nodeAddress, uint8 channelNumber, uint16& result)
     {
+        //read single sensor command only has 1 version (doesn't need to check protocol)
+
         //create the response for the Erase command
         ReadSingleSensor::Response response(m_responseCollector);
 
@@ -1470,6 +1512,12 @@ namespace mscl
 
         //wait for the response or timeout
         response.wait(m_nodeCommandsTimeout);
+
+        if(response.baseReceived() && !response.fullyMatched())
+        {
+            //base received the command and sent to node, wait for the new timeout for the Node's response
+            response.wait(response.baseReceivedWaitTime());
+        }
 
         if(response.success())
         {
@@ -1483,25 +1531,25 @@ namespace mscl
         return response.success();
     }
 
-    bool BaseStation_Impl::node_getDiagnosticInfo(NodeAddress nodeAddress, ChannelData& result)
+    bool BaseStation_Impl::node_getDiagnosticInfo(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, ChannelData& result)
     {
-        //create the response
-        GetDiagnosticInfo::Response response(nodeAddress, m_responseCollector);
+        return nodeProtocol.m_getDiagnosticInfo(this, nodeAddress, result);
+    }
 
-        //send the command
-        m_connection.write(GetDiagnosticInfo::buildCommand(nodeAddress));
-
-        response.wait(m_nodeCommandsTimeout);
-
-        if(response.success())
+    bool BaseStation_Impl::node_testCommProtocol(NodeAddress nodeAddress, WirelessTypes::CommProtocol commProtocol)
+    {
+        if(!features().supportsCommunicationProtocol(commProtocol))
         {
-            result = response.result();
-
-            //update node last comm time
-            NodeCommTimes::updateCommTime(nodeAddress);
+            throw Error_NotSupported("The Communication Protocol is not supported by this BaseStation.");
         }
 
-        return response.success();
+        if(!protocol(communicationProtocol()).supportsTestCommProtocol())
+        {
+            throw Error_NotSupported("The Test Communication Protocol function is not supported by this BaseStation.");
+        }
+
+        //this depends on the protocol of the Base Station, not the Node
+        return protocol(communicationProtocol()).m_testNodeCommProtocol(this, nodeAddress, commProtocol);
     }
 
     bool BaseStation_Impl::node_autocal(NodeAddress nodeAddress, const ByteStream& command, AutoCal::Response& response, AutoCalResult& result)
@@ -1511,6 +1559,12 @@ namespace mscl
 
         //wait for the response or timeout
         response.wait(m_nodeCommandsTimeout);
+
+        if(response.baseReceived() && !response.fullyMatched())
+        {
+            //base received the command and sent to node, wait for the new timeout for the Node's response
+            response.wait(response.baseReceivedWaitTime());
+        }
 
         //if the autocal process has started, but not completed
         if(response.calStarted() && !response.fullyMatched())

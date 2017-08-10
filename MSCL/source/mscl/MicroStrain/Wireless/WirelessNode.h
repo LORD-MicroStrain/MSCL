@@ -7,7 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include "Commands/AutoCalResult.h"
-#include "Commands/LongPing.h"
+#include "Commands/PingResponse.h"
 #include "Configuration/ActivitySense.h"
 #include "Configuration/ConfigIssue.h"
 #include "Configuration/DataModeMask.h"
@@ -50,7 +50,7 @@ namespace mscl
         //Parameters:
         //    nodeAddress - the node address of the node
         //    base - the node's parent Base Station
-        WirelessNode(uint16 nodeAddress, const BaseStation& basestation);
+        WirelessNode(NodeAddress nodeAddress, const BaseStation& basestation);
 
         //Destructor: ~WirelessNode
         //    Destroys a WirelessNode object
@@ -69,8 +69,8 @@ namespace mscl
         //gets a reference to the NodeEepromHelper for the Node.
         NodeEepromHelper& eepromHelper() const;    
 
-        //gets a reference to the WirelessProtocol for the Node.
-        const WirelessProtocol& protocol() const;
+        //gets a reference to the WirelessProtocol for the Node for the given CommProtocol.
+        const WirelessProtocol& protocol(WirelessTypes::CommProtocol commProtocol) const;
 #endif
 
         //API Function: deviceName
@@ -81,7 +81,7 @@ namespace mscl
         //
         //Returns:
         //    The universal sensor name.
-        static std::string deviceName(uint16 nodeAddress);
+        static std::string deviceName(NodeAddress nodeAddress);
 
         //API Function: features
         //    Gets a reference to the <NodeFeatures> for this Node.
@@ -182,7 +182,7 @@ namespace mscl
         //
         //Returns:
         //    The node address of the Node
-        uint16 nodeAddress() const;
+        NodeAddress nodeAddress() const;
 
         //API Function: frequency
         //    Gets the frequency that the Node is on.
@@ -195,6 +195,17 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::Frequency frequency() const;
+
+        //API Function: communicationProtocol
+        //  Gets the <WirelessTypes::CommProtocol> that the Node is currently set to use.
+        //
+        //Returns:
+        //  The <WirelessTypes::CommProtocol> that the Node is currently set to use.
+        //
+        //Exceptions:
+        //    - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::CommProtocol communicationProtocol() const;
 
         //API Function: firmwareVersion
         //    Gets the firmware version of the Node.
@@ -285,23 +296,9 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::RegionCode regionCode() const;
 
-        //API Function: quickPing
-        //    Performs a Quick Ping (Short Ping) command on the Node.
-        //    The Base Station itself responds with a quick success/fail on the Node.
-        //    Note: Use the standard <ping> command instead of this if you want to obtain RSSI values.
-        //
-        //Returns:
-        //    true if the quick ping was successful, false otherwise.
-        //
-        //Exceptions:
-        //    - <Error_Communication>: Failed to determine the protocol version of the BaseStation.
-        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        bool quickPing();
-
         //API Function: ping
         //    Performs a Long Ping command on the Node to check the communication between the Base Station and the Node.
         //    The response to this command contains the Node and BaseStation RSSI values.
-        //    Note: You may want to use the <quickPing> command instead of this if RSSI values are not of importance.
         //
         //Returns:
         //    A <PingResponse> object that can be queried to get details of the ping command's response, including RSSI values.
@@ -327,16 +324,16 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: Attempted to write an unsupported option. The device firmware is not compatible with this version of MSCL.
-        //    - <Error_NodeCommunication>: Failed to write the value to the Node.
+        //    - <Error_NodeCommunication>: Failed to reset the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void cyclePower();
 
         //API Function: resetRadio
-        //    Resets the radio on the Node. 
+        //    Resets the radio on the Node.
         //
         //Exceptions:
         //    - <Error_NotSupported>: Attempted to write an unsupported option. The device firmware is not compatible with this version of MSCL.
-        //    - <Error_NodeCommunication>: Failed to write the value to the Node.
+        //    - <Error_NodeCommunication>: Failed to reset the Node
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void resetRadio();
 
@@ -495,6 +492,23 @@ namespace mscl
         //  - <Error_NodeCommunication>: Failed to communicate with the Wireless Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         ChannelData getDiagnosticInfo();
+
+        //API Function: testCommunicationProtocol
+        //  Tests if the Node will still be able to communicate after changing the Node's communication protocol.
+        //  This is recommended to be used before changing communication protocol as the range can change between protocol modes.
+        //  Note: Both the Node and BaseStation will return to the current protocol after this test.
+        //
+        //Parameters:
+        //  protocol - The <WirelessTypes::CommProtocol> to test.
+        //
+        //Returns:
+        //  true if the Node had good communication (responded to pings) in the new protocol.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: The given communication protocol, or the test communication protocol function, is not supported by the Node or BaseStation.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Wireless Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        bool testCommunicationProtocol(WirelessTypes::CommProtocol protocol);
 
         //API Function: verifyConfig
         //    Checks whether the settings in the given <WirelessNodeConfig> are ok to be written to the Node.

@@ -28,6 +28,8 @@ namespace mscl
     //    <BaseStation::applyConfig>
     class BaseStationConfig
     {
+        friend class BaseStation_Impl;
+
     public:
         //API Constructor: BaseStationConfig
         //    Creates a blank BaseStationConfig.
@@ -40,6 +42,10 @@ namespace mscl
         //Variable: m_transmitPower
         //    The <WirelessTypes::TransmitPower> to set.
         boost::optional<WirelessTypes::TransmitPower> m_transmitPower;
+
+        //Variable: m_commProtocol
+        //  The <WirelessTypes::CommProtocol> to set.
+        boost::optional<WirelessTypes::CommProtocol> m_commProtocol;
 
         //Variable: m_btnsLongPress
         //    The <ButtonMap> for long press actions.
@@ -102,9 +108,6 @@ namespace mscl
             return static_cast<bool>(opt);
         }
 
-    public:
-
-#ifndef SWIG
         //Function: verify
         //    Checks whether the current settings are ok to be written to a given <BaseStation>.
         //
@@ -133,7 +136,6 @@ namespace mscl
         //    - <Error_Communication>: Failed to communicate with the BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void apply(const BaseStationFeatures& features, BaseStationEepromHelper& eeprom) const;
-#endif
 
     public:
         //API Function: transmitPower
@@ -146,6 +148,17 @@ namespace mscl
         //API Function: transmitPower
         //    Sets the <WirelessTypes::TransmitPower> value in the Config.
         void transmitPower(WirelessTypes::TransmitPower power);
+
+        //API Function: communicationProtocol
+        //    Gets the <WirelessTypes::CommProtocol> value in the Config, if set.
+        //
+        //Exceptions:
+        //    <Error_NoData> - The requested value has not been set.
+        WirelessTypes::CommProtocol communicationProtocol() const;
+
+        //API Function: communicationProtocol
+        //    Sets the <WirelessTypes::CommProtocol> value in the Config.
+        void communicationProtocol(WirelessTypes::CommProtocol commProtocol);
 
         //API Function: buttonLongPress
         //    Gets the <BaseStationButton> value in the Config for performing a long press on a specific button, if set.

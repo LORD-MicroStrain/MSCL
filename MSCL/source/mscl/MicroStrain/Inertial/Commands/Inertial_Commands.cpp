@@ -90,6 +90,12 @@ namespace mscl
         return response.data().read_uint8(0);
     }
 
+    //uint8 Inertial_Commands::parseData_AssistedFixOptions(const GenericInertialCommandResponse& response)
+    //{
+    //    //cast to comm mode and return
+    //    return response.data().read_uint8(0);
+    //}
+
     InertialChannels Inertial_Commands::parseData_MessageFormat(const GenericInertialCommandResponse& response, uint8 descSet, uint16 sampleRateBase)
     {
         InertialChannels result;

@@ -20,10 +20,10 @@ namespace mscl
     //    Used to configure and start a Synchronized Sampling network of wireless nodes.
     class SyncSamplingNetwork
     {
-    private:
-        SyncSamplingNetwork();                                        //default constructor disabled
-        SyncSamplingNetwork(const SyncSamplingNetwork&);            //copy constructor disabled
-        SyncSamplingNetwork& operator=(const SyncSamplingNetwork&);    //assignment operator disabled
+    public:
+        SyncSamplingNetwork() = delete;                                         //default constructor disabled
+        SyncSamplingNetwork(const SyncSamplingNetwork&) = delete;               //copy constructor disabled
+        SyncSamplingNetwork& operator=(const SyncSamplingNetwork&) = delete;    //assignment operator disabled
 
     public:
         //API Constructor: SyncSamplingNetwork
@@ -31,6 +31,10 @@ namespace mscl
         //
         //Parameters:
         //    networkBaseStation - The master <BaseStation> that will be the parent base station for this network, performing all the communication with the Nodes.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: Failed to communicate with the parent BaseStation to retrieve network information.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         explicit SyncSamplingNetwork(const BaseStation& networkBaseStation);
 
     private:
@@ -40,7 +44,7 @@ namespace mscl
 
         //Variable: m_nodes
         //    A map of node addresses to <SyncNetworkInfo>s containing all the nodes that were added to the network.
-        std::map<uint16, std::unique_ptr<SyncNetworkInfo> > m_nodes;
+        std::map<NodeAddress, std::unique_ptr<SyncNetworkInfo> > m_nodes;
 
         //Variable: m_allNodes
         //    A vector of node addresses for every node in the network.
@@ -62,9 +66,9 @@ namespace mscl
         //    Whether the lossless option is enabled or not.
         bool m_lossless;
 
-        //Variable: m_highCapacity
-        //    Whether the high capacity option is enabled or not.
-        bool m_highCapacity;
+        //Variable: m_commProtocol
+        //  The <WirelessTypes::CommProtocol> that the network is using (based off of the master BaseStation's comm protocol when this network was created).
+        WirelessTypes::CommProtocol m_commProtocol;
 
         //Variable: m_percentBandwidth
         //    The percent of bandwidth for the entire Sync Sampling Network. 
@@ -180,28 +184,29 @@ namespace mscl
         //    - <Error_UnknownSampleRate>: The sample rate value read from a Node is not a valid SampleRate.
         void lossless(bool enable);
 
-        //API Function: highCapacity
-        //    Gets whether the high capacity option is enabled or not for the entire network (default of false).
-        //    The high capacity feature reduces transmit rates in order to optimize bandwidth and power savings among nodes with slower sample rates.
-        //    This can, however, increase the transmit interval from 1 second to (1 to 16) seconds.
+        //API Function: communicationProtocol
+        //  Gets the <WirelessTypes::CommProtocol> that is set for the network.
+        //  This setting initially gets loaded from the protocol that the BaseStation is configured for when the network is first created.
         //
         //Returns:
-        //    true if the high capacity option is enabled, false if it is disabled.
-        bool highCapacity() const;
+        //  The <WirelessTypes::CommProtocol> that is set for the network.
+        WirelessTypes::CommProtocol communicationProtocol() const;
 
-        //API Function: highCapacity
-        //    Enables or Disables the high capacity option for the entire network. If changed, <refresh> will be called.
-        //    The high capacity feature reduces transmit rates in order to optimize bandwidth and power savings among nodes with slower sample rates.
-        //    This can, however, increase the transmit interval from 1 second to (1 to 16) seconds.
+        //API Function: communicationProtocol
+        //  Sets the <WirelessTypes::CommProtocol> for the network.
+        //  The initial communicationProtocol is set to whichever mode the BaseStation was configured for when the network was first created.
+        //  Changing this setting will call <refresh> and the network calculations (such as percentBandwidth) will be updated.
+        //  Note: Changing this does not actually change the protocol of the BaseStation or Nodes in the network. All devices must be changed to the same
+        //        <WirelessTypes::CommProtocol> that the network is set to before <applyConfiguration> is called, or else an exception will be thrown.
         //
         //Parameters:
-        //    enable - Whether the high capacity option should be enabled (true) or disabled (false).
+        //  protocol - The <WirelessTypes::CommProtocol> to use for network calculations.
         //
         //Exceptions:
-        //    - <Error_NodeCommunication>: Failed to communicate with a Node.
-        //    - <Error_Connection>: A connection error has occurred with a BaseStation.
-        //    - <Error_UnknownSampleRate>: The sample rate value read from a Node is not a valid SampleRate.
-        void highCapacity(bool enable);
+        //  - <Error_NodeCommunication>: Failed to communicate with a Node.
+        //  - <Error_Connection>: A connection error has occurred a BaseStation.
+        //  - <Error_UnknownSampleRate>: The sample rate value read from a Node is not a valid SampleRate.
+        void communicationProtocol(WirelessTypes::CommProtocol protocol);
 
         //API Function: applyConfiguration
         //    Applies the Sync Sampling network settings to all of the nodes in the network.
@@ -262,7 +267,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error>: The node address was not found in the map.
-        SyncNetworkInfo& getNodeNetworkInfo(uint16 nodeAddress);
+        SyncNetworkInfo& getNodeNetworkInfo(NodeAddress nodeAddress);
 
     private:
         //Function: addNodeToNetwork

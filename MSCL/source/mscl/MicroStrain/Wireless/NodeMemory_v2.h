@@ -59,10 +59,6 @@ namespace mscl
         virtual ~NodeMemory_v2() {};
         
     private:
-        //Constant: FLASH_CHUNK_SIZE - 102
-        //  The number of bytes in a flash chunk read from datalogging memory.
-        static const uint16 FLASH_CHUNK_SIZE = 102;
-
         //Variable: m_flashInfo
         //  The <FlashInfo> of the Node.
         FlashInfo m_flashInfo;

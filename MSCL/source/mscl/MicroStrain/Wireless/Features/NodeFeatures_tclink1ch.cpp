@@ -29,9 +29,9 @@ namespace mscl
         );
 
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_diffTemperature);    //temp (thermocouple)
-        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_temperature);        //cjc temp
-        m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_rh);                //% RH
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_diffTemperature, "Thermocouple");
+        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_temperature, "CJC Temperature");
+        m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_rh, "Relative Humidity");
     }
 
     const WirelessTypes::SamplingModes NodeFeatures_tclink1ch::samplingModes() const

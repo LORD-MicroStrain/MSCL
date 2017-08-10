@@ -10,9 +10,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
 
-    //Class: BufferedLdcPacket_16ch
+    //Class: BufferedLdcPacket_v2
     //    A <WirelessDataPacket> derived class representing a Synchronized Sampling (Buffered LDC) packet
-    class BufferedLdcPacket_16ch : public WirelessDataPacket
+    class BufferedLdcPacket_v2 : public WirelessDataPacket
     {
     private:
         //=====================================================================================================
@@ -36,15 +36,15 @@ namespace mscl
         static const uint16 APP_ID_VAL    = 0x02;
 
     public:
-        //Constructor: BufferedLdcPacket_16ch
-        //    Creates a BufferedLdcPacket_16ch from the passed in <WirelessPacket>
+        //Constructor: BufferedLdcPacket_v2
+        //    Creates a BufferedLdcPacket_v2 from the passed in <WirelessPacket>
         //
         //Parameters:
-        //    packet - A <WirelessPacket> determined to be a BufferedLdcPacket_16ch
-        explicit BufferedLdcPacket_16ch(const WirelessPacket& packet);
+        //    packet - A <WirelessPacket> determined to be a BufferedLdcPacket_v2
+        explicit BufferedLdcPacket_v2(const WirelessPacket& packet);
 
     private:
-        BufferedLdcPacket_16ch();    //default constructor disabled
+        BufferedLdcPacket_v2();    //default constructor disabled
 
     private:
         //Function: parseSweeps

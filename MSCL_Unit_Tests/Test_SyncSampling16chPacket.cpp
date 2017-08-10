@@ -3,7 +3,7 @@ Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingPacket_16ch.h"
+#include "mscl/MicroStrain/Wireless/Packets/SyncSamplingPacket_v2.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacketCollector.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessDataPacket.h"
@@ -342,7 +342,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_Valid)
     packet.payload(payloadBytes);    //give the packet the payload bytes we created
 
     //check that the integrity check failed
-    BOOST_CHECK_EQUAL(SyncSamplingPacket_16ch::integrityCheck(packet), false);
+    BOOST_CHECK_EQUAL(SyncSamplingPacket_v2::integrityCheck(packet), false);
 }
 
 BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_SmallPayload)
@@ -362,7 +362,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_SmallPayload)
     packet.payload(payloadBytes);    //give the packet the payload bytes we created
 
     //check that the integrity check failed
-    BOOST_CHECK_EQUAL(SyncSamplingPacket_16ch::integrityCheck(packet), false);
+    BOOST_CHECK_EQUAL(SyncSamplingPacket_v2::integrityCheck(packet), false);
 }
 
 BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_BadAppID)
@@ -395,7 +395,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_BadAppID)
     packet.payload(payloadBytes);    //give the packet the payload bytes we created
 
     //check that the integrity check failed
-    BOOST_CHECK_EQUAL(SyncSamplingPacket_16ch::integrityCheck(packet), false);
+    BOOST_CHECK_EQUAL(SyncSamplingPacket_v2::integrityCheck(packet), false);
 }
 
 BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_BadStopFlags)
@@ -428,7 +428,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_BadStopFlags)
     packet.payload(payloadBytes);    //give the packet the payload bytes we created
 
     //check that the integrity check failed
-    BOOST_CHECK_EQUAL(SyncSamplingPacket_16ch::integrityCheck(packet), false);
+    BOOST_CHECK_EQUAL(SyncSamplingPacket_v2::integrityCheck(packet), false);
 }
 
 BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_BadDataType)
@@ -461,7 +461,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_BadDataType)
     packet.payload(payloadBytes);    //give the packet the payload bytes we created
 
     //check that the integrity check failed
-    BOOST_CHECK_EQUAL(SyncSamplingPacket_16ch::integrityCheck(packet), false);
+    BOOST_CHECK_EQUAL(SyncSamplingPacket_v2::integrityCheck(packet), false);
 }
 
 BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_BadPacketType)
@@ -494,7 +494,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_BadPacketType)
     packet.payload(payloadBytes);    //give the packet the payload bytes we created
 
     //check that the integrity check failed
-    BOOST_CHECK_EQUAL(SyncSamplingPacket_16ch::integrityCheck(packet), false);
+    BOOST_CHECK_EQUAL(SyncSamplingPacket_v2::integrityCheck(packet), false);
 }
 
 BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_NoChannelsActive)
@@ -525,7 +525,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_NoChannelsActive)
     packet.payload(payloadBytes);    //give the packet the payload bytes we created
 
     //check that the integrity check failed
-    BOOST_CHECK_EQUAL(SyncSamplingPacket_16ch::integrityCheck(packet), false);
+    BOOST_CHECK_EQUAL(SyncSamplingPacket_v2::integrityCheck(packet), false);
 }
 
 BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_InvalidPayloadBytes)
@@ -558,7 +558,7 @@ BOOST_AUTO_TEST_CASE(Sync16chPacket_IntegrityCheck_InvalidPayloadBytes)
     packet.payload(payloadBytes);    //give the packet the payload bytes we created
 
     //check that the integrity check failed
-    BOOST_CHECK_EQUAL(SyncSamplingPacket_16ch::integrityCheck(packet), false);
+    BOOST_CHECK_EQUAL(SyncSamplingPacket_v2::integrityCheck(packet), false);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

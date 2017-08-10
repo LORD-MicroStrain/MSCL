@@ -14,6 +14,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/Communication/Connection.h"
 #include "mscl/MicroStrain/Inertial/PositionOffset.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
+#include "mscl/MicroStrain/Inertial/InertialReturnTypes.h"
 
 namespace mscl
 {
@@ -51,7 +52,25 @@ namespace mscl
         //    The <InertialNode_Impl> class that contains all the implementation logic for the InertialNode class.
         std::shared_ptr<InertialNode_Impl> m_impl;
 
-    public:        
+    public:   
+#ifndef SWIG
+        //Function: doCommand
+        //    Performs a generic Inertial Command, sending the command bytes and waiting for the response.
+        //
+        //Parameters:
+        //    response - A <GenericInertialCommand::Response> that will be used to wait and contain all the command/result information.
+        //    command - The <ByteStream> containing the bytes to send for the command.
+        //    verifySupported - Whether to verify if the command is supported before performing the command (default of true).
+        //
+        //Returns:
+        //    The <GenericInertialCommandResponse> that contains the actual data from the response
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_InertialCmdFailed>: The command has failed.
+        virtual GenericInertialCommandResponse doCommand(GenericInertialCommand::Response& response, const ByteStream& command, bool verifySupported = true) const;
+#endif
+
         //API Function: deviceName
         //    Static function for creating the universal sensor name that should be used for SensorCloud.
         //
@@ -61,6 +80,13 @@ namespace mscl
         //Returns:
         //    The universal sensor name.
         static std::string deviceName(const std::string& serial);
+
+        //API Function: connection
+        //    Gets the <Connection> object that this InertialNode is using.
+        //
+        //Returns:
+        //    The <Connection> object that this InertialNode is using.
+        Connection& connection();
 
         //API Function: features
         //    Gets a reference to the <InertialNodeFeatures> for this device.
@@ -166,7 +192,7 @@ namespace mscl
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: Information failed to be loaded for this Node.
         std::string deviceOptions() const;
-
+        
         //API Function: getDataPackets
         //    Gets up to the requested amount of data packets that have been collected.
         //
@@ -200,7 +226,7 @@ namespace mscl
         //
         //Returns:
         //    The timeout (in milliseconds) used for Inertial commands.
-        uint64 timeout();
+        uint64 timeout() const;
 
         //API Function: name
         //    Gets the name of the InertialNode. This is the universal sensor name that should be used for uploading to SensorCloud.
@@ -231,6 +257,16 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setToIdle();
 
+        //API Function: cyclePower
+        //  Performs the "Device Reset" Inertial command.
+        //  Note: This is essentially the same as unplugging and plugging the device back in.
+        //
+        //Exceptions:
+        //  - <Error_Communication>: There was no response to the command. The command timed out.
+        //  - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //  - <Error_Connection>: A connection error has occurred with the InertialNode.
+        bool cyclePower();
+
         //API Function: resume
         //    Places the Node back in the mode it was in before issuing the <setToIdle> command.
         //    If the <setToIdle> command was not issued, then the device is placed in default mode.
@@ -240,6 +276,36 @@ namespace mscl
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void resume();
+
+        //API Function: saveSettingsAsStartup
+        //  Saves all of the current settings as the Node's startup settings.
+        //  Note: A brief data disturbance may occur when calling this command.
+        //
+        //Exceptions:
+        //  - <Error_Communication>: There was no response to the command. The command timed out.
+        //  - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //  - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void saveSettingsAsStartup();
+
+        //API Function: loadStartupSettings
+        //  Loads the saved startup settings onto the Node as its current settings.
+        //  This function is useful if you have powered on the Node, made changes to its settings, and
+        //  want to get back to its startup settings.
+        //
+        //Exceptions:
+        //  - <Error_Communication>: There was no response to the command. The command timed out.
+        //  - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //  - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void loadStartupSettings();
+
+        //API Function: loadFactoryDefaultSettings
+        //  Loads the factory default settings onto the Node as its current settings.
+        //
+        //Exceptions:
+        //  - <Error_Communication>: There was no response to the command. The command timed out.
+        //  - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //  - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void loadFactoryDefaultSettings();
 
         //API Function: getDataRateBase
         //    Gets the Data decimation base for the data rate calculations of the specified <InertialType>.
@@ -477,6 +543,205 @@ namespace mscl
         //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setAntennaOffset(const PositionOffset& offset);
+
+        //API Function: getGNSSAssistedFixControl
+        //    Gets the GNSS Assisted Fix Control.
+        //
+        //Returns:
+        //    bool indicating if assisted fix is enabled.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        bool getGNSSAssistedFixControl();
+
+        //API Function: setGNSSAssistedFixControl
+        //    Sets the GNSS Assisted Fix Control.
+        //
+        //Parameters:
+        //    enableAssistedFix - bool to either enable or disable assisted fix control for GNSS (true == enable).
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+		void setGNSSAssistedFixControl(bool enableAssistedFix);
+
+        //API Function: getGNSSAssistTimeUpdate
+        //    Gets the GNSS Assisted Time Update.
+        //
+        //Returns:
+        //    The GNSS Assist <TimeUpdate>.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        TimeUpdate getGNSSAssistTimeUpdate();
+
+        //API Function: setGNSSAssistTimeUpdate
+        //    Sets the GNSS Assist Time Update.
+        //
+        //Parameters:
+        //    timeUpdate - The <TimeUpdate> object containing the new time to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setGNSSAssistTimeUpdate(const TimeUpdate& timeUpdate);
+
+        //API Function: getGPSTimeUpdate
+        //    Gets the GPS time update.
+        //
+        //Parameters:
+        //    timeFrame - The <InertialTypes::TimeFrame> object specifying what current time value to get, either weeks or seconds.
+        //
+        //Returns:
+        //    The current time for the specified value type.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        mscl::uint32 getGPSTimeUpdate(InertialTypes::TimeFrame timeFrame);
+
+        //API Function: setGPSTimeUpdate
+        //    Sets the GPS Time Update.
+        //
+        //Parameters:
+        //    offset - The <TimeFrame> object specifying what current time value to set, either weeks or seconds.
+        //    time - the current time.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setGPSTimeUpdate(InertialTypes::TimeFrame, mscl::uint32 timeData);
+
+        //API Function: setConstellationSettings
+        //    Sets the GNSS Constellation Settings.
+        //
+        //Parameters:
+        //    dataToUse - The <ConstellationSettingsData> object containing the data to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void setConstellationSettings(const ConstellationSettingsData& dataToUse);
+
+        //API Function: constellationSettings
+        //    Gets the GNSS Constellation Settings.
+        //
+        //Return:
+        //    The <ConstellationSettingsData> object containing the data.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        ConstellationSettingsData getConstellationSettings();
+
+        //API Function: setSBASSettings
+        //    Sets the GNSS SBAS Settings.
+        //
+        //Parameters:
+        //    dataToUse - The <SBASSettingsData> object containing the data to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void setSBASSettings(const SBASSettingsData& dataToUse);
+
+        //API Function: getSBASSettings
+        //    Gets the GNSS SBAS Settings.
+        //
+        //Return:
+        //    The <SBASSettingsData> object containing the data.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        SBASSettingsData getSBASSettings();
+
+        //API Function: setAccelerometerBias
+        //    Sets the Accelerometer Bias.
+        //
+        //Parameters:
+        //    biasVector - The <GeometricVector> object containing the vector to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void setAccelerometerBias(const GeometricVector& biasVector);
+
+        //API Function: getAccelerometerBias
+        //    Gets the Accelerometer Bias.
+        //
+        //Returns:
+        //    The <GeometricVector> object containing the vector.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVector getAccelerometerBias();
+
+        //API Function: setGyroBias
+        //    Sets the Gyro Bias.
+        //
+        //Parameters:
+        //    The <GeometricVector> object containing the vector to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void setGyroBias(const GeometricVector& biasVector);
+
+        //API Function: getGyroBias
+        //    Gets the Gyro Bias vector.
+        //
+        //Return:
+        //    The <GeometricVector> object containing the vector.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVector getGyroBias();
+
+        //API Function: captureGyroBias
+        //    Runs the Gyro Bias capture routine on the inertial device.
+        //
+        //Parameters:
+        //    The <uint16> samplingTime.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        GeometricVector captureGyroBias(const uint16& samplingTime);
     };
 
 }

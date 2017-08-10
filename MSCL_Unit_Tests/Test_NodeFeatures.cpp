@@ -15,7 +15,7 @@ BOOST_AUTO_TEST_SUITE(NodeFeatures_Test)
 
 NodeInfo createInfo(WirelessModels::NodeModel node)
 {
-    return NodeInfo(Version(9, 9), node, 0, WirelessTypes::region_usa);
+    return NodeInfo(Version(9, 9), node, WirelessTypes::region_usa);
 }
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_create)
@@ -164,7 +164,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_supportsChannel)
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_minTimeBetweenBursts)
 {
-    NodeInfo info(Version(1, 0), WirelessModels::node_vLink, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(1, 0), WirelessModels::node_vLink, WirelessTypes::region_usa);
 
     std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
@@ -176,25 +176,25 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_minTimeBetweenBursts)
     WirelessTypes::DataFormat format_float = WirelessTypes::dataFormat_cal_float;
     WirelessTypes::DataMode mode_raw = WirelessTypes::dataMode_raw;
     WirelessTypes::DataMode mode_derived = WirelessTypes::dataMode_derived;
-    WirelessTypes::DataMode mode_rawDerived = WirelessTypes::dataMode_raw_derived;
+    WirelessTypes::CommProtocol lxrs = WirelessTypes::commProtocol_lxrs;
 
-    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs4, derivedMasks, SampleRate::Hertz(256), 100) == TimeSpan::Seconds(5));
-    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs4, derivedMasks, SampleRate::Hertz(32), 100) == TimeSpan::Seconds(8));
-    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs4, derivedMasks, SampleRate::Hertz(32), 200) == TimeSpan::Seconds(11));
-    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_float, chs4, derivedMasks, SampleRate::Hertz(32), 200) == TimeSpan::Seconds(12));
-    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs4, derivedMasks, SampleRate::Hertz(2048), 100) == TimeSpan::Seconds(5));
-    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs2, derivedMasks, SampleRate::Hertz(64), 100) == TimeSpan::Seconds(6));
+    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs4, derivedMasks, SampleRate::Hertz(256), 100, lxrs) == TimeSpan::Seconds(5));
+    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs4, derivedMasks, SampleRate::Hertz(32), 100, lxrs) == TimeSpan::Seconds(8));
+    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs4, derivedMasks, SampleRate::Hertz(32), 200, lxrs) == TimeSpan::Seconds(11));
+    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_float, chs4, derivedMasks, SampleRate::Hertz(32), 200, lxrs) == TimeSpan::Seconds(12));
+    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs4, derivedMasks, SampleRate::Hertz(2048), 100, lxrs) == TimeSpan::Seconds(5));
+    BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs2, derivedMasks, SampleRate::Hertz(64), 100, lxrs) == TimeSpan::Seconds(6));
 
     derivedMasks.emplace(WirelessTypes::derived_rms, ChannelMask(255));
     derivedMasks.emplace(WirelessTypes::derived_peakToPeak, ChannelMask(255));
     derivedMasks.emplace(WirelessTypes::derived_ips, ChannelMask(255));
     derivedMasks.emplace(WirelessTypes::derived_crestFactor, ChannelMask(255));
-    BOOST_CHECK(features->minTimeBetweenBursts(mode_derived, format_uint16, chs4, derivedMasks, SampleRate::Hertz(32), 100) == TimeSpan::Seconds(8));
+    BOOST_CHECK(features->minTimeBetweenBursts(mode_derived, format_uint16, chs4, derivedMasks, SampleRate::Hertz(32), 100, lxrs) == TimeSpan::Seconds(8));
 }
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_maxSampleRate_vLink)
 {
-    NodeInfo info(Version(1, 0), WirelessModels::node_vLink, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(1, 0), WirelessModels::node_vLink, WirelessTypes::region_usa);
 
     std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_maxSampleRate_vLink)
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_maxSampleRate_gLink2)
 {
-    NodeInfo info(Version(1, 0), WirelessModels::node_gLinkII_10g_in, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(1, 0), WirelessModels::node_gLinkII_10g_in, WirelessTypes::region_usa);
 
     std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
@@ -238,7 +238,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_maxSampleRate_gLink2)
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_maxSampleRate_gLink)
 {
-    NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, WirelessTypes::region_usa);
 
     std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
@@ -262,7 +262,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_maxSampleRate_gLink)
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeNumSweeps)
 {
-    NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, WirelessTypes::region_usa);
     std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
     uint32 sweeps = 1;
@@ -284,7 +284,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeNumSweeps)
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeTimeBetweenBursts)
 {
-    NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, WirelessTypes::region_usa);
     std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
     //standard
@@ -310,10 +310,10 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeTimeBetweenBursts)
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeEventDuration)
 {
-    NodeInfo info1(Version(8, 0), WirelessModels::node_wirelessImpactSensor, 0, WirelessTypes::region_usa);
+    NodeInfo info1(Version(8, 0), WirelessModels::node_wirelessImpactSensor, WirelessTypes::region_usa);
     std::shared_ptr<NodeFeatures> features1 = NodeFeatures::create(info1);
 
-    NodeInfo info2(Version(10, 0), WirelessModels::node_wirelessImpactSensor, 0, WirelessTypes::region_usa);
+    NodeInfo info2(Version(10, 0), WirelessModels::node_wirelessImpactSensor, WirelessTypes::region_usa);
     std::shared_ptr<NodeFeatures> features2 = NodeFeatures::create(info2);
 
     uint32 f1 = 1000;
@@ -337,7 +337,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeEventDuration)
 BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_usa_brazil)
 {
     {
-        NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, 0, WirelessTypes::region_usa);
+        NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, WirelessTypes::region_usa);
         std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
         WirelessTypes::TransmitPowers powers = features->transmitPowers();
@@ -350,7 +350,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_usa_brazil)
     }
 
     {
-        NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, 0, WirelessTypes::region_brazil);
+        NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, WirelessTypes::region_brazil);
         std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
         WirelessTypes::TransmitPowers powers = features->transmitPowers();
@@ -366,7 +366,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_usa_brazil)
 BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_europe_other)
 {
     {
-        NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, 0, WirelessTypes::region_europe);
+        NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, WirelessTypes::region_europe);
         std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
         WirelessTypes::TransmitPowers powers = features->transmitPowers();
@@ -378,7 +378,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_europe_other)
     }
 
     {
-        NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, 0, WirelessTypes::region_other);
+        NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, WirelessTypes::region_other);
         std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
         WirelessTypes::TransmitPowers powers = features->transmitPowers();
@@ -393,7 +393,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_europe_other)
 BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_japan)
 {
     {
-        NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, 0, WirelessTypes::region_japan);
+        NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, WirelessTypes::region_japan);
         std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
         WirelessTypes::TransmitPowers powers = features->transmitPowers();
@@ -406,7 +406,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_japan)
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_filterSettlingTime_a)
 {
-    NodeInfo info(Version(1, 0), WirelessModels::node_tcLink_6ch, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(1, 0), WirelessModels::node_tcLink_6ch, WirelessTypes::region_usa);
 
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
@@ -431,7 +431,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_filterSettlingTime_a)
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_filterSettlingTime_b)
 {
-    NodeInfo info(Version(1, 0), WirelessModels::node_tcLink_1ch, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(1, 0), WirelessModels::node_tcLink_1ch, WirelessTypes::region_usa);
 
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
@@ -457,7 +457,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_filterSettlingTime_b)
 BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeSensorDelay_v1)
 {
     //Tests normalizing sensor delay (v1 only supports milliseconds)
-    NodeInfo info(Version(1, 0), WirelessModels::node_sgLink, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(1, 0), WirelessModels::node_sgLink, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
     BOOST_CHECK_EQUAL(features->minSensorDelay(), 1 * 1000);
@@ -473,7 +473,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeSensorDelay_v1)
 BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeSensorDelay_v2)
 {
     //Tests normalizing sensor delay (v2 only supports microseconds)
-    NodeInfo info(Version(1, 0), WirelessModels::node_shmLink, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(1, 0), WirelessModels::node_shmLink, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
     BOOST_CHECK_EQUAL(features->minSensorDelay(), 1);
@@ -487,7 +487,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeSensorDelay_v2)
 BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeSensorDelay_v3)
 {
     //Tests normalizing sensor delay (v3 supports seconds and milliseconds)
-    NodeInfo info(Version(1, 0), WirelessModels::node_vLink, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(1, 0), WirelessModels::node_vLink, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
     BOOST_CHECK_EQUAL(features->minSensorDelay(), 1 * 1000);
@@ -509,7 +509,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeSensorDelay_v3)
 BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeSensorDelay_v4)
 {
     //Tests normalizing sensor delay (v3 supports seconds and milliseconds)
-    NodeInfo info(Version(11, 0), WirelessModels::node_vLink200, 0, WirelessTypes::region_usa);
+    NodeInfo info(Version(11, 0), WirelessModels::node_vLink200, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
     BOOST_CHECK_EQUAL(features->minSensorDelay(), 1);

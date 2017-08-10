@@ -132,7 +132,10 @@ namespace mscl
         //    bytes - A <Bytes> vector to hold the result.
         //    timeout - the timeout, in milliseconds, to wait for the data if necessary (default of 0).
         //    maxBytes - The maximum number of bytes to return. If this is 0 (default), all bytes will be returned.
-        virtual void getRawBytes(Bytes& bytes, uint32 timeout = 0, uint32 maxBytes = 0) = 0;
+        //    minBytes - The minimum number of bytes to parse before returning.
+        virtual void getRawBytes(Bytes& bytes, uint32 timeout = 0, uint32 maxBytes = 0, uint32 minBytes = 0) = 0;
+
+        virtual void getRawBytesWithPattern(Bytes& bytes, const uint8* pattern, size_t length, uint32 timeout = 0) = 0;
 
         //Function: debugMode
         //  Puts the connection into "Debug Mode." 
@@ -359,7 +362,10 @@ namespace mscl
         //    bytes - A <Bytes> vector to hold the result.
         //    timeout - the timeout, in milliseconds, to wait for the data if necessary (default of 0).
         //    maxBytes - The maximum number of bytes to return. If this is 0 (default), all bytes will be returned.
-        virtual void getRawBytes(Bytes& bytes, uint32 timeout = 0, uint32 maxBytes = 0) final;
+        //    minBytes - The minimum number of bytes to parse before returning.
+        virtual void getRawBytes(Bytes& bytes, uint32 timeout = 0, uint32 maxBytes = 0, uint32 minBytes = 0) final;
+
+        virtual void getRawBytesWithPattern(Bytes& bytes, const uint8* pattern, size_t length, uint32 timeout = 0) final;
 
         //Function: debugMode
         //  Puts the connection into "Debug Mode." 
@@ -588,8 +594,9 @@ namespace mscl
             m_errorCode = e.code();
             m_errorMsg = e.what();
         }
-        catch(Error&)
+        catch(Error& e)
         {
+            std::cout << e.what() << std::endl;
             //buffer doesn't have more room to write, 
             //shouldn't happen when starting the read thread
             assert(false);
@@ -662,7 +669,7 @@ namespace mscl
     }
 
     template <typename Comm_Object>
-    void Connection_Impl<Comm_Object>::getRawBytes(Bytes& bytes, uint32 timeout, uint32 maxBytes)
+    void Connection_Impl<Comm_Object>::getRawBytes(Bytes& bytes, uint32 timeout, uint32 maxBytes, uint32 minBytes)
     {
         //create a lock for thread safety
         std::unique_lock<std::mutex> lock(m_rawDataMutex);
@@ -670,11 +677,18 @@ namespace mscl
         //set the number of bytes to all the available bytes
         size_t numBytes = m_rawByteBuffer.size();
 
+        uint64 timeWaited = 0;
+        std::chrono::high_resolution_clock::time_point timepoint;
+
         //if we don't have any bytes in the buffer and the user specified a timeout
-        if(numBytes == 0 && timeout > 0)
+        while((numBytes == 0 || numBytes < minBytes) && timeout > timeWaited)
         {
+            timepoint = std::chrono::high_resolution_clock::now();
+
             //wait for the timeout or data to come in
-            m_rawByteBufferCondition.wait_for(lock, std::chrono::milliseconds(timeout));
+            m_rawByteBufferCondition.wait_for(lock, std::chrono::milliseconds(timeout - timeWaited));
+
+            timeWaited += std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - timepoint).count();
 
             //update the number of bytes to our new buffer size, if any
             numBytes = m_rawByteBuffer.size();
@@ -700,6 +714,47 @@ namespace mscl
             bytes.push_back(m_rawByteBuffer.front());
             m_rawByteBuffer.pop_front();
         }
+    }
+
+    template <typename Comm_Object>
+    void Connection_Impl<Comm_Object>::getRawBytesWithPattern(Bytes& bytes, const uint8* pattern, size_t length, uint32 timeout)
+    {
+        //create a lock for thread safety
+        std::unique_lock<std::mutex> lock(m_rawDataMutex);
+
+        auto timepoint = std::chrono::high_resolution_clock::now();
+
+        uint64 timeWaited = 0;
+
+        do
+        {
+            // Try to find the pattern in the buffer. Will not find partial matches at the end as they require more data.
+            auto result = std::search(m_rawByteBuffer.begin(), m_rawByteBuffer.end(), pattern, pattern + length);
+
+            // Found a match?
+            if(result != m_rawByteBuffer.end())
+            {
+                size_t endPos = (result - m_rawByteBuffer.begin()) + length - 1;
+
+                //add all of the bytes before and up to the end of the matched pattern to the result Bytes vector
+                for(size_t byteItr = 0; byteItr <= endPos; ++byteItr)
+                {
+                    bytes.push_back(m_rawByteBuffer.front());
+                    m_rawByteBuffer.pop_front();
+                }
+
+                return;
+            }
+
+            m_rawByteBufferCondition.wait_for(lock, std::chrono::milliseconds(timeout - timeWaited));
+
+            // Update the timeout based on how long we just spent waiting.
+            auto now = std::chrono::high_resolution_clock::now();
+            timeWaited += std::chrono::duration_cast<std::chrono::milliseconds>(now - timepoint).count();
+            timepoint = now;
+
+        }
+        while(timeWaited < timeout);
     }
 
     template <typename Comm_Object>

@@ -37,14 +37,31 @@ namespace mscl
         m_baseStation->writeEeprom(location, val);
     }
 
-    Version BaseStationEepromHelper::read_asppVersion() const
+    Version BaseStationEepromHelper::read_asppVersion(WirelessTypes::CommProtocol commProtocol) const
     {
+        static const Version MIN_BASE_FW_SUPPORTS_ASPP_VER(3, 39);
+
+        //Don't check the ASPP Version eeprom unless the firmware version supports that eeprom
+        //Note: This is because the Base can be downgraded but still keep its value in the ASPP Version eeprom which is invalid.
+        Version fwVersion = read_fwVersion();
+        if(fwVersion < MIN_BASE_FW_SUPPORTS_ASPP_VER)
+        {
+            //convert the firmware version of the ASPP version
+            return WirelessProtocol::asppVersionFromBaseFw(fwVersion);
+        }
+
         uint16 asppValue = 0;
 
         try
         {
-            //read the ASPP vesrion eeprom
-            asppValue = read(BaseStationEepromMap::ASPP_VER).as_uint16();
+            if(commProtocol == WirelessTypes::commProtocol_lxrsPlus)
+            {
+                asppValue = read(BaseStationEepromMap::ASPP_VER_LXRS_PLUS).as_uint16();
+            }
+            else
+            {
+                asppValue = read(BaseStationEepromMap::ASPP_VER_LXRS).as_uint16();
+            }
         }
         catch(Error_NotSupported&)
         {
@@ -56,16 +73,79 @@ namespace mscl
         //if the aspp version is uninitialized
         if(asppValue == 0xFFFF || asppValue == 0xAAAA || asppValue == 0)
         {
-            Version fwVersion = read_fwVersion();
+            //if the ASPP version isn't supported in EEPROM, and we are looking for 250kpbs aspp version
+            if(commProtocol == WirelessTypes::commProtocol_lxrs)
+            {
+                //convert the firmware version of the ASPP version
+                return WirelessProtocol::asppVersionFromBaseFw(fwVersion);
+            }
 
-            //convert the firmware version of the ASPP version
-            return WirelessProtocol::asppVersionFromBaseFw(fwVersion);
+            //if we have an invalid value (or not supported) and we are looking for lxrs+
+            if(commProtocol == WirelessTypes::commProtocol_lxrsPlus)
+            {
+                return Version(3, 0);
+            }
+            else
+            {
+                assert(false);  //need to add support for a new radio mode
+                return Version(1, 0);
+            }
         }
         else
         {
             //ASPP version is good in eeprom, just return that version number
             return Version(Utils::msb(asppValue), Utils::lsb(asppValue));
         }
+    }
+
+    WirelessTypes::CommProtocol BaseStationEepromHelper::read_commProtocol() const
+    {
+        uint16 radioValue = 0;
+
+        if(!m_baseStation->features().supportsCommProtocolEeprom())
+        {
+            return WirelessTypes::commProtocol_lxrs;
+        }
+
+        try
+        {
+            radioValue = read(BaseStationEepromMap::COMM_PROTOCOL).as_uint16();
+        }
+        catch(Error_NotSupported&)
+        {
+            //if the device doesn't support the radio config eeprom, it supports LXRS only
+            return WirelessTypes::commProtocol_lxrs;
+        }
+
+        switch(radioValue)
+        {
+            case WirelessTypes::commProtocol_lxrsPlus:
+            case 2:
+                return WirelessTypes::commProtocol_lxrsPlus;
+
+            case WirelessTypes::commProtocol_lxrs:
+            case 0xFFFF:
+            case 0xAAAA:
+            case 250:
+            default:
+                return WirelessTypes::commProtocol_lxrs;
+        }
+    }
+
+    void BaseStationEepromHelper::write_commProtocol(WirelessTypes::CommProtocol commProtocol)
+    {
+        if(!m_baseStation->features().supportsCommProtocolEeprom())
+        {
+            if(m_baseStation->features().supportsCommunicationProtocol(commProtocol))
+            {
+                //cannot write the eeprom, but the Base supports the given protocol, just silently return
+                return;
+            }
+
+            throw Error_NotSupported("The Communication Protocol cannot be written to the BaseStation.");
+        }
+
+        write(BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16(static_cast<uint16>(commProtocol)));
     }
 
     Version BaseStationEepromHelper::read_fwVersion() const

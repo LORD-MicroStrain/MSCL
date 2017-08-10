@@ -357,7 +357,7 @@ namespace mscl
         //    to - The 0-based end position in the bytes vector to end calculating the checksum (includes this byte)
         //
         //Returns:
-        //    The simple checksum (addition of bytes) of the ByteStream
+        //    The simple checksum (addition of bytes) of the ByteStream for the given positions.
         //
         //Exceptions:
         //    - std::out_of_range: The index requested is out of range
@@ -371,11 +371,35 @@ namespace mscl
         //    to - The 0-based end position in the bytes vector to end calculating the checksum (includes this byte)
         //
         //Returns:
-        //    The Fletcher checksum of the ByteStream
+        //    The Fletcher checksum of the ByteStream for the given positions.
         //
         //Exceptions:
         //    - std::out_of_range: The index requested is out of range
         uint16 calculateFletcherChecksum(std::size_t from, std::size_t to) const;
+
+        //Function: calculateCrcChecksum
+        //  Calculates the 32-bit CRC with polynomial 0x04C11DB7, an initial value of 0xFFFFFFFF, and inverted output.
+        //
+        //Parameters:
+        //    from - The 0-based starting position in the bytes vector to start calculating the checksum (includes this byte)
+        //    to - The 0-based end position in the bytes vector to end calculating the checksum (includes this byte)
+        //
+        //Returns:
+        //  The CRC checksum of the ByteStream for the given positions.
+        //
+        //Exceptions:
+        //    - std::out_of_range: The index requested is out of range
+        uint32 calculateCrcChecksum(std::size_t from, std::size_t to) const;
+
+        //Function: calculateCrcChecksum
+        //  Calculates the 32-bit CRC with polynomial 0x04C11DB7, an initial value of 0xFFFFFFFF, and inverted output.
+        //
+        //Returns:
+        //  The CRC checksum of all bytes in the ByteStream.
+        //
+        //Exceptions:
+        //    - std::out_of_range: The index requested is out of range
+        uint32 calculateCrcChecksum() const;
 
     private:
         //Function: verifyBytesInStream

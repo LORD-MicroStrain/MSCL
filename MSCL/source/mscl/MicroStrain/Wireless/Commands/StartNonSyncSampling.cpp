@@ -16,7 +16,7 @@ namespace mscl
         cmd.append_uint8(0xAA);                              //Start of Packet
         cmd.append_uint8(0x05);                              //Delivery Stop Flag
         cmd.append_uint8(0x00);                              //App Data Type
-        cmd.append_uint16(nodeAddress);                      //Node address    (2 bytes)
+        cmd.append_uint16(static_cast<uint16>(nodeAddress)); //Node address    (2 bytes)
         cmd.append_uint8(0x02);                              //Payload length
         cmd.append_uint16(WirelessProtocol::cmdId_startLdc_v1); //Command ID    (2 bytes)
 

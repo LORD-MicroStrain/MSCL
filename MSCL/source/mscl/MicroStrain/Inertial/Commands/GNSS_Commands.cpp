@@ -19,7 +19,7 @@ namespace mscl
     }
 
     GetGnssDataRateBase::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        GenericInertialCommand::Response(collector, true, true, "Get GNSS Data Rate Base")
+        GenericInertialCommand::Response(InertialTypes::CMD_GET_GNSS_RATE_BASE, collector, true, true, "Get GNSS Data Rate Base")
     {}
 
     uint16 GetGnssDataRateBase::Response::parseResponse(const GenericInertialCommandResponse& response) const
@@ -35,7 +35,7 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_getCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::READ_BACK_CURRENT_SETTINGS));
 
         //"get" has no channels, so add 0 
         fieldData.append_uint8(0);
@@ -50,7 +50,7 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(Inertial_Commands::cmd_setCurrent));
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::USE_NEW_SETTINGS));
 
         //add the number of channels
         fieldData.append_uint8(static_cast<uint8>(channels.size()));
@@ -77,7 +77,7 @@ namespace mscl
     }
 
     GnssMessageFormat::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
-        GenericInertialCommand::Response(collector, true, dataResponse, "GNSS Message Format")
+        GenericInertialCommand::Response(InertialTypes::CMD_GNSS_MESSAGE_FORMAT, collector, true, dataResponse, "GNSS Message Format")
     {}
 
     InertialChannels GnssMessageFormat::Response::parseResponse(const GenericInertialCommandResponse& response, uint16 sampleRateBase) const

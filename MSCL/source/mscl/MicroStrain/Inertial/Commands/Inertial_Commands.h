@@ -19,24 +19,6 @@ namespace mscl
     class Inertial_Commands
     {
     public:
-        //Enums: InertialCmdSelector
-        //    The possible command function selectors for Inertial commands
-        //
-        //    cmd_setCurrent                - 0x01 - Use new settings as the current settings
-        //    cmd_getCurrent                - 0x02 - Read back the current settings
-        //    cmd_saveCurrentAsStartup    - 0x03 - Save the current settings as the startup settings
-        //    cmd_loadSavedToCurrent        - 0x04 - Load the saved startup settings as the current settings
-        //    cmd_resetCurrentToDefault    - 0x05 - Reset the current settings to the factory default settings
-        enum InertialCmdSelector
-        {
-            cmd_setCurrent = 0x01,
-            cmd_getCurrent = 0x02,
-            cmd_saveCurrentAsStartup = 0x03,
-            cmd_loadSavedToCurrent = 0x04,
-            cmd_resetCurrentToDefault = 0x05
-        };
-
-    public:
         //Function: parseData_singleBool
         //    Parses the data for a single boolean flag response.
         //
@@ -82,6 +64,8 @@ namespace mscl
         //Returns:
         //    The data rate base parsed from the response
         static uint8 parseData_CommunicationMode(const GenericInertialCommandResponse& response);
+
+//        static uint8 parseData_AssistedFixOptions(const GenericInertialCommandResponse& response);
 
         //Function: parseData_MessageFormat
         //    Parses the data from a MessageFormat response

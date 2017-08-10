@@ -372,6 +372,10 @@ namespace mscl
 
         m_partialDownload = true;
 
+        BaseStation& base = m_node.getBaseStation();
+
+        uint16 numBytesRead = 0;
+
         //while we haven't found a full block of data in m_extraData
         while(!verifyBlock(m_extraData, checksumPos, needMoreData))
         {
@@ -384,8 +388,10 @@ namespace mscl
                 return;
             }
 
+            numBytesRead = 0;
+
             //get the datalog data from the current memory address, appending it to m_extraData
-            if(!m_node.getBaseStation().node_getDatalogData(m_node.protocol(), m_node.nodeAddress(), m_downloadAddress, m_extraData))
+            if(!base.node_getDatalogData(m_node.protocol(base.communicationProtocol()), m_node.nodeAddress(), m_downloadAddress, m_extraData, numBytesRead))
             {
                 //the download failed, throw an exception
                 throw Error_NodeCommunication(m_node.nodeAddress(), "Failed to download data from the Node.");
@@ -407,8 +413,8 @@ namespace mscl
                     //      which would prevent verifyBlock from being called repeatedly when not needed
                 }
 
-                //move the address to the next point we need to download from (can read FLASH_CHUNK_SIZE bytes at a time)
-                m_downloadAddress += FLASH_CHUNK_SIZE;
+                //move the address to the next point we need to download from
+                m_downloadAddress += numBytesRead;
                 normalizeAddress();
             }
             else
@@ -428,7 +434,7 @@ namespace mscl
         if(downloadedData && bytesLeftToDownload() == 0)
         {
             //throw away any extra bytes we downloaded passed the last address
-            m_extraData.resize(m_extraData.size() - (m_lastAddress - m_downloadAddress));
+            m_extraData.resize(m_extraData.size() - (m_downloadAddress - m_lastAddress));
         }
 
         //copy the bytes from m_extraData into the provided buffer (throw away the checksum)
@@ -531,6 +537,11 @@ namespace mscl
 
     float NodeMemory_v2::percentComplete()
     {
+        if(m_totalBytes == 0)
+        {
+            return 100.0f;
+        }
+
         return (static_cast<float>(m_totalBytes - bytesRemaining()) / static_cast<float>(m_totalBytes)) * 100.0f;
     }
 }
