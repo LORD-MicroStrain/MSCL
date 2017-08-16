@@ -13,7 +13,7 @@ add_custom_command(
   OUTPUT Output/C++/Release/libmscl.so
   COMMAND bjam MSCL//stage_c++ release -j 4
   )
-add_custom_target(mscl_lib DEPENDS Output/C++/Release/libmscl.so)
+add_custom_target(mscl_lib ALL DEPENDS Output/C++/Release/libmscl.so)
 
 install(FILES Output/C++/Release/libmscl.so RENAME libmscl.so DESTINATION lib)
 install(DIRECTORY MSCL/source/mscl DESTINATION include FILES_MATCHING PATTERN *.h)
