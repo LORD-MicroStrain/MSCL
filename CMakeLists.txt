@@ -1,7 +1,3 @@
-#
-# Copyright (C) 2016-2018, Abundant Robotics (R)
-#
-
 project(Mscl LANGUAGES C)
 
 cmake_minimum_required(VERSION 3.8)
