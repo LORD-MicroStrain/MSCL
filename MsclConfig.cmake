@@ -3,7 +3,7 @@
 find_library(MSCL_LIB NAMES mscl)
 find_path(MSCL_INCLUDE NAMES mscl/Version.h)
 
-find(Boost REQUIRED COMPONENTS system filesystem)
+find_package(Boost REQUIRED COMPONENTS system filesystem)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Mscl DEFAULT_MSG MSCL_LIB MSCL_INCLUDE)

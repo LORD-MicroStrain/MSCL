@@ -13,4 +13,4 @@ add_custom_target(mscl_lib ALL DEPENDS Output/C++/Release/libmscl.so)
 
 install(FILES Output/C++/Release/libmscl.so RENAME libmscl.so DESTINATION lib)
 install(DIRECTORY MSCL/source/mscl DESTINATION include FILES_MATCHING PATTERN *.h)
-install(FILES FindMscl.cmake DESTINATION share/cmake/mscl/)
+install(FILES MsclConfig.cmake DESTINATION share/cmake/mscl/)
