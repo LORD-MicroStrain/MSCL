@@ -153,6 +153,8 @@ using gcc
 :	host
 :	g++
 :	<cxxflags>-I/usr/include/python2.7
+	<cxxflags>-I/thirdParty/boost_1_61_0
+	<linkflags>-L/thirdParty/boost_1_61_0/stage/lib
 ;
 ```
 
