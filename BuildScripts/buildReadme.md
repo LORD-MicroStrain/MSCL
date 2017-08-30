@@ -122,8 +122,9 @@ del Output\Python\_mscl.lib
 ### Dependencies
 
 - gcc 4.9.1-5
-- libboost1.61-dev
-- libboost1.61-tools-dev
+- libboost1.58-dev
+- libboost1.58-tools-dev
+- 7zip
 - python2.7 (Python only)
 - python2.7-dev (Python only)
 - swig 3.0.6 (Python only)
@@ -153,8 +154,6 @@ using gcc
 :	host
 :	g++
 :	<cxxflags>-I/usr/include/python2.7
-	<cxxflags>-I/thirdParty/boost_1_61_0
-	<linkflags>-L/thirdParty/boost_1_61_0/stage/lib
 ;
 ```
 
