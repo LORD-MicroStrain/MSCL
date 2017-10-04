@@ -25,6 +25,6 @@ The library is currently available in:
 [FAQs](https://github.com/LORD-MicroStrain/MSCL/blob/master/FAQs.md)
 
 #### License
-MIT License - see the LICENSE.txt file in the source distribution.
+MIT License - see the LICENSE file in the source distribution.
 
 Copyright (C) 2015-2017 LORD Corporation. All Rights Reserved.
