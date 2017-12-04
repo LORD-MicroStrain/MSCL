@@ -31,6 +31,6 @@ OpenSSL - This product includes software developed by the OpenSSL Project for us
 Boost - see the `License_Boost.txt` file in the source distribution.
 
 #### License
-MIT License - see the `LICENSE.txt` file in the source distribution.
+MIT License - see the LICENSE file in the source distribution.
 
 Copyright (C) 2015-2017 LORD Corporation. All Rights Reserved.
