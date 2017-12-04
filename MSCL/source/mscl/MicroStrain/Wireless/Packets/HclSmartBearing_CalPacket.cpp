@@ -11,6 +11,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/SampleUtils.h"
 #include "mscl/MicroStrain/Vector.h"
 #include "mscl/TimeSpan.h"
+#include "mscl/TimestampCounter.h"
 #include "mscl/Types.h"
 
 namespace mscl
@@ -60,8 +61,7 @@ namespace mscl
 
         m_numSweeps = (m_payload.size() - DATA_START) / m_sweepSize;
 
-        //get the value to increment the timestamp by for each sweep (the timestamp from the packet only applies to the first sweep)
-        const uint64 TS_INCREMENT = currentRate.samplePeriod().getNanoseconds();
+        TimestampCounter tsCounter(currentRate, realTimestamp);
 
         //if we still have no sweeps, there was an error in the packet
         if(m_numSweeps == 0) { throw Error("Invalid Packet"); }
@@ -82,7 +82,10 @@ namespace mscl
             sweep.calApplied(true);
 
             //build this sweep's timestamp
-            sweep.timestamp(Timestamp(realTimestamp + (TS_INCREMENT * sweepItr)));
+            sweep.timestamp(Timestamp(tsCounter.time()));
+
+            //move to the next timestamp
+            tsCounter.advance();
 
             ChannelData chData;
             chData.reserve(15);

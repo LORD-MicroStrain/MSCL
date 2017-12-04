@@ -268,6 +268,23 @@ namespace mscl
             case channel_14_crestFactor:            return "ch14_crestFactor";
             case channel_15_crestFactor:            return "ch15_crestFactor";
             case channel_16_crestFactor:            return "ch16_crestFactor";
+            case channel_1_mean:                    return "ch1_mean";
+            case channel_2_mean:                    return "ch2_mean";
+            case channel_3_mean:                    return "ch3_mean";
+            case channel_4_mean:                    return "ch4_mean";
+            case channel_5_mean:                    return "ch5_mean";
+            case channel_6_mean:                    return "ch6_mean";
+            case channel_7_mean:                    return "ch7_mean";
+            case channel_8_mean:                    return "ch8_mean";
+            case channel_9_mean:                    return "ch9_mean";
+            case channel_10_mean:                   return "ch10_mean";
+            case channel_11_mean:                   return "ch11_mean";
+            case channel_12_mean:                   return "ch12_mean";
+            case channel_13_mean:                   return "ch13_mean";
+            case channel_14_mean:                   return "ch14_mean";
+            case channel_15_mean:                   return "ch15_mean";
+            case channel_16_mean:                   return "ch16_mean";
+
 
             default:
                 assert(false);

@@ -20,7 +20,6 @@ namespace mscl
         addCalCoeffChannelGroup(5, NodeEepromMap::CH_ACTION_SLOPE_5, NodeEepromMap::CH_ACTION_ID_5);
         addCalCoeffChannelGroup(6, NodeEepromMap::CH_ACTION_SLOPE_6, NodeEepromMap::CH_ACTION_ID_6);
         addCalCoeffChannelGroup(7, NodeEepromMap::CH_ACTION_SLOPE_7, NodeEepromMap::CH_ACTION_ID_7);
-        addCalCoeffChannelGroup(8, NodeEepromMap::CH_ACTION_SLOPE_8, NodeEepromMap::CH_ACTION_ID_8);
 
         static const ChannelMask DIFF_CH1(BOOST_BINARY(00000001));    //ch1
         static const ChannelMask DIFF_CH2(BOOST_BINARY(00000010));    //ch2
@@ -48,7 +47,6 @@ namespace mscl
         m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_acceleration, "Acceleration X");
         m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_acceleration, "Acceleration Y");
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration, "Acceleration Z");
-        m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_temperature, "Internal Temperature");
     }
 
     bool NodeFeatures_shmlink200::isChannelSettingReadOnly(WirelessTypes::ChannelGroupSetting setting) const
@@ -135,7 +133,7 @@ namespace mscl
         return false;
     }
 
-    bool NodeFeatures_shmlink200::supportsAutoCal() const
+    bool NodeFeatures_shmlink200::supportsAutoCal_shm() const
     {
         return true;
     }

@@ -31,6 +31,7 @@ namespace mscl
     class BaseStationEeprom;
     class BaseStationEepromHelper;
     class BaseStationConfig;
+    struct BaseStationInfo;
     struct DatalogSessionInfoResult;
     class WirelessResponsePattern;
     struct ShuntCalCmdInfo;
@@ -66,6 +67,28 @@ namespace mscl
         //Destructor: ~BaseStation
         //    Destroys a BaseStation object
         virtual ~BaseStation() {};
+
+        //API Function: Mock
+        //  Static function to create a Mock BaseStation (won't actually talk to a physical device).
+        //
+        //Parameters:
+        //  info - The <BaseStationInfo> to use for creating the Mock BaseStation.
+        //
+        //Returns:
+        //  A <BaseStation> object with a mock implementation.
+        static BaseStation Mock(const BaseStationInfo& info);
+
+        //API Function: Mock
+        //  Static function to create a Mock BaseStation (won't actually talk to a physical device) using the following default info:
+        //      Firmware version: 5.0
+        //      Model: WSDA-Base 104 USB
+        //      Region: USA
+        //      asppVersion_LXRS: 1.7
+        //      asppVersion_LXRS+: 3.0
+        //
+        //Returns:
+        //  A <BaseStation> object with a mock implementation.
+        static BaseStation Mock();
 
 #ifndef SWIG
         BaseStation(std::shared_ptr<BaseStation_Impl> impl); //constructor with direct underlying implementation for this class.
@@ -897,7 +920,7 @@ namespace mscl
         bool node_autoBalance(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, uint8 channelNumber, float targetPercent, AutoBalanceResult& result);
 
         //Function: node_autocal_shm
-        //    Performs automatic calibration (shm) for a Wireless Node.
+        //    Performs automatic calibration for an SHM-Link.
         //
         //Parameters:
         //    nodeProtocol - The <WirelessProtocol> for the Node.
@@ -910,6 +933,21 @@ namespace mscl
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         bool node_autocal_shm(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, AutoCalResult& result);
+
+        //Function: node_autocal_shm201
+        //    Performs automatic calibration for an SHM-Link-201.
+        //
+        //Parameters:
+        //    nodeProtocol - The <WirelessProtocol> for the Node.
+        //    nodeAddress - The node address of the Node to send the command to.
+        //    result - The <AutoCalResult> reference to hold the result.
+        //
+        //Returns:
+        //    true if the AutoCal command was successful, false otherwise.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
+        bool node_autocal_shm201(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, AutoCalResult& result);
 
         //Function: node_autoShuntCal
         //  Performs automatic shunt calibration for a Wireless Node.

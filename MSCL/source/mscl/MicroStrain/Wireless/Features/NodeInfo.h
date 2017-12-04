@@ -21,6 +21,7 @@ namespace mscl
     struct NodeInfo
     {
     public:
+#ifndef SWIG
         //Constructor: NodeInfo
         //    Creates a NodeInfo object from a <WirelessNode>.
         //
@@ -31,6 +32,7 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         NodeInfo(const WirelessNode_Impl* node);
+#endif
         
         //Constructor: NodeInfo
         //    Creates a NodeInfo object.
@@ -62,6 +64,7 @@ namespace mscl
         Utils::Lazy<WirelessTypes::RegionCode> m_regionCode;
 
     public:
+#ifndef SWIG
         //Function: firmwareVersion
         //  Gets the firmware <Version> of the Node.
         Version firmwareVersion() const;
@@ -73,5 +76,6 @@ namespace mscl
         //Function: regionCode
         //  Gets the <WirelessTypes::RegionCode> of the Node.
         WirelessTypes::RegionCode regionCode() const;
+#endif
     };
 }

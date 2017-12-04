@@ -6,6 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "stdafx.h"
 
 #include "WirelessNode.h"
+#include "MockWirelessNode_Impl.h"
 #include "WirelessNode_Impl.h"
 #include "BaseStation.h"
 #include "mscl/Utils.h"
@@ -20,6 +21,24 @@ namespace mscl
     WirelessNode::WirelessNode(NodeAddress nodeAddress, const BaseStation& basestation):
         m_impl(std::make_shared<WirelessNode_Impl>(nodeAddress, basestation))
     {
+    }
+
+    WirelessNode::WirelessNode(std::shared_ptr<WirelessNode_Impl> impl):
+        m_impl(impl)
+    {
+    }
+
+    WirelessNode WirelessNode::Mock(NodeAddress nodeAddress, const BaseStation& basestation, const NodeInfo& info)
+    {
+        return WirelessNode(std::make_shared<MockWirelessNode_Impl>(nodeAddress, basestation, info));
+    }
+
+    WirelessNode WirelessNode::Mock(NodeAddress nodeAddress, const BaseStation& basestation, const NodeInfo& info, const WirelessTypes::EepromMap& initialEepromCache)
+    {
+        auto nodeImpl = std::make_shared<MockWirelessNode_Impl>(nodeAddress, basestation, info);
+        nodeImpl->importEepromCache(initialEepromCache);
+
+        return WirelessNode(nodeImpl);
     }
 
     void WirelessNode::setImpl(std::shared_ptr<WirelessNode_Impl> impl)
@@ -97,6 +116,11 @@ namespace mscl
         m_impl->clearEepromCache();
     }
 
+    WirelessTypes::EepromMap WirelessNode::getEepromCache() const
+    {
+        return m_impl->getEepromCache();
+    }
+
     NodeAddress WirelessNode::nodeAddress() const
     {
         return m_impl->nodeAddress();
@@ -165,6 +189,11 @@ namespace mscl
     AutoCalResult_shmLink WirelessNode::autoCal_shmLink()
     {
         return m_impl->autoCal_shmLink();
+    }
+
+    AutoCalResult_shmLink201 WirelessNode::autoCal_shmLink201()
+    {
+        return m_impl->autoCal_shmLink201();
     }
 
     AutoShuntCalResult WirelessNode::autoShuntCal(const ChannelMask& mask, const ShuntCalCmdInfo& commandInfo)
@@ -347,6 +376,16 @@ namespace mscl
     float WirelessNode::getGaugeFactor(const ChannelMask& mask) const
     {
         return m_impl->getGaugeFactor(mask);
+    }
+
+    uint16 WirelessNode::getGaugeResistance() const
+    {
+        return m_impl->getGaugeResistance();
+    }
+
+    uint16 WirelessNode::getNumActiveGauges() const
+    {
+        return m_impl->getNumActiveGauges();
     }
 
     LinearEquation WirelessNode::getLinearEquation(const ChannelMask& mask) const

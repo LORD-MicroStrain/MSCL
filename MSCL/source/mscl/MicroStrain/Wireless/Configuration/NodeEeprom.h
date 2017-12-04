@@ -56,12 +56,12 @@ namespace mscl
         //Parameters:
         //    nodeAddress - The address of the Node to access the Eeprom of.
         //    base - The <BaseStation> to use for communicating with the Node.
-        //    setttings - The <NodeEepromSettings> to use.
+        //    settings - The <NodeEepromSettings> to use.
         NodeEeprom(const WirelessNode_Impl* node, const BaseStation& base, const NodeEepromSettings& settings);
 
         virtual ~NodeEeprom() {};
 
-    private:
+    protected:
         const WirelessNode_Impl* m_node;
 
         //Variable: m_baseStation

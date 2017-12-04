@@ -55,7 +55,7 @@ namespace mscl
             constellationToAdd.reservedChannelCount = dataBuffer.read_uint8();
             constellationToAdd.maxChannels = dataBuffer.read_uint8();
             uint16 constellationOptionFlags = dataBuffer.read_uint16();
-            constellationToAdd.enableL1SAIF = Utils::bitIsSet(constellationOptionFlags, 7) ? true : false;
+            constellationToAdd.enableL1SAIF = Utils::bitIsSet(constellationOptionFlags, 0) ? true : false;
 
             returnData.constellations.push_back(constellationToAdd);
         }

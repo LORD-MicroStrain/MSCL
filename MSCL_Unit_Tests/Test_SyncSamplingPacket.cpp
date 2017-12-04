@@ -474,4 +474,56 @@ BOOST_AUTO_TEST_CASE(SyncPacket_futureTimestamp)
     BOOST_CHECK_THROW(new SyncSamplingPacket(packet), Error);
 }
 
+//tests that timestamps are calculated correctly for sample rates 1khz and above
+BOOST_AUTO_TEST_CASE(SyncPacket_Constructor_TimestampIncrementFastRates)
+{
+    Bytes payloadBytes;
+    payloadBytes.push_back(2);      //app id
+    payloadBytes.push_back(1);      //channel mask - 1 channel
+    payloadBytes.push_back(WirelessTypes::sampleRate_1024Hz);   //sample rate
+    payloadBytes.push_back(WirelessTypes::dataType_float32);    //data type - 4 byte float
+    payloadBytes.push_back(0);      //tick msb
+    payloadBytes.push_back(1);      //tick lsb
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);
+    payloadBytes.push_back(0);        //channel data b1
+    payloadBytes.push_back(0);        //channel data b2
+    payloadBytes.push_back(0);        //channel data b3
+    payloadBytes.push_back(0);        //channel data b4
+    payloadBytes.push_back(1);        //channel data b1
+    payloadBytes.push_back(1);        //channel data b2
+    payloadBytes.push_back(1);        //channel data b3
+    payloadBytes.push_back(1);        //channel data b4
+    payloadBytes.push_back(2);        //channel data b1
+    payloadBytes.push_back(2);        //channel data b2
+    payloadBytes.push_back(2);        //channel data b3
+    payloadBytes.push_back(2);        //channel data b4
+
+    WirelessPacket packet;
+    packet.nodeAddress(345);
+    packet.deliveryStopFlags(DeliveryStopFlags::fromInvertedByte(0));
+    packet.type(WirelessPacket::packetType_SyncSampling);
+    packet.nodeRSSI(1);
+    packet.baseRSSI(1);
+    packet.payload(payloadBytes);
+
+    WirelessPacketCollector collector;
+    collector.addDataPacket(packet);
+
+    DataSweeps sweeps;
+    collector.getDataSweeps(sweeps);
+    BOOST_CHECK_EQUAL(sweeps.size(), 3);
+
+
+    BOOST_CHECK_EQUAL(sweeps.at(0).timestamp().nanoseconds(), 0);
+    BOOST_CHECK_EQUAL(sweeps.at(1).timestamp().nanoseconds(), 976562);  //actually 976562.5 but we can't represent that in nanoseconds
+    BOOST_CHECK_EQUAL(sweeps.at(2).timestamp().nanoseconds(), 1953125); //takes into account the 0.5 nanoseconds from the last incremental
+}
+
 BOOST_AUTO_TEST_SUITE_END()

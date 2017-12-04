@@ -35,66 +35,54 @@ namespace mscl
         Version asppVersion_lxrs;
         Version asppVersion_lxrsPlus;
 
+        //we don't want to use retries when determining protocol
         NodeEepromSettings tempSettings = m_eepromSettings;
         tempSettings.numRetries = 0;
         tempSettings.useGroupRead = false;
 
-        bool success = false;
-        uint8 retryCount = 0;
-
         rec_mutex_lock_guard lock(m_protocolMutex);
 
-        do
+        //=========================================================================
+        // Determine the firmware version by attempting to use multiple protocols
+        try
         {
-            //=========================================================================
-            // Determine the firmware version by attempting to use multiple protocols
+            //try reading with protocol v1.1 (has read eeprom v2)
+            m_protocol_lxrs = WirelessProtocol::v1_1();
+            m_protocol_lxrsPlus = WirelessProtocol::v1_1();
+
+            eeprom().updateSettings(tempSettings);
+
+            asppVersion_lxrs = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrs);
+            asppVersion_lxrsPlus = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrsPlus);
+        }
+        catch(Error_Communication&)
+        {
+            //Failed reading with protocol v1.1 - Now try v1.0 (has read eeprom v1)
+
             try
             {
-                //try reading with protocol v1.1 (has read eeprom v2)
-                m_protocol_lxrs = WirelessProtocol::v1_1();
-                m_protocol_lxrsPlus = WirelessProtocol::v1_1();
-
-                eeprom().updateSettings(tempSettings);
+                //try reading with protocol v1.0
+                m_protocol_lxrs = WirelessProtocol::v1_0();
+                m_protocol_lxrsPlus = WirelessProtocol::v1_0();
 
                 asppVersion_lxrs = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrs);
                 asppVersion_lxrsPlus = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrsPlus);
-                success = true;
             }
             catch(Error_Communication&)
             {
-                //Failed reading with protocol v1.1 - Now try v1.0 (has read eeprom v1)
+                //we failed to determine the protocol
+                //need to clear out the protocol and eeprom variables
+                m_protocol_lxrs.reset();
+                m_protocol_lxrsPlus.reset();
 
-                try
-                {
-                    //try reading with protocol v1.0
-                    m_protocol_lxrs = WirelessProtocol::v1_0();
-                    m_protocol_lxrsPlus = WirelessProtocol::v1_0();
+                //set back the original eeprom settings
+                eeprom().updateSettings(m_eepromSettings);
 
-                    asppVersion_lxrs = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrs);
-                    asppVersion_lxrsPlus = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrsPlus);
-                    success = true;
-                }
-                catch(Error_Communication&)
-                {
-                    //if this was the last retry
-                    if(retryCount >= m_eepromSettings.numRetries)
-                    {
-                        //we failed to determine the protocol
-                        //need to clear out the protocol and eeprom variables
-                        m_protocol_lxrs.reset();
-                        m_protocol_lxrsPlus.reset();
-
-                        //set back the original eeprom settings
-                        eeprom().updateSettings(m_eepromSettings);
-
-                        //rethrow the exception
-                        throw;
-                    }
-                }
+                //rethrow the exception
+                throw;
             }
-            //=========================================================================
         }
-        while(!success && (retryCount++ < m_eepromSettings.numRetries));
+        //=========================================================================
 
         //set back the original eeprom settings
         eeprom().updateSettings(m_eepromSettings);
@@ -258,7 +246,7 @@ namespace mscl
         //don't need to clear anything if it doesn't exist
         if(m_eeprom != NULL)
         {
-            m_eeprom.reset();
+            m_eeprom->clearCache();
         }
 
         //features may need to be reset if firmware version or model changed
@@ -276,6 +264,11 @@ namespace mscl
         {
             m_protocol_lxrsPlus.reset();
         }
+    }
+
+    WirelessTypes::EepromMap WirelessNode_Impl::getEepromCache() const
+    {
+        return eeprom().getCache();
     }
 
     NodeAddress WirelessNode_Impl::nodeAddress() const
@@ -517,6 +510,16 @@ namespace mscl
     float WirelessNode_Impl::getGaugeFactor(const ChannelMask& mask) const
     {
         return m_eepromHelper->read_gaugeFactor(mask);
+    }
+
+    uint16 WirelessNode_Impl::getGaugeResistance() const
+    {
+        return m_eepromHelper->read_gaugeResistance();
+    }
+
+    uint16 WirelessNode_Impl::getNumActiveGauges() const
+    {
+        return m_eepromHelper->read_numActiveGauges();
     }
 
     LinearEquation WirelessNode_Impl::getLinearEquation(const ChannelMask& mask) const
@@ -869,6 +872,7 @@ namespace mscl
                         case WirelessModels::node_vLink:
                         case WirelessModels::node_sgLink_rgd:
                         case WirelessModels::node_shmLink:
+                        case WirelessModels::node_torqueLink:
                             maxBitsVal = 65536;
                             break;
 
@@ -907,14 +911,13 @@ namespace mscl
         WirelessModels::NodeModel nodeModel = features().m_nodeInfo.model();
 
         //verify the node supports autocal
-        if(!features().supportsAutoCal())
+        if(!features().supportsAutoCal_shm())
         {
             throw Error_NotSupported("AutoCal is not supported by this Node.");
         }
 
         //verify the node is the correct model
         if(nodeModel != WirelessModels::node_shmLink200 &&
-           nodeModel != WirelessModels::node_shmLink201 &&
            nodeModel != WirelessModels::node_shmLink2_cust1_oldNumber &&
            nodeModel != WirelessModels::node_shmLink2_cust1)
         {
@@ -928,6 +931,41 @@ namespace mscl
         if(!success)
         {
             throw Error_NodeCommunication(m_address, "AutoCal has failed.");
+        }
+
+        return result;
+    }
+
+    AutoCalResult_shmLink201 WirelessNode_Impl::autoCal_shmLink201()
+    {
+        //verify the node supports autocal
+        if(!features().supportsAutoCal_shm201())
+        {
+            throw Error_NotSupported("AutoCal is not supported by this Node.");
+        }
+
+        //perform the autocal command by the base station
+        AutoCalResult_shmLink201 result;
+        bool success = m_baseStation.node_autocal_shm201(wirelessProtocol(), m_address, result);
+
+        if(!success)
+        {
+            throw Error_NodeCommunication(m_address, "AutoCal has failed.");
+        }
+
+        if(result.completionFlag() != WirelessTypes::autocal_maybeInvalid_notApplied)
+        {
+            //clear out the slope and offset caches for calibration coefficients
+            NodeEeprom& ee = eeprom();
+            ee.clearCacheLocation(NodeEepromMap::CH_ACTION_ID_1.location());
+            ee.clearCacheLocation(NodeEepromMap::CH_ACTION_SLOPE_1.location());
+            ee.clearCacheLocation(NodeEepromMap::CH_ACTION_OFFSET_1.location());
+            ee.clearCacheLocation(NodeEepromMap::CH_ACTION_ID_2.location());
+            ee.clearCacheLocation(NodeEepromMap::CH_ACTION_SLOPE_2.location());
+            ee.clearCacheLocation(NodeEepromMap::CH_ACTION_OFFSET_2.location());
+            ee.clearCacheLocation(NodeEepromMap::CH_ACTION_ID_3.location());
+            ee.clearCacheLocation(NodeEepromMap::CH_ACTION_SLOPE_3.location());
+            ee.clearCacheLocation(NodeEepromMap::CH_ACTION_OFFSET_3.location());
         }
 
         return result;
@@ -963,12 +1001,34 @@ namespace mscl
 
     Value WirelessNode_Impl::readEeprom(const EepromLocation& location) const
     {
-        return eeprom().readEeprom(location);
+        try
+        {
+            return eeprom().readEeprom(location);
+        }
+        catch(mscl::Error_NodeCommunication& e)
+        {
+            throw mscl::Error_NodeCommunication(e.nodeAddress(), "Failed to read the " + location.description() + " from Node " + Utils::toStr(e.nodeAddress()));
+        }
+        catch(mscl::Error_NotSupported&)
+        {
+            throw mscl::Error_NotSupported("Node " + Utils::toStr(nodeAddress()) + " does not support reading the " + location.description());
+        }
     }
 
     void WirelessNode_Impl::writeEeprom(const EepromLocation& location, const Value& val)
     {
-        eeprom().writeEeprom(location, val);
+        try
+        {
+            eeprom().writeEeprom(location, val);
+        }
+        catch(mscl::Error_NodeCommunication& e)
+        {
+            throw mscl::Error_NodeCommunication(e.nodeAddress(), "Failed to write the " + location.description() + " to Node " + Utils::toStr(e.nodeAddress()));
+        }
+        catch(mscl::Error_NotSupported&)
+        {
+            throw mscl::Error_NotSupported("Node " + Utils::toStr(nodeAddress()) + " does not support writing the " + location.description());
+        }
     }
 
     uint16 WirelessNode_Impl::readEeprom(uint16 location) const

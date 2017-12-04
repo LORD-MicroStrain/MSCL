@@ -8,7 +8,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    BaseStationFeatures_rs232::BaseStationFeatures_rs232(BaseStationInfo& info):
+    BaseStationFeatures_rs232::BaseStationFeatures_rs232(const BaseStationInfo& info):
         BaseStationFeatures(info)
     {
     }

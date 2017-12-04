@@ -231,6 +231,7 @@ namespace mscl
             case WirelessTypes::derived_peakToPeak:
             case WirelessTypes::derived_ips:
             case WirelessTypes::derived_crestFactor:
+            case WirelessTypes::derived_mean:
                 return 4;
 
             default:

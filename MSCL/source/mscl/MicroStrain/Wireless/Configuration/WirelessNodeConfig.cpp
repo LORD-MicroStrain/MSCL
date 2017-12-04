@@ -377,6 +377,30 @@ namespace mscl
             }
         }
 
+        //Gauge Resistance
+        if(isSet(m_gaugeResistance))
+        {
+            if(!features.supportsGaugeResistance())
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_GAUGE_RESISTANCE, "Gauge Resistance is not supported by this Node."));
+            }
+        }
+
+        //Number of Active Gauges
+        if(isSet(m_numActiveGauges))
+        {
+            uint16 val = *m_numActiveGauges;
+
+            if(!features.supportsNumActiveGauges())
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_NUM_ACTIVE_GAUGES, "The Number of Active Gauges is not supported by this Node."));
+            }
+            else if(val < 1 || val > 255)
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_NUM_ACTIVE_GAUGES, "The Number of Active Gauges is out of range (1-255)."));
+            }
+        }
+
         //Transmit Power
         if(isSet(m_transmitPower))
         {
@@ -738,7 +762,8 @@ namespace mscl
                 if(!isDerivedChannelEnabled(WirelessTypes::derived_rms, eeprom, features) &&
                    !isDerivedChannelEnabled(WirelessTypes::derived_peakToPeak, eeprom, features) &&
                    !isDerivedChannelEnabled(WirelessTypes::derived_ips, eeprom, features) &&
-                   !isDerivedChannelEnabled(WirelessTypes::derived_crestFactor, eeprom, features)
+                   !isDerivedChannelEnabled(WirelessTypes::derived_crestFactor, eeprom, features) &&
+                   !isDerivedChannelEnabled(WirelessTypes::derived_mean, eeprom, features)
                    )
                 {
                     //no derived channels are enabled
@@ -766,130 +791,128 @@ namespace mscl
             }
         }
 
-        //if any sampling options are set
-        if(isSet(m_samplingMode) ||
-           isSet(m_sampleRate) ||
-           isSet(m_activeChannels) ||
-           isSet(m_numSweeps) ||
-           isSet(m_dataFormat) ||
-           isSet(m_eventTriggerOptions) ||
-           isAnySet(m_settlingTimes)||
-           isSet(m_dataCollectionMethod) ||
-           isSet(m_timeBetweenBursts) ||
-           isSet(m_dataMode) ||
-           !m_derivedChannelMasks.empty())
+        //verify sampling mode with event trigger settings
+        if(isSet(m_samplingMode) || isSet(m_eventTriggerOptions))
         {
-            //read in all of the sampling values, either from the config or from the Node if not set
-            WirelessTypes::SamplingMode samplingMode =  curSamplingMode(eeprom);
-            WirelessTypes::WirelessSampleRate sampleRate = curSampleRate(eeprom);
-            ChannelMask channels = curActiveChs(eeprom);
-            uint32 numSweeps = curNumSweeps(eeprom);
-            WirelessTypes::DataFormat dataFormat = curDataFormat(eeprom);
-            DataModeMask mode = curDataModeMask(eeprom);
+            WirelessTypes::SamplingMode samplingMode = curSamplingMode(eeprom);
 
-            //verify sampling mode with event trigger settings
-            if(isSet(m_samplingMode) || isSet(m_eventTriggerOptions))
+            //if trying to set the sampling mode to an event trigger mode
+            if(samplingMode == WirelessTypes::samplingMode_nonSyncEvent ||
+                samplingMode == WirelessTypes::samplingMode_syncEvent)
             {
-                //if trying to set the sampling mode to an event trigger mode
-                if(samplingMode == WirelessTypes::samplingMode_nonSyncEvent ||
-                   samplingMode == WirelessTypes::samplingMode_syncEvent)
+                //verify at least 1 event trigger is enabled
+                if(curEventTriggerMask(eeprom).enabledCount() == 0)
                 {
-                    //verify at least 1 event trigger is enabled
-                    if(curEventTriggerMask(eeprom).enabledCount() == 0)
-                    {
-                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER_MASK, "The Sampling Mode includes Event Triggering, but no Events are enabled."));
-                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "The Sampling Mode includes Event Triggering, but no Events are enabled."));
-                    }
-                }
-                //if trying to set the sampling mode to a non-event trigger mode
-                else
-                {
-                    //verify all event trigger are disabled
-                    if(features.supportsEventTrigger() && (curEventTriggerMask(eeprom).enabledCount() != 0))
-                    {
-                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER_MASK, "Event Triggers are enabled, but the Sampling Mode does not include Event Triggering."));
-                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "Event Triggers are enabled, but the Sampling Mode does not include Event Triggering."));
-                    }
+                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER_MASK, "The Sampling Mode includes Event Triggering, but no Events are enabled."));
+                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "The Sampling Mode includes Event Triggering, but no Events are enabled."));
                 }
             }
-
-            //verify sampling mode with data collection method
-            if(isSet(m_samplingMode) || isSet(m_dataCollectionMethod))
+            //if trying to set the sampling mode to a non-event trigger mode
+            else
             {
-                //Event sampling can't be used with transmit only
-                if(samplingMode == WirelessTypes::samplingMode_nonSyncEvent ||
-                   samplingMode == WirelessTypes::samplingMode_syncEvent)
+                //verify all event trigger are disabled
+                if(features.supportsEventTrigger() && (curEventTriggerMask(eeprom).enabledCount() != 0))
                 {
-                    if(curDataCollectionMethod(eeprom) == WirelessTypes::collectionMethod_transmitOnly)
+                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER_MASK, "Event Triggers are enabled, but the Sampling Mode does not include Event Triggering."));
+                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "Event Triggers are enabled, but the Sampling Mode does not include Event Triggering."));
+                }
+            }
+        }
+
+        //verify sampling mode with data collection method
+        if(isSet(m_samplingMode) || isSet(m_dataCollectionMethod))
+        {
+            WirelessTypes::SamplingMode samplingMode = curSamplingMode(eeprom);
+
+            //Event sampling can't be used with transmit only
+            if(samplingMode == WirelessTypes::samplingMode_nonSyncEvent ||
+                samplingMode == WirelessTypes::samplingMode_syncEvent)
+            {
+                if(curDataCollectionMethod(eeprom) == WirelessTypes::collectionMethod_transmitOnly)
+                {
+                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DATA_COLLECTION_METHOD, "Event Triggered sampling cannot be used with Transmit Only."));
+                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "Event Triggered sampling cannot be used with Transmit Only."));
+                }
+            }
+        }
+
+        //verify Sample Rate with Sampling Mode and Data collection method
+        if(isSet(m_sampleRate) || isSet(m_samplingMode) || isSet(m_dataCollectionMethod) || isSet(m_dataMode))
+        {
+            //verify the sample rate and sampling mode
+            if(!features.supportsSampleRate(curSampleRate(eeprom), curSamplingMode(eeprom), curDataCollectionMethod(eeprom), curDataModeMask(eeprom).toDataModeEnum()))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE, "The Sample Rate is not supported for the current Sampling Mode."));
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "The Sample Rate is not supported for the current Sampling Mode."));
+            }
+        }
+
+        //verify the max Sample Rate with the mode and active channels
+        if(isSet(m_sampleRate) || isSet(m_samplingMode) || isSet(m_activeChannels) || isSet(m_dataCollectionMethod) || isSet(m_dataMode))
+        {
+            //get the max sample rate that can be set with these settings
+            WirelessTypes::WirelessSampleRate maxRate = features.maxSampleRate(curSamplingMode(eeprom), curActiveChs(eeprom), curDataCollectionMethod(eeprom), curDataModeMask(eeprom).toDataModeEnum());
+
+            //verify the sample rate works with the sampling mode and active channels
+            if(SampleRate::FromWirelessEepromValue(curSampleRate(eeprom)) > SampleRate::FromWirelessEepromValue(maxRate))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_ACTIVE_CHANNELS, "The Sample Rate exceeds the max for the current number of active channels."));
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE, "The Sample Rate exceeds the max for the current number of active channels."));
+            }
+        }
+
+        if(features.supportsLimitedDuration())
+        {
+            if(isSet(m_numSweeps) || isSet(m_samplingMode) || isSet(m_dataFormat) || isSet(m_activeChannels))
+            {
+                bool unlimitedDuration = curUnlimitedDuration(eeprom);
+                WirelessTypes::SamplingMode samplingMode = curSamplingMode(eeprom);
+
+                //don't check if unlimited duration
+                //unless sampling mode is burst, which ignores unlimited duration
+                if(!unlimitedDuration || samplingMode == WirelessTypes::samplingMode_syncBurst)
+                {
+                    //verify the number of sweeps works with the other sampling settings
+                    if(curNumSweeps(eeprom) > features.maxSweeps(samplingMode, curDataModeMask(eeprom).toDataModeEnum(), curDataFormat(eeprom), curActiveChs(eeprom)))
                     {
-                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DATA_COLLECTION_METHOD, "Event Triggered sampling cannot be used with Transmit Only."));
-                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "Event Triggered sampling cannot be used with Transmit Only."));
-                    }
-                }
-            }
-
-            //verify Sample Rate with Sampling Mode and Data collection method
-            if(isSet(m_sampleRate) || isSet(m_samplingMode) || isSet(m_dataCollectionMethod) || isSet(m_dataMode))
-            {
-                //verify the sample rate and sampling mode
-                if(!features.supportsSampleRate(sampleRate, samplingMode, curDataCollectionMethod(eeprom), mode.toDataModeEnum()))
-                {
-                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE, "The Sample Rate is not supported for the current Sampling Mode."));
-                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "The Sample Rate is not supported for the current Sampling Mode."));
-                }
-            }
-
-            //verify the max Sample Rate with the mode and active channels
-            if(isSet(m_sampleRate) || isSet(m_samplingMode) || isSet(m_activeChannels) || isSet(m_dataCollectionMethod) || isSet(m_dataMode))
-            {
-                //get the max sample rate that can be set with these settings
-                WirelessTypes::WirelessSampleRate maxRate = features.maxSampleRate(samplingMode, channels, curDataCollectionMethod(eeprom), mode.toDataModeEnum());
-
-                //verify the sample rate works with the sampling mode and active channels
-                if(SampleRate::FromWirelessEepromValue(sampleRate) > SampleRate::FromWirelessEepromValue(maxRate))
-                {
-                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_ACTIVE_CHANNELS, "The Sample Rate exceeds the max for the current number of active channels."));
-                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE, "The Sample Rate exceeds the max for the current number of active channels."));
-                }
-            }
-
-            if(features.supportsLimitedDuration())
-            {
-                if(isSet(m_numSweeps) || isSet(m_samplingMode) || isSet(m_dataFormat) || isSet(m_activeChannels))
-                {
-                    bool unlimitedDuration = curUnlimitedDuration(eeprom);
-
-                    //don't check if unlimited duration
-                    //unless sampling mode is burst, which ignores unlimited duration
-                    if(!unlimitedDuration || samplingMode == WirelessTypes::samplingMode_syncBurst)
-                    {
-                        //verify the number of sweeps works with the other sampling settings
-                        if(numSweeps > features.maxSweeps(samplingMode, mode.toDataModeEnum(), dataFormat, channels))
-                        {
-                            outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SWEEPS, "The number of Sweeps exceeds the max for this Configuration."));
-                        }
+                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SWEEPS, "The number of Sweeps exceeds the max for this Configuration."));
                     }
                 }
             }
+        }
+
+        //verify time between bursts
+        if(isSet(m_samplingMode) ||
+            isSet(m_dataMode) ||
+            !m_derivedChannelMasks.empty() ||
+            isSet(m_dataFormat) ||
+            isSet(m_activeChannels) ||
+            isSet(m_sampleRate) ||
+            isSet(m_numSweeps) ||
+            isSet(m_commProtocol) ||
+            isSet(m_timeBetweenBursts))
+        {
 
             //if the sampling mode is burst
-            if(samplingMode == WirelessTypes::samplingMode_syncBurst)
+            if(curSamplingMode(eeprom) == WirelessTypes::samplingMode_syncBurst)
             {
+                DataModeMask mode = curDataModeMask(eeprom);
+
                 //build up the DerivedChannelMasks
                 WirelessTypes::DerivedChannelMasks derivedChMasks;
-                if(DataModeMask(mode).derivedModeEnabled)
+                if(mode.derivedModeEnabled)
                 {
                     //leave default so we don't unnecessarily read eeproms (they won't be used if derived off)
                     derivedChMasks = curDerivedChannelMasks(eeprom, features);
                 }
 
                 auto minTime = features.minTimeBetweenBursts(mode.toDataModeEnum(),
-                                                             dataFormat,
-                                                             channels,
-                                                             derivedChMasks,
-                                                             SampleRate::FromWirelessEepromValue(sampleRate),
-                                                             numSweeps,
-                                                             curCommProtocol(eeprom));
+                                                                curDataFormat(eeprom),
+                                                                curActiveChs(eeprom),
+                                                                derivedChMasks,
+                                                                SampleRate::FromWirelessEepromValue(curSampleRate(eeprom)),
+                                                                curNumSweeps(eeprom),
+                                                                curCommProtocol(eeprom));
 
                 //verify the time between bursts is within range with all the other settings
                 if(curTimeBetweenBursts(eeprom) < minTime)
@@ -897,103 +920,120 @@ namespace mscl
                     outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_TIME_BETWEEN_BURSTS, "The Time Between Bursts is less than the min for this Configuration."));
                 }
             }
+        }
 
-            //verify Filter Settling Time with Sample Rate
-            if(features.supportsFilterSettlingTime() && (isSet(m_sampleRate) || isAnySet(m_settlingTimes)))
+        //verify Filter Settling Time with Sample Rate
+        if(features.supportsFilterSettlingTime() && (isSet(m_sampleRate) || isAnySet(m_settlingTimes)))
+        {
+            WirelessTypes::SettlingTime settlingTime;
+
+            //get the max filter settling time for the sample rate
+            WirelessTypes::SettlingTime maxSettlingTime = features.maxFilterSettlingTime(SampleRate::FromWirelessEepromValue(curSampleRate(eeprom)));
+
+            for(const auto& group : features.channelGroups())
             {
-                WirelessTypes::SettlingTime settlingTime;
-
-                //get the max filter settling time for the sample rate
-                WirelessTypes::SettlingTime maxSettlingTime = features.maxFilterSettlingTime(SampleRate::FromWirelessEepromValue(sampleRate));
-
-                for(const auto& group : features.channelGroups())
+                for(const auto& setting : group.settings())
                 {
-                    for(const auto& setting : group.settings())
+                    //filter settling time setting
+                    if(setting == WirelessTypes::chSetting_filterSettlingTime)
                     {
-                        //filter settling time setting
-                        if(setting == WirelessTypes::chSetting_filterSettlingTime)
+                        //get the current settling time for this channel group
+                        settlingTime = curSettlingTime(group.channels(), eeprom);
+
+                        //verify the settling time isn't out of range
+                        if(settlingTime > maxSettlingTime)
                         {
-                            //get the current settling time for this channel group
-                            settlingTime = curSettlingTime(group.channels(), eeprom);
+                            outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_FILTER_SETTLING_TIME, "The Filter Settling Time exceeds the max for the current Sample Rate.",group.channels()));
 
-                            //verify the settling time isn't out of range
-                            if(settlingTime > maxSettlingTime)
-                            {
-                                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_FILTER_SETTLING_TIME, "The Filter Settling Time exceeds the max for the current Sample Rate.",group.channels()));
-
-                                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE,"The Filter Settling Time exceeds the max for the current Sample Rate.",group.channels()));
-                            }
+                            outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE,"The Filter Settling Time exceeds the max for the current Sample Rate.",group.channels()));
                         }
                     }
                 }
             }
+        }
 
-            //verify Event Trigger settings
-            if(features.supportsEventTrigger() && 
-               (isSet(m_eventTriggerOptions) ||
-                isSet(m_sampleRate) ||
+        //verify Event Trigger settings
+        if(features.supportsEventTrigger() && 
+            (isSet(m_eventTriggerOptions) ||
+            isSet(m_sampleRate) ||
+            isSet(m_activeChannels) ||
+            isSet(m_dataFormat) ||
+            isSet(m_dataMode) ||
+            !m_derivedChannelMasks.empty() ||
+            isSet(m_derivedDataRate)))
+        {
+            //only verify event trigger settings if a trigger is enabled
+            if(curEventTriggerMask(eeprom).enabledCount() > 0)
+            {
+                uint32 preDuration;
+                uint32 postDuration;
+
+                //get the current durations
+                curEventTriggerDurations(eeprom, preDuration, postDuration);
+
+                //build up the DerivedChannelMasks
+                WirelessTypes::DerivedChannelMasks derivedChMasks;
+                WirelessTypes::WirelessSampleRate derivedRate = WirelessTypes::sampleRate_1Hz;
+
+                DataModeMask mode = curDataModeMask(eeprom);
+
+                if(mode.derivedModeEnabled)
+                {
+                    //leave these default so we don't unnecessarily read eeproms (they won't be used if derived off)
+                    derivedChMasks = curDerivedChannelMasks(eeprom, features);
+                    derivedRate = curDerivedRate(eeprom);
+                }
+
+                uint32 maxDuration = features.maxEventTriggerTotalDuration(mode.toDataModeEnum(),
+                                                                            curDataFormat(eeprom),
+                                                                            curActiveChs(eeprom),
+                                                                            derivedChMasks,
+                                                                            SampleRate::FromWirelessEepromValue(curSampleRate(eeprom)),
+                                                                            SampleRate::FromWirelessEepromValue(derivedRate));
+
+                //verify the pre+post duration is within range
+                if((preDuration + postDuration) > maxDuration)
+                {
+                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER_DURATION, "The total event duration exceeds the max for this Configuration."));
+                }
+            }
+        }
+
+        //only check the flash bandwidth if no other errors
+        if(outIssues.size() == 0)
+        {
+            //verify flash bandwidth
+            if(features.supportsFlashId() &&
+                (isSet(m_dataFormat) ||
                 isSet(m_activeChannels) ||
-                isSet(m_dataFormat) ||
+                isSet(m_numSweeps) ||
+                isSet(m_sampleRate) ||
+                isSet(m_samplingMode) ||
+                isSet(m_timeBetweenBursts) ||
                 isSet(m_dataMode) ||
+                isSet(m_dataCollectionMethod) ||
                 !m_derivedChannelMasks.empty() ||
                 isSet(m_derivedDataRate)))
             {
-                //only verify event trigger settings if a trigger is enabled
-                if(curEventTriggerMask(eeprom).enabledCount() > 0)
+                WirelessTypes::DataCollectionMethod method = curDataCollectionMethod(eeprom);
+
+                //only check this if configured for logging
+                if(method == WirelessTypes::collectionMethod_logAndTransmit ||
+                   method == WirelessTypes::collectionMethod_logOnly)
                 {
-                    uint32 preDuration;
-                    uint32 postDuration;
 
-                    //get the current durations
-                    curEventTriggerDurations(eeprom, preDuration, postDuration);
+                    WirelessTypes::SamplingMode samplingMode = curSamplingMode(eeprom);
 
-                    //build up the DerivedChannelMasks
-                    WirelessTypes::DerivedChannelMasks derivedChMasks;
-                    WirelessTypes::WirelessSampleRate derivedRate = WirelessTypes::sampleRate_1Hz;
-
-                    if(DataModeMask(mode).derivedModeEnabled)
-                    {
-                        //leave these default so we don't unnecessarily read eeproms (they won't be used if derived off)
-                        derivedChMasks = curDerivedChannelMasks(eeprom, features);
-                        derivedRate = curDerivedRate(eeprom);
-                    }
-
-                    uint32 maxDuration = features.maxEventTriggerTotalDuration(mode.toDataModeEnum(),
-                                                                               dataFormat,
-                                                                               channels,
-                                                                               derivedChMasks,
-                                                                               SampleRate::FromWirelessEepromValue(sampleRate),
-                                                                               SampleRate::FromWirelessEepromValue(derivedRate));
-
-                    //verify the pre+post duration is within range
-                    if((preDuration + postDuration) > maxDuration)
-                    {
-                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EVENT_TRIGGER_DURATION, "The total event duration exceeds the max for this Configuration."));
-                    }
-                }
-            }
-
-            //only check the flash bandwidth if no other errors
-            if(outIssues.size() == 0)
-            {
-                //verify flash bandwidth
-                if(isSet(m_dataFormat) ||
-                   isSet(m_activeChannels) ||
-                   isSet(m_numSweeps) ||
-                   isSet(m_sampleRate) ||
-                   isSet(m_samplingMode) ||
-                   isSet(m_timeBetweenBursts) ||
-                   isSet(m_dataMode) ||
-                   !m_derivedChannelMasks.empty() ||
-                   isSet(m_derivedDataRate))
-                {
-                    if(features.supportsFlashId() &&
-                       samplingMode != WirelessTypes::samplingMode_nonSyncEvent &&
+                    if(samplingMode != WirelessTypes::samplingMode_nonSyncEvent &&
                        samplingMode != WirelessTypes::samplingMode_syncEvent)
                     {
+                        WirelessTypes::WirelessSampleRate sampleRate = curSampleRate(eeprom);
+                        ChannelMask channels = curActiveChs(eeprom);
+                        WirelessTypes::DataFormat dataFormat = curDataFormat(eeprom);
+
                         uint32 derivedBytesPerSweep = 0;
                         WirelessTypes::WirelessSampleRate derivedDataRate = WirelessTypes::sampleRate_1Hz;
-                        if(DataModeMask(mode).derivedModeEnabled)
+                        if(curDataModeMask(eeprom).derivedModeEnabled)
                         {
                             derivedBytesPerSweep = WirelessTypes::derivedBytesPerSweep(curDerivedChannelMasks(eeprom, features));
                             derivedDataRate = curDerivedRate(eeprom);
@@ -1003,7 +1043,7 @@ namespace mscl
                         float flashBw = 0.0f;
                         if(samplingMode == WirelessTypes::samplingMode_syncBurst)
                         {
-                            flashBw = flashBandwidth_burst(sampleRate, dataFormat, channels.count(), derivedBytesPerSweep, numSweeps, curTimeBetweenBursts(eeprom));
+                            flashBw = flashBandwidth_burst(sampleRate, dataFormat, channels.count(), derivedBytesPerSweep, curNumSweeps(eeprom), curTimeBetweenBursts(eeprom));
                         }
                         else
                         {
@@ -1097,6 +1137,12 @@ namespace mscl
 
         //write lost beacon timeout
         if(isSet(m_lostBeaconTimeout)) { eeprom.write_lostBeaconTimeout(*m_lostBeaconTimeout); }
+
+        //write gauge resistance
+        if(isSet(m_gaugeResistance)) { eeprom.write_gaugeResistance(*m_gaugeResistance); }
+
+        //write number of active gauges
+        if(isSet(m_numActiveGauges)) { eeprom.write_numActiveGauges(*m_numActiveGauges); }
 
         //write Fatigue Options
         if(isSet(m_fatigueOptions)) { eeprom.write_fatigueOptions(*m_fatigueOptions); }
@@ -1453,6 +1499,28 @@ namespace mscl
     void WirelessNodeConfig::gaugeFactor(const ChannelMask& mask, float factor)
     {
         setChannelMapVal(m_gaugeFactors, mask, factor);
+    }
+
+    uint16 WirelessNodeConfig::gaugeResistance() const
+    {
+        checkValue(m_gaugeResistance, "Gauge Resistance");
+        return *m_gaugeResistance;
+    }
+
+    void WirelessNodeConfig::gaugeResistance(uint16 resistance)
+    {
+        m_gaugeResistance = resistance;
+    }
+
+    uint16 WirelessNodeConfig::numActiveGauges() const
+    {
+        checkValue(m_numActiveGauges, "Number of Active Gauges");
+        return *m_numActiveGauges;
+    }
+
+    void WirelessNodeConfig::numActiveGauges(uint16 numGauges)
+    {
+        m_numActiveGauges = numGauges;
     }
 
     const LinearEquation& WirelessNodeConfig::linearEquation(const ChannelMask& mask) const

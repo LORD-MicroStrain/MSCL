@@ -27,24 +27,28 @@ namespace mscl
         AutoCal(const AutoCal&) = delete;                //copy constructor disabled
         AutoCal& operator=(const AutoCal&) = delete;     //assignment operator disabled
 
-        //Enum: AutoCalType
-        //  The types of autocal that are available.
-        enum AutoCalType
-        {
-            calType_shm = 0,
-            calType_shunt = 1
-        };
-
     public:
         //Function: buildCommand_shmLink
         //    Builds the AutoCal command packet for the SHM-Link node.
         //
         //Parameters:
+        //    asppVer - The <WirelessPacket::AsppVersion> to build the command for.
         //    nodeAddress - The address of the Node to build the command for.
         //
         //Returns:
         //    A <ByteStream> containing the command packet.
         static ByteStream buildCommand_shmLink(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress);
+
+        //Function: buildCommand_shmLink201
+        //    Builds the AutoCal command packet for the SHM-Link-201 node.
+        //
+        //Parameters:
+        //    asppVer - The <WirelessPacket::AsppVersion> to build the command for.
+        //    nodeAddress - The address of the Node to build the command for.
+        //
+        //Returns:
+        //    A <ByteStream> containing the command packet.
+        static ByteStream buildCommand_shmLink201(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress);
 
         //Function: buildCommand_shuntCal
         //  Builds the AutoCal command packet for shunt calibration.
@@ -68,16 +72,12 @@ namespace mscl
             //Parameters:
             //    nodeAddress - The node address to check for.
             //    collector - The <ResponseCollector> used to register and unregister the response.
-            Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, AutoCalType type);
+            Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector);
 
         protected:
             //Variable: m_nodeAddress
             //    The node address to look for in the response.
             NodeAddress m_nodeAddress;
-
-            //Variable: m_calType
-            //  The type of autocal we are performing.
-            AutoCalType m_calType;
 
             //Variable: m_calStarted
             //    Whether the AutoCal has been successfully started or not (as reported by the Node).
@@ -157,6 +157,21 @@ namespace mscl
             //  nodeAddress - The node address to check for.
             //  collector - The <ResponseCollector> used to register and unregister the response.
             ShmResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector);
+
+        protected:
+            virtual bool matchSuccessResponse(const WirelessPacket& packet) override;
+        };
+
+        class Shm201Response: public AutoCal::Response
+        {
+        public:
+            //Constructor: Shm201Response
+            //  Creates an SHM-Link-201 Autocal Response object
+            //
+            //Parameters:
+            //  nodeAddress - The node address to check for.
+            //  collector - The <ResponseCollector> used to register and unregister the response.
+            Shm201Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector);
 
         protected:
             virtual bool matchSuccessResponse(const WirelessPacket& packet) override;

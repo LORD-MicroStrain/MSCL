@@ -24,7 +24,13 @@ The library is currently available in:
   
 [FAQs](https://github.com/LORD-MicroStrain/MSCL/blob/master/FAQs.md)
 
+#### Included Libraries
+
+OpenSSL - This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) - see the `License_OpenSSL.txt` file in the source distribution.
+
+Boost - see the `License_Boost.txt` file in the source distribution.
+
 #### License
-MIT License - see the LICENSE.txt file in the source distribution.
+MIT License - see the `LICENSE.txt` file in the source distribution.
 
 Copyright (C) 2015-2017 LORD Corporation. All Rights Reserved.

@@ -13,9 +13,6 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    //=====================================================
-    //AutoCal
-    //=====================================================
     ByteStream AutoCal::buildCommand_shmLink(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress)
     {
         //build the command ByteStream
@@ -27,7 +24,7 @@ namespace mscl
             cmd.append_uint8(0x04);                                 //Delivery Stop Flag
             cmd.append_uint8(0x00);                                 //App Data Type
             cmd.append_uint32(nodeAddress);                         //Node address
-            cmd.append_uint8(0x02);                                 //Payload length
+            cmd.append_uint16(0x0002);                              //Payload length
             cmd.append_uint16(WirelessProtocol::cmdId_autoCal_v1);  //Command ID
             cmd.append_uint16(0x7F7F);                              //dummy RSSI bytes
             cmd.append_uint32(cmd.calculateCrcChecksum());          //Checksum
@@ -44,6 +41,12 @@ namespace mscl
         }
 
         return cmd;
+    }
+
+    ByteStream AutoCal::buildCommand_shmLink201(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress)
+    {
+        //uses the same command packet as the SHM-Link
+        return buildCommand_shmLink(asppVer, nodeAddress);
     }
 
     ByteStream AutoCal::buildCommand_shuntCal(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, const ShuntCalCmdInfo& info, uint8 chNum, WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType chType)
@@ -96,10 +99,9 @@ namespace mscl
         return cmd;
     }
 
-    AutoCal::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, AutoCalType type):
+    AutoCal::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
         WirelessResponsePattern(collector, WirelessProtocol::cmdId_autoCal_v1, nodeAddress),
         m_nodeAddress(nodeAddress),
-        m_calType(type),
         m_calStarted(false),
         m_completionFlag(WirelessTypes::autocal_notComplete),
         m_timeUntilCompletion(0.0f)
@@ -205,7 +207,7 @@ namespace mscl
     }
 
     AutoCal::ShmResponse::ShmResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
-        AutoCal::Response(nodeAddress, collector, AutoCalType::calType_shm)
+        AutoCal::Response(nodeAddress, collector)
     {
     }
 
@@ -240,8 +242,44 @@ namespace mscl
         return true;
     }
 
+    AutoCal::Shm201Response::Shm201Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
+        AutoCal::Response(nodeAddress, collector)
+    {
+    }
+
+    bool AutoCal::Shm201Response::matchSuccessResponse(const WirelessPacket& packet)
+    {
+        WirelessPacket::Payload payload = packet.payload();
+
+        std::size_t payloadLen = payload.size();
+
+        //check the main bytes of the packet
+        if(!packet.deliveryStopFlags().pc ||                                        //delivery stop flag
+           packet.type() != WirelessPacket::packetType_nodeSuccessReply ||          //app data type
+           packet.nodeAddress() != m_nodeAddress ||                                 //node address
+           payloadLen != 34 ||                                                      //payload length
+           payload.read_uint16(0) != WirelessProtocol::cmdId_autoCal_v1             //command id
+           )
+        {
+            //failed to match some of the bytes
+            return false;
+        }
+
+        //Pass/Fail Flag
+        m_completionFlag = static_cast<WirelessTypes::AutoCalCompletionFlag>(payload.read_uint8(2));
+
+        //Info Bytes
+        for(std::size_t i = 3; i < payloadLen; ++i)
+        {
+            //add all of the payload info bytes to m_infoBytes
+            m_infoBytes.push_back(payload.read_uint8(i));
+        }
+
+        return true;
+    }
+
     AutoCal::ShuntCalResponse::ShuntCalResponse(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector, uint8 channelNumber):
-        AutoCal::Response(nodeAddress, collector, AutoCalType::calType_shunt),
+        AutoCal::Response(nodeAddress, collector),
         m_channelNumber(channelNumber)
     {
     }

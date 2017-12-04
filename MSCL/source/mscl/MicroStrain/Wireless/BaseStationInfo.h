@@ -18,11 +18,13 @@ namespace mscl
 {
     class BaseStation_Impl;    //forward declarations
 
-    //Struct: BaseStationInfo
-    //    Holds information (read from eeprom) about a <BaseStation>.
+    //API Struct: BaseStationInfo
+    //    Holds information about a <BaseStation>.
     struct BaseStationInfo
     {
     public:
+
+#ifndef SWIG
         //Constructor: BaseStationInfo
         //    Creates a BaseStationInfo object from a <BaseStation>.
         //
@@ -33,8 +35,9 @@ namespace mscl
         //    - <Error_Communication>: Failed to read the value from the BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         BaseStationInfo(const BaseStation_Impl* base);
+#endif
         
-        //Constructor: BaseStationInfo
+        //API Constructor: BaseStationInfo
         //    Creates a BaseStationInfo object.
         //
         //Parameters:
@@ -46,8 +49,8 @@ namespace mscl
         BaseStationInfo(Version fw, WirelessModels::BaseModel model, WirelessTypes::RegionCode region, const Version& asppVer_lxrs, const Version& asppVer_lxrsPlus);
 
     private:
-        BaseStationInfo();    //disabled default constructor
-
+        //Variable: m_basestation
+        //  The <BaseStation_Impl> to use for lazy loading information for if its not already populated.
         const BaseStation_Impl* m_basestation;
 
     private:
@@ -72,9 +75,11 @@ namespace mscl
         mutable boost::optional<WirelessProtocol> m_protocol_lxrsPlus;
 
     public:
+#ifndef SWIG
         Version firmwareVersion() const;
         WirelessModels::BaseModel model() const;
         WirelessTypes::RegionCode regionCode() const;
         const WirelessProtocol& protocol(WirelessTypes::CommProtocol commProtocol) const;
+#endif
     };
 }

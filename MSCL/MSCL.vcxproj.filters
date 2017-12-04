@@ -52,6 +52,9 @@
     <Filter Include="MicroStrain\Inertial\Commands\3DM_Commands">
       <UniqueIdentifier>{1793bf1c-8cdc-4bfa-ab53-dba1ed6d4381}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MicroStrain\Inertial\Commands\Estimation_Filter_Commands">
+      <UniqueIdentifier>{80e53095-6d46-4bd6-8b22-3f08342d1f55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\mscl\Exceptions.h" />
@@ -267,9 +270,6 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\EstFilter_Commands.h">
       <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Sensor_Commands.h">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
-    </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\SyncSamplingNetwork.h">
       <Filter>MicroStrain\Wireless</Filter>
     </ClInclude>
@@ -331,9 +331,6 @@
     </ClInclude>
     <ClInclude Include="source\mscl\HighResClock.h">
       <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\ContinuousDataStream.h">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ArmForDatalogging.h">
       <Filter>MicroStrain\Wireless\Commands</Filter>
@@ -490,9 +487,6 @@
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\SetToIdleStatus.h">
       <Filter>MicroStrain\Wireless\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_SetToIdle.h">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket_v2.h">
       <Filter>MicroStrain\Wireless\Packets</Filter>
@@ -727,9 +721,6 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GNSS.h">
       <Filter>MicroStrain\Inertial\Packets</Filter>
     </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\DeviceStartupSettings.h">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
-    </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\PingResponse.h">
       <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClInclude>
@@ -787,9 +778,6 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink201.h">
       <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
     </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialReturnTypes.h">
-      <Filter>MicroStrain\Inertial</Filter>
-    </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_AssistedFixControl.h">
       <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
     </ClInclude>
@@ -837,6 +825,90 @@
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\CaptureGyroBias.h">
       <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerHardIronOffset.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerSoftIronMatrix.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\ConingAndScullingEnable.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\UARTBaudRate.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\AdvancedLowPassFilterSettings.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\ExposedInertialTypes.h">
+      <Filter>MicroStrain\Inertial</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\ComplementaryFilterSettings.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\DeviceStatus.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\RawRTCM_2_3Message.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\VehicleDynamicsMode.h">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Sensor_Commands.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_SetToIdle.h">
+      <Filter>MicroStrain\Inertial\Commands\Base_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\EstimationControlFlags.h">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_SourceControl.h">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\ExternalGNSSUpdate.h">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\Communication\MockConnection.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\MockBaseStation_Impl.h">
+      <Filter>MicroStrain\Wireless</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\MockWirelessNode_Impl.h">
+      <Filter>MicroStrain\Wireless</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\MockNodeEeprom.h">
+      <Filter>MicroStrain\Wireless\Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\HeadingUpdateControl.h">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\DeviceStartupSettings.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\ContinuousDataStream.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\ExternalHeadingUpdate.h">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\ExternalHeadingUpdateWithTimestamp.h">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\TimestampCounter.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\Communication\WebSocketConnection.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\Communication\WebSocketSecureConnection.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink201FullBridge.h">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1028,9 +1100,6 @@
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\EstFilter_Commands.cpp">
       <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Sensor_Commands.cpp">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
-    </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\SyncSamplingNetwork.cpp">
       <Filter>MicroStrain\Wireless</Filter>
     </ClCompile>
@@ -1086,9 +1155,6 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialTypes.cpp">
       <Filter>MicroStrain\Inertial</Filter>
-    </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\ContinuousDataStream.cpp">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ArmForDatalogging.cpp">
       <Filter>MicroStrain\Wireless\Commands</Filter>
@@ -1248,9 +1314,6 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\SetToIdleStatus.cpp">
       <Filter>MicroStrain\Wireless\Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_SetToIdle.cpp">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\NodeDiscoveryPacket_v2.cpp">
       <Filter>MicroStrain\Wireless\Packets</Filter>
@@ -1482,9 +1545,6 @@
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GNSS.cpp">
       <Filter>MicroStrain\Inertial\Packets</Filter>
     </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\DeviceStartupSettings.cpp">
-      <Filter>MicroStrain\Inertial\Commands</Filter>
-    </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\PingResponse.cpp">
       <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClCompile>
@@ -1539,9 +1599,6 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink201.cpp">
       <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
     </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialReturnTypes.cpp">
-      <Filter>MicroStrain\Inertial</Filter>
-    </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_AssistedFixControl.cpp">
       <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
     </ClCompile>
@@ -1589,6 +1646,87 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\CaptureGyroBias.cpp">
       <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerHardIronOffset.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerSoftIronMatrix.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\ConingAndScullingEnable.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\UARTBaudRate.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\AdvancedLowPassFilterSettings.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\ExposedInertialTypes.cpp">
+      <Filter>MicroStrain\Inertial</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\ComplementaryFilterSettings.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\DeviceStatus.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\RawRTCM_2_3Message.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\VehicleDynamicsMode.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Sensor_Commands.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_SetToIdle.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Base_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\EstimationControlFlags.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_SourceControl.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\ExternalGNSSUpdate.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\MockBaseStation_Impl.cpp">
+      <Filter>MicroStrain\Wireless</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\MockWirelessNode_Impl.cpp">
+      <Filter>MicroStrain\Wireless</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\MockNodeEeprom.cpp">
+      <Filter>MicroStrain\Wireless\Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\HeadingUpdateControl.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\DeviceStartupSettings.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\ContinuousDataStream.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\ExternalHeadingUpdate.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\ExternalHeadingUpdateWithTimestamp.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\TimestampCounter.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\Communication\WebSocketConnection.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\Communication\WebSocketSecureConnection.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink201FullBridge.cpp">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

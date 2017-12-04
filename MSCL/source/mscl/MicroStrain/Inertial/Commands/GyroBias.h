@@ -7,7 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "GenericInertialCommand.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/Inertial/InertialReturnTypes.h"
+#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/Inertial/Commands/InertialCommand.h"
 
 namespace mscl

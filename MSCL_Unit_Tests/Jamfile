@@ -5,16 +5,19 @@ project
 	;
 
 #Tell it about all the libraries
+lib boost_timer ;
 lib boost_unit_test_framework ;
 lib boost_test_exec_monitor ;
 lib boost_system ;
 lib boost_chrono ;
 lib boost_filesystem ;
 lib boost_date_time ;
+lib ssl ;
+lib crypto ;
 lib pthread ;
 
 #Build the unit tests exe
 exe mscl_unit_tests
-    : [ glob *.cpp ] /mscl-lib//mscl boost_unit_test_framework boost_test_exec_monitor boost_system boost_filesystem boost_chrono boost_date_time pthread
+    : [ glob *.cpp ] /mscl-lib//mscl boost_timer boost_unit_test_framework boost_test_exec_monitor boost_system boost_filesystem boost_chrono boost_date_time ssl crypto pthread
     : <include>.
     ;

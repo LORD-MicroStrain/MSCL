@@ -9,8 +9,17 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Connection_Impl.h"
 #include "Devices.h"
 
+#include "MockConnection.h"
 #include "SerialConnection.h"
 #include "TcpIpConnection.h"
+
+#ifndef MSCL_DISABLE_WEBSOCKETS
+#include "WebSocketConnection.h"
+
+#ifndef MSCL_DISABLE_SSL
+#include "WebSocketSecureConnection.h"
+#endif // MSCL_DISABLE_SSL
+#endif // MSCL_DISABLE_WEBSOCKETS
 
 #ifdef UNIX_BUILD
 #include "UnixSocketConnection.h"
@@ -63,6 +72,29 @@ namespace mscl
         std::shared_ptr<Connection_Impl_Base> tcpip(new TcpIpConnection(serverAddress, serverPort));
         return Connection(tcpip);
     }
+
+#ifndef MSCL_DISABLE_WEBSOCKETS
+    Connection Connection::WebSocket(const std::string& host, uint16 port)
+    {
+        //if the host starts with ws:// (HTTP web socket)
+        if(host.find("ws://") == 0)
+        {
+            std::shared_ptr<Connection_Impl_Base> webSocket(new WebSocketConnection(host, port));
+            return Connection(webSocket);
+        }
+
+#ifndef MSCL_DISABLE_SSL
+        //if the host starts with wss:// (HTTPS web socket)
+        if(host.find("wss://") == 0)
+        {
+            std::shared_ptr<Connection_Impl_Base> webSocketSecure(new WebSocketSecureConnection(host, port));
+            return Connection(webSocketSecure);
+        }
+#endif // MSCL_DISABLE_SSL
+
+        throw Error_InvalidTcpServer(0, "The web socket host name is invalid.");
+    }
+#endif // MSCL_DISABLE_WEBSOCKETS
     
 #ifdef UNIX_BUILD
     Connection Connection::UnixSocket(const std::string& path)
@@ -71,6 +103,12 @@ namespace mscl
         return Connection(socket);
     }
 #endif
+
+    Connection Connection::Mock()
+    {
+        std::shared_ptr<Connection_Impl_Base> mock(new MockConnection());
+        return Connection(mock);
+    }
 
     //====================================================================================================================================================
     //The following functions just get pushed through the Connection_Impl class containing the implementation of all these functions

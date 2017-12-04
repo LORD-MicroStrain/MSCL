@@ -10,6 +10,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/SampleUtils.h"
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
 #include "mscl/TimeSpan.h"
+#include "mscl/TimestampCounter.h"
 #include "mscl/Types.h"
 #include "mscl/Utils.h"
 
@@ -20,14 +21,14 @@ namespace mscl
     SyncSamplingPacket_v2::SyncSamplingPacket_v2(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
-        m_nodeAddress        = packet.nodeAddress();
-        m_deliveryStopFlags = packet.deliveryStopFlags();
-        m_type                = packet.type();
-        m_nodeRSSI            = packet.nodeRSSI();
-        m_baseRSSI            = packet.baseRSSI();
-        m_frequency            = packet.frequency();
-        m_payload            = packet.payload();
-        m_payloadOffsetChannelData = PAYLOAD_OFFSET_CHANNEL_DATA;
+        m_nodeAddress               = packet.nodeAddress();
+        m_deliveryStopFlags         = packet.deliveryStopFlags();
+        m_type                      = packet.type();
+        m_nodeRSSI                  = packet.nodeRSSI();
+        m_baseRSSI                  = packet.baseRSSI();
+        m_frequency                 = packet.frequency();
+        m_payload                   = packet.payload();
+        m_payloadOffsetChannelData  = PAYLOAD_OFFSET_CHANNEL_DATA;
 
         //parse the data sweeps in the packet
         parseSweeps();
@@ -36,14 +37,14 @@ namespace mscl
     void SyncSamplingPacket_v2::parseSweeps()
     {
         //read the values from the payload
-        uint8 sampleMode_dataType_byte    = m_payload.read_uint8(PAYLOAD_OFFSET_SAMPLEMODE_AND_DATA_TYPE);
-        uint16 channelMask                = m_payload.read_uint16(PAYLOAD_OFFSET_CHANNEL_MASK);
+        uint8 sampleMode_dataType_byte  = m_payload.read_uint8(PAYLOAD_OFFSET_SAMPLEMODE_AND_DATA_TYPE);
+        uint16 channelMask              = m_payload.read_uint16(PAYLOAD_OFFSET_CHANNEL_MASK);
         uint8 sampleRate                = m_payload.read_uint8(PAYLOAD_OFFSET_SAMPLE_RATE);
-        uint8 dataType                    = Utils::lsNibble(sampleMode_dataType_byte);
+        uint8 dataType                  = Utils::lsNibble(sampleMode_dataType_byte);
         uint8 sampleMode                = Utils::msNibble(sampleMode_dataType_byte);
-        uint16 tick                        = m_payload.read_uint16(PAYLOAD_OFFSET_TICK);
-        uint64 timestampSeconds            = m_payload.read_uint32(PAYLOAD_OFFSET_TS_SEC);        //the timestamp (UTC) seconds part
-        uint64 timestampNanos            = m_payload.read_uint32(PAYLOAD_OFFSET_TS_NANOSEC);    //the timestamp (UTC) nanoseconds part
+        uint16 tick                     = m_payload.read_uint16(PAYLOAD_OFFSET_TICK);
+        uint64 timestampSeconds         = m_payload.read_uint32(PAYLOAD_OFFSET_TS_SEC);        //the timestamp (UTC) seconds part
+        uint64 timestampNanos           = m_payload.read_uint32(PAYLOAD_OFFSET_TS_NANOSEC);    //the timestamp (UTC) nanoseconds part
 
         //set the data type of the packet
         m_dataType = static_cast<WirelessTypes::DataType>(dataType);
@@ -80,8 +81,7 @@ namespace mscl
         //create a SampleRate object from the sampleRate byte
         SampleRate currentRate = SampleUtils::convertToSampleRate(sampleRate);
 
-        //get the value to increment the timestamp by for each sweep (the timestamp from the packet only applies to the first sweep)
-        const uint64 TS_INCREMENT = currentRate.samplePeriod().getNanoseconds();
+        TimestampCounter tsCounter(currentRate, realTimestamp);
 
         //get the sampling mode for all sweeps in this packet
         DataSweep::SamplingType mode = DataSweep::samplingType_SyncSampling;
@@ -102,8 +102,8 @@ namespace mscl
             sweep.nodeAddress(m_nodeAddress);
             sweep.sampleRate(currentRate);
 
-            //build this sweep's timestamp
-            sweep.timestamp(Timestamp(realTimestamp + (TS_INCREMENT * sweepItr)));
+            sweep.timestamp(Timestamp(tsCounter.time()));
+            tsCounter.advance();
 
             //get this sweep's node and base rssi values
             sweep.nodeRssi(m_nodeRSSI);

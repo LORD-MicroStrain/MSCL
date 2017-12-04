@@ -19,6 +19,8 @@ namespace mscl
 struct InertialTypes
 {
 public:
+    static const uint16 GX5_45_MODEL_NUMBER = 0x186B;
+
     //API Enums: InertialCategory
     //    The enums for all the different types/categories of Inertial commands and data.
     //
@@ -46,6 +48,16 @@ public:
         SAVE_CURRENT_SETTINGS = 0x03,
         LOAD_STARTUP_SETTINGS = 0x04,
         RESET_TO_DEFAULT = 0x05
+    };
+
+    //Enums: StatusSelector
+    //    Represents the two different types of statuses returned by DeviceStatus.
+    //
+    //      BASIC_STATUS_STRUCTURE       - 0x01  used to receive a limited device status.
+    //      DIAGNOSTIC_STATUS_STRUCTURE  - 0x02  used to receive a complete device status.
+    enum StatusSelector {
+        BASIC_STATUS_STRUCTURE = 0x01,
+        DIAGNOSTIC_STATUS_STRUCTURE = 0x02,
     };
 
     //API Enums: EnableSetting

@@ -6,7 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include "GenericInertialCommand.h"
-#include "mscl/MicroStrain/Inertial/InertialReturnTypes.h"
+#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/Inertial/Commands/InertialCommand.h"
 
 namespace mscl
@@ -46,13 +46,13 @@ namespace mscl
         //Function: MakeSetCommand
         //
         //Returns:
-        //    bool - True indicates that a response should return from the device.
+        //    GNSS_ConstellationSettings - object set up to send a set command.
         static GNSS_ConstellationSettings MakeSetCommand(ConstellationSettingsData);
 
         //Function: MakeGetCommand
         //
         //Returns:
-        //    bool - True indicates that a response should return from the device.
+        //    GNSS_ConstellationSettings - object set up to send a get command.
         static GNSS_ConstellationSettings MakeGetCommand();
 
         //Function: MakeResetToDefaultCommand
@@ -64,7 +64,7 @@ namespace mscl
         //Function: getResponseData
         //
         //Returns:
-        //    ConstellationSettingsData - An object iwth the data returned from the device.
+        //    ConstellationSettingsData - An object with the data returned from the device.
         static ConstellationSettingsData getResponseData(const GenericInertialCommandResponse& response);
 
         //Function: operator ByteStream

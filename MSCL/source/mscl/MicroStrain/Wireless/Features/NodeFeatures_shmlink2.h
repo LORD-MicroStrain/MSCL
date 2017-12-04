@@ -54,7 +54,7 @@ namespace mscl
 
         virtual bool supportsActivitySense() const final;
 
-        virtual bool supportsAutoCal() const;
+        virtual bool supportsAutoCal_shm() const override;
 
         virtual bool supportsSensorDelayConfig() const override;
 

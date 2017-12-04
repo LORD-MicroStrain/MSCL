@@ -40,7 +40,6 @@ namespace mscl
         m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_acceleration, "Acceleration X");
         m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_acceleration, "Acceleration X");
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration, "Acceleration X");
-        m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_temperature, "Internal Temperature");
     }
 
     const WirelessTypes::TransmitPowers NodeFeatures_shmlink2::transmitPowers() const
@@ -154,7 +153,7 @@ namespace mscl
         return true;
     }
 
-    bool NodeFeatures_shmlink2::supportsAutoCal() const
+    bool NodeFeatures_shmlink2::supportsAutoCal_shm() const
     {
         return true;
     }

@@ -27,11 +27,11 @@ namespace mscl
     {
         DataBuffer dataBuffer(response.data());
         SBASSettingsData returnData;
-        returnData.enableSBAS = (dataBuffer.read_uint8() == 0x01)? true : false;
+        returnData.enableSBAS = (dataBuffer.read_uint8() == InertialTypes::ENABLED)? true : false;
         uint16 optionFlags = dataBuffer.read_uint16();
-        returnData.enableRanging = Utils::bitIsSet(optionFlags, 7) ? true : false;
-        returnData.enableCorrectionData = Utils::bitIsSet(optionFlags, 6) ? true : false;
-        returnData.applyIntergityInfo = Utils::bitIsSet(optionFlags, 5) ? true : false;
+        returnData.enableRanging = Utils::bitIsSet(optionFlags, 0) ? true : false;
+        returnData.enableCorrectionData = Utils::bitIsSet(optionFlags, 1) ? true : false;
+        returnData.applyIntegrityInfo = Utils::bitIsSet(optionFlags, 2) ? true : false;
 
         uint8 numberOfSatellites = dataBuffer.read_uint8();
         for (uint8 satelliteNum = 0; satelliteNum < numberOfSatellites; ++satelliteNum)
@@ -50,12 +50,13 @@ namespace mscl
         // Only fill in data if set command is being sent.
         if (m_functionSelector == InertialTypes::USE_NEW_SETTINGS)
         {
-            byteCommand.append_uint8(InertialTypes::ENABLED);
+            uint8 sbasEnabled = static_cast<uint8>(m_data.enableSBAS ? InertialTypes::ENABLED : InertialTypes::DISABLED);
+            byteCommand.append_uint8(sbasEnabled);
             uint16 optionFlags = 0;
-            if (m_data.enableRanging) optionFlags &= 0x1;
-            if (m_data.enableSBAS) optionFlags &= 0x2;
-            if (m_data.applyIntergityInfo) optionFlags &= 0x4;
-            byteCommand.append_int16(optionFlags);
+            if (m_data.enableRanging) optionFlags |= 0x1;
+            if (m_data.enableCorrectionData) optionFlags |= 0x2;
+            if (m_data.applyIntegrityInfo) optionFlags |= 0x4;
+            byteCommand.append_uint16(optionFlags);
 
             uint8 vectorSize = checked_cast<uint8, size_t>(m_data.satellitePRNs.size(), "number of Satellite PRNs");
             byteCommand.append_uint8(vectorSize);

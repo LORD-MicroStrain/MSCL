@@ -16,11 +16,13 @@ The directory structure for how the libraries should be placed is given inside t
                             C++
 ----------------------------------------------------------------
 /dependencies/C++/include/mscl/*.h
-/dependencies/C++/lib/Debug/MSCL.lib 
-/dependencies/C++/lib/Release/MSCL.lib
+/dependencies/C++/lib/x86/Debug/MSCL.lib 
+/dependencies/C++/lib/x86/Release/MSCL.lib
+/dependencies/C++/lib/x64/Debug/MSCL.lib 
+/dependencies/C++/lib/x64/Release/MSCL.lib
 
-Note: The C++ MSCL library depends on boost 1.61. You will need to perform the following steps:
-      1. Download boost 1.61 from boost.org
+Note: The C++ MSCL library depends on boost 1.64. You will need to perform the following steps:
+      1. Download boost 1.64 from boost.org
       2. Install the Prebuilt windows binaries, or build boost from source
       3. Edit the MSCL_PropertySheet_Debug.props and MSCL_PropertySheet_Release.props files, or the property pages of each project
       4. Update the "Additional Include Directories" to include the path to: 

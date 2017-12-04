@@ -1,0 +1,95 @@
+/*******************************************************************************
+Copyright(c) 2017 LORD Corporation. All rights reserved.
+
+MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
+*******************************************************************************/
+#pragma once
+
+#include "GenericInertialCommand.h"
+#include "mscl/MicroStrain/ResponseCollector.h"
+#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
+#include "mscl/MicroStrain/Inertial/Commands/InertialCommand.h"
+
+namespace mscl
+{
+
+#ifndef SWIG 
+
+    //Class: UARTBaudRate
+    //    Contains the logic for the Inertial UARTBaudRate command.
+    class UARTBaudRate : public InertialCommand
+    {
+    public:
+        //Function: commandName
+		//
+        //Returns:
+        //    std::string - the string name for this class.
+        virtual std::string commandName() const { return "UARTBaudRate"; }
+
+        //Function: MakeSetCommand
+		//
+        //Parameter: dataToUse
+		//    The <uint32> object to set.
+		//
+        //Returns:
+        //    UARTBaudRate - object set up for sending a set command.
+        static UARTBaudRate MakeSetCommand(uint32 dataToUse);
+
+        //Function: MakeGetCommand
+		//
+        //Returns:
+        //    UARTBaudRate - object set up for sending a get command.
+        static UARTBaudRate MakeGetCommand();
+
+        //Function: getResponseData
+		//
+        //Parameter:
+        //    response - The <GenericInertialCommandResponse> object from which to get formatted data.
+		//
+        //Returns:
+        //    ConstellationSettingsData - An object with the data returned from the device.
+        static uint32 getResponseData(const GenericInertialCommandResponse& response);
+
+        //Function: operator ByteStream
+        //  Converts this class to a ByteStream.
+        operator ByteStream() const;
+
+    private:
+        // Function: Constructor UARTBaudRate
+        //    Private constructor creates a UARTBaudRate object.  Use Make___Command methods to create an object.
+        UARTBaudRate(InertialTypes::FunctionSelector function_selector, uint32 dataToUse);
+		UARTBaudRate(InertialTypes::FunctionSelector function_selector);
+
+        //Function: commandType
+		//
+        //Returns:
+        //    InertialTypes::Command - the command ID.
+        virtual InertialTypes::Command commandType() const { return InertialTypes::CMD_UART_BAUD_RATE; }
+
+        //Function: fieldDataByte
+		//
+        //Returns:
+        //    uint8 - the byte ID for field data in the reply.
+        virtual uint8 fieldDataByte() const { return 0x87; }
+
+        //Function: responseExpected
+		//
+        //Returns:
+        //    bool - True indicates that a response should return from the device.
+        virtual bool responseExpected() const;
+
+        //Variable: m_baudRate
+        //    The uint32 to send to the device.
+        uint32 m_baudRate;
+
+        //Variable: m_functionSelector
+        //    The FunctionSelector type of command to send, get/set, reset to factory defaults, et al.
+        InertialTypes::FunctionSelector m_functionSelector;
+
+    public:
+	// Destructor
+        ~UARTBaudRate() { }
+    };
+
+#endif
+}

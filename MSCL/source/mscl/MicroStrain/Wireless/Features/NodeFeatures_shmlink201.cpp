@@ -14,9 +14,15 @@ namespace mscl
     NodeFeatures_shmlink201::NodeFeatures_shmlink201(const NodeInfo& info):
         NodeFeatures(info)
     {
-        static const ChannelMask DIFF_CH1(BOOST_BINARY(00000001));    //ch1
-        static const ChannelMask DIFF_CH2(BOOST_BINARY(00000010));    //ch2
-        static const ChannelMask DIFF_CH3(BOOST_BINARY(00000100));    //ch3
+        static const ChannelMask DIFF_CH1(BOOST_BINARY(00000001));  //ch1
+        static const ChannelMask DIFF_CH2(BOOST_BINARY(00000010));  //ch2
+        static const ChannelMask DIFF_CH3(BOOST_BINARY(00000100));  //ch3
+        static const ChannelMask ALL_CHS(BOOST_BINARY(00000111));   //ch1 - ch3
+
+        m_channelGroups.emplace_back(ALL_CHS, "Differential Channels",
+                                     ChannelGroup::SettingsMap{
+                                         {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1}}
+        );
 
         m_channelGroups.emplace_back(DIFF_CH1, "Differential Channel 1",
                                      ChannelGroup::SettingsMap{
@@ -42,9 +48,8 @@ namespace mscl
         m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential, "Differential 2");
         m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_fullDifferential, "Differential 3");
         m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_acceleration, "Acceleration X");
-        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_acceleration, "Acceleration X");
-        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration, "Acceleration X");
-        m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_temperature, "Internal Temperature");
+        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_acceleration, "Acceleration Y");
+        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration, "Acceleration Z");
     }
 
     const WirelessTypes::TransmitPowers NodeFeatures_shmlink201::transmitPowers() const
@@ -78,13 +83,24 @@ namespace mscl
         return result;
     }
 
+    const WirelessTypes::Filters NodeFeatures_shmlink201::lowPassFilters() const
+    {
+        static const WirelessTypes::Filters filters = {
+            {WirelessTypes::filter_5222hz},
+            {WirelessTypes::filter_4416hz},
+            {WirelessTypes::filter_2208hz},
+            {WirelessTypes::filter_1104hz},
+            {WirelessTypes::filter_552hz}
+        };
+        return filters;
+    }
+
     const WirelessTypes::SamplingModes NodeFeatures_shmlink201::samplingModes() const
     {
         //build and return the sampling modes that are supported
         WirelessTypes::SamplingModes result;
         result.push_back(WirelessTypes::samplingMode_nonSync);
         result.push_back(WirelessTypes::samplingMode_sync);
-        result.push_back(WirelessTypes::samplingMode_syncBurst);
         return result;
     }
 
@@ -98,9 +114,6 @@ namespace mscl
             {
                 return AvailableSampleRates::continuous_shmLink201;
             }
-
-            case WirelessTypes::samplingMode_syncBurst:
-                return AvailableSampleRates::burst_shmLink201;
 
             default:
                 throw Error_NotSupported("The sampling mode is not supported by this Node");
@@ -152,7 +165,7 @@ namespace mscl
         return true;
     }
 
-    bool NodeFeatures_shmlink201::supportsAutoCal() const
+    bool NodeFeatures_shmlink201::supportsAutoCal_shm201() const
     {
         return true;
     }
@@ -174,7 +187,7 @@ namespace mscl
 
     uint8 NodeFeatures_shmlink201::numSnCurveSegments() const
     {
-        return 3;
+        return 5;
     }
 
     const WirelessTypes::WirelessSampleRates NodeFeatures_shmlink201::histogramTransmitRates() const

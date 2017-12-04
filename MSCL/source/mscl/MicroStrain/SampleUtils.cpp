@@ -47,6 +47,7 @@ namespace mscl
         {SampleRate::Hertz(4096), WirelessTypes::sampleRate_4096Hz},
         {SampleRate::Hertz(2048), WirelessTypes::sampleRate_2048Hz},
         {SampleRate::Hertz(1024), WirelessTypes::sampleRate_1024Hz},
+        {SampleRate::Hertz(887), WirelessTypes::sampleRate_887Hz},
         {SampleRate::Hertz(512), WirelessTypes::sampleRate_512Hz},
         {SampleRate::Hertz(256), WirelessTypes::sampleRate_256Hz},
         {SampleRate::Hertz(128), WirelessTypes::sampleRate_128Hz},
@@ -111,6 +112,7 @@ namespace mscl
         case WirelessTypes::sampleRate_4096Hz:          return SampleRate::Hertz(4096);
         case WirelessTypes::sampleRate_2048Hz:          return SampleRate::Hertz(2048);
         case WirelessTypes::sampleRate_1024Hz:          return SampleRate::Hertz(1024);
+        case WirelessTypes::sampleRate_887Hz:           return SampleRate::Hertz(887);
         case WirelessTypes::sampleRate_512Hz:           return SampleRate::Hertz(512);
         case WirelessTypes::sampleRate_256Hz:           return SampleRate::Hertz(256);
         case WirelessTypes::sampleRate_128Hz:           return SampleRate::Hertz(128);

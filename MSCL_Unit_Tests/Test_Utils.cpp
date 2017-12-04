@@ -384,11 +384,11 @@ BOOST_AUTO_TEST_CASE(Utils_GetSystemTime)
     BOOST_CHECK( time1 < time2 );
 
     const uint64 TIME_2012 = 1349207816000000000;    // 10-02-2012
-    const uint64 TIME_2017 = 1506974216000000000;    // 10-02-2017
+    const uint64 TIME_2022 = 1664742971000000000;    // 10-02-2022
 
     //check that the time is between a certain range of time
     BOOST_CHECK(time1 > TIME_2012);
-    BOOST_CHECK(time1 < TIME_2017);        //this will break on October 2nd, 2017. If you are fixing this in 2017...Hello future Software Engineer! This is Ricky from 5 years ago. How are the flying cars?
+    BOOST_CHECK(time1 < TIME_2022);        //this will break on October 2nd, 2022. If you are fixing this in 2022...Hello future Software Engineer! This is Ricky from 10 years ago. How are the flying cars?
 }
 
 BOOST_AUTO_TEST_CASE(Utils_valueTypeSize)

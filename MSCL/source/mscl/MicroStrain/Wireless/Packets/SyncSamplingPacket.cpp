@@ -10,6 +10,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
 #include "mscl/MicroStrain/SampleUtils.h"
 #include "mscl/TimeSpan.h"
+#include "mscl/TimestampCounter.h"
 #include "mscl/Types.h"
 
 
@@ -80,7 +81,7 @@ namespace mscl
         SampleRate currentRate = SampleUtils::convertToSampleRate(sampleRate);
 
         //get the value to increment the timestamp by for each sweep (the timestamp from the packet only applies to the first sweep)
-        const uint64 TS_INCREMENT = currentRate.samplePeriod().getNanoseconds();
+        TimestampCounter tsCounter(currentRate, realTimestamp);
 
         //get the sampling mode for all sweeps in this packet
         DataSweep::SamplingType mode = DataSweep::samplingType_SyncSampling;
@@ -102,7 +103,8 @@ namespace mscl
             sweep.sampleRate(currentRate);
 
             //build this sweep's timestamp
-            sweep.timestamp(Timestamp(realTimestamp + (TS_INCREMENT * sweepItr)));
+            sweep.timestamp(Timestamp(tsCounter.time()));
+            tsCounter.advance();
 
             //get this sweep's node and base rssi values
             sweep.nodeRssi(m_nodeRSSI);

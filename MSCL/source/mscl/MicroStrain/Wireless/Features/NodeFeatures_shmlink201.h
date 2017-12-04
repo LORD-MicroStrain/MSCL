@@ -30,6 +30,8 @@ namespace mscl
 
         virtual const WirelessTypes::DataFormats dataFormats() const final;
 
+        virtual const WirelessTypes::Filters lowPassFilters() const override;
+
         virtual const WirelessTypes::SamplingModes samplingModes() const final;
 
         virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
@@ -52,7 +54,7 @@ namespace mscl
 
         virtual bool supportsActivitySense() const final;
 
-        virtual bool supportsAutoCal() const;
+        virtual bool supportsAutoCal_shm201() const;
 
         virtual bool supportsSensorDelayConfig() const override;
 

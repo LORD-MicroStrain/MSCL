@@ -15,12 +15,12 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    BaseStationFeatures::BaseStationFeatures(BaseStationInfo& info) :
+    BaseStationFeatures::BaseStationFeatures(const BaseStationInfo& info) :
         m_baseInfo(info)
     {
     }
 
-    std::unique_ptr<BaseStationFeatures> BaseStationFeatures::create(BaseStationInfo& info)
+    std::unique_ptr<BaseStationFeatures> BaseStationFeatures::create(const BaseStationInfo& info)
     {
         switch(info.model())
         {

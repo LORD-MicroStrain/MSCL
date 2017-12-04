@@ -103,6 +103,10 @@ namespace mscl
                 algorithmIdStart = WirelessChannel::channel_1_crestFactor;
                 break;
 
+            case WirelessTypes::derived_mean:
+                algorithmIdStart = WirelessChannel::channel_1_mean;
+                break;
+
             default:
                 assert(false);  //need to add support for a new algorithm ID
                 throw Error("Invalid Algorithm Id");

@@ -13,8 +13,11 @@ namespace mscl
 {
     //API Class: ChannelMask
     //    Represents the channel mask (active and inactive channels) for a WirelessNode. 
-    class ChannelMask : private BitMask
+    class ChannelMask
     {
+    private:
+        BitMask m_bitMask;
+
     public:
         //API Constant: MAX_CHANNELS = 16
         //    The maximum number of channels currently available on any node

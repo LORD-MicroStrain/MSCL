@@ -7,7 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "GenericInertialCommand.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/Inertial/InertialReturnTypes.h"
+#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/Inertial/Commands/InertialCommand.h"
 
 namespace mscl
@@ -57,7 +57,7 @@ namespace mscl
         //Function: getResponseData
         //
         //Returns:
-        //    ConstellationSettingsData - An object iwth the data returned from the device.
+        //    ConstellationSettingsData - An object with the data returned from the device.
         static SBASSettingsData getResponseData(const GenericInertialCommandResponse& response);
 
         //Function: operator ByteStream

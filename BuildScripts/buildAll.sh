@@ -3,6 +3,9 @@
 echo '========================================================'
 echo '(buildAll.sh) STARTING MSCL BUILD'
 
+#add path to boost libraries
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/jenkins/boost/boost_1.64.0_installed/lib
+
 #for now, bjam needs this folder to exist
 echo '(buildAll.sh) Creating the build\swig-python directory'
 mkdir -p build/swig-python

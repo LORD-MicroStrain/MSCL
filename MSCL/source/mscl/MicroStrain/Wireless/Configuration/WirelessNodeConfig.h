@@ -129,6 +129,14 @@ namespace mscl
         //  The sensor delay to set.
         boost::optional<uint32> m_sensorDelay;
 
+        //Variable: m_gaugeResistance
+        //  The gauge resistance to set.
+        boost::optional<uint16> m_gaugeResistance;
+
+        //Variable: m_numActiveGauges
+        //  The number of active gauges to set.
+        boost::optional<uint16> m_numActiveGauges;
+
         //Variable: m_dataMode
         //  The <DataMode> to set.
         boost::optional<WirelessTypes::DataMode> m_dataMode;
@@ -674,6 +682,28 @@ namespace mscl
         //API Function: gaugeFactor
         //    Sets the gauge Factor for the given <ChannelMask> in the Config.
         void gaugeFactor(const ChannelMask& mask, float factor);
+
+        //API Function: gaugeResistance
+        //    Gets the gauge resistance in the Config, if set.
+        //
+        //Exceptions:
+        //    <Error_NoData> - The requested value has not been set.
+        uint16 gaugeResistance() const;
+
+        //API Function: gaugeResistance
+        //    Sets the gauge resistance in the Config.
+        void gaugeResistance(uint16 resistance);
+
+        //API Function: numActiveGauges
+        //    Gets the number of active gauges in the Config, if set.
+        //
+        //Exceptions:
+        //    <Error_NoData> - The requested value has not been set.
+        uint16 numActiveGauges() const;
+
+        //API Function: numActiveGauges
+        //    Sets the number of active gauges in the Config.
+        void numActiveGauges(uint16 numGauges);
 
         //API Function: linearEquation
         //    Gets the <LinearEquation> for the given <ChannelMask> in the Config, if set.

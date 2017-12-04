@@ -33,9 +33,8 @@ namespace mscl
         //    Destroys the Connection_Impl_Base object
         virtual ~Connection_Impl_Base() {};
 
-    private:
-        Connection_Impl_Base(const Connection_Impl_Base&);                    //copy constructor disabled
-        Connection_Impl_Base& operator=(const Connection_Impl_Base&);        //assignment operator disabled
+        Connection_Impl_Base(const Connection_Impl_Base&) = delete;                 //copy constructor disabled
+        Connection_Impl_Base& operator=(const Connection_Impl_Base&) = delete;      //assignment operator disabled
 
     protected:
         //Function: establishConnection

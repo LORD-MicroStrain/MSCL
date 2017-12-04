@@ -493,16 +493,7 @@ namespace mscl
             //Seconds or Milliseconds
             else if(delayVersion == 3)
             {
-                //if the delay is 1 second or more
-                if(delay >= TimeSpan::Seconds(1))
-                {
-                    //the delay needs to be stored as seconds
-                    valueToWrite = static_cast<uint16>(delay.getSeconds());
-
-                    //set the most significant bit on to signify seconds
-                    Utils::setBit(valueToWrite, 15, true);
-                }
-                else
+                if(delay <= TimeSpan::MilliSeconds(500))
                 {
                     //the delay needs to be stored as milliseconds
                     valueToWrite = static_cast<uint16>(delay.getMilliseconds());
@@ -510,22 +501,29 @@ namespace mscl
                     //set the most significant bit off to signify milliseconds
                     Utils::setBit(valueToWrite, 15, false);
                 }
-            }
-            //Seconds, Milliseconds, or Microseconds
-            else if(delayVersion == 4)
-            {
-                //if the delay is 1 second or more
-                if(delay >= TimeSpan::Seconds(1))
+                else
                 {
                     //the delay needs to be stored as seconds
                     valueToWrite = static_cast<uint16>(delay.getSeconds());
 
-                    //0b10 - Seconds
+                    //set the most significant bit on to signify seconds
                     Utils::setBit(valueToWrite, 15, true);
+                }
+            }
+            //Seconds, Milliseconds, or Microseconds
+            else if(delayVersion == 4)
+            {
+                //if we can represent the value in microseconds
+                if(microseconds <= 16383)
+                {
+                    valueToWrite = static_cast<uint16>(delay.getMicroseconds());
+
+                    //0b00 - Microseconds
+                    Utils::setBit(valueToWrite, 15, false);
                     Utils::setBit(valueToWrite, 14, false);
                 }
-                //less than 1 second but more than 1 millisecond
-                else if(delay >= TimeSpan::MilliSeconds(1))
+                //if we can represent the value in milliseconds
+                else if(microseconds <= 16383000)
                 {
                     valueToWrite = static_cast<uint16>(delay.getMilliseconds());
 
@@ -533,13 +531,14 @@ namespace mscl
                     Utils::setBit(valueToWrite, 15, false);
                     Utils::setBit(valueToWrite, 14, true);
                 }
-                //less than 1 millisecond
+                //if we can only represent the value in seconds
                 else
                 {
-                    valueToWrite = static_cast<uint16>(delay.getMicroseconds());
+                    //the delay needs to be stored as seconds
+                    valueToWrite = static_cast<uint16>(delay.getSeconds());
 
-                    //0b00 - Microseconds
-                    Utils::setBit(valueToWrite, 15, false);
+                    //0b10 - Seconds
+                    Utils::setBit(valueToWrite, 15, true);
                     Utils::setBit(valueToWrite, 14, false);
                 }
             }
@@ -1050,6 +1049,26 @@ namespace mscl
         write(NodeEepromMap::MAX_RETRANS_BURST, Value::UINT16(maxReTxPerBurst));
     }
 
+    uint16 NodeEepromHelper::read_gaugeResistance()
+    {
+        return read(NodeEepromMap::GAUGE_RESISTANCE).as_uint16();
+    }
+
+    void NodeEepromHelper::write_gaugeResistance(uint16 resistance)
+    {
+        write(NodeEepromMap::GAUGE_RESISTANCE, Value::UINT16(resistance));
+    }
+
+    uint16 NodeEepromHelper::read_numActiveGauges()
+    {
+        return read(NodeEepromMap::NUM_ACTIVE_GAUGES).as_uint16();
+    }
+
+    void NodeEepromHelper::write_numActiveGauges(uint16 numGauges)
+    {
+        write(NodeEepromMap::NUM_ACTIVE_GAUGES, Value::UINT16(numGauges));
+    }
+
     WirelessTypes::InputRange NodeEepromHelper::read_inputRange(const ChannelMask& mask) const
     {
         //find the type of the last channel enabled in the mask
@@ -1314,6 +1333,16 @@ namespace mscl
         {
             result.snCurveSegment(2, SnCurveSegment(read(NodeEepromMap::SNCURVE_M_3).as_float(), read(NodeEepromMap::SNCURVE_LOGA_3).as_float()));
         }
+
+        if(numSnCurveSegments >= 4)
+        {
+            result.snCurveSegment(3, SnCurveSegment(read(NodeEepromMap::SNCURVE_M_4).as_float(), read(NodeEepromMap::SNCURVE_LOGA_4).as_float()));
+        }
+
+        if(numSnCurveSegments >= 5)
+        {
+            result.snCurveSegment(4, SnCurveSegment(read(NodeEepromMap::SNCURVE_M_5).as_float(), read(NodeEepromMap::SNCURVE_LOGA_5).as_float()));
+        }
         //=============================
 
         //=============================
@@ -1443,6 +1472,20 @@ namespace mscl
         {
             write(NodeEepromMap::SNCURVE_M_3, Value::FLOAT(segment->second.m()));
             write(NodeEepromMap::SNCURVE_LOGA_3, Value::FLOAT(segment->second.logA()));
+        }
+
+        segment = segments.find(3);
+        if(numSnCurveSegments >= 4 && segment != segments.end())
+        {
+            write(NodeEepromMap::SNCURVE_M_4, Value::FLOAT(segment->second.m()));
+            write(NodeEepromMap::SNCURVE_LOGA_4, Value::FLOAT(segment->second.logA()));
+        }
+
+        segment = segments.find(4);
+        if(numSnCurveSegments >= 5 && segment != segments.end())
+        {
+            write(NodeEepromMap::SNCURVE_M_5, Value::FLOAT(segment->second.m()));
+            write(NodeEepromMap::SNCURVE_LOGA_5, Value::FLOAT(segment->second.logA()));
         }
         //=============================
 
@@ -1779,6 +1822,9 @@ namespace mscl
 
             case WirelessTypes::derived_crestFactor:
                 return NodeEepromMap::DERIVED_CREST_FACTOR_MASK;
+
+            case WirelessTypes::derived_mean:
+                return NodeEepromMap::DERIVED_MEAN_MASK;
 
             default:
                 assert(false);  //need to add another derived channel type

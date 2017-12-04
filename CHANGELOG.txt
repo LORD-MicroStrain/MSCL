@@ -14,6 +14,150 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
+32.8.3 - 2017-11-29
+- removed channel 8 from SHM-Link-2 and SHM-Link-200.
+- added RF Sweep support for WSDA-2000 with latest firmware.
+
+32.8.2 - 2017-11-27
+- added rf sweep support to WSDA-200 for all firmware versions equal or above 5.39166
+
+32.8.1 - 2017-11-21
+- fixed incorrect eeprom mapping for number of active gauges
+
+32.8.0 - 2017-11-16
+- added 3DM-GQ4-45 model number.
+
+32.7.1 - 2017-11-15
+- update for the features on the variety of SHM-Link-201s.
+
+32.7.0 - 2017-11-14
+- support for configuration of Gauge Resistance
+- support for configuration of Number of Active Gauges
+
+32.6.1 - 2017-11-13
+- ignoring eeprom read retry setting when determining protocols for WirelessNodes and BaseStations
+- including group read/page download as a retry itself when reading Node eeprom
+
+32.6.0 - 2017-11-08
+- Devices::listBaseStations now returns any WSDA-Pro devices connected via USB, with their IPV6 TCP address
+
+32.5.0 - 2017-11-07
+- initial support for the variety of SHM-Link-201s.
+
+32.4.6 - 2017-11-01
+- fix for incorrect model number for the WSDA-2000.
+
+32.4.5 - 2017-10-27
+- fixed a typo, and also a logic error in Constellationsettings.
+
+32.4.4 - 2017-10-19
+- fix for NodeFeatures::supportsNonSyncLogWithTimestamps() returning true even if the Node doesn't support logging.
+
+32.4.3 - 2017-10-17
+- fixed bad data being used in GNSS_SBASSettings.
+
+32.4.2 - 2017-10-11
+- fix for incorrect model number for SHM-Link-201.
+
+32.4.1 - 2017-10-06
+- fix for erroneous 910hz sample rate, changed to 887hz.
+
+32.4.0 - 2017-10-04
+- removed burst option from SHM-Link-201.
+- support for derived Mean channel.
+
+32.3.0 - 2017-10-03
+- added 910hz sample rate.
+
+32.2.2 - 2017-10-02
+- another fix for missing parameter in Linux Devices code.
+
+32.2.1 - 2017-10-02
+- fix for missing parameter in Linux Devices code.
+
+32.2.0 - 2017-09-29
+- support for 5 SHM-Link-201 SN-Curves
+
+32.1.1 - 2017-09-28
+- fix for AutoCal ASPP3 command sending invalid command packet.
+
+32.1.0 - 2017-09-28
+- support for WebSocket connections.
+    - added requirement for OpenSSL
+    - added requirement for Boost::Beast library
+
+32.0.3 - 2017-09-21
+- fix for eeprom caches being destroyed while other threads are using them causing a crash.
+  - changed to just clearing the cache instead of destroying the object, since the cache uses a mutex internally anyway.
+- don't use group eeprom read if useEepromCache is set to false on the Node, since it just adds unnecessary overhead.
+
+32.0.2 - 2017-09-20
+- added mutex for eeprom cache access.
+
+32.0.1 - 2017-09-19
+- fix for Timestamps being calculated incorrectly with sample rates 1khz and above.
+- removed ch8 from SHM-Link-201.
+
+32.0.0 - 2017-09-14
+- consolidated AutoCalShmErrorFlag and AutoShuntCalErrorFlag into AutoCalErrorFlag.
+  - CHANGED WirelessTypes::AutoCalShmErrorFlag to AutoCalErrorFlag.
+  - CHANGED WirelessTypes::AutoShuntCalErrorFlag to AutoCalErrorFlag.
+
+31.0.0 - 2017-09-13
+- CHANGED NodeFeatures::supportsAutoCal() to supportsAutoCal_shm().
+- added NodeFeatures::supportsAutoCal_shm201().
+- added WirelessNode::autoCal_shmLink201().
+
+30.10.0 - 2017-09-13
+- Put in code to send a save channel info call to the inertial device.
+
+30.9.1 - 2017-09-08
+- fix for Torque-Link using 12-bit resolution in autobalance when should be using 16-bit.
+
+30.9.0 - 2017-09-05
+- added new lowPassFilter options for the SHM-Link-201.
+- changed C++ Release build to not perform Whole Program Optimization.
+
+30.8.1 - 2017-08-31
+- fix for normalizeSensorDelay and the actual writing of sensor delay having mismatched logic.
+
+30.8.0 - 2017-08-30
+- Added DatalogDownloader::calCoefficientsUpdated() for just checking whether any cal coefficients have been updated
+  since the last call to getNextData (similar to metaDataUpdated()).
+
+30.7.0 - 2017-08-21
+- Added HeadingUpdateControl, ExternalHeadingUpdate and ExternalHeadingUpdateWithTimestamp.
+
+30.6.0 - 2017-08-18
+- support for Mock WirelessNodes.
+  - use BaseStation::Mock() to create a mock BaseStation.
+  - use WirelessNode::Mock() to create a mock WirelessNode (pass in the mock BaseStation).
+  - WirelessNodeConfig can be used to set options, which can be verified and applied (will write to eeprom cache).
+  - SyncSamplingNetwork can work with mock Nodes, which can be verified and applied (will write to eeprom cache).
+  - use WirelessNode::getEepromCache() to get an <EepromLocation, value> map of the eeprom cache.
+
+30.5.1 - 2017-08-16
+- fix for incorrect parsing of derived sync data packets.
+
+30.5.0 - 2017-08-16
+- Added GNSS Source Control and External GNSS Update commands.
+
+30.4.0 - 2017-08-16
+- Added EstimationControlFlags, RawRTCM_2_3Message, and VehicleDynamicsMode
+
+30.3.0 - 2017-08-15
+- Added ComplementaryFilterSettings and DeviceStatus
+
+30.2.0 - 2017-08-14
+- Added UARTBaudRate and AdvancedLowPassFilterSettings
+
+30.1.0 - 2017-08-11
+- Added ConingAndScullingEnable and UARTBaudRate commands.
+
+30.0.0 - 2017-08-10
+- Added Magnetometer Hard Iron Offset and Magnetometer Soft Iron Matrix commands.
+- CHANGED Created a GeometricVector struct to replace the old typedef to a std::vector<float>
+
 29.5.0 - 2017-08-09
 - Added Capture Gyro Bias command.
 

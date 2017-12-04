@@ -66,6 +66,8 @@ namespace mscl
 
         //we didn't get a value from the cache
 
+        rec_mutex_lock_guard lock(m_cacheMutex);    //locking here so cache doesn't change between updateCacheFromDevice and readCache
+
         //attempt to read the value from the device 
         if(updateCacheFromDevice(location))
         {

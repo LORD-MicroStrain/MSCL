@@ -61,14 +61,14 @@ namespace mscl
 
         //Destructor: ~BaseStation_Impl
         //    Destroys the BaseStation object
-        ~BaseStation_Impl();
+        virtual ~BaseStation_Impl();
 
     private:
         BaseStation_Impl() = delete;                                    //default constructor disabled
         BaseStation_Impl(const BaseStation_Impl&) = delete;             //copy constructor disabled
         BaseStation_Impl& operator=(const BaseStation_Impl&) = delete;  //assignement operator disabled
 
-    private:
+    protected:
         //Variable: m_connection
         //    The <Connection> object used for communication
         Connection m_connection;
@@ -224,7 +224,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_NotSupported>: Unsupported eeprom location.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool read(uint16 eepromAddress, uint16& result);
+        virtual bool read(uint16 eepromAddress, uint16& result);
 
         //Function: write
         //    Writes a value to the BaseStation at a specified eeprom location.
@@ -239,7 +239,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_NotSupported>: Unsupported eeprom location or value.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool write(uint16 eepromAddress, uint16 value);
+        virtual bool write(uint16 eepromAddress, uint16 value);
 
         //Function: setReadWriteRetries
         //    Sets the number of retry attempts for reading and writing with the BaseStation.
@@ -280,7 +280,7 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         WirelessTypes::Frequency frequency() const;
 
-        //API Function: communicationProtocol
+        //Function: communicationProtocol
         //  Gets the <WirelessTypes::CommProtocol> that the BaseStation is currently set to use.
         //
         //Returns:
@@ -289,7 +289,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_Communication>: Failed to read the value from the BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        WirelessTypes::CommProtocol communicationProtocol() const;
+        virtual WirelessTypes::CommProtocol communicationProtocol() const;
 
         //Function: regionCode
         //    Gets the <WirelessTypes::RegionCode> representing the region of this BaseStation.
@@ -513,7 +513,7 @@ namespace mscl
         //    - <Error_NotSupported>: RF Sweep Mode is not supported by this BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         //    - <Error_Communication>: The beacon status command has failed.
-        void startRfSweepMode();
+        virtual void startRfSweepMode();
 
         //Function: startRfSweepMode
         //    Starts the BaseStation in RF Sweep Mode.
@@ -534,7 +534,7 @@ namespace mscl
         //    - <Error_NotSupported>: Attempted to write an unsupported option. The device firmware is not compatible with this version of MSCL.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         //    - <Error_Communication>: Failed to cycle the power on the BaseStation.
-        void cyclePower(bool checkComm=true);
+        virtual void cyclePower(bool checkComm=true);
 
         //Function: resetRadio
         //    Resets the radio on the base station.
@@ -543,7 +543,7 @@ namespace mscl
         //    - <Error_NotSupported>: Attempted to write an unsupported option. The device firmware is not compatible with this version of MSCL.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         //    - <Error_Communication>: Failed to cycle the power on the BaseStation.
-        void resetRadio();
+        virtual void resetRadio();
 
         //Function: changeFrequency
         //    Changes the radio frequency of the base station.
@@ -788,6 +788,10 @@ namespace mscl
         //Function: protocol_node_autocal_shm_v1
         //  Performs Version 1 of the Node AutoCal SHM command.
         bool protocol_node_autocal_shm_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, AutoCalResult& result);
+
+        //Function: protocol_node_autocal_shm201_v1
+        //  Performs Version 1 of the Node AutoCal SHM-Link-201 command.
+        bool protocol_node_autocal_shm201_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, AutoCalResult& result);
 
         //Function: protocol_node_autoshuntcal_v1
         //  Performs Version 1 of the Node AutoShuntCal command.
@@ -1086,6 +1090,21 @@ namespace mscl
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
         bool node_autocal_shm(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, AutoCalResult& result);
+
+        //Function: node_autocal_shm201
+        //    Performs automatic calibration for a Wireless Node.
+        //
+        //Parameters:
+        //    nodeProtocol - The <WirelessProtocol> for the Node.
+        //    nodeAddress - The node address of the Node to send the command to.
+        //    result - The <AutoCalResult> reference to hold the result.
+        //
+        //Returns:
+        //    true if the AutoCal command was successful, false otherwise.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
+        bool node_autocal_shm201(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, AutoCalResult& result);
 
         //Function: node_autoShuntCal
         //  Performs automatic shunt calibration for a Wireless Node.
