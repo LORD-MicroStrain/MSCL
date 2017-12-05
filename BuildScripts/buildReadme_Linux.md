@@ -20,6 +20,14 @@ OpenSSL and Beast are optional and are used for creating secure WebSocket connec
 #define MSCL_DISABLE_WEBSOCKETS     //removes Beast dependency
 ```
 
+Since we are using bjam to build, you can pass these as bjam parameters instead of using the above defines:
+
+```
+command line arguments for bjam:
+--without-ssl                       //removes OpenSSL dependency
+--without-websockets                //removes Beast dependency
+```
+
 Configure bjam by creating a [site-config.jam or user-config.jam file](http://www.boost.org/build/doc/html/bbv2/overview/configuration.html) in your Home path or Boost Build Path. The contents of the file should look similar to this:
 ```
 using gcc
