@@ -64,6 +64,10 @@ Run the following from the top level MSCL source directory:
 # update the path below to match your boost lib path
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/jenkins/boost/boost_1.64.0_installed/lib
 
+#build using bjam/boost.build
+#Note: pass the following flags to bjam if desired:
+#  --without-ssl           //removes OpenSSL dependency
+#  --without-websockets    //removes Beast dependency
 bjam MSCL//stage_c++ release
 ```
 
@@ -86,9 +90,12 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/jenkins/boost/boost_1.64.0_install
 
 mkdir -p build/swig-python
 
-#have to run the bjam command twice to copy mscl.py (BUG, TODO)
+#build using bjam/boost.build
+#Note: pass the following flags to bjam if desired:
+#  --without-ssl           //removes OpenSSL dependency
+#  --without-websockets    //removes Beast dependency
 bjam MSCL//stage_python_x86 release
-bjam MSCL//stage_python_x86 release
+bjam MSCL//stage_python_x86 release  #have to run the bjam command twice to copy mscl.py (BUG, TODO)
 ```
 
 Output: 
