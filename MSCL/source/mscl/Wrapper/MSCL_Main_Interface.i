@@ -101,12 +101,12 @@
 #include "../MicroStrain/DataPoint.h"
 #include "../MicroStrain/Vector.h"
 #include "../MicroStrain/Matrix.h"
-//#include "../MicroStrain/ResponseCollector.h"
 #include "../MicroStrain/Wireless/ChannelMask.h"
 #include "../MicroStrain/Wireless/ArmedDataloggingNetwork.h"
 #include "../MicroStrain/Wireless/Configuration/BaseStationConfig.h"
 #include "../MicroStrain/Wireless/BaseStationAnalogPair.h"
 #include "../MicroStrain/Wireless/BaseStationButton.h"
+#include "../MicroStrain/Wireless/BaseStationInfo.h"
 #include "../MicroStrain/Wireless/BaseStation.h"
 #include "../MicroStrain/Wireless/Configuration/BaseStationEepromMap.h"
 #include "../MicroStrain/Wireless/Configuration/ConfigIssue.h"
@@ -139,8 +139,9 @@
 #include "../MicroStrain/Wireless/Commands/SetToIdleStatus.h"
 #include "../MicroStrain/Wireless/Features/ChannelGroup.h"
 #include "../MicroStrain/Wireless/Features/NodeFeatures.h"
+#include "../MicroStrain/Wireless/Features/NodeInfo.h"
 #include "../MicroStrain/Wireless/Features/BaseStationFeatures.h"
-#include "../MicroStrain/Inertial/InertialReturnTypes.h"
+#include "../MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "../MicroStrain/Inertial/EulerAngles.h"
 #include "../MicroStrain/Inertial/PositionOffset.h"
 #include "../MicroStrain/Inertial/InertialModels.h"
@@ -178,7 +179,6 @@
 #ifndef UNIX_BUILD
     %include "../Communication/WsdaFinder.h"
 #endif
-//%include "../MicroStrain/ResponseCollector.h"
 %include "../MicroStrain/Wireless/WirelessTypes.h"
 %include "../MicroStrain/SampleRate.h"
 %include "../MicroStrain/Vector.h"
@@ -202,6 +202,7 @@
 %include "../MicroStrain/Wireless/BaseStationButton.h"
 %include "../MicroStrain/Wireless/Configuration/BaseStationConfig.h"
 %include "../MicroStrain/Wireless/Commands/BeaconStatus.h"
+%include "../MicroStrain/Wireless/BaseStationInfo.h"
 %include "../MicroStrain/Wireless/BaseStation.h"
 %include "../MicroStrain/Wireless/LoggedDataSweep.h"
 %include "../MicroStrain/Wireless/RadioFeatures.h"
@@ -211,6 +212,7 @@
 %include "../MicroStrain/Wireless/Commands/AutoCalResult.h"
 %include "../MicroStrain/Wireless/Commands/PingResponse.h"
 %include "../MicroStrain/Wireless/Commands/SetToIdleStatus.h"
+%include "../MicroStrain/Wireless/Features/NodeInfo.h"
 %include "../MicroStrain/Wireless/WirelessNode.h"
 %include "../MicroStrain/Wireless/DatalogDownloader.h"
 %include "../MicroStrain/Wireless/ArmedDataloggingNetwork.h"
@@ -218,7 +220,7 @@
 %include "../MicroStrain/Wireless/SyncSamplingNetwork.h"
 %include "../MicroStrain/Wireless/Features/NodeFeatures.h"
 %include "../MicroStrain/Wireless/Features/BaseStationFeatures.h"
-%include "../MicroStrain/Inertial/InertialReturnTypes.h"
+%include "../MicroStrain/Inertial/ExposedInertialTypes.h"
 %include "../MicroStrain/Inertial/EulerAngles.h"
 %include "../MicroStrain/Inertial/PositionOffset.h"
 %include "../MicroStrain/Inertial/InertialModels.h"
@@ -258,6 +260,7 @@ namespace std
     %template(DataModes)                vector<mscl::WirelessTypes::DataMode>;
     %template(CommProtocols)            vector<mscl::WirelessTypes::CommProtocol>;
     %template(DerivedChannelTypes)      vector<mscl::WirelessTypes::DerivedChannelType>;
+    %template(EepromMap)                map<uint16_t, uint16_t>;
     %template(DerivedChannelMasks)      map<mscl::WirelessTypes::DerivedChannelType, mscl::ChannelMask>;
     %template(SampleRates)              vector<mscl::SampleRate>;
     %template(ConfigIssues)             vector<mscl::ConfigIssue>;
@@ -273,7 +276,6 @@ namespace std
     %template(ConnectionDebugDataVec)   vector<mscl::ConnectionDebugData>;
     %template(SatellitePRNs)            vector<uint16_t>;
     %template(Constellations)           vector<mscl::Constellation>;
-    %template(GeometricVector)  std::vector<float>;
 
 #ifndef UNIX_BUILD
     %template(WsdaMap)                  map<string, mscl::WsdaInfo>;

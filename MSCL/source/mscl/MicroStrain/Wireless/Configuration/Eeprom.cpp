@@ -22,13 +22,16 @@ namespace mscl
 
     void Eeprom::clearCache()
     {
+        rec_mutex_lock_guard lock(m_cacheMutex);
         m_eepromCache.clear();
     }
 
     void Eeprom::clearCacheLocation(uint16 location)
     {
+        rec_mutex_lock_guard lock(m_cacheMutex);
+
         //try to find the value in the map to verify it exists
-        EepromMap::iterator itr = m_eepromCache.find(location);
+        WirelessTypes::EepromMap::iterator itr = m_eepromCache.find(location);
 
         //if the location does exist in the map
         if(itr != m_eepromCache.end())
@@ -43,14 +46,35 @@ namespace mscl
         m_numRetries = retries;
     }
 
-    uint8 Eeprom::getNumRetries()
+    uint8 Eeprom::getNumRetries() const
     {
         return m_numRetries;
     }
 
+    WirelessTypes::EepromMap Eeprom::getCache() const
+    {
+        rec_mutex_lock_guard lock(m_cacheMutex);
+        return m_eepromCache;
+    }
+
+    void Eeprom::importCache(const WirelessTypes::EepromMap& eepromMap)
+    {
+        rec_mutex_lock_guard lock(m_cacheMutex);
+
+        //keeps the old cache data for eeproms that aren't in the new eeprom map
+        
+        for(const auto& i : eepromMap)
+        {
+            //update or add locations from the passed in eepromMap
+            m_eepromCache[i.first] = i.second;
+        }
+    }
+
     bool Eeprom::readCache(uint16 location, uint16& result)
     {
-        EepromMap::iterator itr;
+        rec_mutex_lock_guard lock(m_cacheMutex);
+
+        WirelessTypes::EepromMap::iterator itr;
 
         //look up the eeprom in the cache
         itr = m_eepromCache.find(location);
@@ -70,8 +94,10 @@ namespace mscl
 
     void Eeprom::updateCache(uint16 location, uint16 value)
     {
+        rec_mutex_lock_guard lock(m_cacheMutex);
+
         //try to find the value in the map to see if it already exists
-        EepromMap::iterator itr = m_eepromCache.find(location);
+        WirelessTypes::EepromMap::iterator itr = m_eepromCache.find(location);
 
         //if we couldn't find the value in the map
         if(itr == m_eepromCache.end())

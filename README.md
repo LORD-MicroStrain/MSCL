@@ -1,6 +1,8 @@
-[Download the MSCL Binaries (29.5.0)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v29.5.0/MSCL_29.5.0.zip) (Windows)
+[Download the MSCL Binaries (32.8.3)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v32.8.3/MSCL_32.8.3.zip) (Windows)
 
-[How to build MSCL from source](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme.md) (Can be compiled for Windows, Linux, etc.)
+[Building MSCL on Windows](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme_Windows.md)
+
+[Building MSCL on Linux](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme_Linux.md)
 
 ### What is MSCL?
 MSCL is the MicroStrain Communication Library, developed by [LORD Sensing - Microstrain](http://microstrain.com) in Williston, VT. It was created to make it simple to interact with our [Wireless](http://www.microstrain.com/wireless) and [Inertial](http://www.microstrain.com/inertial) sensors.
@@ -24,7 +26,13 @@ The library is currently available in:
   
 [FAQs](https://github.com/LORD-MicroStrain/MSCL/blob/master/FAQs.md)
 
+#### Included Libraries
+
+OpenSSL - This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) - see the `License_OpenSSL.txt` file in the source distribution.
+
+Boost - see the `License_Boost.txt` file in the source distribution.
+
 #### License
-MIT License - see the LICENSE.txt file in the source distribution.
+MSCL is released under the MIT License - see the `LICENSE` file in the source distribution.
 
 Copyright (C) 2015-2017 LORD Corporation. All Rights Reserved.

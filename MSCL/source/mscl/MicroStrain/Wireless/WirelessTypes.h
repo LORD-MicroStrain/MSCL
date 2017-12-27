@@ -622,6 +622,8 @@ namespace mscl
         //    sampleRate_90kHz           - 79    - 90 kHz
         //    sampleRate_100kHz          - 80    - 100 kHz
         //
+        //    sampleRate_887Hz           - 98    - 887 Hz
+        //
         //    sampleRate_8192Hz          - 100    - 8192 Hz
         //    sampleRate_4096Hz          - 101    - 4096 Hz
         //    sampleRate_2048Hz          - 102    - 2048 Hz
@@ -651,51 +653,53 @@ namespace mscl
         //=====================================================================================================
         enum WirelessSampleRate
         {
-            sampleRate_104170Hz        = 60,
-            sampleRate_78125Hz         = 58,
-            sampleRate_62500Hz         = 57,
-            sampleRate_25000Hz         = 56,
-            sampleRate_12500Hz         = 55,
+            sampleRate_104170Hz         = 60,
+            sampleRate_78125Hz          = 58,
+            sampleRate_62500Hz          = 57,
+            sampleRate_25000Hz          = 56,
+            sampleRate_12500Hz          = 55,
 
-            sampleRate_3200Hz          = 49,
-            sampleRate_1600Hz          = 48,
-            sampleRate_800Hz           = 47,
-            sampleRate_300Hz           = 46,
+            sampleRate_3200Hz           = 49,
+            sampleRate_1600Hz           = 48,
+            sampleRate_800Hz            = 47,
+            sampleRate_300Hz            = 46,
 
-            sampleRate_1kHz            = 62,
-            sampleRate_2kHz            = 63,
-            sampleRate_3kHz            = 64,
-            sampleRate_4kHz            = 65,
-            sampleRate_5kHz            = 66,
-            sampleRate_6kHz            = 67,
-            sampleRate_7kHz            = 68,
-            sampleRate_8kHz            = 69,
-            sampleRate_9kHz            = 70,
-            sampleRate_10kHz           = 71,
-            sampleRate_20kHz           = 72,
-            sampleRate_30kHz           = 73,
-            sampleRate_40kHz           = 74,
-            sampleRate_50kHz           = 75,
-            sampleRate_60kHz           = 76,
-            sampleRate_70kHz           = 77,
-            sampleRate_80kHz           = 78,
-            sampleRate_90kHz           = 79,
-            sampleRate_100kHz          = 80,
+            sampleRate_1kHz             = 62,
+            sampleRate_2kHz             = 63,
+            sampleRate_3kHz             = 64,
+            sampleRate_4kHz             = 65,
+            sampleRate_5kHz             = 66,
+            sampleRate_6kHz             = 67,
+            sampleRate_7kHz             = 68,
+            sampleRate_8kHz             = 69,
+            sampleRate_9kHz             = 70,
+            sampleRate_10kHz            = 71,
+            sampleRate_20kHz            = 72,
+            sampleRate_30kHz            = 73,
+            sampleRate_40kHz            = 74,
+            sampleRate_50kHz            = 75,
+            sampleRate_60kHz            = 76,
+            sampleRate_70kHz            = 77,
+            sampleRate_80kHz            = 78,
+            sampleRate_90kHz            = 79,
+            sampleRate_100kHz           = 80,
 
-            sampleRate_8192Hz          = 100,
-            sampleRate_4096Hz          = 101,
-            sampleRate_2048Hz          = 102,
-            sampleRate_1024Hz          = 103,
-            sampleRate_512Hz           = 104,
-            sampleRate_256Hz           = 105,
-            sampleRate_128Hz           = 106,
-            sampleRate_64Hz            = 107,
-            sampleRate_32Hz            = 108,
-            sampleRate_16Hz            = 109,
-            sampleRate_8Hz             = 110,
-            sampleRate_4Hz             = 111,
-            sampleRate_2Hz             = 112,
-            sampleRate_1Hz             = 113,
+            sampleRate_887Hz            = 98,
+
+            sampleRate_8192Hz           = 100,
+            sampleRate_4096Hz           = 101,
+            sampleRate_2048Hz           = 102,
+            sampleRate_1024Hz           = 103,
+            sampleRate_512Hz            = 104,
+            sampleRate_256Hz            = 105,
+            sampleRate_128Hz            = 106,
+            sampleRate_64Hz             = 107,
+            sampleRate_32Hz             = 108,
+            sampleRate_16Hz             = 109,
+            sampleRate_8Hz              = 110,
+            sampleRate_4Hz              = 111,
+            sampleRate_2Hz              = 112,
+            sampleRate_1Hz              = 113,
 
             sampleRate_2Sec            = 114,
             sampleRate_5Sec            = 115,
@@ -800,42 +804,33 @@ namespace mscl
             autocal_notComplete             = 999
         };
 
-        //API Enum: AutoCalShmErrorFlag
-        //    The possible error flags for the AutoCal SHM Wireless Node function.
+        //API Enum: AutoCalErrorFlag
+        //    The possible error flags for the various AutoCal Wireless Node functions.
         //
-        //    autocalShmError_none              - 0        - AutoCal showed no sign of errors.
-        //    autocalShmError_sensorDetached    - 1        - AutoCal indicated the sensor may be detached.
-        //    autocalShmError_sensorShorted     - 2        - AutoCal indicated the sensor may have shorted.
-        enum AutoCalShmErrorFlag
+        //    autocalError_none                 - 0     - AutoCal showed no sign of errors.
+        //    autocalError_sensorDetached       - 1     - AutoCal indicated the sensor may be detached.
+        //    autocalError_sensorShorted        - 2     - AutoCal indicated the sensor may have shorted.
+        //    autocalError_unsupportedChannel   - 3     - The provided channel was not supported.
+        //    autocalError_baseHighRail         - 4     - The baseline data may have railed high.
+        //    autocalError_baseLowRail          - 5     - The baseline data may have railed low.
+        //    autocalError_shuntHighRail        - 6     - The shunted data may have railed high.
+        //    autocalError_shuntLowRail         - 7     - The shunted data may have railed low.
+        //    autocalError_ramp                 - 8     - There was an unexpected slope to the data.
+        //    autocalError_noShunt              - 9     - No shunt was detected in the data.
+        //    autocalError_timeout              - 10    - A timeout has occurred.
+        enum AutoCalErrorFlag
         {
-            autocalShmError_none             = 0,
-            autocalShmError_sensorDetached   = 1,
-            autocalShmError_sensorShorted    = 2
-        };
-
-        //API Enum: AutoShuntCalErrorFlag
-        //    The possible error flags for the AutoShuntCal Wireless Node function.
-        //
-        //    autoshuntcalError_none               - 0      - AutoCal showed no sign of errors.
-        //    autoshuntcalError_unsupportedChannel - 3      - The provided channel was not supported.
-        //    autoshuntcalError_baseHighRail       - 4      - The baseline data may have railed high.
-        //    autoshuntcalError_baseLowRail        - 5      - The baseline data may have railed low.
-        //    autoshuntcalError_shuntHighRail      - 6      - The shunted data may have railed high.
-        //    autoshuntcalError_shuntLowRail       - 7      - The shunted data may have railed low.
-        //    autoshuntcalError_ramp               - 8      - There was an unexpected slope to the data.
-        //    autoshuntcalError_noShunt            - 9      - No shunt was detected in the data.
-        //    autoshuntcalError_timeout            - 10     - A timeout has occurred.
-        enum AutoShuntCalErrorFlag
-        {
-            autoshuntcalError_none               = 0,
-            autoshuntcalError_unsupportedChannel = 3,
-            autoshuntcalError_baseHighRail       = 4,
-            autoshuntcalError_baseLowRail        = 5,
-            autoshuntcalError_shuntHighRail      = 6,
-            autoshuntcalError_shuntLowRail       = 7,
-            autoshuntcalError_ramp               = 8,
-            autoshuntcalError_noShunt            = 9,
-            autoshuntcalError_timeout            = 10
+            autocalError_none               = 0,
+            autocalError_sensorDetached     = 1,
+            autocalError_sensorShorted      = 2,
+            autocalError_unsupportedChannel = 3,
+            autocalError_baseHighRail       = 4,
+            autocalError_baseLowRail        = 5,
+            autocalError_shuntHighRail      = 6,
+            autocalError_shuntLowRail       = 7,
+            autocalError_ramp               = 8,
+            autocalError_noShunt            = 9,
+            autocalError_timeout            = 10
         };
 
         //API Enum: FatigueMode
@@ -868,14 +863,19 @@ namespace mscl
         //  filter_33000hz - 33000 - 33000 hz
         //  filter_20000hz - 20000 - 20000 hz
         //  filter_10000hz - 10000 - 10000 hz
+        //  filter_5222hz  - 5222 - 5222 hz
         //  filter_5000hz  - 5000 - 5000 hz
+        //  filter_4416hz  - 4416 - 4416 hz
         //  filter_4096hz  - 4096 - 4096 hz
         //  filter_4000hz  - 4000 - 4000 hz
+        //  filter_2208hz  - 2208 - 2208 hz
         //  filter_2048hz  - 2048 - 2048 hz
         //  filter_2000hz  - 2000 - 2000 hz
+        //  filter_1104hz  - 1104 - 1104 hz
         //  filter_1024hz  - 1024 - 1024 hz
         //  filter_1000hz  - 1000 - 1000 hz
         //  filter_800hz   - 800 - 800 hz
+        //  filter_552hz   - 552 - 552 hz
         //  filter_512hz   - 512 - 512 hz
         //  filter_500hz   - 500 - 500 hz
         //  filter_418hz   - 418 - 418 hz
@@ -897,14 +897,19 @@ namespace mscl
             filter_33000hz  = 33000,
             filter_20000hz  = 20000,
             filter_10000hz  = 10000,
+            filter_5222hz   = 5222,
             filter_5000hz   = 5000,
+            filter_4416hz   = 4416,
             filter_4096hz   = 4096,
             filter_4000hz   = 4000,
+            filter_2208hz   = 2208,
             filter_2048hz   = 2048,
             filter_2000hz   = 2000,
+            filter_1104hz   = 1104,
             filter_1024hz   = 1024,
             filter_1000hz   = 1000,
             filter_800hz    = 800,
+            filter_552hz    = 552,
             filter_512hz    = 512,
             filter_500hz    = 500,
             filter_418hz    = 418,
@@ -1096,12 +1101,14 @@ namespace mscl
         //  derived_peakToPeak     - 1 - Peak to Peak
         //  derived_ips            - 2 - Inches per Second
         //  derived_crestFactor    - 3 - Crest Factor
+        //  derived_mean           - 4 - Mean
         enum DerivedChannelType
         {
             derived_rms = 0,
             derived_peakToPeak = 1,
             derived_ips = 2,
-            derived_crestFactor = 3
+            derived_crestFactor = 3,
+            derived_mean = 4
         };
 
         //API Enum: CommProtocol
@@ -1151,6 +1158,10 @@ namespace mscl
         //API Typedef: DerivedChannelMasks
         //  Typedef for a map of <DerivedChannelType> to <ChannelMask> pairs.
         typedef std::map<DerivedChannelType, ChannelMask> DerivedChannelMasks;
+
+        //API Typedef: EepromMap
+        //  Typedef for a map of eeprom locations (uint16) to values (uint16).
+        typedef std::map<uint16, uint16> EepromMap;
 
         //API Constant: UNKNOWN_RSSI = 999
         //    The value given for an unknown RSSI value.

@@ -33,6 +33,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeFeatures_shmlink2.h"
 #include "NodeFeatures_shmlink200.h"
 #include "NodeFeatures_shmlink201.h"
+#include "NodeFeatures_shmlink201FullBridge.h"
 #include "NodeFeatures_tclink1ch.h"
 #include "NodeFeatures_tclink3ch.h"
 #include "NodeFeatures_tclink6ch.h"
@@ -138,6 +139,13 @@ namespace mscl
 
         case WirelessModels::node_shmLink201:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_shmlink201(info));
+
+        case WirelessModels::node_shmLink201_qbridge_1K:
+        case WirelessModels::node_shmLink201_qbridge_348:
+        case WirelessModels::node_shmLink201_hbridge_1K:
+        case WirelessModels::node_shmLink201_hbridge_348:
+        case WirelessModels::node_shmLink201_fullbridge:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_shmlink201FullBridge(info));
 
         case WirelessModels::node_tcLink_1ch:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_tclink1ch(info));
@@ -520,6 +528,16 @@ namespace mscl
         return anyChannelGroupSupports(WirelessTypes::chSetting_gaugeFactor);
     }
 
+    bool NodeFeatures::supportsGaugeResistance() const
+    {
+        return false;
+    }
+
+    bool NodeFeatures::supportsNumActiveGauges() const
+    {
+        return false;
+    }
+
     bool NodeFeatures::supportsLostBeaconTimeout() const
     {
         //if the node supports sync sampling, it supports lost beacon timeout
@@ -583,7 +601,12 @@ namespace mscl
         return false;
     }
 
-    bool NodeFeatures::supportsAutoCal() const
+    bool NodeFeatures::supportsAutoCal_shm() const
+    {
+        return false;
+    }
+
+    bool NodeFeatures::supportsAutoCal_shm201() const
     {
         return false;
     }
@@ -774,6 +797,13 @@ namespace mscl
 
     bool NodeFeatures::supportsNonSyncLogWithTimestamps() const
     {
+        if(!supportsDataCollectionMethod(WirelessTypes::collectionMethod_logOnly) &&
+           !supportsDataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit))
+        {
+            //doesn't support any type of logging, so return false for this
+            return false;
+        }
+
         //ASPP v1.5 added support for this
         return (m_nodeInfo.firmwareVersion() >= MIN_NODE_FW_PROTOCOL_1_5);
     }
@@ -1116,17 +1146,17 @@ namespace mscl
             //milliseconds or seconds
             case 3:
             {
-                //if less than a 500 milliseconds (max allowed for milliseconds)
+                //if <= 500 milliseconds
                 if(delay <= 500000)
                 {
-                    //attempt to set in milliseconds
+                    //set in milliseconds
                     result = static_cast<uint32>(std::ceil(static_cast<float>(delay / 1000.0f))) * 1000;
                     Utils::checkBounds_min(result, static_cast<uint32>(1000));      //1 millisecond
                     Utils::checkBounds_max(result, static_cast<uint32>(500000));    //500 milliseconds
                 }
                 else
                 {
-                    //attempt to set in seconds (PWUWU)
+                    //set in seconds (PWUWU)
                     result = static_cast<uint32>(std::ceil(static_cast<float>(delay / 1000000.0f))) * 1000000;
                     Utils::checkBounds_min(result, static_cast<uint32>(1000000));   //1 second
                     Utils::checkBounds_max(result, maxSensorDelay());
@@ -1546,6 +1576,11 @@ namespace mscl
                 case WirelessModels::node_shmLink:
                 case WirelessModels::node_shmLink200:
                 case WirelessModels::node_shmLink201:
+                case WirelessModels::node_shmLink201_qbridge_1K:
+                case WirelessModels::node_shmLink201_qbridge_348:
+                case WirelessModels::node_shmLink201_hbridge_1K:
+                case WirelessModels::node_shmLink201_hbridge_348:
+                case WirelessModels::node_shmLink201_fullbridge:
                 case WirelessModels::node_shmLink2_cust1_oldNumber:
                 case WirelessModels::node_shmLink2_cust1:
                 case WirelessModels::node_sgLink_herm:

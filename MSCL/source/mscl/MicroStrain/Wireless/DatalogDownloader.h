@@ -14,6 +14,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "WirelessNode.h"
 #include "WirelessTypes.h"
 #include "Packets/WirelessDataPacket.h"
+#include "mscl/TimestampCounter.h"
 #include "mscl/Version.h"
 #include "mscl/MicroStrain/SampleRate.h"
 
@@ -28,6 +29,10 @@ namespace mscl
         //Variable: sessionInfoUpdated
         //  Indicates whether the session info has been updated since the last time <getNextData> was called.
         bool sessionInfoUpdated;
+
+        //Variable: calCoefficientsUpdated
+        //  Indicates whether calibration coefficients have been updates since the last time <getNextData> was called.
+        bool calCoefficientsUpdated;
 
         //Variable: startOfTrigger
         //    Whether the current data point is the start of a new trigger/session.
@@ -78,6 +83,8 @@ namespace mscl
         //    The user entered string of the session (if any).
         std::string userString;
 
+        TimestampCounter tsCounter;
+
         //Variable: timestamp
         //    The starting timestamp for the session, in nanoseconds.
         uint64 timestamp;
@@ -88,6 +95,7 @@ namespace mscl
 
         DatalogSessionInfo():
             sessionInfoUpdated(false),
+            calCoefficientsUpdated(false),
             startOfTrigger(false),
             triggerType(WirelessTypes::trigger_userInit),
             numSweeps(0),
@@ -249,13 +257,18 @@ namespace mscl
         LoggedDataSweep getNextData();
 
         //API Function: metaDataUpdated
-        //  Gets whether the meta data (sample rate, cal coefficients, etc) has been updated since the last call to <getNextData>.
+        //  Gets whether the any of the meta data (sample rate, cal coefficients, etc) has been updated since the last call to <getNextData>.
         //  This will be true for a single <LoggedDataSweep> (after calling <getNextData>), signifying that you should interrogate
         //  all of the meta data on this DatalogDownloader object again to get updated information which may have changed.
         //
         //Returns:
         //  true if the meta data has been updated, false otherwise.
         bool metaDataUpdated() const;
+
+        //API Function: calCoefficientsUpdated
+        //  Gets whether the calibration coefficients information has been updated since the last call to <getNextData>.
+        //  This will be true for a single <LoggedDataSweep> (after calling <getNextData>).
+        bool calCoefficientsUpdated() const;
 
         //API Function: startOfSession
         //  Gets whether a new datalogging session has been found (after calling <getNextData>). This will be true for a single <LoggedDataSweep>.

@@ -162,6 +162,7 @@ namespace mscl
         //  DERIVED_P2P_MASK                - Derived - Peak to Peak channel mask
         //  DERIVED_IPS_MASK                - Derived - Inches Per Second channel mask
         //  DERIVED_CREST_FACTOR_MASK       - Derived - Crest Factor channel mask
+        //  DERIVED_MEAN_MASK               - Derived - Mean channel mask
         //  DATA_PACKET_FORMAT              - The format of the data packet that will be sent out
         //  DIAGNOSTIC_INTERVAL             - The interval at which the Diagnostic Packet is sent
         //  EVENT_SAMPLE_RATE               - Event Driven Sampling: Sample Rate
@@ -218,6 +219,8 @@ namespace mscl
         //  GAUGE_FACTOR_2                  - The Gauge Factor (2)
         //  GAUGE_FACTOR_3                  - The Gauge Factor (3)
         //  GAUGE_FACTOR_4                  - The Gauge Factor (4)
+        //  GAUGE_RESISTANCE                - The Gauge Resistance
+        //  NUM_ACTIVE_GAUGES               - The Number of Active Gauges
         //  THERMOCPL_TYPE                  - The thermocouple type for nodes with thermocouple capabilities (ie. TC-Link)
         //  FILTER_1                        - The first filter value for nodes with filter capabilities (ie. TC-Link)
         //  FILTER_2                        - The second filter value for nodes with 2 filter capabilities (ie. ENV-Link-Pro)
@@ -234,6 +237,10 @@ namespace mscl
         //  SNCURVE_M_2                     - m of the second SN Curve.
         //  SNCURVE_LOGA_3                  - logA of the third SN Curve.
         //  SNCURVE_M_3                     - m of the third SN Curve.
+        //  SNCURVE_LOGA_4                  - logA of the fourth SN Curve.
+        //  SNCURVE_M_4                     - m of the fourth SN Curve.
+        //  SNCURVE_LOGA_5                  - logA of the fifth SN Curve.
+        //  SNCURVE_M_5                     - m of the fifth SN Curve.
         //  YOUNGS_MODULUS                  - The youngs modulus.
         //  POISSONS_RATIO                  - The poissons ratio.
         //  HISTOGRAM_SAMPLE_RATE           - The same rate of the histogram.
@@ -356,6 +363,7 @@ namespace mscl
         static const EepromLocation DERIVED_P2P_MASK;
         static const EepromLocation DERIVED_IPS_MASK;
         static const EepromLocation DERIVED_CREST_FACTOR_MASK;
+        static const EepromLocation DERIVED_MEAN_MASK;
         static const EepromLocation DATA_PACKET_FORMAT;
         static const EepromLocation DIAGNOSTIC_INTERVAL;
         static const EepromLocation EVENT_SAMPLE_RATE;
@@ -412,6 +420,8 @@ namespace mscl
         static const EepromLocation GAUGE_FACTOR_2;
         static const EepromLocation GAUGE_FACTOR_3;
         static const EepromLocation GAUGE_FACTOR_4;
+        static const EepromLocation GAUGE_RESISTANCE;
+        static const EepromLocation NUM_ACTIVE_GAUGES;
         static const EepromLocation THERMOCPL_TYPE;
         static const EepromLocation FILTER_1;
         static const EepromLocation FILTER_2;
@@ -428,6 +438,10 @@ namespace mscl
         static const EepromLocation SNCURVE_M_2;
         static const EepromLocation SNCURVE_LOGA_3;
         static const EepromLocation SNCURVE_M_3;
+        static const EepromLocation SNCURVE_LOGA_4;
+        static const EepromLocation SNCURVE_M_4;
+        static const EepromLocation SNCURVE_LOGA_5;
+        static const EepromLocation SNCURVE_M_5;
         static const EepromLocation YOUNGS_MODULUS;
         static const EepromLocation POISSONS_RATIO;
         static const EepromLocation HISTOGRAM_SAMPLE_RATE;

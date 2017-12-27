@@ -7,6 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Devices.h"
 #include "mscl/Utils.h"
 
+#include <cmath>
 #include <vector>
 
 #ifdef _WIN32
@@ -42,14 +43,16 @@ namespace mscl
     DeviceInfo::DeviceInfo():
         m_description(""),
         m_serial(""),
-        m_baudRate(0)
+        m_baudRate(0),
+        m_connectionType(ConnectionType::connectionType_serial)
     {
     }
 
-    DeviceInfo::DeviceInfo(std::string description, std::string serial, uint32 baudRate):
+    DeviceInfo::DeviceInfo(std::string description, std::string serial, uint32 baudRate, DeviceInfo::ConnectionType type):
         m_description(description),
         m_serial(serial),
-        m_baudRate(baudRate)
+        m_baudRate(baudRate),
+        m_connectionType(type)
     {
     }
 
@@ -66,6 +69,66 @@ namespace mscl
     uint32 DeviceInfo::baudRate() const
     {
         return m_baudRate;
+    }
+
+    DeviceInfo::ConnectionType DeviceInfo::connectionType() const
+    {
+        return m_connectionType;
+    }
+
+    std::string Devices::wsdaProIPAddress(const std::string& serial)
+    {
+        if(serial.length() != 16)
+        {
+            throw Error("unsupported serial");
+        }
+
+        if(serial.at(0) == 'W')
+        {
+            //this is a real WSDA
+
+            //get the uint32 serial of the link transmitter
+            uint32 linkTxSerial = std::stoul(serial.substr(6));
+
+            //convert to an 8-digit hex string
+            std::stringstream stream;
+            stream << std::setfill('0') << std::setw(8) << std::hex << linkTxSerial;
+            std::string serialHexStr = stream.str();
+
+            //add a separator
+            serialHexStr.insert(4, ":");
+
+            return "fd7a:cafa:0eb7:6578:" + serialHexStr + "::1";
+        }
+        else
+        {
+            //this is a WSDA without an SAP number
+            
+            uint32 linkTxSerial = 0;
+
+            for(uint16 i = 15; i >= 10; i--)
+            {
+                char c = serial.at(i);
+                if(c >= '0' && c <= '9')
+                {
+                    linkTxSerial += static_cast<uint32>(std::pow(36u, 15-i)) * (c - '0');
+                }
+                else
+                {
+                    linkTxSerial += static_cast<uint32>(std::pow(36u, 15-i)) * ((c - 'A') + 10);
+                }
+            }
+
+            //convert to an 8-digit hex string
+            std::stringstream stream;
+            stream << std::setfill('0') << std::setw(8) << std::hex << linkTxSerial;
+            std::string serialHexStr = stream.str();
+
+            //add a separator
+            serialHexStr.insert(4, ":");
+
+            return "fd7a:cafa:0eb7:6579:" + serialHexStr + "::1";
+        }
     }
 
 #ifdef _WIN32
@@ -108,9 +171,10 @@ namespace mscl
                 std::string deviceName(Utils_Win32::wstring_to_string(valueMap[NAME].bstrVal));
 
                 uint32 baudRate = 0;
+                DeviceInfo::ConnectionType connectionType;
 
                 //if this device matches what we are looking for
-                if(matchesDevice(pnpDevId, deviceName, devType, baudRate))
+                if(matchesDevice(pnpDevId, deviceName, devType, baudRate, connectionType))
                 {
                     //find the start position of the serial number
                     size_t serialPos = pnpDevId.find_last_of("/\\") + 1;
@@ -122,13 +186,29 @@ namespace mscl
                     //strip off any underscores from the serial
                     Utils::removeChar(serial, '_');
 
-                    //get the DeviceID (COM Port)
-                    size_t comStartPos = deviceName.find_last_of("(") + 1;
-                    size_t comEndPos = deviceName.find_last_of(")") - 1;
-                    std::string deviceId = deviceName.substr(comStartPos, comEndPos + 1 - comStartPos);
+                    std::string deviceId;
+
+                    if(connectionType == DeviceInfo::connectionType_tcp)
+                    {
+                        try
+                        {
+                            deviceId = wsdaProIPAddress(serial);
+                        }
+                        catch(mscl::Error&)
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        //device ID is the COM port, parse from the deviceName
+                        size_t comStartPos = deviceName.find_last_of("(") + 1;
+                        size_t comEndPos = deviceName.find_last_of(")") - 1;
+                        deviceId = deviceName.substr(comStartPos, comEndPos + 1 - comStartPos);
+                    }
 
                     //create the Device Info
-                    DeviceInfo info(deviceName, serial, baudRate);
+                    DeviceInfo info(deviceName, serial, baudRate, connectionType);
 
                     //add the device and info to the map
                     result[deviceId] = info;
@@ -145,10 +225,11 @@ namespace mscl
         return result;
     }
 
-    bool Devices::matchesDevice(const std::string& pnpID, const std::string& name, DeviceType devType, uint32& baudRate)
+    bool Devices::matchesDevice(const std::string& pnpID, const std::string& name, DeviceType devType, uint32& baudRate, DeviceInfo::ConnectionType& type)
     {
-        //verify name has '(COM' in it for all cases
-        if(!Utils::containsStr(name, "(COM"))
+        //verify name has '(COM' or 'LORD' in it for all cases
+        if(!Utils::containsStr(name, "(COM") &&
+           !Utils::containsStr(name, "LORD"))
         {
             return false;
         }
@@ -160,6 +241,7 @@ namespace mscl
             if(Utils::containsStr(name, "Silicon Labs CP210x"))
             {
                 baudRate = 921600;
+                type = DeviceInfo::connectionType_serial;
                 return true;
             }
 
@@ -167,6 +249,7 @@ namespace mscl
             if(Utils::containsStr(pnpID, "VID_199B&PID_BA2E"))
             {
                 baudRate = 921600;
+                type = DeviceInfo::connectionType_serial;
                 return true;
             }
 
@@ -174,6 +257,15 @@ namespace mscl
             if(Utils::containsStr(pnpID, "VID_199B&PID_BA30"))
             {
                 baudRate = 3000000;
+                type = DeviceInfo::connectionType_serial;
+                return true;
+            }
+
+            //check for a WSDA as a USB connected ethernet port
+            if(Utils::containsStr(pnpID, "VID_199B&PID_306B"))
+            {
+                baudRate = 0;
+                type = DeviceInfo::connectionType_tcp;
                 return true;
             }
         }
@@ -322,9 +414,10 @@ namespace mscl
                 getDeviceInfo(deviceItemPath, serial, manufacturer, vendorId);
 
                 uint32 baudRate = 0;
+                DeviceInfo::ConnectionType connectionType = DeviceInfo::connectionType_serial;
 
                 //if this matches the device we are looking for
-                if(matchesDevice(manufacturer, vendorId, devType, baudRate))
+                if(matchesDevice(manufacturer, vendorId, devType, baudRate, connectionType))
                 {
                     //get the first directory in this directory (should be the only one?)
                     fs::directory_iterator ttyItr(ttyPath);
@@ -337,7 +430,7 @@ namespace mscl
                     std::string trueDevicePath = "/dev/" + realDeviceName.substr(pos+1);
 
                     //create the Device Info
-                    DeviceInfo info("", serial, baudRate);
+                    DeviceInfo info("", serial, baudRate, connectionType);
 
                     //add the device to the result map
                     result[trueDevicePath] = info;
@@ -349,7 +442,7 @@ namespace mscl
         return result;
     }
 
-    bool Devices::matchesDevice(const std::string& manufacturer, const std::string& vendorId, DeviceType devType, uint32& baudRate)
+    bool Devices::matchesDevice(const std::string& manufacturer, const std::string& vendorId, DeviceType devType, uint32& baudRate, DeviceInfo::ConnectionType& type)
     {
         //TODO: set baud rate based on found device type on linux (need PID)
         baudRate = 0;

@@ -1374,6 +1374,11 @@ namespace mscl
             case WirelessModels::node_shmLink:
             case WirelessModels::node_shmLink200:
             case WirelessModels::node_shmLink201:
+            case WirelessModels::node_shmLink201_qbridge_1K:
+            case WirelessModels::node_shmLink201_qbridge_348:
+            case WirelessModels::node_shmLink201_hbridge_1K:
+            case WirelessModels::node_shmLink201_hbridge_348:
+            case WirelessModels::node_shmLink201_fullbridge:
             case WirelessModels::node_shmLink2_cust1_oldNumber:
             case WirelessModels::node_shmLink2_cust1:
             case WirelessModels::node_sgLink_herm:

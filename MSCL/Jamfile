@@ -3,13 +3,64 @@ import python ;
 import cast ;
 import path ;
 import common ;
+import set ;
 
 #Setup path variables
 path-constant SWIG_PYTHON : $(BUILD_DIR)/swig-python ;
 
+rule disabled-functions
+{
+  local valid-parameters = ssl websockets ;
+  local argv = [ modules.peek : ARGV ] ;
+  local without-parameters = [ MATCH ^--without-(.*) : $(argv) ] ;
+
+  # make sure there are no invalid paremeters
+  local wrong = [ set.difference $(without-parameters) : $(valid-parameters) ] ;
+  if $(wrong)
+  {
+    EXIT error: invalid without parameter --without-$(wrong[1]) ;
+  }
+
+  return $(without-parameters) ;
+}
+
+rule libraries
+{
+  local configurable-libraries = ssl ;
+  local disabled = [ disabled-functions ] ;
+  local libraries ;
+  if ! ssl in $(disabled)
+  {
+    libraries += ssl crypto ;
+  }
+  return $(libraries) ;
+}
+
+rule compileflags
+{
+  local disabled = [ disabled-functions ] ;
+  local flags ;
+
+  # ssl
+  if ssl in $(disabled)
+  {
+    flags += -DMSCL_DISABLE_SSL ;
+  }
+
+  # websockets
+  if websockets in $(disabled)
+  {
+    flags += -DMSCL_DISABLE_WEBSOCKETS ;
+  }
+  
+  return $(flags) ;
+}
+
+local configured-flags = [ compileflags ] ;
+
 #Define the project
 project
-	: usage-requirements <include>source
+	: usage-requirements <include>source <cflags>"$(configured-flags)"
 	;
 
 #Define libraries that exist on the system
@@ -17,9 +68,12 @@ lib boost_system ;
 lib boost_filesystem ;
 lib boost_chrono ;
 lib boost_date_time ;
+lib ssl ;
+lib crypto ;
 lib pthread ;
 
 #cpp-pch stdafx : source/stdafx.h ; #TODO: Trying to get Precompiled Headers to work
+
 
 #Windows aliases
 alias unixsocket_cpp ;
@@ -30,7 +84,7 @@ alias boostStaticLibs ;
 #Linux aliases
 alias unixsocket_cpp : source/mscl/Communication/UnixSocketConnection.cpp : <target-os>linux ;
 alias upnp_files : : <target-os>linux ;
-alias boostLibs : boost_system boost_filesystem boost_date_time boost_chrono pthread : <target-os>linux ;
+alias boostLibs : boost_system boost_filesystem boost_date_time boost_chrono pthread [ libraries ] : <target-os>linux ;
 alias boostStaticLibs : boost_system/<link>static boost_date_time/<link>static boost_chrono/<link>static : <target-os>linux ;
 
 alias msclSrcs 
@@ -77,6 +131,8 @@ python-extension _mscl
 	<swig-options>-python
 	<swig-options>-modern
 	<swig-options>"-outdir \"$(SWIG_PYTHON)\""
+	<swig-options>"$(configured-flags)"
+	<cflags>"$(configured-flags)"
 	<target-os>linux:<swig-options>-DUNIX_BUILD
 	<target-os>linux:<define>UNIX_BUILD
 ;
@@ -90,6 +146,8 @@ python-extension _mscl-dynamic
 	<swig-options>-python
 	<swig-options>-modern
 	<swig-options>"-outdir \"$(SWIG_PYTHON)\""
+	<swig-options>"$(configured-flags)"
+	<cflags>"$(configured-flags)"
 	<target-os>linux:<swig-options>-DUNIX_BUILD
 	<target-os>linux:<define>UNIX_BUILD
 ;

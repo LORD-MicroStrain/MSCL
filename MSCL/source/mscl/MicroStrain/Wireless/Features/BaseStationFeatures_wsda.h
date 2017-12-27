@@ -21,6 +21,9 @@ namespace mscl
         //
         //Parameters:
         //    info - A <BaseStationInfo> object representing standard information of the <BaseStation>.
-        BaseStationFeatures_wsda(BaseStationInfo& info);
+        BaseStationFeatures_wsda(const BaseStationInfo& info);
+
+        virtual bool supportsRfSweepMode() const final;
+        virtual bool supportsCustomRfSweepMode() const final;
     };
 }

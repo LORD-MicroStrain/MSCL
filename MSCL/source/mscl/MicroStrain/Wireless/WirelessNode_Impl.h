@@ -22,11 +22,11 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Configuration/HistogramOptions.h"
 #include "Configuration/NodeEeprom.h"
 #include "Configuration/NodeEepromHelper.h"
+#include "Features/NodeFeatures.h"
 
 namespace mscl
 {
     //forward declarations
-    class NodeFeatures;
     struct ShuntCalCmdInfo;
     class WirelessNode;
     class WirelessNodeConfig;
@@ -52,7 +52,9 @@ namespace mscl
         //    basestation - the node's parent Base Station
         WirelessNode_Impl(NodeAddress nodeAddress, const BaseStation& basestation);
 
-    private:
+        virtual ~WirelessNode_Impl() {}
+
+    protected:
         //Variable: m_address
         //    The address of the Node.
         NodeAddress m_address;
@@ -89,7 +91,7 @@ namespace mscl
         //    The <NodeFeatures> containing the features for this Node.
         mutable std::unique_ptr<NodeFeatures> m_features;
 
-    private:
+    protected:
         //Function: determineProtocols
         //    Determines the <WirelessProtocol>s to use based on the Node's ASPP version.
         //    All <WirelessProtocol> member variables will be updated.
@@ -97,7 +99,7 @@ namespace mscl
 
         //Function: eeprom
         //    Gets a reference to the <NodeEeprom> for this Node.
-        NodeEeprom& eeprom() const;
+        virtual NodeEeprom& eeprom() const;
 
         //Function: wirelessProtocol
         //  Gets a reference to the <WirelessProtocol> for this Node for the parent BaseStation's current comm protocol setting.
@@ -184,6 +186,10 @@ namespace mscl
         //    Clears the eeprom cache for this Node.
         void clearEepromCache();
 
+        //Function: getEepromCache
+        //  Gets a copy of the eeprom cache as a <WirelessTypes::EepromMap>.
+        WirelessTypes::EepromMap getEepromCache() const;
+
         //Function: nodeAddress
         //    Gets the node address of the Node.
         //
@@ -225,7 +231,7 @@ namespace mscl
         //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        WirelessModels::NodeModel model() const;
+        virtual WirelessModels::NodeModel model() const;
 
         //Function: serial
         //    Gets the serial number of the Node.
@@ -234,7 +240,7 @@ namespace mscl
         //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        std::string serial() const;
+        virtual std::string serial() const;
 
         //Function: microcontroller
         //    Gets the <WirelessTypes::MicroControllerType> of the Node.
@@ -243,7 +249,7 @@ namespace mscl
         //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        WirelessTypes::MicroControllerType microcontroller() const;
+        virtual WirelessTypes::MicroControllerType microcontroller() const;
 
         //Function: radioFeatures
         //    Gets the <RadioFeatures> of the Node.
@@ -252,7 +258,7 @@ namespace mscl
         //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        RadioFeatures radioFeatures() const;
+        virtual RadioFeatures radioFeatures() const;
 
         //Function: dataStorageSize
         //    Gets the number of bytes available for data storage on the Node.
@@ -261,7 +267,7 @@ namespace mscl
         //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        uint64 dataStorageSize() const;
+        virtual uint64 dataStorageSize() const;
 
         //Function: regionCode
         //    Gets the region code currently set on the Node.
@@ -270,7 +276,7 @@ namespace mscl
         //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
         //    - <Error_NodeCommunication>: Failed to read from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        WirelessTypes::RegionCode regionCode() const;
+        virtual WirelessTypes::RegionCode regionCode() const;
 
         //Function: verifyConfig
         //    Checks whether the settings in the given <WirelessNodeConfig> are ok to be written to the Node.
@@ -310,7 +316,7 @@ namespace mscl
         //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
         //    - <Error_NodeCommunication>: Failed to read from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        uint16 getNumDatalogSessions();
+        virtual uint16 getNumDatalogSessions();
 
         //Function: percentFull
         //  Gets the internal datalogging memory percentage that is currently stored on the Node.
@@ -319,7 +325,7 @@ namespace mscl
         //  - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
         //  - <Error_NodeCommunication>: Failed to read from the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        float percentFull();
+        virtual float percentFull();
 
         //Function: getDefaultMode
         //    Reads the <WirelessTypes::DefaultMode> that is currently set on the Node.
@@ -515,6 +521,24 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         float getGaugeFactor(const ChannelMask& mask) const;
 
+        //Function: getGaugeResistance
+        //  Reads the gauge resistance currently set on the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Gauge Resistance is not supported.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        uint16 getGaugeResistance() const;
+
+        //Function: getNumActiveGauges
+        //  Reads the Number of Active Gauges currently set on the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Number of Active Gauges is not supported.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        uint16 getNumActiveGauges() const;
+
         //Function: getLinearEquation
         //    Gets the linear equation of the specified <ChannelMask> currently set on the Node.
         //
@@ -686,7 +710,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        bool sleep();
+        virtual bool sleep();
 
         //Function: cyclePower
         //    Cycles the power on the Node. 
@@ -752,7 +776,7 @@ namespace mscl
         //    - <Error_NotSupported>: Histogram configuration is not supported by the Node.
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void clearHistogram();
+        virtual void clearHistogram();
 
         //Function: autoBalance
         //    Performs an Auto Balance command on a specified channel on the Node.
@@ -768,7 +792,7 @@ namespace mscl
         //    - <Error_NotSupported>: Autobalance is not supported by the Node or channel specified.
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        AutoBalanceResult autoBalance(const ChannelMask& mask, float targetPercent);
+        virtual AutoBalanceResult autoBalance(const ChannelMask& mask, float targetPercent);
 
         //Function: autoCal_shmLink
         //    Performs automatic calibration for the SHM-Link Wireless Node.
@@ -780,7 +804,19 @@ namespace mscl
         //    - <Error_NotSupported>: Autocal is not supported by the Node or The node is an invalid model for this command.
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        AutoCalResult_shmLink autoCal_shmLink();
+        virtual AutoCalResult_shmLink autoCal_shmLink();
+
+        //Function: autoCal_shmLink201
+        //    Performs automatic calibration for the SHM-Link-201 Wireless Node.
+        //
+        //Returns:
+        //    The <AutoCalResult_shmLink201> containing the result of the auto cal operation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Autocal is not supported by the Node or The node is an invalid model for this command.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        virtual AutoCalResult_shmLink201 autoCal_shmLink201();
 
         //Function: autoShuntCal
         //  Performs automatic shunt calibration for a specified <ChannelMask> on supported Nodes.
@@ -796,7 +832,7 @@ namespace mscl
         //  - <Error_NotSupported>: Autocal shunt is not supported by the Node or ChannelMask.
         //  - <Error_NodeCommunication>: Failed to communicate with the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        AutoShuntCalResult autoShuntCal(const ChannelMask& mask, const ShuntCalCmdInfo& commandInfo);
+        virtual AutoShuntCalResult autoShuntCal(const ChannelMask& mask, const ShuntCalCmdInfo& commandInfo);
 
         //Function: readEeprom
         //    Reads a uint16 from the given eeprom location of the node. This may use a page download or a read eeprom command.
@@ -868,7 +904,7 @@ namespace mscl
         //  - <Error_NotSupported>: The Get Diagnostic Info command is not supported.
         //  - <Error_NodeCommunication>: Failed to communicate with the Wireless Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void getDiagnosticInfo(ChannelData& result);
+        virtual void getDiagnosticInfo(ChannelData& result);
 
         //Function: testCommProtocol
         //  Tests if the Node will still be able to communicate after changing the Node's communication protocol.
@@ -885,6 +921,6 @@ namespace mscl
         //  - <Error_NotSupported>: The given communication protocol is not supported by the Node or BaseStation.
         //  - <Error_NodeCommunication>: Failed to communicate with the Wireless Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        bool testCommProtocol(WirelessTypes::CommProtocol commProtocol);
+        virtual bool testCommProtocol(WirelessTypes::CommProtocol commProtocol);
     };
 }

@@ -8,7 +8,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    BaseStationFeatures_usb::BaseStationFeatures_usb(BaseStationInfo& info):
+    BaseStationFeatures_usb::BaseStationFeatures_usb(const BaseStationInfo& info):
         BaseStationFeatures(info)
     {
     }

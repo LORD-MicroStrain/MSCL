@@ -32,6 +32,7 @@ namespace mscl
     struct ShuntCalCmdInfo;
     class WirelessNodeConfig;
     class WirelessProtocol;
+    struct NodeInfo;
 
     //API Class: WirelessNode
     //    A class representing a MicroStrain wireless node
@@ -49,12 +50,37 @@ namespace mscl
         //
         //Parameters:
         //    nodeAddress - the node address of the node
-        //    base - the node's parent Base Station
+        //    basestation - the node's parent Base Station
         WirelessNode(NodeAddress nodeAddress, const BaseStation& basestation);
 
         //Destructor: ~WirelessNode
         //    Destroys a WirelessNode object
         virtual ~WirelessNode(){};
+
+        //API Function: Mock
+        //  Static function to create a Mock WirelessNode (won't actually talk to a physical device).
+        //
+        //Parameters:
+        //  nodeAddress - the node address of the node
+        //  basestation - the node's parent Base Station (should be a Mock BaseStation).
+        //  info - The <NodeInfo> to use for creating the mock Node.
+        //
+        //Returns:
+        //  A <WirelessNode> object with a mock implementation.
+        static WirelessNode Mock(NodeAddress nodeAddress, const BaseStation& basestation, const NodeInfo& info);
+
+        //API Function: Mock
+        //  Static function to create a Mock WirelessNode (won't actually talk to a physical device).
+        //
+        //Parameters:
+        //  nodeAddress - the node address of the node
+        //  basestation - the node's parent Base Station (should be a Mock BaseStation).
+        //  info - The <NodeInfo> to use for creating the mock Node.
+        //  initialEepromCache - The <WirelessTypes::EepromMap> to use as the Node's initial eeprom cache.
+        //
+        //Returns:
+        //  A <WirelessNode> object with a mock implementation.
+        static WirelessNode Mock(NodeAddress nodeAddress, const BaseStation& basestation, const NodeInfo& info, const WirelessTypes::EepromMap& initialEepromCache);
 
     private:
         //Variable: m_impl
@@ -63,6 +89,8 @@ namespace mscl
 
     public:
 #ifndef SWIG
+        WirelessNode(std::shared_ptr<WirelessNode_Impl> impl); //constructor with direct underlying implementation for this class.
+
         //changes/sets the underlying implementation for this class.
         void setImpl(std::shared_ptr<WirelessNode_Impl> impl);    
 
@@ -176,6 +204,13 @@ namespace mscl
         //API Function: clearEepromCache
         //    Clears the eeprom cache for this Node.
         void clearEepromCache();
+
+        //API Function: getEepromCache
+        //  Gets a copy of the eeprom cache as a <WirelessTypes::EepromMap>.
+        //
+        //Returns:
+        //  A <WirelessTypes::EepromMap> of the current eeprom cache.
+        WirelessTypes::EepromMap getEepromCache() const;
 
         //API Function: nodeAddress
         //    Gets the node address of the Node.
@@ -419,7 +454,7 @@ namespace mscl
 
         //API Function: autoCal_shmLink
         //    Performs automatic calibration for the SHM-Link Wireless Node.
-        //    See Also: <NodeFeatures::supportsAutoCal>
+        //    See Also: <NodeFeatures::supportsAutoCal_shm>
         //
         //Returns:
         //    The <AutoCalResult_shmLink> containing the result of the auto cal operation.
@@ -429,6 +464,19 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         AutoCalResult_shmLink autoCal_shmLink();
+
+        //API Function: autoCal_shmLink201
+        //    Performs automatic calibration for the SHM-Link-201 Wireless Node.
+        //    See Also: <NodeFeatures::supportsAutoCal_shm201>
+        //
+        //Returns:
+        //    The <AutoCalResult_shmLink201> containing the result of the auto cal operation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Autocal is not supported by the Node or The node is an invalid model for this command.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        AutoCalResult_shmLink201 autoCal_shmLink201();
 
         //API Function: autoShuntCal
         //  Performs automatic shunt calibration for a specified <ChannelMask> on supported Nodes.
@@ -832,6 +880,32 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to read from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         float getGaugeFactor(const ChannelMask& mask) const;
+
+        //API Function: getGaugeResistance
+        //  Reads the gauge resistance currently set on the Node.
+        //  See Also: <NodeFeatures::supportsGaugeResistance>
+        //
+        //Returns:
+        //  The gauge resistance currently set on the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Gauge Resistance is not supported.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        uint16 getGaugeResistance() const;
+
+        //API Function: getNumActiveGauges
+        //  Reads the Number of Active Gauges currently set on the Node.
+        //  See Also: <NodeFeatures::supportsNumActiveGauges>
+        //
+        //Returns:
+        //  The Number of Active Gauges currently set on the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Number of Active Gauges is not supported.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        uint16 getNumActiveGauges() const;
 
         //API Function: getLinearEquation
         //    Gets the linear equation of the specified <ChannelMask> currently set on the Node.

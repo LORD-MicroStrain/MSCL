@@ -115,6 +115,7 @@ namespace mscl
         result->m_datalogSessionInfo    = nullptr;
         result->m_autoShuntCal          = nullptr;
         result->m_autoCal_shm           = nullptr;
+        result->m_autoCal_shm201        = nullptr;
         result->m_getDiagnosticInfo     = nullptr;
         result->m_batchEepromRead       = nullptr;
 
@@ -156,6 +157,7 @@ namespace mscl
         //Node Commands
         result->m_autoBalance           = std::bind(&BaseStation_Impl::protocol_node_autoBalance_v2, _1, ASPP1, _2, _3, _4, _5);
         result->m_autoCal_shm           = std::bind(&BaseStation_Impl::protocol_node_autocal_shm_v1, _1, ASPP1, _2, _3);
+        result->m_autoCal_shm201        = std::bind(&BaseStation_Impl::protocol_node_autocal_shm201_v1, _1, ASPP1, _2, _3);
         result->m_autoShuntCal          = std::bind(&BaseStation_Impl::protocol_node_autoshuntcal_v1, _1, ASPP1, _2, _3, _4, _5, _6, _7);
 
         return result;
@@ -277,6 +279,7 @@ namespace mscl
         result->m_datalogSessionInfo    = std::bind(&BaseStation_Impl::protocol_node_datalogInfo_v1, _1, ASPP3, _2, _3);
         result->m_autoShuntCal          = std::bind(&BaseStation_Impl::protocol_node_autoshuntcal_v1, _1, ASPP3, _2, _3, _4, _5, _6, _7);
         result->m_autoCal_shm           = std::bind(&BaseStation_Impl::protocol_node_autocal_shm_v1, _1, ASPP3, _2, _3);
+        result->m_autoCal_shm201        = std::bind(&BaseStation_Impl::protocol_node_autocal_shm201_v1, _1, ASPP3, _2, _3);
         result->m_getDiagnosticInfo     = std::bind(&BaseStation_Impl::protocol_node_getDiagnosticInfo_v1, _1, ASPP3, _2, _3);
         result->m_batchEepromRead       = std::mem_fn(&BaseStation_Impl::protocol_node_batchEepromRead_v1);
 

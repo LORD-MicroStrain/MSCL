@@ -38,6 +38,7 @@ namespace mscl
         //  node_3dm_cv5_15     - 6258 - 3DM-CV5-15
         //  node_3dm_cv5_25     - 6257 - 3DM-CV5-25
         //  node_3dm_cv5_45     - 6256 - 3DM-CV5-45
+        //  node_3dm_gq4_45     - 6250 - 3DM-GQ4-45
         //=========================================================================
         enum NodeModel
         {
@@ -61,7 +62,8 @@ namespace mscl
             node_3dm_cv5_10     = 6259,     //3DM-CV5-10
             node_3dm_cv5_15     = 6258,     //3DM-CV5-15
             node_3dm_cv5_25     = 6257,     //3DM-CV5-25
-            node_3dm_cv5_45     = 6256      //3DM-CV5-45
+            node_3dm_cv5_45     = 6256,     //3DM-CV5-45
+            node_3dm_gq4_45     = 6250      //3DM-GQ4-45
         };
 
 #ifndef SWIG

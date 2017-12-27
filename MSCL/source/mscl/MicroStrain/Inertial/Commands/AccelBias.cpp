@@ -50,9 +50,9 @@ namespace mscl
         // Only fill in data if set command is being sent.
         if (m_functionSelector == InertialTypes::USE_NEW_SETTINGS)
         {    // Put in X, Y, and Z values of vector.
-            byteCommand.append_float(m_accelerometerBiasVector[0]);
-            byteCommand.append_float(m_accelerometerBiasVector[1]);
-            byteCommand.append_float(m_accelerometerBiasVector[2]);
+            byteCommand.append_float(m_accelerometerBiasVector.x);
+            byteCommand.append_float(m_accelerometerBiasVector.y);
+            byteCommand.append_float(m_accelerometerBiasVector.z);
         }
         return GenericInertialCommand::buildCommand(commandType(), byteCommand.data()); ;
     }

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -20,7 +20,7 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release %28.NET%29|AnyCPU' ">
-    <OutputPath>..\Output\DotNet\x86\</OutputPath>
+    <OutputPath>..\Output\DotNet\x86\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -29,63 +29,27 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug %28.NET%29|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\Output\DotNet\x86\</OutputPath>
+    <OutputPath>..\Output\DotNet\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release %28.NET%29|x64'">
-    <OutputPath>bin\x64\Release %28.NET%29\</OutputPath>
+    <OutputPath>..\Output\DotNet\x64\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug %28.NET%29|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug %28.NET%29\</OutputPath>
+    <OutputPath>..\Output\DotNet\x64\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x64 %28.NET%29|AnyCPU'">
-    <OutputPath>..\Output\DotNet\x64\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release x64 %28.NET%29|x64'">
-    <OutputPath>..\Output\DotNet\x64\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release %28Java%29|AnyCPU'">
-    <OutputPath>bin\Release %28Java%29\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release %28Java%29|x64'">
-    <OutputPath>bin\x64\Release %28Java%29\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -105,16 +69,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="mscl\ActivitySense.cs" />
+    <Compile Include="mscl\AdvancedLowPassFilterData.cs" />
     <Compile Include="mscl\ArmedDataloggingNetwork.cs" />
     <Compile Include="mscl\AutoBalanceResult.cs" />
     <Compile Include="mscl\AutoCalResult.cs" />
     <Compile Include="mscl\AutoCalResult_shmLink.cs" />
+    <Compile Include="mscl\AutoCalResult_shmLink201.cs" />
     <Compile Include="mscl\AutoShuntCalResult.cs" />
     <Compile Include="mscl\BaseStation.cs" />
     <Compile Include="mscl\BaseStationAnalogPair.cs" />
     <Compile Include="mscl\BaseStationButton.cs" />
     <Compile Include="mscl\BaseStationConfig.cs" />
     <Compile Include="mscl\BaseStationFeatures.cs" />
+    <Compile Include="mscl\BaseStationInfo.cs" />
     <Compile Include="mscl\BeaconStatus.cs" />
     <Compile Include="mscl\Bin.cs" />
     <Compile Include="mscl\Bins.cs" />
@@ -128,6 +95,7 @@
     <Compile Include="mscl\ChannelGroupSettings.cs" />
     <Compile Include="mscl\ChannelMask.cs" />
     <Compile Include="mscl\CommProtocols.cs" />
+    <Compile Include="mscl\ComplementaryFilterData.cs" />
     <Compile Include="mscl\ConfigIssue.cs" />
     <Compile Include="mscl\ConfigIssues.cs" />
     <Compile Include="mscl\Connection.cs" />
@@ -150,15 +118,21 @@
     <Compile Include="mscl\DeviceInfo.cs" />
     <Compile Include="mscl\DeviceList.cs" />
     <Compile Include="mscl\Devices.cs" />
+    <Compile Include="mscl\DeviceStatusData.cs" />
+    <Compile Include="mscl\EepromMap.cs" />
     <Compile Include="mscl\EulerAngles.cs" />
     <Compile Include="mscl\EventTriggerOptions.cs" />
     <Compile Include="mscl\Exceptions.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="mscl\ExternalGNSSUpdateData.cs" />
     <Compile Include="mscl\FatigueModes.cs" />
     <Compile Include="mscl\FatigueOptions.cs" />
     <Compile Include="mscl\Filters.cs" />
     <Compile Include="mscl\GeometricVector.cs" />
+    <Compile Include="mscl\GNSS_Source.cs" />
+    <Compile Include="mscl\HeadingData.cs" />
+    <Compile Include="mscl\HeadingUpdateOptions.cs" />
     <Compile Include="mscl\HighPassFilters.cs" />
     <Compile Include="mscl\Histogram.cs" />
     <Compile Include="mscl\HistogramOptions.cs" />
@@ -182,12 +156,14 @@
     <Compile Include="mscl\LoggedDataSweep.cs" />
     <Compile Include="mscl\LoggedDataSweeps.cs" />
     <Compile Include="mscl\Matrix.cs" />
+    <Compile Include="mscl\Matrix_3x3.cs" />
     <Compile Include="mscl\msclPINVOKE.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="mscl\NodeDiscoveries.cs" />
     <Compile Include="mscl\NodeDiscovery.cs" />
     <Compile Include="mscl\NodeFeatures.cs" />
+    <Compile Include="mscl\NodeInfo.cs" />
     <Compile Include="mscl\PingResponse.cs" />
     <Compile Include="mscl\PositionOffset.cs" />
     <Compile Include="mscl\RadioFeatures.cs" />
@@ -214,6 +190,7 @@
     <Compile Include="mscl\Value.cs" />
     <Compile Include="mscl\ValueType.cs" />
     <Compile Include="mscl\Vector.cs" />
+    <Compile Include="mscl\VehicleModeType.cs" />
     <Compile Include="mscl\Version.cs" />
     <Compile Include="mscl\WirelessChannel.cs" />
     <Compile Include="mscl\WirelessChannels.cs" />

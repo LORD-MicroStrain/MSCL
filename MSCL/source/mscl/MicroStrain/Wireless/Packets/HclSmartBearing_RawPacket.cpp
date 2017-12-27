@@ -19,13 +19,13 @@ namespace mscl
     HclSmartBearing_RawPacket::HclSmartBearing_RawPacket(const WirelessPacket& packet)
     {
         //construct the data packet from the wireless packet passed in
-        m_nodeAddress        = packet.nodeAddress();
-        m_deliveryStopFlags = packet.deliveryStopFlags();
-        m_type                = packet.type();
-        m_nodeRSSI            = packet.nodeRSSI();
-        m_baseRSSI            = packet.baseRSSI();
-        m_frequency            = packet.frequency();
-        m_payload            = packet.payload();
+        m_nodeAddress           = packet.nodeAddress();
+        m_deliveryStopFlags     = packet.deliveryStopFlags();
+        m_type                  = packet.type();
+        m_nodeRSSI              = packet.nodeRSSI();
+        m_baseRSSI              = packet.baseRSSI();
+        m_frequency             = packet.frequency();
+        m_payload               = packet.payload();
         m_payloadOffsetChannelData = 0;    //not used for these packets
 
         //parse the data sweeps in the packet
@@ -144,6 +144,11 @@ namespace mscl
         //build the full nanosecond resolution timestamp from the seconds and nanoseconds values read above
         uint64 realTimestamp = (timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND) + timestampNanos;
 
+        if(!timestampWithinRange(Timestamp(realTimestamp)))
+        {
+            throw Error("Timestamp is out of range");
+        }
+
         //create a SampleRate object from the sampleRate byte
         SampleRate currentRate = SampleUtils::convertToSampleRate(sampleRate);
 
@@ -163,42 +168,42 @@ namespace mscl
 
         ChannelData chData;
         chData.reserve(36);
-        chData.emplace_back(WC::channel_hcl_rawStrain_BL30,        1, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 0)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_BL120,    2, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 2)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_A60,        3, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 4)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_A150,        4, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 6)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_AL30,        5, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 8)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_AL120,    6, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 10)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_BR60,        7, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 12)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_BR150,    8, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 14)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_B30,        9, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 16)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_T120,        10, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 18)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_AR60,        11, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 20)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_AR150,    12, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 22)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_A30,        13, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 24)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_A120,        14, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 26)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_BL90,        15, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 28)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_BL180,    16, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 30)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_BR30,        17, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 32)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_BR120,    18, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 34)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_AL90,        19, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 36)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_AL180,    20, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 38)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_AR30,        21, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 40)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_AR120,    22, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 42)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_B90,        23, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 44)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_T0,        24, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 46)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_BL60,        25, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 48)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_BL150,    26, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 50)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_A90,        27, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 52)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_A0,        28, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 54)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_AL60,        29, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 56)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_AL150,    30, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 58)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_BR90,        31, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 60)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_BR0,        32, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 62)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_T60,        33, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 64)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_B150,        34, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 66)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_AR90,        35, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 68)));
-        chData.emplace_back(WC::channel_hcl_rawStrain_AR0,        36, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 70)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_BL30, 1, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 0)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_BL120, 2, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 2)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_A60, 3, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 4)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_A150, 4, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 6)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_AL30, 5, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 8)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_AL120, 6, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 10)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_BR60, 7, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 12)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_BR150, 8, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 14)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_B30, 9, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 16)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_T120, 10, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 18)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_AR60, 11, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 20)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_AR150, 12, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 22)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_A30, 13, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 24)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_A120, 14, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 26)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_BL90, 15, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 28)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_BL180, 16, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 30)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_BR30, 17, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 32)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_BR120, 18, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 34)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_AL90, 19, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 36)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_AL180, 20, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 38)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_AR30, 21, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 40)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_AR120, 22, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 42)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_B90, 23, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 44)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_T0, 24, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 46)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_BL60, 25, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 48)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_BL150, 26, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 50)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_A90, 27, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 52)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_A0, 28, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 54)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_AL60, 29, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 56)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_AL150, 30, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 58)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_BR90, 31, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 60)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_BR0, 32, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 62)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_T60, 33, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 64)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_B150, 34, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 66)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_AR90, 35, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 68)));
+        chData.emplace_back(WC::channel_hcl_rawStrain_AR0, 36, valueType_uint16, anyType(m_payload.read_uint16(DATA_START + 70)));
 
         //add all of the channel data to the sweep
         sweep.data(chData);
@@ -219,6 +224,11 @@ namespace mscl
 
         //build the full nanosecond resolution timestamp from the seconds and nanoseconds values read above
         uint64 realTimestamp = (timestampSeconds * TimeSpan::NANOSECONDS_PER_SECOND) + timestampNanos;
+
+        if(!timestampWithinRange(Timestamp(realTimestamp)))
+        {
+            throw Error("Timestamp is out of range");
+        }
 
         //create a SampleRate object from the sampleRate byte
         SampleRate currentRate = SampleUtils::convertToSampleRate(sampleRate);

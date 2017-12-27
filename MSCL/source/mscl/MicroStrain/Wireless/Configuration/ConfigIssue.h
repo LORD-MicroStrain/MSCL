@@ -67,6 +67,9 @@ namespace mscl
         //  CONFIG_HIGH_PASS_FILTER             - 44 - High Pass Filter
         //  CONFIG_DERIVED_MASK                 - 45 - Derived Mask (all masks issue)
         //  CONFIG_COMM_PROTOCOL                - 46 - Communication Protocol
+        //  CONFIG_DERIVED_MASK_MEAN            - 47 - Derived Mean Mask
+        //  CONFIG_GAUGE_RESISTANCE             - 48 - Gauge Resistance
+        //  CONFIG_NUM_ACTIVE_GAUGES            - 49 - Number of Active Gauges
         enum ConfigOption
         {
             CONFIG_SAMPLING_MODE                = 0,
@@ -116,6 +119,9 @@ namespace mscl
             CONFIG_HIGH_PASS_FILTER             = 44,
             CONFIG_DERIVED_MASK                 = 45,
             CONFIG_COMM_PROTOCOL                = 46,
+            CONFIG_DERIVED_MASK_MEAN            = 47,
+            CONFIG_GAUGE_RESISTANCE             = 48,
+            CONFIG_NUM_ACTIVE_GAUGES            = 49
         };
 
         ConfigIssue();    //default constructor

@@ -8,20 +8,22 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    BaseStationFeatures_usb200::BaseStationFeatures_usb200(BaseStationInfo& info):
+    BaseStationFeatures_usb200::BaseStationFeatures_usb200(const BaseStationInfo& info):
         BaseStationFeatures(info)
     {
     }
 
     bool BaseStationFeatures_usb200::supportsRfSweepMode() const
     {
-        //temporarily disabling rf sweep mode until we know a firmware version that officially supports it
-        return false;
+        static const Version MIN_RF_SWEEP_FW(5, 39166);
+
+        return (m_baseInfo.firmwareVersion() >= MIN_RF_SWEEP_FW);
     }
 
     bool BaseStationFeatures_usb200::supportsCustomRfSweepMode() const
     {
-        //temporarily disabling rf sweep mode until we know a firmware version that officially supports it
-        return false;
+        static const Version MIN_RF_SWEEP_FW(5, 39166);
+
+        return (m_baseInfo.firmwareVersion() >= MIN_RF_SWEEP_FW);
     }
 }

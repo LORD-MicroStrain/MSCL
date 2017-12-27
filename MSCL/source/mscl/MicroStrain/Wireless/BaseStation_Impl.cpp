@@ -106,59 +106,46 @@ namespace mscl
 
         rec_mutex_lock_guard lock(m_protocolMutex);
 
-        bool success = false;
-        uint8 retryCount = 0;
-
-        do
+        //=========================================================================
+        // Determine the firmware version by attempting to use multiple protocols
+        try
         {
-            //=========================================================================
-            // Determine the firmware version by attempting to use multiple protocols
+            //try reading with protocol v1.1 (has read eeprom v2)
+            m_protocol_lxrs = WirelessProtocol::v1_1();
+            m_protocol_lxrsPlus = WirelessProtocol::v1_1();
+            m_commProtocol.reset(new WirelessTypes::CommProtocol(WirelessTypes::commProtocol_lxrs));
+
+            asppVersion_lxrs = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrs);
+            asppVersion_lxrsPlus = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrsPlus);
+            m_commProtocol.reset(new WirelessTypes::CommProtocol(m_eepromHelper->read_commProtocol()));
+        }
+        catch(Error_Communication&)
+        {
+            //Failed reading with protocol v1.1 - Now try v1.0 (has read eeprom v1)
+
             try
             {
-                //try reading with protocol v1.1 (has read eeprom v2)
-                m_protocol_lxrs = WirelessProtocol::v1_1();
-                m_protocol_lxrsPlus = WirelessProtocol::v1_1();
-                m_commProtocol.reset(new WirelessTypes::CommProtocol(WirelessTypes::commProtocol_lxrs));
+                //try reading with protocol v1.0
+                m_protocol_lxrs = WirelessProtocol::v1_0();
+                m_protocol_lxrsPlus = WirelessProtocol::v1_0();
 
                 asppVersion_lxrs = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrs);
                 asppVersion_lxrsPlus = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrsPlus);
                 m_commProtocol.reset(new WirelessTypes::CommProtocol(m_eepromHelper->read_commProtocol()));
-                success = true;
             }
             catch(Error_Communication&)
             {
-                //Failed reading with protocol v1.1 - Now try v1.0 (has read eeprom v1)
+                //we failed to determine the protocol
+                //need to clear out the protocol
+                m_protocol_lxrs.reset();
+                m_protocol_lxrsPlus.reset();
+                m_commProtocol.reset();
 
-                try
-                {
-                    //try reading with protocol v1.0
-                    m_protocol_lxrs = WirelessProtocol::v1_0();
-                    m_protocol_lxrsPlus = WirelessProtocol::v1_0();
-
-                    asppVersion_lxrs = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrs);
-                    asppVersion_lxrsPlus = m_eepromHelper->read_asppVersion(WirelessTypes::commProtocol_lxrsPlus);
-                    m_commProtocol.reset(new WirelessTypes::CommProtocol(m_eepromHelper->read_commProtocol()));
-                    success = true;
-                }
-                catch(Error_Communication&)
-                {
-                    //if this was the last retry
-                    if(retryCount >= origRetries)
-                    {
-                        //we failed to determine the protocol
-                        //need to clear out the protocol
-                        m_protocol_lxrs.reset();
-                        m_protocol_lxrsPlus.reset();
-                        m_commProtocol.reset();
-
-                        //rethrow the exception
-                        throw;
-                    }
-                }
+                //rethrow the exception
+                throw;
             }
-            //=========================================================================
         }
-        while(!success && (retryCount++ < origRetries));
+        //=========================================================================
 
         m_protocol_lxrs = WirelessProtocol::getProtocol(asppVersion_lxrs);
         m_protocol_lxrsPlus = WirelessProtocol::getProtocol(asppVersion_lxrsPlus);
@@ -1039,11 +1026,20 @@ namespace mscl
 
     bool BaseStation_Impl::protocol_node_autocal_shm_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, AutoCalResult& result)
     {
-        //create the response for the SHM AutoCal command
+        //create the response
         AutoCal::ShmResponse response(nodeAddress, m_responseCollector);
 
-        //build the AutoCal command bytes
         ByteStream cmd = AutoCal::buildCommand_shmLink(asppVer, nodeAddress);
+
+        return node_autocal(nodeAddress, cmd, response, result);
+    }
+
+    bool BaseStation_Impl::protocol_node_autocal_shm201_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, AutoCalResult& result)
+    {
+        //create the response
+        AutoCal::Shm201Response response(nodeAddress, m_responseCollector);
+
+        ByteStream cmd = AutoCal::buildCommand_shmLink201(asppVer, nodeAddress);
 
         return node_autocal(nodeAddress, cmd, response, result);
     }
@@ -1163,12 +1159,34 @@ namespace mscl
 
     Value BaseStation_Impl::readEeprom(const EepromLocation& location) const
     {
-        return m_eeprom->readEeprom(location);
+        try
+        {
+            return m_eeprom->readEeprom(location);
+        }
+        catch(mscl::Error_Communication&)
+        {
+            throw mscl::Error_Communication("Failed to read the " + location.description() + " from the BaseStation");
+        }
+        catch(mscl::Error_NotSupported&)
+        {
+            throw mscl::Error_NotSupported("The BaseStation does not support reading the " + location.description());
+        }
     }
 
     void BaseStation_Impl::writeEeprom(const EepromLocation& location, const Value& val)
     {
-        m_eeprom->writeEeprom(location, val);
+        try
+        {
+            m_eeprom->writeEeprom(location, val);
+        }
+        catch(mscl::Error_Communication&)
+        {
+            throw mscl::Error_Communication("Failed to write the " + location.description() + " to the BaseStation");
+        }
+        catch(mscl::Error_NotSupported&)
+        {
+            throw mscl::Error_NotSupported("The BaseStation does not support writing the " + location.description());
+        }
     }
 
     uint16 BaseStation_Impl::readEeprom(uint16 eepromAddress) const
@@ -1487,6 +1505,11 @@ namespace mscl
     bool BaseStation_Impl::node_autocal_shm(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, AutoCalResult& result)
     {
         return nodeProtocol.m_autoCal_shm(this, nodeAddress, result);
+    }
+
+    bool BaseStation_Impl::node_autocal_shm201(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, AutoCalResult& result)
+    {
+        return nodeProtocol.m_autoCal_shm201(this, nodeAddress, result);
     }
 
     bool BaseStation_Impl::node_autoShuntCal(const WirelessProtocol& nodeProtocol,

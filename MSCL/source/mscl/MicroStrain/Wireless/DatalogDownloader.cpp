@@ -203,6 +203,9 @@ namespace mscl
         float slope;
         float offset;
 
+        ChannelCalMap oldCals = m_sessionInfo.calCoefficients;
+
+        //clear the calCoefficients map so we get rid of any we might not have anymore (channels that have been removed?)
         m_sessionInfo.calCoefficients.clear();
 
         for(channelItr = 1; channelItr <= lastChannel; ++channelItr)
@@ -232,14 +235,33 @@ namespace mscl
                 //read the channel action offset
                 offset = m_nodeMemory->read_float(Utils::littleEndian);
 
+                CalCoefficients cals = CalCoefficients(equation, unit, LinearEquation(slope, offset));
+
+                //if we already have calibration coefficients for this channel in the map
+                auto calItr = oldCals.find(chId);
+                if(calItr != oldCals.end())
+                {
+                    //if we are changing at least 1 calibration coefficient
+                    if(calItr->second != cals)
+                    {
+                        m_sessionInfo.calCoefficientsUpdated = true;
+                    }
+                }
+
                 //add the cal coefficients to the session info
-                m_sessionInfo.calCoefficients[chId] = CalCoefficients(equation, unit, LinearEquation(slope, offset));
+                m_sessionInfo.calCoefficients[chId] = cals;
 
                 //====================================================
                 //MOVE PASSED ANY EXTRA BYTES
                 m_nodeMemory->skipBytes(bytesPerChannel - (m_nodeMemory->readIndex() - byteCounter));
                 //====================================================
             }
+        }
+
+        //if we've added or removed any cal coefficients
+        if(m_sessionInfo.calCoefficients.size() != oldCals.size())
+        {
+            m_sessionInfo.calCoefficientsUpdated = true;
         }
 
         //read the number of bytes before the end of the header
@@ -252,7 +274,7 @@ namespace mscl
         uint32 timestampNanos = m_nodeMemory->read_uint32();
 
         //build the full nanosecond resolution timestamp
-        m_sessionInfo.timestamp = ((static_cast<uint64>(timestampSeconds) * TimeSpan::NANOSECONDS_PER_SECOND) + timestampNanos);
+        m_sessionInfo.tsCounter.reset(sampleRate(), ((static_cast<uint64>(timestampSeconds) * TimeSpan::NANOSECONDS_PER_SECOND) + timestampNanos));
 
         //====================================================
         //MOVE PASSED ANY EXTRA BYTES
@@ -269,6 +291,10 @@ namespace mscl
     {
         //TODO: What if an exception is thrown in here??
 
+        m_sessionInfo.calCoefficientsUpdated = false;
+        m_sessionInfo.sessionInfoUpdated = false;
+        m_sessionInfo.startOfTrigger = false;
+
         uint8 headerId = m_nodeMemory->read_uint8();
 
         if(headerId == NodeMemory_v2::REFRESH_HEADER_ID)
@@ -284,7 +310,7 @@ namespace mscl
             m_nodeMemory->skipBytes(1); //skip sweep count
 
             //read the timestamp
-            m_sessionInfo.timestamp = m_nodeMemory->read_uint64(Utils::littleEndian);
+            m_sessionInfo.tsCounter.reset(m_nodeMemory->read_uint64(Utils::littleEndian));
 
             //read the session index
             uint16 newSessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
@@ -328,8 +354,8 @@ namespace mscl
                 m_isMathData = true;
             }
 
-            //read the timestamp
-            m_sessionInfo.timestamp = m_nodeMemory->read_uint64(Utils::littleEndian);
+            //update the timestampCounter with the new timestamp, and adjust sample rate if sweep type has changed
+            m_sessionInfo.tsCounter.reset(sampleRate(), m_nodeMemory->read_uint64(Utils::littleEndian));
 
             //read the session index
             uint16 newSessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
@@ -359,20 +385,22 @@ namespace mscl
 
                 uint16 newSessionIndex = m_nodeMemory->read_uint16(Utils::littleEndian);
 
-                //only update sessionInfoUpdated flag if index has changed
                 if(!m_foundFirstTrigger || m_sessionInfo.sessionIndex != newSessionIndex)
                 {
                     m_sessionInfo.sessionIndex = newSessionIndex;
                     m_sessionInfo.startOfTrigger = true;
                 }
 
-                m_sessionInfo.timestamp = m_nodeMemory->read_uint64(Utils::littleEndian);
+                uint64 newTimestamp = m_nodeMemory->read_uint64(Utils::littleEndian);
 
                 //read the sample rate
                 WirelessTypes::WirelessSampleRate rate = static_cast<WirelessTypes::WirelessSampleRate>(m_nodeMemory->read_uint8());
 
                 m_sessionInfo.sampleRate = SampleRate::FromWirelessEepromValue(rate);
                 m_sessionInfo.timeBetweenSweeps = m_sessionInfo.sampleRate.samplePeriod().getNanoseconds();
+
+                //update the timestampCounter with the new timestamp, and adjust sample rate if sweep type has changed
+                m_sessionInfo.tsCounter.reset(sampleRate(), newTimestamp);
 
                 //read the active channel mask
                 m_sessionInfo.activeChannels = ChannelMask(m_nodeMemory->read_uint16(Utils::littleEndian));
@@ -409,13 +437,16 @@ namespace mscl
                     m_sessionInfo.startOfTrigger = true;
                 }
 
-                m_sessionInfo.timestamp = m_nodeMemory->read_uint64(Utils::littleEndian);
+                uint64 newTimestamp = m_nodeMemory->read_uint64(Utils::littleEndian);
 
                 //read the raw sample rate
                 WirelessTypes::WirelessSampleRate rawRate = static_cast<WirelessTypes::WirelessSampleRate>(m_nodeMemory->read_uint8());
 
                 m_sessionInfo.sampleRate = SampleRate::FromWirelessEepromValue(rawRate);
                 m_sessionInfo.timeBetweenSweeps = m_sessionInfo.sampleRate.samplePeriod().getNanoseconds();
+
+                //update the timestampCounter with the new timestamp, and adjust sample rate if sweep type has changed
+                m_sessionInfo.tsCounter.reset(sampleRate(), newTimestamp);
 
                 //read the active channel mask
                 m_sessionInfo.activeChannels = ChannelMask(m_nodeMemory->read_uint16(Utils::littleEndian));
@@ -469,6 +500,9 @@ namespace mscl
         float slope;
         float offset;
 
+        ChannelCalMap oldCals = m_sessionInfo.calCoefficients;
+
+        //clear the calCoefficients map so we get rid of any we might not have anymore (channels that have been removed?)
         m_sessionInfo.calCoefficients.clear();
 
         for(channelItr = 1; channelItr <= lastChannel; ++channelItr)
@@ -496,9 +530,28 @@ namespace mscl
                 //read the channel action offset
                 offset = m_nodeMemory->read_float(Utils::littleEndian);
 
+                CalCoefficients cals = CalCoefficients(equation, unit, LinearEquation(slope, offset));
+
+                //if we already have calibration coefficients for this channel in the map
+                auto calItr = oldCals.find(chId);
+                if(calItr != oldCals.end())
+                {
+                    //if we are changing at least 1 calibration coefficient
+                    if(calItr->second != cals)
+                    {
+                        m_sessionInfo.calCoefficientsUpdated = true;
+                    }
+                }
+
                 //add the cal coefficients to the session info
-                m_sessionInfo.calCoefficients[chId] = CalCoefficients(equation, unit, LinearEquation(slope, offset));
+                m_sessionInfo.calCoefficients[chId] = cals;
             }
+        }
+
+        //if we've added or removed any cal coefficients
+        if(m_sessionInfo.calCoefficients.size() != oldCals.size())
+        {
+            m_sessionInfo.calCoefficientsUpdated = true;
         }
     }
 
@@ -621,7 +674,8 @@ namespace mscl
         }
 
         //calculate the timestamp and tick for the sweep
-        uint64 sweepTime = m_sessionInfo.timestamp + (m_sessionInfo.timeBetweenSweeps * m_sweepCount);
+        uint64 sweepTime = m_sessionInfo.tsCounter.time();
+        m_sessionInfo.tsCounter.advance();
         uint64 sweepTick = m_sweepCount;
 
         //increment the sweep count
@@ -671,7 +725,8 @@ namespace mscl
         }
 
         //calculate the timestamp and tick for the sweep
-        uint64 sweepTime = m_sessionInfo.timestamp + (m_sessionInfo.derivedTimeBetweenSweeps * m_sweepCount);
+        uint64 sweepTime = m_sessionInfo.tsCounter.time();
+        m_sessionInfo.tsCounter.advance();
         uint64 sweepTick = m_sweepCount;
 
         //increment the sweep count
@@ -756,6 +811,11 @@ namespace mscl
     bool DatalogDownloader::metaDataUpdated() const
     {
         return m_sessionInfo.sessionInfoUpdated;
+    }
+
+    bool DatalogDownloader::calCoefficientsUpdated() const
+    {
+        return m_sessionInfo.calCoefficientsUpdated;
     }
 
     bool DatalogDownloader::startOfSession() const

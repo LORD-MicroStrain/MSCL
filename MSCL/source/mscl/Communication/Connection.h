@@ -86,6 +86,24 @@ namespace mscl
         //Exceptions:
         //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
         static Connection TcpIp(const std::string& serverAddress, uint16 serverPort);
+
+#ifndef MSCL_DISABLE_WEBSOCKETS
+        //API Function: WebSocket
+        //    A static function for creating a Connection object with a <WebSocketConnection> or <WebSocketSecureConnection> implementation.
+        //    A connection with the specified host/port will be established.
+        //    Note: This requires the "host" string to be in the form "wss://mscl.example.com" (for a Secure Web Socket) or "ws://mscl.example.com" for a standard HTTP Web Socket
+        //
+        //Parameters:
+        //    host - The host name to connect to. For example, "wss://mscl.example.com" (for a Secure Web Socket) or "ws://mscl.example.com" for a standard HTTP Web Socket.
+        //    port - The port to connect to.
+        //
+        //Returns:
+        //    A <Connection> object created with a Web Socket implementation.
+        //
+        //Exceptions:
+        //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
+        static Connection WebSocket(const std::string& host, uint16 port);
+#endif
         
 #ifdef UNIX_BUILD
         //API Function: UnixSocket
@@ -102,6 +120,8 @@ namespace mscl
         //    - <Error_InvalidUnixSocket>: failed to connect to the specified unix socket path.
         static Connection UnixSocket(const std::string& path);
 #endif
+
+        static Connection Mock();
 
     private:
         //Variable: m_impl

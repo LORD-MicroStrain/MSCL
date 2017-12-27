@@ -79,6 +79,21 @@ namespace mscl
         return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
+    ByteStream SensorMessageFormat::buildCommand_save()
+    {
+        //container to hold the command's field data
+        ByteStream fieldData;
+
+        //add the command selector byte
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::SAVE_CURRENT_SETTINGS));
+
+        // no channels, so add 0 
+        fieldData.append_uint8(0);
+
+        //build and return the command bytes
+        return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
+    }
+
     SensorMessageFormat::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
         GenericInertialCommand::Response(InertialTypes::CMD_SENSOR_MESSAGE_FORMAT, collector, true, dataResponse, "Sensor Message Format")
     {}

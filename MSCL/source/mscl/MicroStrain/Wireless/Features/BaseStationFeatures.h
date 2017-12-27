@@ -38,7 +38,7 @@ namespace mscl
         //
         //Parameters:
         //    info - A <BaseStationInfo> object representing standard information of the <BaseStation>.
-        BaseStationFeatures(BaseStationInfo& info);
+        BaseStationFeatures(const BaseStationInfo& info);
 
         //Function: create
         //    Builds and returns a BaseStationFeatures pointer based on the given parameters.
@@ -51,7 +51,7 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: The BaseStation model is not supported by MSCL.
-        static std::unique_ptr<BaseStationFeatures> create(BaseStationInfo& info);
+        static std::unique_ptr<BaseStationFeatures> create(const BaseStationInfo& info);
 #endif
 
     public:

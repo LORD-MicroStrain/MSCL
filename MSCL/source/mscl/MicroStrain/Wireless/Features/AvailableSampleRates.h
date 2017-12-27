@@ -89,7 +89,6 @@ namespace mscl
         static const WirelessTypes::WirelessSampleRates continuous_shmLink2;
         static const WirelessTypes::WirelessSampleRates continuous_shmLink2_2;
         static const WirelessTypes::WirelessSampleRates continuous_shmLink201;
-        static const WirelessTypes::WirelessSampleRates burst_shmLink201;
 
         //Constants: CF-Bearing-Temp-Link SampleRates
         //    continuous_cfBearing - continuous sample rates for the CF-Bearing-Temp-Link node.

@@ -21,6 +21,6 @@ namespace mscl
         //
         //Parameters:
         //    info - A <BaseStationInfo> object representing standard information of the <BaseStation>.
-        BaseStationFeatures_usb(BaseStationInfo& info);
+        BaseStationFeatures_usb(const BaseStationInfo& info);
     };
 }

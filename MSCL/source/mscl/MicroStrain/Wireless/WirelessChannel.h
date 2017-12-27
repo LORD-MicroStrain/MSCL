@@ -231,6 +231,22 @@ namespace mscl
         //  channel_diag_syncFailures               - 208 - Diagnostic - Synchronization Failures
         //  channel_diag_secsSinceLastSync          - 209 - Diagnostic - Seconds since last synchronization
         //  channel_beaconConflict                  - 210 - Conflicting Beacon
+        //  channel_1_mean                          - 211 - Channel 1 Mean
+        //  channel_2_mean                          - 212 - Channel 2 Mean
+        //  channel_3_mean                          - 213 - Channel 3 Mean
+        //  channel_4_mean                          - 214 - Channel 4 Mean
+        //  channel_5_mean                          - 215 - Channel 5 Mean
+        //  channel_6_mean                          - 216 - Channel 6 Mean
+        //  channel_7_mean                          - 217 - Channel 7 Mean
+        //  channel_8_mean                          - 218 - Channel 8 Mean
+        //  channel_9_mean                          - 219 - Channel 9 Mean
+        //  channel_10_mean                         - 220 - Channel 10 Mean
+        //  channel_11_mean                         - 221 - Channel 11 Mean
+        //  channel_12_mean                         - 222 - Channel 12 Mean
+        //  channel_13_mean                         - 223 - Channel 13 Mean
+        //  channel_14_mean                         - 224 - Channel 14 Mean
+        //  channel_15_mean                         - 225 - Channel 15 Mean
+        //  channel_16_mean                         - 226 - Channel 16 Mean
         //=====================================================================================================
         enum ChannelId
         {
@@ -445,6 +461,22 @@ namespace mscl
             channel_diag_syncFailures               = 208,
             channel_diag_secsSinceLastSync          = 209,
             channel_beaconConflict                  = 210,
+            channel_1_mean                          = 211,
+            channel_2_mean                          = 212,
+            channel_3_mean                          = 213,
+            channel_4_mean                          = 214,
+            channel_5_mean                          = 215,
+            channel_6_mean                          = 216,
+            channel_7_mean                          = 217,
+            channel_8_mean                          = 218,
+            channel_9_mean                          = 219,
+            channel_10_mean                         = 220,
+            channel_11_mean                         = 221,
+            channel_12_mean                         = 222,
+            channel_13_mean                         = 223,
+            channel_14_mean                         = 224,
+            channel_15_mean                         = 225,
+            channel_16_mean                         = 226
         };
 
         WirelessChannel();    //default constructor

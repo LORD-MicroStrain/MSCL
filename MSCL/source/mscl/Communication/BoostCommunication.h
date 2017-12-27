@@ -5,6 +5,15 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 #include <boost/asio.hpp>
+
+#ifndef MSCL_DISABLE_SSL
+#include <boost/asio/ssl/stream.hpp>
+#endif
+
+#ifndef MSCL_DISABLE_WEBSOCKETS
+#include <boost/beast.hpp>
+#endif
+
 #include <memory>
 #include <mutex>
 #include <functional>
@@ -17,6 +26,36 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
+    namespace details
+    {
+        //generalized template function for writing to a IO_Object
+        template <typename IO_Object>
+        inline void writeAll(IO_Object& obj, const std::vector<uint8>& data)
+        {
+            boost::asio::write(
+                obj,                                        //the ioObject (serial port, tcp socket, websocket)
+                boost::asio::buffer(data, data.size()));    //the buffer that contains the data to be written
+        }
+
+#ifndef MSCL_DISABLE_WEBSOCKETS
+        //specialized template function of the above for using tcp websockets
+        template <>
+        inline void writeAll(boost::beast::websocket::stream<boost::asio::ip::tcp::socket>& obj, const std::vector<uint8>& data)
+        {
+            obj.write(boost::asio::buffer(data, data.size()));
+        }
+
+#ifndef MSCL_DISABLE_SSL
+        //specialized template function of the above for using secure websockets
+        template <>
+        inline void writeAll(boost::beast::websocket::stream<boost::asio::ssl::stream<boost::asio::ip::tcp::socket>>& obj, const std::vector<uint8>& data)
+        {
+            obj.write(boost::asio::buffer(data, data.size()));
+        }
+#endif // MSCL_DISABLE_SSL
+#endif // MSCL_DISABLE_WEBSOCKETS
+    }
+
     //Class: BoostCommunication
     //    The BoostCommunication object that is used for actual read/write communication for all Connection objects
     template <typename IO_Object>
@@ -41,9 +80,9 @@ namespace mscl
         ~BoostCommunication();
 
     private:
-        BoostCommunication();                                        //default constructor disabled
-        BoostCommunication(const BoostCommunication&);                //copy constructor disabled
-        BoostCommunication& operator=(const BoostCommunication&);    //assignment operator disabled
+        BoostCommunication() = delete;                                        //default constructor disabled
+        BoostCommunication(const BoostCommunication&) = delete;               //copy constructor disabled
+        BoostCommunication& operator=(const BoostCommunication&) = delete;    //assignment operator disabled
 
     private:
         //Variable: m_ioService
@@ -170,10 +209,7 @@ namespace mscl
     {
         try
         {
-            //write all the data (blocks until all is written)
-            boost::asio::write(
-                *m_ioObject,                                        //the ioObject (serial_port)
-                boost::asio::buffer(data, data.size()));            //the buffer that contains the data to be written;
+            details::writeAll(*m_ioObject, data);
 
             if(m_debugDataFunction)
             {

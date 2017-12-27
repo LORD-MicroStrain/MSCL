@@ -844,6 +844,42 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_maxRetransPerBurst(uint16 maxReTxPerBurst);
 
+        //Function: read_gaugeResistance
+        //    Reads the Gauge Resistance that is currently stored on the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        uint16 read_gaugeResistance();
+
+        //Function: write_gaugeResistance
+        //    Writes the Gauge Resistance to the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_gaugeResistance(uint16 resistance);
+
+        //Function: read_numActiveGauges
+        //    Reads the Number of Active Gauges that is currently stored on the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        uint16 read_numActiveGauges();
+
+        //Function: write_numActiveGauges
+        //    Writes the Number of Active Gauges to the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_numActiveGauges(uint16 numGauges);
+
         //Function: read_inputRange
         //    Reads the input range for the specified <ChannelMask> from the Node.
         //

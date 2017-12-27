@@ -271,6 +271,20 @@ namespace mscl
         //    true if the Node support Gauge Factor for at least on <ChannelGroup>, false otherwise.
         virtual bool supportsGaugeFactor() const;
 
+        //API Function: supportsGaugeResistance
+        //  Checks if the Node supports the Gauge Resistance option.
+        //
+        //Returns:
+        //  true if the Node supports Gauge Resistance, false otherwise.
+        virtual bool supportsGaugeResistance() const;
+
+        //API Function: supportsNumActiveGauges
+        //  Checks if the Node supports the Number of Active Gauges option.
+        //
+        //Returns:
+        //  true if the Node supports the Number of Active Gauges option, false otherwise.
+        virtual bool supportsNumActiveGauges() const;
+
         //API Function: supportsLostBeaconTimeout
         //    Checks if the Node supports the Lost Beacon Timeout option.
         //
@@ -369,12 +383,19 @@ namespace mscl
         //  true if the Node supports Shunt Cal for at least 1 <ChannelGroup>, false otherwise.
         virtual bool supportsLegacyShuntCal() const;
 
-        //API Function: supportsAutoCal
-        //    Checks if the Node supports the AutoCal commands.
+        //API Function: supportsAutoCal_shm
+        //    Checks if the Node supports the AutoCal SHM-Link command.
         //
         //Returns:
-        //    true if the Node supports an AutoCal command, false otherwise.
-        virtual bool supportsAutoCal() const;
+        //    true if the Node supports the AutoCal SHM-Link command, false otherwise.
+        virtual bool supportsAutoCal_shm() const;
+
+        //API Function: supportsAutoCal_shm201
+        //    Checks if the Node supports the AutoCal SHM-Link-201 command.
+        //
+        //Returns:
+        //    true if the Node supports the AutoCal SHM-Link-201 command, false otherwise.
+        virtual bool supportsAutoCal_shm201() const;
 
         //API Function: supportsAutoShuntCal
         //  Checks if the Node supports AutoShuntCal on any of this <ChannelGroups>.

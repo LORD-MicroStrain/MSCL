@@ -32,15 +32,19 @@ namespace mscl
         //    The <ValueType> of this value in EEPROM.
         ValueType m_valueType;
 
+        //Variable: m_desription
+        //  The string description of the EEPROM location.
+        std::string m_description;
+
     public:
         //Constructor: EepromLocation
         //    Creates an EepromLocation object. The id is assigned automatically.
-        EepromLocation(uint16 location, ValueType valueType);
+        EepromLocation(uint16 location, ValueType valueType, const std::string& description);
 
         //Constructor: EepromLocation
         //    Creates an EepromLocation object with a specific id.
         //    Note: this should be used only when making a copy of an EepromLocation if you know the id, location, and type.
-        EepromLocation(uint16 idCopy, uint16 location, ValueType valueType);
+        EepromLocation(uint16 idCopy, uint16 location, ValueType valueType, const std::string& description);
 
         //Operator: <
         //    Less than operator for comparing Eeprom Locations (ids).
@@ -51,7 +55,7 @@ namespace mscl
         bool operator==(const EepromLocation& other) const;
 
     private:
-        EepromLocation(); //disabled default constructor 
+        EepromLocation() = delete; //disabled default constructor 
 
     public:
         //Function: id
@@ -65,5 +69,9 @@ namespace mscl
         //Function: valueType
         //    Gets the <ValueType> of this value in EEPROM.
         ValueType valueType() const;
+
+        //Function: description
+        //  Gets a description of this EEPROM location.
+        std::string description() const;
     };
 }

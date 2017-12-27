@@ -5,6 +5,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
+#include <mutex>
+
+#include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/Types.h"
 #include "mscl/Value.h"
 #include "EepromLocation.h"
@@ -15,11 +18,6 @@ namespace mscl
     //    The abstract base class for reading and writing to Wireless devices' eeproms.
     class Eeprom
     {
-    protected:
-        //Typedef: EepromMap
-        //    typedef for a map of eeprom locations to eeprom values
-        typedef std::map<uint16, uint16> EepromMap;
-
     public:
         //Constructor: Eeprom
         //    Creates an Eeprom object.
@@ -33,8 +31,8 @@ namespace mscl
 
     protected:
         //Variable: m_eepromCache
-        //    The <EepromMap> contianing all cached values that have previously been read from a device.
-        EepromMap m_eepromCache;
+        //    The <WirelessTypes::EepromMap> contianing all cached values that have previously been read from a device.
+        WirelessTypes::EepromMap m_eepromCache;
 
         //Variable: m_useCache
         //    Whether or not the cache should be used.
@@ -48,6 +46,10 @@ namespace mscl
         //  A flag used by <resetHasWritten> and <didWrite> to help determine when
         //  an eeprom was actually written, instead of just using the cache.
         bool m_hasWritten;
+
+        //Variable: m_cacheMutex
+        //  Mutex for controlling access to the cache.
+        mutable std::recursive_mutex m_cacheMutex;
 
     public:
         //Function: useCache
@@ -81,7 +83,18 @@ namespace mscl
         //
         //Returns:
         //    The number of retries currently set.
-        uint8 getNumRetries();
+        uint8 getNumRetries() const;
+
+        //Function: getCache
+        //  Gets a copy of the <WirelessTypes::EepromMap> containing the cache of eeprom location/value pairs.
+        //
+        //Returns:
+        //  A <WirelessTypes::EepromMap> of the cache.
+        WirelessTypes::EepromMap getCache() const;
+
+        //Function: importCache
+        //  Imports an existing EEPROM 
+        void importCache(const WirelessTypes::EepromMap& eepromMap);
 
     protected:
         //Function: readCache

@@ -7,6 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "BaseStation.h"
 #include "BaseStation_Impl.h"
+#include "MockBaseStation_Impl.h"
 #include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/Wireless/Commands/WirelessResponsePattern.h"
 #include "Configuration/BaseStationEepromHelper.h"
@@ -27,6 +28,22 @@ namespace mscl
     BaseStation::BaseStation(std::shared_ptr<BaseStation_Impl> impl):
         m_impl(impl)
     {
+    }
+
+    BaseStation BaseStation::Mock(const BaseStationInfo& info)
+    {
+        return BaseStation(std::make_shared<MockBaseStation_Impl>(info));
+    }
+
+    BaseStation BaseStation::Mock()
+    {
+        BaseStationInfo info(Version(5, 0),
+                             WirelessModels::base_wsdaBase_104_usb,
+                             WirelessTypes::region_usa,
+                             Version(1, 7),
+                             Version(3, 0));
+
+        return Mock(info);
     }
 
     BaseStationEepromHelper& BaseStation::eepromHelper() const
@@ -378,6 +395,11 @@ namespace mscl
     bool BaseStation::node_autocal_shm(const WirelessProtocol& protocol, NodeAddress nodeAddress, AutoCalResult& result)
     {
         return m_impl->node_autocal_shm(protocol, nodeAddress, result);
+    }
+
+    bool BaseStation::node_autocal_shm201(const WirelessProtocol& protocol, NodeAddress nodeAddress, AutoCalResult& result)
+    {
+        return m_impl->node_autocal_shm201(protocol, nodeAddress, result);
     }
 
     bool BaseStation::node_autoShuntCal(const WirelessProtocol& protocol,

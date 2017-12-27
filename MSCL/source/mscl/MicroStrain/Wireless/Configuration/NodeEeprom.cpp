@@ -23,10 +23,14 @@ namespace mscl
 
     bool NodeEeprom::updateCacheFromDevice(uint16 location)
     {
+        uint8 retryCount = 0;
+
         //if we can use the page download command
-        if(m_useGroupRead)
+        if(m_useCache && m_useGroupRead)    //if m_useCache is disabled, not much point in doing a group read...revert to single read eeprom
         {
             const WirelessProtocol& nodeProtocol = m_node->protocol(m_baseStation.communicationProtocol());
+
+            retryCount++;   //lets count the group read as a try
 
             //use Batch EEPROM read if supported
             if(nodeProtocol.supportsBatchEepromRead())
@@ -72,10 +76,8 @@ namespace mscl
             }
         }
 
-        //if we got here, we need to read the eeprom value individually    from the node
+        //if we got here, we need to read the eeprom value individually from the node
         uint16 eepromVal;
-
-        uint8 retryCount = 0;
 
         do
         {
@@ -96,6 +98,8 @@ namespace mscl
 
     void NodeEeprom::parseEepromPage(const ByteStream& pageData, uint16 pageIndex)
     {
+        rec_mutex_lock_guard lock(m_cacheMutex);    //don't allow accessing cache until we have updated all the new values
+
         //get the number of bytes in the page ByteStream
         uint16 dataLength = static_cast<uint16>(pageData.size());
         uint16 mapLocation;
@@ -116,6 +120,8 @@ namespace mscl
 
     void NodeEeprom::parseBatchEepromResult(const std::map<uint16, uint16> eepromMap)
     {
+        rec_mutex_lock_guard lock(m_cacheMutex);    //don't allow accessing cache until we have updated all the new values
+
         //loop through all eeprom locations and values and update the cache
         for(const auto& i : eepromMap)
         {
@@ -163,6 +169,8 @@ namespace mscl
         }
 
         //we didn't get a value from the cache
+
+        rec_mutex_lock_guard lock(m_cacheMutex);    //locking here so cache doesn't change between updateCacheFromDevice and readCache
 
         //attempt to read the value from the device 
         if(updateCacheFromDevice(location))

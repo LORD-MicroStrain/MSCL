@@ -99,6 +99,16 @@ namespace mscl
         //    - <Error>: An <InertialChannel> in the channels parameter is not part of the Sensor descriptor set
         static ByteStream buildCommand_set(const InertialChannels& channels, uint16 sampleRateBase);
 
+        //Function: buildCommand_save
+        //    Builds the bytes for the "save" command. 
+        //
+        //Parameters:
+        //    channels - The <InertialChannels> holding the channels to be saved. This should only contain channels that are in the GPS (0x81) descriptor set.
+        //
+        //Returns:
+        //    A <ByteStream> that holds the bytes that make up the command
+        static ByteStream buildCommand_save();
+            
         class Response : public GenericInertialCommand::Response
         {
         protected:

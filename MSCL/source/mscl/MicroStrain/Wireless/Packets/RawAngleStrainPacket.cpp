@@ -7,6 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "RawAngleStrainPacket.h"
 #include "mscl/MicroStrain/SampleUtils.h"
+#include "mscl/TimestampCounter.h"
 #include "mscl/Utils.h"
 
 namespace mscl
@@ -154,8 +155,7 @@ namespace mscl
         //create a SampleRate object from the sampleRate byte
         SampleRate currentRate = SampleUtils::convertToSampleRate(sampleRate);
 
-        //get the value to increment the timestamp by for each sweep (the timestamp from the packet only applies to the first sweep)
-        const uint64 TS_INCREMENT = currentRate.samplePeriod().getNanoseconds();
+        TimestampCounter tsCounter(currentRate, timestamp);
 
         //set the data type of the packet
         m_dataType = WirelessTypes::dataType_float32;
@@ -200,7 +200,8 @@ namespace mscl
                 sweep.sampleRate(currentRate);
 
                 //build this sweep's timestamp
-                sweep.timestamp(Timestamp(timestamp + (TS_INCREMENT * sweepItr)));
+                sweep.timestamp(Timestamp(tsCounter.time()));
+                tsCounter.advance();
 
                 sweep.nodeRssi(m_nodeRSSI);
                 sweep.baseRssi(m_baseRSSI);
@@ -267,7 +268,8 @@ namespace mscl
                 sweep.sampleRate(currentRate);
 
                 //build this sweep's timestamp
-                sweep.timestamp(Timestamp(timestamp + (TS_INCREMENT * sweepItr)));
+                sweep.timestamp(Timestamp(tsCounter.time()));
+                tsCounter.advance();
 
                 sweep.nodeRssi(m_nodeRSSI);
                 sweep.baseRssi(m_baseRSSI);

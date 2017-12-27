@@ -25,13 +25,13 @@ namespace mscl
     public:
         //===========================================================================================
         //API Constants:
-        //    NANOSECONDS_PER_MICROSECOND - 1000            - The number of nanoseconds in 1 microsecond
-        //    NANOSECONDS_PER_MILLISECOND - 1000000        - The number of nanoseconds in 1 millisecond
-        //    NANOSECONDS_PER_SECOND        - 1000000000L    - The number of nanoseconds in 1 second
+        //    NANOSECONDS_PER_MICROSECOND   - 1000          - The number of nanoseconds in 1 microsecond
+        //    NANOSECONDS_PER_MILLISECOND   - 1000000       - The number of nanoseconds in 1 millisecond
+        //    NANOSECONDS_PER_SECOND        - 1000000000L   - The number of nanoseconds in 1 second
         //===========================================================================================
-        static const uint32 NANOSECONDS_PER_MICROSECOND = 1000;
-        static const uint32 NANOSECONDS_PER_MILLISECOND = 1000000;
-        static const uint32 NANOSECONDS_PER_SECOND      = 1000000000L;
+        static const uint64 NANOSECONDS_PER_MICROSECOND = 1000;
+        static const uint64 NANOSECONDS_PER_MILLISECOND = 1000000;
+        static const uint64 NANOSECONDS_PER_SECOND      = 1000000000L;
 
     private:
         TimeSpan(){};    //default constructor disabled

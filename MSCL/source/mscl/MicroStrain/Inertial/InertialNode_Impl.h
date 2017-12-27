@@ -19,7 +19,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
 #include "mscl/MicroStrain/Inertial/PositionOffset.h"
 #include "mscl/Timestamp.h"
-#include "mscl/MicroStrain/Inertial/InertialReturnTypes.h"
+#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 
 namespace mscl
 {
@@ -378,6 +378,21 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         //    - <Error>: An <InertialChannel> in the channels parameter is not part of the specified <InertialTypes::InertialCategory>'s descriptor set.
         virtual void setMessageFormat(InertialTypes::InertialCategory category, const InertialChannels& channels);
+
+        //Function: saveMessageFormat
+        //    Saves the current message format of the specified <InertialTypes::InertialCategory>'s data packet.
+        //    Note that this function does not add to the existing message format, but overwrites it entirely.
+        //
+        //Parameters:
+        //    category - The <InertialTypes::InertialCategory> to set the message format for.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command or <InertialTypes::InertialCategory> is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        //    - <Error>: An <InertialChannel> in the channels parameter is not part of the specified <InertialTypes::InertialCategory>'s descriptor set.
+        void saveMessageFormat(InertialTypes::InertialCategory type);
 
         //Function: getCommunicationMode
         //    Gets the current communication mode that the node is in.
@@ -763,7 +778,354 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
         GeometricVector captureGyroBias(const uint16& samplingTime);
 
-   private:
+        //Function: setMagnetometerSoftIronMatrix
+        //    Sets the Magnetometer Soft Iron matrix.
+        //
+        //Parameters:
+        //    The <Matrix_3x3> object containing the matrix to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void setMagnetometerSoftIronMatrix(const Matrix_3x3& biasVector);
+
+        //Function: getMagnetometerSoftIronMatrix
+        //    Gets the Magnetometer Soft Iron matrix.
+        //
+        //Return:
+        //    The <GeometricVector> object containing the matrix.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        Matrix_3x3 getMagnetometerSoftIronMatrix();
+
+
+        //Function: setMagnetometerHardIronOffset
+        //    Sets the magnetometer hard iron offset vector.
+        //
+        //Parameters:
+        //    offsetVector - The <GeometricVector> object containing the vector to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void setMagnetometerHardIronOffset(const GeometricVector& offsetVector);
+
+        //Function: setMagnetometerHardIronOffset
+        //    Gets the magnetometer hard iron offset vector.
+        //
+        //Return:
+        //    The <GeometricVector> object containing the offset vector.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVector getMagnetometerHardIronOffset();
+
+        //Function: setConingAndScullingEnable
+        //    Enables/disables coning and sculling.
+        //
+        //Parameters:
+        //    bool indicating whether to enable coning and sculling.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void setConingAndScullingEnable(bool enable);
+
+        //Function: getConingAndScullingEnable
+        //    determines whether coning and sculling are enabled.
+        //
+        //Return:
+        //    bool indicating whether coning and sculling are enabled.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        bool getConingAndScullingEnable();
+
+        //Function: setUARTBaudRate
+        //    Sets the baud rate.  The device can be unresponsive for as much as 250 ms following this command.
+        //
+        //Parameters:
+        //    baudRate - The new baud rate.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void setUARTBaudRate(uint32 baudRate);
+
+        //Function: getUARTBaudRate
+        //    Gets the current baud rate for the inertial device.
+        //
+        //Return:
+        //    uint8 current baud rate.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        uint32 getUARTBaudRate();
+
+        //Function: setAdvancedLowPassFilterSettings
+        //    Sets the advanced low-pass filter settings.
+        //
+        //Parameters:
+        //    data - the new settings to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data);
+
+        //Function: getAdvancedLowPassFilterSettings
+        //    AdvancedLowPassFilterData new settings.  The <AdvancedLowPassFilterData::DataDescriptor> field
+        //    from the passed in data is used to set the type of data to be returned.
+        //
+        //Parameters:
+        //    data - The <AdvancedLowPassFilterData::DataDescriptor> field from
+        //    the passed in data is used to set the type of data to be returned.
+        //
+        //Return:
+        //    AdvancedLowPassFilterData new settings.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        AdvancedLowPassFilterData getAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data);
+
+        //Function: setComplementaryFilterSettings
+        //    Sets the complementary filter settings.
+        //
+        //Parameter:
+        //    data - the new settings to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void setComplementaryFilterSettings(const ComplementaryFilterData& data);
+
+        //Function: getComplementaryFilterSettings
+        //    Gets the current complementary filter settings.
+        //
+        //Return:
+        //    ComplementaryFilterData - The new settings.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        ComplementaryFilterData getComplementaryFilterSettings();
+
+        //Function: getBasicDeviceStatus
+        //    Gets the basic device status settings.
+        //
+        //Return:
+        //    DeviceStatusData - The new settings.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        DeviceStatusData getBasicDeviceStatus();
+
+        //Function: getDiagnosticDeviceStatus
+        //    Gets the diagnostic device status settings.
+        //
+        //Return:
+        //    DeviceStatusData - The new settings.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        DeviceStatusData getDiagnosticDeviceStatus();
+
+        //Function: sendRawRTCM_2_3Message
+        //    Sends a raw RTCM 2.3 message.
+        //
+        //Parameter:
+        //    theMessage - the RTCM message to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void sendRawRTCM_2_3Message(const RTCMMessage& theMessage);
+
+        //Function: setVehicleDynamicsMode
+        //    Sets the vehicle dynamics mode.
+        //
+        //Parameter:
+        //    mode - the new mode to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void setVehicleDynamicsMode(const VehicleModeType& mode);
+
+        //Function: getVehicleDynamicsMode
+        //    Gets the vehicle dynamics mode.
+        //
+        //Return:
+        //    VehicleModeType - The new mode.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        VehicleModeType getVehicleDynamicsMode();
+
+        //Function: setEstimationControlFlags
+        //    Sets the estimation control flags.
+        //
+        //Parameter:
+        //    mode - the new mode to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void setEstimationControlFlags(const uint16& flags);
+
+        //Function: getEstimationControlFlags
+        //    Gets the estimation control flags.
+        //
+        //Return:
+        //    uint16 - The new flags.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        uint16 getEstimationControlFlags();
+
+        //Function: setEstimationControlFlags
+        //    Sets the estimation control flags.
+        //
+        //Parameter:
+        //    gnssSource - the new mode to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void setGNSS_SourceControl(const GNSS_Source& gnssSource);
+
+        //Function: getEstimationControlFlags
+        //    Gets the estimation control flags.
+        //
+        //Return:
+        //    <GNSS_Source> - The new source.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GNSS_Source getGNSS_SourceControl();
+
+        //Function: sendExternalGNSSUpdate
+        //    sends the external GNSS update command.
+        //
+        //Parameter:
+        //    gnssUpdateData - the data to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void sendExternalGNSSUpdate(const ExternalGNSSUpdateData& gnssUpdateData);
+
+        //Function: setHeadingUpdateControl
+        //    Sets the heading update control flags.
+        //
+        //Parameter:
+        //    headingUpdateOptions - the new options to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void setHeadingUpdateControl(const HeadingUpdateOptions& headingUpdateOptions);
+
+        //Function: getHeadingUpdateControl
+        //    Gets the heading update control flags.
+        //
+        //Return:
+        //    <HeadingUpdateOptions> - The current options.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        HeadingUpdateOptions getHeadingUpdateControl();
+
+
+        //Function: sendExternalHeadingUpdate
+        //    sends the external heading update command.
+        //
+        //Parameter:
+        //    headingData - the new heading.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void sendExternalHeadingUpdate(const HeadingData& headingData);
+
+        //Function: sendExternalHeadingUpdate
+        //    sends the external heading update command.
+        //
+        //Parameter:
+        //    headingData - the new heading.
+        //    timestamp - the timestamp.  Improves accuracy in situations of high angular rate.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_InertialCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void sendExternalHeadingUpdate(const HeadingData& headingData, const TimeUpdate& timestamp);
+
+
+private:
        //Function: SendCommand
        //    Generic send command.
        //

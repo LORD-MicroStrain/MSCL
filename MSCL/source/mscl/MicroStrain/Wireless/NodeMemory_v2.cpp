@@ -215,13 +215,13 @@ namespace mscl
                 m_sweepSize = numRawChs * dataTypeSize;
 
                 uint8 numActiveAlgorithms = buffer.read_uint8(21);
-                const uint8 NUM_RAW_CAL_INFO_BYTES = numRawChs * 10;    //10 bytes per raw active channel
-                const uint8 ALG_META_OFFSET = 26 + NUM_RAW_CAL_INFO_BYTES;
+                const uint16 NUM_RAW_CAL_INFO_BYTES = numRawChs * 10;    //10 bytes per raw active channel
+                const size_t ALG_META_OFFSET = 26 + NUM_RAW_CAL_INFO_BYTES;
                 uint16 numAlgChannelBytes = 0;
 
                 if(numActiveAlgorithms > 0)
                 {
-                    if(static_cast<uint64>(buffer.size()) < (ALG_META_OFFSET + (numActiveAlgorithms * 3)))
+                    if(static_cast<uint64>(buffer.size()) < (ALG_META_OFFSET + (static_cast<uint64>(numActiveAlgorithms) * 3)))
                     {
                         //not enough bytes in the buffer to verify a block header
                         needMoreData = true;

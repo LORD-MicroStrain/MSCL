@@ -21,11 +21,11 @@ echo Building MSCL for Python x86... (bjam)
 echo ********************************
 echo.
 
-SET msclCxxFlags="/I"C:/Python27/include" /I"C:/Dev/Lib/boost/boost_1_61_0""
+SET msclCxxFlags="/I"C:/Python27/include" /I"C:/Dev/Lib/boost/boost_1_64_0" /I"C:/Dev/Lib/openssl/include""
 IF NOT [%1]==[] SET msclCxxFlags=%1
 IF [%1]==["none"] SET msclCxxFlags=" "
 
-SET msclLinkFlags="/LIBPATH:"C:/Python27/libs" /LIBPATH:"C:/Dev/Lib/boost/boost_1_61_0/lib32-msvc-14.0" libboost_system-vc140-mt-s-1_61.lib"
+SET msclLinkFlags="/LIBPATH:"C:/Python27/libs" /LIBPATH:"C:/Dev/Lib/boost/boost_1_64_0/lib32-msvc-14.0" /LIBPATH:"C:/Dev/Lib/openssl/lib" libboost_system-vc140-mt-s-1_64.lib libsslMT.lib libcryptoMT.lib crypt32.lib ws2_32.lib gdi32.lib advapi32.lib user32.lib"
 IF NOT [%2]==[] SET msclLinkFlags=%2
 IF [%2]==["none"] SET msclLinkFlags=" "
 

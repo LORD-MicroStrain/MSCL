@@ -1,7 +1,6 @@
 #pragma once
 
 #include "mscl/Types.h"
-//#include "InertialTypes.h"
 #include "mscl/MicroStrain/Inertial/Commands/GenericInertialCommand.h"
 
 namespace mscl

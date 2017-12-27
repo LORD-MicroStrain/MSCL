@@ -9,6 +9,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "BufferedLdcPacket_v2.h"
 #include "mscl/MicroStrain/SampleUtils.h"
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
+#include "mscl/TimestampCounter.h"
 #include "mscl/Types.h"
 #include "mscl/Utils.h"
 
@@ -65,13 +66,15 @@ namespace mscl
         if(m_numSweeps == 0) { throw Error("Invalid Packet"); }
 
         //build the full nanosecond resolution timestamp from the seconds and nanoseconds values read above
-        uint64 recievedTime = Timestamp::timeNow().nanoseconds();
+        uint64 receivedTime = Timestamp::timeNow().nanoseconds();
 
         //create a SampleRate object from the sampleRate byte
         SampleRate currentRate = SampleUtils::convertToSampleRate(sampleRate);
 
-        //get the value to increment the timestamp by for each sweep (the timestamp from the packet only applies to the first sweep)
-        const uint64 TS_INCREMENT = currentRate.samplePeriod().getNanoseconds();
+        TimestampCounter tsCounter(currentRate, receivedTime);
+
+        //last sweep gets PC timestamp, so need to reverse backwards and advance from there for each sweep
+        tsCounter.reverse(m_numSweeps - 1);
 
         //there are multiple sweeps in this packet (buffered)
         for(uint32 sweepItr = 0; sweepItr < m_numSweeps; sweepItr++)
@@ -84,8 +87,9 @@ namespace mscl
             sweep.nodeAddress(m_nodeAddress);
             sweep.sampleRate(currentRate);
 
-            //calculate the timestamp to use for this sweep (last sweep gets PC timestamp, count backwards for the other sweeps)
-            sweep.timestamp(Timestamp(recievedTime - (TS_INCREMENT * (m_numSweeps - (sweepItr + 1)))));
+            //calculate the timestamp to use for this sweep
+            sweep.timestamp(Timestamp(tsCounter.time()));
+            tsCounter.advance();
 
             //get this sweep's node and base rssi values
             sweep.nodeRssi(m_nodeRSSI);

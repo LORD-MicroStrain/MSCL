@@ -21,7 +21,7 @@ namespace mscl
         //
         //Parameters:
         //    info - A <BaseStationInfo> object representing standard information of the <BaseStation>.
-        BaseStationFeatures_analog(BaseStationInfo& info);
+        BaseStationFeatures_analog(const BaseStationInfo& info);
 
         //Function: buttonCount
         //    Gets the total number of buttons that are supported.

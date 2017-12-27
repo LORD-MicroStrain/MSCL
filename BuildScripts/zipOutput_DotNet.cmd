@@ -18,10 +18,10 @@ echo ========================================================
 echo (zipOutput_DotNet.cmd) START - ZIP THE MSCL DOTNET OUTPUT
 echo.
 
-REM copy the output/result files into a single directory structure 
+REM copy the output/result files into a single directory structure (only creating Release build files at this point)
 echo (zipOutput_DotNet.cmd) Copying files
-xcopy "..\Output\DotNet\x86\*.dll" %DOTNET_OUTPUT_DIR% /i /s
-xcopy "..\Output\DotNet\x64\*.dll" %DOTNET64_OUTPUT_DIR% /i /s
+xcopy "..\Output\DotNet\x86\Release\*.dll" %DOTNET_OUTPUT_DIR% /i /s
+xcopy "..\Output\DotNet\x64\Release\*.dll" %DOTNET64_OUTPUT_DIR% /i /s
 
 REM remove old .zip files if they already exist
 echo (zipOutput_DotNet.cmd) Deleting zip files if they already exist

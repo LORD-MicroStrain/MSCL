@@ -1,8 +1,7 @@
-<Project DefaultTargets="BuildAll" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="BuildAll" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
     <ConfigurationDotNet>Release (.NET)</ConfigurationDotNet>
-    <ConfigurationDotNet64>Release x64 (.NET)</ConfigurationDotNet64>
   </PropertyGroup>
 
   <!--Include all the project files that we want to build into the "CoreProjectsToBuild" item-->
@@ -44,7 +43,7 @@
     <Message Text="=====================Cleaning the Managed Project (Release x64)====================="/>
     <MSBuild Projects="@(ManagedProjectsToBuild)"
              Targets="Clean"
-             Properties="Configuration=$(ConfigurationDotNet64);Platform=x64">
+             Properties="Configuration=$(ConfigurationDotNet);Platform=x64">
     </MSBuild>
   </Target>
   
@@ -66,7 +65,7 @@
     <Message Text="=====================Building the Managed Project (Release x64)====================="/>
     <MSBuild Projects="@(ManagedProjectsToBuild)"
              ContinueOnError="false"
-             Properties="Configuration=$(ConfigurationDotNet64);Platform=x64">
+             Properties="Configuration=$(ConfigurationDotNet);Platform=x64">
       <Output ItemName="OutputFiles" TaskParameter="TargetOutputs"/>
     </MSBuild>
   </Target>

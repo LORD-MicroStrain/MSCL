@@ -170,6 +170,11 @@ namespace mscl
         m_impl->setMessageFormat(category, channels);
     }
 
+    void InertialNode::saveActiveChannelFields(InertialTypes::InertialCategory category)
+    {
+        m_impl->saveMessageFormat(category);
+    }
+
     uint8 InertialNode::getCommunicationMode()                                                    
     { 
         return m_impl->getCommunicationMode(); 
@@ -313,13 +318,143 @@ namespace mscl
         m_impl->setGyroBias(biasVector);
     }
 
+    GeometricVector InertialNode::getGyroBias()
+    {
+        return m_impl->getGyroBias();
+    }
+
     GeometricVector InertialNode::captureGyroBias(const uint16& samplingTime)
     {
         return m_impl->captureGyroBias(samplingTime);
     }
 
-    GeometricVector InertialNode::getGyroBias()
+    void InertialNode::setMagnetometerSoftIronMatrix(const Matrix_3x3& matrix)
     {
-        return m_impl->getGyroBias();
+        m_impl->setMagnetometerSoftIronMatrix(matrix);
+    }
+
+    Matrix_3x3 InertialNode::getMagnetometerSoftIronMatrix()
+    {
+        return m_impl->getMagnetometerSoftIronMatrix();
+    }
+
+    void InertialNode::setMagnetometerHardIronOffset(const GeometricVector& offsetVector)
+    {
+        m_impl->setMagnetometerHardIronOffset(offsetVector);
+    }
+
+    GeometricVector InertialNode::getMagnetometerHardIronOffset()
+    {
+        return m_impl->getMagnetometerHardIronOffset();
+    }
+
+    void InertialNode::setConingAndScullingEnable(bool enable)
+    {
+        m_impl->setConingAndScullingEnable(enable);
+    }
+
+    bool InertialNode::getConingAndScullingEnable()
+    {
+        return m_impl->getConingAndScullingEnable();
+    }
+
+    void InertialNode::setUARTBaudRate(uint32 baudRate)
+    {
+        m_impl->setUARTBaudRate(baudRate);
+    }
+
+    uint32 InertialNode::getUARTBaudRate()
+    {
+        return m_impl->getUARTBaudRate();
+    }
+
+    void InertialNode::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data)
+    {
+        m_impl->setAdvancedLowPassFilterSettings(data);
+    }
+
+    AdvancedLowPassFilterData InertialNode::getAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data)
+    {
+        return m_impl->getAdvancedLowPassFilterSettings(data);
+    }
+
+    void InertialNode::setComplementaryFilterSettings(const ComplementaryFilterData& data)
+    {
+        m_impl->setComplementaryFilterSettings(data);
+    }
+    
+    ComplementaryFilterData InertialNode::getComplementaryFilterSettings()
+    {
+        return m_impl->getComplementaryFilterSettings();
+    }
+
+    DeviceStatusData InertialNode::getBasicDeviceStatus()
+    {
+        return m_impl->getBasicDeviceStatus();
+    }
+
+    DeviceStatusData InertialNode::getDiagnosticDeviceStatus()
+    {
+        return m_impl->getDiagnosticDeviceStatus();
+    }
+
+    void InertialNode::sendRawRTCM_2_3Message(const RTCMMessage& theMessage)
+    {
+        m_impl->sendRawRTCM_2_3Message(theMessage);
+    }
+
+    void InertialNode::setVehicleDynamicsMode(const VehicleModeType& mode)
+    {
+        m_impl->setVehicleDynamicsMode(mode);
+    }
+
+    VehicleModeType InertialNode::getVehicleDynamicsMode()
+    {
+        return m_impl->getVehicleDynamicsMode();
+    }
+
+    void InertialNode::setEstimationControlFlags(const uint16& flags)
+    {
+        m_impl->setEstimationControlFlags(flags);
+    }
+
+    uint16 InertialNode::getEstimationControlFlags()
+    {
+        return m_impl->getEstimationControlFlags();
+    }
+
+    void InertialNode::setGNSS_SourceControl(const GNSS_Source& gnssSource)
+    {
+        m_impl->setGNSS_SourceControl(gnssSource);
+    }
+
+    GNSS_Source InertialNode::getGNSS_SourceControl()
+    {
+        return m_impl->getGNSS_SourceControl();
+    }
+
+    void InertialNode::sendExternalGNSSUpdate(const ExternalGNSSUpdateData& gnssUpdateData)
+    {
+        m_impl->sendExternalGNSSUpdate(gnssUpdateData);
+    }
+
+    void InertialNode::setHeadingUpdateControl(const HeadingUpdateOptions& headingUpdateOptions)
+    {
+        m_impl->setHeadingUpdateControl(headingUpdateOptions);
+    }
+
+    HeadingUpdateOptions InertialNode::getHeadingUpdateControl()
+    {
+        return m_impl->getHeadingUpdateControl();
+    }
+
+    void InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData)
+    {
+        m_impl->sendExternalHeadingUpdate(headingData);
+    }
+
+    void InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData, const TimeUpdate& timestamp)
+    {
+        m_impl->sendExternalHeadingUpdate(headingData, timestamp);
     }
 }

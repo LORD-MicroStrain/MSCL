@@ -80,6 +80,22 @@ namespace mscl
         return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
+    ByteStream EstFilterMessageFormat::buildCommand_save()
+    {
+        //container to hold the command's field data
+        ByteStream fieldData;
+
+        //add the command selector byte
+        fieldData.append_uint8(static_cast<uint8>(InertialTypes::SAVE_CURRENT_SETTINGS));
+
+        //"get" has no channels, so add 0 
+        fieldData.append_uint8(0);
+
+        //build and return the command bytes
+        return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
+    }
+
+
     EstFilterMessageFormat::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
         GenericInertialCommand::Response(InertialTypes::CMD_EF_MESSAGE_FORMAT, collector, true, dataResponse, "Estimation Filter Message Format")
     {}

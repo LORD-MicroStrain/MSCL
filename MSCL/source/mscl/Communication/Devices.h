@@ -18,6 +18,15 @@ namespace mscl
     class DeviceInfo
     {
     public:
+        //API Enum: ConnectionType
+        //  connectionType_serial - 0 - Serial connection (or usb-to-serial)
+        //  connectionType_tcp - 1 - TCP/IP connection
+        enum ConnectionType
+        {
+            connectionType_serial = 0,
+            connectionType_tcp = 1
+        };
+
         //Constructor: DeviceInfo
         //  Creates a DeviceInfo object
         DeviceInfo();
@@ -29,7 +38,8 @@ namespace mscl
         //  description - The description of the device
         //  serial - The serial address that is issued for this device
         //  baudRate - The suspected baud rate of the device
-        DeviceInfo(std::string description, std::string serial, uint32 baudRate);
+        //  type - The <ConnectionType> of the device
+        DeviceInfo(std::string description, std::string serial, uint32 baudRate, ConnectionType type);
 
     private:
         //Variable: m_description
@@ -43,6 +53,10 @@ namespace mscl
         //Variable: m_baudRate
         //  The suspected baud rate of the device.
         uint32 m_baudRate;
+
+        //Variable: m_connectionType
+        //  The <ConnectionType> of the device.
+        ConnectionType m_connectionType;
 
     public:
         //API Function: description
@@ -67,6 +81,13 @@ namespace mscl
         //  This is not gauranteed to be correct as it is basing this value on the
         //  driver info available, which doesn't always have uniquely identifiable information.
         uint32 baudRate() const;
+
+        //API Function: connectionType
+        //  Gets the <ConnectionType> of the device.
+        //
+        //Returns:
+        //  The <ConnectionType> of the device.
+        ConnectionType connectionType() const;
     };
     
 
@@ -75,7 +96,7 @@ namespace mscl
     class Devices
     {
     private:
-        //API Enums: DeviceType
+        //Enums: DeviceType
         //    TYPE_ALL            - 0 - All Devices
         //    TYPE_BASESTATION    - 1 - Device of a BaseStation type
         //    TYPE_INERTIALDEVICE - 2 - Device of an InertialDevice type
@@ -83,18 +104,19 @@ namespace mscl
         {
             TYPE_ALL                = 0,
             TYPE_BASESTATION        = 1,
-            TYPE_INERTIALDEVICE        = 2
+            TYPE_INERTIALDEVICE     = 2
         };
+
+        static std::string wsdaProIPAddress(const std::string& serial);
 
     public:
         //API Typedef: DeviceList
         //    Typedef for a map of string COM ports to <DeviceInfo> objects detailing the information about each device
         typedef std::map<std::string, DeviceInfo> DeviceList;
 
-    private:
-        Devices();                            //default constructor disabled
-        Devices(const Devices&);            //copy constructor disabled
-        Devices& operator=(const Devices&);    //assignment operator disabled
+        Devices() = delete;                             //default constructor disabled
+        Devices(const Devices&) = delete;               //copy constructor disabled
+        Devices& operator=(const Devices&) = delete;    //assignment operator disabled
 
     public:
         //API Function: listBaseStations
@@ -139,10 +161,11 @@ namespace mscl
         //    name - The WMI Name to match
         //    devType - The <DeviceType> to check for
         //    baudRate - Resulting suspected baud rate based on the device information
+        //    type - Resulting <DeviceInfo::ConnectionType> of the device
         //
         //Returns:
         //    true if the string matches the given <DeviceType>, false otherwise
-        static bool matchesDevice(const std::string& pnpID, const std::string& name, DeviceType devType, uint32& baudRate);
+        static bool matchesDevice(const std::string& pnpID, const std::string& name, DeviceType devType, uint32& baudRate, DeviceInfo::ConnectionType& type);
 #else
         //Function: matchesDevice
         //    Checks whether the given information, found from searching files in linux, matches the given device
@@ -152,10 +175,11 @@ namespace mscl
         //    vendorId - The vendor id of the device
         //    devType - The <DeviceType> to check for
         //    baudRate - Resulting suspected baud rate based on the device information
+        //    type - Resulting <DeviceInfo::ConnectionType> of the device
         //
         //Returns:
         //    true if the string matches the given <DeviceType>, false otherwise
-        static bool matchesDevice(const std::string& manufacturer, const std::string& vendorId, DeviceType devType, uint32& baudRate);
+        static bool matchesDevice(const std::string& manufacturer, const std::string& vendorId, DeviceType devType, uint32& baudRate, DeviceInfo::ConnectionType& type);
         
         //Function: getDeviceInfo
         //    Gets information about the attached device

@@ -30,6 +30,23 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Inertial/Commands/AccelBias.h"
 #include "mscl/MicroStrain/Inertial/Commands/GyroBias.h"
 #include "mscl/MicroStrain/Inertial/Commands/CaptureGyroBias.h"
+#include "mscl/MicroStrain/Inertial/Commands/MagnetometerSoftIronMatrix.h"
+#include "mscl/MicroStrain/Inertial/Commands/MagnetometerHardIronOffset.h"
+#include "mscl/MicroStrain/Inertial/Commands/ConingAndScullingEnable.h"
+#include "mscl/MicroStrain/Inertial/Commands/UARTBaudRate.h"
+#include "mscl/MicroStrain/Inertial/Commands/AdvancedLowPassFilterSettings.h"
+#include "mscl/MicroStrain/Inertial/Commands/ComplementaryFilterSettings.h"
+#include "mscl/MicroStrain/Inertial/Commands/DeviceStatus.h"
+#include "mscl/MicroStrain/Inertial/Commands/RawRTCM_2_3Message.h"
+#include "mscl/MicroStrain/Inertial/Commands/VehicleDynamicsMode.h"
+#include "mscl/MicroStrain/Inertial/Commands/EstimationControlFlags.h"
+#include "mscl/MicroStrain/Inertial/Commands/GNSS_SourceControl.h"
+#include "mscl/MicroStrain/Inertial/Commands/ExternalGNSSUpdate.h"
+#include "mscl/MicroStrain/Inertial/Commands/HeadingUpdateControl.h"
+#include "mscl/MicroStrain/Inertial/Commands/ExternalHeadingUpdate.h"
+#include "mscl/MicroStrain/Inertial/Commands/ExternalHeadingUpdateWithTimestamp.h"
+
+
 
 namespace mscl
 {
@@ -471,6 +488,43 @@ namespace mscl
         }
     }
 
+    void InertialNode_Impl::saveMessageFormat(InertialTypes::InertialCategory type)
+    {
+        switch (type)
+        {
+            case InertialTypes::CATEGORY_SENSOR:
+            {
+                //set the expected response
+                SensorMessageFormat::Response r(m_responseCollector, false);
+
+                //send the command, wait for the response, and parse the result
+                doCommand(r, SensorMessageFormat::buildCommand_save());
+                break;
+            }
+
+            case InertialTypes::CATEGORY_GNSS:
+            {
+                //set the expected response
+                GnssMessageFormat::Response r(m_responseCollector, false);
+
+                //send the command, wait for the response, and parse the result
+                doCommand(r, GnssMessageFormat::buildCommand_save());
+                break;
+            }
+
+            case InertialTypes::CATEGORY_ESTFILTER:
+            default:                
+            {
+                //set the expected response
+                EstFilterMessageFormat::Response r(m_responseCollector, false);
+
+                //send the command, wait for the response, and parse the result
+                doCommand(r, EstFilterMessageFormat::buildCommand_save());
+                break;
+            }
+        }
+    }
+
     uint8 InertialNode_Impl::getCommunicationMode()
     {
         //set the expected response
@@ -706,12 +760,180 @@ namespace mscl
         return captureGyroBiasCmd.getResponseData(response);
     }
 
-    GenericInertialCommandResponse InertialNode_Impl::SendCommand(InertialCommand& command)
+    void InertialNode_Impl::setMagnetometerSoftIronMatrix(const Matrix_3x3& biasVector)
     {
-       std::shared_ptr<GenericInertialCommand::Response> responsePtr = command.createResponse(m_responseCollector);
-
-        return doCommand(*responsePtr, command);
+        MagnetometerSoftIronMatrix magnetometerSoftIronMatrix = MagnetometerSoftIronMatrix::MakeSetCommand(biasVector);
+        SendCommand(magnetometerSoftIronMatrix);
     }
 
-    //============================================================================
+    Matrix_3x3 InertialNode_Impl::getMagnetometerSoftIronMatrix()
+    {
+        MagnetometerSoftIronMatrix magnetometerSoftIronMatrixCmd = MagnetometerSoftIronMatrix::MakeGetCommand();
+        GenericInertialCommandResponse response = SendCommand(magnetometerSoftIronMatrixCmd);
+        return magnetometerSoftIronMatrixCmd.getResponseData(response);
+    }
+
+    void InertialNode_Impl::setMagnetometerHardIronOffset(const GeometricVector& offsetVector)
+    {
+        MagnetometerHardIronOffset magnetometerSettings = MagnetometerHardIronOffset::MakeSetCommand(offsetVector);
+        SendCommand(magnetometerSettings);
+    }
+
+    GeometricVector InertialNode_Impl::getMagnetometerHardIronOffset()
+    {
+        MagnetometerHardIronOffset magnetometerHIOCmd = MagnetometerHardIronOffset::MakeGetCommand();
+        GenericInertialCommandResponse response = SendCommand(magnetometerHIOCmd);
+        return magnetometerHIOCmd.getResponseData(response);
+    }
+
+    void InertialNode_Impl::setConingAndScullingEnable(bool enable)
+    {
+        ConingAndScullingEnable coningAndScullingEnable = ConingAndScullingEnable::MakeSetCommand(enable);
+        SendCommand(coningAndScullingEnable);
+    }
+
+    bool InertialNode_Impl::getConingAndScullingEnable()
+    {
+        ConingAndScullingEnable coningAndScullingEnable = ConingAndScullingEnable::MakeGetCommand();
+        GenericInertialCommandResponse response = SendCommand(coningAndScullingEnable);
+        return coningAndScullingEnable.getResponseData(response);
+    }
+
+    void InertialNode_Impl::setUARTBaudRate(uint32 baudRate)
+    {
+        UARTBaudRate baudRateCmd = UARTBaudRate::MakeSetCommand(baudRate);
+        SendCommand(baudRateCmd);
+    }
+
+    uint32 InertialNode_Impl::getUARTBaudRate()
+    {
+        UARTBaudRate baudRateCmd = UARTBaudRate::MakeGetCommand();
+        GenericInertialCommandResponse response = SendCommand(baudRateCmd);
+        return baudRateCmd.getResponseData(response);
+    }
+
+    void InertialNode_Impl::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data)
+    {
+        AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeSetCommand(data);
+        SendCommand(lowPassFilterCmd);
+    }
+
+    AdvancedLowPassFilterData InertialNode_Impl::getAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data)
+    {
+        AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeGetCommand(data);
+        GenericInertialCommandResponse response = SendCommand(lowPassFilterCmd);
+        return lowPassFilterCmd.getResponseData(response);
+    }
+
+    void InertialNode_Impl::setComplementaryFilterSettings(const ComplementaryFilterData& data)
+    {
+        ComplementaryFilterSettings compFilterCmd = ComplementaryFilterSettings::MakeSetCommand(data);
+        SendCommand(compFilterCmd);
+    }
+
+    ComplementaryFilterData InertialNode_Impl::getComplementaryFilterSettings()
+    {
+        ComplementaryFilterSettings compFilterCmd = ComplementaryFilterSettings::MakeGetCommand();
+        GenericInertialCommandResponse response = SendCommand(compFilterCmd);
+        return compFilterCmd.getResponseData(response);
+    }
+
+    DeviceStatusData InertialNode_Impl::getBasicDeviceStatus()
+    {
+        DeviceStatus deviceStatus = DeviceStatus::MakeBasicStatusCommand();
+        GenericInertialCommandResponse response = SendCommand(deviceStatus);
+        return deviceStatus.getResponseData(response);
+    }
+
+    DeviceStatusData InertialNode_Impl::getDiagnosticDeviceStatus()
+    {
+        DeviceStatus deviceStatus = DeviceStatus::MakeDiagnosticStatusCommand();
+        GenericInertialCommandResponse response = SendCommand(deviceStatus);
+        return deviceStatus.getResponseData(response);
+    }
+
+    void InertialNode_Impl::sendRawRTCM_2_3Message(const RTCMMessage& theMessage)
+    {
+        RawRTCM_2_3Message messageCmd = RawRTCM_2_3Message::MakeCommand(theMessage);
+        SendCommand(messageCmd);
+    }
+
+    void InertialNode_Impl::setVehicleDynamicsMode(const VehicleModeType& mode)
+    {
+        VehicleDynamicsMode vehicleMode = VehicleDynamicsMode::MakeSetCommand(mode);
+        SendCommand(vehicleMode);
+    }
+
+    VehicleModeType InertialNode_Impl::getVehicleDynamicsMode()
+    {
+        VehicleDynamicsMode vehicleMode = VehicleDynamicsMode::MakeGetCommand();
+        GenericInertialCommandResponse response = SendCommand(vehicleMode);
+        return vehicleMode.getResponseData(response);
+    }
+
+    void InertialNode_Impl::setEstimationControlFlags(const uint16& flags)
+    {
+        EstimationControlFlags estimationControlFlags = EstimationControlFlags::MakeSetCommand(flags);
+        SendCommand(estimationControlFlags);
+    }
+
+    uint16 InertialNode_Impl::getEstimationControlFlags()
+    {
+        EstimationControlFlags estimationControlFlags = EstimationControlFlags::MakeGetCommand();
+        GenericInertialCommandResponse response = SendCommand(estimationControlFlags);
+        return estimationControlFlags.getResponseData(response);
+    }
+
+    void InertialNode_Impl::setGNSS_SourceControl(const GNSS_Source& gnssSource)
+    {
+        GNSS_SourceControl gnssSourceCtrl = GNSS_SourceControl::MakeSetCommand(gnssSource);
+        SendCommand(gnssSourceCtrl);
+    }
+
+    GNSS_Source InertialNode_Impl::getGNSS_SourceControl()
+    {
+        GNSS_SourceControl gnssSourceCtrl = GNSS_SourceControl::MakeGetCommand();
+        GenericInertialCommandResponse response = SendCommand(gnssSourceCtrl);
+        return gnssSourceCtrl.getResponseData(response);
+    }
+
+    void InertialNode_Impl::sendExternalGNSSUpdate(const ExternalGNSSUpdateData& gnssUpdateData)
+    {
+        ExternalGNSSUpdate externalGNSSUpdate = ExternalGNSSUpdate::MakeCommand(gnssUpdateData);
+        SendCommand(externalGNSSUpdate);
+    }
+
+    void InertialNode_Impl::setHeadingUpdateControl(const HeadingUpdateOptions& headingUpdateOptions)
+    {
+        HeadingUpdateControl headingUpdateControl = HeadingUpdateControl::MakeSetCommand(headingUpdateOptions);
+        SendCommand(headingUpdateControl);
+    }
+
+    HeadingUpdateOptions InertialNode_Impl::getHeadingUpdateControl()
+    {
+        HeadingUpdateControl headingUpdateControl = HeadingUpdateControl::MakeGetCommand();
+        GenericInertialCommandResponse response = SendCommand(headingUpdateControl);
+        return headingUpdateControl.getResponseData(response);
+    }
+
+    void InertialNode_Impl::sendExternalHeadingUpdate(const HeadingData& headingData)
+    {
+        ExternalHeadingUpdate externalGNSSUpdate = ExternalHeadingUpdate::MakeCommand(headingData);
+        SendCommand(externalGNSSUpdate);
+    }
+
+    void InertialNode_Impl::sendExternalHeadingUpdate(const HeadingData& headingData, const TimeUpdate& timestamp)
+    {
+        ExternalHeadingUpdateWithTimestamp externalGNSSUpdate = ExternalHeadingUpdateWithTimestamp::MakeCommand(headingData, timestamp);
+        SendCommand(externalGNSSUpdate);
+    }
+
+    //==============================SendCommand==============================
+
+    GenericInertialCommandResponse InertialNode_Impl::SendCommand(InertialCommand& command)
+    {
+        std::shared_ptr<GenericInertialCommand::Response> responsePtr = command.createResponse(m_responseCollector);
+        return doCommand(*responsePtr, command);
+    }
+    //=======================================================================
 }

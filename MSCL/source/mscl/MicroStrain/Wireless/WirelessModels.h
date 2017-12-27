@@ -64,7 +64,12 @@ namespace mscl
         //  node_shmLink2_cust1_oldNumber   - 63290000 - SHM-Link 2 - Custom 1 (old model number)
         //  node_shmLink2_cust1             - 63290100 - SHM-Link 2 - Custom 1
         //  node_shmLink200                 - 63290200 - SHM-Link 200
-        //  node_shmLink201                 - 63290201 - SHM-Link 201
+        //  node_shmLink201                 - 63290150 - SHM-Link 201 - Rosette - 3000 resistance
+        //  node_shmLink201_qbridge_1K      - 63290151 - SHM-Link 201 - Quarter Bridge - 1K resistance
+        //  node_shmLink201_qbridge_348     - 63290152 - SHM-Link 201 - Quarter Bridge - 348 resistance
+        //  node_shmLink201_hbridge_1K      - 63290153 - SHM-Link 201 - Half Bridge - 1K resistance
+        //  node_shmLink201_hbridge_348     - 63290154 - SHM-Link 201 - Half Bridge - 348 resistance
+        //  node_shmLink201_fullbridge      - 63290155 - SHM-Link 201 - Full Bridge
         //  node_torqueLink                 - 63309999 - Torque-Link
         //  node_sgLink_herm                - 65010000 - SG-Link-Hermetic
         //  node_sgLink_herm_2600           - 65011110 - SG-Link-Hermetic 2600 belt assembly
@@ -125,7 +130,12 @@ namespace mscl
             node_shmLink2_cust1_oldNumber   = 63290000,     //SHM-Link 2 - Custom 1 (old model number)
             node_shmLink2_cust1             = 63290100,     //SHM-Link 2 - Custom 1
             node_shmLink200                 = 63290200,     //SHM-Link 200
-            node_shmLink201                 = 63290201,     //SHM-Link 201
+            node_shmLink201                 = 63290150,     //SHM-Link 201 - Rosette - 3000 resistance
+            node_shmLink201_qbridge_1K      = 63290151,     //SHM-Link 201 - Quarter Bridge - 1K resistance
+            node_shmLink201_qbridge_348     = 63290152,     //SHM-Link 201 - Quarter Bridge - 348 resistance
+            node_shmLink201_hbridge_1K      = 63290153,     //SHM-Link 201 - Half Bridge - 1K resistance
+            node_shmLink201_hbridge_348     = 63290154,     //SHM-Link 201 - Half Bridge - 348 resistance
+            node_shmLink201_fullbridge      = 63290155,     //SHM-Link 201 - Full Bridge
             node_torqueLink                 = 63309999,     //Torque-Link
             node_sgLink_herm                = 65010000,     //SG-Link-Hermetic
             node_sgLink_herm_2600           = 65011110,     //SG-Link-Hermetic 2600 belt assembly
@@ -140,7 +150,7 @@ namespace mscl
         //
         //base_wsda_1000                - 63140050       -WSDA-1000
         //base_wsda_1500                - 63141500       -WSDA-1500
-        //base_wsda_2000                - 63142050       -WSDA-2000
+        //base_wsda_2000                - 63142000       -WSDA-2000
         //base_wsdaBase_200             - 63072040       -WSDA-Base-200 (USB)
         //base_wsdaBase_200_extAntenna  - 63072140       -WSDA-Base-200 (USB) - External Antenna
         //base_wsdaBase_101_analog      - 63071010       -WSDA-Base-101 (Analog)
@@ -153,7 +163,7 @@ namespace mscl
         {
             base_wsda_1000                 = 63140050,      //WSDA-1000
             base_wsda_1500                 = 63141500,      //WSDA-1500
-            base_wsda_2000                 = 63142050,      //WSDA-2000
+            base_wsda_2000                 = 63142000,      //WSDA-2000
             base_wsdaBase_200_legacy       = 63070200,      //WSDA-Base-200 (USB) (Legacy, never released)
             base_wsdaBase_200              = 63072040,      //WSDA-Base-200 (USB)
             base_wsdaBase_200_extAntenna   = 63072140,      //WSDA-Base-200 (USB) - External Antenna

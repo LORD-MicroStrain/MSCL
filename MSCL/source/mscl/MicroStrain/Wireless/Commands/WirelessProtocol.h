@@ -96,6 +96,10 @@ namespace mscl
         //  The function pointer for the Node AutoCal (SHM) protocol command.
         std::function<bool(BaseStation_Impl*, NodeAddress, AutoCalResult&)> m_autoCal_shm;
 
+        //Variable: m_autoCal_shm201
+        //  The function pointer for the Node AutoCal (SHM) protocol command.
+        std::function<bool(BaseStation_Impl*, NodeAddress, AutoCalResult&)> m_autoCal_shm201;
+
         //Variable: m_autoShuntCal
         //  The function pointer for the Node AutoShuntCal protocol command.
         std::function<bool(BaseStation_Impl*, NodeAddress, const ShuntCalCmdInfo&, uint8, WirelessModels::NodeModel, WirelessTypes::ChannelType, AutoCalResult&)> m_autoShuntCal;

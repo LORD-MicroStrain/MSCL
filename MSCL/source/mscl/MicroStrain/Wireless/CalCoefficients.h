@@ -46,6 +46,22 @@ namespace mscl
         LinearEquation m_linearEq;
 
     public:
+#ifndef SWIG
+        //Operator: ==
+        //    Checks that two CalCoefficients objects are equal
+        //
+        //Returns:
+        //    true if the two CalCoefficients are identical, false otherwise
+        bool operator==(const CalCoefficients& src) const;
+
+        //Operator: !=
+        //    Checks that two CalCoefficients objects are not equal
+        //
+        //Returns:
+        //    true if the two CalCoefficients are different, false if they are identical
+        bool operator!=(const CalCoefficients& src) const;
+#endif
+
         //API Function: equationType
         //  Gets the <WirelessTypes::CalCoef_EquationType> of the Cal Coefficients.
         WirelessTypes::CalCoef_EquationType equationType() const;

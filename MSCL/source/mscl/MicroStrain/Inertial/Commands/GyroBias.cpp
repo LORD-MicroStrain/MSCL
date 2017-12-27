@@ -19,9 +19,9 @@ namespace mscl
             throw Error_NoData("Data must be passed in for a set command.");
     }
 
-    GyroBias GyroBias::MakeSetCommand(GeometricVector dataToUse)
+    GyroBias GyroBias::MakeSetCommand(GeometricVector offsetVector)
     {
-        return GyroBias(InertialTypes::USE_NEW_SETTINGS, dataToUse);
+        return GyroBias(InertialTypes::USE_NEW_SETTINGS, offsetVector);
     }
 
     GyroBias GyroBias::MakeGetCommand()
@@ -50,9 +50,9 @@ namespace mscl
         // Only fill in data if set command is being sent.
         if (m_functionSelector == InertialTypes::USE_NEW_SETTINGS)
         {    // Put in X, Y, and Z values of vector.
-            byteCommand.append_float(m_gyroBiasVector[0]);
-            byteCommand.append_float(m_gyroBiasVector[1]);
-            byteCommand.append_float(m_gyroBiasVector[2]);
+            byteCommand.append_float(m_gyroBiasVector.x);
+            byteCommand.append_float(m_gyroBiasVector.y);
+            byteCommand.append_float(m_gyroBiasVector.z);
         }
         return GenericInertialCommand::buildCommand(commandType(), byteCommand.data()); ;
     }

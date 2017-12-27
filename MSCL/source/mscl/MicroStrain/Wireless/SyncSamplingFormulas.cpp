@@ -146,15 +146,34 @@ namespace SyncSamplingFormulas
 
     bool checkSamplingDelay(WirelessTypes::SamplingMode samplingMode, const SampleRate& sampleRate, WirelessModels::NodeModel nodeModel)
     {
+        bool isShmLink = false;
+
+        switch(nodeModel)
+        {
+            case WirelessModels::node_shmLink:
+            case WirelessModels::node_shmLink2_cust1:
+            case WirelessModels::node_shmLink2_cust1_oldNumber:
+            case WirelessModels::node_shmLink200:
+            case WirelessModels::node_shmLink201:
+            case WirelessModels::node_shmLink201_qbridge_1K:
+            case WirelessModels::node_shmLink201_qbridge_348:
+            case WirelessModels::node_shmLink201_hbridge_1K:
+            case WirelessModels::node_shmLink201_hbridge_348:
+            case WirelessModels::node_shmLink201_fullbridge:
+                isShmLink = true;
+                break;
+
+            default:
+                break;
+        }
+
         //if the sampling mode is not Burst mode
         if(samplingMode != WirelessTypes::samplingMode_syncBurst)
         {
             //if the sample rate is 16hz or slower, or the 32hz or faster and a tclink1ch or rtdlink, or the model is SHM-Link
             if( (sampleRate <= SampleRate::Hertz(16)) ||
                 (sampleRate >= SampleRate::Hertz(32) && (nodeModel == WirelessModels::node_tcLink_1ch || nodeModel == WirelessModels::node_rtdLink)) ||
-                (nodeModel == WirelessModels::node_shmLink || nodeModel == WirelessModels::node_shmLink200 ||
-                 nodeModel == WirelessModels::node_shmLink2_cust1 || nodeModel == WirelessModels::node_shmLink2_cust1_oldNumber ||
-                 nodeModel == WirelessModels::node_shmLink201)
+                (isShmLink)
               )
             {
                 return true;

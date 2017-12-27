@@ -10,6 +10,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
 #include "mscl/MicroStrain/SampleUtils.h"
 #include "mscl/TimeSpan.h"
+#include "mscl/TimestampCounter.h"
 #include "mscl/Types.h"
 
 
@@ -62,8 +63,7 @@ namespace mscl
             rate = SampleRate::Seconds(calculationRate);
         }
 
-        //get the value to increment the timestamp by for each sweep (the timestamp from the packet only applies to the first sweep)
-        const uint64 TS_INCREMENT = rate.samplePeriod().getNanoseconds();
+        TimestampCounter tsCounter(rate, timestamp);
 
         //build up the Algorithm Meta Data
         std::vector<WirelessDataPacket::AlgorithmMetaData> metaData;
@@ -75,7 +75,7 @@ namespace mscl
             );
         }
 
-        const uint8 NUM_CHANNEL_BYTES = static_cast<uint8>(payload.bytesRemaining() - 4);   //subtract node rssi, base rssi, and checksum bytes
+        const uint8 NUM_CHANNEL_BYTES = static_cast<uint8>(payload.bytesRemaining());
 
         //build a sweep to add
         DataSweep sweep;
@@ -92,7 +92,7 @@ namespace mscl
         uint8 lastChEnabled = 0;
 
         //while there are more sweeps remaining
-        while(payload.bytesRemaining() > NUM_CHANNEL_BYTES)
+        while(payload.bytesRemaining() >= NUM_CHANNEL_BYTES)
         {
             ChannelData chData;
 
@@ -122,16 +122,14 @@ namespace mscl
                 }
             }
 
-            sweep.tick(tick);
-            sweep.timestamp(Timestamp(timestamp));
+            sweep.tick(tick++);
+
+            sweep.timestamp(Timestamp(tsCounter.time()));
+            tsCounter.advance();
 
             //add the current sweep to the container of sweeps
             sweep.data(chData);
             addSweep(sweep);
-
-            //increment the timestamp for the next sweep
-            tick++;
-            timestamp += TS_INCREMENT;
         }
     }
 
