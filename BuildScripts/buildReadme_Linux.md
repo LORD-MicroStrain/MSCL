@@ -20,6 +20,14 @@ OpenSSL and Beast are optional and are used for creating secure WebSocket connec
 #define MSCL_DISABLE_WEBSOCKETS     //removes Beast dependency
 ```
 
+Since we are using bjam to build, you can pass these as bjam parameters instead of using the above defines:
+
+```
+command line arguments for bjam:
+--without-ssl                       //removes OpenSSL dependency
+--without-websockets                //removes Beast dependency
+```
+
 Configure bjam by creating a [site-config.jam or user-config.jam file](http://www.boost.org/build/doc/html/bbv2/overview/configuration.html) in your Home path or Boost Build Path. The contents of the file should look similar to this:
 ```
 using gcc
@@ -56,6 +64,10 @@ Run the following from the top level MSCL source directory:
 # update the path below to match your boost lib path
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/jenkins/boost/boost_1.64.0_installed/lib
 
+#build using bjam/boost.build
+#Note: pass the following flags to bjam if desired:
+#  --without-ssl           //removes OpenSSL dependency
+#  --without-websockets    //removes Beast dependency
 bjam MSCL//stage_c++ release
 ```
 
@@ -78,9 +90,12 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/jenkins/boost/boost_1.64.0_install
 
 mkdir -p build/swig-python
 
-#have to run the bjam command twice to copy mscl.py (BUG, TODO)
+#build using bjam/boost.build
+#Note: pass the following flags to bjam if desired:
+#  --without-ssl           //removes OpenSSL dependency
+#  --without-websockets    //removes Beast dependency
 bjam MSCL//stage_python_x86 release
-bjam MSCL//stage_python_x86 release
+bjam MSCL//stage_python_x86 release  #have to run the bjam command twice to copy mscl.py (BUG, TODO)
 ```
 
 Output: 

@@ -1,4 +1,4 @@
-[Download the MSCL Binaries (32.8.3) for Windows](https://github.com/LORD-MicroStrain/MSCL/releases/download/v32.8.3/MSCL_32.8.3.zip) (Windows)
+[Download the MSCL Binaries (32.8.3)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v32.8.3/MSCL_32.8.3.zip) (Windows)
 
 [Building MSCL on Windows](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme_Windows.md)
 
@@ -33,6 +33,6 @@ OpenSSL - This product includes software developed by the OpenSSL Project for us
 Boost - see the `License_Boost.txt` file in the source distribution.
 
 #### License
-MIT License - see the LICENSE file in the source distribution.
+MSCL is released under the MIT License - see the `LICENSE` file in the source distribution.
 
 Copyright (C) 2015-2017 LORD Corporation. All Rights Reserved.
