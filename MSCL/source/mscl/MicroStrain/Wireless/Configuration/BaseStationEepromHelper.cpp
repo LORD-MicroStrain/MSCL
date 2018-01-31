@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -100,12 +100,15 @@ namespace mscl
 
     WirelessTypes::CommProtocol BaseStationEepromHelper::read_commProtocol() const
     {
-        uint16 radioValue = 0;
+        const uint8 MIN_BASE_FW_SUPPORTS_COMM_PROTOCOL = 5;
 
-        if(!m_baseStation->features().supportsCommProtocolEeprom())
+        if(read_fwVersionMajor() < MIN_BASE_FW_SUPPORTS_COMM_PROTOCOL)
         {
+            //doesn't support for the comm protocol eeprom
             return WirelessTypes::commProtocol_lxrs;
         }
+
+        uint16 radioValue = 0;
 
         try
         {
@@ -134,7 +137,9 @@ namespace mscl
 
     void BaseStationEepromHelper::write_commProtocol(WirelessTypes::CommProtocol commProtocol)
     {
-        if(!m_baseStation->features().supportsCommProtocolEeprom())
+        const uint8 MIN_BASE_FW_SUPPORTS_COMM_PROTOCOL = 5;
+
+        if(read_fwVersionMajor() < MIN_BASE_FW_SUPPORTS_COMM_PROTOCOL)
         {
             if(m_baseStation->features().supportsCommunicationProtocol(commProtocol))
             {
@@ -172,6 +177,11 @@ namespace mscl
 
             return Version(major, svnRevision);
         }
+    }
+
+    uint8 BaseStationEepromHelper::read_fwVersionMajor() const
+    {
+        return Utils::msb(read(BaseStationEepromMap::FIRMWARE_VER).as_uint16());
     }
 
     WirelessModels::BaseModel BaseStationEepromHelper::read_model() const

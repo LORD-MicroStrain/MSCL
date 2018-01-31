@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -13,6 +13,7 @@ namespace mscl
     UnixSocketConnection::UnixSocketConnection(const std::string& path) :
         m_path(path)                    //set the path
     {
+        m_type = Connection::connectionType_unixSocket;
         establishConnection(); 
     }
     

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -66,7 +66,7 @@ namespace mscl
         m_baseReceived = true;
 
         //store the new time we should wait for the Node response (in milliseconds)
-        m_baseReceivedWaitTime = static_cast<uint64>(payload.read_float(3) * 1000.0) + 75;
+        m_baseReceivedWaitTime = static_cast<uint64>(payload.read_float(3) * 1000.0);
 
         //if we made it here, the packet matches the response pattern
         return true;

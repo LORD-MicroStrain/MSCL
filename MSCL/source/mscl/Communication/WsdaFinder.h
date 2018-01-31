@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -100,11 +100,11 @@ namespace mscl
     private:
         //Variable: m_upnpService
         //  The <UpnpService> that asynchronously searches for upnp devices.
-        std::auto_ptr<UpnpService> m_upnpService;
+        std::unique_ptr<UpnpService> m_upnpService;
 
         //Variable: m_upnpSearchCallback
         //  The <UpnpDeviceFinderCallback> that handles all the upnp callbacks.
-        UpnpDeviceFinderCallback* m_upnpSearchCallback;
+        std::unique_ptr<UpnpDeviceFinderCallback> m_upnpSearchCallback;
 
         //Variable: m_foundWsdas
         //  The <WsdaMap> containing the list of WSDAs that were found.

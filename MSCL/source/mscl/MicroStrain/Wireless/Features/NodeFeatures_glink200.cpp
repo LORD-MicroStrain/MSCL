@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -46,20 +46,24 @@ namespace mscl
         return false;
     }
 
-    const WirelessTypes::TransmitPowers NodeFeatures_glink200::transmitPowers() const
+    WirelessTypes::TransmitPower NodeFeatures_glink200::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
     {
-        if(m_nodeInfo.regionCode() == WirelessTypes::region_japan)
+        if(region == WirelessTypes::region_japan)
         {
-            WirelessTypes::TransmitPowers result;
-            result.push_back(WirelessTypes::power_16dBm);
-            result.push_back(WirelessTypes::power_10dBm);
-            result.push_back(WirelessTypes::power_5dBm);
-            return result;
+            return WirelessTypes::power_16dBm;
         }
-        else
+
+        return NodeFeatures::maxTransmitPower(region, commProtocol);
+    }
+    
+    WirelessTypes::TransmitPower NodeFeatures_glink200::minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
+    {
+        if(region == WirelessTypes::region_japan)
         {
-            return NodeFeatures::transmitPowers();
+            return WirelessTypes::power_5dBm;
         }
+
+        return NodeFeatures::minTransmitPower(region, commProtocol);
     }
 
     const WirelessTypes::SamplingModes NodeFeatures_glink200::samplingModes() const

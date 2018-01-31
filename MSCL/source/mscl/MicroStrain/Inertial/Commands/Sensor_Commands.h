@@ -1,12 +1,12 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "GenericInertialCommand.h"
-#include "mscl/MicroStrain/Inertial/InertialChannel.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
+#include "mscl/MicroStrain/MIP/MipChannel.h"
 
 namespace mscl
 {
@@ -18,9 +18,9 @@ namespace mscl
     {
     public:
         //Constants: Packet Bytes
-        //    CMD_ID                - CMD_GET_SENSOR_RATE_BASE    - The <InertialTypes::Command> for this command
+        //    CMD_ID                - CMD_GET_SENSOR_RATE_BASE    - The <MipTypes::Command> for this command
         //  FIELD_DATA_BYTE        - 0x83                        - The Data Field Descriptor byte
-        static const InertialTypes::Command CMD_ID = InertialTypes::CMD_GET_SENSOR_RATE_BASE;
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_GET_SENSOR_RATE_BASE;
         static const uint8 FIELD_DATA_BYTE            = 0x83;
         
     private:
@@ -38,8 +38,8 @@ namespace mscl
         //    Handles the response to the command
         //
         //See Also:
-        //    <GenericInertialCommand::Response>
-        class Response : public GenericInertialCommand::Response
+        //    <GenericMipCommand::Response>
+        class Response : public GenericMipCommand::Response
         {
         protected:
             //Function: fieldDataByte
@@ -55,11 +55,11 @@ namespace mscl
             //    Parses the response, getting the data rate base result
             //
             //Parameters:
-            //    response - The <GenericInertialCommandResponse> holding the response to parse
+            //    response - The <GenericMipCmdResponse> holding the response to parse
             //
             //Returns:
             //    The data rate base result
-            uint16 parseResponse(const GenericInertialCommandResponse& response) const;
+            uint16 parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
 
@@ -70,9 +70,9 @@ namespace mscl
     {
     public:
         //Constants: Packet Bytes
-        //    CMD_ID                - CMD_SENSOR_MESSAGE_FORMAT    - The <InertialTypes::Command> for this command
+        //    CMD_ID                - CMD_SENSOR_MESSAGE_FORMAT    - The <MipTypes::Command> for this command
         //  FIELD_DATA_BYTE        - 0x80                        - The Data Field Descriptor byte
-        static const InertialTypes::Command CMD_ID    = InertialTypes::CMD_SENSOR_MESSAGE_FORMAT;
+        static const MipTypes::Command CMD_ID    = MipTypes::CMD_SENSOR_MESSAGE_FORMAT;
         static const uint8 FIELD_DATA_BYTE            = 0x80;
 
     private:
@@ -90,15 +90,15 @@ namespace mscl
         //    Builds the bytes for the "set" command. 
         //
         //Parameters:
-        //    channels - The <InertialChannels> holding the channels to be set. This should only contain channels that are in the Sensor (0x80) descriptor set.
+        //    channels - The <MipChannels> holding the channels to be set. This should only contain channels that are in the Sensor (0x80) descriptor set.
         //    sampleRateBase - The base sample rate for the sensor command set.
         //
         //Returns:
         //    A <ByteStream> that holds the bytes that make up the command
         //
         //Exceptions:
-        //    - <Error>: An <InertialChannel> in the channels parameter is not part of the Sensor descriptor set
-        static ByteStream buildCommand_set(const InertialChannels& channels, uint16 sampleRateBase);
+        //    - <Error>: An <MipChannel> in the channels parameter is not part of the Sensor descriptor set
+        static ByteStream buildCommand_set(const MipChannels& channels, uint16 sampleRateBase);
 
         //Function: buildCommand_saveAsStartup
         //    Builds the bytes for the command to save the current settings as the startup settings. 
@@ -109,17 +109,17 @@ namespace mscl
         //    A <ByteStream> that holds the bytes that make up the command
         //
         //Exceptions:
-        //    - <Error>: An <InertialChannel> in the channels parameter is not part of the Sensor descriptor set
+        //    - <Error>: An <MipChannel> in the channels parameter is not part of the Sensor descriptor set
         static ByteStream buildCommand_save();
 
-        class Response : public GenericInertialCommand::Response
+        class Response : public GenericMipCommand::Response
         {
         protected:
             virtual uint8 fieldDataByte() const    override { return FIELD_DATA_BYTE; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
-            InertialChannels parseResponse(const GenericInertialCommandResponse& response, uint16 sampleRateBase) const;
+            MipChannels parseResponse(const GenericMipCmdResponse& response, uint16 sampleRateBase) const;
         };
     };
 }

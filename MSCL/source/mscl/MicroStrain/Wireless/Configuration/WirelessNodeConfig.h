@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -12,7 +12,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Wireless/Configuration/DataModeMask.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/WirelessModels.h"
-#include "mscl/MicroStrain/Wireless/LinearEquation.h"
+#include "mscl/MicroStrain/LinearEquation.h"
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
 #include "mscl/Exceptions.h"
 #include "mscl/TimeSpan.h"
@@ -198,6 +198,10 @@ namespace mscl
         std::map<ChannelMask, WirelessTypes::CalCoef_EquationType> m_equationTypes;
 
     private:
+        //Function: curTransmitPower
+        //    Gets the transmit power currently set, or from the node if not set.
+        WirelessTypes::TransmitPower curTransmitPower(const NodeEepromHelper& eeprom) const;
+
         //Function: curCommProtocol
         //    Gets the communication protocol currently set, or from the node if not set.
         WirelessTypes::CommProtocol curCommProtocol(const NodeEepromHelper& eeprom) const;

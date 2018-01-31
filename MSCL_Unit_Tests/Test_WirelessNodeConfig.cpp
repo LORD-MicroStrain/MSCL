@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -107,6 +107,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_setMultipleValues)
     c.transmitPower(WirelessTypes::power_16dBm);
 
     //expect the eeprom writes
+    expectRead(impl, NodeEepromMap::FIRMWARE_VER, Value(valueType_uint16, (uint16)10));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value(valueType_uint16, (uint16)WirelessTypes::commProtocol_lxrs));
     expectWrite(impl, NodeEepromMap::INACTIVE_TIMEOUT, Value::UINT16(200));
     expectWrite(impl, NodeEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::power_16dBm));
     expectResetRadio(impl);
@@ -312,6 +314,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyConflictsFail_sampleRate_sampleMod
     expectRead(impl, NodeEepromMap::TIME_BETW_SESSIONS, Value::UINT16(4000));
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(WirelessTypes::collectionMethod_transmitOnly));
     expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
+    expectRead(impl, NodeEepromMap::FIRMWARE_VER, Value::UINT16((uint16)5));
 
     WirelessNodeConfig c;
     c.sampleRate(WirelessTypes::sampleRate_1Hz);
@@ -346,6 +349,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyConflictsFail_sampleRate_channels)
     expectRead(impl, NodeEepromMap::UNLIMITED_SAMPLING, Value::UINT16(0));
     expectRead(impl, NodeEepromMap::COLLECTION_MODE, Value::UINT16(WirelessTypes::collectionMethod_transmitOnly));
     expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
+    expectRead(impl, NodeEepromMap::FIRMWARE_VER, Value::UINT16((uint16)5));
 
     WirelessNodeConfig c;
     ChannelMask chs;
@@ -410,6 +414,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyConflicts_successBcUnlimitedDurati
     expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16(WirelessTypes::dataFormat_cal_float));
     expectRead(impl, NodeEepromMap::TIME_BETW_SESSIONS, Value::UINT16(4000));
     expectRead(impl, NodeEepromMap::UNLIMITED_SAMPLING, Value::UINT16(1));    //unlimited duration flag is true
+    expectRead(impl, NodeEepromMap::FIRMWARE_VER, Value::UINT16((uint16)5));
 
     WirelessNodeConfig c;
     c.numSweeps(2000000000);
@@ -441,6 +446,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verifyConflictsFail_sweepsWithUnlimitedD
     expectRead(impl, NodeEepromMap::TIME_BETW_SESSIONS, Value::UINT16(4000));
     expectRead(impl, NodeEepromMap::UNLIMITED_SAMPLING, Value::UINT16(1));
     expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value::UINT16(WirelessTypes::commProtocol_lxrs));
+    expectRead(impl, NodeEepromMap::FIRMWARE_VER, Value::UINT16((uint16)5));
 
     WirelessNodeConfig c;
     c.numSweeps(2000000000);

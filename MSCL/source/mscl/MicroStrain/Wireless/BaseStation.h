@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -44,25 +44,39 @@ namespace mscl
     public:
         //=====================================================================================================
         //API Constants: Default Timeouts
-        //    BASE_COMMANDS_DEFAULT_TIMEOUT    - 75 ms      - The default timeout for a base station command (in milliseconds)
-        //    BROADCAST_NODE_ADDRESS           - 65535      - The address to use for performing Broadcast commands that will be heard by all <WirelessNode>s on the frequency.
-        //    BROADCAST_NODE_ADDRESS_ASPP3     - 0xFFFFFFFF - The address to use for performing Broadcast commands that will be heard by all <WirelessNode>s on the frequency (ASPP 3.X).
+        //    BASE_COMMANDS_DEFAULT_TIMEOUT     - 75 ms      - The default timeout for a base station command (in milliseconds) used by USB Bases
+        //    EXT_BASE_COMMANDS_DEFAULT_TIMEOUT - 500 ms    - The extended default timeout for a base station command (in milliseconds)
+        //    BROADCAST_NODE_ADDRESS            - 65535      - The address to use for performing Broadcast commands that will be heard by all <WirelessNode>s on the frequency.
+        //    BROADCAST_NODE_ADDRESS_ASPP3      - 0xFFFFFFFF - The address to use for performing Broadcast commands that will be heard by all <WirelessNode>s on the frequency (ASPP 3.X).
         //=====================================================================================================
         static const uint64 BASE_COMMANDS_DEFAULT_TIMEOUT = 75;
+        static const uint64 ETHERNET_BASE_COMMANDS_DEFAULT_TIMEOUT = 500;
         static const NodeAddress BROADCAST_NODE_ADDRESS = 0xFFFF;
         static const NodeAddress BROADCAST_NODE_ADDRESS_ASPP3 = 0xFFFFFFFF;
 
     public:
         //API Constructor: BaseStation
         //  Creates a BaseStation object.
+        //  Note: this will use a default timeout of <BASE_COMMANDS_DEFAULT_TIMEOUT> for serial connections
+        //        and a default timeout of <ETHERNET_BASE_COMMANDS_DEFAULT_TIMEOUT> for ethernet/websocket connections
         //    
         //Parameters:
         //    connection - The <Connection> object used for communication
-        //    baseTimeout - The timeout to use for base station commands (optional, default of <BASE_COMMANDS_DEFAULT_TIMEOUT> (2 seconds))
         //
         //Exceptions:
         //    - <Error_Connection>: A problem occured with the Connection.
-        explicit BaseStation(Connection& connection, uint64 baseTimeout = BASE_COMMANDS_DEFAULT_TIMEOUT);
+        explicit BaseStation(Connection& connection);
+
+        //API Constructor: BaseStation
+        //  Creates a BaseStation object.
+        //    
+        //Parameters:
+        //    connection - The <Connection> object used for communication
+        //    baseTimeout - The timeout to use for base station commands
+        //
+        //Exceptions:
+        //    - <Error_Connection>: A problem occured with the Connection.
+        explicit BaseStation(Connection& connection, uint64 baseTimeout);
 
         //Destructor: ~BaseStation
         //    Destroys a BaseStation object

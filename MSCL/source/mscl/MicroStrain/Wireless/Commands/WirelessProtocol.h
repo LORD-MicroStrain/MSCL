@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -205,6 +205,10 @@ namespace mscl
         //Function: v1_7
         //  Static function to create a WirelessProtocol with version 1.7.
         static std::unique_ptr<WirelessProtocol> v1_7();
+
+        //Function: v1_8
+        //  Static function to create a WirelessProtocol with version 1.8.
+        static std::unique_ptr<WirelessProtocol> v1_8();
 
         //Function: v3_0
         //  Static function to create a WirelessProtocol with version 3.0.

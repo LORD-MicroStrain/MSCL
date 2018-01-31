@@ -269,7 +269,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4290;4127;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
       <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -306,7 +306,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4290;4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
       <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -342,7 +342,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4290;4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
       <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -377,7 +377,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4290;4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
@@ -407,7 +407,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <DisableSpecificWarnings>4290;4127;4100%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
       <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -437,7 +437,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4290;4127;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
       <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -468,7 +468,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <DisableSpecificWarnings>4290;4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
       <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
@@ -500,7 +500,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4290;4127;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
       <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
@@ -531,7 +531,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4290;4127;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
       <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -565,7 +565,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4290;4127;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
       <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -600,7 +600,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4290;4127;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
       <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -634,7 +634,7 @@
       <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>false</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4290;4127;4100;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
       <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -689,6 +689,11 @@
     <ClInclude Include="source\mscl\HighResClock.h" />
     <ClInclude Include="source\mscl\Histogram.h" />
     <ClInclude Include="source\mscl\LibVersion.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Displacement\Commands\DeviceTime.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Displacement\Commands\DisplacementOutputDataRate.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Displacement\Commands\GetAnalogToDisplacementCals.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Displacement\DisplacementModels.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Displacement\DisplacementNode.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\AccelBias.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\AdvancedLowPassFilterSettings.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\CaptureGyroBias.h" />
@@ -703,65 +708,55 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_AssistedFixControl.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\DeviceStartupSettings.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\EstFilter_Commands.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GenericInertialCommand.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceDescriptorSets.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceInfo.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GetExtendedDeviceDescriptorSets.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_AssistTimeUpdate.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_Commands.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_ConstellationSettings.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_SBASSettings.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_SourceControl.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GPSTimeUpdate.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GyroBias.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\HeadingUpdateControl.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\InertialCmdResponse.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\InertialCommand.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_Commands.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_CyclePower.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_SetToIdle.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerHardIronOffset.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerSoftIronMatrix.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Ping.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\RawRTCM_2_3Message.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Resume.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Sensor_Commands.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\System_Commands.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\UARTBaudRate.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\VehicleDynamicsMode.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\EulerAngles.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\ExposedInertialTypes.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_dh3.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_gx2.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_gx3_15.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_gx3_25.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_gx3_35.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_gx3_45.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_gx4_15.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_gx4_25.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_gx4_45.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_rq1_45.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_fasA.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialChannel.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialDataField.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialModels.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialNodeInfo.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialNode_Impl.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialTypes.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialDataPacket.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialDataPoint.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_EstFilter.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialNode.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GNSS.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Sensor.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacket.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacketBuilder.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacketCollector.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialParser.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\PositionOffset.h" />
+    <ClInclude Include="source\mscl\MicroStrain\LinearEquation.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\CyclePower.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\GenericMipCommand.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\GetDeviceDescriptorSets.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\GetDeviceInfo.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\GetExtendedDeviceDescriptorSets.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\GPSTimeUpdate.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\MipCmdResponse.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\MipCommand.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\MIP_Commands.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\Mip_SetToIdle.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\Ping.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\Resume.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\MipChannel.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\MipDataField.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\MipDataPoint.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\MipNodeFeatures.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\MipNodeInfo.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\MipNode_Impl.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\MipParser.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\MipTypes.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipDataPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipFieldParser.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipFieldParser_Displacement.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacketBuilder.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacketCollector.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\ArmedDataloggingNetwork.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStationAnalogPair.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStationButton.h" />
@@ -801,6 +796,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\SetToIdleStatus.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\SetToIdle_v2.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\Sleep.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\Sleep_v2.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\StartNonSyncSampling.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\StartNonSyncSampling_v2.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\StartSyncSampling.h" />
@@ -871,7 +867,6 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink_legacy.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_wirelessImpactSensor.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeInfo.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Wireless\LinearEquation.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\LoggedDataSweep.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\MockBaseStation_Impl.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\MockWirelessNode_Impl.h" />
@@ -987,6 +982,11 @@
     <ClCompile Include="source\mscl\HighResClock.cpp" />
     <ClCompile Include="source\mscl\Histogram.cpp" />
     <ClCompile Include="source\mscl\LibVersion.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Displacement\Commands\DeviceTime.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Displacement\Commands\DisplacementOutputDataRate.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Displacement\Commands\GetAnalogToDisplacementCals.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Displacement\DisplacementModels.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Displacement\DisplacementNode.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\AccelBias.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\AdvancedLowPassFilterSettings.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\CaptureGyroBias.cpp" />
@@ -1001,65 +1001,55 @@
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_AssistedFixControl.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\DeviceStartupSettings.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\EstFilter_Commands.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GenericInertialCommand.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceDescriptorSets.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GetDeviceInfo.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GetExtendedDeviceDescriptorSets.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_AssistTimeUpdate.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_Commands.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_ConstellationSettings.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_SBASSettings.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_SourceControl.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GPSTimeUpdate.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GyroBias.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\HeadingUpdateControl.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\InertialCmdResponse.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\InertialCommand.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_Commands.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_CyclePower.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Inertial_SetToIdle.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerHardIronOffset.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerSoftIronMatrix.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Ping.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\RawRTCM_2_3Message.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Resume.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Sensor_Commands.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\System_Commands.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\UARTBaudRate.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\VehicleDynamicsMode.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\EulerAngles.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\ExposedInertialTypes.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_dh3.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_gx2.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_gx3_15.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_gx3_25.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_gx3_35.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_gx3_45.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_gx4_15.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_gx4_25.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_gx4_45.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_3dm_rq1_45.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Features\InertialNodeFeatures_fasA.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialChannel.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialDataField.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialModels.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialNodeInfo.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialNode_Impl.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialTypes.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialDataPacket.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialDataPoint.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_EstFilter.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialNode.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GNSS.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Sensor.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacket.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacketBuilder.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialPacketCollector.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialParser.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\PositionOffset.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\LinearEquation.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\CyclePower.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\GenericMipCommand.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\GetDeviceDescriptorSets.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\GetDeviceInfo.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\GetExtendedDeviceDescriptorSets.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\GPSTimeUpdate.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\MipCmdResponse.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\MipCommand.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\MIP_Commands.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\Mip_SetToIdle.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\Ping.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\Resume.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\MipChannel.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\MipDataField.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\MipDataPoint.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\MipNodeFeatures.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\MipNodeInfo.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\MipNode_Impl.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\MipParser.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\MipTypes.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipDataPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipFieldParser.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipFieldParser_Displacement.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacketBuilder.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacketCollector.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\ArmedDataloggingNetwork.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStationAnalogPair.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStationButton.cpp" />
@@ -1097,6 +1087,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\SetToIdleStatus.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\SetToIdle_v2.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\Sleep.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\Sleep_v2.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\StartNonSyncSampling.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\StartNonSyncSampling_v2.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\StartSyncSampling.cpp" />
@@ -1167,7 +1158,6 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_vlink_legacy.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_wirelessImpactSensor.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeInfo.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Wireless\LinearEquation.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\LoggedDataSweep.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\MockBaseStation_Impl.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\MockWirelessNode_Impl.cpp" />

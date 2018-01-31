@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -27,6 +27,11 @@ namespace mscl
         //          Instead, it is sent once every burst, with a provided sample rate of once every 24 hours.
         m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_acceleration, "Acceleration");
         m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_temperature, "Internal Temperature");
+    }
+
+    uint32 NodeFeatures_iepeLink::ramBufferSize() const
+    {
+        return 600000;
     }
 
     bool NodeFeatures_iepeLink::supportsSensorDelayConfig() const

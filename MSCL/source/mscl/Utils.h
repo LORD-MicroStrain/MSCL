@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -45,7 +45,6 @@ namespace mscl
         //    
         //Parameters:
         //    value - the 2-Byte unsigned integer (in system endianness) to find the MSB from
-        //    endian - the <Endianness> to use for finding the msb.
         //
         //Returns:
         //    The Most Significant Byte of the passed in value
@@ -56,7 +55,6 @@ namespace mscl
         //    
         //Parameters:
         //    value - the 2-Byte unsigned integer (in system endianness) to find the LSB from
-        //    endian - the <Endianness> to use for finding the lsb.
         //
         //Returns:
         //    The Least Significant Byte of the passed in value

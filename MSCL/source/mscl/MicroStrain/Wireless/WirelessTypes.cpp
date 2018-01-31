@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -159,25 +159,6 @@ namespace mscl
         {
             //just cast and return the value
             return static_cast<uint16>(rate);
-        }
-    }
-
-    WirelessTypes::TransmitPower WirelessTypes::maxTransmitPower(WirelessTypes::RegionCode region)
-    {
-        //determine the max power based on the region code
-        switch(region)
-        {
-            case WirelessTypes::region_japan:
-                return WirelessTypes::power_5dBm;
-
-            case WirelessTypes::region_europe:
-            case WirelessTypes::region_other:
-                return WirelessTypes::power_10dBm;
-
-            case WirelessTypes::region_usa:
-            case WirelessTypes::region_brazil:
-            default:
-                return WirelessTypes::power_20dBm;
         }
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -23,9 +23,24 @@ namespace mscl
     class Connection
     {
         friend class BaseStation_Impl;
-        friend class InertialNode_Impl;
+        friend class MipNode_Impl;
 
     public:
+        //API Enums: ConnectionType
+        //  Represents the types of channels on Wireless Nodes.
+        //
+        //  connectionType_serial       - 0 - Serial Connection
+        //  connectionType_tcp          - 1 - TCP/IP Connection
+        //  connectionType_webSocket    - 2 - Web Socket Connection
+        //  connectionType_unixSocket   - 3 - Unix Socket Connection
+        enum ConnectionType
+        {
+            connectionType_serial = 0,
+            connectionType_tcp = 1,
+            connectionType_webSocket = 2,
+            connectionType_unixSocket = 3
+        };
+
 #ifndef SWIG
         //Constructor: Connection
         //    Creates a Connection object with the given implementation.
@@ -79,13 +94,14 @@ namespace mscl
         //Parameters:
         //    serverAddress - The server address (domain name or ip address) to connect to.
         //    serverPort - The server port to connect to.
+        //    interfaceAddress - The address of the specific ethernet adapter to use for the connection (optional).
         //
         //Returns:
         //    A <Connection> object created with a <TcpIpConnection> implementation.
         //
         //Exceptions:
         //    - <Error_InvalidTcpServer>: the specified server address and/or server port is invalid.
-        static Connection TcpIp(const std::string& serverAddress, uint16 serverPort);
+        static Connection TcpIp(const std::string& serverAddress, uint16 serverPort, const std::string& interfaceAddress = "");
 
 #ifndef MSCL_DISABLE_WEBSOCKETS
         //API Function: WebSocket
@@ -164,6 +180,13 @@ namespace mscl
         //Returns:
         //    A description of the connection.
         std::string description();
+
+        //API Function: type
+        //  Gets the <ConnectionType> of the connection.
+        //
+        //Returns:
+        //  A <ConnectionType> enum.
+        ConnectionType type();
 
         //API Function: disconnect
         //    Closes the current connection.

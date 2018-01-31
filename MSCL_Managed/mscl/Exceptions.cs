@@ -105,9 +105,9 @@
         }
     }
 
-    public class Error_InertialCmdFailed : Error
+    public class Error_MipCmdFailed : Error
     {
-        public Error_InertialCmdFailed(string message, int code)
+        public Error_MipCmdFailed(string message, int code)
             : base(message)
         {
             m_code = code;

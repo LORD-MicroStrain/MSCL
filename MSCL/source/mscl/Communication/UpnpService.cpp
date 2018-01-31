@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -10,6 +10,7 @@ namespace mscl
 {
     UpnpService::UpnpService(IUPnPDeviceFinderCallback& callback, BSTR description):
         m_deviceFinderCallback(&callback),
+        m_deviceFinder(nullptr),
         m_description(description),
         m_findDataIndex(0),
         m_findStarted(false),
@@ -25,12 +26,12 @@ namespace mscl
     {
         m_shutdown = true;
 
+        m_searchThread->join();
+
         if(m_searching)
         {
             cancelFindDevices();
         }
-
-        m_searchThread->join();
     }
 
     bool UpnpService::startSearch()
@@ -125,6 +126,7 @@ namespace mscl
                 Utils::threadSleep(250);
             }
 
+            cancelFindDevices();
             CoUninitialize();
         }
         catch(...)
@@ -142,15 +144,10 @@ namespace mscl
 
     void UpnpService::cancelFindDevices()
     {
-        if(m_deviceFinder)
+        if(m_deviceFinder != nullptr)
         {
             m_deviceFinder->CancelAsyncFind(m_findDataIndex);
             m_deviceFinder->Release();
-        }
-        
-        if(m_deviceFinderCallback)
-        {
-            m_deviceFinderCallback->Release();
         }
 
         m_searchComplete = false;

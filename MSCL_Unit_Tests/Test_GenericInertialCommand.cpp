@@ -1,10 +1,10 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-#include "mscl/MicroStrain/Inertial/Commands/GenericInertialCommand.h"
-#include "mscl/MicroStrain/Inertial/InertialDataField.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 
 #include <boost/test/unit_test.hpp>
@@ -15,16 +15,16 @@ BOOST_AUTO_TEST_SUITE(GenericInertialCommand_Test)
 BOOST_AUTO_TEST_CASE(GenericInertialCommandResponse_ResponseSuccess)
 {
     //check a success response with no data
-    GenericInertialCommandResponse res = GenericInertialCommandResponse::ResponseSuccess("Hello World");
-    BOOST_CHECK_EQUAL(res.errorCode(), InertialPacket::MIP_ACK_NACK_ERROR_NONE);
+    GenericMipCmdResponse res = GenericMipCmdResponse::ResponseSuccess("Hello World");
+    BOOST_CHECK_EQUAL(res.errorCode(), MipPacket::MIP_ACK_NACK_ERROR_NONE);
     BOOST_CHECK_EQUAL(res.success(), true);
     BOOST_CHECK_EQUAL(res.data().size(), 0);
 
     //check a success response with data
     ByteStream bytes;
     bytes.append_uint16(0x1234);
-    GenericInertialCommandResponse res2 = GenericInertialCommandResponse::ResponseSuccess("Hello World", bytes);
-    BOOST_CHECK_EQUAL(res2.errorCode(), InertialPacket::MIP_ACK_NACK_ERROR_NONE);
+    GenericMipCmdResponse res2 = GenericMipCmdResponse::ResponseSuccess("Hello World", bytes);
+    BOOST_CHECK_EQUAL(res2.errorCode(), MipPacket::MIP_ACK_NACK_ERROR_NONE);
     BOOST_CHECK_EQUAL(res2.success(), true);
     BOOST_CHECK_EQUAL(res2.data().size(), 2);
 }
@@ -32,14 +32,14 @@ BOOST_AUTO_TEST_CASE(GenericInertialCommandResponse_ResponseSuccess)
 BOOST_AUTO_TEST_CASE(GenericInertialCommandResponse_ResponseFail)
 {
     //check a fail response
-    GenericInertialCommandResponse res = GenericInertialCommandResponse::ResponseFail(ResponsePattern::STATE_FAIL, InertialPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND, "");
-    BOOST_CHECK_EQUAL(res.errorCode(), InertialPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
+    GenericMipCmdResponse res = GenericMipCmdResponse::ResponseFail(ResponsePattern::STATE_FAIL, MipPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND, "");
+    BOOST_CHECK_EQUAL(res.errorCode(), MipPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
     BOOST_CHECK_EQUAL(res.success(), false);
 }
 
 BOOST_AUTO_TEST_CASE(GenericInertialCommand_buildCommand_withBytes)
 {
-    ByteStream cmdNoData = GenericInertialCommand::buildCommand(0x0C, 0x06);
+    ByteStream cmdNoData = GenericMipCommand::buildCommand(0x0C, 0x06);
 
     //Check all the bytes in the ByteStream
     BOOST_CHECK_EQUAL(cmdNoData.read_uint8(0), 0x75);
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(GenericInertialCommand_buildCommand_withBytes)
     Bytes data;
     data.push_back(0x02);
     data.push_back(0x00);
-    ByteStream cmd = GenericInertialCommand::buildCommand(0x0C, 0x08, data);
+    ByteStream cmd = GenericMipCommand::buildCommand(0x0C, 0x08, data);
 
     //Check all the bytes in the ByteStream
     BOOST_CHECK_EQUAL(cmd.read_uint8(0), 0x75);

@@ -1,12 +1,12 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "GenericInertialCommand.h"
-#include "mscl/MicroStrain/Inertial/InertialTypes.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
+#include "mscl/MicroStrain/MIP/MipTypes.h"
 
 namespace mscl
 {
@@ -16,14 +16,14 @@ namespace mscl
     //    Contains the logic for the "Communication Mode" command
     //
     //See Also:
-    //    <GenericInertialCommand>
+    //    <GenericMipCommand>
     class CommunicationMode
     {
     public:
         //Constants: Packet Bytes
-        //    CMD_ID                - CMD_GET_SENSOR_RATE_BASE    - The <InertialTypes::Command> for this command
+        //    CMD_ID                - CMD_GET_SENSOR_RATE_BASE    - The <MipTypes::Command> for this command
         //  FIELD_DATA_BYTE        - 0x90                        - The Data Field Descriptor byte
-        static const InertialTypes::Command CMD_ID    = InertialTypes::CMD_COMMUNICATION_MODE;
+        static const MipTypes::Command CMD_ID    = MipTypes::CMD_COMMUNICATION_MODE;
         static const uint8 FIELD_DATA_BYTE            = 0x90;
         
     private:
@@ -47,17 +47,17 @@ namespace mscl
         //    A <ByteStream> that holds the bytes that make up the command
         //
         //Exceptions:
-        //    - <Error>: An <InertialChannel> in the channels parameter is not part of the Sensor descriptor set
+        //    - <Error>: An <MipChannel> in the channels parameter is not part of the Sensor descriptor set
         static ByteStream buildCommand_set(uint8 communicationMode);
 
-        class Response : public GenericInertialCommand::Response
+        class Response : public GenericMipCommand::Response
         {
         protected:
             virtual uint8 fieldDataByte() const    { return FIELD_DATA_BYTE; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
-            uint8 parseResponse(const GenericInertialCommandResponse& response) const;
+            uint8 parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
 }

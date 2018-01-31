@@ -31,9 +31,9 @@ Note: The C++ MSCL library depends on boost 1.64. You will need to perform the f
             [boostInstallDir]/lib32_msvc-14.0
       6. Update the "Additional Dependencies" to include the following:
          Release:
-            libboost_system-vc140-mt-s-1_61.lib
+            libboost_system-vc140-mt-s-1_64.lib
          Debug:
-            libboost_system-vc140-mt-sgd-1_61.lib
+            libboost_system-vc140-mt-sgd-1_64.lib
 
 
 ----------------------------------------------------------------

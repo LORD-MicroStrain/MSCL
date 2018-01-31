@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "RawRTCM_2_3Message.h"
-#include "mscl/MicroStrain/Inertial/InertialDataField.h"
-#include "mscl/MicroStrain/Inertial/Packets/InertialPacketBuilder.h"
-#include "mscl/MicroStrain/Inertial/InertialTypes.h"
-#include "Inertial_Commands.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
+#include "mscl/MicroStrain/MIP/MipTypes.h"
+#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 
 namespace mscl
 {
@@ -25,7 +25,7 @@ namespace mscl
     {
         ByteStream byteCommand;
         byteCommand.append_string(m_message);
-        return GenericInertialCommand::buildCommand(commandType(), byteCommand.data());
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
 
 }

@@ -1,28 +1,28 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "ContinuousDataStream.h"
-#include "Inertial_Commands.h"
-#include "mscl/MicroStrain/Inertial/InertialDataField.h"
+#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/Utils.h"
 #include "mscl/Exceptions.h"
 
 namespace mscl
 {
-    uint8 ContinuousDataStream::getDeviceSelector(InertialTypes::InertialCategory type)
+    uint8 ContinuousDataStream::getDeviceSelector(MipTypes::DataClass type)
     {
         switch(type)
         {
-            case InertialTypes::CATEGORY_SENSOR:
+            case MipTypes::CLASS_AHRS_IMU:
                 return 0x01;
 
-            case InertialTypes::CATEGORY_GNSS:
+            case MipTypes::CLASS_GNSS:
                 return 0x02;
 
-            case InertialTypes::CATEGORY_ESTFILTER:
+            case MipTypes::CLASS_ESTFILTER:
                 return 0x03;
 
             default:
@@ -30,13 +30,13 @@ namespace mscl
         }
     }
 
-    ByteStream ContinuousDataStream::buildCommand_get(InertialTypes::InertialCategory type)
+    ByteStream ContinuousDataStream::buildCommand_get(MipTypes::DataClass type)
     {
         //container to hold the command's field data
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(InertialTypes::READ_BACK_CURRENT_SETTINGS));
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::READ_BACK_CURRENT_SETTINGS));
 
         //add the device selector
         fieldData.append_uint8(getDeviceSelector(type));
@@ -45,16 +45,16 @@ namespace mscl
         fieldData.append_uint8(0);
 
         //build and return the command bytes
-        return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    ByteStream ContinuousDataStream::buildCommand_set(InertialTypes::InertialCategory type, bool enable)
+    ByteStream ContinuousDataStream::buildCommand_set(MipTypes::DataClass type, bool enable)
     {
         //container to hold the command's field data
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(InertialTypes::USE_NEW_SETTINGS));
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::USE_NEW_SETTINGS));
 
         //add the device selector
         fieldData.append_uint8(getDeviceSelector(type));
@@ -63,15 +63,15 @@ namespace mscl
         fieldData.append_uint8(static_cast<uint8>(enable));
 
         //build and return the command bytes
-        return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    ContinuousDataStream::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse, InertialTypes::InertialCategory type):
-        GenericInertialCommand::Response(InertialTypes::CMD_CONTINUOUS_DATA_STREAM, collector, true, dataResponse, "Continuous Data Stream"),
+    ContinuousDataStream::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse, MipTypes::DataClass type):
+        GenericMipCommand::Response(MipTypes::CMD_CONTINUOUS_DATA_STREAM, collector, true, dataResponse, "Continuous Data Stream"),
         m_deviceSelector(getDeviceSelector(type))
     {}
 
-    bool ContinuousDataStream::Response::match_data(const InertialDataField& field)
+    bool ContinuousDataStream::Response::match_data(const MipDataField& field)
     {
         ByteStream data = field.fieldData();
 
@@ -88,11 +88,11 @@ namespace mscl
         }
         
         //call match from the super class as well
-        return GenericInertialCommand::Response::match_data(field);
+        return GenericMipCommand::Response::match_data(field);
     }
 
-    bool ContinuousDataStream::Response::parseResponse(const GenericInertialCommandResponse& response) const
+    bool ContinuousDataStream::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
-        return Inertial_Commands::parseData_ContinuousDataStream(response);
+        return MIP_Commands::parseData_ContinuousDataStream(response);
     }
 }

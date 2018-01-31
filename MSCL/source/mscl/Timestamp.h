@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -52,9 +52,6 @@ namespace mscl
         //Returns:
         //    A <TimeSpan> representing the difference between the 2 Timestamps.
         TimeSpan operator-(const Timestamp& other) const;
-
-        friend std::istream& operator>> (std::istream &in, Timestamp& t);
-        friend std::ostream& operator<< (std::ostream &out, const Timestamp& t);
 
         //Operator: ==
         //  Equal operator for comparing Timestamps.

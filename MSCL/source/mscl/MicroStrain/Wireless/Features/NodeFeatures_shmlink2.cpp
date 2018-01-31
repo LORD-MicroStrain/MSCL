@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -42,19 +42,24 @@ namespace mscl
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration, "Acceleration X");
     }
 
-    const WirelessTypes::TransmitPowers NodeFeatures_shmlink2::transmitPowers() const
+    WirelessTypes::TransmitPower NodeFeatures_shmlink2::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
     {
-        if(m_nodeInfo.regionCode() == WirelessTypes::region_japan)
+        if(region == WirelessTypes::region_japan)
         {
-            WirelessTypes::TransmitPowers result;
-            result.push_back(WirelessTypes::power_16dBm);
-            result.push_back(WirelessTypes::power_10dBm);
-            return result;
+            return WirelessTypes::power_16dBm;
         }
-        else
+
+        return NodeFeatures::maxTransmitPower(region, commProtocol);
+    }
+
+    WirelessTypes::TransmitPower NodeFeatures_shmlink2::minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
+    {
+        if(region == WirelessTypes::region_japan)
         {
-            return NodeFeatures::transmitPowers();
+            return WirelessTypes::power_10dBm;
         }
+
+        return NodeFeatures::minTransmitPower(region, commProtocol);
     }
     
     const WirelessTypes::DataCollectionMethods NodeFeatures_shmlink2::dataCollectionMethods() const

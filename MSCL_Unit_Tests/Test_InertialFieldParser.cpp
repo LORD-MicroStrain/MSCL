@@ -1,10 +1,10 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-#include "mscl/MicroStrain/Inertial/Packets/InertialFieldParser.h"
-#include "mscl/MicroStrain/Inertial/Packets/InertialDataPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipFieldParser.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -21,11 +21,11 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_parseField)
     bytes.append_float(0.0f);    //Accel 2 float
     bytes.append_float(0.0f);    //Accel 3 float
 
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_RAW_ACCEL_VEC, bytes.data()); 
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_RAW_ACCEL_VEC, bytes.data()); 
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 3);
@@ -43,11 +43,11 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_parseUnknown)
     bytes.append_uint32(0x00000000);    //Accel 2 float
     bytes.append_uint32(0x00000000);    //Accel 3 float
 
-    InertialDataField field(0, bytes.data()); 
+    MipDataField field(0, bytes.data()); 
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 1);

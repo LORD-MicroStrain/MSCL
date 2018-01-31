@@ -213,7 +213,7 @@
     //===================================================================================================
 
     //===================================================================================================
-    //                                EXCEPTION: Error_InertialCmdFailed
+    //                                EXCEPTION: Error_MipCmdFailed
     CSharpExceptionWithCodeCallback_t exceptionCallback__MSCL_InertialCmdFailed = NULL;
 
     extern "C" SWIGEXPORT
@@ -554,7 +554,7 @@
     //===================================================================================================
 
     //===================================================================================================
-    //                                EXCEPTION: Error_InertialCmdFailed
+    //                                EXCEPTION: Error_MipCmdFailed
     class Exception_Helper__MSCL_InertialCmdFailed
     {
         // C# delegate for the C/C++ exceptionCallback_MSCL_
@@ -567,7 +567,7 @@
 
         static void SetPendingCustomException__MSCL_InertialCmdFailed(string message, int code)
         {
-            SWIGPendingException.Set(new mscl.Error_InertialCmdFailed(message, code));
+            SWIGPendingException.Set(new mscl.Error_MipCmdFailed(message, code));
         }
 
         static Exception_Helper__MSCL_InertialCmdFailed()
@@ -713,8 +713,8 @@
     return $null;
 }
 
-//Exception: Error_InertialCmdFailed
-%typemap(throws, canthrow = 1) mscl::Error_InertialCmdFailed
+//Exception: Error_MipCmdFailed
+%typemap(throws, canthrow = 1) mscl::Error_MipCmdFailed
 {
     SWIG_CSharpSetPendingExceptionCustom__MSCL_InertialCmdFailed($1.what(), $1.code());
     return $null;
@@ -750,6 +750,7 @@
 %catches(mscl::Error_InvalidSerialPort, mscl::Error_Connection, mscl::Error)                                                                mscl::Connection::Serial(const std::string& port, int baudRate);
 %catches(mscl::Error_InvalidSerialPort, mscl::Error_Connection, mscl::Error)                                                                mscl::Connection::Serial(const std::string& port);
 %catches(mscl::Error_InvalidTcpServer, mscl::Error_Connection, mscl::Error)                                                                 mscl::Connection::TcpIp(const std::string& serverAddress, uint16 serverPort);
+%catches(mscl::Error_InvalidTcpServer, mscl::Error_Connection, mscl::Error)                                                                 mscl::Connection::TcpIp(const std::string& serverAddress, uint16 serverPort, const std::string& interfaceAddress);
 %catches(mscl::Error_InvalidUnixSocket, mscl::Error_Connection, mscl::Error)                                                                mscl::Connection::UnixSocket(const std::string& path);
 %catches(mscl::Error_Connection, mscl::Error)                                                                                               mscl::Connection::write(const Bytes& bytes);
 %catches(mscl::Error_Connection, mscl::Error)                                                                                               mscl::Connection::writeStr(const std::string& bytes);
@@ -934,90 +935,117 @@
 %catches(mscl::Error_NotSupported)      mscl::NodeFeatures::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const;
 %catches(mscl::Error_NotSupported)      mscl::NodeFeatures::maxFilterSettlingTime(const SampleRate& rate) const;
 
+//DisplacementNode
+%catches(mscl::Error_Communication, mscl::Error_Connection, mscl::Error)                                                            mscl::DisplacementNode::DisplacementNode(Connection connection);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::DisplacementNode::doCommand(uint8 descriptorSet, uint8 cmdDescriptor, const Bytes& fieldData, bool ackNackResponse, bool dataResponse, uint8 responseDataDescriptor) const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::DisplacementNode::doCommand(uint8 descriptorSet, uint8 cmdDescriptor, const Bytes& fieldData, bool ackNackResponse, bool dataResponse) const;
+%catches(mscl::Error_Connection, mscl::Error)                                                                                       mscl::DisplacementNode::getDataPackets();
+%catches(mscl::Error_Connection, mscl::Error)                                                                                       mscl::DisplacementNode::getDataPackets(uint32 timeout);
+%catches(mscl::Error_Connection, mscl::Error)                                                                                       mscl::DisplacementNode::getDataPackets(uint32 maxPackets);
+%catches(mscl::Error_Connection, mscl::Error)                                                                                       mscl::DisplacementNode::getDataPackets(uint32 timeout, uint32 maxPackets);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection, mscl::Error_NotSupported, mscl::Error)        mscl::DisplacementNode::features();
+%catches(mscl::Error_NoData)                                                                                                        mscl::DisplacementNode::lastCommunicationTime();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::DisplacementNode::firmwareVersion() const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::DisplacementNode::model() const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::DisplacementNode::modelName() const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::DisplacementNode::modelNumber() const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::DisplacementNode::serialNumber() const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::DisplacementNode::lotNumber() const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::DisplacementNode::deviceOptions() const;
+%catches(mscl::Error_Connection)                                                                                                    mscl::DisplacementNode::ping();
+%catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::DisplacementNode::setToIdle();
+%catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::DisplacementNode::cyclePower();
+%catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::DisplacementNode::resume();
+%catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::DisplacementNode::getDisplacementOutputDataRate() const;
+%catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::DisplacementNode::getAnalogToDisplacementCal() const;
+%catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::DisplacementNode::setDeviceTime();
+%catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::DisplacementNode::setDeviceTime(uint64 nanoseconds);
+
 //InertialNode
-%catches(mscl::Error_Communication, mscl::Error_Connection, mscl::Error)                                                                mscl::InertialNode::InertialNode(Connection connection);
-%catches(mscl::Error_Connection, mscl::Error)                                                                                           mscl::InertialNode::getDataPackets();
-%catches(mscl::Error_Connection, mscl::Error)                                                                                           mscl::InertialNode::getDataPackets(uint32 maxPackets);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection, mscl::Error_NotSupported, mscl::Error)       mscl::InertialNode::features();
-%catches(mscl::Error_NoData)                                                                                                            mscl::InertialNode::lastCommunicationTime();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNode::firmwareVersion() const;
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNode::model() const;
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNode::modelName() const;
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNode::modelNumber() const;
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNode::serialNumber() const;
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNode::lotNumber() const;
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNode::deviceOptions() const;
-%catches(mscl::Error_Connection)                                                                                                        mscl::InertialNode::ping();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getDataRateBase(InertialTypes::InertialCategory category);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getActiveChannelFields(InertialTypes::InertialCategory category);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error)       mscl::InertialNode::setActiveChannelFields(InertialTypes::InertialCategory category, const InertialChannels& channels);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::saveActiveChannelFields(InertialTypes::InertialCategory category);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getCommunicationMode();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNode::setCommunicationMode(uint8 communicationMode);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::enableDataStream(InertialTypes::InertialCategory category);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::enableDataStream(InertialTypes::InertialCategory category, bool enable);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::resetFilter();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getAutoInitialization();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setAutoInitialization();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setInitialAttitude(const EulerAngles& attitude);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setInitialHeading(float heading);
-%catches(mscl::Error_Communication, mscl::Error_InertialCmdFailed, mscl::Error_Connection)                                              mscl::InertialNode::setToIdle();
-%catches(mscl::Error_Communication, mscl::Error_InertialCmdFailed, mscl::Error_Connection)                                              mscl::InertialNode::cyclePower();
-%catches(mscl::Error_Communication, mscl::Error_InertialCmdFailed, mscl::Error_Connection)                                              mscl::InertialNode::resume();
-%catches(mscl::Error_Communication, mscl::Error_InertialCmdFailed, mscl::Error_Connection)                                              mscl::InertialNode::saveSettingsAsStartup();
-%catches(mscl::Error_Communication, mscl::Error_InertialCmdFailed, mscl::Error_Connection)                                              mscl::InertialNode::loadStartupSettings();
-%catches(mscl::Error_Communication, mscl::Error_InertialCmdFailed, mscl::Error_Connection)                                              mscl::InertialNode::loadFactoryDefaultSettings();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getSensorToVehicleTransformation();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setSensorToVehicleTransformation(const EulerAngles& angles);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getGNSSAssistedFixControl();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setGNSSAssistedFixControl(bool enableAssistedFix);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getGNSSAssistTimeUpdate();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setGNSSAssistTimeUpdate(const TimeUpdate& timeUpdate);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getGPSTimeUpdate(InertialTypes::TimeFrame timeFrame);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setGPSTimeUpdate(InertialTypes::TimeFrame, mscl::uint32 timeData);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getSBASSettings();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setSBASSettings(const SBASSettingsData& dataToUse);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getConstellationSettings();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setConstellationSettings(const ConstellationSettingsData& dataToUse);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getAccelerometerBias();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setAccelerometerBias(const GeometricVector& biasVector);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getGyroBias();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setGyroBias(const GeometricVector& biasVector);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::captureGyroBias(const uint16& samplingTime);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setMagnetometerSoftIronMatrix(const Matrix_3x3& matrix);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getMagnetometerSoftIronMatrix();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setMagnetometerHardIronOffset(const GeometricVector& offsetVector);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getMagnetometerHardIronOffset();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setConingAndScullingEnable(bool enable);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getConingAndScullingEnable();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setUARTBaudRate(uint32 baudRate);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getUARTBaudRate();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setComplementaryFilterSettings(const ComplementaryFilterData& data);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getComplementaryFilterSettings();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getBasicDeviceStatus();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getDiagnosticDeviceStatus();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::sendRawRTCM_2_3Message(const RTCMMessage& theMessage);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setVehicleDynamicsMode(const VehicleModeType& data);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getVehicleDynamicsMode();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setEstimationControlFlags(const uint16& flags);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getEstimationControlFlags();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setGNSS_SourceControl(const GNSS_Source& gnssSource);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getGNSS_SourceControl();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::sendExternalGNSSUpdate(const ExternalGNSSUpdateData& gnssUpdateData);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::setHeadingUpdateControl(const HeadingUpdateOptions& headingUpdateOptions);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::getHeadingUpdateControl();
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData);
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData, const TimeUpdate& timestamp);
+%catches(mscl::Error_Communication, mscl::Error_Connection, mscl::Error)                                                            mscl::InertialNode::InertialNode(Connection connection);
+%catches(mscl::Error_Connection, mscl::Error)                                                                                       mscl::InertialNode::getDataPackets();
+%catches(mscl::Error_Connection, mscl::Error)                                                                                       mscl::InertialNode::getDataPackets(uint32 timeout);
+%catches(mscl::Error_Connection, mscl::Error)                                                                                       mscl::InertialNode::getDataPackets(uint32 maxPackets);
+%catches(mscl::Error_Connection, mscl::Error)                                                                                       mscl::InertialNode::getDataPackets(uint32 timeout, uint32 maxPackets);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection, mscl::Error_NotSupported, mscl::Error)        mscl::InertialNode::features();
+%catches(mscl::Error_NoData)                                                                                                        mscl::InertialNode::lastCommunicationTime();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::InertialNode::firmwareVersion() const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::InertialNode::model() const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::InertialNode::modelName() const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::InertialNode::modelNumber() const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::InertialNode::serialNumber() const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::InertialNode::lotNumber() const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::InertialNode::deviceOptions() const;
+%catches(mscl::Error_Connection)                                                                                                    mscl::InertialNode::ping();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getDataRateBase(MipTypes::DataClass category);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getActiveChannelFields(MipTypes::DataClass category);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error)        mscl::InertialNode::setActiveChannelFields(MipTypes::DataClass category, const MipChannels& channels);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::saveActiveChannelFields(MipTypes::DataClass category);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getCommunicationMode();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::InertialNode::setCommunicationMode(uint8 communicationMode);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::enableDataStream(MipTypes::DataClass category);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::enableDataStream(MipTypes::DataClass category, bool enable);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::resetFilter();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getAutoInitialization();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setAutoInitialization();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setInitialAttitude(const EulerAngles& attitude);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setInitialHeading(float heading);
+%catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::InertialNode::setToIdle();
+%catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::InertialNode::cyclePower();
+%catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::InertialNode::resume();
+%catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::InertialNode::saveSettingsAsStartup();
+%catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::InertialNode::loadStartupSettings();
+%catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::InertialNode::loadFactoryDefaultSettings();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getSensorToVehicleTransformation();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setSensorToVehicleTransformation(const EulerAngles& angles);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getGNSSAssistedFixControl();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setGNSSAssistedFixControl(bool enableAssistedFix);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getGNSSAssistTimeUpdate();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setGNSSAssistTimeUpdate(const TimeUpdate& timeUpdate);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getGPSTimeUpdate(MipTypes::TimeFrame timeFrame);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setGPSTimeUpdate(MipTypes::TimeFrame, mscl::uint32 timeData);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getSBASSettings();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setSBASSettings(const SBASSettingsData& dataToUse);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getConstellationSettings();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setConstellationSettings(const ConstellationSettingsData& dataToUse);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getAccelerometerBias();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setAccelerometerBias(const GeometricVector& biasVector);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getGyroBias();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setGyroBias(const GeometricVector& biasVector);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::captureGyroBias(const uint16& samplingTime);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setMagnetometerSoftIronMatrix(const Matrix_3x3& matrix);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getMagnetometerSoftIronMatrix();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setMagnetometerHardIronOffset(const GeometricVector& offsetVector);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getMagnetometerHardIronOffset();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setConingAndScullingEnable(bool enable);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getConingAndScullingEnable();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setUARTBaudRate(uint32 baudRate);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getUARTBaudRate();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setComplementaryFilterSettings(const ComplementaryFilterData& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getComplementaryFilterSettings();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getBasicDeviceStatus();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getDiagnosticDeviceStatus();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::sendRawRTCM_2_3Message(const RTCMMessage& theMessage);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setVehicleDynamicsMode(const VehicleModeType& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getVehicleDynamicsMode();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setEstimationControlFlags(const uint16& flags);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getEstimationControlFlags();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setGNSS_SourceControl(const GNSS_Source& gnssSource);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getGNSS_SourceControl();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::sendExternalGNSSUpdate(const ExternalGNSSUpdateData& gnssUpdateData);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setHeadingUpdateControl(const HeadingUpdateOptions& headingUpdateOptions);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getHeadingUpdateControl();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData, const TimeUpdate& timestamp);
 
-
-//InertialNodeFeatures
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNodeFeatures::supportedChannelFields(InertialTypes::InertialCategory category) const;
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                    mscl::InertialNodeFeatures::supportedSampleRates(InertialTypes::InertialCategory category) const;
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNodeFeatures::supportsCategory(InertialTypes::InertialCategory category) const;
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNodeFeatures::supportsCommand(InertialTypes::Command commandId) const;
-%catches(mscl::Error_InertialCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                              mscl::InertialNodeFeatures::supportedCommands() const;
+//MipNodeFeatures
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)         mscl::MipNodeFeatures::supportedChannelFields(MipTypes::DataClass category) const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)         mscl::MipNodeFeatures::supportedSampleRates(MipTypes::DataClass category) const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                   mscl::MipNodeFeatures::supportsCategory(MipTypes::DataClass category) const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                   mscl::MipNodeFeatures::supportsCommand(MipTypes::Command commandId) const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                   mscl::MipNodeFeatures::supportedCommands() const;
 
 //Value
 %catches(mscl::Error_BadDataType)                   mscl::Value::as_float() const;

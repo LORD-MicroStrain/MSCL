@@ -3,7 +3,7 @@
 //  This example does not start a Node sampling. To receive data, a Node
 //  must be put into a sampling mode.
 //
-//Updated: 01/18/2016
+//Updated: 12/20/2017
 
 //Note: If you are having 'PINVOKE' errors, please make sure the following is true:
 //  -'MSCL_Managed' is added as a Refence for the project (add 'MSCL_Managed.dll')
@@ -33,15 +33,15 @@ namespace ParseData
                 while (true)
                 {             
                     //get all of the next data packet from the node, with a timeout of 500 milliseconds
-                    mscl.InertialDataPackets packets = node.getDataPackets(500);
+                    mscl.MipDataPackets packets = node.getDataPackets(500);
                     
-                    foreach (mscl.InertialDataPacket in packets)
+                    foreach (mscl.MipDataPacket in packets)
                     {
                         //print out the data
                         Console.Write("Packet Received: ");
                         
                         //iterate over all the data points in the packet
-                        foreach (mscl.InertialDataPoint dataPoint in packet.data())
+                        foreach (mscl.MipDataPoint dataPoint in packet.data())
                         {
                             //print out the channel data
                             Console.Write(dataPoint.as_string() + " "); //Just printing this out as a string. Other methods (ie. as_float, as_uint16, as_Vector) are also available.

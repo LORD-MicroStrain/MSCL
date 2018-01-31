@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -49,6 +49,7 @@ private:
     virtual void unregisterParser(){}
     virtual void throwIfError(){}
     virtual std::string description(){return "";}
+    virtual Connection::ConnectionType type() { return Connection::connectionType_serial; };
 
     virtual void write(const ByteStream& data) const
     {

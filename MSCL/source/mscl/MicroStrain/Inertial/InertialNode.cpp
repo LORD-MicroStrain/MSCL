@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -8,11 +8,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "mscl/Types.h"
 #include "mscl/Communication/SerialConnection.h"
-#include "mscl/MicroStrain/Inertial/Commands/Inertial_Commands.h"
-#include "Features/InertialNodeFeatures.h"
-#include "Packets/InertialPacket.h"
-#include "InertialParser.h"
-#include "InertialNode_Impl.h"
+#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
+#include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
+#include "mscl/MicroStrain/MIP/MipNode_Impl.h"
 
 #include <algorithm>
 
@@ -20,28 +19,28 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
     InertialNode::InertialNode(Connection connection): 
-        m_impl(std::make_shared<InertialNode_Impl>(connection))
+        m_impl(std::make_shared<MipNode_Impl>(connection))
     {
     }
 
-    InertialNode::InertialNode(std::shared_ptr<InertialNode_Impl> impl) :
+    InertialNode::InertialNode(std::shared_ptr<MipNode_Impl> impl) :
         m_impl(impl)
     {
     }
 
-    const InertialNodeFeatures& InertialNode::features()
+    const MipNodeFeatures& InertialNode::features()
     {
         return m_impl->features();
     }
 
-    InertialDataPackets InertialNode::getDataPackets(uint32 timeout, uint32 maxPackets)
+    MipDataPackets InertialNode::getDataPackets(uint32 timeout, uint32 maxPackets)
     { 
-        InertialDataPackets packets;
+        MipDataPackets packets;
         m_impl->getDataPackets(packets, timeout, maxPackets);
         return packets;
     }
 
-    GenericInertialCommandResponse InertialNode::doCommand(GenericInertialCommand::Response& response, const ByteStream& command, bool verifySupported) const
+    GenericMipCmdResponse InertialNode::doCommand(GenericMipCommand::Response& response, const ByteStream& command, bool verifySupported) const
     {
         return m_impl->doCommand(response, command, verifySupported);
     }
@@ -72,7 +71,7 @@ namespace mscl
 
     InertialModels::NodeModel InertialNode::model() const
     {
-        return m_impl->model();
+        return InertialModels::nodeFromModelString(modelNumber());
     }
 
     std::string InertialNode::modelName() const
@@ -155,22 +154,22 @@ namespace mscl
         return m_impl->loadFactoryDefaultSettings();
     }
 
-    uint16 InertialNode::getDataRateBase(InertialTypes::InertialCategory category)
+    uint16 InertialNode::getDataRateBase(MipTypes::DataClass category)
     { 
         return m_impl->getDataRateBase(category);
     }
 
-    InertialChannels InertialNode::getActiveChannelFields(InertialTypes::InertialCategory category)
+    MipChannels InertialNode::getActiveChannelFields(MipTypes::DataClass category)
     { 
         return m_impl->getMessageFormat(category);
     }
 
-    void InertialNode::setActiveChannelFields(InertialTypes::InertialCategory category, const InertialChannels& channels)
+    void InertialNode::setActiveChannelFields(MipTypes::DataClass category, const MipChannels& channels)
     { 
         m_impl->setMessageFormat(category, channels);
     }
 
-    void InertialNode::saveActiveChannelFields(InertialTypes::InertialCategory category)
+    void InertialNode::saveActiveChannelFields(MipTypes::DataClass category)
     {
         m_impl->saveMessageFormat(category);
     }
@@ -185,7 +184,7 @@ namespace mscl
         m_impl->setCommunicationMode(communicationMode); 
     }
 
-    void InertialNode::enableDataStream(InertialTypes::InertialCategory category, bool enable)
+    void InertialNode::enableDataStream(MipTypes::DataClass category, bool enable)
     {
         m_impl->enableDataStream(category, enable);
     }
@@ -265,20 +264,20 @@ namespace mscl
         m_impl->setGNSSAssistTimeUpdate(timeUpdate);
     }
 
-    mscl::uint32 InertialNode::getGPSTimeUpdate(InertialTypes::TimeFrame timeFrame)
+    mscl::uint32 InertialNode::getGPSTimeUpdate(MipTypes::TimeFrame timeFrame)
     {
         switch (timeFrame)
         {
-        case InertialTypes::TIME_FRAME_WEEKS:
+        case MipTypes::TIME_FRAME_WEEKS:
             return m_impl->getGPSTimeUpdateWeeks();
-        case InertialTypes::TIME_FRAME_SECONDS:
+        case MipTypes::TIME_FRAME_SECONDS:
             return m_impl->getGPSTimeUpdateSeconds();
         default:
-            throw Error_InertialCmdFailed("InertialNode::getGPSTimeUpdate  Unknown timeframe");
+            throw Error_MipCmdFailed("InertialNode::getGPSTimeUpdate  Unknown timeframe");
         }
     }
 
-    void InertialNode::setGPSTimeUpdate(InertialTypes::TimeFrame timeFrame, mscl::uint32 time)
+    void InertialNode::setGPSTimeUpdate(MipTypes::TimeFrame timeFrame, mscl::uint32 time)
     {
         m_impl->setGPSTimeUpdate(timeFrame, time);
     }
@@ -403,12 +402,12 @@ namespace mscl
         m_impl->sendRawRTCM_2_3Message(theMessage);
     }
 
-    void InertialNode::setVehicleDynamicsMode(const VehicleModeType& mode)
+    void InertialNode::setVehicleDynamicsMode(const InertialTypes::VehicleModeType& mode)
     {
         m_impl->setVehicleDynamicsMode(mode);
     }
 
-    VehicleModeType InertialNode::getVehicleDynamicsMode()
+    InertialTypes::VehicleModeType InertialNode::getVehicleDynamicsMode()
     {
         return m_impl->getVehicleDynamicsMode();
     }
@@ -423,12 +422,12 @@ namespace mscl
         return m_impl->getEstimationControlFlags();
     }
 
-    void InertialNode::setGNSS_SourceControl(const GNSS_Source& gnssSource)
+    void InertialNode::setGNSS_SourceControl(const InertialTypes::GNSS_Source& gnssSource)
     {
         m_impl->setGNSS_SourceControl(gnssSource);
     }
 
-    GNSS_Source InertialNode::getGNSS_SourceControl()
+    InertialTypes::GNSS_Source InertialNode::getGNSS_SourceControl()
     {
         return m_impl->getGNSS_SourceControl();
     }

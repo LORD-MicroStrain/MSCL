@@ -1,11 +1,11 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "GenericInertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 
 namespace mscl
 {
@@ -18,8 +18,8 @@ namespace mscl
     {
     public:
         //Constants: Packet Bytes
-        //    CMD_ID        - CMD_SAVE_STARTUP_SETTINGS    - The <InertialTypes::Command> for this command
-        static const InertialTypes::Command CMD_ID = InertialTypes::CMD_SAVE_STARTUP_SETTINGS;
+        //    CMD_ID        - CMD_SAVE_STARTUP_SETTINGS    - The <MipTypes::Command> for this command
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_SAVE_STARTUP_SETTINGS;
 
     private:
         DeviceStartupSettings();                                        //default constructor disabled
@@ -50,7 +50,7 @@ namespace mscl
 
         //Class: Response
         //    Handles the response to the DeviceStartupSettings command.
-        class Response : public GenericInertialCommand::Response
+        class Response : public GenericMipCommand::Response
         {
         public:
             //Constructor: Response

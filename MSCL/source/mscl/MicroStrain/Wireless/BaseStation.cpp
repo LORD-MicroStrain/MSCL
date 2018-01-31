@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -20,8 +20,13 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
     //Constructor
-    BaseStation::BaseStation(Connection& connection, uint64 baseTimeout): //baseTimeout=BASE_COMMANDS_DEFAULT_TIMEOUT
+    BaseStation::BaseStation(Connection& connection, uint64 baseTimeout):
         m_impl(std::make_shared<BaseStation_Impl>(connection, baseTimeout))
+    {
+    }
+
+    BaseStation::BaseStation(Connection& connection):
+        m_impl(std::make_shared<BaseStation_Impl>(connection))
     {
     }
 

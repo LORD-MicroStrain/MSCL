@@ -3,7 +3,7 @@
 //  This example does not start a Node sampling. To receive data, a Node
 //  must be put into a sampling mode.
 //
-//Updated: 01/18/2016
+//Updated: 12/20/2017
 
 #include <iostream>
 using namespace std;
@@ -29,16 +29,16 @@ int main(int argc, char **argv)
 		while(true)
 		{
       //get all the data packets from the node, with a timeout of 500 milliseconds
-      mscl::InertialDataPackets packets = node.getDataPackets(500);
+      mscl::MipDataPackets packets = node.getDataPackets(500);
 
-      for(mscl::InertialDataPacket packet : packets)
+      for(mscl::MipDataPacket packet : packets)
       {
         //print out the data
         cout << "Packet Received: ";
 
         //get the data in the packet
-        mscl::InertialDataPoints data = packet.data();
-        mscl::InertialDataPoint dataPoint;
+        mscl::MipDataPoints data = packet.data();
+        mscl::MipDataPoint dataPoint;
 
         //loop through all the data points in the packet
         for(unsigned int itr = 0; itr < data.size(); itr++)

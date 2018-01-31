@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -58,6 +58,8 @@ namespace mscl
         //See Also:
         //    <Connection>, <SerialConnection>
         explicit BaseStation_Impl(Connection connection, uint64 baseTimeout);
+
+        explicit BaseStation_Impl(Connection connection);
 
         //Destructor: ~BaseStation_Impl
         //    Destroys the BaseStation object
@@ -669,6 +671,8 @@ namespace mscl
         BaseStationAnalogPair getAnalogPair(uint8 portNumber) const;
 
     private:
+        uint16 timeoutToAdd();
+
         //Function: doBaseCommand
         //  Performs a BaseStation command with the given parameters.
         bool doBaseCommand(const ByteStream& command, WirelessResponsePattern& response, uint64 minTimeout = 0);
@@ -751,7 +755,11 @@ namespace mscl
 
         //Function: protocol_node_sleep_v1
         //  Performs Version 1 of the Node Sleep command.
-        bool protocol_node_sleep_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress);
+        bool protocol_node_sleep_v1(NodeAddress nodeAddress);
+
+        //Function: protocol_node_sleep_v2
+        //  Performs Version 2 of the Node Sleep command.
+        bool protocol_node_sleep_v2(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress);
 
         //Function: protocol_node_setToIdle_v1
         //    Performs Version 1 of the Node Set to Idle command.

@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "ExternalGNSSUpdate.h"
-#include "mscl/MicroStrain/Inertial/InertialDataField.h"
-#include "mscl/MicroStrain/Inertial/Packets/InertialPacketBuilder.h"
-#include "mscl/MicroStrain/Inertial/InertialTypes.h"
-#include "Inertial_Commands.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
+#include "mscl/MicroStrain/MIP/MipTypes.h"
+#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 
 namespace mscl
 {
@@ -39,7 +39,7 @@ namespace mscl
         byteCommand.append_float(m_data.eastVelocityUncertainty);
         byteCommand.append_float(m_data.downVelocityUncertainty);
 
-        return GenericInertialCommand::buildCommand(commandType(), byteCommand.data());
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
 
 }

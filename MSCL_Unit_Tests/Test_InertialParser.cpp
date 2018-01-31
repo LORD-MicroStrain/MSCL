@@ -1,12 +1,12 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-#include "mscl/MicroStrain/Inertial/InertialParser.h"
-#include "mscl/MicroStrain/Inertial/Packets/InertialPacket.h"
-#include "mscl/MicroStrain/Inertial/Packets/InertialDataPacket.h"
-#include "mscl/MicroStrain/Inertial/Packets/InertialPacketCollector.h"
+#include "mscl/MicroStrain/MIP/MipParser.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/ChecksumBuilder.h"
 #include "mscl/MicroStrain/DataBuffer.h"
@@ -29,12 +29,12 @@ BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_NotEnoughData)
     DataBuffer buffer(b.data());
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
-    InertialPacketCollector packetCollector;
-    InertialParser parser(&packetCollector, responseCollector);
-    InertialPacket packet;
+    MipPacketCollector packetCollector;
+    MipParser parser(&packetCollector, responseCollector);
+    MipPacket packet;
 
-    //check that the result is inertialParserResult_notEnoughData b/c there isn't enough data to be a MIP packet 
-    BOOST_CHECK_EQUAL(parser.parseAsPacket(buffer, packet), inertialParserResult_notEnoughData);
+    //check that the result is mipParserResult_notEnoughData b/c there isn't enough data to be a MIP packet 
+    BOOST_CHECK_EQUAL(parser.parseAsPacket(buffer, packet), mipParserResult_notEnoughData);
 
     b.append_uint8(0x80);
     b.append_uint8(0xAB);    //payload length
@@ -43,8 +43,8 @@ BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_NotEnoughData)
 
     DataBuffer buffer2(b.data());
 
-    //check that the result is inertialParserResult_notEnoughData b/c there isn't enough data in the payload
-    BOOST_CHECK_EQUAL(parser.parseAsPacket(buffer2, packet), inertialParserResult_notEnoughData);
+    //check that the result is mipParserResult_notEnoughData b/c there isn't enough data in the payload
+    BOOST_CHECK_EQUAL(parser.parseAsPacket(buffer2, packet), mipParserResult_notEnoughData);
 }
 
 BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_InvalidPacket)
@@ -58,12 +58,12 @@ BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_InvalidPacket)
     DataBuffer buffer(b.data());
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
-    InertialPacketCollector packetCollector;
-    InertialParser parser(&packetCollector, responseCollector);
-    InertialPacket packet;
+    MipPacketCollector packetCollector;
+    MipParser parser(&packetCollector, responseCollector);
+    MipPacket packet;
 
-    //check that the result is inertialParserResult_invalidPacket b/c the first bytes aren't the start of a packet
-    BOOST_CHECK_EQUAL(parser.parseAsPacket(buffer, packet), inertialParserResult_invalidPacket);
+    //check that the result is mipParserResult_invalidPacket b/c the first bytes aren't the start of a packet
+    BOOST_CHECK_EQUAL(parser.parseAsPacket(buffer, packet), mipParserResult_invalidPacket);
 }
 
 BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_BadChecksum)
@@ -82,12 +82,12 @@ BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_BadChecksum)
     DataBuffer buffer(b.data());
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
-    InertialPacketCollector packetCollector;
-    InertialParser parser(&packetCollector, responseCollector);
-    InertialPacket packet;
+    MipPacketCollector packetCollector;
+    MipParser parser(&packetCollector, responseCollector);
+    MipPacket packet;
 
-    //check that the result is inertialParserResult_badChecksum b/c the checksum is invalid
-    BOOST_CHECK_EQUAL(parser.parseAsPacket(buffer, packet), inertialParserResult_badChecksum);
+    //check that the result is mipParserResult_badChecksum b/c the checksum is invalid
+    BOOST_CHECK_EQUAL(parser.parseAsPacket(buffer, packet), mipParserResult_badChecksum);
 }
 
 BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_CompletePacket)
@@ -110,12 +110,12 @@ BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_CompletePacket)
     DataBuffer buffer(b.data());
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
-    InertialPacketCollector packetCollector;
-    InertialParser parser(&packetCollector, responseCollector);
-    InertialPacket packet;
+    MipPacketCollector packetCollector;
+    MipParser parser(&packetCollector, responseCollector);
+    MipPacket packet;
 
-    //check that the result is inertialParserResult_completePacket b/c the packet is valid
-    BOOST_CHECK_EQUAL(parser.parseAsPacket(buffer, packet), inertialParserResult_completePacket);
+    //check that the result is mipParserResult_completePacket b/c the packet is valid
+    BOOST_CHECK_EQUAL(parser.parseAsPacket(buffer, packet), mipParserResult_completePacket);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -141,11 +141,11 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket_AfterBadBytes)
     DataBuffer buffer(b.data());
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
-    InertialPacketCollector packetCollector;
-    InertialParser parser(&packetCollector, responseCollector);
-    InertialPacket packet;
+    MipPacketCollector packetCollector;
+    MipParser parser(&packetCollector, responseCollector);
+    MipPacket packet;
 
-    InertialDataPackets dataPackets;
+    MipDataPackets dataPackets;
 
     packetCollector.getDataPackets(dataPackets);
 
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket_AfterBadBytes)
     //call the parse() function, sending the DataBuffer we created
     parser.parse(buffer);
 
-    //calling getNextDataPacket now should return a legitimate InertialDataPacket
+    //calling getNextDataPacket now should return a legitimate MipDataPacket
     packetCollector.getDataPackets(dataPackets, 0);
 
     BOOST_CHECK_EQUAL(dataPackets.at(0).isDataPacket(), true);
@@ -181,11 +181,11 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket)
     DataBuffer buffer(b.data());
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
-    InertialPacketCollector packetCollector;
-    InertialParser parser(&packetCollector, responseCollector);
-    InertialPacket packet;
+    MipPacketCollector packetCollector;
+    MipParser parser(&packetCollector, responseCollector);
+    MipPacket packet;
 
-    InertialDataPackets dataPackets;
+    MipDataPackets dataPackets;
 
     packetCollector.getDataPackets(dataPackets);
 
@@ -194,7 +194,7 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket)
     //call the parse() function, sending the DataBuffer we created
     parser.parse(buffer);
 
-    //calling getNextDataPacket now should return a legitimate InertialDataPacket
+    //calling getNextDataPacket now should return a legitimate MipDataPacket
     packetCollector.getDataPackets(dataPackets);
 
     BOOST_CHECK_EQUAL(dataPackets.at(0).isDataPacket(), true);
@@ -220,11 +220,11 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_responsePacket_notExpected)
     DataBuffer buffer(b.data());
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
-    InertialPacketCollector packetCollector;
-    InertialParser parser(&packetCollector, responseCollector);
-    InertialPacket packet;
+    MipPacketCollector packetCollector;
+    MipParser parser(&packetCollector, responseCollector);
+    MipPacket packet;
 
-    InertialDataPackets dataPackets;
+    MipDataPackets dataPackets;
 
     packetCollector.getDataPackets(dataPackets);
 
@@ -254,11 +254,11 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_badChecksum)
     DataBuffer buffer(b.data());
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
-    InertialPacketCollector packetCollector;
-    InertialParser parser(&packetCollector, responseCollector);
-    InertialPacket packet;
+    MipPacketCollector packetCollector;
+    MipParser parser(&packetCollector, responseCollector);
+    MipPacket packet;
 
-    InertialDataPackets dataPackets;
+    MipDataPackets dataPackets;
 
     packetCollector.getDataPackets(dataPackets);
 
@@ -302,11 +302,11 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_notEnoughData)
     DataBuffer buffer(b.data());
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
-    InertialPacketCollector packetCollector;
-    InertialParser parser(&packetCollector, responseCollector);
-    InertialPacket packet;
+    MipPacketCollector packetCollector;
+    MipParser parser(&packetCollector, responseCollector);
+    MipPacket packet;
 
-    InertialDataPackets dataPackets;
+    MipDataPackets dataPackets;
 
     packetCollector.getDataPackets(dataPackets);
 
@@ -342,11 +342,11 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket_AfterNotEnoughData)
     DataBuffer buffer(b.data());
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
-    InertialPacketCollector packetCollector;
-    InertialParser parser(&packetCollector, responseCollector);
-    InertialPacket packet;
+    MipPacketCollector packetCollector;
+    MipParser parser(&packetCollector, responseCollector);
+    MipPacket packet;
 
-    InertialDataPackets dataPackets;
+    MipDataPackets dataPackets;
 
     packetCollector.getDataPackets(dataPackets);
 

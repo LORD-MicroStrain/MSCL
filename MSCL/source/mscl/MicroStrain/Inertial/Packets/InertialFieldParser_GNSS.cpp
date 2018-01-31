@@ -1,12 +1,12 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 
 #include "InertialFieldParser_GNSS.h"
-#include "InertialDataPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 #include "mscl/MicroStrain/DataBuffer.h"
 
 namespace mscl
@@ -19,10 +19,10 @@ namespace mscl
 
     //=====================================================================================================================================================
     //                                                        FieldParser_LLHPosition
-    const InertialTypes::ChannelField FieldParser_LLHPosition::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_LLH_POSITION;
+    const MipTypes::ChannelField FieldParser_LLHPosition::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_LLH_POSITION;
     const bool FieldParser_LLHPosition::REGISTERED = FieldParser_LLHPosition::registerParser();    //register the parser immediately
 
-    void FieldParser_LLHPosition::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_LLHPosition::parse(const MipDataField& field, MipDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -45,27 +45,27 @@ namespace mscl
         bool vertValid        = pointIsValid(flags, VERT_ACCUR_FLAG);
 
         //add all the data points we just collected
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_LATITUDE, valueType_double, anyType(latitude), latLongValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_LONGITUDE, valueType_double, anyType(longitude), latLongValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_HEIGHT_ABOVE_ELLIPSOID, valueType_double, anyType(heightAboveEllipsoid), ellipsoidValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_HEIGHT_ABOVE_MSL, valueType_double, anyType(heightAboveMSL), mslValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_HORIZONTAL_ACCURACY, valueType_float, anyType(horizAccuracy), horizValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_VERTICAL_ACCURACY, valueType_float, anyType(vertAccuracy), vertValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_LATITUDE, valueType_double, anyType(latitude), latLongValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_LONGITUDE, valueType_double, anyType(longitude), latLongValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_HEIGHT_ABOVE_ELLIPSOID, valueType_double, anyType(heightAboveEllipsoid), ellipsoidValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_HEIGHT_ABOVE_MSL, valueType_double, anyType(heightAboveMSL), mslValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_HORIZONTAL_ACCURACY, valueType_float, anyType(horizAccuracy), horizValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_VERTICAL_ACCURACY, valueType_float, anyType(vertAccuracy), vertValid));
     }
 
     bool FieldParser_LLHPosition::registerParser()
     {
         static FieldParser_LLHPosition p;
-        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_ECEFPosition
-    const InertialTypes::ChannelField FieldParser_ECEFPosition::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_ECEF_POSITION;
+    const MipTypes::ChannelField FieldParser_ECEFPosition::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_ECEF_POSITION;
     const bool FieldParser_ECEFPosition::REGISTERED = FieldParser_ECEFPosition::registerParser();    //register the parser immediately
 
-    void FieldParser_ECEFPosition::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_ECEFPosition::parse(const MipDataField& field, MipDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -83,25 +83,25 @@ namespace mscl
         bool posAccurValid    = pointIsValid(flags, POS_ACCURACY_FLAG);
 
         //add all the data points we just collected
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_X, valueType_double, anyType(xPos), ecefPosValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_Y, valueType_double, anyType(yPos), ecefPosValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_Z, valueType_double, anyType(zPos), ecefPosValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_POSITION_ACCURACY, valueType_float, anyType(posAccuracy), posAccurValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_double, anyType(xPos), ecefPosValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_double, anyType(yPos), ecefPosValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_double, anyType(zPos), ecefPosValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_POSITION_ACCURACY, valueType_float, anyType(posAccuracy), posAccurValid));
     }
 
     bool FieldParser_ECEFPosition::registerParser()
     {
         static FieldParser_ECEFPosition p;
-        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_NEDVelocity
-    const InertialTypes::ChannelField FieldParser_NEDVelocity::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_NED_VELOCITY;
+    const MipTypes::ChannelField FieldParser_NEDVelocity::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_NED_VELOCITY;
     const bool FieldParser_NEDVelocity::REGISTERED = FieldParser_NEDVelocity::registerParser();    //register the parser immediately
 
-    void FieldParser_NEDVelocity::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_NEDVelocity::parse(const MipDataField& field, MipDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -127,29 +127,29 @@ namespace mscl
         bool headingAccurValid    = pointIsValid(flags, HEADING_ACCUR_FLAG);
 
         //add all the data points we just collected
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_NORTH, valueType_float, anyType(north), nedVelocityValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_EAST, valueType_float, anyType(east), nedVelocityValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_DOWN, valueType_float, anyType(down), nedVelocityValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_SPEED, valueType_float, anyType(speed), speedValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_GROUND_SPEED, valueType_float, anyType(groundSpeed), groundSpeedValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_HEADING, valueType_float, anyType(heading), headingValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_SPEED_ACCURACY, valueType_float, anyType(speedAccuracy), speedAccurValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_HEADING_ACCURACY, valueType_float, anyType(headingAccuracy), headingAccurValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_NORTH, valueType_float, anyType(north), nedVelocityValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_EAST, valueType_float, anyType(east), nedVelocityValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_DOWN, valueType_float, anyType(down), nedVelocityValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_SPEED, valueType_float, anyType(speed), speedValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_GROUND_SPEED, valueType_float, anyType(groundSpeed), groundSpeedValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_HEADING, valueType_float, anyType(heading), headingValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_SPEED_ACCURACY, valueType_float, anyType(speedAccuracy), speedAccurValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_HEADING_ACCURACY, valueType_float, anyType(headingAccuracy), headingAccurValid));
     }
 
     bool FieldParser_NEDVelocity::registerParser()
     {
         static FieldParser_NEDVelocity p;
-        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_ECEFVelocity
-    const InertialTypes::ChannelField FieldParser_ECEFVelocity::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_ECEF_VELOCITY;
+    const MipTypes::ChannelField FieldParser_ECEFVelocity::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_ECEF_VELOCITY;
     const bool FieldParser_ECEFVelocity::REGISTERED = FieldParser_ECEFVelocity::registerParser();    //register the parser immediately
 
-    void FieldParser_ECEFVelocity::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_ECEFVelocity::parse(const MipDataField& field, MipDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -167,25 +167,25 @@ namespace mscl
         bool accuracyValid        = pointIsValid(flags, VELOCITY_ACCUR_FLAG);
 
         //add all the data points we just collected
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_X, valueType_float, anyType(xVelocity), ecefVelocityValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_Y, valueType_float, anyType(yVelocity), ecefVelocityValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_Z, valueType_float, anyType(zVelocity), ecefVelocityValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_VELOCITY_ACCURACY, valueType_float, anyType(velocityAccuracy), accuracyValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(xVelocity), ecefVelocityValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(yVelocity), ecefVelocityValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(zVelocity), ecefVelocityValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_VELOCITY_ACCURACY, valueType_float, anyType(velocityAccuracy), accuracyValid));
     }
 
     bool FieldParser_ECEFVelocity::registerParser()
     {
         static FieldParser_ECEFVelocity p;
-        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_DOP
-    const InertialTypes::ChannelField FieldParser_DOP::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_DOP;
+    const MipTypes::ChannelField FieldParser_DOP::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_DOP;
     const bool FieldParser_DOP::REGISTERED = FieldParser_DOP::registerParser();    //register the parser immediately
 
-    void FieldParser_DOP::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_DOP::parse(const MipDataField& field, MipDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -211,28 +211,28 @@ namespace mscl
         bool eValid    = pointIsValid(flags, EDOP_FLAG);
 
         //add all the data points we just collected
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_GEOMETRIC_DOP, valueType_float, anyType(geometric), gValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_POSITION_DOP, valueType_float, anyType(position), pValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_HORIZONTAL_DOP, valueType_float, anyType(horizontal), hValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_VERTICAL_DOP, valueType_float, anyType(vertical), vValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_TIME_DOP, valueType_float, anyType(time), tValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_NORTHING_DOP, valueType_float, anyType(northing), nValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_EASTING_DOP, valueType_float, anyType(easting), eValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_GEOMETRIC_DOP, valueType_float, anyType(geometric), gValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_POSITION_DOP, valueType_float, anyType(position), pValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_HORIZONTAL_DOP, valueType_float, anyType(horizontal), hValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_VERTICAL_DOP, valueType_float, anyType(vertical), vValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_TIME_DOP, valueType_float, anyType(time), tValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_NORTHING_DOP, valueType_float, anyType(northing), nValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_EASTING_DOP, valueType_float, anyType(easting), eValid));
     }
 
     bool FieldParser_DOP::registerParser()
     {
         static FieldParser_DOP p;
-        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_UTCTime
-    const InertialTypes::ChannelField FieldParser_UTCTime::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_UTC_TIME;
+    const MipTypes::ChannelField FieldParser_UTCTime::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_UTC_TIME;
     const bool FieldParser_UTCTime::REGISTERED = FieldParser_UTCTime::registerParser();    //register the parser immediately
 
-    void FieldParser_UTCTime::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_UTCTime::parse(const MipDataField& field, MipDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -259,23 +259,23 @@ namespace mscl
         Timestamp time(year, month, day, hour, minute, second, millisecond);
 
         //add all the data points we just collected
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_TIMESTAMP, valueType_Timestamp, anyType(time), fullTimestampValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_FLAGS, valueType_uint16, anyType(flags), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_TIMESTAMP, valueType_Timestamp, anyType(time), fullTimestampValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FLAGS, valueType_uint16, anyType(flags), true));
     }
 
     bool FieldParser_UTCTime::registerParser()
     {
         static FieldParser_UTCTime p;
-        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_GPSTime
-    const InertialTypes::ChannelField FieldParser_GPSTime::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_GPS_TIME;
+    const MipTypes::ChannelField FieldParser_GPSTime::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_GPS_TIME;
     const bool FieldParser_GPSTime::REGISTERED = FieldParser_GPSTime::registerParser();    //register the parser immediately
 
-    void FieldParser_GPSTime::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_GPSTime::parse(const MipDataField& field, MipDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -291,23 +291,23 @@ namespace mscl
         bool weekValid    = pointIsValid(flags, WEEK_NUM_VALID);
 
         //add data points for the values we just collected
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_TIME_OF_WEEK, valueType_double, anyType(gpsTimeOfWeek), towValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_WEEK_NUMBER, valueType_uint16, anyType(gpsWeekNumber), weekValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_TIME_OF_WEEK, valueType_double, anyType(gpsTimeOfWeek), towValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_WEEK_NUMBER, valueType_uint16, anyType(gpsWeekNumber), weekValid));
     }
 
     bool FieldParser_GPSTime::registerParser()
     {
         static FieldParser_GPSTime p;
-        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_ClockInfo
-    const InertialTypes::ChannelField FieldParser_ClockInfo::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_CLOCK_INFO;
+    const MipTypes::ChannelField FieldParser_ClockInfo::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_CLOCK_INFO;
     const bool FieldParser_ClockInfo::REGISTERED = FieldParser_ClockInfo::registerParser();    //register the parser immediately
 
-    void FieldParser_ClockInfo::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_ClockInfo::parse(const MipDataField& field, MipDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -325,24 +325,24 @@ namespace mscl
         bool accurValid = pointIsValid(flags, ACCUR_VALID);
 
         //add data points for the values we just collected
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_BIAS, valueType_double, anyType(clockBias), biasValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_DRIFT, valueType_double, anyType(clockDrift), driftValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_ACCURACY_ESTIMATE, valueType_double, anyType(accuracy), accurValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_BIAS, valueType_double, anyType(clockBias), biasValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_DRIFT, valueType_double, anyType(clockDrift), driftValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ACCURACY_ESTIMATE, valueType_double, anyType(accuracy), accurValid));
     }
 
     bool FieldParser_ClockInfo::registerParser()
     {
         static FieldParser_ClockInfo p;
-        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_GPSFixInfo
-    const InertialTypes::ChannelField FieldParser_GPSFixInfo::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_FIX_INFO;
+    const MipTypes::ChannelField FieldParser_GPSFixInfo::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_FIX_INFO;
     const bool FieldParser_GPSFixInfo::REGISTERED = FieldParser_GPSFixInfo::registerParser();    //register the parser immediately
 
-    void FieldParser_GPSFixInfo::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_GPSFixInfo::parse(const MipDataField& field, MipDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -360,24 +360,24 @@ namespace mscl
         bool fixFlagsValid    = pointIsValid(flags, FIX_FLAGS_VALID);
 
         //add data points for the values we just collected
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_FIX_TYPE, valueType_uint8, anyType(fixType), fixTypeValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_SV_COUNT, valueType_uint8, anyType(numSvs), numSvsValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_FLAGS, valueType_uint16, anyType(fixFlags), fixFlagsValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FIX_TYPE, valueType_uint8, anyType(fixType), fixTypeValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_SV_COUNT, valueType_uint8, anyType(numSvs), numSvsValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FLAGS, valueType_uint16, anyType(fixFlags), fixFlagsValid));
     }
 
     bool FieldParser_GPSFixInfo::registerParser()
     {
         static FieldParser_GPSFixInfo p;
-        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_SpaceVehicleInfo
-    const InertialTypes::ChannelField FieldParser_SpaceVehicleInfo::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO;
+    const MipTypes::ChannelField FieldParser_SpaceVehicleInfo::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO;
     const bool FieldParser_SpaceVehicleInfo::REGISTERED = FieldParser_SpaceVehicleInfo::registerParser();    //register the parser immediately
 
-    void FieldParser_SpaceVehicleInfo::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_SpaceVehicleInfo::parse(const MipDataField& field, MipDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -402,27 +402,27 @@ namespace mscl
         bool svFlagsValid    = pointIsValid(flags, SV_FLAGS_VALID);
 
         //add data points for the values we just collected
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_CHANNEL, valueType_uint8, anyType(channel), channelValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_ID, valueType_uint8, anyType(vehicleId), svIdValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_CARRIER_TO_NOISE_RATIO, valueType_uint16, anyType(ratio), ratioValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_AZIMUTH, valueType_int16, anyType(azimuth), azimuthValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_ELEVATION, valueType_int16, anyType(elevation), elevationValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_FLAGS, valueType_uint16, anyType(svFlags), svFlagsValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_CHANNEL, valueType_uint8, anyType(channel), channelValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ID, valueType_uint8, anyType(vehicleId), svIdValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_CARRIER_TO_NOISE_RATIO, valueType_uint16, anyType(ratio), ratioValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_AZIMUTH, valueType_int16, anyType(azimuth), azimuthValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ELEVATION, valueType_int16, anyType(elevation), elevationValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FLAGS, valueType_uint16, anyType(svFlags), svFlagsValid));
     }
 
     bool FieldParser_SpaceVehicleInfo::registerParser()
     {
         static FieldParser_SpaceVehicleInfo p;
-        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_HardwareStatus
-    const InertialTypes::ChannelField FieldParser_HardwareStatus::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_HARDWARE_STATUS;
+    const MipTypes::ChannelField FieldParser_HardwareStatus::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_HARDWARE_STATUS;
     const bool FieldParser_HardwareStatus::REGISTERED = FieldParser_HardwareStatus::registerParser();    //register the parser immediately
 
-    void FieldParser_HardwareStatus::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_HardwareStatus::parse(const MipDataField& field, MipDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -440,24 +440,24 @@ namespace mscl
         bool antennaPowerValid = pointIsValid(flags, ANTENNA_POWER_VALID);
 
         //add data points for the values we just collected
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_SENSOR_STATE, valueType_uint8, anyType(sensorState), sensorStateValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_ANTENNA_STATE, valueType_uint8, anyType(antennaState), antennaStateValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_ANTENNA_POWER, valueType_uint8, anyType(antennaPower), antennaPowerValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_SENSOR_STATE, valueType_uint8, anyType(sensorState), sensorStateValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ANTENNA_STATE, valueType_uint8, anyType(antennaState), antennaStateValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ANTENNA_POWER, valueType_uint8, anyType(antennaPower), antennaPowerValid));
     }
 
     bool FieldParser_HardwareStatus::registerParser()
     {
         static FieldParser_HardwareStatus p;
-        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_DGNSSInfo
-    const InertialTypes::ChannelField FieldParser_DGNSSInfo::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_DGNSS_INFO;
+    const MipTypes::ChannelField FieldParser_DGNSSInfo::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_DGNSS_INFO;
     const bool FieldParser_DGNSSInfo::REGISTERED = FieldParser_DGNSSInfo::registerParser();    //register the parser immediately
 
-    void FieldParser_DGNSSInfo::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_DGNSSInfo::parse(const MipDataField& field, MipDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -477,26 +477,26 @@ namespace mscl
         bool numChsValid = pointIsValid(flags, NUM_CHANNELS_VALID);
 
         //add data points for the values we just collected
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_AGE, valueType_float, anyType(newestAge), ageValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_ID, valueType_int16, anyType(baseId), baseIdValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_STATUS, valueType_int16, anyType(baseStatus), baseStatusValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_NUM_CHANNELS, valueType_uint16, anyType(numChs), numChsValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_AGE, valueType_float, anyType(newestAge), ageValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ID, valueType_int16, anyType(baseId), baseIdValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_STATUS, valueType_int16, anyType(baseStatus), baseStatusValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_NUM_CHANNELS, valueType_uint16, anyType(numChs), numChsValid));
     }
 
     bool FieldParser_DGNSSInfo::registerParser()
     {
         static FieldParser_DGNSSInfo p;
-        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
 
     //=====================================================================================================================================================
     //                                                        FieldParser_DGNSSChannelStatus
-    const InertialTypes::ChannelField FieldParser_DGNSSChannelStatus::FIELD_TYPE = InertialTypes::CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS;
+    const MipTypes::ChannelField FieldParser_DGNSSChannelStatus::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS;
     const bool FieldParser_DGNSSChannelStatus::REGISTERED = FieldParser_DGNSSChannelStatus::registerParser();    //register the parser immediately
 
-    void FieldParser_DGNSSChannelStatus::parse(const InertialDataField& field, InertialDataPoints& result) const
+    void FieldParser_DGNSSChannelStatus::parse(const MipDataField& field, MipDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
@@ -516,16 +516,16 @@ namespace mscl
         bool rateCorrectionValid = pointIsValid(flags, RATE_CORRECTION_VALID);
 
         //add data points for the values we just collected
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_ID, valueType_uint8, anyType(spaceVehicleId), svIdValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_AGE, valueType_float, anyType(age), ageValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_CORRECTION, valueType_float, anyType(correction), correctionValid));
-        result.push_back(InertialDataPoint(FIELD_TYPE, InertialTypes::CH_RATE_CORRECTION, valueType_float, anyType(rateCorrection), rateCorrectionValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ID, valueType_uint8, anyType(spaceVehicleId), svIdValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_AGE, valueType_float, anyType(age), ageValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_CORRECTION, valueType_float, anyType(correction), correctionValid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_RATE_CORRECTION, valueType_float, anyType(rateCorrection), rateCorrectionValid));
     }
 
     bool FieldParser_DGNSSChannelStatus::registerParser()
     {
         static FieldParser_DGNSSChannelStatus p;
-        return InertialFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 }

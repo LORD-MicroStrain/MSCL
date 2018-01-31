@@ -115,7 +115,7 @@
 #include "../MicroStrain/Wireless/Configuration/HistogramOptions.h"
 #include "../MicroStrain/Wireless/Configuration/EventTriggerOptions.h"
 #include "../MicroStrain/Wireless/DataSweep.h"
-#include "../MicroStrain/Wireless/LinearEquation.h"
+#include "../MicroStrain/LinearEquation.h"
 #include "../MicroStrain/Wireless/CalCoefficients.h"
 #include "../MicroStrain/Wireless/DatalogDownloader.h"
 #include "../MicroStrain/Wireless/LoggedDataSweep.h"
@@ -145,14 +145,16 @@
 #include "../MicroStrain/Inertial/EulerAngles.h"
 #include "../MicroStrain/Inertial/PositionOffset.h"
 #include "../MicroStrain/Inertial/InertialModels.h"
-#include "../MicroStrain/Inertial/InertialTypes.h"
-#include "../MicroStrain/Inertial/InertialChannel.h"
-#include "../MicroStrain/Inertial/InertialDataField.h"
-#include "../MicroStrain/Inertial/Packets/InertialDataPacket.h"
-#include "../MicroStrain/Inertial/InertialDataPoint.h"
-#include "../MicroStrain/Inertial/Features/InertialNodeFeatures.h"
+#include "../MicroStrain/Displacement/DisplacementModels.h"
+#include "../MicroStrain/MIP/MipTypes.h"
+#include "../MicroStrain/MIP/MipChannel.h"
+#include "../MicroStrain/MIP/MipDataField.h"
+#include "../MicroStrain/MIP/Packets/MipDataPacket.h"
+#include "../MicroStrain/MIP/MipDataPoint.h"
+#include "../MicroStrain/MIP/MipNodeFeatures.h"
 #include "../MicroStrain/Inertial/InertialNode.h"
-#include "../MicroStrain/Inertial/Packets/InertialPacket.h"
+#include "../MicroStrain/Displacement/DisplacementNode.h"
+#include "../MicroStrain/MIP/Packets/MipPacket.h"
 #include "../MicroStrain/Inertial/Commands/GNSS_SBASSettings.h"
 %}
 
@@ -192,7 +194,7 @@
 %include "../MicroStrain/Wireless/Configuration/HistogramOptions.h"
 %include "../MicroStrain/Wireless/WirelessModels.h"
 %include "../MicroStrain/Wireless/NodeDiscovery.h"
-%include "../MicroStrain/Wireless/LinearEquation.h"
+%include "../MicroStrain/LinearEquation.h"
 %include "../MicroStrain/Wireless/CalCoefficients.h"
 %include "../MicroStrain/Wireless/Features/ChannelGroup.h"
 %include "../MicroStrain/Wireless/WirelessChannel.h"
@@ -224,27 +226,29 @@
 %include "../MicroStrain/Inertial/EulerAngles.h"
 %include "../MicroStrain/Inertial/PositionOffset.h"
 %include "../MicroStrain/Inertial/InertialModels.h"
-%include "../MicroStrain/Inertial/InertialTypes.h"
-%include "../MicroStrain/Inertial/InertialChannel.h"
-%include "../MicroStrain/Inertial/InertialDataField.h"
-%include "../MicroStrain/Inertial/Packets/InertialPacket.h"
-%include "../MicroStrain/Inertial/InertialDataPoint.h"
-%include "../MicroStrain/Inertial/Packets/InertialDataPacket.h"
-%include "../MicroStrain/Inertial/Features/InertialNodeFeatures.h"
+%include "../MicroStrain/Displacement/DisplacementModels.h"
+%include "../MicroStrain/MIP/MipTypes.h"
+%include "../MicroStrain/MIP/MipChannel.h"
+%include "../MicroStrain/MIP/MipDataField.h"
+%include "../MicroStrain/MIP/Packets/MipPacket.h"
+%include "../MicroStrain/MIP/MipDataPoint.h"
+%include "../MicroStrain/MIP/Packets/MipDataPacket.h"
+%include "../MicroStrain/MIP/MipNodeFeatures.h"
 %include "../MicroStrain/Inertial/InertialNode.h"
+%include "../MicroStrain/Displacement/DisplacementNode.h"
 %include "../MicroStrain/Inertial/Commands/GNSS_SBASSettings.h"
 
 namespace std
 {
     %template(ChannelData)              vector<mscl::WirelessDataPoint>;
-    %template(InertialDataPoints)       vector<mscl::InertialDataPoint>;
+    %template(MipDataPoints)            vector<mscl::MipDataPoint>;
     %template(Bytes)                    vector<unsigned char>;
     %template(DeviceList)               map<string, mscl::DeviceInfo>;
     %template(NodeDiscoveries)          vector<mscl::NodeDiscovery>;
     %template(DataSweeps)               vector<mscl::DataSweep>;
     %template(LoggedDataSweeps)         vector<mscl::LoggedDataSweep>;
-    %template(InertialDataPackets)      vector<mscl::InertialDataPacket>;
-    %template(InertialChannels)         vector<mscl::InertialChannel>;
+    %template(MipDataPackets)           vector<mscl::MipDataPacket>;
+    %template(MipChannels)              vector<mscl::MipChannel>;
     %template(DataCollectionMethods)    vector<mscl::WirelessTypes::DataCollectionMethod>;
     %template(DataFormats)              vector<mscl::WirelessTypes::DataFormat>;
     %template(WirelessSampleRates)      vector<mscl::WirelessTypes::WirelessSampleRate>;
@@ -264,8 +268,8 @@ namespace std
     %template(DerivedChannelMasks)      map<mscl::WirelessTypes::DerivedChannelType, mscl::ChannelMask>;
     %template(SampleRates)              vector<mscl::SampleRate>;
     %template(ConfigIssues)             vector<mscl::ConfigIssue>;
-    %template(InertialChannelFields)    vector<mscl::InertialTypes::ChannelField>;
-    %template(InertialCommands)         vector<mscl::InertialTypes::Command>;
+    %template(MipChannelFields)         vector<mscl::MipTypes::ChannelField>;
+    %template(MipCommands)              vector<mscl::MipTypes::Command>;
     %template(ChannelGroups)            vector<mscl::ChannelGroup>;
     %template(WirelessChannels)         vector<mscl::WirelessChannel>;
     %template(DamageAngles)             map<uint8_t, float>;

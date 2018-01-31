@@ -14,6 +14,133 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
+35.1.2 - 2018-01-30
+- fix for IEPE having incorrect ramBufferSize, causing maxBytesPerBurst to be incorrect.
+
+35.1.1 - 2018-01-29
+- fix for maxTransmitPower and minTransmitPower functions using device region code instead of passed in region code.
+
+35.1.0 - 2018-01-26
+- added NodeFeatures::maxTransmitPower and minTransmitPower.
+- added BaseStationFeatures::maxTransmitPower and minTransmitPower.
+
+35.0.0 - 2018-01-26
+- REMOVED WirelessTypes::maxTransmitPower().
+- CHANGED NodeFeatures::transmitPowers() to take a WirelessTypes::CommProtocol argument.
+- CHANGED NodeFeatures::supportsTransmitPower() to take a WirelessTypes::CommProtocol argument.
+- CHANGED BaseStationFeatures::transmitPowers() to take a WirelessTypes::CommProtocol argument.
+- CHANGED BaseStationFeatures::supportsTransmitPower() to take a WirelessTypes::CommProtocol argument.
+- different set of transmit powers in Japan for some products, depending on communication protocol.
+
+34.0.7 - 2018-01-25
+- update Base Received Response timeout logic.
+
+34.0.6 - 2018-01-25
+- fix for Node timeouts not always being set correctly.
+
+34.0.5 - 2018-01-25
+- setting tcp::no_delay(true) for TcpIpConnections to disable Nagle's Algorithm.
+
+34.0.4 - 2018-01-24
+- changed TcpIp connections deadline timer to 5 seconds.
+
+34.0.3 - 2018-01-23
+- TcpIp connections now use async_connect with a deadline timer of 3 seconds.
+
+34.0.2 - 2018-01-23
+- fix for crash when destroying WsdaFinder object before the initial UPnP thread was started.
+
+34.0.1 - 2018-01-22
+- fix for incorrect logic in determining Node timeout, causing failures on TCP connections with lots of latency.
+- changed default TCP connection timeout from 2 seconds to 500 milliseconds.
+
+34.0.0 - 2018-01-12
+- RENAMED MipDataPacket::timestamp() to MipDataPacket::collectedTimestamp()
+- added MipDataPacket::utcTimestamp() for when a UTC time is available from the data packet (currently just used by Displacement).
+- added DisplacementNode::setDeviceTime functions.
+- reduced the amount of eeprom reads a BaseStation and Node require when first communicating.
+- updated more transmit powers for Japan region for some products.
+
+33.5.1 - 2018-01-10
+- updated transmit powers for Japan region for some products.
+
+33.5.0 - 2018-01-08
+- added the WirelessNode updateEepromCacheFromNodeDiscovery function to import NodeDiscovery 
+  information into a Node's eeprom cache
+
+33.4.6 - 2018-01-03
+- support for Sleep v2 (ASPP 1.8) command.
+
+33.4.5 - 2017-12-20
+- revised logic for padding on timeout after receiving a BaseStation received response
+  to avoid adding too much timeout to serial/usb connected BaseStations.
+- BaseStation constructor with no timeout now uses extended default timeout for TCP/WebSocket connections.
+
+33.4.4 - 2017-12-20
+- extended padding on timeout after receiving a BaseStation received response.
+
+33.4.3 - 2017-12-19
+- fix for getDisplacementOutputDataRate not waiting for data reply.
+
+33.4.2 - 2017-12-19
+- update for parsing Displacement model number strings.
+- update for Displacement model number enum identifier.
+
+33.4.1 - 2017-12-14
+- fix for DisplacementOutputDataRate parsing a uint16 instead of a uint32.
+
+33.4.0 - 2017-12-14
+- added DisplacementNode::getDisplacementOutputDataRate().
+- added DisplacementNode::getAnalogToDisplacementCal().
+- fix for Displacement model string to model enum failing.
+- added nack code to Error_MipCmdFailed string.
+
+33.3.0 - 2017-12-12
+- added optional interfaceAddress parameter to Connection::TcpIp.
+
+33.2.0 - 2017-12-12
+- added doCommand function to DisplacementNode class for performing advanced MIP commands.
+
+33.1.0 - 2017-12-12
+- added DisplacementNode class
+- support for parsing MIP packets from Displacement Nodes
+- support for basic MIP commands that Displacement Nodes will support
+
+33.0.0 - 2017-12-08
+- RENAMED Error_InertialCmdFailed to Error_MipCmdFailed.
+- RENAMED InertialTypes to MipTypes.
+- RENAMED InertialTypes::InertialCategory to MipTypes::DataClass.
+- RENAMED InertialCategory::CATEGORY_SENSOR to DataClass::class_AHRS_IMU.
+- RENAMED InertialChannelFields to MipChannelFields.
+- RENAMED InertialCommands to MipCommands.
+- RENAMED InertialChannel to MipChannel.
+- RENAMED InertialChannels to MipChannels.
+- RENAMED InertialDataField to MipDataField.
+- RENAMED InertialDataFields to MipDataFields.
+- RENAMED InertialDataPoint to MipDataPoint.
+- RENAMED InertialDataPoints to MipDataPoints.
+- RENAMED InertialNodeInfo to MipNodeInfo.
+- RENAMED InertialParser to MipParser.
+- RENAMED InertialDataPacket to MipDataPacket.
+- RENAMED InertialDataPackets to MipDataPackets.
+- RENAMED InertialFieldParser to MipFieldParser.
+- RENAMED InertialPacket to MipPacket.
+- RENAMED InertialPacketBuilder to MipPacketBuilder.
+- RENAMED InertialPacketCollector to MipPacketCollector.
+- RENAMED GenericInertialCmdResponse to GenericMipCmdResponse.
+- RENAMED GenericInertialCommand to GenericMipCommand.
+- RENAMED Inertial_CyclePower to CyclePower.
+- RENAMED Inertial_SetToIdle to Mip_SetToIdle.
+- CHANGED VehicleModeType to be nested under InertialTypes (InertialTypes::VehicleModeType).
+- CHANGED GNSS_Source to be nested under InertialTypes (InertialTypes::GNSS_Source).
+- CHANGED InertialDataEnums::GnssFixType to be nested under InertialTypes (InertialTypes::GnssFixType).
+- CHANGED InertialDataEnums::HwStatus_SensorState to be nested under InertialTypes (InertialTypes::SensorState).
+- CHANGED InertialDataEnums::HwStatus_AntennaState to be nested under InertialTypes (InertialTypes::AntennaState).
+- CHANGED InertialDataEnums::HwStatus_AntennaPower to be nested under InertialTypes (InertialTypes::AntennaPower).
+- CHANGED InertialDataEnums::FilterStatus to be nested under InertialTypes (InertialTypes::FilterStatus).
+- CHANGED InertialDataEnums::HeadingSource to be nested under InertialTypes (InertialTypes::HeadingSource).
+- moved some files from Inertial folder to MIP folder, include paths in C++ may need to be updated.
+
 32.8.3 - 2017-11-29
 - removed channel 8 from SHM-Link-2 and SHM-Link-200.
 - added RF Sweep support for WSDA-2000 with latest firmware.

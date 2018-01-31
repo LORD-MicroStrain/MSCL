@@ -5,7 +5,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "GenericInertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 
@@ -17,13 +17,13 @@ namespace mscl
     //Class: GNSS_AssistTimeUpdate
     //    Contains the logic for the Inertial GNSS Assist TimeUpdate command.
     //    It is important to note that this command will get a Nack back every time after the first from power up.
-    class GNSS_AssistTimeUpdate : private GenericInertialCommand
+    class GNSS_AssistTimeUpdate : private GenericMipCommand
     {
     protected:
         //Function: CommandId
         //Returns:
-        //    InertialTypes::Command - the command ID.
-        virtual InertialTypes::Command commandId() const override { return InertialTypes::CMD_GNSS_ASSIST_TIME_UPDATE; }
+        //    MipTypes::Command - the command ID.
+        virtual MipTypes::Command commandId() const override { return MipTypes::CMD_GNSS_ASSIST_TIME_UPDATE; }
 
     public:
         GNSS_AssistTimeUpdate();
@@ -52,7 +52,7 @@ namespace mscl
 
         //Class: Response
         //    Handles the response to the GNSS_AssistTimeUpdate command.
-        class Response : public GenericInertialCommand::Response
+        class Response : public GenericMipCommand::Response
         {
             //Function: fieldDataByte
             //    Gets the data field descriptor byte
@@ -70,11 +70,11 @@ namespace mscl
             //    Parses the response, getting the assist time result
             //
             //Parameters:
-            //    response - The <GenericInertialCommandResponse> holding the response to parse
+            //    response - The <GenericMipCmdResponse> holding the response to parse
             //
             //Returns:
             //    The data rate base result
-            TimeUpdate parseResponse(const GenericInertialCommandResponse& response) const;
+            TimeUpdate parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
 

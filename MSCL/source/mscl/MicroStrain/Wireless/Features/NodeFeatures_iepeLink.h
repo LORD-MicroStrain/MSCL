@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -19,6 +19,9 @@ namespace mscl
         //Constructor: NodeFeatures_iepeLink
         //    Creates a NodeFeatures_iepeLink object.
         NodeFeatures_iepeLink(const NodeInfo& info);
+
+    private:
+        virtual uint32 ramBufferSize() const override;
 
     public:
         virtual bool supportsSensorDelayConfig() const override;

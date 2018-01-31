@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -14,9 +14,10 @@ namespace mscl
 {
     //The constructor that sets up the SerialConnection
     SerialConnection::SerialConnection(const std::string& port, uint32 baudRate):
-        m_port(port),                    //set the port
-        m_baudRate(baudRate)            //set the baud rate
+        m_port(port),
+        m_baudRate(baudRate)
     {
+        m_type = Connection::connectionType_serial;
         establishConnection();
     }
 

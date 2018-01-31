@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -17,7 +17,7 @@ namespace mscl
 {
     class DataBuffer;
     class WirelessPacket;
-    class InertialDataField;
+    class MipDataField;
     class ResponseCollector;
 
     //Class: ResponsePattern
@@ -137,14 +137,14 @@ namespace mscl
         virtual bool match(const WirelessPacket& packet);
 
         //Function: match
-        //    Checks if the <InertialDataField> passed in matches the response pattern's bytes
+        //    Checks if the <MipDataField> passed in matches the response pattern's bytes
         //
         //Parameters:
-        //    field - The <InertialDataField> in which to try to find the pattern
+        //    field - The <MipDataField> in which to try to find the pattern
         //
         //Returns:
         //    true if the packet matches a response pattern, false otherwise.
-        virtual bool match(const InertialDataField& field);
+        virtual bool match(const MipDataField& field);
 
         //Function: wait
         //    Waits for a certain amount of time for the response pattern to be matched

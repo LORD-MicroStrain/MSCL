@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -1244,16 +1244,6 @@ namespace mscl
         //Returns:
         //    A datalogging sample rate eeprom value for the given <WirelessSampleRate>.
         static uint16 sampleRateToDataloggingRate(WirelessSampleRate rate);
-
-        //Function: maxTransmitPower
-        //    Gets the max transmit power that is allowed based on the region code.
-        //
-        //Parameters:
-        //    region - the <WirelessTypes::RegionCode> to get the max power for.
-        //
-        //Returns:
-        //    The max <WirelessTypes::TransmitPower>.
-        static WirelessTypes::TransmitPower maxTransmitPower(WirelessTypes::RegionCode region);
 
         //Function: legacyToTransmitPower
         //    Converts the given <WirelessTypes::LegacyTransmitPower> to the <WirelessTypes::TransmitPower> equivalent.

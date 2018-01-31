@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -60,7 +60,7 @@ namespace mscl
         //  commProtocol - The <WirelessTypes::CommProtocol> to get the ASPP version for.
         //
         //Exceptions:
-        //  - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //  - <Error_Communication>: Failed to read the value from the BaseStation.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         Version read_asppVersion(WirelessTypes::CommProtocol commProtocol) const;
 
@@ -68,7 +68,7 @@ namespace mscl
         //  Gets the <WirelessTypes::CommProtocol> of the BaseStation.
         //
         //Exceptions:
-        //  - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //  - <Error_Communication>: Failed to read the value from the BaseStation.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::CommProtocol read_commProtocol() const;
 
@@ -90,6 +90,8 @@ namespace mscl
         //  - <Error_Communication>: Failed to read from the BaseStation.
         //  - <Error_Connection>: A connection error has occurred with the BaseStation.
         Version read_fwVersion() const;
+
+        uint8 read_fwVersionMajor() const;
 
         //Function: read_model
         //  Reads the <WirelessModels::BaseModel> of the BaseStation.

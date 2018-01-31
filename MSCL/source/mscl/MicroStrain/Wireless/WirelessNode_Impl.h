@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -185,6 +185,8 @@ namespace mscl
         //Function: clearEepromCache
         //    Clears the eeprom cache for this Node.
         void clearEepromCache();
+
+        void updateEepromCacheFromNodeDiscovery(const NodeDiscovery& nodeDisovery);
 
         //Function: getEepromCache
         //  Gets a copy of the eeprom cache as a <WirelessTypes::EepromMap>.

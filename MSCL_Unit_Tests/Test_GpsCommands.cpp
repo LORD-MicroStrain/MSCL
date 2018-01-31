@@ -1,10 +1,10 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "mscl/MicroStrain/Inertial/Commands/GNSS_Commands.h"
-#include "mscl/MicroStrain/Inertial/InertialDataField.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 
 #include <boost/test/unit_test.hpp>
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(GetGpsDataRateBase_parseData)
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     GetGnssDataRateBase::Response response(rc);
 
-    BOOST_CHECK_EQUAL(response.parseResponse(GenericInertialCommandResponse::ResponseSuccess("", data)), 1000);
+    BOOST_CHECK_EQUAL(response.parseResponse(GenericMipCmdResponse::ResponseSuccess("", data)), 1000);
 }
 
 BOOST_AUTO_TEST_CASE(GetGpsDataRateBase_Match_Success)
@@ -48,12 +48,12 @@ BOOST_AUTO_TEST_CASE(GetGpsDataRateBase_Match_Success)
     Bytes ackData;
     ackData.push_back(0x07);
     ackData.push_back(0x00);
-    InertialDataField ackField(0x0CF1, ackData); //ack/nack field
+    MipDataField ackField(0x0CF1, ackData); //ack/nack field
 
     Bytes data;
     data.push_back(0x00);
     data.push_back(0x04);
-    InertialDataField dataField(0x0C84, data); //data field
+    MipDataField dataField(0x0C84, data); //data field
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(ackField), true);
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(GetGpsDataRateBase_Match_Success)
     BOOST_CHECK_EQUAL(response.match(dataField), true);
     BOOST_CHECK_EQUAL(response.fullyMatched(), true);
     BOOST_CHECK_EQUAL(response.result().success(), true);
-    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::InertialPacket::MIP_ACK_NACK_ERROR_NONE);
+    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
 }
 
 BOOST_AUTO_TEST_SUITE_END()    //End GetGpsDataRateBase
@@ -88,9 +88,9 @@ BOOST_AUTO_TEST_CASE(GpsMessageFormat_buildCommand_get)
 
 BOOST_AUTO_TEST_CASE(GpsMessageFormat_buildCommand_set)
 {
-    InertialChannels chs;
-    chs.push_back(InertialChannel(InertialTypes::CH_FIELD_GNSS_LLH_POSITION, SampleRate::Hertz(2)));
-    chs.push_back(InertialChannel(InertialTypes::CH_FIELD_GNSS_NED_VELOCITY, SampleRate::Hertz(4)));
+    MipChannels chs;
+    chs.push_back(MipChannel(MipTypes::CH_FIELD_GNSS_LLH_POSITION, SampleRate::Hertz(2)));
+    chs.push_back(MipChannel(MipTypes::CH_FIELD_GNSS_NED_VELOCITY, SampleRate::Hertz(4)));
 
     ByteStream b = GnssMessageFormat::buildCommand_set(chs, 4);
 
@@ -125,10 +125,10 @@ BOOST_AUTO_TEST_CASE(GpsMessageFormat_parseData)
 
     uint16 sampleRateBase = 1000;
 
-    InertialChannels chs = response.parseResponse(GenericInertialCommandResponse::ResponseSuccess("", data), sampleRateBase);
+    MipChannels chs = response.parseResponse(GenericMipCmdResponse::ResponseSuccess("", data), sampleRateBase);
 
     BOOST_CHECK_EQUAL(chs.size(), 1);
-    BOOST_CHECK_EQUAL(chs.at(0).channelField(), InertialTypes::CH_FIELD_GNSS_UTC_TIME);
+    BOOST_CHECK_EQUAL(chs.at(0).channelField(), MipTypes::CH_FIELD_GNSS_UTC_TIME);
     BOOST_CHECK_EQUAL(chs.at(0).rateDecimation(sampleRateBase), 4);
     BOOST_CHECK_EQUAL(chs.at(0).sampleRate().samplesPerSecond(), SampleRate::Hertz(250).samplesPerSecond());
 }

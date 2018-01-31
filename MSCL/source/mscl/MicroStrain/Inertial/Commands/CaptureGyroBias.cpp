@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "CaptureGyroBias.h"
-#include "mscl/MicroStrain/Inertial/InertialDataField.h"
-#include "mscl/MicroStrain/Inertial/Packets/InertialPacketBuilder.h"
-#include "mscl/MicroStrain/Inertial/InertialTypes.h"
-#include "Inertial_Commands.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
+#include "mscl/MicroStrain/MIP/MipTypes.h"
+#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 
 namespace mscl
 {
@@ -21,7 +21,7 @@ namespace mscl
         return true;
     }
 
-    GeometricVector CaptureGyroBias::getResponseData(const GenericInertialCommandResponse& response)
+    GeometricVector CaptureGyroBias::getResponseData(const GenericMipCmdResponse& response)
     {
         DataBuffer dataBuffer(response.data());
         GeometricVector returnData{ dataBuffer.read_float(), dataBuffer.read_float(), dataBuffer.read_float() };
@@ -32,7 +32,7 @@ namespace mscl
     {
         ByteStream byteCommand;
         byteCommand.append_uint16(m_samplingTimeInMS);
-        return GenericInertialCommand::buildCommand(commandType(), byteCommand.data()); ;
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
     }
 
 }

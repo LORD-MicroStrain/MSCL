@@ -5,10 +5,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "GenericInertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/Inertial/Commands/InertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
@@ -17,7 +17,7 @@ namespace mscl
 
     //Class: VehicleDynamicsMode
     //    Contains the logic for the Inertial VehicleDynamicsMode command.
-    class VehicleDynamicsMode : public InertialCommand
+    class VehicleDynamicsMode : public MipCommand
     {
     public:
         //Function: commandName
@@ -33,7 +33,7 @@ namespace mscl
 		//
         //Returns:
         //    VehicleDynamicsMode - object set up for sending a set command.
-        static VehicleDynamicsMode MakeSetCommand(const VehicleModeType& vehicleType);
+        static VehicleDynamicsMode MakeSetCommand(const InertialTypes::VehicleModeType& vehicleType);
 
         //Function: MakeGetCommand
 		//
@@ -44,11 +44,11 @@ namespace mscl
         //Function: getResponseData
 		//
         //Parameter:
-        //    response - The <GenericInertialCommandResponse> object from which to get formatted data.
+        //    response - The <GenericMipCmdResponse> object from which to get formatted data.
 		//
         //Returns:
         //    VehicleModeType - An object with the data returned from the device.
-        static VehicleModeType getResponseData(const GenericInertialCommandResponse& response);
+        static InertialTypes::VehicleModeType getResponseData(const GenericMipCmdResponse& response);
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
@@ -57,14 +57,14 @@ namespace mscl
     private:
         // Function: Constructor VehicleDynamicsMode
         //    Private constructor creates a VehicleDynamicsMode object.  Use Make___Command methods to create an object.
-        VehicleDynamicsMode(InertialTypes::FunctionSelector function_selector, const VehicleModeType& dataToUse);
-		VehicleDynamicsMode(InertialTypes::FunctionSelector function_selector);
+        VehicleDynamicsMode(MipTypes::FunctionSelector function_selector, const InertialTypes::VehicleModeType& dataToUse);
+		VehicleDynamicsMode(MipTypes::FunctionSelector function_selector);
 
         //Function: commandType
 		//
         //Returns:
-        //    InertialTypes::Command - the command ID.
-        virtual InertialTypes::Command commandType() const { return InertialTypes::CMD_EF_VEHIC_DYNAMICS_MODE; }
+        //    MipTypes::Command - the command ID.
+        virtual MipTypes::Command commandType() const { return MipTypes::CMD_EF_VEHIC_DYNAMICS_MODE; }
 
         //Function: fieldDataByte
 		//
@@ -80,11 +80,11 @@ namespace mscl
 
         //Variable: m_VehicleType
         //    The uint8 to send to the device.
-        VehicleModeType m_VehicleType;
+        InertialTypes::VehicleModeType m_VehicleType;
 
         //Variable: m_functionSelector
         //    The FunctionSelector type of command to send, get/set, reset to factory defaults, et al.
-        InertialTypes::FunctionSelector m_functionSelector;
+        MipTypes::FunctionSelector m_functionSelector;
 
     public:
 	// Destructor

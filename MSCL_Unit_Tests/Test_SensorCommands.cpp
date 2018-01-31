@@ -1,10 +1,10 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "mscl/MicroStrain/Inertial/Commands/Sensor_Commands.h"
-#include "mscl/MicroStrain/Inertial/InertialDataField.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 
 #include <boost/test/unit_test.hpp>
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_CASE(GetSensorDataRateBase_parseData)
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     GetSensorDataRateBase::Response response(rc);
 
-    BOOST_CHECK_EQUAL(response.parseResponse(GenericInertialCommandResponse::ResponseSuccess("", data)), 4000);
+    BOOST_CHECK_EQUAL(response.parseResponse(GenericMipCmdResponse::ResponseSuccess("", data)), 4000);
 }
 
 BOOST_AUTO_TEST_CASE(GetSensorDataRateBase_Match_Success)
@@ -48,12 +48,12 @@ BOOST_AUTO_TEST_CASE(GetSensorDataRateBase_Match_Success)
     Bytes ackData;
     ackData.push_back(0x06);
     ackData.push_back(0x00);
-    InertialDataField ackField(0x0CF1, ackData); //ack/nack field
+    MipDataField ackField(0x0CF1, ackData); //ack/nack field
 
     Bytes data;
     data.push_back(0x00);
     data.push_back(0x0A);
-    InertialDataField dataField(0x0C83, data); //data field
+    MipDataField dataField(0x0C83, data); //data field
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(ackField), true);
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(GetSensorDataRateBase_Match_Success)
     BOOST_CHECK_EQUAL(response.match(dataField), true);
     BOOST_CHECK_EQUAL(response.fullyMatched(), true);
     BOOST_CHECK_EQUAL(response.result().success(), true);
-    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::InertialPacket::MIP_ACK_NACK_ERROR_NONE);
+    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
 }
 
 BOOST_AUTO_TEST_SUITE_END()    //End GetSensorDataRateBase
@@ -90,9 +90,9 @@ BOOST_AUTO_TEST_CASE(SensorMessageFormat_buildCommand_set)
 {
     SampleRate hz1 = SampleRate::Hertz(1);
 
-    InertialChannels chs;
-    chs.push_back(InertialChannel(InertialTypes::CH_FIELD_SENSOR_SCALED_ACCEL_VEC, hz1));
-    chs.push_back(InertialChannel(InertialTypes::CH_FIELD_SENSOR_SCALED_GYRO_VEC, hz1));
+    MipChannels chs;
+    chs.push_back(MipChannel(MipTypes::CH_FIELD_SENSOR_SCALED_ACCEL_VEC, hz1));
+    chs.push_back(MipChannel(MipTypes::CH_FIELD_SENSOR_SCALED_GYRO_VEC, hz1));
 
     ByteStream b = SensorMessageFormat::buildCommand_set(chs, 10);
 
@@ -129,10 +129,10 @@ BOOST_AUTO_TEST_CASE(SensorMessageFormat_parseData)
 
     uint16 sampleRateBase = 50;
 
-    InertialChannels chs = response.parseResponse(GenericInertialCommandResponse::ResponseSuccess("", data), sampleRateBase);
+    MipChannels chs = response.parseResponse(GenericMipCmdResponse::ResponseSuccess("", data), sampleRateBase);
 
     BOOST_CHECK_EQUAL(chs.size(), 2);
-    BOOST_CHECK_EQUAL(chs.at(0).channelField(), InertialTypes::CH_FIELD_SENSOR_SCALED_MAG_VEC);
+    BOOST_CHECK_EQUAL(chs.at(0).channelField(), MipTypes::CH_FIELD_SENSOR_SCALED_MAG_VEC);
     BOOST_CHECK_EQUAL(chs.at(0).rateDecimation(sampleRateBase), 10);
     BOOST_CHECK_EQUAL(chs.at(0).sampleRate().samplesPerSecond(), SampleRate::Hertz(5).samplesPerSecond());
 }

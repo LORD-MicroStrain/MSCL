@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -9,54 +9,13 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    ByteStream Sleep::buildCommand(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress)
+    ByteStream Sleep::buildCommand(NodeAddress nodeAddress)
     {
         //build the command ByteStream
         ByteStream cmd;
-
-        if(asppVer == WirelessPacket::aspp_v3)
-        {
-            cmd.append_uint8(WirelessPacket::ASPP_V3_SOP);              //Start of Packet
-            cmd.append_uint8(0x04);                                     //Delivery Stop Flag
-            cmd.append_uint8(WirelessPacket::packetType_nodeCommand);   //App Data Type
-            cmd.append_uint32(nodeAddress);                             //Node address
-            cmd.append_uint16(0x0002);                                  //Payload length
-            cmd.append_uint16(WirelessProtocol::cmdId_sleep);           //Command ID
-            cmd.append_uint16(0x7F7F);                                  //dummy RSSI bytes
-            cmd.append_uint32(cmd.calculateCrcChecksum());              //Checksum
-        }
-        else
-        {
-            cmd.append_uint8(static_cast<uint8>(WirelessProtocol::cmdId_sleep));    //Start of Packet
-            cmd.append_uint16(static_cast<uint16>(nodeAddress));                    //Node address    (2 bytes)
-        }
+        cmd.append_uint8(static_cast<uint8>(WirelessProtocol::cmdId_sleep));    //Start of Packet
+        cmd.append_uint16(static_cast<uint16>(nodeAddress));                    //Node address
 
         return cmd;
-    }
-
-    Sleep::Response::Response(NodeAddress nodeAddress, std::weak_ptr<ResponseCollector> collector):
-        WirelessResponsePattern(collector, WirelessProtocol::cmdId_sleep, nodeAddress),
-        m_nodeAddress(nodeAddress)
-    {
-    }
-
-    bool Sleep::Response::matchSuccessResponse(const WirelessPacket& packet)
-    {
-        WirelessPacket::Payload payload = packet.payload();
-
-        //check the main bytes of the packet
-        if(packet.deliveryStopFlags().toByte() != 0x08 ||                      //delivery stop flag
-           packet.type() != WirelessPacket::packetType_nodeSuccessReply ||     //app data type
-           packet.nodeAddress() != m_nodeAddress ||                            //node address
-           payload.size() != 2 ||                                              //payload length
-           payload.read_uint16(0) != WirelessProtocol::cmdId_sleep             //command ID
-           )
-        {
-            //failed to match some of the bytes
-            return false;
-        }
-
-        //if we made it here, the packet matches the response pattern
-        return true;
     }
 }

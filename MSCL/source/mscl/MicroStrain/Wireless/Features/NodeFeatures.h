@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -524,10 +524,11 @@ namespace mscl
         //
         //Parameters:
         //    power - The <WirelessTypes::TransmitPower> to check if supported.
+        //    commProtocol - The <WirelessTypes::CommProtocol> to check if the power is supported in.
         //
         //Returns:
         //    true if the transmit power is supported, false otherwise.
-        virtual bool supportsTransmitPower(WirelessTypes::TransmitPower power) const;
+        virtual bool supportsTransmitPower(WirelessTypes::TransmitPower power, WirelessTypes::CommProtocol commProtocol) const;
 
         //API Function: supportsDataMode
         //    Checks if a <WirelessTypes::DataMode> is supported by this Node.
@@ -881,11 +882,15 @@ namespace mscl
         virtual const WirelessTypes::WirelessSampleRates derivedDataRates() const;
 
         //API Function: transmitPowers
-        //    Gets a list of the <WirelessTypes::TransmitPowers> that are supported by this Node.
+        //    Gets a list of the <WirelessTypes::TransmitPowers> that are supported by this Node, for the given <WirelessTypes::CommProtocol>.
+        //    Note: This list is dependent on the <WirelessTypes::RegionCode> of the device. If this changes, this function should be called again.
+        //
+        //Parameters:
+        //  commProtocol - The <WirelessTypes::CommProtocol> to get the transmit powers for.
         //
         //Returns:
         //    A vector of <WirelessTypes::TransmitPowers> that are supported by this Node.
-        virtual const WirelessTypes::TransmitPowers transmitPowers() const;
+        virtual const WirelessTypes::TransmitPowers transmitPowers(WirelessTypes::CommProtocol commProtocol) const;
 
         //API Function: commProtocols
         //  Gets a list of <WirelessTypes::CommProtocols> that are supported by this Node.
@@ -960,6 +965,28 @@ namespace mscl
         //  A vector of <WirelessTypes::DerivedChannelTypes> supported by the Node.
         virtual const WirelessTypes::DerivedChannelTypes derivedChannelTypes() const;
 
+        //API Function: maxTransmitPower
+        //  Gets the maximum <WirelessTypes::TransmitPower> that is supported for the given parameters.
+        //
+        //Parameters:
+        //  region - The <WirelessTypes::RegionCode> of the device.
+        //  commProtocol - The <WirelessTypes::CommProtocol> of the device.
+        //
+        //Returns:
+        //  The max <WirelessTypes::TransmitPower> that is suppported for the given parameters.
+        virtual WirelessTypes::TransmitPower maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const;
+
+        //API Function: minTransmitPower
+        //  Gets the minimum <WirelessTypes::TransmitPower> that is supported for the given parameters.
+        //
+        //Parameters:
+        //  region - The <WirelessTypes::RegionCode> of the device.
+        //  commProtocol - The <WirelessTypes::CommProtocol> of the device.
+        //
+        //Returns:
+        //  The min <WirelessTypes::TransmitPower> that is suppported for the given parameters.
+        virtual WirelessTypes::TransmitPower minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const;
+
     protected:
         //Function: supportsNewTransmitPowers
         //    Checks if the Node supports the new transmit powers (true), or the old ones (false).
@@ -1010,10 +1037,6 @@ namespace mscl
         //Function: supportsDataModeEeprom
         //  Checks if the Data Mode eeprom location is supported.
         virtual bool supportsDataModeEeprom() const;
-
-        //Function: supportsCommProtocolEeprom
-        //  Checks if the Communication Protocol eeprom location is supported.
-        virtual bool supportsCommProtocolEeprom() const;
 
         //Function: supportsEeprom1024AndAbove
         //  Checks if the Node supports reading eeprom location 1024 and above.

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -13,6 +13,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include <string>
 #include <thread>
 #include "BoostCommunication.h"
+#include "Connection.h"
 #include "ConnectionDebugData.h"
 #include <functional>
 
@@ -48,6 +49,10 @@ namespace mscl
         //Returns:
         //    A description of the connection
         virtual std::string description() = 0;
+
+        //Function: type
+        //  Gets the <Connection::ConnectionType>.
+        virtual Connection::ConnectionType type() = 0;
 
         //Function: disconnect
         //    Closes the current connection.
@@ -213,6 +218,10 @@ namespace mscl
         //    The function to call to parse data that is read in.
         std::function<void(DataBuffer&)> m_parseFunction;
 
+        //Variable: m_type
+        //  The <Connection::ConnectionType> of this connection.
+        Connection::ConnectionType m_type;
+
     private:
         //Variable: m_rawByteBuffer
         //    The circular buffer to store data when in "Raw Byte Mode."
@@ -270,6 +279,10 @@ namespace mscl
         //Returns:
         //    A description of the connection.
         virtual std::string description() = 0;
+
+        //Function: type
+        //  Gets the <Connection::ConnectionType>.
+        virtual Connection::ConnectionType type() override;
 
         //Function: disconnect
         //    Closes the current connection.
@@ -528,6 +541,12 @@ namespace mscl
     }
 
     template <typename Comm_Object>
+    Connection::ConnectionType Connection_Impl<Comm_Object>::type()
+    {
+        return m_type;
+    }
+
+    template <typename Comm_Object>
     void Connection_Impl<Comm_Object>::reconnect()
     {
         establishConnection();
@@ -595,7 +614,9 @@ namespace mscl
         }
         catch(Error& e)
         {
-            std::cout << e.what() << std::endl;
+            m_connectionError = true;
+            m_errorMsg = e.what();
+
             //buffer doesn't have more room to write, 
             //shouldn't happen when starting the read thread
             assert(false);

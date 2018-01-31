@@ -1,33 +1,33 @@
 #include "stdafx.h"
 #include "GNSS_SBASSettings.h"
-#include "mscl/MicroStrain/Inertial/InertialDataField.h"
-#include "mscl/MicroStrain/Inertial/Packets/InertialPacketBuilder.h"
-#include "mscl/MicroStrain/Inertial/InertialTypes.h"
-#include "Inertial_Commands.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
+#include "mscl/MicroStrain/MIP/MipTypes.h"
+#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 
 namespace mscl
 {
     SBASSettings SBASSettings::MakeSetCommand(SBASSettingsData dataToUse)
     {
-        return SBASSettings(InertialTypes::USE_NEW_SETTINGS, dataToUse);
+        return SBASSettings(MipTypes::USE_NEW_SETTINGS, dataToUse);
     }
 
     SBASSettings SBASSettings::MakeGetCommand()
     {
         SBASSettingsData dataToUse;  // The data won't get used for a get command.
-        return SBASSettings(InertialTypes::READ_BACK_CURRENT_SETTINGS, dataToUse);
+        return SBASSettings(MipTypes::READ_BACK_CURRENT_SETTINGS, dataToUse);
     }
 
     bool SBASSettings::responseExpected() const
     {
-        return (m_functionSelector == InertialTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
     }
 
-    SBASSettingsData SBASSettings::getResponseData(const GenericInertialCommandResponse& response)
+    SBASSettingsData SBASSettings::getResponseData(const GenericMipCmdResponse& response)
     {
         DataBuffer dataBuffer(response.data());
         SBASSettingsData returnData;
-        returnData.enableSBAS = (dataBuffer.read_uint8() == InertialTypes::ENABLED)? true : false;
+        returnData.enableSBAS = (dataBuffer.read_uint8() == MipTypes::ENABLED)? true : false;
         uint16 optionFlags = dataBuffer.read_uint16();
         returnData.enableRanging = Utils::bitIsSet(optionFlags, 0) ? true : false;
         returnData.enableCorrectionData = Utils::bitIsSet(optionFlags, 1) ? true : false;
@@ -48,9 +48,9 @@ namespace mscl
         byteCommand.append_uint8(static_cast<uint8>(m_functionSelector));
 
         // Only fill in data if set command is being sent.
-        if (m_functionSelector == InertialTypes::USE_NEW_SETTINGS)
+        if (m_functionSelector == MipTypes::USE_NEW_SETTINGS)
         {
-            uint8 sbasEnabled = static_cast<uint8>(m_data.enableSBAS ? InertialTypes::ENABLED : InertialTypes::DISABLED);
+            uint8 sbasEnabled = static_cast<uint8>(m_data.enableSBAS ? MipTypes::ENABLED : MipTypes::DISABLED);
             byteCommand.append_uint8(sbasEnabled);
             uint16 optionFlags = 0;
             if (m_data.enableRanging) optionFlags |= 0x1;
@@ -66,7 +66,7 @@ namespace mscl
                 byteCommand.append_uint16(*i);
             }
         }
-        return GenericInertialCommand::buildCommand(commandType(), byteCommand.data()); ;
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
     }
 
 }

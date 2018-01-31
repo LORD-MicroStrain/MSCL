@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(BaseStation_changeFrequency_success)
     std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl());
     BaseStation base(baseImpl);
 
-    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+    MOCK_EXPECT(baseImpl->communicationProtocol).returns(WirelessTypes::commProtocol_lxrs);
     MOCK_EXPECT(baseImpl->protocol).returns(*(WirelessProtocol::v1_5().get()));
     //expectRead(baseImpl, BaseStationEepromMap::ASPP_VER_LXRS, Value::UINT16((uint16)(0x0100)));
     expectWrite(baseImpl, BaseStationEepromMap::FREQUENCY, Value::UINT16(14));
