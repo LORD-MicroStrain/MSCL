@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -30,12 +30,9 @@ namespace mscl
         virtual void establishConnection() override { return; }
 
     public:
-        //Function: description
-        //    Gets a description of the connection as a string
-        //
-        //Returns:
-        //    A description of the connection
         virtual std::string description() override { return "Mock Connection"; }
+
+        virtual Connection::ConnectionType type() override { return Connection::connectionType_serial; };
 
         virtual void disconnect() override { return; }
 

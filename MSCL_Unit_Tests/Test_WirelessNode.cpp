@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_Ping_success)
 
     std::unique_ptr<BaseStationFeatures> baseFeatures;
     expectBaseFeatures(baseFeatures, impl);
-    expectRead(impl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+    MOCK_EXPECT(impl->communicationProtocol).returns(WirelessTypes::commProtocol_lxrs);
 
     WirelessNode node(123, base);
 
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_readEepromuint16_pageDownload)
 
     std::unique_ptr<BaseStationFeatures> baseFeatures;
     expectBaseFeatures(baseFeatures, impl);
-    expectRead(impl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+    MOCK_EXPECT(impl->communicationProtocol).returns(WirelessTypes::commProtocol_lxrs);
 
     WirelessNode node(123, base);
 
@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_readEepromuint16_read)
 
     std::unique_ptr<BaseStationFeatures> baseFeatures;
     expectBaseFeatures(baseFeatures, impl);
-    expectRead(impl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+    MOCK_EXPECT(impl->communicationProtocol).returns(WirelessTypes::commProtocol_lxrs);
 
     WirelessNode node(123, base);
 
@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_writeEepromuint16)
 
     std::unique_ptr<BaseStationFeatures> baseFeatures;
     expectBaseFeatures(baseFeatures, impl);
-    expectRead(impl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+    MOCK_EXPECT(impl->communicationProtocol).returns(WirelessTypes::commProtocol_lxrs);
 
     WirelessNode node(123, base);
 
@@ -298,7 +298,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_frequency)
 
     std::unique_ptr<BaseStationFeatures> baseFeatures;
     expectBaseFeatures(baseFeatures, impl);
-    expectRead(impl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+    MOCK_EXPECT(impl->communicationProtocol).returns(WirelessTypes::commProtocol_lxrs);
 
     //call the create function
     WirelessNode node(123, base);
@@ -552,6 +552,7 @@ BOOST_AUTO_TEST_CASE(NodeConfig_setTransmitPower)
     expectNodeFeatures(features, impl);
 
     expectWrite(impl, NodeEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)25619));
+    expectRead(impl, NodeEepromMap::FIRMWARE_VER, Value(valueType_uint16, (uint16)10));
     MOCK_EXPECT(impl->cyclePower);
 
     WirelessNodeConfig c;
@@ -777,7 +778,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_erase)
 
     std::unique_ptr<BaseStationFeatures> baseFeatures;
     expectBaseFeatures(baseFeatures, impl);
-    expectRead(impl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+    MOCK_EXPECT(impl->communicationProtocol).returns(WirelessTypes::commProtocol_lxrs);
 
     WirelessNode node(123, base);
     

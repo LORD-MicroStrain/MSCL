@@ -1,10 +1,10 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-#include "mscl/MicroStrain/Inertial/Commands/Ping.h"
-#include "mscl/MicroStrain/Inertial/InertialDataField.h"
+#include "mscl/MicroStrain/MIP/Commands/Ping.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/Exceptions.h"
 
@@ -35,11 +35,11 @@ BOOST_AUTO_TEST_CASE(InertialPing_GetResponseResult)
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     Ping::Response response(rc);
 
-    InertialCmdResponse r = response.result();
+    MipCmdResponse r = response.result();
 
     //check that the the response result is what it should be
     BOOST_CHECK_EQUAL(r.success(), false);
-    BOOST_CHECK_EQUAL(r.errorCode(), InertialPacket::MIP_ACK_NACK_ERROR_NONE);
+    BOOST_CHECK_EQUAL(r.errorCode(), MipPacket::MIP_ACK_NACK_ERROR_NONE);
 }
 
 BOOST_AUTO_TEST_CASE(InertialPing_Match_Fail_DescSet)
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(InertialPing_Match_Fail_DescSet)
     Bytes fieldData;
     fieldData.push_back(0x01);
     fieldData.push_back(0x00);
-    InertialDataField field(0x04F1, fieldData); //invalid descriptor set
+    MipDataField field(0x04F1, fieldData); //invalid descriptor set
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), false);
@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(InertialPing_Match_Fail_FieldDataLen)
 
     Bytes fieldData;
     fieldData.push_back(0x01);
-    InertialDataField field(0x01F1, fieldData); //bad field data length
+    MipDataField field(0x01F1, fieldData); //bad field data length
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), false);
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(InertialPing_Match_Fail_FieldDesc)
     Bytes fieldData;
     fieldData.push_back(0x01);
     fieldData.push_back(0x00);
-    InertialDataField field(0x0101, fieldData); //invalid field descriptor
+    MipDataField field(0x0101, fieldData); //invalid field descriptor
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), false);
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(InertialPing_Match_Fail_CommandEcho)
     Bytes fieldData;
     fieldData.push_back(0x05);    //bad command echo
     fieldData.push_back(0x00);
-    InertialDataField field(0x01F1, fieldData);
+    MipDataField field(0x01F1, fieldData);
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), false);
@@ -104,13 +104,13 @@ BOOST_AUTO_TEST_CASE(InertialPing_Match_FailWithErrorCode)
 
     Bytes fieldData;
     fieldData.push_back(0x01);
-    fieldData.push_back(mscl::InertialPacket::MIP_ACK_NACK_ERROR_CHECKSUM_INVALID);
-    InertialDataField field(0x01F1, fieldData); //good field, but with error code
+    fieldData.push_back(mscl::MipPacket::MIP_ACK_NACK_ERROR_CHECKSUM_INVALID);
+    MipDataField field(0x01F1, fieldData); //good field, but with error code
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), true);
     BOOST_CHECK_EQUAL(response.result().success(), false);
-    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::InertialPacket::MIP_ACK_NACK_ERROR_CHECKSUM_INVALID);
+    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_CHECKSUM_INVALID);
 }
 
 BOOST_AUTO_TEST_CASE(InertialPing_Match_Success)
@@ -121,12 +121,12 @@ BOOST_AUTO_TEST_CASE(InertialPing_Match_Success)
     Bytes fieldData;
     fieldData.push_back(0x01);
     fieldData.push_back(0x00);
-    InertialDataField field(0x01F1, fieldData); //good field
+    MipDataField field(0x01F1, fieldData); //good field
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(field), true);
     BOOST_CHECK_EQUAL(response.result().success(), true);
-    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::InertialPacket::MIP_ACK_NACK_ERROR_NONE);
+    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -23,7 +23,9 @@ namespace mscl
     public:
         virtual bool isChannelSettingReadOnly(WirelessTypes::ChannelGroupSetting setting) const override;
 
-        virtual const WirelessTypes::TransmitPowers transmitPowers() const;
+        virtual WirelessTypes::TransmitPower maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const override;
+
+        virtual WirelessTypes::TransmitPower minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const override;
 
         virtual const WirelessTypes::SamplingModes samplingModes() const override;
 

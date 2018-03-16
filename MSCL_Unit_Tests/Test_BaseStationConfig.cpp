@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -59,6 +59,8 @@ BOOST_AUTO_TEST_CASE(BaseStationConfig_setSingleValue)
 
     //expect the single eeprom write
     expectWrite(impl, BaseStationEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)WirelessTypes::power_10dBm));
+    expectRead(impl, BaseStationEepromMap::COMM_PROTOCOL, Value(valueType_uint16, (uint16)WirelessTypes::commProtocol_lxrs));
+    expectRead(impl, BaseStationEepromMap::FIRMWARE_VER, Value(valueType_uint16, (uint16)10));
     expectResetRadio(impl);
 
     BOOST_CHECK_NO_THROW(b.applyConfig(c));

@@ -5,10 +5,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "GenericInertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/Inertial/Commands/InertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
@@ -17,7 +17,7 @@ namespace mscl
 
     //Class: GNSS_SourceControl
     //    Contains the logic for the Inertial GNSS_SourceControl command.
-    class GNSS_SourceControl : public InertialCommand
+    class GNSS_SourceControl : public MipCommand
     {
     public:
         //Function: commandName
@@ -33,7 +33,7 @@ namespace mscl
 		//
         //Returns:
         //    GNSS_SourceControl - object set up for sending a set command.
-        static GNSS_SourceControl MakeSetCommand(const GNSS_Source& dataToUse);
+        static GNSS_SourceControl MakeSetCommand(const InertialTypes::GNSS_Source& dataToUse);
 
         //Function: MakeGetCommand
 		//
@@ -44,11 +44,11 @@ namespace mscl
         //Function: getResponseData
 		//
         //Parameter:
-        //    response - The <GenericInertialCommandResponse> object from which to get formatted data.
+        //    response - The <GenericMipCmdResponse> object from which to get formatted data.
 		//
         //Returns:
         //    ConstellationSettingsData - An object with the data returned from the device.
-        static GNSS_Source getResponseData(const GenericInertialCommandResponse& response);
+        static InertialTypes::GNSS_Source getResponseData(const GenericMipCmdResponse& response);
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
@@ -57,14 +57,14 @@ namespace mscl
     private:
         // Function: Constructor GNSS_SourceControl
         //    Private constructor creates a GNSS_SourceControl object.  Use Make___Command methods to create an object.
-        GNSS_SourceControl(InertialTypes::FunctionSelector function_selector, const GNSS_Source& gnssSource);
-		GNSS_SourceControl(InertialTypes::FunctionSelector function_selector);
+        GNSS_SourceControl(MipTypes::FunctionSelector function_selector, const InertialTypes::GNSS_Source& gnssSource);
+		GNSS_SourceControl(MipTypes::FunctionSelector function_selector);
 
         //Function: commandType
 		//
         //Returns:
-        //    InertialTypes::Command - the command ID.
-        virtual InertialTypes::Command commandType() const { return InertialTypes::CMD_EF_GNSS_SRC_CTRL; }
+        //    MipTypes::Command - the command ID.
+        virtual MipTypes::Command commandType() const { return MipTypes::CMD_EF_GNSS_SRC_CTRL; }
 
         //Function: fieldDataByte
 		//
@@ -80,11 +80,11 @@ namespace mscl
 
         //Variable: m_gnssSource
         //    The GNSS_Source to send to the device.
-        GNSS_Source m_gnssSource;
+        InertialTypes::GNSS_Source m_gnssSource;
 
         //Variable: m_functionSelector
         //    The FunctionSelector type of command to send, get/set, reset to factory defaults, et al.
-        InertialTypes::FunctionSelector m_functionSelector;
+        MipTypes::FunctionSelector m_functionSelector;
 
     public:
 	// Destructor

@@ -5,10 +5,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "GenericInertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/Inertial/Commands/InertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
@@ -17,7 +17,7 @@ namespace mscl
 
     //Class: ExternalGNSSUpdate
     //    Contains the logic for the Inertial ExternalGNSSUpdate command.
-    class ExternalGNSSUpdate : public InertialCommand
+    class ExternalGNSSUpdate : public MipCommand
     {
     public:
         //Function: commandName
@@ -47,8 +47,8 @@ namespace mscl
         //Function: commandType
 		//
         //Returns:
-        //    InertialTypes::Command - the command ID.
-        virtual InertialTypes::Command commandType() const { return InertialTypes::CMD_EF_EXTERN_GNSS_UPDATE; }
+        //    MipTypes::Command - the command ID.
+        virtual MipTypes::Command commandType() const { return MipTypes::CMD_EF_EXTERN_GNSS_UPDATE; }
 
         //Function: fieldDataByte
 		//

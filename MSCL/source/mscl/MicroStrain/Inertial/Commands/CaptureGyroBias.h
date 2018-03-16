@@ -5,10 +5,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "GenericInertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/Inertial/Commands/InertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
@@ -17,7 +17,7 @@ namespace mscl
 
     //Class: CaptureGyroBias
     //    Contains the logic for the Inertial CaptureGyroBias command.
-    class CaptureGyroBias : public InertialCommand
+    class CaptureGyroBias : public MipCommand
     {
     public:
         //Function: commandName
@@ -36,7 +36,7 @@ namespace mscl
         //
         //Returns:
         //    A <GeometricVector> object with the data returned from the device.
-        static GeometricVector getResponseData(const GenericInertialCommandResponse& response);
+        static GeometricVector getResponseData(const GenericMipCmdResponse& response);
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
@@ -50,8 +50,8 @@ namespace mscl
         //Function: commandType
         //
         //Returns:
-        //    InertialTypes::Command - the command ID.
-        virtual InertialTypes::Command commandType() const { return InertialTypes::CMD_CAP_GYRO_BIAS; }
+        //    MipTypes::Command - the command ID.
+        virtual MipTypes::Command commandType() const { return MipTypes::CMD_CAP_GYRO_BIAS; }
 
         //Function: fieldDataByte
         //

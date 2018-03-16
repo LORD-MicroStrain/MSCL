@@ -5,9 +5,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "GenericInertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/Inertial/Commands/InertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
@@ -16,14 +16,14 @@ namespace mscl
 
     //Class: GNSS_ConstellationSettings
     //    Contains the logic for the "GNSS Constellation Settings" command
-    class GNSS_ConstellationSettings : public InertialCommand
+    class GNSS_ConstellationSettings : public MipCommand
     {
     public:
         //Function: commandType
         //
         //Returns:
-        //    InertialTypes::Command - the command ID.
-        virtual InertialTypes::Command commandType() const { return InertialTypes::CMD_GNSS_CONSTELLATION_SETTINGS; }
+        //    MipTypes::Command - the command ID.
+        virtual MipTypes::Command commandType() const { return MipTypes::CMD_GNSS_CONSTELLATION_SETTINGS; }
 
         //Function: fieldDataByte
         //
@@ -65,7 +65,7 @@ namespace mscl
         //
         //Returns:
         //    ConstellationSettingsData - An object with the data returned from the device.
-        static ConstellationSettingsData getResponseData(const GenericInertialCommandResponse& response);
+        static ConstellationSettingsData getResponseData(const GenericMipCmdResponse& response);
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
@@ -73,15 +73,15 @@ namespace mscl
 
     private:
 	// Private Constructors.  Use static accessor classes to create an object.
-        GNSS_ConstellationSettings(InertialTypes::FunctionSelector function_selector, ConstellationSettingsData dataToUse);
-        GNSS_ConstellationSettings(InertialTypes::FunctionSelector function_selector);
+        GNSS_ConstellationSettings(MipTypes::FunctionSelector function_selector, ConstellationSettingsData dataToUse);
+        GNSS_ConstellationSettings(MipTypes::FunctionSelector function_selector);
 
         //Variable: m_data
         //    The <ConstellationSettingsData> to send to the device.
         //Variable: m_functionSelector
-        //    The <InertialTypes::FunctionSelector> type of command to send, get/set, reset to factory defaults, et al.
+        //    The <MipTypes::FunctionSelector> type of command to send, get/set, reset to factory defaults, et al.
         ConstellationSettingsData m_data;
-        InertialTypes::FunctionSelector m_functionSelector;
+        MipTypes::FunctionSelector m_functionSelector;
 
     public:
 	// Destructor

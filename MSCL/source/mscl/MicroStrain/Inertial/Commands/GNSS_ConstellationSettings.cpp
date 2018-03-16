@@ -1,45 +1,45 @@
 #include "stdafx.h"
 #include "GNSS_ConstellationSettings.h"
-#include "mscl/MicroStrain/Inertial/InertialDataField.h"
-#include "mscl/MicroStrain/Inertial/Packets/InertialPacketBuilder.h"
-#include "mscl/MicroStrain/Inertial/InertialTypes.h"
-#include "Inertial_Commands.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
+#include "mscl/MicroStrain/MIP/MipTypes.h"
+#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 
 namespace mscl
 {
-    GNSS_ConstellationSettings::GNSS_ConstellationSettings(InertialTypes::FunctionSelector function_selector, ConstellationSettingsData dataToUse) :
+    GNSS_ConstellationSettings::GNSS_ConstellationSettings(MipTypes::FunctionSelector function_selector, ConstellationSettingsData dataToUse) :
         m_functionSelector(function_selector),
         m_data(dataToUse)
     { }
 
-    GNSS_ConstellationSettings::GNSS_ConstellationSettings(InertialTypes::FunctionSelector function_selector) :
+    GNSS_ConstellationSettings::GNSS_ConstellationSettings(MipTypes::FunctionSelector function_selector) :
         m_functionSelector(function_selector)
     {
-        if (function_selector == InertialTypes::USE_NEW_SETTINGS)
+        if (function_selector == MipTypes::USE_NEW_SETTINGS)
             throw Error_NoData("Data must be passed in for a set command.");
     }
 
     GNSS_ConstellationSettings GNSS_ConstellationSettings::MakeSetCommand(ConstellationSettingsData dataToUse)
     {
-        return GNSS_ConstellationSettings(InertialTypes::USE_NEW_SETTINGS, dataToUse);
+        return GNSS_ConstellationSettings(MipTypes::USE_NEW_SETTINGS, dataToUse);
     }
 
     GNSS_ConstellationSettings GNSS_ConstellationSettings::MakeGetCommand()
     {
-        return GNSS_ConstellationSettings(InertialTypes::READ_BACK_CURRENT_SETTINGS);
+        return GNSS_ConstellationSettings(MipTypes::READ_BACK_CURRENT_SETTINGS);
     }
 
     GNSS_ConstellationSettings GNSS_ConstellationSettings::MakeResetToDefaultCommand()
     {
-        return GNSS_ConstellationSettings(InertialTypes::RESET_TO_DEFAULT);
+        return GNSS_ConstellationSettings(MipTypes::RESET_TO_DEFAULT);
     }
     
     bool GNSS_ConstellationSettings::responseExpected() const
     {
-        return (m_functionSelector == InertialTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
+        return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
     }
 
-    ConstellationSettingsData GNSS_ConstellationSettings::getResponseData(const GenericInertialCommandResponse& response)
+    ConstellationSettingsData GNSS_ConstellationSettings::getResponseData(const GenericMipCmdResponse& response)
     {
         DataBuffer dataBuffer(response.data());
         ConstellationSettingsData returnData;
@@ -68,7 +68,7 @@ namespace mscl
         byteCommand.append_uint8(static_cast<uint8>(m_functionSelector));
 
         // Only fill in data if set command is being sent.
-        if (m_functionSelector == InertialTypes::USE_NEW_SETTINGS)
+        if (m_functionSelector == MipTypes::USE_NEW_SETTINGS)
         {
             byteCommand.append_uint16(static_cast<uint8>(m_data.maxChannelsToUse));
             byteCommand.append_uint8(static_cast<uint8>(m_data.constellations.size()));
@@ -82,7 +82,7 @@ namespace mscl
                 byteCommand.append_uint16(constellationOptionFlags);
             }
         }
-        return GenericInertialCommand::buildCommand(commandType(), byteCommand.data()); ;
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
     }
 
 }

@@ -5,10 +5,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "GenericInertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/Inertial/Commands/InertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
@@ -17,7 +17,7 @@ namespace mscl
 
     //Class: HeadingUpdateControl
     //    Contains the logic for the Inertial HeadingUpdateControl command.
-    class HeadingUpdateControl : public InertialCommand
+    class HeadingUpdateControl : public MipCommand
     {
     public:
         //Function: commandName
@@ -44,11 +44,11 @@ namespace mscl
         //Function: getResponseData
 		//
         //Parameter:
-        //    response - The <GenericInertialCommandResponse> object from which to get formatted data.
+        //    response - The <GenericMipCmdResponse> object from which to get formatted data.
 		//
         //Returns:
         //    ConstellationSettingsData - An object with the data returned from the device.
-        static HeadingUpdateOptions getResponseData(const GenericInertialCommandResponse& response);
+        static HeadingUpdateOptions getResponseData(const GenericMipCmdResponse& response);
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
@@ -57,14 +57,14 @@ namespace mscl
     private:
         // Function: Constructor HeadingUpdateControl
         //    Private constructor creates a HeadingUpdateControl object.  Use Make___Command methods to create an object.
-        HeadingUpdateControl(InertialTypes::FunctionSelector function_selector, const HeadingUpdateOptions& dataToUse);
-		HeadingUpdateControl(InertialTypes::FunctionSelector function_selector);
+        HeadingUpdateControl(MipTypes::FunctionSelector function_selector, const HeadingUpdateOptions& dataToUse);
+		HeadingUpdateControl(MipTypes::FunctionSelector function_selector);
 
         //Function: commandType
 		//
         //Returns:
-        //    InertialTypes::Command - the command ID.
-        virtual InertialTypes::Command commandType() const { return InertialTypes::CMD_EF_HEADING_UPDATE_CTRL; }
+        //    MipTypes::Command - the command ID.
+        virtual MipTypes::Command commandType() const { return MipTypes::CMD_EF_HEADING_UPDATE_CTRL; }
 
         //Function: fieldDataByte
 		//
@@ -84,7 +84,7 @@ namespace mscl
 
         //Variable: m_functionSelector
         //    The FunctionSelector type of command to send, get/set, reset to factory defaults, et al.
-        InertialTypes::FunctionSelector m_functionSelector;
+        MipTypes::FunctionSelector m_functionSelector;
 
     public:
 	// Destructor

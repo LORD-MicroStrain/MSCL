@@ -1,10 +1,10 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-#include "mscl/MicroStrain/Inertial/Packets/InertialPacketBuilder.h"
-#include "mscl/MicroStrain/Inertial/InertialDataField.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ByteStream.h"
 #include <boost/test/unit_test.hpp>
 
@@ -15,10 +15,10 @@ BOOST_AUTO_TEST_SUITE(InertialPacketBuilder_Test)
 BOOST_AUTO_TEST_CASE(InertialPacketBuilder_Constructor)
 {
     //create a field to add
-    InertialDataField field(0x01);
+    MipDataField field(0x01);
 
     //create the builder
-    InertialPacketBuilder builder(0x01, field);
+    MipPacketBuilder builder(0x01, field);
     
     //build the packet
     ByteStream bytes = builder.buildPacket();
@@ -41,10 +41,10 @@ BOOST_AUTO_TEST_CASE(InertialPacketBuilder_WithFieldData)
     data.push_back(0x00);
 
     //create a field to add
-    InertialDataField field(0x01, data);
+    MipDataField field(0x01, data);
 
     //create the builder
-    InertialPacketBuilder builder(0x0C, field);
+    MipPacketBuilder builder(0x0C, field);
     
     //build the packet
     ByteStream bytes = builder.buildPacket();
@@ -75,10 +75,10 @@ BOOST_AUTO_TEST_CASE(InertialPacketBuilder_MultipleFields)
     data.push_back(0x0A);
 
     //create a field to add
-    InertialDataField field1(0x08, data);
+    MipDataField field1(0x08, data);
 
     //create the builder
-    InertialPacketBuilder builder(0x0C, field1);
+    MipPacketBuilder builder(0x0C, field1);
 
     Bytes data2;
     data2.push_back(0x00);
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(InertialPacketBuilder_MultipleFields)
     data2.push_back(0x04);
 
     //create another field to add
-    InertialDataField field2(0x09, data2);
+    MipDataField field2(0x09, data2);
 
     builder.addField(field2);
 
@@ -135,13 +135,13 @@ BOOST_AUTO_TEST_CASE(InertialPacketBuilder_InertialFieldCopyConstructor)
     data.push_back(0x00);
 
     //create a field to add
-    InertialDataField field(0x01, data);
+    MipDataField field(0x01, data);
 
     //create another field with the copy constructor
-    InertialDataField field2(field);
+    MipDataField field2(field);
 
     //create the builder
-    InertialPacketBuilder builder(0x0C, field2);
+    MipPacketBuilder builder(0x0C, field2);
     
     //build the packet
     ByteStream bytes = builder.buildPacket();
@@ -166,13 +166,13 @@ BOOST_AUTO_TEST_CASE(InertialPacketBuilder_InertialFieldAssignmentOperator)
     data.push_back(0x00);
 
     //create a field to add
-    InertialDataField field(0x01, data);
+    MipDataField field(0x01, data);
 
     //create another field with the assignment operator
-    InertialDataField field2 = field;
+    MipDataField field2 = field;
 
     //create the builder
-    InertialPacketBuilder builder(0x0C, field2);
+    MipPacketBuilder builder(0x0C, field2);
     
     //build the packet
     ByteStream bytes = builder.buildPacket();

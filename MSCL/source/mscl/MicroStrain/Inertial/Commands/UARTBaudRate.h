@@ -5,10 +5,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "GenericInertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/Inertial/Commands/InertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
@@ -17,7 +17,7 @@ namespace mscl
 
     //Class: UARTBaudRate
     //    Contains the logic for the Inertial UARTBaudRate command.
-    class UARTBaudRate : public InertialCommand
+    class UARTBaudRate : public MipCommand
     {
     public:
         //Function: commandName
@@ -44,11 +44,11 @@ namespace mscl
         //Function: getResponseData
 		//
         //Parameter:
-        //    response - The <GenericInertialCommandResponse> object from which to get formatted data.
+        //    response - The <GenericMipCmdResponse> object from which to get formatted data.
 		//
         //Returns:
         //    ConstellationSettingsData - An object with the data returned from the device.
-        static uint32 getResponseData(const GenericInertialCommandResponse& response);
+        static uint32 getResponseData(const GenericMipCmdResponse& response);
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
@@ -57,14 +57,14 @@ namespace mscl
     private:
         // Function: Constructor UARTBaudRate
         //    Private constructor creates a UARTBaudRate object.  Use Make___Command methods to create an object.
-        UARTBaudRate(InertialTypes::FunctionSelector function_selector, uint32 dataToUse);
-		UARTBaudRate(InertialTypes::FunctionSelector function_selector);
+        UARTBaudRate(MipTypes::FunctionSelector function_selector, uint32 dataToUse);
+		UARTBaudRate(MipTypes::FunctionSelector function_selector);
 
         //Function: commandType
 		//
         //Returns:
-        //    InertialTypes::Command - the command ID.
-        virtual InertialTypes::Command commandType() const { return InertialTypes::CMD_UART_BAUD_RATE; }
+        //    MipTypes::Command - the command ID.
+        virtual MipTypes::Command commandType() const { return MipTypes::CMD_UART_BAUD_RATE; }
 
         //Function: fieldDataByte
 		//
@@ -84,7 +84,7 @@ namespace mscl
 
         //Variable: m_functionSelector
         //    The FunctionSelector type of command to send, get/set, reset to factory defaults, et al.
-        InertialTypes::FunctionSelector m_functionSelector;
+        MipTypes::FunctionSelector m_functionSelector;
 
     public:
 	// Destructor

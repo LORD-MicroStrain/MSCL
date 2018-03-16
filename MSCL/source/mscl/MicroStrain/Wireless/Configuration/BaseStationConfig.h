@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -107,6 +107,14 @@ namespace mscl
         {
             return static_cast<bool>(opt);
         }
+
+        //Function: curTransmitPower
+        //    Gets the transmit power currently set, or from the node if not set.
+        WirelessTypes::TransmitPower curTransmitPower(const BaseStationEepromHelper& eeprom) const;
+
+        //Function: curCommProtocol
+        //    Gets the communication protocol currently set, or from the base if not set.
+        WirelessTypes::CommProtocol curCommProtocol(const BaseStationEepromHelper& eeprom) const;
 
         //Function: verify
         //    Checks whether the current settings are ok to be written to a given <BaseStation>.

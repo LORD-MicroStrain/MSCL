@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -14,6 +14,24 @@ namespace mscl
 {
     BaseStationConfig::BaseStationConfig()
     {
+    }
+
+    WirelessTypes::TransmitPower BaseStationConfig::curTransmitPower(const BaseStationEepromHelper& eeprom) const
+    {
+        //if its currently set in the config, return the set value
+        if(isSet(m_transmitPower)) { return *m_transmitPower; }
+
+        //not set, so read the value from the node
+        return eeprom.read_transmitPower();
+    }
+
+    WirelessTypes::CommProtocol BaseStationConfig::curCommProtocol(const BaseStationEepromHelper& eeprom) const
+    {
+        //if its currently set in the config, return the set value
+        if(isSet(m_commProtocol)) { return *m_commProtocol; }
+
+        //not set, so read the value from the node
+        return eeprom.read_commProtocol();
     }
 
     bool BaseStationConfig::verify(const BaseStationFeatures& features, const BaseStationEepromHelper& eeprom, ConfigIssues& outIssues) const
@@ -87,16 +105,6 @@ namespace mscl
             }
         }
 
-        //Transmit Power
-        if(isSet(m_transmitPower))
-        {
-            //verify the transmit power is supported
-            if(!features.supportsTransmitPower(*m_transmitPower))
-            {
-                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_TRANSMIT_POWER, "The Transmit Power is not supported by this BaseStation."));
-            }
-        }
-
         //Communication Protocol
         if(isSet(m_commProtocol))
         {
@@ -104,6 +112,16 @@ namespace mscl
             if(!features.supportsCommunicationProtocol(*m_commProtocol))
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_COMM_PROTOCOL, "The Communication Protocol is not supported by this BaseStation."));
+            }
+        }
+
+        //Transmit Power
+        if(isSet(m_transmitPower) || isSet(m_commProtocol))
+        {
+            //verify the transmit power is supported
+            if(!features.supportsTransmitPower(curTransmitPower(eeprom), curCommProtocol(eeprom)))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_TRANSMIT_POWER, "The Transmit Power is not supported by this BaseStation, for the current Communication Protocol."));
             }
         }
 

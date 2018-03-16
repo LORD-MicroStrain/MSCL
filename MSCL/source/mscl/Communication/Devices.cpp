@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -132,7 +132,7 @@ namespace mscl
     }
 
 #ifdef _WIN32
-
+    
     Devices::DeviceList Devices::listDevices(DeviceType devType)
     {
         DeviceList result;

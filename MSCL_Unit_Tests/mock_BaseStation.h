@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -39,6 +39,7 @@ MOCK_BASE_CLASS(mock_baseStationImpl, BaseStation_Impl)
     MOCK_METHOD(disableBeacon, 0);
     MOCK_METHOD(features, 0);
     MOCK_METHOD(protocol, 1);
+    MOCK_METHOD(communicationProtocol, 0);
 
     MOCK_METHOD(node_ping, 2);
     MOCK_METHOD(node_pageDownload, 4);
@@ -81,8 +82,6 @@ static BaseStation makeBaseStationWithMockImpl()
 
 static void expectBaseFeatures(std::unique_ptr<BaseStationFeatures>& features, std::shared_ptr<mock_baseStationImpl> impl, WirelessModels::BaseModel model = WirelessModels::base_wsdaBase_104_usb)
 {
-    //WirelessProtocol p = *(WirelessProtocol::getProtocol(Version(1, 7)).get());
-    //WirelessProtocol p2 = *(WirelessProtocol::getProtocol(Version(3, 0)).get());
     Version asppVer_lxrs(1, 7);
     Version asppVer_lxrsPlus(3, 0);
     BaseStationInfo info(Version(9, 9), model, WirelessTypes::region_usa, asppVer_lxrs, asppVer_lxrsPlus);//p, p2);

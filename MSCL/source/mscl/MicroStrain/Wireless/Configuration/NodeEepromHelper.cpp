@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -119,6 +119,11 @@ namespace mscl
         }
     }
 
+    uint8 NodeEepromHelper::read_fwVersionMajor() const
+    {
+        return Utils::msb(read(NodeEepromMap::FIRMWARE_VER).as_uint16());
+    }
+
     Version NodeEepromHelper::read_asppVersion(WirelessTypes::CommProtocol commProtocol) const
     {
         uint16 asppValue = 0;
@@ -176,13 +181,15 @@ namespace mscl
 
     WirelessTypes::CommProtocol NodeEepromHelper::read_commProtocol() const
     {
-        uint16 commProtocol = 0;
+        const uint8 MIN_NODE_FW_SUPPORTS_COMM_PROTOCOL = 11;
 
-        if(!m_node->features().supportsCommProtocolEeprom())
+        if(read_fwVersionMajor() < MIN_NODE_FW_SUPPORTS_COMM_PROTOCOL)
         {
+            //doesn't support the comm protocol eeprom
             return WirelessTypes::commProtocol_lxrs;
         }
         
+        uint16 commProtocol = 0;
         try
         {
             commProtocol = read(NodeEepromMap::COMM_PROTOCOL).as_uint16();
@@ -210,7 +217,9 @@ namespace mscl
 
     void NodeEepromHelper::write_commProtocol(WirelessTypes::CommProtocol protocol)
     {
-        if(!m_node->features().supportsCommProtocolEeprom())
+        const uint8 MIN_NODE_FW_SUPPORTS_COMM_PROTOCOL = 11;
+
+        if(read_fwVersionMajor() < MIN_NODE_FW_SUPPORTS_COMM_PROTOCOL)
         {
             if(m_node->features().supportsCommunicationProtocol(protocol))
             {

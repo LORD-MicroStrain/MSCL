@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -56,6 +56,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Commands/SetToIdle.h"
 #include "Commands/SetToIdle_v2.h"
 #include "Commands/Sleep.h"
+#include "Commands/Sleep_v2.h"
 #include "Commands/StartNonSyncSampling.h"
 #include "Commands/StartNonSyncSampling_v2.h"
 #include "Commands/StartSyncSampling.h"
@@ -70,12 +71,51 @@ namespace mscl
     BaseStation_Impl::BaseStation_Impl(Connection connection, uint64 baseTimeout):
         m_connection(connection),
         m_responseCollector(std::make_shared<ResponseCollector>()),
-        m_baseCommandsTimeout(baseTimeout),
-        m_nodeCommandsTimeout(baseTimeout + 50),
+        m_baseCommandsTimeout(0),
+        m_nodeCommandsTimeout(0),
         m_frequency(WirelessTypes::freq_unknown),
         m_eeprom(new BaseStationEeprom(this)),
         m_eepromHelper(new BaseStationEepromHelper(this))
     {
+        //set the base and node timeouts
+        timeout(baseTimeout);
+
+        m_responseCollector->setConnection(&m_connection);
+
+        //build the parser with the base station's packet collector and response collector
+        m_parser.reset(new WirelessParser(m_packetCollector, m_responseCollector));
+
+        //register the parse function with the connection
+        m_connection.registerParser(std::bind(&BaseStation_Impl::parseData, this, std::placeholders::_1));
+    }
+
+    BaseStation_Impl::BaseStation_Impl(Connection connection):
+        m_connection(connection),
+        m_responseCollector(std::make_shared<ResponseCollector>()),
+        m_frequency(WirelessTypes::freq_unknown),
+        m_eeprom(new BaseStationEeprom(this)),
+        m_eepromHelper(new BaseStationEepromHelper(this))
+    {
+        uint64 tempTimeout;
+
+        //no timeout provided, create it based on the connection type
+        switch(connection.type())
+        {
+            case Connection::connectionType_serial:
+            case Connection::connectionType_unixSocket:
+                tempTimeout = BaseStation::BASE_COMMANDS_DEFAULT_TIMEOUT;
+                break;
+
+            case Connection::connectionType_tcp:
+            case Connection::connectionType_webSocket:
+            default:
+                tempTimeout = BaseStation::ETHERNET_BASE_COMMANDS_DEFAULT_TIMEOUT;
+                break;
+        }
+
+        //set the base and node timeouts
+        timeout(tempTimeout);
+
         m_responseCollector->setConnection(&m_connection);
 
         //build the parser with the base station's packet collector and response collector
@@ -164,14 +204,14 @@ namespace mscl
         //send the command to the base station
         m_connection.write(cmdBytes);
 
+        //wait for the response or a timeout
+        response.wait(timeout);
+
         if(response.baseReceived() && !response.fullyMatched())
         {
             //base received the command and sent to node, wait for the new timeout for the Node's response
-            response.wait(response.baseReceivedWaitTime());
+            response.wait(response.baseReceivedWaitTime() + timeoutToAdd());
         }
-
-        //wait for the response or a timeout
-        response.wait(timeout);
 
         //return the result of the command/response
         return response.success();
@@ -407,8 +447,8 @@ namespace mscl
     {
         m_baseCommandsTimeout = timeout;
 
-        //add a bit more time for communication between Nodes and Bases
-        m_nodeCommandsTimeout = timeout + 50;
+        //add more time for communication between Nodes and Bases
+        m_nodeCommandsTimeout = timeout + (timeout / 2) + 50;
     }
 
     uint64 BaseStation_Impl::timeout() const
@@ -516,6 +556,18 @@ namespace mscl
         return protocol(communicationProtocol()).m_startRfSweep(this, minFreq, maxFreq, interval, options);
     }
 
+    uint16 BaseStation_Impl::timeoutToAdd()
+    {
+        switch(m_connection.type())
+        {
+            case Connection::connectionType_tcp:
+                return 250;
+
+            default:
+                return 75;
+        }
+    }
+
     bool BaseStation_Impl::doBaseCommand(const ByteStream& command, WirelessResponsePattern& response, uint64 minTimeout)
     {
         //write the command
@@ -538,7 +590,7 @@ namespace mscl
         if(response.baseReceived() && !response.fullyMatched())
         {
             //base received the command and sent to node, wait for the new timeout for the Node's response
-            response.wait(response.baseReceivedWaitTime() + 100);
+            response.wait(std::max(response.baseReceivedWaitTime() + timeoutToAdd(), minTimeout));
         }
 
         if(response.success())
@@ -817,24 +869,24 @@ namespace mscl
         }
     }
 
-    bool BaseStation_Impl::protocol_node_sleep_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress)
+    bool BaseStation_Impl::protocol_node_sleep_v1(NodeAddress nodeAddress)
     {
-        ByteStream command = Sleep::buildCommand(asppVer, nodeAddress);
+        ByteStream command = Sleep::buildCommand(nodeAddress);
 
-        if(asppVer == WirelessPacket::aspp_v3)
-        {
-            Sleep::Response response(nodeAddress, m_responseCollector);
+        //send the sleep command to the base station
+        m_connection.write(command);
 
-            return doNodeCommand(nodeAddress, command, response);
-        }
-        else
-        {
-            //send the sleep command to the base station
-            m_connection.write(command);
+        //we don't have a success packet for this command
+        return true;
+    }
 
-            //we don't have a success packet for this command
-            return true;
-        }
+    bool BaseStation_Impl::protocol_node_sleep_v2(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress)
+    {
+        ByteStream command = Sleep_v2::buildCommand(asppVer, nodeAddress);
+
+        Sleep_v2::Response response(nodeAddress, m_responseCollector);
+
+        return doNodeCommand(nodeAddress, command, response);
     }
 
     SetToIdleStatus BaseStation_Impl::protocol_node_setToIdle_v1(NodeAddress nodeAddress, const BaseStation& base)
@@ -1471,7 +1523,7 @@ namespace mscl
         if(response.baseReceived() && !response.fullyMatched())
         {
             //base received the command and sent to node, wait for the new timeout for the Node's response
-            response.wait(response.baseReceivedWaitTime());
+            response.wait(response.baseReceivedWaitTime() + timeoutToAdd());
         }
 
         if(response.success())
@@ -1539,7 +1591,7 @@ namespace mscl
         if(response.baseReceived() && !response.fullyMatched())
         {
             //base received the command and sent to node, wait for the new timeout for the Node's response
-            response.wait(response.baseReceivedWaitTime());
+            response.wait(response.baseReceivedWaitTime() + timeoutToAdd());
         }
 
         if(response.success())
@@ -1586,7 +1638,7 @@ namespace mscl
         if(response.baseReceived() && !response.fullyMatched())
         {
             //base received the command and sent to node, wait for the new timeout for the Node's response
-            response.wait(response.baseReceivedWaitTime());
+            response.wait(response.baseReceivedWaitTime() + timeoutToAdd());
         }
 
         //if the autocal process has started, but not completed

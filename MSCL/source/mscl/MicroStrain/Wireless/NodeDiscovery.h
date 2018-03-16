@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -22,6 +22,8 @@ namespace mscl
     //          heard, this NodeDiscovery object will have some information be invalid (set to default values).
     class NodeDiscovery
     {
+        friend class WirelessNode_Impl;
+
 #ifndef SWIG
     public:
         NodeDiscovery();
@@ -35,6 +37,10 @@ namespace mscl
 #endif
 
     private:
+        //Variable: m_eepromMap
+        //  Contains an eeprom map to use for updating a WirelessNode's eeprom cache with the Node Discovery info, if desired.
+        WirelessTypes::EepromMap m_eepromMap;
+
         //Variable: m_nodeAddress
         //    The node address of the node that sent the Node Discovery packet.
         NodeAddress m_nodeAddress;
@@ -86,6 +92,9 @@ namespace mscl
         //Variable: m_timestamp
         //    The <Timestamp> of when the NodeDiscovery packet was received by MSCL.
         Timestamp m_timestamp;
+
+    protected:
+        const WirelessTypes::EepromMap& eepromMap() const;
 
     private:
         //Function: initFromPacket_v1

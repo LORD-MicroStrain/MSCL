@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -35,5 +35,39 @@ namespace mscl
         }
 
         return false;
+    }
+
+    WirelessTypes::TransmitPower BaseStationFeatures_wsda::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
+    {
+        if(region == WirelessTypes::region_japan)
+        {
+            WirelessTypes::TransmitPowers result;
+
+            if(commProtocol == WirelessTypes::commProtocol_lxrs)
+            {
+                return WirelessTypes::power_16dBm;
+            }
+
+            return WirelessTypes::power_10dBm;
+        }
+
+        return BaseStationFeatures::maxTransmitPower(region, commProtocol);
+    }
+
+    WirelessTypes::TransmitPower BaseStationFeatures_wsda::minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
+    {
+        if(region == WirelessTypes::region_japan)
+        {
+            WirelessTypes::TransmitPowers result;
+
+            if(commProtocol == WirelessTypes::commProtocol_lxrs)
+            {
+                return WirelessTypes::power_5dBm;
+            }
+
+            return WirelessTypes::power_0dBm;
+        }
+
+        return BaseStationFeatures::minTransmitPower(region, commProtocol);
     }
 }

@@ -5,10 +5,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "GenericInertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/Inertial/Commands/InertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
@@ -17,7 +17,7 @@ namespace mscl
 
     //Class: AccelBias
     //    Contains the logic for the Inertial GPSTimeUpdate command.
-    class AccelBias : public InertialCommand
+    class AccelBias : public MipCommand
     {
     public:
         //Function: commandName
@@ -43,11 +43,11 @@ namespace mscl
         //Function: getResponseData
         //
         //Parameter:
-        //    response - The <GenericInertialCommandResponse> object from which to get formatted data.
+        //    response - The <GenericMipCmdResponse> object from which to get formatted data.
         //
         //Returns:
         // <GeometricVector> object with the data returned from the device.
-        static GeometricVector getResponseData(const GenericInertialCommandResponse& response);
+        static GeometricVector getResponseData(const GenericMipCmdResponse& response);
 
         //Function: operator ByteStream
         // Converts this class to a ByteStream.
@@ -56,14 +56,14 @@ namespace mscl
     private:
         // Constructor: AccelBias
         //  Private constructor creates a GyroBias object.  Use Make___Command methods to create an object.
-        AccelBias(InertialTypes::FunctionSelector function_selector, const GeometricVector& dataToUse);
-        AccelBias(InertialTypes::FunctionSelector function_selector);
+        AccelBias(MipTypes::FunctionSelector function_selector, const GeometricVector& dataToUse);
+        AccelBias(MipTypes::FunctionSelector function_selector);
 
         //Function: commandType
         //
         //Returns:
-        // InertialTypes::Command - the command ID.
-        virtual InertialTypes::Command commandType() const { return InertialTypes::CMD_ACCEL_BIAS; }
+        // MipTypes::Command - the command ID.
+        virtual MipTypes::Command commandType() const { return MipTypes::CMD_ACCEL_BIAS; }
 
         //Function: fieldDataByte
         //
@@ -82,8 +82,8 @@ namespace mscl
         GeometricVector m_accelerometerBiasVector;
 
         //Variable: m_functionSelector
-        //    The <InertialTypes::FunctionSelector> type of command to send, get/set, reset to factory defaults, et al.
-        InertialTypes::FunctionSelector m_functionSelector;
+        //    The <MipTypes::FunctionSelector> type of command to send, get/set, reset to factory defaults, et al.
+        MipTypes::FunctionSelector m_functionSelector;
 
     public:
 	// Destructor: ~AccelBias

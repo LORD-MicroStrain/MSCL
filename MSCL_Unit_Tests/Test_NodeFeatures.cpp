@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -340,7 +340,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_usa_brazil)
         NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, WirelessTypes::region_usa);
         std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
-        WirelessTypes::TransmitPowers powers = features->transmitPowers();
+        WirelessTypes::TransmitPowers powers = features->transmitPowers(WirelessTypes::commProtocol_lxrs);
 
         BOOST_CHECK_EQUAL(powers.size(), 4);
         BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_16dBm);
@@ -353,7 +353,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_usa_brazil)
         NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, WirelessTypes::region_brazil);
         std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
-        WirelessTypes::TransmitPowers powers = features->transmitPowers();
+        WirelessTypes::TransmitPowers powers = features->transmitPowers(WirelessTypes::commProtocol_lxrs);
 
         BOOST_CHECK_EQUAL(powers.size(), 4);
         BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_16dBm);
@@ -369,7 +369,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_europe_other)
         NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, WirelessTypes::region_europe);
         std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
-        WirelessTypes::TransmitPowers powers = features->transmitPowers();
+        WirelessTypes::TransmitPowers powers = features->transmitPowers(WirelessTypes::commProtocol_lxrs);
 
         BOOST_CHECK_EQUAL(powers.size(), 3);
         BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_10dBm);
@@ -381,7 +381,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_europe_other)
         NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, WirelessTypes::region_other);
         std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
-        WirelessTypes::TransmitPowers powers = features->transmitPowers();
+        WirelessTypes::TransmitPowers powers = features->transmitPowers(WirelessTypes::commProtocol_lxrs);
 
         BOOST_CHECK_EQUAL(powers.size(), 3);
         BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_10dBm);
@@ -396,7 +396,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_japan)
         NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, WirelessTypes::region_japan);
         std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
-        WirelessTypes::TransmitPowers powers = features->transmitPowers();
+        WirelessTypes::TransmitPowers powers = features->transmitPowers(WirelessTypes::commProtocol_lxrs);
 
         BOOST_CHECK_EQUAL(powers.size(), 2);
         BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_5dBm);

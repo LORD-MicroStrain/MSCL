@@ -56,8 +56,8 @@ public class InertialNode : global::System.IDisposable {
     return ret;
   }
 
-  public InertialNodeFeatures features() {
-    InertialNodeFeatures ret = new InertialNodeFeatures(msclPINVOKE.InertialNode_features(swigCPtr), false);
+  public MipNodeFeatures features() {
+    MipNodeFeatures ret = new MipNodeFeatures(msclPINVOKE.InertialNode_features(swigCPtr), false);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -110,20 +110,20 @@ public class InertialNode : global::System.IDisposable {
     return ret;
   }
 
-  public InertialDataPackets getDataPackets(uint timeout, uint maxPackets) {
-    InertialDataPackets ret = new InertialDataPackets(msclPINVOKE.InertialNode_getDataPackets__SWIG_0(swigCPtr, timeout, maxPackets), true);
+  public MipDataPackets getDataPackets(uint timeout, uint maxPackets) {
+    MipDataPackets ret = new MipDataPackets(msclPINVOKE.InertialNode_getDataPackets__SWIG_0(swigCPtr, timeout, maxPackets), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public InertialDataPackets getDataPackets(uint timeout) {
-    InertialDataPackets ret = new InertialDataPackets(msclPINVOKE.InertialNode_getDataPackets__SWIG_1(swigCPtr, timeout), true);
+  public MipDataPackets getDataPackets(uint timeout) {
+    MipDataPackets ret = new MipDataPackets(msclPINVOKE.InertialNode_getDataPackets__SWIG_1(swigCPtr, timeout), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public InertialDataPackets getDataPackets() {
-    InertialDataPackets ret = new InertialDataPackets(msclPINVOKE.InertialNode_getDataPackets__SWIG_2(swigCPtr), true);
+  public MipDataPackets getDataPackets() {
+    MipDataPackets ret = new MipDataPackets(msclPINVOKE.InertialNode_getDataPackets__SWIG_2(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -188,24 +188,24 @@ public class InertialNode : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public ushort getDataRateBase(InertialTypes.InertialCategory category) {
+  public ushort getDataRateBase(MipTypes.DataClass category) {
     ushort ret = msclPINVOKE.InertialNode_getDataRateBase(swigCPtr, (int)category);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public InertialChannels getActiveChannelFields(InertialTypes.InertialCategory category) {
-    InertialChannels ret = new InertialChannels(msclPINVOKE.InertialNode_getActiveChannelFields(swigCPtr, (int)category), true);
+  public MipChannels getActiveChannelFields(MipTypes.DataClass category) {
+    MipChannels ret = new MipChannels(msclPINVOKE.InertialNode_getActiveChannelFields(swigCPtr, (int)category), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void setActiveChannelFields(InertialTypes.InertialCategory category, InertialChannels channels) {
-    msclPINVOKE.InertialNode_setActiveChannelFields(swigCPtr, (int)category, InertialChannels.getCPtr(channels));
+  public void setActiveChannelFields(MipTypes.DataClass category, MipChannels channels) {
+    msclPINVOKE.InertialNode_setActiveChannelFields(swigCPtr, (int)category, MipChannels.getCPtr(channels));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void saveActiveChannelFields(InertialTypes.InertialCategory category) {
+  public void saveActiveChannelFields(MipTypes.DataClass category) {
     msclPINVOKE.InertialNode_saveActiveChannelFields(swigCPtr, (int)category);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
@@ -221,12 +221,12 @@ public class InertialNode : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void enableDataStream(InertialTypes.InertialCategory category, bool enable) {
+  public void enableDataStream(MipTypes.DataClass category, bool enable) {
     msclPINVOKE.InertialNode_enableDataStream__SWIG_0(swigCPtr, (int)category, enable);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void enableDataStream(InertialTypes.InertialCategory category) {
+  public void enableDataStream(MipTypes.DataClass category) {
     msclPINVOKE.InertialNode_enableDataStream__SWIG_1(swigCPtr, (int)category);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
@@ -312,13 +312,13 @@ public class InertialNode : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public uint getGPSTimeUpdate(InertialTypes.TimeFrame timeFrame) {
+  public uint getGPSTimeUpdate(MipTypes.TimeFrame timeFrame) {
     uint ret = msclPINVOKE.InertialNode_getGPSTimeUpdate(swigCPtr, (int)timeFrame);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void setGPSTimeUpdate(InertialTypes.TimeFrame arg0, uint timeData) {
+  public void setGPSTimeUpdate(MipTypes.TimeFrame arg0, uint timeData) {
     msclPINVOKE.InertialNode_setGPSTimeUpdate(swigCPtr, (int)arg0, timeData);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
@@ -456,13 +456,13 @@ public class InertialNode : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void setVehicleDynamicsMode(VehicleModeType mode) {
+  public void setVehicleDynamicsMode(InertialTypes.VehicleModeType mode) {
     msclPINVOKE.InertialNode_setVehicleDynamicsMode(swigCPtr, (int)mode);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public VehicleModeType getVehicleDynamicsMode() {
-    VehicleModeType ret = (VehicleModeType)msclPINVOKE.InertialNode_getVehicleDynamicsMode(swigCPtr);
+  public InertialTypes.VehicleModeType getVehicleDynamicsMode() {
+    InertialTypes.VehicleModeType ret = (InertialTypes.VehicleModeType)msclPINVOKE.InertialNode_getVehicleDynamicsMode(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -478,13 +478,13 @@ public class InertialNode : global::System.IDisposable {
     return ret;
   }
 
-  public void setGNSS_SourceControl(GNSS_Source gnssSource) {
+  public void setGNSS_SourceControl(InertialTypes.GNSS_Source gnssSource) {
     msclPINVOKE.InertialNode_setGNSS_SourceControl(swigCPtr, (int)gnssSource);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public GNSS_Source getGNSS_SourceControl() {
-    GNSS_Source ret = (GNSS_Source)msclPINVOKE.InertialNode_getGNSS_SourceControl(swigCPtr);
+  public InertialTypes.GNSS_Source getGNSS_SourceControl() {
+    InertialTypes.GNSS_Source ret = (InertialTypes.GNSS_Source)msclPINVOKE.InertialNode_getGNSS_SourceControl(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

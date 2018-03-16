@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -67,9 +67,9 @@ namespace mscl
         return Connection::Serial(port, baudRate);
     }
 
-    Connection Connection::TcpIp(const std::string& serverAddress, uint16 serverPort)
+    Connection Connection::TcpIp(const std::string& serverAddress, uint16 serverPort, const std::string& interfaceAddress)
     {
-        std::shared_ptr<Connection_Impl_Base> tcpip(new TcpIpConnection(serverAddress, serverPort));
+        std::shared_ptr<Connection_Impl_Base> tcpip(new TcpIpConnection(serverAddress, serverPort, interfaceAddress));
         return Connection(tcpip);
     }
 
@@ -131,6 +131,11 @@ namespace mscl
     std::string Connection::description()
     { 
         return m_impl->description(); 
+    }
+
+    Connection::ConnectionType Connection::type()
+    {
+        return m_impl->type();
     }
 
     void Connection::disconnect()

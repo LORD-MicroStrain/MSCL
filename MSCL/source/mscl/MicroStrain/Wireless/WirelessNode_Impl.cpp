@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -248,6 +248,30 @@ namespace mscl
         {
             m_eeprom->clearCache();
         }
+
+        //features may need to be reset if firmware version or model changed
+        if(m_features != NULL)
+        {
+            m_features.reset();
+        }
+
+        //protocols may need to be reset if ASPP of firmware version changed
+        if(m_protocol_lxrs != NULL)
+        {
+            m_protocol_lxrs.reset();
+        }
+        if(m_protocol_lxrsPlus != NULL)
+        {
+            m_protocol_lxrsPlus.reset();
+        }
+    }
+
+    void WirelessNode_Impl::updateEepromCacheFromNodeDiscovery(const NodeDiscovery& nodeDisovery)
+    {
+        rec_mutex_lock_guard lock(m_protocolMutex);
+
+        //import the Node Discovery eeprom map
+        eeprom().importCache(nodeDisovery.eepromMap());
 
         //features may need to be reset if firmware version or model changed
         if(m_features != NULL)

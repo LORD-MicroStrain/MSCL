@@ -1,10 +1,10 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-#include "mscl/MicroStrain/Inertial/Packets/InertialDataPacket.h"
-#include "mscl/MicroStrain/Inertial/Packets/InertialPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
 #include "mscl/Timestamp.h"
 #include "mscl/Utils.h"
 
@@ -16,8 +16,8 @@ BOOST_AUTO_TEST_SUITE(InertialDataPacket_Test)
 
 BOOST_AUTO_TEST_CASE(InertialDataPacket_DefaultConstructor)
 {
-    InertialDataPacket p;
-    BOOST_CHECK_EQUAL(p.timestamp().nanoseconds(), 0);
+    MipDataPacket p;
+    BOOST_CHECK_EQUAL(p.collectedTimestamp().nanoseconds(), 0);
 }
 
 BOOST_AUTO_TEST_CASE(InertialDataPacket_ParseValidData)
@@ -39,13 +39,13 @@ BOOST_AUTO_TEST_CASE(InertialDataPacket_ParseValidData)
     b.push_back(0x00);
     b.push_back(0x00);
 
-    //create an InertialPacket with legitimate data
-    InertialPacket p;
+    //create an MipPacket with legitimate data
+    MipPacket p;
     p.descriptorSet(DescriptorSet::DESC_SET_DATA_SENSOR);
     p.payload(b);
 
-    //create an InertialDataPacket with the InertialPacket, which should immediately parse the data for fields and data points
-    InertialDataPacket packet(p);
+    //create an MipDataPacket with the MipPacket, which should immediately parse the data for fields and data points
+    MipDataPacket packet(p);
 
     //make sure it found valid data points
     BOOST_CHECK_EQUAL(packet.data().size(), 3);
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_CASE(InertialDataPacket_ParseValidData)
 
     Utils::threadSleep(500);
     //check that the timestamp is OK (less than current time)
-    BOOST_CHECK_LT(packet.timestamp().nanoseconds(), Timestamp::timeNow().nanoseconds());
+    BOOST_CHECK_LT(packet.collectedTimestamp().nanoseconds(), Timestamp::timeNow().nanoseconds());
 }
 
 BOOST_AUTO_TEST_CASE(InertialDataPacket_ParseValidData_multipleFields)
@@ -77,13 +77,13 @@ BOOST_AUTO_TEST_CASE(InertialDataPacket_ParseValidData_multipleFields)
     bytes.append_float(0.0f);            //Gyro 2 float
     bytes.append_float(0.0f);            //Gyro 3 float
 
-    //create an InertialPacket with legitimate data
-    InertialPacket p;
+    //create an MipPacket with legitimate data
+    MipPacket p;
     p.descriptorSet(DescriptorSet::DESC_SET_DATA_SENSOR);
     p.payload(bytes.data());
 
-    //create an InertialDataPacket with the InertialPacket, which should immediately parse the data for fields and data points
-    InertialDataPacket packet(p);
+    //create an MipDataPacket with the MipPacket, which should immediately parse the data for fields and data points
+    MipDataPacket packet(p);
 
     //make sure it found valid data points
     BOOST_CHECK_EQUAL(packet.data().size(), 6);

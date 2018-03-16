@@ -1,10 +1,10 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-#include "mscl/MicroStrain/Inertial/Packets/InertialPacketCollector.h"
-#include "mscl/MicroStrain/Inertial/Packets/InertialPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
 #include "mscl/Exceptions.h"
 
 #include <boost/test/unit_test.hpp>
@@ -15,25 +15,25 @@ BOOST_AUTO_TEST_SUITE(InertialPacketCollector_Test)
 
 BOOST_AUTO_TEST_CASE(InertialPacketCollector_getDataPackets_noData)
 {
-    InertialPacketCollector collector;
+    MipPacketCollector collector;
 
     //check that totalPackets is 0
     BOOST_CHECK_EQUAL(collector.totalPackets(), 0);
 
     //check that the size of the packets is 0
-    std::vector<InertialDataPacket> packets;
+    std::vector<MipDataPacket> packets;
     collector.getDataPackets(packets);
     BOOST_CHECK_EQUAL(packets.size(), 0);
 }
 
 BOOST_AUTO_TEST_CASE(InertialPacketCollector_getDataPackets_multiplePackets_all)
 {
-    InertialPacketCollector collector;
+    MipPacketCollector collector;
 
-    InertialPacket p;
+    MipPacket p;
     p.descriptorSet(DescriptorSet::DESC_SET_DATA_GNSS);
 
-    InertialPacket p2;
+    MipPacket p2;
     p2.descriptorSet(DescriptorSet::DESC_SET_DATA_EST_FILTER);
 
     //add the packets to the collector
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(InertialPacketCollector_getDataPackets_multiplePackets_all)
     BOOST_CHECK_EQUAL(collector.totalPackets(), 2);
 
     //check that calling getDataPackets returns 2 packets
-    std::vector<InertialDataPacket> packets;
+    std::vector<MipDataPacket> packets;
     collector.getDataPackets(packets);
     BOOST_CHECK_EQUAL(packets.size(), 2);
 
@@ -57,12 +57,12 @@ BOOST_AUTO_TEST_CASE(InertialPacketCollector_getDataPackets_multiplePackets_all)
 
 BOOST_AUTO_TEST_CASE(InertialPacketCollector_getDataPackets_multiplePackets_limited)
 {
-    InertialPacketCollector collector;
+    MipPacketCollector collector;
 
-    InertialPacket p;
+    MipPacket p;
     p.descriptorSet(DescriptorSet::DESC_SET_DATA_GNSS);
 
-    InertialPacket p2;
+    MipPacket p2;
     p2.descriptorSet(DescriptorSet::DESC_SET_DATA_EST_FILTER);
 
     //add the packets to the collector
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(InertialPacketCollector_getDataPackets_multiplePackets_limi
     BOOST_CHECK_EQUAL(collector.totalPackets(), 2);
 
     //check that calling getDataPackets returns 1 packet
-    std::vector<InertialDataPacket> packets;
+    std::vector<MipDataPacket> packets;
     collector.getDataPackets(packets, 0, 1);
     BOOST_CHECK_EQUAL(packets.size(), 1);
     BOOST_CHECK_EQUAL(packets.at(0).descriptorSet(), DescriptorSet::DESC_SET_DATA_GNSS);

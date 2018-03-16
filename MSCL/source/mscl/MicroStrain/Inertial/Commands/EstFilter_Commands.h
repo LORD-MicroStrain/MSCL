@@ -1,12 +1,12 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "GenericInertialCommand.h"
-#include "mscl/MicroStrain/Inertial/InertialChannel.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
+#include "mscl/MicroStrain/MIP/MipChannel.h"
 
 namespace mscl
 {
@@ -22,9 +22,9 @@ namespace mscl
     {
     public:
         //Constants: Packet Bytes
-        //  CMD_ID              - CMD_GET_EF_RATE_BASE        - The <InertialTypes::Command> for this command
+        //  CMD_ID              - CMD_GET_EF_RATE_BASE        - The <MipTypes::Command> for this command
         //  FIELD_DATA_BYTE     - 0x8A                        - The Data Field Descriptor byte
-        static const InertialTypes::Command CMD_ID    = InertialTypes::CMD_GET_EF_RATE_BASE;
+        static const MipTypes::Command CMD_ID    = MipTypes::CMD_GET_EF_RATE_BASE;
         static const uint8 FIELD_DATA_BYTE            = 0x8A;
 
     private:
@@ -42,13 +42,13 @@ namespace mscl
         //    Handles the response to the command
         //
         //See Also:
-        //    <GenericInertialCommand::Response>
-        class Response : public GenericInertialCommand::Response
+        //    <GenericMipCommand::Response>
+        class Response : public GenericMipCommand::Response
         {
         protected:
             //Function: fieldId
-            //    Gets the <InertialTypes::Command>
-            virtual InertialTypes::Command commandId() const { return CMD_ID; }
+            //    Gets the <MipTypes::Command>
+            virtual MipTypes::Command commandId() const { return CMD_ID; }
 
             //Function: fieldDataByte
             //    Gets the data field descriptor byte
@@ -63,11 +63,11 @@ namespace mscl
             //    Parses the response, getting the data rate base result
             //
             //Parameters:
-            //    response - The <GenericInertialCommandResponse> holding the response to parse
+            //    response - The <GenericMipCmdResponse> holding the response to parse
             //
             //Returns:
             //    The data rate base result
-            uint16 parseResponse(const GenericInertialCommandResponse& response) const;
+            uint16 parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
 
@@ -77,9 +77,9 @@ namespace mscl
     {
     public:
         //Constants: Packet Bytes
-        //  CMD_ID              - CMD_EF_MESSAGE_FORMAT    - The <InertialTypes::Command> for this command
+        //  CMD_ID              - CMD_EF_MESSAGE_FORMAT    - The <MipTypes::Command> for this command
         //  FIELD_DATA_BYTE     - 0x82                    - The Data Field Descriptor byte
-        static const InertialTypes::Command CMD_ID    = InertialTypes::CMD_EF_MESSAGE_FORMAT;
+        static const MipTypes::Command CMD_ID    = MipTypes::CMD_EF_MESSAGE_FORMAT;
         static const uint8 FIELD_DATA_BYTE            = 0x82;
 
     private:
@@ -97,15 +97,15 @@ namespace mscl
         //    Builds the bytes for the "set" command. 
         //
         //Parameters:
-        //    channels - The <InertialChannels> holding the channels to be set. This should only contain channels that are in the Estimation Filter (0x82) descriptor set 
+        //    channels - The <MipChannels> holding the channels to be set. This should only contain channels that are in the Estimation Filter (0x82) descriptor set 
         //    sampleRateBase - The base sample rate for the estimation filter command set.
         //
         //Returns:
         //    A <ByteStream> that holds the bytes that make up the command
         //
         //Exceptions:
-        //    - <Error>: An <InertialChannel> in the channels parameter is not part of the Sensor descriptor set
-        static ByteStream buildCommand_set(const InertialChannels& channels, uint16 sampleRateBase);
+        //    - <Error>: An <MipChannel> in the channels parameter is not part of the Sensor descriptor set
+        static ByteStream buildCommand_set(const MipChannels& channels, uint16 sampleRateBase);
 
         //Function: buildCommand_save
         //    Builds the bytes for the "save" command
@@ -114,15 +114,15 @@ namespace mscl
         //    A <ByteStream> that holds the bytes that make up the command
         static ByteStream buildCommand_save();
         
-        class Response : public GenericInertialCommand::Response
+        class Response : public GenericMipCommand::Response
         {
         protected:
-//            virtual InertialTypes::Command commandId() const { return CMD_ID; }
+//            virtual MipTypes::Command commandId() const { return CMD_ID; }
             virtual uint8 fieldDataByte() const { return FIELD_DATA_BYTE; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
-            InertialChannels parseResponse(const GenericInertialCommandResponse& response, uint16 sampleRateBase) const;
+            MipChannels parseResponse(const GenericMipCmdResponse& response, uint16 sampleRateBase) const;
         };
     };
 
@@ -132,8 +132,8 @@ namespace mscl
     {
     public:
         //Constants: Packet Bytes
-        //  CMD_ID              - CMD_EF_RESET_FILTER       - The <InertialTypes::Command> for this command
-        static const InertialTypes::Command CMD_ID = InertialTypes::CMD_EF_RESET_FILTER;
+        //  CMD_ID              - CMD_EF_RESET_FILTER       - The <MipTypes::Command> for this command
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_EF_RESET_FILTER;
 
     private:
         ResetFilter() = delete;
@@ -143,10 +143,10 @@ namespace mscl
         //    Builds the bytes for the command. 
         static ByteStream buildCommand();
 
-        class Response: public GenericInertialCommand::Response
+        class Response: public GenericMipCommand::Response
         {
         //protected:
-        //    virtual InertialTypes::Command commandId() const { return CMD_ID; }
+        //    virtual MipTypes::Command commandId() const { return CMD_ID; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector);
@@ -159,8 +159,8 @@ namespace mscl
     {
     public:
         //Constants: Packet Bytes
-        //  CMD_ID              - CMD_EF_INIT_ATTITUDE     - The <InertialTypes::Command> for this command
-        static const InertialTypes::Command CMD_ID = InertialTypes::CMD_EF_INIT_ATTITUDE;
+        //  CMD_ID              - CMD_EF_INIT_ATTITUDE     - The <MipTypes::Command> for this command
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_EF_INIT_ATTITUDE;
 
     private:
         SetInitialAttitude() = delete;
@@ -173,10 +173,10 @@ namespace mscl
         //    attitude - The <EulerAngles> representing the initial attitude.
         static ByteStream buildCommand(const EulerAngles& attitude);
 
-        class Response: public GenericInertialCommand::Response
+        class Response: public GenericMipCommand::Response
         {
         //protected:
-        //    virtual InertialTypes::Command commandId() const { return CMD_ID; }
+        //    virtual MipTypes::Command commandId() const { return CMD_ID; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector);
@@ -189,8 +189,8 @@ namespace mscl
     {
     public:
         //Constants: Packet Bytes
-        //  CMD_ID              - CMD_EF_INIT_HEADING     - The <InertialTypes::Command> for this command
-        static const InertialTypes::Command CMD_ID = InertialTypes::CMD_EF_INIT_HEADING;
+        //  CMD_ID              - CMD_EF_INIT_HEADING     - The <MipTypes::Command> for this command
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_EF_INIT_HEADING;
 
     private:
         SetInitialHeading() = delete;
@@ -203,10 +203,10 @@ namespace mscl
         //    heading - The heading value to set.
         static ByteStream buildCommand(float heading);
 
-        class Response: public GenericInertialCommand::Response
+        class Response: public GenericMipCommand::Response
         {
         protected:
-            virtual InertialTypes::Command commandId() const { return CMD_ID; }
+            virtual MipTypes::Command commandId() const { return CMD_ID; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector);
@@ -219,9 +219,9 @@ namespace mscl
     {
     public:
         //Constants: Packet Bytes
-        //  CMD_ID              - CMD_EF_AUTO_INIT_CTRL     - The <InertialTypes::Command> for this command
+        //  CMD_ID              - CMD_EF_AUTO_INIT_CTRL     - The <MipTypes::Command> for this command
         //  FIELD_DATA_BYTE     - 0x88                      - The Data Field Descriptor byte
-        static const InertialTypes::Command CMD_ID = InertialTypes::CMD_EF_AUTO_INIT_CTRL;
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_EF_AUTO_INIT_CTRL;
         static const uint8 FIELD_DATA_BYTE = 0x88;
 
     private:
@@ -239,15 +239,15 @@ namespace mscl
         //    enable - Whether to enable (true) or disable (false) the automatic initialization.
         static ByteStream buildCommand_set(bool enable);
 
-        class Response: public GenericInertialCommand::Response
+        class Response: public GenericMipCommand::Response
         {
         protected:
-            virtual InertialTypes::Command commandId() const { return CMD_ID; }
+            virtual MipTypes::Command commandId() const { return CMD_ID; }
             virtual uint8 fieldDataByte() const { return FIELD_DATA_BYTE; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
-            bool parseResponse(const GenericInertialCommandResponse& response) const;
+            bool parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
 
@@ -257,9 +257,9 @@ namespace mscl
     {
     public:
         //Constants: Packet Bytes
-        //  CMD_ID              - CMD_EF_SENS_VEHIC_FRAME_TRANS     - The <InertialTypes::Command> for this command
+        //  CMD_ID              - CMD_EF_SENS_VEHIC_FRAME_TRANS     - The <MipTypes::Command> for this command
         //  FIELD_DATA_BYTE     - 0x81                              - The Data Field Descriptor byte
-        static const InertialTypes::Command CMD_ID = InertialTypes::CMD_EF_SENS_VEHIC_FRAME_TRANS;
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANS;
         static const uint8 FIELD_DATA_BYTE = 0x81;
 
     private:
@@ -277,15 +277,15 @@ namespace mscl
         //    angles-  The <EulerAngles> containing the roll, pitch, and yaw (in radians).
         static ByteStream buildCommand_set(const EulerAngles& angles);
 
-        class Response: public GenericInertialCommand::Response
+        class Response: public GenericMipCommand::Response
         {
         protected:
-            virtual InertialTypes::Command commandId() const { return CMD_ID; }
+            virtual MipTypes::Command commandId() const { return CMD_ID; }
             virtual uint8 fieldDataByte() const { return FIELD_DATA_BYTE; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
-            EulerAngles parseResponse(const GenericInertialCommandResponse& response) const;
+            EulerAngles parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
 
@@ -295,9 +295,9 @@ namespace mscl
     {
     public:
         //Constants: Packet Bytes
-        //  CMD_ID              - CMD_EF_SENS_VEHIC_FRAME_OFFSET    - The <InertialTypes::Command> for this command
+        //  CMD_ID              - CMD_EF_SENS_VEHIC_FRAME_OFFSET    - The <MipTypes::Command> for this command
         //  FIELD_DATA_BYTE     - 0x82                              - The Data Field Descriptor byte
-        static const InertialTypes::Command CMD_ID = InertialTypes::CMD_EF_SENS_VEHIC_FRAME_OFFSET;
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_EF_SENS_VEHIC_FRAME_OFFSET;
         static const uint8 FIELD_DATA_BYTE = 0x82;
 
     private:
@@ -315,15 +315,15 @@ namespace mscl
         //    offset -  The <PositionOffset> in meters.
         static ByteStream buildCommand_set(const PositionOffset& offset);
 
-        class Response: public GenericInertialCommand::Response
+        class Response: public GenericMipCommand::Response
         {
         protected:
-            virtual InertialTypes::Command commandId() const { return CMD_ID; }
+            virtual MipTypes::Command commandId() const { return CMD_ID; }
             virtual uint8 fieldDataByte() const { return FIELD_DATA_BYTE; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
-            PositionOffset parseResponse(const GenericInertialCommandResponse& response) const;
+            PositionOffset parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
 
@@ -333,9 +333,9 @@ namespace mscl
     {
     public:
         //Constants: Packet Bytes
-        //  CMD_ID              - CMD_EF_ANTENNA_OFFSET     - The <InertialTypes::Command> for this command
+        //  CMD_ID              - CMD_EF_ANTENNA_OFFSET     - The <MipTypes::Command> for this command
         //  FIELD_DATA_BYTE     - 0x83                      - The Data Field Descriptor byte
-        static const InertialTypes::Command CMD_ID = InertialTypes::CMD_EF_ANTENNA_OFFSET;
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_EF_ANTENNA_OFFSET;
         static const uint8 FIELD_DATA_BYTE = 0x83;
 
     private:
@@ -353,15 +353,15 @@ namespace mscl
         //    offset -  The <PositionOffset> in meters.
         static ByteStream buildCommand_set(const PositionOffset& offset);
 
-        class Response: public GenericInertialCommand::Response
+        class Response: public GenericMipCommand::Response
         {
         protected:
-            virtual InertialTypes::Command commandId() const { return CMD_ID; }
+            virtual MipTypes::Command commandId() const { return CMD_ID; }
             virtual uint8 fieldDataByte() const { return FIELD_DATA_BYTE; }
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
-            PositionOffset parseResponse(const GenericInertialCommandResponse& response) const;
+            PositionOffset parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
 }

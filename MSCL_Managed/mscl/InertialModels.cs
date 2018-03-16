@@ -65,7 +65,8 @@ public class InertialModels : global::System.IDisposable {
     node_3dm_cv5_10 = 6259,
     node_3dm_cv5_15 = 6258,
     node_3dm_cv5_25 = 6257,
-    node_3dm_cv5_45 = 6256
+    node_3dm_cv5_45 = 6256,
+    node_3dm_gq4_45 = 6250
   }
 
 }

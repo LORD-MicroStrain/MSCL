@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -8,7 +8,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "mscl/Exceptions.h"
 #include "mscl/Utils.h"
-#include "Inertial_Commands.h"
+#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 
 namespace mscl
 {
@@ -17,16 +17,16 @@ namespace mscl
     ByteStream GetSensorDataRateBase::buildCommand()
     {
         //return the result of the Generic buildCommand function
-        return GenericInertialCommand::buildCommand(CMD_ID);
+        return GenericMipCommand::buildCommand(CMD_ID);
     }
 
     GetSensorDataRateBase::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        GenericInertialCommand::Response(InertialTypes::CMD_GET_SENSOR_RATE_BASE, collector, true, true, "Get Sensor Data Rate Base")
+        GenericMipCommand::Response(MipTypes::CMD_GET_SENSOR_RATE_BASE, collector, true, true, "Get Sensor Data Rate Base")
     {}
 
-    uint16 GetSensorDataRateBase::Response::parseResponse(const GenericInertialCommandResponse& response) const
+    uint16 GetSensorDataRateBase::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
-        return Inertial_Commands::parseData_DataRateBase(response);
+        return MIP_Commands::parseData_DataRateBase(response);
     }
     //==========================================================================================
 
@@ -38,33 +38,33 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(InertialTypes::READ_BACK_CURRENT_SETTINGS));
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::READ_BACK_CURRENT_SETTINGS));
 
         //"get" has no channels, so add 0 
         fieldData.append_uint8(0);
 
         //build and return the command bytes
-        return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
-    ByteStream SensorMessageFormat::buildCommand_set(const InertialChannels& channels, uint16 sampleRateBase)
+    ByteStream SensorMessageFormat::buildCommand_set(const MipChannels& channels, uint16 sampleRateBase)
     {
         //container to hold the command's field data
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(InertialTypes::USE_NEW_SETTINGS));
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::USE_NEW_SETTINGS));
 
         //add the number of channels
         fieldData.append_uint8(static_cast<uint8>(channels.size()));
 
         //loop through each channel in the vector of channels
-        for(InertialChannel ch : channels)
+        for(MipChannel ch : channels)
         {
             //if we find a channel not in the Sensor descriptor set
             if(ch.descriptorSet() != DescriptorSet::DESC_SET_DATA_SENSOR)
             {
-                throw Error("InertialChannel (" + Utils::toStr(ch.channelField()) +") is not in the Sensor descriptor set");
+                throw Error("MipChannel (" + Utils::toStr(ch.channelField()) +") is not in the Sensor descriptor set");
             }
 
             //validate the sample rate for the channel
@@ -76,7 +76,7 @@ namespace mscl
         }
 
         //build and return the command bytes
-        return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
     ByteStream SensorMessageFormat::buildCommand_save()
@@ -85,22 +85,22 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(InertialTypes::SAVE_CURRENT_SETTINGS));
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::SAVE_CURRENT_SETTINGS));
 
         // no channels, so add 0 
         fieldData.append_uint8(0);
 
         //build and return the command bytes
-        return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
     SensorMessageFormat::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
-        GenericInertialCommand::Response(InertialTypes::CMD_SENSOR_MESSAGE_FORMAT, collector, true, dataResponse, "Sensor Message Format")
+        GenericMipCommand::Response(MipTypes::CMD_SENSOR_MESSAGE_FORMAT, collector, true, dataResponse, "Sensor Message Format")
     {}
 
-    InertialChannels SensorMessageFormat::Response::parseResponse(const GenericInertialCommandResponse& response, uint16 sampleRateBase) const
+    MipChannels SensorMessageFormat::Response::parseResponse(const GenericMipCmdResponse& response, uint16 sampleRateBase) const
     {
-        return Inertial_Commands::parseData_MessageFormat(response, fieldDataByte(), sampleRateBase);
+        return MIP_Commands::parseData_MessageFormat(response, fieldDataByte(), sampleRateBase);
     }
     //==========================================================================================
 

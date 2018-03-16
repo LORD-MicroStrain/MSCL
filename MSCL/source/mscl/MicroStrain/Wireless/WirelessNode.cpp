@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -114,6 +114,11 @@ namespace mscl
     void WirelessNode::clearEepromCache()
     {
         m_impl->clearEepromCache();
+    }
+
+    void WirelessNode::updateEepromCacheFromNodeDiscovery(const NodeDiscovery& nodeDisovery)
+    {
+        m_impl->updateEepromCacheFromNodeDiscovery(nodeDisovery);
     }
 
     WirelessTypes::EepromMap WirelessNode::getEepromCache() const

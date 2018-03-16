@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-#include "mscl/MicroStrain/Inertial/InertialDataField.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/Commands/Sensor_Commands.h"
 #include "mscl/MicroStrain/Inertial/Commands/GNSS_Commands.h"
@@ -44,7 +44,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_Sensor_Match_Fail_DescSet)
     Bytes fieldData1;
     fieldData1.push_back(0x06);
     fieldData1.push_back(0x00);
-    InertialDataField field1(0x02F1, fieldData1); //invalid descriptor set
+    MipDataField field1(0x02F1, fieldData1); //invalid descriptor set
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field1), false);
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_Sensor_Match_Fail_FieldDataLen)
 
     Bytes fieldData;
     fieldData.push_back(0x06);
-    InertialDataField field(0x02F1, fieldData); //bad field data length
+    MipDataField field(0x02F1, fieldData); //bad field data length
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), false);
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_Sensor_Match_Fail_FieldDesc)
     Bytes fieldData;
     fieldData.push_back(0x06);
     fieldData.push_back(0x00);
-    InertialDataField field(0x0CF2, fieldData); //invalid field descriptor
+    MipDataField field(0x0CF2, fieldData); //invalid field descriptor
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), false);
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_Sensor_Match_Fail_CommandEcho)
     Bytes fieldData;
     fieldData.push_back(0x01);    //bad command echo
     fieldData.push_back(0x00);
-    InertialDataField field(0x0CF1, fieldData);
+    MipDataField field(0x0CF1, fieldData);
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), false);
@@ -98,13 +98,13 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_Sensor_Match_FailWithErrorCode)
 
     Bytes fieldData;
     fieldData.push_back(0x06);
-    fieldData.push_back(mscl::InertialPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
-    InertialDataField field(0x0CF1, fieldData); //good field, but with error code
+    fieldData.push_back(mscl::MipPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
+    MipDataField field(0x0CF1, fieldData); //good field, but with error code
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), true);
     BOOST_CHECK_EQUAL(response.result().success(), false);
-    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::InertialPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
+    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
 }
 
 BOOST_AUTO_TEST_CASE(GetDataRateBase_Sensor_Match_Success_NotFullyMatched)
@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_Sensor_Match_Success_NotFullyMatched)
     Bytes fieldData1;
     fieldData1.push_back(0x06);
     fieldData1.push_back(0x00);
-    InertialDataField field1(0x0CF1, fieldData1); //good field
+    MipDataField field1(0x0CF1, fieldData1); //good field
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field1), true);
@@ -131,13 +131,13 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_Sensor_Match_Success_OnlyData)
     ByteStream bytes;
     bytes.append_uint16(1000);
 
-    InertialDataField field2(0x0C83, bytes.data()); //good device info field
+    MipDataField field2(0x0C83, bytes.data()); //good device info field
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(field2), true); 
     BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //even though we didnt get an ACK/NACK, we still fully matched because the descritors info is enough to match
     BOOST_CHECK_EQUAL(response.result().success(), true);
-    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::InertialPacket::MIP_ACK_NACK_ERROR_NONE);
+    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
     BOOST_CHECK_EQUAL(response.result().data().read_uint16(0), 1000);
 }
 
@@ -152,19 +152,19 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_Sensor_Match_Success)
     Bytes fieldData1;
     fieldData1.push_back(0x06);
     fieldData1.push_back(0x00);
-    InertialDataField field1(0x0CF1, fieldData1); //good field
+    MipDataField field1(0x0CF1, fieldData1); //good field
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field1), true);
     BOOST_CHECK_EQUAL(response.fullyMatched(), false);    //not yet fully matched
 
-    InertialDataField field2(0x0C83, bytes.data()); //good device info field
+    MipDataField field2(0x0C83, bytes.data()); //good device info field
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(field2), true); 
     BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //we  fully matched because the device info is enough to match
     BOOST_CHECK_EQUAL(response.result().success(), true);
-    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::InertialPacket::MIP_ACK_NACK_ERROR_NONE);
+    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
     BOOST_CHECK_EQUAL(response.result().data().read_uint16(0), 4);
 }
 
@@ -197,7 +197,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Fail_DescSet)
     Bytes fieldData1;
     fieldData1.push_back(0x07);
     fieldData1.push_back(0x00);
-    InertialDataField field1(0x02F1, fieldData1); //invalid descriptor set
+    MipDataField field1(0x02F1, fieldData1); //invalid descriptor set
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field1), false);
@@ -210,7 +210,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Fail_FieldDataLen)
 
     Bytes fieldData;
     fieldData.push_back(0x07);
-    InertialDataField field(0x0CF1, fieldData); //bad field data length
+    MipDataField field(0x0CF1, fieldData); //bad field data length
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), false);
@@ -224,7 +224,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Fail_FieldDesc)
     Bytes fieldData;
     fieldData.push_back(0x07);
     fieldData.push_back(0x00);
-    InertialDataField field(0x0CF2, fieldData); //invalid field descriptor
+    MipDataField field(0x0CF2, fieldData); //invalid field descriptor
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), false);
@@ -238,7 +238,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Fail_CommandEcho)
     Bytes fieldData;
     fieldData.push_back(0x01);    //bad command echo
     fieldData.push_back(0x00);
-    InertialDataField field(0x0CF1, fieldData);
+    MipDataField field(0x0CF1, fieldData);
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), false);
@@ -251,13 +251,13 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_FailWithErrorCode)
 
     Bytes fieldData;
     fieldData.push_back(0x07);
-    fieldData.push_back(mscl::InertialPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
-    InertialDataField field(0x0CF1, fieldData); //good field, but with error code
+    fieldData.push_back(mscl::MipPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
+    MipDataField field(0x0CF1, fieldData); //good field, but with error code
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), true);
     BOOST_CHECK_EQUAL(response.result().success(), false);
-    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::InertialPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
+    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
 }
 
 BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Success_NotFullyMatched)
@@ -268,7 +268,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Success_NotFullyMatched)
     Bytes fieldData1;
     fieldData1.push_back(0x07);
     fieldData1.push_back(0x00);
-    InertialDataField field1(0x0CF1, fieldData1); //good field
+    MipDataField field1(0x0CF1, fieldData1); //good field
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field1), true);
@@ -284,13 +284,13 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Success_OnlyData)
     ByteStream bytes;
     bytes.append_uint16(2000);
 
-    InertialDataField field2(0x0C84, bytes.data()); //good device info field
+    MipDataField field2(0x0C84, bytes.data()); //good device info field
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(field2), true); 
     BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //even though we didnt get an ACK/NACK, we still fully matched because the descritors info is enough to match
     BOOST_CHECK_EQUAL(response.result().success(), true);
-    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::InertialPacket::MIP_ACK_NACK_ERROR_NONE);
+    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
     BOOST_CHECK_EQUAL(response.result().data().read_uint16(0), 2000);
 }
 
@@ -305,19 +305,19 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_GPS_Match_Success)
     Bytes fieldData1;
     fieldData1.push_back(0x07);
     fieldData1.push_back(0x00);
-    InertialDataField field1(0x0CF1, fieldData1); //good field
+    MipDataField field1(0x0CF1, fieldData1); //good field
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field1), true);
     BOOST_CHECK_EQUAL(response.fullyMatched(), false);    //not yet fully matched
 
-    InertialDataField field2(0x0C84, bytes.data()); //good device info field
+    MipDataField field2(0x0C84, bytes.data()); //good device info field
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(field2), true); 
     BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //we  fully matched because the device info is enough to match
     BOOST_CHECK_EQUAL(response.result().success(), true);
-    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::InertialPacket::MIP_ACK_NACK_ERROR_NONE);
+    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
     BOOST_CHECK_EQUAL(response.result().data().read_uint16(0), 40);
 }
 
@@ -351,7 +351,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_EstFilter_Match_Fail_DescSet)
     Bytes fieldData1;
     fieldData1.push_back(0x0B);
     fieldData1.push_back(0x00);
-    InertialDataField field1(0x03F1, fieldData1); //invalid descriptor set
+    MipDataField field1(0x03F1, fieldData1); //invalid descriptor set
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field1), false);
@@ -364,7 +364,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_EstFilter_Match_Fail_FieldDataLen)
 
     Bytes fieldData;
     fieldData.push_back(0x0B);
-    InertialDataField field(0x0CF1, fieldData); //bad field data length
+    MipDataField field(0x0CF1, fieldData); //bad field data length
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), false);
@@ -378,7 +378,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_EstFilter_Match_Fail_FieldDesc)
     Bytes fieldData;
     fieldData.push_back(0x0B);
     fieldData.push_back(0x00);
-    InertialDataField field(0x0CF2, fieldData); //invalid field descriptor
+    MipDataField field(0x0CF2, fieldData); //invalid field descriptor
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), false);
@@ -392,7 +392,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_EstFilter_Match_Fail_CommandEcho)
     Bytes fieldData;
     fieldData.push_back(0x01);    //bad command echo
     fieldData.push_back(0x00);
-    InertialDataField field(0x0CF1, fieldData);
+    MipDataField field(0x0CF1, fieldData);
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), false);
@@ -405,13 +405,13 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_EstFilter_Match_FailWithErrorCode)
 
     Bytes fieldData;
     fieldData.push_back(0x0B);
-    fieldData.push_back(mscl::InertialPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
-    InertialDataField field(0x0CF1, fieldData); //good field, but with error code
+    fieldData.push_back(mscl::MipPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
+    MipDataField field(0x0CF1, fieldData); //good field, but with error code
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field), true);
     BOOST_CHECK_EQUAL(response.result().success(), false);
-    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::InertialPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
+    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_UNKNOWN_COMMAND);
 }
 
 BOOST_AUTO_TEST_CASE(GetDataRateBase_EstFilter_Match_Fail_DataMatchFieldDesc)
@@ -422,7 +422,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_EstFilter_Match_Fail_DataMatchFieldDesc)
     ByteStream bytes;
     bytes.append_uint16(2000);
 
-    InertialDataField field2(0x0C00, bytes.data()); //bad field descriptor
+    MipDataField field2(0x0C00, bytes.data()); //bad field descriptor
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(field2), false); 
@@ -436,7 +436,7 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_EstFilter_Match_Success_NotFullyMatched)
     Bytes fieldData1;
     fieldData1.push_back(0x0B);
     fieldData1.push_back(0x00);
-    InertialDataField field1(0x0CF1, fieldData1); //good field
+    MipDataField field1(0x0CF1, fieldData1); //good field
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field1), true);
@@ -452,13 +452,13 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_EstFilter_Match_Success_OnlyData)
     ByteStream bytes;
     bytes.append_uint16(2000);
 
-    InertialDataField field2(0x0C8A, bytes.data()); //good device info field
+    MipDataField field2(0x0C8A, bytes.data()); //good device info field
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(field2), true); 
     BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //even though we didnt get an ACK/NACK, we still fully matched because the descritors info is enough to match
     BOOST_CHECK_EQUAL(response.result().success(), true);
-    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::InertialPacket::MIP_ACK_NACK_ERROR_NONE);
+    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
     BOOST_CHECK_EQUAL(response.result().data().read_uint16(0), 2000);
 }
 
@@ -473,19 +473,19 @@ BOOST_AUTO_TEST_CASE(GetDataRateBase_EstFilter_Match_Success)
     Bytes fieldData1;
     fieldData1.push_back(0x0B);
     fieldData1.push_back(0x00);
-    InertialDataField field1(0x0CF1, fieldData1); //good field
+    MipDataField field1(0x0CF1, fieldData1); //good field
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field1), true);
     BOOST_CHECK_EQUAL(response.fullyMatched(), false);    //not yet fully matched
 
-    InertialDataField field2(0x0C8A, bytes.data()); //good device info field
+    MipDataField field2(0x0C8A, bytes.data()); //good device info field
 
     //check that the match succeeds
     BOOST_CHECK_EQUAL(response.match(field2), true); 
     BOOST_CHECK_EQUAL(response.fullyMatched(), true);    //we  fully matched because the device info is enough to match
     BOOST_CHECK_EQUAL(response.result().success(), true);
-    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::InertialPacket::MIP_ACK_NACK_ERROR_NONE);
+    BOOST_CHECK_EQUAL(response.result().errorCode(), mscl::MipPacket::MIP_ACK_NACK_ERROR_NONE);
     BOOST_CHECK_EQUAL(response.result().data().read_uint16(0), 40);
 }
 

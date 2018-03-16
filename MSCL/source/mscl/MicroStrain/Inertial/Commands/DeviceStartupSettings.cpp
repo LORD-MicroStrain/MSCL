@@ -1,10 +1,10 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
-#include "Inertial_Commands.h"
+#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 #include "DeviceStartupSettings.h"
 
 namespace mscl
@@ -14,10 +14,10 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(InertialTypes::SAVE_CURRENT_SETTINGS));
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::SAVE_CURRENT_SETTINGS));
 
         //build and return the command bytes
-        return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
     ByteStream DeviceStartupSettings::buildCommand_loadStartup()
@@ -25,10 +25,10 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(InertialTypes::LOAD_STARTUP_SETTINGS));
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::LOAD_STARTUP_SETTINGS));
 
         //build and return the command bytes
-        return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
     ByteStream DeviceStartupSettings::buildCommand_loadDefault()
@@ -36,14 +36,14 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(InertialTypes::RESET_TO_DEFAULT));
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::RESET_TO_DEFAULT));
 
         //build and return the command bytes
-        return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
     DeviceStartupSettings::Response::Response(std::weak_ptr<ResponseCollector> collector):
-        GenericInertialCommand::Response(InertialTypes::CMD_SAVE_STARTUP_SETTINGS, collector, true, false, "Device Startup Settings")
+        GenericMipCommand::Response(MipTypes::CMD_SAVE_STARTUP_SETTINGS, collector, true, false, "Device Startup Settings")
     {
     }
 }

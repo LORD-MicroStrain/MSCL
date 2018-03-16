@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -53,7 +53,9 @@ namespace mscl
 
     WsdaFinder::~WsdaFinder()
     {
-        if(m_upnpSearchCallback != nullptr)
+        m_upnpService.reset(nullptr);
+
+        if(m_upnpSearchCallback)
         {
             m_upnpSearchCallback->Release();
         }
@@ -61,7 +63,7 @@ namespace mscl
 
     void WsdaFinder::start()
     {
-        m_upnpSearchCallback = new UpnpDeviceFinderCallback();
+        m_upnpSearchCallback.reset(new UpnpDeviceFinderCallback());
         m_upnpSearchCallback->AddRef();
         m_upnpSearchCallback->bindSearchComplete(std::bind(&WsdaFinder::onSearchComplete, this));
         m_upnpSearchCallback->bindDeviceAdded(std::bind(&WsdaFinder::onDeviceAdded, this, std::placeholders::_1));

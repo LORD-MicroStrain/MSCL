@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodePing", "NodePing\NodePing.csproj", "{B67A0C1C-69FB-4ED5-9BBF-30A74389E395}"
 EndProject
@@ -14,8 +14,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigureNode", "ConfigureNode\ConfigureNode.csproj", "{18C66B25-05BD-4034-9F2E-1533A4E0B3B2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StopNode", "StopNode\StopNode.csproj", "{91702C5C-FF10-45D9-9A02-9019FE46FC3E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArmedDatalogging", "ArmedDatalogging\ArmedDatalogging.csproj", "{60A73D41-8DD0-46C3-BF46-5B1BF1441564}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,18 +115,6 @@ Global
 		{91702C5C-FF10-45D9-9A02-9019FE46FC3E}.Release|Win32.Build.0 = Release|x86
 		{91702C5C-FF10-45D9-9A02-9019FE46FC3E}.Release|x86.ActiveCfg = Release|x86
 		{91702C5C-FF10-45D9-9A02-9019FE46FC3E}.Release|x86.Build.0 = Release|x86
-		{60A73D41-8DD0-46C3-BF46-5B1BF1441564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{60A73D41-8DD0-46C3-BF46-5B1BF1441564}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{60A73D41-8DD0-46C3-BF46-5B1BF1441564}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{60A73D41-8DD0-46C3-BF46-5B1BF1441564}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{60A73D41-8DD0-46C3-BF46-5B1BF1441564}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{60A73D41-8DD0-46C3-BF46-5B1BF1441564}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{60A73D41-8DD0-46C3-BF46-5B1BF1441564}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{60A73D41-8DD0-46C3-BF46-5B1BF1441564}.Release|Any CPU.Build.0 = Release|Any CPU
-		{60A73D41-8DD0-46C3-BF46-5B1BF1441564}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{60A73D41-8DD0-46C3-BF46-5B1BF1441564}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{60A73D41-8DD0-46C3-BF46-5B1BF1441564}.Release|Win32.ActiveCfg = Release|Any CPU
-		{60A73D41-8DD0-46C3-BF46-5B1BF1441564}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

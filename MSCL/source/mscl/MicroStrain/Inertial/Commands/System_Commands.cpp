@@ -1,11 +1,11 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "System_Commands.h"
-#include "Inertial_Commands.h"
+#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 
 namespace mscl
 {
@@ -17,13 +17,13 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(InertialTypes::READ_BACK_CURRENT_SETTINGS));
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::READ_BACK_CURRENT_SETTINGS));
 
         //"get" has no data, so add 0 
         fieldData.append_uint8(0);
 
         //build and return the command bytes
-        return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
     ByteStream CommunicationMode::buildCommand_set(uint8 communicationMode)
@@ -32,22 +32,22 @@ namespace mscl
         ByteStream fieldData;
 
         //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(InertialTypes::USE_NEW_SETTINGS));
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::USE_NEW_SETTINGS));
 
         //add the communication mode
         fieldData.append_uint8(communicationMode);
 
         //build and return the command bytes
-        return GenericInertialCommand::buildCommand(CMD_ID, fieldData.data());
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
     }
 
     CommunicationMode::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
-        GenericInertialCommand::Response(InertialTypes::CMD_COMMUNICATION_MODE, collector, true, dataResponse, "Communication Mode")
+        GenericMipCommand::Response(MipTypes::CMD_COMMUNICATION_MODE, collector, true, dataResponse, "Communication Mode")
     {}
 
-    uint8 CommunicationMode::Response::parseResponse(const GenericInertialCommandResponse& response) const
+    uint8 CommunicationMode::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
-        return Inertial_Commands::parseData_CommunicationMode(response);
+        return MIP_Commands::parseData_CommunicationMode(response);
     }
     //==========================================================================================
 }

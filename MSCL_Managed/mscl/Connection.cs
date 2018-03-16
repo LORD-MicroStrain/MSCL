@@ -56,8 +56,14 @@ public class Connection : global::System.IDisposable {
     return ret;
   }
 
+  public static Connection TcpIp(string serverAddress, ushort serverPort, string interfaceAddress) {
+    Connection ret = new Connection(msclPINVOKE.Connection_TcpIp__SWIG_0(serverAddress, serverPort, interfaceAddress), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public static Connection TcpIp(string serverAddress, ushort serverPort) {
-    Connection ret = new Connection(msclPINVOKE.Connection_TcpIp(serverAddress, serverPort), true);
+    Connection ret = new Connection(msclPINVOKE.Connection_TcpIp__SWIG_1(serverAddress, serverPort), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -20,8 +20,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "BaseStation.h"
 #include "RadioFeatures.h"
 #include "WirelessModels.h"
-#include "LinearEquation.h"
 #include "WirelessDataPoint.h"
+#include "mscl/MicroStrain/LinearEquation.h"
 
 namespace mscl
 {
@@ -204,6 +204,15 @@ namespace mscl
         //API Function: clearEepromCache
         //    Clears the eeprom cache for this Node.
         void clearEepromCache();
+
+        //API Function: updateEepromCacheFromNodeDiscovery
+        //  Updates the Node's eeprom cache with information from the <NodeDiscovery> object.
+        //  Note: Take caution when using this function that the NodeDiscovery object actually belongs
+        //        to this <WirelessNode>.
+        //
+        //Parameters:
+        //  nodeDiscovery - The <NodeDiscovery> object to update the cache with.
+        void updateEepromCacheFromNodeDiscovery(const NodeDiscovery& nodeDisovery);
 
         //API Function: getEepromCache
         //  Gets a copy of the eeprom cache as a <WirelessTypes::EepromMap>.

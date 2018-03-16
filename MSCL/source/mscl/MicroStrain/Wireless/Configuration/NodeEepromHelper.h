@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -13,7 +13,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/WirelessModels.h"
 #include "mscl/MicroStrain/Wireless/RadioFeatures.h"
-#include "mscl/MicroStrain/Wireless/LinearEquation.h"
+#include "mscl/MicroStrain/LinearEquation.h"
 #include "mscl/TimeSpan.h"
 #include "mscl/Version.h"
 #include "mscl/Value.h"
@@ -142,6 +142,8 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         Version read_fwVersion() const;
+
+        uint8 read_fwVersionMajor() const;
 
         //Function: read_asppVersion
         //  Gets the ASPP version of the Node for the specified <WirelesTypes::RadioMode>.

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -39,7 +39,8 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v1_0)
 
     std::unique_ptr<BaseStationFeatures> baseFeatures;
     expectBaseFeatures(baseFeatures, baseImpl);
-    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+    MOCK_EXPECT(baseImpl->communicationProtocol).returns(WirelessTypes::commProtocol_lxrs);
+    //expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
 
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b));
     WirelessNode node(1, b);
@@ -121,7 +122,8 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_0)
 
     std::unique_ptr<BaseStationFeatures> baseFeatures;
     expectBaseFeatures(baseFeatures, baseImpl);
-    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+    MOCK_EXPECT(baseImpl->communicationProtocol).returns(WirelessTypes::commProtocol_lxrs);
+    //expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
 
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b));
     WirelessNode node(1, b);
@@ -209,7 +211,8 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_1)
 
     std::unique_ptr<BaseStationFeatures> baseFeatures;
     expectBaseFeatures(baseFeatures, baseImpl);
-    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+    MOCK_EXPECT(baseImpl->communicationProtocol).returns(WirelessTypes::commProtocol_lxrs);
+    //expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
 
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b));
     WirelessNode node(1, b);
@@ -299,7 +302,8 @@ BOOST_AUTO_TEST_CASE(DatalogDownloader_getNextData_v2_1_fastSampleRates)
 
     std::unique_ptr<BaseStationFeatures> baseFeatures;
     expectBaseFeatures(baseFeatures, baseImpl);
-    expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
+    MOCK_EXPECT(baseImpl->communicationProtocol).returns(WirelessTypes::commProtocol_lxrs);
+    //expectRead(baseImpl, BaseStationEepromMap::COMM_PROTOCOL, Value::UINT16((uint16)(0)));
 
     std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b));
     WirelessNode node(1, b);

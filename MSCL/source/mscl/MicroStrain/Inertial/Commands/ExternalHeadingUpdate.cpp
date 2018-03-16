@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "ExternalHeadingUpdate.h"
-#include "mscl/MicroStrain/Inertial/InertialDataField.h"
-#include "mscl/MicroStrain/Inertial/Packets/InertialPacketBuilder.h"
-#include "mscl/MicroStrain/Inertial/InertialTypes.h"
-#include "Inertial_Commands.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacketBuilder.h"
+#include "mscl/MicroStrain/MIP/MipTypes.h"
+#include "mscl/MicroStrain/MIP/Commands/MIP_Commands.h"
 
 namespace mscl
 {
@@ -32,10 +32,10 @@ namespace mscl
         else if (m_headingData.heading == HeadingData::HeadingType::MAGNETIC_HEADING)
             headingType = 0x02;
         else
-            throw Error_InertialCmdFailed("Unknown heading type used.");
+            throw Error_MipCmdFailed("Unknown heading type used.");
         byteCommand.append_uint8(headingType);
 
-        return GenericInertialCommand::buildCommand(commandType(), byteCommand.data());
+        return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
 
 }

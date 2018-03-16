@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "mscl/MicroStrain/Inertial/Commands/GenericInertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "ExposedInertialTypes.h"
-#include "InertialTypes.h"
+#include "mscl/MicroStrain/MIP/MipTypes.h"
 
 namespace mscl
 {
@@ -153,7 +153,7 @@ HeadingUpdateOptions::HeadingUpdateOptions(const mscl::uint8& headingUpdateOptio
         useExternalHeadingMessages = true;
         break;
     default:
-        throw Error_InertialCmdFailed("An invalid option value was passed in to HeadingUpdateOptions.");
+        throw Error_MipCmdFailed("An invalid option value was passed in to HeadingUpdateOptions.");
     }
 }
 

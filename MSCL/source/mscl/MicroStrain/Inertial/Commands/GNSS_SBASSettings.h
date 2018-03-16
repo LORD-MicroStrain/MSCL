@@ -5,24 +5,24 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "GenericInertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
-#include "mscl/MicroStrain/Inertial/Commands/InertialCommand.h"
+#include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
 
 namespace mscl
 {
 
 #ifndef SWIG 
 
-    class SBASSettings : public InertialCommand
+    class SBASSettings : public MipCommand
     {
     public:
         //Function: commandType
         //
         //Returns:
-        //    InertialTypes::Command - the command ID.
-        virtual InertialTypes::Command commandType() const { return InertialTypes::CMD_GNSS_SBAS_SETTINGS; }
+        //    MipTypes::Command - the command ID.
+        virtual MipTypes::Command commandType() const { return MipTypes::CMD_GNSS_SBAS_SETTINGS; }
 
         //Function: fieldDataByte
         //
@@ -58,7 +58,7 @@ namespace mscl
         //
         //Returns:
         //    ConstellationSettingsData - An object with the data returned from the device.
-        static SBASSettingsData getResponseData(const GenericInertialCommandResponse& response);
+        static SBASSettingsData getResponseData(const GenericMipCmdResponse& response);
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
@@ -66,7 +66,7 @@ namespace mscl
 
     private:
         //Constructor: SBASSettings
-        SBASSettings(InertialTypes::FunctionSelector function_selector, SBASSettingsData dataToUse) :
+        SBASSettings(MipTypes::FunctionSelector function_selector, SBASSettingsData dataToUse) :
             m_functionSelector(function_selector),
             m_data(dataToUse)
         { }
@@ -76,8 +76,8 @@ namespace mscl
         SBASSettingsData m_data;
 
         //Variable: m_functionSelector
-        //  The InertialTypes::FunctionSelector type of command to send, get/set, reset to factory defaults, et al.
-        InertialTypes::FunctionSelector m_functionSelector;
+        //  The MipTypes::FunctionSelector type of command to send, get/set, reset to factory defaults, et al.
+        MipTypes::FunctionSelector m_functionSelector;
 
     public:
         //  Destructor

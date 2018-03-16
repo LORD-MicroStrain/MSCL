@@ -1,11 +1,11 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-#include "mscl/MicroStrain/Inertial/InertialDataField.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/Inertial/Commands/Inertial_SetToIdle.h"
+#include "mscl/MicroStrain/MIP/Commands/Mip_SetToIdle.h"
 #include "mscl/Exceptions.h"
 
 #include <boost/test/unit_test.hpp>
@@ -17,7 +17,7 @@ BOOST_AUTO_TEST_SUITE(Inertial_SetToIdle_Test)
 
 BOOST_AUTO_TEST_CASE(Inertial_SetToIdle_BuildCommand)
 {
-    ByteStream b = Inertial_SetToIdle::buildCommand();
+    ByteStream b = Mip_SetToIdle::buildCommand();
     BOOST_CHECK_EQUAL(b.read_uint8(0), 0x75);
     BOOST_CHECK_EQUAL(b.read_uint8(1), 0x65);
     BOOST_CHECK_EQUAL(b.read_uint8(2), 0x01);
@@ -31,12 +31,12 @@ BOOST_AUTO_TEST_CASE(Inertial_SetToIdle_BuildCommand)
 BOOST_AUTO_TEST_CASE(Inertial_SetToIdle_Match_Success)
 {
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
-    Inertial_SetToIdle::Response response(rc);
+    Mip_SetToIdle::Response response(rc);
     
     Bytes ackField;
     ackField.push_back(0x02);
     ackField.push_back(0x00);
-    InertialDataField field1(0x01F1, ackField); //good ack field
+    MipDataField field1(0x01F1, ackField); //good ack field
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field1), true);

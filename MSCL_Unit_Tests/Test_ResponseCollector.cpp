@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -7,7 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/ResponsePattern.h"
 #include "mscl/MicroStrain/Wireless/Commands/LongPing.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
-#include "mscl/MicroStrain/Inertial/InertialDataField.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/DataBuffer.h"
 
 #include <boost/test/unit_test.hpp>
@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(ResponsePattern_Match)
     WirelessPacket packet;
     BOOST_CHECK_EQUAL(p.match(packet), false);
 
-    InertialDataField field;
+    MipDataField field;
     BOOST_CHECK_EQUAL(p.match(field), false);
 }
 
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(WirelessPacketCollector_MatchExpected_InertialDataField_Fai
 {
     ResponseCollector collector;
 
-    InertialDataField f;
+    MipDataField f;
 
     //check that matchExpected() returns false
     BOOST_CHECK_EQUAL(collector.matchExpected(f), false);

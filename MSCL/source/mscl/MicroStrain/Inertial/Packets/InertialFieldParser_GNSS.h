@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -7,18 +7,18 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include <boost/utility/binary.hpp>
 
-#include "InertialFieldParser.h"
-#include "InertialDataPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipFieldParser.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 
 namespace mscl
 {
     //Title: InertialFieldParser_GNSS
 
-    class InertialDataField;
+    class MipDataField;
 
     //Class: FieldParser_LLHPosition
     //    The field parser for LLH Position data
-    class FieldParser_LLHPosition : public InertialFieldParser
+    class FieldParser_LLHPosition : public MipFieldParser
     {
     private:
         //Constants: Valid Flags
@@ -38,12 +38,12 @@ namespace mscl
 
     public:
         //Function: parse
-        //    Parses an <InertialDataField> for <InertialDataPoints> and stores them in the valid or invalid result vectors
+        //    Parses an <MipDataField> for <MipDataPoints> and stores them in the valid or invalid result vectors
         //
         //Parameters:
-        //    field - The <InertialDataField> to parse for data points
-        //    result - The <InertialDataPoints> vector to store the data points in
-        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        //    field - The <MipDataField> to parse for data points
+        //    result - The <MipDataPoints> vector to store the data points in
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
 
         //Function: registerParser
         //    The static function that registers this parser with the list of parsers (called immediately)
@@ -55,7 +55,7 @@ namespace mscl
     public:
         //Constant: FIELD_TYPE
         //    The 2-byte field type (Descriptor ID + Field ID) for this parser
-        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const MipTypes::ChannelField FIELD_TYPE;
 
         //Constant: REGISTERED
         //    Whether this parser is registered. This will always be true. This is used to call registerParser() immediately
@@ -64,7 +64,7 @@ namespace mscl
 
     //Class: FieldParser_ECEFPosition
     //    The field parser for ECEF Position data
-    class FieldParser_ECEFPosition : public InertialFieldParser
+    class FieldParser_ECEFPosition : public MipFieldParser
     {
     private:
         //Constants: Valid Flags
@@ -77,17 +77,17 @@ namespace mscl
         FieldParser_ECEFPosition(){};        //default constructor disabled
 
     public:
-        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
     public:
-        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_NEDVelocity
     //    The field parser for NED Velocity data
-    class FieldParser_NEDVelocity : public InertialFieldParser
+    class FieldParser_NEDVelocity : public MipFieldParser
     {
     private:
         //Constants: Valid Flags
@@ -108,17 +108,17 @@ namespace mscl
         FieldParser_NEDVelocity(){};        //default constructor disabled
 
     public:
-        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
     public:
-        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_ECEFVelocity
     //    The field parser for ECEF Velocity data
-    class FieldParser_ECEFVelocity : public InertialFieldParser
+    class FieldParser_ECEFVelocity : public MipFieldParser
     {
     private:
         //Constants: Valid Flags
@@ -131,17 +131,17 @@ namespace mscl
         FieldParser_ECEFVelocity(){};        //default constructor disabled
 
     public:
-        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
     public:
-        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_DOP
     //    The field parser for DOP data
-    class FieldParser_DOP : public InertialFieldParser
+    class FieldParser_DOP : public MipFieldParser
     {
     private:
         //Constants: Valid Flags
@@ -164,17 +164,17 @@ namespace mscl
         FieldParser_DOP(){};        //default constructor disabled
 
     public:
-        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
     public:
-        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_UTCTime
     //    The field parser for UTC Time data
-    class FieldParser_UTCTime : public InertialFieldParser
+    class FieldParser_UTCTime : public MipFieldParser
     {
     private:
         //Constants: Valid Flags
@@ -187,17 +187,17 @@ namespace mscl
         FieldParser_UTCTime(){};        //default constructor disabled
 
     public:
-        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
     public:
-        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_GPSTime
     //    The field parser for GPS Time data
-    class FieldParser_GPSTime : public InertialFieldParser
+    class FieldParser_GPSTime : public MipFieldParser
     {
     private:
         //Constants: Valid Flags
@@ -210,17 +210,17 @@ namespace mscl
         FieldParser_GPSTime(){};        //default constructor disabled
 
     public:
-        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
     public:
-        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_ClockInfo
     //    The field parser for Clock Info data
-    class FieldParser_ClockInfo : public InertialFieldParser
+    class FieldParser_ClockInfo : public MipFieldParser
     {
     private:
         //Constants: Valid Flags
@@ -235,17 +235,17 @@ namespace mscl
         FieldParser_ClockInfo(){};        //default constructor disabled
 
     public:
-        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
     public:
-        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_GPSFixInfo
     //    The field parser for GPS Fix Information data
-    class FieldParser_GPSFixInfo : public InertialFieldParser
+    class FieldParser_GPSFixInfo : public MipFieldParser
     {
     private:
         //Constants: Valid Flags
@@ -260,17 +260,17 @@ namespace mscl
         FieldParser_GPSFixInfo(){};        //default constructor disabled
 
     public:
-        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
     public:
-        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_SpaceVehicleInfo
     //    The field parser for Space Vehicle Information data
-    class FieldParser_SpaceVehicleInfo : public InertialFieldParser
+    class FieldParser_SpaceVehicleInfo : public MipFieldParser
     {
     private:
         //Constants: Valid Flags
@@ -291,17 +291,17 @@ namespace mscl
         FieldParser_SpaceVehicleInfo(){};        //default constructor disabled
 
     public:
-        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
     public:
-        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_HardwareStatus
     //    The field parser for Hardware Status Information data
-    class FieldParser_HardwareStatus : public InertialFieldParser
+    class FieldParser_HardwareStatus : public MipFieldParser
     {
     private:
         //Constants: Valid Flags
@@ -316,17 +316,17 @@ namespace mscl
         FieldParser_HardwareStatus(){};        //default constructor disabled
 
     public:
-        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
     public:
-        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_DGNSSInfo
     //    The field parser for DGNSS Information data
-    class FieldParser_DGNSSInfo: public InertialFieldParser
+    class FieldParser_DGNSSInfo: public MipFieldParser
     {
     private:
         //Constants: Valid Flags
@@ -343,17 +343,17 @@ namespace mscl
         FieldParser_DGNSSInfo() {};        //default constructor disabled
 
     public:
-        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
     public:
-        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 
     //Class: FieldParser_DGNSSChannelStatus
     //    The field parser for DGNSS Channel Status data
-    class FieldParser_DGNSSChannelStatus: public InertialFieldParser
+    class FieldParser_DGNSSChannelStatus: public MipFieldParser
     {
     private:
         //Constants: Valid Flags
@@ -370,11 +370,11 @@ namespace mscl
         FieldParser_DGNSSChannelStatus() {};        //default constructor disabled
 
     public:
-        virtual void parse(const InertialDataField& field, InertialDataPoints& result) const override;
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
         static bool registerParser();
 
     public:
-        static const InertialTypes::ChannelField FIELD_TYPE;
+        static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
 }

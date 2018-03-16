@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -15,6 +15,15 @@ namespace mscl
 {
     WirelessNodeConfig::WirelessNodeConfig()
     {
+    }
+
+    WirelessTypes::TransmitPower WirelessNodeConfig::curTransmitPower(const NodeEepromHelper& eeprom) const
+    {
+        //if its currently set in the config, return the set value
+        if(isSet(m_transmitPower)) { return *m_transmitPower; }
+
+        //not set, so read the value from the node
+        return eeprom.read_transmitPower();
     }
 
     WirelessTypes::CommProtocol WirelessNodeConfig::curCommProtocol(const NodeEepromHelper& eeprom) const
@@ -402,12 +411,12 @@ namespace mscl
         }
 
         //Transmit Power
-        if(isSet(m_transmitPower))
+        if(isSet(m_transmitPower) || isSet(m_commProtocol))
         {
             //verify the transmit power is supported
-            if(!features.supportsTransmitPower(*m_transmitPower))
+            if(!features.supportsTransmitPower(curTransmitPower(eeprom), curCommProtocol(eeprom)))
             {
-                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_TRANSMIT_POWER, "The Transmit Power is not supported by this Node."));
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_TRANSMIT_POWER, "The Transmit Power is not supported by this Node for the current Comm Protocol."));
             }
         }
 

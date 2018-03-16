@@ -1,10 +1,11 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 #include "NodeDiscovery.h"
+#include "Configuration/NodeEepromMap.h"
 #include "Packets/WirelessPacket.h"
 #include "Packets/NodeDiscoveryPacket.h"
 #include "Packets/NodeDiscoveryPacket_v2.h"
@@ -91,7 +92,13 @@ namespace mscl
         m_radioChannel = static_cast<WirelessTypes::Frequency>(payload.read_uint8(Info::PAYLOAD_OFFSET_RADIO_CHANNEL));
 
         //Model (convert from legacy to current model number)
-        m_model = WirelessModels::nodeFromLegacyModel(payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_NUMBER));
+        uint16 legacyModel = payload.read_uint16(Info::PAYLOAD_OFFSET_MODEL_NUMBER);
+        m_model = WirelessModels::nodeFromLegacyModel(legacyModel);
+
+
+        //build the eeprom map for importing to cache
+        m_eepromMap[NodeEepromMap::FREQUENCY.location()] = static_cast<uint16>(m_radioChannel);
+        m_eepromMap[NodeEepromMap::LEGACY_MODEL_NUMBER.location()] = legacyModel;
     }
 
     void NodeDiscovery::initFromPacket_v2(const WirelessPacket& packet)
@@ -117,6 +124,15 @@ namespace mscl
         //Firmware Version
         uint16 fwVersion = payload.read_uint16(Info::PAYLOAD_OFFSET_FIRMWARE_VER);
         m_firmwareVersion = Version(Utils::msb(fwVersion), Utils::lsb(fwVersion));
+
+
+        //build the eeprom map for importing to cache
+        m_eepromMap[NodeEepromMap::FREQUENCY.location()] = static_cast<uint16>(m_radioChannel);
+        m_eepromMap[NodeEepromMap::MODEL_NUMBER.location()] = model;
+        m_eepromMap[NodeEepromMap::MODEL_OPTION.location()] = modelOption;
+        m_eepromMap[NodeEepromMap::SERIAL_ID.location()] = m_serialNumber >> 16;
+        m_eepromMap[NodeEepromMap::SERIAL_ID.location() + 2] = m_serialNumber & 0xFFFF;
+        m_eepromMap[NodeEepromMap::FIRMWARE_VER.location()] = fwVersion;
     }
 
     void NodeDiscovery::initFromPacket_v3(const WirelessPacket& packet)
@@ -150,6 +166,17 @@ namespace mscl
 
         //Default Mode
         m_defaultMode = static_cast<WirelessTypes::DefaultMode>(payload.read_uint16(Info::PAYLOAD_OFFSET_DEFAULT_MODE));
+
+
+        //build the eeprom map for importing to cache
+        m_eepromMap[NodeEepromMap::FREQUENCY.location()] = static_cast<uint16>(m_radioChannel);
+        m_eepromMap[NodeEepromMap::MODEL_NUMBER.location()] = model;
+        m_eepromMap[NodeEepromMap::MODEL_OPTION.location()] = modelOption;
+        m_eepromMap[NodeEepromMap::SERIAL_ID.location()] = m_serialNumber >> 16;
+        m_eepromMap[NodeEepromMap::SERIAL_ID.location() + 2] = m_serialNumber & 0xFFFF;
+        m_eepromMap[NodeEepromMap::FIRMWARE_VER.location()] = fwVersion1;
+        m_eepromMap[NodeEepromMap::FIRMWARE_VER2.location()] = fwVersion2;
+        m_eepromMap[NodeEepromMap::DEFAULT_MODE.location()] = static_cast<uint16>(m_defaultMode);
     }
 
     void NodeDiscovery::initFromPacket_v4(const WirelessPacket& packet)
@@ -201,6 +228,25 @@ namespace mscl
 
         //Default Mode
         m_defaultMode = static_cast<WirelessTypes::DefaultMode>(payload.read_uint16(Info::PAYLOAD_OFFSET_DEFAULT_MODE));
+
+
+        //build the eeprom map for importing to cache
+        m_eepromMap[NodeEepromMap::FREQUENCY.location()] = static_cast<uint16>(m_radioChannel);
+        m_eepromMap[NodeEepromMap::MODEL_NUMBER.location()] = model;
+        m_eepromMap[NodeEepromMap::MODEL_OPTION.location()] = modelOption;
+        m_eepromMap[NodeEepromMap::SERIAL_ID.location()] = m_serialNumber >> 16;
+        m_eepromMap[NodeEepromMap::SERIAL_ID.location() + 2] = m_serialNumber & 0xFFFF;
+        m_eepromMap[NodeEepromMap::FIRMWARE_VER.location()] = fwVersion1;
+        m_eepromMap[NodeEepromMap::FIRMWARE_VER2.location()] = fwVersion2;
+        m_eepromMap[NodeEepromMap::DEFAULT_MODE.location()] = static_cast<uint16>(m_defaultMode);
+        m_eepromMap[NodeEepromMap::ASPP_VER_LXRS.location()] = asppVersionLxrs;
+        m_eepromMap[NodeEepromMap::ASPP_VER_LXRS_PLUS.location()] = asppVersionLxrsPlus;
+        m_eepromMap[NodeEepromMap::COMM_PROTOCOL.location()] = static_cast<uint16>(m_commProtocol);
+    }
+
+    const WirelessTypes::EepromMap& NodeDiscovery::eepromMap() const
+    {
+        return m_eepromMap;
     }
 
     NodeAddress NodeDiscovery::nodeAddress() const

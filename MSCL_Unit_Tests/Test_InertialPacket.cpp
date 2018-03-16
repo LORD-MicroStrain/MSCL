@@ -1,9 +1,9 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-#include "mscl/MicroStrain/Inertial/Packets/InertialPacket.h"
+#include "mscl/MicroStrain/MIP/Packets/MipPacket.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -13,7 +13,7 @@ BOOST_AUTO_TEST_SUITE(InertialPacket_Test)
 
 BOOST_AUTO_TEST_CASE(InertialPacket_isDataPacket)
 {
-    InertialPacket p;
+    MipPacket p;
 
     //initially, the packet is set to an unknown descriptor set, so isn't a data packet
     BOOST_CHECK_EQUAL(p.descriptorSet(), 0);
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(InertialPacket_isDataPacket)
 
 BOOST_AUTO_TEST_CASE(InertialPacket_Payload)
 {
-    InertialPacket p;
+    MipPacket p;
 
     Bytes b;
     b.push_back(0x01);

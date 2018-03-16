@@ -1,11 +1,11 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-#include "mscl/MicroStrain/Inertial/InertialDataField.h"
+#include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
-#include "mscl/MicroStrain/Inertial/Commands/Resume.h"
+#include "mscl/MicroStrain/MIP/Commands/Resume.h"
 #include "mscl/Exceptions.h"
 
 #include <boost/test/unit_test.hpp>
@@ -36,7 +36,7 @@ BOOST_AUTO_TEST_CASE(Resume_Match_Success)
     Bytes ackField;
     ackField.push_back(0x06);
     ackField.push_back(0x00);
-    InertialDataField field1(0x01F1, ackField); //good ack field
+    MipDataField field1(0x01F1, ackField); //good ack field
 
     //check that the match fails
     BOOST_CHECK_EQUAL(response.match(field1), true);

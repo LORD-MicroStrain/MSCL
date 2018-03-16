@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -66,9 +66,11 @@ namespace mscl
         static const Version ASPP_1_5 = Version(1, 5);
         static const Version ASPP_1_6 = Version(1, 6);
         static const Version ASPP_1_7 = Version(1, 7);
+        static const Version ASPP_1_8 = Version(1, 8);
         static const Version ASPP_3_0 = Version(3, 0);
 
         if(asppVersion >= ASPP_3_0) { return v3_0(); }
+        if(asppVersion >= ASPP_1_8) { return v1_8(); }
         if(asppVersion >= ASPP_1_7) { return v1_7(); }
         if(asppVersion >= ASPP_1_6) { return v1_6(); }
         if(asppVersion >= ASPP_1_5) { return v1_5(); }
@@ -101,7 +103,7 @@ namespace mscl
 
         //Node Commands
         result->m_longPing              = std::bind(&BaseStation_Impl::protocol_node_longPing_v1, _1, ASPP1, _2);
-        result->m_sleep                 = std::bind(&BaseStation_Impl::protocol_node_sleep_v1, _1, ASPP1, _2);
+        result->m_sleep                 = std::mem_fn(&BaseStation_Impl::protocol_node_sleep_v1);
         result->m_readNodeEeprom        = std::mem_fn(&BaseStation_Impl::protocol_node_readEeprom_v1);
         result->m_writeNodeEeprom       = std::mem_fn(&BaseStation_Impl::protocol_node_writeEeprom_v1);
         result->m_pageDownload          = std::mem_fn(&BaseStation_Impl::protocol_node_pageDownload_v1);
@@ -241,6 +243,21 @@ namespace mscl
         return result;
     }
 
+    std::unique_ptr<WirelessProtocol> WirelessProtocol::v1_8()
+    {
+        using namespace std::placeholders;
+        static const WirelessPacket::AsppVersion ASPP1 = WirelessPacket::aspp_v1;
+
+        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_7();
+
+        //changes from v1.6
+
+        //Node Commands
+        result->m_sleep = std::bind(&BaseStation_Impl::protocol_node_sleep_v2, _1, ASPP1, _2);
+
+        return result;
+    }
+
     std::unique_ptr<WirelessProtocol> WirelessProtocol::v3_0()
     {
         using namespace std::placeholders;
@@ -265,7 +282,7 @@ namespace mscl
 
         //Node Commands
         result->m_longPing              = std::bind(&BaseStation_Impl::protocol_node_longPing_v1, _1, ASPP3, _2);
-        result->m_sleep                 = std::bind(&BaseStation_Impl::protocol_node_sleep_v1, _1, ASPP3, _2);
+        result->m_sleep                 = std::bind(&BaseStation_Impl::protocol_node_sleep_v2, _1, ASPP3, _2);
         result->m_readNodeEeprom        = std::bind(&BaseStation_Impl::protocol_node_readEeprom_v2, _1, ASPP3, _2, _3, _4);
         result->m_writeNodeEeprom       = std::bind(&BaseStation_Impl::protocol_node_writeEeprom_v2, _1, ASPP3, _2, _3, _4);
         result->m_pageDownload          = nullptr;

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -14,7 +14,7 @@ namespace mscl
     class Connection;
     class DataBuffer;
     class WirelessPacket;
-    class InertialDataField;
+    class MipDataField;
     class ResponsePattern;
 
     struct ResponseInfo
@@ -109,13 +109,13 @@ namespace mscl
         bool matchExpected(const WirelessPacket& packet, std::size_t lastReadPos);
 
         //Function: matchExpected
-        //    Checks to see if the <InertialDataField> passed in matches any of the expected responses
+        //    Checks to see if the <MipDataField> passed in matches any of the expected responses
         //
         //Parameters:
-        //    field - The <InertialDataField> to be compared against the expected responses
+        //    field - The <MipDataField> to be compared against the expected responses
         //
         //Returns:
         //    true if the packet matched an expected response, false otherwise
-        bool matchExpected(InertialDataField& field);
+        bool matchExpected(MipDataField& field);
     };
 }

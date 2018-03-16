@@ -1,11 +1,11 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
-#include "mscl/MicroStrain/Inertial/Packets/InertialFieldParser.h"
-#include "mscl/MicroStrain/Inertial/Packets/InertialDataPacket.h"
-#include "mscl/MicroStrain/Inertial/InertialDataPoint.h"
+#include "mscl/MicroStrain/MIP/Packets/MipFieldParser.h"
+#include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
+#include "mscl/MicroStrain/MIP/MipDataPoint.h"
 #include "mscl/MicroStrain/Inertial/Packets/InertialFieldParser_Sensor.h"
 
 #include <boost/test/unit_test.hpp>
@@ -24,28 +24,28 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_RawAccelVector_parse)
     bytes.append_float(0.0f);    //Accel 3 float
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_RAW_ACCEL_VEC, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_RAW_ACCEL_VEC, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 3);
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_RAW_ACCEL_VEC);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_X);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_RAW_ACCEL_VEC);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_X);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(0).as_float(), 1.234, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_SENSOR_RAW_ACCEL_VEC);
-    BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_Y);
+    BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_SENSOR_RAW_ACCEL_VEC);
+    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_Y);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(1).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
  
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_SENSOR_RAW_ACCEL_VEC);
-    BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_Z);
+    BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_SENSOR_RAW_ACCEL_VEC);
+    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_Z);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(2).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
@@ -61,28 +61,28 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_RawGyroVector_parse)
     bytes.append_float(0.0f);    //Gyro 3 float
 
     //Create the Data Field 
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_RAW_GYRO_VEC, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_RAW_GYRO_VEC, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 3);
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_RAW_GYRO_VEC);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_X);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_RAW_GYRO_VEC);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_X);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(0).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_SENSOR_RAW_GYRO_VEC);
-    BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_Y);
+    BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_SENSOR_RAW_GYRO_VEC);
+    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_Y);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(1).as_float(), 1.234, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_SENSOR_RAW_GYRO_VEC);
-    BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_Z);
+    BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_SENSOR_RAW_GYRO_VEC);
+    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_Z);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(2).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
@@ -98,28 +98,28 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_RawMagVector_parse)
     bytes.append_float(2.345f);    //Mag 3 float
 
     //Create the Data Field 
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_RAW_MAG_VEC, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_RAW_MAG_VEC, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 3);
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_RAW_MAG_VEC);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_X);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_RAW_MAG_VEC);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_X);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(0).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_SENSOR_RAW_MAG_VEC);
-    BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_Y);
+    BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_SENSOR_RAW_MAG_VEC);
+    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_Y);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(1).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_SENSOR_RAW_MAG_VEC);
-    BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_Z);
+    BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_SENSOR_RAW_MAG_VEC);
+    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_Z);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(2).as_float(), 2.345, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
@@ -135,28 +135,28 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ScaledAccelVector_parse)
     bytes.append_float(0.0f);    //Z Accel float
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_SCALED_ACCEL_VEC, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_SCALED_ACCEL_VEC, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 3);
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_SCALED_ACCEL_VEC);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_X);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_SCALED_ACCEL_VEC);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_X);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(0).as_float(), 2.345, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_SENSOR_SCALED_ACCEL_VEC);
-    BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_Y);
+    BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_SENSOR_SCALED_ACCEL_VEC);
+    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_Y);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(1).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_SENSOR_SCALED_ACCEL_VEC);
-    BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_Z);
+    BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_SENSOR_SCALED_ACCEL_VEC);
+    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_Z);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(2).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
@@ -172,28 +172,28 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ScaledGyroVector_parse)
     bytes.append_float(0.0f);    //Z Gyro float    
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_SCALED_GYRO_VEC, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_SCALED_GYRO_VEC, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 3);
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_SCALED_GYRO_VEC);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_X);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_SCALED_GYRO_VEC);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_X);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(0).as_float(), 2.345, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_SENSOR_SCALED_GYRO_VEC);
-    BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_Y);
+    BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_SENSOR_SCALED_GYRO_VEC);
+    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_Y);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(1).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_SENSOR_SCALED_GYRO_VEC);
-    BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_Z);
+    BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_SENSOR_SCALED_GYRO_VEC);
+    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_Z);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(2).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
@@ -209,28 +209,28 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ScaledMagVector_parse)
     bytes.append_float(0.0f);    //Z Mag float    
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_SCALED_MAG_VEC, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_SCALED_MAG_VEC, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 3);
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_SCALED_MAG_VEC);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_X);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_SCALED_MAG_VEC);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_X);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(0).as_float(), 2.345, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_SENSOR_SCALED_MAG_VEC);
-    BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_Y);
+    BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_SENSOR_SCALED_MAG_VEC);
+    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_Y);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(1).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_SENSOR_SCALED_MAG_VEC);
-    BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_Z);
+    BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_SENSOR_SCALED_MAG_VEC);
+    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_Z);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(2).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
@@ -246,28 +246,28 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DeltaThetaVector_parse)
     bytes.append_float(0.0f);    //Z Delta Theta float    
 
     //Create the Data Field 
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_DELTA_THETA_VEC, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_DELTA_THETA_VEC, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 3);
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_DELTA_THETA_VEC);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_X);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_DELTA_THETA_VEC);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_X);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(0).as_float(), 2.345, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_SENSOR_DELTA_THETA_VEC);
-    BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_Y);
+    BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_SENSOR_DELTA_THETA_VEC);
+    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_Y);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(1).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_SENSOR_DELTA_THETA_VEC);
-    BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_Z);
+    BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_SENSOR_DELTA_THETA_VEC);
+    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_Z);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(2).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
@@ -283,28 +283,28 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DeltaVelocityVector_parse)
     bytes.append_float(0.0f);    //Z Delta Velocity float    
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_DELTA_VELOCITY_VEC, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_DELTA_VELOCITY_VEC, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 3);
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_DELTA_VELOCITY_VEC);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_X);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_DELTA_VELOCITY_VEC);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_X);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(0).as_float(), 2.345, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_SENSOR_DELTA_VELOCITY_VEC);
-    BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_Y);
+    BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_SENSOR_DELTA_VELOCITY_VEC);
+    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_Y);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(1).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_SENSOR_DELTA_VELOCITY_VEC);
-    BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_Z);
+    BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_SENSOR_DELTA_VELOCITY_VEC);
+    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_Z);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(2).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
@@ -326,16 +326,16 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_OrientMatrix_parse)
     bytes.append_float(0.0f);
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_ORIENTATION_MATRIX, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_ORIENTATION_MATRIX, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 1);
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_ORIENTATION_MATRIX);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_MATRIX);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_ORIENTATION_MATRIX);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_MATRIX);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_Matrix);
     BOOST_CHECK_CLOSE(data.at(0).as_Matrix().as_floatAt(0, 0), 0.0, 0.0001);
     BOOST_CHECK_CLOSE(data.at(0).as_Matrix().as_floatAt(0, 1), 1.234, 0.0001);
@@ -360,16 +360,16 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_Quaternion_parse)
     bytes.append_float(0.0f);    //q3
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_ORIENTATION_QUATERNION, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_ORIENTATION_QUATERNION, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 1);
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_ORIENTATION_QUATERNION);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_QUATERNION);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_ORIENTATION_QUATERNION);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_QUATERNION);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_Vector);
     BOOST_CHECK_CLOSE(data.at(0).as_Vector().as_floatAt(0), 2.345, 0.0001);
     BOOST_CHECK_EQUAL(data.at(0).as_Vector().as_floatAt(1), 0);
@@ -394,16 +394,16 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_OrientUpdateMatrix_parse)
     bytes.append_float(0.0f);
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_ORIENTATION_UPDATE_MATRIX, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_ORIENTATION_UPDATE_MATRIX, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 1);
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_ORIENTATION_UPDATE_MATRIX);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_MATRIX);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_ORIENTATION_UPDATE_MATRIX);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_MATRIX);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_Matrix);
     BOOST_CHECK_CLOSE(data.at(0).as_Matrix().as_floatAt(0, 0), 0.0, 0.0001);
     BOOST_CHECK_CLOSE(data.at(0).as_Matrix().as_floatAt(0, 1), 1.234, 0.0001);
@@ -427,28 +427,28 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_EulerAngles_parse)
     bytes.append_float(0.0f);    //yaw
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_EULER_ANGLES, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_EULER_ANGLES, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 3);
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_EULER_ANGLES);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_ROLL);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_EULER_ANGLES);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_ROLL);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(0).as_float(), 2.345, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_SENSOR_EULER_ANGLES);
-    BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_PITCH);
+    BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_SENSOR_EULER_ANGLES);
+    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_PITCH);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(1).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_SENSOR_EULER_ANGLES);
-    BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_YAW);
+    BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_SENSOR_EULER_ANGLES);
+    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_YAW);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(2).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
@@ -462,16 +462,16 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_InternalTimestamp_parse)
     bytes.append_uint32(1234567890);     //timestamp value (tick)
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_INTERNAL_TIMESTAMP, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_INTERNAL_TIMESTAMP, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 1);
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_INTERNAL_TIMESTAMP);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_TICK);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_INTERNAL_TIMESTAMP);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_TICK);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_uint32);
     BOOST_CHECK_EQUAL(data.at(0).as_uint32(), 1234567890);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
@@ -487,16 +487,16 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_BeaconedTimestamp_parse)
     bytes.append_uint32(12345);         //timestamp nanoseconds
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_BEACONED_TIMESTAMP, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_BEACONED_TIMESTAMP, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 1);
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_BEACONED_TIMESTAMP);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_TIMESTAMP);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_BEACONED_TIMESTAMP);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_TIMESTAMP);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_Timestamp);
     BOOST_CHECK_EQUAL(data.at(0).as_Timestamp().str(), "2013-03-03 03:44:16.000012345");
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
@@ -512,28 +512,28 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_StabilizedMagVector_parse)
     bytes.append_float(0.0f);    //Z Stab Mag float    
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_STABILIZED_MAG_VEC, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_STABILIZED_MAG_VEC, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 3);
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_STABILIZED_MAG_VEC);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_X);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_STABILIZED_MAG_VEC);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_X);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(0).as_float(), 2.345, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_SENSOR_STABILIZED_MAG_VEC);
-    BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_Y);
+    BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_SENSOR_STABILIZED_MAG_VEC);
+    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_Y);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(1).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_SENSOR_STABILIZED_MAG_VEC);
-    BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_Z);
+    BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_SENSOR_STABILIZED_MAG_VEC);
+    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_Z);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(2).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
@@ -549,28 +549,28 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_StabilizedAccelVector_parse)
     bytes.append_float(0.0f);    //Z Stab Accel float    
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_STABILIZED_ACCEL_VEC, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_STABILIZED_ACCEL_VEC, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 3);
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_STABILIZED_ACCEL_VEC);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_X);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_STABILIZED_ACCEL_VEC);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_X);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(0).as_float(), 2.345, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_SENSOR_STABILIZED_ACCEL_VEC);
-    BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_Y);
+    BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_SENSOR_STABILIZED_ACCEL_VEC);
+    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_Y);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(1).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_SENSOR_STABILIZED_ACCEL_VEC);
-    BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_Z);
+    BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_SENSOR_STABILIZED_ACCEL_VEC);
+    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_Z);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(2).as_float(), 0.0, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
@@ -586,32 +586,32 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_GpsCorrelationTimestamp_parse)
     bytes.append_uint16(1);            //timestamp flags
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 3);
 
     //GPS Time of Week
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_TIME_OF_WEEK);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_TIME_OF_WEEK);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_double);
     BOOST_CHECK_CLOSE(data.at(0).as_double(), 1.2, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
     //GPS Week Number
-    BOOST_CHECK_EQUAL(data.at(1).field(), InertialTypes::CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP);
-    BOOST_CHECK_EQUAL(data.at(1).qualifier(), InertialTypes::CH_WEEK_NUMBER);
+    BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP);
+    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_WEEK_NUMBER);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_uint16);
     BOOST_CHECK_EQUAL(data.at(1).as_uint16(), 1200);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
     //Timestamp Flags
-    BOOST_CHECK_EQUAL(data.at(2).field(), InertialTypes::CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP);
-    BOOST_CHECK_EQUAL(data.at(2).qualifier(), InertialTypes::CH_FLAGS);
+    BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP);
+    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_FLAGS);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_uint16);
     BOOST_CHECK_EQUAL(data.at(2).as_uint16(), 1);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
@@ -625,17 +625,17 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ScaledAmbientPressure_parse)
     bytes.append_float(1.2f);        //ambient pressure
 
     //Create the Data Field
-    InertialDataField field(InertialTypes::CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE, bytes.data());
 
-    InertialDataPoints data;
+    MipDataPoints data;
 
-    InertialFieldParser::parseField(field, data);
+    MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
     BOOST_CHECK_EQUAL(data.size(), 1);
 
-    BOOST_CHECK_EQUAL(data.at(0).field(), InertialTypes::CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), InertialTypes::CH_PRESSURE);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_PRESSURE);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_CLOSE(data.at(0).as_float(), 1.2, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());

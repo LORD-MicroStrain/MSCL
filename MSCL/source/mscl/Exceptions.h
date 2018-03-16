@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -352,9 +352,9 @@ namespace mscl
         {}
     };
 
-    //API Class: Error_InertialCmdFailed
+    //API Class: Error_MipCmdFailed
     //    The Inertial command has failed
-    class Error_InertialCmdFailed : public Error
+    class Error_MipCmdFailed : public Error
     {
     protected:
         //Variable: m_code
@@ -362,38 +362,38 @@ namespace mscl
         int m_code;
 
     public:
-        //API Constructor: Error_InertialCmdFailed
-        //    Initializes the Error_InertialCmdFailed object,
+        //API Constructor: Error_MipCmdFailed
+        //    Initializes the Error_MipCmdFailed object,
         //    sets the error code to a default of -1
-        Error_InertialCmdFailed() :
+        Error_MipCmdFailed() :
             Error("The Inertial command has failed."),
             m_code(-1)
         {}
 
-        //API Constructor: Error_InertialCmdFailed
-        //    Initializes the Error_InertialCmdFailed object,
+        //API Constructor: Error_MipCmdFailed
+        //    Initializes the Error_MipCmdFailed object,
         //    sets the error code to a default of -1
-        Error_InertialCmdFailed(const std::string& description) :
+        Error_MipCmdFailed(const std::string& description) :
             Error(description),
             m_code(-1)
         {}
 
-        //API Constructor: Error_InertialCmdFailed
-        //    Initializes the Error_InertialCmdFailed object
+        //API Constructor: Error_MipCmdFailed
+        //    Initializes the Error_MipCmdFailed object
         //
         //Parameters:
         //    code - the exception error code
-        Error_InertialCmdFailed(int code):
+        Error_MipCmdFailed(int code):
             Error("The Inertial command has failed."),
             m_code(code)
         {}
 
-        Error_InertialCmdFailed(int code, const std::string& message):
+        Error_MipCmdFailed(int code, const std::string& message):
             Error(message),
             m_code(code)
         {}
 
-        ~Error_InertialCmdFailed() throw ()
+        ~Error_MipCmdFailed() throw ()
         {
         }
 
