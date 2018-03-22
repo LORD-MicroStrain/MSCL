@@ -28,14 +28,14 @@ namespace mscl
         //
         //Returns:
         //    The major version of MSCL.
-        static uint32 major();
+        static uint32 _major();
 
         //API Function: minor
         //    Gets the minor version of MSCL.
         //
         //Returns:
         //    The minor version of MSCL.
-        static uint32 minor();
+        static uint32 _minor();
 
         //API Function: patch
         //    Gets the patch version of MSCL.
