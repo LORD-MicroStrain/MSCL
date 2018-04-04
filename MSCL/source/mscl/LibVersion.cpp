@@ -10,12 +10,12 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    uint32 LibVersion::major()
+    uint32 LibVersion::_major()
     {
         return static_cast<uint32>(MSCL_MAJOR);
     }
 
-    uint32 LibVersion::minor()
+    uint32 LibVersion::_minor()
     {
         return static_cast<uint32>(MSCL_MINOR);
     }
