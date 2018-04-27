@@ -52,7 +52,7 @@ rule compileflags
   {
     flags += -DMSCL_DISABLE_WEBSOCKETS ;
   }
-  
+
   return $(flags) ;
 }
 
@@ -76,18 +76,24 @@ lib pthread ;
 
 
 #Windows aliases
-alias unixsocket_cpp ;
-alias upnp_files : source/mscl/Communication/WsdaFinder.h source/mscl/Communication/WsdaFinder.cpp source/mscl/Communication/UpnpService.h source/mscl/Communication/UpnpService.cpp source/mscl/Communication/UpnpDeviceFinderCallback.h source/mscl/Communication/UpnpDeviceFinderCallback.cpp ;
-alias boostLibs ;
-alias boostStaticLibs ;
+alias unixsocket_cpp : : <target-os>windows ;
+alias upnp_files : source/mscl/Communication/WsdaFinder.h source/mscl/Communication/WsdaFinder.cpp source/mscl/Communication/UpnpService.h source/mscl/Communication/UpnpService.cpp source/mscl/Communication/UpnpDeviceFinderCallback.h source/mscl/Communication/UpnpDeviceFinderCallback.cpp : <target-os>windows ;
+alias boostLibs : : <target-os>windows ;
+alias boostStaticLibs : : <target-os>windows ;
 
-#Linux aliases
+#linux aliases
 alias unixsocket_cpp : source/mscl/Communication/UnixSocketConnection.cpp : <target-os>linux ;
 alias upnp_files : : <target-os>linux ;
 alias boostLibs : boost_system boost_filesystem boost_date_time boost_chrono pthread [ libraries ] : <target-os>linux ;
 alias boostStaticLibs : boost_system/<link>static boost_date_time/<link>static boost_chrono/<link>static : <target-os>linux ;
 
-alias msclSrcs 
+#darwin aliases
+alias unixsocket_cpp : source/mscl/Communication/UnixSocketConnection.cpp : <target-os>darwin ;
+alias upnp_files : : <target-os>darwin ;
+alias boostLibs : boost_system boost_filesystem boost_date_time boost_chrono pthread [ libraries ] : <target-os>darwin ;
+alias boostStaticLibs : boost_system/<link>static boost_date_time/<link>static boost_chrono/<link>static : <target-os>darwin ;
+
+alias msclSrcs
 :   [ glob source/*.cpp ]
 	[ glob source/mscl/*.cpp ]
 	[ glob source/mscl/Communication/*.cpp : source/mscl/Communication/UnixSocketConnection.cpp source/mscl/Communication/WsdaFinder.h source/mscl/Communication/WsdaFinder.cpp source/mscl/Communication/UpnpService.h source/mscl/Communication/UpnpService.cpp source/mscl/Communication/UpnpDeviceFinderCallback.h source/mscl/Communication/UpnpDeviceFinderCallback.cpp ]
@@ -110,11 +116,12 @@ alias msclSrcs
 ;
 
 #Define how we build the C++ library
-lib mscl 
+lib mscl
 :	msclSrcs
 	boostLibs
 :	<include>source
 	<target-os>linux:<define>UNIX_BUILD
+	<target-os>darwin:<define>UNIX_BUILD
     ;
 
 #Ensure that the python output folder exists
@@ -139,6 +146,8 @@ python-extension _mscl
 	<cflags>"$(configured-flags)"
 	<target-os>linux:<swig-options>-DUNIX_BUILD
 	<target-os>linux:<define>UNIX_BUILD
+	<target-os>darwin:<swig-options>-DUNIX_BUILD
+	<target-os>darwin:<define>UNIX_BUILD
 ;
 
 #Define the python mscl build
@@ -154,6 +163,8 @@ python-extension _mscl-dynamic
 	<cflags>"$(configured-flags)"
 	<target-os>linux:<swig-options>-DUNIX_BUILD
 	<target-os>linux:<define>UNIX_BUILD
+	<target-os>darwin:<swig-options>-DUNIX_BUILD
+	<target-os>darwin:<define>UNIX_BUILD
 ;
 
 #Copy all the header files and put them in an output directory
@@ -193,6 +204,6 @@ explicit stage_python_dynamic ;
 
 #Make an alias for all of the copying
 alias stage_all
-	: stage_c++ stage_python_x86 stage_python_x64 #stage_headers 
+	: stage_c++ stage_python_x86 stage_python_x64 #stage_headers
 ;
 explicit stage_all ;
