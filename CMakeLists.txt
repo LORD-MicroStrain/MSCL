@@ -9,7 +9,7 @@ find_package(Boost REQUIRED filesystem system)
 add_custom_command(
   WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
   OUTPUT Output/C++/Release/libmscl.so
-  COMMAND bjam MSCL//stage_c++ release cxxflags="-std=c++11" --without-websockets -j 4
+  COMMAND bjam MSCL//stage_c++ release cxxflags="-std=c++11" --without-ssl --without-websockets -j 4
   )
 add_custom_target(mscl_lib ALL DEPENDS Output/C++/Release/libmscl.so)
 
