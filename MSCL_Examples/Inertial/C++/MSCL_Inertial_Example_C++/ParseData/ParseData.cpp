@@ -8,6 +8,8 @@
 #include <iostream>
 using namespace std;
 
+#include "mscl/Types.h"
+#include "mscl/MicroStrain/MIP/MipTypes.h"
 #include "mscl/Communication/Connection.h"
 #include "mscl/MicroStrain/Inertial/InertialNode.h"
 #include "mscl/Exceptions.h"
@@ -15,7 +17,7 @@ using namespace std;
 int main(int argc, char **argv)
 {
 	//TODO: change these constants to match your setup
-	const string COM_PORT = "COM15";
+	const string COM_PORT = "COM15"; //linux: /dev/ttyACM0
 
 	try
 	{
@@ -24,6 +26,25 @@ int main(int argc, char **argv)
 
 		//create an InertialNode with the connection
 		mscl::InertialNode node(connection);
+
+        //Put the Inertial Node into its idle state
+        //  (This is not required but reduces the parsing
+        //  burden during initialization and makes visual
+        //  confirmation of the commands easier.)
+        node.setToIdle();
+
+        //build up the channels to set
+        mscl::MipChannels sensorChs;
+
+        //setup Scaled Accelerometer Vector
+        sensorChs.push_back(mscl::MipChannel(mscl::MipTypes::CH_FIELD_SENSOR_SCALED_ACCEL_VEC, mscl::SampleRate::Hertz(100)));
+        //setup Scaled Gyro Vector
+        sensorChs.push_back(mscl::MipChannel(mscl::MipTypes::CH_FIELD_SENSOR_SCALED_GYRO_VEC, mscl::SampleRate::Hertz(100)));
+        //set the active channels for the Sensor category on the Node 
+        node.setActiveChannelFields(mscl::MipTypes::CLASS_AHRS_IMU, sensorChs);
+
+        //start sampling on the Sensor category of the Node
+        node.enableDataStream(mscl::MipTypes::CLASS_AHRS_IMU);
 
 		//endless loop of reading in data
 		while(true)
