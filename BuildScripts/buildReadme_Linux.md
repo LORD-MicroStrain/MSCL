@@ -3,7 +3,7 @@
 #### Installing Dependencies
 
 - gcc 4.9.1-5
-- [Boost 1.64](http://www.boost.org/)
+- [Boost 1.66](http://www.boost.org/)
 - libssl1.0.0 (OpenSSL is optional, see below)
 - libssl-dev (OpenSSL is optional, see below)
 - libcrypto (OpenSSL is optional, see below)
