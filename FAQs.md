@@ -4,7 +4,7 @@ The following are some frequently asked questions from MSCL users. It can also b
 
 If you need more help, please [Create a New Issue](https://github.com/LORD-MicroStrain/MSCL/issues/new), or contact richard.stoneback@lord.com
 
-### How do I set up a connection to a WSDA-1500 ethernet BaseStation?
+### How do I set up a connection to a WSDA-2000 / WSDA-1500 ethernet BaseStation?
 
 Using a TCP/IP connection vs a USB/Serial connection in MSCL is as simple as changing 1 line of code:
 
@@ -18,7 +18,7 @@ tcpConnection = mscl.Connection.TcpIp("192.100.26.1", 5000)
 baseStation = mscl.BaseStation(tcpConnection)
 ```
 
-### I am using a WSDA-1500 ethernet BaseStation, but am having trouble communicating with it / Wireless Nodes.
+### I am using a WSDA-2000 ethernet BaseStation, but am having trouble communicating with it / Wireless Nodes.
 
 Depending on your network latency, you may need to adjust the timeout for communicating with the BaseStation:
 
