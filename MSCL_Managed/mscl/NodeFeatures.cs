@@ -76,14 +76,14 @@ public class NodeFeatures : global::System.IDisposable {
     return ret;
   }
 
-  public virtual bool isChannelSettingReadOnly(WirelessTypes.ChannelGroupSetting setting) {
-    bool ret = msclPINVOKE.NodeFeatures_isChannelSettingReadOnly(swigCPtr, (int)setting);
+  public virtual bool supportsInputRange() {
+    bool ret = msclPINVOKE.NodeFeatures_supportsInputRange__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public virtual bool supportsInputRange() {
-    bool ret = msclPINVOKE.NodeFeatures_supportsInputRange__SWIG_0(swigCPtr);
+  public virtual bool supportsInputRangePerExcitationVoltage() {
+    bool ret = msclPINVOKE.NodeFeatures_supportsInputRangePerExcitationVoltage(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -136,6 +136,12 @@ public class NodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public virtual bool supportsPullUpResistor() {
+    bool ret = msclPINVOKE.NodeFeatures_supportsPullUpResistor(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public virtual bool supportsFilterSettlingTime() {
     bool ret = msclPINVOKE.NodeFeatures_supportsFilterSettlingTime(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -144,6 +150,18 @@ public class NodeFeatures : global::System.IDisposable {
 
   public virtual bool supportsThermocoupleType() {
     bool ret = msclPINVOKE.NodeFeatures_supportsThermocoupleType(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool supportsTempSensorOptions() {
+    bool ret = msclPINVOKE.NodeFeatures_supportsTempSensorOptions(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool supportsDebounceFilter() {
+    bool ret = msclPINVOKE.NodeFeatures_supportsDebounceFilter(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -310,8 +328,8 @@ public class NodeFeatures : global::System.IDisposable {
     return ret;
   }
 
-  public virtual bool supportsTransmitPower(WirelessTypes.TransmitPower power) {
-    bool ret = msclPINVOKE.NodeFeatures_supportsTransmitPower(swigCPtr, (int)power);
+  public virtual bool supportsTransmitPower(WirelessTypes.TransmitPower power, WirelessTypes.CommProtocol commProtocol) {
+    bool ret = msclPINVOKE.NodeFeatures_supportsTransmitPower(swigCPtr, (int)power, (int)commProtocol);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -330,6 +348,12 @@ public class NodeFeatures : global::System.IDisposable {
 
   public virtual bool supportsInputRange(WirelessTypes.InputRange range, ChannelMask channels) {
     bool ret = msclPINVOKE.NodeFeatures_supportsInputRange__SWIG_1(swigCPtr, (int)range, ChannelMask.getCPtr(channels));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool supportsInputRange(WirelessTypes.InputRange range, ChannelMask channels, WirelessTypes.Voltage excitationVoltage) {
+    bool ret = msclPINVOKE.NodeFeatures_supportsInputRange__SWIG_2(swigCPtr, (int)range, ChannelMask.getCPtr(channels), (int)excitationVoltage);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -370,6 +394,12 @@ public class NodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public virtual bool supportsExcitationVoltageConfig() {
+    bool ret = msclPINVOKE.NodeFeatures_supportsExcitationVoltageConfig(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public virtual WirelessTypes.WirelessSampleRate maxSampleRate(WirelessTypes.SamplingMode samplingMode, ChannelMask channels, WirelessTypes.DataCollectionMethod dataCollectionMethod, WirelessTypes.DataMode dataMode) {
     WirelessTypes.WirelessSampleRate ret = (WirelessTypes.WirelessSampleRate)msclPINVOKE.NodeFeatures_maxSampleRate(swigCPtr, (int)samplingMode, ChannelMask.getCPtr(channels), (int)dataCollectionMethod, (int)dataMode);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -382,8 +412,20 @@ public class NodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public virtual WirelessTypes.WirelessSampleRate maxSampleRateForLowPassFilter(WirelessTypes.Filter lowPassFilter, WirelessTypes.SamplingMode samplingMode, WirelessTypes.DataCollectionMethod dataCollectionMethod, WirelessTypes.DataMode dataMode) {
+    WirelessTypes.WirelessSampleRate ret = (WirelessTypes.WirelessSampleRate)msclPINVOKE.NodeFeatures_maxSampleRateForLowPassFilter(swigCPtr, (int)lowPassFilter, (int)samplingMode, (int)dataCollectionMethod, (int)dataMode);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public virtual WirelessTypes.SettlingTime maxFilterSettlingTime(SampleRate rate) {
     WirelessTypes.SettlingTime ret = (WirelessTypes.SettlingTime)msclPINVOKE.NodeFeatures_maxFilterSettlingTime(swigCPtr, SampleRate.getCPtr(rate));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual WirelessTypes.Filter minLowPassFilter(SampleRate rate) {
+    WirelessTypes.Filter ret = (WirelessTypes.Filter)msclPINVOKE.NodeFeatures_minLowPassFilter(swigCPtr, SampleRate.getCPtr(rate));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -526,8 +568,8 @@ public class NodeFeatures : global::System.IDisposable {
     return ret;
   }
 
-  public virtual TransmitPowers transmitPowers() {
-    TransmitPowers ret = new TransmitPowers(msclPINVOKE.NodeFeatures_transmitPowers(swigCPtr), true);
+  public virtual TransmitPowers transmitPowers(WirelessTypes.CommProtocol commProtocol) {
+    TransmitPowers ret = new TransmitPowers(msclPINVOKE.NodeFeatures_transmitPowers(swigCPtr, (int)commProtocol), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -575,7 +617,13 @@ public class NodeFeatures : global::System.IDisposable {
   }
 
   public virtual InputRanges inputRanges(ChannelMask channels) {
-    InputRanges ret = new InputRanges(msclPINVOKE.NodeFeatures_inputRanges(swigCPtr, ChannelMask.getCPtr(channels)), true);
+    InputRanges ret = new InputRanges(msclPINVOKE.NodeFeatures_inputRanges__SWIG_0(swigCPtr, ChannelMask.getCPtr(channels)), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual InputRanges inputRanges(ChannelMask channels, WirelessTypes.Voltage excitationVoltage) {
+    InputRanges ret = new InputRanges(msclPINVOKE.NodeFeatures_inputRanges__SWIG_1(swigCPtr, ChannelMask.getCPtr(channels), (int)excitationVoltage), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -588,6 +636,24 @@ public class NodeFeatures : global::System.IDisposable {
 
   public virtual DerivedChannelTypes derivedChannelTypes() {
     DerivedChannelTypes ret = new DerivedChannelTypes(msclPINVOKE.NodeFeatures_derivedChannelTypes(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual Voltages excitationVoltages() {
+    Voltages ret = new Voltages(msclPINVOKE.NodeFeatures_excitationVoltages(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual WirelessTypes.TransmitPower maxTransmitPower(WirelessTypes.RegionCode region, WirelessTypes.CommProtocol commProtocol) {
+    WirelessTypes.TransmitPower ret = (WirelessTypes.TransmitPower)msclPINVOKE.NodeFeatures_maxTransmitPower(swigCPtr, (int)region, (int)commProtocol);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual WirelessTypes.TransmitPower minTransmitPower(WirelessTypes.RegionCode region, WirelessTypes.CommProtocol commProtocol) {
+    WirelessTypes.TransmitPower ret = (WirelessTypes.TransmitPower)msclPINVOKE.NodeFeatures_minTransmitPower(swigCPtr, (int)region, (int)commProtocol);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

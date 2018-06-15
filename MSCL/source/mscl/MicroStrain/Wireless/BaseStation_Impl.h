@@ -34,7 +34,7 @@ namespace mscl
     class BaseStationConfig;
     struct DatalogSessionInfoResult;
     class WirelessResponsePattern;
-    struct ShuntCalCmdInfo;
+    struct AutoCalCmdDetails;
     class WirelessProtocol;
 
     //Class: BaseStation_Impl
@@ -803,7 +803,7 @@ namespace mscl
 
         //Function: protocol_node_autoshuntcal_v1
         //  Performs Version 1 of the Node AutoShuntCal command.
-        bool protocol_node_autoshuntcal_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, const ShuntCalCmdInfo& commandInfo, uint8 chNum, WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType chType, AutoCalResult& result);
+        bool protocol_node_autoshuntcal_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, const AutoCalCmdDetails& commandDetails, AutoCalResult& result);
 
         //Function: protocol_node_getDiagnosticInfo_v1
         //  Performs Version 1 of the Node Get Diagnostic Info command.
@@ -1119,11 +1119,7 @@ namespace mscl
         //
         //Parameters:
         //  nodeProtocol - The <WirelessProtocol> for the Node.
-        //  nodeAddress - The node address of the Node to send the command to.
-        //  commandInfo - The <ShuntCalCmdInfo> to use in the command.
-        //  chNum - The channel number to calibrated.
-        //  nodeType - The type of node being calibrated.
-        //  chType - The type of the channel being calibrated.
+        //  commandDetails - The <AutoCalCmdDetails> for this command.
         //  result - The <AutoCalResult> reference to hold the result.
         //
         //Returns:
@@ -1132,11 +1128,7 @@ namespace mscl
         //Exceptions:
         //  - <Error_Connection>: A connection error has occurred with the BaseStation.
         bool node_autoShuntCal(const WirelessProtocol& nodeProtocol,
-                               NodeAddress nodeAddress,
-                               const ShuntCalCmdInfo& commandInfo,
-                               uint8 chNum,
-                               WirelessModels::NodeModel nodeType,
-                               WirelessTypes::ChannelType chType,
+                               const AutoCalCmdDetails& commandDetails,
                                AutoCalResult& result);
 
         //Function: node_readSingleSensor

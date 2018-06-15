@@ -49,9 +49,19 @@ namespace mscl
         return buildCommand_shmLink(asppVer, nodeAddress);
     }
 
-    ByteStream AutoCal::buildCommand_shuntCal(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, const ShuntCalCmdInfo& info, uint8 chNum, WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType chType)
+    ByteStream AutoCal::buildCommand_shuntCal(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, const AutoCalCmdDetails& details)
     {
-        uint16 inputRangeEepromVal = InputRange::inputRangeToEepromVal(info.inputRange, nodeType, chType);
+        const ShuntCalCmdInfo& info = details.commandInfo;
+
+        uint16 inputRangeEepromVal;
+        if(details.useExcitationVoltage)
+        {
+            inputRangeEepromVal = InputRangeHelper::inputRangeToEepromVal(info.inputRange, details.nodeType, details.chType, details.excitationVoltage);
+        }
+        else
+        {
+            inputRangeEepromVal = InputRangeHelper::inputRangeToEepromVal(info.inputRange, details.nodeType, details.chType);
+        }
 
         uint8 internalShunt = (info.useInternalShunt) ? 1 : 0;
 
@@ -66,7 +76,7 @@ namespace mscl
             cmd.append_uint32(nodeAddress);                             //Node address
             cmd.append_uint16(18);                                      //Payload length
             cmd.append_uint16(WirelessProtocol::cmdId_autoCal_v1);      //Command ID
-            cmd.append_uint8(chNum);
+            cmd.append_uint8(details.chNum);
             cmd.append_uint8(internalShunt);
             cmd.append_uint8(static_cast<uint8>(inputRangeEepromVal));
             cmd.append_uint16(info.hardwareOffset);
@@ -85,7 +95,7 @@ namespace mscl
             cmd.append_uint16(static_cast<uint16>(nodeAddress));        //Node address
             cmd.append_uint8(18);                                       //Payload length
             cmd.append_uint16(WirelessProtocol::cmdId_autoCal_v1);      //Command ID
-            cmd.append_uint8(chNum);
+            cmd.append_uint8(details.chNum);
             cmd.append_uint8(internalShunt);
             cmd.append_uint8(static_cast<uint8>(inputRangeEepromVal));
             cmd.append_uint16(info.hardwareOffset);

@@ -32,13 +32,13 @@ namespace mscl
         );
 
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_diffTemperature, "Thermocouple 1");
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_diffTemperature, "Thermocouple 2");
-        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_diffTemperature, "Thermocouple 3");
-        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_diffTemperature, "Thermocouple 4");
-        m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_diffTemperature, "Thermocouple 5");
-        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_diffTemperature, "Thermocouple 6");
-        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_temperature, "CJC Temperature");
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_diffTemperature, "Thermocouple 1", 24);
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_diffTemperature, "Thermocouple 2", 24);
+        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_diffTemperature, "Thermocouple 3", 24);
+        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_diffTemperature, "Thermocouple 4", 24);
+        m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_diffTemperature, "Thermocouple 5", 24);
+        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_diffTemperature, "Thermocouple 6", 24);
+        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_temperature, "CJC Temperature", 12);
         
         if(info.model() != WirelessModels::node_tcLink_6ch_ip67)
         {

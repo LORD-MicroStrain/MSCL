@@ -18,7 +18,7 @@ namespace mscl
 
         //Channels
         m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_temperature, "Internal Temperature");
-        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_displacement, "Displacement");
+        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_displacement, "Displacement", 12);
     }
 
     bool NodeFeatures_dvrtlink::supportsSensorDelayConfig() const

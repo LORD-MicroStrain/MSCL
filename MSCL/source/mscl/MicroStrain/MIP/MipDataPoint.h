@@ -21,11 +21,11 @@ namespace mscl
 #ifndef SWIG
     public:
         //Constructor: MipDataPoint
-        //    Creates an MipDataPoint object with default, unknown, values
+        //    Creates a MipDataPoint object with default, unknown, values
         MipDataPoint();
 
         //Constructor: MipDataPoint
-        //    Creates an MipDataPoint object
+        //    Creates a MipDataPoint object
         //
         //Parameters:
         //    field - The <MipTypes::ChannelField> for the data point.

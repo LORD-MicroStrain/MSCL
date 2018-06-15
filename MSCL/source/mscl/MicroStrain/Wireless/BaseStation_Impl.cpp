@@ -1096,12 +1096,12 @@ namespace mscl
         return node_autocal(nodeAddress, cmd, response, result);
     }
 
-    bool BaseStation_Impl::protocol_node_autoshuntcal_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, const ShuntCalCmdInfo& commandInfo, uint8 chNum, WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType chType, AutoCalResult& result)
+    bool BaseStation_Impl::protocol_node_autoshuntcal_v1(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, const AutoCalCmdDetails& commandDetails, AutoCalResult& result)
     {
         //create the response
-        AutoCal::ShuntCalResponse response(nodeAddress, m_responseCollector, chNum);
+        AutoCal::ShuntCalResponse response(nodeAddress, m_responseCollector, commandDetails.chNum);
 
-        ByteStream cmd = AutoCal::buildCommand_shuntCal(asppVer, nodeAddress, commandInfo, chNum, nodeType, chType);
+        ByteStream cmd = AutoCal::buildCommand_shuntCal(asppVer, nodeAddress, commandDetails);
 
         return node_autocal(nodeAddress, cmd, response, result);
     }
@@ -1565,14 +1565,10 @@ namespace mscl
     }
 
     bool BaseStation_Impl::node_autoShuntCal(const WirelessProtocol& nodeProtocol,
-                                             NodeAddress nodeAddress,
-                                             const ShuntCalCmdInfo& commandInfo,
-                                             uint8 chNum,
-                                             WirelessModels::NodeModel nodeType,
-                                             WirelessTypes::ChannelType chType,
+                                             const AutoCalCmdDetails& commandDetails,
                                              AutoCalResult& result)
     {
-        return nodeProtocol.m_autoShuntCal(this, nodeAddress, commandInfo, chNum, nodeType, chType, result);
+        return nodeProtocol.m_autoShuntCal(this, commandDetails.nodeAddress, commandDetails, result);
     }
 
     bool BaseStation_Impl::node_readSingleSensor(NodeAddress nodeAddress, uint8 channelNumber, uint16& result)

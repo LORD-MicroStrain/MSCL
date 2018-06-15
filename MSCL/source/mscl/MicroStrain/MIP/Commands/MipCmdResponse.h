@@ -17,14 +17,14 @@ namespace mscl
     {
     public:
         //Constructor: MipCmdResponse
-        //    Creates an MipCmdResponse with default values
+        //    Creates a MipCmdResponse with default values
         MipCmdResponse();
 
         virtual ~MipCmdResponse(){};    //virtual destructor
 
     protected:
         //Constructor: MipCmdResponse
-        //    Creates an MipCmdResponse with the given parameters
+        //    Creates a MipCmdResponse with the given parameters
         //
         //Parameters:
         //    state - The state of the response

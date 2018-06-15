@@ -119,11 +119,6 @@ namespace mscl
         }
     }
 
-    uint8 NodeEepromHelper::read_fwVersionMajor() const
-    {
-        return Utils::msb(read(NodeEepromMap::FIRMWARE_VER).as_uint16());
-    }
-
     Version NodeEepromHelper::read_asppVersion(WirelessTypes::CommProtocol commProtocol) const
     {
         uint16 asppValue = 0;
@@ -181,9 +176,7 @@ namespace mscl
 
     WirelessTypes::CommProtocol NodeEepromHelper::read_commProtocol() const
     {
-        const uint8 MIN_NODE_FW_SUPPORTS_COMM_PROTOCOL = 11;
-
-        if(read_fwVersionMajor() < MIN_NODE_FW_SUPPORTS_COMM_PROTOCOL)
+        if(!m_node->features().supportsCommProtocolEeprom())
         {
             //doesn't support the comm protocol eeprom
             return WirelessTypes::commProtocol_lxrs;
@@ -217,9 +210,7 @@ namespace mscl
 
     void NodeEepromHelper::write_commProtocol(WirelessTypes::CommProtocol protocol)
     {
-        const uint8 MIN_NODE_FW_SUPPORTS_COMM_PROTOCOL = 11;
-
-        if(read_fwVersionMajor() < MIN_NODE_FW_SUPPORTS_COMM_PROTOCOL)
+        if(!m_node->features().supportsCommProtocolEeprom())
         {
             if(m_node->features().supportsCommunicationProtocol(protocol))
             {
@@ -1089,19 +1080,14 @@ namespace mscl
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_inputRange, mask);
 
         //read the bits value stored in eeprom
-        uint16 bitsVal = read(eeprom).as_uint16();
+        uint16 eeVal = read(eeprom).as_uint16();
 
-        //convert the bits value to gain and return
-        return InputRange::eepromValToInputRange(bitsVal, m_node->model(), chType);
-    }
+        if(m_node->features().supportsExcitationVoltageConfig())
+        {
+            return InputRangeHelper::eepromValToInputRange(eeVal, m_node->model(), chType, read_excitationVoltage());
+        }
 
-    uint16 NodeEepromHelper::read_hardwareOffset(const ChannelMask& mask) const
-    {
-        //find the eeprom location
-        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_hardwareOffset, mask);
-
-        //return the result read from eeprom
-        return read(eeprom).as_uint16();
+        return InputRangeHelper::eepromValToInputRange(eeVal, m_node->model(), chType);
     }
 
     void NodeEepromHelper::write_inputRange(const ChannelMask& mask, WirelessTypes::InputRange range)
@@ -1111,113 +1097,240 @@ namespace mscl
         uint8 lastCh = mask.lastChEnabled();
         WirelessTypes::ChannelType chType = m_node->features().channelType(lastCh);
 
-        //find the eeprom location
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_inputRange, mask);
 
-        //convert the gain value to bits, which is what gets written to eeprom
-        uint16 bitsVal = InputRange::inputRangeToEepromVal(range, m_node->model(), chType);
+        //convert the gain value to the value that gets written to eeprom
+        uint16 eeVal = InputRangeHelper::inputRangeToEepromVal(range, m_node->model(), chType);
+        write(eeprom, Value::UINT16(eeVal));
+    }
 
-        //write the hardware gain (in bits) to eeprom
-        write(eeprom, Value::UINT16(bitsVal));
+    void NodeEepromHelper::write_inputRange(const ChannelMask& mask, WirelessTypes::Voltage excitationVoltage, WirelessTypes::InputRange range)
+    {
+        //find the type of the last channel enabled in the mask
+        //  TODO: clean this up so that masks can tell you what the type is themselves
+        uint8 lastCh = mask.lastChEnabled();
+        WirelessTypes::ChannelType chType = m_node->features().channelType(lastCh);
+
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_inputRange, mask);
+
+        //convert the gain value to the value that gets written to eeprom
+        uint16 eeVal = InputRangeHelper::inputRangeToEepromVal(range, m_node->model(), chType, excitationVoltage);
+        write(eeprom, Value::UINT16(eeVal));
+    }
+
+    uint16 NodeEepromHelper::read_hardwareOffset(const ChannelMask& mask) const
+    {
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_hardwareOffset, mask);
+        return read(eeprom).as_uint16();
     }
 
     void NodeEepromHelper::write_hardwareOffset(const ChannelMask& mask, uint16 offset)
     {
-        //find the eeprom location
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_hardwareOffset, mask);
-
-        //write the hardware offset to eeprom
         write(eeprom, Value::UINT16(offset));
     }
 
     WirelessTypes::Filter NodeEepromHelper::read_antiAliasingFilter(const ChannelMask& mask) const
     {
-        //find the eeprom location
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_antiAliasingFilter, mask);
-
-        //return the result read from eeprom
         return static_cast<WirelessTypes::Filter>(read(eeprom).as_uint16());
     }
 
     void NodeEepromHelper::write_antiAliasingFilter(const ChannelMask& mask, WirelessTypes::Filter filter)
     {
-        //find the eeprom location
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_antiAliasingFilter, mask);
-
-        //write the filter to eeprom
         write(eeprom, Value::UINT16(static_cast<uint16>(filter)));
     }
 
     WirelessTypes::Filter NodeEepromHelper::read_lowPassFilter(const ChannelMask& mask) const
     {
-        //find the eeprom location
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_lowPassFilter, mask);
-
-        //return the result read from eeprom
         return static_cast<WirelessTypes::Filter>(read(eeprom).as_uint16());
     }
 
     void NodeEepromHelper::write_lowPassFilter(const ChannelMask& mask, WirelessTypes::Filter filter)
     {
-        //find the eeprom location
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_lowPassFilter, mask);
-
-        //write the low pass filter to eeprom
         write(eeprom, Value::UINT16(static_cast<uint16>(filter)));
     }
 
     WirelessTypes::HighPassFilter NodeEepromHelper::read_highPassFilter(const ChannelMask& mask) const
     {
-        //find the eeprom location
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_highPassFilter, mask);
-
-        //return the result read from eeprom
         return static_cast<WirelessTypes::HighPassFilter>(read(eeprom).as_uint16());
     }
 
     void NodeEepromHelper::write_highPassFilter(const ChannelMask& mask, WirelessTypes::HighPassFilter filter)
     {
-        //find the eeprom location
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_highPassFilter, mask);
-
-        //write the high pass filter to eeprom
         write(eeprom, Value::UINT16(static_cast<uint16>(filter)));
     }
 
     float NodeEepromHelper::read_gaugeFactor(const ChannelMask& mask) const
     {
-        //find the eeprom location
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_gaugeFactor, mask);
-
-        //read the gauge factor from eeprom
         return read(eeprom).as_float();
     }
 
     void NodeEepromHelper::write_gaugeFactor(const ChannelMask& mask, float gaugeFactor)
     {
-        //find the eeprom location
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_gaugeFactor, mask);
-
-        //write the gauge factor to eeprom
         write(eeprom, Value::FLOAT(gaugeFactor));
     }
 
     WirelessTypes::ThermocoupleType NodeEepromHelper::read_thermoType(const ChannelMask& mask) const
     {
-        //find the eeprom location
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_thermocoupleType, mask);
-
-        //read and return the thermocouple type
         return static_cast<WirelessTypes::ThermocoupleType>(read(eeprom).as_uint16());
     }
 
     void NodeEepromHelper::write_thermoType(const ChannelMask& mask, WirelessTypes::ThermocoupleType thermocouple)
     {
-        //find the eeprom location
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_thermocoupleType, mask);
-
-        //write the thermocouple type to the Node
         write(eeprom, Value::UINT16(static_cast<uint16>(thermocouple)));
+    }
+
+    TempSensorOptions NodeEepromHelper::read_tempSensorOptions(const ChannelMask& mask) const
+    {
+        const uint16 THERMOCOUPLE = 0b0000000000000000;
+        const uint16 RTD_2WIRE = 0b0001000000000000;
+        const uint16 RTD_3WIRE = 0b0010000000000000;
+        const uint16 RTD_4WIRE = 0b0011000000000000;
+        const uint16 THERMISTOR = 0b0100000000000000;
+
+        //find the eeprom location
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_tempSensorOptions, mask);
+
+        uint16 val = read(eeprom).as_uint16();
+
+        //the transducer is bits 12 - 15
+        //  Note: this value is different than WirelessTypes::TransducerType, as it also indicates RTD Wire Type
+        uint16 transducerVal = val & (0b1111000000000000);
+
+        switch(transducerVal)
+        {
+            case RTD_2WIRE:
+            case RTD_3WIRE:
+            case RTD_4WIRE:
+            {
+                //the RTD Wire Type is part of the transducer value
+                WirelessTypes::RtdWireType wireType = WirelessTypes::rtd_2wire;
+                if(transducerVal == RTD_2WIRE) { wireType = WirelessTypes::rtd_2wire; }
+                else if(transducerVal == RTD_3WIRE) { wireType = WirelessTypes::rtd_3wire; }
+                else if(transducerVal == RTD_4WIRE) { wireType = WirelessTypes::rtd_4wire; }
+
+                //the RTD curve is bits 8 - 11, but we only support European Curve for now, ignoring
+
+                //the RTD type is bits 0 - 7
+                WirelessTypes::RtdType type = static_cast<WirelessTypes::RtdType>(val & (0b0000000011111111));
+
+                return TempSensorOptions::RTD(wireType, type);
+            }
+
+            case THERMISTOR:
+            {
+                //the thermistor type is bits 0 - 11
+                WirelessTypes::ThermistorType type = static_cast<WirelessTypes::ThermistorType>(val & (0b0000111111111111));
+                return TempSensorOptions::Thermistor(type);
+            }
+
+            case THERMOCOUPLE:
+            default:
+            {
+                //the thermocouple type is bits 0 - 11
+                WirelessTypes::ThermocoupleType type = static_cast<WirelessTypes::ThermocoupleType>(val & (0b0000111111111111));
+                return TempSensorOptions::Thermocouple(type);
+            }
+        }
+    }
+
+    void NodeEepromHelper::write_tempSensorOptions(const ChannelMask& mask, const TempSensorOptions& options)
+    {
+        const uint16 THERMOCOUPLE   = 0b0000000000000000;
+        const uint16 RTD_2WIRE      = 0b0001000000000000;
+        const uint16 RTD_3WIRE      = 0b0010000000000000;
+        const uint16 RTD_4WIRE      = 0b0011000000000000;
+        const uint16 THERMISTOR     = 0b0100000000000000;
+
+        //find the eeprom location
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_tempSensorOptions, mask);
+
+        uint16 val = 0;
+
+        switch(options.transducerType())
+        {
+            case WirelessTypes::transducer_thermocouple:
+            {
+                val = THERMOCOUPLE;
+                val |= options.thermocoupleType();
+                break;
+            }
+
+            case WirelessTypes::transducer_thermistor:
+            {
+                val = THERMISTOR;
+                val |= options.thermistorType();
+                break;
+            }
+
+            case WirelessTypes::transducer_rtd:
+            {
+                auto wireType = options.rtdWireType();
+
+                if(wireType == WirelessTypes::rtd_2wire) { val = RTD_2WIRE; }
+                else if(wireType == WirelessTypes::rtd_3wire) { val = RTD_3WIRE; }
+                else if(wireType == WirelessTypes::rtd_4wire) { val = RTD_4WIRE; }
+                else { throw Error_NotSupported("Invalid RTD Wire Type"); }
+
+                val |= options.rtdType();
+
+                break;
+            }
+
+            default:
+                throw Error_NotSupported("Invalid Transducer Type");
+        }
+
+        //write the value to the Node
+        write(eeprom, Value::UINT16(val));
+    }
+
+    WirelessTypes::Voltage NodeEepromHelper::read_excitationVoltage() const
+    {
+        return static_cast<WirelessTypes::Voltage>(read(NodeEepromMap::EXCITATION_VOLTAGE).as_uint16());
+    }
+
+    void NodeEepromHelper::write_excitationVoltage(WirelessTypes::Voltage voltage)
+    {
+        write(NodeEepromMap::EXCITATION_VOLTAGE, Value::UINT16(static_cast<uint16>(voltage)));
+    }
+
+    uint16 NodeEepromHelper::read_debounceFilter(const ChannelMask& mask) const
+    {
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_debounceFilter, mask);
+        return read(eeprom).as_uint16();
+    }
+
+    void NodeEepromHelper::write_debounceFilter(const ChannelMask& mask, uint16 milliseconds)
+    {
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_debounceFilter, mask);
+
+        //max value of 250ms
+        Utils::checkBounds_max(milliseconds, static_cast<uint16>(250));
+
+        write(eeprom, Value::UINT16(milliseconds));
+    }
+
+    bool NodeEepromHelper::read_pullUpResistor(const ChannelMask& mask) const
+    {
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_pullUpResistor, mask);
+        return read(eeprom).as_bool();
+    }
+
+    void NodeEepromHelper::write_pullUpResistor(const ChannelMask& mask, bool enable)
+    {
+        const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_pullUpResistor, mask);
+        write(eeprom, Value::UINT16(static_cast<uint16>(enable)));
     }
 
     void NodeEepromHelper::read_activitySense(ActivitySense& result) const
@@ -1780,6 +1893,11 @@ namespace mscl
 
     uint16 NodeEepromHelper::read_diagnosticInterval() const
     {
+        if(!m_node->features().supportsDiagnosticInfo())
+        {
+            return 0;
+        }
+
         return read(NodeEepromMap::DIAGNOSTIC_INTERVAL).as_uint16();
     }
 
@@ -1854,14 +1972,12 @@ namespace mscl
     ChannelMask NodeEepromHelper::read_derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel) const
     {
         const EepromLocation eeprom = findDerivedChannelEeprom(derivedChannel);
-
         return ChannelMask(read(eeprom).as_uint16());
     }
 
     void NodeEepromHelper::write_derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel, const ChannelMask& mask)
     {
         const EepromLocation eeprom = findDerivedChannelEeprom(derivedChannel);
-
         write(eeprom, Value::UINT16(mask.toMask()));
     }
 }

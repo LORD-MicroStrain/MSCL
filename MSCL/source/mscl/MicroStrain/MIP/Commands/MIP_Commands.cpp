@@ -113,7 +113,7 @@ namespace mscl
 
             MipTypes::ChannelField channelId = static_cast<MipTypes::ChannelField>(Utils::make_uint16(descSet, fieldDesc));
 
-            //create an MipChannel and add to the result
+            //create a MipChannel and add to the result
             result.push_back(MipChannel(channelId, SampleRate::Hertz(sampleRateBase / rateDecimation)));
         }
 

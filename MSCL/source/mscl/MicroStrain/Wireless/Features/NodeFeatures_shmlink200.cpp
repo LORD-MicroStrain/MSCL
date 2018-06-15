@@ -49,18 +49,6 @@ namespace mscl
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration, "Acceleration Z");
     }
 
-    bool NodeFeatures_shmlink200::isChannelSettingReadOnly(WirelessTypes::ChannelGroupSetting setting) const
-    {
-        if(setting == WirelessTypes::chSetting_linearEquation ||
-           setting == WirelessTypes::chSetting_equationType ||
-           setting == WirelessTypes::chSetting_unit)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
     const WirelessTypes::DataFormats NodeFeatures_shmlink200::dataFormats() const
     {
         //build and return the data formats that are supported

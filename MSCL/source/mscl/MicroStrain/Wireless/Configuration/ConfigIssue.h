@@ -70,6 +70,10 @@ namespace mscl
         //  CONFIG_DERIVED_MASK_MEAN            - 47 - Derived Mean Mask
         //  CONFIG_GAUGE_RESISTANCE             - 48 - Gauge Resistance
         //  CONFIG_NUM_ACTIVE_GAUGES            - 49 - Number of Active Gauges
+        //  CONFIG_TEMP_SENSOR_OPTS             - 50 - Temp Sensor Options
+        //  CONFIG_DEBOUNCE_FILTER              - 51 - Debounce Filter
+        //  CONFIG_PULLUP_RESISTOR              - 52 - Pull-up Resistor
+        //  CONFIG_EXCITATION_VOLTAGE           - 53 - Excitation Voltage
         enum ConfigOption
         {
             CONFIG_SAMPLING_MODE                = 0,
@@ -121,7 +125,11 @@ namespace mscl
             CONFIG_COMM_PROTOCOL                = 46,
             CONFIG_DERIVED_MASK_MEAN            = 47,
             CONFIG_GAUGE_RESISTANCE             = 48,
-            CONFIG_NUM_ACTIVE_GAUGES            = 49
+            CONFIG_NUM_ACTIVE_GAUGES            = 49,
+            CONFIG_TEMP_SENSOR_OPTS             = 50,
+            CONFIG_DEBOUNCE_FILTER              = 51,
+            CONFIG_PULLUP_RESISTOR              = 52,
+            CONFIG_EXCITATION_VOLTAGE           = 53
         };
 
         ConfigIssue();    //default constructor

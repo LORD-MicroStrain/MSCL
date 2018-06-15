@@ -187,6 +187,10 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         ChannelMask derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel);
 
+        //Function: diagnosticInterval
+        //  Gets the diagnostic interval set on the Node.
+        uint16 diagnosticInterval();
+
     public:
         //Function: txPerGroup
         //    Writes the transmissions per group to the node.

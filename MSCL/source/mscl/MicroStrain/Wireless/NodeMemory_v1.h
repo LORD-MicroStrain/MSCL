@@ -42,9 +42,9 @@ namespace mscl
 
     private:
         //Constants: Node Memory Constants
-        //    PAGE_SIZE    - 264    - The size of a single datalogging page (in bytes).
-        //    START_PAGE    - 2        - The first page on the Node that has actual datalogging data.
-        static const uint16 PAGE_SIZE = 264;
+        //    DPAGE_SIZE    - 264   - The size of a single datalogging page (in bytes).
+        //    START_PAGE    - 2     - The first page on the Node that has actual datalogging data.
+        static const uint16 DPAGE_SIZE = 264;
         static const uint16 START_PAGE = 2;
 
         //Variable: m_currentAddress

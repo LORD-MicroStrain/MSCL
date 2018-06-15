@@ -53,16 +53,16 @@ namespace SyncSamplingFormulas
         {
             if(highBandwidth)
             {
-                return 69;//144;
+                return 69;
             }
 
             if(lossless)
             {
-                return 138;//288;
+                return 138;
             }
             else
             {
-                return 207;//432;
+                return 138; //keep same bandwidth limitations as lossless
             }
         }
     }
@@ -308,7 +308,7 @@ namespace SyncSamplingFormulas
         return txPerSec;
     }
 
-    float overheadFactor(bool lossless, bool optimizeBandwidth, const SampleRate& sampleRate, uint8 syncFormulaVersion)
+    float overheadFactor(bool lossless, bool optimizeBandwidth, bool diagnosticPacketEnabled, const SampleRate& sampleRate, uint8 syncFormulaVersion)
     {
         //special cases for sync version 1
         if(syncFormulaVersion == 1)
@@ -327,6 +327,11 @@ namespace SyncSamplingFormulas
         if(lossless)
         {
             return 1.5f;
+        }
+
+        if(diagnosticPacketEnabled)
+        {
+            return 1.05f;
         }
         
         return 1.0f;

@@ -124,7 +124,7 @@ Note: The default .NET build statically links in all dependencies. In your proje
 
 Building the Python library involves using Boost.Build framework, using the `bjam` or `b2` command, and utilizing the provided Jamfiles.
 
-Configure bjam by creating a [site-config.jam or user-config.jam file](http://www.boost.org/build/doc/html/bbv2/overview/configuration.html) in your Home path or Boost Build Path. The contents of the file should look similar to this:
+Configure bjam by creating a [site-config.jam or user-config.jam file](https://boostorg.github.io/build/manual/develop/index.html#bbv2.overview.configuration) in your Home path or Boost Build Path. The contents of the file should look similar to this:
 ```
 using msvc
 :

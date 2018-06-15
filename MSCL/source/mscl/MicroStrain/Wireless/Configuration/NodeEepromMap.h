@@ -201,6 +201,9 @@ namespace mscl
         //  EVENT_OPER_8                    - Event Driven Sampling: The operation for Event 8
         //  EVENT_VAL1_8                    - Event Driven Sampling: Value 1 for Event 8
         //  EVENT_VAL2_8                    - Event Driven Sampling: Value 2 for Event 8
+        //  EXCITATION_VOLTAGE              - Excitation Voltage
+        //  DEBOUNCE_FILTER                 - Debounce Filter
+        //  INTERNAL_PULLUP_RESISTOR        - Internal Pull-up Resistor
         //  ANTI_ALIASING_FILTER_1          - The anti-aliasing filter for channels (1).
         //  ANTI_ALIASING_FILTER_2          - The anti-aliasing filter for channels (2).
         //  ANTI_ALIASING_FILTER_3          - The anti-aliasing filter for channels (3).
@@ -402,6 +405,9 @@ namespace mscl
         static const EepromLocation EVENT_OPER_8;
         static const EepromLocation EVENT_VAL1_8;
         static const EepromLocation EVENT_VAL2_8;
+        static const EepromLocation EXCITATION_VOLTAGE;
+        static const EepromLocation DEBOUNCE_FILTER;
+        static const EepromLocation INTERNAL_PULLUP_RESISTOR;
         static const EepromLocation ANTI_ALIASING_FILTER_1;
         static const EepromLocation ANTI_ALIASING_FILTER_2;
         static const EepromLocation ANTI_ALIASING_FILTER_3;
@@ -463,5 +469,21 @@ namespace mscl
         static const EepromLocation BOOTLOADER_VER;
         static const EepromLocation FIRMWARE_UPGRADE_FLAGS;
         static const EepromLocation BOOTLOADER_FLASH_ADDRESS;
+        static const EepromLocation TEMP_SENSOR_CONFIG_1;
+        static const EepromLocation TEMP_SENSOR_CONFIG_2;
+        static const EepromLocation TEMP_SENSOR_CONFIG_3;
+        static const EepromLocation TEMP_SENSOR_CONFIG_4;
+        static const EepromLocation TEMP_SENSOR_CONFIG_5;
+        static const EepromLocation TEMP_SENSOR_CONFIG_6;
+        static const EepromLocation TEMP_SENSOR_CONFIG_7;
+        static const EepromLocation TEMP_SENSOR_CONFIG_8;
+        static const EepromLocation TEMP_SENSOR_CONFIG_9;
+        static const EepromLocation TEMP_SENSOR_CONFIG_10;
+        static const EepromLocation TEMP_SENSOR_CONFIG_11;
+        static const EepromLocation TEMP_SENSOR_CONFIG_12;
+        static const EepromLocation TEMP_SENSOR_CONFIG_13;
+        static const EepromLocation TEMP_SENSOR_CONFIG_14;
+        static const EepromLocation TEMP_SENSOR_CONFIG_15;
+        static const EepromLocation TEMP_SENSOR_CONFIG_16;
     };
 }

@@ -14,6 +14,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Configuration/EventTriggerOptions.h"
 #include "Configuration/FatigueOptions.h"
 #include "Configuration/HistogramOptions.h"
+#include "Configuration/TempSensorOptions.h"
 #include "mscl/Version.h"
 #include "mscl/BitMask.h"
 #include "ChannelMask.h"
@@ -874,6 +875,37 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::HighPassFilter getHighPassFilter(const ChannelMask& mask) const;
 
+        //API Function: getDebounceFilter
+        //  Reads the Debounce Filter of the specified <ChannelMask> currently set on the Node.
+        //  See Also: <NodeFeatures::channelGroups>, <NodeFeatures::supportsDebounceFilter>
+        //
+        //Parameters:
+        //  mask - The <ChannelMask> of the debounce filter to read.
+        //
+        //Returns:
+        //  The debounce filter currently set on the Node, in milliseconds.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Debounce Filter is not supported for the provided <ChannelMask>.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        uint16 getDebounceFilter(const ChannelMask& mask) const;
+
+        //API Function: getPullUpResistor
+        //    Gets whether or not the pull-up resistor is enabled on the Node.
+        //
+        //Parameters:
+        //  mask - The <ChannelMask> of the pull-up resistor to read.
+        //
+        //Returns:
+        //    true if the pull-up resistor is enabled on the Node, false if it is disabled.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Attempted to read an unsupported option.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        bool getPullUpResistor(const ChannelMask& mask) const;
+
         //API Function: getGaugeFactor
         //    Reads the gauge factor of the specified <ChannelMask> currently set on the Node.
         //    See Also: <NodeFeatures::channelGroups>, <NodeFeatures::supportsGaugeFactor>
@@ -889,6 +921,42 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to read from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         float getGaugeFactor(const ChannelMask& mask) const;
+
+        //API Function: getExcitationVoltage
+        //  Reads the Excitation <WirelessTypes::Voltage> currently set on the Node.
+        //
+        //Returns:
+        //  The <WirelessTypes::Voltage> currently set on the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Excitation Voltage is not supported.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::Voltage getExcitationVoltage() const;
+
+        //API Function: getAdcVoltageRef
+        //  Reads the ADC <WirelessTypes::Voltage> Reference of the Node.
+        //
+        //Returns:
+        //  The ADC <WirelessTypes::Voltage> Reference of the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: ADC Voltage is not supported.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::Voltage getAdcVoltageRef() const;
+
+        //API Function: getGainAmplifierVoltageRef
+        //  Reads the Gain Amplifier <WirelessTypes::Voltage> Reference of the Node.
+        //
+        //Returns:
+        //  The Gain Amplifier <WirelessTypes::Voltage> Reference of the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: ADC Voltage is not supported.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::Voltage getGainAmplifierVoltageRef() const;
 
         //API Function: getGaugeResistance
         //  Reads the gauge resistance currently set on the Node.
@@ -986,13 +1054,29 @@ namespace mscl
         //    mask - The <ChannelMask> of the thermocouple type to read.
         //
         //Returns:
-        //    The <WirelessTypes::ThermocoupleType> currently set on the Node for the <ChannelMask.
+        //    The <WirelessTypes::ThermocoupleType> currently set on the Node for the <ChannelMask>.
         //
         //Exceptions:
         //    - <Error_NotSupported>: Thermocouple Type is not supported for the provided <ChannelMask>.
         //    - <Error_NodeCommunication>: Failed to read from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::ThermocoupleType getThermocoupleType(const ChannelMask& mask) const;
+
+        //API Function: getTempSensorOptions
+        //    Reads the <TempSensorOptions> of the specified <ChannelMask> currently set on the Node.
+        //    See Also: <NodeFeatures::channelGroups>
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> indication which channel(s) the TempSensorOptions should be read for.
+        //
+        //Returns:
+        //    The <TempSensorOptions> currently set on the Node for the <ChannelMask>.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: TempSensorOptions are not supported for the provided <ChannelMask>.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        TempSensorOptions getTempSensorOptions(const ChannelMask& mask) const;
 
         //API Function: getFatigueOptions
         //    Reads the <FatigueOptions> currently set on the Node.

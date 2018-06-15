@@ -904,6 +904,22 @@
     <ClInclude Include="source\mscl\MicroStrain\Displacement\Commands\DeviceTime.h">
       <Filter>MicroStrain\Displacement\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="source\mscl\mscl.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_wsda2000.h">
+      <Filter>MicroStrain\Wireless\Features\BaseStations</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink200.h">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\TempSensorOptions.h">
+      <Filter>MicroStrain\Wireless\Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink200.h">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_200series.h">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp">
@@ -1085,7 +1101,6 @@
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\System_Commands.cpp">
       <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClCompile>
-    <ClCompile Include="source\mscl\LibVersion.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Packets\ShmPacket.cpp">
       <Filter>MicroStrain\Wireless\Packets</Filter>
     </ClCompile>
@@ -1706,6 +1721,21 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Displacement\Commands\DeviceTime.cpp">
       <Filter>MicroStrain\Displacement\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_wsda2000.cpp">
+      <Filter>MicroStrain\Wireless\Features\BaseStations</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink200.cpp">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\TempSensorOptions.cpp">
+      <Filter>MicroStrain\Wireless\Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink200.cpp">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_200series.cpp">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

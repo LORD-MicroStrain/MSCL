@@ -7,6 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #pragma once
 
 #include <bitset>
+#include <functional>
 #include <iomanip>
 #include <string>
 #include "Types.h"
@@ -458,6 +459,20 @@ namespace mscl
             {
                 value = max;
             }
+        }
+
+        //Function: eraseIf
+        //  Takes a container (such as a vector) and removes elements from it if they don't match a certain predicate.
+        //
+        //Parameters:
+        //  c - The container to check and remove elements from, as a reference.
+        //  t - The predicate that will return false for elements that should be removed from the container.
+        template<typename Container, class T>
+        void eraseIf(Container& c, T&& t)
+        {
+            c.erase(
+                std::remove_if(c.begin(), c.end(), std::forward<T>(t)),
+                c.end());
         }
 
         //Function: toStr

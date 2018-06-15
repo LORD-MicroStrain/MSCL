@@ -145,6 +145,9 @@ namespace mscl
     const EepromLocation NodeEepromMap::EVENT_OPER_8                    (394, valueType_uint16, "Event Operation");
     const EepromLocation NodeEepromMap::EVENT_VAL1_8                    (396, valueType_uint16, "Event Value");
     const EepromLocation NodeEepromMap::EVENT_VAL2_8                    (398, valueType_uint16, "Event Value");
+    const EepromLocation NodeEepromMap::EXCITATION_VOLTAGE              (410, valueType_uint16, "Excitation Voltage");
+    const EepromLocation NodeEepromMap::DEBOUNCE_FILTER                 (430, valueType_uint16, "Debounce Filter");
+    const EepromLocation NodeEepromMap::INTERNAL_PULLUP_RESISTOR        (432, valueType_uint16, "Internal Pull-up Resistor");
     const EepromLocation NodeEepromMap::ANTI_ALIASING_FILTER_1          (440, valueType_uint16, "Anti-Aliasing Filter");
     const EepromLocation NodeEepromMap::ANTI_ALIASING_FILTER_2          (442, valueType_uint16, "Anti-Aliasing Filter");
     const EepromLocation NodeEepromMap::ANTI_ALIASING_FILTER_3          (444, valueType_uint16, "Anti-Aliasing Filter");
@@ -211,6 +214,22 @@ namespace mscl
     const EepromLocation NodeEepromMap::BOOTLOADER_VER                  (1030, valueType_uint16, "Bootloader Version");
     const EepromLocation NodeEepromMap::FIRMWARE_UPGRADE_FLAGS          (1032, valueType_uint16, "Firmware Upgrade Flags");
     const EepromLocation NodeEepromMap::BOOTLOADER_FLASH_ADDRESS        (1036, valueType_uint32, "Bootloader Flash Address");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_1            (1100, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_2            (1102, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_3            (1104, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_4            (1106, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_5            (1108, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_6            (1110, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_7            (1112, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_8            (1114, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_9            (1116, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_10           (1118, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_11           (1120, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_12           (1122, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_13           (1124, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_14           (1126, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_15           (1128, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_16           (1130, valueType_uint16, "Temp Sensor Config");
 
     bool NodeEepromMap::canUseCache_read(uint16 eepromLocation)
     {

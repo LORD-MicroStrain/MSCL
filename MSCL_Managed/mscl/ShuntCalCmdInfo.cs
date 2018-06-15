@@ -124,6 +124,18 @@ public class ShuntCalCmdInfo : global::System.IDisposable {
     } 
   }
 
+  public WirelessTypes.Voltage excitationVoltage {
+    set {
+      msclPINVOKE.ShuntCalCmdInfo_excitationVoltage_set(swigCPtr, (int)value);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      WirelessTypes.Voltage ret = (WirelessTypes.Voltage)msclPINVOKE.ShuntCalCmdInfo_excitationVoltage_get(swigCPtr);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
   public ShuntCalCmdInfo() : this(msclPINVOKE.new_ShuntCalCmdInfo(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }

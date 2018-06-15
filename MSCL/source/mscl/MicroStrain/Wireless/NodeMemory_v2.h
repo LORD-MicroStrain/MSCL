@@ -107,6 +107,10 @@ namespace mscl
         //  Flag to store whether we have downloaded all the data or not.
         bool m_doneDownloading;
 
+        //Variable: m_startedDownloading
+        //  true if we've downloaded at least some data.
+        bool m_startedDownloading;
+
         //Variable: m_nextData
         //  <ByteStream> to hold the next valid block.
         ByteStream m_nextData;

@@ -48,6 +48,10 @@ public class WirelessChannel : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public WirelessChannel(byte chNumber, WirelessChannel.ChannelId id, WirelessTypes.ChannelType type, string description, byte adcResolution) : this(msclPINVOKE.new_WirelessChannel__SWIG_2(chNumber, (int)id, (int)type, description, adcResolution), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public byte channelNumber() {
     byte ret = msclPINVOKE.WirelessChannel_channelNumber(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -68,6 +72,18 @@ public class WirelessChannel : global::System.IDisposable {
 
   public string description() {
     string ret = msclPINVOKE.WirelessChannel_description(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public byte adcResolution() {
+    byte ret = msclPINVOKE.WirelessChannel_adcResolution(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public uint adcMaxValue() {
+    uint ret = msclPINVOKE.WirelessChannel_adcMaxValue(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

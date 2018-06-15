@@ -29,12 +29,14 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeFeatures_sglinkoemNoXR.h"
 #include "NodeFeatures_sglinkMicro.h"
 #include "NodeFeatures_sglinkrgd.h"
+#include "NodeFeatures_sglink200.h"
 #include "NodeFeatures_shmlink.h"
 #include "NodeFeatures_shmlink2.h"
 #include "NodeFeatures_shmlink200.h"
 #include "NodeFeatures_shmlink201.h"
 #include "NodeFeatures_shmlink201FullBridge.h"
 #include "NodeFeatures_tclink1ch.h"
+#include "NodeFeatures_tclink200.h"
 #include "NodeFeatures_tclink3ch.h"
 #include "NodeFeatures_tclink6ch.h"
 #include "NodeFeatures_torqueLink.h"
@@ -98,6 +100,10 @@ namespace mscl
         case WirelessModels::node_gLink_200_8g_oem:
         case WirelessModels::node_gLink_200_40g:
         case WirelessModels::node_gLink_200_40g_oem:
+        case WirelessModels::node_gLink_200_8g_oem_mmcx:
+        case WirelessModels::node_gLink_200_40g_oem_mmcx:
+        case WirelessModels::node_gLink_200_8g_oem_u_fl:
+        case WirelessModels::node_gLink_200_40g_oem_u_fl:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_glink200(info));
 
         case WirelessModels::node_iepeLink:
@@ -126,6 +132,22 @@ namespace mscl
 
         case WirelessModels::node_sgLink_rgd:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglinkrgd(info));
+
+        case WirelessModels::node_sgLink200_oem:
+        case WirelessModels::node_sgLink200_oem_ufl:
+        case WirelessModels::node_sgLink200_oem_hbridge_1K:
+        case WirelessModels::node_sgLink200_oem_hbridge_1K_ufl:
+        case WirelessModels::node_sgLink200_oem_hbridge_120:
+        case WirelessModels::node_sgLink200_oem_hbridge_120_ufl:
+        case WirelessModels::node_sgLink200_oem_hbridge_350:
+        case WirelessModels::node_sgLink200_oem_hbridge_350_ufl:
+        case WirelessModels::node_sgLink200_oem_qbridge_1K:
+        case WirelessModels::node_sgLink200_oem_qbridge_1K_ufl:
+        case WirelessModels::node_sgLink200_oem_qbridge_120:
+        case WirelessModels::node_sgLink200_oem_qbridge_120_ufl:
+        case WirelessModels::node_sgLink200_oem_qbridge_350:
+        case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglink200(info));
 
         case WirelessModels::node_shmLink:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_shmlink(info));
@@ -157,6 +179,10 @@ namespace mscl
         case WirelessModels::node_tcLink_6ch_ip67:
         case WirelessModels::node_tcLink_6ch_ip67_rht:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_tclink6ch(info));
+
+        case WirelessModels::node_tcLink200_oem:
+        case WirelessModels::node_tcLink200_oem_ufl:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_tclink200(info));
 
         case WirelessModels::node_vLink200:
         case WirelessModels::node_vLink200_qbridge_1K:
@@ -493,14 +519,14 @@ namespace mscl
         }
     }
 
-    bool NodeFeatures::isChannelSettingReadOnly(WirelessTypes::ChannelGroupSetting setting) const
-    {
-        return false;
-    }
-
     bool NodeFeatures::supportsInputRange() const
     {
         return anyChannelGroupSupports(WirelessTypes::chSetting_inputRange);
+    }
+
+    bool NodeFeatures::supportsInputRangePerExcitationVoltage() const
+    {
+        return supportsInputRange() && supportsExcitationVoltageConfig();
     }
 
     bool NodeFeatures::supportsHardwareOffset() const
@@ -546,6 +572,11 @@ namespace mscl
                 supportsSamplingMode(WirelessTypes::samplingMode_syncEvent));
     }
 
+    bool NodeFeatures::supportsPullUpResistor() const
+    {
+        return anyChannelGroupSupports(WirelessTypes::chSetting_pullUpResistor);
+    }
+
     bool NodeFeatures::supportsFilterSettlingTime() const
     {
         return anyChannelGroupSupports(WirelessTypes::chSetting_filterSettlingTime);
@@ -554,6 +585,16 @@ namespace mscl
     bool NodeFeatures::supportsThermocoupleType() const
     {
         return anyChannelGroupSupports(WirelessTypes::chSetting_thermocoupleType);
+    }
+
+    bool NodeFeatures::supportsTempSensorOptions() const
+    {
+        return anyChannelGroupSupports(WirelessTypes::chSetting_tempSensorOptions);
+    }
+
+    bool NodeFeatures::supportsDebounceFilter() const
+    {
+        return anyChannelGroupSupports(WirelessTypes::chSetting_debounceFilter);
     }
 
     bool NodeFeatures::supportsFatigueConfig() const
@@ -776,9 +817,16 @@ namespace mscl
 
     bool NodeFeatures::supportsInputRange(WirelessTypes::InputRange range, const ChannelMask& channels) const
     {
-        const WirelessTypes::InputRanges& ranges = inputRanges(channels);
+        const InputRanges& ranges = inputRanges(channels);
 
-        return (std::find(ranges.begin(), ranges.end(), range) != ranges.end());
+        return (std::find_if(ranges.begin(), ranges.end(), [&range](const InputRangeEntry& r)->bool { return r.inputRange == range; }) != ranges.end());
+    }
+
+    bool NodeFeatures::supportsInputRange(WirelessTypes::InputRange range, const ChannelMask& channels, WirelessTypes::Voltage excitationVoltage) const
+    {
+        const InputRanges& ranges = inputRanges(channels, excitationVoltage);
+
+        return (std::find_if(ranges.begin(), ranges.end(), [&range](const InputRangeEntry& r)->bool { return r.inputRange == range; }) != ranges.end());
     }
 
     bool NodeFeatures::supportsCentisecondEventDuration() const
@@ -836,6 +884,11 @@ namespace mscl
         return (derivedChannelTypes().size() > 0);
     }
 
+    bool NodeFeatures::supportsExcitationVoltageConfig() const
+    {
+        return false;
+    }
+
     WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
         //get all the sample rates supported
@@ -863,12 +916,22 @@ namespace mscl
 
     WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
-        throw Error_NotSupported("Filter Settling Time is not supported by this Node.");
+        return sampleRates(samplingMode, dataCollectionMethod, dataMode).at(0);
+    }
+
+    WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
+    {
+        return sampleRates(samplingMode, dataCollectionMethod, dataMode).at(0);
     }
 
     WirelessTypes::SettlingTime NodeFeatures::maxFilterSettlingTime(const SampleRate& rate) const
     {
         throw Error_NotSupported("Filter Settling Time is not supported by this Node.");
+    }
+
+    WirelessTypes::Filter NodeFeatures::minLowPassFilter(const SampleRate& rate) const
+    {
+        return lowPassFilters().at(lowPassFilters().size() - 1);
     }
 
     uint16 NodeFeatures::minInactivityTimeout() const
@@ -1446,13 +1509,25 @@ namespace mscl
         return result;
     }
 
-    const WirelessTypes::InputRanges NodeFeatures::inputRanges(const ChannelMask& channels) const
+    const InputRanges NodeFeatures::inputRanges(const ChannelMask& channels) const
     {
-        WirelessTypes::InputRanges result;
+        InputRanges result;
 
         if(supportsInputRange())
         {
-            InputRange::getRangeVector(m_nodeInfo.model(), channelType(channels.lastChEnabled()), result);
+            InputRangeHelper::getRangeVector(m_nodeInfo.model(), channelType(channels.lastChEnabled()), result);
+        }
+
+        return result;
+    }
+
+    const InputRanges NodeFeatures::inputRanges(const ChannelMask& channels, WirelessTypes::Voltage excitationVoltage) const
+    {
+        InputRanges result;
+
+        if(supportsInputRange() && supportsExcitationVoltageConfig())
+        {
+            InputRangeHelper::getRangeVector(m_nodeInfo.model(), channelType(channels.lastChEnabled()), excitationVoltage, result);
         }
 
         return result;
@@ -1464,13 +1539,19 @@ namespace mscl
         return result;
     }
 
+    const WirelessTypes::Voltages NodeFeatures::excitationVoltages() const
+    {
+        WirelessTypes::Voltages result;
+        return result;
+    }
+
     WirelessTypes::TransmitPower NodeFeatures::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
     {
         //determine the max power based on the region code
         switch(region)
         {
             case WirelessTypes::region_japan:
-                return WirelessTypes::power_5dBm;
+                return WirelessTypes::power_10dBm;
 
             case WirelessTypes::region_europe:
             case WirelessTypes::region_other:
@@ -1478,6 +1559,7 @@ namespace mscl
 
             case WirelessTypes::region_usa:
             case WirelessTypes::region_brazil:
+            case WirelessTypes::region_china:
             default:
             {
                 if(supportsNewTransmitPowers())
@@ -1494,7 +1576,14 @@ namespace mscl
 
     WirelessTypes::TransmitPower NodeFeatures::minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
     {
-        return WirelessTypes::power_0dBm;
+        switch(region)
+        {
+            case WirelessTypes::region_japan:
+                return WirelessTypes::power_5dBm;
+
+            default:
+                return WirelessTypes::power_0dBm;
+        }
     }
 
     const WirelessTypes::DataModes NodeFeatures::dataModes() const
@@ -1683,10 +1772,24 @@ namespace mscl
         return (m_nodeInfo.firmwareVersion() >= DATA_MODE_FW);
     }
 
+    bool NodeFeatures::supportsCommProtocolEeprom() const
+    {
+        static const Version COMM_PROTOCOL_FW(11, 0);
+
+        return (m_nodeInfo.firmwareVersion() >= COMM_PROTOCOL_FW);
+    }
+
     bool NodeFeatures::supportsEeprom1024AndAbove() const
     {
         static const Version HIGH_EEPROM_FW(10, 0);
 
         return (m_nodeInfo.firmwareVersion() >= HIGH_EEPROM_FW);
+    }
+
+    void NodeFeatures::narrowDownTxPowers(WirelessTypes::TransmitPowers& txPowers, WirelessTypes::TransmitPower min, WirelessTypes::TransmitPower max)
+    {
+        auto outOfRange = [min, max](WirelessTypes::TransmitPower power) { return (power < min || power > max); };
+
+        Utils::eraseIf(txPowers, outOfRange);
     }
 }

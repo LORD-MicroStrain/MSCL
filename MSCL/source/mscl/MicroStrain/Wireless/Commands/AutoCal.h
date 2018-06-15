@@ -12,11 +12,36 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Wireless/WirelessModels.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "AutoCalInfo.h"
 
 namespace mscl
 {
     class WirelessPacket;
     struct ShuntCalCmdInfo;
+
+    //Struct: AutoCalCmdDetails
+    //  Struct used internally to hold details for passing to the AutoCal function.
+    //  Contains the ShuntCalCmdInfo that we want user exposed, as well as other internal info.
+    struct AutoCalCmdDetails
+    {
+        NodeAddress nodeAddress;
+        ShuntCalCmdInfo commandInfo;
+        uint8 chNum;
+        WirelessModels::NodeModel nodeType;
+        WirelessTypes::ChannelType chType;
+
+        WirelessTypes::Voltage excitationVoltage;
+        bool useExcitationVoltage;
+
+        AutoCalCmdDetails():
+            nodeAddress(0),
+            chNum(0),
+            nodeType(static_cast<WirelessModels::NodeModel>(0)),
+            chType(WirelessTypes::chType_acceleration),
+            excitationVoltage(static_cast<WirelessTypes::Voltage>(0)),
+            useExcitationVoltage(false)
+        {}
+    };
 
     //Class: AutoCal
     //    Contains logic for the AutoCal Node command.
@@ -54,12 +79,13 @@ namespace mscl
         //  Builds the AutoCal command packet for shunt calibration.
         //
         //Parameters:
+        //  asppVer - The <WirelessPacket::AsppVersion> to build the command for.
         //  nodeAddress - The address of the Node to build the command for.
-        //  info - The <ShuntCalCmdInfo> containing all the data for the command.
+        //  details - The <AutoCalCmdDetails> containing all the data for the command.
         //
         //Returns:
         //    A <ByteStream> containing the command packet.
-        static ByteStream buildCommand_shuntCal(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, const ShuntCalCmdInfo& info, uint8 chNum, WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType chType);
+        static ByteStream buildCommand_shuntCal(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, const AutoCalCmdDetails& details);
 
         //Class: Response
         //    Handles the response to the AutoBalance Node command

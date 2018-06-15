@@ -14,7 +14,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
     NodeFeatures_glink200::NodeFeatures_glink200(const NodeInfo& info):
-        NodeFeatures(info)
+        NodeFeatures_200series(info)
     {
         addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
         addCalCoeffChannelGroup(2, NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
@@ -29,56 +29,9 @@ namespace mscl
                                      });
 
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_acceleration, "Acceleration X");
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_acceleration, "Acceleration Y");
-        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_acceleration, "Acceleration Z");
-    }
-
-    bool NodeFeatures_glink200::isChannelSettingReadOnly(WirelessTypes::ChannelGroupSetting setting) const
-    {
-        if(setting == WirelessTypes::chSetting_linearEquation ||
-           setting == WirelessTypes::chSetting_equationType ||
-           setting == WirelessTypes::chSetting_unit)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    WirelessTypes::TransmitPower NodeFeatures_glink200::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
-    {
-        if(region == WirelessTypes::region_japan)
-        {
-            return WirelessTypes::power_16dBm;
-        }
-
-        return NodeFeatures::maxTransmitPower(region, commProtocol);
-    }
-    
-    WirelessTypes::TransmitPower NodeFeatures_glink200::minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
-    {
-        if(region == WirelessTypes::region_japan)
-        {
-            return WirelessTypes::power_5dBm;
-        }
-
-        return NodeFeatures::minTransmitPower(region, commProtocol);
-    }
-
-    const WirelessTypes::SamplingModes NodeFeatures_glink200::samplingModes() const
-    {
-        //build and return the sampling modes that are supported
-        WirelessTypes::SamplingModes result;
-
-        result.push_back(WirelessTypes::samplingMode_sync);
-        result.push_back(WirelessTypes::samplingMode_syncBurst);
-        result.push_back(WirelessTypes::samplingMode_nonSync);
-        result.push_back(WirelessTypes::samplingMode_syncEvent);
-
-        //no support for armed datalogging
-
-        return result;
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_acceleration, "Acceleration X", 20);
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_acceleration, "Acceleration Y", 20);
+        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_acceleration, "Acceleration Z", 20);
     }
 
     const WirelessTypes::WirelessSampleRates NodeFeatures_glink200::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
@@ -163,13 +116,5 @@ namespace mscl
         };
 
         return channels;
-    }
-
-    const WirelessTypes::StorageLimitModes NodeFeatures_glink200::storageLimitModes() const
-    {
-        WirelessTypes::StorageLimitModes modes;
-        modes.push_back(WirelessTypes::storageLimit_stop);
-        modes.push_back(WirelessTypes::storageLimit_overwrite);
-        return modes;
     }
 }

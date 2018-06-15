@@ -60,4 +60,9 @@ namespace mscl
     {
         return (m_settingsMap.find(setting) != m_settingsMap.end());
     }
+
+    bool ChannelGroup::hasSettingAndChannel(WirelessTypes::ChannelGroupSetting setting, uint8 channelNumber) const
+    {
+        return hasSetting(setting) && m_channels.enabled(channelNumber);
+    }
 }

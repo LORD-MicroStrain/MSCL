@@ -489,7 +489,19 @@ namespace mscl
         //    id - The <WirelessChannel::ChannelId> of the channel.
         //    type - The <WirelessTypes::ChannelType> of the channel.
         //    description - The description of the channel.
+        //    adcResolution will be defaulted to 0.
         WirelessChannel(uint8 chNumber, WirelessChannel::ChannelId id, WirelessTypes::ChannelType type, const std::string& description);
+
+        //Constructor: WirelessChannel
+        //    Creates a WirelessChannel object.
+        //
+        //Parameters:
+        //    chNumber - The channel number (ch1 = 1) of the channel.
+        //    id - The <WirelessChannel::ChannelId> of the channel.
+        //    type - The <WirelessTypes::ChannelType> of the channel.
+        //    description - The description of the channel.
+        //    adcResolution - the ADC resolution of the channel.
+        WirelessChannel(uint8 chNumber, WirelessChannel::ChannelId id, WirelessTypes::ChannelType type, const std::string& description, uint8 adcResolution);
 
     private:
         //Variable: m_chNumber
@@ -507,6 +519,11 @@ namespace mscl
         //Variable: m_description
         //  The description of the channel.
         std::string m_description;
+
+        //Variable: m_adcResolution
+        //  The resolution of the A/D Converter for this channel.
+        uint8 m_adcResolution;
+
 
     public:
         //API Function: channelNumber
@@ -536,6 +553,20 @@ namespace mscl
         //Returns:
         //  A string description of the channel.
         std::string description() const;
+
+        //API Function: adcResolution
+        //    Gets the ADC Resolution of this channel (Ex: 18 for 18-bit). 
+        //
+        //Returns:
+        //    The ADC Resolution of this channel.
+        uint8 adcResolution() const;
+
+        //API Function: adcMaxValue
+        //    Gets the maximum value output from the ADC for this channel (Ex: 2^18 for 18-bit). 
+        //
+        //Returns:
+        //    The maximum value output from the ADC for this channel.
+        uint32 adcMaxValue() const;
 
         //API Function: name
         //    Gets the name of this channel. 

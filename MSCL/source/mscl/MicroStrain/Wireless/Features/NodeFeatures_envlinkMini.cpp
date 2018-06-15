@@ -31,9 +31,9 @@ namespace mscl
         );
 
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_diffTemperature, "Thermocouple 1");
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_diffTemperature, "Thermocouple 2");
-        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_diffTemperature, "Thermocouple 3");
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_diffTemperature, "Thermocouple 1", 24);
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_diffTemperature, "Thermocouple 2", 24);
+        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_diffTemperature, "Thermocouple 3", 24);
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_temperature, "Internal Temperature");
         m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_rh, "Relative Humidity");
     }

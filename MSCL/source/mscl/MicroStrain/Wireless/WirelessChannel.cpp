@@ -13,7 +13,8 @@ namespace mscl
         m_chNumber(0),
         m_id(WirelessChannel::channel_unknown),
         m_type(WirelessTypes::chType_none),
-        m_description("")
+        m_description(""),
+        m_adcResolution(0)
     {
     }
 
@@ -21,7 +22,17 @@ namespace mscl
         m_chNumber(chNumber),
         m_id(id),
         m_type(type),
-        m_description(description)
+        m_description(description),
+        m_adcResolution(0)
+    {
+    }
+
+    WirelessChannel::WirelessChannel(uint8 chNumber, WirelessChannel::ChannelId id, WirelessTypes::ChannelType type, const std::string& description, uint8 adcResolution) :
+        m_chNumber(chNumber),
+        m_id(id),
+        m_type(type),
+        m_description(description),
+        m_adcResolution(adcResolution)
     {
     }
 
@@ -48,6 +59,16 @@ namespace mscl
     std::string WirelessChannel::description() const
     {
         return m_description;
+    }
+
+    uint8 WirelessChannel::adcResolution() const
+    {
+        return m_adcResolution;
+    }
+
+    uint32 WirelessChannel::adcMaxValue() const
+    {
+        return static_cast<uint32>(std::pow(2, m_adcResolution));
     }
 
     std::string WirelessChannel::channelName(WirelessChannel::ChannelId channelId)

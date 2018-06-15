@@ -7,7 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "WirelessTypes.h"
 
 namespace mscl
-{
+{    
     uint16 WirelessTypes::dataTypeSize(DataType type)
     {
         switch(type)
@@ -16,6 +16,7 @@ namespace mscl
             case dataType_uint16:
             case dataType_uint16_shifted:
             case dataType_uint16_18bitTrunc:
+            case dataType_uint16_24bitTrunc:
             case dataType_int16_20bitTrunc:
                 return 2;
 
@@ -25,6 +26,7 @@ namespace mscl
                 return 4;
 
             case dataType_uint24:
+            case dataType_uint24_18bitRes:
             case dataType_int24_20bit:
                 return 3;
 
@@ -47,7 +49,9 @@ namespace mscl
 
             case dataType_uint32:
             case dataType_uint24:               //uint24 is stored as a uint32 in mscl
+            case dataType_uint24_18bitRes:
             case dataType_uint16_18bitTrunc:    //uint16 from 18-bit node is stored as a uint32 in mscl
+            case dataType_uint16_24bitTrunc:    //uint16 from 24-bit node is stored as a uint32 in mscl
                 return valueType_uint32;
 
             case dataType_int16_20bitTrunc:     //int16 from 20-bit node is stored as an int32 in mscl

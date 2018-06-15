@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -78,16 +78,16 @@ namespace mscl
         //    bool - True indicates that a response should return from the device.
         virtual bool responseExpected() const;
 
-        //Variable: m_gyroBiasVector
-        //  The gyro bias to send to the device.
-        GeometricVector m_gyroBiasVector;
-
         //Variable: m_functionSelector
         //  <The MipTypes::FunctionSelector> type of command to send, get/set, reset to factory defaults, et al.
         MipTypes::FunctionSelector m_functionSelector;
 
+        //Variable: m_gyroBiasVector
+        //  The gyro bias to send to the device.
+        GeometricVector m_gyroBiasVector;
+
     public:
-	    // Destructor: ~GyroBias
+        // Destructor: ~GyroBias
         ~GyroBias() { }
     };
 

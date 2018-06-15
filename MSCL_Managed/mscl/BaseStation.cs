@@ -40,11 +40,11 @@ public class BaseStation : global::System.IDisposable {
     }
   }
 
-  public BaseStation(Connection connection, ulong baseTimeout) : this(msclPINVOKE.new_BaseStation__SWIG_0(Connection.getCPtr(connection), baseTimeout), true) {
+  public BaseStation(Connection connection) : this(msclPINVOKE.new_BaseStation__SWIG_0(Connection.getCPtr(connection)), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public BaseStation(Connection connection) : this(msclPINVOKE.new_BaseStation__SWIG_1(Connection.getCPtr(connection)), true) {
+  public BaseStation(Connection connection, ulong baseTimeout) : this(msclPINVOKE.new_BaseStation__SWIG_1(Connection.getCPtr(connection), baseTimeout), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -335,6 +335,7 @@ public class BaseStation : global::System.IDisposable {
   }
 
   public static readonly ulong BASE_COMMANDS_DEFAULT_TIMEOUT = msclPINVOKE.BaseStation_BASE_COMMANDS_DEFAULT_TIMEOUT_get();
+  public static readonly ulong ETHERNET_BASE_COMMANDS_DEFAULT_TIMEOUT = msclPINVOKE.BaseStation_ETHERNET_BASE_COMMANDS_DEFAULT_TIMEOUT_get();
   public static readonly uint BROADCAST_NODE_ADDRESS = msclPINVOKE.BaseStation_BROADCAST_NODE_ADDRESS_get();
   public static readonly uint BROADCAST_NODE_ADDRESS_ASPP3 = msclPINVOKE.BaseStation_BROADCAST_NODE_ADDRESS_ASPP3_get();
 }

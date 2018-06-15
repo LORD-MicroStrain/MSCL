@@ -15,25 +15,11 @@ namespace mscl
 
     bool BaseStationFeatures_wsda::supportsRfSweepMode() const
     {
-        if(m_baseInfo.model() == WirelessModels::base_wsda_2000)
-        {
-            static const Version MIN_RF_SWEEP_FW(5, 39166);
-
-            return (m_baseInfo.firmwareVersion() >= MIN_RF_SWEEP_FW);
-        }
-
         return false;
     }
 
     bool BaseStationFeatures_wsda::supportsCustomRfSweepMode() const
     {
-        if(m_baseInfo.model() == WirelessModels::base_wsda_2000)
-        {
-            static const Version MIN_RF_SWEEP_FW(5, 39166);
-
-            return (m_baseInfo.firmwareVersion() >= MIN_RF_SWEEP_FW);
-        }
-
         return false;
     }
 
@@ -41,13 +27,6 @@ namespace mscl
     {
         if(region == WirelessTypes::region_japan)
         {
-            WirelessTypes::TransmitPowers result;
-
-            if(commProtocol == WirelessTypes::commProtocol_lxrs)
-            {
-                return WirelessTypes::power_16dBm;
-            }
-
             return WirelessTypes::power_10dBm;
         }
 
@@ -58,14 +37,7 @@ namespace mscl
     {
         if(region == WirelessTypes::region_japan)
         {
-            WirelessTypes::TransmitPowers result;
-
-            if(commProtocol == WirelessTypes::commProtocol_lxrs)
-            {
-                return WirelessTypes::power_5dBm;
-            }
-
-            return WirelessTypes::power_0dBm;
+            return WirelessTypes::power_5dBm;
         }
 
         return BaseStationFeatures::minTransmitPower(region, commProtocol);

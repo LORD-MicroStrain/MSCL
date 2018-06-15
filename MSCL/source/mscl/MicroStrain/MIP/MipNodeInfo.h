@@ -24,14 +24,14 @@ namespace mscl
     {
     public:
         //Constructor: MipNodeInfo
-        //  Creates an MipNodeInfo object.
+        //  Creates a MipNodeInfo object.
         //
         //Parameters:
         //  node - The <MipNode_Impl> to use for lazy loading.
         MipNodeInfo(const MipNode_Impl* node);
 
         //Constructor: MipNodeInfo
-        //    Creates an MipNodeInfo object.
+        //    Creates a MipNodeInfo object.
         //
         //Parameters:
         //    info - The <MipDeviceInfo> containing information about the device.

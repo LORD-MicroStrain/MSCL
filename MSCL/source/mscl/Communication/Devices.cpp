@@ -451,7 +451,8 @@ namespace mscl
         if(devType == TYPE_BASESTATION || devType == TYPE_ALL)
         {
             //currently, checking the base station information isn't a very strong search
-            if(Utils::containsStr(manufacturer, "Silicon Labs") && Utils::containsStr(vendorId, "10c4"))
+            if( (Utils::containsStr(manufacturer, "Silicon Labs") && Utils::containsStr(vendorId, "10c4")) ||
+                (Utils::containsStr(manufacturer, "LORD Sensing Systems") && Utils::containsStr(vendorId, "199b")))
             {
                 return true;
             }

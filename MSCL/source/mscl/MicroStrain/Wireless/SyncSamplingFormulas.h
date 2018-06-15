@@ -246,7 +246,7 @@ namespace mscl
 
         //Function: overheadFactor
         //  Gets the overhead factor used in TDMA calculations.
-        float overheadFactor(bool lossless, bool optimizeBandwidth, const SampleRate& sampleRate, uint8 syncFormulaVersion);
+        float overheadFactor(bool lossless, bool optimizeBandwidth, bool diagnosticPacketEnabled, const SampleRate& sampleRate, uint8 syncFormulaVersion);
     }
 #endif
 }

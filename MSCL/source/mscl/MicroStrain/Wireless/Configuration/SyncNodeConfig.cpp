@@ -240,6 +240,18 @@ namespace mscl
         }
     }
 
+    uint16 SyncNodeConfig::diagnosticInterval()
+    {
+        try
+        {
+            return m_networkInfo->getPendingConfig().diagnosticInterval();
+        }
+        catch(Error_NoData&)
+        {
+            return m_eepromHelper.read_diagnosticInterval();
+        }
+    }
+
     void SyncNodeConfig::txPerGroup(uint32 txPerGroup)
     {
         //write the transmissions per group value to eeprom

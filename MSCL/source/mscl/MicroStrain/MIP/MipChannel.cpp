@@ -36,7 +36,7 @@ namespace mscl
 
     const SampleRate& MipChannel::validateSampleRate(uint16 sampleRateBase)
     {
-        //the lowest sample rate allowed by an MipChannel is currently 1hz
+        //the lowest sample rate allowed by a MipChannel is currently 1hz
         static const SampleRate RATE_1HZ = SampleRate::Hertz(1);
         if(m_sampleRate < RATE_1HZ)
         {

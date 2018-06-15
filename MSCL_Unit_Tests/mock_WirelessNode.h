@@ -85,6 +85,11 @@ static void expectWrite(std::shared_ptr<mock_WirelessNodeImpl> impl, const Eepro
     MOCK_EXPECT(impl->writeEeprom).with(loc, val);
 }
 
+static void expectWriteOnce(std::shared_ptr<mock_WirelessNodeImpl> impl, const EepromLocation& loc, const Value& val)
+{
+    MOCK_EXPECT(impl->writeEeprom).once().with(loc, val);
+}
+
 static void expectReadModel(std::shared_ptr<mock_WirelessNodeImpl> impl, WirelessModels::NodeModel model)
 {
     //split the model into its 2 pieces

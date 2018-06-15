@@ -47,7 +47,7 @@ namespace mscl
         //    info - An <MipNodeInfo> object representing standard information of the device.
         //
         //Returns:
-        //    An MipNodeFeatures unique_ptr.
+        //    A MipNodeFeatures unique_ptr.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The Node model is not supported by MSCL.

@@ -11,7 +11,7 @@
 namespace mscl {
 
 public class InputRanges : global::System.IDisposable, global::System.Collections.IEnumerable
-    , global::System.Collections.Generic.IEnumerable<WirelessTypes.InputRange>
+    , global::System.Collections.Generic.IEnumerable<InputRangeEntry>
  {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
@@ -45,7 +45,7 @@ public class InputRanges : global::System.IDisposable, global::System.Collection
   public InputRanges(global::System.Collections.ICollection c) : this() {
     if (c == null)
       throw new global::System.ArgumentNullException("c");
-    foreach (WirelessTypes.InputRange element in c) {
+    foreach (InputRangeEntry element in c) {
       this.Add(element);
     }
   }
@@ -62,7 +62,7 @@ public class InputRanges : global::System.IDisposable, global::System.Collection
     }
   }
 
-  public WirelessTypes.InputRange this[int index]  {
+  public InputRangeEntry this[int index]  {
     get {
       return getitem(index);
     }
@@ -94,17 +94,17 @@ public class InputRanges : global::System.IDisposable, global::System.Collection
     }
   }
 
-  public void CopyTo(WirelessTypes.InputRange[] array)
+  public void CopyTo(InputRangeEntry[] array)
   {
     CopyTo(0, array, 0, this.Count);
   }
 
-  public void CopyTo(WirelessTypes.InputRange[] array, int arrayIndex)
+  public void CopyTo(InputRangeEntry[] array, int arrayIndex)
   {
     CopyTo(0, array, arrayIndex, this.Count);
   }
 
-  public void CopyTo(int index, WirelessTypes.InputRange[] array, int arrayIndex, int count)
+  public void CopyTo(int index, InputRangeEntry[] array, int arrayIndex, int count)
   {
     if (array == null)
       throw new global::System.ArgumentNullException("array");
@@ -122,7 +122,7 @@ public class InputRanges : global::System.IDisposable, global::System.Collection
       array.SetValue(getitemcopy(index+i), arrayIndex+i);
   }
 
-  global::System.Collections.Generic.IEnumerator<WirelessTypes.InputRange> global::System.Collections.Generic.IEnumerable<WirelessTypes.InputRange>.GetEnumerator() {
+  global::System.Collections.Generic.IEnumerator<InputRangeEntry> global::System.Collections.Generic.IEnumerable<InputRangeEntry>.GetEnumerator() {
     return new InputRangesEnumerator(this);
   }
 
@@ -140,7 +140,7 @@ public class InputRanges : global::System.IDisposable, global::System.Collection
   /// collection but not when one of the elements of the collection is modified as it is a bit
   /// tricky to detect unmanaged code that modifies the collection under our feet.
   public sealed class InputRangesEnumerator : global::System.Collections.IEnumerator
-    , global::System.Collections.Generic.IEnumerator<WirelessTypes.InputRange>
+    , global::System.Collections.Generic.IEnumerator<InputRangeEntry>
   {
     private InputRanges collectionRef;
     private int currentIndex;
@@ -155,7 +155,7 @@ public class InputRanges : global::System.IDisposable, global::System.Collection
     }
 
     // Type-safe iterator Current
-    public WirelessTypes.InputRange Current {
+    public InputRangeEntry Current {
       get {
         if (currentIndex == -1)
           throw new global::System.InvalidOperationException("Enumeration not started.");
@@ -163,7 +163,7 @@ public class InputRanges : global::System.IDisposable, global::System.Collection
           throw new global::System.InvalidOperationException("Enumeration finished.");
         if (currentObject == null)
           throw new global::System.InvalidOperationException("Collection modified.");
-        return (WirelessTypes.InputRange)currentObject;
+        return (InputRangeEntry)currentObject;
       }
     }
 
@@ -205,8 +205,8 @@ public class InputRanges : global::System.IDisposable, global::System.Collection
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void Add(WirelessTypes.InputRange x) {
-    msclPINVOKE.InputRanges_Add(swigCPtr, (int)x);
+  public void Add(InputRangeEntry x) {
+    msclPINVOKE.InputRanges_Add(swigCPtr, InputRangeEntry.getCPtr(x));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -239,20 +239,20 @@ public class InputRanges : global::System.IDisposable, global::System.Collection
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  private WirelessTypes.InputRange getitemcopy(int index) {
-    WirelessTypes.InputRange ret = (WirelessTypes.InputRange)msclPINVOKE.InputRanges_getitemcopy(swigCPtr, index);
+  private InputRangeEntry getitemcopy(int index) {
+    InputRangeEntry ret = new InputRangeEntry(msclPINVOKE.InputRanges_getitemcopy(swigCPtr, index), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  private WirelessTypes.InputRange getitem(int index) {
-    WirelessTypes.InputRange ret = (WirelessTypes.InputRange)msclPINVOKE.InputRanges_getitem(swigCPtr, index);
+  private InputRangeEntry getitem(int index) {
+    InputRangeEntry ret = new InputRangeEntry(msclPINVOKE.InputRanges_getitem(swigCPtr, index), false);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  private void setitem(int index, WirelessTypes.InputRange val) {
-    msclPINVOKE.InputRanges_setitem(swigCPtr, index, (int)val);
+  private void setitem(int index, InputRangeEntry val) {
+    msclPINVOKE.InputRanges_setitem(swigCPtr, index, InputRangeEntry.getCPtr(val));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -268,8 +268,8 @@ public class InputRanges : global::System.IDisposable, global::System.Collection
     return ret;
   }
 
-  public void Insert(int index, WirelessTypes.InputRange x) {
-    msclPINVOKE.InputRanges_Insert(swigCPtr, index, (int)x);
+  public void Insert(int index, InputRangeEntry x) {
+    msclPINVOKE.InputRanges_Insert(swigCPtr, index, InputRangeEntry.getCPtr(x));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -288,8 +288,8 @@ public class InputRanges : global::System.IDisposable, global::System.Collection
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public static InputRanges Repeat(WirelessTypes.InputRange value, int count) {
-    global::System.IntPtr cPtr = msclPINVOKE.InputRanges_Repeat((int)value, count);
+  public static InputRanges Repeat(InputRangeEntry value, int count) {
+    global::System.IntPtr cPtr = msclPINVOKE.InputRanges_Repeat(InputRangeEntry.getCPtr(value), count);
     InputRanges ret = (cPtr == global::System.IntPtr.Zero) ? null : new InputRanges(cPtr, true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;

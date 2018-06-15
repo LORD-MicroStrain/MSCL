@@ -86,6 +86,12 @@ public class Connection : global::System.IDisposable {
     return ret;
   }
 
+  public Connection.ConnectionType type() {
+    Connection.ConnectionType ret = (Connection.ConnectionType)msclPINVOKE.Connection_type(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public void disconnect() {
     msclPINVOKE.Connection_disconnect(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -203,6 +209,13 @@ public class Connection : global::System.IDisposable {
     ConnectionDebugDataVec ret = new ConnectionDebugDataVec(msclPINVOKE.Connection_getDebugData__SWIG_1(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
+  }
+
+  public enum ConnectionType {
+    connectionType_serial = 0,
+    connectionType_tcp = 1,
+    connectionType_webSocket = 2,
+    connectionType_unixSocket = 3
   }
 
 }

@@ -399,8 +399,8 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_japan)
         WirelessTypes::TransmitPowers powers = features->transmitPowers(WirelessTypes::commProtocol_lxrs);
 
         BOOST_CHECK_EQUAL(powers.size(), 2);
-        BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_5dBm);
-        BOOST_CHECK_EQUAL(powers.at(1), WirelessTypes::power_0dBm);
+        BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_10dBm);
+        BOOST_CHECK_EQUAL(powers.at(1), WirelessTypes::power_5dBm);
     }
 }
 

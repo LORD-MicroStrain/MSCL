@@ -14,6 +14,170 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
+41.0.8 - 2018-06-13
+- added event driven sampling as a supported mode for the TC-Link-200s
+- fix for .NET build not having mscl.MSCL_VERSION
+
+41.0.7 - 2018-06-13
+- added excitation voltage to the ShuntCalCmdInfo for Nodes that support it
+
+41.0.6 - 2018-06-06
+- reading adc and gain amplifier voltage refs from excitation voltage eeprom for SG-Link-200s
+
+41.0.5 - 2018-06-06
+- revised list of filters for SG-Link-200
+
+41.0.4 - 2018-06-05
+- fix mismatched function signature for inputRanges
+
+41.0.3 - 2018-06-05
+- handle excitation voltage conditions in WirelessNodeConfig verification
+
+41.0.2 - 2018-06-04
+- fix incorrect eeprom lookup for reading/writing internal pull-up resistor
+
+41.0.1 - 2018-05-31
+- added sample rate restrictions per low pass filter for the SG-Link-200
+
+41.0.0 - 2018-05-30
+- CHANGED NodeFeatures::excitationVoltage to WirelessNode::getExcitationVoltage
+- CHANGED NodeFeatures::adcVoltageRef to WirelessNode::getAdcVoltageRef
+- CHANGED NodeFeatures::gaVoltageRef to WirelessNode::getGainAmplifierVoltageRef
+- added support for finding WSDA-200 via the listBaseStations call on Linux
+- added configuration of excitation voltage
+- added support for getting list of supported excitation voltages for configuration
+- added getting supported input ranges per excitation voltage
+
+40.0.0 - 2018-05-27
+- CHANGED WirelessTypes::InputRangeEntry to InputRangeEntry (moved to the main mscl namespace)
+- CHANGED WirelessTypes::InputRanges to InputRanges (moved to the main mscl namespace)
+- revised list of low pass filters for TC-Link-200-OEM
+- added input ranges to the TC-Link-200-OEM
+
+39.0.3 - 2018-05-22
+- removing the max sample rate limitation from the SG-Link-200-OEM
+
+39.0.2 - 2018-05-17
+- fix for missing SG-Link-200-OEM features
+
+39.0.1 - 2018-05-16
+- fix for uninitialized MipDataPacket variables
+- updated to finalized TC-Link-200-OEM model numbers
+
+39.0.0 - 2018-05-16
+- made Pull-Up Resistor a channel group setting
+- CHANGED WirelessNode::getPullUpResistor to take a ChannelMask parameter
+- CHANGED WirelessNodeConfig::pullUpResistor functions to take a ChannelMask parameter
+
+38.4.1 - 2018-05-15
+- reverting the change made in 34.0.0 that reduced the amount of eeprom reads a Node requires when first communicating
+  as it caused issues with MockNode which passed in a valid NodeInfo but was being ignored.
+
+38.4.0 - 2018-05-15
+- added configuration of Pull-Up Resistor
+- fix for max sample rate for 12.66hz low pass filter
+
+38.3.4 - 2018-05-11
+- added new uint16 from Node with 24-bit resolution data type for wireless packets
+
+38.3.3 - 2018-05-10
+- fix for TC-Link-200 missing channel setting for Low Pass Filter
+- added China region code
+
+38.3.2 - 2018-05-10
+- added new uint24 from Node with 24-bit resolution data type for wireless packets
+
+38.3.1 - 2018-05-09
+- updated list of supported sampling modes for SG-Link-200
+
+38.3.0 - 2018-05-09
+- added NodeFeatures::minLowPassFilter()
+- added NodeFeatures::maxSampleRateForLowPassFilter()
+- new low pass filters for the TC-Link-200
+- verifying low pass filter against the sample rate when verifying the WirelessNodeConfig
+
+38.2.1 - 2018-05-02
+- fix for missing information on SG-Link-200-OEM channels.
+
+38.2.0 - 2018-05-01
+- added debounce filter configuration for Wireless Nodes that support it.
+- updated TC-Link-200 sample rates.
+
+38.1.2 - 2018-04-24
+- add ohm units to WirelessTypes::CalCoef_Unit enum
+
+38.1.1 - 2018-04-18
+- change incorrect excitation voltage, ADC voltage reference, and gain amp voltage reference for SG-Link-Hermetic
+
+38.1.0 - 2018-04-12
+- support for TC-Link-200-OEM
+- support for configuration of TempSensorOptions (thermocouple, rtd, thermistor)
+
+38.0.4 - 2018-04-10
+- add/update ADC resolution, excitation voltage, ADC voltage reference, and gain amp voltage reference for some nodes/channels
+
+38.0.3 - 2018-04-03
+- add raw voltage units to WirelessTypes::CalCoef_Unit enum
+
+38.0.2 - 2018-04-03
+- fix for crash caused when download logged data from a Node that only has derived data on it.
+
+38.0.1 - 2018-03-28
+- added default constructor for struct WirelessTypes::InputRangeEntry
+
+38.0.0 - 2018-03-28
+- REMOVED NodeFeatures::isChannelSettingReadOnly()
+- CHANGED WirelessTypes::InputRanges (returned from NodeFeatures::inputRanges()) is now a vector of new struct WirelessTypes::InputRangeEntry
+- Added struct WirelessTypes::InputRangeEntry to access gain value with the associated WirelessTypes::InputRange
+- Added ADC resolution values to WirelessChannel per node channel (WirelessChannel::adcResolution() and WirelessChannel::adcMaxValue())
+- Added excitation voltage, ADC voltage reference, and Gain Amplifier voltage reference to NodeFeatures for relevant nodes
+
+37.0.0 - 2018-03-22
+- REMOVED LibVersion class (use mscl::MSCL_VERSION instead)
+- fix for missing #include <functional> in Utils.h
+
+36.1.2 - 2018-03-21
+- fix for DatalogDownloader not finding end of data when a Node was 100% full.
+
+36.1.1 - 2018-03-19
+- fix for incorrect transmit powers for WSDA-200 and WSDA-2000 in LXRS+ mode.
+
+36.1.0 - 2018-03-13
+- support for more SG-Link-200-OEM model numbers.
+
+36.0.1 - 2018-03-13
+- fix for incorrect channel mask for channel group in SG-Link-200-OEM.
+
+36.0.0 - 2018-03-13
+- CHANGED input range enumerations to have more precise names.
+- initial support for the SG-Link-200-OEM.
+- updated more transmit powers for Japan.
+
+35.2.1 - 2018-03-01
+- updated transmit powers for Japan.
+
+35.2.0 - 2018-02-27
+- support for more G-Link-200-OEM model numbers.
+
+35.1.8 - 2018-02-27
+- changed maxBytesPerPacket for non-lossless.
+- dropped default Serial BaseStation timeout down to 20ms from 75ms.
+
+35.1.7 - 2018-02-20
+- added incrementing numbers to the Single-ended channel descriptions on the vlink200 for consistency
+
+35.1.6 - 2018-02-13
+- changed overhead factor for Nodes when lossless disabled and diagnostic packets enabled.
+
+35.1.5 - 2018-02-08
+- fix for build failing on C++11 compilers.
+
+35.1.4 - 2018-02-08
+- updated Japan transmit powers for certain devices.
+
+35.1.3 - 2018-02-06
+- added mscl.h which includes all the headers for the public interface.
+
 35.1.2 - 2018-01-30
 - fix for IEPE having incorrect ramBufferSize, causing maxBytesPerBurst to be incorrect.
 

@@ -53,8 +53,26 @@ public class MipDataPacket : MipPacket {
     return ret;
   }
 
-  public Timestamp timestamp() {
-    Timestamp ret = new Timestamp(msclPINVOKE.MipDataPacket_timestamp(swigCPtr), true);
+  public Timestamp collectedTimestamp() {
+    Timestamp ret = new Timestamp(msclPINVOKE.MipDataPacket_collectedTimestamp(swigCPtr), false);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public Timestamp utcTimestamp() {
+    Timestamp ret = new Timestamp(msclPINVOKE.MipDataPacket_utcTimestamp(swigCPtr), false);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool utcTimeValid() {
+    bool ret = msclPINVOKE.MipDataPacket_utcTimeValid(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public ushort utcTimeFlags() {
+    ushort ret = msclPINVOKE.MipDataPacket_utcTimeFlags(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

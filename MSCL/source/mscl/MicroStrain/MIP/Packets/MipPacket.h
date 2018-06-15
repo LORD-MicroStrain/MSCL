@@ -41,7 +41,7 @@ namespace mscl
 
     public:
         //Default Constructor: MipPacket
-        //    The default constructor for an MipPacket object
+        //    The default constructor for a MipPacket object
         MipPacket();
 
 #ifndef SWIG

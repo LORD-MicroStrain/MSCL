@@ -20,7 +20,7 @@ namespace mscl
     {
     public:
         //Constructor: MipPacketBuilder
-        //    Creates an MipPacketBuilder object
+        //    Creates a MipPacketBuilder object
         //
         //Parameters:
         //    descriptorSet - The 1-byte Descriptor Set

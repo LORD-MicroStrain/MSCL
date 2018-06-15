@@ -77,18 +77,20 @@ namespace mscl
         //Enums: DataType
         //  The types of data that can be transmitted in data packets.
         //
-        //  dataType_first                - 1 - The smallest value in the list
-        //  dataType_uint16_shifted       - 1 - 2-byte unsigned integer (bit-shifted)
-        //  dataType_float32              - 2 - 4-byte float
-        //  dataType_uint16_12bitRes      - 3 - 2-byte unsigned integer (12-bit resolution)
-        //  dataType_uint32               - 4 - 4-byte unsigned integer
-        //  dataType_uint16               - 7 - 2-byte unsigned integer (16-bit resolution)
-        //  dataType_float32_noCals       - 8 - 4-byte float (no cal coefficients applied)
-        //  dataType_uint24               - 9 - 3-byte unsigned integer
-        //  dataType_uint16_18bitTrunc    - 10 - uint16 from a device with 18-bit resolution (truncated)
-        //  dataType_int24_20bit          - 11 - signed int24 from a device with 20-bit resolution
-        //  dataType_int16_20bitTrunc     - 12 - signed int16 from a device with 20-bit resolution (truncated)
-        //  dataType_last                 - 12 - The largest value in the list
+        //  dataType_first                  - 1 - The smallest value in the list
+        //  dataType_uint16_shifted         - 1 - 2-byte unsigned integer (bit-shifted)
+        //  dataType_float32                - 2 - 4-byte float
+        //  dataType_uint16_12bitRes        - 3 - 2-byte unsigned integer (12-bit resolution)
+        //  dataType_uint32                 - 4 - 4-byte unsigned integer
+        //  dataType_uint16                 - 7 - 2-byte unsigned integer (16-bit resolution)
+        //  dataType_float32_noCals         - 8 - 4-byte float (no cal coefficients applied)
+        //  dataType_uint24_18bitRes        - 9 - 3-byte unsigned integer (18-bit resolution)
+        //  dataType_uint16_18bitTrunc      - 10 - uint16 from a device with 18-bit resolution (truncated)
+        //  dataType_int24_20bit            - 11 - signed int24 from a device with 20-bit resolution
+        //  dataType_int16_20bitTrunc       - 12 - signed int16 from a device with 20-bit resolution (truncated)
+        //  dataType_uint24                 - 13 - 3-byte unsigned integer
+        //  dataType_uint16_24bitTrunc      - 14 - 2-byte unsigned integer from a device with 24-bit resolution (truncated)
+        //  dataType_last                   - 14 - The largest value in the list
         //=====================================================================================================
         enum DataType
         {
@@ -100,12 +102,14 @@ namespace mscl
             dataType_uint32             = 4,
             dataType_uint16             = 7,
             dataType_float32_noCals     = 8,
-            dataType_uint24             = 9,
+            dataType_uint24_18bitRes    = 9,
             dataType_uint16_18bitTrunc  = 10,
             dataType_int24_20bit        = 11,
             dataType_int16_20bitTrunc   = 12,
+            dataType_uint24             = 13,
+            dataType_uint16_24bitTrunc  = 14,
 
-            dataType_last               = 12
+            dataType_last               = 14
         };
 
         //=====================================================================================================
@@ -228,18 +232,24 @@ namespace mscl
         //API Enums: TransmitPower
         //    Represents the transmit powers that can be used for Wireless Devices.
         //
-        //    power_20dBm   - 20 - 20 dBm (100 mw)
-        //    power_16dBm   - 16 - 16 dBm (39 mw)
-        //    power_10dBm   - 10 - 10 dBm (10 mw)
-        //    power_5dBm    - 5  - 5 dBm (3 mw)
-        //    power_0dBm    - 0  - 0 dBm  (1 mw)
+        //    power_20dBm   - 20 - 20 dBm
+        //    power_16dBm   - 16 - 16 dBm
+        //    power_12dBm   - 12 - 12 dBm
+        //    power_11dBm   - 11 - 11 dBm
+        //    power_10dBm   - 10 - 10 dBm
+        //    power_5dBm    - 5  - 5 dBm
+        //    power_1dBm    - 1  - 1 dBm
+        //    power_0dBm    - 0  - 0 dBm
         //=====================================================================================================
         enum TransmitPower
         {
             power_20dBm   = 20,
             power_16dBm   = 16,
+            power_12dBm   = 12,
+            power_11dBm   = 11,
             power_10dBm   = 10,
             power_5dBm    = 5,
+            power_1dBm    = 1,
             power_0dBm    = 0
         };
 
@@ -356,9 +366,15 @@ namespace mscl
         //    unit_pressure_pascal                - 23  - Pascal
         //    unit_pressure_megaPascal            - 24  - megaPascal
         //    unit_pressure_kiloPascal            - 25  - kiloPascal
+        //    unit_rawVoltage_volts               - 97  - Raw Volts
+        //    unit_rawVoltage_millivolts          - 98  - Raw Millivolts
+        //    unit_rawVoltage_microvolts          - 99  - Raw Microvolts
         //    unit_reactiveEnergy_VARh            - 56  - Volt-Ampere Reactive Hour
         //    unit_reactiveEnergy_kVARh           - 57  - Kilovolt-Ampere Reactive Hour
         //    unit_reactivePower_var              - 53  - Volt-Ampere Reactive
+        //    unit_resistance_ohm                 - 100 - Ohm
+        //    unit_resistance_milliohm            - 101 - milliOhm
+        //    unit_resistance_kiloohm             - 102 - kiloOhm
         //    unit_rh_percentRh                   - 32  - percent relative humidity
         //    unit_rssi_dBm                       - 63  - dBm
         //    unit_rssi_dBHz                      - 92  - dBHz
@@ -491,6 +507,12 @@ namespace mscl
             unit_other_unitless                 = 94,
             unit_velocity_inchesPerSec          = 95,
             unit_force_kg                       = 96,
+            unit_rawVoltage_volts               = 97,
+            unit_rawVoltage_millivolts          = 98,
+            unit_rawVoltage_microvolts          = 99,
+            unit_resistance_ohm                 = 100,
+            unit_resistance_milliohm            = 101,
+            unit_resistance_kiloohm             = 102
 
             //170 (0xAA) needs to be reserved - treated as none
             //255 (0xFF) needs to be reserved - treated as none
@@ -500,29 +522,31 @@ namespace mscl
         //API Enums: ChannelType
         //    Represents the types of channels on Wireless Nodes.
         //
-        //    chType_none                    - 0 - No channel type (channel not supported)
-        //    chType_fullDifferential        - 1 - Full Differential
-        //    chType_singleEnded             - 2 - Single Ended
-        //    chType_battery                 - 3 - Battery
-        //    chType_temperature             - 4 - Temperature
-        //    chType_rh                      - 5 - Relative Humidity
-        //    chType_acceleration            - 6 - Acceleration
-        //    chType_displacement            - 7 - Displacement
-        //    chType_voltage                 - 8 - Voltage
-        //    chType_diffTemperature         - 9 - Differential - Temperature (thermocouple, rtd)
+        //  chType_none                 - 0 - No channel type (channel not supported)
+        //  chType_fullDifferential     - 1 - Full Differential
+        //  chType_singleEnded          - 2 - Single Ended
+        //  chType_battery              - 3 - Battery
+        //  chType_temperature          - 4 - Temperature
+        //  chType_rh                   - 5 - Relative Humidity
+        //  chType_acceleration         - 6 - Acceleration
+        //  chType_displacement         - 7 - Displacement
+        //  chType_voltage              - 8 - Voltage
+        //  chType_diffTemperature      - 9 - Differential - Temperature (thermocouple, rtd)
+        //  chType_digital              - 10 - Digital
         //=====================================================================================================
         enum ChannelType
         {
-            chType_none                    = 0,
-            chType_fullDifferential        = 1,
-            chType_singleEnded             = 2,
-            chType_battery                 = 3,
-            chType_temperature             = 4,
-            chType_rh                      = 5,
-            chType_acceleration            = 6,
-            chType_displacement            = 7,
-            chType_voltage                 = 8,
-            chType_diffTemperature         = 9
+            chType_none                     = 0,
+            chType_fullDifferential         = 1,
+            chType_singleEnded              = 2,
+            chType_battery                  = 3,
+            chType_temperature              = 4,
+            chType_rh                       = 5,
+            chType_acceleration             = 6,
+            chType_displacement             = 7,
+            chType_voltage                  = 8,
+            chType_diffTemperature          = 9,
+            chType_digital                  = 10
         };
 
         //=====================================================================================================
@@ -559,10 +583,25 @@ namespace mscl
         };
 
         //=====================================================================================================
+        //API Enums: TransducerType
+        //    Represents the Transducer types supported by some Wireless Nodes.
+        //
+        //    transducer_thermocouple   - 0 - Thermocouple
+        //    transducer_rtd            - 1 - RTD
+        //    transducer_thermistor     - 2 - Thermistor
+        //=====================================================================================================
+        enum TransducerType
+        {
+            transducer_thermocouple = 0,
+            transducer_rtd          = 1,
+            transducer_thermistor   = 2
+        };
+
+        //=====================================================================================================
         //API Enums: ThermocoupleType
         //    Represents the thermocouple types supported by some Wireless Nodes.
         //
-        //    tc_uncompensated    - 0        - Uncompensated (no thermocouple type)
+        //    tc_uncompensated    - 0        - Uncompensated (None)
         //    tc_K                - 1        - K Type Thermocouple
         //    tc_J                - 2        - J Type Thermocouple
         //    tc_R                - 3        - R Type Thermocouple
@@ -585,6 +624,67 @@ namespace mscl
             tc_B                = 7,
             tc_N                = 8,
             tc_customPolynomial = 9
+        };
+        
+        //=====================================================================================================
+        //API Enums: RtdType
+        //    Represents the RTD types supported by some Wireless Nodes.
+        //
+        //    rtd_uncompensated   - 0 - Uncompensated (None)
+        //    rtd_pt10            - 1 - PT-10
+        //    rtd_pt50            - 2 - PT-50
+        //    rtd_pt100           - 3 - PT-100
+        //    rtd_pt200           - 4 - PT-200
+        //    rtd_pt500           - 5 - PT-500
+        //    rtd_pt1000          - 6 - PT-1000
+        //=====================================================================================================
+        enum RtdType
+        {
+            rtd_uncompensated   = 0,
+            rtd_pt10            = 1,
+            rtd_pt50            = 2,
+            rtd_pt100           = 3,
+            rtd_pt200           = 4,
+            rtd_pt500           = 5,
+            rtd_pt1000          = 6
+        };
+
+        //=====================================================================================================
+        //API Enums: RtdWireType
+        //    Represents the Wire types supported for RTD sensors.
+        //
+        //    rtd_2wire - 0 - 2 Wire RTD
+        //    rtd_3wire - 1 - 3 Wire RTD
+        //    rtd_4wire - 2 - 4 Wire RTD
+        //=====================================================================================================
+        enum RtdWireType
+        {
+            rtd_2wire   = 0,
+            rtd_3wire   = 1,
+            rtd_4wire   = 2
+        };
+
+        //=====================================================================================================
+        //API Enums: ThermistorType
+        //    Represents the Thermistor types supported by some Wireless Nodes.
+        //
+        //    thermistor_uncompensated    - 0 - Uncompensated (None)
+        //    thermistor_44004_44033      - 1 - 44004/44033
+        //    thermistor_44005_44030      - 2 - 44005/44030
+        //    thermistor_44007_44034      - 3 - 44007/44034
+        //    thermistor_44006_44031      - 4 - 44006/44031
+        //    thermistor_44008_44032      - 5 - 44008/44032
+        //    thermistor_ys1_400          - 6 - YSI-400
+        //=====================================================================================================
+        enum ThermistorType
+        {
+            thermistor_uncompensated    = 0,//8192,  //0010 0000 0000 0000
+            thermistor_44004_44033      = 1,//8193,  //0010 0000 0000 0001
+            thermistor_44005_44030      = 2,//8194,  //0010 0000 0000 0010
+            thermistor_44007_44034      = 3,//8195,  //0010 0000 0000 0011
+            thermistor_44006_44031      = 4,//8196,  //0010 0000 0000 0100
+            thermistor_44008_44032      = 5,//8197,  //0010 0000 0000 0101
+            thermistor_ysi_400          = 6//8198   //0010 0000 0000 0110
         };
 
         //=====================================================================================================
@@ -717,53 +817,61 @@ namespace mscl
         //Enum: RegionCode
         //    The possible region codes for the device.
         //
-        //    region_usa        - 0
-        //    region_europe     - 1
-        //    region_japan      - 2
-        //    region_other      - 3
-        //    region_brazil     - 4
+        //  region_usa      - 0
+        //  region_europe   - 1
+        //  region_japan    - 2
+        //  region_other    - 3
+        //  region_brazil   - 4
+        //  region_china    - 5
         enum RegionCode
         {
-            region_usa        = 0,
-            region_europe     = 1,
-            region_japan      = 2,
-            region_other      = 3,
-            region_brazil     = 4
+            region_usa      = 0,
+            region_europe   = 1,
+            region_japan    = 2,
+            region_other    = 3,
+            region_brazil   = 4,
+            region_china    = 5
         };
 
         //API Enum: ChannelGroupSetting
-        //    The possible settings for ChannelGroups.
+        //  The possible settings for ChannelGroups.
         //
-        //    chSetting_inputRange              - 0 - Input Range
-        //    chSetting_filterSettlingTime      - 1 - Filter Settling Time
-        //    chSetting_thermocoupleType        - 2 - Thermocouple Type
-        //    chSetting_linearEquation          - 3 - Linear Equation
-        //    chSetting_unit                    - 4 - Unit
-        //    chSetting_equationType            - 5 - Equation Type
-        //    chSetting_hardwareOffset          - 6 - Hardware Offset
-        //    chSetting_autoBalance             - 7 - Autobalance Function
-        //    chSetting_gaugeFactor             - 8 - Gauge Factor
-        //    chSetting_antiAliasingFilter      - 9 - Anti-Aliasing Filter
-        //    chSetting_legacyShuntCal          - 10 - Legacy Shunt Cal (Note: the actual shunt cal operation is not a feature in MSCL)
-        //    chSetting_autoShuntCal            - 11 - Auto Shunt Cal
-        //    chSetting_lowPassFilter           - 12 - Low Pass Filter
-        //    chSetting_highPassFilter          - 13 - High Pass Filter
+        //  chSetting_inputRange            - 0 - Input Range
+        //  chSetting_filterSettlingTime    - 1 - Filter Settling Time
+        //  chSetting_thermocoupleType      - 2 - Thermocouple Type
+        //  chSetting_linearEquation        - 3 - Linear Equation
+        //  chSetting_unit                  - 4 - Unit
+        //  chSetting_equationType          - 5 - Equation Type
+        //  chSetting_hardwareOffset        - 6 - Hardware Offset
+        //  chSetting_autoBalance           - 7 - Autobalance Function
+        //  chSetting_gaugeFactor           - 8 - Gauge Factor
+        //  chSetting_antiAliasingFilter    - 9 - Anti-Aliasing Filter
+        //  chSetting_legacyShuntCal        - 10 - Legacy Shunt Cal (Note: the actual shunt cal operation is not a feature in MSCL)
+        //  chSetting_autoShuntCal          - 11 - Auto Shunt Cal
+        //  chSetting_lowPassFilter         - 12 - Low Pass Filter
+        //  chSetting_highPassFilter        - 13 - High Pass Filter
+        //  chSetting_tempSensorOptions     - 14 - Temperature Sensor Options
+        //  chSetting_debounceFilter        - 15 - Debounce Filter
+        //  chSetting_pullUpResistor        - 16 - Internal Pull-up Resistor
         enum ChannelGroupSetting
         {
-            chSetting_inputRange              = 0,
-            chSetting_filterSettlingTime      = 1,
-            chSetting_thermocoupleType        = 2,
-            chSetting_linearEquation          = 3,
-            chSetting_unit                    = 4,
-            chSetting_equationType            = 5,
-            chSetting_hardwareOffset          = 6,
-            chSetting_autoBalance             = 7,
-            chSetting_gaugeFactor             = 8,
-            chSetting_antiAliasingFilter      = 9,
-            chSetting_legacyShuntCal          = 10,
-            chSetting_autoShuntCal            = 11,
-            chSetting_lowPassFilter           = 12,
-            chSetting_highPassFilter          = 13
+            chSetting_inputRange                = 0,
+            chSetting_filterSettlingTime        = 1,
+            chSetting_thermocoupleType          = 2,
+            chSetting_linearEquation            = 3,
+            chSetting_unit                      = 4,
+            chSetting_equationType              = 5,
+            chSetting_hardwareOffset            = 6,
+            chSetting_autoBalance               = 7,
+            chSetting_gaugeFactor               = 8,
+            chSetting_antiAliasingFilter        = 9,
+            chSetting_legacyShuntCal            = 10,
+            chSetting_autoShuntCal              = 11,
+            chSetting_lowPassFilter             = 12,
+            chSetting_highPassFilter            = 13,
+            chSetting_tempSensorOptions         = 14,
+            chSetting_debounceFilter            = 15,
+            chSetting_pullUpResistor            = 16
         };
 
         //API Enum: AutoBalanceErrorFlag
@@ -879,10 +987,12 @@ namespace mscl
         //  filter_512hz   - 512 - 512 hz
         //  filter_500hz   - 500 - 500 hz
         //  filter_418hz   - 418 - 418 hz
+        //  filter_294hz   - 294 - 294 hz
         //  filter_256hz   - 256 - 256 hz
         //  filter_250hz   - 250 - 250 hz
         //  filter_209hz   - 209 - 209 hz
         //  filter_200hz   - 200 - 200 hz
+        //  filter_147hz   - 147 - 147 hz
         //  filter_128hz   - 128 - 128 hz
         //  filter_125hz   - 125 - 125 hz
         //  filter_104hz   - 104 - 104 hz
@@ -892,6 +1002,8 @@ namespace mscl
         //  filter_50hz    - 50 - 50 hz
         //  filter_31hz    - 31 - 31 hz
         //  filter_26hz    - 26 - 26 hz
+        //  filter_12_66hz - 12 - 12.66 hz
+        //  filter_2_6hz   - 2 - 2.6 hz
         enum Filter
         {
             filter_33000hz  = 33000,
@@ -913,10 +1025,12 @@ namespace mscl
             filter_512hz    = 512,
             filter_500hz    = 500,
             filter_418hz    = 418,
+            filter_294hz    = 294,
             filter_256hz    = 256,
             filter_250hz    = 250,
             filter_209hz    = 209,
             filter_200hz    = 200,
+            filter_147hz    = 147,
             filter_128hz    = 128,
             filter_125hz    = 125,
             filter_104hz    = 104,
@@ -925,7 +1039,9 @@ namespace mscl
             filter_52hz     = 52,
             filter_50hz     = 50,
             filter_31hz     = 31,
-            filter_26hz     = 26
+            filter_26hz     = 26,
+            filter_12_66hz  = 12,
+            filter_2_6hz    = 2
         };
 
         //API Enum: HighPassFilter
@@ -953,130 +1069,273 @@ namespace mscl
         //API Enum: InputRange
         //  The options available for input range on supported Nodes.
         //
-        //  range_10V           - 0 - +-10 Volts
-        //  range_5V            - 1 - +-5 Volts
-        //  range_2V            - 2 - +-2 Volts
-        //  range_1V            - 3 - +-1 Volt
-        //  range_0to10V        - 4 - 0 Volts to 10 Volts
-        //  range_0to5V         - 5 - 0 Volts to 5 Volts
-        //  range_731mV         - 6 - +-731 milliVolts
-        //  range_585mV         - 7 - +-585 milliVolts
-        //  range_365mV         - 8 - +-365 milliVolts
-        //  range_292mV         - 9 - +-292 milliVolts
-        //  range_182mV         - 10 - +-182 milliVolts
-        //  range_146mV         - 11 - +-146 milliVolts
-        //  range_156mV         - 12 - +-156 milliVolts
-        //  range_91mV          - 13 - +-91 milliVolts
-        //  range_78mV          - 14 - +-78 milliVolts
-        //  range_75mV          - 15 - +-75 milliVolts
-        //  range_73mV          - 16 - +-73 milliVolts
-        //  range_70mV          - 17 - +-70 milliVolts
-        //  range_62mV          - 18 - +-62 milliVolts
-        //  range_50mV          - 19 - +-50 milliVolts
-        //  range_45mV          - 20 - +-45 milliVolts
-        //  range_44mV          - 21 - +-44 milliVolts
-        //  range_39mV          - 22 - +-39 milliVolts
-        //  range_37mV          - 23 - +-37 milliVolts
-        //  range_36mV          - 24 - +-36 milliVolts
-        //  range_35mV          - 25 - +-35 milliVolts
-        //  range_31mV          - 26 - +-31 milliVolts
-        //  range_30mV          - 27 - +-30 milliVolts
-        //  range_20mV          - 28 - +-20 milliVolts
-        //  range_19mV          - 29 - +-19 milliVolts
-        //  range_18mV          - 30 - +-18 milliVolts
-        //  range_17mV          - 31 - +-17 milliVolts
-        //  range_15mV          - 32 - +-15 milliVolts
-        //  range_14mV          - 33 - +-14 milliVolts
-        //  range_10mV          - 34 - +-10 milliVolts
-        //  range_9mV           - 35 - +-9 milliVolts
-        //  range_8mV           - 36 - +-8 milliVolts
-        //  range_7mV           - 37 - +-7 milliVolts
-        //  range_5mV           - 38 - +-5 milliVolts
-        //  range_4mV           - 39 - +-4 milliVolts
-        //  range_3mV           - 40 - +-3 milliVolts
-        //  range_2mV           - 41 - +-2 milliVolts
-        //  range_1mV           - 42 - +-1 milliVolts
-        //  range_976microV     - 43 - +-976 microVolts
-        //  range_600microV     - 44 - +-600 microVolts
-        //  range_586microV     - 45 - +-586 microVolts
-        //  range_547microV     - 46 - +-547 microVolts
-        //  range_488microV     - 47 - +-488 microVolts
-        //  range_350microV     - 48 - +-350 microVolts
-        //  range_300microV     - 49 - +-300 microVolts
-        //  range_100microV     - 50 - +-100 microVolts
-        //  range_1500microV    - 51 - +-1500 microVolts
-        //  range_812microV     - 52 - +-2 microVolts
-        //  range_6mV           - 53 - +-6 milliVolts
-        //  range_2G            - 54 - +-2 Gs
-        //  range_4G            - 55 - +-4 Gs
-        //  range_8G            - 56 - +-8 Gs
-        //  range_10G           - 58 - +-10 Gs
-        //  range_20G           - 59 - +-20 Gs
-        //  range_40G           - 60 - +-40 Gs
-        //  range_invalid       - 65535 - invalid input range
+        //  range_14_545mV                  - 0         - +-14.545 milliVolts
+        //  range_10_236mV                  - 1         - +-10.236 milliVolts
+        //  range_7_608mV                   - 2         - +-7.608 milliVolts
+        //  range_4_046mV                   - 3         - +-4.046 milliVolts
+        //  range_2_008mV                   - 4         - +-2.008 milliVolts
+        //  range_1_511mV                   - 5         - +-1.511 milliVolts
+        //  range_1_001mV                   - 6         - +-1.001 milliVolts
+        //  range_0_812mV                   - 7         - +-0.812 milliVolts
+        //  range_75mV                      - 8         - +-75 milliVolts
+        //  range_37_5mV                    - 9         - +-37.5 milliVolts
+        //  range_18_75mV                   - 10        - +-18.75 milliVolts
+        //  range_9_38mV                    - 11        - +-9.38 milliVolts
+        //  range_4_69mV                    - 12        - +-4.69 milliVolts
+        //  range_2_34mV                    - 13        - +-2.34 milliVolts
+        //  range_1_17mV                    - 14        - +-1.17 milliVolts
+        //  range_0_586mV                   - 15        - +-0.586 milliVolts
+        //  range_70mV                      - 16        - +-70 milliVolts
+        //  range_35mV                      - 17        - +-35 milliVolts
+        //  range_17_5mV                    - 18        - +-17.5 milliVolts
+        //  range_8_75mV                    - 19        - +-8.75 milliVolts
+        //  range_4_38mV                    - 20        - +-4.38 milliVolts
+        //  range_2_19mV                    - 21        - +-2.19 milliVolts
+        //  range_1_09mV                    - 22        - +-1.09 milliVolts
+        //  range_0_547mV                   - 23        - +-0.547 milliVolts
+        //  range_44mV                      - 24        - +-44 milliVolts
+        //  range_30mV                      - 25        - +-30 milliVolts
+        //  range_20mV                      - 26        - +-20 milliVolts
+        //  range_15mV                      - 27        - +-15 milliVolts
+        //  range_10mV                      - 28        - +-10 milliVolts
+        //  range_5mV                       - 29        - +-5 milliVolts
+        //  range_3mV                       - 30        - +-3 milliVolts
+        //  range_2mV                       - 31        - +-2 milliVolts
+        //  range_6mV                       - 32        - +-6 milliVolts
+        //  range_1mV                       - 33        - +-1 milliVolt
+        //  range_50mV                      - 34        - +-50 milliVolts
+        //  range_2_5mV                     - 35        - +-2.5 milliVolts
+        //  range_0_6mV                     - 36        - +-0.6 milliVolts
+        //  range_0_35mV                    - 37        - +-0.35 milliVolts
+        //  range_0_1mV                     - 38        - +-0.1 milliVolts
+        //  range_156mV                     - 39        - +-156 milliVolts
+        //  range_78_1mV                    - 40        - +-78.1 milliVolts
+        //  range_39mV                      - 41        - +-39 milliVolts
+        //  range_19_5mV                    - 42        - +-19.5 milliVolts
+        //  range_9_76mV                    - 43        - +-9.76 milliVolts
+        //  range_4_88mV                    - 44        - +-4.88 milliVolts
+        //  range_2_44mV                    - 45        - +-2.44 milliVolts
+        //  range_1_22mV                    - 46        - +-1.22 milliVolts
+        //  range_10_24V                    - 47        - +-10.24 Volts
+        //  range_5_12V                     - 48        - +-5.12 Volts
+        //  range_2_56V                     - 49        - +-2.56 Volts
+        //  range_0to10_24V                 - 50        - 0 to 10.24 Volts
+        //  range_0to5_12V                  - 51        - 0 to 5.12 Volts
+        //  range_1_147V                    - 52        - +-1.147 Volts
+        //  range_585mV                     - 53        - +-585 milliVolts
+        //  range_292_5mV                   - 54        - +-292.5 milliVolts
+        //  range_146_25mV                  - 55        - +-146.25 milliVolts
+        //  range_73_13mV                   - 56        - +-73.13 milliVolts
+        //  range_36_56mV                   - 57        - +-36.56 milliVolts
+        //  range_18_23mV                   - 58        - +-18.23 milliVolts
+        //  range_9_14mV                    - 59        - +-9.14 milliVolts
+        //  range_5_74V                     - 60        - +-5.74 Volts
+        //  range_2_93V                     - 61        - +-2.93 Volts
+        //  range_1_46V                     - 62        - +-1.46 Volts
+        //  range_731_3mV                   - 63        - +-731.3 milliVolts
+        //  range_365_6mV                   - 64        - +-365.6 milliVolts
+        //  range_182_8mV                   - 65        - +-182.8 milliVolts
+        //  range_91_4mV                    - 66        - +-91.4 milliVolts
+        //  range_45_7mV                    - 67        - +-45.7 milliVolts
+        //  range_62_5mV                    - 68        - +-62.5 milliVolts
+        //  range_31_25mV                   - 69        - +-31.25 milliVolts
+        //  range_15_63mV                   - 70        - +-15.63 milliVolts
+        //  range_7_81mV                    - 71        - +-7.81 milliVolts
+        //  range_3_91mV                    - 72        - +-3.91 milliVolts
+        //  range_1_95mV                    - 73        - +-1.95 milliVolts
+        //  range_0_976mV                   - 74        - +-0.976 milliVolts
+        //  range_0_488mV                   - 75        - +-0.488 milliVolts
+        //  range_2G                        - 76        - +-2 Gs
+        //  range_4G                        - 77        - +-4 Gs
+        //  range_8G                        - 78        - +-8 Gs
+        //  range_10G                       - 79        - +-10 Gs
+        //  range_20G                       - 80        - +-20 Gs
+        //  range_40G                       - 81        - +-40 Gs
+        //  range_2_5V                      - 82        - +-2.5 Volts
+        //  range_1_25V                     - 83        - +-1.25 Volts
+        //  range_625mV                     - 84        - +-625 milliVolts
+        //  range_312_5mV                   - 85        - +-312.5 milliVolts
+        //  range_156_25mV                  - 86        - +-156.25 milliVolts
+        //  range_78_125mV                  - 87        - +-78.125 milliVolts
+        //  range_39_063mV                  - 88        - +-39.063 milliVolts
+        //  range_19_532mV                  - 89        - +-19.532 milliVolts
+        //  range_0to2_5V                   - 90        - 0 to 2.5 Volts
+        //  range_0to1_25V                  - 91        - 0 to 1.25 Volts
+        //  range_0to625mV                  - 92        - 0 to 625 milliVolts
+        //  range_0to312_5mV                - 93        - 0 to 312.5 milliVolts
+        //  range_0to156_25mV               - 94        - 0 to 156.25 milliVolts
+        //  range_0to78_125mV               - 95        - 0 to 78.125 milliVolts
+        //  range_0to39_063mV               - 96        - 0 to 39.063 milliVolts
+        //  range_0to19_532mV               - 97        - 0 to 19.532 milliVolts
+        //  range_9_766mV                   - 98        - +-9.766 milliVolts
+        //  range_1_35V_or_0to2026408518ohm - 99       - +-1.35 Volts, or 0 to 2026408518 ohms
+        //  range_1_25V_or_0to5100ohm       - 100       - +-1.25 Volts, or 0 to 5100 ohms
+        //  range_625mV_or_0to1700ohm       - 101       - +-625 milliVolts, or 0 to 1700 ohms
+        //  range_312_5mV_or_0to728ohm      - 102       - +-312.5 milliVolts, or 0 to 728 ohms
+        //  range_156_25mV_or_0to340ohm     - 103       - +-156.25 milliVolts, or 0 to 340 ohms
+        //  range_78_125mV_or_0to164ohm     - 104       - +-78.125 milliVolts, or 0 to 164 ohms
+        //  range_39_0625mV_or_0to80ohm     - 105       - +-39.0625 milliVolts, or 0 to 80 ohms
+        //  range_19_5313mV_or_0to40ohm     - 106       - +-19.5313 milliVolts, or 0 to 40 ohms
+        //  range_750mV                     - 107       - +-750 milliVolts
+        //  range_375mV                     - 108       - +-375 milliVolts
+        //  range_187_5mV                   - 109       - +-187.5 milliVolts
+        //  range_93_75mV                   - 110       - +-93.75 milliVolts
+        //  range_46_875mV                  - 111       - +-46.875 milliVolts
+        //  range_23_438mV                  - 112       - +-23.438 milliVolts
+        //  range_11_719mV                  - 113       - +-11.719 milliVolts
+        //  range_5_859mV                   - 114       - +-5.859 milliVolts
+        //  range_0to1_5V                   - 115       - 0 to 1.5 Volts
+        //  range_0to750mV                  - 116       - 0 to 750 milliVolts
+        //  range_0to375mV                  - 117       - 0 to 375 milliVolts
+        //  range_0to187_5mV                - 118       - 0 to 187.5 milliVolts
+        //  range_0to93_75mV                - 119       - 0 to 93.75 milliVolts
+        //  range_0to46_875mV               - 120       - 0 to 46.875 milliVolts
+        //  range_0to23_438mV               - 121       - 0 to 23.438 milliVolts
+        //  range_0to11_719mV               - 122       - 0 to 11.719 milliVolts
+        //  range_invalid                   - 65535     - invalid input range
         enum InputRange
         {
-            range_10V = 0,           //+-10 Volts
-            range_5V = 1,            //+-5 Volts
-            range_2V = 2,            //+-2 Volts
-            range_1V = 3,            //+-1 Volt
-            range_0to10V = 4,        //0 Volts to 10 Volts
-            range_0to5V = 5,         //0 Volts to 5 Volts
-            range_731mV = 6,         //+-731 milliVolts
-            range_585mV = 7,         //+-585 milliVolts
-            range_365mV = 8,         //+-365 milliVolts
-            range_292mV = 9,         //+-292 milliVolts
-            range_182mV = 10,        //+-182 milliVolts
-            range_146mV = 11,        //+-146 milliVolts
-            range_156mV = 12,        //+-156 milliVolts
-            range_91mV = 13,         //+-91 milliVolts
-            range_78mV = 14,         //+-78 milliVolts
-            range_75mV = 15,         //+-75 milliVolts
-            range_73mV = 16,         //+-73 milliVolts
-            range_70mV = 17,         //+-70 milliVolts
-            range_62mV = 18,         //+-62 milliVolts
-            range_50mV = 19,         //+-50 milliVolts
-            range_45mV = 20,         //+-45 milliVolts
-            range_44mV = 21,         //+-44 milliVolts
-            range_39mV = 22,         //+-39 milliVolts
-            range_37mV = 23,         //+-37 milliVolts
-            range_36mV = 24,         //+-36 milliVolts
-            range_35mV = 25,         //+-35 milliVolts
-            range_31mV = 26,         //+-31 milliVolts
-            range_30mV = 27,         //+-30 milliVolts
-            range_20mV = 28,         //+-20 milliVolts
-            range_19mV = 29,         //+-19 milliVolts
-            range_18mV = 30,         //+-18 milliVolts
-            range_17mV = 31,         //+-17 milliVolts
-            range_15mV = 32,         //+-15 milliVolts
-            range_14mV = 33,         //+-14 milliVolts
-            range_10mV = 34,         //+-10 milliVolts
-            range_9mV = 35,          //+-9 milliVolts
-            range_8mV = 36,          //+-8 milliVolts
-            range_7mV = 37,          //+-7 milliVolts
-            range_5mV = 38,          //+-5 milliVolts
-            range_4mV = 39,          //+-4 milliVolts
-            range_3mV = 40,          //+-3 milliVolts
-            range_2mV = 41,          //+-2 milliVolts
-            range_1mV = 42,          //+-1 milliVolts
-            range_976microV = 43,    //+-976 microVolts
-            range_600microV = 44,    //+-600 microVolts
-            range_586microV = 45,    //+-586 microVolts
-            range_547microV = 46,    //+-547 microVolts
-            range_488microV = 47,    //+-488 microVolts
-            range_350microV = 48,    //+-350 microVolts
-            range_300microV = 49,    //+-300 microVolts
-            range_100microV = 50,    //+-100 microVolts
-            range_1500microV = 51,   //+-1500 microVolts
-            range_812microV = 52,    //+-812 microVolts
-            range_6mV = 53,          //+-6 milliVolts
-            range_2G = 54,           //+-2 Gs
-            range_4G = 55,           //+-4 Gs
-            range_8G = 56,           //+-8 Gs
-            range_10G = 58,          //+-10 Gs
-            range_20G = 59,          //+-20 Gs
-            range_40G = 60,          //+-40 Gs
-            range_invalid = 65535    //invalid input range
+            range_14_545mV      = 0,        //+-14.545 milliVolts
+            range_10_236mV      = 1,        //+-10.236 milliVolts
+            range_7_608mV       = 2,        //+-7.608 milliVolts
+            range_4_046mV       = 3,        //+-4.046 milliVolts
+            range_2_008mV       = 4,        //+-2.008 milliVolts
+            range_1_511mV       = 5,        //+-1.511 milliVolts
+            range_1_001mV       = 6,        //+-1.001 milliVolts
+            range_0_812mV       = 7,        //+-0.812 milliVolts
+
+            range_75mV          = 8,        //+-75 milliVolts
+            range_37_5mV        = 9,        //+-37.5 milliVolts
+            range_18_75mV       = 10,       //+-18.75 milliVolts
+            range_9_38mV        = 11,       //+-9.38 milliVolts
+            range_4_69mV        = 12,       //+-4.69 milliVolts
+            range_2_34mV        = 13,       //+-2.34 milliVolts
+            range_1_17mV        = 14,       //+-1.17 milliVolts
+            range_0_586mV       = 15,       //+-0.586 milliVolts
+
+            range_70mV          = 16,       //+-70 milliVolts
+            range_35mV          = 17,       //+-35 milliVolts
+            range_17_5mV        = 18,       //+-17.5 milliVolts
+            range_8_75mV        = 19,       //+-8.75 milliVolts
+            range_4_38mV        = 20,       //+-4.38 milliVolts
+            range_2_19mV        = 21,       //+-2.19 milliVolts
+            range_1_09mV        = 22,       //+-1.09 milliVolts
+            range_0_547mV       = 23,       //+-0.547 milliVolts
+
+            range_44mV          = 24,       //+-44 milliVolts
+            range_30mV          = 25,       //+-30 milliVolts
+            range_20mV          = 26,       //+-20 milliVolts
+            range_15mV          = 27,       //+-15 milliVolts
+            range_10mV          = 28,       //+-10 milliVolts
+            range_5mV           = 29,       //+-5 milliVolts
+            range_3mV           = 30,       //+-3 milliVolts
+            range_2mV           = 31,       //+-2 milliVolts
+
+            range_6mV           = 32,       //+-6 milliVolts
+            range_1mV           = 33,       //+-1 milliVolt
+
+            range_50mV          = 34,       //+-50 milliVolts
+            range_2_5mV         = 35,       //+-2.5 milliVolts
+            range_0_6mV         = 36,       //+-0.6 milliVolts
+            range_0_35mV        = 37,       //+-0.35 milliVolts
+            range_0_1mV         = 38,       //+-0.1 milliVolts
+
+            range_156mV         = 39,       //+-156 milliVolts
+            range_78_1mV        = 40,       //+-78.1 milliVolts
+            range_39mV          = 41,       //+-39 milliVolts
+            range_19_5mV        = 42,       //+-19.5 milliVolts
+            range_9_76mV        = 43,       //+-9.76 milliVolts
+            range_4_88mV        = 44,       //+-4.88 milliVolts
+            range_2_44mV        = 45,       //+-2.44 milliVolts
+            range_1_22mV        = 46,       //+-1.22 milliVolts
+
+            range_10_24V        = 47,       //+-10.24 Volts
+            range_5_12V         = 48,       //+-5.12 Volts
+            range_2_56V         = 49,       //+-2.56 Volts
+            range_0to10_24V     = 50,       //0 to 10.24 Volts
+            range_0to5_12V      = 51,       //0 to 5.12 Volts
+
+            range_1_147V        = 52,       //+-1.147 Volts
+            range_585mV         = 53,       //+-585 milliVolts
+            range_292_5mV       = 54,       //+-292.5 milliVolts
+            range_146_25mV      = 55,       //+-146.25 milliVolts
+            range_73_13mV       = 56,       //+-73.13 milliVolts
+            range_36_56mV       = 57,       //+-36.56 milliVolts
+            range_18_23mV       = 58,       //+-18.23 milliVolts
+            range_9_14mV        = 59,       //+-9.14 milliVolts
+
+            range_5_74V         = 60,       //+-5.74 Volts
+            range_2_93V         = 61,       //+-2.93 Volts
+            range_1_46V         = 62,       //+-1.46 Volts
+            range_731_3mV       = 63,       //+-731.3 milliVolts
+            range_365_6mV       = 64,       //+-365.6 milliVolts
+            range_182_8mV       = 65,       //+-182.8 milliVolts
+            range_91_4mV        = 66,       //+-91.4 milliVolts
+            range_45_7mV        = 67,       //+-45.7 milliVolts
+
+            range_62_5mV        = 68,       //+-62.5 milliVolts
+            range_31_25mV       = 69,       //+-31.25 milliVolts
+            range_15_63mV       = 70,       //+-15.63 milliVolts
+            range_7_81mV        = 71,       //+-7.81 milliVolts
+            range_3_91mV        = 72,       //+-3.91 milliVolts
+            range_1_95mV        = 73,       //+-1.95 milliVolts
+            range_0_976mV       = 74,       //+-0.976 milliVolts
+            range_0_488mV       = 75,       //+-0.488 milliVolts
+
+            range_2G            = 76,       //+-2 Gs
+            range_4G            = 77,       //+-4 Gs
+            range_8G            = 78,       //+-8 Gs
+            range_10G           = 79,       //+-10 Gs
+            range_20G           = 80,       //+-20 Gs
+            range_40G           = 81,       //+-40 Gs
+
+            range_2_5V          = 82,       //+-2.5 Volts
+            range_1_25V         = 83,       //+-1.25 Volts
+            range_625mV         = 84,       //+-625 milliVolts
+            range_312_5mV       = 85,       //+-312.5 milliVolts
+            range_156_25mV      = 86,       //+-156.25 milliVolts
+            range_78_125mV      = 87,       //+-78.125 milliVolts
+            range_39_063mV      = 88,       //+-39.063 milliVolts
+            range_19_532mV      = 89,       //+-19.532 milliVolts
+
+            range_0to2_5V       = 90,       //0 to 2.5 Volts
+            range_0to1_25V      = 91,       //0 to 1.25 Volts
+            range_0to625mV      = 92,       //0 to 625 milliVolts
+            range_0to312_5mV    = 93,       //0 to 312.5 milliVolts
+            range_0to156_25mV   = 94,       //0 to 156.25 milliVolts
+            range_0to78_125mV   = 95,       //0 to 78.125 milliVolts
+            range_0to39_063mV   = 96,       //0 to 39.063 milliVolts
+            range_0to19_532mV   = 97,       //0 to 19.532 milliVolts
+            range_9_766mV       = 98,       //+-9.766 milliVolts
+
+            range_1_35V_or_0to2026408518ohm = 99,  //+- 1.35 Volts, or 0 to 2026408518 ohms
+            range_1_25V_or_0to5100ohm       = 100,  //+- 1.25 Volts, or 0 to 5100 ohms
+            range_625mV_or_0to1700ohm       = 101,  //+- 625 milliVolts, or 0 to 1700 ohms
+            range_312_5mV_or_0to728ohm      = 102,  //+- 312.5 milliVolts, or 0 to 728 ohms
+            range_156_25mV_or_0to340ohm     = 103,  //+- 156.25 milliVolts, or 0 to 340 ohms
+            range_78_125mV_or_0to164ohm     = 104,  //+- 78.125 milliVolts, or 0 to 164 ohms
+            range_39_0625mV_or_0to80ohm     = 105,  //+- 39.0625 milliVolts, or 0 to 80 ohms
+            range_19_5313mV_or_0to40ohm     = 106,  //+- 19.5313 milliVolts, or 0 to 40 ohms
+
+            range_750mV         = 107,  //+- 750 milliVolts
+            range_375mV         = 108,  //+- 375 milliVolts
+            range_187_5mV       = 109,  //+- 187.5 milliVolts
+            range_93_75mV       = 110,  //+- 93.75 milliVolts
+            range_46_875mV      = 111,  //+- 46.875 milliVolts
+            range_23_438mV      = 112,  //+- 23.438 milliVolts
+            range_11_719mV      = 113,  //+- 11.719 milliVolts
+            range_5_859mV       = 114,  //+- 5.859 milliVolts
+
+            range_0to1_5V       = 115,  //0 to 1.5 Volts
+            range_0to750mV      = 116,  //0 to 750 milliVolts
+            range_0to375mV      = 117,  //0 to 375 milliVolts
+            range_0to187_5mV    = 118,  //0 to 187.5 milliVolts
+            range_0to93_75mV    = 119,  //0 to 93.75 milliVolts
+            range_0to46_875mV   = 120,  //0 to 46.875 milliVolts
+            range_0to23_438mV   = 121,  //0 to 23.438 milliVolts
+            range_0to11_719mV   = 122,  //0 to 11.719 milliVolts
+
+            range_invalid       = 65535  //invalid input range
         };
 
         //API Enum: DataMode
@@ -1122,23 +1381,47 @@ namespace mscl
             commProtocol_lxrsPlus = 1,
         };
 
+        //API Enum: Voltage
+        //  Available Voltages.
+        //
+        //  voltage_5120mV  - 5120 - 5.2V
+        //  voltage_5000mV  - 5000 - 5.0V
+        //  voltage_4096mV  - 4096 - 4.096V
+        //  voltage_3000mV  - 3000 - 3.0V
+        //  voltage_2800mV  - 2800 - 2.8V
+        //  voltage_2700mV  - 2700 - 2.7V
+        //  voltage_2500mV  - 2500 - 2.5V
+        //  voltage_1500mV  - 1500 - 1.5V
+        enum Voltage
+        {
+            voltage_5120mV  = 5120,
+            voltage_5000mV  = 5000,
+            voltage_4096mV  = 4096,
+            voltage_3000mV  = 3000,
+            voltage_2800mV  = 2800,
+            voltage_2700mV  = 2700,
+            voltage_2500mV  = 2500,
+            voltage_1500mV  = 1500
+        };
+
     public:
+
         //API Typedefs:
-        //  DataCollectionMethods      - A vector of <DataCollectionMethod> enums.
-        //  DataFormats                - A vector of <DataFormat> enums.
-        //  WirelessSampleRates        - A vector of <WirelessSampleRate> enums.
-        //  SamplingModes              - A vector of <SamplingMode> enums.
-        //  DefaultModes               - A vector of <DefaultMode> enums.
-        //  TransmitPowers             - A vector of <TransmitPower> enums.
-        //  ChannelGroupSettings       - A vector of <ChannelGroupSetting> enums.
-        //  FatigueModes               - A vector of <FatigueMode> enums.
-        //  Filter                     - A vector of <Filter> enums.
-        //  HighPassFilters            - A vector of <HighPassFilter> enums.
-        //  StorageLimitModes          - A vector of <StorageLimitMode> enums.
-        //  InputRanges                - A vector of <InputRange> enums.
-        //  DataModes                  - A vector of <DataMode> enums.
-        //  DerivedChannelTypes        - A vector of <DerivedChannelType> enums.
-        //  CommProtocols              - A vector of <CommProtocol> enums.
+        //  DataCollectionMethods       - A vector of <DataCollectionMethod> enums.
+        //  DataFormats                 - A vector of <DataFormat> enums.
+        //  WirelessSampleRates         - A vector of <WirelessSampleRate> enums.
+        //  SamplingModes               - A vector of <SamplingMode> enums.
+        //  DefaultModes                - A vector of <DefaultMode> enums.
+        //  TransmitPowers              - A vector of <TransmitPower> enums.
+        //  ChannelGroupSettings        - A vector of <ChannelGroupSetting> enums.
+        //  FatigueModes                - A vector of <FatigueMode> enums.
+        //  Filter                      - A vector of <Filter> enums.
+        //  HighPassFilters             - A vector of <HighPassFilter> enums.
+        //  StorageLimitModes           - A vector of <StorageLimitMode> enums.
+        //  DataModes                   - A vector of <DataMode> enums.
+        //  DerivedChannelTypes         - A vector of <DerivedChannelType> enums.
+        //  CommProtocols               - A vector of <CommProtocol> enums.
+        //  Voltages                    - A vector of <Voltage> enums.
         typedef std::vector<DataCollectionMethod> DataCollectionMethods;
         typedef std::vector<DataFormat> DataFormats;
         typedef std::vector<WirelessSampleRate> WirelessSampleRates;
@@ -1150,10 +1433,10 @@ namespace mscl
         typedef std::vector<Filter> Filters;
         typedef std::vector<HighPassFilter> HighPassFilters;
         typedef std::vector<StorageLimitMode> StorageLimitModes;
-        typedef std::vector<InputRange> InputRanges;
         typedef std::vector<DataMode> DataModes;
         typedef std::vector<DerivedChannelType> DerivedChannelTypes;
         typedef std::vector<CommProtocol> CommProtocols;
+        typedef std::vector<Voltage> Voltages;
 
         //API Typedef: DerivedChannelMasks
         //  Typedef for a map of <DerivedChannelType> to <ChannelMask> pairs.

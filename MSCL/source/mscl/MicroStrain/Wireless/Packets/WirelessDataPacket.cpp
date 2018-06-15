@@ -165,6 +165,14 @@ namespace mscl
                 break;
             }
 
+            //uint16 value (from 24-bit node, needs shifted left)
+            case WirelessTypes::dataType_uint16_24bitTrunc:
+            {
+                uint32 val = static_cast<uint32>(m_payload.read_uint16(payloadPosition));
+                result = (val << 8);
+                break;
+            }
+
             //int16 value (from 20-bit node, needs shifted left)
             case WirelessTypes::dataType_int16_20bitTrunc:
             {
@@ -182,6 +190,7 @@ namespace mscl
 
             //uint24 value (we store this as a uint32)
             case WirelessTypes::dataType_uint24:
+            case WirelessTypes::dataType_uint24_18bitRes:
                 result = m_payload.read_uint24(payloadPosition);
                 break;
 

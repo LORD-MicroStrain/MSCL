@@ -897,6 +897,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeRate)
 
     WirelessNodeConfig c;
     c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
+    c.lowPassFilter(ChannelMask(7), WirelessTypes::filter_209hz);
     c.activeChannels(ChannelMask(1));
     c.numSweeps(1000);
     c.dataFormat(WirelessTypes::dataFormat_cal_float);
@@ -945,6 +946,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeMask)
 
     WirelessNodeConfig c;
     c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
+    c.lowPassFilter(ChannelMask(7), WirelessTypes::filter_209hz);
     c.activeChannels(ChannelMask(1));
     c.numSweeps(1000);
     c.dataFormat(WirelessTypes::dataFormat_cal_float);
@@ -1021,6 +1023,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_channelMasks)
 
     WirelessNodeConfig c;
     c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
+    c.lowPassFilter(ChannelMask(7), WirelessTypes::filter_209hz);
     c.numSweeps(1000);
     c.dataFormat(WirelessTypes::dataFormat_cal_float);
     c.unlimitedDuration(true);
@@ -1098,6 +1101,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedSampleRate)
     //Test too fast (1)
     c.sampleRate(WirelessTypes::sampleRate_16Hz);
     c.derivedDataRate(WirelessTypes::sampleRate_1Hz);
+    c.lowPassFilter(ChannelMask(7), WirelessTypes::filter_209hz);
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
     BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_SAMPLE_RATE);
     BOOST_CHECK_EQUAL(issues.at(1).id(), ConfigIssue::CONFIG_DERIVED_DATA_RATE);

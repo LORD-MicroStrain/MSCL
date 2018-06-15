@@ -378,9 +378,34 @@ namespace mscl
         return m_impl->getHighPassFilter(mask);
     }
 
+    uint16 WirelessNode::getDebounceFilter(const ChannelMask& mask) const
+    {
+        return m_impl->getDebounceFilter(mask);
+    }
+
+    bool WirelessNode::getPullUpResistor(const ChannelMask& mask) const
+    {
+        return m_impl->getPullUpResistor(mask);
+    }
+
     float WirelessNode::getGaugeFactor(const ChannelMask& mask) const
     {
         return m_impl->getGaugeFactor(mask);
+    }
+
+    WirelessTypes::Voltage WirelessNode::getExcitationVoltage() const
+    {
+        return m_impl->getExcitationVoltage();
+    }
+
+    WirelessTypes::Voltage WirelessNode::getAdcVoltageRef() const
+    {
+        return m_impl->getAdcVoltageRef();
+    }
+
+    WirelessTypes::Voltage WirelessNode::getGainAmplifierVoltageRef() const
+    {
+        return m_impl->getGainAmplifierVoltageRef();
     }
 
     uint16 WirelessNode::getGaugeResistance() const
@@ -416,6 +441,11 @@ namespace mscl
     WirelessTypes::ThermocoupleType WirelessNode::getThermocoupleType(const ChannelMask& mask) const
     {
         return m_impl->getThermocoupleType(mask);
+    }
+
+    TempSensorOptions WirelessNode::getTempSensorOptions(const ChannelMask& mask) const
+    {
+        return m_impl->getTempSensorOptions(mask);
     }
 
     FatigueOptions WirelessNode::getFatigueOptions() const

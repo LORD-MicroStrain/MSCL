@@ -24,8 +24,6 @@ namespace mscl
         NodeFeatures_shmlink200(const NodeInfo& info);
 
     public:
-        virtual bool isChannelSettingReadOnly(WirelessTypes::ChannelGroupSetting setting) const override;
-
         virtual const WirelessTypes::DataFormats dataFormats() const final;
 
         virtual const WirelessTypes::SamplingModes samplingModes() const final;

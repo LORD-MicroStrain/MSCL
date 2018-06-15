@@ -113,7 +113,9 @@
 #include "../MicroStrain/Wireless/Configuration/ActivitySense.h"
 #include "../MicroStrain/Wireless/Configuration/FatigueOptions.h"
 #include "../MicroStrain/Wireless/Configuration/HistogramOptions.h"
+#include "../MicroStrain/Wireless/Configuration/InputRange.h"
 #include "../MicroStrain/Wireless/Configuration/EventTriggerOptions.h"
+#include "../MicroStrain/Wireless/Configuration/TempSensorOptions.h"
 #include "../MicroStrain/Wireless/DataSweep.h"
 #include "../MicroStrain/LinearEquation.h"
 #include "../MicroStrain/Wireless/CalCoefficients.h"
@@ -155,7 +157,6 @@
 #include "../MicroStrain/Inertial/InertialNode.h"
 #include "../MicroStrain/Displacement/DisplacementNode.h"
 #include "../MicroStrain/MIP/Packets/MipPacket.h"
-#include "../MicroStrain/Inertial/Commands/GNSS_SBASSettings.h"
 %}
 
 // Need to tell SWIG that the following classes are not abstract (thinks they are by default and doesn't generate constructors)
@@ -166,7 +167,6 @@
 //DO NOT CHANGE THE ORDER OF THESE!!!
 %include "../Types.h"
 %include "../BitMask.h"
-%include "../LibVersion.h"
 %include "../MicroStrain/Wireless/ChannelMask.h"
 %include "../Value.h"
 %include "../Bin.h"
@@ -174,6 +174,7 @@
 %include "../Timestamp.h"
 %include "../TimeSpan.h"
 %include "../Version.h"
+%include "../LibVersion.h"
 %include "../Utils.h"
 %include "../Communication/Devices.h"
 %include "../Communication/ConnectionDebugData.h"
@@ -192,6 +193,8 @@
 %include "../MicroStrain/Wireless/Configuration/EventTriggerOptions.h"
 %include "../MicroStrain/Wireless/Configuration/FatigueOptions.h"
 %include "../MicroStrain/Wireless/Configuration/HistogramOptions.h"
+%include "../MicroStrain/Wireless/Configuration/InputRange.h"
+%include "../MicroStrain/Wireless/Configuration/TempSensorOptions.h"
 %include "../MicroStrain/Wireless/WirelessModels.h"
 %include "../MicroStrain/Wireless/NodeDiscovery.h"
 %include "../MicroStrain/LinearEquation.h"
@@ -236,7 +239,6 @@
 %include "../MicroStrain/MIP/MipNodeFeatures.h"
 %include "../MicroStrain/Inertial/InertialNode.h"
 %include "../MicroStrain/Displacement/DisplacementNode.h"
-%include "../MicroStrain/Inertial/Commands/GNSS_SBASSettings.h"
 
 namespace std
 {
@@ -260,9 +262,10 @@ namespace std
     %template(Filters)                  vector<mscl::WirelessTypes::Filter>;
     %template(HighPassFilters)          vector<mscl::WirelessTypes::HighPassFilter>;
     %template(StorageLimitModes)        vector<mscl::WirelessTypes::StorageLimitMode>;
-    %template(InputRanges)              vector<mscl::WirelessTypes::InputRange>;
+    %template(InputRanges)              vector<mscl::InputRangeEntry>;
     %template(DataModes)                vector<mscl::WirelessTypes::DataMode>;
     %template(CommProtocols)            vector<mscl::WirelessTypes::CommProtocol>;
+    %template(Voltages)                 vector<mscl::WirelessTypes::Voltage>;
     %template(DerivedChannelTypes)      vector<mscl::WirelessTypes::DerivedChannelType>;
     %template(EepromMap)                map<uint16_t, uint16_t>;
     %template(DerivedChannelMasks)      map<mscl::WirelessTypes::DerivedChannelType, mscl::ChannelMask>;

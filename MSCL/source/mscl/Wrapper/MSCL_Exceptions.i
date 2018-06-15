@@ -281,7 +281,7 @@
 
         static void SetPendingCustomException___MSCL_Default(string message)
         {
-            SWIGPendingException.Set(new mscl.Error(message));
+            SWIGPendingException.Set(new Error(message));
         }
 
         static Exception_Helper__MSCL_Default()
@@ -307,7 +307,7 @@
 
         static void SetPendingCustomException__MSCL_Communication(string message)
         {
-            SWIGPendingException.Set(new mscl.Error_Communication(message));
+            SWIGPendingException.Set(new Error_Communication(message));
         }
 
         static Exception_Helper__MSCL_Communication()
@@ -333,7 +333,7 @@
 
         static void SetPendingCustomException__MSCL_NodeCommunication(string message, ushort code)
         {
-            SWIGPendingException.Set(new mscl.Error_NodeCommunication(message, code));
+            SWIGPendingException.Set(new Error_NodeCommunication(message, code));
         }
 
         static Exception_Helper__MSCL_NodeCommunication()
@@ -359,7 +359,7 @@
 
         static void SetPendingCustomException__MSCL_Connection(string message, int code)
         {
-            SWIGPendingException.Set(new mscl.Error_Connection(message, code));
+            SWIGPendingException.Set(new Error_Connection(message, code));
         }
 
         static Exception_Helper__MSCL_Connection()
@@ -385,7 +385,7 @@
 
         static void SetPendingCustomException__MSCL_Inv_Com_Port(string message, int code)
         {
-            SWIGPendingException.Set(new mscl.Error_InvalidSerialPort(message, code));
+            SWIGPendingException.Set(new Error_InvalidSerialPort(message, code));
         }
 
         static Exception_Helper__MSCL_Inv_Com_Port()
@@ -411,7 +411,7 @@
 
         static void SetPendingCustomException__MSCL_Inv_Tcp_Server(string message, int code)
         {
-            SWIGPendingException.Set(new mscl.Error_InvalidTcpServer(message, code));
+            SWIGPendingException.Set(new Error_InvalidTcpServer(message, code));
         }
 
         static Exception_Helper__MSCL_Inv_Tcp_Server()
@@ -437,7 +437,7 @@
 
         static void SetPendingCustomException__MSCL_Inv_Unix_Socket(string message, int code)
         {
-            SWIGPendingException.Set(new mscl.Error_InvalidUnixSocket(message, code));
+            SWIGPendingException.Set(new Error_InvalidUnixSocket(message, code));
         }
 
         static Exception_Helper__MSCL_Inv_Unix_Socket()
@@ -463,7 +463,7 @@
 
         static void SetPendingCustomException__MSCL_No_Data(string message)
         {
-            SWIGPendingException.Set(new mscl.Error_NoData(message));
+            SWIGPendingException.Set(new Error_NoData(message));
         }
 
         static Exception_Helper__MSCL_No_Data()
@@ -489,7 +489,7 @@
 
         static void SetPendingCustomException__MSCL_Bad_Data_Type(string message)
         {
-            SWIGPendingException.Set(new mscl.Error_BadDataType(message));
+            SWIGPendingException.Set(new Error_BadDataType(message));
         }
 
         static Exception_Helper__MSCL_Bad_Data_Type()
@@ -515,7 +515,7 @@
 
         static void SetPendingCustomException__MSCL_Unknown_Sample_Rate(string message)
         {
-            SWIGPendingException.Set(new mscl.Error_UnknownSampleRate(message));
+            SWIGPendingException.Set(new Error_UnknownSampleRate(message));
         }
 
         static Exception_Helper__MSCL_Unknown_Sample_Rate()
@@ -541,7 +541,7 @@
 
         static void SetPendingCustomException__MSCL_Not_Supported(string message)
         {
-            SWIGPendingException.Set(new mscl.Error_NotSupported(message));
+            SWIGPendingException.Set(new Error_NotSupported(message));
         }
 
         static Exception_Helper__MSCL_Not_Supported()
@@ -567,7 +567,7 @@
 
         static void SetPendingCustomException__MSCL_InertialCmdFailed(string message, int code)
         {
-            SWIGPendingException.Set(new mscl.Error_MipCmdFailed(message, code));
+            SWIGPendingException.Set(new Error_MipCmdFailed(message, code));
         }
 
         static Exception_Helper__MSCL_InertialCmdFailed()
@@ -594,7 +594,7 @@
 
         static void SetPendingCustomException__MSCL_InvalidConfig(string message)
         {
-            SWIGPendingException.Set(new mscl.Error_InvalidConfig(message));
+            SWIGPendingException.Set(new Error_InvalidConfig(message));
         }
 
         static Exception_Helper__MSCL_InvalidConfig()
@@ -622,7 +622,7 @@
 
         static void SetPendingCustomException__MSCL_InvalidNodeConfig(string message, ushort code)
         {
-            SWIGPendingException.Set(new mscl.Error_InvalidNodeConfig(message, code));
+            SWIGPendingException.Set(new Error_InvalidNodeConfig(message, code));
         }
 
         static Exception_Helper__MSCL_InvalidNodeConfig()
@@ -840,8 +840,13 @@
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::lowPassFilter(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::highPassFilter(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::gaugeFactor(const ChannelMask& mask) const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::gaugeResistance() const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::excitationVoltage() const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::filterSettlingTime(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::thermocoupleType(const ChannelMask& mask) const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::tempSensorOptions(const ChannelMask& mask) const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::debounceFilter(const ChannelMask& mask) const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::pullUpResistor(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::linearEquation(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::unit(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::equation(const ChannelMask& mask) const;
@@ -908,9 +913,16 @@
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getAntiAliasingFilter(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getLowPassFilter(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getHighPassFilter(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getDebounceFilter(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getPullUpResistor(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getGaugeFactor(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getExcitationVoltage() const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getAdcVoltageRef() const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getGainAmplifierVoltageRef() const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getGaugeResistance() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getFilterSettlingTime(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getThermocoupleType(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getTempSensorOptions(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getLinearEquation(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getUnit(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getEquation(const ChannelMask& mask) const;
@@ -932,8 +944,10 @@
 %catches(mscl::Error_NotSupported)      mscl::NodeFeatures::normalizeSensorDelay(uint32 delay) const;
 %catches(mscl::Error_NotSupported)      mscl::NodeFeatures::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const;
 %catches(mscl::Error_NotSupported)      mscl::NodeFeatures::maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod) const;
-%catches(mscl::Error_NotSupported)      mscl::NodeFeatures::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const;
+%catches(mscl::Error_NotSupported)      mscl::NodeFeatures::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const;
 %catches(mscl::Error_NotSupported)      mscl::NodeFeatures::maxFilterSettlingTime(const SampleRate& rate) const;
+%catches(mscl::Error_NotSupported)      mscl::NodeFeatures::maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const;
+%catches(mscl::Error_NotSupported)      mscl::NodeFeatures::minLowPassFilter(const SampleRate& rate) const;
 
 //DisplacementNode
 %catches(mscl::Error_Communication, mscl::Error_Connection, mscl::Error)                                                            mscl::DisplacementNode::DisplacementNode(Connection connection);

@@ -187,6 +187,17 @@ public class WirelessNodeConfig : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public bool pullUpResistor(ChannelMask mask) {
+    bool ret = msclPINVOKE.WirelessNodeConfig_pullUpResistor__SWIG_0(swigCPtr, ChannelMask.getCPtr(mask));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void pullUpResistor(ChannelMask mask, bool enable) {
+    msclPINVOKE.WirelessNodeConfig_pullUpResistor__SWIG_1(swigCPtr, ChannelMask.getCPtr(mask), enable);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public WirelessTypes.InputRange inputRange(ChannelMask mask) {
     WirelessTypes.InputRange ret = (WirelessTypes.InputRange)msclPINVOKE.WirelessNodeConfig_inputRange__SWIG_0(swigCPtr, ChannelMask.getCPtr(mask));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -264,6 +275,17 @@ public class WirelessNodeConfig : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public WirelessTypes.Voltage excitationVoltage() {
+    WirelessTypes.Voltage ret = (WirelessTypes.Voltage)msclPINVOKE.WirelessNodeConfig_excitationVoltage__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void excitationVoltage(WirelessTypes.Voltage voltage) {
+    msclPINVOKE.WirelessNodeConfig_excitationVoltage__SWIG_1(swigCPtr, (int)voltage);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public ushort numActiveGauges() {
     ushort ret = msclPINVOKE.WirelessNodeConfig_numActiveGauges__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -327,6 +349,28 @@ public class WirelessNodeConfig : global::System.IDisposable {
 
   public void thermocoupleType(ChannelMask mask, WirelessTypes.ThermocoupleType type) {
     msclPINVOKE.WirelessNodeConfig_thermocoupleType__SWIG_1(swigCPtr, ChannelMask.getCPtr(mask), (int)type);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public TempSensorOptions tempSensorOptions(ChannelMask mask) {
+    TempSensorOptions ret = new TempSensorOptions(msclPINVOKE.WirelessNodeConfig_tempSensorOptions__SWIG_0(swigCPtr, ChannelMask.getCPtr(mask)), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void tempSensorOptions(ChannelMask mask, TempSensorOptions options) {
+    msclPINVOKE.WirelessNodeConfig_tempSensorOptions__SWIG_1(swigCPtr, ChannelMask.getCPtr(mask), TempSensorOptions.getCPtr(options));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public ushort debounceFilter(ChannelMask mask) {
+    ushort ret = msclPINVOKE.WirelessNodeConfig_debounceFilter__SWIG_0(swigCPtr, ChannelMask.getCPtr(mask));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void debounceFilter(ChannelMask mask, ushort milliseconds) {
+    msclPINVOKE.WirelessNodeConfig_debounceFilter__SWIG_1(swigCPtr, ChannelMask.getCPtr(mask), milliseconds);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

@@ -22,6 +22,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Configuration/HistogramOptions.h"
 #include "Configuration/NodeEeprom.h"
 #include "Configuration/NodeEepromHelper.h"
+#include "Configuration/TempSensorOptions.h"
 #include "Features/NodeFeatures.h"
 
 namespace mscl
@@ -448,6 +449,18 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint16 getLostBeaconTimeout() const;
 
+        //Function: getPullUpResistor
+        //    Gets whether or not the pull-up resistor is enabled on the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> of the pull-up resistor to read.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        bool getPullUpResistor(const ChannelMask& mask) const;
+
         //Function: getInputRange
         //    Reads the input range of the specified <ChannelMask>.
         //
@@ -508,20 +521,53 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::HighPassFilter getHighPassFilter(const ChannelMask& mask) const;
 
+        //Function: getDebounceFilter
+        //  Reads the Debounce Filter of the specified <ChannelMask> currently set on the Node.
+        //
+        //Parameters:
+        //  mask - The <ChannelMask> of the debounce filter to read.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Debounce Filter is not supported for the provided <ChannelMask>.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        uint16 getDebounceFilter(const ChannelMask& mask) const;
+
         //Function: getGaugeFactor
         //    Reads the gauge factor of the specified <ChannelMask> currently set on the Node.
         //
         //Parameters:
         //    mask - The <ChannelMask> of the gauge factor to read.
         //
-        //Returns:
-        //    The gauge factor currently set on the Node for the <ChannelMask>.
-        //
         //Exceptions:
         //    - <Error_NotSupported>: Gauge Factor is not supported for the provided <ChannelMask>.
         //    - <Error_NodeCommunication>: Failed to read from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         float getGaugeFactor(const ChannelMask& mask) const;
+
+        //Function: getExcitationVoltage
+        //  Reads the Excitation <WirelessTypes::Voltage> currently set on the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Excitation Voltage is not supported.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::Voltage getExcitationVoltage() const;
+
+        //Function: getAdcVoltageRef
+        //  Reads the ADC <WirelessTypes::Voltage> Reference of the Node.
+        //
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: ADC Voltage is not supported.
+        WirelessTypes::Voltage getAdcVoltageRef() const;
+
+        //Function: getGainAmplifierVoltageRef
+        //  Reads the Gain Amplifier <WirelessTypes::Voltage> Reference of the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: ADC Voltage is not supported.
+        WirelessTypes::Voltage getGainAmplifierVoltageRef() const;
 
         //Function: getGaugeResistance
         //  Reads the gauge resistance currently set on the Node.
@@ -594,6 +640,18 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to read from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::ThermocoupleType getThermocoupleType(const ChannelMask& mask) const;
+
+        //Function: getTempSensorOptions
+        //    Reads the <TempSensorOptions> of the specified <ChannelMask> currently set on the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> of the TempSensorOptions to read.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: TempSensorOptions is not supported for the provided <ChannelMask>.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        TempSensorOptions getTempSensorOptions(const ChannelMask& mask) const;
 
         //Function: getFatigueOptions
         //    Reads the <FatigueOptions> currently set on the Node.

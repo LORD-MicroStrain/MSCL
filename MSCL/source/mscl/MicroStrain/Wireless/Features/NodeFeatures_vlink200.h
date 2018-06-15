@@ -5,13 +5,13 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "NodeFeatures.h"
+#include "NodeFeatures_200series.h"
 
 namespace mscl
 {
     //Class: NodeFeatures_vlink200
     //    Contains information on features for the V-Link2 node. Inherits from <NodeFeatures>.
-    class NodeFeatures_vlink200 : public NodeFeatures
+    class NodeFeatures_vlink200 : public NodeFeatures_200series
     {
     private:
         NodeFeatures_vlink200();    //disabled default constructor
@@ -26,18 +26,8 @@ namespace mscl
     public:
         virtual bool supportsSensorDelayConfig() const override;
 
-        virtual WirelessTypes::TransmitPower maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const override;
-
-        virtual WirelessTypes::TransmitPower minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const override;
-
-        virtual const WirelessTypes::DataFormats dataFormats() const final;
-
-        virtual const WirelessTypes::SamplingModes samplingModes() const override;
-
         virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
         virtual const WirelessTypes::Filters antiAliasingFilters() const override;
-
-        virtual const WirelessTypes::StorageLimitModes storageLimitModes() const;
     };
 }

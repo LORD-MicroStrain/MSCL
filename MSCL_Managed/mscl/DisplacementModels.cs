@@ -45,7 +45,7 @@ public class DisplacementModels : global::System.IDisposable {
   }
 
   public enum NodeModel {
-    node_digitalDemod = 61302000
+    node_digitalDemod = 6130
   }
 
 }

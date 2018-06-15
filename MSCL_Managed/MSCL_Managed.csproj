@@ -140,8 +140,8 @@
     <Compile Include="mscl\InertialModels.cs" />
     <Compile Include="mscl\InertialNode.cs" />
     <Compile Include="mscl\InertialTypes.cs" />
+    <Compile Include="mscl\InputRangeEntry.cs" />
     <Compile Include="mscl\InputRanges.cs" />
-    <Compile Include="mscl\LibVersion.cs" />
     <Compile Include="mscl\LinearEquation.cs" />
     <Compile Include="mscl\LoggedDataSweep.cs" />
     <Compile Include="mscl\LoggedDataSweeps.cs" />
@@ -158,6 +158,7 @@
     <Compile Include="mscl\MipNodeFeatures.cs" />
     <Compile Include="mscl\MipPacket.cs" />
     <Compile Include="mscl\MipTypes.cs" />
+    <Compile Include="mscl\mscl.cs" />
     <Compile Include="mscl\msclPINVOKE.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -182,6 +183,7 @@
     <Compile Include="mscl\StructuralHealth.cs" />
     <Compile Include="mscl\SyncNetworkInfo.cs" />
     <Compile Include="mscl\SyncSamplingNetwork.cs" />
+    <Compile Include="mscl\TempSensorOptions.cs" />
     <Compile Include="mscl\TimeSpan.cs" />
     <Compile Include="mscl\Timestamp.cs" />
     <Compile Include="mscl\TimeUpdate.cs" />
@@ -192,6 +194,7 @@
     <Compile Include="mscl\ValueType.cs" />
     <Compile Include="mscl\Vector.cs" />
     <Compile Include="mscl\Version.cs" />
+    <Compile Include="mscl\Voltages.cs" />
     <Compile Include="mscl\WirelessChannel.cs" />
     <Compile Include="mscl\WirelessChannels.cs" />
     <Compile Include="mscl\WirelessDataPoint.cs" />

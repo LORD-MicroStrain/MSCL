@@ -40,7 +40,7 @@ namespace mscl
 
     public:
         //Constructor: MipNode_Impl
-        //    Creates an MipNode_Impl object.
+        //    Creates a MipNode_Impl object.
         //
         //Parameters:
         //    connection - The Connection object used for communication.

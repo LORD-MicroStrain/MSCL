@@ -40,8 +40,8 @@ public class BaseStationFeatures : global::System.IDisposable {
     }
   }
 
-  public virtual bool supportsTransmitPower(WirelessTypes.TransmitPower power) {
-    bool ret = msclPINVOKE.BaseStationFeatures_supportsTransmitPower(swigCPtr, (int)power);
+  public virtual bool supportsTransmitPower(WirelessTypes.TransmitPower power, WirelessTypes.CommProtocol commProtocol) {
+    bool ret = msclPINVOKE.BaseStationFeatures_supportsTransmitPower(swigCPtr, (int)power, (int)commProtocol);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -94,14 +94,26 @@ public class BaseStationFeatures : global::System.IDisposable {
     return ret;
   }
 
-  public virtual TransmitPowers transmitPowers() {
-    TransmitPowers ret = new TransmitPowers(msclPINVOKE.BaseStationFeatures_transmitPowers(swigCPtr), true);
+  public virtual TransmitPowers transmitPowers(WirelessTypes.CommProtocol commProtocol) {
+    TransmitPowers ret = new TransmitPowers(msclPINVOKE.BaseStationFeatures_transmitPowers(swigCPtr, (int)commProtocol), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public virtual CommProtocols commProtocols() {
     CommProtocols ret = new CommProtocols(msclPINVOKE.BaseStationFeatures_commProtocols(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual WirelessTypes.TransmitPower maxTransmitPower(WirelessTypes.RegionCode region, WirelessTypes.CommProtocol commProtocol) {
+    WirelessTypes.TransmitPower ret = (WirelessTypes.TransmitPower)msclPINVOKE.BaseStationFeatures_maxTransmitPower(swigCPtr, (int)region, (int)commProtocol);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual WirelessTypes.TransmitPower minTransmitPower(WirelessTypes.RegionCode region, WirelessTypes.CommProtocol commProtocol) {
+    WirelessTypes.TransmitPower ret = (WirelessTypes.TransmitPower)msclPINVOKE.BaseStationFeatures_minTransmitPower(swigCPtr, (int)region, (int)commProtocol);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

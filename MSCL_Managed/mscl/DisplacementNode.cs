@@ -197,6 +197,16 @@ public class DisplacementNode : global::System.IDisposable {
     return ret;
   }
 
+  public void setDeviceTime() {
+    msclPINVOKE.DisplacementNode_setDeviceTime__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void setDeviceTime(ulong nanoseconds) {
+    msclPINVOKE.DisplacementNode_setDeviceTime__SWIG_1(swigCPtr, nanoseconds);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
 }
 
 }

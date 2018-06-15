@@ -17,6 +17,15 @@ namespace mscl
     {
     }
 
+    WirelessTypes::Voltage WirelessNodeConfig::curExcitationVoltage(const NodeEepromHelper& eeprom) const
+    {
+        //if its currently set in the config, return the set value
+        if(isSet(m_excitationVoltage)) { return *m_excitationVoltage; }
+
+        //not set, so read the value from the node
+        return eeprom.read_excitationVoltage();
+    }
+
     WirelessTypes::TransmitPower WirelessNodeConfig::curTransmitPower(const NodeEepromHelper& eeprom) const
     {
         //if its currently set in the config, return the set value
@@ -137,6 +146,15 @@ namespace mscl
         return eeprom.read_settlingTime(mask);
     }
 
+    WirelessTypes::Filter WirelessNodeConfig::curLowPassFilter(const ChannelMask& mask, const NodeEepromHelper& eeprom) const
+    {
+        //if its currently set in the config, return the set value
+        if(isSet(m_lowPassFilters, mask)) { return m_lowPassFilters.at(mask); }
+
+        //not set, so read the value from the node
+        return eeprom.read_lowPassFilter(mask);
+    }
+
     void WirelessNodeConfig::curEventTriggerDurations(const NodeEepromHelper& eeprom, uint32& pre, uint32& post) const
     {
         //if its currently set in the config, return the set value
@@ -211,6 +229,29 @@ namespace mscl
         }
 
         return (curDerivedMask(derivedChannel, eeprom).count() > 0);
+    }
+
+    bool WirelessNodeConfig::findGroupWithChannelAndSetting(const ChannelMask& mask, WirelessTypes::ChannelGroupSetting setting, const NodeFeatures& features, ChannelGroup& foundGroup) const
+    {
+        //loop through all supported channel groups
+        for(const auto& group : features.channelGroups())
+        {
+            for(uint8 ch = 1; ch <= ChannelMask::MAX_CHANNELS; ch++)
+            {
+                //check each channel in the group
+                if(mask.enabled(ch))
+                {
+                    //if this group has the requested setting, and at least one of the the same channels as the mask
+                    if(group.hasSettingAndChannel(setting, ch))
+                    {
+                        foundGroup = group;
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     ConfigIssue::ConfigOption WirelessNodeConfig::findDerivedMaskConfigIssue(WirelessTypes::DerivedChannelType channel)
@@ -392,6 +433,15 @@ namespace mscl
             if(!features.supportsGaugeResistance())
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_GAUGE_RESISTANCE, "Gauge Resistance is not supported by this Node."));
+            }
+        }
+
+        //Excitation Voltage
+        if(isSet(m_excitationVoltage))
+        {
+            if(!features.supportsExcitationVoltageConfig())
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EXCITATION_VOLTAGE, "Excitation Voltage is not supported by this Node."));
             }
         }
 
@@ -660,9 +710,13 @@ namespace mscl
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_INPUT_RANGE, "Input Range is not supported for the provided Channel Mask.", range.first));
             }
             //verify the specific input range is acceptable for the channel mask
-            else if(!features.supportsInputRange(range.second, range.first))
+            else if(!features.supportsExcitationVoltageConfig() && !features.supportsInputRange(range.second, range.first))
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_INPUT_RANGE, "The provided Input Range is not valid for the provided Channel Mask.", range.first));
+            }
+            else if (features.supportsExcitationVoltageConfig() && !features.supportsInputRange(range.second, range.first, curExcitationVoltage(eeprom))) {
+
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_INPUT_RANGE, "The provided Input Range is not valid for the provided Channel Mask and Excitation Voltage", range.first));
             }
         }
 
@@ -743,6 +797,34 @@ namespace mscl
             if(!features.supportsChannelSetting(WirelessTypes::chSetting_thermocoupleType, type.first))
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_THERMOCOUPLE_TYPE, "Thermocouple Type is not supported for the provided Channel Mask.", type.first));
+            }
+        }
+
+        //Temp Sensor Options
+        for(const auto& opts : m_tempSensorOptions)
+        {
+            //verify TempSensorOptions are supported for the channel mask
+            if(!features.supportsChannelSetting(WirelessTypes::chSetting_tempSensorOptions, opts.first))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_TEMP_SENSOR_OPTS, "TempSensorOptions are not supported for the provided Channel Mask.", opts.first));
+            }
+        }
+
+        //Debounce Filters
+        for(const auto& filters : m_debounceFilters)
+        {
+            if(!features.supportsChannelSetting(WirelessTypes::chSetting_debounceFilter, filters.first))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DEBOUNCE_FILTER, "Debounce Filter is not supported for the provided Channel Mask.", filters.first));
+            }
+        }
+
+        //Pull-up Resistors
+        for(const auto& flags : m_pullUpResistors)
+        {
+            if(!features.supportsChannelSetting(WirelessTypes::chSetting_pullUpResistor, flags.first))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_PULLUP_RESISTOR, "Pull-Up Resistor is not supported for the provided Channel Mask.", flags.first));
             }
         }
 
@@ -953,8 +1035,34 @@ namespace mscl
                         if(settlingTime > maxSettlingTime)
                         {
                             outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_FILTER_SETTLING_TIME, "The Filter Settling Time exceeds the max for the current Sample Rate.",group.channels()));
-
                             outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE,"The Filter Settling Time exceeds the max for the current Sample Rate.",group.channels()));
+                        }
+                    }
+                }
+            }
+        }
+
+        //veriy Low Pass Filters with Sample Rate
+        if(features.supportsLowPassFilter() && (isSet(m_sampleRate) || isAnySet(m_lowPassFilters)))
+        {
+            WirelessTypes::Filter lpf;
+
+            WirelessTypes::Filter minLpf = features.minLowPassFilter(SampleRate::FromWirelessEepromValue(curSampleRate(eeprom)));
+
+            for(const auto& group : features.channelGroups())
+            {
+                for(const auto& setting : group.settings())
+                {
+                    //filter settling time setting
+                    if(setting == WirelessTypes::chSetting_lowPassFilter)
+                    {
+                        //get the current settling time for this channel group
+                        lpf = curLowPassFilter(group.channels(), eeprom);
+
+                        if(lpf < minLpf)
+                        {
+                            outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_LOW_PASS_FILTER, "The Low Pass Filter is below the min for the current Sample Rate.", group.channels()));
+                            outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE, "The Low Pass Filter is below the min for the current Sample Rate.", group.channels()));
                         }
                     }
                 }
@@ -1150,6 +1258,9 @@ namespace mscl
         //write gauge resistance
         if(isSet(m_gaugeResistance)) { eeprom.write_gaugeResistance(*m_gaugeResistance); }
 
+        //write excitation voltage
+        if(isSet(m_excitationVoltage)) { eeprom.write_excitationVoltage(*m_excitationVoltage); }
+
         //write number of active gauges
         if(isSet(m_numActiveGauges)) { eeprom.write_numActiveGauges(*m_numActiveGauges); }
 
@@ -1237,10 +1348,21 @@ namespace mscl
             eeprom.write_derivedChannelMask(mask.first, mask.second);
         }
 
-        //write Hardware Gain(s)
-        for(const auto& range : m_inputRanges)
+        //write Input Range(s)
+        if(features.supportsExcitationVoltageConfig())
         {
-            eeprom.write_inputRange(range.first, range.second);
+            WirelessTypes::Voltage exVoltage = curExcitationVoltage(eeprom);
+            for(const auto& range : m_inputRanges)
+            {
+                eeprom.write_inputRange(range.first, exVoltage, range.second);
+            }
+        }
+        else
+        {
+            for(const auto& range : m_inputRanges)
+            {
+                eeprom.write_inputRange(range.first, range.second);
+            }
         }
 
         //write Hardware Offset(s)
@@ -1301,6 +1423,24 @@ namespace mscl
         for(const auto& type : m_thermoTypes)
         {
             eeprom.write_thermoType(type.first, type.second);
+        }
+
+        //write Temp Sensor Options
+        for(const auto& opts : m_tempSensorOptions)
+        {
+            eeprom.write_tempSensorOptions(opts.first, opts.second);
+        }
+
+        //write Debounce Filters
+        for(const auto& filters : m_debounceFilters)
+        {
+            eeprom.write_debounceFilter(filters.first, filters.second);
+        }
+
+        //write pull-up resistors
+        for(const auto& flags : m_pullUpResistors)
+        {
+            eeprom.write_pullUpResistor(flags.first, flags.second);
         }
 
         //write Communication Protocol
@@ -1521,6 +1661,17 @@ namespace mscl
         m_gaugeResistance = resistance;
     }
 
+    WirelessTypes::Voltage WirelessNodeConfig::excitationVoltage() const
+    {
+        checkValue(m_excitationVoltage, "Excitation Voltage");
+        return *m_excitationVoltage;
+    }
+
+    void WirelessNodeConfig::excitationVoltage(WirelessTypes::Voltage voltage)
+    {
+        m_excitationVoltage = voltage;
+    }
+
     uint16 WirelessNodeConfig::numActiveGauges() const
     {
         checkValue(m_numActiveGauges, "Number of Active Gauges");
@@ -1580,6 +1731,36 @@ namespace mscl
     void WirelessNodeConfig::thermocoupleType(const ChannelMask& mask, WirelessTypes::ThermocoupleType type)
     {
         setChannelMapVal(m_thermoTypes, mask, type);
+    }
+
+    TempSensorOptions WirelessNodeConfig::tempSensorOptions(const ChannelMask& mask) const
+    {
+        return getChannelMapVal(m_tempSensorOptions, mask, "Temperature Sensor Options");
+    }
+
+    void WirelessNodeConfig::tempSensorOptions(const ChannelMask& mask, const TempSensorOptions& options)
+    {
+        setChannelMapVal(m_tempSensorOptions, mask, options);
+    }
+
+    uint16 WirelessNodeConfig::debounceFilter(const ChannelMask& mask) const
+    {
+        return getChannelMapVal(m_debounceFilters, mask, "Debounce Filter");
+    }
+
+    void WirelessNodeConfig::debounceFilter(const ChannelMask& mask, uint16 milliseconds)
+    {
+        setChannelMapVal(m_debounceFilters, mask, milliseconds);
+    }
+
+    bool WirelessNodeConfig::pullUpResistor(const ChannelMask& mask) const
+    {
+        return getChannelMapVal(m_pullUpResistors, mask, "Pull-Up Resistor");
+    }
+
+    void WirelessNodeConfig::pullUpResistor(const ChannelMask& mask, bool enable)
+    {
+        setChannelMapVal(m_pullUpResistors, mask, enable);
     }
 
     const FatigueOptions& WirelessNodeConfig::fatigueOptions() const

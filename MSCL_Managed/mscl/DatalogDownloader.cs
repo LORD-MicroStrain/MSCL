@@ -44,7 +44,7 @@ public class DatalogDownloader : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public DatalogDownloader(WirelessNode node, ushort startAddress, uint size) : this(msclPINVOKE.new_DatalogDownloader__SWIG_1(WirelessNode.getCPtr(node), startAddress, size), true) {
+  public DatalogDownloader(WirelessNode node, uint startAddress, uint size) : this(msclPINVOKE.new_DatalogDownloader__SWIG_1(WirelessNode.getCPtr(node), startAddress, size), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

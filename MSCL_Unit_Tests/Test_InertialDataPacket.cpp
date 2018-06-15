@@ -39,12 +39,12 @@ BOOST_AUTO_TEST_CASE(InertialDataPacket_ParseValidData)
     b.push_back(0x00);
     b.push_back(0x00);
 
-    //create an MipPacket with legitimate data
+    //create a MipPacket with legitimate data
     MipPacket p;
     p.descriptorSet(DescriptorSet::DESC_SET_DATA_SENSOR);
     p.payload(b);
 
-    //create an MipDataPacket with the MipPacket, which should immediately parse the data for fields and data points
+    //create a MipDataPacket with the MipPacket, which should immediately parse the data for fields and data points
     MipDataPacket packet(p);
 
     //make sure it found valid data points
@@ -77,12 +77,12 @@ BOOST_AUTO_TEST_CASE(InertialDataPacket_ParseValidData_multipleFields)
     bytes.append_float(0.0f);            //Gyro 2 float
     bytes.append_float(0.0f);            //Gyro 3 float
 
-    //create an MipPacket with legitimate data
+    //create a MipPacket with legitimate data
     MipPacket p;
     p.descriptorSet(DescriptorSet::DESC_SET_DATA_SENSOR);
     p.payload(bytes.data());
 
-    //create an MipDataPacket with the MipPacket, which should immediately parse the data for fields and data points
+    //create a MipDataPacket with the MipPacket, which should immediately parse the data for fields and data points
     MipDataPacket packet(p);
 
     //make sure it found valid data points

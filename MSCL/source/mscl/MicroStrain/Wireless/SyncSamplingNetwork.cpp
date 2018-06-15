@@ -426,6 +426,7 @@ namespace mscl
 
             uint16 totalChannels = config.activeChannelCount();
             SampleRate sampleRate = config.sampleRate();
+            bool diagnosticPacketEnabled = (config.diagnosticInterval() > 0);
             uint8 bytesPerSample = WirelessTypes::dataFormatSize(config.dataFormat());
 
             uint32 maxRetransmissionPerBurst = 0;
@@ -445,8 +446,8 @@ namespace mscl
             switch(m_commProtocol)
             {
                 case WirelessTypes::commProtocol_lxrsPlus:
-                    maxBytes = 207;//432;
-                    derivedMaxBytes = 207.0f;//432.0f;
+                    maxBytes = 207;
+                    derivedMaxBytes = 207.0f;
                     break;
 
                 case WirelessTypes::commProtocol_lxrs:
@@ -494,7 +495,6 @@ namespace mscl
                     rawPacketsPerGroup = static_cast<float>(sampleRate.samplesPerSecond() * groupSize * nodeInfo.m_bytesPerSweep / maxBytes);
                 }
             }
-            
 
             //Derived Channels enabled
             if(mode.derivedModeEnabled)
@@ -565,7 +565,7 @@ namespace mscl
             else
             {
                 //update transmissions per group for continuous mode
-                float overheadFactor = SyncSamplingFormulas::overheadFactor(m_lossless, optimizeBandwidth, sampleRate, nodeInfo.syncSamplingVersion());
+                float overheadFactor = SyncSamplingFormulas::overheadFactor(m_lossless, optimizeBandwidth, diagnosticPacketEnabled, sampleRate, nodeInfo.syncSamplingVersion());
                 txPerGroup = Utils::ceilBase2(std::ceil((rawPacketsPerGroup + derivedPacketsPerGroup) * overheadFactor));
             }
 

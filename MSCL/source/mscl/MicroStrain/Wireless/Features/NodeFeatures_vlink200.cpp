@@ -12,17 +12,17 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
     NodeFeatures_vlink200::NodeFeatures_vlink200(const NodeInfo& info):
-        NodeFeatures(info)
+        NodeFeatures_200series(info)
     {
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential 1");
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential, "Differential 2");
-        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_fullDifferential, "Differential 3");
-        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_fullDifferential, "Differential 4");
-        m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_singleEnded, "Single-ended");
-        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_singleEnded, "Single-ended");
-        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_singleEnded, "Single-ended");
-        m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_singleEnded, "Single-ended");
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential 1", 18);
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential, "Differential 2", 18);
+        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_fullDifferential, "Differential 3", 18);
+        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_fullDifferential, "Differential 4", 18);
+        m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_singleEnded, "Single-ended 1", 18);
+        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_singleEnded, "Single-ended 2", 18);
+        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_singleEnded, "Single-ended 3", 18);
+        m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_singleEnded, "Single-ended 4", 18);
 
 
         //Channel Groups
@@ -106,49 +106,6 @@ namespace mscl
         return true;
     }
 
-    WirelessTypes::TransmitPower NodeFeatures_vlink200::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
-    {
-        if(region == WirelessTypes::region_japan)
-        {
-            return WirelessTypes::power_16dBm;
-        }
-
-        return NodeFeatures::maxTransmitPower(region, commProtocol);
-    }
-
-    WirelessTypes::TransmitPower NodeFeatures_vlink200::minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
-    {
-        if(region == WirelessTypes::region_japan)
-        {
-            return WirelessTypes::power_5dBm;
-        }
-
-        return NodeFeatures::minTransmitPower(region, commProtocol);
-    }
-
-    const WirelessTypes::DataFormats NodeFeatures_vlink200::dataFormats() const
-    {
-        //build and return the data formats that are supported
-        WirelessTypes::DataFormats result;
-        result.push_back(WirelessTypes::dataFormat_raw_uint16);
-        result.push_back(WirelessTypes::dataFormat_raw_uint24);
-        result.push_back(WirelessTypes::dataFormat_cal_float);
-        return result;
-    }
-
-    const WirelessTypes::SamplingModes NodeFeatures_vlink200::samplingModes() const
-    {
-        //build and return the sampling modes that are supported
-        WirelessTypes::SamplingModes result;
-
-        result.push_back(WirelessTypes::samplingMode_sync);
-        result.push_back(WirelessTypes::samplingMode_syncBurst);
-        result.push_back(WirelessTypes::samplingMode_nonSync);
-        result.push_back(WirelessTypes::samplingMode_syncEvent);
-
-        return result;
-    }
-
     const WirelessTypes::WirelessSampleRates NodeFeatures_vlink200::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
         //the list of sample rates varies for each sampling mode
@@ -157,26 +114,26 @@ namespace mscl
         case WirelessTypes::samplingMode_nonSync:
             if(dataCollectionMethod == WirelessTypes::collectionMethod_logOnly)
             {
-                return AvailableSampleRates::continuous_log_gen2;
+                return AvailableSampleRates::continuous_log_vlink200;
             }
             else
             {
-                return AvailableSampleRates::continuous_nonSync_gen2;
+                return AvailableSampleRates::continuous_nonSync_vlink200;
             }
 
         case WirelessTypes::samplingMode_sync:
             if(dataCollectionMethod == WirelessTypes::collectionMethod_logOnly) 
             {
-                return AvailableSampleRates::continuous_log_gen2;
+                return AvailableSampleRates::continuous_log_vlink200;
             }
             else
             {
-                return AvailableSampleRates::continuous_sync_gen2;
+                return AvailableSampleRates::continuous_sync_vlink200;
             }
 
         case WirelessTypes::samplingMode_syncBurst:
         case WirelessTypes::samplingMode_syncEvent:
-            return AvailableSampleRates::burst_gen2;
+            return AvailableSampleRates::burst_vlink200;
 
         default:
             throw Error_NotSupported("The sampling mode is not supported by this Node");
@@ -194,13 +151,5 @@ namespace mscl
             {WirelessTypes::filter_128hz}
         };
         return filters;
-    }
-
-    const WirelessTypes::StorageLimitModes NodeFeatures_vlink200::storageLimitModes() const
-    {
-        WirelessTypes::StorageLimitModes modes;
-        modes.push_back(WirelessTypes::storageLimit_stop);
-        modes.push_back(WirelessTypes::storageLimit_overwrite);
-        return modes;
     }
 }

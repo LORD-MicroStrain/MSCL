@@ -64,7 +64,7 @@ namespace mscl
         }
     }
 
-    DatalogDownloader::DatalogDownloader(const WirelessNode& node, uint16 startAddress, uint32 size):
+    DatalogDownloader::DatalogDownloader(const WirelessNode& node, uint32 startAddress, uint32 size):
         m_node(node),
         m_foundFirstTrigger(false),
         m_outOfMemory(false),
@@ -445,9 +445,6 @@ namespace mscl
                 m_sessionInfo.sampleRate = SampleRate::FromWirelessEepromValue(rawRate);
                 m_sessionInfo.timeBetweenSweeps = m_sessionInfo.sampleRate.samplePeriod().getNanoseconds();
 
-                //update the timestampCounter with the new timestamp, and adjust sample rate if sweep type has changed
-                m_sessionInfo.tsCounter.reset(sampleRate(), newTimestamp);
-
                 //read the active channel mask
                 m_sessionInfo.activeChannels = ChannelMask(m_nodeMemory->read_uint16(Utils::littleEndian));
 
@@ -473,6 +470,9 @@ namespace mscl
                 }
 
                 m_sessionInfo.derivedTimeBetweenSweeps = m_sessionInfo.derivedRate.samplePeriod().getNanoseconds();
+
+                //update the timestampCounter with the new timestamp, and adjust sample rate if sweep type has changed
+                m_sessionInfo.tsCounter.reset(sampleRate(), newTimestamp);
 
                 //parse the raw calibration data
                 parseRawCalData();
@@ -635,6 +635,7 @@ namespace mscl
 
                     //uint24 (get as a uint32)
                     case WirelessTypes::dataType_uint24:
+                        case WirelessTypes::dataType_uint24_18bitRes:
                         dataPoint = m_nodeMemory->read_uint24(dataEndian);
                         break;
 
@@ -643,6 +644,14 @@ namespace mscl
                     {
                         uint32 val = m_nodeMemory->read_uint16(dataEndian);
                         dataPoint = (val << 2);
+                        break;
+                    }
+
+                    //uint16 value (from 24-bit node, shift bits)
+                    case WirelessTypes::dataType_uint16_24bitTrunc:
+                    {
+                        uint32 val = m_nodeMemory->read_uint16(dataEndian);
+                        dataPoint = (val << 8);
                         break;
                     }
 

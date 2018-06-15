@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2017 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -72,19 +72,20 @@ namespace mscl
         operator ByteStream() const;
 
     private:
-	// Private Constructors.  Use static accessor classes to create an object.
+        // Private Constructors.  Use static accessor classes to create an object.
         GNSS_ConstellationSettings(MipTypes::FunctionSelector function_selector, ConstellationSettingsData dataToUse);
         GNSS_ConstellationSettings(MipTypes::FunctionSelector function_selector);
 
-        //Variable: m_data
-        //    The <ConstellationSettingsData> to send to the device.
         //Variable: m_functionSelector
         //    The <MipTypes::FunctionSelector> type of command to send, get/set, reset to factory defaults, et al.
-        ConstellationSettingsData m_data;
         MipTypes::FunctionSelector m_functionSelector;
 
+        //Variable: m_data
+        //    The <ConstellationSettingsData> to send to the device.
+        ConstellationSettingsData m_data;
+
     public:
-	// Destructor
+        // Destructor
         ~GNSS_ConstellationSettings() { }
     };
 

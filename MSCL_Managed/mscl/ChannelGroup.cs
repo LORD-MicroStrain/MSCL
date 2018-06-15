@@ -74,6 +74,12 @@ public class ChannelGroup : global::System.IDisposable {
     return ret;
   }
 
+  public bool hasSettingAndChannel(WirelessTypes.ChannelGroupSetting setting, byte channelNumber) {
+    bool ret = msclPINVOKE.ChannelGroup_hasSettingAndChannel(swigCPtr, (int)setting, channelNumber);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }
 
 }

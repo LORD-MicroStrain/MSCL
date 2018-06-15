@@ -153,7 +153,7 @@
       </EntryPointSymbol>
       <NoEntryPoint>false</NoEntryPoint>
       <SubSystem>Console</SubSystem>
-      <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/SAFESEH:NO /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>libboost_system-vc140-mt-sgd-1_64.lib;libsslMTd.lib;libcryptoMTd.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -176,6 +176,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -183,7 +184,7 @@
       </EntryPointSymbol>
       <NoEntryPoint>false</NoEntryPoint>
       <SubSystem>Console</SubSystem>
-      <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/SAFESEH:NO /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>libboost_system-vc140-mt-sgd-1_64.lib;libsslMTd.lib;libcryptoMTd.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>

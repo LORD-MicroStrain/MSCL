@@ -11,6 +11,15 @@
 namespace mscl {
 
 public class mscl {
+  public static Version MSCL_VERSION {
+    get {
+      global::System.IntPtr cPtr = msclPINVOKE.MSCL_VERSION_get();
+      Version ret = (cPtr == global::System.IntPtr.Zero) ? null : new Version(cPtr, false);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
 }
 
 }

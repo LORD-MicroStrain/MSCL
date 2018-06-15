@@ -14,7 +14,6 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Configuration/BaseStationConfig.h"
 #include "Features/BaseStationFeatures.h"
 #include "Commands/AutoCal.h"
-#include "Commands/AutoCalInfo.h"
 #include "Commands/DatalogSessionInfoResult.h"
 
 namespace mscl
@@ -408,14 +407,10 @@ namespace mscl
     }
 
     bool BaseStation::node_autoShuntCal(const WirelessProtocol& protocol,
-                                        NodeAddress nodeAddress,
-                                        const ShuntCalCmdInfo& commandInfo,
-                                        uint8 chNum,
-                                        WirelessModels::NodeModel nodeType,
-                                        WirelessTypes::ChannelType chType,
+                                        const AutoCalCmdDetails& commandDetails,
                                         AutoCalResult& result)
     {
-        return m_impl->node_autoShuntCal(protocol, nodeAddress, commandInfo, chNum, nodeType, chType, result);
+        return m_impl->node_autoShuntCal(protocol, commandDetails, result);
     }
 
     bool BaseStation::node_readSingleSensor(NodeAddress nodeAddress, uint8 channelNumber, uint16& result)

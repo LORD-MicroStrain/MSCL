@@ -24,14 +24,14 @@ namespace mscl
         MipDataField();
 
         //Constructor: MipDataField
-        //    Creates an MipDataField with the given fieldId and no field data
+        //    Creates a MipDataField with the given fieldId and no field data
         //
         //Parameters:
         //    fieldId - The field id describing the type of the field data
         explicit MipDataField(uint16 fieldId);
 
         //Constructor: MipDataField
-        //    Creates an MipDataField with the given fieldId and field data
+        //    Creates a MipDataField with the given fieldId and field data
         //
         //Parameters:
         //    fieldId - The field id describing the type of the field data
