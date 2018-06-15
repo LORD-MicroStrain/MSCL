@@ -1,4 +1,4 @@
-[Download the MSCL Binaries (35.1.2)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v35.1.2/MSCL_35.1.2.zip) (Windows)
+[Download the MSCL Binaries (41.0.8)](https://github.com/LORD-MicroStrain/MSCL/releases/download/v41.0.8/MSCL_41.0.8.zip) (Windows)
 
 [Building MSCL on Windows](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme_Windows.md)
 
