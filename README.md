@@ -1,12 +1,13 @@
 ### MSCL - The MicroStrain Communication Library
 
-#### Pre-built MSCL Windows Binaries (v44.0.2)
+#### Downloads
+##### Pre-built MSCL Windows Binaries (v44.0.2)
 [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v44.0.2/mscl_44.0.2_Windows_C++.zip) | 
 [Python 2.7](https://github.com/LORD-MicroStrain/MSCL/releases/download/v44.0.2/mscl_44.0.2_Windows_Python2.7.zip) |
 [Python 3.6](https://github.com/LORD-MicroStrain/MSCL/releases/download/v44.0.2/mscl_44.0.2_Windows_Python3.6.zip) |
 [.NET](https://github.com/LORD-MicroStrain/MSCL/releases/download/v44.0.2/mscl_44.0.2_Windows_DotNet.zip)
 
-#### Pre-built MSCL Linux Packages (v44.0.2)
+##### Pre-built MSCL Linux Packages (v44.0.2)
 Ubuntu 16.04: 
 [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v44.0.2/c++-mscl_44.0.2_amd64_ubuntu16.04.deb) |
 [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v44.0.2/python2-mscl_44.0.2_amd64_ubuntu16.04.deb) |
