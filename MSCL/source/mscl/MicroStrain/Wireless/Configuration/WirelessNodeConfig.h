@@ -151,13 +151,21 @@ namespace mscl
         //  The <WirelessTypes::WirelessSampleRate> for all Derived Channels to set.
         boost::optional<WirelessTypes::WirelessSampleRate> m_derivedDataRate;
 
+        //Variable: m_derivedVelocityUnit
+        //  The <WirelessTypes::DerivedVelocityUnit> to set.
+        boost::optional<WirelessTypes::DerivedVelocityUnit> m_derivedVelocityUnit;
+
         //Variable: m_commProtocol
         //  The <WirelessTypes::CommProtocol> to set.
         boost::optional<WirelessTypes::CommProtocol> m_commProtocol;
 
+        //Variable: m_sensorOutputMode
+        //  The <WirelessTypes::SensorOutputMode> to set.
+        boost::optional<WirelessTypes::SensorOutputMode> m_sensorOutputMode;
+
         //Variable: m_derivedChannelMasks
-        //  The map of <WirelessTypes::DerivedChannelType> to <ChannelMask> to set for Derived Channels' Masks.
-        std::map<WirelessTypes::DerivedChannelType, ChannelMask> m_derivedChannelMasks;
+        //  The map of <WirelessTypes::DerivedCategory> to <ChannelMask> to set for Derived Channels' Masks.
+        std::map<WirelessTypes::DerivedCategory, ChannelMask> m_derivedChannelMasks;
 
         //Variable: m_inputRanges
         //    The map of <ChannelMask> to <WirelessTypes::InputRange> to set.
@@ -289,17 +297,17 @@ namespace mscl
         LinearEquation curLinearEquation(const ChannelMask& mask, const NodeEepromHelper& eeprom) const;
 
         //Function: curDerivedMask
-        //  Gets the derived <ChannelMask> currently set for the given <WirelessTypes::DerivedChannelType>
-        ChannelMask curDerivedMask(WirelessTypes::DerivedChannelType derivedChannel, const NodeEepromHelper& eeprom) const;
+        //  Gets the derived <ChannelMask> currently set for the given <WirelessTypes::DerivedCategory>
+        ChannelMask curDerivedMask(WirelessTypes::DerivedCategory category, const NodeEepromHelper& eeprom) const;
 
         //Function: curDerivedChannelMasks
         //  Gets the <WirelessTypes::DerivedChannelMasks> for all supported derived channel types.
         WirelessTypes::DerivedChannelMasks curDerivedChannelMasks(const NodeEepromHelper& eeprom, const NodeFeatures& features) const;
 
         //Function: isDerivedChannelEnabled
-        //  Checks whether any channels are enabled for the <WirelessTypes::DerivedChannelType>.
+        //  Checks whether any channels are enabled for the <WirelessTypes::DerivedCategory>.
         //  This first checks the config object, and the Node if not set in the config object.
-        bool isDerivedChannelEnabled(WirelessTypes::DerivedChannelType derivedChannel, const NodeEepromHelper& eeprom, const NodeFeatures& features) const;
+        bool isDerivedChannelEnabled(WirelessTypes::DerivedCategory category, const NodeEepromHelper& eeprom, const NodeFeatures& features) const;
 
         //Function: findGroupWithChannelAndSetting
         //  Attempts to find any of the Node's channel groups that support the specified setting,
@@ -458,8 +466,8 @@ namespace mscl
         bool verifyConflicts(const NodeFeatures& features, const NodeEepromHelper& eeprom, ConfigIssues& outIssues) const;
 
         //Function: findDerivedMaskConfigIssue
-        //  Finds the <ConfigIssue::ConfigOption> for the provided <WirelessTypes::DerivedChannelType>.
-        static ConfigIssue::ConfigOption findDerivedMaskConfigIssue(WirelessTypes::DerivedChannelType channel);
+        //  Finds the <ConfigIssue::ConfigOption> for the provided <WirelessTypes::DerivedCategory>.
+        static ConfigIssue::ConfigOption findDerivedMaskConfigIssue(WirelessTypes::DerivedCategory category);
 
         //Function: apply
         //    Writes all of the configuration values that are set to a WirelessNode.
@@ -974,15 +982,26 @@ namespace mscl
         void derivedDataRate(WirelessTypes::WirelessSampleRate rate);
 
         //API Function: derivedChannelMask
-        //  Gets the <ChannelMask> for a specified <WirelessTypes::DerivedChannelType> currently set in this Config object.
+        //  Gets the <ChannelMask> for a specified <WirelessTypes::DerivedCategory> currently set in this Config object.
         //
         //Exceptions:
         //  <Error_NoData> - The requested value has not been set.
-        ChannelMask derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType) const;
+        ChannelMask derivedChannelMask(WirelessTypes::DerivedCategory category) const;
 
         //API Function: derivedChannelMask
-        //  Sets the <ChannelMask> for a specified <WirelessTypes::DerivedChannelType> in this Config object.
-        void derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType, const ChannelMask& mask);
+        //  Sets the <ChannelMask> for a specified <WirelessTypes::DerivedCategory> in this Config object.
+        void derivedChannelMask(WirelessTypes::DerivedCategory category, const ChannelMask& mask);
+
+        //API Function: derivedVelocityUnit
+        //  Gets the <WirelessTypes::DerivedVelocityUnit> currently set in this Config object.
+        //
+        //Exceptions:
+        //  <Error_NoData> - The requested value has not been set.
+        WirelessTypes::DerivedVelocityUnit derivedVelocityUnit() const;
+
+        //API Function: derivedVelocityUnit
+        //  Sets the <WirelessTypes::DerivedVelocityUnit> in this Config object.
+        void derivedVelocityUnit(WirelessTypes::DerivedVelocityUnit unit);
 
         //API Function: communicationProtocol
         //  Gets the <WirelessTypes::CommProtocol> currently set in this Config object.
@@ -994,6 +1013,17 @@ namespace mscl
         //API Function: communicationProtocol
         //  Sets the <WirelessTypes::CommProtocol> in this Config object.
         void communicationProtocol(WirelessTypes::CommProtocol commProtocol);
+
+        //API Function: sensorOutputMode
+        //  Gets the <WirelessTypes::SensorOutputMode> currently set in this Config object.
+        //
+        //Exceptions:
+        //  <Error_NoData> - The requested value has not been set.
+        WirelessTypes::SensorOutputMode sensorOutputMode() const;
+
+        //API Function: sensorOutputMode
+        //  Sets the <WirelessTypes::SensorOutputMode> in this Config object.
+        void sensorOutputMode(WirelessTypes::SensorOutputMode mode);
 
     public:
         //Function: flashBandwidth

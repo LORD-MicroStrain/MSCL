@@ -47,8 +47,8 @@ namespace mscl
         //    response - The <GenericMipCmdResponse> object from which to get formatted data.
         //
         //Returns:
-        //    ConstellationSettingsData - An object with the data returned from the device.
-        static uint16 getResponseData(const GenericMipCmdResponse& response);
+        //    EstimationControlOptions - the object containing the flags returned from the device.
+        static EstimationControlOptions getResponseData(const GenericMipCmdResponse& response);
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.

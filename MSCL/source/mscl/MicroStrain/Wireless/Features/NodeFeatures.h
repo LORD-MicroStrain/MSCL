@@ -466,6 +466,13 @@ namespace mscl
         //  true if the Node supports setting the sensor delay to "Always On", false otherwise
         virtual bool supportsSensorDelayAlwaysOn() const;
 
+        //API Function: supportsSensorOutputMode
+        //  Checks if the Node supports configuration of the Sensor Output Mode.
+        //
+        //Returns:
+        //  true if the Node supports setting the Sensor Output Mode, false otherwise
+        virtual bool supportsSensorOutputMode() const;
+
         //API Function: supportsChannel
         //    Checks if a specific channel is supported (can be enabled) by this Node.
         //
@@ -616,15 +623,15 @@ namespace mscl
         //  true if the Node supports Non-Sync logging with timestamps.
         virtual bool supportsNonSyncLogWithTimestamps() const;
 
-        //API Function: supportsDerivedChannelType
-        //  Checks if the Node supports a specific <WirelessTypes::DerivedChannel>.
+        //API Function: supportsDerivedCategory
+        //  Checks if the Node supports a specific <WirelessTypes::DerivedCategory>.
         //
         //Parameters:
-        //  derivedChannelType - The <WirelessTypes::DerivedChannelType> to check if it is supported.
+        //  derivedChannelOption - The <WirelessTypes::DerivedChannelOption> to check if it is supported.
         //
         //Returns:
         //  true if the specific derived channel is supported, false otherwise.
-        virtual bool supportsDerivedChannelType(WirelessTypes::DerivedChannelType derivedChannelType) const;
+        virtual bool supportsDerivedCategory(WirelessTypes::DerivedCategory category) const;
 
         //API Function: supportsRawDataMode
         //  Checks if the Node supports any form of the Raw Data Mode (raw only, raw + derived, etc).
@@ -639,6 +646,13 @@ namespace mscl
         //Returns:
         //  true if the Node supports any form of the Derived Data Mode.
         virtual bool supportsDerivedDataMode() const;
+
+        //API Function: supportsDerivedVelocityUnitConfig
+        //  Checks if the Node supports configuration of the Derived Velocity Unit.
+        //
+        //Returns:
+        //  true if the Node supports configuration of the Derived Velocity unit, false otherwise.
+        virtual bool supportsDerivedVelocityUnitConfig() const;
 
         //API Function: supportsExcitationVoltageConfig
         //  Checks if the Node supports configuration of its Excitation Voltage.
@@ -968,6 +982,13 @@ namespace mscl
         //  A vector of <WirelessTypes::CommProtocols> that are supported by this Node.
         virtual const WirelessTypes::CommProtocols commProtocols() const;
 
+        //API Function: sensorOutputModes
+        //  Gets a list of <WirelessTypes::SensorOutputModes> that are supported by this Node.
+        //
+        //Returns:
+        //  A vector of <WirelessTypes::SensorOutputModes> that are supported by this Node.
+        virtual const WirelessTypes::SensorOutputModes sensorOutputModes() const;
+
         //API Function: histogramTransmitRates
         //    Gets a list of the Histogram Transmit Rates that are supported by this Node.
         //
@@ -1011,7 +1032,7 @@ namespace mscl
         virtual const WirelessTypes::StorageLimitModes storageLimitModes() const;
 
         //API Function: inputRanges
-        //  Gets a list of <WirelessTypes::InputRanges> that are supported by this Node for the specified channel mask.
+        //  Gets a list of <InputRanges> that are supported by this Node for the specified channel mask.
         //
         //Parameters:
         //  channels - The <ChannelMask> of the channel group to get the supported input ranges for.
@@ -1038,12 +1059,13 @@ namespace mscl
         //  A vector of <WirelessTypes::DataModes> supported by the Node.
         virtual const WirelessTypes::DataModes dataModes() const;
 
-        //API Function: derivedChannelTypes
-        //  Gets a list of <WirelessTypes::DerivedChannelTypes> that are supported by this Node.
+        //API Function: channelsPerDerivedCategory
+        //  Gets a map of <WirelessTypes::DerivedCategory> to <ChannelMask>s that are supported by this Node.
+        //  The ChannelMask indicates the raw channels that are available for the derived category.
         //
         //Returns:
-        //  A vector of <WirelessTypes::DerivedChannelTypes> supported by the Node.
-        virtual const WirelessTypes::DerivedChannelTypes derivedChannelTypes() const;
+        //  A <WirelessTypes::DerivedChannelMasks> map of <WirelessTypes::DerivedCategory> to supported <ChannelMask>s.
+        virtual const WirelessTypes::DerivedChannelMasks channelsPerDerivedCategory() const;
 
         //API Function: excitationVoltages
         //  Gets a list of <WirelessTypes::Voltages> that are supported by the Node for configuration.
@@ -1051,6 +1073,13 @@ namespace mscl
         //Returns:
         //  A vector of <WirelessTypes::Voltage>s supported by the Node for configuration
         virtual const WirelessTypes::Voltages excitationVoltages() const;
+
+        //API Function: adcVoltageInputType
+        //  Gets the input voltage type of the ADC for this node.
+        //
+        //Returns:
+        //  The <WirelessTypes::VoltageType> that represents the structure of the node's ADC.
+        virtual const WirelessTypes::VoltageType adcVoltageInputType() const;
 
         //API Function: maxTransmitPower
         //  Gets the maximum <WirelessTypes::TransmitPower> that is supported for the given parameters.

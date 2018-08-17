@@ -35,13 +35,13 @@ namespace mscl
         return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
     }
 
-    uint16 EstimationControlFlags::getResponseData(const GenericMipCmdResponse& response)
+    EstimationControlOptions EstimationControlFlags::getResponseData(const GenericMipCmdResponse& response)
     {
         DataBuffer dataBuffer(response.data());
         uint16 returnData;
         returnData = dataBuffer.read_uint16();
 
-        return returnData;
+        return EstimationControlOptions(returnData);
     }
 
     EstimationControlFlags::operator ByteStream() const

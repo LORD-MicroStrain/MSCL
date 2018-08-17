@@ -25,7 +25,7 @@ namespace mscl
 
         virtual bool supportsSensorDelayConfig() const override;
 
-        virtual const WirelessTypes::DerivedChannelTypes derivedChannelTypes() const override;
+        virtual const WirelessTypes::DerivedChannelMasks channelsPerDerivedCategory() const override;
 
         virtual const WirelessTypes::Filters lowPassFilters() const override;
 
@@ -34,6 +34,8 @@ namespace mscl
         virtual WirelessTypes::Filter minLowPassFilter(const SampleRate& rate) const override;
 
         virtual const WirelessTypes::Voltages excitationVoltages() const override;
+
+        virtual const WirelessTypes::VoltageType adcVoltageInputType() const override;
 
         virtual bool supportsPullUpResistor() const override;
 

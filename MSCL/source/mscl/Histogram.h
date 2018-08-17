@@ -23,7 +23,8 @@ namespace mscl
         //    Creates a Histogram object with no bins.
         //
         //Parameters:
-        //    
+        //  binsStart - The start value of the first Bin.
+        //  binsSize - The size of each Bin.
         Histogram(const Value& binsStart, const Value& binsSize);
 
     private:

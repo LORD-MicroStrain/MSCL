@@ -152,7 +152,7 @@ namespace mscl
         //    devType - The type of device to list
         static DeviceList listDevices(DeviceType devType);
 
-#ifdef WIN32
+#ifdef _WIN32
         //Function: matchesDevice
         //    Checks whether a given string found from WMI matches the given device
         //

@@ -113,6 +113,6 @@ namespace mscl
         m_tempWsdas.clear();
         m_foundWsdas.clear();
 
-        m_upnpService->cancelFindDevices();
+        m_upnpService->restartSearch();
     }
 }

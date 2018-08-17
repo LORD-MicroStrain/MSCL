@@ -247,6 +247,22 @@ namespace mscl
         //  channel_14_mean                         - 224 - Channel 14 Mean
         //  channel_15_mean                         - 225 - Channel 15 Mean
         //  channel_16_mean                         - 226 - Channel 16 Mean
+        //  channel_1_mmps                          - 227 - Channel 1 Millimeters Per Second
+        //  channel_2_mmps                          - 228 - Channel 2 Millimeters Per Second
+        //  channel_3_mmps                          - 229 - Channel 3 Millimeters Per Second
+        //  channel_4_mmps                          - 230 - Channel 4 Millimeters Per Second
+        //  channel_5_mmps                          - 231 - Channel 5 Millimeters Per Second
+        //  channel_6_mmps                          - 232 - Channel 6 Millimeters Per Second
+        //  channel_7_mmps                          - 233 - Channel 7 Millimeters Per Second
+        //  channel_8_mmps                          - 234 - Channel 8 Millimeters Per Second
+        //  channel_9_mmps                          - 235 - Channel 9 Millimeters Per Second
+        //  channel_10_mmps                         - 236 - Channel 10 Millimeters Per Second
+        //  channel_11_mmps                         - 237 - Channel 11 Millimeters Per Second
+        //  channel_12_mmps                         - 238 - Channel 12 Millimeters Per Second
+        //  channel_13_mmps                         - 239 - Channel 13 Millimeters Per Second
+        //  channel_14_mmps                         - 240 - Channel 14 Millimeters Per Second
+        //  channel_15_mmps                         - 241 - Channel 15 Millimeters Per Second
+        //  channel_16_mmps                         - 242 - Channel 16 Millimeters Per Second
         //=====================================================================================================
         enum ChannelId
         {
@@ -476,7 +492,23 @@ namespace mscl
             channel_13_mean                         = 223,
             channel_14_mean                         = 224,
             channel_15_mean                         = 225,
-            channel_16_mean                         = 226
+            channel_16_mean                         = 226,
+            channel_1_mmps                          = 227,
+            channel_2_mmps                          = 228,
+            channel_3_mmps                          = 229,
+            channel_4_mmps                          = 230,
+            channel_5_mmps                          = 231,
+            channel_6_mmps                          = 232,
+            channel_7_mmps                          = 233,
+            channel_8_mmps                          = 234,
+            channel_9_mmps                          = 235,
+            channel_10_mmps                         = 236,
+            channel_11_mmps                         = 237,
+            channel_12_mmps                         = 238,
+            channel_13_mmps                         = 239,
+            channel_14_mmps                         = 240,
+            channel_15_mmps                         = 241,
+            channel_16_mmps                         = 242
         };
 
         WirelessChannel();    //default constructor

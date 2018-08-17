@@ -103,12 +103,13 @@ namespace mscl
     const EepromLocation NodeEepromMap::DERIVED_DATA_RATE               (284, valueType_uint16, "Derived Data Rate");
     const EepromLocation NodeEepromMap::DERIVED_RMS_MASK                (286, valueType_uint16, "Derived RMS Mask");
     const EepromLocation NodeEepromMap::DERIVED_P2P_MASK                (288, valueType_uint16, "Derived P2P Mask");
-    const EepromLocation NodeEepromMap::DERIVED_IPS_MASK                (290, valueType_uint16, "Derived IPS Mask");
+    const EepromLocation NodeEepromMap::DERIVED_VELOCITY_MASK           (290, valueType_uint16, "Derived Velocity Mask");
     const EepromLocation NodeEepromMap::DATA_PACKET_FORMAT              (292, valueType_uint16, "Data Packet Format");
     const EepromLocation NodeEepromMap::DERIVED_CREST_FACTOR_MASK       (294, valueType_uint16, "Derived Crest Factor Mask");
     const EepromLocation NodeEepromMap::DERIVED_MEAN_MASK               (296, valueType_uint16, "Derived Mean Mask");
     const EepromLocation NodeEepromMap::DIAGNOSTIC_INTERVAL             (300, valueType_uint16, "Diagnostic Interval");
     const EepromLocation NodeEepromMap::THERMOCPL_TYPE                  (306, valueType_uint16, "Thermocouple Type");
+    const EepromLocation NodeEepromMap::DERIVED_VELOCITY_UNIT           (310, valueType_uint16, "Derived Velocity Unit");
     const EepromLocation NodeEepromMap::EVENT_SAMPLE_RATE               (328, valueType_uint16, "Event Sampling Rate");
     const EepromLocation NodeEepromMap::EVENT_TRIGGER_MASK              (330, valueType_uint16, "Event Trigger Mask");
     const EepromLocation NodeEepromMap::EVENT_PRE_DURATION              (332, valueType_uint16, "Event Pre Duration");
@@ -148,6 +149,7 @@ namespace mscl
     const EepromLocation NodeEepromMap::EXCITATION_VOLTAGE              (410, valueType_uint16, "Excitation Voltage");
     const EepromLocation NodeEepromMap::DEBOUNCE_FILTER                 (430, valueType_uint16, "Debounce Filter");
     const EepromLocation NodeEepromMap::INTERNAL_PULLUP_RESISTOR        (432, valueType_uint16, "Internal Pull-up Resistor");
+    const EepromLocation NodeEepromMap::SENSOR_MODE                     (438, valueType_uint16, "Sensor Mode");
     const EepromLocation NodeEepromMap::ANTI_ALIASING_FILTER_1          (440, valueType_uint16, "Anti-Aliasing Filter");
     const EepromLocation NodeEepromMap::ANTI_ALIASING_FILTER_2          (442, valueType_uint16, "Anti-Aliasing Filter");
     const EepromLocation NodeEepromMap::ANTI_ALIASING_FILTER_3          (444, valueType_uint16, "Anti-Aliasing Filter");

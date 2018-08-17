@@ -1164,6 +1164,16 @@ namespace mscl
     {
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_highPassFilter, mask);
         write(eeprom, Value::UINT16(static_cast<uint16>(filter)));
+
+        //adjusting the high pass filter can affect the offset that the Node reports from an eeprom read, clear those locations
+        m_node->clearEepromCacheLocation(NodeEepromMap::CH_ACTION_OFFSET_1.location());
+        m_node->clearEepromCacheLocation(NodeEepromMap::CH_ACTION_OFFSET_2.location());
+        m_node->clearEepromCacheLocation(NodeEepromMap::CH_ACTION_OFFSET_3.location());
+        m_node->clearEepromCacheLocation(NodeEepromMap::CH_ACTION_OFFSET_4.location());
+        m_node->clearEepromCacheLocation(NodeEepromMap::CH_ACTION_OFFSET_5.location());
+        m_node->clearEepromCacheLocation(NodeEepromMap::CH_ACTION_OFFSET_6.location());
+        m_node->clearEepromCacheLocation(NodeEepromMap::CH_ACTION_OFFSET_7.location());
+        m_node->clearEepromCacheLocation(NodeEepromMap::CH_ACTION_OFFSET_8.location());
     }
 
     float NodeEepromHelper::read_gaugeFactor(const ChannelMask& mask) const
@@ -1331,6 +1341,16 @@ namespace mscl
     {
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_pullUpResistor, mask);
         write(eeprom, Value::UINT16(static_cast<uint16>(enable)));
+    }
+
+    WirelessTypes::SensorOutputMode NodeEepromHelper::read_sensorMode() const
+    {
+        return static_cast<WirelessTypes::SensorOutputMode>(read(NodeEepromMap::SENSOR_MODE).as_uint16());
+    }
+
+    void NodeEepromHelper::write_sensorMode(WirelessTypes::SensorOutputMode mode)
+    {
+        write(NodeEepromMap::SENSOR_MODE, Value::UINT16(static_cast<uint16>(mode)));
     }
 
     void NodeEepromHelper::read_activitySense(ActivitySense& result) const
@@ -1934,28 +1954,28 @@ namespace mscl
         write(NodeEepromMap::DATA_MODE, Value::UINT16(DataModeMask(dataMode).toMask().toMask()));
     }
 
-    EepromLocation NodeEepromHelper::findDerivedChannelEeprom(WirelessTypes::DerivedChannelType derivedChannel)
+    EepromLocation NodeEepromHelper::findDerivedChannelEeprom(WirelessTypes::DerivedCategory category)
     {
-        switch(derivedChannel)
+        switch(category)
         {
-            case WirelessTypes::derived_rms:
+            case WirelessTypes::derivedCategory_rms:
                 return NodeEepromMap::DERIVED_RMS_MASK;
 
-            case WirelessTypes::derived_peakToPeak:
+            case WirelessTypes::derivedCategory_peakToPeak:
                 return NodeEepromMap::DERIVED_P2P_MASK;
 
-            case WirelessTypes::derived_ips:
-                return NodeEepromMap::DERIVED_IPS_MASK;
+            case WirelessTypes::derivedCategory_velocity:
+                return NodeEepromMap::DERIVED_VELOCITY_MASK;
 
-            case WirelessTypes::derived_crestFactor:
+            case WirelessTypes::derivedCategory_crestFactor:
                 return NodeEepromMap::DERIVED_CREST_FACTOR_MASK;
 
-            case WirelessTypes::derived_mean:
+            case WirelessTypes::derivedCategory_mean:
                 return NodeEepromMap::DERIVED_MEAN_MASK;
 
             default:
                 assert(false);  //need to add another derived channel type
-                throw Error("Invalid WirelessTypes::DerivedChannel.");
+                throw Error("Invalid WirelessTypes::DerivedCategory");
         }
     }
 
@@ -1969,15 +1989,25 @@ namespace mscl
         write(NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(static_cast<uint16>(rate)));
     }
 
-    ChannelMask NodeEepromHelper::read_derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel) const
+    ChannelMask NodeEepromHelper::read_derivedChannelMask(WirelessTypes::DerivedCategory category) const
     {
-        const EepromLocation eeprom = findDerivedChannelEeprom(derivedChannel);
+        const EepromLocation eeprom = findDerivedChannelEeprom(category);
         return ChannelMask(read(eeprom).as_uint16());
     }
 
-    void NodeEepromHelper::write_derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel, const ChannelMask& mask)
+    void NodeEepromHelper::write_derivedChannelMask(WirelessTypes::DerivedCategory category, const ChannelMask& mask)
     {
-        const EepromLocation eeprom = findDerivedChannelEeprom(derivedChannel);
+        const EepromLocation eeprom = findDerivedChannelEeprom(category);
         write(eeprom, Value::UINT16(mask.toMask()));
+    }
+
+    WirelessTypes::DerivedVelocityUnit NodeEepromHelper::read_derivedVelocityUnit() const
+    {
+        return static_cast<WirelessTypes::DerivedVelocityUnit>(read(NodeEepromMap::DERIVED_VELOCITY_UNIT).as_uint16());
+    }
+
+    void NodeEepromHelper::write_derivedVelocityUnit(WirelessTypes::DerivedVelocityUnit unit)
+    {
+        write(NodeEepromMap::DERIVED_VELOCITY_UNIT, Value::UINT16(static_cast<uint16>(unit)));
     }
 }

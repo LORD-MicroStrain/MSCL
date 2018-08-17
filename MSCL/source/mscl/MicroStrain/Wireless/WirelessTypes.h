@@ -396,6 +396,7 @@ namespace mscl
         //    unit_torque_inchPounds              - 79  - Inch Pounds
         //    unit_velocity_inchesPerSec          - 95  - Inches per Second
         //    unit_velocity_metersPerSec          - 66  - Meters per Second
+        //    unit_velocity_mmPerSec              - 103 - Millimeters per Second
         //    unit_velocity_kilometersPerSec      - 67  - Kilometers per Second
         //    unit_velocity_kilometersPerHr       - 68  - Kilometers per Hour
         //    unit_velocity_milesPerHr            - 69  - Miles per Hour
@@ -512,7 +513,8 @@ namespace mscl
             unit_rawVoltage_microvolts          = 99,
             unit_resistance_ohm                 = 100,
             unit_resistance_milliohm            = 101,
-            unit_resistance_kiloohm             = 102
+            unit_resistance_kiloohm             = 102,
+            unit_velocity_mmPerSec              = 103
 
             //170 (0xAA) needs to be reserved - treated as none
             //255 (0xFF) needs to be reserved - treated as none
@@ -533,20 +535,35 @@ namespace mscl
         //  chType_voltage              - 8 - Voltage
         //  chType_diffTemperature      - 9 - Differential - Temperature (thermocouple, rtd)
         //  chType_digital              - 10 - Digital
+        //  chType_tilt                 - 11 - Tilt
         //=====================================================================================================
         enum ChannelType
         {
-            chType_none                     = 0,
-            chType_fullDifferential         = 1,
-            chType_singleEnded              = 2,
-            chType_battery                  = 3,
-            chType_temperature              = 4,
-            chType_rh                       = 5,
-            chType_acceleration             = 6,
-            chType_displacement             = 7,
-            chType_voltage                  = 8,
-            chType_diffTemperature          = 9,
-            chType_digital                  = 10
+            chType_none                 = 0,
+            chType_fullDifferential     = 1,
+            chType_singleEnded          = 2,
+            chType_battery              = 3,
+            chType_temperature          = 4,
+            chType_rh                   = 5,
+            chType_acceleration         = 6,
+            chType_displacement         = 7,
+            chType_voltage              = 8,
+            chType_diffTemperature      = 9,
+            chType_digital              = 10,
+            chType_tilt                 = 11
+        };
+
+        //=====================================================================================================
+        //API Enums: VoltageType
+        //    Represents the possible voltage input types
+        //
+        //  voltageType_singleEnded     - 0 - Single-ended
+        //  voltageType_differential    - 1 - Differential
+        //=====================================================================================================
+        enum VoltageType
+        {
+            voltageType_singleEnded     = 0,
+            voltageType_differential    = 1
         };
 
         //=====================================================================================================
@@ -1309,13 +1326,13 @@ namespace mscl
             range_9_766mV       = 98,       //+-9.766 milliVolts
 
             range_1_35V_or_0to2026408518ohm = 99,  //+- 1.35 Volts, or 0 to 2026408518 ohms
-            range_1_25V_or_0to5100ohm       = 100,  //+- 1.25 Volts, or 0 to 5100 ohms
-            range_625mV_or_0to1700ohm       = 101,  //+- 625 milliVolts, or 0 to 1700 ohms
-            range_312_5mV_or_0to728ohm      = 102,  //+- 312.5 milliVolts, or 0 to 728 ohms
-            range_156_25mV_or_0to340ohm     = 103,  //+- 156.25 milliVolts, or 0 to 340 ohms
-            range_78_125mV_or_0to164ohm     = 104,  //+- 78.125 milliVolts, or 0 to 164 ohms
-            range_39_0625mV_or_0to80ohm     = 105,  //+- 39.0625 milliVolts, or 0 to 80 ohms
-            range_19_5313mV_or_0to40ohm     = 106,  //+- 19.5313 milliVolts, or 0 to 40 ohms
+            range_1_25V_or_0to10000ohm      = 100,  //+- 1.25 Volts, or 0 to 10000 ohms
+            range_625mV_or_0to2580ohm       = 101,  //+- 625 milliVolts, or 0 to 2580 ohms
+            range_312_5mV_or_0to1290ohm     = 102,  //+- 312.5 milliVolts, or 0 to 1290 ohms
+            range_156_25mV_or_0to645ohm     = 103,  //+- 156.25 milliVolts, or 0 to 645 ohms
+            range_78_125mV_or_0to322ohm     = 104,  //+- 78.125 milliVolts, or 0 to 322 ohms
+            range_39_0625mV_or_0to161ohm    = 105,  //+- 39.0625 milliVolts, or 0 to 161 ohms
+            range_19_5313mV_or_0to80ohm     = 106,  //+- 19.5313 milliVolts, or 0 to 80 ohms
 
             range_750mV         = 107,  //+- 750 milliVolts
             range_375mV         = 108,  //+- 375 milliVolts
@@ -1353,21 +1370,48 @@ namespace mscl
             dataMode_raw_derived = 3
         };
 
-        //API Enum: DerivedChannelType
-        //  Available Derived Channel Types.
+        //API Enum: DerivedCategory
+        //  Available Derived Channel Categories for configuration.
         //
-        //  derived_rms            - 0 - RMS
-        //  derived_peakToPeak     - 1 - Peak to Peak
-        //  derived_ips            - 2 - Inches per Second
-        //  derived_crestFactor    - 3 - Crest Factor
-        //  derived_mean           - 4 - Mean
-        enum DerivedChannelType
+        //  derivedCategory_rms            - 0 - RMS
+        //  derivedCategory_peakToPeak     - 1 - Peak to Peak
+        //  derivedCategory_velocity       - 2 - Velocity (IPS, mm/s)
+        //  derivedCategory_crestFactor    - 3 - Crest Factor
+        //  derivedCategory_mean           - 4 - Mean
+        enum DerivedCategory
         {
-            derived_rms = 0,
-            derived_peakToPeak = 1,
-            derived_ips = 2,
-            derived_crestFactor = 3,
-            derived_mean = 4
+            derivedCategory_rms = 0,
+            derivedCategory_peakToPeak = 1,
+            derivedCategory_velocity = 2,
+            derivedCategory_crestFactor = 3,
+            derivedCategory_mean = 4
+        };
+
+        //API Enum: DerivedDataPacketAlgorithmId
+        //  The types of channels that can be sent in a derived data packet.
+        //
+        //  derivedAlgId_rms             - 0 - RMS
+        //  derivedAlgId_peakToPeak      - 1 - Peak to Peak
+        //  derivedAlgId_ips             - 2 - Inches per Second
+        //  derivedAlgId_crestFactor     - 3 - Crest Factor
+        //  derivedAlgId_mean            - 4 - Mean
+        //  derivedAlgId_mmps            - 5 - millimeters per second
+        enum DerivedDataPacketAlgorithmId
+        {
+            derivedAlgId_rms = 0,
+            derivedAlgId_peakToPeak = 1,
+            derivedAlgId_ips = 2,
+            derivedAlgId_crestFactor = 3,
+            derivedAlgId_mean = 4,
+            derivedAlgId_mmps = 5
+        };
+
+        //API Enum: DerivedVelocityUnit
+        //  The options that can be configured for the velocity derived channel.
+        enum DerivedVelocityUnit
+        {
+            derivedVelocity_ips = 0,
+            derivedVelocity_mmps = 1
         };
 
         //API Enum: CommProtocol
@@ -1404,6 +1448,17 @@ namespace mscl
             voltage_1500mV  = 1500
         };
 
+        //API Enum: SensorOutputMode
+        //  Available Sensor Output Modes.
+        //
+        //  sensorOutputMode_vibration  - 0
+        //  sensorOutputMode_tilt       - 1
+        enum SensorOutputMode
+        {
+            sensorOutputMode_vibration = 0,
+            sensorOutputMode_tilt = 1
+        };
+
     public:
 
         //API Typedefs:
@@ -1419,9 +1474,9 @@ namespace mscl
         //  HighPassFilters             - A vector of <HighPassFilter> enums.
         //  StorageLimitModes           - A vector of <StorageLimitMode> enums.
         //  DataModes                   - A vector of <DataMode> enums.
-        //  DerivedChannelTypes         - A vector of <DerivedChannelType> enums.
         //  CommProtocols               - A vector of <CommProtocol> enums.
         //  Voltages                    - A vector of <Voltage> enums.
+        //  SensorOutputModes           - A vector of <SensorOutputMode> enums.
         typedef std::vector<DataCollectionMethod> DataCollectionMethods;
         typedef std::vector<DataFormat> DataFormats;
         typedef std::vector<WirelessSampleRate> WirelessSampleRates;
@@ -1434,13 +1489,13 @@ namespace mscl
         typedef std::vector<HighPassFilter> HighPassFilters;
         typedef std::vector<StorageLimitMode> StorageLimitModes;
         typedef std::vector<DataMode> DataModes;
-        typedef std::vector<DerivedChannelType> DerivedChannelTypes;
         typedef std::vector<CommProtocol> CommProtocols;
         typedef std::vector<Voltage> Voltages;
+        typedef std::vector<SensorOutputMode> SensorOutputModes;
 
         //API Typedef: DerivedChannelMasks
-        //  Typedef for a map of <DerivedChannelType> to <ChannelMask> pairs.
-        typedef std::map<DerivedChannelType, ChannelMask> DerivedChannelMasks;
+        //  Typedef for a map of <DerivedChannelOption> to <ChannelMask> pairs.
+        typedef std::map<DerivedCategory, ChannelMask> DerivedChannelMasks;
 
         //API Typedef: EepromMap
         //  Typedef for a map of eeprom locations (uint16) to values (uint16).
@@ -1551,7 +1606,7 @@ namespace mscl
         //    - <Error>: Invalid transmit power.
         static WirelessTypes::LegacyTransmitPower transmitPowerToLegacy(WirelessTypes::TransmitPower power);
 
-        //Function: bytesPerDerivedChannel
+        //Function: bytesPerDerivedAlgorithmId
         //  Gets the number of bytes that make up a derived channel.
         //  For example, derived_rms is a single float, so this will return 4.
         //
@@ -1563,7 +1618,20 @@ namespace mscl
         //
         //Exceptions:
         //    - <Error_NotSupported>: Invalid Derived Channel
-        static uint8 bytesPerDerivedChannel(DerivedChannelType id);
+        static uint8 bytesPerDerivedAlgorithmId(DerivedDataPacketAlgorithmId id);
+
+        //Function: bytesPerDerivedChannelOption
+        //  Gets the number of bytes that make up a derived channel option.
+        //
+        //Parameters:
+        //  opt - The <DerivedCategory> to get the byte count for.
+        //
+        //Returns:
+        //  The number of bytes that make up a derived channel's data.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Invalid Derived Option
+        static uint8 bytesPerDerivedChannelOption(DerivedCategory category);
 
         //Function: derivedBytesPerSweep
         //  Gets the number of derived bytes in a sweep for the given <WirelessTypes::DerivedChannelMasks>.

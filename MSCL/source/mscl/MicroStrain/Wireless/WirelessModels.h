@@ -91,6 +91,7 @@ namespace mscl
         //  node_shmLink201_hbridge_348         - 63290154 - SHM-Link 201 - Half Bridge - 348 resistance
         //  node_shmLink201_fullbridge          - 63290155 - SHM-Link 201 - Full Bridge
         //  node_torqueLink                     - 63309999 - Torque-Link
+        //  node_torqueLink200                  - 63319999 - Torque-Link-200
         //  node_sgLink_herm                    - 65010000 - SG-Link-Hermetic
         //  node_sgLink_herm_2600               - 65011110 - SG-Link-Hermetic 2600 belt assembly
         //  node_sgLink_herm_2700               - 65011210 - SG-Link-Hermetic 2700 belt assembly
@@ -177,6 +178,7 @@ namespace mscl
             node_shmLink201_hbridge_348         = 63290154,     //SHM-Link 201 - Half Bridge - 348 resistance
             node_shmLink201_fullbridge          = 63290155,     //SHM-Link 201 - Full Bridge
             node_torqueLink                     = 63309999,     //Torque-Link
+            node_torqueLink200                  = 63319999,     //Torque-Link-200
             node_sgLink_herm                    = 65010000,     //SG-Link-Hermetic
             node_sgLink_herm_2600               = 65011110,     //SG-Link-Hermetic 2600 belt assembly
             node_sgLink_herm_2700               = 65011210,     //SG-Link-Hermetic 2700 belt assembly

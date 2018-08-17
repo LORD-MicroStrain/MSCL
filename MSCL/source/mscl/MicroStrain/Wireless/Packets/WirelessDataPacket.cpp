@@ -74,7 +74,7 @@ namespace mscl
         return static_cast<WirelessChannel::ChannelId>(channelNum);
     }
 
-    WirelessChannel::ChannelId WirelessDataPacket::getMathChannelId(WirelessTypes::DerivedChannelType algorithmId, uint8 channelNumber)
+    WirelessChannel::ChannelId WirelessDataPacket::getMathChannelId(WirelessTypes::DerivedDataPacketAlgorithmId algorithmId, uint8 channelNumber)
     {
         uint16 algorithmIdStart = 0;
 
@@ -87,23 +87,27 @@ namespace mscl
         //determine where the start offset is in the enum list
         switch(algorithmId)
         {
-            case WirelessTypes::derived_rms:
+            case WirelessTypes::derivedAlgId_rms:
                 algorithmIdStart = WirelessChannel::channel_1_rms;
                 break;
 
-            case WirelessTypes::derived_peakToPeak:
+            case WirelessTypes::derivedAlgId_peakToPeak:
                 algorithmIdStart = WirelessChannel::channel_1_peakToPeak;
                 break;
 
-            case WirelessTypes::derived_ips:
+            case WirelessTypes::derivedAlgId_ips:
                 algorithmIdStart = WirelessChannel::channel_1_ips;
                 break;
 
-            case WirelessTypes::derived_crestFactor:
+            case WirelessTypes::derivedAlgId_mmps:
+                algorithmIdStart = WirelessChannel::channel_1_mmps;
+                break;
+
+            case WirelessTypes::derivedAlgId_crestFactor:
                 algorithmIdStart = WirelessChannel::channel_1_crestFactor;
                 break;
 
-            case WirelessTypes::derived_mean:
+            case WirelessTypes::derivedAlgId_mean:
                 algorithmIdStart = WirelessChannel::channel_1_mean;
                 break;
 

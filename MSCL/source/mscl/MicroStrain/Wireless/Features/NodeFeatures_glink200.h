@@ -20,6 +20,9 @@ namespace mscl
         //    Creates a NodeFeatures_glink200 object.
         NodeFeatures_glink200(const NodeInfo& info);
 
+    private:
+        static const Version VER_TILT_SUPPORTED;
+
     public:
         virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
@@ -29,6 +32,8 @@ namespace mscl
 
         virtual const WirelessTypes::HighPassFilters highPassFilters() const override;
 
-        virtual const WirelessTypes::DerivedChannelTypes derivedChannelTypes() const override;
+        virtual const WirelessTypes::DerivedChannelMasks channelsPerDerivedCategory() const override;
+
+        virtual const WirelessTypes::SensorOutputModes sensorOutputModes() const override;
     };
 }

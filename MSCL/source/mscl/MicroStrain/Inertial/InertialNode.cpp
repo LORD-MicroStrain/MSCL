@@ -154,24 +154,29 @@ namespace mscl
         return m_impl->loadFactoryDefaultSettings();
     }
 
-    uint16 InertialNode::getDataRateBase(MipTypes::DataClass category)
-    { 
-        return m_impl->getDataRateBase(category);
-    }
-
-    MipChannels InertialNode::getActiveChannelFields(MipTypes::DataClass category)
-    { 
-        return m_impl->getMessageFormat(category);
-    }
-
-    void InertialNode::setActiveChannelFields(MipTypes::DataClass category, const MipChannels& channels)
-    { 
-        m_impl->setMessageFormat(category, channels);
-    }
-
-    void InertialNode::saveActiveChannelFields(MipTypes::DataClass category)
+    void InertialNode::pollData(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields /*= MipTypes::MipChannelFields()*/)
     {
-        m_impl->saveMessageFormat(category);
+        m_impl->pollData(dataClass, fields);
+    }
+
+    uint16 InertialNode::getDataRateBase(MipTypes::DataClass dataClass)
+    { 
+        return m_impl->getDataRateBase(dataClass);
+    }
+
+    MipChannels InertialNode::getActiveChannelFields(MipTypes::DataClass dataClass)
+    { 
+        return m_impl->getMessageFormat(dataClass);
+    }
+
+    void InertialNode::setActiveChannelFields(MipTypes::DataClass dataClass, const MipChannels& channels)
+    { 
+        m_impl->setMessageFormat(dataClass, channels);
+    }
+
+    void InertialNode::saveActiveChannelFields(MipTypes::DataClass dataClass)
+    {
+        m_impl->saveMessageFormat(dataClass);
     }
 
     uint8 InertialNode::getCommunicationMode()                                                    
@@ -184,14 +189,54 @@ namespace mscl
         m_impl->setCommunicationMode(communicationMode); 
     }
 
-    void InertialNode::enableDataStream(MipTypes::DataClass category, bool enable)
+    void InertialNode::enableDataStream(MipTypes::DataClass dataClass, bool enable)
     {
-        m_impl->enableDataStream(category, enable);
+        m_impl->enableDataStream(dataClass, enable);
     }
 
     void InertialNode::resetFilter()
     {
         m_impl->resetFilter();
+    }
+
+    bool InertialNode::getAltitudeAid()
+    {
+        return m_impl->getAltitudeAid();
+    }
+
+    void InertialNode::setAltitudeAid(bool enable)
+    {
+        m_impl->setAltitudeAid(enable);
+    }
+
+    bool InertialNode::getPitchRollAid()
+    {
+        return m_impl->getPitchRollAid();
+    }
+
+    void InertialNode::setPitchRollAid(bool enable)
+    {
+        m_impl->setPitchRollAid(enable);
+    }
+
+    ZUPTSettingsData InertialNode::getVelocityZUPT()
+    {
+        return m_impl->getVelocityZUPT();
+    }
+
+    void InertialNode::setVelocityZUPT(const ZUPTSettingsData& ZUPTSettings)
+    {
+        m_impl->setVelocityZUPT(ZUPTSettings);
+    }
+
+    ZUPTSettingsData InertialNode::getAngularRateZUPT()
+    {
+        return m_impl->getAngularRateZUPT();
+    }
+
+    void InertialNode::setAngularRateZUPT(const ZUPTSettingsData& ZUPTSettings)
+    {
+        m_impl->setAngularRateZUPT(ZUPTSettings);
     }
 
     bool InertialNode::getAutoInitialization()
@@ -412,14 +457,44 @@ namespace mscl
         return m_impl->getVehicleDynamicsMode();
     }
 
-    void InertialNode::setEstimationControlFlags(const uint16& flags)
+    void InertialNode::setEstimationControlFlags(const EstimationControlOptions& flags)
     {
         m_impl->setEstimationControlFlags(flags);
     }
 
-    uint16 InertialNode::getEstimationControlFlags()
+    EstimationControlOptions InertialNode::getEstimationControlFlags()
     {
         return m_impl->getEstimationControlFlags();
+    }
+
+    void InertialNode::setInclinationSource(const GeographicSourceOptions& options)
+    {
+        m_impl->setInclinationSource(options);
+    }
+
+    GeographicSourceOptions InertialNode::getInclinationSource()
+    {
+        return m_impl->getInclinationSource();
+    }
+
+    void InertialNode::setDeclinationSource(const GeographicSourceOptions& options)
+    {
+        m_impl->setDeclinationSource(options);
+    }
+
+    GeographicSourceOptions InertialNode::getDeclinationSource()
+    {
+        return m_impl->getDeclinationSource();
+    }
+
+    void InertialNode::setMagneticFieldMagnitudeSource(const GeographicSourceOptions& options)
+    {
+        m_impl->setMagneticFieldMagnitudeSource(options);
+    }
+
+    GeographicSourceOptions InertialNode::getMagneticFieldMagnitudeSource()
+    {
+        return m_impl->getMagneticFieldMagnitudeSource();
     }
 
     void InertialNode::setGNSS_SourceControl(const InertialTypes::GNSS_Source& gnssSource)
@@ -445,6 +520,36 @@ namespace mscl
     HeadingUpdateOptions InertialNode::getHeadingUpdateControl()
     {
         return m_impl->getHeadingUpdateControl();
+    }
+
+    void InertialNode::setGravityErrorAdaptiveMeasurement(const AdaptiveMeasurementData& data)
+    {
+        m_impl->setAdaptiveMeasurement(MipTypes::Command::CMD_EF_GRAV_MAGNITUDE_ERR_ADAPT_MEASURE, data);
+    }
+
+    AdaptiveMeasurementData InertialNode::getGravityErrorAdaptiveMeasurement()
+    {
+        return m_impl->getAdaptiveMeasurement(MipTypes::Command::CMD_EF_GRAV_MAGNITUDE_ERR_ADAPT_MEASURE);
+    }
+
+    void InertialNode::setMagnetometerErrorAdaptiveMeasurement(const AdaptiveMeasurementData& data)
+    {
+        m_impl->setAdaptiveMeasurement(MipTypes::Command::CMD_EF_MAG_MAGNITUDE_ERR_ADAPT_MEASURE, data);
+    }
+
+    AdaptiveMeasurementData InertialNode::getMagnetometerErrorAdaptiveMeasurement()
+    {
+        return m_impl->getAdaptiveMeasurement(MipTypes::Command::CMD_EF_MAG_MAGNITUDE_ERR_ADAPT_MEASURE);
+    }
+
+    void InertialNode::setMagDipAngleErrorAdaptiveMeasurement(const AdaptiveMeasurementData& data)
+    {
+        m_impl->setAdaptiveMeasurement(MipTypes::Command::CMD_EF_MAG_DIP_ANGLE_ERR_ADAPT_MEASURE, data);
+    }
+
+    AdaptiveMeasurementData InertialNode::getMagDipAngleErrorAdaptiveMeasurement()
+    {
+        return m_impl->getAdaptiveMeasurement(MipTypes::Command::CMD_EF_MAG_DIP_ANGLE_ERR_ADAPT_MEASURE);
     }
 
     void InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData)

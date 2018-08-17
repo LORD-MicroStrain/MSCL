@@ -22,12 +22,12 @@ namespace mscl
     //    portName - the name of the port to be opened ("COM26")
     //
     //Returns:
-    //    The handle to the port as a boost serial_port_service::native_type
+    //    The handle to the port as a boost::asio::serial_port::native_handle_type
     //
     //Exceptions:
     //    - <Error_InvalidSerialPort>: the specified com port is invalid
     //    - <Error_Connection>: failed to get or set com port parameters
-    boost::asio::serial_port_service::native_type getNativeSerialPort(const std::string& portName)
+    boost::asio::serial_port::native_handle_type getNativeSerialPort(const std::string& portName)
     {
         // For convenience, add a leading \\.\ sequence if not already present.
         std::string name = (portName[0] == '\\') ? portName : "\\\\.\\" + portName;

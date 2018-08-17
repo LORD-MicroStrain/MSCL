@@ -305,6 +305,22 @@ namespace mscl
             case channel_14_mean:                   return "ch14_mean";
             case channel_15_mean:                   return "ch15_mean";
             case channel_16_mean:                   return "ch16_mean";
+            case channel_1_mmps:                    return "ch1_mmps";
+            case channel_2_mmps:                    return "ch2_mmps";
+            case channel_3_mmps:                    return "ch3_mmps";
+            case channel_4_mmps:                    return "ch4_mmps";
+            case channel_5_mmps:                    return "ch5_mmps";
+            case channel_6_mmps:                    return "ch6_mmps";
+            case channel_7_mmps:                    return "ch7_mmps";
+            case channel_8_mmps:                    return "ch8_mmps";
+            case channel_9_mmps:                    return "ch9_mmps";
+            case channel_10_mmps:                   return "ch10_mmps";
+            case channel_11_mmps:                   return "ch11_mmps";
+            case channel_12_mmps:                   return "ch12_mmps";
+            case channel_13_mmps:                   return "ch13_mmps";
+            case channel_14_mmps:                   return "ch14_mmps";
+            case channel_15_mmps:                   return "ch15_mmps";
+            case channel_16_mmps:                   return "ch16_mmps";
 
 
             default:

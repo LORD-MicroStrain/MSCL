@@ -180,12 +180,12 @@ namespace mscl
         SampleRate derivedDataRate();
 
         //Function: derivedChannelMask
-        //  Gets the channel mask for the specified <WirelessTypes::DerivedChannelType> as a <ChannelMask>.
+        //  Gets the channel mask for the specified <WirelessTypes::DerivedCategory> as a <ChannelMask>.
         //
         //Exceptions:
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        ChannelMask derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel);
+        ChannelMask derivedChannelMask(WirelessTypes::DerivedCategory category);
 
         //Function: diagnosticInterval
         //  Gets the diagnostic interval set on the Node.

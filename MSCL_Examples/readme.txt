@@ -21,8 +21,8 @@ The directory structure for how the libraries should be placed is given inside t
 /dependencies/C++/lib/x64/Debug/MSCL.lib 
 /dependencies/C++/lib/x64/Release/MSCL.lib
 
-Note: The C++ MSCL library depends on boost 1.64. You will need to perform the following steps:
-      1. Download boost 1.64 from boost.org
+Note: The C++ MSCL library depends on boost 1.68. You will need to perform the following steps:
+      1. Download boost 1.68 from boost.org
       2. Install the Prebuilt windows binaries, or build boost from source
       3. Edit the MSCL_PropertySheet_Debug.props and MSCL_PropertySheet_Release.props files, or the property pages of each project
       4. Update the "Additional Include Directories" to include the path to: 
@@ -31,9 +31,9 @@ Note: The C++ MSCL library depends on boost 1.64. You will need to perform the f
             [boostInstallDir]/lib32_msvc-14.0
       6. Update the "Additional Dependencies" to include the following:
          Release:
-            libboost_system-vc140-mt-s-1_64.lib
+            libboost_system-vc140-mt-s-x64-1_68.lib (or -x32 for 32bit)
          Debug:
-            libboost_system-vc140-mt-sgd-1_64.lib
+            libboost_system-vc140-mt-sgd-x64-1_68.lib (or -x32 for 32bit)
 
 
 ----------------------------------------------------------------

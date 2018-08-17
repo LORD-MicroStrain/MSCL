@@ -160,12 +160,14 @@ public:
     //  CMD_EF_HARD_IRON_OFFSET_PROCESS_NOISE       - 0x0D2B    - Estimation Filter - Hard Iron Offset Process Noise
     //  CMD_EF_SOFT_IRON_OFFSET_PROCESS_NOISE       - 0x0D2C    - Estimation Filter - Soft Iron Offset Process Noise
     //  CMD_EF_MAG_NOISE_STD_DEV                    - 0x0D42    - Estimation Filter - Magnetometer Noise Standard Deviation
-    //  CMD_EF_DECLINATION_SRC                      - 0x0D43    - Estimation Filter - Declintion Source
+    //  CMD_EF_DECLINATION_SRC                      - 0x0D43    - Estimation Filter - Declination Source
     //  CMD_EF_GRAV_MAGNITUDE_ERR_ADAPT_MEASURE     - 0x0D44    - Estimation Filter - Gravity Magnitude Error Adaptive Measurement
     //  CMD_EF_MAG_MAGNITUDE_ERR_ADAPT_MEASURE      - 0x0D45    - Estimation Filter - Magnetometer Magnitude Error Adaptive Measurement
     //  CMD_EF_MAG_DIP_ANGLE_ERR_ADAPT_MEASURE      - 0x0D46    - Estimation Filter - Magnetometer Dip Angle Error Adaptive Measurement
     //  CMD_EF_ALTITUDE_AID_CTRL                    - 0x0D47    - Estimation Filter - Altitude Aiding Control
     //  CMD_EF_PITCH_ROLL_AID_CTRL                  - 0x0D4B    - Estimation Filter - Pitch-Roll Aiding Control
+    //  CMD_EF_INCLINATION_SRC                      - 0x0D4C    - Estimation Filter - Inclination Source
+    //  CMD_EF_FIELD_MAGNITUDE_SRC                  - 0x0D4D    - Estimation Filter - Magnetic Field Magnitude Source
     //  CMD_COMMUNICATION_MODE                      - 0x7F10    - Communication Mode
     //  CMD_HARDWARE_CTRL                           - 0x7F11    - Hardware Control
     //  CMD_GET_ANALOG_DISPLACEMENT_CALS            - 0x1101    - Get Analog Output to Displacement Slope and Offset
@@ -252,6 +254,8 @@ public:
         CMD_EF_MAG_DIP_ANGLE_ERR_ADAPT_MEASURE      = 0x0D46,
         CMD_EF_ALTITUDE_AID_CTRL                    = 0x0D47,
         CMD_EF_PITCH_ROLL_AID_CTRL                  = 0x0D4B,
+        CMD_EF_INCLINATION_SRC                      = 0x0D4C,
+        CMD_EF_FIELD_MAGNITUDE_SRC                  = 0x0D4D,
         CMD_COMMUNICATION_MODE                      = 0x7F10,
         CMD_HARDWARE_CTRL                           = 0x7F11,
         CMD_GET_ANALOG_DISPLACEMENT_CALS            = 0x1101,

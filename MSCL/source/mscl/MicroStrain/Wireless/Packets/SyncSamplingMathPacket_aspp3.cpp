@@ -70,7 +70,7 @@ namespace mscl
         metaData.reserve(numAlgorithms);
         for(uint8 i = 0; i < numAlgorithms; ++i)
         {
-            metaData.emplace_back(static_cast<WirelessTypes::DerivedChannelType>(payload.read_uint8()),
+            metaData.emplace_back(static_cast<WirelessTypes::DerivedDataPacketAlgorithmId>(payload.read_uint8()),
                                   ChannelMask(payload.read_uint16())
             );
         }
@@ -115,7 +115,7 @@ namespace mscl
                     propertyChMask.enable(chItr);
                     WirelessDataPoint::ChannelProperties properties({
                         {std::make_pair(WirelessDataPoint::channelPropertyId_derivedFrom, Value(valueType_ChannelMask, propertyChMask))},
-                        {std::make_pair(WirelessDataPoint::channelPropertyId_derivedChannelType, Value(valueType_uint8, static_cast<uint8>(alg.algorithmId)))}
+                        {std::make_pair(WirelessDataPoint::channelPropertyId_derivedAlgorithmId, Value(valueType_uint8, static_cast<uint8>(alg.algorithmId)))}
                     });
                     
                     chData.emplace_back(channelId, chItr, valueType_float, anyType(payload.read_float()), properties);
@@ -162,16 +162,16 @@ namespace mscl
         const uint8 numAlgorithms = payload.read_uint8(19);
         uint8 readPos = 20;
         uint8 expectedChannelBytes = 0;
-        WirelessTypes::DerivedChannelType tempId;
+        WirelessTypes::DerivedDataPacketAlgorithmId tempId;
         ChannelMask tempMask;
         for(uint8 i = 0; i < numAlgorithms; ++i)
         {
-            tempId = static_cast<WirelessTypes::DerivedChannelType>(payload.read_uint8(readPos));
+            tempId = static_cast<WirelessTypes::DerivedDataPacketAlgorithmId>(payload.read_uint8(readPos));
             readPos += 1;
             tempMask.fromMask(payload.read_uint16(readPos));
             readPos += 2;
 
-            expectedChannelBytes += tempMask.count() * WirelessTypes::bytesPerDerivedChannel(tempId);
+            expectedChannelBytes += tempMask.count() * WirelessTypes::bytesPerDerivedAlgorithmId(tempId);
         }
 
         //verify we have the expected number of channel bytes (could be more than 1 sweep, so checking mod operator)

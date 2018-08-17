@@ -69,23 +69,23 @@ TimeUpdate::~TimeUpdate()
 //////////  HeadingUpdateOptions  //////////
 
 
-uint8 HeadingUpdateOptions::AsUint8() const
+InertialTypes::HeadingUpdateEnableOption HeadingUpdateOptions::AsOptionId() const
 {
     if (useInternalMagnetometer)
     {
         if (useInternalGNSSVelocityVector)
         {
             if (useExternalHeadingMessages)
-                return 0x07;
+                return InertialTypes::HeadingUpdateEnableOption::ENABLE_ALL;
             else
-                return 0x04;
+                return InertialTypes::HeadingUpdateEnableOption::ENABLE_MAGNETOMETER_AND_GNSS;
         }
         else
         {
             if (useExternalHeadingMessages)
-                return 0x06;
+                return InertialTypes::HeadingUpdateEnableOption::ENABLE_MAGNETOMETER_AND_EXTERNAL;
             else
-                return 0x01;
+                return InertialTypes::HeadingUpdateEnableOption::ENABLE_INTERNAL_MAGNETOMETER;
         }
     }
     else
@@ -93,61 +93,61 @@ uint8 HeadingUpdateOptions::AsUint8() const
         if (useInternalGNSSVelocityVector)
         {
             if (useExternalHeadingMessages)
-                return 0x05;
+                return InertialTypes::HeadingUpdateEnableOption::ENABLE_GNSS_AND_EXTERNAL;
             else
-                return 0x02;
+                return InertialTypes::HeadingUpdateEnableOption::ENABLE_INTERNAL_GNSS;
         }
         else
         {
             if (useExternalHeadingMessages)
-                return 0x03;
+                return InertialTypes::HeadingUpdateEnableOption::ENABLE_EXTERNAL_MESSAGES;
             else
-                return 0x00;
+                return InertialTypes::HeadingUpdateEnableOption::ENABLE_NONE;
         }
     }
 }
 
 //  This constructor converts a uint8 to a HeadingUpdateOptions object according to the Communications Protocol.
-HeadingUpdateOptions::HeadingUpdateOptions(const mscl::uint8& headingUpdateOption)
+HeadingUpdateOptions::HeadingUpdateOptions(const InertialTypes::HeadingUpdateEnableOption& headingUpdateOption)
 {
     switch (headingUpdateOption)
     {
-    case 0x00:
+    case InertialTypes::HeadingUpdateEnableOption::ENABLE_NONE:
         useInternalMagnetometer = false;
         useInternalGNSSVelocityVector = false;
         useExternalHeadingMessages = false;
         break;
-    case 0x01:
+    case InertialTypes::HeadingUpdateEnableOption::ENABLE_INTERNAL_MAGNETOMETER:
         useInternalMagnetometer = true;
         useInternalGNSSVelocityVector = false;
         useExternalHeadingMessages = false;
         break;
-    case 0x02:
+    case InertialTypes::HeadingUpdateEnableOption::ENABLE_INTERNAL_GNSS:
         useInternalMagnetometer = false;
         useInternalGNSSVelocityVector = true;
         useExternalHeadingMessages = false;
         break;
-    case 0x03:
+    case InertialTypes::HeadingUpdateEnableOption::ENABLE_EXTERNAL_MESSAGES:
         useInternalMagnetometer = false;
         useInternalGNSSVelocityVector = false;
         useExternalHeadingMessages = true;
         break;
-    case 0x04:
+    case InertialTypes::HeadingUpdateEnableOption::ENABLE_MAGNETOMETER_AND_GNSS:
         useInternalMagnetometer = true;
         useInternalGNSSVelocityVector = true;
         useExternalHeadingMessages = false;
         break;
-    case 0x05:
+    case InertialTypes::HeadingUpdateEnableOption::ENABLE_GNSS_AND_EXTERNAL:
         useInternalMagnetometer = false;
         useInternalGNSSVelocityVector = true;
         useExternalHeadingMessages = true;
         break;
-    case 0x06:
+    case InertialTypes::HeadingUpdateEnableOption::ENABLE_MAGNETOMETER_AND_EXTERNAL:
         useInternalMagnetometer = true;
         useInternalGNSSVelocityVector = false;
         useExternalHeadingMessages = true;
         break;
-    case 0x07:
+    case InertialTypes::HeadingUpdateEnableOption::ENABLE_ALL:
         useInternalMagnetometer = true;
         useInternalGNSSVelocityVector = true;
         useExternalHeadingMessages = true;
@@ -155,6 +155,56 @@ HeadingUpdateOptions::HeadingUpdateOptions(const mscl::uint8& headingUpdateOptio
     default:
         throw Error_MipCmdFailed("An invalid option value was passed in to HeadingUpdateOptions.");
     }
+}
+
+
+
+//////////  EstimationControlOptions  //////////
+
+
+uint16 EstimationControlOptions::AsUint16() const {
+    uint16 intValue = 0;
+
+    if (enableGyroBiasEstimation) {
+        intValue = intValue | InertialTypes::EstimationControlOption::ENABLE_GYRO_BIAS_ESTIMATION;
+    }
+
+    if (enableAccelBiasEstimation) {
+        intValue = intValue | InertialTypes::EstimationControlOption::ENABLE_ACCEL_BIAS_ESTIMATION;
+    }
+
+    if (enableGyroScaleFactorEstimation) {
+        intValue = intValue | InertialTypes::EstimationControlOption::ENABLE_GYRO_SCALE_FACTOR_ESTIMATION;
+    }
+
+    if (enableAccelScaleFactorEstimation) {
+        intValue = intValue | InertialTypes::EstimationControlOption::ENABLE_ACCEL_SCALE_FACTOR_ESTIMATION;
+    }
+
+    if (enableGNSSAntennaOffsetEstimation) {
+        intValue = intValue | InertialTypes::EstimationControlOption::ENABLE_GNSS_ANTENNA_OFFSET_ESTIMATION;
+    }
+
+    if (enableHardIronAutoCalibration) {
+        intValue = intValue | InertialTypes::EstimationControlOption::ENABLE_HARD_IRON_AUTO_CALIBRATION;
+    }
+
+    if (enableSoftIronAutoCalibration) {
+        intValue = intValue | InertialTypes::EstimationControlOption::ENABLE_SOFT_IRON_AUTO_CALIBRATION;
+    }
+
+    return intValue;
+}
+
+//  This constructor converts a uint16 to a EstimationControlOptions object according to the Communications Protocol.
+EstimationControlOptions::EstimationControlOptions(const mscl::uint16& estimationControlData) {
+    enableGyroBiasEstimation = (estimationControlData & InertialTypes::EstimationControlOption::ENABLE_GYRO_BIAS_ESTIMATION) != 0;
+    enableAccelBiasEstimation = (estimationControlData & InertialTypes::EstimationControlOption::ENABLE_ACCEL_BIAS_ESTIMATION) != 0;
+    enableGyroScaleFactorEstimation = (estimationControlData & InertialTypes::EstimationControlOption::ENABLE_GYRO_SCALE_FACTOR_ESTIMATION) != 0;
+    enableAccelScaleFactorEstimation = (estimationControlData & InertialTypes::EstimationControlOption::ENABLE_ACCEL_SCALE_FACTOR_ESTIMATION) != 0;
+    enableGNSSAntennaOffsetEstimation = (estimationControlData & InertialTypes::EstimationControlOption::ENABLE_GNSS_ANTENNA_OFFSET_ESTIMATION) != 0;
+    enableHardIronAutoCalibration = (estimationControlData & InertialTypes::EstimationControlOption::ENABLE_HARD_IRON_AUTO_CALIBRATION) != 0;
+    enableSoftIronAutoCalibration = (estimationControlData & InertialTypes::EstimationControlOption::ENABLE_SOFT_IRON_AUTO_CALIBRATION) != 0;
 }
 
 

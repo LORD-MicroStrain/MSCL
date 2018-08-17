@@ -561,6 +561,7 @@ namespace mscl
         switch(m_connection.type())
         {
             case Connection::connectionType_tcp:
+            case Connection::connectionType_webSocket:
                 return 250;
 
             default:

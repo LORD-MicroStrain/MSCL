@@ -93,8 +93,8 @@ namespace mscl
         void write(const EepromLocation& location, const Value& val);
 
         //Function: findDerivedChannelEeprom
-        //  Gets the <EepromLocation> for the given <WirelessTypes::DerivedChannelType>.
-        static EepromLocation findDerivedChannelEeprom(WirelessTypes::DerivedChannelType derivedCh);
+        //  Gets the <EepromLocation> for the given <WirelessTypes::DerivedCategory>.
+        static EepromLocation findDerivedChannelEeprom(WirelessTypes::DerivedCategory category);
 
     public:
         //Function: nodeAddress
@@ -1205,6 +1205,27 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_pullUpResistor(const ChannelMask& mask, bool enable);
 
+        //Function: read_sensorMode
+        //  Reads the <WirelessTypes::SensorOutputMode> from the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::SensorOutputMode read_sensorMode() const;
+
+        //Function: write_sensorMode
+        //  Write the <WirelessTypes::SensorOutputMode> to the Node.
+        //
+        //Parameters:
+        //  mode - The <WirelessTypes::SensorOutputMode> to write.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_sensorMode(WirelessTypes::SensorOutputMode mode);
+
         //Function: read_activitySense
         //    Reads the <ActivitySense> options from the Node.
         //    This assumes activity sense configuration is supported by the Node.
@@ -1478,10 +1499,10 @@ namespace mscl
 
         //Function: read_derivedChannelMask
         //  Reads the Derived Channel Mask from the Node for the specified <WirelessTypes::DerivedChannel>.
-        //  This assumes Derived Channels are supported by the Node, and that the given derivedChannel is supported.
+        //  This assumes Derived Channels are supported by the Node, and that the given category is supported.
         //
         //Parameters:
-        //  derivedChannel - The <WirelessTypes::DerivedChannelType> to read the mask for.
+        //  category - The <WirelessTypes::DerivedCategory> to read the mask for.
         //
         //Returns:
         //  A <ChannelMask> representing the associated Node channels for the requested DerivedChannel.
@@ -1490,20 +1511,42 @@ namespace mscl
         //  - <Error_NotSupported>: Unsupported eeprom location.
         //  - <Error_NodeCommunication>: Failed to communicate with the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        ChannelMask read_derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel) const;
+        ChannelMask read_derivedChannelMask(WirelessTypes::DerivedCategory category) const;
 
         //Function: write_derivedChannelMask
-        //  Writes a Derived Channel Mask to the Node for the specified <WirelessTypes::MathChannel>.
-        //  This assumes Derived Channels are supported by the Node, and that the given derivedChannel is supported.
+        //  Writes a Derived Channel Mask to the Node for the specified <WirelessTypes::DerivedCategory>.
+        //  This assumes Derived Channels are supported by the Node, and that the given category is supported.
         //
         //Parameters:
-        //  derivedChannel - The <WirelessTypes::DerivedChannelType> to write the mask for.
+        //  category - The <WirelessTypes::DerivedCategory> to write the mask for.
         //  mask - The <ChannelMask> representing the associated Node channels to set.
         //
         //Exceptions:
         //  - <Error_NotSupported>: Unsupported eeprom location.
         //  - <Error_NodeCommunication>: Failed to communicate with the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void write_derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel, const ChannelMask& mask);
+        void write_derivedChannelMask(WirelessTypes::DerivedCategory category, const ChannelMask& mask);
+
+        //Function: read_derivedVelocityUnit
+        //  Reads the <WirelessTypes::DerivedVelocityUnit> from the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::DerivedVelocityUnit read_derivedVelocityUnit() const;
+
+        //Function: write_derivedVelocityUnit
+        //  Writes the <WirelessTypes::DerivedVelocityUnit> to the Node.
+        //  This assumes Derived Channels are supported by the Node, and that the given derivedChannel is supported.
+        //
+        //Parameters:
+        //  unit - The <WirelessTypes::DerivedVelocityUnit> to write .
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_derivedVelocityUnit(WirelessTypes::DerivedVelocityUnit unit);
     };
 }

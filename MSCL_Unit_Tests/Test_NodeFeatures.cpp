@@ -185,10 +185,10 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_minTimeBetweenBursts)
     BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs4, derivedMasks, SampleRate::Hertz(2048), 100, lxrs) == TimeSpan::Seconds(5));
     BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs2, derivedMasks, SampleRate::Hertz(64), 100, lxrs) == TimeSpan::Seconds(6));
 
-    derivedMasks.emplace(WirelessTypes::derived_rms, ChannelMask(255));
-    derivedMasks.emplace(WirelessTypes::derived_peakToPeak, ChannelMask(255));
-    derivedMasks.emplace(WirelessTypes::derived_ips, ChannelMask(255));
-    derivedMasks.emplace(WirelessTypes::derived_crestFactor, ChannelMask(255));
+    derivedMasks.emplace(WirelessTypes::derivedCategory_rms, ChannelMask(255));
+    derivedMasks.emplace(WirelessTypes::derivedCategory_peakToPeak, ChannelMask(255));
+    derivedMasks.emplace(WirelessTypes::derivedCategory_velocity, ChannelMask(255));
+    derivedMasks.emplace(WirelessTypes::derivedCategory_crestFactor, ChannelMask(255));
     BOOST_CHECK(features->minTimeBetweenBursts(mode_derived, format_uint16, chs4, derivedMasks, SampleRate::Hertz(32), 100, lxrs) == TimeSpan::Seconds(8));
 }
 

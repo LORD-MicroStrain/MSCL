@@ -36,14 +36,14 @@ namespace mscl
         struct AlgorithmMetaData
         {
             //Variable: algorithmId
-            //  The <WirelessTypes::DerivedChannelType>.
-            WirelessTypes::DerivedChannelType algorithmId;
+            //  The <WirelessTypes::DerivedDataPacketAlgorithmId>.
+            WirelessTypes::DerivedDataPacketAlgorithmId algorithmId;
 
             //Variable: channelMask
             //  The <ChannelMask> to which the algorithm is applied.
             ChannelMask channelMask;
 
-            AlgorithmMetaData(WirelessTypes::DerivedChannelType id, const ChannelMask& mask):
+            AlgorithmMetaData(WirelessTypes::DerivedDataPacketAlgorithmId id, const ChannelMask& mask):
                 algorithmId(id),
                 channelMask(mask)
             {}
@@ -137,12 +137,12 @@ namespace mscl
         //  Takes a math algorithm ID and a channel number (1 = ch1, 8 = ch8) and determines the <WirelessChannel::ChannelId>.
         //
         //Parameters:
-        //  algorithmId - The <WirelessTypes::DerivedChannelType>.
+        //  algorithmId - The <WirelessTypes::DerivedDataPacketAlgorithmId>.
         //  channelNumber - The channel number (1 = ch1, 8 = ch8) which the math applies to.
         //
         //Returns:
         //  The <WirelessChannel::ChannelId> representing the math channel.
-        static WirelessChannel::ChannelId getMathChannelId(WirelessTypes::DerivedChannelType algorithmId, uint8 channelNumber);
+        static WirelessChannel::ChannelId getMathChannelId(WirelessTypes::DerivedDataPacketAlgorithmId algorithmId, uint8 channelNumber);
 
         //Function: getNextSweep
         //    Gets the next <DataSweep> in the packet

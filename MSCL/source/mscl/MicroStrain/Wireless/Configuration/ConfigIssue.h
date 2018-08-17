@@ -74,6 +74,8 @@ namespace mscl
         //  CONFIG_DEBOUNCE_FILTER              - 51 - Debounce Filter
         //  CONFIG_PULLUP_RESISTOR              - 52 - Pull-up Resistor
         //  CONFIG_EXCITATION_VOLTAGE           - 53 - Excitation Voltage
+        //  CONFIG_DERIVED_UNIT                 - 54 - Derived Unit
+        //  CONFIG_SENSOR_OUTPUT_MODE           - 55 - Sensor Output Mode
         enum ConfigOption
         {
             CONFIG_SAMPLING_MODE                = 0,
@@ -129,7 +131,9 @@ namespace mscl
             CONFIG_TEMP_SENSOR_OPTS             = 50,
             CONFIG_DEBOUNCE_FILTER              = 51,
             CONFIG_PULLUP_RESISTOR              = 52,
-            CONFIG_EXCITATION_VOLTAGE           = 53
+            CONFIG_EXCITATION_VOLTAGE           = 53,
+            CONFIG_DERIVED_UNIT                 = 54,
+            CONFIG_SENSOR_OUTPUT_MODE           = 55
         };
 
         ConfigIssue();    //default constructor

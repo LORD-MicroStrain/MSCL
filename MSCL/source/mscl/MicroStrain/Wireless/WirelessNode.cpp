@@ -388,6 +388,11 @@ namespace mscl
         return m_impl->getPullUpResistor(mask);
     }
 
+    WirelessTypes::SensorOutputMode WirelessNode::getSensorOutputMode() const
+    {
+        return m_impl->getSensorOutputMode();
+    }
+
     float WirelessNode::getGaugeFactor(const ChannelMask& mask) const
     {
         return m_impl->getGaugeFactor(mask);
@@ -493,8 +498,13 @@ namespace mscl
         return m_impl->getDerivedDataRate();
     }
 
-    ChannelMask WirelessNode::getDerivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType) const
+    ChannelMask WirelessNode::getDerivedChannelMask(WirelessTypes::DerivedCategory category) const
     {
-        return m_impl->getDerivedChannelMask(derivedChannelType);
+        return m_impl->getDerivedChannelMask(category);
+    }
+
+    WirelessTypes::DerivedVelocityUnit WirelessNode::getDerivedVelocityUnit() const
+    {
+        return m_impl->getDerivedVelocityUnit();
     }
 }

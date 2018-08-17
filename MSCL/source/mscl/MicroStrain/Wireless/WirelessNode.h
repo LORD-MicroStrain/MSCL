@@ -906,6 +906,18 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         bool getPullUpResistor(const ChannelMask& mask) const;
 
+        //API Function: getSensorOutputMode
+        //  Gets the <WirelessTypes::SensorOutputMode> currently set on the Node.
+        //
+        //Returns:
+        //  The <WirelessTypes::SensorOutputMode> currently set on the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Attempted to read an unsupported option.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::SensorOutputMode getSensorOutputMode() const;
+
         //API Function: getGaugeFactor
         //    Reads the gauge factor of the specified <ChannelMask> currently set on the Node.
         //    See Also: <NodeFeatures::channelGroups>, <NodeFeatures::supportsGaugeFactor>
@@ -1194,20 +1206,32 @@ namespace mscl
         WirelessTypes::WirelessSampleRate getDerivedDataRate() const;
 
         //API Function: getDerivedChannelMask
-        //  Reads the <ChannelMask> for an individual <WirelessTypes::DerivedChannel> that is currently set on the Node.
+        //  Reads the <ChannelMask> for an individual <WirelessTypes::DerivedCategory> that is currently set on the Node.
         //  This represents which of the actual Node's channels are set to be mapped to derived channels.
         //  For example, if the mask for RMS has ch1 and ch3 active, ch1RMS and ch3RMS channels will be output.
         //
         //Parameters:
-        //  derivedChannelType - The <WirelessTypes::DerivedChannelType> to read the channel mask for.
+        //  category - The <WirelessTypes::DerivedCategory> to read the channel mask for.
         //
         //Returns:
-        //  A <ChannelMask> that is currently set on the Node for the requested <WirelessTypes::DerivedChannel>.
+        //  A <ChannelMask> that is currently set on the Node for the requested <WirelessTypes::DerivedCategory>.
         //
         //Exceptions:
         //  - <Error_NotSupported>: Derived Channels are not supported by this Node.
         //  - <Error_NodeCommunication>: Failed to read from the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        ChannelMask getDerivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType) const;
+        ChannelMask getDerivedChannelMask(WirelessTypes::DerivedCategory category) const;
+
+        //API Function: getDerivedVelocityUnit
+        //  Reads the <WirelessTypes::DerivedVelocityUnit> which indicates which unit the Velocity derived channel is set to.
+        //
+        //Returns:
+        //  A <WirelessTypes::DerivedVelocityUnit>.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: The Derived Velocity channel is not supported by this Node.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::DerivedVelocityUnit getDerivedVelocityUnit() const;
     };
 }

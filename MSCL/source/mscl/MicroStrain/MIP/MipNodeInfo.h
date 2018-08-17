@@ -81,7 +81,7 @@ namespace mscl
 
         //Function: supportedSampleRates
         //  Gets the <SampleRates> supported by the Node for the given <MipTypes::DataClass>.
-        const SampleRates& supportedSampleRates(MipTypes::DataClass category) const;
+        const SampleRates& supportedSampleRates(MipTypes::DataClass dataClass) const;
     };
 
 }

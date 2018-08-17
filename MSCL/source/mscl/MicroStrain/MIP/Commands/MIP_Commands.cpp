@@ -156,4 +156,18 @@ namespace mscl
 
         return result;
     }
+
+    ZUPTSettingsData MIP_Commands::parseData_ZUPTControl(const GenericMipCmdResponse& response)
+    {
+        //use a DataBuffer to make reading nicer
+        DataBuffer db(response.data());
+
+        //read the enable value
+        bool enabled =  static_cast<bool>(db.read_uint8() == 1);
+
+        //read the ZUPT Threshold
+        float threshold = db.read_float();
+
+        return ZUPTSettingsData(enabled, threshold);
+    }
 }

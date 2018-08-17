@@ -209,6 +209,172 @@ namespace mscl
     //==========================================================================================
 
     //==========================================================================================
+    //Altitude Aid Control
+    ByteStream AltitudeAidControl::buildCommand_get()
+    {
+        //container to hold the command's field data
+        ByteStream fieldData;
+
+        //add the command selector byte
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::READ_BACK_CURRENT_SETTINGS));
+
+        //build and return the command bytes
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
+    }
+
+    ByteStream AltitudeAidControl::buildCommand_set(bool enable)
+    {
+        //container to hold the command's field data
+        ByteStream fieldData;
+
+        //add the command selector byte
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::USE_NEW_SETTINGS));
+
+        //add the enable/disable flag
+        fieldData.append_uint8(static_cast<uint8>(enable));
+
+        //build and return the command bytes
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
+    }
+
+    AltitudeAidControl::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
+        GenericMipCommand::Response(MipTypes::CMD_EF_ALTITUDE_AID_CTRL, collector, true, dataResponse, "Altitude Aid Control")
+    {
+    }
+
+    bool AltitudeAidControl::Response::parseResponse(const GenericMipCmdResponse& response) const
+    {
+        return MIP_Commands::parseData_singleBool(response);
+    }
+    //==========================================================================================
+
+    //==========================================================================================
+    //Pitch/Roll Aid Control
+    ByteStream PitchRollAidControl::buildCommand_get()
+    {
+        //container to hold the command's field data
+        ByteStream fieldData;
+
+        //add the command selector byte
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::READ_BACK_CURRENT_SETTINGS));
+
+        //build and return the command bytes
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
+    }
+
+    ByteStream PitchRollAidControl::buildCommand_set(bool enable)
+    {
+        //container to hold the command's field data
+        ByteStream fieldData;
+
+        //add the command selector byte
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::USE_NEW_SETTINGS));
+
+        //add the enable/disable flag
+        fieldData.append_uint8(static_cast<uint8>(enable));
+
+        //build and return the command bytes
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
+    }
+
+    PitchRollAidControl::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
+        GenericMipCommand::Response(MipTypes::CMD_EF_PITCH_ROLL_AID_CTRL, collector, true, dataResponse, "Pitch/Roll Aid Control")
+    {
+    }
+
+    bool PitchRollAidControl::Response::parseResponse(const GenericMipCmdResponse& response) const
+    {
+        return MIP_Commands::parseData_singleBool(response);
+    }
+    //==========================================================================================
+
+    //==========================================================================================
+    //Velocity ZUPT Control
+    ByteStream VelocityZUPTControl::buildCommand_get()
+    {
+        //container to hold the command's field data
+        ByteStream fieldData;
+
+        //add the command selector byte
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::READ_BACK_CURRENT_SETTINGS));
+
+        //build and return the command bytes
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
+    }
+
+    ByteStream VelocityZUPTControl::buildCommand_set(const ZUPTSettingsData& settingsData)
+    {
+        //container to hold the command's field data
+        ByteStream fieldData;
+
+        //add the command selector byte
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::USE_NEW_SETTINGS));
+
+        //add the enable/disable flag
+        fieldData.append_uint8(static_cast<uint8>(settingsData.enabled));
+
+        //add the threshold value
+        fieldData.append_float(static_cast<float>(settingsData.threshold));
+
+        //build and return the command bytes
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
+    }
+
+    VelocityZUPTControl::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
+        GenericMipCommand::Response(MipTypes::CMD_EF_ZERO_VEL_UPDATE_CTRL, collector, true, dataResponse, "Velocity ZUPT Control")
+    {
+    }
+
+    ZUPTSettingsData VelocityZUPTControl::Response::parseResponse(const GenericMipCmdResponse& response) const
+    {
+        return MIP_Commands::parseData_ZUPTControl(response);
+    }
+    //==========================================================================================
+
+    //==========================================================================================
+    //Angular Rate ZUPT Control
+    ByteStream AngularRateZUPTControl::buildCommand_get()
+    {
+        //container to hold the command's field data
+        ByteStream fieldData;
+
+        //add the command selector byte
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::READ_BACK_CURRENT_SETTINGS));
+
+        //build and return the command bytes
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
+    }
+
+    ByteStream AngularRateZUPTControl::buildCommand_set(const ZUPTSettingsData& settingsData)
+    {
+        //container to hold the command's field data
+        ByteStream fieldData;
+
+        //add the command selector byte
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::USE_NEW_SETTINGS));
+
+        //add the enable/disable flag
+        fieldData.append_uint8(static_cast<uint8>(settingsData.enabled));
+
+        //add the threshold value
+        fieldData.append_float(static_cast<float>(settingsData.threshold));
+
+        //build and return the command bytes
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
+    }
+
+    AngularRateZUPTControl::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
+        GenericMipCommand::Response(MipTypes::CMD_EF_ZERO_ANG_RATE_UPDATE_CTRL, collector, true, dataResponse, "Angular Rate ZUPT Control")
+    {
+    }
+
+    ZUPTSettingsData AngularRateZUPTControl::Response::parseResponse(const GenericMipCmdResponse& response) const
+    {
+        return MIP_Commands::parseData_ZUPTControl(response);
+    }
+    //==========================================================================================
+
+    //==========================================================================================
     //Sensor to Vehicle Frame Transformation
     ByteStream SensorToVehicFrameTrans::buildCommand_get()
     {

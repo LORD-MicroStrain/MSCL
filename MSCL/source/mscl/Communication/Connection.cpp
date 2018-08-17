@@ -25,6 +25,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "UnixSocketConnection.h"
 #endif
 
+#ifndef _WIN32
+#include <boost/filesystem.hpp>
+#endif
+
 namespace mscl
 {
     Connection::Connection(std::shared_ptr<Connection_Impl_Base> impl) :
@@ -34,12 +38,16 @@ namespace mscl
 
     Connection Connection::Serial(const std::string& port, uint32 baudRate)
     {
-        std::shared_ptr<Connection_Impl_Base> serial(new SerialConnection(port, baudRate));
+        std::string resolvedPort = resolvePath(port);
+
+        std::shared_ptr<Connection_Impl_Base> serial(new SerialConnection(resolvedPort, baudRate));
         return Connection(serial);
     }
 
     Connection Connection::Serial(const std::string& port)
     {
+        std::string resolvedPort = resolvePath(port);
+
         //attempt to automatically discover the baud rate setting
         auto ports = Devices::listPorts();
         uint32 baudRate = 921600;
@@ -47,7 +55,7 @@ namespace mscl
 
         for(auto i : ports)
         {
-            if(i.first == port)
+            if(i.first == resolvedPort)
             {
                 foundPort = true;
                 baudRate = i.second.baudRate();
@@ -64,7 +72,7 @@ namespace mscl
             throw Error_InvalidSerialPort(-999);
         }
 
-        return Connection::Serial(port, baudRate);
+        return Connection::Serial(resolvedPort, baudRate);
     }
 
     Connection Connection::TcpIp(const std::string& serverAddress, uint16 serverPort, const std::string& interfaceAddress)
@@ -156,6 +164,25 @@ namespace mscl
     void Connection::throwIfError()
     {
         m_impl->throwIfError();
+    }
+
+    std::string Connection::resolvePath(const std::string& path)
+    {
+        std::string result = path;
+        //Note: do nothing on Windows
+
+#ifndef _WIN32
+        //Linux specific code
+        boost::filesystem::path p(path);
+
+        if(boost::filesystem::is_symlink(p))
+        {
+            p = boost::filesystem::read_symlink(p);
+            result = p.string();
+        }
+#endif
+
+        return result;
     }
 
     void Connection::writeStr(const std::string& bytes) const

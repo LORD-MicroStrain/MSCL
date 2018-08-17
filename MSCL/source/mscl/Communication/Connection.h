@@ -173,6 +173,8 @@ namespace mscl
         //    - <Error_Connection>: a connection error has occurred.
         void throwIfError();
 
+        static std::string resolvePath(const std::string& path);
+
     public:
         //API Function: description
         //    Gets a description of the connection as a string.

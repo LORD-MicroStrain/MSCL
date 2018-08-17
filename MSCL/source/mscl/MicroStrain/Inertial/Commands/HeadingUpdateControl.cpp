@@ -38,7 +38,7 @@ namespace mscl
     HeadingUpdateOptions HeadingUpdateControl::getResponseData(const GenericMipCmdResponse& response)
     {
         DataBuffer dataBuffer(response.data());
-        HeadingUpdateOptions headingUpdateOptions (dataBuffer.read_uint8());
+        HeadingUpdateOptions headingUpdateOptions (static_cast<InertialTypes::HeadingUpdateEnableOption>(dataBuffer.read_uint8()));
 
         return headingUpdateOptions;
     }
@@ -51,7 +51,7 @@ namespace mscl
         // Only fill in data if set command is being sent.
         if (m_functionSelector == MipTypes::USE_NEW_SETTINGS)
         {
-            byteCommand.append_uint8(m_HeadingUpdateOptions.AsUint8());
+            byteCommand.append_uint8(static_cast<uint8>(m_HeadingUpdateOptions.AsOptionId()));
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }

@@ -19,9 +19,9 @@ namespace mscl
         addCalCoeffChannelGroup(5, NodeEepromMap::CH_ACTION_SLOPE_5, NodeEepromMap::CH_ACTION_ID_5);
         addCalCoeffChannelGroup(6, NodeEepromMap::CH_ACTION_SLOPE_6, NodeEepromMap::CH_ACTION_ID_6);
 
-        static const ChannelMask DIFFERENTIAL_CHS(BOOST_BINARY(00000001));  //ch1
-        static const ChannelMask SINGLE_ENDED_CHS(BOOST_BINARY(00000010));  //ch2
-        static const ChannelMask PULSE_CHS(BOOST_BINARY(00110000));         //ch5 and ch6
+        const ChannelMask DIFFERENTIAL_CHS(BOOST_BINARY(00000001));  //ch1
+        const ChannelMask SINGLE_ENDED_CHS(BOOST_BINARY(00000010));  //ch2
+        const ChannelMask PULSE_CHS(BOOST_BINARY(00110000));         //ch5 and ch6
 
         m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential Channels",
                                      ChannelGroup::SettingsMap{
@@ -54,15 +54,17 @@ namespace mscl
         return true;
     }
 
-    const WirelessTypes::DerivedChannelTypes NodeFeatures_sglink200::derivedChannelTypes() const
+    const WirelessTypes::DerivedChannelMasks NodeFeatures_sglink200::channelsPerDerivedCategory() const
     {
-        static const WirelessTypes::DerivedChannelTypes channels = {
-            {WirelessTypes::derived_rms},
-            {WirelessTypes::derived_peakToPeak},
-            {WirelessTypes::derived_mean}
+        const ChannelMask ALL_CHS(BOOST_BINARY(00110011));
+
+        const WirelessTypes::DerivedChannelMasks result = {
+            {std::make_pair(WirelessTypes::derivedCategory_rms, ALL_CHS)},
+            {std::make_pair(WirelessTypes::derivedCategory_peakToPeak, ALL_CHS)},
+            {std::make_pair(WirelessTypes::derivedCategory_mean, ALL_CHS)}
         };
 
-        return channels;
+        return result;
     }
 
     const WirelessTypes::Filters NodeFeatures_sglink200::lowPassFilters() const
@@ -143,6 +145,11 @@ namespace mscl
             {WirelessTypes::voltage_1500mV}
         };
         return excitationVoltages;
+    }
+
+    const WirelessTypes::VoltageType NodeFeatures_sglink200::adcVoltageInputType() const
+    {
+        return WirelessTypes::VoltageType::voltageType_differential;
     }
 
     bool NodeFeatures_sglink200::supportsPullUpResistor() const

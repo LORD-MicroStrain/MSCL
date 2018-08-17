@@ -152,25 +152,23 @@ namespace mscl
     };
 
     const InputRangeHelper::InputRangeMap InputRangeHelper::RANGES_SGLINK200_FULLDIFF_CHS_2500mV = {
-        {0, InputRangeEntry(WirelessTypes::range_1_25V, 1.0f)},
-        {1, InputRangeEntry(WirelessTypes::range_625mV, 2.0f)},
-        {2, InputRangeEntry(WirelessTypes::range_312_5mV, 4.0f)},
-        {3, InputRangeEntry(WirelessTypes::range_156_25mV, 8.0f)},
-        {4, InputRangeEntry(WirelessTypes::range_78_125mV, 16.0f)},
-        {5, InputRangeEntry(WirelessTypes::range_39_063mV, 32.0f)},
-        {6, InputRangeEntry(WirelessTypes::range_19_532mV, 64.0f)},
-        {7, InputRangeEntry(WirelessTypes::range_9_766mV, 128.0f)}
+        {1, InputRangeEntry(WirelessTypes::range_1_25V, 2.0f)},
+        {2, InputRangeEntry(WirelessTypes::range_625mV, 4.0f)},
+        {3, InputRangeEntry(WirelessTypes::range_312_5mV, 8.0f)},
+        {4, InputRangeEntry(WirelessTypes::range_156_25mV, 16.0f)},
+        {5, InputRangeEntry(WirelessTypes::range_78_125mV, 32.0f)},
+        {6, InputRangeEntry(WirelessTypes::range_39_063mV, 64.0f)},
+        {7, InputRangeEntry(WirelessTypes::range_19_532mV, 128.0f)}
     };
 
     const InputRangeHelper::InputRangeMap InputRangeHelper::RANGES_SGLINK200_FULLDIFF_CHS_1500mV = {
-        {0, InputRangeEntry(WirelessTypes::range_750mV, 1.0f)},
-        {1, InputRangeEntry(WirelessTypes::range_375mV, 2.0f)},
-        {2, InputRangeEntry(WirelessTypes::range_187_5mV, 4.0f)},
-        {3, InputRangeEntry(WirelessTypes::range_93_75mV, 8.0f)},
-        {4, InputRangeEntry(WirelessTypes::range_46_875mV, 16.0f)},
-        {5, InputRangeEntry(WirelessTypes::range_23_438mV, 32.0f)},
-        {6, InputRangeEntry(WirelessTypes::range_11_719mV, 64.0f)},
-        {7, InputRangeEntry(WirelessTypes::range_5_859mV, 128.0f)}
+        {1, InputRangeEntry(WirelessTypes::range_750mV, 2.0f)},
+        {2, InputRangeEntry(WirelessTypes::range_375mV, 4.0f)},
+        {3, InputRangeEntry(WirelessTypes::range_187_5mV, 8.0f)},
+        {4, InputRangeEntry(WirelessTypes::range_93_75mV, 16.0f)},
+        {5, InputRangeEntry(WirelessTypes::range_46_875mV, 32.0f)},
+        {6, InputRangeEntry(WirelessTypes::range_23_438mV, 64.0f)},
+        {7, InputRangeEntry(WirelessTypes::range_11_719mV, 128.0f)}
     };
 
     const InputRangeHelper::InputRangeMap InputRangeHelper::RANGES_SGLINK200_SINGLEENDED_CHS_2500mV = {
@@ -197,13 +195,13 @@ namespace mscl
 
     const InputRangeHelper::InputRangeMap InputRangeHelper::RANGES_TCLINK_200 = {
         {1, InputRangeEntry(WirelessTypes::range_1_35V_or_0to2026408518ohm, 1.0f)},
-        {2, InputRangeEntry(WirelessTypes::range_1_25V_or_0to5100ohm, 2.0f)},
-        {4, InputRangeEntry(WirelessTypes::range_625mV_or_0to1700ohm, 4.0f)},
-        {8, InputRangeEntry(WirelessTypes::range_312_5mV_or_0to728ohm, 8.0f)},
-        {16, InputRangeEntry(WirelessTypes::range_156_25mV_or_0to340ohm, 16.0f)},
-        {32, InputRangeEntry(WirelessTypes::range_78_125mV_or_0to164ohm, 32.0f)},
-        {64, InputRangeEntry(WirelessTypes::range_39_0625mV_or_0to80ohm, 64.0f)},
-        {128, InputRangeEntry(WirelessTypes::range_19_5313mV_or_0to40ohm, 128.0f)}
+        {2, InputRangeEntry(WirelessTypes::range_1_25V_or_0to10000ohm, 2.0f)},
+        {4, InputRangeEntry(WirelessTypes::range_625mV_or_0to2580ohm, 4.0f)},
+        {8, InputRangeEntry(WirelessTypes::range_312_5mV_or_0to1290ohm, 8.0f)},
+        {16, InputRangeEntry(WirelessTypes::range_156_25mV_or_0to645ohm, 16.0f)},
+        {32, InputRangeEntry(WirelessTypes::range_78_125mV_or_0to322ohm, 32.0f)},
+        {64, InputRangeEntry(WirelessTypes::range_39_0625mV_or_0to161ohm, 64.0f)},
+        {128, InputRangeEntry(WirelessTypes::range_19_5313mV_or_0to80ohm, 128.0f)}
     };
 
     const InputRangeHelper::InputRangeMap& InputRangeHelper::getRangeMap(WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType channelType, WirelessTypes::Voltage excitationVoltage)
@@ -242,6 +240,7 @@ namespace mscl
             case WirelessModels::node_sgLink200_oem_qbridge_120_ufl:
             case WirelessModels::node_sgLink200_oem_qbridge_350:
             case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
+            case WirelessModels::node_torqueLink200:
             {
                 if(channelType == WirelessTypes::chType_fullDifferential)
                 {

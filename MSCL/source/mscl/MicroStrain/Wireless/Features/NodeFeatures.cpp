@@ -40,6 +40,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeFeatures_tclink3ch.h"
 #include "NodeFeatures_tclink6ch.h"
 #include "NodeFeatures_torqueLink.h"
+#include "NodeFeatures_torqueLink200.h"
 #include "NodeFeatures_vlink200.h"
 #include "NodeFeatures_vlink.h"
 #include "NodeFeatures_vlink_legacy.h"
@@ -210,6 +211,9 @@ namespace mscl
 
         case WirelessModels::node_torqueLink:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_torqueLink(info));
+
+        case WirelessModels::node_torqueLink200:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_torqueLink200(info));
 
         //TODO: add Watt-Link
 
@@ -704,6 +708,11 @@ namespace mscl
         return false;
     }
 
+    bool NodeFeatures::supportsSensorOutputMode() const
+    {
+        return (sensorOutputModes().size() > 0);
+    }
+
     bool NodeFeatures::supportsAutoBalance() const
     {
         return anyChannelGroupSupports(WirelessTypes::chSetting_autoBalance);
@@ -856,12 +865,12 @@ namespace mscl
         return (m_nodeInfo.firmwareVersion() >= MIN_NODE_FW_PROTOCOL_1_5);
     }
 
-    bool NodeFeatures::supportsDerivedChannelType(WirelessTypes::DerivedChannelType derivedChannelType) const
+    bool NodeFeatures::supportsDerivedCategory(WirelessTypes::DerivedCategory category) const
     {
-        WirelessTypes::DerivedChannelTypes chs = derivedChannelTypes();
+        WirelessTypes::DerivedChannelMasks cats = channelsPerDerivedCategory();
 
         //return the result of trying to find the math channel in the vector
-        return (std::find(chs.begin(), chs.end(), derivedChannelType) != chs.end());
+        return (cats.find(category) != cats.end());
     }
 
     bool NodeFeatures::supportsRawDataMode() const
@@ -881,7 +890,12 @@ namespace mscl
     bool NodeFeatures::supportsDerivedDataMode() const
     {
         //if any derived channels are avaiable, derived data mode should be available
-        return (derivedChannelTypes().size() > 0);
+        return (channelsPerDerivedCategory().size() > 0);
+    }
+
+    bool NodeFeatures::supportsDerivedVelocityUnitConfig() const
+    {
+        return supportsDerivedCategory(WirelessTypes::derivedCategory_velocity) && m_nodeInfo.firmwareVersion() >= Version(12, 41110);
     }
 
     bool NodeFeatures::supportsExcitationVoltageConfig() const
@@ -1461,6 +1475,12 @@ namespace mscl
         return result;
     }
 
+    const WirelessTypes::SensorOutputModes NodeFeatures::sensorOutputModes() const
+    {
+        WirelessTypes::SensorOutputModes result;
+        return result;
+    }
+
     const WirelessTypes::WirelessSampleRates NodeFeatures::histogramTransmitRates() const
     {
         //empty by default
@@ -1533,9 +1553,9 @@ namespace mscl
         return result;
     }
 
-    const WirelessTypes::DerivedChannelTypes NodeFeatures::derivedChannelTypes() const
+    const WirelessTypes::DerivedChannelMasks NodeFeatures::channelsPerDerivedCategory() const
     {
-        WirelessTypes::DerivedChannelTypes result;
+        WirelessTypes::DerivedChannelMasks result;
         return result;
     }
 
@@ -1543,6 +1563,11 @@ namespace mscl
     {
         WirelessTypes::Voltages result;
         return result;
+    }
+
+    const WirelessTypes::VoltageType NodeFeatures::adcVoltageInputType() const
+    {
+        return WirelessTypes::VoltageType::voltageType_singleEnded;
     }
 
     WirelessTypes::TransmitPower NodeFeatures::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
@@ -1593,7 +1618,7 @@ namespace mscl
         //all nodes currently support raw data mode
         result.push_back(WirelessTypes::dataMode_raw);
 
-        if(derivedChannelTypes().size() > 0)
+        if(channelsPerDerivedCategory().size() > 0)
         {
             result.push_back(WirelessTypes::dataMode_derived);
 

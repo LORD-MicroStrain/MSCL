@@ -16,12 +16,14 @@ BOOST_AUTO_TEST_SUITE(ArmedDataloggingNetwork_Test)
 
 BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_addNode_success)
 {
-    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl());
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl(new mock_baseStationImpl());
+    BaseStation b(baseImpl);
+
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b));
     WirelessNode node(1, b);
     node.setImpl(impl);
 
-    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl());
+    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b));
     WirelessNode node2(2, b);
     node2.setImpl(impl2);
 
@@ -43,13 +45,15 @@ BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_addNode_success)
 
 BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_addNode_fail_differentBase)
 {
-    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl());
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl1(new mock_baseStationImpl());
+    BaseStation b(baseImpl1);
+
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b));
     WirelessNode node(1, b);
     node.setImpl(impl);
 
-    std::shared_ptr<BaseStation_Impl> baseImpl(new mock_baseStationImpl());
-    BaseStation b2(baseImpl);
+    std::shared_ptr<BaseStation_Impl> baseImpl2(new mock_baseStationImpl());
+    BaseStation b2(baseImpl2);
 
     std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b2, 2));
     WirelessNode node2(2, b2);
@@ -70,8 +74,10 @@ BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_addNode_fail_differentBase)
 
 BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_addNode_fail_invalidConfig)
 {
-    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl());
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl1(new mock_baseStationImpl());
+    BaseStation b(baseImpl1);
+
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b));
     WirelessNode node(1, b);
     node.setImpl(impl);
 
@@ -88,12 +94,14 @@ BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_addNode_fail_invalidConfig)
 
 BOOST_AUTO_TEST_CASE(ArmedDataloggingNetwork_removeNode)
 {
-    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl());
-    BaseStation b = makeBaseStationWithMockImpl();
+    std::shared_ptr<mock_baseStationImpl> baseImpl1(new mock_baseStationImpl());
+    BaseStation b(baseImpl1);
+
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(b));
     WirelessNode node(1, b);
     node.setImpl(impl);
 
-    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl());
+    std::shared_ptr<mock_WirelessNodeImpl> impl2(new mock_WirelessNodeImpl(b));
     WirelessNode node2(2, b);
     node2.setImpl(impl2);
 

@@ -267,6 +267,14 @@ namespace mscl
         }
     }
 
+    void WirelessNode_Impl::clearEepromCacheLocation(uint16 location)
+    {
+        if(m_eeprom != nullptr)
+        {
+            m_eeprom->clearCacheLocation(location);
+        }
+    }
+
     void WirelessNode_Impl::updateEepromCacheFromNodeDiscovery(const NodeDiscovery& nodeDisovery)
     {
         rec_mutex_lock_guard lock(m_protocolMutex);
@@ -512,6 +520,11 @@ namespace mscl
         return m_eepromHelper->read_pullUpResistor(mask);
     }
 
+    WirelessTypes::SensorOutputMode WirelessNode_Impl::getSensorOutputMode() const
+    {
+        return m_eepromHelper->read_sensorMode();
+    }
+
     WirelessTypes::InputRange WirelessNode_Impl::getInputRange(const ChannelMask& mask) const
     {
         return m_eepromHelper->read_inputRange(mask);
@@ -609,8 +622,9 @@ namespace mscl
             case WirelessModels::node_sgLink200_oem_qbridge_120_ufl:
             case WirelessModels::node_sgLink200_oem_qbridge_350:
             case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
+            case WirelessModels::node_torqueLink200:
                 assert(false);
-                throw Error("SG-Link-200 should read this value from EEPROM!");
+                throw Error("This Node should read Excitation Voltage from EEPROM!");
 
             default:
                 throw Error_NotSupported("Unknown Excitation voltage for this Node.");
@@ -666,6 +680,7 @@ namespace mscl
             case WirelessModels::node_sgLink200_oem_qbridge_120_ufl:
             case WirelessModels::node_sgLink200_oem_qbridge_350:
             case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
+            case WirelessModels::node_torqueLink200:
                 return m_eepromHelper->read_excitationVoltage();        //gain amplifier voltage is the same as the excitation, which is read from eeprom
 
             case WirelessModels::node_shmLink201:
@@ -728,6 +743,7 @@ namespace mscl
             case WirelessModels::node_sgLink200_oem_qbridge_120_ufl:
             case WirelessModels::node_sgLink200_oem_qbridge_350:
             case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
+            case WirelessModels::node_torqueLink200:
                 return m_eepromHelper->read_excitationVoltage();        //gain amplifier voltage is the same as the excitation, which is read from eeprom
 
             case WirelessModels::node_shmLink201:
@@ -884,19 +900,39 @@ namespace mscl
         return m_eepromHelper->read_derivedSampleRate();
     }
 
-    ChannelMask WirelessNode_Impl::getDerivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType) const
+    ChannelMask WirelessNode_Impl::getDerivedChannelMask(WirelessTypes::DerivedCategory category) const
     {
         if(!features().supportsDerivedDataMode())
         {
             throw Error_NotSupported("Derived Data Channels are not supported by this Node.");
         }
 
-        if(!features().supportsDerivedChannelType(derivedChannelType))
+        if(!features().supportsDerivedCategory(category))
         {
-            throw Error_NotSupported("The given DerivedChannelType (" + Utils::toStr(derivedChannelType) + ") is not supported by this Node.");
+            throw Error_NotSupported("The given DerivedCategory (" + Utils::toStr(category) + ") is not supported by this Node.");
         }
 
-        return m_eepromHelper->read_derivedChannelMask(derivedChannelType);
+        return m_eepromHelper->read_derivedChannelMask(category);
+    }
+
+    WirelessTypes::DerivedVelocityUnit WirelessNode_Impl::getDerivedVelocityUnit() const
+    {
+        if(!features().supportsDerivedCategory(WirelessTypes::derivedCategory_velocity))
+        {
+            throw Error_NotSupported("The velocity derived data category is not supported by this Node.");
+        }
+
+        try
+        {
+            return m_eepromHelper->read_derivedVelocityUnit();
+        }
+        catch(Error_NotSupported&)
+        {
+            //the velocity category is supported, but the configuration eeprom isnt
+            
+            //default of IPS
+            return WirelessTypes::derivedVelocity_ips;
+        }
     }
 
     PingResponse WirelessNode_Impl::ping()

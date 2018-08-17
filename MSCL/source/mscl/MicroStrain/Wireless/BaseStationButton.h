@@ -31,14 +31,14 @@ namespace mscl
         //=====================================================================================================
         enum Command
         {
-            btn_nodeSleep                = 0,
+            btn_nodeSleep               = 0,
             btn_nodeStop                = 1,
             btn_enableBeacon            = 2,
-            btn_disableBeacon            = 3,
-            btn_nodeNonSyncSampling        = 4,
+            btn_disableBeacon           = 3,
+            btn_nodeNonSyncSampling     = 4,
             btn_nodeSyncSampling        = 5,
             btn_nodeArmedDatalogging    = 6,
-            btn_cyclePower                = 7,
+            btn_cyclePower              = 7,
             btn_disabled                = 65535
         };
 

@@ -25,13 +25,7 @@ namespace mscl
     UpnpService::~UpnpService()
     {
         m_shutdown = true;
-
         m_searchThread->join();
-
-        if(m_searching)
-        {
-            cancelFindDevices();
-        }
     }
 
     bool UpnpService::startSearch()
@@ -99,24 +93,29 @@ namespace mscl
             //loop until asked to shut down
             while(!m_shutdown)
             {
-                //if there isn't a search already in progress
-                if(!m_searching)
                 {
-                    if(startSearch())
-                    {
-                        m_searching = true;
-                    }
-                    else
-                    {
-                        //TODO: failed to start upnpservice, do something else here?
-                        return;
-                    }
-                }
+                    rec_mutex_lock_guard lock(m_upnpMutex);
 
-                if(m_searchComplete)
-                {
-                    cancelFindDevices();
-                }
+                    //if there isn't a search already in progress
+                    if(!m_searching)
+                    {
+                        if(startSearch())
+                        {
+                            m_searching = true;
+                        }
+                        else
+                        {
+                            //TODO: failed to start upnpservice, do something else here?
+                            return;
+                        }
+                    }
+
+                    if(m_searchComplete)
+                    {
+                        cancelFindDevices();
+                    }
+                    
+                }//unlock mutex
 
                 // STA threads must pump messages
                 while(PeekMessage(&message, NULL, 0, 0, PM_REMOVE))
@@ -137,6 +136,8 @@ namespace mscl
 
     void UpnpService::setSearchComplete()
     {
+        rec_mutex_lock_guard lock(m_upnpMutex);
+
         //sets the search to complete so that the current search loop
         //will terminate and a new search process will begin
         m_searchComplete = true;
@@ -144,13 +145,21 @@ namespace mscl
 
     void UpnpService::cancelFindDevices()
     {
-        if(m_deviceFinder != nullptr)
+        rec_mutex_lock_guard lock(m_upnpMutex);
+
+        if(m_deviceFinder)
         {
             m_deviceFinder->CancelAsyncFind(m_findDataIndex);
             m_deviceFinder->Release();
+            m_deviceFinder = nullptr;
         }
 
         m_searchComplete = false;
         m_searching = false;
+    }
+
+    void UpnpService::restartSearch()
+    {
+        setSearchComplete();
     }
 }

@@ -35,15 +35,17 @@ namespace mscl
         bool m_searching;
         bool m_shutdown;
         bool m_searchComplete;
+        std::recursive_mutex m_upnpMutex;
         std::unique_ptr<std::thread> m_searchThread;
 
     private:
         bool startSearch();
         void findDevices();
+        void cancelFindDevices();
 
     public:
         void setSearchComplete();
-        void cancelFindDevices();
+        void restartSearch();
     };
 }
 

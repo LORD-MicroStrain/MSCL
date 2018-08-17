@@ -162,6 +162,71 @@ namespace mscl
             HEADINGSOURCE_INTERNAL_GPS_VELOCITY_VECTOR = 0x0002,
             HEADINGSOURCE_EXTERNAL_HEADING_UPDATE_CMD = 0x0004
         };
+
+        //API Enums: HeadingUpdateEnableOption
+        //    The enums to represent the different available options and combinations for the Heading Update Control command (0x0D, 0x18)
+        //
+        //      ENABLE_NONE                        - 0x00
+        //      ENABLE_INTERNAL_MAGNETOMETER       - 0x01
+        //      ENABLE_INTERNAL_GNSS               - 0x02
+        //      ENABLE_EXTERNAL_MESSAGES           - 0x03
+        //      ENABLE_MAGNETOMETER_AND_GNSS       - 0X04
+        //      ENABLE_GNSS_AND_EXTERNAL           - 0X05
+        //      ENABLE_MAGNETOMETER_AND_EXTERNAL   - 0X06
+        //      ENABLE_ALL                         - 0x07
+        enum HeadingUpdateEnableOption
+        {
+            ENABLE_NONE = 0x00,
+            ENABLE_INTERNAL_MAGNETOMETER = 0x01,
+            ENABLE_INTERNAL_GNSS = 0x02,
+            ENABLE_EXTERNAL_MESSAGES = 0x03,
+            ENABLE_MAGNETOMETER_AND_GNSS = 0x04,
+            ENABLE_GNSS_AND_EXTERNAL = 0x05,
+            ENABLE_MAGNETOMETER_AND_EXTERNAL = 0x06,
+            ENABLE_ALL = 0x07
+        };
+
+        //API Enums: EstimationControlOption
+        //    The enums to represent the different available options and combinations for the Estimation Control command (0x0D, 0x14)
+        //
+        //      ENABLE_GYRO_BIAS_ESTIMATION             - 0x0001
+        //      ENABLE_ACCEL_BIAS_ESTIMATION            - 0x0002
+        //      ENABLE_GYRO_SCALE_FACTOR_ESTIMATION     - 0x0004
+        //      ENABLE_ACCEL_SCALE_FACTOR_ESTIMATION    - 0X0008
+        //      ENABLE_GNSS_ANTENNA_OFFSET_ESTIMATION   - 0X0010
+        //      ENABLE_HARD_IRON_AUTO_CALIBRATION       - 0X0020
+        //      ENABLE_SOFT_IRON_AUTO_CALIBRATION       - 0x0040
+        enum EstimationControlOption
+        {
+            ENABLE_GYRO_BIAS_ESTIMATION = 0x0001,
+            ENABLE_ACCEL_BIAS_ESTIMATION = 0x0002,
+            ENABLE_GYRO_SCALE_FACTOR_ESTIMATION = 0x0004,
+            ENABLE_ACCEL_SCALE_FACTOR_ESTIMATION = 0X0008,
+            ENABLE_GNSS_ANTENNA_OFFSET_ESTIMATION = 0X0010,
+            ENABLE_HARD_IRON_AUTO_CALIBRATION = 0X0020,
+            ENABLE_SOFT_IRON_AUTO_CALIBRATION = 0x0040
+        };
+
+        //API Enums: EstimationControlOption
+        //    The enums to represent the source options for Declination (0x0D, 0x43), Inclination (0x0D, 0x4C), and Magnitude Source (0x0D, 0x4D)
+        //
+        //      NONE                        - 0x0001
+        //      WORLD_MAGNETIC_MODEL        - 0x0002
+        //      MANUAL                      - 0x0004
+        enum GeographicSourceOption
+        {
+            NONE = 0x01,
+            WORLD_MAGNETIC_MODEL = 0x02,
+            MANUAL = 0x03
+		};
+
+        //API Enums: AdaptiveMeasurementMode
+        //    The enums to represent the different available options and combinations for the Adaptive Measurement commands (0x0D, 0x44-0x46)
+        enum AdaptiveMeasurementMode
+        {
+            ADAPTIVE_MEASUREMENT_DISABLE = 0x00,
+            ADAPTIVE_MEASUREMENT_ENABLE_FIXED = 0x01,
+            ADAPTIVE_MEASUREMENT_ENABLE_AUTO = 0x02        };
     };
 
 
@@ -200,7 +265,7 @@ namespace mscl
         //  Sets matrix index to passed in float value.
         //
         //Parameters:
-        //  col - the collumn to set.
+        //  col - the column to set.
         //  row - the row to set.
         //  value - the value to set (row,col) to.
         void set(uint8 row, uint8 col, float value);
@@ -210,7 +275,7 @@ namespace mscl
         //
         //Parameters:
         //  row - the row to set.
-        //  col - the collumn to set.
+        //  col - the column to set.
 #ifndef SWIG
         float operator() (uint8 row, uint8 col) const;
 #endif
@@ -312,6 +377,29 @@ private:
     const float m_timeAccuracy;
 };
 
+                /////  ZUPTSettingsData  /////
+
+//API Struct: ZUPTSettingsData
+//    Contains the data for the AngularRateZUPTControl and VelocityZUPTControl classes.
+struct ZUPTSettingsData
+{
+    //API Constructor: ZUPTSettingsData
+    //    Creates a ZUPTSettingsData object.
+    //
+    //Parameters:
+    //    enable - whether the control is enabled
+    //    threshold - the threshold to trigger the control
+    ZUPTSettingsData(bool enable, float threshold) :
+    enabled(enable),
+    threshold(threshold)
+{ }
+
+    //API Variable: enabled
+    bool enabled;
+
+    //API Variable: threshold
+    float threshold;
+};
 
                 /////  SBASSettings  /////
 
@@ -588,17 +676,15 @@ public:
     float downVelocityUncertainty;
 };
 
-//API Struct: ExternalGNSSUpdateData
+//API Struct: HeadingUpdateOptions
 //    Contains the possible sources of aiding heading updates to the Kalman filter.
 //    Some, all, or none of the options can be set as heading aids.
 struct HeadingUpdateOptions
 {
 public:
-//#ifndef SWIG
-    //Function: operator <mscl::uint8>
-    //  Converts this class to a <mscl::uint8>.
-    uint8 AsUint8() const;
-    //#endif
+    //Function: operator <InertialTypes::HeadingUpdateEnableOption>
+    //  Converts this class to a <InertialTypes::HeadingUpdateEnableOption>.
+    InertialTypes::HeadingUpdateEnableOption AsOptionId() const;
 
     //Constructor: HeadingUpdateOptions
     HeadingUpdateOptions() :
@@ -607,21 +693,103 @@ public:
         useExternalHeadingMessages(false)
     { }
 
-    //Function: Constructor
-    //  Updates this class from a <mscl::uint8> heading update according to the Communications Protocol.
+    //Constructor: HeadingUpdateOptions
+    //  Updates this class from a <InertialTypes::HeadingUpdateEnableOption> according to the Communications Protocol.
     //
-    //Parameter:
+    //Parameters:
     //  headingUpdateOption - The heading update used to fill in this object.
-    HeadingUpdateOptions(const mscl::uint8& headingUpdateOption);
+    HeadingUpdateOptions(const InertialTypes::HeadingUpdateEnableOption& headingUpdateOption);
 
     //API Variable: useInternalMagnetometer
     bool useInternalMagnetometer;
 
-    //API Variable: useInternalMagnetometer
+    //API Variable: useInternalGNSSVelocityVector
     bool useInternalGNSSVelocityVector;
 
-    //API Variable: useInternalMagnetometer
+    //API Variable: useExternalHeadingMessages
     bool useExternalHeadingMessages;
+};
+
+typedef std::vector<HeadingUpdateOptions> HeadingUpdateOptionsList;
+
+//API Struct: Geographic Source Options
+//    Holds the Geographic Source Option and the fixed value if manual is selected.
+//    Determines the sources for Declination, Inclination, and Magnitude.
+struct GeographicSourceOptions
+{
+public:
+    //Constructor: GeographicSourceOptions
+    GeographicSourceOptions() :
+        source(InertialTypes::GeographicSourceOption::NONE),
+        fixed(0.0)
+    { }
+
+    //Constructor: GeographicSourceOptions
+    //  constructs this class from a GeographicSourceOption and a float.
+    //
+    //Parameters:
+    //  sourceValue - The geographic source option to use.
+    //  fixedValue - The fixed value entered by the user to be used if the source is fixed.
+    GeographicSourceOptions(const InertialTypes::GeographicSourceOption& sourceValue, const float fixedValue) :
+        source(sourceValue),
+        fixed(fixedValue)
+    {}
+
+    //API Variable: source
+    InertialTypes::GeographicSourceOption source;
+
+    //API Variable: fixed
+    float fixed;
+};
+
+//API Struct: EstimationControlOptions
+//    Controls which parameters are estimated by the Kalman Filter.
+//    Some, all, or none of the options can be set as estimation controls.
+struct EstimationControlOptions
+{
+public:
+    //Function: operator <mscl::uint16>
+    //  Converts this class to a <mscl::uint16>.
+    uint16 AsUint16() const;
+
+    //Constructor: EstimationControlOptions
+    EstimationControlOptions() :
+        enableGyroBiasEstimation(false),
+        enableAccelBiasEstimation(false),
+        enableGyroScaleFactorEstimation(false),
+        enableAccelScaleFactorEstimation(false),
+        enableGNSSAntennaOffsetEstimation(false),
+        enableHardIronAutoCalibration(false),
+        enableSoftIronAutoCalibration(false)
+    { }
+
+    //Constructor: EstimationControlOptions
+    //  constructs this class from a <mscl::uint16> estimation control according to the Communications Protocol.
+    //
+    //Parameters:
+    //  estimationControlData - The estimation control data used to fill in this object.
+    EstimationControlOptions(const mscl::uint16& estimationControlData);
+
+    //API Variable: enableGyroBiasEstimation
+    bool enableGyroBiasEstimation;
+
+    //API Variable: enableAccelBiasEstimation
+    bool enableAccelBiasEstimation;
+
+    //API Variable: enableGyroScaleFactorEstimation
+    bool enableGyroScaleFactorEstimation;
+
+    //API Variable: enableAccelScaleFactorEstimation
+    bool enableAccelScaleFactorEstimation;
+
+    //API Variable: enableGNSSAntennaOffsetEstimation
+    bool enableGNSSAntennaOffsetEstimation;
+
+    //API Variable: enableHardIronAutoCalibration
+    bool enableHardIronAutoCalibration;
+
+    //API Variable: enableSoftIronAutoCalibration
+    bool enableSoftIronAutoCalibration;
 };
 
 //API Struct: HeadingData
@@ -649,4 +817,41 @@ public:
     float headingAngleUncertainty;
 };
 
+    //API Struct: AdaptiveMeasurementData
+    struct AdaptiveMeasurementData
+    {
+    public:
+        AdaptiveMeasurementData() :
+            mode(InertialTypes::AdaptiveMeasurementMode::ADAPTIVE_MEASUREMENT_DISABLE),
+            lowPassFilterCutoff(0),
+            lowLimit(0),
+            highLimit(0),
+            lowLimitUncertainty(0),
+            highLimitUncertainty(0),
+            minUncertainty(0)
+        {}
+
+        //API Variable: mode
+        InertialTypes::AdaptiveMeasurementMode mode;
+        
+        //API Variable: lowPassFilterCutoff
+        float lowPassFilterCutoff;
+
+        //API Variable: lowLimit
+        float lowLimit;
+
+        //API Variable: highLimit
+        float highLimit;
+
+        //API Variable: lowLimitUncertainty
+        float lowLimitUncertainty;
+
+        //API Variable: highLimitUncertainty
+        float highLimitUncertainty;
+
+        //API Variable: minUncertainty
+        float minUncertainty;
+    };
+
+    typedef std::vector<InertialTypes::AdaptiveMeasurementMode> AdaptiveMeasurementModes;
 }

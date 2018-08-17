@@ -208,19 +208,36 @@ namespace mscl
         }
     }
 
-    uint8 WirelessTypes::bytesPerDerivedChannel(DerivedChannelType id)
+    uint8 WirelessTypes::bytesPerDerivedAlgorithmId(DerivedDataPacketAlgorithmId id)
     {
         switch(id)
         {
-            case WirelessTypes::derived_rms:
-            case WirelessTypes::derived_peakToPeak:
-            case WirelessTypes::derived_ips:
-            case WirelessTypes::derived_crestFactor:
-            case WirelessTypes::derived_mean:
+            case WirelessTypes::derivedAlgId_rms:
+            case WirelessTypes::derivedAlgId_peakToPeak:
+            case WirelessTypes::derivedAlgId_ips:
+            case WirelessTypes::derivedAlgId_mmps:
+            case WirelessTypes::derivedAlgId_crestFactor:
+            case WirelessTypes::derivedAlgId_mean:
                 return 4;
 
             default:
                 throw Error_NotSupported("Invalid Derived Channel ID ( " + Utils::toStr(id) + ")");
+        }
+    }
+
+    uint8 WirelessTypes::bytesPerDerivedChannelOption(DerivedCategory category)
+    {
+        switch(category)
+        {
+            case WirelessTypes::derivedCategory_rms:
+            case WirelessTypes::derivedCategory_peakToPeak:
+            case WirelessTypes::derivedCategory_velocity:
+            case WirelessTypes::derivedCategory_crestFactor:
+            case WirelessTypes::derivedCategory_mean:
+                return 4;
+
+            default:
+                throw Error_NotSupported("Invalid DerivedCategory ( " + Utils::toStr(category) + ")");
         }
     }
 
@@ -234,7 +251,7 @@ namespace mscl
 
             if(count > 0)
             {
-                sweepSize += (count * bytesPerDerivedChannel(ch.first));
+                sweepSize += (count * bytesPerDerivedChannelOption(ch.first));
             }
         }
 

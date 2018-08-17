@@ -42,12 +42,12 @@ namespace mscl
         //
         //  channelPropertyId_angle                 - 0 - The angle (float) that the channel is from.
         //  channelPropertyId_derivedFrom           - 1 - The <ChannelMask> that a derived channel is representing.
-        //  channelPropertyId_derivedChannelType    - 2 - The <WirelessTypes::DerivedChannelType> of the derived channel.
+        //  channelPropertyId_derivedAlgorithmId    - 2 - The <WirelessTypes::DerivedDataPacketAlgorithmId> of the derived channel.
         enum ChannelPropertyId
         {
             channelPropertyId_angle = 0,
             channelPropertyId_derivedFrom = 1,
-            channelPropertyId_derivedChannelType = 2,
+            channelPropertyId_derivedAlgorithmId = 2,
         };
 
         //Typedef: ChannelProperties

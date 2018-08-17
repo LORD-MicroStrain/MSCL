@@ -559,14 +559,14 @@ namespace mscl
     {
         m_mathMetaDeta.clear();
         
-        WirelessTypes::DerivedChannelType id;
+        WirelessTypes::DerivedDataPacketAlgorithmId id;
         uint16 channelMask = 0;
         uint8 algItr = 0;
 
         //read and store all the math meta data
         for(algItr = 0; algItr < numActiveAlgorithms; ++algItr)
         {
-            id = static_cast<WirelessTypes::DerivedChannelType>(m_nodeMemory->read_uint8());
+            id = static_cast<WirelessTypes::DerivedDataPacketAlgorithmId>(m_nodeMemory->read_uint8());
             channelMask = m_nodeMemory->read_uint16(Utils::littleEndian);
 
             m_mathMetaDeta.emplace_back(id, ChannelMask(channelMask));
@@ -718,14 +718,14 @@ namespace mscl
                     float value = m_nodeMemory->read_float(dataEndian);
 
                     //create a WirelessDataPoint and add it to the ChannelData vector
-                    WirelessChannel::ChannelId channelId = WirelessDataPacket::getMathChannelId(static_cast<WirelessTypes::DerivedChannelType>(meta.algorithmId), chNum);
+                    WirelessChannel::ChannelId channelId = WirelessDataPacket::getMathChannelId(static_cast<WirelessTypes::DerivedDataPacketAlgorithmId>(meta.algorithmId), chNum);
 
                     //create the ChannelMask property indicating which channel it was derived from
                     ChannelMask propertyChMask;
                     propertyChMask.enable(chNum);
                     WirelessDataPoint::ChannelProperties properties({
                         {std::make_pair(WirelessDataPoint::channelPropertyId_derivedFrom, Value(valueType_ChannelMask, propertyChMask))},
-                        {std::make_pair(WirelessDataPoint::channelPropertyId_derivedChannelType, Value(valueType_uint8, static_cast<uint8>(meta.algorithmId)))}
+                        {std::make_pair(WirelessDataPoint::channelPropertyId_derivedAlgorithmId, Value(valueType_uint8, static_cast<uint8>(meta.algorithmId)))}
                     });
 
                     chData.push_back(WirelessDataPoint(channelId, chNum, valueType_float, anyType(value), properties));

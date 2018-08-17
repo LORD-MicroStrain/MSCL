@@ -69,6 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="mscl\ActivitySense.cs" />
+    <Compile Include="mscl\AdaptiveMeasurementData.cs" />
+    <Compile Include="mscl\AdaptiveMeasurementModes.cs" />
     <Compile Include="mscl\AdvancedLowPassFilterData.cs" />
     <Compile Include="mscl\ArmedDataloggingNetwork.cs" />
     <Compile Include="mscl\AutoBalanceResult.cs" />
@@ -114,7 +116,6 @@
     <Compile Include="mscl\DataSweeps.cs" />
     <Compile Include="mscl\DefaultModes.cs" />
     <Compile Include="mscl\DerivedChannelMasks.cs" />
-    <Compile Include="mscl\DerivedChannelTypes.cs" />
     <Compile Include="mscl\DeviceInfo.cs" />
     <Compile Include="mscl\DeviceList.cs" />
     <Compile Include="mscl\Devices.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="mscl\DisplacementModels.cs" />
     <Compile Include="mscl\DisplacementNode.cs" />
     <Compile Include="mscl\EepromMap.cs" />
+    <Compile Include="mscl\EstimationControlOptions.cs" />
     <Compile Include="mscl\EulerAngles.cs" />
     <Compile Include="mscl\EventTriggerOptions.cs" />
     <Compile Include="mscl\Exceptions.cs">
@@ -131,9 +133,11 @@
     <Compile Include="mscl\FatigueModes.cs" />
     <Compile Include="mscl\FatigueOptions.cs" />
     <Compile Include="mscl\Filters.cs" />
+    <Compile Include="mscl\GeographicSourceOptions.cs" />
     <Compile Include="mscl\GeometricVector.cs" />
     <Compile Include="mscl\HeadingData.cs" />
     <Compile Include="mscl\HeadingUpdateOptions.cs" />
+    <Compile Include="mscl\HeadingUpdateOptionsList.cs" />
     <Compile Include="mscl\HighPassFilters.cs" />
     <Compile Include="mscl\Histogram.cs" />
     <Compile Include="mscl\HistogramOptions.cs" />
@@ -175,6 +179,7 @@
     <Compile Include="mscl\SamplingModes.cs" />
     <Compile Include="mscl\SatellitePRNs.cs" />
     <Compile Include="mscl\SBASSettingsData.cs" />
+    <Compile Include="mscl\SensorOutputModes.cs" />
     <Compile Include="mscl\SetToIdleStatus.cs" />
     <Compile Include="mscl\ShuntCalCmdInfo.cs" />
     <Compile Include="mscl\SnCurveSegment.cs" />
@@ -206,6 +211,7 @@
     <Compile Include="mscl\WsdaFinder.cs" />
     <Compile Include="mscl\WsdaInfo.cs" />
     <Compile Include="mscl\WsdaMap.cs" />
+    <Compile Include="mscl\ZUPTSettingsData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

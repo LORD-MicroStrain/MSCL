@@ -266,9 +266,9 @@ namespace std
     %template(DataModes)                vector<mscl::WirelessTypes::DataMode>;
     %template(CommProtocols)            vector<mscl::WirelessTypes::CommProtocol>;
     %template(Voltages)                 vector<mscl::WirelessTypes::Voltage>;
-    %template(DerivedChannelTypes)      vector<mscl::WirelessTypes::DerivedChannelType>;
+    %template(SensorOutputModes)        vector<mscl::WirelessTypes::SensorOutputMode>;
     %template(EepromMap)                map<uint16_t, uint16_t>;
-    %template(DerivedChannelMasks)      map<mscl::WirelessTypes::DerivedChannelType, mscl::ChannelMask>;
+    %template(DerivedChannelMasks)      map<mscl::WirelessTypes::DerivedCategory, mscl::ChannelMask>;
     %template(SampleRates)              vector<mscl::SampleRate>;
     %template(ConfigIssues)             vector<mscl::ConfigIssue>;
     %template(MipChannelFields)         vector<mscl::MipTypes::ChannelField>;
@@ -283,6 +283,9 @@ namespace std
     %template(ConnectionDebugDataVec)   vector<mscl::ConnectionDebugData>;
     %template(SatellitePRNs)            vector<uint16_t>;
     %template(Constellations)           vector<mscl::Constellation>;
+    %template(HeadingUpdateOptionsList) vector<mscl::HeadingUpdateOptions>;
+    %template(AdaptiveMeasurementModes)vector<mscl::InertialTypes::AdaptiveMeasurementMode>;
+    
 
 #ifndef UNIX_BUILD
     %template(WsdaMap)                  map<string, mscl::WsdaInfo>;

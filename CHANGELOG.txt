@@ -14,6 +14,125 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
+44.0.2 - 2018-08-16
+- fix for comments for inertial commands Declination Source (0x0D, 0x43), Inclination Source (0x0D, 0x4C), and Magnetic Field Magnitude Source (0x0D, 0x4D)
+
+44.0.1 - 2018-08-15
+- checking for unsupported channels for derived categories in verifyConfig.
+
+44.0.0 - 2018-08-15
+- CHANGED NodeFeatures::derivedCategories() to NodeFeatures::channelsPerDerivedCategory()
+  which returns a map of supported DerivedCategory to ChannelMask that it supports.
+- REMOVED WirelessTypes::DerivedCategories typedef as it is no longer used.
+
+43.5.2 - 2018-08-13
+- updated to Boost 1.68
+
+43.5.1 - 2018-08-10
+- checking whether Sensor Output Mode is supported in the verify function of WirelessNodeConfig
+
+43.5.0 - 2018-08-10
+- added support for inertial commands Declination Source (0x0D, 0x43), Inclination Source (0x0D, 0x4C), and Magnetic Field Magnitude Source (0x0D, 0x4D)
+
+43.4.1 - 2018-08-10
+- support tilt mode on all G-Link-200 nodes
+
+43.4.0 - 2018-08-10
+- support for G-Link-200-8G tilt mode (get and set Sensor Output Mode)
+
+43.3.0 - 2018-08-08
+- added support for inertial config commands Gravity Magnitude (0x0D, 0x44), Magnetometer Magnitude (0x0D, 0x45), and Magnetometer Dip Angle (0x0D, 0x46) Error Adaptive Measurement
+- added function to inertial features to get the adaptive measurement modes supported by the node
+
+43.2.4 - 2018-08-08
+- fix for UpnpService/WsdaFinder crashing on exit in some scenarios
+
+43.2.3 - 2018-08-06
+- corrected formatting of estimation control data
+
+43.2.2 - 2018-08-06
+- commenting updates for estimation controls 
+
+43.2.1 - 2018-08-02
+- fix for .NET build issue
+
+43.2.0 - 2018-08-02
+- added MipTypes::EstimationControlOption enum to represent available options for the Heading Update Control command
+- added function to MipNodeFeatures to get a list of supported estimation control options for the node (by model number)
+
+43.1.0 - 2018-07-31
+- allowing symbolic links to be passed to the Serial Connection constructors
+
+43.0.3 - 2018-07-30
+- corrected the available Heading Update Control enable options for 3DM-GX4-25 nodes
+
+43.0.2 - 2018-07-23
+- fix for .NET build issue
+
+43.0.1 - 2018-07-23
+- added function to MipNodeFeatures to get a list of supported heading update control options for the node (by model number)
+
+43.0.0 - 2018-07-23
+- CHANGED some WirelessTypes::InputRange enums
+
+42.4.5 - 2018-07-20
+- reverting to 42.4.3, previous revision needs to be significantly changed
+
+42.4.4 - 2018-07-20
+- added MipTypes::HeadingUpdateEnableOption enum to represent available options for the Heading Update Control command
+- added function to MipNodeFeatures to get a list of supported heading update control options for the node (by model number) 
+
+42.4.3 - 2018-07-20
+- corrected parameter names in zero update commands
+
+42.4.2 - 2018-07-20
+- corrected styling and documentation for the zero update commands 
+
+42.4.1 - 2018-07-19
+- changed name of new ADC input voltage type enum to be more general
+
+42.4.0 - 2018-07-19
+- added ADC input voltage type to wireless node features
+
+42.3.1 - 2018-07-17
+- increased BaseStation timeout for websocket connection after receiving a BaseStation received response
+
+42.3.0 - 2018-07-16
+- added commands to set and read velocity and angular rate zero update
+
+42.2.1 - 2018-07-13
+- clearing the cache of calibration offset eeproms when the high pass filter is written
+- changing the start sync sampling retry order to try all Nodes once, then go back and try all again
+
+42.2.0 - 2018-07-12
+- added commands to turn on and off altitude aiding and pitch/roll aiding
+
+42.1.2 - 2018-07-06
+- updated list of Input Ranges available for SG-Link-200-OEM
+
+42.1.1 - 2018-07-05
+- changed derived channels Sync formula to fix an issue where only derived data would get behind at 1hz
+
+42.1.0 - 2018-06-28
+- support for the Poll Data Inertial Commands
+
+42.0.0 - 2018-06-22
+- RENAMED WirelessTypes::DerivedChannelType to WirelessTypes::DerivedCategory
+- RENAMED WirelessTypes::DerivedChannelTypes to WirelessTypes::DerivedCategories
+- RENAMED channelPropertyId_derivedChannelType to channelPropertyId_derivedAlgorithmId
+- RENAMED NodeFeatures::supportsDerivedChannelType to NodeFeatures::supportsDerivedCategory
+- support for configuration of the derived Velocity channel unit
+- support for parsing of mm/s derived data
+- added the millimeters per second unit
+- added WirelessTypes::DerivedDataPacketAlgorithmId which represents the actual algorithm ID of a channel
+  - for example, the DerivedDataPacketAlgorithmId has IPS or mm/s while the DerivedCategory just has Velocity
+
+41.0.10 - 2018-06-20
+- reverting back to the code in 41.0.8, as we couldn't quite get the header only to work as we wanted
+
+41.0.9 - 2018-06-19
+- added BOOST_ERROR_CODE_HEADER_ONLY to remove the dependency on the Boost.System library for Asio
+
 41.0.8 - 2018-06-13
 - added event driven sampling as a supported mode for the TC-Link-200s
 - fix for .NET build not having mscl.MSCL_VERSION

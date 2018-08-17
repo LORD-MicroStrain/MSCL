@@ -160,9 +160,10 @@ namespace mscl
         //  DERIVED_DATA_RATE               - The sample rate for the Math channels
         //  DERIVED_RMS_MASK                - Derived - RMS channel mask
         //  DERIVED_P2P_MASK                - Derived - Peak to Peak channel mask
-        //  DERIVED_IPS_MASK                - Derived - Inches Per Second channel mask
+        //  DERIVED_VELOCITY_MASK           - Derived - Velocity channel mask
         //  DERIVED_CREST_FACTOR_MASK       - Derived - Crest Factor channel mask
         //  DERIVED_MEAN_MASK               - Derived - Mean channel mask
+        //  DERIVED_VELOCITY_UNIT           - Derived - Velocity Unit
         //  DATA_PACKET_FORMAT              - The format of the data packet that will be sent out
         //  DIAGNOSTIC_INTERVAL             - The interval at which the Diagnostic Packet is sent
         //  EVENT_SAMPLE_RATE               - Event Driven Sampling: Sample Rate
@@ -364,9 +365,10 @@ namespace mscl
         static const EepromLocation DERIVED_DATA_RATE;
         static const EepromLocation DERIVED_RMS_MASK;
         static const EepromLocation DERIVED_P2P_MASK;
-        static const EepromLocation DERIVED_IPS_MASK;
+        static const EepromLocation DERIVED_VELOCITY_MASK;
         static const EepromLocation DERIVED_CREST_FACTOR_MASK;
         static const EepromLocation DERIVED_MEAN_MASK;
+        static const EepromLocation DERIVED_VELOCITY_UNIT;
         static const EepromLocation DATA_PACKET_FORMAT;
         static const EepromLocation DIAGNOSTIC_INTERVAL;
         static const EepromLocation EVENT_SAMPLE_RATE;
@@ -408,6 +410,7 @@ namespace mscl
         static const EepromLocation EXCITATION_VOLTAGE;
         static const EepromLocation DEBOUNCE_FILTER;
         static const EepromLocation INTERNAL_PULLUP_RESISTOR;
+        static const EepromLocation SENSOR_MODE;
         static const EepromLocation ANTI_ALIASING_FILTER_1;
         static const EepromLocation ANTI_ALIASING_FILTER_2;
         static const EepromLocation ANTI_ALIASING_FILTER_3;

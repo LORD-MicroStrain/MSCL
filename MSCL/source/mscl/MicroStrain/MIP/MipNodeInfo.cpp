@@ -49,10 +49,10 @@ namespace mscl
         return *m_descriptors;
     }
 
-    const SampleRates& MipNodeInfo::supportedSampleRates(MipTypes::DataClass category) const
+    const SampleRates& MipNodeInfo::supportedSampleRates(MipTypes::DataClass dataClass) const
     {
         //set the SampleRates pointer depending on the category that is being asked for
-        switch(category)
+        switch(dataClass)
         {
             case MipTypes::CLASS_AHRS_IMU:
                 return *m_ahrsImuSampleRates;

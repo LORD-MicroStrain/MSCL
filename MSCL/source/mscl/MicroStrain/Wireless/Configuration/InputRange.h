@@ -12,7 +12,7 @@ namespace mscl
 {
     class ChannelMask;
 
-    //API Struct: RangeEntry
+    //API Struct: InputRangeEntry
     // struct for Input Range options that specify an input range and associated gain for a channel
     struct InputRangeEntry
     {

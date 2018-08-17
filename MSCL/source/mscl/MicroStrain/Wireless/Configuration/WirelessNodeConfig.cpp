@@ -195,9 +195,9 @@ namespace mscl
         return result;
     }
 
-    ChannelMask WirelessNodeConfig::curDerivedMask(WirelessTypes::DerivedChannelType derivedChannel, const NodeEepromHelper& eeprom) const
+    ChannelMask WirelessNodeConfig::curDerivedMask(WirelessTypes::DerivedCategory category, const NodeEepromHelper& eeprom) const
     {
-        const auto& mask = m_derivedChannelMasks.find(derivedChannel);
+        const auto& mask = m_derivedChannelMasks.find(category);
 
         //if its currently set in the config, return the set value
         if(mask != m_derivedChannelMasks.end())
@@ -206,29 +206,29 @@ namespace mscl
         }
 
         //not set, so read the value from the node
-        return eeprom.read_derivedChannelMask(derivedChannel);
+        return eeprom.read_derivedChannelMask(category);
     }
 
     WirelessTypes::DerivedChannelMasks WirelessNodeConfig::curDerivedChannelMasks(const NodeEepromHelper& eeprom, const NodeFeatures& features) const
     {
         WirelessTypes::DerivedChannelMasks derivedChMasks;
-        const WirelessTypes::DerivedChannelTypes& derivedChs = features.derivedChannelTypes();
-        for(WirelessTypes::DerivedChannelType dc : derivedChs)
+        const WirelessTypes::DerivedChannelMasks& derivedChs = features.channelsPerDerivedCategory();
+        for(const auto& dc : derivedChs)
         {
-            derivedChMasks.emplace(dc, curDerivedMask(dc, eeprom));
+            derivedChMasks.emplace(dc.first, curDerivedMask(dc.first, eeprom));
         }
 
         return derivedChMasks;
     }
 
-    bool WirelessNodeConfig::isDerivedChannelEnabled(WirelessTypes::DerivedChannelType derivedChannel, const NodeEepromHelper& eeprom, const NodeFeatures& features) const
+    bool WirelessNodeConfig::isDerivedChannelEnabled(WirelessTypes::DerivedCategory category, const NodeEepromHelper& eeprom, const NodeFeatures& features) const
     {
-        if(!features.supportsDerivedChannelType(derivedChannel))
+        if(!features.supportsDerivedCategory(category))
         {
             return false;
         }
 
-        return (curDerivedMask(derivedChannel, eeprom).count() > 0);
+        return (curDerivedMask(category, eeprom).count() > 0);
     }
 
     bool WirelessNodeConfig::findGroupWithChannelAndSetting(const ChannelMask& mask, WirelessTypes::ChannelGroupSetting setting, const NodeFeatures& features, ChannelGroup& foundGroup) const
@@ -254,21 +254,24 @@ namespace mscl
         return false;
     }
 
-    ConfigIssue::ConfigOption WirelessNodeConfig::findDerivedMaskConfigIssue(WirelessTypes::DerivedChannelType channel)
+    ConfigIssue::ConfigOption WirelessNodeConfig::findDerivedMaskConfigIssue(WirelessTypes::DerivedCategory category)
     {
-        switch(channel)
+        switch(category)
         {
-            case WirelessTypes::derived_rms:
+            case WirelessTypes::derivedCategory_rms:
                 return ConfigIssue::CONFIG_DERIVED_MASK_RMS;
 
-            case WirelessTypes::derived_peakToPeak:
+            case WirelessTypes::derivedCategory_peakToPeak:
                 return ConfigIssue::CONFIG_DERIVED_MASK_P2P;
 
-            case WirelessTypes::derived_ips:
+            case WirelessTypes::derivedCategory_velocity:
                 return ConfigIssue::CONFIG_DERIVED_MASK_IPS;
 
-            case WirelessTypes::derived_crestFactor:
+            case WirelessTypes::derivedCategory_crestFactor:
                 return ConfigIssue::CONFIG_DERIVED_MASK_CREST_FACTOR;
+
+            case WirelessTypes::derivedCategory_mean:
+                return ConfigIssue::CONFIG_DERIVED_MASK_MEAN;
 
             default:
                 assert(false);  //need to add support for new DerivedChannel
@@ -622,6 +625,15 @@ namespace mscl
             }
         }
 
+        //Sensor Output Mode
+        if(isSet(m_sensorOutputMode))
+        {
+            if(!features.supportsSensorOutputMode())
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SENSOR_OUTPUT_MODE, "Sensor Output Mode is not supported by the Node."));
+            }
+        }
+
         //Data Mode
         bool dataModeValid = true;
         if(isSet(m_dataMode))
@@ -665,32 +677,37 @@ namespace mscl
                 }
             }
 
+            //Derived Velocity Unit
+            if(isSet(m_derivedVelocityUnit))
+            {
+                if(!features.supportsDerivedVelocityUnitConfig())
+                {
+                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DERIVED_UNIT, "Derived Velocity Unit configuration is not supported by the Node."));
+                }
+            }
+
             //Derived Channels Masks
             if(!m_derivedChannelMasks.empty())
             {
                 //for each derived channel in the map
                 for(auto& mask : m_derivedChannelMasks)
                 {
-                    if(!features.supportsDerivedChannelType(mask.first))
+                    if(!features.supportsDerivedCategory(mask.first))
                     {
-                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DERIVED_MASK, "The Derived Channel type is not supported by this Node."));
+                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DERIVED_MASK, "The Derived Channel category is not supported by this Node."));
                         break;
                     }
-                }
-
-                //for each derived channel in the map
-                for(auto& mask : m_derivedChannelMasks)
-                {
-                    uint8 lastActiveCh = mask.second.lastChEnabled();
-
-                    uint8 chItr = 0;
-                    for(chItr = 1; chItr <= lastActiveCh; ++chItr)
+                    else
                     {
-                        //if this channel is enabled in the derived channel mask
-                        if(mask.second.enabled(chItr))
+                        ChannelMask maskChs = mask.second;
+                        ChannelMask allowedChs = features.channelsPerDerivedCategory().at(mask.first);
+
+                        uint8 lastActiveCh = mask.second.lastChEnabled();
+
+                        //check if any channels are enable that aren't allowed by this category
+                        for(uint8 i = 1; i <= lastActiveCh; ++i)
                         {
-                            //if this channel is not supported by the Node
-                            if(!features.supportsChannel(chItr))
+                            if(maskChs.enabled(i) && !allowedChs.enabled(i))
                             {
                                 outIssues.push_back(ConfigIssue(findDerivedMaskConfigIssue(mask.first), "The Channel Mask is invalid for the Derived Channel."));
                                 break;
@@ -850,11 +867,11 @@ namespace mscl
             //if derived enabled, verify derived channel mask is set
             if(mode.derivedModeEnabled)
             {
-                if(!isDerivedChannelEnabled(WirelessTypes::derived_rms, eeprom, features) &&
-                   !isDerivedChannelEnabled(WirelessTypes::derived_peakToPeak, eeprom, features) &&
-                   !isDerivedChannelEnabled(WirelessTypes::derived_ips, eeprom, features) &&
-                   !isDerivedChannelEnabled(WirelessTypes::derived_crestFactor, eeprom, features) &&
-                   !isDerivedChannelEnabled(WirelessTypes::derived_mean, eeprom, features)
+                if(!isDerivedChannelEnabled(WirelessTypes::derivedCategory_rms, eeprom, features) &&
+                   !isDerivedChannelEnabled(WirelessTypes::derivedCategory_peakToPeak, eeprom, features) &&
+                   !isDerivedChannelEnabled(WirelessTypes::derivedCategory_velocity, eeprom, features) &&
+                   !isDerivedChannelEnabled(WirelessTypes::derivedCategory_crestFactor, eeprom, features) &&
+                   !isDerivedChannelEnabled(WirelessTypes::derivedCategory_mean, eeprom, features)
                    )
                 {
                     //no derived channels are enabled
@@ -963,10 +980,12 @@ namespace mscl
                 //unless sampling mode is burst, which ignores unlimited duration
                 if(!unlimitedDuration || samplingMode == WirelessTypes::samplingMode_syncBurst)
                 {
+                    const uint32 maxSweeps = features.maxSweeps(samplingMode, curDataModeMask(eeprom).toDataModeEnum(), curDataFormat(eeprom), curActiveChs(eeprom));
+
                     //verify the number of sweeps works with the other sampling settings
-                    if(curNumSweeps(eeprom) > features.maxSweeps(samplingMode, curDataModeMask(eeprom).toDataModeEnum(), curDataFormat(eeprom), curActiveChs(eeprom)))
+                    if(curNumSweeps(eeprom) > maxSweeps)
                     {
-                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SWEEPS, "The number of Sweeps exceeds the max for this Configuration."));
+                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SWEEPS, "The number of Sweeps exceeds the max (" + Utils::toStr(maxSweeps) + ") for this Configuration."));
                     }
                 }
             }
@@ -1339,8 +1358,17 @@ namespace mscl
             }
         }
 
+        //write Sensor Output Mode
+        if(isSet(m_sensorOutputMode))
+        {
+            eeprom.write_sensorMode(*m_sensorOutputMode);
+        }
+
         //write Derived Channels Sample Rate
         if(isSet(m_derivedDataRate)) { eeprom.write_derivedSampleRate(*m_derivedDataRate); }
+
+        //write Derived Velocity Unit
+        if(isSet(m_derivedVelocityUnit)) { eeprom.write_derivedVelocityUnit(*m_derivedVelocityUnit); }
 
         //write Derived Channel Mask(s)
         for(const auto& mask : m_derivedChannelMasks)
@@ -1862,21 +1890,21 @@ namespace mscl
         m_derivedDataRate = rate;
     }
 
-    ChannelMask WirelessNodeConfig::derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType) const
+    ChannelMask WirelessNodeConfig::derivedChannelMask(WirelessTypes::DerivedCategory category) const
     {
         try
         {
-            return m_derivedChannelMasks.at(derivedChannelType);
+            return m_derivedChannelMasks.at(category);
         }
         catch(std::out_of_range&)
         {
-            throw Error_NoData("The Derived Channel Mask option has not been set for this DerivedChannelType.");
+            throw Error_NoData("The Derived Channel Mask option has not been set for this DerivedCategory.");
         }
     }
 
-    void WirelessNodeConfig::derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType, const ChannelMask& mask)
+    void WirelessNodeConfig::derivedChannelMask(WirelessTypes::DerivedCategory category, const ChannelMask& mask)
     {
-        auto itr = m_derivedChannelMasks.find(derivedChannelType);
+        auto itr = m_derivedChannelMasks.find(category);
 
         if(itr != m_derivedChannelMasks.end())
         {
@@ -1884,8 +1912,19 @@ namespace mscl
         }
         else
         {
-            m_derivedChannelMasks.emplace(derivedChannelType, mask);
+            m_derivedChannelMasks.emplace(category, mask);
         }
+    }
+
+    WirelessTypes::DerivedVelocityUnit WirelessNodeConfig::derivedVelocityUnit() const
+    {
+        checkValue(m_derivedVelocityUnit, "Derived Velocity Unit");
+        return *m_derivedVelocityUnit;
+    }
+
+    void WirelessNodeConfig::derivedVelocityUnit(WirelessTypes::DerivedVelocityUnit unit)
+    {
+        m_derivedVelocityUnit = unit;
     }
 
     WirelessTypes::CommProtocol WirelessNodeConfig::communicationProtocol() const
@@ -1897,6 +1936,17 @@ namespace mscl
     void WirelessNodeConfig::communicationProtocol(WirelessTypes::CommProtocol commProtocol)
     {
         m_commProtocol = commProtocol;
+    }
+
+    WirelessTypes::SensorOutputMode WirelessNodeConfig::sensorOutputMode() const
+    {
+        checkValue(m_sensorOutputMode, "Sensor Output Mode");
+        return *m_sensorOutputMode;
+    }
+
+    void WirelessNodeConfig::sensorOutputMode(WirelessTypes::SensorOutputMode mode)
+    {
+        m_sensorOutputMode = mode;
     }
 
     float WirelessNodeConfig::flashBandwidth(WirelessTypes::WirelessSampleRate rawSampleRate, WirelessTypes::DataFormat dataFormat, uint8 numChannels, uint32 derivedBytesPerSweep, WirelessTypes::WirelessSampleRate derivedRate)

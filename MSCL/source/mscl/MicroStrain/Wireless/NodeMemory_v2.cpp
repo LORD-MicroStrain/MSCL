@@ -248,7 +248,7 @@ namespace mscl
                     {
                         //add up the number of bytes for all the active algorithms
                         //  (# of bytes for the algorithm type) * (# of channels that are active)
-                        numAlgChannelBytes += WirelessTypes::bytesPerDerivedChannel(static_cast<WirelessTypes::DerivedChannelType>(algorithmId)) * chMask.count();
+                        numAlgChannelBytes += WirelessTypes::bytesPerDerivedAlgorithmId(static_cast<WirelessTypes::DerivedDataPacketAlgorithmId>(algorithmId)) * chMask.count();
                     }
                     catch(Error_NotSupported&)
                     {

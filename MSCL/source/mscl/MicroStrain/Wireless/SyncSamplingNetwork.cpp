@@ -502,12 +502,12 @@ namespace mscl
                 uint8 derivedChannelCount = 0;
                 uint8 numDerivedNonChBytes = 0;
 
-                const WirelessTypes::DerivedChannelTypes& chs = nodeInfo.supportedDerivedChannelTypes();
+                const WirelessTypes::DerivedChannelMasks& chs = nodeInfo.supportedDerivedCategories();
 
                 uint8 count = 0;
-                for(WirelessTypes::DerivedChannelType ch : chs)
+                for(const auto& ch : chs)
                 {
-                    count = config.derivedChannelMask(ch).count();
+                    count = config.derivedChannelMask(ch.first).count();
 
                     if(count > 0)
                     {
@@ -525,7 +525,8 @@ namespace mscl
                     derivedSweepSize = static_cast<uint16>(derivedMaxBytes * std::ceil(derivedSweepSize / derivedMaxBytes));
                 }
 
-                derivedPacketsPerGroup = static_cast<float>(config.derivedDataRate().samplesPerSecond()) * groupSize * derivedSweepSize / derivedMaxBytes;
+                //Note: the +1 accounts for overhead needed because the Node isn't buffering multiple derived sweeps into one packet
+                derivedPacketsPerGroup = (static_cast<float>(config.derivedDataRate().samplesPerSecond()) * groupSize * derivedSweepSize / derivedMaxBytes) + 1;
             }
 
             if(isBurstMode)
@@ -1427,46 +1428,44 @@ namespace mscl
 
     void SyncSamplingNetwork::sendStartToAllNodes()
     {
-        static const uint8 MAX_RETRIES = 2;
+        static const uint8 MAX_ATTEMPTS = 3;
         uint8 retryCount = 0;
-        bool nodeSuccess = false;
+        bool atLeastOneFailed = false;
 
-        //go through each node in the network
-        for(NodeAddress nodeAddress : m_allNodes)
+        do
         {
-            SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
+            atLeastOneFailed = false;
 
-            //only want to start nodes that haven't already been started (in previous calls to this function)
-            if(!nodeInfo.m_startedSampling)
+            //go through each node in the network
+            for(NodeAddress nodeAddress : m_allNodes)
             {
-                retryCount = 0;
-                nodeSuccess = false;
+                SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
 
-                //send the start sync sampling command to the node (with retries)
-                do
+                //only want to start nodes that haven't already been started (in previous calls to this function)
+                if(!nodeInfo.m_startedSampling)
                 {
-                    nodeSuccess = m_networkBase.node_startSyncSampling(nodeInfo.m_node.protocol(m_networkBase.communicationProtocol()), nodeAddress);
-                    retryCount++;
-                }
-                while(!nodeSuccess && retryCount <= MAX_RETRIES);
+                    if(m_networkBase.node_startSyncSampling(nodeInfo.m_node.protocol(m_networkBase.communicationProtocol()), nodeAddress))
+                    {
+                        //mark this node as started sampling so that we don't apply it again on successive calls to this function
+                        nodeInfo.m_startedSampling = true;
 
-                if(!nodeSuccess)
-                {
-                    nodeInfo.m_startedSampling = false;
+                        //sleep between each node start sampling command for good measure
+                        Utils::threadSleep(20);
+                    }
+                    else
+                    {
+                        //no longer throwing an exception here as we want to continue on to the next nodes
+                        //and no response is not necessarily indicative of a failure, which can mess things up if the node really started
+                        nodeInfo.m_startedSampling = false;
 
-                    //no longer throwing an exception here as we want to continue on to the next nodes
-                    //and no response is not necessarily indicative of a failure, which can mess things up if the node really started
-                }
-                else
-                {
-                    //mark this node as started sampling so that we don't apply it again on successive calls to this function
-                    nodeInfo.m_startedSampling = true;
-
-                    //sleep between each node start sampling command for good measure
-                    Utils::threadSleep(50);
+                        atLeastOneFailed = true;
+                    }
                 }
             }
+
+            retryCount++;
         }
+        while(atLeastOneFailed && retryCount <= MAX_ATTEMPTS);
     }
 
     bool SyncSamplingNetwork::inLegacyMode()

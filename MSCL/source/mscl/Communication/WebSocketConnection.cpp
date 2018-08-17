@@ -111,7 +111,7 @@ namespace mscl
 
                 DWORD dwBytesRet = 0;
 
-                WSAIoctl(m_ioPort->next_layer().native(), SIO_KEEPALIVE_VALS, &alive, sizeof(alive), NULL, 0, &dwBytesRet, NULL, NULL);
+                WSAIoctl(m_ioPort->next_layer().native_handle(), SIO_KEEPALIVE_VALS, &alive, sizeof(alive), NULL, 0, &dwBytesRet, NULL, NULL);
 #endif
 
                 //setup m_comm by creating a new BoostCommunication object using the serial_port and io_service we created
