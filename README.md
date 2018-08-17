@@ -1,3 +1,6 @@
+### MSCL
+The MicroStrain Communication Library by LORD Sensing.
+
 #### Pre-built MSCL Windows Binaries (44.0.2)
 [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v44.0.2/mscl_44.0.2_Windows_C++.zip) | 
 [Python 2.7](https://github.com/LORD-MicroStrain/MSCL/releases/download/v44.0.2/mscl_44.0.2_Windows_Python2.7.zip) |
