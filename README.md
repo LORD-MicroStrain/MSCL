@@ -1,6 +1,10 @@
 ### MSCL - The MicroStrain Communication Library
 
 #### Downloads
+
+[Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v44.0.2/mscl_44.0.2_Documentation.zip) | 
+[Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v44.0.2/mscl_44.0.2_Examples.zip)
+
 ##### Pre-built MSCL Windows Binaries (v44.0.2)
 [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v44.0.2/mscl_44.0.2_Windows_C++.zip) | 
 [Python 2.7](https://github.com/LORD-MicroStrain/MSCL/releases/download/v44.0.2/mscl_44.0.2_Windows_Python2.7.zip) |
@@ -39,8 +43,6 @@ The library is currently available in:
 * .NET (C#, VB, MATLAB, LabVIEW)
 
 ### Documentation
-[Download Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v44.0.2/mscl_44.0.2_Documentation.zip) | 
-[Download Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v44.0.2/mscl_44.0.2_Examples.zip)
 
 [Quick Start Guide](http://lord-microstrain.github.io/MSCL/Documentation/Getting%20Started/index.html)
 
