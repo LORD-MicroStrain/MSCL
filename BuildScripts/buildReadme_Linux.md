@@ -19,7 +19,7 @@ Pre-built versions are available for download. To get it, head over to the [MSCL
 
 ## Building MSCL for C++
 
-1. Download the Debian or RedHat based MSCL manual build scripts.
+1. Download the Debian or RedHat based MSCL [manual build scripts](https://github.com/LORD-MicroStrain/MSCL/tree/master/BuildScripts/linuxManualBuild).
 2. Inside the folder, open the `config.cfg` file.
 3. Under the "PACKAGE_INFO" section, there is a `package_name` variable. This can be changed to whatever you would like.
 4. In the same section, there is a `python_version` variable. Change this to `None` to build for C++.
@@ -30,7 +30,7 @@ Note: OpenSSL and Beast are optional and are used for creating secure WebSocket 
 
 ## Building MSCL for Python
 
-1. Download the Debian or RedHat based MSCL manual build scripts.
+1. Download the Debian or RedHat based MSCL [manual build scripts](https://github.com/LORD-MicroStrain/MSCL/tree/master/BuildScripts/linuxManualBuild).
 2. Inside the folder, open the `config.cfg` file.
 3. Under the "PACKAGE_INFO" section, there is a `package_name` variable. This can be changed to whatever you would like.
 4. In the same section, there is a `python_version` variable. Change this to whichever version of Python you wish to build MSCL for.
