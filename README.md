@@ -1,5 +1,7 @@
 ### MSCL - The MicroStrain Communication Library
 
+MSCL is the MicroStrain Communication Library, developed by [LORD Sensing - Microstrain](http://microstrain.com) in Williston, VT. It was created to make it simple to interact with our [Wireless](http://www.microstrain.com/wireless), [Inertial](http://www.microstrain.com/inertial), and digital [Displacement](https://www.microstrain.com/displacement/nodes) sensors.
+
 #### Downloads
 
 [Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v44.0.2/mscl_44.0.2_Documentation.zip) | 
@@ -32,15 +34,6 @@ CentOS 7.5.1804:
 [Building MSCL on Linux](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme_Linux.md)
 
 ---
-
-### What is MSCL?
-MSCL is the MicroStrain Communication Library, developed by [LORD Sensing - Microstrain](http://microstrain.com) in Williston, VT. It was created to make it simple to interact with our [Wireless](http://www.microstrain.com/wireless), [Inertial](http://www.microstrain.com/inertial), and digital [Displacement](https://www.microstrain.com/displacement/nodes) sensors.
-
-MSCL is written in C++, but by using [SWIG](http://swig.org/) we are able to wrap it into a variety of languages.
-The library is currently available in:
-* C++
-* Python (2.7 and 3.6)
-* .NET (C#, VB, MATLAB, LabVIEW)
 
 ### Documentation
 
