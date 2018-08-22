@@ -30,6 +30,9 @@ CentOS 7.5.1804:
 
 ---
 
+If the pre-built packages aren't available on your platform, you can build MSCL from source.
+
+Instructions can be found here:
 [Building MSCL on Windows](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme_Windows.md) | 
 [Building MSCL on Linux](https://github.com/LORD-MicroStrain/MSCL/blob/master/BuildScripts/buildReadme_Linux.md)
 
