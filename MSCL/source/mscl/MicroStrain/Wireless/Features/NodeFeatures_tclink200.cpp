@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -15,35 +15,70 @@ namespace mscl
     NodeFeatures_tclink200::NodeFeatures_tclink200(const NodeInfo& info) :
         NodeFeatures_200series(info)
     {
-        addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
-        addCalCoeffChannelGroup(2, NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
+        addCalCoeffChannelGroup(1, "Temperature", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
+        addCalCoeffChannelGroup(2, "Temperature", NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
+        addCalCoeffChannelGroup(3, "Temperature", NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);
+        addCalCoeffChannelGroup(4, "Temperature", NodeEepromMap::CH_ACTION_SLOPE_4, NodeEepromMap::CH_ACTION_ID_4);
+        addCalCoeffChannelGroup(5, "Temperature", NodeEepromMap::CH_ACTION_SLOPE_5, NodeEepromMap::CH_ACTION_ID_5);
+        addCalCoeffChannelGroup(6, "Temperature", NodeEepromMap::CH_ACTION_SLOPE_6, NodeEepromMap::CH_ACTION_ID_6);
+        addCalCoeffChannelGroup(7, "Temperature", NodeEepromMap::CH_ACTION_SLOPE_7, NodeEepromMap::CH_ACTION_ID_7);
+        addCalCoeffChannelGroup(8, "Temperature", NodeEepromMap::CH_ACTION_SLOPE_8, NodeEepromMap::CH_ACTION_ID_8);
+        addCalCoeffChannelGroup(9, "Temperature", NodeEepromMap::CH_ACTION_SLOPE_9, NodeEepromMap::CH_ACTION_ID_9);
+        addCalCoeffChannelGroup(10, "Temperature", NodeEepromMap::CH_ACTION_SLOPE_10, NodeEepromMap::CH_ACTION_ID_10);
+        addCalCoeffChannelGroup(11, "Temperature", NodeEepromMap::CH_ACTION_SLOPE_11, NodeEepromMap::CH_ACTION_ID_11);
+        addCalCoeffChannelGroup(12, "Temperature", NodeEepromMap::CH_ACTION_SLOPE_12, NodeEepromMap::CH_ACTION_ID_12);
+        addCalCoeffChannelGroup(13, "CJC Temperature", NodeEepromMap::CH_ACTION_SLOPE_13, NodeEepromMap::CH_ACTION_ID_13);
 
-        static const ChannelMask TEMP_CHS(BOOST_BINARY(00000001)); //ch1
-
-        m_channelGroups.emplace_back(TEMP_CHS, "Temperature Channels",
+        m_channelGroups.emplace_back(ChannelMask(BOOST_BINARY(00000000 00111111)), "Temperature",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_tempSensorOptions, NodeEepromMap::TEMP_SENSOR_CONFIG_1},
-                                         {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1},
-                                         {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_1}}
+                                         {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_1}
+                                     }
+        );
+
+        m_channelGroups.emplace_back(ChannelMask(BOOST_BINARY(00001111 11000000)), "Temperature",
+                                     ChannelGroup::SettingsMap{
+                                         {WirelessTypes::chSetting_tempSensorOptions, NodeEepromMap::TEMP_SENSOR_CONFIG_2},
+                                         {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_2}
+                                     }
+        );
+
+        m_channelGroups.emplace_back(ChannelMask(BOOST_BINARY(00001111 11111111)), "Temperature",
+                                     ChannelGroup::SettingsMap{
+                                         {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1}
+                                     }
         );
 
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_diffTemperature, "Temperature Sensor", 24);  //TODO: WHATS THE ADC RESOLUTION FOR THIS CHANNEL?
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_temperature, "CJC Temperature", 12);   //TODO: WHATS THE ADC RESOLUTION FOR THIS CHANNEL?
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_diffTemperature, "Temperature", 24);
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_diffTemperature, "Temperature", 24);
+        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_diffTemperature, "Temperature", 24);
+        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_diffTemperature, "Temperature", 24);
+        m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_diffTemperature, "Temperature", 24);
+        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_diffTemperature, "Temperature", 24);
+        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_diffTemperature, "Temperature", 24);
+        m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_diffTemperature, "Temperature", 24);
+        m_channels.emplace_back(9, WirelessChannel::channel_9, WirelessTypes::chType_diffTemperature, "Temperature", 24);
+        m_channels.emplace_back(10, WirelessChannel::channel_10, WirelessTypes::chType_diffTemperature, "Temperature", 24);
+        m_channels.emplace_back(11, WirelessChannel::channel_11, WirelessTypes::chType_diffTemperature, "Temperature", 24);
+        m_channels.emplace_back(12, WirelessChannel::channel_12, WirelessTypes::chType_diffTemperature, "Temperature", 24);
+        m_channels.emplace_back(13, WirelessChannel::channel_13, WirelessTypes::chType_temperature, "CJC Temperature", 12);
     }
 
     const WirelessTypes::SamplingModes NodeFeatures_tclink200::samplingModes() const
     {
         //build and return the sampling modes that are supported
         WirelessTypes::SamplingModes result;
-
         result.push_back(WirelessTypes::samplingMode_sync);
         result.push_back(WirelessTypes::samplingMode_nonSync);
         result.push_back(WirelessTypes::samplingMode_syncEvent);
-        
-        //no support for burst
-        //no support for armed datalogging
+        return result;
+    }
 
+    const WirelessTypes::TransducerTypes NodeFeatures_tclink200::transducerTypes() const
+    {
+        WirelessTypes::TransducerTypes result;
+        result.push_back(WirelessTypes::transducer_thermocouple);
         return result;
     }
 
@@ -51,11 +86,7 @@ namespace mscl
     {
         //build and return the data formats that are supported
         WirelessTypes::DataFormats result;
-
         result.push_back(WirelessTypes::dataFormat_cal_float);
-
-        //no support for uint16
-
         return result;
     }
 
@@ -84,28 +115,13 @@ namespace mscl
         return filters;
     }
 
-    WirelessTypes::WirelessSampleRate NodeFeatures_tclink200::maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
+    WirelessTypes::WirelessSampleRate NodeFeatures_tclink200::maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter,
+                                                                                            WirelessTypes::SamplingMode samplingMode,
+                                                                                            WirelessTypes::DataCollectionMethod dataCollectionMethod,
+                                                                                            WirelessTypes::DataMode dataMode,
+                                                                                            const ChannelMask& channels) const
     {
-        //find the max sample rate allowed for the settling time
-        SampleRate maxRate;
-
-        switch(lowPassFilter)
-        {
-            case WirelessTypes::filter_294hz:
-                maxRate = SampleRate::Hertz(128);
-                break;
-
-            case WirelessTypes::filter_12_66hz:
-                maxRate = SampleRate::Hertz(8);
-                break;
-
-            case WirelessTypes::filter_2_6hz:
-                maxRate = SampleRate::Hertz(2);
-                break;
-
-            default:
-                throw Error_NotSupported("Invalid Low Pass Filter");
-        }
+        SampleRate maxRate = SampleRate::FromWirelessEepromValue(maxRateForFilter(lowPassFilter, channels));
 
         const WirelessTypes::WirelessSampleRates rates = sampleRates(samplingMode, dataCollectionMethod, dataMode);
 
@@ -125,19 +141,84 @@ namespace mscl
         return rates.at(rates.size() - 1);
     }
 
-    WirelessTypes::Filter NodeFeatures_tclink200::minLowPassFilter(const SampleRate& rate) const
+    const WirelessTypes::WirelessSampleRate NodeFeatures_tclink200::maxRateForFilter(WirelessTypes::Filter lowPassFilter, const ChannelMask& channels)
     {
-        if(rate <= SampleRate::Hertz(2))
+        //the max rate depends on how many channels are enabled per ADC
+        const uint8 LAST_CH_ADC_1 = 6;  //ADC1 = ch1-ch6
+        const uint8 LAST_CH_ADC_2 = 12; //ADC2 = ch7-ch12
+
+        const std::map<uint8, WirelessTypes::WirelessSampleRate> filterRates_294hz = {
+            {1, WirelessTypes::sampleRate_128Hz},
+            {2, WirelessTypes::sampleRate_64Hz},
+            {3, WirelessTypes::sampleRate_64Hz},
+            {4, WirelessTypes::sampleRate_32Hz},
+            {5, WirelessTypes::sampleRate_32Hz},
+            {6, WirelessTypes::sampleRate_32Hz}
+        };
+
+        const std::map<uint8, WirelessTypes::WirelessSampleRate> filterRates_12hz = {
+            {1, WirelessTypes::sampleRate_8Hz},
+            {2, WirelessTypes::sampleRate_4Hz},
+            {3, WirelessTypes::sampleRate_4Hz},
+            {4, WirelessTypes::sampleRate_2Hz},
+            {5, WirelessTypes::sampleRate_2Hz},
+            {6, WirelessTypes::sampleRate_2Hz}
+        };
+
+        const std::map<uint8, WirelessTypes::WirelessSampleRate> filterRates_2hz = {
+            {1, WirelessTypes::sampleRate_2Hz},
+            {2, WirelessTypes::sampleRate_1Hz},
+            {3, WirelessTypes::sampleRate_2Sec},
+            {4, WirelessTypes::sampleRate_2Sec},
+            {5, WirelessTypes::sampleRate_5Sec},
+            {6, WirelessTypes::sampleRate_5Sec}
+        };
+
+        uint8 adc1Count = 0;
+        uint8 adc2Count = 0;
+        for(uint8 chNum = 1; chNum <= channels.lastChEnabled(); chNum++)
         {
-            return WirelessTypes::filter_2_6hz;
+            if(channels.enabled(chNum))
+            {
+                if(chNum <= LAST_CH_ADC_1)
+                {
+                    adc1Count++;
+                }
+                else if(chNum <= LAST_CH_ADC_2)
+                {
+                    adc2Count++;
+                }
+            }
         }
-        else if(rate <= SampleRate::Hertz(8))
+
+        const uint8 maxAdcChannelCount = std::max(adc1Count, adc2Count);
+
+        switch(lowPassFilter)
         {
-            return WirelessTypes::filter_12_66hz;
+            case WirelessTypes::filter_294hz:
+                return filterRates_294hz.at(maxAdcChannelCount);
+                break;
+
+            case WirelessTypes::filter_12_66hz:
+                return filterRates_12hz.at(maxAdcChannelCount);
+                break;
+
+            case WirelessTypes::filter_2_6hz:
+                return filterRates_2hz.at(maxAdcChannelCount);
+                break;
+
+            default:
+                throw Error_NotSupported("Invalid Low Pass Filter");
         }
-        else
-        {
-            return WirelessTypes::filter_294hz;
-        }
+    }
+
+    bool NodeFeatures_tclink200::supportsNewTransmitPowers() const
+    {
+        return true;
+    }
+
+    bool NodeFeatures_tclink200::supportsLowBatteryThresholdConfig() const
+    {
+        return m_nodeInfo.firmwareVersion() >= Version(12, 42296);
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -742,6 +742,9 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_fatigueDistAngles)
 
     WirelessNodeConfig c;
     c.fatigueOptions(opts);
+
+    expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16((uint16)WirelessTypes::samplingMode_sync));
+    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16((uint16)WirelessTypes::dataFormat_cal_float));
 
     ConfigIssues issues;
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);

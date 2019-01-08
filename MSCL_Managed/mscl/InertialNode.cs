@@ -68,6 +68,12 @@ public class InertialNode : global::System.IDisposable {
     return ret;
   }
 
+  public DeviceState lastDeviceState() {
+    DeviceState ret = (DeviceState)msclPINVOKE.InertialNode_lastDeviceState(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public Version firmwareVersion() {
     Version ret = new Version(msclPINVOKE.InertialNode_firmwareVersion(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -471,13 +477,13 @@ public class InertialNode : global::System.IDisposable {
     return ret;
   }
 
-  public void setAdvancedLowPassFilterSettings(AdvancedLowPassFilterData data) {
-    msclPINVOKE.InertialNode_setAdvancedLowPassFilterSettings(swigCPtr, AdvancedLowPassFilterData.getCPtr(data));
+  public void setAdvancedLowPassFilterSettings(AdvancedLowPassFilterConfig data) {
+    msclPINVOKE.InertialNode_setAdvancedLowPassFilterSettings(swigCPtr, AdvancedLowPassFilterConfig.getCPtr(data));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public AdvancedLowPassFilterData getAdvancedLowPassFilterSettings(AdvancedLowPassFilterData data) {
-    AdvancedLowPassFilterData ret = new AdvancedLowPassFilterData(msclPINVOKE.InertialNode_getAdvancedLowPassFilterSettings(swigCPtr, AdvancedLowPassFilterData.getCPtr(data)), true);
+  public AdvancedLowPassFilterConfig getAdvancedLowPassFilterSettings(MipChannelFields dataDescriptors) {
+    AdvancedLowPassFilterConfig ret = new AdvancedLowPassFilterConfig(msclPINVOKE.InertialNode_getAdvancedLowPassFilterSettings(swigCPtr, MipChannelFields.getCPtr(dataDescriptors)), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -621,6 +627,116 @@ public class InertialNode : global::System.IDisposable {
 
   public AdaptiveMeasurementData getMagDipAngleErrorAdaptiveMeasurement() {
     AdaptiveMeasurementData ret = new AdaptiveMeasurementData(msclPINVOKE.InertialNode_getMagDipAngleErrorAdaptiveMeasurement(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setMagNoiseStandardDeviation(GeometricVector data) {
+    msclPINVOKE.InertialNode_setMagNoiseStandardDeviation(swigCPtr, GeometricVector.getCPtr(data));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public GeometricVector getMagNoiseStandardDeviation() {
+    GeometricVector ret = new GeometricVector(msclPINVOKE.InertialNode_getMagNoiseStandardDeviation(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setGravNoiseStandardDeviation(GeometricVector data) {
+    msclPINVOKE.InertialNode_setGravNoiseStandardDeviation(swigCPtr, GeometricVector.getCPtr(data));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public GeometricVector getGravNoiseStandardDeviation() {
+    GeometricVector ret = new GeometricVector(msclPINVOKE.InertialNode_getGravNoiseStandardDeviation(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setAccelNoiseStandardDeviation(GeometricVector data) {
+    msclPINVOKE.InertialNode_setAccelNoiseStandardDeviation(swigCPtr, GeometricVector.getCPtr(data));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public GeometricVector getAccelNoiseStandardDeviation() {
+    GeometricVector ret = new GeometricVector(msclPINVOKE.InertialNode_getAccelNoiseStandardDeviation(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setGyroNoiseStandardDeviation(GeometricVector data) {
+    msclPINVOKE.InertialNode_setGyroNoiseStandardDeviation(swigCPtr, GeometricVector.getCPtr(data));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public GeometricVector getGyroNoiseStandardDeviation() {
+    GeometricVector ret = new GeometricVector(msclPINVOKE.InertialNode_getGyroNoiseStandardDeviation(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setPressureAltNoiseStandardDeviation(float data) {
+    msclPINVOKE.InertialNode_setPressureAltNoiseStandardDeviation(swigCPtr, data);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public float getPressureAltNoiseStandardDeviation() {
+    float ret = msclPINVOKE.InertialNode_getPressureAltNoiseStandardDeviation(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setHardIronOffsetProcessNoise(GeometricVector data) {
+    msclPINVOKE.InertialNode_setHardIronOffsetProcessNoise(swigCPtr, GeometricVector.getCPtr(data));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public GeometricVector getHardIronOffsetProcessNoise() {
+    GeometricVector ret = new GeometricVector(msclPINVOKE.InertialNode_getHardIronOffsetProcessNoise(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setAccelBiasModelParams(GeometricVectors data) {
+    msclPINVOKE.InertialNode_setAccelBiasModelParams(swigCPtr, GeometricVectors.getCPtr(data));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public GeometricVectors getAccelBiasModelParams() {
+    GeometricVectors ret = new GeometricVectors(msclPINVOKE.InertialNode_getAccelBiasModelParams(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setGyroBiasModelParams(GeometricVectors data) {
+    msclPINVOKE.InertialNode_setGyroBiasModelParams(swigCPtr, GeometricVectors.getCPtr(data));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public GeometricVectors getGyroBiasModelParams() {
+    GeometricVectors ret = new GeometricVectors(msclPINVOKE.InertialNode_getGyroBiasModelParams(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setSoftIronMatrixProcessNoise(Matrix_3x3 data) {
+    msclPINVOKE.InertialNode_setSoftIronMatrixProcessNoise(swigCPtr, Matrix_3x3.getCPtr(data));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public Matrix_3x3 getSoftIronMatrixProcessNoise() {
+    Matrix_3x3 ret = new Matrix_3x3(msclPINVOKE.InertialNode_getSoftIronMatrixProcessNoise(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setFixedReferencePosition(FixedReferencePositionData data) {
+    msclPINVOKE.InertialNode_setFixedReferencePosition(swigCPtr, FixedReferencePositionData.getCPtr(data));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public FixedReferencePositionData getFixedReferencePosition() {
+    FixedReferencePositionData ret = new FixedReferencePositionData(msclPINVOKE.InertialNode_getFixedReferencePosition(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

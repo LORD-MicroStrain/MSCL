@@ -130,8 +130,14 @@ public class Connection : global::System.IDisposable {
   }
 
   public void rawByteMode(bool enable) {
-    msclPINVOKE.Connection_rawByteMode(swigCPtr, enable);
+    msclPINVOKE.Connection_rawByteMode__SWIG_0(swigCPtr, enable);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public bool rawByteMode() {
+    bool ret = msclPINVOKE.Connection_rawByteMode__SWIG_1(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
   public Bytes getRawBytes(uint timeout, uint maxBytes, uint minBytes) {
@@ -195,8 +201,14 @@ public class Connection : global::System.IDisposable {
   }
 
   public void debugMode(bool enable) {
-    msclPINVOKE.Connection_debugMode(swigCPtr, enable);
+    msclPINVOKE.Connection_debugMode__SWIG_0(swigCPtr, enable);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public bool debugMode() {
+    bool ret = msclPINVOKE.Connection_debugMode__SWIG_1(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
   public ConnectionDebugDataVec getDebugData(uint timeout) {

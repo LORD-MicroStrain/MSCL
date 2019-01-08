@@ -80,6 +80,12 @@ public class DisplacementNode : global::System.IDisposable {
     return ret;
   }
 
+  public DeviceState lastDeviceState() {
+    DeviceState ret = (DeviceState)msclPINVOKE.DisplacementNode_lastDeviceState(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public Version firmwareVersion() {
     Version ret = new Version(msclPINVOKE.DisplacementNode_firmwareVersion(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

@@ -82,6 +82,12 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public VehicleModeTypes supportedVehicleModeTypes() {
+    VehicleModeTypes ret = new VehicleModeTypes(msclPINVOKE.MipNodeFeatures_supportedVehicleModeTypes(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public AdaptiveMeasurementModes supportedAdaptiveMeasurementModes() {
     AdaptiveMeasurementModes ret = new AdaptiveMeasurementModes(msclPINVOKE.MipNodeFeatures_supportedAdaptiveMeasurementModes(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

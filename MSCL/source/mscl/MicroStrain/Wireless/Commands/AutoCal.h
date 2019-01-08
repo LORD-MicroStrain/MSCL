@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -29,6 +29,7 @@ namespace mscl
         uint8 chNum;
         WirelessModels::NodeModel nodeType;
         WirelessTypes::ChannelType chType;
+        Version firmwareVersion;
 
         WirelessTypes::Voltage excitationVoltage;
         bool useExcitationVoltage;
@@ -38,6 +39,7 @@ namespace mscl
             chNum(0),
             nodeType(static_cast<WirelessModels::NodeModel>(0)),
             chType(WirelessTypes::chType_acceleration),
+            firmwareVersion(Version()),
             excitationVoltage(static_cast<WirelessTypes::Voltage>(0)),
             useExcitationVoltage(false)
         {}

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -610,7 +610,7 @@ namespace mscl
         }
 
         //calibrations are applied if floating point data
-        bool calsApplied = (m_sessionInfo.dataType == WirelessTypes::dataType_float32);
+        bool calsApplied = WirelessTypes::isCalApplied(m_sessionInfo.dataType);
 
         //loop through all the channels
         for(uint8 chItr = 1; chItr <= lastActiveCh; ++chItr)
@@ -660,6 +660,13 @@ namespace mscl
                     {
                         int32 val = static_cast<int32>(m_nodeMemory->read_int16(dataEndian));
                         dataPoint = (val << 6);
+                        break;
+                    }
+
+                    //int16 value (calibrated value multiplied by 10, needs divided by 10)
+                    case WirelessTypes::dataType_int16_x10:
+                    {
+                        dataPoint = static_cast<float>(m_nodeMemory->read_int16(dataEndian)) / 10.0f;
                         break;
                     }
 

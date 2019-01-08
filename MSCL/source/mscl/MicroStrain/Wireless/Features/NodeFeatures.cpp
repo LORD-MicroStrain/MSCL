@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -23,6 +23,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeFeatures_iepeLink.h"
 #include "NodeFeatures_mvpervlink.h"
 #include "NodeFeatures_rtdlink.h"
+#include "NodeFeatures_rtdlink200.h"
 #include "NodeFeatures_sglink.h"
 #include "NodeFeatures_sglinkoem.h"
 #include "NodeFeatures_sglinkoemHermetic.h"
@@ -30,13 +31,16 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeFeatures_sglinkMicro.h"
 #include "NodeFeatures_sglinkrgd.h"
 #include "NodeFeatures_sglink200.h"
+#include "NodeFeatures_sglink200oem.h"
 #include "NodeFeatures_shmlink.h"
 #include "NodeFeatures_shmlink2.h"
 #include "NodeFeatures_shmlink200.h"
 #include "NodeFeatures_shmlink201.h"
 #include "NodeFeatures_shmlink201FullBridge.h"
+#include "NodeFeatures_shmlink210.h"
 #include "NodeFeatures_tclink1ch.h"
 #include "NodeFeatures_tclink200.h"
+#include "NodeFeatures_tclink200oem.h"
 #include "NodeFeatures_tclink3ch.h"
 #include "NodeFeatures_tclink6ch.h"
 #include "NodeFeatures_torqueLink.h"
@@ -113,6 +117,9 @@ namespace mscl
         case WirelessModels::node_rtdLink:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_rtdlink(info));
 
+        case WirelessModels::node_rtdLink200:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_rtdlink200(info));
+
         case WirelessModels::node_sgLink:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglink(info));
 
@@ -126,6 +133,7 @@ namespace mscl
         case WirelessModels::node_sgLink_herm_2600:
         case WirelessModels::node_sgLink_herm_2700:
         case WirelessModels::node_sgLink_herm_2800:
+        case WirelessModels::node_sgLink_herm_2900:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglinkoemHermetic(info));
 
         case WirelessModels::node_sgLink_oem_S:
@@ -133,6 +141,15 @@ namespace mscl
 
         case WirelessModels::node_sgLink_rgd:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglinkrgd(info));
+
+        case WirelessModels::node_sgLink200:
+        case WirelessModels::node_sgLink200_hbridge_1K:
+        case WirelessModels::node_sgLink200_hbridge_350:
+        case WirelessModels::node_sgLink200_hbridge_120:
+        case WirelessModels::node_sgLink200_qbridge_1K:
+        case WirelessModels::node_sgLink200_qbridge_350:
+        case WirelessModels::node_sgLink200_qbridge_120:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglink200(info));
 
         case WirelessModels::node_sgLink200_oem:
         case WirelessModels::node_sgLink200_oem_ufl:
@@ -148,7 +165,7 @@ namespace mscl
         case WirelessModels::node_sgLink200_oem_qbridge_120_ufl:
         case WirelessModels::node_sgLink200_oem_qbridge_350:
         case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
-            return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglink200(info));
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglink200oem(info));
 
         case WirelessModels::node_shmLink:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_shmlink(info));
@@ -170,6 +187,10 @@ namespace mscl
         case WirelessModels::node_shmLink201_fullbridge:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_shmlink201FullBridge(info));
 
+        case WirelessModels::node_shmLink210_fullbridge:
+        case WirelessModels::node_shmLink210_qbridge_3K:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_shmlink210(info));
+
         case WirelessModels::node_tcLink_1ch:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_tclink1ch(info));
 
@@ -181,9 +202,12 @@ namespace mscl
         case WirelessModels::node_tcLink_6ch_ip67_rht:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_tclink6ch(info));
 
+        case WirelessModels::node_tcLink200:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_tclink200(info));
+
         case WirelessModels::node_tcLink200_oem:
         case WirelessModels::node_tcLink200_oem_ufl:
-            return std::unique_ptr<NodeFeatures>(new NodeFeatures_tclink200(info));
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_tclink200oem(info));
 
         case WirelessModels::node_vLink200:
         case WirelessModels::node_vLink200_qbridge_1K:
@@ -223,14 +247,11 @@ namespace mscl
         }
     }
 
-    void NodeFeatures::addCalCoeffChannelGroup(uint8 channelNumber, const EepromLocation& slopeEeprom, const EepromLocation& actionIdEeprom)
+    void NodeFeatures::addCalCoeffChannelGroup(uint8 channelNumber, const std::string& name, const EepromLocation& slopeEeprom, const EepromLocation& actionIdEeprom)
     {
         //create the channel mask
         ChannelMask mask;
         mask.enable(channelNumber);
-
-        //create the name
-        std::string name = "Channel " + Utils::toStr(channelNumber);
 
         m_channelGroups.emplace_back(mask, name,
                                      ChannelGroup::SettingsMap{
@@ -815,6 +836,12 @@ namespace mscl
         return (std::find(supportedModes.begin(), supportedModes.end(), dataMode) != supportedModes.end());
     }
 
+    bool NodeFeatures::supportsTransducerType(WirelessTypes::TransducerType transducerType) const
+    {
+        const WirelessTypes::TransducerTypes& supportedTypes = transducerTypes();
+        return (std::find(supportedTypes.begin(), supportedTypes.end(), transducerType) != supportedTypes.end());
+    }
+
     bool NodeFeatures::supportsFatigueMode(WirelessTypes::FatigueMode mode) const
     {
         //get the supported fatigue modes
@@ -903,6 +930,11 @@ namespace mscl
         return false;
     }
 
+    bool NodeFeatures::supportsLowBatteryThresholdConfig() const
+    {
+        return false;
+    }
+
     WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
         //get all the sample rates supported
@@ -933,7 +965,7 @@ namespace mscl
         return sampleRates(samplingMode, dataCollectionMethod, dataMode).at(0);
     }
 
-    WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
+    WirelessTypes::WirelessSampleRate NodeFeatures::maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode, const ChannelMask& channels) const
     {
         return sampleRates(samplingMode, dataCollectionMethod, dataMode).at(0);
     }
@@ -941,11 +973,6 @@ namespace mscl
     WirelessTypes::SettlingTime NodeFeatures::maxFilterSettlingTime(const SampleRate& rate) const
     {
         throw Error_NotSupported("Filter Settling Time is not supported by this Node.");
-    }
-
-    WirelessTypes::Filter NodeFeatures::minLowPassFilter(const SampleRate& rate) const
-    {
-        return lowPassFilters().at(lowPassFilters().size() - 1);
     }
 
     uint16 NodeFeatures::minInactivityTimeout() const
@@ -1629,11 +1656,22 @@ namespace mscl
         return result;
     }
 
+    const WirelessTypes::TransducerTypes NodeFeatures::transducerTypes() const
+    {
+        WirelessTypes::TransducerTypes result;
+        return result;
+    }
+
     bool NodeFeatures::supportsNewTransmitPowers() const
     {
         static const Version MIN_NEW_TX_POWER_FW(10, 0);
 
         return (m_nodeInfo.firmwareVersion() >= MIN_NEW_TX_POWER_FW);
+    }
+
+    bool NodeFeatures::hasMaxSampleRatePerFilterAndAdcChCount() const
+    {
+        return false;
     }
 
     bool NodeFeatures::supportsAutoBalance2() const
@@ -1740,6 +1778,7 @@ namespace mscl
                 case WirelessModels::node_sgLink_herm_2600:
                 case WirelessModels::node_sgLink_herm_2700:
                 case WirelessModels::node_sgLink_herm_2800:
+                case WirelessModels::node_sgLink_herm_2900:
                 case WirelessModels::node_sgLink_rgd:
                     return 2;
 

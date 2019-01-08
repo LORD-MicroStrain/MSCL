@@ -55,7 +55,7 @@ namespace mscl
         if (m_functionSelector == MipTypes::USE_NEW_SETTINGS)
         {
             byteCommand.append_uint8(static_cast<uint8>(m_sourceOptions.source));
-            byteCommand.append_float(m_sourceOptions.fixed);
+            byteCommand.append_float(m_sourceOptions.manual);
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }

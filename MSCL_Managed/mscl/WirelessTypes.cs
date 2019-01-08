@@ -81,7 +81,8 @@ public class WirelessTypes : global::System.IDisposable {
     dataType_int16_20bitTrunc = 12,
     dataType_uint24 = 13,
     dataType_uint16_24bitTrunc = 14,
-    dataType_last = 14
+    dataType_int16_x10 = 15,
+    dataType_last = 15
   }
 
   public enum DataFormat {
@@ -89,7 +90,8 @@ public class WirelessTypes : global::System.IDisposable {
     dataFormat_cal_float = 2,
     dataFormat_raw_uint24 = 3,
     dataFormat_raw_int24 = 4,
-    dataFormat_raw_int16 = 5
+    dataFormat_raw_int16 = 5,
+    dataFormat_cal_int16_x10 = 6
   }
 
   public enum SyncSamplingMode {
@@ -629,14 +631,14 @@ public class WirelessTypes : global::System.IDisposable {
     range_0to39_063mV = 96,
     range_0to19_532mV = 97,
     range_9_766mV = 98,
-    range_1_35V_or_0to2026408518ohm = 99,
+    range_1_35V_or_0to1000000ohm = 99,
     range_1_25V_or_0to10000ohm = 100,
-    range_625mV_or_0to2580ohm = 101,
-    range_312_5mV_or_0to1290ohm = 102,
-    range_156_25mV_or_0to645ohm = 103,
-    range_78_125mV_or_0to322ohm = 104,
-    range_39_0625mV_or_0to161ohm = 105,
-    range_19_5313mV_or_0to80ohm = 106,
+    range_625mV_or_0to3333_3ohm = 101,
+    range_312_5mV_or_0to1428_6ohm = 102,
+    range_156_25mV_or_0to666_67ohm = 103,
+    range_78_125mV_or_0to322_58ohm = 104,
+    range_39_0625mV_or_0to158_73ohm = 105,
+    range_19_5313mV_or_0to78_74ohm = 106,
     range_750mV = 107,
     range_375mV = 108,
     range_187_5mV = 109,
@@ -653,6 +655,16 @@ public class WirelessTypes : global::System.IDisposable {
     range_0to46_875mV = 120,
     range_0to23_438mV = 121,
     range_0to11_719mV = 122,
+    range_1_5V = 123,
+    range_1_35V = 124,
+    range_0to1000000ohm = 125,
+    range_0to10000ohm = 126,
+    range_0to3333_3ohm = 127,
+    range_0to1428_6ohm = 128,
+    range_0to666_67ohm = 129,
+    range_0to322_58ohm = 130,
+    range_0to158_73ohm = 131,
+    range_0to78_74ohm = 132,
     range_invalid = 65535
   }
 
@@ -696,14 +708,26 @@ public class WirelessTypes : global::System.IDisposable {
     voltage_4096mV = 4096,
     voltage_3000mV = 3000,
     voltage_2800mV = 2800,
+    voltage_2750mV = 2750,
     voltage_2700mV = 2700,
     voltage_2500mV = 2500,
     voltage_1500mV = 1500
   }
 
   public enum SensorOutputMode {
-    sensorOutputMode_vibration = 0,
+    sensorOutputMode_accel = 0,
     sensorOutputMode_tilt = 1
+  }
+
+  public enum BatteryStatus {
+    batteryStatus_good = 0,
+    batteryStatus_low = 1,
+    batteryStatus_critical = 2
+  }
+
+  public enum ExternalPowerIndicator {
+    externalPower_notConnected = 0,
+    externalPower_connected = 1
   }
 
   public static readonly short UNKNOWN_RSSI = msclPINVOKE.WirelessTypes_UNKNOWN_RSSI_get();

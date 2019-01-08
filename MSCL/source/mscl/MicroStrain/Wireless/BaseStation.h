@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -485,7 +485,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_NotSupported>: RF Sweep Mode is not supported by this BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        //    - <Error_Communication>: The beacon status command has failed.
+        //    - <Error_Communication>: The command has failed.
         void startRfSweepMode();
 
         //API Function: startRfSweepMode
@@ -501,7 +501,7 @@ namespace mscl
         //Exceptions:
         //  - <Error_NotSupported>: Raw RF Sweep Mode is not supported by this BaseStation.
         //  - <Error_Connection>: A connection error has occurred with the BaseStation.
-        //  - <Error_Communication>: The beacon status command has failed.
+        //  - <Error_Communication>: The command has failed.
         void startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options=0);
 
         //API Function: cyclePower

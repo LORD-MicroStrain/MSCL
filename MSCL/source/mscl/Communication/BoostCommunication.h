@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -8,6 +8,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #ifndef MSCL_DISABLE_SSL
 #include <boost/asio/ssl/stream.hpp>
+#include <boost/beast/websocket/ssl.hpp>
 #endif
 
 #ifndef MSCL_DISABLE_WEBSOCKETS
@@ -71,9 +72,9 @@ namespace mscl
         //    Initializes the BoostCommunication object
         //    
         //Parameters:
-        //    ioService - boost io_service
+        //    ioContext - boost io_context
         //    ioObj - boost io_object passed (Template)
-        BoostCommunication(std::unique_ptr<boost::asio::io_service> ioService, std::unique_ptr<IO_Object> ioObj);
+        BoostCommunication(std::unique_ptr<boost::asio::io_context> io_context, std::unique_ptr<IO_Object> ioObj);
 
         //Destructor: ~BoostCommunication
         //    Destroys the BoostCommunication object
@@ -85,13 +86,13 @@ namespace mscl
         BoostCommunication& operator=(const BoostCommunication&) = delete;    //assignment operator disabled
 
     private:
-        //Variable: m_ioService
-        //    Boost io_service needed in communication
-        std::unique_ptr<boost::asio::io_service> m_ioService;
-
         //Variable: m_ioObject
         //    Boost io_object used to communicate (serial_port, ip::tcp::socket, etc.)
         std::unique_ptr<IO_Object> m_ioObject;
+
+        //Variable: m_ioContext
+        //    Boost io_context needed in communication
+        std::unique_ptr<boost::asio::io_context> m_ioContext;
 
         //Variable: m_readBuffer
         //    The <DataBuffer> to hold all the bytes read in
@@ -156,11 +157,11 @@ namespace mscl
         void readLoopHandler(const boost::system::error_code &error, std::size_t bytes_transferred);
 
         //Function: stopIoService
-        //    Stops the current boost::asio::io_service so no more reads or writes will happen
+        //    Stops the current boost::asio::io_context so no more reads or writes will happen
         void stopIoService();
 
         //Function: stopIoServiceError
-        //    Stops the current boost::asio::io_service due to an error
+        //    Stops the current boost::asio::io_context due to an error
         void stopIoServiceError(int errorCode);
 
         //Function: setParseFunction
@@ -185,9 +186,9 @@ namespace mscl
 
     //Constructor
     template <typename IO_Object>
-    BoostCommunication<IO_Object>::BoostCommunication(std::unique_ptr<boost::asio::io_service> ioService, std::unique_ptr<IO_Object> ioObj):
-        m_ioService(std::move(ioService)),
+    BoostCommunication<IO_Object>::BoostCommunication(std::unique_ptr<boost::asio::io_context> ioContext, std::unique_ptr<IO_Object> ioObj):
         m_ioObject(std::move(ioObj)),
+        m_ioContext(std::move(ioContext)),
         m_readBuffer(1024 * 1000),
         m_bufferWriter(m_readBuffer.getBufferWriter()),
         m_parseDataFunction(nullptr),
@@ -200,7 +201,7 @@ namespace mscl
     {
         //need to destroy the serial_port object BEFORE the io_service object, or else an access violation will occur
         m_ioObject.reset();
-        m_ioService.reset();
+        m_ioContext.reset();
     }
 
     template <typename IO_Object>
@@ -278,7 +279,7 @@ namespace mscl
     template <typename IO_Object>
     void BoostCommunication<IO_Object>::startReadLoop()
     {
-        m_ioService->reset();
+        m_ioContext->reset();
 
         //get the BufferWriter for our current read buffer
         m_bufferWriter = m_readBuffer.getBufferWriter();
@@ -289,7 +290,7 @@ namespace mscl
         try
         {
             //start the async_read operation
-            m_ioService->run();
+            m_ioContext->run();
         }
         catch(Error_Connection& ex)
         {
@@ -316,13 +317,13 @@ namespace mscl
     template <typename IO_Object>
     void BoostCommunication<IO_Object>::stopIoService()
     {
-        m_ioService->post([]() { throw Error_Connection("Stopping Data Thread."); });
+        m_ioContext->post([]() { throw Error_Connection("Stopping Data Thread."); });
     }
 
     template <typename IO_Object>
     void BoostCommunication<IO_Object>::stopIoServiceError(int errorCode)
     {
-        m_ioService->post([&errorCode]() { throw Error_Connection(errorCode); });
+        m_ioContext->post([&errorCode]() { throw Error_Connection(errorCode); });
     }
 
     //read handler for the read loop, called when data has come in or the read operation has been canceled

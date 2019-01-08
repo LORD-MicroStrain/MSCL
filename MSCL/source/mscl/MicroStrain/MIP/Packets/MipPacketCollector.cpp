@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -11,14 +11,19 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    MipPacketCollector::MipPacketCollector()
-        :m_dataPackets(MAX_DATA_BUFFER_SIZE)
+    MipPacketCollector::MipPacketCollector():
+        m_dataPackets(MAX_DATA_BUFFER_SIZE)
     {
     }
 
     //required (if taken out, causes runtime error on destruction of WirelessPacketCollector)
     MipPacketCollector::~MipPacketCollector()
     {
+    }
+
+    void MipPacketCollector::requestDataAddedNotification(std::function<void()> fnToCall)
+    {
+        m_notifyDataAddedFn = fnToCall;
     }
 
     void MipPacketCollector::addDataPacket(const MipPacket& packet)
@@ -31,6 +36,12 @@ namespace mscl
 
         //add the data packet to the container
         m_dataPackets.push_back(dataPacket);
+
+        //call the notification function if its been set
+        if(m_notifyDataAddedFn)
+        {
+            m_notifyDataAddedFn();
+        }
 
         //notify the read thread, if it is waiting for data to be put into the buffer
         m_emptyBufferCondition.notify_one();

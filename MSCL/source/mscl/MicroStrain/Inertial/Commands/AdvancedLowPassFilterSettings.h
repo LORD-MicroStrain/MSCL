@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -39,7 +39,7 @@ namespace mscl
         //
         //Returns:
         //    AdvancedLowPassFilterSettings - object set up for sending a get command.
-        static AdvancedLowPassFilterSettings MakeGetCommand(const AdvancedLowPassFilterData& dataToUse);
+        static AdvancedLowPassFilterSettings MakeGetCommand(const MipTypes::ChannelField& descriptor);
 
         //Function: getResponseData
         //
@@ -58,7 +58,7 @@ namespace mscl
         // Function: Constructor AdvancedLowPassFilterSettings
         //    Private constructor creates a AdvancedLowPassFilterSettings object.  Use Make___Command methods to create an object.
         AdvancedLowPassFilterSettings(const MipTypes::FunctionSelector& function_selector, const AdvancedLowPassFilterData& dataToUse);
-        AdvancedLowPassFilterSettings(const MipTypes::FunctionSelector& function_selector);
+        AdvancedLowPassFilterSettings(const MipTypes::FunctionSelector& function_selector, const MipTypes::ChannelField& descriptor);
 
         //Function: commandType
         //

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -18,20 +18,20 @@ namespace mscl
     NodeFeatures_glink200::NodeFeatures_glink200(const NodeInfo& info):
         NodeFeatures_200series(info)
     {
-        addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
-        addCalCoeffChannelGroup(2, NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
-        addCalCoeffChannelGroup(3, NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);
+        addCalCoeffChannelGroup(1, "Acceleration X", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
+        addCalCoeffChannelGroup(2, "Acceleration Y", NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
+        addCalCoeffChannelGroup(3, "Acceleration Z", NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);
 
         bool supportsTilt = (m_nodeInfo.firmwareVersion() >= VER_TILT_SUPPORTED);
         if(supportsTilt)
         {
             //add the tilt channels
-            addCalCoeffChannelGroup(4, NodeEepromMap::CH_ACTION_SLOPE_4, NodeEepromMap::CH_ACTION_ID_4);
-            addCalCoeffChannelGroup(5, NodeEepromMap::CH_ACTION_SLOPE_5, NodeEepromMap::CH_ACTION_ID_5);
+            addCalCoeffChannelGroup(4, "Pitch", NodeEepromMap::CH_ACTION_SLOPE_4, NodeEepromMap::CH_ACTION_ID_4);
+            addCalCoeffChannelGroup(5, "Roll", NodeEepromMap::CH_ACTION_SLOPE_5, NodeEepromMap::CH_ACTION_ID_5);
         }
 
         const ChannelMask ACCEL_CHS(BOOST_BINARY(00000111)); //ch1 - ch3
-        m_channelGroups.emplace_back(ACCEL_CHS, "Accel Channels", 
+        m_channelGroups.emplace_back(ACCEL_CHS, "Acceleration X,Y,Z", 
                                      ChannelGroup::SettingsMap {
                                          {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1},
                                          {WirelessTypes::chSetting_highPassFilter, NodeEepromMap::HIGH_PASS_FILTER_1},
@@ -142,7 +142,7 @@ namespace mscl
         
         if(m_nodeInfo.firmwareVersion() >= VER_TILT_SUPPORTED)
         {
-            modes.push_back(WirelessTypes::sensorOutputMode_vibration);
+            modes.push_back(WirelessTypes::sensorOutputMode_accel);
             modes.push_back(WirelessTypes::sensorOutputMode_tilt);
         }
         

@@ -346,6 +346,12 @@ public class NodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public virtual bool supportsTransducerType(WirelessTypes.TransducerType transducerType) {
+    bool ret = msclPINVOKE.NodeFeatures_supportsTransducerType(swigCPtr, (int)transducerType);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public virtual bool supportsFatigueMode(WirelessTypes.FatigueMode mode) {
     bool ret = msclPINVOKE.NodeFeatures_supportsFatigueMode(swigCPtr, (int)mode);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -412,6 +418,12 @@ public class NodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public virtual bool supportsLowBatteryThresholdConfig() {
+    bool ret = msclPINVOKE.NodeFeatures_supportsLowBatteryThresholdConfig(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public virtual WirelessTypes.WirelessSampleRate maxSampleRate(WirelessTypes.SamplingMode samplingMode, ChannelMask channels, WirelessTypes.DataCollectionMethod dataCollectionMethod, WirelessTypes.DataMode dataMode) {
     WirelessTypes.WirelessSampleRate ret = (WirelessTypes.WirelessSampleRate)msclPINVOKE.NodeFeatures_maxSampleRate(swigCPtr, (int)samplingMode, ChannelMask.getCPtr(channels), (int)dataCollectionMethod, (int)dataMode);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -424,20 +436,14 @@ public class NodeFeatures : global::System.IDisposable {
     return ret;
   }
 
-  public virtual WirelessTypes.WirelessSampleRate maxSampleRateForLowPassFilter(WirelessTypes.Filter lowPassFilter, WirelessTypes.SamplingMode samplingMode, WirelessTypes.DataCollectionMethod dataCollectionMethod, WirelessTypes.DataMode dataMode) {
-    WirelessTypes.WirelessSampleRate ret = (WirelessTypes.WirelessSampleRate)msclPINVOKE.NodeFeatures_maxSampleRateForLowPassFilter(swigCPtr, (int)lowPassFilter, (int)samplingMode, (int)dataCollectionMethod, (int)dataMode);
+  public virtual WirelessTypes.WirelessSampleRate maxSampleRateForLowPassFilter(WirelessTypes.Filter lowPassFilter, WirelessTypes.SamplingMode samplingMode, WirelessTypes.DataCollectionMethod dataCollectionMethod, WirelessTypes.DataMode dataMode, ChannelMask channels) {
+    WirelessTypes.WirelessSampleRate ret = (WirelessTypes.WirelessSampleRate)msclPINVOKE.NodeFeatures_maxSampleRateForLowPassFilter(swigCPtr, (int)lowPassFilter, (int)samplingMode, (int)dataCollectionMethod, (int)dataMode, ChannelMask.getCPtr(channels));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public virtual WirelessTypes.SettlingTime maxFilterSettlingTime(SampleRate rate) {
     WirelessTypes.SettlingTime ret = (WirelessTypes.SettlingTime)msclPINVOKE.NodeFeatures_maxFilterSettlingTime(swigCPtr, SampleRate.getCPtr(rate));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public virtual WirelessTypes.Filter minLowPassFilter(SampleRate rate) {
-    WirelessTypes.Filter ret = (WirelessTypes.Filter)msclPINVOKE.NodeFeatures_minLowPassFilter(swigCPtr, SampleRate.getCPtr(rate));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -648,6 +654,12 @@ public class NodeFeatures : global::System.IDisposable {
 
   public virtual DataModes dataModes() {
     DataModes ret = new DataModes(msclPINVOKE.NodeFeatures_dataModes(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual TransducerTypes transducerTypes() {
+    TransducerTypes ret = new TransducerTypes(msclPINVOKE.NodeFeatures_transducerTypes(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

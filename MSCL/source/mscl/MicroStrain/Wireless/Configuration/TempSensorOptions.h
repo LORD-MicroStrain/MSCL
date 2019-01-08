@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -68,22 +68,22 @@ namespace mscl
 
         //API Function: thermocoupleType
         //  Gets the <WirelessTypes::ThermocoupleType> set in this options object.
-        //  Note: this is only valid is <transducerType> returns <WirelessTypes::TransducerType::transducer_thermocouple>.
+        //  Note: this is only valid if <transducerType> returns <WirelessTypes::TransducerType::transducer_thermocouple>.
         WirelessTypes::ThermocoupleType thermocoupleType() const;
 
         //API Function: rtdType
         //  Gets the <WirelessTypes::RtdType> set in this options object.
-        //  Note: this is only valid is <transducerType> returns <WirelessTypes::TransducerType::transducer_rtd>.
+        //  Note: this is only valid if <transducerType> returns <WirelessTypes::TransducerType::transducer_rtd>.
         WirelessTypes::RtdType rtdType() const;
 
         //API Function: rtdWireType
         //  Gets the <WirelessTypes::RtdWireType> set in this options object.
-        //  Note: this is only valid is <transducerType> returns <WirelessTypes::TransducerType::transducer_rtd>.
+        //  Note: this is only valid if <transducerType> returns <WirelessTypes::TransducerType::transducer_rtd>.
         WirelessTypes::RtdWireType rtdWireType() const;
 
         //API Function: thermistorType
         //  Gets the <WirelessTypes::ThermistorType> set in this options object.
-        //  Note: this is only valid is <transducerType> returns <WirelessTypes::TransducerType::transducer_thermistor>.
+        //  Note: this is only valid if <transducerType> returns <WirelessTypes::TransducerType::transducer_thermistor>.
         WirelessTypes::ThermistorType thermistorType() const;
     };
 }

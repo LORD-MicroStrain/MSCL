@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -143,6 +143,10 @@ namespace mscl
         //  The number of active gauges to set.
         boost::optional<uint16> m_numActiveGauges;
 
+        //Variable: m_lowBatteryThreshold
+        //  The low battery threshold to set.
+        boost::optional<float> m_lowBatteryThreshold;
+
         //Variable: m_dataMode
         //  The <DataMode> to set.
         boost::optional<WirelessTypes::DataMode> m_dataMode;
@@ -259,6 +263,10 @@ namespace mscl
         //Function: curDataFormat
         //    Gets the data format currently set, or from the node if not set.
         WirelessTypes::DataFormat curDataFormat(const NodeEepromHelper& eeprom) const;
+
+        //Function: curFatigueMode
+        //  Gets the fatigue mode currently set, or from the node if not set.
+        WirelessTypes::FatigueMode curFatigueMode(const NodeEepromHelper& eeprom) const;
 
         //Function: curDataModeMask
         //    Gets the <DataModeMask> currently set, or from the node if not set.
@@ -468,6 +476,10 @@ namespace mscl
         //Function: findDerivedMaskConfigIssue
         //  Finds the <ConfigIssue::ConfigOption> for the provided <WirelessTypes::DerivedCategory>.
         static ConfigIssue::ConfigOption findDerivedMaskConfigIssue(WirelessTypes::DerivedCategory category);
+
+        //Function: isSyncSamplingMode
+        //  Checks if the given mode is a sync mode.
+        static bool isSyncSamplingMode(WirelessTypes::SamplingMode mode);
 
         //Function: apply
         //    Writes all of the configuration values that are set to a WirelessNode.
@@ -778,6 +790,17 @@ namespace mscl
         //API Function: numActiveGauges
         //    Sets the number of active gauges in this Config object.
         void numActiveGauges(uint16 numGauges);
+
+        //API Function: lowBatteryThreshold
+        //    Gets the low battery threshold in this Config object, if set.
+        //
+        //Exceptions:
+        //    <Error_NoData> - The requested value has not been set.
+        float lowBatteryThreshold() const;
+
+        //API Function: lowBatteryThreshold
+        //    Sets the low battery threshold in this Config object.
+        void lowBatteryThreshold(float voltage);
 
         //API Function: linearEquation
         //    Gets the <LinearEquation> for the given <ChannelMask> in this Config object, if set.

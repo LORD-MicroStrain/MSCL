@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -22,7 +22,7 @@ namespace mscl
         m_chNumber(chNumber),
         m_id(id),
         m_type(type),
-        m_description(description),
+        m_description(description + " (ch" + Utils::toStr(chNumber) + ")"),
         m_adcResolution(0)
     {
     }
@@ -31,7 +31,7 @@ namespace mscl
         m_chNumber(chNumber),
         m_id(id),
         m_type(type),
-        m_description(description),
+        m_description(description + " (ch" + Utils::toStr(chNumber) + ")"),
         m_adcResolution(adcResolution)
     {
     }
@@ -225,6 +225,7 @@ namespace mscl
             case channel_diag_syncAttempts:         return "diagnostic_syncAttempts";
             case channel_diag_syncFailures:         return "diagnostic_syncFailures";
             case channel_diag_secsSinceLastSync:    return "diagnostic_secsSinceLastSync";
+            case channel_diag_memoryFull:           return "diagnostic_memoryFull";
             case channel_1_rms:                     return "ch1_rms";
             case channel_2_rms:                     return "ch2_rms";
             case channel_3_rms:                     return "ch3_rms";

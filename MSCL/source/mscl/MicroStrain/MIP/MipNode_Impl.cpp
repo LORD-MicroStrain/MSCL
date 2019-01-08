@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -21,6 +21,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Displacement/Commands/DisplacementOutputDataRate.h"
 #include "mscl/MicroStrain/Displacement/Commands/GetAnalogToDisplacementCals.h"
 #include "mscl/MicroStrain/Inertial/Commands/AccelBias.h"
+#include "mscl/MicroStrain/Inertial/Commands/AdaptiveMeasurement.h"
 #include "mscl/MicroStrain/Inertial/Commands/AdvancedLowPassFilterSettings.h"
 #include "mscl/MicroStrain/Inertial/Commands/CaptureGyroBias.h"
 #include "mscl/MicroStrain/Inertial/Commands/ComplementaryFilterSettings.h"
@@ -34,6 +35,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Inertial/Commands/ExternalGNSSUpdate.h"
 #include "mscl/MicroStrain/Inertial/Commands/ExternalHeadingUpdate.h"
 #include "mscl/MicroStrain/Inertial/Commands/ExternalHeadingUpdateWithTimestamp.h"
+#include "mscl/MicroStrain/Inertial/Commands/FloatCommand.h"
+#include "mscl/MicroStrain/Inertial/Commands/GeometricVectorCommand.h"
 #include "mscl/MicroStrain/Inertial/Commands/GNSS_AssistedFixControl.h"
 #include "mscl/MicroStrain/Inertial/Commands/GNSS_AssistTimeUpdate.h"
 #include "mscl/MicroStrain/Inertial/Commands/GNSS_Commands.h"
@@ -42,12 +45,13 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Inertial/Commands/GNSS_SourceControl.h"
 #include "mscl/MicroStrain/Inertial/Commands/GyroBias.h"
 #include "mscl/MicroStrain/Inertial/Commands/HeadingUpdateControl.h"
-#include "mscl/MicroStrain/Inertial/Commands/AdaptiveMeasurement.h"
 #include "mscl/MicroStrain/Inertial/Commands/MagnetometerHardIronOffset.h"
 #include "mscl/MicroStrain/Inertial/Commands/MagnetometerSoftIronMatrix.h"
+#include "mscl/MicroStrain/Inertial/Commands/Matrix3x3Command.h"
 #include "mscl/MicroStrain/Inertial/Commands/PollData.h"
 #include "mscl/MicroStrain/Inertial/Commands/RawRTCM_2_3Message.h"
 #include "mscl/MicroStrain/Inertial/Commands/Sensor_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/SetReferencePosition.h"
 #include "mscl/MicroStrain/Inertial/Commands/System_Commands.h"
 #include "mscl/MicroStrain/Inertial/Commands/UARTBaudRate.h"
 #include "mscl/MicroStrain/Inertial/Commands/VehicleDynamicsMode.h"
@@ -59,12 +63,16 @@ namespace mscl
         m_commandsTimeout(COMMANDS_DEFAULT_TIMEOUT),
         m_sensorRateBase(0),
         m_gnssRateBase(0),
-        m_estfilterRateBase(0)
+        m_estfilterRateBase(0),
+        m_lastDeviceState(deviceState_unknown)
     {
         //create the response collector
         m_responseCollector.reset(new ResponseCollector);
 
         m_responseCollector->setConnection(&m_connection);
+
+        //want to get notified of data packets
+        m_packetCollector.requestDataAddedNotification(std::bind(&MipNode_Impl::onDataPacketAdded, this));
 
         //build the parser with the MipNode_Impl's packet collector and response collector
         m_parser.reset(new MipParser(&m_packetCollector, m_responseCollector));
@@ -87,6 +95,11 @@ namespace mscl
         }
 
         return m_lastCommTime;
+    }
+
+    DeviceState MipNode_Impl::lastDeviceState() const
+    {
+        return m_lastDeviceState;
     }
 
     Version MipNode_Impl::firmwareVersion() const
@@ -128,6 +141,11 @@ namespace mscl
         }
 
         return (*m_nodeInfo);
+    }
+
+    void MipNode_Impl::onDataPacketAdded()
+    {
+        m_lastDeviceState = DeviceState::deviceState_sampling;
     }
 
     const MipNodeFeatures& MipNode_Impl::features() const
@@ -287,6 +305,8 @@ namespace mscl
 
         //send the command and wait for the response
         doCommand(r, Mip_SetToIdle::buildCommand(), false);
+
+        m_lastDeviceState = DeviceState::deviceState_idle;
     }
 
     bool MipNode_Impl::cyclePower()
@@ -926,9 +946,9 @@ namespace mscl
         SendCommand(lowPassFilterCmd);
     }
 
-    AdvancedLowPassFilterData MipNode_Impl::getAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data)
+    AdvancedLowPassFilterData MipNode_Impl::getAdvancedLowPassFilterSettings(const MipTypes::ChannelField& dataDescriptor)
     {
-        AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeGetCommand(data);
+        AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeGetCommand(dataDescriptor);
         GenericMipCmdResponse response = SendCommand(lowPassFilterCmd);
         return lowPassFilterCmd.getResponseData(response);
     }
@@ -1072,6 +1092,58 @@ namespace mscl
     AdaptiveMeasurementData MipNode_Impl::getAdaptiveMeasurement(MipTypes::Command cmd)
     {
         AdaptiveMeasurement command = AdaptiveMeasurement::MakeGetCommand(cmd);
+        GenericMipCmdResponse response = SendCommand(command);
+        return command.getResponseData(response);
+    }
+
+    void MipNode_Impl::setGeometricVectors(MipTypes::Command cmd, const GeometricVectors& data)
+    {
+        GeometricVectorCommand command = GeometricVectorCommand::MakeSetCommand(cmd, data);
+        SendCommand(command);
+    }
+
+    GeometricVectors MipNode_Impl::getGeometricVectors(MipTypes::Command cmd)
+    {
+        GeometricVectorCommand command = GeometricVectorCommand::MakeGetCommand(cmd);
+        GenericMipCmdResponse response = SendCommand(command);
+        return command.getResponseData(response);
+    }
+
+    void MipNode_Impl::setMatrix3x3s(MipTypes::Command cmd, const Matrix_3x3s& data)
+    {
+        Matrix3x3Command command = Matrix3x3Command::MakeSetCommand(cmd, data);
+        SendCommand(command);
+    }
+
+    Matrix_3x3s MipNode_Impl::getMatrix3x3s(MipTypes::Command cmd)
+    {
+        Matrix3x3Command command = Matrix3x3Command::MakeGetCommand(cmd);
+        GenericMipCmdResponse response = SendCommand(command);
+        return command.getResponseData(response);
+    }
+
+    void MipNode_Impl::setFloats(MipTypes::Command cmd, const std::vector<float>& data)
+    {
+        FloatCommand command = FloatCommand::MakeSetCommand(cmd, data);
+        SendCommand(command);
+    }
+
+    std::vector<float> MipNode_Impl::getFloats(MipTypes::Command cmd)
+    {
+        FloatCommand command = FloatCommand::MakeGetCommand(cmd);
+        GenericMipCmdResponse response = SendCommand(command);
+        return command.getResponseData(response);
+    }
+
+    void MipNode_Impl::setFixedReferencePosition(const FixedReferencePositionData& data)
+    {
+        SetReferencePosition command = SetReferencePosition::MakeSetCommand(data);
+        SendCommand(command);
+    }
+
+    FixedReferencePositionData MipNode_Impl::getFixedReferencePosition()
+    {
+        SetReferencePosition command = SetReferencePosition::MakeGetCommand();
         GenericMipCmdResponse response = SendCommand(command);
         return command.getResponseData(response);
     }

@@ -40,13 +40,13 @@ public class Constellation : global::System.IDisposable {
     }
   }
 
-  public byte constellationID {
+  public InertialTypes.ConstellationId constellationID {
     set {
-      msclPINVOKE.Constellation_constellationID_set(swigCPtr, value);
+      msclPINVOKE.Constellation_constellationID_set(swigCPtr, (int)value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      byte ret = msclPINVOKE.Constellation_constellationID_get(swigCPtr);
+      InertialTypes.ConstellationId ret = (InertialTypes.ConstellationId)msclPINVOKE.Constellation_constellationID_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 

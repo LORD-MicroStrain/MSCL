@@ -74,6 +74,12 @@ public class WirelessNode : global::System.IDisposable {
     return ret;
   }
 
+  public DeviceState lastDeviceState() {
+    DeviceState ret = (DeviceState)msclPINVOKE.WirelessNode_lastDeviceState(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public void setBaseStation(BaseStation basestation) {
     msclPINVOKE.WirelessNode_setBaseStation(swigCPtr, BaseStation.getCPtr(basestation));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -470,6 +476,12 @@ public class WirelessNode : global::System.IDisposable {
 
   public ushort getNumActiveGauges() {
     ushort ret = msclPINVOKE.WirelessNode_getNumActiveGauges(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public float getLowBatteryThreshold() {
+    float ret = msclPINVOKE.WirelessNode_getLowBatteryThreshold(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

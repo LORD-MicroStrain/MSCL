@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -14,39 +14,39 @@ namespace mscl
     NodeFeatures_sglink200::NodeFeatures_sglink200(const NodeInfo& info):
         NodeFeatures_200series(info)
     {
-        addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
-        addCalCoeffChannelGroup(2, NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
-        addCalCoeffChannelGroup(5, NodeEepromMap::CH_ACTION_SLOPE_5, NodeEepromMap::CH_ACTION_ID_5);
-        addCalCoeffChannelGroup(6, NodeEepromMap::CH_ACTION_SLOPE_6, NodeEepromMap::CH_ACTION_ID_6);
+        addCalCoeffChannelGroup(1, "Differential", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
+        addCalCoeffChannelGroup(2, "Differential", NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
+        addCalCoeffChannelGroup(3, "Differential", NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);
 
-        const ChannelMask DIFFERENTIAL_CHS(BOOST_BINARY(00000001));  //ch1
-        const ChannelMask SINGLE_ENDED_CHS(BOOST_BINARY(00000010));  //ch2
-        const ChannelMask PULSE_CHS(BOOST_BINARY(00110000));         //ch5 and ch6
+        const ChannelMask DIFFERENTIAL_CH1(BOOST_BINARY(00000001));    //ch1
+        const ChannelMask DIFFERENTIAL_CH2(BOOST_BINARY(00000010));    //ch2
+        const ChannelMask DIFFERENTIAL_CH3(BOOST_BINARY(00000100));    //ch3
 
-        m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential Channels",
+        m_channelGroups.emplace_back(DIFFERENTIAL_CH1, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_1},
                                          {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1},
                                          {WirelessTypes::chSetting_autoShuntCal, NodeEepromMap::CH_ACTION_SLOPE_1}}
         );
 
-        m_channelGroups.emplace_back(SINGLE_ENDED_CHS, "Single-ended Channels",
+        m_channelGroups.emplace_back(DIFFERENTIAL_CH2, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_2},
-                                         {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_2}}
+                                         {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_2},
+                                         {WirelessTypes::chSetting_autoShuntCal, NodeEepromMap::CH_ACTION_SLOPE_2}}
         );
 
-        m_channelGroups.emplace_back(PULSE_CHS, "Pulse Channels",
+        m_channelGroups.emplace_back(DIFFERENTIAL_CH3, "Differential",
                                      ChannelGroup::SettingsMap{
-                                        {WirelessTypes::chSetting_debounceFilter, NodeEepromMap::DEBOUNCE_FILTER},
-                                        {WirelessTypes::chSetting_pullUpResistor, NodeEepromMap::INTERNAL_PULLUP_RESISTOR}}
+                                         {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_3},
+                                         {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_3},
+                                         {WirelessTypes::chSetting_autoShuntCal, NodeEepromMap::CH_ACTION_SLOPE_3}}
         );
 
         //Channels
         m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential", 24);
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_singleEnded, "Single-ended", 24);
-        m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_digital, "Pulse Frequency");
-        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_digital, "Total Pulses");
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential, "Differential", 24);
+        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_fullDifferential, "Differential", 24);
     }
 
     bool NodeFeatures_sglink200::supportsSensorDelayConfig() const
@@ -56,7 +56,7 @@ namespace mscl
 
     const WirelessTypes::DerivedChannelMasks NodeFeatures_sglink200::channelsPerDerivedCategory() const
     {
-        const ChannelMask ALL_CHS(BOOST_BINARY(00110011));
+        const ChannelMask ALL_CHS(BOOST_BINARY(00000111));
 
         const WirelessTypes::DerivedChannelMasks result = {
             {std::make_pair(WirelessTypes::derivedCategory_rms, ALL_CHS)},
@@ -77,7 +77,11 @@ namespace mscl
         return filters;
     }
 
-    WirelessTypes::WirelessSampleRate NodeFeatures_sglink200::maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
+    WirelessTypes::WirelessSampleRate NodeFeatures_sglink200::maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter,
+                                                                                            WirelessTypes::SamplingMode samplingMode,
+                                                                                            WirelessTypes::DataCollectionMethod dataCollectionMethod,
+                                                                                            WirelessTypes::DataMode dataMode,
+                                                                                            const ChannelMask& channels) const
     {
         //find the max sample rate allowed for the settling time
         SampleRate maxRate;
@@ -118,25 +122,21 @@ namespace mscl
         return rates.at(rates.size() - 1);
     }
 
-    WirelessTypes::Filter NodeFeatures_sglink200::minLowPassFilter(const SampleRate& rate) const
+    WirelessTypes::WirelessSampleRate NodeFeatures_sglink200::maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
     {
-        if(rate >= SampleRate::Hertz(1024))
+        uint16 channelCount = channels.count();
+
+        if(channelCount >= 3)
         {
-            return WirelessTypes::filter_4416hz;
-        }
-        else if(rate >= SampleRate::Hertz(256))
-        {
-            return WirelessTypes::filter_1104hz;
-        }
-        else if(rate >= SampleRate::Hertz(4))
-        {
-            return WirelessTypes::filter_12_66hz;
+            return WirelessTypes::sampleRate_512Hz;
         }
         else
         {
-            return WirelessTypes::filter_12_66hz;
+            //just return the result of the parent class' function
+            return NodeFeatures::maxSampleRate(samplingMode, channels, dataCollectionMethod, dataMode);
         }
     }
+
 
     const WirelessTypes::Voltages NodeFeatures_sglink200::excitationVoltages() const
     {

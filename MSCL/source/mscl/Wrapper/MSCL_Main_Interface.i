@@ -267,6 +267,7 @@ namespace std
     %template(CommProtocols)            vector<mscl::WirelessTypes::CommProtocol>;
     %template(Voltages)                 vector<mscl::WirelessTypes::Voltage>;
     %template(SensorOutputModes)        vector<mscl::WirelessTypes::SensorOutputMode>;
+    %template(TransducerTypes)          vector<mscl::WirelessTypes::TransducerType>;
     %template(EepromMap)                map<uint16_t, uint16_t>;
     %template(DerivedChannelMasks)      map<mscl::WirelessTypes::DerivedCategory, mscl::ChannelMask>;
     %template(SampleRates)              vector<mscl::SampleRate>;
@@ -284,7 +285,11 @@ namespace std
     %template(SatellitePRNs)            vector<uint16_t>;
     %template(Constellations)           vector<mscl::Constellation>;
     %template(HeadingUpdateOptionsList) vector<mscl::HeadingUpdateOptions>;
-    %template(AdaptiveMeasurementModes)vector<mscl::InertialTypes::AdaptiveMeasurementMode>;
+    %template(AdaptiveMeasurementModes) vector<mscl::InertialTypes::AdaptiveMeasurementMode>;
+    %template(GeometricVectors)         vector<mscl::GeometricVector>;
+    %template(Matrix_3x3s)              vector<mscl::Matrix_3x3>;
+    %template(VehicleModeTypes)         vector<mscl::InertialTypes::VehicleModeType>;
+    %template(AdvancedLowPassFilterConfig)vector<mscl::AdvancedLowPassFilterData>;
     
 
 #ifndef UNIX_BUILD

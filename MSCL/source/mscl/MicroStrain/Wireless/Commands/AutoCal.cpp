@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -53,10 +53,31 @@ namespace mscl
     {
         const ShuntCalCmdInfo& info = details.commandInfo;
 
+        uint8 payloadLength = 18;
+        bool includeExcitationVoltage = false;
+
         uint16 inputRangeEepromVal;
         if(details.useExcitationVoltage)
         {
             inputRangeEepromVal = InputRangeHelper::inputRangeToEepromVal(info.inputRange, details.nodeType, details.chType, details.excitationVoltage);
+            
+            // include excitation voltage if this is an sg-link-200 or torque-link with the firmware version that supports the extra parameter
+            if ((details.nodeType == WirelessModels::node_sgLink200
+                    || details.nodeType == WirelessModels::node_sgLink200_hbridge_1K || details.nodeType == WirelessModels::node_sgLink200_hbridge_350 || details.nodeType == WirelessModels::node_sgLink200_hbridge_120
+                    || details.nodeType == WirelessModels::node_sgLink200_qbridge_1K || details.nodeType == WirelessModels::node_sgLink200_qbridge_350 || details.nodeType == WirelessModels::node_sgLink200_qbridge_120
+                    || details.nodeType == WirelessModels::node_sgLink200_oem || details.nodeType == WirelessModels::node_sgLink200_oem_ufl
+                    || details.nodeType == WirelessModels::node_sgLink200_oem_hbridge_1K || details.nodeType == WirelessModels::node_sgLink200_oem_hbridge_1K_ufl
+                    || details.nodeType == WirelessModels::node_sgLink200_oem_hbridge_120 || details.nodeType == WirelessModels::node_sgLink200_oem_hbridge_120_ufl
+                    || details.nodeType == WirelessModels::node_sgLink200_oem_hbridge_350 || details.nodeType == WirelessModels::node_sgLink200_oem_hbridge_350_ufl
+                    || details.nodeType == WirelessModels::node_sgLink200_oem_qbridge_1K || details.nodeType == WirelessModels::node_sgLink200_oem_qbridge_1K_ufl
+                    || details.nodeType == WirelessModels::node_sgLink200_oem_qbridge_120 || details.nodeType == WirelessModels::node_sgLink200_oem_qbridge_120_ufl
+                    || details.nodeType == WirelessModels::node_sgLink200_oem_qbridge_350 || details.nodeType == WirelessModels::node_sgLink200_oem_qbridge_350_ufl
+                    || details.nodeType == WirelessModels::node_torqueLink)
+                && details.firmwareVersion > Version(12, 42247))
+            {
+                payloadLength += 2;
+                includeExcitationVoltage = true;
+            }
         }
         else
         {
@@ -74,7 +95,7 @@ namespace mscl
             cmd.append_uint8(0x04);                                     //Delivery Stop Flag
             cmd.append_uint8(0x00);                                     //App Data Type
             cmd.append_uint32(nodeAddress);                             //Node address
-            cmd.append_uint16(18);                                      //Payload length
+            cmd.append_uint16(payloadLength);                           //Payload length
             cmd.append_uint16(WirelessProtocol::cmdId_autoCal_v1);      //Command ID
             cmd.append_uint8(details.chNum);
             cmd.append_uint8(internalShunt);
@@ -84,6 +105,10 @@ namespace mscl
             cmd.append_uint16(info.gaugeResistance);
             cmd.append_uint32(info.shuntResistance);
             cmd.append_float(info.gaugeFactor);
+            if (includeExcitationVoltage)
+            {
+                cmd.append_uint16(static_cast<uint16>(details.excitationVoltage));
+            }
             cmd.append_uint16(0x7F7F);                                  //dummy RSSI bytes
             cmd.append_uint32(cmd.calculateCrcChecksum());              //Checksum
         }
@@ -93,7 +118,7 @@ namespace mscl
             cmd.append_uint8(0x05);                                     //Delivery Stop Flag
             cmd.append_uint8(0x00);                                     //App Data Type
             cmd.append_uint16(static_cast<uint16>(nodeAddress));        //Node address
-            cmd.append_uint8(18);                                       //Payload length
+            cmd.append_uint8(payloadLength);                            //Payload length
             cmd.append_uint16(WirelessProtocol::cmdId_autoCal_v1);      //Command ID
             cmd.append_uint8(details.chNum);
             cmd.append_uint8(internalShunt);
@@ -103,7 +128,11 @@ namespace mscl
             cmd.append_uint16(info.gaugeResistance);
             cmd.append_uint32(info.shuntResistance);
             cmd.append_float(info.gaugeFactor);
-            cmd.append_uint16(cmd.calculateSimpleChecksum(1, 23));      //Checksum
+            if (includeExcitationVoltage)
+            {
+                cmd.append_uint16(static_cast<uint16>(details.excitationVoltage));
+            }
+            cmd.append_uint16(cmd.calculateSimpleChecksum(1, 5 + payloadLength));      //Checksum
         }
 
         return cmd;

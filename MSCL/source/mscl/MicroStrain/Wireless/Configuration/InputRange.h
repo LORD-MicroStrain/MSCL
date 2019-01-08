@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -86,7 +86,9 @@ namespace mscl
         static const InputRangeMap RANGES_SGLINK200_FULLDIFF_CHS_1500mV;
         static const InputRangeMap RANGES_SGLINK200_SINGLEENDED_CHS_2500mV;
         static const InputRangeMap RANGES_SGLINK200_SINGLEENDED_CHS_1500mV;
+        static const InputRangeMap RANGES_TCLINK_200_OEM;
         static const InputRangeMap RANGES_TCLINK_200;
+        static const InputRangeMap RANGES_RTDLINK_200;
 
     private:
         //Function: getRangeMap

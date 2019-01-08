@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -66,6 +66,11 @@ namespace mscl
     const Timestamp& DisplacementNode::lastCommunicationTime() const
     {
         return m_impl->lastCommunicationTime();
+    }
+
+    DeviceState DisplacementNode::lastDeviceState() const
+    {
+        return m_impl->lastDeviceState();
     }
 
     Version DisplacementNode::firmwareVersion() const

@@ -270,7 +270,8 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
-      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zm1000 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)$(ProjectName).dll</OutputFile>
@@ -307,7 +308,8 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
-      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zm1000 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)$(ProjectName).dll</OutputFile>
@@ -344,7 +346,8 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
-      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zm1000 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <PostBuildEvent>
       <Command />
@@ -380,7 +383,8 @@
       <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zm1000 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <PostBuildEvent>
       <Command>
@@ -400,7 +404,7 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;NOMINMAX;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
+      <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -408,7 +412,8 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
-      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zm1000 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <OptimizeReferences>false</OptimizeReferences>
@@ -438,7 +443,8 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
-      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zm1000 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <OptimizeReferences>false</OptimizeReferences>
@@ -460,7 +466,7 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>$(ProjectDir)source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;NOMINMAX;_WIN32_WINNT=0x0501;BOOST_ALL_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MinimalRebuild>true</MinimalRebuild>
+      <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -472,7 +478,8 @@
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
       <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
-      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zm1000 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <PostBuildEvent>
       <Command />
@@ -504,7 +511,8 @@
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
       <ProgramDataBaseFileName>$(OutDir)$(ProjectName).pdb</ProgramDataBaseFileName>
-      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zm1000 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <PostBuildEvent>
       <Command>
@@ -532,7 +540,8 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
-      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zm1000 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <OutputFile>..\Output\DotNet\x86\Release\$(ProjectName).dll</OutputFile>
@@ -566,7 +575,8 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
-      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zm1000 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <OutputFile>..\Output\Java\x86\$(ProjectName).dll</OutputFile>
@@ -601,7 +611,8 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
-      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zm1000 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <OutputFile>..\Output\DotNet\x64\Release\$(ProjectName).dll</OutputFile>
@@ -635,7 +646,8 @@
       <TreatWarningAsError>false</TreatWarningAsError>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290;4127;4100;</DisableSpecificWarnings>
-      <AdditionalOptions>/Zm200 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zm1000 /bigobj %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <OutputFile>..\Output\Java\x64\$(ProjectName).dll</OutputFile>
@@ -707,6 +719,8 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\ExternalGNSSUpdate.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\ExternalHeadingUpdate.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\ExternalHeadingUpdateWithTimestamp.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\FloatCommand.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GeometricVectorCommand.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_AssistedFixControl.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\DeviceStartupSettings.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\EstFilter_Commands.h" />
@@ -719,9 +733,11 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\HeadingUpdateControl.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerHardIronOffset.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerSoftIronMatrix.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Matrix3x3Command.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\PollData.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\RawRTCM_2_3Message.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Sensor_Commands.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\SetReferencePosition.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\System_Commands.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\UARTBaudRate.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\VehicleDynamicsMode.h" />
@@ -853,8 +869,10 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_iepeLink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_mvpervlink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink200.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink200.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink200oem.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkMicro.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkoem.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkoemHermetic.h" />
@@ -865,8 +883,10 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink200.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink201.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink201FullBridge.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink210.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink1ch.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink200.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink200oem.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink3ch.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink6ch.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_torqueLink.h" />
@@ -1008,7 +1028,9 @@
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\ExternalGNSSUpdate.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\ExternalHeadingUpdate.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\ExternalHeadingUpdateWithTimestamp.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\FloatCommand.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GeographicSource.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GeometricVectorCommand.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_AssistedFixControl.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\DeviceStartupSettings.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\EstFilter_Commands.cpp" />
@@ -1021,9 +1043,11 @@
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\HeadingUpdateControl.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerHardIronOffset.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerSoftIronMatrix.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Matrix3x3Command.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\PollData.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\RawRTCM_2_3Message.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Sensor_Commands.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\SetReferencePosition.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\System_Commands.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\UARTBaudRate.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\VehicleDynamicsMode.cpp" />
@@ -1153,8 +1177,10 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_iepeLink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_mvpervlink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink200.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink200.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink200oem.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkMicro.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkoem.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglinkoemHermetic.cpp" />
@@ -1165,8 +1191,10 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink200.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink201.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink201FullBridge.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink210.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink1ch.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink200.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink200oem.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink3ch.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink6ch.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_torqueLink.cpp" />

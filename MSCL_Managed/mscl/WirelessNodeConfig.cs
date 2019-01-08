@@ -297,6 +297,17 @@ public class WirelessNodeConfig : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public float lowBatteryThreshold() {
+    float ret = msclPINVOKE.WirelessNodeConfig_lowBatteryThreshold__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void lowBatteryThreshold(float voltage) {
+    msclPINVOKE.WirelessNodeConfig_lowBatteryThreshold__SWIG_1(swigCPtr, voltage);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public LinearEquation linearEquation(ChannelMask mask) {
     LinearEquation ret = new LinearEquation(msclPINVOKE.WirelessNodeConfig_linearEquation__SWIG_0(swigCPtr, ChannelMask.getCPtr(mask)), false);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

@@ -71,6 +71,7 @@
     <Compile Include="mscl\ActivitySense.cs" />
     <Compile Include="mscl\AdaptiveMeasurementData.cs" />
     <Compile Include="mscl\AdaptiveMeasurementModes.cs" />
+    <Compile Include="mscl\AdvancedLowPassFilterConfig.cs" />
     <Compile Include="mscl\AdvancedLowPassFilterData.cs" />
     <Compile Include="mscl\ArmedDataloggingNetwork.cs" />
     <Compile Include="mscl\AutoBalanceResult.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="mscl\DeviceInfo.cs" />
     <Compile Include="mscl\DeviceList.cs" />
     <Compile Include="mscl\Devices.cs" />
+    <Compile Include="mscl\DeviceState.cs" />
     <Compile Include="mscl\DeviceStatusData.cs" />
     <Compile Include="mscl\DisplacementModels.cs" />
     <Compile Include="mscl\DisplacementNode.cs" />
@@ -133,8 +135,10 @@
     <Compile Include="mscl\FatigueModes.cs" />
     <Compile Include="mscl\FatigueOptions.cs" />
     <Compile Include="mscl\Filters.cs" />
+    <Compile Include="mscl\FixedReferencePositionData.cs" />
     <Compile Include="mscl\GeographicSourceOptions.cs" />
     <Compile Include="mscl\GeometricVector.cs" />
+    <Compile Include="mscl\GeometricVectors.cs" />
     <Compile Include="mscl\HeadingData.cs" />
     <Compile Include="mscl\HeadingUpdateOptions.cs" />
     <Compile Include="mscl\HeadingUpdateOptionsList.cs" />
@@ -151,6 +155,7 @@
     <Compile Include="mscl\LoggedDataSweeps.cs" />
     <Compile Include="mscl\Matrix.cs" />
     <Compile Include="mscl\Matrix_3x3.cs" />
+    <Compile Include="mscl\Matrix_3x3s.cs" />
     <Compile Include="mscl\MipChannel.cs" />
     <Compile Include="mscl\MipChannelFields.cs" />
     <Compile Include="mscl\MipChannels.cs" />
@@ -171,6 +176,7 @@
     <Compile Include="mscl\NodeFeatures.cs" />
     <Compile Include="mscl\NodeInfo.cs" />
     <Compile Include="mscl\PingResponse.cs" />
+    <Compile Include="mscl\Position.cs" />
     <Compile Include="mscl\PositionOffset.cs" />
     <Compile Include="mscl\RadioFeatures.cs" />
     <Compile Include="mscl\RfSweep.cs" />
@@ -192,12 +198,14 @@
     <Compile Include="mscl\TimeSpan.cs" />
     <Compile Include="mscl\Timestamp.cs" />
     <Compile Include="mscl\TimeUpdate.cs" />
+    <Compile Include="mscl\TransducerTypes.cs" />
     <Compile Include="mscl\TransmitPowers.cs" />
     <Compile Include="mscl\Trigger.cs" />
     <Compile Include="mscl\Triggers.cs" />
     <Compile Include="mscl\Value.cs" />
     <Compile Include="mscl\ValueType.cs" />
     <Compile Include="mscl\Vector.cs" />
+    <Compile Include="mscl\VehicleModeTypes.cs" />
     <Compile Include="mscl\Version.cs" />
     <Compile Include="mscl\Voltages.cs" />
     <Compile Include="mscl\WirelessChannel.cs" />

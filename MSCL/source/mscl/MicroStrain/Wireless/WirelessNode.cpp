@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -74,6 +74,11 @@ namespace mscl
     const Timestamp& WirelessNode::lastCommunicationTime() const
     {
         return m_impl->lastCommunicationTime();
+    }
+
+    DeviceState WirelessNode::lastDeviceState() const
+    {
+        return m_impl->lastDeviceState();
     }
 
     void WirelessNode::setBaseStation(const BaseStation& basestation)
@@ -421,6 +426,11 @@ namespace mscl
     uint16 WirelessNode::getNumActiveGauges() const
     {
         return m_impl->getNumActiveGauges();
+    }
+
+    float WirelessNode::getLowBatteryThreshold() const
+    {
+        return m_impl->getLowBatteryThreshold();
     }
 
     LinearEquation WirelessNode::getLinearEquation(const ChannelMask& mask) const

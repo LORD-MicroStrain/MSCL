@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -93,7 +93,7 @@ namespace mscl
     protected:
         //Function: addCalCoeffChannelGroup
         //    Adds a cal coefficient (Linear Equation, unit, equation type) to the channel groups for the specified channel.
-        void addCalCoeffChannelGroup(uint8 channelNumber, const EepromLocation& slopeEeprom, const EepromLocation& actionIdEeprom);
+        void addCalCoeffChannelGroup(uint8 channelNumber, const std::string& name, const EepromLocation& slopeEeprom, const EepromLocation& actionIdEeprom);
 
         //Function: maxFilterSettlingTime_A
         //    Gets the max filter settling time allowed by the given <SampleRate>. 
@@ -567,6 +567,16 @@ namespace mscl
         //    true if the data mode is supported, false otherwise.
         virtual bool supportsDataMode(WirelessTypes::DataMode dataMode) const;
 
+        //API Function: supportsTransducerType
+        //  Checks if a <WirelessTypes::TransducerType> is supported by this Node.
+        //
+        //Parameters 
+        //  transducerType - The <WirelessTypes::TransducerType> to check if supported.
+        //
+        //Returns:
+        //  true if the transducer type is supported, false otherwise.
+        virtual bool supportsTransducerType(WirelessTypes::TransducerType transducerType) const;
+
         //API Function: supportsFatigueMode
         //    Checks if a <WirelessTypes::FatigueMode> is supported by this Node.
         //
@@ -658,8 +668,15 @@ namespace mscl
         //  Checks if the Node supports configuration of its Excitation Voltage.
         //
         //Returns:
-        //  true if the Node supports configuration of its Excitation Voltage.
+        //  true if the Node supports configuration of its Excitation Voltage, false otherwise.
         virtual bool supportsExcitationVoltageConfig() const;
+
+        //API Function: supportsLowBatteryThresholdConfig
+        //  Checks if the Node supports configuration of its low battery threshold.
+        //
+        //Returns:
+        //  true if the Node supports configuration of its low battery threshold, false otherwise.
+        virtual bool supportsLowBatteryThresholdConfig() const;
 
         //API Function: maxSampleRate
         //    Gets the maximum <SampleRate> value that is supported by this Node with the given <SamplingMode>, <ChannelMask>, and <WirelessTypes::DataCollectionMethod>.
@@ -702,13 +719,14 @@ namespace mscl
         //  samplingMode - The <WirelessTypes::SamplingMode> that the Node will be in for determining sample rates.
         //  dataCollectionMethod - The <WirelessTypes::DataCollectionMethod> that the Node will be set for in determining sample rates.
         //  dataMode - The <WirelessTypes::DataMode> that the Node will be set for in determining sampling rates.
+        //  channels - A <ChannelMask> representing the active raw channels.
         //
         //Returns:
         //    The max <WirelessTypes::WirelessSampleRate> that is supported by this Node with the given <WirelessTypes::SettlingTime>.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The Low Pass Filter feature is not supported by this Node, or an invalid filter was used.
-        virtual WirelessTypes::WirelessSampleRate maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const;
+        virtual WirelessTypes::WirelessSampleRate maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode, const ChannelMask& channels) const;
 
         //API Function: maxFilterSettlingTime
         //    Gets the maximum <WirelessTypes::SettlingTime> available for the given <SampleRate>.
@@ -722,19 +740,6 @@ namespace mscl
         //Exceptions:
         //    - <Error_NotSupported>: The Filter Settling Time feature is not supported by this Node.
         virtual WirelessTypes::SettlingTime maxFilterSettlingTime(const SampleRate& rate) const;
-
-        //API Function: minLowPassFilter
-        //    Gets the minimum Low Pass Filter available for the given <SampleRate>.
-        //
-        //Parameters:
-        //    rate - The <SampleRate> to check the min Low Pass Filter for.
-        //
-        //Returns:
-        //    The min <WirelessTypes::Filter> available.
-        //
-        //Exceptions:
-        //    - <Error_NotSupported>: The Low Pass Filter feature is not supported by this Node.
-        virtual WirelessTypes::Filter minLowPassFilter(const SampleRate& rate) const;
 
         //API Function: minInactivityTimeout
         //    Gets the minimum inactivity timeout (in seconds) that is supported.
@@ -1059,6 +1064,13 @@ namespace mscl
         //  A vector of <WirelessTypes::DataModes> supported by the Node.
         virtual const WirelessTypes::DataModes dataModes() const;
 
+        //API Function: transducerTypes
+        //  Gets a list of <WirelessTypes::TransducerTypes> that are supported by this Node.
+        //
+        //Returns:
+        //  A vector of <WirelessTypes::TransducerTypes> supported by the Node.
+        virtual const WirelessTypes::TransducerTypes transducerTypes() const;
+
         //API Function: channelsPerDerivedCategory
         //  Gets a map of <WirelessTypes::DerivedCategory> to <ChannelMask>s that are supported by this Node.
         //  The ChannelMask indicates the raw channels that are available for the derived category.
@@ -1104,6 +1116,8 @@ namespace mscl
         virtual WirelessTypes::TransmitPower minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const;
 
     protected:
+        virtual bool hasMaxSampleRatePerFilterAndAdcChCount() const;
+
         //Function: supportsNewTransmitPowers
         //    Checks if the Node supports the new transmit powers (true), or the old ones (false).
         virtual bool supportsNewTransmitPowers() const;

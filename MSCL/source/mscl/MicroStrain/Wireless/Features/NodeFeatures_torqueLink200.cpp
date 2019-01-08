@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -14,21 +14,21 @@ namespace mscl
     NodeFeatures_torqueLink200::NodeFeatures_torqueLink200(const NodeInfo& info):
         NodeFeatures_200series(info)
     {
-        addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
-        addCalCoeffChannelGroup(5, NodeEepromMap::CH_ACTION_SLOPE_5, NodeEepromMap::CH_ACTION_ID_5);
-        addCalCoeffChannelGroup(6, NodeEepromMap::CH_ACTION_SLOPE_6, NodeEepromMap::CH_ACTION_ID_6);
+        addCalCoeffChannelGroup(1, "Differential", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
+        addCalCoeffChannelGroup(5, "Pulse Frequency", NodeEepromMap::CH_ACTION_SLOPE_5, NodeEepromMap::CH_ACTION_ID_5);
+        addCalCoeffChannelGroup(6, "Total Pulses", NodeEepromMap::CH_ACTION_SLOPE_6, NodeEepromMap::CH_ACTION_ID_6);
 
         static const ChannelMask DIFFERENTIAL_CHS(BOOST_BINARY(00000001));  //ch1
         static const ChannelMask PULSE_CHS(BOOST_BINARY(00110000));         //ch5 and ch6
 
-        m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential Channels",
+        m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_1},
                                          {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1},
                                          {WirelessTypes::chSetting_autoShuntCal, NodeEepromMap::CH_ACTION_SLOPE_1}}
         );
 
-        m_channelGroups.emplace_back(PULSE_CHS, "Pulse Channels",
+        m_channelGroups.emplace_back(PULSE_CHS, "Pulse Input",
                                      ChannelGroup::SettingsMap{
                                         {WirelessTypes::chSetting_debounceFilter, NodeEepromMap::DEBOUNCE_FILTER},
                                         {WirelessTypes::chSetting_pullUpResistor, NodeEepromMap::INTERNAL_PULLUP_RESISTOR}}
@@ -68,7 +68,11 @@ namespace mscl
         return filters;
     }
 
-    WirelessTypes::WirelessSampleRate NodeFeatures_torqueLink200::maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
+    WirelessTypes::WirelessSampleRate NodeFeatures_torqueLink200::maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter,
+                                                                                                WirelessTypes::SamplingMode samplingMode,
+                                                                                                WirelessTypes::DataCollectionMethod dataCollectionMethod,
+                                                                                                WirelessTypes::DataMode dataMode,
+                                                                                                const ChannelMask& channels) const
     {
         //find the max sample rate allowed for the settling time
         SampleRate maxRate;
@@ -107,26 +111,6 @@ namespace mscl
         //and node features are built correctly.
         assert(false);
         return rates.at(rates.size() - 1);
-    }
-
-    WirelessTypes::Filter NodeFeatures_torqueLink200::minLowPassFilter(const SampleRate& rate) const
-    {
-        if(rate >= SampleRate::Hertz(1024))
-        {
-            return WirelessTypes::filter_4416hz;
-        }
-        else if(rate >= SampleRate::Hertz(256))
-        {
-            return WirelessTypes::filter_1104hz;
-        }
-        else if(rate >= SampleRate::Hertz(4))
-        {
-            return WirelessTypes::filter_12_66hz;
-        }
-        else
-        {
-            return WirelessTypes::filter_12_66hz;
-        }
     }
 
     const WirelessTypes::Voltages NodeFeatures_torqueLink200::excitationVoltages() const

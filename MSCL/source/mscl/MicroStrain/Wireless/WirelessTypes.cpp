@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -18,6 +18,7 @@ namespace mscl
             case dataType_uint16_18bitTrunc:
             case dataType_uint16_24bitTrunc:
             case dataType_int16_20bitTrunc:
+            case dataType_int16_x10:
                 return 2;
 
             case dataType_float32:
@@ -61,6 +62,7 @@ namespace mscl
             //data types that are floats
             case dataType_float32:
             case dataType_float32_noCals:
+            case dataType_int16_x10:            //int16 stored as a float in mscl
                 return valueType_float;
 
             default:
@@ -82,8 +84,22 @@ namespace mscl
 
         case dataFormat_raw_uint16:
         case dataFormat_raw_int16:
+        case dataFormat_cal_int16_x10:
         default:
             return 2;
+        }
+    }
+
+    bool WirelessTypes::isCalApplied(DataType dataType)
+    {
+        switch(dataType)
+        {
+            case dataType_float32:
+            case dataType_int16_x10:
+                return true;
+
+            default:
+                return false;
         }
     }
 

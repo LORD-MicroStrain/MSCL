@@ -143,6 +143,15 @@ public class InertialTypes : global::System.IDisposable {
     ADAPTIVE_MEASUREMENT_ENABLE_AUTO = 0x02
   }
 
+  public enum ConstellationId {
+    GPS = 0x00,
+    SBAS = 0x01,
+    GALILEO = 0x02,
+    BEIDOU = 0x03,
+    QZSS = 0x05,
+    GLONASS = 0x06
+  }
+
 }
 
 }

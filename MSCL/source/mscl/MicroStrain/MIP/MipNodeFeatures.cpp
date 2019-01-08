@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -112,6 +112,39 @@ namespace mscl
         return m_nodeInfo.supportedSampleRates(dataClass);
     }
 
+    const VehicleModeTypes MipNodeFeatures::supportedVehicleModeTypes() const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_VEHIC_DYNAMICS_MODE))
+        {
+            return VehicleModeTypes(0);
+        }
+
+        InertialModels::NodeModel model = InertialModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model)
+        {
+        
+        case InertialModels::node_3dm_gx3_45:
+            return{
+                InertialTypes::VehicleModeType::PORTABLE_VEHICLE,
+                InertialTypes::VehicleModeType::AUTOMOTIVE_VEHICLE,
+                InertialTypes::VehicleModeType::AIRBORNE_VEHICLE
+            };
+
+        case InertialModels::node_3dm_gx5_45:
+        case InertialModels::node_3dm_gx4_45:
+        case InertialModels::node_3dm_gq4_45:
+        case InertialModels::node_3dm_rq1_45_lt:
+        case InertialModels::node_3dm_rq1_45_st:
+        default:
+            return{
+                InertialTypes::VehicleModeType::PORTABLE_VEHICLE,
+                InertialTypes::VehicleModeType::AUTOMOTIVE_VEHICLE,
+                InertialTypes::VehicleModeType::AIRBORNE_VEHICLE,
+                InertialTypes::VehicleModeType::AIRBORNE_HIGH_G_VEHICLE
+            };
+        }
+    }
+
     const HeadingUpdateOptionsList MipNodeFeatures::supportedHeadingUpdateOptions() const
     {
         if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_HEADING_UPDATE_CTRL))
@@ -141,7 +174,8 @@ namespace mscl
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_EXTERNAL_MESSAGES)
             };
 
-        case InertialModels::node_3dm_rq1_45:
+        case InertialModels::node_3dm_rq1_45_lt:
+        case InertialModels::node_3dm_rq1_45_st:
             return{
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_NONE),
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_INTERNAL_GNSS),
@@ -204,7 +238,8 @@ namespace mscl
             );
 
         case InertialModels::node_3dm_gx4_45:
-        case InertialModels::node_3dm_rq1_45:
+        case InertialModels::node_3dm_rq1_45_lt:
+        case InertialModels::node_3dm_rq1_45_st:
         case InertialModels::node_3dm_gq4_45:
             return EstimationControlOptions(
                 InertialTypes::EstimationControlOption::ENABLE_GYRO_BIAS_ESTIMATION |
@@ -266,7 +301,8 @@ namespace mscl
             case InertialModels::node_3dm_gx3_25:
             case InertialModels::node_3dm_gx3_15:
             case InertialModels::node_3dm_gx2:
-            case InertialModels::node_3dm_rq1_45:
+            case InertialModels::node_3dm_rq1_45_lt:
+            case InertialModels::node_3dm_rq1_45_st:
             case InertialModels::node_3dm_gq4_45:
             case InertialModels::node_3dm:
             case InertialModels::node_fasA:

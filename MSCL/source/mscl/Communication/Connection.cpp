@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -214,6 +214,11 @@ namespace mscl
         m_impl->rawByteMode(enable);
     }
 
+    bool Connection::rawByteMode()
+    {
+        return m_impl->rawByteMode();
+    }
+
     Bytes Connection::getRawBytes(uint32 timeout, uint32 maxBytes, uint32 minBytes)
     {
         Bytes result;
@@ -242,6 +247,11 @@ namespace mscl
     void Connection::debugMode(bool enable)
     {
         m_impl->debugMode(enable);
+    }
+
+    bool Connection::debugMode()
+    {
+        return m_impl->debugMode();
     }
 
     ConnectionDebugDataVec Connection::getDebugData(uint32 timeout /*= 0*/)

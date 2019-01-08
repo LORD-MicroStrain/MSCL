@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -171,9 +171,9 @@ namespace SyncSamplingFormulas
         if(samplingMode != WirelessTypes::samplingMode_syncBurst)
         {
             //if the sample rate is 16hz or slower, or the 32hz or faster and a tclink1ch or rtdlink, or the model is SHM-Link
-            if( (sampleRate <= SampleRate::Hertz(16)) ||
-                (sampleRate >= SampleRate::Hertz(32) && (nodeModel == WirelessModels::node_tcLink_1ch || nodeModel == WirelessModels::node_rtdLink)) ||
-                (isShmLink)
+            if( (isShmLink) ||
+                (sampleRate <= SampleRate::Hertz(16)) ||
+                (sampleRate >= SampleRate::Hertz(32) && (nodeModel == WirelessModels::node_tcLink_1ch || nodeModel == WirelessModels::node_rtdLink))
               )
             {
                 return true;

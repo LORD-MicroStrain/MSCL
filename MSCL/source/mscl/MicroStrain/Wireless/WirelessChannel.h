@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -263,6 +263,7 @@ namespace mscl
         //  channel_14_mmps                         - 240 - Channel 14 Millimeters Per Second
         //  channel_15_mmps                         - 241 - Channel 15 Millimeters Per Second
         //  channel_16_mmps                         - 242 - Channel 16 Millimeters Per Second
+        //  channel_diag_memoryFull                 - 243 - Diagnostic - % Datalogging Memory Full
         //=====================================================================================================
         enum ChannelId
         {
@@ -508,7 +509,8 @@ namespace mscl
             channel_13_mmps                         = 239,
             channel_14_mmps                         = 240,
             channel_15_mmps                         = 241,
-            channel_16_mmps                         = 242
+            channel_16_mmps                         = 242,
+            channel_diag_memoryFull                 = 243 
         };
 
         WirelessChannel();    //default constructor
@@ -580,7 +582,7 @@ namespace mscl
         WirelessTypes::ChannelType type() const;
 
         //API Function: description
-        //  Gets the description of this channel (ex. "Acceleration X" or "CJC Temperature").
+        //  Gets the description of this channel (ex. "Acceleration X (ch1)" or "CJC Temperature (ch8)").
         //
         //Returns:
         //  A string description of the channel.

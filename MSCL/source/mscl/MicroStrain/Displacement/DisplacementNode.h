@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -127,6 +127,14 @@ namespace mscl
         //Exceptions:
         //  - <Error_NoData>: There is no communication time logged for this device.
         const Timestamp& lastCommunicationTime() const;
+
+        //API Function: lastDeviceState
+        //  Gets the last known <DeviceState> for the InertialNode.
+        //  This device state is updated by MSCL when data packets are received, as well as when operations are performed, such as setting a Node to idle.
+        //
+        //Returns:
+        //  The last known <DeviceState>.
+        DeviceState lastDeviceState() const;
 
         //API Function: firmwareVersion
         //    Gets the firmware <Version> of the DisplacementNode.

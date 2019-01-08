@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -165,6 +165,11 @@ namespace mscl
         return NodeCommTimes::getLastCommTime(m_address);
     }
 
+    DeviceState WirelessNode_Impl::lastDeviceState() const
+    {
+        return NodeCommTimes::getLastDeviceState(m_address);
+    }
+
     void WirelessNode_Impl::setBaseStation(const BaseStation& basestation)
     {
         //if the base station is already set as the parent base station
@@ -277,8 +282,6 @@ namespace mscl
 
     void WirelessNode_Impl::updateEepromCacheFromNodeDiscovery(const NodeDiscovery& nodeDisovery)
     {
-        rec_mutex_lock_guard lock(m_protocolMutex);
-
         //import the Node Discovery eeprom map
         eeprom().importCache(nodeDisovery.eepromMap());
 
@@ -288,6 +291,7 @@ namespace mscl
             m_features.reset();
         }
 
+        rec_mutex_lock_guard lock(m_protocolMutex);
         //protocols may need to be reset if ASPP of firmware version changed
         if(m_protocol_lxrs != nullptr)
         {
@@ -594,6 +598,7 @@ namespace mscl
             case WirelessModels::node_sgLink_herm_2600:
             case WirelessModels::node_sgLink_herm_2700:
             case WirelessModels::node_sgLink_herm_2800:
+            case WirelessModels::node_sgLink_herm_2900:
                 return WirelessTypes::voltage_2800mV;
 
             case WirelessModels::node_shmLink:
@@ -606,8 +611,17 @@ namespace mscl
             case WirelessModels::node_shmLink201_hbridge_1K:
             case WirelessModels::node_shmLink201_hbridge_348:
             case WirelessModels::node_shmLink201_fullbridge:
+            case WirelessModels::node_shmLink210_fullbridge:
+            case WirelessModels::node_shmLink210_qbridge_3K:
                 return WirelessTypes::voltage_2500mV;
 
+            case WirelessModels::node_sgLink200:
+            case WirelessModels::node_sgLink200_hbridge_1K:
+            case WirelessModels::node_sgLink200_hbridge_350:
+            case WirelessModels::node_sgLink200_hbridge_120:
+            case WirelessModels::node_sgLink200_qbridge_1K:
+            case WirelessModels::node_sgLink200_qbridge_350:
+            case WirelessModels::node_sgLink200_qbridge_120:
             case WirelessModels::node_sgLink200_oem:
             case WirelessModels::node_sgLink200_oem_ufl:
             case WirelessModels::node_sgLink200_oem_hbridge_1K:
@@ -660,12 +674,23 @@ namespace mscl
             case WirelessModels::node_sgLink_herm_2600:
             case WirelessModels::node_sgLink_herm_2700:
             case WirelessModels::node_sgLink_herm_2800:
+            case WirelessModels::node_sgLink_herm_2900:
                 return WirelessTypes::voltage_2800mV;
+
+            case WirelessModels::node_iepeLink:
+                return WirelessTypes::voltage_2750mV;
 
             case WirelessModels::node_shmLink:
             case WirelessModels::node_torqueLink:
                 return WirelessTypes::voltage_2700mV;
 
+            case WirelessModels::node_sgLink200:
+            case WirelessModels::node_sgLink200_hbridge_1K:
+            case WirelessModels::node_sgLink200_hbridge_350:
+            case WirelessModels::node_sgLink200_hbridge_120:
+            case WirelessModels::node_sgLink200_qbridge_1K:
+            case WirelessModels::node_sgLink200_qbridge_350:
+            case WirelessModels::node_sgLink200_qbridge_120:
             case WirelessModels::node_sgLink200_oem:
             case WirelessModels::node_sgLink200_oem_ufl:
             case WirelessModels::node_sgLink200_oem_hbridge_1K:
@@ -681,6 +706,8 @@ namespace mscl
             case WirelessModels::node_sgLink200_oem_qbridge_350:
             case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
             case WirelessModels::node_torqueLink200:
+            case WirelessModels::node_shmLink210_fullbridge:
+            case WirelessModels::node_shmLink210_qbridge_3K:
                 return m_eepromHelper->read_excitationVoltage();        //gain amplifier voltage is the same as the excitation, which is read from eeprom
 
             case WirelessModels::node_shmLink201:
@@ -723,12 +750,23 @@ namespace mscl
             case WirelessModels::node_sgLink_herm_2600:
             case WirelessModels::node_sgLink_herm_2700:
             case WirelessModels::node_sgLink_herm_2800:
+            case WirelessModels::node_sgLink_herm_2900:
                 return WirelessTypes::voltage_2800mV;
+
+            case WirelessModels::node_iepeLink:
+                return WirelessTypes::voltage_2750mV;
 
             case WirelessModels::node_shmLink:
             case WirelessModels::node_torqueLink:
                 return WirelessTypes::voltage_2700mV;
 
+            case WirelessModels::node_sgLink200:
+            case WirelessModels::node_sgLink200_hbridge_1K:
+            case WirelessModels::node_sgLink200_hbridge_350:
+            case WirelessModels::node_sgLink200_hbridge_120:
+            case WirelessModels::node_sgLink200_qbridge_1K:
+            case WirelessModels::node_sgLink200_qbridge_350:
+            case WirelessModels::node_sgLink200_qbridge_120:
             case WirelessModels::node_sgLink200_oem:
             case WirelessModels::node_sgLink200_oem_ufl:
             case WirelessModels::node_sgLink200_oem_hbridge_1K:
@@ -744,6 +782,8 @@ namespace mscl
             case WirelessModels::node_sgLink200_oem_qbridge_350:
             case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
             case WirelessModels::node_torqueLink200:
+            case WirelessModels::node_shmLink210_fullbridge:
+            case WirelessModels::node_shmLink210_qbridge_3K:
                 return m_eepromHelper->read_excitationVoltage();        //gain amplifier voltage is the same as the excitation, which is read from eeprom
 
             case WirelessModels::node_shmLink201:
@@ -767,6 +807,11 @@ namespace mscl
     uint16 WirelessNode_Impl::getNumActiveGauges() const
     {
         return m_eepromHelper->read_numActiveGauges();
+    }
+
+    float WirelessNode_Impl::getLowBatteryThreshold() const
+    {
+        return m_eepromHelper->read_lowBatteryThreshold();
     }
 
     LinearEquation WirelessNode_Impl::getLinearEquation(const ChannelMask& mask) const
@@ -1046,7 +1091,12 @@ namespace mscl
         }
 
         //call the node_startNonSyncSampling command from the parent BaseStation
-        m_baseStation.node_startNonSyncSampling(wirelessProtocol(), m_address);
+        const bool success = m_baseStation.node_startNonSyncSampling(wirelessProtocol(), m_address);
+
+        if(success)
+        {
+            NodeCommTimes::updateDeviceState(m_address, DeviceState::deviceState_sampling);
+        }
     }
 
     void WirelessNode_Impl::clearHistogram()
@@ -1266,6 +1316,7 @@ namespace mscl
         details.chNum = channel;
         details.nodeType = model();
         details.chType = chType;
+        details.firmwareVersion = firmwareVersion();
 
         //if supported, add excitation voltage details so the autocal command knows how to convert the input range value
         if(features().supportsExcitationVoltageConfig())

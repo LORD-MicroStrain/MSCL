@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -598,6 +598,11 @@ namespace mscl
         {
             //update node last comm time
             NodeCommTimes::updateCommTime(nodeAddress);
+
+            //update the device state to idle
+            //Note: this isn't always true, as the command that was just sent could have put the node to sleep or started 
+            //      it sampling, but those commands will update the device state separately immediately after this function
+            NodeCommTimes::updateDeviceState(nodeAddress, DeviceState::deviceState_idle);
 
             return true;
         }
@@ -1451,7 +1456,13 @@ namespace mscl
             return false;
         }
 
-        return nodeProtocol.m_sleep(this, nodeAddress);
+        if(nodeProtocol.m_sleep(this, nodeAddress))
+        {
+            NodeCommTimes::updateDeviceState(nodeAddress, DeviceState::deviceState_sleep);
+            return true;
+        }
+
+        return false;
     }
 
     SetToIdleStatus BaseStation_Impl::node_setToIdle(NodeAddress nodeAddress, const BaseStation& base)

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -31,6 +31,7 @@ BOOST_AUTO_TEST_CASE(ChannelGroup_channelGroups)
 
     BOOST_CHECK_EQUAL(groups.size(), 4);
     BOOST_CHECK_EQUAL(groups.at(0).channels().toMask(), 1);    //differential channels
+    BOOST_CHECK_EQUAL(groups.at(0).name(), "Differential (ch1)");
     auto diffSettings = groups.at(0).settings();
     BOOST_CHECK_EQUAL(diffSettings.size(), 4);
     BOOST_CHECK_EQUAL(diffSettings.at(0), WirelessTypes::chSetting_inputRange);
@@ -39,22 +40,63 @@ BOOST_AUTO_TEST_CASE(ChannelGroup_channelGroups)
     BOOST_CHECK_EQUAL(diffSettings.at(3), WirelessTypes::chSetting_legacyShuntCal);
 
     BOOST_CHECK_EQUAL(groups.at(1).channels().toMask(), 1);    //cal coefficient ch1
+    BOOST_CHECK_EQUAL(groups.at(1).name(), "Differential (ch1)");
     auto ch1Settings = groups.at(1).settings();
     BOOST_CHECK_EQUAL(ch1Settings.at(0), WirelessTypes::chSetting_linearEquation);
     BOOST_CHECK_EQUAL(ch1Settings.at(1), WirelessTypes::chSetting_unit);
     BOOST_CHECK_EQUAL(ch1Settings.at(2), WirelessTypes::chSetting_equationType);
 
     BOOST_CHECK_EQUAL(groups.at(2).channels().toMask(), 4);    //cal coefficient ch3
+    BOOST_CHECK_EQUAL(groups.at(2).name(), "Differential (ch3)");
     auto ch3Settings = groups.at(2).settings();
     BOOST_CHECK_EQUAL(ch3Settings.at(0), WirelessTypes::chSetting_linearEquation);
     BOOST_CHECK_EQUAL(ch3Settings.at(1), WirelessTypes::chSetting_unit);
     BOOST_CHECK_EQUAL(ch3Settings.at(2), WirelessTypes::chSetting_equationType);
 
     BOOST_CHECK_EQUAL(groups.at(3).channels().toMask(), 8);    //cal coefficient ch4
+    BOOST_CHECK_EQUAL(groups.at(3).name(), "Differential (ch4)");
     auto ch4Settings = groups.at(3).settings();
     BOOST_CHECK_EQUAL(ch4Settings.at(0), WirelessTypes::chSetting_linearEquation);
     BOOST_CHECK_EQUAL(ch4Settings.at(1), WirelessTypes::chSetting_unit);
     BOOST_CHECK_EQUAL(ch4Settings.at(2), WirelessTypes::chSetting_equationType);
+}
+
+BOOST_AUTO_TEST_CASE(ChannelGroup_channelGroups_multiChannel)
+{
+    std::shared_ptr<NodeFeatures> node = NodeFeatures::create(createInfo(WirelessModels::node_tcLink200));
+    mscl::ChannelGroups groups = node->channelGroups();
+
+    BOOST_CHECK_EQUAL(groups.size(), 16);
+    BOOST_CHECK_EQUAL(groups.at(0).channels().toMask(), 1);     //cal coefficients ch1
+    BOOST_CHECK_EQUAL(groups.at(0).name(), "Temperature (ch1)");
+    auto ch1Settings = groups.at(0).settings();
+    BOOST_CHECK_EQUAL(ch1Settings.at(0), WirelessTypes::chSetting_linearEquation);
+    BOOST_CHECK_EQUAL(ch1Settings.at(1), WirelessTypes::chSetting_unit);
+    BOOST_CHECK_EQUAL(ch1Settings.at(2), WirelessTypes::chSetting_equationType);
+
+    BOOST_CHECK_EQUAL(groups.at(12).channels().toMask(), 4096);    //cal coefficient ch13
+    BOOST_CHECK_EQUAL(groups.at(12).name(), "CJC Temperature (ch13)");
+    auto ch13Settings = groups.at(12).settings();
+    BOOST_CHECK_EQUAL(ch13Settings.at(0), WirelessTypes::chSetting_linearEquation);
+    BOOST_CHECK_EQUAL(ch13Settings.at(1), WirelessTypes::chSetting_unit);
+    BOOST_CHECK_EQUAL(ch13Settings.at(2), WirelessTypes::chSetting_equationType);
+
+    BOOST_CHECK_EQUAL(groups.at(13).channels().toMask(), 63);   //channels 1-6
+    BOOST_CHECK_EQUAL(groups.at(13).name(), "Temperature (ch1-ch6)");
+    auto settings1 = groups.at(13).settings();
+    BOOST_CHECK_EQUAL(settings1.at(0), WirelessTypes::chSetting_inputRange);
+    BOOST_CHECK_EQUAL(settings1.at(1), WirelessTypes::chSetting_tempSensorOptions);
+
+    BOOST_CHECK_EQUAL(groups.at(14).channels().toMask(), 4032); //channels 7-12
+    BOOST_CHECK_EQUAL(groups.at(14).name(), "Temperature (ch7-ch12)");
+    auto settings2 = groups.at(14).settings();
+    BOOST_CHECK_EQUAL(settings2.at(0), WirelessTypes::chSetting_inputRange);
+    BOOST_CHECK_EQUAL(settings2.at(1), WirelessTypes::chSetting_tempSensorOptions);
+
+    BOOST_CHECK_EQUAL(groups.at(15).channels().toMask(), 4095); //channels 1-12
+    BOOST_CHECK_EQUAL(groups.at(15).name(), "Temperature (ch1-ch12)");
+    auto settings3 = groups.at(15).settings();
+    BOOST_CHECK_EQUAL(settings3.at(0), WirelessTypes::chSetting_lowPassFilter);
 }
 
 BOOST_AUTO_TEST_CASE(ChannelGroup_getGaugeFactor)

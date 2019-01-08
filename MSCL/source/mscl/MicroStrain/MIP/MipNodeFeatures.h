@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -131,8 +131,15 @@ namespace mscl
         //    Gets an object containing the estimation control options supported by this node.
         //
         //Returns:
-        //    A EstimationControlOptions object containing all the supported heading update control options for this node.
+        //    A EstimationControlOptions object containing all the supported estimation control options for this node.
         const EstimationControlOptions supportedEstimationControlOptions() const;
+
+        //API Function: supportedVehicleModeTypes
+        //    Gets a list of the supported vehicle mode types for this node.
+        //
+        //Returns:
+        //    A <VehicleModeTypes> containing all the supported vehicle mode types for this node.
+        const VehicleModeTypes supportedVehicleModeTypes() const;
 
         //API Function: supportedAdaptiveMeasurementModes
         //    Gets an object containing the adaptive measurement modes supported by this node.

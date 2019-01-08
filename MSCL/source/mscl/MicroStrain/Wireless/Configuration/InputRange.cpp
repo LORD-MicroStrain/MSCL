@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -152,6 +152,7 @@ namespace mscl
     };
 
     const InputRangeHelper::InputRangeMap InputRangeHelper::RANGES_SGLINK200_FULLDIFF_CHS_2500mV = {
+        {0, InputRangeEntry(WirelessTypes::range_2_5V, 1.0f)},
         {1, InputRangeEntry(WirelessTypes::range_1_25V, 2.0f)},
         {2, InputRangeEntry(WirelessTypes::range_625mV, 4.0f)},
         {3, InputRangeEntry(WirelessTypes::range_312_5mV, 8.0f)},
@@ -162,6 +163,7 @@ namespace mscl
     };
 
     const InputRangeHelper::InputRangeMap InputRangeHelper::RANGES_SGLINK200_FULLDIFF_CHS_1500mV = {
+        {0, InputRangeEntry(WirelessTypes::range_1_5V, 1.0f)},
         {1, InputRangeEntry(WirelessTypes::range_750mV, 2.0f)},
         {2, InputRangeEntry(WirelessTypes::range_375mV, 4.0f)},
         {3, InputRangeEntry(WirelessTypes::range_187_5mV, 8.0f)},
@@ -193,15 +195,37 @@ namespace mscl
         {7, InputRangeEntry(WirelessTypes::range_0to11_719mV)}
     };
 
-    const InputRangeHelper::InputRangeMap InputRangeHelper::RANGES_TCLINK_200 = {
-        {1, InputRangeEntry(WirelessTypes::range_1_35V_or_0to2026408518ohm, 1.0f)},
+    const InputRangeHelper::InputRangeMap InputRangeHelper::RANGES_TCLINK_200_OEM = {
+        {1, InputRangeEntry(WirelessTypes::range_1_35V_or_0to1000000ohm, 1.0f)},
         {2, InputRangeEntry(WirelessTypes::range_1_25V_or_0to10000ohm, 2.0f)},
-        {4, InputRangeEntry(WirelessTypes::range_625mV_or_0to2580ohm, 4.0f)},
-        {8, InputRangeEntry(WirelessTypes::range_312_5mV_or_0to1290ohm, 8.0f)},
-        {16, InputRangeEntry(WirelessTypes::range_156_25mV_or_0to645ohm, 16.0f)},
-        {32, InputRangeEntry(WirelessTypes::range_78_125mV_or_0to322ohm, 32.0f)},
-        {64, InputRangeEntry(WirelessTypes::range_39_0625mV_or_0to161ohm, 64.0f)},
-        {128, InputRangeEntry(WirelessTypes::range_19_5313mV_or_0to80ohm, 128.0f)}
+        {4, InputRangeEntry(WirelessTypes::range_625mV_or_0to3333_3ohm, 4.0f)},
+        {8, InputRangeEntry(WirelessTypes::range_312_5mV_or_0to1428_6ohm, 8.0f)},
+        {16, InputRangeEntry(WirelessTypes::range_156_25mV_or_0to666_67ohm, 16.0f)},
+        {32, InputRangeEntry(WirelessTypes::range_78_125mV_or_0to322_58ohm, 32.0f)},
+        {64, InputRangeEntry(WirelessTypes::range_39_0625mV_or_0to158_73ohm, 64.0f)},
+        {128, InputRangeEntry(WirelessTypes::range_19_5313mV_or_0to78_74ohm, 128.0f)}
+    };
+
+    const InputRangeHelper::InputRangeMap InputRangeHelper::RANGES_TCLINK_200 = {
+        {1, InputRangeEntry(WirelessTypes::range_1_35V, 1.0f)},
+        {2, InputRangeEntry(WirelessTypes::range_1_25V, 2.0f)},
+        {4, InputRangeEntry(WirelessTypes::range_625mV, 4.0f)},
+        {8, InputRangeEntry(WirelessTypes::range_312_5mV, 8.0f)},
+        {16, InputRangeEntry(WirelessTypes::range_156_25mV, 16.0f)},
+        {32, InputRangeEntry(WirelessTypes::range_78_125mV, 32.0f)},
+        {64, InputRangeEntry(WirelessTypes::range_39_063mV, 64.0f)},
+        {128, InputRangeEntry(WirelessTypes::range_19_532mV, 128.0f)}
+    };
+
+    const InputRangeHelper::InputRangeMap InputRangeHelper::RANGES_RTDLINK_200 = {
+        {1, InputRangeEntry(WirelessTypes::range_0to1000000ohm, 1.0f)},
+        {2, InputRangeEntry(WirelessTypes::range_0to10000ohm, 2.0f)},
+        {4, InputRangeEntry(WirelessTypes::range_0to3333_3ohm, 4.0f)},
+        {8, InputRangeEntry(WirelessTypes::range_0to1428_6ohm, 8.0f)},
+        {16, InputRangeEntry(WirelessTypes::range_0to666_67ohm, 16.0f)},
+        {32, InputRangeEntry(WirelessTypes::range_0to322_58ohm, 32.0f)},
+        {64, InputRangeEntry(WirelessTypes::range_0to158_73ohm, 64.0f)},
+        {128, InputRangeEntry(WirelessTypes::range_0to78_74ohm, 128.0f)}
     };
 
     const InputRangeHelper::InputRangeMap& InputRangeHelper::getRangeMap(WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType channelType, WirelessTypes::Voltage excitationVoltage)
@@ -221,11 +245,19 @@ namespace mscl
             case WirelessModels::node_sgLink_herm_2600:
             case WirelessModels::node_sgLink_herm_2700:
             case WirelessModels::node_sgLink_herm_2800:
+            case WirelessModels::node_sgLink_herm_2900:
                 return RANGES_SGLINK_HERMETIC;
 
             case WirelessModels::node_sgLink_rgd:
                 return RANGES_SGLINK_RGD;
 
+            case WirelessModels::node_sgLink200:
+            case WirelessModels::node_sgLink200_hbridge_1K:
+            case WirelessModels::node_sgLink200_hbridge_350:
+            case WirelessModels::node_sgLink200_hbridge_120:
+            case WirelessModels::node_sgLink200_qbridge_1K:
+            case WirelessModels::node_sgLink200_qbridge_350:
+            case WirelessModels::node_sgLink200_qbridge_120:
             case WirelessModels::node_sgLink200_oem:
             case WirelessModels::node_sgLink200_oem_ufl:
             case WirelessModels::node_sgLink200_oem_hbridge_1K:
@@ -315,7 +347,13 @@ namespace mscl
 
             case WirelessModels::node_tcLink200_oem:
             case WirelessModels::node_tcLink200_oem_ufl:
+                return RANGES_TCLINK_200_OEM;
+
+            case WirelessModels::node_tcLink200:
                 return RANGES_TCLINK_200;
+
+            case WirelessModels::node_rtdLink200:
+                return RANGES_RTDLINK_200;
 
             default:
                 break;

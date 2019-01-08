@@ -62,4 +62,4 @@ Boost - see the `License_Boost.txt` file in the source distribution.
 #### License
 MSCL is released under the MIT License - see the `LICENSE` file in the source distribution.
 
-Copyright (C) 2015-2018 LORD Corporation. All Rights Reserved.
+Copyright (C) 2015-2019 LORD Corporation. All Rights Reserved.

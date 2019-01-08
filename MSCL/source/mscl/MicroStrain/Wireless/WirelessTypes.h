@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -79,7 +79,7 @@ namespace mscl
         //
         //  dataType_first                  - 1 - The smallest value in the list
         //  dataType_uint16_shifted         - 1 - 2-byte unsigned integer (bit-shifted)
-        //  dataType_float32                - 2 - 4-byte float
+        //  dataType_float32                - 2 - 4-byte float (calibrated)
         //  dataType_uint16_12bitRes        - 3 - 2-byte unsigned integer (12-bit resolution)
         //  dataType_uint32                 - 4 - 4-byte unsigned integer
         //  dataType_uint16                 - 7 - 2-byte unsigned integer (16-bit resolution)
@@ -90,7 +90,8 @@ namespace mscl
         //  dataType_int16_20bitTrunc       - 12 - signed int16 from a device with 20-bit resolution (truncated)
         //  dataType_uint24                 - 13 - 3-byte unsigned integer
         //  dataType_uint16_24bitTrunc      - 14 - 2-byte unsigned integer from a device with 24-bit resolution (truncated)
-        //  dataType_last                   - 14 - The largest value in the list
+        //  dataType_int16_x10              - 15 - 2-byte signed integer that represents a calibrated value that was multiplied by 10
+        //  dataType_last                   - 15 - The largest value in the list
         //=====================================================================================================
         enum DataType
         {
@@ -108,19 +109,21 @@ namespace mscl
             dataType_int16_20bitTrunc   = 12,
             dataType_uint24             = 13,
             dataType_uint16_24bitTrunc  = 14,
+            dataType_int16_x10          = 15,
 
-            dataType_last               = 14
+            dataType_last               = 15
         };
 
         //=====================================================================================================
         //API Enums: DataFormat
         //  Represents the types of data formats that Nodes can be configured to send when sampling.
         //
-        //  dataFormat_raw_uint16   - 1 - Raw, uint16 data format
-        //  dataFormat_cal_float    - 2 - Calibrated, float data format
-        //  dataFormat_raw_uint24   - 3 - Raw, uint24 data format
-        //  dataFormat_raw_int24    - 4 - Raw, int24 data format
-        //  dataFormat_raw_int16    - 5 - Raw, int16 data format
+        //  dataFormat_raw_uint16       - 1 - Raw, uint16 data format
+        //  dataFormat_cal_float        - 2 - Calibrated, float data format
+        //  dataFormat_raw_uint24       - 3 - Raw, uint24 data format
+        //  dataFormat_raw_int24        - 4 - Raw, int24 data format
+        //  dataFormat_raw_int16        - 5 - Raw, int16 data format
+        //  dataFormat_cal_int16_x10    - 6 - Calibrated, int16 multiplied by 10 (range of -3276.8 to +3276.7 with 0.1 resolution)
         //=====================================================================================================
         enum DataFormat
         {
@@ -128,7 +131,8 @@ namespace mscl
             dataFormat_cal_float        = 2,
             dataFormat_raw_uint24       = 3,
             dataFormat_raw_int24        = 4,
-            dataFormat_raw_int16        = 5
+            dataFormat_raw_int16        = 5,
+            dataFormat_cal_int16_x10    = 6
         };
 
         //=====================================================================================================
@@ -1185,7 +1189,7 @@ namespace mscl
         //  range_0to39_063mV               - 96        - 0 to 39.063 milliVolts
         //  range_0to19_532mV               - 97        - 0 to 19.532 milliVolts
         //  range_9_766mV                   - 98        - +-9.766 milliVolts
-        //  range_1_35V_or_0to2026408518ohm - 99       - +-1.35 Volts, or 0 to 2026408518 ohms
+        //  range_1_35V_or_0to2026408518ohm - 99        - +-1.35 Volts, or 0 to 2026408518 ohms
         //  range_1_25V_or_0to5100ohm       - 100       - +-1.25 Volts, or 0 to 5100 ohms
         //  range_625mV_or_0to1700ohm       - 101       - +-625 milliVolts, or 0 to 1700 ohms
         //  range_312_5mV_or_0to728ohm      - 102       - +-312.5 milliVolts, or 0 to 728 ohms
@@ -1209,6 +1213,16 @@ namespace mscl
         //  range_0to46_875mV               - 120       - 0 to 46.875 milliVolts
         //  range_0to23_438mV               - 121       - 0 to 23.438 milliVolts
         //  range_0to11_719mV               - 122       - 0 to 11.719 milliVolts
+        //  range_1_5V                      - 123       - +-1.5 Volts
+        //  range_1_35V                     - 124       - +-1.35 Volts
+        //  range_0to2026408518ohm          - 125       - 0 to 2026408518 ohms
+        //  range_0to10000ohm               - 126       - 0 to 10000 ohms
+        //  range_0to2580ohm                - 127       - 0 to 2580 ohms
+        //  range_0to1290ohm                - 128       - 0 to 1290 ohms
+        //  range_0to645ohm                 - 129       - 0 to 645 ohms
+        //  range_0to322ohm                 - 130       - 0 to 322 ohms
+        //  range_0to161ohm                 - 131       - 0 to 161 ohms
+        //  range_0to80ohm                  - 132       - 0 to 80 ohms
         //  range_invalid                   - 65535     - invalid input range
         enum InputRange
         {
@@ -1325,14 +1339,14 @@ namespace mscl
             range_0to19_532mV   = 97,       //0 to 19.532 milliVolts
             range_9_766mV       = 98,       //+-9.766 milliVolts
 
-            range_1_35V_or_0to2026408518ohm = 99,  //+- 1.35 Volts, or 0 to 2026408518 ohms
+            range_1_35V_or_0to1000000ohm    = 99,   //+- 1.35 Volts, or 0 to 1000000 ohms
             range_1_25V_or_0to10000ohm      = 100,  //+- 1.25 Volts, or 0 to 10000 ohms
-            range_625mV_or_0to2580ohm       = 101,  //+- 625 milliVolts, or 0 to 2580 ohms
-            range_312_5mV_or_0to1290ohm     = 102,  //+- 312.5 milliVolts, or 0 to 1290 ohms
-            range_156_25mV_or_0to645ohm     = 103,  //+- 156.25 milliVolts, or 0 to 645 ohms
-            range_78_125mV_or_0to322ohm     = 104,  //+- 78.125 milliVolts, or 0 to 322 ohms
-            range_39_0625mV_or_0to161ohm    = 105,  //+- 39.0625 milliVolts, or 0 to 161 ohms
-            range_19_5313mV_or_0to80ohm     = 106,  //+- 19.5313 milliVolts, or 0 to 80 ohms
+            range_625mV_or_0to3333_3ohm     = 101,  //+- 625 milliVolts, or 0 to 3333.3 ohms
+            range_312_5mV_or_0to1428_6ohm   = 102,  //+- 312.5 milliVolts, or 0 to 1428.6 ohms
+            range_156_25mV_or_0to666_67ohm  = 103,  //+- 156.25 milliVolts, or 0 to 666.67 ohms
+            range_78_125mV_or_0to322_58ohm  = 104,  //+- 78.125 milliVolts, or 0 to 322.58 ohms
+            range_39_0625mV_or_0to158_73ohm = 105,  //+- 39.0625 milliVolts, or 0 to 158.73 ohms
+            range_19_5313mV_or_0to78_74ohm  = 106,  //+- 19.5313 milliVolts, or 0 to 78.74 ohms
 
             range_750mV         = 107,  //+- 750 milliVolts
             range_375mV         = 108,  //+- 375 milliVolts
@@ -1351,6 +1365,18 @@ namespace mscl
             range_0to46_875mV   = 120,  //0 to 46.875 milliVolts
             range_0to23_438mV   = 121,  //0 to 23.438 milliVolts
             range_0to11_719mV   = 122,  //0 to 11.719 milliVolts
+
+            range_1_5V          = 123,  //+- 1.5 Volts
+            range_1_35V         = 124,  //+- 1.35 Volts
+
+            range_0to1000000ohm = 125,  //0 to 1000000 ohms
+            range_0to10000ohm   = 126,  //0 to 10000 ohms
+            range_0to3333_3ohm  = 127,  //0 to 3333.3 ohms
+            range_0to1428_6ohm  = 128,  //0 to 1428.6 ohms
+            range_0to666_67ohm  = 129,  //0 to 666.67 ohms
+            range_0to322_58ohm  = 130,  //0 to 322.58 ohms
+            range_0to158_73ohm  = 131,  //0 to 158.73 ohms
+            range_0to78_74ohm   = 132,  //0 to 78.74 ohms
 
             range_invalid       = 65535  //invalid input range
         };
@@ -1433,6 +1459,7 @@ namespace mscl
         //  voltage_4096mV  - 4096 - 4.096V
         //  voltage_3000mV  - 3000 - 3.0V
         //  voltage_2800mV  - 2800 - 2.8V
+        //  voltage_2750mV  - 2750 - 2.75V
         //  voltage_2700mV  - 2700 - 2.7V
         //  voltage_2500mV  - 2500 - 2.5V
         //  voltage_1500mV  - 1500 - 1.5V
@@ -1443,6 +1470,7 @@ namespace mscl
             voltage_4096mV  = 4096,
             voltage_3000mV  = 3000,
             voltage_2800mV  = 2800,
+            voltage_2750mV  = 2750,
             voltage_2700mV  = 2700,
             voltage_2500mV  = 2500,
             voltage_1500mV  = 1500
@@ -1451,12 +1479,36 @@ namespace mscl
         //API Enum: SensorOutputMode
         //  Available Sensor Output Modes.
         //
-        //  sensorOutputMode_vibration  - 0
-        //  sensorOutputMode_tilt       - 1
+        //  sensorOutputMode_accel  - 0
+        //  sensorOutputMode_tilt   - 1
         enum SensorOutputMode
         {
-            sensorOutputMode_vibration = 0,
+            sensorOutputMode_accel = 0,
             sensorOutputMode_tilt = 1
+        };
+
+        //API Enum: BatteryStatus
+        //  Battery status values - can be mapped to the low battery flag value in the diagnostic packet.
+        //
+        //  batteryStatus_good      - 0
+        //  batteryStatus_low       - 1
+        //  batteryStatus_critical  - 2
+        enum BatteryStatus
+        {
+            batteryStatus_good = 0,
+            batteryStatus_low = 1,
+            batteryStatus_critical = 2
+        };
+
+        //API Enum: ExternalPowerIndicator
+        //  Indicates external power state - can be mapped to the external power value in the diagnostic packet.
+        //
+        //  externalPower_notConnected  - 0
+        //  externalPower_connected     - 1
+        enum ExternalPowerIndicator
+        {
+            externalPower_notConnected = 0,
+            externalPower_connected = 1
         };
 
     public:
@@ -1477,6 +1529,7 @@ namespace mscl
         //  CommProtocols               - A vector of <CommProtocol> enums.
         //  Voltages                    - A vector of <Voltage> enums.
         //  SensorOutputModes           - A vector of <SensorOutputMode> enums.
+        //  TransducerTypes             - A vector of <TransducerType> enums.
         typedef std::vector<DataCollectionMethod> DataCollectionMethods;
         typedef std::vector<DataFormat> DataFormats;
         typedef std::vector<WirelessSampleRate> WirelessSampleRates;
@@ -1492,6 +1545,7 @@ namespace mscl
         typedef std::vector<CommProtocol> CommProtocols;
         typedef std::vector<Voltage> Voltages;
         typedef std::vector<SensorOutputMode> SensorOutputModes;
+        typedef std::vector<TransducerType> TransducerTypes;
 
         //API Typedef: DerivedChannelMasks
         //  Typedef for a map of <DerivedChannelOption> to <ChannelMask> pairs.
@@ -1552,6 +1606,8 @@ namespace mscl
         //Returns:
         //    The number of bytes for the <DataFormat> 
         static uint8 dataFormatSize(DataFormat dataFormat);
+
+        static bool isCalApplied(DataType dataType);
 
         //Function: settlingTime
         //    Gets the actual settling time, in milliseconds, for the given <SettlingTime>.

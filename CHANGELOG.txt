@@ -14,6 +14,146 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
+48.0.0 - 2019-01-07
+- CHANGED input range enums for the RTD channels, as they were previously incorrect.
+
+47.1.2 - 2018-12-19
+- added enums for diagnostic data fields
+
+47.1.1 - 2018-12-18
+- added sample rate restriction to SG-Link-200
+
+47.1.0 - 2018-12-05
+- added low battery threshold configuration
+
+47.0.5 - 2018-11-29
+- include excitation voltage in auto cal parameters conditionally based on model and firmware version
+
+47.0.4 - 2018-11-29
+- add excitation voltage to auto cal parameters to support SG-Link-200-OEM
+
+47.0.3 - 2018-11-20
+- fix deadlock caused by locking comm protocol mutex earlier than necessary
+
+47.0.2 - 2018-11-16
+- added Connection::rawByteMode and Connection::debugMode "getter" functions
+- updated RTD-Link-200 max sample rate per adc channels/filter call
+- added Channel Mask error message for RTD-Link-200 and TC-Link-200 when low pass filter/sample rate/channel mask errors
+
+47.0.1 - 2018-11-01
+- fix for logic in determining max sample rate per low pass filter for the RTD-Link-200
+
+47.0.0 - 2018-10-31
+- REMOVED NodeFeatures::minLowPassFilter
+
+46.0.0 - 2018-10-30
+- CHANGED NodeFeatures::maxSampleRateForLowPassFilter to take the active channel mask
+- restricting max sample rate per low pass filter for the TC-Link-200 and RTD-Link-200
+
+45.3.8 - 2018-10-24
+- add additional inertial NodeModel values
+
+45.3.7 - 2018-10-12
+- add ConstellationId enum
+
+45.3.6 - 2018-10-11
+- fix for listInertialDevices not setting the type of connection
+- fix for warning on out of order initialization list
+
+45.3.5 - 2018-10-04
+- update IEPE-Link acceleration channel resolution to 23-bit
+
+45.3.4 - 2018-10-02
+- add IEPE-Link ADC and Gain Amplifier voltage reference feature values to support mV/g calibration
+
+45.3.3 - 2018-10-01
+- updated list of input ranges for TC-Link-200 and RTD-Link-200
+
+45.3.2 - 2018-09-28
+- revisions to the names of Channel Groups and channel descriptions retrieved from NodeFeatures
+- fix for incorrect channel number for the RTD-Link-200 in the NodeFeatures
+
+45.3.1 - 2018-09-26
+- update for corrected calibration coefficient ch9-16 eeproms
+
+45.3.0 - 2018-09-26
+- initial support for TC-Link-200
+- initial support for RTD-Link-200
+- added NodeFeatures::transducerTypes() to get a list of supported transducer types
+
+45.2.6 - 2018-09-24
+- fix for crash/hang when closing a port (just in the last commit)
+
+45.2.5 - 2018-09-24
+- WirelessNodeConfig verifying calibrated float with angle mode, in all sampling modes
+- changed deprecated boost::io_service to boost::io_context 
+
+45.2.4 - 2018-09-11
+- updates to Advanced Low-Pass Filter Settings command (0x0C, 0x50)
+
+45.2.3 - 2018-09-07
+- fix for Diagnostic Packet not updating the last state correctly
+
+45.2.2 - 2018-09-07
+- fix for never updating the WirelessNode last state to Sleep mode
+
+45.2.1 - 2018-09-07
+- fix for Set to Idle v2 not updating the WirelessNode last known state
+- fix for an Angle Mode configuration error for Nodes that don't support Angle Mode
+
+45.2.0 - 2018-09-06
+- added WirelessNode, InertialNode, and DisplacementNode lastDeviceState() functions to get the last
+  known state that MSCL believes the device to be in, tracked by processing data and performing commands.
+
+45.1.4 - 2018-09-05
+- added new input range for SG-Link-200, SG-Link-200-OEM, and Torque-Link-200
+
+45.1.3 - 2018-08-31
+- added support for inertial config command Set Reference Position (0x0D, 0x26)
+
+45.1.2 - 2018-08-31
+- fix for incorrectly labeling int16x10 data sweeps as not being calibrated
+
+45.1.1 - 2018-08-30
+- added missing SG-Link-Hermetic 2900 model number
+
+45.1.0 - 2018-08-29
+- support for SG-Link-200
+
+45.0.1 - 2018-08-29
+- updated list of low pass filters for SHM-Link-210
+
+45.0.0 - 2018-08-29
+- RENAMED WirelessTypes::sensorOutputMode_vibration to WirelessTypes::sensorOutputMode_accel
+- support for % memory full diagnostic packet
+
+44.3.0 - 2018-08-28
+- added support for inertial config command Soft Iron Matrix Process Noise (0x0D, 0x2C)
+
+44.2.3 - 2018-08-27
+- fixed build problem with vehicle dynamics
+- renamed fixed property of Geographic source to manual to remove warning
+
+44.2.2 - 2018-08-27
+- Added features call to find available vehicle dynamics modes by node
+
+44.2.1 - 2018-08-24
+- fix for missing excitation voltages from NodeFeatures for the SHM-Link-210
+
+44.2.0 - 2018-08-24
+- added support for the following inertial config commands:
+    - Magnetometer Noise Standard Deviation (0x0D, 0x42), Gravity Noise Standard Deviation (0x0D, 0x28), Accelerometer Noise Standard Deviation (0x0D, 0x1A), Gyroscope Noise Standard Deviation (0x0D, 0x1B)
+    - Hard Iron Offset Process Noise (0x0D, 0x2B)
+    - Pressure Altitude Noise Standard Deviation (0x0D, 0x29)
+    - Accelerometer Bias Model Parameters (0x0D, 0x1C), Gyroscope Bias Model Parameters (0x0D, 0x1D)
+- created generic classes for inertial commands to get/set collections of GeometricVectors (floats x, y, z) and floats
+
+44.1.0 - 2018-08-24
+- basic support for the SHM-Link-210 models
+- support for parsing calibrated int16 x10 data types
+- support for configuring the data format for int16 x10
+- verifying that 4-byte float is enabled when using angle fatigue modes
+
 44.0.2 - 2018-08-16
 - fix for comments for inertial commands Declination Source (0x0D, 0x43), Inclination Source (0x0D, 0x4C), and Magnetic Field Magnitude Source (0x0D, 0x4D)
 

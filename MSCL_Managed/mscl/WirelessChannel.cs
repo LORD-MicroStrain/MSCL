@@ -337,7 +337,8 @@ public class WirelessChannel : global::System.IDisposable {
     channel_13_mmps = 239,
     channel_14_mmps = 240,
     channel_15_mmps = 241,
-    channel_16_mmps = 242
+    channel_16_mmps = 242,
+    channel_diag_memoryFull = 243
   }
 
 }

@@ -929,8 +929,32 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\AdaptiveMeasurement.h">
       <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
     </ClInclude>
-	<ClInclude Include="GeographicSource.h">
+    <ClInclude Include="GeographicSource.h">
       <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink210.h">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\FloatCommand.h">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GeometricVectorCommand.h">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Matrix3x3Command.h">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink200oem.h">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\SetReferencePosition.h">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink200oem.h">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink200.h">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1760,6 +1784,30 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GeographicSource.cpp">
       <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_shmlink210.cpp">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\FloatCommand.cpp">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GeometricVectorCommand.cpp">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Matrix3x3Command.cpp">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink200oem.cpp">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\SetReferencePosition.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_tclink200oem.cpp">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink200.cpp">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

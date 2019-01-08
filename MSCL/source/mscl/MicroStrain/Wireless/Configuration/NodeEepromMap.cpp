@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -212,6 +212,31 @@ namespace mscl
     const EepromLocation NodeEepromMap::HISTOGRAM_ENABLE                (852, valueType_uint16, "Histogram Enable Flag");
     const EepromLocation NodeEepromMap::GAUGE_RESISTANCE                (854, valueType_uint16, "Gauge Resistance");
     const EepromLocation NodeEepromMap::NUM_ACTIVE_GAUGES               (864, valueType_uint16, "Number of Active Gauges");
+    const EepromLocation NodeEepromMap::LOW_BATTERY_THRESHOLD           (866, valueType_float, "Low Battery Threshold");
+    const EepromLocation NodeEepromMap::CH_ACTION_ID_9                  (900, valueType_uint16, "Channel Action ID");
+    const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_9               (902, valueType_float, "Channel Slope");
+    const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_9              (906, valueType_float, "Channel Offset");
+    const EepromLocation NodeEepromMap::CH_ACTION_ID_10                 (910, valueType_uint16, "Channel Action ID");
+    const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_10              (912, valueType_float, "Channel Slope");
+    const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_10             (916, valueType_float, "Channel Offset");
+    const EepromLocation NodeEepromMap::CH_ACTION_ID_11                 (920, valueType_uint16, "Channel Action ID");
+    const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_11              (922, valueType_float, "Channel Slope");
+    const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_11             (926, valueType_float, "Channel Offset");
+    const EepromLocation NodeEepromMap::CH_ACTION_ID_12                 (930, valueType_uint16, "Channel Action ID");
+    const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_12              (932, valueType_float, "Channel Slope");
+    const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_12             (936, valueType_float, "Channel Offset");
+    const EepromLocation NodeEepromMap::CH_ACTION_ID_13                 (940, valueType_uint16, "Channel Action ID");
+    const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_13              (942, valueType_float, "Channel Slope");
+    const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_13             (946, valueType_float, "Channel Offset");
+    const EepromLocation NodeEepromMap::CH_ACTION_ID_14                 (950, valueType_uint16, "Channel Action ID");
+    const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_14              (952, valueType_float, "Channel Slope");
+    const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_14             (956, valueType_float, "Channel Offset");
+    const EepromLocation NodeEepromMap::CH_ACTION_ID_15                 (960, valueType_uint16, "Channel Action ID");
+    const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_15              (962, valueType_float, "Channel Slope");
+    const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_15             (966, valueType_float, "Channel Offset");
+    const EepromLocation NodeEepromMap::CH_ACTION_ID_16                 (970, valueType_uint16, "Channel Action ID");
+    const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_16              (972, valueType_float, "Channel Slope");
+    const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_16             (976, valueType_float, "Channel Offset");
     const EepromLocation NodeEepromMap::COMM_PROTOCOL                   (1024, valueType_uint16, "Communication Protocol");
     const EepromLocation NodeEepromMap::BOOTLOADER_VER                  (1030, valueType_uint16, "Bootloader Version");
     const EepromLocation NodeEepromMap::FIRMWARE_UPGRADE_FLAGS          (1032, valueType_uint16, "Firmware Upgrade Flags");

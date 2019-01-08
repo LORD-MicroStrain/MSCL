@@ -7,7 +7,7 @@ import sys
 configDict = {}
 
 
-
+#Installs Dependencies
 def update(args):
 	subprocess.call(['sudo','yum', 'update' , '-y'])
 	subprocess.call(['sudo','yum', 'install', 'gcc','-y'])
@@ -24,7 +24,7 @@ def update(args):
 		subprocess.call(['sudo', 'yum', 'install', 'python' + configDict['python_version'][0] + '-devel','-y'])	
 	
 
-
+#Downloads and builds Boost, Swig, and Patchelf
 def init():
 	
 	directory = '/usr/share/'
@@ -64,8 +64,7 @@ def init():
 
 
 	directory =  glob(os.path.join( '/usr/share/' + configDict['package_name'] +'/programs/', 'boost*'))[0]
-	#subprocess.call(['./bootstrap.sh', '--with-libraries=system,filesystem,test'], cwd=directory) GitHub needs to be updated for this to take effect
-	subprocess.call(['./bootstrap.sh'], cwd=directory) #Will be removed when GitHub is updated
+	subprocess.call(['./bootstrap.sh', '--with-libraries=system,filesystem,test'], cwd=directory)
 	subprocess.call(['./b2', 'install', '--prefix=/usr/share/' + configDict['package_name'] + '/programs/', '-j2'], cwd=directory)
 	
 	
@@ -75,6 +74,7 @@ def init():
 	subprocess.call(['./b2', 'install', '--prefix=/usr/share/' + configDict['package_name'] + '/programs/', '-j2'], cwd=directory)
 
 
+#Builds MSCL
 def buildMSCL(arg):
 	
 	directory = '/usr/share/' + configDict['package_name'] + '/programs/'
@@ -99,19 +99,16 @@ def buildMSCL(arg):
 	
 	print 'Flags:', flags
 	if (configDict['python_version'] == 'None'):
-		mscl_call = 'MSCL//stage_c++ release ' + flags +'-j2'
+		mscl_call = 'MSCL//stage_c++ release ' + flags + ' -j2'
 		subprocess.call(call.split() + mscl_call.split(), cwd=directory)
 	else:
 		subprocess.call(['mkdir', '-p', 'build/swig-python'], cwd=directory)
-		#Need to change when GitHub is updated
-		#mscl_call = 'MSCL//stage_python_x86 ' + arg +' -j2'
+		mscl_call = 'MSCL//stage_python release ' + flags + ' -j2'
 
-		#Delete when GitHub is updated
-		mscl_call = 'MSCL//stage_python_x86 release ' + flags +'-j2'
 		subprocess.call(call.split() + mscl_call.split(), cwd=directory)
 		subprocess.call(call.split() + mscl_call.split(), cwd=directory)
 		
-	
+#Moves the required files to a different location	
 def moveFiles():
 	directory = '/usr/share/' + configDict['package_name'] + '/'
 	subprocess.call(['mkdir', '-p', 'Boost'], cwd = directory)
@@ -140,8 +137,7 @@ def moveFiles():
 		subprocess.call(['patchelf', '--set-rpath', '/usr/share/' + configDict['package_name'] + '/Boost/lib', '/usr/share/' + configDict['package_name'] + '/libmscl.so'])
 		
 	else:
-#		files = glob(os.path.join('/usr/share/' +  configDict['package_name'] + '/programs/MSCL-BUILT/Output/', 'Python/*')) will be true When GitHub is updated
-		files = glob(os.path.join('/usr/share/' +  configDict['package_name'] + '/programs/MSCL-BUILT/Output/Python/', 'x86/*')) #Will be removed when GitHub is updated
+		files = glob(os.path.join('/usr/share/' +  configDict['package_name'] + '/programs/MSCL-BUILT/Output/', 'Python/*')) 
 		
 		for file in files:
 			call = 'cp -r ' + file + ' /usr/share/' + configDict['package_name']
@@ -150,7 +146,7 @@ def moveFiles():
 		call = 'patchelf --set-rpath /usr/share/' + configDict['package_name'] + '/Boost/lib /usr/share/' + configDict['package_name'] + '/_mscl.so'
 		subprocess.call(call.split())
 
-
+#Removes any programs/files that are not required 
 def cleanup():
 	directory =  glob(os.path.join( '/usr/share/' + configDict['package_name'] +'/programs/', 'swig*'))[0]
 	subprocess.call(['sudo', 'make', 'uninstall'], cwd=directory)

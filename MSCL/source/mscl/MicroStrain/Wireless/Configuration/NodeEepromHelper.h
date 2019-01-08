@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -881,6 +881,24 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_numActiveGauges(uint16 numGauges);
 
+        //Function: read_lowBatteryThreshold
+        //    Reads the Low Battery Threshold (in Volts) that is currently stored on the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        float read_lowBatteryThreshold();
+
+        //Function: write_lowBatteryThreshold
+        //    Writes the Low Battery Threshold to the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_lowBatteryThreshold(float volts);
+
         //Function: read_inputRange
         //    Reads the input range for the specified <ChannelMask> from the Node.
         //
@@ -1251,6 +1269,15 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_activitySense(const ActivitySense& options);
+
+        //Function: read_fatigueMode
+        //  Reads the <WirelessTypes::FatigeMode> from the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::FatigueMode read_fatigueMode() const;
 
         //Function: read_fatigueOptions
         //    Reads the <FatigueOptions> from the Node.

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -96,6 +96,13 @@ namespace mscl
 
         //not set, so read the value from the node
         return eeprom.read_dataFormat();
+    }
+
+    WirelessTypes::FatigueMode WirelessNodeConfig::curFatigueMode(const NodeEepromHelper& eeprom) const
+    {
+        if(isSet(m_fatigueOptions)) { return (*m_fatigueOptions).fatigueMode(); }
+
+        return eeprom.read_fatigueMode();
     }
 
     DataModeMask WirelessNodeConfig::curDataModeMask(const NodeEepromHelper& eeprom) const
@@ -276,6 +283,20 @@ namespace mscl
             default:
                 assert(false);  //need to add support for new DerivedChannel
                 return ConfigIssue::CONFIG_DERIVED_MASK_RMS;
+        }
+    }
+
+    bool WirelessNodeConfig::isSyncSamplingMode(WirelessTypes::SamplingMode mode)
+    {
+        switch(mode)
+        {
+            case WirelessTypes::samplingMode_sync:
+            case WirelessTypes::samplingMode_syncBurst:
+            case WirelessTypes::samplingMode_syncEvent:
+                return true;
+
+            default:
+                return false;
         }
     }
 
@@ -460,6 +481,15 @@ namespace mscl
             else if(val < 1 || val > 255)
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_NUM_ACTIVE_GAUGES, "The Number of Active Gauges is out of range (1-255)."));
+            }
+        }
+
+        //Low Battery Threshold
+        if(isSet(m_lowBatteryThreshold))
+        {
+            if(!features.supportsLowBatteryThresholdConfig())
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_LOW_BATTERY_THRESHOLD, "Low Battery Threshold configuration is not supported by this Node."));
             }
         }
 
@@ -825,6 +855,11 @@ namespace mscl
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_TEMP_SENSOR_OPTS, "TempSensorOptions are not supported for the provided Channel Mask.", opts.first));
             }
+            //verify the transducer type is supported by this Node
+            else if(!features.supportsTransducerType(opts.second.transducerType()))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_TEMP_SENSOR_OPTS, "The provided Transducer Type is not supported by the Node.", opts.first));
+            }
         }
 
         //Debounce Filters
@@ -1061,30 +1096,65 @@ namespace mscl
             }
         }
 
-        //veriy Low Pass Filters with Sample Rate
-        if(features.supportsLowPassFilter() && (isSet(m_sampleRate) || isAnySet(m_lowPassFilters)))
+        //verify Low Pass Filters with Sample Rate
+        if(features.supportsLowPassFilter() && 
+            (isSet(m_sampleRate) ||
+             isAnySet(m_lowPassFilters) ||
+             isSet(m_samplingMode) || 
+             isSet(m_dataCollectionMethod) ||
+             isSet(m_dataMode) ||
+             isSet(m_activeChannels))
+           )
         {
-            WirelessTypes::Filter lpf;
-
-            WirelessTypes::Filter minLpf = features.minLowPassFilter(SampleRate::FromWirelessEepromValue(curSampleRate(eeprom)));
+            WirelessTypes::SamplingMode samplingMode = curSamplingMode(eeprom);
+            WirelessTypes::DataCollectionMethod collectionMethod = curDataCollectionMethod(eeprom);
+            WirelessTypes::DataMode dataMode = curDataModeMask(eeprom).toDataModeEnum();
+            ChannelMask activeChs = curActiveChs(eeprom);
 
             for(const auto& group : features.channelGroups())
             {
                 for(const auto& setting : group.settings())
                 {
-                    //filter settling time setting
+                    //low pass filter setting
                     if(setting == WirelessTypes::chSetting_lowPassFilter)
                     {
-                        //get the current settling time for this channel group
-                        lpf = curLowPassFilter(group.channels(), eeprom);
+                        WirelessTypes::WirelessSampleRate maxRateEnum =  features.maxSampleRateForLowPassFilter(curLowPassFilter(group.channels(), eeprom),
+                                                                                                            samplingMode,
+                                                                                                            collectionMethod,
+                                                                                                            dataMode,
+                                                                                                            activeChs);
+                        SampleRate maxSampleRate = SampleRate::FromWirelessEepromValue(maxRateEnum);
 
-                        if(lpf < minLpf)
+                        if(SampleRate::FromWirelessEepromValue(curSampleRate(eeprom)) > maxSampleRate)
                         {
-                            outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_LOW_PASS_FILTER, "The Low Pass Filter is below the min for the current Sample Rate.", group.channels()));
-                            outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE, "The Low Pass Filter is below the min for the current Sample Rate.", group.channels()));
+                            if(features.hasMaxSampleRatePerFilterAndAdcChCount())
+                            {
+                                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_LOW_PASS_FILTER, "The Sample Rate exceeds the max (" + maxSampleRate.prettyStr() + ") for the selected Low Pass Filter and Active Channels.", group.channels()));
+                                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE, "The Sample Rate exceeds the max (" + maxSampleRate.prettyStr() + ") for the selected Low Pass Filter and Active Channels.", group.channels()));
+                                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_ACTIVE_CHANNELS, "The Sample Rate exceeds the max (" + maxSampleRate.prettyStr() + ") for the selected Low Pass Filter and Active Channels.", group.channels()));
+                            }
+                            else
+                            {
+                                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_LOW_PASS_FILTER, "The Sample Rate exceeds the max (" + maxSampleRate.prettyStr() + ") for the selected Low Pass Filter.", group.channels()));
+                                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE, "The Sample Rate exceeds the max (" + maxSampleRate.prettyStr() + ") for the selected Low Pass Filter.", group.channels()));
+                            }
                         }
                     }
                 }
+            }
+        }
+
+        if(features.supportsFatigueConfig() &&
+           (isSet(m_dataFormat) ||
+           isSet(m_fatigueOptions)))
+        {
+            WirelessTypes::FatigueMode fatigueMode = curFatigueMode(eeprom);
+
+            if((fatigueMode == WirelessTypes::fatigueMode_angleStrain || fatigueMode == WirelessTypes::fatigueMode_distributedAngle) &&
+               curDataFormat(eeprom) != WirelessTypes::dataFormat_cal_float)
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DATA_FORMAT, "Angle mode only supports the 4-byte float calibrated data format."));
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_FATIGUE_MODE, "Angle mode only supports the 4-byte float calibrated data format."));
             }
         }
 
@@ -1285,6 +1355,9 @@ namespace mscl
 
         //write Fatigue Options
         if(isSet(m_fatigueOptions)) { eeprom.write_fatigueOptions(*m_fatigueOptions); }
+
+        //write Low Battery Threshold
+        if(isSet(m_lowBatteryThreshold)) { eeprom.write_lowBatteryThreshold(*m_lowBatteryThreshold); }
 
         //write Histogram Options
         if(isSet(m_histogramOptions)) { eeprom.write_histogramOptions(*m_histogramOptions); }
@@ -1709,6 +1782,17 @@ namespace mscl
     void WirelessNodeConfig::numActiveGauges(uint16 numGauges)
     {
         m_numActiveGauges = numGauges;
+    }
+
+    float WirelessNodeConfig::lowBatteryThreshold() const
+    {
+        checkValue(m_lowBatteryThreshold, "Low Battery Threshold");
+        return *m_lowBatteryThreshold;
+    }
+
+    void WirelessNodeConfig::lowBatteryThreshold(float voltage)
+    {
+        m_lowBatteryThreshold = voltage;
     }
 
     const LinearEquation& WirelessNodeConfig::linearEquation(const ChannelMask& mask) const

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -16,8 +16,8 @@ namespace mscl
         NodeFeatures(info)
     {
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_temperature, "Temperature 1", 24);
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_temperature, "Temperature 2", 24);
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_temperature, "Temperature", 24);
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_temperature, "Temperature", 24);
     }
 
     const WirelessTypes::SamplingModes NodeFeatures_cfBearing::samplingModes() const

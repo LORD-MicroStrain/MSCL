@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -76,6 +76,7 @@ namespace mscl
         //  CONFIG_EXCITATION_VOLTAGE           - 53 - Excitation Voltage
         //  CONFIG_DERIVED_UNIT                 - 54 - Derived Unit
         //  CONFIG_SENSOR_OUTPUT_MODE           - 55 - Sensor Output Mode
+        //  CONFIG_LOW_BATTERY_THRESHOLD        - 56 - Low Battery Threshold
         enum ConfigOption
         {
             CONFIG_SAMPLING_MODE                = 0,
@@ -133,7 +134,8 @@ namespace mscl
             CONFIG_PULLUP_RESISTOR              = 52,
             CONFIG_EXCITATION_VOLTAGE           = 53,
             CONFIG_DERIVED_UNIT                 = 54,
-            CONFIG_SENSOR_OUTPUT_MODE           = 55
+            CONFIG_SENSOR_OUTPUT_MODE           = 55,
+            CONFIG_LOW_BATTERY_THRESHOLD        = 56
         };
 
         ConfigIssue();    //default constructor

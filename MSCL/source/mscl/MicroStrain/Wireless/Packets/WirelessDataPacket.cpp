@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -201,6 +201,11 @@ namespace mscl
             //int24 value (we store this as a int32)
             case WirelessTypes::dataType_int24_20bit:
                 result = m_payload.read_int24(payloadPosition);
+                break;
+
+            //int16 value (calibrated value multiplied by 10, needs divided by 10)
+            case WirelessTypes::dataType_int16_x10:
+                result = static_cast<float>(m_payload.read_int16(payloadPosition)) / 10.0f;
                 break;
         }
     }

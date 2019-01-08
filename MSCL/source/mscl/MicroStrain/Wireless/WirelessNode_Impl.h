@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -136,6 +136,10 @@ namespace mscl
         //Function: lastCommunicationTime
         //    Gets the <Timestamp> for the last time MSCL communicated with the Node.
         const Timestamp& lastCommunicationTime() const;
+
+        //Function: lastDeviceState
+        //  Gets the last known <DeviceState> for the Node.
+        DeviceState lastDeviceState() const;
 
         //Function: setBaseStation
         //    Sets the node's parent Base Station, which will perform all communication with the Node.
@@ -597,6 +601,8 @@ namespace mscl
         //  - <Error_NodeCommunication>: Failed to read from the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint16 getNumActiveGauges() const;
+
+        float getLowBatteryThreshold() const;
 
         //Function: getLinearEquation
         //    Gets the linear equation of the specified <ChannelMask> currently set on the Node.

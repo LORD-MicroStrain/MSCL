@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -154,6 +154,7 @@ public:
     //  CMD_EF_TARE_ORIENT                          - 0x0D21    - Estimation Filter - Tare Orientation
     //  CMD_EF_CMDED_ZERO_VEL_UPDATE                - 0x0D22    - Estimation Filter - Commanded Zero Velocity Update
     //  CMD_EF_CMDED_ZERO_ANG_RATE_UPDATE           - 0x0D23    - Estimation Filter - Commanded Zero Angular Rate Update
+    //  CMD_EF_SET_REF_POSITION                     - 0x0D26    - Estimation Filter - Set Reference Position
     //  CMD_EF_MAG_CAPTURE_AUTO_CAL                 - 0x0D27    - Estimation Filter - Magnetometer Capture Auto Calibration
     //  CMD_EF_GRAVITY_NOISE_STD_DEV                - 0x0D28    - Estimation Filter - Gravity Noise Standard Deviation
     //  CMD_EF_PRESS_ALT_NOISE_STD_DEV              - 0x0D29    - Estimation Filter - Pressure Altitude Noise Standard Deviation
@@ -242,6 +243,7 @@ public:
         CMD_EF_TARE_ORIENT                          = 0x0D21,
         CMD_EF_CMDED_ZERO_VEL_UPDATE                = 0x0D22,
         CMD_EF_CMDED_ZERO_ANG_RATE_UPDATE           = 0x0D23,
+        CMD_EF_SET_REF_POSITION                     = 0x0D26,
         CMD_EF_MAG_CAPTURE_AUTO_CAL                 = 0x0D27,
         CMD_EF_GRAVITY_NOISE_STD_DEV                = 0x0D28,
         CMD_EF_PRESS_ALT_NOISE_STD_DEV              = 0x0D29,

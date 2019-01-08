@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mscl/Types.h"
+#include "mscl/MicroStrain/MIP/MipTypes.h"
 #include <array>
 
 
@@ -226,7 +227,20 @@ namespace mscl
         {
             ADAPTIVE_MEASUREMENT_DISABLE = 0x00,
             ADAPTIVE_MEASUREMENT_ENABLE_FIXED = 0x01,
-            ADAPTIVE_MEASUREMENT_ENABLE_AUTO = 0x02        };
+            ADAPTIVE_MEASUREMENT_ENABLE_AUTO = 0x02
+        };
+
+        //API Enums: ConstellationId
+        //  The enums to represent the different available constellation IDs for GNSS constellation settings
+        enum ConstellationId
+        {
+            GPS = 0x00,
+            SBAS = 0x01,
+            GALILEO = 0x02,
+            BEIDOU = 0x03,
+            QZSS = 0x05,
+            GLONASS = 0x06
+        };
     };
 
 
@@ -238,6 +252,8 @@ namespace mscl
     //API Typedef: RTCMMessage
     //  A string composing the RTCM message.
     typedef std::string RTCMMessage;
+
+    typedef std::vector<InertialTypes::VehicleModeType> VehicleModeTypes;
 
     ///////////////  Matrix_3x3  ///////////////
 
@@ -285,7 +301,7 @@ namespace mscl
         //
         //Parameters:
         //  row - the row to set.
-        //  col - the collumn to set.
+        //  col - the column to set.
         float at(uint8 row, uint8 col) const;
 
     private:
@@ -293,6 +309,8 @@ namespace mscl
         //  A 3 by 3 array.
         std::array< std::array<float, 3>, 3 > m_array;
     };
+
+    typedef std::vector<Matrix_3x3> Matrix_3x3s;
 
     ///////////////  GeometricVector  ///////////////
 
@@ -329,6 +347,48 @@ namespace mscl
         //API Variable: z
         //  the vector's z coordinate.
         float z;
+    };
+
+    typedef std::vector<GeometricVector> GeometricVectors;
+
+    ///////////////  Position  ///////////////
+
+    //API Struct: Position
+    //    Defines a latitude, longitude, and altitude.
+    struct Position
+    {
+    public:
+        //API Constructor: Position
+        //    Creates a Position object.
+        //
+        //Parameters:
+        //    lat_init - initial latitude
+        //    long_init - initial longitude
+        //    alt_init - initial altitude
+        Position(double lat_init, double long_init, double alt_init):
+            latitude(lat_init),
+            longitude(long_init),
+            altitude(alt_init) {}
+
+        //API Constructor: Position
+        //    Creates a zero-filled Position object.
+        Position() :
+            latitude(0),
+            longitude(0),
+            altitude(0) {}
+
+        //API Destructor: ~Position
+        //    Destroys a TimeUpdate object.
+        ~Position() {}
+
+        //API Variable: latitude
+        double latitude;
+
+        //API Variable: longitude
+        double longitude;
+
+        //API Variable: altitude
+        double altitude;
     };
 
     ///////////////  TimeUpdate  ///////////////
@@ -401,6 +461,35 @@ struct ZUPTSettingsData
     float threshold;
 };
 
+/////  FixedReferencePositionData  /////
+
+//API Struct: FixedReferencePositionData
+//    Contains the data for Set Reference Position command.
+struct FixedReferencePositionData
+{
+    //API Constructor: FixedReferencePositionData
+    //    Creates a FixedReferencePositionData object.
+    //
+    //Parameters:
+    //    pEnable - indicates whether a fixed reference position should be used
+    //    pReference - the reference position
+    FixedReferencePositionData(bool pEnable, Position pReference) :
+        enable(pEnable),
+        referencePosition(pReference) { }
+
+    //API Constructor: FixedReferencePositionData
+    //    Creates a FixedReferencePositionData object.
+    FixedReferencePositionData() :
+        enable(false),
+        referencePosition(Position()) { }
+
+    //API Variable: enable
+    bool enable;
+
+    //API Variable: referencePosition
+    Position referencePosition;
+};
+
                 /////  SBASSettings  /////
 
 //API Struct: SBASSettingsData
@@ -422,6 +511,13 @@ struct SBASSettingsData
     //API Variable: SatellitePRNs 
     //  The <SatellitePRNs> for all included satellites.
     SatellitePRNs satellitePRNs;
+
+    SBASSettingsData():
+        enableSBAS(false),
+        enableRanging(false),
+        enableCorrectionData(false),
+        applyIntegrityInfo(false)
+    {}
 };
 
 //API Struct: Constellation
@@ -429,7 +525,7 @@ struct SBASSettingsData
 struct Constellation
 {
     //API Variable: constellationID
-    uint8 constellationID;
+    InertialTypes::ConstellationId constellationID;
 
     //API Variable: enabled
     bool enabled;
@@ -454,7 +550,7 @@ typedef std::vector<Constellation> Constellations;
 struct ConstellationSettingsData
 {
     //API Variable: maxChannelsAvailable
-    uint16 maxChannelsAvailable;  // Ignored on send.  Only relevent on reply.
+    uint16 maxChannelsAvailable;  // Ignored on send.  Only relevant on reply.
 
     //API Variable: maxChannelsToUse
     uint16 maxChannelsToUse;
@@ -467,29 +563,6 @@ struct ConstellationSettingsData
 //    Contains the data for the <InertialNode::setAdvancedLowPassFilterSettings> API call.
 struct AdvancedLowPassFilterData
 {
-    // API Constructor: AdvancedLowPassFilterData
-    AdvancedLowPassFilterData() :
-        dataDescriptor (SCALED_ACCEL_DATA),
-        manualFilterBandwidthConfig (SET_TO_HALF_REPORTING_RATE),
-        applyLowPassFilter (true),
-        cutoffFrequency (0)
-    { }
-
-    //API Enum: DataDescriptor
-    //    The enum for the different data descriptors.
-    //
-    //  SCALED_ACCEL_DATA = 0x04
-    //  SCALED_GYRO_DATA = 0x05
-    //  SCALED_MAG_DATA = 0x06
-    //  SCALED_PRESSURE_DATA = 0x17
-    enum DataDescriptor
-    {
-        SCALED_ACCEL_DATA = 0x04,
-        SCALED_GYRO_DATA = 0x05,
-        SCALED_MAG_DATA = 0x06,
-        SCALED_PRESSURE_DATA = 0x17
-    } dataDescriptor;
-
     //API Enum: ManualFilterBandwidthConfig
     //    The enum for the different data descriptors.
     //
@@ -497,9 +570,39 @@ struct AdvancedLowPassFilterData
     //  USER_SPECIFIED_CUTOFF_FREQ = 0x01
     enum ManualFilterBandwidthConfig
     {
-        SET_TO_HALF_REPORTING_RATE = 0X00,
+        SET_TO_HALF_REPORTING_RATE = 0x00,
         USER_SPECIFIED_CUTOFF_FREQ = 0x01
-    } manualFilterBandwidthConfig;
+    };
+
+    // API Constructor: AdvancedLowPassFilterData
+    AdvancedLowPassFilterData() :
+        dataDescriptor(mscl::MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_ACCEL_VEC),
+        manualFilterBandwidthConfig(SET_TO_HALF_REPORTING_RATE),
+        applyLowPassFilter(true),
+        cutoffFrequency(0)
+    { }
+
+    // API Constructor: AdvancedLowPassFilterData
+    AdvancedLowPassFilterData(mscl::MipTypes::ChannelField descriptor) :
+        dataDescriptor(descriptor),
+        manualFilterBandwidthConfig(SET_TO_HALF_REPORTING_RATE),
+        applyLowPassFilter(true),
+        cutoffFrequency(0)
+    { }
+
+    //API Variable: dataDescriptor
+    //    the data descriptor these settings apply to
+    //
+    //  Valid values:
+    //  CH_FIELD_SENSOR_SCALED_ACCEL_VEC = 0x8004
+    //  CH_FIELD_SENSOR_SCALED_GYRO_VEC = 0x8005
+    //  CH_FIELD_SENSOR_SCALED_MAG_VEC = 0x8006
+    //  CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE = 0x8017
+    mscl::MipTypes::ChannelField dataDescriptor;
+
+    //API Variable: manualFilterBandwidthConfig
+    //  The <ManualFilterBandwidthConfig> to use.
+    ManualFilterBandwidthConfig manualFilterBandwidthConfig;
 
     //API Variable: applyLowPassFilter
     //    applies low-pass filter if set to true.
@@ -508,7 +611,14 @@ struct AdvancedLowPassFilterData
     //API Variable: cutoffFrequency
     //    Sets the cutoff frequency, only if manualFilterBandwidthConfig == USER_SPECIFIED_CUTOFF_FREQ
     uint16 cutoffFrequency;
+
+public:
+    static uint8 getDataDescriptorForCommand(mscl::MipTypes::ChannelField descriptor) { return static_cast<uint8>(descriptor); }
+
+    static mscl::MipTypes::ChannelField getDataDescriptorFromUint8(uint8 descriptor) { return static_cast<mscl::MipTypes::ChannelField>(descriptor | 0x8000); }
 };
+
+typedef std::vector<AdvancedLowPassFilterData> AdvancedLowPassFilterConfig;
 
 //API Struct: ComplementaryFilterData
 //    Contains the data needed by the <InertialNode::setComplementaryFilterSettings> class.
@@ -721,7 +831,7 @@ public:
     //Constructor: GeographicSourceOptions
     GeographicSourceOptions() :
         source(InertialTypes::GeographicSourceOption::NONE),
-        fixed(0.0)
+        manual(0.0)
     { }
 
     //Constructor: GeographicSourceOptions
@@ -732,14 +842,14 @@ public:
     //  fixedValue - The fixed value entered by the user to be used if the source is fixed.
     GeographicSourceOptions(const InertialTypes::GeographicSourceOption& sourceValue, const float fixedValue) :
         source(sourceValue),
-        fixed(fixedValue)
+        manual(fixedValue)
     {}
 
     //API Variable: source
     InertialTypes::GeographicSourceOption source;
 
-    //API Variable: fixed
-    float fixed;
+    //API Variable: manual
+    float manual;
 };
 
 //API Struct: EstimationControlOptions

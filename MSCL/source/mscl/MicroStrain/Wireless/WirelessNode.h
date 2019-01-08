@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -135,6 +135,14 @@ namespace mscl
         //Exceptions:
         //  - <Error_NoData>: There is no communication time logged for this Node.
         const Timestamp& lastCommunicationTime() const;
+
+        //API Function: lastDeviceState
+        //  Gets the last known <DeviceState> for the Node.
+        //  This device state is updated by diagnostic packets, as well as when operations are performed by MSCL, such as setting a Node to idle.
+        //
+        //Returns:
+        //  The last known <DeviceState>.
+        DeviceState lastDeviceState() const;
 
         //API Function: setBaseStation
         //    Sets the node's parent Base Station, which will perform all communication with the node
@@ -995,6 +1003,18 @@ namespace mscl
         //  - <Error_NodeCommunication>: Failed to read from the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint16 getNumActiveGauges() const;
+
+        //API Function: getLowBatteryThreshold
+        //  Reads the threshold at which the low battery diagnostic flag is sent.
+        //
+        //Returns:
+        //  The low battery threshold, in Volts.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Low Battery Threshold is not supported.
+        //  - <Error_NodeCommunication>: Failed to read from the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        float getLowBatteryThreshold() const;
 
         //API Function: getLinearEquation
         //    Gets the linear equation of the specified <ChannelMask> currently set on the Node.

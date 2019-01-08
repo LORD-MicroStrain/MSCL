@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -10,8 +10,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {    
-    //API Class: NodeFeatures
-    //    Contains information on which features are supported by a <WirelessNode>.
+    //API Class: NodeFeatures_200series
+    //    Contains information on which features are supported by a 200-series <WirelessNode>.
+    //    Inherits from <NodeFeatures>.
     class NodeFeatures_200series : public NodeFeatures
     {
     private:

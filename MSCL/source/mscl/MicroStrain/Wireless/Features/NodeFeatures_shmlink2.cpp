@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -18,28 +18,28 @@ namespace mscl
         static const ChannelMask DIFF_CH2(BOOST_BINARY(00000010));    //ch2
         static const ChannelMask DIFF_CH3(BOOST_BINARY(00000100));    //ch3
 
-        m_channelGroups.emplace_back(DIFF_CH1, "Differential Channel 1",
+        m_channelGroups.emplace_back(DIFF_CH1, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_gaugeFactor, NodeEepromMap::GAUGE_FACTOR_1}}
         );
 
-        m_channelGroups.emplace_back(DIFF_CH2, "Differential Channel 2",
+        m_channelGroups.emplace_back(DIFF_CH2, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_gaugeFactor, NodeEepromMap::GAUGE_FACTOR_2}}
         );
 
-        m_channelGroups.emplace_back(DIFF_CH3, "Differential Channel 3",
+        m_channelGroups.emplace_back(DIFF_CH3, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_gaugeFactor, NodeEepromMap::GAUGE_FACTOR_3}}
         );
 
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential 1");
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential, "Differential 2");
-        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_fullDifferential, "Differential 3");
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential");
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential, "Differential");
+        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_fullDifferential, "Differential");
         m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_acceleration, "Acceleration X");
-        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_acceleration, "Acceleration X");
-        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration, "Acceleration X");
+        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_acceleration, "Acceleration Y");
+        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration, "Acceleration Z");
     }
 
     WirelessTypes::TransmitPower NodeFeatures_shmlink2::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const

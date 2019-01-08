@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -138,6 +138,30 @@ namespace mscl
         //  CH_ACTION_ID_8                  - The channel action ID of channel 8
         //  CH_ACTION_SLOPE_8               - The channel action slope of channel 8
         //  CH_ACTION_OFFSET_8              - The channel action offset of channel 8
+        //  CH_ACTION_ID_9                  - The channel action ID of channel 9
+        //  CH_ACTION_SLOPE_9               - The channel action slope of channel 9
+        //  CH_ACTION_OFFSET_9              - The channel action offset of channel 9
+        //  CH_ACTION_ID_10                 - The channel action ID of channel 10
+        //  CH_ACTION_SLOPE_10              - The channel action slope of channel 10
+        //  CH_ACTION_OFFSET_10             - The channel action offset of channel 10
+        //  CH_ACTION_ID_11                 - The channel action ID of channel 11
+        //  CH_ACTION_SLOPE_11              - The channel action slope of channel 11
+        //  CH_ACTION_OFFSET_11             - The channel action offset of channel 11
+        //  CH_ACTION_ID_12                 - The channel action ID of channel 12
+        //  CH_ACTION_SLOPE_12              - The channel action slope of channel 12
+        //  CH_ACTION_OFFSET_12             - The channel action offset of channel 12
+        //  CH_ACTION_ID_13                 - The channel action ID of channel 13
+        //  CH_ACTION_SLOPE_13              - The channel action slope of channel 13
+        //  CH_ACTION_OFFSET_13             - The channel action offset of channel 13
+        //  CH_ACTION_ID_14                 - The channel action ID of channel 14
+        //  CH_ACTION_SLOPE_14              - The channel action slope of channel 14
+        //  CH_ACTION_OFFSET_14             - The channel action offset of channel 14
+        //  CH_ACTION_ID_15                 - The channel action ID of channel 15
+        //  CH_ACTION_SLOPE_15              - The channel action slope of channel 15
+        //  CH_ACTION_OFFSET_15             - The channel action offset of channel 15
+        //  CH_ACTION_ID_16                 - The channel action ID of channel 16
+        //  CH_ACTION_SLOPE_16              - The channel action slope of channel 16
+        //  CH_ACTION_OFFSET_16             - The channel action offset of channel 16
         //  LEGACY_BOOTLOAD_PAGE            - The bootloader page address (Legacy)
         //  LEGACY_BOOTLOAD_ENABLE_FLAG     - The bootloader enable flag (Legacy)
         //  LEGACY_BOOTLOAD_CHECKSUM        - The bootloader checksum (Legacy)
@@ -225,6 +249,7 @@ namespace mscl
         //  GAUGE_FACTOR_4                  - The Gauge Factor (4)
         //  GAUGE_RESISTANCE                - The Gauge Resistance
         //  NUM_ACTIVE_GAUGES               - The Number of Active Gauges
+        //  LOW_BATTERY_THRESHOLD           - The threshold at which the low battery flag is sent
         //  THERMOCPL_TYPE                  - The thermocouple type for nodes with thermocouple capabilities (ie. TC-Link)
         //  FILTER_1                        - The first filter value for nodes with filter capabilities (ie. TC-Link)
         //  FILTER_2                        - The second filter value for nodes with 2 filter capabilities (ie. ENV-Link-Pro)
@@ -343,6 +368,30 @@ namespace mscl
         static const EepromLocation CH_ACTION_ID_8;
         static const EepromLocation CH_ACTION_SLOPE_8;
         static const EepromLocation CH_ACTION_OFFSET_8;
+        static const EepromLocation CH_ACTION_ID_9;
+        static const EepromLocation CH_ACTION_SLOPE_9;
+        static const EepromLocation CH_ACTION_OFFSET_9;
+        static const EepromLocation CH_ACTION_ID_10;
+        static const EepromLocation CH_ACTION_SLOPE_10;
+        static const EepromLocation CH_ACTION_OFFSET_10;
+        static const EepromLocation CH_ACTION_ID_11;
+        static const EepromLocation CH_ACTION_SLOPE_11;
+        static const EepromLocation CH_ACTION_OFFSET_11;
+        static const EepromLocation CH_ACTION_ID_12;
+        static const EepromLocation CH_ACTION_SLOPE_12;
+        static const EepromLocation CH_ACTION_OFFSET_12;
+        static const EepromLocation CH_ACTION_ID_13;
+        static const EepromLocation CH_ACTION_SLOPE_13;
+        static const EepromLocation CH_ACTION_OFFSET_13;
+        static const EepromLocation CH_ACTION_ID_14;
+        static const EepromLocation CH_ACTION_SLOPE_14;
+        static const EepromLocation CH_ACTION_OFFSET_14;
+        static const EepromLocation CH_ACTION_ID_15;
+        static const EepromLocation CH_ACTION_SLOPE_15;
+        static const EepromLocation CH_ACTION_OFFSET_15;
+        static const EepromLocation CH_ACTION_ID_16;
+        static const EepromLocation CH_ACTION_SLOPE_16;
+        static const EepromLocation CH_ACTION_OFFSET_16;
         static const EepromLocation LEGACY_BOOTLOAD_PAGE;
         static const EepromLocation LEGACY_BOOTLOAD_ENABLE_FLAG;
         static const EepromLocation LEGACY_BOOTLOAD_CHECKSUM;
@@ -431,6 +480,7 @@ namespace mscl
         static const EepromLocation GAUGE_FACTOR_4;
         static const EepromLocation GAUGE_RESISTANCE;
         static const EepromLocation NUM_ACTIVE_GAUGES;
+        static const EepromLocation LOW_BATTERY_THRESHOLD;
         static const EepromLocation THERMOCPL_TYPE;
         static const EepromLocation FILTER_1;
         static const EepromLocation FILTER_2;

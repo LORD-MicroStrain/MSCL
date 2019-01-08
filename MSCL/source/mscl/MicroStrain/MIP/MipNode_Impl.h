@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -100,6 +100,10 @@ namespace mscl
         //    A <Timestamp> representing the last time communication was achieved with the Node.
         Timestamp m_lastCommTime;
 
+        //Variable: m_lastDeviceState
+        //  The last known <DeviceState> of the Node.
+        DeviceState m_lastDeviceState;
+
     private:
         //Function: parseData
         //    Callback function that parses any bytes that are in the read buffer to find packets or command responses
@@ -121,7 +125,11 @@ namespace mscl
         //    - <Error_Connection>: Information failed to be loaded for this Node.
         const MipNodeInfo& info() const;
 
-	public:
+        //Function: onDataPacketAdded
+        //  The callback function to use to get notified of data packets being added.
+        void onDataPacketAdded();
+
+    public:
         //Function: doCommand
         //    Performs a generic MIP Command, sending the command bytes and waiting for the response.
         //
@@ -161,6 +169,10 @@ namespace mscl
         //Exceptions:
         //  - <Error_NoData>: There is no communication time logged for this device.
         const Timestamp& lastCommunicationTime() const;
+
+        //Function: lastDeviceState
+        //  Gets the last known <DeviceState> for the Node.
+        DeviceState lastDeviceState() const;
 
         //Function: firmwareVersion
         //    Gets the firmware <Version> of the Node.
@@ -1009,8 +1021,7 @@ namespace mscl
         //    from the passed in data is used to set the type of data to be returned.
         //
         //Parameters:
-        //    data - The <AdvancedLowPassFilterData::DataDescriptor> field from
-        //    the passed in data is used to set the type of data to be returned.
+        //    dataDescriptor - the <MipType::ChannelField> data descriptor for which to return the current advanced low-pass filter settings.
         //
         //Return:
         //    AdvancedLowPassFilterData new settings.
@@ -1020,7 +1031,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        AdvancedLowPassFilterData getAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data);
+        AdvancedLowPassFilterData getAdvancedLowPassFilterSettings(const MipTypes::ChannelField& dataDescriptor);
 
         //Function: setComplementaryFilterSettings
         //    Sets the complementary filter settings.
@@ -1313,6 +1324,128 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         AdaptiveMeasurementData getAdaptiveMeasurement(MipTypes::Command cmd);
+
+        //API Function: setGeometricVectors
+        //    Sets the <GeometricVector> data for the specified command.
+        //
+        //Parameter:
+        //    cmd - the specific command to set.
+        //
+        //Parameter:
+        //    data - the collection of <GeometricVector> data to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setGeometricVectors(MipTypes::Command cmd, const GeometricVectors& data);
+
+        //API Function: getGeometricVectors
+        //    Gets the <GeometricVector> data for the specified command.
+        //
+        //Parameter:
+        //    cmd - the specific command to get.
+        //
+        //Return:
+        //    <GeometricVector> - a collection of GeometricVectors representing the current settings for the specified command.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVectors getGeometricVectors(MipTypes::Command cmd);
+
+        //API Function: setFloats
+        //    Sets the float data for the specified command.
+        //
+        //Parameter:
+        //    cmd - the specific command to set.
+        //
+        //Parameter:
+        //    data - the collection of float data to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setFloats(MipTypes::Command cmd, const std::vector<float>& data);
+
+        //API Function: getFloats
+        //    Gets the float data for the specified command.
+        //
+        //Parameter:
+        //    cmd - the specific command to get.
+        //
+        //Return:
+        //    float - a collection of floats representing the current settings for the specified command.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        std::vector<float> getFloats(MipTypes::Command cmd);
+
+        //API Function: setMatrix3x3s
+        //    Sets the <Matrix_3x3> data for the specified command.
+        //
+        //Parameter:
+        //    cmd - the specific command to set.
+        //
+        //Parameter:
+        //    data - the collection of <Matrix_3x3> data to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setMatrix3x3s(MipTypes::Command cmd, const Matrix_3x3s& data);
+
+        //API Function: getMatrix3x3s
+        //    Gets the <Matrix_3x3> data for the specified command.
+        //
+        //Parameter:
+        //    cmd - the specific command to get.
+        //
+        //Return:
+        //    <Matrix_3x3> - a collection of Matrix_3x3s representing the current settings for the specified command.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        Matrix_3x3s getMatrix3x3s(MipTypes::Command cmd);
+
+        //API Function: setFixedReferencePosition
+        //    Sets the <FixedReferencePositionData> data for the specified command.
+        //
+        //Parameter:
+        //    data - the <FixedReferencePositionData> data to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setFixedReferencePosition(const FixedReferencePositionData& data);
+
+        //API Function: FixedReferencePositionData
+        //    Gets the <FixedReferencePositionData> data for the specified command.
+        //
+        //Return:
+        //    <FixedReferencePositionData> - the current fixed reference position settings.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        FixedReferencePositionData getFixedReferencePosition();
 
         //Function: sendExternalHeadingUpdate
         //    sends the external heading update command.

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -21,6 +21,31 @@ namespace mscl
         for(const auto& setting : m_settingsMap)
         {
             m_settings.push_back(setting.first);
+        }
+
+        //append channel numbers to the end of the group name
+        const uint8 lastChEnabled = channelMask.lastChEnabled();
+        if(channelMask.count() == 1)
+        {
+            m_name += " (ch" + Utils::toStr(lastChEnabled) + ")";
+        }
+        else
+        {
+            //find the first channel enabled
+            uint8 firstChEnabled = 0;
+            for(uint8 i = 1; i <= lastChEnabled; i++)
+            {
+                if(channelMask.enabled(i))
+                {
+                    firstChEnabled = i;
+                    break;
+                }
+            }
+
+            if(firstChEnabled != 0)
+            {
+                m_name += " (ch" + Utils::toStr(firstChEnabled) + "-ch" + Utils::toStr(lastChEnabled) + ")";
+            }
         }
     }
 

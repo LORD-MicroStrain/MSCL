@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -83,6 +83,10 @@ namespace mscl
         //Constants: TC-Link-200 SampleRates
         //    continuous_tclink1ch - continuous sample rates for the TC-Link-200 node.
         static const WirelessTypes::WirelessSampleRates continuous_tclink200;
+        
+        //Constants: RTD-Link-200 SampleRates
+        //    continuous_rtdlink200 - continuous sample rates for the RTD-Link-200 node.
+        static const WirelessTypes::WirelessSampleRates continuous_rtdlink200;
 
         //Constants: ENV-Link SampleRates
         //    continuous_envlink - continuous sample rates for the ENV-Link nodes.

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -14,6 +14,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Configuration/WirelessNodeConfig.h"
 #include "SyncSamplingFormulas.h"
 #include "mscl/MicroStrain/SampleUtils.h"
+#include "mscl/MicroStrain/Wireless/NodeCommTimes.h"
 
 namespace mscl
 {
@@ -1210,7 +1211,6 @@ namespace mscl
                             //this is a thermocouple channel
                             addThermoExtra = true;
 
-                            //settlingTime = WirelessTypes::settlingTime(config.filter1());
                             settlingTime = WirelessTypes::settlingTime(config.filterSettlingTime(chanItr));
 
                             //certain nodes need special delays
@@ -1271,7 +1271,6 @@ namespace mscl
                             addThermoExtra = true;
 
                             //first filter (thermocouple)
-                            //settlingTime = WirelessTypes::settlingTime(config.filter1());
                             settlingTime = WirelessTypes::settlingTime(config.filterSettlingTime(chanItr));
 
                             delayResult += settlingTime + 3;
@@ -1282,7 +1281,6 @@ namespace mscl
                             addVoltageExtra = true;
 
                             //second filter (voltage)
-                            //settlingTime = WirelessTypes::settlingTime(config.filter2());
                             settlingTime = WirelessTypes::settlingTime(config.filterSettlingTime(chanItr));
 
                             delayResult += settlingTime + 8;
@@ -1331,7 +1329,6 @@ namespace mscl
                             addVoltageExtra = true;
 
                             //first filter (voltage)
-                            //settlingTime = WirelessTypes::settlingTime(config.filter1());
                             settlingTime = WirelessTypes::settlingTime(config.filterSettlingTime(chanItr));
 
                             delayResult += settlingTime + 8;
@@ -1386,6 +1383,7 @@ namespace mscl
             case WirelessModels::node_sgLink_herm_2600:
             case WirelessModels::node_sgLink_herm_2700:
             case WirelessModels::node_sgLink_herm_2800:
+            case WirelessModels::node_sgLink_herm_2900:
             case WirelessModels::node_sgLink_rgd:
             {
                 //get the sampling delay stored in EEPROM (this node uses this values as microseconds instead of milliseconds).
@@ -1446,6 +1444,8 @@ namespace mscl
                 {
                     if(m_networkBase.node_startSyncSampling(nodeInfo.m_node.protocol(m_networkBase.communicationProtocol()), nodeAddress))
                     {
+                        NodeCommTimes::updateDeviceState(nodeAddress, DeviceState::deviceState_sampling);
+
                         //mark this node as started sampling so that we don't apply it again on successive calls to this function
                         nodeInfo.m_startedSampling = true;
 

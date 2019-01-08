@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -154,5 +154,24 @@ namespace mscl
         valueType_StructuralHealth          = 13,
         valueType_RfSweep                   = 14,
         valueType_ChannelMask               = 15
+    };
+
+    //API Enum: DeviceState
+    //  The possible states a device can be in.
+    //
+    //  deviceState_idle                - 0 - Idle state
+    //  deviceState_sleep               - 1 - Sleep state
+    //  deviceState_sampling            - 2 - Sampling state
+    //  deviceState_sampling_lostBeacon - 3 - Sampling state, but lost the beacon
+    //  deviceState_inactive            - 4 - Sampling state, but with no activity (in activity detect mode)
+    //  deviceState_unknown             - 255 - Unknown
+    enum DeviceState
+    {
+        deviceState_idle                = 0,
+        deviceState_sleep               = 1,
+        deviceState_sampling            = 2,
+        deviceState_sampling_lostBeacon = 3,
+        deviceState_sampling_inactive   = 4,
+        deviceState_unknown             = 255
     };
 }

@@ -1,11 +1,12 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 
 #include "DiagnosticPacket.h"
+#include "mscl/MicroStrain/Wireless/NodeCommTimes.h"
 
 namespace mscl
 {
@@ -35,7 +36,6 @@ namespace mscl
         sweep.frequency(m_frequency);
         sweep.nodeAddress(m_nodeAddress);
 
-        //the data itself is the beacon timestamp. 
         //use this for the current PC time
         sweep.timestamp(Timestamp::timeNow());
 
@@ -65,7 +65,7 @@ namespace mscl
 
             infoId = payload.read_uint8();
 
-            addDataPoint(chData, payload, infoLen - 1, infoId);
+            addDataPoint(chData, payload, infoLen - 1, infoId, m_nodeAddress);
 
             infoByteCounter += (infoLen + 1);
         }
@@ -77,14 +77,18 @@ namespace mscl
         addSweep(sweep);
     }
 
-    void DiagnosticPacket::addDataPoint(ChannelData& container, DataBuffer& payload, uint8 infoLength, uint8 infoId)
+    void DiagnosticPacket::addDataPoint(ChannelData& container, DataBuffer& payload, uint8 infoLength, uint8 infoId, NodeAddress nodeAddress)
     {
         switch(infoId)
         {
             //Current State
             case 0x00:
-                container.emplace_back(WirelessChannel::channel_diag_state, 0, valueType_uint8, anyType(payload.read_uint8()));
+            {
+                uint8 val = payload.read_uint8();
+                NodeCommTimes::updateDeviceState(nodeAddress, static_cast<DeviceState>(val));
+                container.emplace_back(WirelessChannel::channel_diag_state, 0, valueType_uint8, anyType(val));
                 break;
+            }
 
             //Run Time
             case 0x01:
@@ -169,6 +173,11 @@ namespace mscl
             case 0x0B:
                 //this field is just an updated version of the previous Internal Temperature (0x09) field
                 container.emplace_back(WirelessChannel::channel_diag_internalTemp, 0, valueType_float, anyType(static_cast<float>(payload.read_int16() / 100.0f)));
+                break;
+
+            //% Datalogging Memory Full
+            case 0x0C:
+                container.emplace_back(WirelessChannel::channel_diag_memoryFull, 0, valueType_float, anyType(static_cast<float>(payload.read_uint16() / 100.0f)));
                 break;
 
             //Unknown info

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -128,6 +128,8 @@ namespace mscl
         //    - <Error_Connection>: The connection has been disconnected.
         virtual void rawByteMode(bool enable) = 0;
 
+        virtual bool rawByteMode() = 0;
+
         //Function: getRawBytes
         //    Gets all of the raw bytes that are available that have been collected when the Connection is in "Raw Byte Mode."
         //    If the Connection has not been put into "Raw Byte Mode" by calling <rawByteMode>, no data can be retrieved from this function.
@@ -153,6 +155,8 @@ namespace mscl
         //Exceptions:
         //  - <Error_Connection>: The connection has been disconnected.
         virtual void debugMode(bool enable) = 0;
+
+        virtual bool debugMode() = 0;
 
         //Function: getDebugData
         //  Gets the <ConnectionDebugData> that have been collected when the Connection is in "Debug Mode."
@@ -198,9 +202,9 @@ namespace mscl
         //    A <BoostCommunication> object used for actual read/write operations.
         std::unique_ptr< BoostCommunication<Comm_Object> > m_comm;
 
-        //Variable: m_ioService
-        //    The boost::asio::io_service object.
-        std::unique_ptr<boost::asio::io_service> m_ioService;
+        //Variable: m_ioContext
+        //    The boost::asio::io_context object.
+        std::unique_ptr<boost::asio::io_context> m_ioContext;
 
         //Variable: m_ioPort
         //    The actual boost communication object (ex. boost::asio::serial_port, tcp::socket, etc.)
@@ -366,6 +370,10 @@ namespace mscl
         //    - <Error_Connection>: The connection has been disconnected.
         virtual void rawByteMode(bool enable) final;
 
+        //Function: rawByteMode
+        //  Checks if raw byte mode is enabled (true) or disabled (false)
+        virtual bool rawByteMode() final;
+
         //Function: getRawBytes
         //    Gets all of the raw bytes that are available that have been collected when the Connection is in "Raw Byte Mode."
         //    If the Connection has not been put into "Raw Byte Mode" by calling <rawByteMode>, no data can be retrieved from this function.
@@ -391,6 +399,10 @@ namespace mscl
         //Exceptions:
         //  - <Error_Connection>: The connection has been disconnected.
         virtual void debugMode(bool enable) final;
+
+        //Function: debugMode
+        //  Checks if debug mode is enabled (true) or disabled (false)
+        virtual bool debugMode() final;
 
         //Function: getDebugData
         //  Gets the <ConnectionDebugData> that have been collected when the Connection is in "Debug Mode."
@@ -629,7 +641,7 @@ namespace mscl
         //if the thread is running
         if(m_readThread.get())
         {
-            //stop the boost io_service to stop all the reads and writes, and close the com port
+            //stop the boost io_context to stop all the reads and writes, and close the com port
             if(m_comm)
             {
                 m_comm->stopIoService();
@@ -669,6 +681,12 @@ namespace mscl
 
             m_rawByteMode = false;
         }
+    }
+
+    template <typename Comm_Object>
+    bool Connection_Impl<Comm_Object>::rawByteMode()
+    {
+        return m_rawByteMode;
     }
 
     template <typename Comm_Object>
@@ -799,6 +817,12 @@ namespace mscl
         }
 
         m_debugMode = enable;
+    }
+
+    template <typename Comm_Object>
+    bool Connection_Impl<Comm_Object>::debugMode()
+    {
+        return m_debugMode;
     }
 
     template <typename Comm_Object>

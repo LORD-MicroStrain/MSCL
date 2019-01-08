@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -29,7 +29,7 @@ namespace mscl
     //initializes and opens the serial connection
     void SerialConnection::establishConnection()
     {
-        using ::boost::asio::io_service;
+        using ::boost::asio::io_context;
         using ::boost::asio::serial_port;
         using ::boost::asio::serial_port_base;
 
@@ -48,11 +48,11 @@ namespace mscl
         {
             try
             {
-                //setup the m_ioService
-                m_ioService.reset(new io_service());
+                //setup the m_ioContext
+                m_ioContext.reset(new io_context());
 
-                //setup the m_ioPort by creating a new serial_port using the io_service and port name
-                m_ioPort.reset(new serial_port(*m_ioService, getNativeSerialPort(m_port)));
+                //setup the m_ioPort by creating a new serial_port using the io_context and port name
+                m_ioPort.reset(new serial_port(*m_ioContext, getNativeSerialPort(m_port)));
 
                 //create the serial port options
                 const serial_port_base::baud_rate           BAUD(m_baudRate);                                       //Baud Rate
@@ -69,7 +69,7 @@ namespace mscl
                 m_ioPort->set_option(STOP_BITS);
 
                 //setup m_comm by creating a new BoostCommunication object using the serial_port and io_service we created
-                m_comm.reset(new BoostCommunication<serial_port>(std::move(m_ioService), std::move(m_ioPort)));
+                m_comm.reset(new BoostCommunication<serial_port>(std::move(m_ioContext), std::move(m_ioPort)));
 
                 //create/start the read thread to parse incoming data
                 m_readThread.reset(new std::thread(&SerialConnection::startIoThread, this));

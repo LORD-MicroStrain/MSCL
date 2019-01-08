@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -110,6 +110,14 @@ namespace mscl
         //Exceptions:
         //  - <Error_NoData>: There is no communication time logged for this device.
         const Timestamp& lastCommunicationTime() const;
+
+        //API Function: lastDeviceState
+        //  Gets the last known <DeviceState> for the InertialNode.
+        //  This device state is updated by MSCL when data packets are received, as well as when operations are performed, such as setting a Node to idle.
+        //
+        //Returns:
+        //  The last known <DeviceState>.
+        DeviceState lastDeviceState() const;
 
         //API Function: firmwareVersion
         //    Gets the firmware <Version> of the InertialNode.
@@ -991,24 +999,23 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
-        void setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data);
+        void setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterConfig& data);
 
         //API Function: getAdvancedLowPassFilterSettings
-        //    Gets the current advanced low-pass filter settings.
+        //    Gets the current advanced low-pass filter settings for the given data descriptors
         //
         //Parameter:
-        //    data - The <AdvancedLowPassFilterData::DataDescriptor> field from
-        //    the passed in data is used to set the type of data to be returned.
+        //    dataDescriptors - the <MipType::ChannelField> data descriptors for which to return the current advanced low-pass filter settings.
         //
         //Return:
-        //    AdvancedLowPassFilterData new settings.
+        //    <AdvancedLowPassFilterData> settings.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        AdvancedLowPassFilterData getAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data);
+        AdvancedLowPassFilterConfig getAdvancedLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors);
         
         //API Function: setComplementaryFilterSettings
         //    Sets the complementary filter settings.
@@ -1347,6 +1354,266 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         AdaptiveMeasurementData getMagDipAngleErrorAdaptiveMeasurement();
+
+        //API Function: setMagNoiseStandardDeviation
+        //    Sets the magnetometer noise standard deviation.
+        //
+        //Parameter:
+        //    data - the <GeometricVector> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setMagNoiseStandardDeviation(const GeometricVector& data);
+
+        //API Function: getMagNoiseStandardDeviation
+        //    Gets the magnetometer noise standard deviation.
+        //
+        //Return:
+        //    <GeometricVector> - The current magnetometer noise standard deviation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVector getMagNoiseStandardDeviation();
+
+        //API Function: setGravNoiseStandardDeviation
+        //    Sets the gravity noise standard deviation.
+        //
+        //Parameter:
+        //    data - the <GeometricVector> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setGravNoiseStandardDeviation(const GeometricVector& data);
+
+        //API Function: getGravNoiseStandardDeviation
+        //    Gets the gravity noise standard deviation.
+        //
+        //Return:
+        //    <GeometricVector> - The current gravity noise standard deviation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVector getGravNoiseStandardDeviation();
+
+        //API Function: setAccelNoiseStandardDeviation
+        //    Sets the accelerometer noise standard deviation.
+        //
+        //Parameter:
+        //    data - the <GeometricVector> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setAccelNoiseStandardDeviation(const GeometricVector& data);
+
+        //API Function: getAccelNoiseStandardDeviation
+        //    Gets the accelerometer noise standard deviation.
+        //
+        //Return:
+        //    <GeometricVector> - The current accelerometer noise standard deviation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVector getAccelNoiseStandardDeviation();
+
+        //API Function: setGyroNoiseStandardDeviation
+        //    Sets the gyroscope noise standard deviation.
+        //
+        //Parameter:
+        //    data - the <GeometricVector> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setGyroNoiseStandardDeviation(const GeometricVector& data);
+
+        //API Function: getGyroNoiseStandardDeviation
+        //    Gets the gyroscope noise standard deviation.
+        //
+        //Return:
+        //    <GeometricVector> - The current gyroscope noise standard deviation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVector getGyroNoiseStandardDeviation();
+
+        //API Function: setPressureAltNoiseStandardDeviation
+        //    Sets the pressure altitude noise standard deviation.
+        //
+        //Parameter:
+        //    data - the float to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setPressureAltNoiseStandardDeviation(const float& data);
+
+        //API Function: getPressureAltNoiseStandardDeviation
+        //    Gets the pressure altitude noise standard deviation.
+        //
+        //Return:
+        //    float - The current pressure altitude noise standard deviation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        float getPressureAltNoiseStandardDeviation();
+
+        //API Function: setHardIronOffsetProcessNoise
+        //    Sets the hard iron offset process noise.
+        //
+        //Parameter:
+        //    data - the <GeometricVector> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setHardIronOffsetProcessNoise(const GeometricVector& data);
+
+        //API Function: getHardIronOffsetProcessNoise
+        //    Gets the hard iron offset process noise.
+        //
+        //Return:
+        //    <GeometricVector> - The current hard iron offset process noise.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVector getHardIronOffsetProcessNoise();
+
+        //API Function: setAccelBiasModelParams
+        //    Sets the accelerometer bias model parameters.
+        //
+        //Parameter:
+        //    data - the collection of <GeometricVector> to send - contains two data points: bias beta values, and bias noise values.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setAccelBiasModelParams(const GeometricVectors& data);
+
+        //API Function: getAccelBiasModelParams
+        //    Gets the accelerometer bias model parameters.
+        //
+        //Return:
+        //    <GeometricVector> - The current accelerometer bias model parameters - returns two data points: bias beta values, and bias noise values.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVectors getAccelBiasModelParams();
+
+        //API Function: setGyroBiasModelParams
+        //    Sets the gyroscope bias model parameters.
+        //
+        //Parameter:
+        //    data - the collection of <GeometricVector> to send - contains two data points: bias beta values, and bias noise values.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setGyroBiasModelParams(const GeometricVectors& data);
+
+        //API Function: getGyroBiasModelParams
+        //    Gets the gyroscope bias model parameters.
+        //
+        //Return:
+        //    <GeometricVector> - The current gyroscope bias model parameters - returns two data points: bias beta values, and bias noise values.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVectors getGyroBiasModelParams();
+
+        //API Function: setSoftIronMatrixProcessNoise
+        //    Sets the soft iron matrix process noise.
+        //
+        //Parameter:
+        //    data - the collection of <Matrix_3x3> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setSoftIronMatrixProcessNoise(const Matrix_3x3& data);
+
+        //API Function: getSoftIronMatrixProcessNoise
+        //    Gets the soft iron matrix process noise.
+        //
+        //Return:
+        //    <Matrix_3x3> - The current soft iron matrix process noise.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        Matrix_3x3 getSoftIronMatrixProcessNoise();
+
+        //API Function: setFixedReferencePosition
+        //    Sets the <FixedReferencePositionData> data for the specified command.
+        //
+        //Parameter:
+        //    data - the <FixedReferencePositionData> data to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setFixedReferencePosition(const FixedReferencePositionData& data);
+
+        //API Function: FixedReferencePositionData
+        //    Gets the <FixedReferencePositionData> data for the specified command.
+        //
+        //Return:
+        //    <FixedReferencePositionData> - the current fixed reference position settings.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        FixedReferencePositionData getFixedReferencePosition();
 
         //API Function: sendExternalHeadingUpdate
         //    sends the external heading update command.

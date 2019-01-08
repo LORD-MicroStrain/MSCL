@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -41,6 +41,13 @@ namespace mscl
         //  node_gLink_200_40g_oem_u_fl         - 63056142 - G-Link-200-40g-OEM (U.Fl Antenna)
         //  node_sgLink_oem_S                   - 63081000 - SG-Link 0EM -S (non-xr)
         //  node_sgLink                         - 63083000 - SG-Link
+        //  node_sgLink200                      - 63083300 - SG-Link-200, Full Bridge
+        //  node_sgLink200_hbridge_350          - 63083330 - SG-Link-200, Half Bridge, 350 ohm
+        //  node_sgLink200_hbridge_120          - 63083320 - SG-Link-200, Half Bridge, 120 ohm
+        //  node_sgLink200_qbridge_1K           - 63083410 - SG-Link-200, Quarter Bridge, 1k ohm
+        //  node_sgLink200_hbridge_1K           - 63083310 - SG-Link-200, Half Bridge, 1k ohm
+        //  node_sgLink200_qbridge_350          - 63083430 - SG-Link-200, Quarter Bridge, 350 ohm
+        //  node_sgLink200_qbridge_120          - 63083420 - SG-Link-200, Quarter Bridge, 120 ohm
         //  node_sgLink_oem                     - 63084000 - SG-Link OEM
         //  node_sgLink_micro                   - 63084100 - SG-Link Micro
         //  node_sgLink200_oem                  - 63084200 - SG-Link-200-OEM - Full Bridge, Internal Antenna
@@ -65,9 +72,17 @@ namespace mscl
         //  node_tcLink_6ch_ip67                - 63107000 - TC-Link 6CH IP67
         //  node_tcLink200_oem                  - 63104100 - TC-Link-200-OEM, Internal Antenna
         //  node_tcLink200_oem_ufl              - 63104101 - TC-Link-200-OEM, U.Fl Antenna
+        //  node_tcLink200                      - 63105400 - TC-Link-200
+        //  node_rtdLink200                     - 63105500 - RTD-Link-200
         //  node_tcLink_6ch_ip67_rht            - 63108000 - TC-Link 6CH IP67 RHT
         //  node_vLink                          - 63121000 - V-Link
-        //  node_vLink200                       - 63122000 - V-Link 2
+        //  node_vLink200                       - 63122000 - V-Link 200 - Full Bridge
+        //  node_vLink200_qbridge_1K            - 63122110 - V-Link 200 - Quarter Bridge, 1K OHM
+        //  node_vLink200_qbridge_120           - 63122120 - V-Link 200 - Quarter Bridge, 120 OHM
+        //  node_vLink200_qbridge_350           - 63122130 - V-Link 200 - Quarter Bridge, 350 OHM
+        //  node_vLink200_hbridge_1K            - 63122210 - V-Link 200 - Half Bridge, 1K OHM
+        //  node_vLink200_hbridge_120           - 63122220 - V-Link 200 - Half Bridge, 120 OHM
+        //  node_vLink200_hbridge_350           - 63122230 - V-Link 200 - Half Bridge, 350 OHM
         //  node_iepeLink                       - 63160010 - IEPE-Link
         //  node_dvrtLink                       - 63181000 - DVRT-Link
         //  node_envLink_mini                   - 63220000 - ENV-Link-Mini
@@ -90,12 +105,15 @@ namespace mscl
         //  node_shmLink201_hbridge_1K          - 63290153 - SHM-Link 201 - Half Bridge - 1K resistance
         //  node_shmLink201_hbridge_348         - 63290154 - SHM-Link 201 - Half Bridge - 348 resistance
         //  node_shmLink201_fullbridge          - 63290155 - SHM-Link 201 - Full Bridge
+        //  node_shmLink210_fullbridge          - 63290170 - SHM-Link 210 - Full Bridge
+        //  node_shmLink210_qbridge_3K          - 63290171 - SHM-Link 210 - Quarter Bridge - 3K OHM
         //  node_torqueLink                     - 63309999 - Torque-Link
         //  node_torqueLink200                  - 63319999 - Torque-Link-200
         //  node_sgLink_herm                    - 65010000 - SG-Link-Hermetic
         //  node_sgLink_herm_2600               - 65011110 - SG-Link-Hermetic 2600 belt assembly
         //  node_sgLink_herm_2700               - 65011210 - SG-Link-Hermetic 2700 belt assembly
         //  node_sgLink_herm_2800               - 65011310 - SG-Link-Hermetic 2800 belt assembly
+        //  node_sgLink_herm_2900               - 65011410 - SG-Link-Hermetic 2900 belt assembly
         //  node_wirelessImpactSensor           - 65080000 - Wireless Impact Sensor
         //=========================================================================
         enum NodeModel
@@ -122,6 +140,13 @@ namespace mscl
             node_gLink_200_40g_oem_u_fl         = 63056142,     //G-Link-200-40g-OEM (U.Fl Antenna)
             node_sgLink_oem_S                   = 63081000,     //SG-Link 0EM -S (non-xr)
             node_sgLink                         = 63083000,     //SG-Link
+            node_sgLink200                      = 63083300,     //SG-Link-200, Full Bridge
+            node_sgLink200_hbridge_1K           = 63083310,     //SG-Link-200, Half Bridge, 1k ohm
+            node_sgLink200_hbridge_350          = 63083330,     //SG-Link-200, Half Bridge, 350 ohm
+            node_sgLink200_hbridge_120          = 63083320,     //SG-Link-200, Half Bridge, 120 ohm
+            node_sgLink200_qbridge_1K           = 63083410,     //SG-Link-200, Quarter Bridge, 1k ohm
+            node_sgLink200_qbridge_350          = 63083430,     //SG-Link-200, Quarter Bridge, 350 ohm
+            node_sgLink200_qbridge_120          = 63083420,     //SG-Link-200, Quarter Bridge, 120 ohm
             node_sgLink_oem                     = 63084000,     //SG-Link OEM
             node_sgLink_micro                   = 63084100,     //SG-Link Micro
             node_sgLink200_oem                  = 63084200,     //SG-Link-200-OEM - Full Bridge, Internal Antenna
@@ -146,6 +171,8 @@ namespace mscl
             node_tcLink_6ch_ip67                = 63107000,     //TC-Link 6CH IP67
             node_tcLink200_oem                  = 63104100,     //TC-Link-200-OEM, Internal Antenna
             node_tcLink200_oem_ufl              = 63104101,     //TC-Link-200-OEM, U.Fl Antenna
+            node_tcLink200                      = 63105400,     //TC-Link-200
+            node_rtdLink200                     = 63105500,     //RTD-Link-200
             node_tcLink_6ch_ip67_rht            = 63108000,     //TC-Link 6CH IP67 RHT
             node_vLink                          = 63121000,     //V-Link
             node_vLink200                       = 63122000,     //V-Link 200 - Full Bridge
@@ -177,12 +204,15 @@ namespace mscl
             node_shmLink201_hbridge_1K          = 63290153,     //SHM-Link 201 - Half Bridge - 1K resistance
             node_shmLink201_hbridge_348         = 63290154,     //SHM-Link 201 - Half Bridge - 348 resistance
             node_shmLink201_fullbridge          = 63290155,     //SHM-Link 201 - Full Bridge
+            node_shmLink210_fullbridge          = 63290170,     //SHM-Link 210 - Full Bridge
+            node_shmLink210_qbridge_3K          = 63290171,     //SHM-Link 210 - Quarter Bridge - 3K OHM
             node_torqueLink                     = 63309999,     //Torque-Link
             node_torqueLink200                  = 63319999,     //Torque-Link-200
             node_sgLink_herm                    = 65010000,     //SG-Link-Hermetic
             node_sgLink_herm_2600               = 65011110,     //SG-Link-Hermetic 2600 belt assembly
             node_sgLink_herm_2700               = 65011210,     //SG-Link-Hermetic 2700 belt assembly
             node_sgLink_herm_2800               = 65011310,     //SG-Link-Hermetic 2800 belt assembly
+            node_sgLink_herm_2900               = 65011410,     //SG-Link-Hermetic 2900 belt assembly
             node_wirelessImpactSensor           = 65080000,     //Wireless Impact Sensor
         };
 

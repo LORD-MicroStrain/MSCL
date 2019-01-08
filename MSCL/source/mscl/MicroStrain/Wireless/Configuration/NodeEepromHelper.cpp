@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -1069,6 +1069,16 @@ namespace mscl
         write(NodeEepromMap::NUM_ACTIVE_GAUGES, Value::UINT16(numGauges));
     }
 
+    float NodeEepromHelper::read_lowBatteryThreshold()
+    {
+        return read(NodeEepromMap::LOW_BATTERY_THRESHOLD).as_float();
+    }
+
+    void NodeEepromHelper::write_lowBatteryThreshold(float volts)
+    {
+        write(NodeEepromMap::LOW_BATTERY_THRESHOLD, Value::FLOAT(volts));
+    }
+
     WirelessTypes::InputRange NodeEepromHelper::read_inputRange(const ChannelMask& mask) const
     {
         //find the type of the last channel enabled in the mask
@@ -1387,6 +1397,16 @@ namespace mscl
 
         //Inactivity Timeout
         write(NodeEepromMap::ACT_SENSE_INACTIVE_TIMEOUT, Value::FLOAT(options.inactivityTimeout()));
+    }
+
+    WirelessTypes::FatigueMode NodeEepromHelper::read_fatigueMode() const
+    {
+        if(m_node->features().supportsFatigueModeConfig())
+        {
+            return static_cast<WirelessTypes::FatigueMode>(read(NodeEepromMap::FATIGUE_MODE).as_uint16());
+        }
+        
+        return WirelessTypes::fatigueMode_angleStrain;
     }
 
     void NodeEepromHelper::read_fatigueOptions(FatigueOptions& result) const

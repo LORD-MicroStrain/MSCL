@@ -60,13 +60,13 @@ public class GeographicSourceOptions : global::System.IDisposable {
     } 
   }
 
-  public float _fixed {
+  public float manual {
     set {
-      msclPINVOKE.GeographicSourceOptions__fixed_set(swigCPtr, value);
+      msclPINVOKE.GeographicSourceOptions_manual_set(swigCPtr, value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      float ret = msclPINVOKE.GeographicSourceOptions__fixed_get(swigCPtr);
+      float ret = msclPINVOKE.GeographicSourceOptions_manual_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
