@@ -88,8 +88,8 @@ alias boostStaticLibs : boost_system/<link>static : <target-os>linux ;
 #darwin aliases
 alias unixsocket_cpp : source/mscl/Communication/UnixSocketConnection.cpp : <target-os>darwin ;
 alias upnp_files : : <target-os>darwin ;
-alias boostLibs : boost_system boost_filesystem boost_date_time boost_chrono pthread [ libraries ] : <target-os>darwin ;
-alias boostStaticLibs : boost_system/<link>static boost_date_time/<link>static boost_chrono/<link>static : <target-os>darwin ;
+alias boostLibs : boost_system boost_filesystem  pthread [ libraries ] : <target-os>darwin ;
+alias boostStaticLibs : boost_system/<link>static : <target-os>darwin ;
 
 alias msclSrcs
 :   [ glob source/*.cpp ]
