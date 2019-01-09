@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -46,6 +46,13 @@ namespace mscl
         //  The hardware offset to use when performing the Shunt Cal command.
         uint16 hardwareOffset;
 
+        //API Variable: excitationVoltage;
+        //  The excitation voltage of the Node when performing the Shunt Cal command.
+        //  Note: This will only be used if the Node supports excitation voltage configuration (see <NodeFeatures::supportsExcitationVoltageConfig>).
+        WirelessTypes::Voltage excitationVoltage;
+
+        //API Constructor: ShuntCalCmdInfo
+        //  Creates a default constructed ShuntCalCmdInfo object.
         ShuntCalCmdInfo():
             useInternalShunt(true),
             numActiveGauges(0),
@@ -53,7 +60,8 @@ namespace mscl
             shuntResistance(0),
             gaugeFactor(0.0f),
             inputRange(WirelessTypes::range_1mV),
-            hardwareOffset(0)
+            hardwareOffset(0),
+            excitationVoltage(WirelessTypes::voltage_1500mV)
         { }
     };
 }

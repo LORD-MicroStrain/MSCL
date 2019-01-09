@@ -11,7 +11,7 @@
 Title: MSCL Documentation
 Subtitle: MicroStrain Communication Library
 
-Copyright: © 2017 LORD Corporation. All Rights Reserved.
+Copyright: © 2018 LORD Corporation. All Rights Reserved.
 
 Timestamp: Updated mm/dd/yyyy
 #    m     - Single digit month, when possible.  January is "1".

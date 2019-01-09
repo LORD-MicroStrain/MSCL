@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -93,7 +93,7 @@ namespace mscl
             sweep.baseRssi(m_baseRSSI);
 
             //cals applied if the data type is float
-            sweep.calApplied(m_dataType == WirelessTypes::dataType_float32);
+            sweep.calApplied(WirelessTypes::isCalApplied(m_dataType));
         
             ChannelData chData;
 

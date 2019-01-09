@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -23,7 +23,8 @@ namespace mscl
         //    Creates a Histogram object with no bins.
         //
         //Parameters:
-        //    
+        //  binsStart - The start value of the first Bin.
+        //  binsSize - The size of each Bin.
         Histogram(const Value& binsStart, const Value& binsSize);
 
     private:

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -743,6 +743,9 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_fatigueDistAngles)
     WirelessNodeConfig c;
     c.fatigueOptions(opts);
 
+    expectRead(impl, NodeEepromMap::SAMPLING_MODE, Value::UINT16((uint16)WirelessTypes::samplingMode_sync));
+    expectRead(impl, NodeEepromMap::DATA_FORMAT, Value::UINT16((uint16)WirelessTypes::dataFormat_cal_float));
+
     ConfigIssues issues;
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
 
@@ -897,6 +900,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeRate)
 
     WirelessNodeConfig c;
     c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
+    c.lowPassFilter(ChannelMask(7), WirelessTypes::filter_209hz);
     c.activeChannels(ChannelMask(1));
     c.numSweeps(1000);
     c.dataFormat(WirelessTypes::dataFormat_cal_float);
@@ -904,10 +908,10 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeRate)
     c.dataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit);
     c.samplingMode(WirelessTypes::samplingMode_sync);
     c.dataMode(WirelessTypes::dataMode_raw_derived);
-    c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(1));
-    c.derivedChannelMask(WirelessTypes::derived_peakToPeak, ChannelMask(1));
-    c.derivedChannelMask(WirelessTypes::derived_ips, ChannelMask(1));
-    c.derivedChannelMask(WirelessTypes::derived_crestFactor, ChannelMask(1));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_rms, ChannelMask(1));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_peakToPeak, ChannelMask(1));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_velocity, ChannelMask(1));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_crestFactor, ChannelMask(1));
     EventTriggerOptions opts;
     opts.triggerMask(BitMask(0));
     c.eventTriggerOptions(opts);
@@ -945,6 +949,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeMask)
 
     WirelessNodeConfig c;
     c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
+    c.lowPassFilter(ChannelMask(7), WirelessTypes::filter_209hz);
     c.activeChannels(ChannelMask(1));
     c.numSweeps(1000);
     c.dataFormat(WirelessTypes::dataFormat_cal_float);
@@ -953,10 +958,10 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeMask)
     c.samplingMode(WirelessTypes::samplingMode_sync);
     c.dataMode(WirelessTypes::dataMode_raw_derived);
     c.derivedDataRate(WirelessTypes::sampleRate_30Sec);
-    c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(0));               //invalid ch for G-Link-200
-    c.derivedChannelMask(WirelessTypes::derived_peakToPeak, ChannelMask(0));
-    c.derivedChannelMask(WirelessTypes::derived_ips, ChannelMask(0));
-    c.derivedChannelMask(WirelessTypes::derived_crestFactor, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_rms, ChannelMask(0));               //invalid ch for G-Link-200
+    c.derivedChannelMask(WirelessTypes::derivedCategory_peakToPeak, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_velocity, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_crestFactor, ChannelMask(0));
     EventTriggerOptions opts;
     opts.triggerMask(BitMask(0));
     c.eventTriggerOptions(opts);
@@ -965,7 +970,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeMask)
 
     //-------------------------------------
     //Test invalid derived mask
-    c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(512));             //invalid ch for G-Link-200
+    c.derivedChannelMask(WirelessTypes::derivedCategory_rms, ChannelMask(512));             //invalid ch for G-Link-200
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
     BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DERIVED_MASK_RMS);
     issues.clear();
@@ -973,8 +978,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeMask)
 
     //-------------------------------------
     //Test invalid derived mask
-    c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(0));
-    c.derivedChannelMask(WirelessTypes::derived_peakToPeak, ChannelMask(512));      //invalid ch for G-Link-200
+    c.derivedChannelMask(WirelessTypes::derivedCategory_rms, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_peakToPeak, ChannelMask(512));      //invalid ch for G-Link-200
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
     BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DERIVED_MASK_P2P);
     issues.clear();
@@ -982,8 +987,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeMask)
 
     //-------------------------------------
     //Test invalid derived mask
-    c.derivedChannelMask(WirelessTypes::derived_peakToPeak, ChannelMask(0));
-    c.derivedChannelMask(WirelessTypes::derived_ips, ChannelMask(512));             //invalid ch for G-Link-200
+    c.derivedChannelMask(WirelessTypes::derivedCategory_peakToPeak, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_velocity, ChannelMask(512));             //invalid ch for G-Link-200
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
     BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DERIVED_MASK_IPS);
     issues.clear();
@@ -991,8 +996,8 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeMask)
 
     //-------------------------------------
     //Test invalid derived mask
-    c.derivedChannelMask(WirelessTypes::derived_ips, ChannelMask(0));
-    c.derivedChannelMask(WirelessTypes::derived_crestFactor, ChannelMask(513));     //invalid ch for G-Link-200
+    c.derivedChannelMask(WirelessTypes::derivedCategory_velocity, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_crestFactor, ChannelMask(513));     //invalid ch for G-Link-200
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
     BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DERIVED_MASK_CREST_FACTOR);
     issues.clear();
@@ -1000,9 +1005,61 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeMask)
 
     //-------------------------------------
     //Test derived data rate is ok
-    c.derivedChannelMask(WirelessTypes::derived_crestFactor, ChannelMask(1));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_crestFactor, ChannelMask(1));
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
     //-------------------------------------
+}
+
+BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedModeMask_invalidChannels)
+{
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl());
+    BaseStation b = makeBaseStationWithMockImpl();
+    WirelessNode node(123, b);
+    node.setImpl(impl);
+
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::ASPP_VER_LXRS).returns(Value::UINT16(0x0105));
+    MOCK_EXPECT(impl->readEeprom).with(NodeEepromMap::FLASH_ID).returns(Value::UINT16(0));
+
+    NodeInfo info(Version(12, 41496), WirelessModels::node_gLink_200_8g, WirelessTypes::region_usa);    //fw supports tilt
+    std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
+    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+
+    WirelessNodeConfig c;
+    c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
+    c.lowPassFilter(ChannelMask(7), WirelessTypes::filter_209hz);
+    c.activeChannels(ChannelMask(1));
+    c.numSweeps(1000);
+    c.dataFormat(WirelessTypes::dataFormat_cal_float);
+    c.unlimitedDuration(true);
+    c.dataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit);
+    c.samplingMode(WirelessTypes::samplingMode_sync);
+    c.dataMode(WirelessTypes::dataMode_raw_derived);
+    c.derivedDataRate(WirelessTypes::sampleRate_30Sec);
+    c.derivedChannelMask(WirelessTypes::derivedCategory_rms, ChannelMask(0));               //invalid ch for G-Link-200
+    c.derivedChannelMask(WirelessTypes::derivedCategory_peakToPeak, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_velocity, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_crestFactor, ChannelMask(0));
+    EventTriggerOptions opts;
+    opts.triggerMask(BitMask(0));
+    c.eventTriggerOptions(opts);
+
+    ConfigIssues issues;
+
+    //-------------------------------------
+    //Test invalid derived mask
+    c.derivedChannelMask(WirelessTypes::derivedCategory_rms, ChannelMask(16));             //ch5 (roll) doesn't support rms
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
+    BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DERIVED_MASK_RMS);
+    issues.clear();
+    //-------------------------------------
+
+    //-------------------------------------
+    //Test invalid derived mask
+    c.derivedChannelMask(WirelessTypes::derivedCategory_rms, ChannelMask(1));
+    BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
+    issues.clear();
+    //-------------------------------------
+
 }
 
 BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_channelMasks)
@@ -1021,6 +1078,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_channelMasks)
 
     WirelessNodeConfig c;
     c.sampleRate(WirelessTypes::WirelessSampleRate::sampleRate_256Hz);
+    c.lowPassFilter(ChannelMask(7), WirelessTypes::filter_209hz);
     c.numSweeps(1000);
     c.dataFormat(WirelessTypes::dataFormat_cal_float);
     c.unlimitedDuration(true);
@@ -1028,10 +1086,10 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_channelMasks)
     c.samplingMode(WirelessTypes::samplingMode_sync);
     c.dataMode(WirelessTypes::dataMode_raw_derived);
     c.derivedDataRate(WirelessTypes::sampleRate_30Sec);
-    c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(1));
-    c.derivedChannelMask(WirelessTypes::derived_peakToPeak, ChannelMask(0));
-    c.derivedChannelMask(WirelessTypes::derived_ips, ChannelMask(0));
-    c.derivedChannelMask(WirelessTypes::derived_crestFactor, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_rms, ChannelMask(1));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_peakToPeak, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_velocity, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_crestFactor, ChannelMask(0));
     EventTriggerOptions opts;
     opts.triggerMask(BitMask(0));
     c.eventTriggerOptions(opts);
@@ -1049,7 +1107,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_channelMasks)
     //-------------------------------------
     //Test invalid derived mask
     c.activeChannels(ChannelMask(1));
-    c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_rms, ChannelMask(0));
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
     BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_DERIVED_MASK);
     issues.clear();
@@ -1057,7 +1115,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_channelMasks)
 
     //-------------------------------------
     //Test derived data rate is ok
-    c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(1));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_rms, ChannelMask(1));
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), true);
     //-------------------------------------
 }
@@ -1084,10 +1142,10 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedSampleRate)
     c.dataCollectionMethod(WirelessTypes::collectionMethod_logAndTransmit);
     c.samplingMode(WirelessTypes::samplingMode_sync);
     c.dataMode(WirelessTypes::dataMode_raw_derived);
-    c.derivedChannelMask(WirelessTypes::derived_rms, ChannelMask(1));
-    c.derivedChannelMask(WirelessTypes::derived_peakToPeak, ChannelMask(0));
-    c.derivedChannelMask(WirelessTypes::derived_ips, ChannelMask(0));
-    c.derivedChannelMask(WirelessTypes::derived_crestFactor, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_rms, ChannelMask(1));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_peakToPeak, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_velocity, ChannelMask(0));
+    c.derivedChannelMask(WirelessTypes::derivedCategory_crestFactor, ChannelMask(0));
     EventTriggerOptions opts;
     opts.triggerMask(BitMask(0));
     c.eventTriggerOptions(opts);
@@ -1098,6 +1156,7 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_verify_derivedSampleRate)
     //Test too fast (1)
     c.sampleRate(WirelessTypes::sampleRate_16Hz);
     c.derivedDataRate(WirelessTypes::sampleRate_1Hz);
+    c.lowPassFilter(ChannelMask(7), WirelessTypes::filter_209hz);
     BOOST_CHECK_EQUAL(node.verifyConfig(c, issues), false);
     BOOST_CHECK_EQUAL(issues.at(0).id(), ConfigIssue::CONFIG_SAMPLE_RATE);
     BOOST_CHECK_EQUAL(issues.at(1).id(), ConfigIssue::CONFIG_DERIVED_DATA_RATE);

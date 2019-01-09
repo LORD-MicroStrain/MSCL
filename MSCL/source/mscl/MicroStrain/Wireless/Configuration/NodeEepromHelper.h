@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -8,6 +8,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include <memory>
 #include "EepromLocation.h"
 #include "mscl/MicroStrain/Wireless/Configuration/DataModeMask.h"
+#include "mscl/MicroStrain/Wireless/Configuration/TempSensorOptions.h"
 #include "mscl/MicroStrain/Wireless/Features/FlashInfo.h"
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
@@ -92,8 +93,8 @@ namespace mscl
         void write(const EepromLocation& location, const Value& val);
 
         //Function: findDerivedChannelEeprom
-        //  Gets the <EepromLocation> for the given <WirelessTypes::DerivedChannelType>.
-        static EepromLocation findDerivedChannelEeprom(WirelessTypes::DerivedChannelType derivedCh);
+        //  Gets the <EepromLocation> for the given <WirelessTypes::DerivedCategory>.
+        static EepromLocation findDerivedChannelEeprom(WirelessTypes::DerivedCategory category);
 
     public:
         //Function: nodeAddress
@@ -142,8 +143,6 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to read the value from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         Version read_fwVersion() const;
-
-        uint8 read_fwVersionMajor() const;
 
         //Function: read_asppVersion
         //  Gets the ASPP version of the Node for the specified <WirelesTypes::RadioMode>.
@@ -882,6 +881,24 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_numActiveGauges(uint16 numGauges);
 
+        //Function: read_lowBatteryThreshold
+        //    Reads the Low Battery Threshold (in Volts) that is currently stored on the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        float read_lowBatteryThreshold();
+
+        //Function: write_lowBatteryThreshold
+        //    Writes the Low Battery Threshold to the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_lowBatteryThreshold(float volts);
+
         //Function: read_inputRange
         //    Reads the input range for the specified <ChannelMask> from the Node.
         //
@@ -897,6 +914,33 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::InputRange read_inputRange(const ChannelMask& mask) const;
 
+        //Function: write_inputRange
+        //    Writes the <WirelessTypes::InputRange> value for the specified <ChannelMask> to the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to write the hardware gain for.
+        //    range - The <WirlessTypes::InputRange> value to write to the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Input Range is not supported for the given <ChannelMask> or Node.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_inputRange(const ChannelMask& mask, WirelessTypes::InputRange range);
+
+        //Function: write_inputRange
+        //    Writes the <WirelessTypes::InputRange> value for the specified <ChannelMask> and excitation voltage, to the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to write the hardware gain for.
+        //    excitationVoltage - The Excitation <WirelessTypes::Voltage> set on the Node.
+        //    range - The <WirlessTypes::InputRange> value to write to the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Input Range is not supported for the given <ChannelMask> or Node.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_inputRange(const ChannelMask& mask, WirelessTypes::Voltage excitationVoltage, WirelessTypes::InputRange range);
+
         //Function: read_hardwareOffset
         //    Reads the hardware offset for the specified <ChannelMask> from the Node.
         //
@@ -911,19 +955,6 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         uint16 read_hardwareOffset(const ChannelMask& mask) const;
-
-        //Function: write_inputRange
-        //    Writes the <WirelessTypes::InputRange> value for the specified <ChannelMask> to the Node.
-        //
-        //Parameters:
-        //    mask - The <ChannelMask> to write the hardware gain for.
-        //    range - The <WirlessTypes::InputRange> value to write to the Node.
-        //
-        //Exceptions:
-        //    - <Error_NotSupported>: Input Range is not supported for the given <ChannelMask> or Node.
-        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
-        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void write_inputRange(const ChannelMask& mask, WirelessTypes::InputRange range);
 
         //Function: write_hardwareOffset
         //    Writes the hardware offset value for the specified <ChannelMask> to the Node.
@@ -1079,6 +1110,140 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_thermoType(const ChannelMask& mask, WirelessTypes::ThermocoupleType thermocouple);
 
+        //Function: read_tempSensorOptions
+        //    Reads the <TempSensorOptions> from the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to read the options type for.
+        //
+        //Returns:
+        //    The <TempSensorOptions> read from the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: TempSensorOptions are not supported for the given <ChannelMask> or Node.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        TempSensorOptions read_tempSensorOptions(const ChannelMask& mask) const;
+
+        //Function: write_tempSensorOptions
+        //    Writes the <TempSensorOptions> to the Node.
+        //    This assumes TempSensorOptions are supported.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to write the options for.
+        //    options - The <TempSensorOptions> to write to the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_tempSensorOptions(const ChannelMask& mask, const TempSensorOptions& options);
+
+        //Function: read_excitationVoltage
+        //    Reads the <WirelessTypes::Voltage> from the Node.
+        //
+        //Returns:
+        //    The <WirelessTypes::Voltage>.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Excitation Voltage is not supported for the Node.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::Voltage read_excitationVoltage() const;
+
+        //Function: write_excitationVoltage
+        //    Writes the <WirelessTypes::Voltage> to the Node.
+        //    This assumes Excitation Voltage configuration is supported.
+        //
+        //Parameters:
+        //    voltage - The <WirelessTypes::Voltage> to write to the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_excitationVoltage(WirelessTypes::Voltage voltage);
+
+        //Function: read_debounceFilter
+        //    Reads the Debounce Filter from the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to read the options type for.
+        //
+        //Returns:
+        //    The Debounce Filter, in milliseconds.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Debounce Filter is not supported for the given <ChannelMask> or Node.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        uint16 read_debounceFilter(const ChannelMask& mask) const;
+
+        //Function: write_debounceFilter
+        //    Writes the Debounce Filter to the Node.
+        //    This assumes Debounce Filter is supported.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to write the options for.
+        //    milliseconds - The Debounce Filter time to write to the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_debounceFilter(const ChannelMask& mask, uint16 milliseconds);
+
+        //Function: read_pullUpResistor
+        //    Reads the pull-up resistor flag from the Node.
+        //    This assumes pull-up resistor configuration is supported by the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to read the options for.
+        //
+        //Returns:
+        //    true if the pull-up resistor is on, false if it is off.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        bool read_pullUpResistor(const ChannelMask& mask) const;
+
+        //Function: write_pullUpResistor
+        //    Writes the pull-up resistor flag to the Node.
+        //    This assumes pull-up resistor configuration is supported by the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to write the options for.
+        //    enable - true to turn on the pull-up resistor, false to turn off.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_pullUpResistor(const ChannelMask& mask, bool enable);
+
+        //Function: read_sensorMode
+        //  Reads the <WirelessTypes::SensorOutputMode> from the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::SensorOutputMode read_sensorMode() const;
+
+        //Function: write_sensorMode
+        //  Write the <WirelessTypes::SensorOutputMode> to the Node.
+        //
+        //Parameters:
+        //  mode - The <WirelessTypes::SensorOutputMode> to write.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_sensorMode(WirelessTypes::SensorOutputMode mode);
+
         //Function: read_activitySense
         //    Reads the <ActivitySense> options from the Node.
         //    This assumes activity sense configuration is supported by the Node.
@@ -1104,6 +1269,15 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_activitySense(const ActivitySense& options);
+
+        //Function: read_fatigueMode
+        //  Reads the <WirelessTypes::FatigeMode> from the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unsupported eeprom location.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::FatigueMode read_fatigueMode() const;
 
         //Function: read_fatigueOptions
         //    Reads the <FatigueOptions> from the Node.
@@ -1352,10 +1526,10 @@ namespace mscl
 
         //Function: read_derivedChannelMask
         //  Reads the Derived Channel Mask from the Node for the specified <WirelessTypes::DerivedChannel>.
-        //  This assumes Derived Channels are supported by the Node, and that the given derivedChannel is supported.
+        //  This assumes Derived Channels are supported by the Node, and that the given category is supported.
         //
         //Parameters:
-        //  derivedChannel - The <WirelessTypes::DerivedChannelType> to read the mask for.
+        //  category - The <WirelessTypes::DerivedCategory> to read the mask for.
         //
         //Returns:
         //  A <ChannelMask> representing the associated Node channels for the requested DerivedChannel.
@@ -1364,20 +1538,42 @@ namespace mscl
         //  - <Error_NotSupported>: Unsupported eeprom location.
         //  - <Error_NodeCommunication>: Failed to communicate with the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        ChannelMask read_derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel) const;
+        ChannelMask read_derivedChannelMask(WirelessTypes::DerivedCategory category) const;
 
         //Function: write_derivedChannelMask
-        //  Writes a Derived Channel Mask to the Node for the specified <WirelessTypes::MathChannel>.
-        //  This assumes Derived Channels are supported by the Node, and that the given derivedChannel is supported.
+        //  Writes a Derived Channel Mask to the Node for the specified <WirelessTypes::DerivedCategory>.
+        //  This assumes Derived Channels are supported by the Node, and that the given category is supported.
         //
         //Parameters:
-        //  derivedChannel - The <WirelessTypes::DerivedChannelType> to write the mask for.
+        //  category - The <WirelessTypes::DerivedCategory> to write the mask for.
         //  mask - The <ChannelMask> representing the associated Node channels to set.
         //
         //Exceptions:
         //  - <Error_NotSupported>: Unsupported eeprom location.
         //  - <Error_NodeCommunication>: Failed to communicate with the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        void write_derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel, const ChannelMask& mask);
+        void write_derivedChannelMask(WirelessTypes::DerivedCategory category, const ChannelMask& mask);
+
+        //Function: read_derivedVelocityUnit
+        //  Reads the <WirelessTypes::DerivedVelocityUnit> from the Node.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::DerivedVelocityUnit read_derivedVelocityUnit() const;
+
+        //Function: write_derivedVelocityUnit
+        //  Writes the <WirelessTypes::DerivedVelocityUnit> to the Node.
+        //  This assumes Derived Channels are supported by the Node, and that the given derivedChannel is supported.
+        //
+        //Parameters:
+        //  unit - The <WirelessTypes::DerivedVelocityUnit> to write .
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Unsupported eeprom location.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_derivedVelocityUnit(WirelessTypes::DerivedVelocityUnit unit);
     };
 }

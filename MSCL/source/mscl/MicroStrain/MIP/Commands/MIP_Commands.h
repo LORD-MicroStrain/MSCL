@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -11,6 +11,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/MIP/MipTypes.h"
 #include "mscl/MicroStrain/Inertial/PositionOffset.h"
 #include "GetDeviceInfo.h"
+#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 
 namespace mscl
 {
@@ -108,5 +109,15 @@ namespace mscl
         //Returns:
         //    The <EulerAngles> containing the result that is parsed.
         static PositionOffset parseData_PositionOffset(const GenericMipCmdResponse& response);
+
+        //Function: parseData_ZuptControl
+        //    Parses the data from a command response containing the response for a ZUPT field.
+        //
+        //Parameters:
+        //    response - The <GenericMipCmdResponse> that contains the data to be parsed
+        //
+        //Returns:
+        //    The <ZUPTSettingsData> containing the result that is parsed.
+        static ZUPTSettingsData parseData_ZUPTControl(const GenericMipCmdResponse& response);
     };
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -14,6 +14,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Configuration/WirelessNodeConfig.h"
 #include "SyncSamplingFormulas.h"
 #include "mscl/MicroStrain/SampleUtils.h"
+#include "mscl/MicroStrain/Wireless/NodeCommTimes.h"
 
 namespace mscl
 {
@@ -426,6 +427,7 @@ namespace mscl
 
             uint16 totalChannels = config.activeChannelCount();
             SampleRate sampleRate = config.sampleRate();
+            bool diagnosticPacketEnabled = (config.diagnosticInterval() > 0);
             uint8 bytesPerSample = WirelessTypes::dataFormatSize(config.dataFormat());
 
             uint32 maxRetransmissionPerBurst = 0;
@@ -445,8 +447,8 @@ namespace mscl
             switch(m_commProtocol)
             {
                 case WirelessTypes::commProtocol_lxrsPlus:
-                    maxBytes = 207;//432;
-                    derivedMaxBytes = 207.0f;//432.0f;
+                    maxBytes = 207;
+                    derivedMaxBytes = 207.0f;
                     break;
 
                 case WirelessTypes::commProtocol_lxrs:
@@ -494,7 +496,6 @@ namespace mscl
                     rawPacketsPerGroup = static_cast<float>(sampleRate.samplesPerSecond() * groupSize * nodeInfo.m_bytesPerSweep / maxBytes);
                 }
             }
-            
 
             //Derived Channels enabled
             if(mode.derivedModeEnabled)
@@ -502,12 +503,12 @@ namespace mscl
                 uint8 derivedChannelCount = 0;
                 uint8 numDerivedNonChBytes = 0;
 
-                const WirelessTypes::DerivedChannelTypes& chs = nodeInfo.supportedDerivedChannelTypes();
+                const WirelessTypes::DerivedChannelMasks& chs = nodeInfo.supportedDerivedCategories();
 
                 uint8 count = 0;
-                for(WirelessTypes::DerivedChannelType ch : chs)
+                for(const auto& ch : chs)
                 {
-                    count = config.derivedChannelMask(ch).count();
+                    count = config.derivedChannelMask(ch.first).count();
 
                     if(count > 0)
                     {
@@ -525,7 +526,8 @@ namespace mscl
                     derivedSweepSize = static_cast<uint16>(derivedMaxBytes * std::ceil(derivedSweepSize / derivedMaxBytes));
                 }
 
-                derivedPacketsPerGroup = static_cast<float>(config.derivedDataRate().samplesPerSecond()) * groupSize * derivedSweepSize / derivedMaxBytes;
+                //Note: the +1 accounts for overhead needed because the Node isn't buffering multiple derived sweeps into one packet
+                derivedPacketsPerGroup = (static_cast<float>(config.derivedDataRate().samplesPerSecond()) * groupSize * derivedSweepSize / derivedMaxBytes) + 1;
             }
 
             if(isBurstMode)
@@ -565,7 +567,7 @@ namespace mscl
             else
             {
                 //update transmissions per group for continuous mode
-                float overheadFactor = SyncSamplingFormulas::overheadFactor(m_lossless, optimizeBandwidth, sampleRate, nodeInfo.syncSamplingVersion());
+                float overheadFactor = SyncSamplingFormulas::overheadFactor(m_lossless, optimizeBandwidth, diagnosticPacketEnabled, sampleRate, nodeInfo.syncSamplingVersion());
                 txPerGroup = Utils::ceilBase2(std::ceil((rawPacketsPerGroup + derivedPacketsPerGroup) * overheadFactor));
             }
 
@@ -1209,7 +1211,6 @@ namespace mscl
                             //this is a thermocouple channel
                             addThermoExtra = true;
 
-                            //settlingTime = WirelessTypes::settlingTime(config.filter1());
                             settlingTime = WirelessTypes::settlingTime(config.filterSettlingTime(chanItr));
 
                             //certain nodes need special delays
@@ -1270,7 +1271,6 @@ namespace mscl
                             addThermoExtra = true;
 
                             //first filter (thermocouple)
-                            //settlingTime = WirelessTypes::settlingTime(config.filter1());
                             settlingTime = WirelessTypes::settlingTime(config.filterSettlingTime(chanItr));
 
                             delayResult += settlingTime + 3;
@@ -1281,7 +1281,6 @@ namespace mscl
                             addVoltageExtra = true;
 
                             //second filter (voltage)
-                            //settlingTime = WirelessTypes::settlingTime(config.filter2());
                             settlingTime = WirelessTypes::settlingTime(config.filterSettlingTime(chanItr));
 
                             delayResult += settlingTime + 8;
@@ -1330,7 +1329,6 @@ namespace mscl
                             addVoltageExtra = true;
 
                             //first filter (voltage)
-                            //settlingTime = WirelessTypes::settlingTime(config.filter1());
                             settlingTime = WirelessTypes::settlingTime(config.filterSettlingTime(chanItr));
 
                             delayResult += settlingTime + 8;
@@ -1385,6 +1383,7 @@ namespace mscl
             case WirelessModels::node_sgLink_herm_2600:
             case WirelessModels::node_sgLink_herm_2700:
             case WirelessModels::node_sgLink_herm_2800:
+            case WirelessModels::node_sgLink_herm_2900:
             case WirelessModels::node_sgLink_rgd:
             {
                 //get the sampling delay stored in EEPROM (this node uses this values as microseconds instead of milliseconds).
@@ -1427,46 +1426,46 @@ namespace mscl
 
     void SyncSamplingNetwork::sendStartToAllNodes()
     {
-        static const uint8 MAX_RETRIES = 2;
+        static const uint8 MAX_ATTEMPTS = 3;
         uint8 retryCount = 0;
-        bool nodeSuccess = false;
+        bool atLeastOneFailed = false;
 
-        //go through each node in the network
-        for(NodeAddress nodeAddress : m_allNodes)
+        do
         {
-            SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
+            atLeastOneFailed = false;
 
-            //only want to start nodes that haven't already been started (in previous calls to this function)
-            if(!nodeInfo.m_startedSampling)
+            //go through each node in the network
+            for(NodeAddress nodeAddress : m_allNodes)
             {
-                retryCount = 0;
-                nodeSuccess = false;
+                SyncNetworkInfo& nodeInfo = getNodeNetworkInfo(nodeAddress);
 
-                //send the start sync sampling command to the node (with retries)
-                do
+                //only want to start nodes that haven't already been started (in previous calls to this function)
+                if(!nodeInfo.m_startedSampling)
                 {
-                    nodeSuccess = m_networkBase.node_startSyncSampling(nodeInfo.m_node.protocol(m_networkBase.communicationProtocol()), nodeAddress);
-                    retryCount++;
-                }
-                while(!nodeSuccess && retryCount <= MAX_RETRIES);
+                    if(m_networkBase.node_startSyncSampling(nodeInfo.m_node.protocol(m_networkBase.communicationProtocol()), nodeAddress))
+                    {
+                        NodeCommTimes::updateDeviceState(nodeAddress, DeviceState::deviceState_sampling);
 
-                if(!nodeSuccess)
-                {
-                    nodeInfo.m_startedSampling = false;
+                        //mark this node as started sampling so that we don't apply it again on successive calls to this function
+                        nodeInfo.m_startedSampling = true;
 
-                    //no longer throwing an exception here as we want to continue on to the next nodes
-                    //and no response is not necessarily indicative of a failure, which can mess things up if the node really started
-                }
-                else
-                {
-                    //mark this node as started sampling so that we don't apply it again on successive calls to this function
-                    nodeInfo.m_startedSampling = true;
+                        //sleep between each node start sampling command for good measure
+                        Utils::threadSleep(20);
+                    }
+                    else
+                    {
+                        //no longer throwing an exception here as we want to continue on to the next nodes
+                        //and no response is not necessarily indicative of a failure, which can mess things up if the node really started
+                        nodeInfo.m_startedSampling = false;
 
-                    //sleep between each node start sampling command for good measure
-                    Utils::threadSleep(50);
+                        atLeastOneFailed = true;
+                    }
                 }
             }
+
+            retryCount++;
         }
+        while(atLeastOneFailed && retryCount <= MAX_ATTEMPTS);
     }
 
     bool SyncSamplingNetwork::inLegacyMode()

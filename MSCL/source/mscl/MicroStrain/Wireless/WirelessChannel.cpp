@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -13,7 +13,8 @@ namespace mscl
         m_chNumber(0),
         m_id(WirelessChannel::channel_unknown),
         m_type(WirelessTypes::chType_none),
-        m_description("")
+        m_description(""),
+        m_adcResolution(0)
     {
     }
 
@@ -21,7 +22,17 @@ namespace mscl
         m_chNumber(chNumber),
         m_id(id),
         m_type(type),
-        m_description(description)
+        m_description(description + " (ch" + Utils::toStr(chNumber) + ")"),
+        m_adcResolution(0)
+    {
+    }
+
+    WirelessChannel::WirelessChannel(uint8 chNumber, WirelessChannel::ChannelId id, WirelessTypes::ChannelType type, const std::string& description, uint8 adcResolution) :
+        m_chNumber(chNumber),
+        m_id(id),
+        m_type(type),
+        m_description(description + " (ch" + Utils::toStr(chNumber) + ")"),
+        m_adcResolution(adcResolution)
     {
     }
 
@@ -48,6 +59,16 @@ namespace mscl
     std::string WirelessChannel::description() const
     {
         return m_description;
+    }
+
+    uint8 WirelessChannel::adcResolution() const
+    {
+        return m_adcResolution;
+    }
+
+    uint32 WirelessChannel::adcMaxValue() const
+    {
+        return static_cast<uint32>(std::pow(2, m_adcResolution));
     }
 
     std::string WirelessChannel::channelName(WirelessChannel::ChannelId channelId)
@@ -204,6 +225,7 @@ namespace mscl
             case channel_diag_syncAttempts:         return "diagnostic_syncAttempts";
             case channel_diag_syncFailures:         return "diagnostic_syncFailures";
             case channel_diag_secsSinceLastSync:    return "diagnostic_secsSinceLastSync";
+            case channel_diag_memoryFull:           return "diagnostic_memoryFull";
             case channel_1_rms:                     return "ch1_rms";
             case channel_2_rms:                     return "ch2_rms";
             case channel_3_rms:                     return "ch3_rms";
@@ -284,6 +306,22 @@ namespace mscl
             case channel_14_mean:                   return "ch14_mean";
             case channel_15_mean:                   return "ch15_mean";
             case channel_16_mean:                   return "ch16_mean";
+            case channel_1_mmps:                    return "ch1_mmps";
+            case channel_2_mmps:                    return "ch2_mmps";
+            case channel_3_mmps:                    return "ch3_mmps";
+            case channel_4_mmps:                    return "ch4_mmps";
+            case channel_5_mmps:                    return "ch5_mmps";
+            case channel_6_mmps:                    return "ch6_mmps";
+            case channel_7_mmps:                    return "ch7_mmps";
+            case channel_8_mmps:                    return "ch8_mmps";
+            case channel_9_mmps:                    return "ch9_mmps";
+            case channel_10_mmps:                   return "ch10_mmps";
+            case channel_11_mmps:                   return "ch11_mmps";
+            case channel_12_mmps:                   return "ch12_mmps";
+            case channel_13_mmps:                   return "ch13_mmps";
+            case channel_14_mmps:                   return "ch14_mmps";
+            case channel_15_mmps:                   return "ch15_mmps";
+            case channel_16_mmps:                   return "ch16_mmps";
 
 
             default:

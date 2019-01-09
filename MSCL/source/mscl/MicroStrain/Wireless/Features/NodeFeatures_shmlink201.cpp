@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -19,37 +19,37 @@ namespace mscl
         static const ChannelMask DIFF_CH3(BOOST_BINARY(00000100));  //ch3
         static const ChannelMask ALL_CHS(BOOST_BINARY(00000111));   //ch1 - ch3
 
-        m_channelGroups.emplace_back(ALL_CHS, "Differential Channels",
+        m_channelGroups.emplace_back(ALL_CHS, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1}}
         );
 
-        m_channelGroups.emplace_back(DIFF_CH1, "Differential Channel 1",
+        m_channelGroups.emplace_back(DIFF_CH1, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_gaugeFactor, NodeEepromMap::GAUGE_FACTOR_1}}
         );
 
-        m_channelGroups.emplace_back(DIFF_CH2, "Differential Channel 2",
+        m_channelGroups.emplace_back(DIFF_CH2, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_gaugeFactor, NodeEepromMap::GAUGE_FACTOR_2}}
         );
 
-        m_channelGroups.emplace_back(DIFF_CH3, "Differential Channel 3",
+        m_channelGroups.emplace_back(DIFF_CH3, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_gaugeFactor, NodeEepromMap::GAUGE_FACTOR_3}}
         );
 
-        addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
-        addCalCoeffChannelGroup(2, NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
-        addCalCoeffChannelGroup(3, NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);
+        addCalCoeffChannelGroup(1, "Differential", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
+        addCalCoeffChannelGroup(2, "Differential", NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
+        addCalCoeffChannelGroup(3, "Differential", NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);
 
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential 1");
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential, "Differential 2");
-        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_fullDifferential, "Differential 3");
-        m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_acceleration, "Acceleration X");
-        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_acceleration, "Acceleration Y");
-        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration, "Acceleration Z");
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential", 24);
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential, "Differential", 24);
+        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_fullDifferential, "Differential", 24);
+        m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_acceleration, "Acceleration X", 24);
+        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_acceleration, "Acceleration Y", 24);
+        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration, "Acceleration Z", 24);
     }
 
     WirelessTypes::TransmitPower NodeFeatures_shmlink201::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
@@ -85,6 +85,12 @@ namespace mscl
         //build and return the data formats that are supported
         WirelessTypes::DataFormats result;
         result.push_back(WirelessTypes::dataFormat_cal_float);
+
+        if(m_nodeInfo.firmwareVersion() >= Version(12, 41596))
+        {
+            result.push_back(WirelessTypes::dataFormat_cal_int16_x10);
+        }
+
         return result;
     }
 
@@ -193,6 +199,11 @@ namespace mscl
     uint8 NodeFeatures_shmlink201::numSnCurveSegments() const
     {
         return 5;
+    }
+
+    const WirelessTypes::VoltageType NodeFeatures_shmlink201::adcVoltageInputType() const
+    {
+        return WirelessTypes::VoltageType::voltageType_differential;
     }
 
     const WirelessTypes::WirelessSampleRates NodeFeatures_shmlink201::histogramTransmitRates() const

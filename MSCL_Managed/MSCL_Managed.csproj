@@ -69,6 +69,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="mscl\ActivitySense.cs" />
+    <Compile Include="mscl\AdaptiveMeasurementData.cs" />
+    <Compile Include="mscl\AdaptiveMeasurementModes.cs" />
+    <Compile Include="mscl\AdvancedLowPassFilterConfig.cs" />
     <Compile Include="mscl\AdvancedLowPassFilterData.cs" />
     <Compile Include="mscl\ArmedDataloggingNetwork.cs" />
     <Compile Include="mscl\AutoBalanceResult.cs" />
@@ -114,14 +117,15 @@
     <Compile Include="mscl\DataSweeps.cs" />
     <Compile Include="mscl\DefaultModes.cs" />
     <Compile Include="mscl\DerivedChannelMasks.cs" />
-    <Compile Include="mscl\DerivedChannelTypes.cs" />
     <Compile Include="mscl\DeviceInfo.cs" />
     <Compile Include="mscl\DeviceList.cs" />
     <Compile Include="mscl\Devices.cs" />
+    <Compile Include="mscl\DeviceState.cs" />
     <Compile Include="mscl\DeviceStatusData.cs" />
     <Compile Include="mscl\DisplacementModels.cs" />
     <Compile Include="mscl\DisplacementNode.cs" />
     <Compile Include="mscl\EepromMap.cs" />
+    <Compile Include="mscl\EstimationControlOptions.cs" />
     <Compile Include="mscl\EulerAngles.cs" />
     <Compile Include="mscl\EventTriggerOptions.cs" />
     <Compile Include="mscl\Exceptions.cs">
@@ -131,22 +135,27 @@
     <Compile Include="mscl\FatigueModes.cs" />
     <Compile Include="mscl\FatigueOptions.cs" />
     <Compile Include="mscl\Filters.cs" />
+    <Compile Include="mscl\FixedReferencePositionData.cs" />
+    <Compile Include="mscl\GeographicSourceOptions.cs" />
     <Compile Include="mscl\GeometricVector.cs" />
+    <Compile Include="mscl\GeometricVectors.cs" />
     <Compile Include="mscl\HeadingData.cs" />
     <Compile Include="mscl\HeadingUpdateOptions.cs" />
+    <Compile Include="mscl\HeadingUpdateOptionsList.cs" />
     <Compile Include="mscl\HighPassFilters.cs" />
     <Compile Include="mscl\Histogram.cs" />
     <Compile Include="mscl\HistogramOptions.cs" />
     <Compile Include="mscl\InertialModels.cs" />
     <Compile Include="mscl\InertialNode.cs" />
     <Compile Include="mscl\InertialTypes.cs" />
+    <Compile Include="mscl\InputRangeEntry.cs" />
     <Compile Include="mscl\InputRanges.cs" />
-    <Compile Include="mscl\LibVersion.cs" />
     <Compile Include="mscl\LinearEquation.cs" />
     <Compile Include="mscl\LoggedDataSweep.cs" />
     <Compile Include="mscl\LoggedDataSweeps.cs" />
     <Compile Include="mscl\Matrix.cs" />
     <Compile Include="mscl\Matrix_3x3.cs" />
+    <Compile Include="mscl\Matrix_3x3s.cs" />
     <Compile Include="mscl\MipChannel.cs" />
     <Compile Include="mscl\MipChannelFields.cs" />
     <Compile Include="mscl\MipChannels.cs" />
@@ -158,6 +167,7 @@
     <Compile Include="mscl\MipNodeFeatures.cs" />
     <Compile Include="mscl\MipPacket.cs" />
     <Compile Include="mscl\MipTypes.cs" />
+    <Compile Include="mscl\mscl.cs" />
     <Compile Include="mscl\msclPINVOKE.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -166,6 +176,7 @@
     <Compile Include="mscl\NodeFeatures.cs" />
     <Compile Include="mscl\NodeInfo.cs" />
     <Compile Include="mscl\PingResponse.cs" />
+    <Compile Include="mscl\Position.cs" />
     <Compile Include="mscl\PositionOffset.cs" />
     <Compile Include="mscl\RadioFeatures.cs" />
     <Compile Include="mscl\RfSweep.cs" />
@@ -174,6 +185,7 @@
     <Compile Include="mscl\SamplingModes.cs" />
     <Compile Include="mscl\SatellitePRNs.cs" />
     <Compile Include="mscl\SBASSettingsData.cs" />
+    <Compile Include="mscl\SensorOutputModes.cs" />
     <Compile Include="mscl\SetToIdleStatus.cs" />
     <Compile Include="mscl\ShuntCalCmdInfo.cs" />
     <Compile Include="mscl\SnCurveSegment.cs" />
@@ -182,16 +194,20 @@
     <Compile Include="mscl\StructuralHealth.cs" />
     <Compile Include="mscl\SyncNetworkInfo.cs" />
     <Compile Include="mscl\SyncSamplingNetwork.cs" />
+    <Compile Include="mscl\TempSensorOptions.cs" />
     <Compile Include="mscl\TimeSpan.cs" />
     <Compile Include="mscl\Timestamp.cs" />
     <Compile Include="mscl\TimeUpdate.cs" />
+    <Compile Include="mscl\TransducerTypes.cs" />
     <Compile Include="mscl\TransmitPowers.cs" />
     <Compile Include="mscl\Trigger.cs" />
     <Compile Include="mscl\Triggers.cs" />
     <Compile Include="mscl\Value.cs" />
     <Compile Include="mscl\ValueType.cs" />
     <Compile Include="mscl\Vector.cs" />
+    <Compile Include="mscl\VehicleModeTypes.cs" />
     <Compile Include="mscl\Version.cs" />
+    <Compile Include="mscl\Voltages.cs" />
     <Compile Include="mscl\WirelessChannel.cs" />
     <Compile Include="mscl\WirelessChannels.cs" />
     <Compile Include="mscl\WirelessDataPoint.cs" />
@@ -203,6 +219,7 @@
     <Compile Include="mscl\WsdaFinder.cs" />
     <Compile Include="mscl\WsdaInfo.cs" />
     <Compile Include="mscl\WsdaMap.cs" />
+    <Compile Include="mscl\ZUPTSettingsData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

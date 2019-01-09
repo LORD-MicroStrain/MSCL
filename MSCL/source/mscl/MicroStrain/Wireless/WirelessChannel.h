@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -247,6 +247,23 @@ namespace mscl
         //  channel_14_mean                         - 224 - Channel 14 Mean
         //  channel_15_mean                         - 225 - Channel 15 Mean
         //  channel_16_mean                         - 226 - Channel 16 Mean
+        //  channel_1_mmps                          - 227 - Channel 1 Millimeters Per Second
+        //  channel_2_mmps                          - 228 - Channel 2 Millimeters Per Second
+        //  channel_3_mmps                          - 229 - Channel 3 Millimeters Per Second
+        //  channel_4_mmps                          - 230 - Channel 4 Millimeters Per Second
+        //  channel_5_mmps                          - 231 - Channel 5 Millimeters Per Second
+        //  channel_6_mmps                          - 232 - Channel 6 Millimeters Per Second
+        //  channel_7_mmps                          - 233 - Channel 7 Millimeters Per Second
+        //  channel_8_mmps                          - 234 - Channel 8 Millimeters Per Second
+        //  channel_9_mmps                          - 235 - Channel 9 Millimeters Per Second
+        //  channel_10_mmps                         - 236 - Channel 10 Millimeters Per Second
+        //  channel_11_mmps                         - 237 - Channel 11 Millimeters Per Second
+        //  channel_12_mmps                         - 238 - Channel 12 Millimeters Per Second
+        //  channel_13_mmps                         - 239 - Channel 13 Millimeters Per Second
+        //  channel_14_mmps                         - 240 - Channel 14 Millimeters Per Second
+        //  channel_15_mmps                         - 241 - Channel 15 Millimeters Per Second
+        //  channel_16_mmps                         - 242 - Channel 16 Millimeters Per Second
+        //  channel_diag_memoryFull                 - 243 - Diagnostic - % Datalogging Memory Full
         //=====================================================================================================
         enum ChannelId
         {
@@ -476,7 +493,24 @@ namespace mscl
             channel_13_mean                         = 223,
             channel_14_mean                         = 224,
             channel_15_mean                         = 225,
-            channel_16_mean                         = 226
+            channel_16_mean                         = 226,
+            channel_1_mmps                          = 227,
+            channel_2_mmps                          = 228,
+            channel_3_mmps                          = 229,
+            channel_4_mmps                          = 230,
+            channel_5_mmps                          = 231,
+            channel_6_mmps                          = 232,
+            channel_7_mmps                          = 233,
+            channel_8_mmps                          = 234,
+            channel_9_mmps                          = 235,
+            channel_10_mmps                         = 236,
+            channel_11_mmps                         = 237,
+            channel_12_mmps                         = 238,
+            channel_13_mmps                         = 239,
+            channel_14_mmps                         = 240,
+            channel_15_mmps                         = 241,
+            channel_16_mmps                         = 242,
+            channel_diag_memoryFull                 = 243 
         };
 
         WirelessChannel();    //default constructor
@@ -489,7 +523,19 @@ namespace mscl
         //    id - The <WirelessChannel::ChannelId> of the channel.
         //    type - The <WirelessTypes::ChannelType> of the channel.
         //    description - The description of the channel.
+        //    adcResolution will be defaulted to 0.
         WirelessChannel(uint8 chNumber, WirelessChannel::ChannelId id, WirelessTypes::ChannelType type, const std::string& description);
+
+        //Constructor: WirelessChannel
+        //    Creates a WirelessChannel object.
+        //
+        //Parameters:
+        //    chNumber - The channel number (ch1 = 1) of the channel.
+        //    id - The <WirelessChannel::ChannelId> of the channel.
+        //    type - The <WirelessTypes::ChannelType> of the channel.
+        //    description - The description of the channel.
+        //    adcResolution - the ADC resolution of the channel.
+        WirelessChannel(uint8 chNumber, WirelessChannel::ChannelId id, WirelessTypes::ChannelType type, const std::string& description, uint8 adcResolution);
 
     private:
         //Variable: m_chNumber
@@ -507,6 +553,11 @@ namespace mscl
         //Variable: m_description
         //  The description of the channel.
         std::string m_description;
+
+        //Variable: m_adcResolution
+        //  The resolution of the A/D Converter for this channel.
+        uint8 m_adcResolution;
+
 
     public:
         //API Function: channelNumber
@@ -531,11 +582,25 @@ namespace mscl
         WirelessTypes::ChannelType type() const;
 
         //API Function: description
-        //  Gets the description of this channel (ex. "Acceleration X" or "CJC Temperature").
+        //  Gets the description of this channel (ex. "Acceleration X (ch1)" or "CJC Temperature (ch8)").
         //
         //Returns:
         //  A string description of the channel.
         std::string description() const;
+
+        //API Function: adcResolution
+        //    Gets the ADC Resolution of this channel (Ex: 18 for 18-bit). 
+        //
+        //Returns:
+        //    The ADC Resolution of this channel.
+        uint8 adcResolution() const;
+
+        //API Function: adcMaxValue
+        //    Gets the maximum value output from the ADC for this channel (Ex: 2^18 for 18-bit). 
+        //
+        //Returns:
+        //    The maximum value output from the ADC for this channel.
+        uint32 adcMaxValue() const;
 
         //API Function: name
         //    Gets the name of this channel. 

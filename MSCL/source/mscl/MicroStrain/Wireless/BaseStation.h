@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -34,7 +34,7 @@ namespace mscl
     struct BaseStationInfo;
     struct DatalogSessionInfoResult;
     class WirelessResponsePattern;
-    struct ShuntCalCmdInfo;
+    struct AutoCalCmdDetails;
     class WirelessProtocol;
 
     //API Class: BaseStation
@@ -44,12 +44,12 @@ namespace mscl
     public:
         //=====================================================================================================
         //API Constants: Default Timeouts
-        //    BASE_COMMANDS_DEFAULT_TIMEOUT     - 75 ms      - The default timeout for a base station command (in milliseconds) used by USB Bases
+        //    BASE_COMMANDS_DEFAULT_TIMEOUT     - 20 ms     - The default timeout for a base station command (in milliseconds) used by USB Bases
         //    EXT_BASE_COMMANDS_DEFAULT_TIMEOUT - 500 ms    - The extended default timeout for a base station command (in milliseconds)
         //    BROADCAST_NODE_ADDRESS            - 65535      - The address to use for performing Broadcast commands that will be heard by all <WirelessNode>s on the frequency.
         //    BROADCAST_NODE_ADDRESS_ASPP3      - 0xFFFFFFFF - The address to use for performing Broadcast commands that will be heard by all <WirelessNode>s on the frequency (ASPP 3.X).
         //=====================================================================================================
-        static const uint64 BASE_COMMANDS_DEFAULT_TIMEOUT = 75;
+        static const uint64 BASE_COMMANDS_DEFAULT_TIMEOUT = 20;
         static const uint64 ETHERNET_BASE_COMMANDS_DEFAULT_TIMEOUT = 500;
         static const NodeAddress BROADCAST_NODE_ADDRESS = 0xFFFF;
         static const NodeAddress BROADCAST_NODE_ADDRESS_ASPP3 = 0xFFFFFFFF;
@@ -485,7 +485,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_NotSupported>: RF Sweep Mode is not supported by this BaseStation.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation.
-        //    - <Error_Communication>: The beacon status command has failed.
+        //    - <Error_Communication>: The command has failed.
         void startRfSweepMode();
 
         //API Function: startRfSweepMode
@@ -501,7 +501,7 @@ namespace mscl
         //Exceptions:
         //  - <Error_NotSupported>: Raw RF Sweep Mode is not supported by this BaseStation.
         //  - <Error_Connection>: A connection error has occurred with the BaseStation.
-        //  - <Error_Communication>: The beacon status command has failed.
+        //  - <Error_Communication>: The command has failed.
         void startRfSweepMode(uint32 minFreq, uint32 maxFreq, uint32 interval, uint16 options=0);
 
         //API Function: cyclePower
@@ -968,11 +968,7 @@ namespace mscl
         //
         //Parameters:
         //  nodeProtocol - The <WirelessProtocol> for the Node.
-        //  nodeAddress - The node address of the Node to send the command to.
-        //  commandInfo - The <ShuntCalCmdInfo> for the command.
-        //  chNum - The channel number to calibrated.
-        //  nodeType - The type of node being calibrated.
-        //  chType - The type of the channel being calibrated.
+        //  commandDetails - The <AutoCalCmdDetails> for this command.
         //  result - The <AutoCalResult> reference to hold the result.
         //
         //Returns:
@@ -981,11 +977,7 @@ namespace mscl
         //Exceptions:
         //  - <Error_Connection>: A connection error has occurred with the BaseStation.
         bool node_autoShuntCal(const WirelessProtocol& nodeProtocol,
-                               NodeAddress nodeAddress,
-                               const ShuntCalCmdInfo& commandInfo,
-                               uint8 chNum,
-                               WirelessModels::NodeModel nodeType,
-                               WirelessTypes::ChannelType chType,
+                               const AutoCalCmdDetails& commandDetails,
                                AutoCalResult& result);
 
         //Function: node_readSingleSensor

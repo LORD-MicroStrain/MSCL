@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -14,16 +14,21 @@ namespace mscl
 {                    
     MipDataPacket::MipDataPacket():
         m_collectedTime(0),
-        m_utcTime(0)
+        m_utcTime(0),
+        m_utcTimeValid(false),
+        m_utcTimeFlags(0)
     {
     }
 
-    MipDataPacket::MipDataPacket(const MipPacket& packet)
+    MipDataPacket::MipDataPacket(const MipPacket& packet):
+        m_collectedTime(Timestamp::timeNow()),
+        m_utcTime(0),
+        m_utcTimeValid(false),
+        m_utcTimeFlags(0)
     {
         //construct the data packet from the MipPacket passed in
         m_descriptorSet     = packet.descriptorSet();
         m_payload           = Payload(packet.payload());
-        m_collectedTime     = Timestamp::timeNow();
 
         //parse the data fields in the packet
         parseDataFields();

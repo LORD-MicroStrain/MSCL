@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -227,16 +227,28 @@ namespace mscl
         return SampleUtils::convertToSampleRate(sampleRateVal);
     }
 
-    ChannelMask SyncNodeConfig::derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannel)
+    ChannelMask SyncNodeConfig::derivedChannelMask(WirelessTypes::DerivedCategory category)
     {
         try
         {
             //try to read the value from the pending config
-            return m_networkInfo->getPendingConfig().derivedChannelMask(derivedChannel);
+            return m_networkInfo->getPendingConfig().derivedChannelMask(category);
         }
         catch(Error_NoData&)
         {
-            return m_eepromHelper.read_derivedChannelMask(derivedChannel);
+            return m_eepromHelper.read_derivedChannelMask(category);
+        }
+    }
+
+    uint16 SyncNodeConfig::diagnosticInterval()
+    {
+        try
+        {
+            return m_networkInfo->getPendingConfig().diagnosticInterval();
+        }
+        catch(Error_NoData&)
+        {
+            return m_eepromHelper.read_diagnosticInterval();
         }
     }
 

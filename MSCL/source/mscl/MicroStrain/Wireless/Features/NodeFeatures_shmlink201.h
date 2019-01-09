@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -65,6 +65,8 @@ namespace mscl
         virtual uint8 numDamageAngles() const final;
 
         virtual uint8 numSnCurveSegments() const final;
+
+        virtual const WirelessTypes::VoltageType adcVoltageInputType() const override;
 
         virtual const WirelessTypes::WirelessSampleRates histogramTransmitRates() const final;
 

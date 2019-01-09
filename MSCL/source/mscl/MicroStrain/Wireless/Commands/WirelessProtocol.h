@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -20,7 +20,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
     //forward declarations
-    struct ShuntCalCmdInfo;
+    struct AutoCalCmdDetails;
     class BaseStation_Impl;
     class BaseStation;
     class Version;
@@ -102,7 +102,7 @@ namespace mscl
 
         //Variable: m_autoShuntCal
         //  The function pointer for the Node AutoShuntCal protocol command.
-        std::function<bool(BaseStation_Impl*, NodeAddress, const ShuntCalCmdInfo&, uint8, WirelessModels::NodeModel, WirelessTypes::ChannelType, AutoCalResult&)> m_autoShuntCal;
+        std::function<bool(BaseStation_Impl*, NodeAddress, const AutoCalCmdDetails&, AutoCalResult&)> m_autoShuntCal;
 
         //Variable: m_getDiagnosticInfo
         //  The function pointer for the Node Get Diagnostic Info protocol command.

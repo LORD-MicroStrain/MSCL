@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -173,6 +173,8 @@ namespace mscl
         //    - <Error_Connection>: a connection error has occurred.
         void throwIfError();
 
+        static std::string resolvePath(const std::string& path);
+
     public:
         //API Function: description
         //    Gets a description of the connection as a string.
@@ -256,6 +258,13 @@ namespace mscl
         //    - <Error_Connection>: The connection has been disconnected.
         void rawByteMode(bool enable);
 
+        //API Function: rawByteMode
+        //  Checks if raw byte mode is enabled or disabled. 
+        //
+        //Returns:
+        //  true if raw byte mode is enabled, false if it is disabled.
+        bool rawByteMode();
+
         //API Function: getRawBytes
         //    Gets the raw bytes that are available that have been collected when the Connection is in "Raw Byte Mode."
         //    If the Connection has not been put into "Raw Byte Mode" by calling <rawByteMode>, no data can be retrieved from this function.
@@ -300,7 +309,7 @@ namespace mscl
 
         //API Function: debugMode
         //  Puts the connection into "Debug Mode." 
-        //  "Debug Mode Mode" adds an additional container that gets filled when any write or read operations occur.
+        //  "Debug Mode" adds an additional container that gets filled when any write or read operations occur.
         //  Once debug mode is enabled, you can access this data with the <getDebugData> function.
         //  This does not interfere with standard data collection.
         //
@@ -310,6 +319,13 @@ namespace mscl
         //Exceptions:
         //  - <Error_Connection>: The connection has been disconnected.
         void debugMode(bool enable);
+
+        //API Function: debugMode
+        //  Checks if debug mode is enabled or disabled.
+        //
+        //Returns:
+        //  true if debug mode is enabled, false if it is disabled.
+        bool debugMode();
 
         //API Function: getDebugData
         //  Gets the <ConnectionDebugData> that have been collected when the Connection is in "Debug Mode."

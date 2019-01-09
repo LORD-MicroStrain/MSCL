@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -74,7 +74,7 @@ namespace mscl
         return static_cast<WirelessChannel::ChannelId>(channelNum);
     }
 
-    WirelessChannel::ChannelId WirelessDataPacket::getMathChannelId(WirelessTypes::DerivedChannelType algorithmId, uint8 channelNumber)
+    WirelessChannel::ChannelId WirelessDataPacket::getMathChannelId(WirelessTypes::DerivedDataPacketAlgorithmId algorithmId, uint8 channelNumber)
     {
         uint16 algorithmIdStart = 0;
 
@@ -87,23 +87,27 @@ namespace mscl
         //determine where the start offset is in the enum list
         switch(algorithmId)
         {
-            case WirelessTypes::derived_rms:
+            case WirelessTypes::derivedAlgId_rms:
                 algorithmIdStart = WirelessChannel::channel_1_rms;
                 break;
 
-            case WirelessTypes::derived_peakToPeak:
+            case WirelessTypes::derivedAlgId_peakToPeak:
                 algorithmIdStart = WirelessChannel::channel_1_peakToPeak;
                 break;
 
-            case WirelessTypes::derived_ips:
+            case WirelessTypes::derivedAlgId_ips:
                 algorithmIdStart = WirelessChannel::channel_1_ips;
                 break;
 
-            case WirelessTypes::derived_crestFactor:
+            case WirelessTypes::derivedAlgId_mmps:
+                algorithmIdStart = WirelessChannel::channel_1_mmps;
+                break;
+
+            case WirelessTypes::derivedAlgId_crestFactor:
                 algorithmIdStart = WirelessChannel::channel_1_crestFactor;
                 break;
 
-            case WirelessTypes::derived_mean:
+            case WirelessTypes::derivedAlgId_mean:
                 algorithmIdStart = WirelessChannel::channel_1_mean;
                 break;
 
@@ -165,6 +169,14 @@ namespace mscl
                 break;
             }
 
+            //uint16 value (from 24-bit node, needs shifted left)
+            case WirelessTypes::dataType_uint16_24bitTrunc:
+            {
+                uint32 val = static_cast<uint32>(m_payload.read_uint16(payloadPosition));
+                result = (val << 8);
+                break;
+            }
+
             //int16 value (from 20-bit node, needs shifted left)
             case WirelessTypes::dataType_int16_20bitTrunc:
             {
@@ -182,12 +194,18 @@ namespace mscl
 
             //uint24 value (we store this as a uint32)
             case WirelessTypes::dataType_uint24:
+            case WirelessTypes::dataType_uint24_18bitRes:
                 result = m_payload.read_uint24(payloadPosition);
                 break;
 
             //int24 value (we store this as a int32)
             case WirelessTypes::dataType_int24_20bit:
                 result = m_payload.read_int24(payloadPosition);
+                break;
+
+            //int16 value (calibrated value multiplied by 10, needs divided by 10)
+            case WirelessTypes::dataType_int16_x10:
+                result = static_cast<float>(m_payload.read_int16(payloadPosition)) / 10.0f;
                 break;
         }
     }

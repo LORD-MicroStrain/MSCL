@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -21,7 +21,8 @@ namespace mscl
         m_derivedSweepSize(0),
         m_isMathData(false),
         m_partialDownload(false),
-        m_doneDownloading(false)
+        m_doneDownloading(false),
+        m_startedDownloading(false)
     {
         m_totalBytes = size;
 
@@ -44,6 +45,12 @@ namespace mscl
         //if we haven't rolled over
         if(m_downloadAddress >= m_startAddress)
         {
+            //we've come back around to the start address, should be done downloading
+            if((m_downloadAddress == m_startAddress) && m_startedDownloading)
+            {
+                return 0;
+            }
+
             uint32 bytesRead = m_downloadAddress - m_startAddress;
             if(m_totalBytes > bytesRead)
             {
@@ -241,7 +248,7 @@ namespace mscl
                     {
                         //add up the number of bytes for all the active algorithms
                         //  (# of bytes for the algorithm type) * (# of channels that are active)
-                        numAlgChannelBytes += WirelessTypes::bytesPerDerivedChannel(static_cast<WirelessTypes::DerivedChannelType>(algorithmId)) * chMask.count();
+                        numAlgChannelBytes += WirelessTypes::bytesPerDerivedAlgorithmId(static_cast<WirelessTypes::DerivedDataPacketAlgorithmId>(algorithmId)) * chMask.count();
                     }
                     catch(Error_NotSupported&)
                     {
@@ -494,6 +501,8 @@ namespace mscl
                 fillBuffer(m_nextData);
             }
         }
+
+        m_startedDownloading = true;
 
         return m_currentData.read_uint8(m_readIndex++);
     }

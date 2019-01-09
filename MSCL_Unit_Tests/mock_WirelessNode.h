@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -83,6 +83,11 @@ static void expectRead(std::shared_ptr<mock_WirelessNodeImpl> impl, const Eeprom
 static void expectWrite(std::shared_ptr<mock_WirelessNodeImpl> impl, const EepromLocation& loc, const Value& val)
 {
     MOCK_EXPECT(impl->writeEeprom).with(loc, val);
+}
+
+static void expectWriteOnce(std::shared_ptr<mock_WirelessNodeImpl> impl, const EepromLocation& loc, const Value& val)
+{
+    MOCK_EXPECT(impl->writeEeprom).once().with(loc, val);
 }
 
 static void expectReadModel(std::shared_ptr<mock_WirelessNodeImpl> impl, WirelessModels::NodeModel model)

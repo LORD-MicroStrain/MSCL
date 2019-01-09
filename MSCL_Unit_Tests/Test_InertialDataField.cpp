@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -22,7 +22,7 @@ BOOST_AUTO_TEST_CASE(InertialDataField_Constructor)
     b.push_back(0x01);
     b.push_back(0x02);
 
-    //build an MipDataField from the bytes
+    //build a MipDataField from the bytes
     MipDataField f1(MipTypes::CH_FIELD_SENSOR_RAW_ACCEL_VEC, b);
 
     BOOST_CHECK_EQUAL(f1.fieldId(), MipTypes::CH_FIELD_SENSOR_RAW_ACCEL_VEC);

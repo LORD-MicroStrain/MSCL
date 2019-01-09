@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -23,14 +23,14 @@ namespace mscl
 
     uint32 NodeMemory_v1::calcTotalBytes(uint16 logPage, uint16 pageOffset)
     {
-        //if page offset >= PAGE_SIZE
-        if(pageOffset >= PAGE_SIZE)
+        //if page offset >= DPAGE_SIZE
+        if(pageOffset >= DPAGE_SIZE)
         {
             //need to increment the log page by 1
             logPage += 1;
 
-            //need to reduce the page offset by the PAGE_SIZE
-            pageOffset -= PAGE_SIZE;
+            //need to reduce the page offset by the DPAGE_SIZE
+            pageOffset -= DPAGE_SIZE;
         }
 
         //eeproms take up the first 2 pages
@@ -41,14 +41,14 @@ namespace mscl
         }
 
         //each physical page is equal to 1 virtual page.
-        return (lastPage * PAGE_SIZE) + (pageOffset);
+        return (lastPage * DPAGE_SIZE) + (pageOffset);
     }
 
     void NodeMemory_v1::findPageAndOffset(uint32 bytePosition, uint16& page, uint16& offset) const
     {
         //calculate the page and offset
-        page = static_cast<uint16>((bytePosition / PAGE_SIZE) + START_PAGE);
-        offset = bytePosition % PAGE_SIZE;
+        page = static_cast<uint16>((bytePosition / DPAGE_SIZE) + START_PAGE);
+        offset = bytePosition % DPAGE_SIZE;
     }
 
     ByteStream* NodeMemory_v1::getByteStream(uint16 page)

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -53,16 +53,16 @@ namespace SyncSamplingFormulas
         {
             if(highBandwidth)
             {
-                return 69;//144;
+                return 69;
             }
 
             if(lossless)
             {
-                return 138;//288;
+                return 138;
             }
             else
             {
-                return 207;//432;
+                return 138; //keep same bandwidth limitations as lossless
             }
         }
     }
@@ -171,9 +171,9 @@ namespace SyncSamplingFormulas
         if(samplingMode != WirelessTypes::samplingMode_syncBurst)
         {
             //if the sample rate is 16hz or slower, or the 32hz or faster and a tclink1ch or rtdlink, or the model is SHM-Link
-            if( (sampleRate <= SampleRate::Hertz(16)) ||
-                (sampleRate >= SampleRate::Hertz(32) && (nodeModel == WirelessModels::node_tcLink_1ch || nodeModel == WirelessModels::node_rtdLink)) ||
-                (isShmLink)
+            if( (isShmLink) ||
+                (sampleRate <= SampleRate::Hertz(16)) ||
+                (sampleRate >= SampleRate::Hertz(32) && (nodeModel == WirelessModels::node_tcLink_1ch || nodeModel == WirelessModels::node_rtdLink))
               )
             {
                 return true;
@@ -308,7 +308,7 @@ namespace SyncSamplingFormulas
         return txPerSec;
     }
 
-    float overheadFactor(bool lossless, bool optimizeBandwidth, const SampleRate& sampleRate, uint8 syncFormulaVersion)
+    float overheadFactor(bool lossless, bool optimizeBandwidth, bool diagnosticPacketEnabled, const SampleRate& sampleRate, uint8 syncFormulaVersion)
     {
         //special cases for sync version 1
         if(syncFormulaVersion == 1)
@@ -327,6 +327,11 @@ namespace SyncSamplingFormulas
         if(lossless)
         {
             return 1.5f;
+        }
+
+        if(diagnosticPacketEnabled)
+        {
+            return 1.05f;
         }
         
         return 1.0f;

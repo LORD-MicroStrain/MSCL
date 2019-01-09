@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -10,6 +10,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "mscl/MicroStrain/MIP/MipNodeInfo.h"
 #include "mscl/MicroStrain/MIP/MipTypes.h"
+#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/SampleRate.h"
 
 namespace mscl
@@ -47,7 +48,7 @@ namespace mscl
         //    info - An <MipNodeInfo> object representing standard information of the device.
         //
         //Returns:
-        //    An MipNodeFeatures unique_ptr.
+        //    A MipNodeFeatures unique_ptr.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The Node model is not supported by MSCL.
@@ -67,8 +68,8 @@ namespace mscl
         //    Checks whether or not a given <MipTypes::DataClass> is supported by the Node.
         //
         //Parameters:
-        //    category - The <MipTypes::DataClass> to check if supported.
-        bool supportsCategory(MipTypes::DataClass category) const;
+        //    dataClass - The <MipTypes::DataClass> to check if supported.
+        bool supportsCategory(MipTypes::DataClass dataClass) const;
 
         //API Function: supportsCommand
         //    Checks whether or not the given <MipTypes::Command> is supported by the Node.
@@ -91,7 +92,7 @@ namespace mscl
         //    Gets a list of the supported channel fields for a given <MipTypes::DataClass>.
         //
         //Parameters:
-        //    category - The <MipTypes::DataClass> to get the list of supported channels for.
+        //    dataClass - The <MipTypes::DataClass> to get the list of supported channels for.
         //
         //Returns:
         //    A <MipTypes::ChannelFields> object containing the list of supported channel fields.
@@ -101,13 +102,13 @@ namespace mscl
         //    - <Error_Communication>: Timed out waiting for a response.
         //    - <Error_NotSupported>: The <MipTypes::DataClass> is not supported by this node.
         //    - <Error_Connection>: A connection error has occurred with the Node.
-        MipTypes::MipChannelFields supportedChannelFields(MipTypes::DataClass category) const;
+        MipTypes::MipChannelFields supportedChannelFields(MipTypes::DataClass dataClass) const;
 
         //API Function: supportedSampleRates
         //    Gets a list of the supported sample rates for a given <MipTypes::DataClass>.
         //
         //Parameters:
-        //    category - The <MipTypes::DataClass> to get the sample rate list for.
+        //    dataClass - The <MipTypes::DataClass> to get the sample rate list for.
         //
         //Returns:
         //    A <SampleRates> list containing all the supported sample rates for the provided channel.
@@ -117,6 +118,34 @@ namespace mscl
         //    - <Error_Communication>: Timed out waiting for a response.
         //    - <Error_NotSupported>: The <MipTypes::DataClass> is not supported by this node.
         //    - <Error_Connection>: A connection error has occurred with the Node.
-        const SampleRates& supportedSampleRates(MipTypes::DataClass category) const;
+        const SampleRates& supportedSampleRates(MipTypes::DataClass dataClass) const;
+
+        //API Function: supportedHeadingUpdateOptions
+        //    Gets a list of the supported heading update control options for this node.
+        //
+        //Returns:
+        //    A <HeadingUpdateOptionsList> containing all the supported heading update control options for this node.
+        const HeadingUpdateOptionsList supportedHeadingUpdateOptions() const;
+
+        //API Function: supportedEstimationControlOptions
+        //    Gets an object containing the estimation control options supported by this node.
+        //
+        //Returns:
+        //    A EstimationControlOptions object containing all the supported estimation control options for this node.
+        const EstimationControlOptions supportedEstimationControlOptions() const;
+
+        //API Function: supportedVehicleModeTypes
+        //    Gets a list of the supported vehicle mode types for this node.
+        //
+        //Returns:
+        //    A <VehicleModeTypes> containing all the supported vehicle mode types for this node.
+        const VehicleModeTypes supportedVehicleModeTypes() const;
+
+        //API Function: supportedAdaptiveMeasurementModes
+        //    Gets an object containing the adaptive measurement modes supported by this node.
+        //
+        //Returns:
+        //    A AdaptiveMeasurementModes object containing all the supported adaptive measurement modes for this node.
+        const AdaptiveMeasurementModes supportedAdaptiveMeasurementModes() const;
     };
 }

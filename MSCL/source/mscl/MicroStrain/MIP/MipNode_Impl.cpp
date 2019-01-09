@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -21,6 +21,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Displacement/Commands/DisplacementOutputDataRate.h"
 #include "mscl/MicroStrain/Displacement/Commands/GetAnalogToDisplacementCals.h"
 #include "mscl/MicroStrain/Inertial/Commands/AccelBias.h"
+#include "mscl/MicroStrain/Inertial/Commands/AdaptiveMeasurement.h"
 #include "mscl/MicroStrain/Inertial/Commands/AdvancedLowPassFilterSettings.h"
 #include "mscl/MicroStrain/Inertial/Commands/CaptureGyroBias.h"
 #include "mscl/MicroStrain/Inertial/Commands/ComplementaryFilterSettings.h"
@@ -29,10 +30,13 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Inertial/Commands/DeviceStartupSettings.h"
 #include "mscl/MicroStrain/Inertial/Commands/DeviceStatus.h"
 #include "mscl/MicroStrain/Inertial/Commands/EstimationControlFlags.h"
+#include "mscl/MicroStrain/Inertial/Commands/GeographicSource.h"
 #include "mscl/MicroStrain/Inertial/Commands/EstFilter_Commands.h"
 #include "mscl/MicroStrain/Inertial/Commands/ExternalGNSSUpdate.h"
 #include "mscl/MicroStrain/Inertial/Commands/ExternalHeadingUpdate.h"
 #include "mscl/MicroStrain/Inertial/Commands/ExternalHeadingUpdateWithTimestamp.h"
+#include "mscl/MicroStrain/Inertial/Commands/FloatCommand.h"
+#include "mscl/MicroStrain/Inertial/Commands/GeometricVectorCommand.h"
 #include "mscl/MicroStrain/Inertial/Commands/GNSS_AssistedFixControl.h"
 #include "mscl/MicroStrain/Inertial/Commands/GNSS_AssistTimeUpdate.h"
 #include "mscl/MicroStrain/Inertial/Commands/GNSS_Commands.h"
@@ -43,8 +47,11 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Inertial/Commands/HeadingUpdateControl.h"
 #include "mscl/MicroStrain/Inertial/Commands/MagnetometerHardIronOffset.h"
 #include "mscl/MicroStrain/Inertial/Commands/MagnetometerSoftIronMatrix.h"
+#include "mscl/MicroStrain/Inertial/Commands/Matrix3x3Command.h"
+#include "mscl/MicroStrain/Inertial/Commands/PollData.h"
 #include "mscl/MicroStrain/Inertial/Commands/RawRTCM_2_3Message.h"
 #include "mscl/MicroStrain/Inertial/Commands/Sensor_Commands.h"
+#include "mscl/MicroStrain/Inertial/Commands/SetReferencePosition.h"
 #include "mscl/MicroStrain/Inertial/Commands/System_Commands.h"
 #include "mscl/MicroStrain/Inertial/Commands/UARTBaudRate.h"
 #include "mscl/MicroStrain/Inertial/Commands/VehicleDynamicsMode.h"
@@ -56,12 +63,16 @@ namespace mscl
         m_commandsTimeout(COMMANDS_DEFAULT_TIMEOUT),
         m_sensorRateBase(0),
         m_gnssRateBase(0),
-        m_estfilterRateBase(0)
+        m_estfilterRateBase(0),
+        m_lastDeviceState(deviceState_unknown)
     {
         //create the response collector
         m_responseCollector.reset(new ResponseCollector);
 
         m_responseCollector->setConnection(&m_connection);
+
+        //want to get notified of data packets
+        m_packetCollector.requestDataAddedNotification(std::bind(&MipNode_Impl::onDataPacketAdded, this));
 
         //build the parser with the MipNode_Impl's packet collector and response collector
         m_parser.reset(new MipParser(&m_packetCollector, m_responseCollector));
@@ -84,6 +95,11 @@ namespace mscl
         }
 
         return m_lastCommTime;
+    }
+
+    DeviceState MipNode_Impl::lastDeviceState() const
+    {
+        return m_lastDeviceState;
     }
 
     Version MipNode_Impl::firmwareVersion() const
@@ -127,6 +143,11 @@ namespace mscl
         return (*m_nodeInfo);
     }
 
+    void MipNode_Impl::onDataPacketAdded()
+    {
+        m_lastDeviceState = DeviceState::deviceState_sampling;
+    }
+
     const MipNodeFeatures& MipNode_Impl::features() const
     {
         //if the features variable hasn't been set yet
@@ -144,12 +165,12 @@ namespace mscl
         return m_connection;
     }
 
-    SampleRates MipNode_Impl::supportedSampleRates(MipTypes::DataClass category) const
+    SampleRates MipNode_Impl::supportedSampleRates(MipTypes::DataClass dataClass) const
     {
         SampleRates result;
 
         //get the sample rate's base rate for this category from the Node
-        uint16 baseRate = getDataRateBase(category);
+        uint16 baseRate = getDataRateBase(dataClass);
 
         for(uint16 decimator = baseRate; decimator > 0; --decimator)
         {
@@ -284,6 +305,8 @@ namespace mscl
 
         //send the command and wait for the response
         doCommand(r, Mip_SetToIdle::buildCommand(), false);
+
+        m_lastDeviceState = DeviceState::deviceState_idle;
     }
 
     bool MipNode_Impl::cyclePower()
@@ -345,6 +368,36 @@ namespace mscl
         doCommand(r, DeviceStartupSettings::buildCommand_loadDefault(), false);
     }
 
+    void MipNode_Impl::pollData(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields)
+    {
+        switch(dataClass)
+        {
+            case MipTypes::CLASS_AHRS_IMU:
+            {
+                PollImuData::Response r(m_responseCollector);
+                doCommand(r, PollImuData::buildCommand(fields), false);
+                break;
+            }
+
+            case MipTypes::CLASS_GNSS:
+            {
+                PollGnssData::Response r(m_responseCollector);
+                doCommand(r, PollGnssData::buildCommand(fields), false);
+                break;
+            }
+
+            case MipTypes::CLASS_ESTFILTER:
+            {
+                PollEstFilterData::Response r(m_responseCollector);
+                doCommand(r, PollEstFilterData::buildCommand(fields), false);
+                break;
+            }
+
+            default:
+                throw Error_NotSupported("Unsupported DataClass");
+        }
+    }
+
     MipDeviceInfo MipNode_Impl::getDeviceInfo() const
     {
         //create the response for the GetDeviceInfo command
@@ -359,6 +412,7 @@ namespace mscl
         std::vector<uint16> descriptors;
 
         //create the response for the GetDeviceDescriptorSets command
+
         GetDeviceDescriptorSets::Response r(m_responseCollector);
 
         //append the descriptors to the container
@@ -377,9 +431,9 @@ namespace mscl
         return descriptors;
     }
 
-    uint16 MipNode_Impl::getDataRateBase(MipTypes::DataClass category) const
+    uint16 MipNode_Impl::getDataRateBase(MipTypes::DataClass dataClass) const
     {
-        switch(category)
+        switch(dataClass)
         {
             case MipTypes::CLASS_AHRS_IMU:
             {
@@ -466,12 +520,12 @@ namespace mscl
         }
     }
 
-    void MipNode_Impl::setMessageFormat(MipTypes::DataClass category, const MipChannels& channels)
+    void MipNode_Impl::setMessageFormat(MipTypes::DataClass dataClass, const MipChannels& channels)
     {
         //get the sample rate base set for this category
-        uint16 sampleRateBase = getDataRateBase(category);
+        uint16 sampleRateBase = getDataRateBase(dataClass);
 
-        switch(category)
+        switch(dataClass)
         {
             case MipTypes::CLASS_AHRS_IMU:
             {
@@ -564,13 +618,13 @@ namespace mscl
         m_nodeInfo.reset();
     }
 
-    void MipNode_Impl::enableDataStream(MipTypes::DataClass category, bool enable)
+    void MipNode_Impl::enableDataStream(MipTypes::DataClass dataClass, bool enable)
     {
         //set the expected response
-        ContinuousDataStream::Response r(m_responseCollector, false, category);
+        ContinuousDataStream::Response r(m_responseCollector, false, dataClass);
 
         //send the command and wait for the response
-        doCommand(r, ContinuousDataStream::buildCommand_set(category, enable));
+        doCommand(r, ContinuousDataStream::buildCommand_set(dataClass, enable));
     }
 
     void MipNode_Impl::resetFilter()
@@ -592,6 +646,62 @@ namespace mscl
         AutoInitializeControl::Response r(m_responseCollector, false);
 
         doCommand(r, AutoInitializeControl::buildCommand_set(enable));
+    }
+
+    bool MipNode_Impl::getAltitudeAid()
+    {
+        AltitudeAidControl::Response r(m_responseCollector, true);
+
+        return r.parseResponse(doCommand(r, AltitudeAidControl::buildCommand_get()));
+    }
+
+    void MipNode_Impl::setAltitudeAid(bool enable)
+    {
+        AltitudeAidControl::Response r(m_responseCollector, false);
+
+        doCommand(r, AltitudeAidControl::buildCommand_set(enable));
+    }
+
+    bool MipNode_Impl::getPitchRollAid()
+    {
+        PitchRollAidControl::Response r(m_responseCollector, true);
+
+        return r.parseResponse(doCommand(r, PitchRollAidControl::buildCommand_get()));
+    }
+
+    void MipNode_Impl::setPitchRollAid(bool enable)
+    {
+        PitchRollAidControl::Response r(m_responseCollector, false);
+
+        doCommand(r, PitchRollAidControl::buildCommand_set(enable));
+    }
+
+    ZUPTSettingsData MipNode_Impl::getVelocityZUPT()
+    {
+        VelocityZUPTControl::Response r(m_responseCollector, true);
+
+        return r.parseResponse(doCommand(r, VelocityZUPTControl::buildCommand_get()));
+    }
+
+    void MipNode_Impl::setVelocityZUPT(const ZUPTSettingsData& ZUPTSettings)
+    {
+        VelocityZUPTControl::Response r(m_responseCollector, false);
+
+        doCommand(r, VelocityZUPTControl::buildCommand_set(ZUPTSettings));
+    }
+
+    ZUPTSettingsData MipNode_Impl::getAngularRateZUPT()
+    {
+        AngularRateZUPTControl::Response r(m_responseCollector, true);
+
+        return r.parseResponse(doCommand(r, AngularRateZUPTControl::buildCommand_get()));
+    }
+
+    void MipNode_Impl::setAngularRateZUPT(const ZUPTSettingsData& ZUPTSettings)
+    {
+        AngularRateZUPTControl::Response r(m_responseCollector, false);
+
+        doCommand(r, AngularRateZUPTControl::buildCommand_set(ZUPTSettings));
     }
 
     void MipNode_Impl::setInitialAttitude(const EulerAngles& attitude)
@@ -836,9 +946,9 @@ namespace mscl
         SendCommand(lowPassFilterCmd);
     }
 
-    AdvancedLowPassFilterData MipNode_Impl::getAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data)
+    AdvancedLowPassFilterData MipNode_Impl::getAdvancedLowPassFilterSettings(const MipTypes::ChannelField& dataDescriptor)
     {
-        AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeGetCommand(data);
+        AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeGetCommand(dataDescriptor);
         GenericMipCmdResponse response = SendCommand(lowPassFilterCmd);
         return lowPassFilterCmd.getResponseData(response);
     }
@@ -889,17 +999,56 @@ namespace mscl
         return vehicleMode.getResponseData(response);
     }
 
-    void MipNode_Impl::setEstimationControlFlags(const uint16& flags)
+    void MipNode_Impl::setEstimationControlFlags(const EstimationControlOptions& flags)
     {
-        EstimationControlFlags estimationControlFlags = EstimationControlFlags::MakeSetCommand(flags);
+        EstimationControlFlags estimationControlFlags = EstimationControlFlags::MakeSetCommand(flags.AsUint16());
         SendCommand(estimationControlFlags);
     }
 
-    uint16 MipNode_Impl::getEstimationControlFlags()
+    EstimationControlOptions MipNode_Impl::getEstimationControlFlags()
     {
         EstimationControlFlags estimationControlFlags = EstimationControlFlags::MakeGetCommand();
         GenericMipCmdResponse response = SendCommand(estimationControlFlags);
         return estimationControlFlags.getResponseData(response);
+    }
+
+    void MipNode_Impl::setInclinationSource(const GeographicSourceOptions& options)
+    {
+        GeographicSource inclinationSource = InclinationSource::MakeSetCommand(options);
+        SendCommand(inclinationSource);
+    }
+
+    GeographicSourceOptions MipNode_Impl::getInclinationSource()
+    {
+        GeographicSource inclinationSource = InclinationSource::MakeGetCommand();
+        GenericMipCmdResponse response = SendCommand(inclinationSource);
+        return inclinationSource.getResponseData(response);
+    }
+
+    void MipNode_Impl::setDeclinationSource(const GeographicSourceOptions& options)
+    {
+        GeographicSource declinationSource = DeclinationSource::MakeSetCommand(options);
+        SendCommand(declinationSource);
+    }
+
+    GeographicSourceOptions MipNode_Impl::getDeclinationSource()
+    {
+        GeographicSource declinationSource = DeclinationSource::MakeGetCommand();
+        GenericMipCmdResponse response = SendCommand(declinationSource);
+        return declinationSource.getResponseData(response);
+    }
+
+    void MipNode_Impl::setMagneticFieldMagnitudeSource(const GeographicSourceOptions& options)
+    {
+        GeographicSource magneticFieldMagnitudeSource = MagneticFieldMagnitudeSource::MakeSetCommand(options);
+        SendCommand(magneticFieldMagnitudeSource);
+    }
+
+    GeographicSourceOptions MipNode_Impl::getMagneticFieldMagnitudeSource()
+    {
+        GeographicSource magneticFieldMagnitudeSource = MagneticFieldMagnitudeSource::MakeGetCommand();
+        GenericMipCmdResponse response = SendCommand(magneticFieldMagnitudeSource);
+        return magneticFieldMagnitudeSource.getResponseData(response);
     }
 
     void MipNode_Impl::setGNSS_SourceControl(const InertialTypes::GNSS_Source& gnssSource)
@@ -932,6 +1081,71 @@ namespace mscl
         HeadingUpdateControl headingUpdateControl = HeadingUpdateControl::MakeGetCommand();
         GenericMipCmdResponse response = SendCommand(headingUpdateControl);
         return headingUpdateControl.getResponseData(response);
+    }
+
+    void MipNode_Impl::setAdaptiveMeasurement(MipTypes::Command cmd, const AdaptiveMeasurementData& data)
+    {
+        AdaptiveMeasurement command = AdaptiveMeasurement::MakeSetCommand(cmd, data);
+        SendCommand(command);
+    }
+
+    AdaptiveMeasurementData MipNode_Impl::getAdaptiveMeasurement(MipTypes::Command cmd)
+    {
+        AdaptiveMeasurement command = AdaptiveMeasurement::MakeGetCommand(cmd);
+        GenericMipCmdResponse response = SendCommand(command);
+        return command.getResponseData(response);
+    }
+
+    void MipNode_Impl::setGeometricVectors(MipTypes::Command cmd, const GeometricVectors& data)
+    {
+        GeometricVectorCommand command = GeometricVectorCommand::MakeSetCommand(cmd, data);
+        SendCommand(command);
+    }
+
+    GeometricVectors MipNode_Impl::getGeometricVectors(MipTypes::Command cmd)
+    {
+        GeometricVectorCommand command = GeometricVectorCommand::MakeGetCommand(cmd);
+        GenericMipCmdResponse response = SendCommand(command);
+        return command.getResponseData(response);
+    }
+
+    void MipNode_Impl::setMatrix3x3s(MipTypes::Command cmd, const Matrix_3x3s& data)
+    {
+        Matrix3x3Command command = Matrix3x3Command::MakeSetCommand(cmd, data);
+        SendCommand(command);
+    }
+
+    Matrix_3x3s MipNode_Impl::getMatrix3x3s(MipTypes::Command cmd)
+    {
+        Matrix3x3Command command = Matrix3x3Command::MakeGetCommand(cmd);
+        GenericMipCmdResponse response = SendCommand(command);
+        return command.getResponseData(response);
+    }
+
+    void MipNode_Impl::setFloats(MipTypes::Command cmd, const std::vector<float>& data)
+    {
+        FloatCommand command = FloatCommand::MakeSetCommand(cmd, data);
+        SendCommand(command);
+    }
+
+    std::vector<float> MipNode_Impl::getFloats(MipTypes::Command cmd)
+    {
+        FloatCommand command = FloatCommand::MakeGetCommand(cmd);
+        GenericMipCmdResponse response = SendCommand(command);
+        return command.getResponseData(response);
+    }
+
+    void MipNode_Impl::setFixedReferencePosition(const FixedReferencePositionData& data)
+    {
+        SetReferencePosition command = SetReferencePosition::MakeSetCommand(data);
+        SendCommand(command);
+    }
+
+    FixedReferencePositionData MipNode_Impl::getFixedReferencePosition()
+    {
+        SetReferencePosition command = SetReferencePosition::MakeGetCommand();
+        GenericMipCmdResponse response = SendCommand(command);
+        return command.getResponseData(response);
     }
 
     void MipNode_Impl::sendExternalHeadingUpdate(const HeadingData& headingData)

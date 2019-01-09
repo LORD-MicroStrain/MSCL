@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -7,7 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "WirelessTypes.h"
 
 namespace mscl
-{
+{    
     uint16 WirelessTypes::dataTypeSize(DataType type)
     {
         switch(type)
@@ -16,7 +16,9 @@ namespace mscl
             case dataType_uint16:
             case dataType_uint16_shifted:
             case dataType_uint16_18bitTrunc:
+            case dataType_uint16_24bitTrunc:
             case dataType_int16_20bitTrunc:
+            case dataType_int16_x10:
                 return 2;
 
             case dataType_float32:
@@ -25,6 +27,7 @@ namespace mscl
                 return 4;
 
             case dataType_uint24:
+            case dataType_uint24_18bitRes:
             case dataType_int24_20bit:
                 return 3;
 
@@ -47,7 +50,9 @@ namespace mscl
 
             case dataType_uint32:
             case dataType_uint24:               //uint24 is stored as a uint32 in mscl
+            case dataType_uint24_18bitRes:
             case dataType_uint16_18bitTrunc:    //uint16 from 18-bit node is stored as a uint32 in mscl
+            case dataType_uint16_24bitTrunc:    //uint16 from 24-bit node is stored as a uint32 in mscl
                 return valueType_uint32;
 
             case dataType_int16_20bitTrunc:     //int16 from 20-bit node is stored as an int32 in mscl
@@ -57,6 +62,7 @@ namespace mscl
             //data types that are floats
             case dataType_float32:
             case dataType_float32_noCals:
+            case dataType_int16_x10:            //int16 stored as a float in mscl
                 return valueType_float;
 
             default:
@@ -78,8 +84,22 @@ namespace mscl
 
         case dataFormat_raw_uint16:
         case dataFormat_raw_int16:
+        case dataFormat_cal_int16_x10:
         default:
             return 2;
+        }
+    }
+
+    bool WirelessTypes::isCalApplied(DataType dataType)
+    {
+        switch(dataType)
+        {
+            case dataType_float32:
+            case dataType_int16_x10:
+                return true;
+
+            default:
+                return false;
         }
     }
 
@@ -204,19 +224,36 @@ namespace mscl
         }
     }
 
-    uint8 WirelessTypes::bytesPerDerivedChannel(DerivedChannelType id)
+    uint8 WirelessTypes::bytesPerDerivedAlgorithmId(DerivedDataPacketAlgorithmId id)
     {
         switch(id)
         {
-            case WirelessTypes::derived_rms:
-            case WirelessTypes::derived_peakToPeak:
-            case WirelessTypes::derived_ips:
-            case WirelessTypes::derived_crestFactor:
-            case WirelessTypes::derived_mean:
+            case WirelessTypes::derivedAlgId_rms:
+            case WirelessTypes::derivedAlgId_peakToPeak:
+            case WirelessTypes::derivedAlgId_ips:
+            case WirelessTypes::derivedAlgId_mmps:
+            case WirelessTypes::derivedAlgId_crestFactor:
+            case WirelessTypes::derivedAlgId_mean:
                 return 4;
 
             default:
                 throw Error_NotSupported("Invalid Derived Channel ID ( " + Utils::toStr(id) + ")");
+        }
+    }
+
+    uint8 WirelessTypes::bytesPerDerivedChannelOption(DerivedCategory category)
+    {
+        switch(category)
+        {
+            case WirelessTypes::derivedCategory_rms:
+            case WirelessTypes::derivedCategory_peakToPeak:
+            case WirelessTypes::derivedCategory_velocity:
+            case WirelessTypes::derivedCategory_crestFactor:
+            case WirelessTypes::derivedCategory_mean:
+                return 4;
+
+            default:
+                throw Error_NotSupported("Invalid DerivedCategory ( " + Utils::toStr(category) + ")");
         }
     }
 
@@ -230,7 +267,7 @@ namespace mscl
 
             if(count > 0)
             {
-                sweepSize += (count * bytesPerDerivedChannel(ch.first));
+                sweepSize += (count * bytesPerDerivedChannelOption(ch.first));
             }
         }
 

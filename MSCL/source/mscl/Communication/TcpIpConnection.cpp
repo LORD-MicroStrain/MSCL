@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -39,11 +39,11 @@ namespace mscl
         {
             try
             {
-                //setup the m_ioService
-                m_ioService.reset(new boost::asio::io_service);
+                //setup the m_ioContext
+                m_ioContext.reset(new boost::asio::io_context);
 
                 //create a resolver to turn the server name into a TCP endpoint
-                tcp::resolver resolver(*m_ioService);
+                tcp::resolver resolver(*m_ioContext);
 
                 //create the resolver query with our address and port
                 tcp::resolver::query query(m_serverAddress, Utils::toStr(m_serverPort));
@@ -53,9 +53,9 @@ namespace mscl
                 tcp::resolver::iterator end;
 
                 //setup the m_ioPort
-                m_ioPort.reset(new tcp::socket(*m_ioService));
+                m_ioPort.reset(new tcp::socket(*m_ioContext));
 
-                m_deadlineTimer.reset(new boost::asio::deadline_timer(*m_ioService));
+                m_deadlineTimer.reset(new boost::asio::deadline_timer(*m_ioContext));
                 m_deadlineTimer->expires_at(boost::posix_time::pos_infin);
 
                 boost::system::error_code error = boost::asio::error::would_block;
@@ -83,7 +83,7 @@ namespace mscl
                     m_ioPort->async_connect(*endpoint_iterator++, boost::lambda::var(error) = boost::lambda::_1);
                     do
                     {
-                        m_ioService->run_one();
+                        m_ioContext->run_one();
                     }
                     while(error == boost::asio::error::would_block);
                 }
@@ -108,11 +108,11 @@ namespace mscl
 
                 DWORD dwBytesRet = 0;
 
-                WSAIoctl(m_ioPort->native(), SIO_KEEPALIVE_VALS, &alive, sizeof(alive), NULL, 0, &dwBytesRet, NULL, NULL);
+                WSAIoctl(m_ioPort->native_handle(), SIO_KEEPALIVE_VALS, &alive, sizeof(alive), NULL, 0, &dwBytesRet, NULL, NULL);
 #endif
 
-                //setup m_comm by creating a new BoostCommunication object using the serial_port and io_service we created
-                m_comm.reset(new BoostCommunication<tcp::socket>(std::move(m_ioService), std::move(m_ioPort)));
+                //setup m_comm by creating a new BoostCommunication object using the serial_port and io_context we created
+                m_comm.reset(new BoostCommunication<tcp::socket>(std::move(m_ioContext), std::move(m_ioPort)));
 
                 //create/start the read thread to parse incoming data
                 m_readThread.reset(new std::thread(&TcpIpConnection::startIoThread, this));

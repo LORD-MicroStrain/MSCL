@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -3074,7 +3074,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_1)
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
     expectRead(impl, NodeEepromMap::DERIVED_RMS_MASK, Value::UINT16(7));                    //rms ch1, ch2, ch3
     expectRead(impl, NodeEepromMap::DERIVED_P2P_MASK, Value::UINT16(0));
-    expectRead(impl, NodeEepromMap::DERIVED_IPS_MASK, Value::UINT16(0));
+    expectRead(impl, NodeEepromMap::DERIVED_VELOCITY_MASK, Value::UINT16(0));
     expectRead(impl, NodeEepromMap::DERIVED_CREST_FACTOR_MASK, Value::UINT16(0));
 
     expectReadModel(impl, WirelessModels::node_gLink_200_8g);
@@ -3139,7 +3139,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_1_lxrsPlus)
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
     expectRead(impl, NodeEepromMap::DERIVED_RMS_MASK, Value::UINT16(15));
     expectRead(impl, NodeEepromMap::DERIVED_P2P_MASK, Value::UINT16(15));
-    expectRead(impl, NodeEepromMap::DERIVED_IPS_MASK, Value::UINT16(15));
+    expectRead(impl, NodeEepromMap::DERIVED_VELOCITY_MASK, Value::UINT16(15));
     expectRead(impl, NodeEepromMap::DERIVED_CREST_FACTOR_MASK, Value::UINT16(15));
 
     expectReadModel(impl, WirelessModels::node_gLink_200_8g);
@@ -3209,7 +3209,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_2)
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
     expectRead(impl, NodeEepromMap::DERIVED_RMS_MASK, Value::UINT16(7));                    //rms ch1, ch2, ch3
     expectRead(impl, NodeEepromMap::DERIVED_P2P_MASK, Value::UINT16(0));
-    expectRead(impl, NodeEepromMap::DERIVED_IPS_MASK, Value::UINT16(0));
+    expectRead(impl, NodeEepromMap::DERIVED_VELOCITY_MASK, Value::UINT16(0));
     expectRead(impl, NodeEepromMap::DERIVED_CREST_FACTOR_MASK, Value::UINT16(0));
 
     expectReadModel(impl, WirelessModels::node_gLink_200_8g);
@@ -3229,8 +3229,8 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_2)
     BOOST_CHECK_EQUAL(info.configurationApplied(), false);
     BOOST_CHECK_CLOSE(info.percentBandwidth(), 3.125, 0.1);
     BOOST_CHECK_EQUAL(info.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 4);
-    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 256);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 8);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 128);
     BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
 }
 
@@ -3279,7 +3279,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_3)
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
     expectRead(impl, NodeEepromMap::DERIVED_RMS_MASK, Value::UINT16(7));                    //rms ch1, ch2, ch3
     expectRead(impl, NodeEepromMap::DERIVED_P2P_MASK, Value::UINT16(0));
-    expectRead(impl, NodeEepromMap::DERIVED_IPS_MASK, Value::UINT16(0));
+    expectRead(impl, NodeEepromMap::DERIVED_VELOCITY_MASK, Value::UINT16(0));
     expectRead(impl, NodeEepromMap::DERIVED_CREST_FACTOR_MASK, Value::UINT16(0));
 
     expectReadModel(impl, WirelessModels::node_gLink_200_8g);
@@ -3348,7 +3348,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_4)
     expectRead(impl, NodeEepromMap::DATA_MODE, Value::UINT16(3));                           //derived and raw mode enabled
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
     expectRead(impl, NodeEepromMap::DERIVED_RMS_MASK, Value::UINT16(7));                    //rms ch1, ch2, ch3
-    expectRead(impl, NodeEepromMap::DERIVED_IPS_MASK, Value::UINT16(3));                    //ips ch1, ch2
+    expectRead(impl, NodeEepromMap::DERIVED_VELOCITY_MASK, Value::UINT16(3));                    //ips ch1, ch2
     expectRead(impl, NodeEepromMap::DERIVED_P2P_MASK, Value::UINT16(2));                    //p2p ch2
     expectRead(impl, NodeEepromMap::DERIVED_CREST_FACTOR_MASK, Value::UINT16(0));
 
@@ -3417,7 +3417,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_1)
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
     expectRead(impl, NodeEepromMap::DERIVED_RMS_MASK, Value::UINT16(7));                    //rms ch1, ch2, ch3
     expectRead(impl, NodeEepromMap::DERIVED_P2P_MASK, Value::UINT16(0));
-    expectRead(impl, NodeEepromMap::DERIVED_IPS_MASK, Value::UINT16(0));
+    expectRead(impl, NodeEepromMap::DERIVED_VELOCITY_MASK, Value::UINT16(0));
     expectRead(impl, NodeEepromMap::DERIVED_CREST_FACTOR_MASK, Value::UINT16(0));
 
     expectReadModel(impl, WirelessModels::node_gLink_200_8g);
@@ -3429,16 +3429,16 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_1)
 
     //verify the network information
     BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.78125, 0.1);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 1.5625, 0.1);
 
     //verify the networkInfo for the nodes in the network
     const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
     BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
     BOOST_CHECK_EQUAL(info.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info.percentBandwidth(), 0.78125, 0.1);
+    BOOST_CHECK_CLOSE(info.percentBandwidth(), 1.5625, 0.1);
     BOOST_CHECK_EQUAL(info.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 1);
-    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 1024);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 4);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 256);
     BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
 }
 
@@ -3485,7 +3485,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_1_lxrsPl
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
     expectRead(impl, NodeEepromMap::DERIVED_RMS_MASK, Value::UINT16(7));                    //rms ch1, ch2, ch3
     expectRead(impl, NodeEepromMap::DERIVED_P2P_MASK, Value::UINT16(0));
-    expectRead(impl, NodeEepromMap::DERIVED_IPS_MASK, Value::UINT16(0));
+    expectRead(impl, NodeEepromMap::DERIVED_VELOCITY_MASK, Value::UINT16(0));
     expectRead(impl, NodeEepromMap::DERIVED_CREST_FACTOR_MASK, Value::UINT16(0));
 
     expectReadModel(impl, WirelessModels::node_gLink_200_8g);
@@ -3497,16 +3497,16 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_1_lxrsPl
 
     //verify the network information
     BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.390625, 0.1);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.78125, 0.1);
 
     //verify the networkInfo for the nodes in the network
     const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
     BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
     BOOST_CHECK_EQUAL(info.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info.percentBandwidth(), 0.390625, 0.1);
+    BOOST_CHECK_CLOSE(info.percentBandwidth(), 0.78125, 0.1);
     BOOST_CHECK_EQUAL(info.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 1);
-    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 1024);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 4);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 256);
     BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
 }
 
@@ -3555,7 +3555,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_2)
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
     expectRead(impl, NodeEepromMap::DERIVED_RMS_MASK, Value::UINT16(7));                    //rms ch1, ch2, ch3
     expectRead(impl, NodeEepromMap::DERIVED_P2P_MASK, Value::UINT16(2));                    //p2p ch2
-    expectRead(impl, NodeEepromMap::DERIVED_IPS_MASK, Value::UINT16(0));
+    expectRead(impl, NodeEepromMap::DERIVED_VELOCITY_MASK, Value::UINT16(0));
     expectRead(impl, NodeEepromMap::DERIVED_CREST_FACTOR_MASK, Value::UINT16(3));           //cf ch1, ch2
 
     expectReadModel(impl, WirelessModels::node_gLink_200_8g);
@@ -3567,16 +3567,16 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_2)
 
     //verify the network information
     BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 0.78125, 0.1);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 1.5625, 0.1);
 
     //verify the networkInfo for the nodes in the network
     const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
     BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
     BOOST_CHECK_EQUAL(info.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info.percentBandwidth(), 0.78125, 0.1);
+    BOOST_CHECK_CLOSE(info.percentBandwidth(), 1.5625, 0.1);
     BOOST_CHECK_EQUAL(info.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 1);
-    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 1024);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 4);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 256);
     BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
 }
 
@@ -3625,7 +3625,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_3)
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
     expectRead(impl, NodeEepromMap::DERIVED_RMS_MASK, Value::UINT16(255));                  //rms ch1 - ch8
     expectRead(impl, NodeEepromMap::DERIVED_P2P_MASK, Value::UINT16(255));                  //p2p ch1 - ch8
-    expectRead(impl, NodeEepromMap::DERIVED_IPS_MASK, Value::UINT16(255));                  //ips ch1 - ch8
+    expectRead(impl, NodeEepromMap::DERIVED_VELOCITY_MASK, Value::UINT16(255));                  //ips ch1 - ch8
     expectRead(impl, NodeEepromMap::DERIVED_CREST_FACTOR_MASK, Value::UINT16(255));         //cf ch1 - ch8
 
     expectReadModel(impl, WirelessModels::node_gLink_200_8g);
@@ -3637,16 +3637,16 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derivedOnly_3)
 
     //verify the network information
     BOOST_CHECK_EQUAL(nwk.ok(), true);
-    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 3.125, 0.1);
+    BOOST_CHECK_CLOSE(nwk.percentBandwidth(), 6.25, 0.1);
 
     //verify the networkInfo for the nodes in the network
     const SyncNetworkInfo& info = nwk.getNodeNetworkInfo(100);
     BOOST_CHECK_EQUAL(info.status(), SyncNetworkInfo::status_OK);
     BOOST_CHECK_EQUAL(info.configurationApplied(), false);
-    BOOST_CHECK_CLOSE(info.percentBandwidth(), 3.125, 0.1);
+    BOOST_CHECK_CLOSE(info.percentBandwidth(), 6.25, 0.1);
     BOOST_CHECK_EQUAL(info.groupSize(), 1);
-    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 4);
-    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 256);
+    BOOST_CHECK_EQUAL(info.transmissionPerGroup(), 8);
+    BOOST_CHECK_EQUAL(info.maxTdmaAddress(), 128);
     BOOST_CHECK_EQUAL(info.tdmaAddress(), 1);
 }
 
@@ -3693,7 +3693,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_burst_derived1)
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(WirelessTypes::sampleRate_1Hz));
     expectRead(impl, NodeEepromMap::DERIVED_RMS_MASK, Value::UINT16(2));                    //rms ch2
     expectRead(impl, NodeEepromMap::DERIVED_P2P_MASK, Value::UINT16(255));                  //p2p ch1 - ch8
-    expectRead(impl, NodeEepromMap::DERIVED_IPS_MASK, Value::UINT16(0));
+    expectRead(impl, NodeEepromMap::DERIVED_VELOCITY_MASK, Value::UINT16(0));
     expectRead(impl, NodeEepromMap::DERIVED_CREST_FACTOR_MASK, Value::UINT16(3));           //cf ch1, ch2
 
     //add the node to the network
@@ -3767,7 +3767,7 @@ BOOST_AUTO_TEST_CASE(SyncSamplingNetwork_addNode_continuous_derived_nolossless)
     expectRead(impl, NodeEepromMap::DERIVED_DATA_RATE, Value::UINT16(derivedRate));
     expectRead(impl, NodeEepromMap::DERIVED_RMS_MASK, Value::UINT16(7));                    //rms ch1, ch2, ch3
     expectRead(impl, NodeEepromMap::DERIVED_P2P_MASK, Value::UINT16(0));
-    expectRead(impl, NodeEepromMap::DERIVED_IPS_MASK, Value::UINT16(0));
+    expectRead(impl, NodeEepromMap::DERIVED_VELOCITY_MASK, Value::UINT16(0));
     expectRead(impl, NodeEepromMap::DERIVED_CREST_FACTOR_MASK, Value::UINT16(0));
 
     expectReadModel(impl, WirelessModels::node_gLink_200_8g);

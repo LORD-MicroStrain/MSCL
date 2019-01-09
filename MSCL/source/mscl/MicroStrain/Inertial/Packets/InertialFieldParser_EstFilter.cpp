@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -200,7 +200,7 @@ namespace mscl
         //get whether points are valid or invalid from the flags
         bool valid    = pointIsValid(flags, MATRIX_FLAG);
 
-        //create a Matrix object with the Orientation Matrix data and create an MipDataPoint from it
+        //create a Matrix object with the Orientation Matrix data and create a MipDataPoint from it
         result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_MATRIX, valueType_Matrix, anyType(data), valid));
     }
 
@@ -990,7 +990,7 @@ namespace mscl
         //get whether points are valid or invalid from the flags
         bool valid = pointIsValid(flags, MATRIX_FLAG);
 
-        //create a Matrix object with the Orientation Matrix data and create an MipDataPoint from it
+        //create a Matrix object with the Orientation Matrix data and create a MipDataPoint from it
         result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_MATRIX, valueType_Matrix, anyType(data), valid));
     }
 
@@ -1051,7 +1051,7 @@ namespace mscl
         //get whether points are valid or invalid from the flags
         bool valid = pointIsValid(flags, MATRIX_FLAG);
 
-        //create a Matrix object with the Orientation Matrix data and create an MipDataPoint from it
+        //create a Matrix object with the Orientation Matrix data and create a MipDataPoint from it
         result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_MATRIX, valueType_Matrix, anyType(data), valid));
     }
 

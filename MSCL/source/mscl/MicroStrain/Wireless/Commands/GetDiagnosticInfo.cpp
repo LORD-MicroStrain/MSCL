@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -106,7 +106,7 @@ namespace mscl
 
             infoId = payload.read_uint8();
 
-            DiagnosticPacket::addDataPoint(m_result, payload, infoLen - 1, infoId);
+            DiagnosticPacket::addDataPoint(m_result, payload, infoLen - 1, infoId, packet.nodeAddress());
 
             infoByteCounter += (infoLen + 1);
         }

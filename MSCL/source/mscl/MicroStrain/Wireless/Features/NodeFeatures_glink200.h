@@ -1,17 +1,17 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "NodeFeatures.h"
+#include "NodeFeatures_200series.h"
 
 namespace mscl
 {
     //Class: NodeFeatures_glink200
     //    Contains information on features for the G-Link 200 node.
-    class NodeFeatures_glink200: public NodeFeatures
+    class NodeFeatures_glink200: public NodeFeatures_200series
     {
     public:
         virtual ~NodeFeatures_glink200(){};
@@ -20,15 +20,10 @@ namespace mscl
         //    Creates a NodeFeatures_glink200 object.
         NodeFeatures_glink200(const NodeInfo& info);
 
+    private:
+        static const Version VER_TILT_SUPPORTED;
+
     public:
-        virtual bool isChannelSettingReadOnly(WirelessTypes::ChannelGroupSetting setting) const override;
-
-        virtual WirelessTypes::TransmitPower maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const override;
-
-        virtual WirelessTypes::TransmitPower minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const override;
-
-        virtual const WirelessTypes::SamplingModes samplingModes() const override;
-
         virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
         virtual const WirelessTypes::DataFormats dataFormats() const override;
@@ -37,8 +32,8 @@ namespace mscl
 
         virtual const WirelessTypes::HighPassFilters highPassFilters() const override;
 
-        virtual const WirelessTypes::DerivedChannelTypes derivedChannelTypes() const override;
+        virtual const WirelessTypes::DerivedChannelMasks channelsPerDerivedCategory() const override;
 
-        virtual const WirelessTypes::StorageLimitModes storageLimitModes() const;
+        virtual const WirelessTypes::SensorOutputModes sensorOutputModes() const override;
     };
 }

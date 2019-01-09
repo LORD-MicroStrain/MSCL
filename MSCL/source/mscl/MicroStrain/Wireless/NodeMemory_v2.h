@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -106,6 +106,10 @@ namespace mscl
         //Variable: m_doneDownloading
         //  Flag to store whether we have downloaded all the data or not.
         bool m_doneDownloading;
+
+        //Variable: m_startedDownloading
+        //  true if we've downloaded at least some data.
+        bool m_startedDownloading;
 
         //Variable: m_nextData
         //  <ByteStream> to hold the next valid block.

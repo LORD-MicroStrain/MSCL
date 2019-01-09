@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -37,7 +37,8 @@ namespace mscl
         //    payload - The <DataBuffer> containing the payload, moved to the position of the info bytes to read.
         //    infoLength - The number of bytes that make up the info item.
         //    infoId - The id of the info item.
-        static void addDataPoint(ChannelData& container, DataBuffer& payload, uint8 infoLength, uint8 infoId);
+        //    nodeAddress - The NodeAddress of the Node this data point was from.
+        static void addDataPoint(ChannelData& container, DataBuffer& payload, uint8 infoLength, uint8 infoId, NodeAddress nodeAddress);
 
     public:
         //Function: integrityCheck

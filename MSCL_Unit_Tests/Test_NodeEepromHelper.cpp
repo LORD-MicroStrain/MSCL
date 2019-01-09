@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -9,6 +9,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Wireless/Features/NodeFeatures.h"
 #include "mscl/MicroStrain/Wireless/Configuration/WirelessNodeConfig.h"
 #include "mscl/MicroStrain/Wireless/Configuration/NodeEepromMap.h"
+#include "mscl/MicroStrain/Wireless/Configuration/TempSensorOptions.h"
 
 #include <boost/test/unit_test.hpp>
 #include "mock_WirelessNode.h"
@@ -366,6 +367,133 @@ BOOST_AUTO_TEST_CASE(NodeEepromHelper_getNumDatalogSessions)
     expectRead(impl, NodeEepromMap::DATA_SETS_STORED, Value::UINT16(static_cast<uint16>(12)));
 
     BOOST_CHECK_EQUAL(c.read_numDatalogSessions(), 12);
+}
+
+BOOST_AUTO_TEST_CASE(NodeEepromHelper_getTempSensorOptions_thermocouple)
+{
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(100));
+    BaseStation b = makeBaseStationWithMockImpl();
+    WirelessNode node(100, b);
+    node.setImpl(impl);
+
+    std::unique_ptr<NodeFeatures> features;
+    expectNodeFeatures(features, impl, mscl::WirelessModels::node_tcLink200_oem);
+
+    uint16 rTypeThermo = 0b0000000000000011;    //R-Type Thermocouple
+
+    expectRead(impl, NodeEepromMap::TEMP_SENSOR_CONFIG_1, Value::UINT16(rTypeThermo));
+
+    NodeEepromHelper c(node.eepromHelper());
+
+    TempSensorOptions result = c.read_tempSensorOptions(ChannelMask(1));
+
+    BOOST_CHECK_EQUAL(result.transducerType(), WirelessTypes::transducer_thermocouple);
+    BOOST_CHECK_EQUAL(result.thermocoupleType(), WirelessTypes::tc_R);
+}
+
+BOOST_AUTO_TEST_CASE(NodeEepromHelper_getTempSensorOptions_thermistor)
+{
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(100));
+    BaseStation b = makeBaseStationWithMockImpl();
+    WirelessNode node(100, b);
+    node.setImpl(impl);
+
+    std::unique_ptr<NodeFeatures> features;
+    expectNodeFeatures(features, impl, mscl::WirelessModels::node_tcLink200_oem);
+
+    uint16 thermistor = 0b0100000000000100;    //Thermistor 44006/44031
+
+    expectRead(impl, NodeEepromMap::TEMP_SENSOR_CONFIG_1, Value::UINT16(thermistor));
+
+    NodeEepromHelper c(node.eepromHelper());
+
+    TempSensorOptions result = c.read_tempSensorOptions(ChannelMask(1));
+
+    BOOST_CHECK_EQUAL(result.transducerType(), WirelessTypes::transducer_thermistor);
+    BOOST_CHECK_EQUAL(result.thermistorType(), WirelessTypes::thermistor_44006_44031);
+}
+
+BOOST_AUTO_TEST_CASE(NodeEepromHelper_getTempSensorOptions_rtd)
+{
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(100));
+    BaseStation b = makeBaseStationWithMockImpl();
+    WirelessNode node(100, b);
+    node.setImpl(impl);
+
+    std::unique_ptr<NodeFeatures> features;
+    expectNodeFeatures(features, impl, mscl::WirelessModels::node_tcLink200_oem);
+
+    uint16 rtd = 0b0010000000000001;    //3-Wire RTD PT-10
+
+    expectRead(impl, NodeEepromMap::TEMP_SENSOR_CONFIG_1, Value::UINT16(rtd));
+
+    NodeEepromHelper c(node.eepromHelper());
+
+    TempSensorOptions result = c.read_tempSensorOptions(ChannelMask(1));
+
+    BOOST_CHECK_EQUAL(result.transducerType(), WirelessTypes::transducer_rtd);
+    BOOST_CHECK_EQUAL(result.rtdWireType(), WirelessTypes::rtd_3wire);
+    BOOST_CHECK_EQUAL(result.rtdType(), WirelessTypes::rtd_pt10);
+}
+
+BOOST_AUTO_TEST_CASE(NodeEepromHelper_setTempSensorOptions_thermocouple)
+{
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(100));
+    BaseStation b = makeBaseStationWithMockImpl();
+    WirelessNode node(100, b);
+    node.setImpl(impl);
+
+    std::unique_ptr<NodeFeatures> features;
+    expectNodeFeatures(features, impl, mscl::WirelessModels::node_tcLink200_oem);
+
+    uint16 eTypeThermo = 0b0000000000000110;    //E-Type Thermocouple
+
+    expectWriteOnce(impl, NodeEepromMap::TEMP_SENSOR_CONFIG_1, Value::UINT16(eTypeThermo));
+
+    NodeEepromHelper c(node.eepromHelper());
+
+    TempSensorOptions opts = TempSensorOptions::Thermocouple(WirelessTypes::tc_E);
+    BOOST_CHECK_NO_THROW(c.write_tempSensorOptions(ChannelMask(1), opts));
+}
+
+BOOST_AUTO_TEST_CASE(NodeEepromHelper_setTempSensorOptions_thermistor)
+{
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(100));
+    BaseStation b = makeBaseStationWithMockImpl();
+    WirelessNode node(100, b);
+    node.setImpl(impl);
+
+    std::unique_ptr<NodeFeatures> features;
+    expectNodeFeatures(features, impl, mscl::WirelessModels::node_tcLink200_oem);
+
+    uint16 thermistor = 0b0100000000000101;    //Thermistor 44008/44032
+
+    expectWriteOnce(impl, NodeEepromMap::TEMP_SENSOR_CONFIG_1, Value::UINT16(thermistor));
+
+    NodeEepromHelper c(node.eepromHelper());
+
+    TempSensorOptions opts = TempSensorOptions::Thermistor(WirelessTypes::thermistor_44008_44032);
+    BOOST_CHECK_NO_THROW(c.write_tempSensorOptions(ChannelMask(1), opts));
+}
+
+BOOST_AUTO_TEST_CASE(NodeEepromHelper_setTempSensorOptions_rtd)
+{
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(100));
+    BaseStation b = makeBaseStationWithMockImpl();
+    WirelessNode node(100, b);
+    node.setImpl(impl);
+
+    std::unique_ptr<NodeFeatures> features;
+    expectNodeFeatures(features, impl, mscl::WirelessModels::node_tcLink200_oem);
+
+    uint16 rtd = 0b0010000000000010;    //3-Wire RTD PT-50
+
+    expectWriteOnce(impl, NodeEepromMap::TEMP_SENSOR_CONFIG_1, Value::UINT16(rtd));
+
+    NodeEepromHelper c(node.eepromHelper());
+
+    TempSensorOptions opts = TempSensorOptions::RTD(WirelessTypes::rtd_3wire, WirelessTypes::rtd_pt50);
+    BOOST_CHECK_NO_THROW(c.write_tempSensorOptions(ChannelMask(1), opts));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

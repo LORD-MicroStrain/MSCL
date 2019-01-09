@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -13,6 +13,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Wireless/WirelessTypes.h"
 #include "mscl/MicroStrain/Wireless/WirelessModels.h"
 #include "mscl/MicroStrain/Wireless/WirelessChannel.h"
+#include "mscl/MicroStrain/Wireless/Configuration/InputRange.h"
 #include "mscl/MicroStrain/SampleRate.h"
 #include "mscl/Types.h"
 #include "ChannelGroup.h"
@@ -92,7 +93,7 @@ namespace mscl
     protected:
         //Function: addCalCoeffChannelGroup
         //    Adds a cal coefficient (Linear Equation, unit, equation type) to the channel groups for the specified channel.
-        void addCalCoeffChannelGroup(uint8 channelNumber, const EepromLocation& slopeEeprom, const EepromLocation& actionIdEeprom);
+        void addCalCoeffChannelGroup(uint8 channelNumber, const std::string& name, const EepromLocation& slopeEeprom, const EepromLocation& actionIdEeprom);
 
         //Function: maxFilterSettlingTime_A
         //    Gets the max filter settling time allowed by the given <SampleRate>. 
@@ -219,22 +220,20 @@ namespace mscl
         //    true if the <WirelessTypes::ChannelGroupSetting> is supported for the <ChannelMask>, false otherwise.
         virtual bool supportsChannelSetting(WirelessTypes::ChannelGroupSetting setting, const ChannelMask& mask) const;
 
-        //API Function: isChannelSettingReadOnly
-        //  Checks if the <WirelessTypes::ChannelGroupSetting> is read only.
-        //
-        //Parameters:
-        //  setting - The <WirelessTypes::ChannelGroupSetting> to check for.
-        //
-        //Returns:
-        //  true if the <WirelessTypes::ChannelGroupSetting> is read only, false otherwise.
-        virtual bool isChannelSettingReadOnly(WirelessTypes::ChannelGroupSetting setting) const;
-
         //API Function: supportsInputRange
         //    Checks if the Node supports Input Range for any of its <ChannelGroups>.
         //    
         //Returns:
         //    true if the Node supports Input Range for at least one <ChannelGroup>, false otherwise.
         virtual bool supportsInputRange() const;
+
+        //API Function: supportsInputRange
+        //  Checks if the Node supports Input Range for any of its <ChannelGroups>,
+        //  and has different input ranges depending on a configurable excitation voltage.
+        //    
+        //Returns:
+        //  true if the Node supports Input Range for at least one <ChannelGroup>, false otherwise.
+        virtual bool supportsInputRangePerExcitationVoltage() const;
 
         //API Function: supportsHardwareOffset
         //    Checks if the Node supports Hardware Offset for any of its <ChannelGroups>.
@@ -292,6 +291,13 @@ namespace mscl
         //    true if the Node supports Lost Beacon Timeout, false otherwise.
         virtual bool supportsLostBeaconTimeout() const;
 
+        //API Function: supportsPullUpResistor
+        //  Checks if the Node supports the Pull-up Resistor option.
+        //
+        //Returns:
+        //  true if the Node supports Pull-up Registor, false otherwise.
+        virtual bool supportsPullUpResistor() const;
+
         //API Function: supportsFilterSettlingTime
         //    Checks if the Node supports Filter Settling Time for any of its <ChannelGroups>.
         //
@@ -305,6 +311,20 @@ namespace mscl
         //Returns:
         //    true if the Node supports Thermocouple Type for at least one <ChannelGroup>, false otherwise.
         virtual bool supportsThermocoupleType() const;
+
+        //API Function: supportsTempSensorOptions
+        //    Checks if the Node supports the TempSensorOptions configuration for any of its <ChannelGroups>.
+        //
+        //Returns:
+        //    true if the Node supports TempSensorOptions configuration for at least one <ChannelGroup>, false otherwise.
+        virtual bool supportsTempSensorOptions() const;
+
+        //API Function: supportsDebounceFilter
+        //    Checks if the Node supports the Debounce Filter configuration for any of its <ChannelGroups>.
+        //
+        //Returns:
+        //    true if the Node supports Debounce Filter configuration for at least one <ChannelGroup>, false otherwise.
+        virtual bool supportsDebounceFilter() const;
 
         //API Function: supportsFatigueConfig
         //    Checks if the Node supports <FatigueOptions> configuration.
@@ -446,6 +466,13 @@ namespace mscl
         //  true if the Node supports setting the sensor delay to "Always On", false otherwise
         virtual bool supportsSensorDelayAlwaysOn() const;
 
+        //API Function: supportsSensorOutputMode
+        //  Checks if the Node supports configuration of the Sensor Output Mode.
+        //
+        //Returns:
+        //  true if the Node supports setting the Sensor Output Mode, false otherwise
+        virtual bool supportsSensorOutputMode() const;
+
         //API Function: supportsChannel
         //    Checks if a specific channel is supported (can be enabled) by this Node.
         //
@@ -540,6 +567,16 @@ namespace mscl
         //    true if the data mode is supported, false otherwise.
         virtual bool supportsDataMode(WirelessTypes::DataMode dataMode) const;
 
+        //API Function: supportsTransducerType
+        //  Checks if a <WirelessTypes::TransducerType> is supported by this Node.
+        //
+        //Parameters 
+        //  transducerType - The <WirelessTypes::TransducerType> to check if supported.
+        //
+        //Returns:
+        //  true if the transducer type is supported, false otherwise.
+        virtual bool supportsTransducerType(WirelessTypes::TransducerType transducerType) const;
+
         //API Function: supportsFatigueMode
         //    Checks if a <WirelessTypes::FatigueMode> is supported by this Node.
         //
@@ -560,6 +597,19 @@ namespace mscl
         //Returns:
         //  true if the input range is supported, false if it is not.
         virtual bool supportsInputRange(WirelessTypes::InputRange range, const ChannelMask& channels) const;
+
+
+        //API function: supportsInputRange
+        //  Checks if a <WirelessTypes::InputRange> is supported by this Node for the given <ChannelMask>.
+        //
+        //Parameters:
+        //  range - The <WirelessTypes::InputRange> to check if supported.
+        //  channels - The <ChannelMask> to check for.
+        //  excitationVoltage - The Excitation <WirelessTypes::Voltage> to check for.
+        //
+        //Returns:
+        //  true if the input range is supported, false if it is not.
+        virtual bool supportsInputRange(WirelessTypes::InputRange range, const ChannelMask& channels, WirelessTypes::Voltage excitationVoltage) const;
 
         //API Function: supportsCentisecondEventDuration
         //  Checks if the Node configures event duration in 10s of milliseconds or not.
@@ -583,15 +633,15 @@ namespace mscl
         //  true if the Node supports Non-Sync logging with timestamps.
         virtual bool supportsNonSyncLogWithTimestamps() const;
 
-        //API Function: supportsDerivedChannelType
-        //  Checks if the Node supports a specific <WirelessTypes::DerivedChannel>.
+        //API Function: supportsDerivedCategory
+        //  Checks if the Node supports a specific <WirelessTypes::DerivedCategory>.
         //
         //Parameters:
-        //  derivedChannelType - The <WirelessTypes::DerivedChannelType> to check if it is supported.
+        //  derivedChannelOption - The <WirelessTypes::DerivedChannelOption> to check if it is supported.
         //
         //Returns:
         //  true if the specific derived channel is supported, false otherwise.
-        virtual bool supportsDerivedChannelType(WirelessTypes::DerivedChannelType derivedChannelType) const;
+        virtual bool supportsDerivedCategory(WirelessTypes::DerivedCategory category) const;
 
         //API Function: supportsRawDataMode
         //  Checks if the Node supports any form of the Raw Data Mode (raw only, raw + derived, etc).
@@ -606,6 +656,27 @@ namespace mscl
         //Returns:
         //  true if the Node supports any form of the Derived Data Mode.
         virtual bool supportsDerivedDataMode() const;
+
+        //API Function: supportsDerivedVelocityUnitConfig
+        //  Checks if the Node supports configuration of the Derived Velocity Unit.
+        //
+        //Returns:
+        //  true if the Node supports configuration of the Derived Velocity unit, false otherwise.
+        virtual bool supportsDerivedVelocityUnitConfig() const;
+
+        //API Function: supportsExcitationVoltageConfig
+        //  Checks if the Node supports configuration of its Excitation Voltage.
+        //
+        //Returns:
+        //  true if the Node supports configuration of its Excitation Voltage, false otherwise.
+        virtual bool supportsExcitationVoltageConfig() const;
+
+        //API Function: supportsLowBatteryThresholdConfig
+        //  Checks if the Node supports configuration of its low battery threshold.
+        //
+        //Returns:
+        //  true if the Node supports configuration of its low battery threshold, false otherwise.
+        virtual bool supportsLowBatteryThresholdConfig() const;
 
         //API Function: maxSampleRate
         //    Gets the maximum <SampleRate> value that is supported by this Node with the given <SamplingMode>, <ChannelMask>, and <WirelessTypes::DataCollectionMethod>.
@@ -639,6 +710,23 @@ namespace mscl
         //Exceptions:
         //    - <Error_NotSupported>: The Filter Settling Time feature is not supported by this Node.
         virtual WirelessTypes::WirelessSampleRate maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const;
+
+        //API Function: maxSampleRateForLowPassFilter
+        //  Gets the maximum <SampleRate> value that is supported by this Node with the given Low Pass Filter.
+        //
+        //Parameters:
+        //  lowPassFilter - The <WirelessTypes::Filter> to check the max sample rate for.
+        //  samplingMode - The <WirelessTypes::SamplingMode> that the Node will be in for determining sample rates.
+        //  dataCollectionMethod - The <WirelessTypes::DataCollectionMethod> that the Node will be set for in determining sample rates.
+        //  dataMode - The <WirelessTypes::DataMode> that the Node will be set for in determining sampling rates.
+        //  channels - A <ChannelMask> representing the active raw channels.
+        //
+        //Returns:
+        //    The max <WirelessTypes::WirelessSampleRate> that is supported by this Node with the given <WirelessTypes::SettlingTime>.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The Low Pass Filter feature is not supported by this Node, or an invalid filter was used.
+        virtual WirelessTypes::WirelessSampleRate maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode, const ChannelMask& channels) const;
 
         //API Function: maxFilterSettlingTime
         //    Gets the maximum <WirelessTypes::SettlingTime> available for the given <SampleRate>.
@@ -899,6 +987,13 @@ namespace mscl
         //  A vector of <WirelessTypes::CommProtocols> that are supported by this Node.
         virtual const WirelessTypes::CommProtocols commProtocols() const;
 
+        //API Function: sensorOutputModes
+        //  Gets a list of <WirelessTypes::SensorOutputModes> that are supported by this Node.
+        //
+        //Returns:
+        //  A vector of <WirelessTypes::SensorOutputModes> that are supported by this Node.
+        virtual const WirelessTypes::SensorOutputModes sensorOutputModes() const;
+
         //API Function: histogramTransmitRates
         //    Gets a list of the Histogram Transmit Rates that are supported by this Node.
         //
@@ -942,14 +1037,25 @@ namespace mscl
         virtual const WirelessTypes::StorageLimitModes storageLimitModes() const;
 
         //API Function: inputRanges
-        //  Gets a list of <WirelessTypes::InputRanges> that are supported by this Node for the specified channel mask.
+        //  Gets a list of <InputRanges> that are supported by this Node for the specified channel mask.
         //
         //Parameters:
         //  channels - The <ChannelMask> of the channel group to get the supported input ranges for.
         //
         //Returns:
-        //  A vector of <WirelessTypes::InputRanges> that are supported by this Node.
-        virtual const WirelessTypes::InputRanges inputRanges(const ChannelMask& channels) const;
+        //  A vector of <InputRanges> that are supported by this Node.
+        virtual const InputRanges inputRanges(const ChannelMask& channels) const;
+
+        //API Function: inputRanges
+        //  Gets a list of <WirelessTypes::InputRanges> that are supported by this Node for the specified channel mask, for the given Excitation <WirelessTypes::Voltage>.
+        //
+        //Parameters:
+        //  channels - The <ChannelMask> of the channel group to get the supported input ranges for.
+        //  excitationVoltage - The Excitation <WirelessTypes::Voltage> to get the input ranges for.
+        //
+        //Returns:
+        //  A vector of <InputRanges> that are supported by this Node.
+        virtual const InputRanges inputRanges(const ChannelMask& channels, WirelessTypes::Voltage excitationVoltage) const;
 
         //API Function: dataModes
         //  Gets a list of <WirelessTypes::DataModes> that are supported by this Node.
@@ -958,12 +1064,34 @@ namespace mscl
         //  A vector of <WirelessTypes::DataModes> supported by the Node.
         virtual const WirelessTypes::DataModes dataModes() const;
 
-        //API Function: derivedChannelTypes
-        //  Gets a list of <WirelessTypes::DerivedChannelTypes> that are supported by this Node.
+        //API Function: transducerTypes
+        //  Gets a list of <WirelessTypes::TransducerTypes> that are supported by this Node.
         //
         //Returns:
-        //  A vector of <WirelessTypes::DerivedChannelTypes> supported by the Node.
-        virtual const WirelessTypes::DerivedChannelTypes derivedChannelTypes() const;
+        //  A vector of <WirelessTypes::TransducerTypes> supported by the Node.
+        virtual const WirelessTypes::TransducerTypes transducerTypes() const;
+
+        //API Function: channelsPerDerivedCategory
+        //  Gets a map of <WirelessTypes::DerivedCategory> to <ChannelMask>s that are supported by this Node.
+        //  The ChannelMask indicates the raw channels that are available for the derived category.
+        //
+        //Returns:
+        //  A <WirelessTypes::DerivedChannelMasks> map of <WirelessTypes::DerivedCategory> to supported <ChannelMask>s.
+        virtual const WirelessTypes::DerivedChannelMasks channelsPerDerivedCategory() const;
+
+        //API Function: excitationVoltages
+        //  Gets a list of <WirelessTypes::Voltages> that are supported by the Node for configuration.
+        //
+        //Returns:
+        //  A vector of <WirelessTypes::Voltage>s supported by the Node for configuration
+        virtual const WirelessTypes::Voltages excitationVoltages() const;
+
+        //API Function: adcVoltageInputType
+        //  Gets the input voltage type of the ADC for this node.
+        //
+        //Returns:
+        //  The <WirelessTypes::VoltageType> that represents the structure of the node's ADC.
+        virtual const WirelessTypes::VoltageType adcVoltageInputType() const;
 
         //API Function: maxTransmitPower
         //  Gets the maximum <WirelessTypes::TransmitPower> that is supported for the given parameters.
@@ -988,6 +1116,8 @@ namespace mscl
         virtual WirelessTypes::TransmitPower minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const;
 
     protected:
+        virtual bool hasMaxSampleRatePerFilterAndAdcChCount() const;
+
         //Function: supportsNewTransmitPowers
         //    Checks if the Node supports the new transmit powers (true), or the old ones (false).
         virtual bool supportsNewTransmitPowers() const;
@@ -1038,8 +1168,14 @@ namespace mscl
         //  Checks if the Data Mode eeprom location is supported.
         virtual bool supportsDataModeEeprom() const;
 
+        //Function: supportsCommProtocolEeprom
+        //  Checks if the Communication Protocol eeprom location is supported.
+        virtual bool supportsCommProtocolEeprom() const;
+
         //Function: supportsEeprom1024AndAbove
         //  Checks if the Node supports reading eeprom location 1024 and above.
         virtual bool supportsEeprom1024AndAbove() const;
+
+        static void narrowDownTxPowers(WirelessTypes::TransmitPowers& txPowers, WirelessTypes::TransmitPower min, WirelessTypes::TransmitPower max);
     };
 }

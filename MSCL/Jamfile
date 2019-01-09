@@ -18,7 +18,7 @@ rule disabled-functions
   local wrong = [ set.difference $(without-parameters) : $(valid-parameters) ] ;
   if $(wrong)
   {
-    EXIT error: invalid without parameter --without-$(wrong[1]) ;
+    EXIT "error: invalid without parameter --without-$(wrong[1])" ;
   }
 
   return $(without-parameters) ;
@@ -66,8 +66,6 @@ project
 #Define libraries that exist on the system
 lib boost_system ;
 lib boost_filesystem ;
-lib boost_chrono ;
-lib boost_date_time ;
 lib ssl ;
 lib crypto ;
 lib pthread ;
@@ -84,14 +82,14 @@ alias boostStaticLibs : : <target-os>windows ;
 #linux aliases
 alias unixsocket_cpp : source/mscl/Communication/UnixSocketConnection.cpp : <target-os>linux ;
 alias upnp_files : : <target-os>linux ;
-alias boostLibs : boost_system boost_filesystem boost_date_time boost_chrono pthread [ libraries ] : <target-os>linux ;
-alias boostStaticLibs : boost_system/<link>static boost_date_time/<link>static boost_chrono/<link>static : <target-os>linux ;
+alias boostLibs : boost_system boost_filesystem pthread [ libraries ] : <target-os>linux ;
+alias boostStaticLibs : boost_system/<link>static : <target-os>linux ;
 
 #darwin aliases
 alias unixsocket_cpp : source/mscl/Communication/UnixSocketConnection.cpp : <target-os>darwin ;
 alias upnp_files : : <target-os>darwin ;
-alias boostLibs : boost_system boost_filesystem boost_date_time boost_chrono pthread [ libraries ] : <target-os>darwin ;
-alias boostStaticLibs : boost_system/<link>static boost_date_time/<link>static boost_chrono/<link>static : <target-os>darwin ;
+alias boostLibs : boost_system boost_filesystem  pthread [ libraries ] : <target-os>darwin ;
+alias boostStaticLibs : boost_system/<link>static : <target-os>darwin ;
 
 alias msclSrcs
 :   [ glob source/*.cpp ]
@@ -181,6 +179,15 @@ install stage_c++
 	  <variant>debug:<location>$(STAGING_DIR)/C++/Debug
 ;
 explicit stage_c++ ;
+
+
+#Copy the python directory
+install stage_python
+	: _mscl [ path.glob-tree $(SWIG_PYTHON) : *.py ]
+	: <location>$(STAGING_DIR)/Python/
+;
+explicit stage_python_x86 ;
+
 
 #Copy the python (x86) directory
 install stage_python_x86

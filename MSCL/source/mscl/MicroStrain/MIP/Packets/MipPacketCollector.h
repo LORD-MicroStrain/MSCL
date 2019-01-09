@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -25,18 +25,17 @@ namespace mscl
         //    The destructor for the MipPacketCollector
         ~MipPacketCollector();
 
-    private:
-        MipPacketCollector(const MipPacketCollector&);                //copy constructor disabled
-        MipPacketCollector& operator=(const MipPacketCollector&);        //assignment operator disabled
+        MipPacketCollector(const MipPacketCollector&) = delete;             //copy constructor disabled
+        MipPacketCollector& operator=(const MipPacketCollector&) = delete;  //assignment operator disabled
 
     private:
         //Typedef: circular_data_buffer
         //    Typedef for a circular buffer of a <MipDataPacket>
         typedef boost::circular_buffer_space_optimized<MipDataPacket> circular_data_buffer;
 
-        //Constant: MAX_DATA_BUFFER_SIZE = 1024 * 100    
+        //Constant: MAX_DATA_BUFFER_SIZE = 1024 * 100
         //    The maximum number of data packets that can be stored in the circular buffer
-        static const int MAX_DATA_BUFFER_SIZE        = 1024 * 100; 
+        static const int MAX_DATA_BUFFER_SIZE = 1024 * 100;
 
     private:
         //Variable: m_dataPackets
@@ -51,7 +50,11 @@ namespace mscl
         //    Allows the write to buffer thread to tell the reading thread when data is available
         std::condition_variable m_emptyBufferCondition;
 
+        std::function<void()> m_notifyDataAddedFn;
+
     public:
+        void requestDataAddedNotification(std::function<void()> fnToCall);
+
         //Function: addDataPacket
         //    Adds a data packet to the data packets circular buffer
         //

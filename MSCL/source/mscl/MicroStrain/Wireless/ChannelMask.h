@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -20,7 +20,7 @@ namespace mscl
 
     public:
         //API Constant: MAX_CHANNELS = 16
-        //    The maximum number of channels currently available on any node
+        //    The maximum number of channels currently available on any WirelessNode
         static const uint8 MAX_CHANNELS = 16;
 
     public:

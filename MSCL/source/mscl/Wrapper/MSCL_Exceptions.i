@@ -281,7 +281,7 @@
 
         static void SetPendingCustomException___MSCL_Default(string message)
         {
-            SWIGPendingException.Set(new mscl.Error(message));
+            SWIGPendingException.Set(new Error(message));
         }
 
         static Exception_Helper__MSCL_Default()
@@ -307,7 +307,7 @@
 
         static void SetPendingCustomException__MSCL_Communication(string message)
         {
-            SWIGPendingException.Set(new mscl.Error_Communication(message));
+            SWIGPendingException.Set(new Error_Communication(message));
         }
 
         static Exception_Helper__MSCL_Communication()
@@ -333,7 +333,7 @@
 
         static void SetPendingCustomException__MSCL_NodeCommunication(string message, ushort code)
         {
-            SWIGPendingException.Set(new mscl.Error_NodeCommunication(message, code));
+            SWIGPendingException.Set(new Error_NodeCommunication(message, code));
         }
 
         static Exception_Helper__MSCL_NodeCommunication()
@@ -359,7 +359,7 @@
 
         static void SetPendingCustomException__MSCL_Connection(string message, int code)
         {
-            SWIGPendingException.Set(new mscl.Error_Connection(message, code));
+            SWIGPendingException.Set(new Error_Connection(message, code));
         }
 
         static Exception_Helper__MSCL_Connection()
@@ -385,7 +385,7 @@
 
         static void SetPendingCustomException__MSCL_Inv_Com_Port(string message, int code)
         {
-            SWIGPendingException.Set(new mscl.Error_InvalidSerialPort(message, code));
+            SWIGPendingException.Set(new Error_InvalidSerialPort(message, code));
         }
 
         static Exception_Helper__MSCL_Inv_Com_Port()
@@ -411,7 +411,7 @@
 
         static void SetPendingCustomException__MSCL_Inv_Tcp_Server(string message, int code)
         {
-            SWIGPendingException.Set(new mscl.Error_InvalidTcpServer(message, code));
+            SWIGPendingException.Set(new Error_InvalidTcpServer(message, code));
         }
 
         static Exception_Helper__MSCL_Inv_Tcp_Server()
@@ -437,7 +437,7 @@
 
         static void SetPendingCustomException__MSCL_Inv_Unix_Socket(string message, int code)
         {
-            SWIGPendingException.Set(new mscl.Error_InvalidUnixSocket(message, code));
+            SWIGPendingException.Set(new Error_InvalidUnixSocket(message, code));
         }
 
         static Exception_Helper__MSCL_Inv_Unix_Socket()
@@ -463,7 +463,7 @@
 
         static void SetPendingCustomException__MSCL_No_Data(string message)
         {
-            SWIGPendingException.Set(new mscl.Error_NoData(message));
+            SWIGPendingException.Set(new Error_NoData(message));
         }
 
         static Exception_Helper__MSCL_No_Data()
@@ -489,7 +489,7 @@
 
         static void SetPendingCustomException__MSCL_Bad_Data_Type(string message)
         {
-            SWIGPendingException.Set(new mscl.Error_BadDataType(message));
+            SWIGPendingException.Set(new Error_BadDataType(message));
         }
 
         static Exception_Helper__MSCL_Bad_Data_Type()
@@ -515,7 +515,7 @@
 
         static void SetPendingCustomException__MSCL_Unknown_Sample_Rate(string message)
         {
-            SWIGPendingException.Set(new mscl.Error_UnknownSampleRate(message));
+            SWIGPendingException.Set(new Error_UnknownSampleRate(message));
         }
 
         static Exception_Helper__MSCL_Unknown_Sample_Rate()
@@ -541,7 +541,7 @@
 
         static void SetPendingCustomException__MSCL_Not_Supported(string message)
         {
-            SWIGPendingException.Set(new mscl.Error_NotSupported(message));
+            SWIGPendingException.Set(new Error_NotSupported(message));
         }
 
         static Exception_Helper__MSCL_Not_Supported()
@@ -567,7 +567,7 @@
 
         static void SetPendingCustomException__MSCL_InertialCmdFailed(string message, int code)
         {
-            SWIGPendingException.Set(new mscl.Error_MipCmdFailed(message, code));
+            SWIGPendingException.Set(new Error_MipCmdFailed(message, code));
         }
 
         static Exception_Helper__MSCL_InertialCmdFailed()
@@ -594,7 +594,7 @@
 
         static void SetPendingCustomException__MSCL_InvalidConfig(string message)
         {
-            SWIGPendingException.Set(new mscl.Error_InvalidConfig(message));
+            SWIGPendingException.Set(new Error_InvalidConfig(message));
         }
 
         static Exception_Helper__MSCL_InvalidConfig()
@@ -622,7 +622,7 @@
 
         static void SetPendingCustomException__MSCL_InvalidNodeConfig(string message, ushort code)
         {
-            SWIGPendingException.Set(new mscl.Error_InvalidNodeConfig(message, code));
+            SWIGPendingException.Set(new Error_InvalidNodeConfig(message, code));
         }
 
         static Exception_Helper__MSCL_InvalidNodeConfig()
@@ -840,8 +840,13 @@
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::lowPassFilter(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::highPassFilter(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::gaugeFactor(const ChannelMask& mask) const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::gaugeResistance() const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::excitationVoltage() const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::filterSettlingTime(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::thermocoupleType(const ChannelMask& mask) const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::tempSensorOptions(const ChannelMask& mask) const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::debounceFilter(const ChannelMask& mask) const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::pullUpResistor(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::linearEquation(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::unit(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::equation(const ChannelMask& mask) const;
@@ -854,8 +859,10 @@
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::sensorDelay() const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::dataMode() const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::derivedDataRate() const;
-%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::derivedChannelMask() const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::derivedVelocityUnit() const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::derivedChannelMask(WirelessTypes::DerivedCategory category) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::communicationProtocol() const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::sensorOutputMode() const;
 
 //WirelessNode
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::features() const;
@@ -908,9 +915,19 @@
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getAntiAliasingFilter(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getLowPassFilter(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getHighPassFilter(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getDebounceFilter(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getPullUpResistor(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getSensorOutputMode() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getGaugeFactor(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getExcitationVoltage() const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getAdcVoltageRef() const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getGainAmplifierVoltageRef() const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getGaugeResistance() const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getNumActiveGauges() const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getLowBatteryThreshold() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getFilterSettlingTime(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getThermocoupleType(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getTempSensorOptions(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getLinearEquation(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getUnit(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getEquation(const ChannelMask& mask) const;
@@ -923,7 +940,8 @@
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getSensorDelay() const;
 %catches(mscl::Error_NodeCommunication, mscl::Error_Connection)                                                             mscl::WirelessNode::getDataMode() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getDerivedDataRate() const;
-%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getDerivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getDerivedChannelMask(WirelessTypes::DerivedCategory category) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getDerivedVelocityUnit() const;
 
 //NodeFeatures
 %catches(mscl::Error_NotSupported)      mscl::NodeFeatures::channelType(uint8 channelNumber) const;
@@ -932,8 +950,9 @@
 %catches(mscl::Error_NotSupported)      mscl::NodeFeatures::normalizeSensorDelay(uint32 delay) const;
 %catches(mscl::Error_NotSupported)      mscl::NodeFeatures::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const;
 %catches(mscl::Error_NotSupported)      mscl::NodeFeatures::maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod) const;
-%catches(mscl::Error_NotSupported)      mscl::NodeFeatures::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod) const;
+%catches(mscl::Error_NotSupported)      mscl::NodeFeatures::maxSampleRateForSettlingTime(WirelessTypes::SettlingTime filterSettlingTime, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const;
 %catches(mscl::Error_NotSupported)      mscl::NodeFeatures::maxFilterSettlingTime(const SampleRate& rate) const;
+%catches(mscl::Error_NotSupported)      mscl::NodeFeatures::maxSampleRateForLowPassFilter(WirelessTypes::Filter lowPassFilter, WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode, const ChannelMask& channels) const;
 
 //DisplacementNode
 %catches(mscl::Error_Communication, mscl::Error_Connection, mscl::Error)                                                            mscl::DisplacementNode::DisplacementNode(Connection connection);
@@ -977,17 +996,27 @@
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::InertialNode::lotNumber() const;
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::InertialNode::deviceOptions() const;
 %catches(mscl::Error_Connection)                                                                                                    mscl::InertialNode::ping();
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getDataRateBase(MipTypes::DataClass category);
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getActiveChannelFields(MipTypes::DataClass category);
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error)        mscl::InertialNode::setActiveChannelFields(MipTypes::DataClass category, const MipChannels& channels);
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::saveActiveChannelFields(MipTypes::DataClass category);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getDataRateBase(MipTypes::DataClass dataClass);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getActiveChannelFields(MipTypes::DataClass dataClass);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection, mscl::Error)        mscl::InertialNode::setActiveChannelFields(MipTypes::DataClass dataClass, const MipChannels& channels);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::saveActiveChannelFields(MipTypes::DataClass dataClass);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getCommunicationMode();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                               mscl::InertialNode::setCommunicationMode(uint8 communicationMode);
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::enableDataStream(MipTypes::DataClass category);
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::enableDataStream(MipTypes::DataClass category, bool enable);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::enableDataStream(MipTypes::DataClass dataClass);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::enableDataStream(MipTypes::DataClass dataClass, bool enable);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::resetFilter();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getAutoInitialization();
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setAutoInitialization();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setAutoInitialization(bool enable);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getAltitudeAid();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setAltitudeAid(bool enable);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getPitchRollAid();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setPitchRollAid(bool enable);
+
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setVelocityZUPT(const ZUPTSettingsData& ZUPTSettings);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getVelocityZUPT();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setVelocityZUPT(const ZUPTSettingsData& ZUPTSettings);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getVelocityZUPT();
+
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setInitialAttitude(const EulerAngles& attitude);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setInitialHeading(float heading);
 %catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::InertialNode::setToIdle();
@@ -996,6 +1025,8 @@
 %catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::InertialNode::saveSettingsAsStartup();
 %catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::InertialNode::loadStartupSettings();
 %catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::InertialNode::loadFactoryDefaultSettings();
+%catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::pollData(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields);
+%catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::pollData(MipTypes::DataClass dataClass);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getSensorToVehicleTransformation();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setSensorToVehicleTransformation(const EulerAngles& angles);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getGNSSAssistedFixControl();
@@ -1021,8 +1052,8 @@
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getConingAndScullingEnable();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setUARTBaudRate(uint32 baudRate);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getUARTBaudRate();
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data);
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterConfig& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getAdvancedLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setComplementaryFilterSettings(const ComplementaryFilterData& data);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getComplementaryFilterSettings();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getBasicDeviceStatus();
@@ -1030,20 +1061,52 @@
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::sendRawRTCM_2_3Message(const RTCMMessage& theMessage);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setVehicleDynamicsMode(const VehicleModeType& data);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getVehicleDynamicsMode();
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setEstimationControlFlags(const uint16& flags);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setEstimationControlFlags(const EstimationControlOptions& flags);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getEstimationControlFlags();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setInclinationSource(const GeographicSourceOptions& options);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getInclinationSource();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setDeclinationSource(const GeographicSourceOptions& options);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getDeclinationSource();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setMagneticFieldMagnitudeSource(const GeographicSourceOptions& options);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getMagneticFieldMagnitudeSource();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setGNSS_SourceControl(const GNSS_Source& gnssSource);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getGNSS_SourceControl();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::sendExternalGNSSUpdate(const ExternalGNSSUpdateData& gnssUpdateData);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setHeadingUpdateControl(const HeadingUpdateOptions& headingUpdateOptions);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getHeadingUpdateControl();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setGravityErrorAdaptiveMeasurement(const AdaptiveMeasurementData& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getGravityErrorAdaptiveMeasurement();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setMagnetometerErrorAdaptiveMeasurement(const AdaptiveMeasurementData& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getMagnetometerErrorAdaptiveMeasurement();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setMagDipAngleErrorAdaptiveMeasurement(const AdaptiveMeasurementData& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getMagDipAngleErrorAdaptiveMeasurement();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setMagNoiseStandardDeviation(const GeometricVector& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getMagNoiseStandardDeviation();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setGravNoiseStandardDeviation(const GeometricVector& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getGravNoiseStandardDeviation();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setAccelNoiseStandardDeviation(const GeometricVector& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getAccelNoiseStandardDeviation();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setGyroNoiseStandardDeviation(const GeometricVector& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getGyroNoiseStandardDeviation();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setPressureAltNoiseStandardDeviation(const float& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getPressureAltNoiseStandardDeviation();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setHardIronOffsetProcessNoise(const GeometricVector& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getHardIronOffsetProcessNoise();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setAccelBiasModelParams(const GeometricVectors& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getAccelBiasModelParams();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setGyroBiasModelParams(const GeometricVectors& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getGyroBiasModelParams();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setSoftIronMatrixProcessNoise(const Matrix_3x3& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getSoftIronMatrixProcessNoise();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setFixedReferencePosition(const FixedReferencePositionData& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getFixedReferencePosition();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData, const TimeUpdate& timestamp);
 
 //MipNodeFeatures
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)         mscl::MipNodeFeatures::supportedChannelFields(MipTypes::DataClass category) const;
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)         mscl::MipNodeFeatures::supportedSampleRates(MipTypes::DataClass category) const;
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                   mscl::MipNodeFeatures::supportsCategory(MipTypes::DataClass category) const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)         mscl::MipNodeFeatures::supportedChannelFields(MipTypes::DataClass dataClass) const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)         mscl::MipNodeFeatures::supportedSampleRates(MipTypes::DataClass dataClass) const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                   mscl::MipNodeFeatures::supportsCategory(MipTypes::DataClass dataClass) const;
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                   mscl::MipNodeFeatures::supportsCommand(MipTypes::Command commandId) const;
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_Connection)                                   mscl::MipNodeFeatures::supportedCommands() const;
 

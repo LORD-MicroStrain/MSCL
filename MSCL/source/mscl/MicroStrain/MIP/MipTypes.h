@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -154,18 +154,21 @@ public:
     //  CMD_EF_TARE_ORIENT                          - 0x0D21    - Estimation Filter - Tare Orientation
     //  CMD_EF_CMDED_ZERO_VEL_UPDATE                - 0x0D22    - Estimation Filter - Commanded Zero Velocity Update
     //  CMD_EF_CMDED_ZERO_ANG_RATE_UPDATE           - 0x0D23    - Estimation Filter - Commanded Zero Angular Rate Update
+    //  CMD_EF_SET_REF_POSITION                     - 0x0D26    - Estimation Filter - Set Reference Position
     //  CMD_EF_MAG_CAPTURE_AUTO_CAL                 - 0x0D27    - Estimation Filter - Magnetometer Capture Auto Calibration
     //  CMD_EF_GRAVITY_NOISE_STD_DEV                - 0x0D28    - Estimation Filter - Gravity Noise Standard Deviation
     //  CMD_EF_PRESS_ALT_NOISE_STD_DEV              - 0x0D29    - Estimation Filter - Pressure Altitude Noise Standard Deviation
     //  CMD_EF_HARD_IRON_OFFSET_PROCESS_NOISE       - 0x0D2B    - Estimation Filter - Hard Iron Offset Process Noise
     //  CMD_EF_SOFT_IRON_OFFSET_PROCESS_NOISE       - 0x0D2C    - Estimation Filter - Soft Iron Offset Process Noise
     //  CMD_EF_MAG_NOISE_STD_DEV                    - 0x0D42    - Estimation Filter - Magnetometer Noise Standard Deviation
-    //  CMD_EF_DECLINATION_SRC                      - 0x0D43    - Estimation Filter - Declintion Source
+    //  CMD_EF_DECLINATION_SRC                      - 0x0D43    - Estimation Filter - Declination Source
     //  CMD_EF_GRAV_MAGNITUDE_ERR_ADAPT_MEASURE     - 0x0D44    - Estimation Filter - Gravity Magnitude Error Adaptive Measurement
     //  CMD_EF_MAG_MAGNITUDE_ERR_ADAPT_MEASURE      - 0x0D45    - Estimation Filter - Magnetometer Magnitude Error Adaptive Measurement
     //  CMD_EF_MAG_DIP_ANGLE_ERR_ADAPT_MEASURE      - 0x0D46    - Estimation Filter - Magnetometer Dip Angle Error Adaptive Measurement
     //  CMD_EF_ALTITUDE_AID_CTRL                    - 0x0D47    - Estimation Filter - Altitude Aiding Control
     //  CMD_EF_PITCH_ROLL_AID_CTRL                  - 0x0D4B    - Estimation Filter - Pitch-Roll Aiding Control
+    //  CMD_EF_INCLINATION_SRC                      - 0x0D4C    - Estimation Filter - Inclination Source
+    //  CMD_EF_FIELD_MAGNITUDE_SRC                  - 0x0D4D    - Estimation Filter - Magnetic Field Magnitude Source
     //  CMD_COMMUNICATION_MODE                      - 0x7F10    - Communication Mode
     //  CMD_HARDWARE_CTRL                           - 0x7F11    - Hardware Control
     //  CMD_GET_ANALOG_DISPLACEMENT_CALS            - 0x1101    - Get Analog Output to Displacement Slope and Offset
@@ -240,6 +243,7 @@ public:
         CMD_EF_TARE_ORIENT                          = 0x0D21,
         CMD_EF_CMDED_ZERO_VEL_UPDATE                = 0x0D22,
         CMD_EF_CMDED_ZERO_ANG_RATE_UPDATE           = 0x0D23,
+        CMD_EF_SET_REF_POSITION                     = 0x0D26,
         CMD_EF_MAG_CAPTURE_AUTO_CAL                 = 0x0D27,
         CMD_EF_GRAVITY_NOISE_STD_DEV                = 0x0D28,
         CMD_EF_PRESS_ALT_NOISE_STD_DEV              = 0x0D29,
@@ -252,6 +256,8 @@ public:
         CMD_EF_MAG_DIP_ANGLE_ERR_ADAPT_MEASURE      = 0x0D46,
         CMD_EF_ALTITUDE_AID_CTRL                    = 0x0D47,
         CMD_EF_PITCH_ROLL_AID_CTRL                  = 0x0D4B,
+        CMD_EF_INCLINATION_SRC                      = 0x0D4C,
+        CMD_EF_FIELD_MAGNITUDE_SRC                  = 0x0D4D,
         CMD_COMMUNICATION_MODE                      = 0x7F10,
         CMD_HARDWARE_CTRL                           = 0x7F11,
         CMD_GET_ANALOG_DISPLACEMENT_CALS            = 0x1101,

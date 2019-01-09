@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -22,7 +22,8 @@ namespace mscl
 {
     WebSocketSecureConnection::WebSocketSecureConnection(const std::string& serverAddress, uint16 serverPort) :
         m_host(serverAddress),
-        m_port(serverPort)
+        m_port(serverPort),
+        m_sslContext(boost::asio::ssl::context::sslv23_client)
     {
         m_type = Connection::connectionType_webSocket;
         establishConnection(); 
@@ -43,16 +44,13 @@ namespace mscl
         {
             try
             {
-                //setup the m_ioService
-                m_ioService.reset(new boost::asio::io_service);
+                //setup the m_ioContext
+                m_ioContext.reset(new boost::asio::io_context);
 
-                //SSL context that holds certificates
-                ssl::context ctx(ssl::context::sslv23_client);
-
-                //load_root_certificates(ctx);
+                //load_root_certificates(m_sslContext);
 
                 //create a resolver to turn the server name into a TCP endpoint
-                tcp::resolver resolver(*m_ioService);
+                tcp::resolver resolver(*m_ioContext);
 
                 if(m_host.find("wss://") != 0)
                 {
@@ -85,7 +83,7 @@ namespace mscl
                 tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
                 tcp::resolver::iterator end;
 
-                m_ioPort.reset(new websocket::stream<ssl::stream<tcp::socket>>(*m_ioService, ctx));
+                m_ioPort.reset(new websocket::stream<ssl::stream<tcp::socket>>(*m_ioContext, m_sslContext));
 
                 m_ioPort->binary(true);
 
@@ -130,12 +128,11 @@ namespace mscl
 
                 DWORD dwBytesRet = 0;
 
-                WSAIoctl(m_ioPort->next_layer().next_layer().native(), SIO_KEEPALIVE_VALS, &alive, sizeof(alive), NULL, 0, &dwBytesRet, NULL, NULL);
+                WSAIoctl(m_ioPort->next_layer().next_layer().native_handle(), SIO_KEEPALIVE_VALS, &alive, sizeof(alive), NULL, 0, &dwBytesRet, NULL, NULL);
 #endif
 
-                //setup m_comm by creating a new BoostCommunication object using the serial_port and io_service we created
-                //m_comm.reset(new BoostCommunication<tcp::socket>(std::move(m_ioService), std::move(m_ioPort)));
-                m_comm.reset(new BoostCommunication<websocket::stream<ssl::stream<tcp::socket>>>(std::move(m_ioService), std::move(m_ioPort)));
+                //setup m_comm by creating a new BoostCommunication object using the serial_port and io_context we created
+                m_comm.reset(new BoostCommunication<websocket::stream<ssl::stream<tcp::socket>>>(std::move(m_ioContext), std::move(m_ioPort)));
 
                 //create/start the read thread to parse incoming data
                 m_readThread.reset(new std::thread(&WebSocketSecureConnection::startIoThread, this));

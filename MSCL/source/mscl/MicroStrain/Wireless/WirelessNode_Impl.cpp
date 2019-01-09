@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -12,6 +12,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "WirelessNode_Impl.h"
 #include "Features/NodeInfo.h"
 #include "Features/NodeFeatures.h"
+#include "Commands/AutoCal.h"
 #include "Commands/AutoCalInfo.h"
 #include "Commands/WirelessProtocol.h"
 #include "Commands/DatalogSessionInfoResult.h"
@@ -96,7 +97,7 @@ namespace mscl
         rec_mutex_lock_guard lock(m_protocolMutex);
 
         //if the eeprom variable hasn't been set yet
-        if(m_eeprom == NULL)
+        if(m_eeprom == nullptr)
         {
             //create the eeprom variable
             m_eeprom.reset(new NodeEeprom(this, m_baseStation, m_eepromSettings));
@@ -120,7 +121,7 @@ namespace mscl
     const NodeFeatures& WirelessNode_Impl::features() const
     {
         //if the features variable hasn't been set yet
-        if(m_features == NULL)
+        if(m_features == nullptr)
         {
             //create the NodeInfo to give to the features
             NodeInfo info(this);
@@ -137,7 +138,7 @@ namespace mscl
         rec_mutex_lock_guard lock(m_protocolMutex);
 
         //if the protocol variable hasn't been set yet
-        if(m_protocol_lxrs == NULL || m_protocol_lxrsPlus == NULL)
+        if(m_protocol_lxrs == nullptr || m_protocol_lxrsPlus == nullptr)
         {
             //determine and assign the protocols for this Node
             determineProtocols();
@@ -164,6 +165,11 @@ namespace mscl
         return NodeCommTimes::getLastCommTime(m_address);
     }
 
+    DeviceState WirelessNode_Impl::lastDeviceState() const
+    {
+        return NodeCommTimes::getLastDeviceState(m_address);
+    }
+
     void WirelessNode_Impl::setBaseStation(const BaseStation& basestation)
     {
         //if the base station is already set as the parent base station
@@ -178,7 +184,7 @@ namespace mscl
 
         rec_mutex_lock_guard lock(m_protocolMutex);
 
-        if(m_eeprom != NULL)
+        if(m_eeprom != nullptr)
         {
             //update the base station in the eeprom object
             eeprom().setBaseStation(m_baseStation);
@@ -202,7 +208,7 @@ namespace mscl
 
         rec_mutex_lock_guard lock(m_protocolMutex);
 
-        if(m_eeprom != NULL)
+        if(m_eeprom != nullptr)
         {
             eeprom().updateSettings(m_eepromSettings);
         }
@@ -215,7 +221,7 @@ namespace mscl
 
         rec_mutex_lock_guard lock(m_protocolMutex);
 
-        if(m_eeprom != NULL)
+        if(m_eeprom != nullptr)
         {
             eeprom().updateSettings(m_eepromSettings);
         }
@@ -233,7 +239,7 @@ namespace mscl
 
         rec_mutex_lock_guard lock(m_protocolMutex);
 
-        if(m_eeprom != NULL)
+        if(m_eeprom != nullptr)
         {
             eeprom().updateSettings(m_eepromSettings);
         }
@@ -244,47 +250,54 @@ namespace mscl
         rec_mutex_lock_guard lock(m_protocolMutex);
 
         //don't need to clear anything if it doesn't exist
-        if(m_eeprom != NULL)
+        if(m_eeprom != nullptr)
         {
             m_eeprom->clearCache();
         }
 
         //features may need to be reset if firmware version or model changed
-        if(m_features != NULL)
+        if(m_features != nullptr)
         {
             m_features.reset();
         }
 
         //protocols may need to be reset if ASPP of firmware version changed
-        if(m_protocol_lxrs != NULL)
+        if(m_protocol_lxrs != nullptr)
         {
             m_protocol_lxrs.reset();
         }
-        if(m_protocol_lxrsPlus != NULL)
+        if(m_protocol_lxrsPlus != nullptr)
         {
             m_protocol_lxrsPlus.reset();
         }
     }
 
+    void WirelessNode_Impl::clearEepromCacheLocation(uint16 location)
+    {
+        if(m_eeprom != nullptr)
+        {
+            m_eeprom->clearCacheLocation(location);
+        }
+    }
+
     void WirelessNode_Impl::updateEepromCacheFromNodeDiscovery(const NodeDiscovery& nodeDisovery)
     {
-        rec_mutex_lock_guard lock(m_protocolMutex);
-
         //import the Node Discovery eeprom map
         eeprom().importCache(nodeDisovery.eepromMap());
 
         //features may need to be reset if firmware version or model changed
-        if(m_features != NULL)
+        if(m_features != nullptr)
         {
             m_features.reset();
         }
 
+        rec_mutex_lock_guard lock(m_protocolMutex);
         //protocols may need to be reset if ASPP of firmware version changed
-        if(m_protocol_lxrs != NULL)
+        if(m_protocol_lxrs != nullptr)
         {
             m_protocol_lxrs.reset();
         }
-        if(m_protocol_lxrsPlus != NULL)
+        if(m_protocol_lxrsPlus != nullptr)
         {
             m_protocol_lxrsPlus.reset();
         }
@@ -506,6 +519,16 @@ namespace mscl
         return m_eepromHelper->read_lostBeaconTimeout();
     }
 
+    bool WirelessNode_Impl::getPullUpResistor(const ChannelMask& mask) const
+    {
+        return m_eepromHelper->read_pullUpResistor(mask);
+    }
+
+    WirelessTypes::SensorOutputMode WirelessNode_Impl::getSensorOutputMode() const
+    {
+        return m_eepromHelper->read_sensorMode();
+    }
+
     WirelessTypes::InputRange WirelessNode_Impl::getInputRange(const ChannelMask& mask) const
     {
         return m_eepromHelper->read_inputRange(mask);
@@ -531,9 +554,249 @@ namespace mscl
         return m_eepromHelper->read_highPassFilter(mask);
     }
 
+    uint16 WirelessNode_Impl::getDebounceFilter(const ChannelMask& mask) const
+    {
+        return m_eepromHelper->read_debounceFilter(mask);
+    }
+
     float WirelessNode_Impl::getGaugeFactor(const ChannelMask& mask) const
     {
         return m_eepromHelper->read_gaugeFactor(mask);
+    }
+
+    WirelessTypes::Voltage WirelessNode_Impl::getExcitationVoltage() const
+    {
+        //if this is in eeprom
+        if(features().supportsExcitationVoltageConfig())
+        {
+            return m_eepromHelper->read_excitationVoltage();
+        }
+
+        //not in eeprom, use a lookup table
+        switch(model())
+        {
+            case WirelessModels::node_vLink200:
+            case WirelessModels::node_vLink200_hbridge_120:
+            case WirelessModels::node_vLink200_hbridge_1K:
+            case WirelessModels::node_vLink200_hbridge_350:
+            case WirelessModels::node_vLink200_qbridge_120:
+            case WirelessModels::node_vLink200_qbridge_1K:
+            case WirelessModels::node_vLink200_qbridge_350:
+                return WirelessTypes::voltage_4096mV;
+
+            case WirelessModels::node_dvrtLink:
+            case WirelessModels::node_sgLink:
+            case WirelessModels::node_sgLink_oem:
+            case WirelessModels::node_sgLink_oem_S:
+            case WirelessModels::node_sgLink_rgd:
+            case WirelessModels::node_sgLink_micro:
+            case WirelessModels::node_vLink:
+            case WirelessModels::node_vLink_legacy:
+                return WirelessTypes::voltage_3000mV;
+
+            case WirelessModels::node_sgLink_herm:
+            case WirelessModels::node_sgLink_herm_2600:
+            case WirelessModels::node_sgLink_herm_2700:
+            case WirelessModels::node_sgLink_herm_2800:
+            case WirelessModels::node_sgLink_herm_2900:
+                return WirelessTypes::voltage_2800mV;
+
+            case WirelessModels::node_shmLink:
+            case WirelessModels::node_torqueLink:
+                return WirelessTypes::voltage_2700mV;
+
+            case WirelessModels::node_shmLink201:
+            case WirelessModels::node_shmLink201_qbridge_1K:
+            case WirelessModels::node_shmLink201_qbridge_348:
+            case WirelessModels::node_shmLink201_hbridge_1K:
+            case WirelessModels::node_shmLink201_hbridge_348:
+            case WirelessModels::node_shmLink201_fullbridge:
+            case WirelessModels::node_shmLink210_fullbridge:
+            case WirelessModels::node_shmLink210_qbridge_3K:
+                return WirelessTypes::voltage_2500mV;
+
+            case WirelessModels::node_sgLink200:
+            case WirelessModels::node_sgLink200_hbridge_1K:
+            case WirelessModels::node_sgLink200_hbridge_350:
+            case WirelessModels::node_sgLink200_hbridge_120:
+            case WirelessModels::node_sgLink200_qbridge_1K:
+            case WirelessModels::node_sgLink200_qbridge_350:
+            case WirelessModels::node_sgLink200_qbridge_120:
+            case WirelessModels::node_sgLink200_oem:
+            case WirelessModels::node_sgLink200_oem_ufl:
+            case WirelessModels::node_sgLink200_oem_hbridge_1K:
+            case WirelessModels::node_sgLink200_oem_hbridge_1K_ufl:
+            case WirelessModels::node_sgLink200_oem_hbridge_120:
+            case WirelessModels::node_sgLink200_oem_hbridge_120_ufl:
+            case WirelessModels::node_sgLink200_oem_hbridge_350:
+            case WirelessModels::node_sgLink200_oem_hbridge_350_ufl:
+            case WirelessModels::node_sgLink200_oem_qbridge_1K:
+            case WirelessModels::node_sgLink200_oem_qbridge_1K_ufl:
+            case WirelessModels::node_sgLink200_oem_qbridge_120:
+            case WirelessModels::node_sgLink200_oem_qbridge_120_ufl:
+            case WirelessModels::node_sgLink200_oem_qbridge_350:
+            case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
+            case WirelessModels::node_torqueLink200:
+                assert(false);
+                throw Error("This Node should read Excitation Voltage from EEPROM!");
+
+            default:
+                throw Error_NotSupported("Unknown Excitation voltage for this Node.");
+        }
+
+        
+    }
+
+    WirelessTypes::Voltage WirelessNode_Impl::getAdcVoltageRef() const
+    {
+        switch(model())
+        {
+            case WirelessModels::node_vLink200:
+            case WirelessModels::node_vLink200_hbridge_120:
+            case WirelessModels::node_vLink200_hbridge_1K:
+            case WirelessModels::node_vLink200_hbridge_350:
+            case WirelessModels::node_vLink200_qbridge_120:
+            case WirelessModels::node_vLink200_qbridge_1K:
+            case WirelessModels::node_vLink200_qbridge_350:
+                return WirelessTypes::voltage_5120mV;
+
+            case WirelessModels::node_dvrtLink:
+            case WirelessModels::node_sgLink:
+            case WirelessModels::node_sgLink_oem:
+            case WirelessModels::node_sgLink_oem_S:
+            case WirelessModels::node_sgLink_rgd:
+            case WirelessModels::node_sgLink_micro:
+            case WirelessModels::node_vLink:
+            case WirelessModels::node_vLink_legacy:
+                return WirelessTypes::voltage_3000mV;
+
+            case WirelessModels::node_sgLink_herm:
+            case WirelessModels::node_sgLink_herm_2600:
+            case WirelessModels::node_sgLink_herm_2700:
+            case WirelessModels::node_sgLink_herm_2800:
+            case WirelessModels::node_sgLink_herm_2900:
+                return WirelessTypes::voltage_2800mV;
+
+            case WirelessModels::node_iepeLink:
+                return WirelessTypes::voltage_2750mV;
+
+            case WirelessModels::node_shmLink:
+            case WirelessModels::node_torqueLink:
+                return WirelessTypes::voltage_2700mV;
+
+            case WirelessModels::node_sgLink200:
+            case WirelessModels::node_sgLink200_hbridge_1K:
+            case WirelessModels::node_sgLink200_hbridge_350:
+            case WirelessModels::node_sgLink200_hbridge_120:
+            case WirelessModels::node_sgLink200_qbridge_1K:
+            case WirelessModels::node_sgLink200_qbridge_350:
+            case WirelessModels::node_sgLink200_qbridge_120:
+            case WirelessModels::node_sgLink200_oem:
+            case WirelessModels::node_sgLink200_oem_ufl:
+            case WirelessModels::node_sgLink200_oem_hbridge_1K:
+            case WirelessModels::node_sgLink200_oem_hbridge_1K_ufl:
+            case WirelessModels::node_sgLink200_oem_hbridge_120:
+            case WirelessModels::node_sgLink200_oem_hbridge_120_ufl:
+            case WirelessModels::node_sgLink200_oem_hbridge_350:
+            case WirelessModels::node_sgLink200_oem_hbridge_350_ufl:
+            case WirelessModels::node_sgLink200_oem_qbridge_1K:
+            case WirelessModels::node_sgLink200_oem_qbridge_1K_ufl:
+            case WirelessModels::node_sgLink200_oem_qbridge_120:
+            case WirelessModels::node_sgLink200_oem_qbridge_120_ufl:
+            case WirelessModels::node_sgLink200_oem_qbridge_350:
+            case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
+            case WirelessModels::node_torqueLink200:
+            case WirelessModels::node_shmLink210_fullbridge:
+            case WirelessModels::node_shmLink210_qbridge_3K:
+                return m_eepromHelper->read_excitationVoltage();        //gain amplifier voltage is the same as the excitation, which is read from eeprom
+
+            case WirelessModels::node_shmLink201:
+            case WirelessModels::node_shmLink201_qbridge_1K:
+            case WirelessModels::node_shmLink201_qbridge_348:
+            case WirelessModels::node_shmLink201_hbridge_1K:
+            case WirelessModels::node_shmLink201_hbridge_348:
+            case WirelessModels::node_shmLink201_fullbridge:
+                return WirelessTypes::voltage_2500mV;
+
+            default:
+                throw Error_NotSupported("Unknown ADC voltage reference for this Node.");
+        }
+    }
+
+    WirelessTypes::Voltage WirelessNode_Impl::getGainAmplifierVoltageRef() const
+    {
+        switch(model())
+        {
+            case WirelessModels::node_vLink200:
+            case WirelessModels::node_vLink200_hbridge_120:
+            case WirelessModels::node_vLink200_hbridge_1K:
+            case WirelessModels::node_vLink200_hbridge_350:
+            case WirelessModels::node_vLink200_qbridge_120:
+            case WirelessModels::node_vLink200_qbridge_1K:
+            case WirelessModels::node_vLink200_qbridge_350:
+                return WirelessTypes::voltage_5000mV;
+
+            case WirelessModels::node_dvrtLink:
+            case WirelessModels::node_sgLink:
+            case WirelessModels::node_sgLink_oem:
+            case WirelessModels::node_sgLink_oem_S:
+            case WirelessModels::node_sgLink_rgd:
+            case WirelessModels::node_sgLink_micro:
+            case WirelessModels::node_vLink:
+            case WirelessModels::node_vLink_legacy:
+                return WirelessTypes::voltage_3000mV;
+
+            case WirelessModels::node_sgLink_herm:
+            case WirelessModels::node_sgLink_herm_2600:
+            case WirelessModels::node_sgLink_herm_2700:
+            case WirelessModels::node_sgLink_herm_2800:
+            case WirelessModels::node_sgLink_herm_2900:
+                return WirelessTypes::voltage_2800mV;
+
+            case WirelessModels::node_iepeLink:
+                return WirelessTypes::voltage_2750mV;
+
+            case WirelessModels::node_shmLink:
+            case WirelessModels::node_torqueLink:
+                return WirelessTypes::voltage_2700mV;
+
+            case WirelessModels::node_sgLink200:
+            case WirelessModels::node_sgLink200_hbridge_1K:
+            case WirelessModels::node_sgLink200_hbridge_350:
+            case WirelessModels::node_sgLink200_hbridge_120:
+            case WirelessModels::node_sgLink200_qbridge_1K:
+            case WirelessModels::node_sgLink200_qbridge_350:
+            case WirelessModels::node_sgLink200_qbridge_120:
+            case WirelessModels::node_sgLink200_oem:
+            case WirelessModels::node_sgLink200_oem_ufl:
+            case WirelessModels::node_sgLink200_oem_hbridge_1K:
+            case WirelessModels::node_sgLink200_oem_hbridge_1K_ufl:
+            case WirelessModels::node_sgLink200_oem_hbridge_120:
+            case WirelessModels::node_sgLink200_oem_hbridge_120_ufl:
+            case WirelessModels::node_sgLink200_oem_hbridge_350:
+            case WirelessModels::node_sgLink200_oem_hbridge_350_ufl:
+            case WirelessModels::node_sgLink200_oem_qbridge_1K:
+            case WirelessModels::node_sgLink200_oem_qbridge_1K_ufl:
+            case WirelessModels::node_sgLink200_oem_qbridge_120:
+            case WirelessModels::node_sgLink200_oem_qbridge_120_ufl:
+            case WirelessModels::node_sgLink200_oem_qbridge_350:
+            case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
+            case WirelessModels::node_torqueLink200:
+            case WirelessModels::node_shmLink210_fullbridge:
+            case WirelessModels::node_shmLink210_qbridge_3K:
+                return m_eepromHelper->read_excitationVoltage();        //gain amplifier voltage is the same as the excitation, which is read from eeprom
+
+            case WirelessModels::node_shmLink201:
+            case WirelessModels::node_shmLink201_qbridge_1K:
+            case WirelessModels::node_shmLink201_qbridge_348:
+            case WirelessModels::node_shmLink201_hbridge_1K:
+            case WirelessModels::node_shmLink201_hbridge_348:
+            case WirelessModels::node_shmLink201_fullbridge:
+                return WirelessTypes::voltage_2500mV;
+
+            default:
+                throw Error_NotSupported("Unknown Gain Amplifier voltage reference for this Node.");
+        }
     }
 
     uint16 WirelessNode_Impl::getGaugeResistance() const
@@ -544,6 +807,11 @@ namespace mscl
     uint16 WirelessNode_Impl::getNumActiveGauges() const
     {
         return m_eepromHelper->read_numActiveGauges();
+    }
+
+    float WirelessNode_Impl::getLowBatteryThreshold() const
+    {
+        return m_eepromHelper->read_lowBatteryThreshold();
     }
 
     LinearEquation WirelessNode_Impl::getLinearEquation(const ChannelMask& mask) const
@@ -571,6 +839,11 @@ namespace mscl
     WirelessTypes::ThermocoupleType WirelessNode_Impl::getThermocoupleType(const ChannelMask& mask) const
     {
         return m_eepromHelper->read_thermoType(mask);
+    }
+
+    TempSensorOptions WirelessNode_Impl::getTempSensorOptions(const ChannelMask& mask) const
+    {
+        return m_eepromHelper->read_tempSensorOptions(mask);
     }
 
     FatigueOptions WirelessNode_Impl::getFatigueOptions() const
@@ -672,19 +945,39 @@ namespace mscl
         return m_eepromHelper->read_derivedSampleRate();
     }
 
-    ChannelMask WirelessNode_Impl::getDerivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType) const
+    ChannelMask WirelessNode_Impl::getDerivedChannelMask(WirelessTypes::DerivedCategory category) const
     {
         if(!features().supportsDerivedDataMode())
         {
             throw Error_NotSupported("Derived Data Channels are not supported by this Node.");
         }
 
-        if(!features().supportsDerivedChannelType(derivedChannelType))
+        if(!features().supportsDerivedCategory(category))
         {
-            throw Error_NotSupported("The given DerivedChannelType (" + Utils::toStr(derivedChannelType) + ") is not supported by this Node.");
+            throw Error_NotSupported("The given DerivedCategory (" + Utils::toStr(category) + ") is not supported by this Node.");
         }
 
-        return m_eepromHelper->read_derivedChannelMask(derivedChannelType);
+        return m_eepromHelper->read_derivedChannelMask(category);
+    }
+
+    WirelessTypes::DerivedVelocityUnit WirelessNode_Impl::getDerivedVelocityUnit() const
+    {
+        if(!features().supportsDerivedCategory(WirelessTypes::derivedCategory_velocity))
+        {
+            throw Error_NotSupported("The velocity derived data category is not supported by this Node.");
+        }
+
+        try
+        {
+            return m_eepromHelper->read_derivedVelocityUnit();
+        }
+        catch(Error_NotSupported&)
+        {
+            //the velocity category is supported, but the configuration eeprom isnt
+            
+            //default of IPS
+            return WirelessTypes::derivedVelocity_ips;
+        }
     }
 
     PingResponse WirelessNode_Impl::ping()
@@ -798,7 +1091,12 @@ namespace mscl
         }
 
         //call the node_startNonSyncSampling command from the parent BaseStation
-        m_baseStation.node_startNonSyncSampling(wirelessProtocol(), m_address);
+        const bool success = m_baseStation.node_startNonSyncSampling(wirelessProtocol(), m_address);
+
+        if(success)
+        {
+            NodeCommTimes::updateDeviceState(m_address, DeviceState::deviceState_sampling);
+        }
     }
 
     void WirelessNode_Impl::clearHistogram()
@@ -1012,8 +1310,23 @@ namespace mscl
         uint8 channel = mask.lastChEnabled();
         WirelessTypes::ChannelType chType = features().channelType(channel);
 
+        AutoCalCmdDetails details;
+        details.nodeAddress = m_address;
+        details.commandInfo = commandInfo;
+        details.chNum = channel;
+        details.nodeType = model();
+        details.chType = chType;
+        details.firmwareVersion = firmwareVersion();
+
+        //if supported, add excitation voltage details so the autocal command knows how to convert the input range value
+        if(features().supportsExcitationVoltageConfig())
+        {
+            details.useExcitationVoltage = true;
+            details.excitationVoltage = commandInfo.excitationVoltage;
+        }
+
         AutoShuntCalResult result;
-        bool success = m_baseStation.node_autoShuntCal(wirelessProtocol(), m_address, commandInfo, channel, model(), chType, result);
+        bool success = m_baseStation.node_autoShuntCal(wirelessProtocol(), details, result);
 
         if(!success)
         {

@@ -50,7 +50,7 @@ namespace mscl
         for (uint8 constellationNum = 0; constellationNum < numberOfConstellations; ++constellationNum)
         {
             Constellation constellationToAdd;
-            constellationToAdd.constellationID = dataBuffer.read_uint8();
+            constellationToAdd.constellationID = static_cast<InertialTypes::ConstellationId>(dataBuffer.read_uint8());
             constellationToAdd.enabled = (dataBuffer.read_uint8() == 0x00) ? false : true;
             constellationToAdd.reservedChannelCount = dataBuffer.read_uint8();
             constellationToAdd.maxChannels = dataBuffer.read_uint8();
@@ -74,7 +74,7 @@ namespace mscl
             byteCommand.append_uint8(static_cast<uint8>(m_data.constellations.size()));
             for (Constellations::const_iterator constellation = m_data.constellations.begin(); constellation != m_data.constellations.end(); ++constellation)
             {
-                byteCommand.append_uint8(constellation->constellationID);
+                byteCommand.append_uint8(static_cast<uint8>(constellation->constellationID));
                 byteCommand.append_uint8(constellation->enabled);
                 byteCommand.append_uint8(constellation->reservedChannelCount);
                 byteCommand.append_uint8(constellation->maxChannels);

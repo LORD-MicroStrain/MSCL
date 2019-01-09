@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -113,7 +113,7 @@ namespace mscl
 
             MipTypes::ChannelField channelId = static_cast<MipTypes::ChannelField>(Utils::make_uint16(descSet, fieldDesc));
 
-            //create an MipChannel and add to the result
+            //create a MipChannel and add to the result
             result.push_back(MipChannel(channelId, SampleRate::Hertz(sampleRateBase / rateDecimation)));
         }
 
@@ -155,5 +155,19 @@ namespace mscl
         PositionOffset result(x, y, z);
 
         return result;
+    }
+
+    ZUPTSettingsData MIP_Commands::parseData_ZUPTControl(const GenericMipCmdResponse& response)
+    {
+        //use a DataBuffer to make reading nicer
+        DataBuffer db(response.data());
+
+        //read the enable value
+        bool enabled =  static_cast<bool>(db.read_uint8() == 1);
+
+        //read the ZUPT Threshold
+        float threshold = db.read_float();
+
+        return ZUPTSettingsData(enabled, threshold);
     }
 }

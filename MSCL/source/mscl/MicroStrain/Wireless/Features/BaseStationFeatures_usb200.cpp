@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -38,7 +38,7 @@ namespace mscl
                 return WirelessTypes::power_16dBm;
             }
 
-            return WirelessTypes::power_10dBm;
+            return WirelessTypes::power_11dBm;
         }
 
         return BaseStationFeatures::maxTransmitPower(region, commProtocol);
@@ -59,5 +59,30 @@ namespace mscl
         }
 
         return BaseStationFeatures::minTransmitPower(region, commProtocol);
+    }
+
+    const WirelessTypes::TransmitPowers BaseStationFeatures_usb200::transmitPowers(WirelessTypes::CommProtocol commProtocol) const
+    {
+        WirelessTypes::RegionCode region = m_baseInfo.regionCode();
+
+        //japan has a custom list of transmit powers for this Node
+        if(region == WirelessTypes::region_japan)
+        {
+            WirelessTypes::TransmitPowers result{
+                WirelessTypes::power_16dBm,
+                WirelessTypes::power_11dBm,
+                WirelessTypes::power_5dBm,
+                WirelessTypes::power_0dBm
+            };
+
+            WirelessTypes::TransmitPower maxPower = maxTransmitPower(region, commProtocol);
+            WirelessTypes::TransmitPower minPower = minTransmitPower(region, commProtocol);
+
+            narrowDownTxPowers(result, minPower, maxPower);
+
+            return result;
+        }
+
+        return BaseStationFeatures::transmitPowers(commProtocol);
     }
 }

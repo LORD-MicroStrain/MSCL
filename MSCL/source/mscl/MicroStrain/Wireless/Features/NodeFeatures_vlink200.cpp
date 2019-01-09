@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -12,17 +12,17 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
     NodeFeatures_vlink200::NodeFeatures_vlink200(const NodeInfo& info):
-        NodeFeatures(info)
+        NodeFeatures_200series(info)
     {
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential 1");
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential, "Differential 2");
-        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_fullDifferential, "Differential 3");
-        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_fullDifferential, "Differential 4");
-        m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_singleEnded, "Single-ended");
-        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_singleEnded, "Single-ended");
-        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_singleEnded, "Single-ended");
-        m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_singleEnded, "Single-ended");
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential", 18);
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential, "Differential", 18);
+        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_fullDifferential, "Differential", 18);
+        m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_fullDifferential, "Differential", 18);
+        m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_singleEnded, "Single-ended", 18);
+        m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_singleEnded, "Single-ended", 18);
+        m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_singleEnded, "Single-ended", 18);
+        m_channels.emplace_back(8, WirelessChannel::channel_8, WirelessTypes::chType_singleEnded, "Single-ended", 18);
 
 
         //Channel Groups
@@ -35,7 +35,7 @@ namespace mscl
         static const ChannelMask SINGLEENDED_CH7(BOOST_BINARY(01000000));    //ch7
         static const ChannelMask SINGLEENDED_CH8(BOOST_BINARY(10000000));    //ch8
 
-        m_channelGroups.emplace_back(DIFFERENTIAL_CH1, "Differential Channel 1",
+        m_channelGroups.emplace_back(DIFFERENTIAL_CH1, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_1},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1},
@@ -44,7 +44,7 @@ namespace mscl
                                          {WirelessTypes::chSetting_antiAliasingFilter, NodeEepromMap::ANTI_ALIASING_FILTER_1}}
         );
 
-        m_channelGroups.emplace_back(DIFFERENTIAL_CH2, "Differential Channel 2",
+        m_channelGroups.emplace_back(DIFFERENTIAL_CH2, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_2},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_2},
@@ -53,7 +53,7 @@ namespace mscl
                                          {WirelessTypes::chSetting_antiAliasingFilter, NodeEepromMap::ANTI_ALIASING_FILTER_2}}
         );
 
-        m_channelGroups.emplace_back(DIFFERENTIAL_CH3, "Differential Channel 3",
+        m_channelGroups.emplace_back(DIFFERENTIAL_CH3, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_3},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_3},
@@ -62,7 +62,7 @@ namespace mscl
                                          {WirelessTypes::chSetting_antiAliasingFilter, NodeEepromMap::ANTI_ALIASING_FILTER_3}}
         );
 
-        m_channelGroups.emplace_back(DIFFERENTIAL_CH4, "Differential Channel 4",
+        m_channelGroups.emplace_back(DIFFERENTIAL_CH4, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_4},
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_4},
@@ -71,82 +71,39 @@ namespace mscl
                                          {WirelessTypes::chSetting_antiAliasingFilter, NodeEepromMap::ANTI_ALIASING_FILTER_4}}
         );
 
-        m_channelGroups.emplace_back(SINGLEENDED_CH5, "Single Ended Channel 5",
+        m_channelGroups.emplace_back(SINGLEENDED_CH5, "Single-ended",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_5}}
         );
 
-        m_channelGroups.emplace_back(SINGLEENDED_CH6, "Single Ended Channel 6",
+        m_channelGroups.emplace_back(SINGLEENDED_CH6, "Single-ended",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_6}}
         );
 
-        m_channelGroups.emplace_back(SINGLEENDED_CH7, "Single Ended Channel 7",
+        m_channelGroups.emplace_back(SINGLEENDED_CH7, "Single-ended",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_7}}
         );
 
-        m_channelGroups.emplace_back(SINGLEENDED_CH8, "Single Ended Channel 8",
+        m_channelGroups.emplace_back(SINGLEENDED_CH8, "Single-ended",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_8}}
         );
 
-        addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
-        addCalCoeffChannelGroup(2, NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
-        addCalCoeffChannelGroup(3, NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);
-        addCalCoeffChannelGroup(4, NodeEepromMap::CH_ACTION_SLOPE_4, NodeEepromMap::CH_ACTION_ID_4);
-        addCalCoeffChannelGroup(5, NodeEepromMap::CH_ACTION_SLOPE_5, NodeEepromMap::CH_ACTION_ID_5);
-        addCalCoeffChannelGroup(6, NodeEepromMap::CH_ACTION_SLOPE_6, NodeEepromMap::CH_ACTION_ID_6);
-        addCalCoeffChannelGroup(7, NodeEepromMap::CH_ACTION_SLOPE_7, NodeEepromMap::CH_ACTION_ID_7);
-        addCalCoeffChannelGroup(8, NodeEepromMap::CH_ACTION_SLOPE_8, NodeEepromMap::CH_ACTION_ID_8);
+        addCalCoeffChannelGroup(1, "Differential", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
+        addCalCoeffChannelGroup(2, "Differential", NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
+        addCalCoeffChannelGroup(3, "Differential", NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);
+        addCalCoeffChannelGroup(4, "Differential", NodeEepromMap::CH_ACTION_SLOPE_4, NodeEepromMap::CH_ACTION_ID_4);
+        addCalCoeffChannelGroup(5, "Single-ended", NodeEepromMap::CH_ACTION_SLOPE_5, NodeEepromMap::CH_ACTION_ID_5);
+        addCalCoeffChannelGroup(6, "Single-ended", NodeEepromMap::CH_ACTION_SLOPE_6, NodeEepromMap::CH_ACTION_ID_6);
+        addCalCoeffChannelGroup(7, "Single-ended", NodeEepromMap::CH_ACTION_SLOPE_7, NodeEepromMap::CH_ACTION_ID_7);
+        addCalCoeffChannelGroup(8, "Single-ended", NodeEepromMap::CH_ACTION_SLOPE_8, NodeEepromMap::CH_ACTION_ID_8);
     }
 
     bool NodeFeatures_vlink200::supportsSensorDelayConfig() const
     {
         return true;
-    }
-
-    WirelessTypes::TransmitPower NodeFeatures_vlink200::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
-    {
-        if(region == WirelessTypes::region_japan)
-        {
-            return WirelessTypes::power_16dBm;
-        }
-
-        return NodeFeatures::maxTransmitPower(region, commProtocol);
-    }
-
-    WirelessTypes::TransmitPower NodeFeatures_vlink200::minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
-    {
-        if(region == WirelessTypes::region_japan)
-        {
-            return WirelessTypes::power_5dBm;
-        }
-
-        return NodeFeatures::minTransmitPower(region, commProtocol);
-    }
-
-    const WirelessTypes::DataFormats NodeFeatures_vlink200::dataFormats() const
-    {
-        //build and return the data formats that are supported
-        WirelessTypes::DataFormats result;
-        result.push_back(WirelessTypes::dataFormat_raw_uint16);
-        result.push_back(WirelessTypes::dataFormat_raw_uint24);
-        result.push_back(WirelessTypes::dataFormat_cal_float);
-        return result;
-    }
-
-    const WirelessTypes::SamplingModes NodeFeatures_vlink200::samplingModes() const
-    {
-        //build and return the sampling modes that are supported
-        WirelessTypes::SamplingModes result;
-
-        result.push_back(WirelessTypes::samplingMode_sync);
-        result.push_back(WirelessTypes::samplingMode_syncBurst);
-        result.push_back(WirelessTypes::samplingMode_nonSync);
-        result.push_back(WirelessTypes::samplingMode_syncEvent);
-
-        return result;
     }
 
     const WirelessTypes::WirelessSampleRates NodeFeatures_vlink200::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
@@ -157,26 +114,26 @@ namespace mscl
         case WirelessTypes::samplingMode_nonSync:
             if(dataCollectionMethod == WirelessTypes::collectionMethod_logOnly)
             {
-                return AvailableSampleRates::continuous_log_gen2;
+                return AvailableSampleRates::continuous_log_vlink200;
             }
             else
             {
-                return AvailableSampleRates::continuous_nonSync_gen2;
+                return AvailableSampleRates::continuous_nonSync_vlink200;
             }
 
         case WirelessTypes::samplingMode_sync:
             if(dataCollectionMethod == WirelessTypes::collectionMethod_logOnly) 
             {
-                return AvailableSampleRates::continuous_log_gen2;
+                return AvailableSampleRates::continuous_log_vlink200;
             }
             else
             {
-                return AvailableSampleRates::continuous_sync_gen2;
+                return AvailableSampleRates::continuous_sync_vlink200;
             }
 
         case WirelessTypes::samplingMode_syncBurst:
         case WirelessTypes::samplingMode_syncEvent:
-            return AvailableSampleRates::burst_gen2;
+            return AvailableSampleRates::burst_vlink200;
 
         default:
             throw Error_NotSupported("The sampling mode is not supported by this Node");
@@ -194,13 +151,5 @@ namespace mscl
             {WirelessTypes::filter_128hz}
         };
         return filters;
-    }
-
-    const WirelessTypes::StorageLimitModes NodeFeatures_vlink200::storageLimitModes() const
-    {
-        WirelessTypes::StorageLimitModes modes;
-        modes.push_back(WirelessTypes::storageLimit_stop);
-        modes.push_back(WirelessTypes::storageLimit_overwrite);
-        return modes;
     }
 }

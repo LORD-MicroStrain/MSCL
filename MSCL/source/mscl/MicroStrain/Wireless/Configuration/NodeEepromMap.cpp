@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -103,12 +103,13 @@ namespace mscl
     const EepromLocation NodeEepromMap::DERIVED_DATA_RATE               (284, valueType_uint16, "Derived Data Rate");
     const EepromLocation NodeEepromMap::DERIVED_RMS_MASK                (286, valueType_uint16, "Derived RMS Mask");
     const EepromLocation NodeEepromMap::DERIVED_P2P_MASK                (288, valueType_uint16, "Derived P2P Mask");
-    const EepromLocation NodeEepromMap::DERIVED_IPS_MASK                (290, valueType_uint16, "Derived IPS Mask");
+    const EepromLocation NodeEepromMap::DERIVED_VELOCITY_MASK           (290, valueType_uint16, "Derived Velocity Mask");
     const EepromLocation NodeEepromMap::DATA_PACKET_FORMAT              (292, valueType_uint16, "Data Packet Format");
     const EepromLocation NodeEepromMap::DERIVED_CREST_FACTOR_MASK       (294, valueType_uint16, "Derived Crest Factor Mask");
     const EepromLocation NodeEepromMap::DERIVED_MEAN_MASK               (296, valueType_uint16, "Derived Mean Mask");
     const EepromLocation NodeEepromMap::DIAGNOSTIC_INTERVAL             (300, valueType_uint16, "Diagnostic Interval");
     const EepromLocation NodeEepromMap::THERMOCPL_TYPE                  (306, valueType_uint16, "Thermocouple Type");
+    const EepromLocation NodeEepromMap::DERIVED_VELOCITY_UNIT           (310, valueType_uint16, "Derived Velocity Unit");
     const EepromLocation NodeEepromMap::EVENT_SAMPLE_RATE               (328, valueType_uint16, "Event Sampling Rate");
     const EepromLocation NodeEepromMap::EVENT_TRIGGER_MASK              (330, valueType_uint16, "Event Trigger Mask");
     const EepromLocation NodeEepromMap::EVENT_PRE_DURATION              (332, valueType_uint16, "Event Pre Duration");
@@ -145,6 +146,10 @@ namespace mscl
     const EepromLocation NodeEepromMap::EVENT_OPER_8                    (394, valueType_uint16, "Event Operation");
     const EepromLocation NodeEepromMap::EVENT_VAL1_8                    (396, valueType_uint16, "Event Value");
     const EepromLocation NodeEepromMap::EVENT_VAL2_8                    (398, valueType_uint16, "Event Value");
+    const EepromLocation NodeEepromMap::EXCITATION_VOLTAGE              (410, valueType_uint16, "Excitation Voltage");
+    const EepromLocation NodeEepromMap::DEBOUNCE_FILTER                 (430, valueType_uint16, "Debounce Filter");
+    const EepromLocation NodeEepromMap::INTERNAL_PULLUP_RESISTOR        (432, valueType_uint16, "Internal Pull-up Resistor");
+    const EepromLocation NodeEepromMap::SENSOR_MODE                     (438, valueType_uint16, "Sensor Mode");
     const EepromLocation NodeEepromMap::ANTI_ALIASING_FILTER_1          (440, valueType_uint16, "Anti-Aliasing Filter");
     const EepromLocation NodeEepromMap::ANTI_ALIASING_FILTER_2          (442, valueType_uint16, "Anti-Aliasing Filter");
     const EepromLocation NodeEepromMap::ANTI_ALIASING_FILTER_3          (444, valueType_uint16, "Anti-Aliasing Filter");
@@ -207,10 +212,51 @@ namespace mscl
     const EepromLocation NodeEepromMap::HISTOGRAM_ENABLE                (852, valueType_uint16, "Histogram Enable Flag");
     const EepromLocation NodeEepromMap::GAUGE_RESISTANCE                (854, valueType_uint16, "Gauge Resistance");
     const EepromLocation NodeEepromMap::NUM_ACTIVE_GAUGES               (864, valueType_uint16, "Number of Active Gauges");
+    const EepromLocation NodeEepromMap::LOW_BATTERY_THRESHOLD           (866, valueType_float, "Low Battery Threshold");
+    const EepromLocation NodeEepromMap::CH_ACTION_ID_9                  (900, valueType_uint16, "Channel Action ID");
+    const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_9               (902, valueType_float, "Channel Slope");
+    const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_9              (906, valueType_float, "Channel Offset");
+    const EepromLocation NodeEepromMap::CH_ACTION_ID_10                 (910, valueType_uint16, "Channel Action ID");
+    const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_10              (912, valueType_float, "Channel Slope");
+    const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_10             (916, valueType_float, "Channel Offset");
+    const EepromLocation NodeEepromMap::CH_ACTION_ID_11                 (920, valueType_uint16, "Channel Action ID");
+    const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_11              (922, valueType_float, "Channel Slope");
+    const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_11             (926, valueType_float, "Channel Offset");
+    const EepromLocation NodeEepromMap::CH_ACTION_ID_12                 (930, valueType_uint16, "Channel Action ID");
+    const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_12              (932, valueType_float, "Channel Slope");
+    const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_12             (936, valueType_float, "Channel Offset");
+    const EepromLocation NodeEepromMap::CH_ACTION_ID_13                 (940, valueType_uint16, "Channel Action ID");
+    const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_13              (942, valueType_float, "Channel Slope");
+    const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_13             (946, valueType_float, "Channel Offset");
+    const EepromLocation NodeEepromMap::CH_ACTION_ID_14                 (950, valueType_uint16, "Channel Action ID");
+    const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_14              (952, valueType_float, "Channel Slope");
+    const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_14             (956, valueType_float, "Channel Offset");
+    const EepromLocation NodeEepromMap::CH_ACTION_ID_15                 (960, valueType_uint16, "Channel Action ID");
+    const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_15              (962, valueType_float, "Channel Slope");
+    const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_15             (966, valueType_float, "Channel Offset");
+    const EepromLocation NodeEepromMap::CH_ACTION_ID_16                 (970, valueType_uint16, "Channel Action ID");
+    const EepromLocation NodeEepromMap::CH_ACTION_SLOPE_16              (972, valueType_float, "Channel Slope");
+    const EepromLocation NodeEepromMap::CH_ACTION_OFFSET_16             (976, valueType_float, "Channel Offset");
     const EepromLocation NodeEepromMap::COMM_PROTOCOL                   (1024, valueType_uint16, "Communication Protocol");
     const EepromLocation NodeEepromMap::BOOTLOADER_VER                  (1030, valueType_uint16, "Bootloader Version");
     const EepromLocation NodeEepromMap::FIRMWARE_UPGRADE_FLAGS          (1032, valueType_uint16, "Firmware Upgrade Flags");
     const EepromLocation NodeEepromMap::BOOTLOADER_FLASH_ADDRESS        (1036, valueType_uint32, "Bootloader Flash Address");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_1            (1100, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_2            (1102, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_3            (1104, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_4            (1106, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_5            (1108, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_6            (1110, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_7            (1112, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_8            (1114, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_9            (1116, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_10           (1118, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_11           (1120, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_12           (1122, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_13           (1124, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_14           (1126, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_15           (1128, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_16           (1130, valueType_uint16, "Temp Sensor Config");
 
     bool NodeEepromMap::canUseCache_read(uint16 eepromLocation)
     {

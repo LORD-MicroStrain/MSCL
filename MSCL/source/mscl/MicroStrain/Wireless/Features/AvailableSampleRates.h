@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -24,15 +24,15 @@ namespace mscl
         static const WirelessTypes::WirelessSampleRates armedDatalog;
         static const WirelessTypes::WirelessSampleRates derivedOnly;
 
-        //Constants: Standard Gen2 Sample Rates
-        //  continuous_nonSync_gen2 - standard continuous NonSync sample rates
-        //  continuous_sync_gen2    - standard continuous Sync sample rates
-        //  continuous_log_gen2     - standard continuous Log Only sample rates
-        //  burst_gen2              - standard burst sample rates
-        static const WirelessTypes::WirelessSampleRates continuous_nonSync_gen2;
-        static const WirelessTypes::WirelessSampleRates continuous_sync_gen2;
-        static const WirelessTypes::WirelessSampleRates continuous_log_gen2;
-        static const WirelessTypes::WirelessSampleRates burst_gen2;
+        //Constants: V-Link-200 Sample Rates
+        //  continuous_nonSync_vlink200 - standard continuous NonSync sample rates
+        //  continuous_sync_vlink200    - standard continuous Sync sample rates
+        //  continuous_log_vlink200     - standard continuous Log Only sample rates
+        //  burst_vlink200              - standard burst sample rates
+        static const WirelessTypes::WirelessSampleRates continuous_nonSync_vlink200;
+        static const WirelessTypes::WirelessSampleRates continuous_sync_vlink200;
+        static const WirelessTypes::WirelessSampleRates continuous_log_vlink200;
+        static const WirelessTypes::WirelessSampleRates burst_vlink200;
 
         //Constants: G-Link-200 Sample Rates
         //  continuous_nonSync_glink200 - continuous NonSync sample rates for the G-Link-200
@@ -80,9 +80,20 @@ namespace mscl
         //    continuous_tclink1ch - continuous sample rates for the TC-Link 1-ch node.
         static const WirelessTypes::WirelessSampleRates continuous_tclink1ch;
 
+        //Constants: TC-Link-200 SampleRates
+        //    continuous_tclink1ch - continuous sample rates for the TC-Link-200 node.
+        static const WirelessTypes::WirelessSampleRates continuous_tclink200;
+        
+        //Constants: RTD-Link-200 SampleRates
+        //    continuous_rtdlink200 - continuous sample rates for the RTD-Link-200 node.
+        static const WirelessTypes::WirelessSampleRates continuous_rtdlink200;
+
         //Constants: ENV-Link SampleRates
         //    continuous_envlink - continuous sample rates for the ENV-Link nodes.
         static const WirelessTypes::WirelessSampleRates continuous_envlink;
+
+        static const WirelessTypes::WirelessSampleRates continuous_sglink200;
+        static const WirelessTypes::WirelessSampleRates burst_sglink200;
 
         //Constants: SHM-Link2 SampleRates
         //    continuous_shmLink2 - continuous sample rates for the SHM-Link nodes.

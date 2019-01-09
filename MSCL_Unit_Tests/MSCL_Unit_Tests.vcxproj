@@ -17,14 +17,6 @@
       <Configuration>Release (C++)</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release (Java)|Win32">
-      <Configuration>Release (Java)</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release (Java)|x64">
-      <Configuration>Release (Java)</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{50B79FA8-35FA-40A4-866C-559719455197}</ProjectGuid>
@@ -38,21 +30,9 @@
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -72,13 +52,7 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'" Label="PropertySheets">
@@ -95,46 +69,36 @@
     <OutDir>$(ProjectDir)\build\x86\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)\build\x86\$(Configuration)\</IntDir>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
-    <IncludePath>$(LIB_PATH)\boost\boost_1_64_0;$(LIB_PATH)\turtle\include;$(LIB_PATH)\openssl\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(LIB_PATH)\boost\boost_1_64_0\lib32-msvc-14.0;$(LIB_PATH)\openssl\lib64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_68_0;$(LIB_PATH)\turtle\include;$(LIB_PATH)\openssl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_68_0\lib32-msvc-14.0;$(LIB_PATH)\openssl\lib;$(LibraryPath)</LibraryPath>
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|x64'">
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
     <OutDir>$(ProjectDir)\build\x64\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)\build\x64\$(Configuration)\</IntDir>
-    <IncludePath>$(LIB_PATH)\boost\boost_1_64_0;$(LIB_PATH)\turtle\include;$(LIB_PATH)\openssl\include64;$(IncludePath)</IncludePath>
-    <LibraryPath>$(LIB_PATH)\boost\boost_1_64_0\lib64-msvc-14.0;$(LIB_PATH)\openssl\lib64;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_68_0;$(LIB_PATH)\turtle\include;$(LIB_PATH)\openssl\include64;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_68_0\lib64-msvc-14.0;$(LIB_PATH)\openssl\lib64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|Win32'">
     <OutDir>$(ProjectDir)\build\x86\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)\build\x86\$(Configuration)\</IntDir>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
-    <IncludePath>$(LIB_PATH)\boost\boost_1_64_0;$(LIB_PATH)\turtle\include;$(LIB_PATH)\openssl\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(LIB_PATH)\boost\boost_1_64_0\lib32-msvc-14.0;$(LIB_PATH)\openssl\lib;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|Win32'">
-    <OutDir>$(ProjectDir)\build\$(Configuration)\</OutDir>
-    <IntDir>$(ProjectDir)\build\$(Configuration)\</IntDir>
-    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
-    <IncludePath>$(LIB_PATH)\boost\boost_1_61_0;$(LIB_PATH)\turtle\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(LIB_PATH)\boost\boost_1_61_0\lib32-msvc-14.0;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_68_0;$(LIB_PATH)\turtle\include;$(LIB_PATH)\openssl\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_68_0\lib32-msvc-14.0;$(LIB_PATH)\openssl\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (C++)|x64'">
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
     <OutDir>$(ProjectDir)\build\x64\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)\build\x64\$(Configuration)\</IntDir>
-    <IncludePath>$(LIB_PATH)\boost\boost_1_64_0;$(LIB_PATH)\turtle\include;$(LIB_PATH)\openssl\include64;$(IncludePath)</IncludePath>
-    <LibraryPath>$(LIB_PATH)\boost\boost_1_64_0\lib64-msvc-14.0;$(LIB_PATH)\openssl\lib64;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|x64'">
-    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <IncludePath>$(LIB_PATH)\boost\boost_1_68_0;$(LIB_PATH)\turtle\include;$(LIB_PATH)\openssl\include64;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LIB_PATH)\boost\boost_1_68_0\lib64-msvc-14.0;$(LIB_PATH)\openssl\lib64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug (C++)|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\MSCL\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WIN32_WINNT=0x0501;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0501;_WINSOCK_DEPRECATED_NO_WARNINGS;BOOST_ALL_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
       <MinimalRebuild>false</MinimalRebuild>
@@ -153,8 +117,8 @@
       </EntryPointSymbol>
       <NoEntryPoint>false</NoEntryPoint>
       <SubSystem>Console</SubSystem>
-      <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>libboost_system-vc140-mt-sgd-1_64.lib;libsslMTd.lib;libcryptoMTd.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/SAFESEH:NO /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>libboost_system-vc140-mt-sgd-x32-1_68.lib;libboost_unit_test_framework-vc140-mt-sgd-x32-1_68.lib;libsslMTd.lib;libcryptoMTd.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Message>*****RUNNING MSCL UNIT TESTS*****</Message>
@@ -165,7 +129,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\MSCL\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WIN32_WINNT=0x0501;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0501;_WINSOCK_DEPRECATED_NO_WARNINGS;BOOST_ALL_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -176,6 +140,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4290;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -183,8 +148,8 @@
       </EntryPointSymbol>
       <NoEntryPoint>false</NoEntryPoint>
       <SubSystem>Console</SubSystem>
-      <AdditionalOptions>/SAFESEH:NO %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>libboost_system-vc140-mt-sgd-1_64.lib;libsslMTd.lib;libcryptoMTd.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/SAFESEH:NO /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>libboost_system-vc140-mt-sgd-x64-1_68.lib;libboost_unit_test_framework-vc140-mt-sgd-x64-1_68.lib;libsslMTd.lib;libcryptoMTd.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Message>*****RUNNING MSCL UNIT TESTS*****</Message>
@@ -196,7 +161,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>..\MSCL\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WIN32_WINNT=0x0501;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0501;_WINSOCK_DEPRECATED_NO_WARNINGS;BOOST_ALL_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader />
@@ -206,34 +171,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libboost_system-vc140-mt-s-1_64.lib;libsslMT.lib;libcryptoMT.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <TargetMachine>MachineX86</TargetMachine>
-      <SubSystem>Console</SubSystem>
-    </Link>
-    <PostBuildEvent>
-      <Message>*****RUNNING MSCL UNIT TESTS*****</Message>
-      <Command>IF NOT '%ISHUDSONBUILD%'=='True' "$(TargetPath)" --log_level=test_suite --report_level=no</Command>
-    </PostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|Win32'">
-    <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\MSCL\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WIN32_WINNT=0x0501;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4290;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>libboost_system-vc140-mt-s-1_61.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libboost_system-vc140-mt-s-x32-1_68.lib;libboost_unit_test_framework-vc140-mt-s-x32-1_68.lib;libsslMT.lib;libcryptoMT.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -250,7 +188,7 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>..\MSCL\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WIN32_WINNT=0x0501;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0501;_WINSOCK_DEPRECATED_NO_WARNINGS;BOOST_ALL_NO_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>
@@ -261,7 +199,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libboost_system-vc140-mt-s-1_64.lib;libsslMT.lib;libcryptoMT.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libboost_system-vc140-mt-s-x64-1_68.lib;libboost_unit_test_framework-vc140-mt-s-x64-1_68.lib;libsslMT.lib;libcryptoMT.lib;crypt32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -270,32 +208,6 @@
     <PostBuildEvent>
       <Message>*****RUNNING MSCL UNIT TESTS*****</Message>
       <Command>IF NOT '%ISHUDSONBUILD%'=='True' "$(TargetPath)" --log_level=test_suite --report_level=no</Command>
-    </PostBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release (Java)|x64'">
-    <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\MSCL\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_WIN32_WINNT=0x0501;_WINSOCK_DEPRECATED_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4290;%(DisableSpecificWarnings)</DisableSpecificWarnings>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>..\Output\C++\Release\MSCL.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <OptimizeReferences>true</OptimizeReferences>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <SubSystem>Console</SubSystem>
-    </Link>
-    <PostBuildEvent>
-      <Message>*****RUNNING MSCL UNIT TESTS*****</Message>
-      <Command>IF NOT '%ISHUDSONBUILD%'=='True' "$(TargetPath)" --log_level=all --report_level=no</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

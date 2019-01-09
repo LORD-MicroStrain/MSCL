@@ -21,11 +21,11 @@ echo Building MSCL for Python x64... (bjam)
 echo ********************************
 echo.
 
-SET msclCxxFlags="/bigobj /I""C:/Python27_64/include"" /I"C:/Dev/Lib/boost/boost_1_64_0" /I"C:/Dev/Lib/openssl/include64""
+SET msclCxxFlags="/bigobj /I""C:/Python27_64/include"" /I"C:/Dev/Lib/boost/boost_1_68_0" /I"C:/Dev/Lib/openssl/include64""
 IF NOT [%1]==[] SET msclCxxFlags=%1
 IF [%1]==["none"] SET msclCxxFlags=" "
 
-SET msclLinkFlags="/LIBPATH:""C:/Python27_64/libs"" /LIBPATH:"C:/Dev/Lib/boost/boost_1_64_0/lib64-msvc-14.0" /LIBPATH:"C:/Dev/Lib/openssl/lib64" libboost_system-vc140-mt-s-1_64.lib libsslMT.lib libcryptoMT.lib crypt32.lib ws2_32.lib gdi32.lib advapi32.lib user32.lib"
+SET msclLinkFlags="/LIBPATH:""C:/Python27_64/libs"" /LIBPATH:"C:/Dev/Lib/boost/boost_1_68_0/lib64-msvc-14.0" /LIBPATH:"C:/Dev/Lib/openssl/lib64" libboost_system-vc140-mt-s-x64-1_68.lib libsslMT.lib libcryptoMT.lib crypt32.lib ws2_32.lib gdi32.lib advapi32.lib user32.lib"
 IF NOT [%2]==[] SET msclLinkFlags=%2
 IF [%2]==["none"] SET msclLinkFlags=" "
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -110,6 +110,14 @@ namespace mscl
         //Exceptions:
         //  - <Error_NoData>: There is no communication time logged for this device.
         const Timestamp& lastCommunicationTime() const;
+
+        //API Function: lastDeviceState
+        //  Gets the last known <DeviceState> for the InertialNode.
+        //  This device state is updated by MSCL when data packets are received, as well as when operations are performed, such as setting a Node to idle.
+        //
+        //Returns:
+        //  The last known <DeviceState>.
+        DeviceState lastDeviceState() const;
 
         //API Function: firmwareVersion
         //    Gets the firmware <Version> of the InertialNode.
@@ -309,6 +317,21 @@ namespace mscl
         //  - <Error_Connection>: A connection error has occurred with the InertialNode.
         void loadFactoryDefaultSettings();
 
+        //API Function: pollData
+        //  Polls the device for a message with the specified fields, for the specified data class.
+        //  This will cause the device to send a single data packet.
+        //
+        //Parameters:
+        //  dataClass - The <MipTypes::DataClass> to poll the data for.
+        //  fields - The <MipTypes::MipChannelFields> to poll. If this is empty, the device will use its stored format.
+        //
+        //Exceptions:
+        //  - <Error_Communication>: There was no response to the command. The command timed out.
+        //  - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //  - <Error_NotSupported>: Unsupported Data Class.
+        //  - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void pollData(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields = MipTypes::MipChannelFields());
+
         //API Function: getDataRateBase
         //    Gets the Data decimation base for the data rate calculations of the specified <InertialType>.
         //
@@ -323,13 +346,13 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        uint16 getDataRateBase(MipTypes::DataClass category);
+        uint16 getDataRateBase(MipTypes::DataClass dataClass);
 
         //API Function: getActiveChannelFields
         //    Gets the current active channel fields for the specified <MipTypes::DataClass>.
         //
         //Parameters:
-        //    category - The <MipTypes::DataClass> to get the current message format for.
+        //    dataClass - The <MipTypes::DataClass> to get the current message format for.
         //
         //Returns:
         //    An <MipChannels> object containing the channels that make up the data message format for the specified <MipTypes::DataClass>.
@@ -339,14 +362,14 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        MipChannels getActiveChannelFields(MipTypes::DataClass category);
+        MipChannels getActiveChannelFields(MipTypes::DataClass dataClass);
 
         //API Function: setActiveChannelFields
         //    Sets the current active channel fields for the specified <MipTypes::DataClass>.
         //    Note that this function does not add to the existing message format (active channels), but overwrites it entirely.
         //
         //Parameters:
-        //    category - The <MipTypes::DataClass> to set the message format for.
+        //    dataClass - The <MipTypes::DataClass> to set the message format for.
         //    channels - The <MipChannels> object containing the channels to set the message format to. Passing an empty <MipChannels> object will effectively disable all channels.
         //
         //Exceptions:
@@ -355,14 +378,13 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         //    - <Error>: An <MipChannel> in the channels parameter is not part of the specified <MipTypes::DataClass>'s descriptor set.
-        void setActiveChannelFields(MipTypes::DataClass category, const MipChannels& channels);
+        void setActiveChannelFields(MipTypes::DataClass dataClass, const MipChannels& channels);
 
         //Function: saveActiveChannelFields
         //    Saves the current message format of the specified <MipTypes::DataClass>'s data packet.
-        //    Note that this function does not add to the existing message format, but overwrites it entirely.
         //
         //Parameters:
-        //    category - The <MipTypes::DataClass> to set the message format for.
+        //    dataClass - The <MipTypes::DataClass> to set the message format for.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command or <MipTypes::DataClass> is not supported by this Node.
@@ -370,7 +392,7 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         //    - <Error>: An <MipChannel> in the channels parameter is not part of the specified <MipTypes::DataClass>'s descriptor set.
-        void saveActiveChannelFields(MipTypes::DataClass category);
+        void saveActiveChannelFields(MipTypes::DataClass dataClass);
 
         //API Function: getCommunicationMode
         //    Gets the current communication mode that the node is in.
@@ -402,7 +424,7 @@ namespace mscl
         //    Enables or disables continuous data streaming for the node.
         //
         //Parameters:
-        //    category - The <MipTypes::DataClass> to enable/disable streaming for.
+        //    dataClass - The <MipTypes::DataClass> to enable/disable streaming for.
         //    enable - Whether to enable (true) or disable (false) continuous streaming (Default of true).
         //
         //Exceptions:
@@ -410,7 +432,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void enableDataStream(MipTypes::DataClass category, bool enable = true);
+        void enableDataStream(MipTypes::DataClass dataClass, bool enable = true);
 
         //API Function: resetFilter
         //    Resets the filter to the initialize state.
@@ -449,6 +471,108 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setAutoInitialization(bool enable);
+
+        //API Function: getAltitudeAid
+        //    Gets the state of the altitude aid upon device startup.
+        //
+        //Returns:
+        //    true if altitude aiding is enabled, false if it is disabled.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        bool getAltitudeAid();
+
+        //API Function: setAltitudeAid
+        //    Sets the state of the altitude aid upon device startup.
+        //
+        //Parameters:
+        //    enable - Whether to enable (true) or disable(false) altitude aiding.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setAltitudeAid(bool enable);
+
+        //API Function: getPitchRollAid
+        //    Gets the state of the pitch/roll aid upon device startup.
+        //
+        //Returns:
+        //    true if pitch/roll aiding is enabled, false if it is disabled.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        bool getPitchRollAid();
+
+        //API Function: setPitchRollAid
+        //    Sets the state of the pitch/roll aid upon device startup.
+        //
+        //Parameters:
+        //    enable - Whether to enable (true) or disable(false) pitch/roll aiding.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setPitchRollAid(bool enable);
+
+        //API Function: setVelocityZUPT
+        //    Sets the state of the velocity ZUPT control.
+        //
+        //Parameters:
+        //    ZUPTSettings - the ZUPTSettingsData object containing whether ZUPT is enabled and the threshold.
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setVelocityZUPT(const ZUPTSettingsData& ZUPTSettings);
+
+        //API Function: getVelocityZUPT
+        //    Gets the state of the velocity ZUPT control.
+        //
+        //Returns:
+        //    the ZUPTSettingsData object containing whether ZUPT is enabled and the threshold.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        ZUPTSettingsData getVelocityZUPT();
+
+        //API Function: setAngularRateZUPT
+        //    Sets the state of the angular rate ZUPT control.
+        //
+        //Parameters:
+        //    ZUPTSettings - the ZUPTSettingsData object containing whether ZUPT is enabled and the threshold.
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setAngularRateZUPT(const ZUPTSettingsData& ZUPTSettings);
+
+        //API Function: getAngularRateZUPT
+        //    Gets the state of the angular rate ZUPT control.
+        //
+        //Returns:
+        //    the ZUPTSettingsData object containing whether ZUPT is enabled and the threshold.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        ZUPTSettingsData getAngularRateZUPT();
 
         //API Function: setInitialAttitude
         //    Sets the initial attitude.
@@ -875,24 +999,23 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
-        void setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data);
+        void setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterConfig& data);
 
         //API Function: getAdvancedLowPassFilterSettings
-        //    Gets the current advanced low-pass filter settings.
+        //    Gets the current advanced low-pass filter settings for the given data descriptors
         //
         //Parameter:
-        //    data - The <AdvancedLowPassFilterData::DataDescriptor> field from
-        //    the passed in data is used to set the type of data to be returned.
+        //    dataDescriptors - the <MipType::ChannelField> data descriptors for which to return the current advanced low-pass filter settings.
         //
         //Return:
-        //    AdvancedLowPassFilterData new settings.
+        //    <AdvancedLowPassFilterData> settings.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        AdvancedLowPassFilterData getAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data);
+        AdvancedLowPassFilterConfig getAdvancedLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors);
         
         //API Function: setComplementaryFilterSettings
         //    Sets the complementary filter settings.
@@ -989,27 +1112,105 @@ namespace mscl
         //    Sets the estimation control flags.
         //
         //Parameter:
-        //    mode - the new flags to send.
+        //    flags - the new flags to send.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
-        void setEstimationControlFlags(const uint16& flags);
+        void setEstimationControlFlags(const EstimationControlOptions& flags);
 
         //API Function: getEstimationControlFlags
         //    Gets the estimation control flags.
         //
         //Return:
-        //    uint16 - The new flags.
+        //    EstimationControlOptions - The current flags.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        uint16 getEstimationControlFlags();
+        EstimationControlOptions getEstimationControlFlags();
+
+        //Function: setInclinationSource
+        //    Sets the source for the inclination geographic source command.
+        //
+        //Parameter:
+        //    options - the GeographicSourceOptions to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setInclinationSource(const GeographicSourceOptions& options);
+
+        //Function: getInclinationSource
+        //    Gets the source for the inclination geographic source command.
+        //
+        //Return:
+        //    GeographicSourceOptions - the current GeographicSourceOptions for the inclination.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeographicSourceOptions getInclinationSource();
+
+        //Function: setDeclinationSource
+        //    Sets the source for the declination geographic source command.
+        //
+        //Parameter:
+        //    options - the GeographicSourceOptions to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setDeclinationSource(const GeographicSourceOptions& options);
+
+        //Function: getDeclinationSource
+        //    Gets the source for the declination geographic source command.
+        //
+        //Return:
+        //    GeographicSourceOptions - the current GeographicSourceOptions for the declination.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeographicSourceOptions getDeclinationSource();
+
+        //Function: setMagneticFieldMagnitudeSource
+        //    Sets the source for the magnetic field magnitude geographic source command.
+        //
+        //Parameter:
+        //    options - the GeographicSourceOptions to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setMagneticFieldMagnitudeSource(const GeographicSourceOptions& options);
+
+        //Function: getMagneticFieldMagnitudeSource
+        //    Gets the source for the field magnitude geographic source command.
+        //
+        //Return:
+        //    GeographicSourceOptions - the current GeographicSourceOptions for the magnetic field magnitude.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeographicSourceOptions getMagneticFieldMagnitudeSource();
 
         //API Function: setEstimationControlFlags
         //    Sets the estimation control flags.
@@ -1075,6 +1276,344 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         HeadingUpdateOptions getHeadingUpdateControl();
+
+        //API Function: setGravityErrorAdaptiveMeasurement
+        //    Sets the gravity magnitude error adaptive measurement settings.
+        //
+        //Parameter:
+        //    data - the adaptive measurement settings to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setGravityErrorAdaptiveMeasurement(const AdaptiveMeasurementData& data);
+
+        //API Function: getGravityErrorAdaptiveMeasurement
+        //    Gets the gravity magnitude error adaptive measurement settings.
+        //
+        //Return:
+        //    <AdaptiveMeasurementData> - The current adaptive measurement settings.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        AdaptiveMeasurementData getGravityErrorAdaptiveMeasurement();
+
+        //API Function: setMagnetometerErrorAdaptiveMeasurement
+        //    Sets the magnetometer magnitude error adaptive measurement settings.
+        //
+        //Parameter:
+        //    data - the adaptive measurement settings to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setMagnetometerErrorAdaptiveMeasurement(const AdaptiveMeasurementData& data);
+
+        //API Function: getMagnetometerErrorAdaptiveMeasurement
+        //    Gets the magnetometer magnitude error adaptive measurement settings.
+        //
+        //Return:
+        //    <AdaptiveMeasurementData> - The current adaptive measurement settings.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        AdaptiveMeasurementData getMagnetometerErrorAdaptiveMeasurement();
+
+        //API Function: setMagDipAngleErrorAdaptiveMeasurement
+        //    Sets the magnetometer dip angle error adaptive measurement settings.
+        //
+        //Parameter:
+        //    data - the adaptive measurement settings to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setMagDipAngleErrorAdaptiveMeasurement(const AdaptiveMeasurementData& data);
+
+        //API Function: getMagDipAngleErrorAdaptiveMeasurement
+        //    Gets the magnetometer dip angle error adaptive measurement settings.
+        //
+        //Return:
+        //    <AdaptiveMeasurementData> - The current adaptive measurement settings.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        AdaptiveMeasurementData getMagDipAngleErrorAdaptiveMeasurement();
+
+        //API Function: setMagNoiseStandardDeviation
+        //    Sets the magnetometer noise standard deviation.
+        //
+        //Parameter:
+        //    data - the <GeometricVector> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setMagNoiseStandardDeviation(const GeometricVector& data);
+
+        //API Function: getMagNoiseStandardDeviation
+        //    Gets the magnetometer noise standard deviation.
+        //
+        //Return:
+        //    <GeometricVector> - The current magnetometer noise standard deviation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVector getMagNoiseStandardDeviation();
+
+        //API Function: setGravNoiseStandardDeviation
+        //    Sets the gravity noise standard deviation.
+        //
+        //Parameter:
+        //    data - the <GeometricVector> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setGravNoiseStandardDeviation(const GeometricVector& data);
+
+        //API Function: getGravNoiseStandardDeviation
+        //    Gets the gravity noise standard deviation.
+        //
+        //Return:
+        //    <GeometricVector> - The current gravity noise standard deviation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVector getGravNoiseStandardDeviation();
+
+        //API Function: setAccelNoiseStandardDeviation
+        //    Sets the accelerometer noise standard deviation.
+        //
+        //Parameter:
+        //    data - the <GeometricVector> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setAccelNoiseStandardDeviation(const GeometricVector& data);
+
+        //API Function: getAccelNoiseStandardDeviation
+        //    Gets the accelerometer noise standard deviation.
+        //
+        //Return:
+        //    <GeometricVector> - The current accelerometer noise standard deviation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVector getAccelNoiseStandardDeviation();
+
+        //API Function: setGyroNoiseStandardDeviation
+        //    Sets the gyroscope noise standard deviation.
+        //
+        //Parameter:
+        //    data - the <GeometricVector> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setGyroNoiseStandardDeviation(const GeometricVector& data);
+
+        //API Function: getGyroNoiseStandardDeviation
+        //    Gets the gyroscope noise standard deviation.
+        //
+        //Return:
+        //    <GeometricVector> - The current gyroscope noise standard deviation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVector getGyroNoiseStandardDeviation();
+
+        //API Function: setPressureAltNoiseStandardDeviation
+        //    Sets the pressure altitude noise standard deviation.
+        //
+        //Parameter:
+        //    data - the float to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setPressureAltNoiseStandardDeviation(const float& data);
+
+        //API Function: getPressureAltNoiseStandardDeviation
+        //    Gets the pressure altitude noise standard deviation.
+        //
+        //Return:
+        //    float - The current pressure altitude noise standard deviation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        float getPressureAltNoiseStandardDeviation();
+
+        //API Function: setHardIronOffsetProcessNoise
+        //    Sets the hard iron offset process noise.
+        //
+        //Parameter:
+        //    data - the <GeometricVector> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setHardIronOffsetProcessNoise(const GeometricVector& data);
+
+        //API Function: getHardIronOffsetProcessNoise
+        //    Gets the hard iron offset process noise.
+        //
+        //Return:
+        //    <GeometricVector> - The current hard iron offset process noise.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVector getHardIronOffsetProcessNoise();
+
+        //API Function: setAccelBiasModelParams
+        //    Sets the accelerometer bias model parameters.
+        //
+        //Parameter:
+        //    data - the collection of <GeometricVector> to send - contains two data points: bias beta values, and bias noise values.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setAccelBiasModelParams(const GeometricVectors& data);
+
+        //API Function: getAccelBiasModelParams
+        //    Gets the accelerometer bias model parameters.
+        //
+        //Return:
+        //    <GeometricVector> - The current accelerometer bias model parameters - returns two data points: bias beta values, and bias noise values.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVectors getAccelBiasModelParams();
+
+        //API Function: setGyroBiasModelParams
+        //    Sets the gyroscope bias model parameters.
+        //
+        //Parameter:
+        //    data - the collection of <GeometricVector> to send - contains two data points: bias beta values, and bias noise values.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setGyroBiasModelParams(const GeometricVectors& data);
+
+        //API Function: getGyroBiasModelParams
+        //    Gets the gyroscope bias model parameters.
+        //
+        //Return:
+        //    <GeometricVector> - The current gyroscope bias model parameters - returns two data points: bias beta values, and bias noise values.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVectors getGyroBiasModelParams();
+
+        //API Function: setSoftIronMatrixProcessNoise
+        //    Sets the soft iron matrix process noise.
+        //
+        //Parameter:
+        //    data - the collection of <Matrix_3x3> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setSoftIronMatrixProcessNoise(const Matrix_3x3& data);
+
+        //API Function: getSoftIronMatrixProcessNoise
+        //    Gets the soft iron matrix process noise.
+        //
+        //Return:
+        //    <Matrix_3x3> - The current soft iron matrix process noise.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        Matrix_3x3 getSoftIronMatrixProcessNoise();
+
+        //API Function: setFixedReferencePosition
+        //    Sets the <FixedReferencePositionData> data for the specified command.
+        //
+        //Parameter:
+        //    data - the <FixedReferencePositionData> data to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setFixedReferencePosition(const FixedReferencePositionData& data);
+
+        //API Function: FixedReferencePositionData
+        //    Gets the <FixedReferencePositionData> data for the specified command.
+        //
+        //Return:
+        //    <FixedReferencePositionData> - the current fixed reference position settings.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        FixedReferencePositionData getFixedReferencePosition();
 
         //API Function: sendExternalHeadingUpdate
         //    sends the external heading update command.

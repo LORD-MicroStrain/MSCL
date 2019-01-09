@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -24,14 +24,14 @@ namespace mscl
     {
     public:
         //Constructor: MipNodeInfo
-        //  Creates an MipNodeInfo object.
+        //  Creates a MipNodeInfo object.
         //
         //Parameters:
         //  node - The <MipNode_Impl> to use for lazy loading.
         MipNodeInfo(const MipNode_Impl* node);
 
         //Constructor: MipNodeInfo
-        //    Creates an MipNodeInfo object.
+        //    Creates a MipNodeInfo object.
         //
         //Parameters:
         //    info - The <MipDeviceInfo> containing information about the device.
@@ -81,7 +81,7 @@ namespace mscl
 
         //Function: supportedSampleRates
         //  Gets the <SampleRates> supported by the Node for the given <MipTypes::DataClass>.
-        const SampleRates& supportedSampleRates(MipTypes::DataClass category) const;
+        const SampleRates& supportedSampleRates(MipTypes::DataClass dataClass) const;
     };
 
 }

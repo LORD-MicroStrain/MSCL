@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -160,7 +160,7 @@ namespace mscl
         result->m_autoBalance           = std::bind(&BaseStation_Impl::protocol_node_autoBalance_v2, _1, ASPP1, _2, _3, _4, _5);
         result->m_autoCal_shm           = std::bind(&BaseStation_Impl::protocol_node_autocal_shm_v1, _1, ASPP1, _2, _3);
         result->m_autoCal_shm201        = std::bind(&BaseStation_Impl::protocol_node_autocal_shm201_v1, _1, ASPP1, _2, _3);
-        result->m_autoShuntCal          = std::bind(&BaseStation_Impl::protocol_node_autoshuntcal_v1, _1, ASPP1, _2, _3, _4, _5, _6, _7);
+        result->m_autoShuntCal          = std::bind(&BaseStation_Impl::protocol_node_autoshuntcal_v1, _1, ASPP1, _2, _3, _4);
 
         return result;
     }
@@ -294,7 +294,7 @@ namespace mscl
         result->m_softReset             = std::mem_fn(&BaseStation_Impl::protocol_node_softReset_v2);
         result->m_getDatalogData        = std::bind(&BaseStation_Impl::protocol_node_getDatalogData_v1, _1, ASPP3, _2, _3, _4, _5);
         result->m_datalogSessionInfo    = std::bind(&BaseStation_Impl::protocol_node_datalogInfo_v1, _1, ASPP3, _2, _3);
-        result->m_autoShuntCal          = std::bind(&BaseStation_Impl::protocol_node_autoshuntcal_v1, _1, ASPP3, _2, _3, _4, _5, _6, _7);
+        result->m_autoShuntCal          = std::bind(&BaseStation_Impl::protocol_node_autoshuntcal_v1, _1, ASPP3, _2, _3, _4);
         result->m_autoCal_shm           = std::bind(&BaseStation_Impl::protocol_node_autocal_shm_v1, _1, ASPP3, _2, _3);
         result->m_autoCal_shm201        = std::bind(&BaseStation_Impl::protocol_node_autocal_shm201_v1, _1, ASPP3, _2, _3);
         result->m_getDiagnosticInfo     = std::bind(&BaseStation_Impl::protocol_node_getDiagnosticInfo_v1, _1, ASPP3, _2, _3);

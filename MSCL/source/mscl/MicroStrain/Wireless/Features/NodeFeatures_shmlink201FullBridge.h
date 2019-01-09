@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -48,6 +48,8 @@ namespace mscl
         virtual bool supportsSensorDelayConfig() const override;
 
         virtual bool supportsSensorDelayAlwaysOn() const override;
+
+        virtual const WirelessTypes::VoltageType adcVoltageInputType() const override;
 
         virtual const WirelessTypes::WirelessSampleRates histogramTransmitRates() const final;
 

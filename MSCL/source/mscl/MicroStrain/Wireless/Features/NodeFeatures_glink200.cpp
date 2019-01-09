@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -13,15 +13,25 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    NodeFeatures_glink200::NodeFeatures_glink200(const NodeInfo& info):
-        NodeFeatures(info)
-    {
-        addCalCoeffChannelGroup(1, NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
-        addCalCoeffChannelGroup(2, NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
-        addCalCoeffChannelGroup(3, NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);
+    const Version NodeFeatures_glink200::VER_TILT_SUPPORTED(12, 41495);
 
-        static const ChannelMask ACCEL_CHS(BOOST_BINARY(00000111)); //ch1 - ch3
-        m_channelGroups.emplace_back(ACCEL_CHS, "Accel Channels", 
+    NodeFeatures_glink200::NodeFeatures_glink200(const NodeInfo& info):
+        NodeFeatures_200series(info)
+    {
+        addCalCoeffChannelGroup(1, "Acceleration X", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
+        addCalCoeffChannelGroup(2, "Acceleration Y", NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
+        addCalCoeffChannelGroup(3, "Acceleration Z", NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);
+
+        bool supportsTilt = (m_nodeInfo.firmwareVersion() >= VER_TILT_SUPPORTED);
+        if(supportsTilt)
+        {
+            //add the tilt channels
+            addCalCoeffChannelGroup(4, "Pitch", NodeEepromMap::CH_ACTION_SLOPE_4, NodeEepromMap::CH_ACTION_ID_4);
+            addCalCoeffChannelGroup(5, "Roll", NodeEepromMap::CH_ACTION_SLOPE_5, NodeEepromMap::CH_ACTION_ID_5);
+        }
+
+        const ChannelMask ACCEL_CHS(BOOST_BINARY(00000111)); //ch1 - ch3
+        m_channelGroups.emplace_back(ACCEL_CHS, "Acceleration X,Y,Z", 
                                      ChannelGroup::SettingsMap {
                                          {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1},
                                          {WirelessTypes::chSetting_highPassFilter, NodeEepromMap::HIGH_PASS_FILTER_1},
@@ -29,56 +39,15 @@ namespace mscl
                                      });
 
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_acceleration, "Acceleration X");
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_acceleration, "Acceleration Y");
-        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_acceleration, "Acceleration Z");
-    }
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_acceleration, "Acceleration X", 20);
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_acceleration, "Acceleration Y", 20);
+        m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_acceleration, "Acceleration Z", 20);
 
-    bool NodeFeatures_glink200::isChannelSettingReadOnly(WirelessTypes::ChannelGroupSetting setting) const
-    {
-        if(setting == WirelessTypes::chSetting_linearEquation ||
-           setting == WirelessTypes::chSetting_equationType ||
-           setting == WirelessTypes::chSetting_unit)
+        if(supportsTilt)
         {
-            return true;
+            m_channels.emplace_back(4, WirelessChannel::channel_4, WirelessTypes::chType_tilt, "Pitch", 20);
+            m_channels.emplace_back(5, WirelessChannel::channel_5, WirelessTypes::chType_tilt, "Roll", 20);
         }
-
-        return false;
-    }
-
-    WirelessTypes::TransmitPower NodeFeatures_glink200::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
-    {
-        if(region == WirelessTypes::region_japan)
-        {
-            return WirelessTypes::power_16dBm;
-        }
-
-        return NodeFeatures::maxTransmitPower(region, commProtocol);
-    }
-    
-    WirelessTypes::TransmitPower NodeFeatures_glink200::minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
-    {
-        if(region == WirelessTypes::region_japan)
-        {
-            return WirelessTypes::power_5dBm;
-        }
-
-        return NodeFeatures::minTransmitPower(region, commProtocol);
-    }
-
-    const WirelessTypes::SamplingModes NodeFeatures_glink200::samplingModes() const
-    {
-        //build and return the sampling modes that are supported
-        WirelessTypes::SamplingModes result;
-
-        result.push_back(WirelessTypes::samplingMode_sync);
-        result.push_back(WirelessTypes::samplingMode_syncBurst);
-        result.push_back(WirelessTypes::samplingMode_nonSync);
-        result.push_back(WirelessTypes::samplingMode_syncEvent);
-
-        //no support for armed datalogging
-
-        return result;
     }
 
     const WirelessTypes::WirelessSampleRates NodeFeatures_glink200::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const
@@ -153,23 +122,30 @@ namespace mscl
         return filters;
     }
 
-    const WirelessTypes::DerivedChannelTypes NodeFeatures_glink200::derivedChannelTypes() const
+    const WirelessTypes::DerivedChannelMasks NodeFeatures_glink200::channelsPerDerivedCategory() const
     {
-        static const WirelessTypes::DerivedChannelTypes channels = {
-            {WirelessTypes::derived_rms},
-            {WirelessTypes::derived_peakToPeak},
-            {WirelessTypes::derived_ips},
-            {WirelessTypes::derived_crestFactor}
+        const ChannelMask ACCEL_CHS(BOOST_BINARY(00000111)); //ch1 - ch3
+
+        static const WirelessTypes::DerivedChannelMasks result{
+            {std::make_pair(WirelessTypes::derivedCategory_rms, ACCEL_CHS)},
+            {std::make_pair(WirelessTypes::derivedCategory_peakToPeak, ACCEL_CHS)},
+            {std::make_pair(WirelessTypes::derivedCategory_velocity, ACCEL_CHS)},
+            {std::make_pair(WirelessTypes::derivedCategory_crestFactor, ACCEL_CHS)}
         };
 
-        return channels;
+        return result;
     }
 
-    const WirelessTypes::StorageLimitModes NodeFeatures_glink200::storageLimitModes() const
+    const WirelessTypes::SensorOutputModes NodeFeatures_glink200::sensorOutputModes() const
     {
-        WirelessTypes::StorageLimitModes modes;
-        modes.push_back(WirelessTypes::storageLimit_stop);
-        modes.push_back(WirelessTypes::storageLimit_overwrite);
+        WirelessTypes::SensorOutputModes modes;
+        
+        if(m_nodeInfo.firmwareVersion() >= VER_TILT_SUPPORTED)
+        {
+            modes.push_back(WirelessTypes::sensorOutputMode_accel);
+            modes.push_back(WirelessTypes::sensorOutputMode_tilt);
+        }
+        
         return modes;
     }
 }

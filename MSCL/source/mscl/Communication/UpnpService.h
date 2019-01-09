@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -35,15 +35,17 @@ namespace mscl
         bool m_searching;
         bool m_shutdown;
         bool m_searchComplete;
+        std::recursive_mutex m_upnpMutex;
         std::unique_ptr<std::thread> m_searchThread;
 
     private:
         bool startSearch();
         void findDevices();
+        void cancelFindDevices();
 
     public:
         void setSearchComplete();
-        void cancelFindDevices();
+        void restartSearch();
     };
 }
 

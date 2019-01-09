@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -62,6 +62,11 @@ namespace mscl
     const Timestamp& InertialNode::lastCommunicationTime() const
     {
         return m_impl->lastCommunicationTime();
+    }
+
+    DeviceState InertialNode::lastDeviceState() const
+    {
+        return m_impl->lastDeviceState();
     }
 
     Version InertialNode::firmwareVersion() const
@@ -154,24 +159,29 @@ namespace mscl
         return m_impl->loadFactoryDefaultSettings();
     }
 
-    uint16 InertialNode::getDataRateBase(MipTypes::DataClass category)
-    { 
-        return m_impl->getDataRateBase(category);
-    }
-
-    MipChannels InertialNode::getActiveChannelFields(MipTypes::DataClass category)
-    { 
-        return m_impl->getMessageFormat(category);
-    }
-
-    void InertialNode::setActiveChannelFields(MipTypes::DataClass category, const MipChannels& channels)
-    { 
-        m_impl->setMessageFormat(category, channels);
-    }
-
-    void InertialNode::saveActiveChannelFields(MipTypes::DataClass category)
+    void InertialNode::pollData(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields /*= MipTypes::MipChannelFields()*/)
     {
-        m_impl->saveMessageFormat(category);
+        m_impl->pollData(dataClass, fields);
+    }
+
+    uint16 InertialNode::getDataRateBase(MipTypes::DataClass dataClass)
+    { 
+        return m_impl->getDataRateBase(dataClass);
+    }
+
+    MipChannels InertialNode::getActiveChannelFields(MipTypes::DataClass dataClass)
+    { 
+        return m_impl->getMessageFormat(dataClass);
+    }
+
+    void InertialNode::setActiveChannelFields(MipTypes::DataClass dataClass, const MipChannels& channels)
+    { 
+        m_impl->setMessageFormat(dataClass, channels);
+    }
+
+    void InertialNode::saveActiveChannelFields(MipTypes::DataClass dataClass)
+    {
+        m_impl->saveMessageFormat(dataClass);
     }
 
     uint8 InertialNode::getCommunicationMode()                                                    
@@ -184,14 +194,54 @@ namespace mscl
         m_impl->setCommunicationMode(communicationMode); 
     }
 
-    void InertialNode::enableDataStream(MipTypes::DataClass category, bool enable)
+    void InertialNode::enableDataStream(MipTypes::DataClass dataClass, bool enable)
     {
-        m_impl->enableDataStream(category, enable);
+        m_impl->enableDataStream(dataClass, enable);
     }
 
     void InertialNode::resetFilter()
     {
         m_impl->resetFilter();
+    }
+
+    bool InertialNode::getAltitudeAid()
+    {
+        return m_impl->getAltitudeAid();
+    }
+
+    void InertialNode::setAltitudeAid(bool enable)
+    {
+        m_impl->setAltitudeAid(enable);
+    }
+
+    bool InertialNode::getPitchRollAid()
+    {
+        return m_impl->getPitchRollAid();
+    }
+
+    void InertialNode::setPitchRollAid(bool enable)
+    {
+        m_impl->setPitchRollAid(enable);
+    }
+
+    ZUPTSettingsData InertialNode::getVelocityZUPT()
+    {
+        return m_impl->getVelocityZUPT();
+    }
+
+    void InertialNode::setVelocityZUPT(const ZUPTSettingsData& ZUPTSettings)
+    {
+        m_impl->setVelocityZUPT(ZUPTSettings);
+    }
+
+    ZUPTSettingsData InertialNode::getAngularRateZUPT()
+    {
+        return m_impl->getAngularRateZUPT();
+    }
+
+    void InertialNode::setAngularRateZUPT(const ZUPTSettingsData& ZUPTSettings)
+    {
+        m_impl->setAngularRateZUPT(ZUPTSettings);
     }
 
     bool InertialNode::getAutoInitialization()
@@ -367,14 +417,23 @@ namespace mscl
         return m_impl->getUARTBaudRate();
     }
 
-    void InertialNode::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data)
+    void InertialNode::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterConfig& data)
     {
-        m_impl->setAdvancedLowPassFilterSettings(data);
+        for (size_t i = 0; i < data.size(); i++)
+        {
+            m_impl->setAdvancedLowPassFilterSettings(data[i]);
+        }
     }
 
-    AdvancedLowPassFilterData InertialNode::getAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data)
+    AdvancedLowPassFilterConfig InertialNode::getAdvancedLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors)
     {
-        return m_impl->getAdvancedLowPassFilterSettings(data);
+        AdvancedLowPassFilterConfig data;
+        for (size_t i = 0; i < dataDescriptors.size(); i++)
+        {
+            data.push_back(m_impl->getAdvancedLowPassFilterSettings(dataDescriptors[i]));
+        }
+
+        return data;
     }
 
     void InertialNode::setComplementaryFilterSettings(const ComplementaryFilterData& data)
@@ -412,14 +471,44 @@ namespace mscl
         return m_impl->getVehicleDynamicsMode();
     }
 
-    void InertialNode::setEstimationControlFlags(const uint16& flags)
+    void InertialNode::setEstimationControlFlags(const EstimationControlOptions& flags)
     {
         m_impl->setEstimationControlFlags(flags);
     }
 
-    uint16 InertialNode::getEstimationControlFlags()
+    EstimationControlOptions InertialNode::getEstimationControlFlags()
     {
         return m_impl->getEstimationControlFlags();
+    }
+
+    void InertialNode::setInclinationSource(const GeographicSourceOptions& options)
+    {
+        m_impl->setInclinationSource(options);
+    }
+
+    GeographicSourceOptions InertialNode::getInclinationSource()
+    {
+        return m_impl->getInclinationSource();
+    }
+
+    void InertialNode::setDeclinationSource(const GeographicSourceOptions& options)
+    {
+        m_impl->setDeclinationSource(options);
+    }
+
+    GeographicSourceOptions InertialNode::getDeclinationSource()
+    {
+        return m_impl->getDeclinationSource();
+    }
+
+    void InertialNode::setMagneticFieldMagnitudeSource(const GeographicSourceOptions& options)
+    {
+        m_impl->setMagneticFieldMagnitudeSource(options);
+    }
+
+    GeographicSourceOptions InertialNode::getMagneticFieldMagnitudeSource()
+    {
+        return m_impl->getMagneticFieldMagnitudeSource();
     }
 
     void InertialNode::setGNSS_SourceControl(const InertialTypes::GNSS_Source& gnssSource)
@@ -445,6 +534,150 @@ namespace mscl
     HeadingUpdateOptions InertialNode::getHeadingUpdateControl()
     {
         return m_impl->getHeadingUpdateControl();
+    }
+
+    void InertialNode::setGravityErrorAdaptiveMeasurement(const AdaptiveMeasurementData& data)
+    {
+        m_impl->setAdaptiveMeasurement(MipTypes::Command::CMD_EF_GRAV_MAGNITUDE_ERR_ADAPT_MEASURE, data);
+    }
+
+    AdaptiveMeasurementData InertialNode::getGravityErrorAdaptiveMeasurement()
+    {
+        return m_impl->getAdaptiveMeasurement(MipTypes::Command::CMD_EF_GRAV_MAGNITUDE_ERR_ADAPT_MEASURE);
+    }
+
+    void InertialNode::setMagnetometerErrorAdaptiveMeasurement(const AdaptiveMeasurementData& data)
+    {
+        m_impl->setAdaptiveMeasurement(MipTypes::Command::CMD_EF_MAG_MAGNITUDE_ERR_ADAPT_MEASURE, data);
+    }
+
+    AdaptiveMeasurementData InertialNode::getMagnetometerErrorAdaptiveMeasurement()
+    {
+        return m_impl->getAdaptiveMeasurement(MipTypes::Command::CMD_EF_MAG_MAGNITUDE_ERR_ADAPT_MEASURE);
+    }
+
+    void InertialNode::setMagDipAngleErrorAdaptiveMeasurement(const AdaptiveMeasurementData& data)
+    {
+        m_impl->setAdaptiveMeasurement(MipTypes::Command::CMD_EF_MAG_DIP_ANGLE_ERR_ADAPT_MEASURE, data);
+    }
+
+    AdaptiveMeasurementData InertialNode::getMagDipAngleErrorAdaptiveMeasurement()
+    {
+        return m_impl->getAdaptiveMeasurement(MipTypes::Command::CMD_EF_MAG_DIP_ANGLE_ERR_ADAPT_MEASURE);
+    }
+
+    void InertialNode::setMagNoiseStandardDeviation(const GeometricVector& data)
+    {
+        GeometricVectors collection;
+        collection.push_back(data);
+        m_impl->setGeometricVectors(MipTypes::Command::CMD_EF_MAG_NOISE_STD_DEV, collection);
+    }
+
+    GeometricVector InertialNode::getMagNoiseStandardDeviation()
+    {
+        return m_impl->getGeometricVectors(MipTypes::Command::CMD_EF_MAG_NOISE_STD_DEV)[0];
+    }
+
+    void InertialNode::setGravNoiseStandardDeviation(const GeometricVector& data)
+    {
+        GeometricVectors collection;
+        collection.push_back(data);
+        m_impl->setGeometricVectors(MipTypes::Command::CMD_EF_GRAVITY_NOISE_STD_DEV, collection);
+    }
+
+    GeometricVector InertialNode::getGravNoiseStandardDeviation()
+    {
+        return m_impl->getGeometricVectors(MipTypes::Command::CMD_EF_GRAVITY_NOISE_STD_DEV)[0];
+    }
+
+    void InertialNode::setAccelNoiseStandardDeviation(const GeometricVector& data)
+    {
+        GeometricVectors collection;
+        collection.push_back(data);
+        m_impl->setGeometricVectors(MipTypes::Command::CMD_EF_ACCEL_WHT_NSE_STD_DEV, collection);
+    }
+
+    GeometricVector InertialNode::getAccelNoiseStandardDeviation()
+    {
+        return m_impl->getGeometricVectors(MipTypes::Command::CMD_EF_ACCEL_WHT_NSE_STD_DEV)[0];
+    }
+
+    void InertialNode::setGyroNoiseStandardDeviation(const GeometricVector& data)
+    {
+        GeometricVectors collection;
+        collection.push_back(data);
+        m_impl->setGeometricVectors(MipTypes::Command::CMD_EF_GYRO_WHT_NSE_STD_DEV, collection);
+    }
+
+    GeometricVector InertialNode::getGyroNoiseStandardDeviation()
+    {
+        return m_impl->getGeometricVectors(MipTypes::Command::CMD_EF_GYRO_WHT_NSE_STD_DEV)[0];
+    }
+
+    void InertialNode::setPressureAltNoiseStandardDeviation(const float& data)
+    {
+        std::vector<float> collection;
+        collection.push_back(data);
+        m_impl->setFloats(MipTypes::Command::CMD_EF_PRESS_ALT_NOISE_STD_DEV, collection);
+    }
+
+    float InertialNode::getPressureAltNoiseStandardDeviation()
+    {
+        return m_impl->getFloats(MipTypes::Command::CMD_EF_PRESS_ALT_NOISE_STD_DEV)[0];
+    }
+
+    void InertialNode::setHardIronOffsetProcessNoise(const GeometricVector& data)
+    {
+        GeometricVectors collection;
+        collection.push_back(data);
+        m_impl->setGeometricVectors(MipTypes::Command::CMD_EF_HARD_IRON_OFFSET_PROCESS_NOISE, collection);
+    }
+
+    GeometricVector InertialNode::getHardIronOffsetProcessNoise()
+    {
+        return m_impl->getGeometricVectors(MipTypes::Command::CMD_EF_HARD_IRON_OFFSET_PROCESS_NOISE)[0];
+    }
+
+    void InertialNode::setAccelBiasModelParams(const GeometricVectors& data)
+    {
+        m_impl->setGeometricVectors(MipTypes::Command::CMD_EF_ACCEL_BIAS_MODEL_PARAMS, data);
+    }
+
+    GeometricVectors InertialNode::getAccelBiasModelParams()
+    {
+        return m_impl->getGeometricVectors(MipTypes::Command::CMD_EF_ACCEL_BIAS_MODEL_PARAMS);
+    }
+
+    void InertialNode::setGyroBiasModelParams(const GeometricVectors& data)
+    {
+        m_impl->setGeometricVectors(MipTypes::Command::CMD_EF_GYRO_BIAS_MODEL_PARAMS, data);
+    }
+
+    GeometricVectors InertialNode::getGyroBiasModelParams()
+    {
+        return m_impl->getGeometricVectors(MipTypes::Command::CMD_EF_GYRO_BIAS_MODEL_PARAMS);
+    }
+
+    void InertialNode::setSoftIronMatrixProcessNoise(const Matrix_3x3& data)
+    {
+        Matrix_3x3s collection;
+        collection.push_back(data);
+        m_impl->setMatrix3x3s(MipTypes::Command::CMD_EF_SOFT_IRON_OFFSET_PROCESS_NOISE, collection);
+    }
+
+    Matrix_3x3 InertialNode::getSoftIronMatrixProcessNoise()
+    {
+        return m_impl->getMatrix3x3s(MipTypes::Command::CMD_EF_SOFT_IRON_OFFSET_PROCESS_NOISE)[0];
+    }
+
+    void InertialNode::setFixedReferencePosition(const FixedReferencePositionData& data)
+    {
+        m_impl->setFixedReferencePosition(data);
+    }
+
+    FixedReferencePositionData InertialNode::getFixedReferencePosition()
+    {
+        return m_impl->getFixedReferencePosition();
     }
 
     void InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData)

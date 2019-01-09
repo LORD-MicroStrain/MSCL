@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -138,6 +138,30 @@ namespace mscl
         //  CH_ACTION_ID_8                  - The channel action ID of channel 8
         //  CH_ACTION_SLOPE_8               - The channel action slope of channel 8
         //  CH_ACTION_OFFSET_8              - The channel action offset of channel 8
+        //  CH_ACTION_ID_9                  - The channel action ID of channel 9
+        //  CH_ACTION_SLOPE_9               - The channel action slope of channel 9
+        //  CH_ACTION_OFFSET_9              - The channel action offset of channel 9
+        //  CH_ACTION_ID_10                 - The channel action ID of channel 10
+        //  CH_ACTION_SLOPE_10              - The channel action slope of channel 10
+        //  CH_ACTION_OFFSET_10             - The channel action offset of channel 10
+        //  CH_ACTION_ID_11                 - The channel action ID of channel 11
+        //  CH_ACTION_SLOPE_11              - The channel action slope of channel 11
+        //  CH_ACTION_OFFSET_11             - The channel action offset of channel 11
+        //  CH_ACTION_ID_12                 - The channel action ID of channel 12
+        //  CH_ACTION_SLOPE_12              - The channel action slope of channel 12
+        //  CH_ACTION_OFFSET_12             - The channel action offset of channel 12
+        //  CH_ACTION_ID_13                 - The channel action ID of channel 13
+        //  CH_ACTION_SLOPE_13              - The channel action slope of channel 13
+        //  CH_ACTION_OFFSET_13             - The channel action offset of channel 13
+        //  CH_ACTION_ID_14                 - The channel action ID of channel 14
+        //  CH_ACTION_SLOPE_14              - The channel action slope of channel 14
+        //  CH_ACTION_OFFSET_14             - The channel action offset of channel 14
+        //  CH_ACTION_ID_15                 - The channel action ID of channel 15
+        //  CH_ACTION_SLOPE_15              - The channel action slope of channel 15
+        //  CH_ACTION_OFFSET_15             - The channel action offset of channel 15
+        //  CH_ACTION_ID_16                 - The channel action ID of channel 16
+        //  CH_ACTION_SLOPE_16              - The channel action slope of channel 16
+        //  CH_ACTION_OFFSET_16             - The channel action offset of channel 16
         //  LEGACY_BOOTLOAD_PAGE            - The bootloader page address (Legacy)
         //  LEGACY_BOOTLOAD_ENABLE_FLAG     - The bootloader enable flag (Legacy)
         //  LEGACY_BOOTLOAD_CHECKSUM        - The bootloader checksum (Legacy)
@@ -160,9 +184,10 @@ namespace mscl
         //  DERIVED_DATA_RATE               - The sample rate for the Math channels
         //  DERIVED_RMS_MASK                - Derived - RMS channel mask
         //  DERIVED_P2P_MASK                - Derived - Peak to Peak channel mask
-        //  DERIVED_IPS_MASK                - Derived - Inches Per Second channel mask
+        //  DERIVED_VELOCITY_MASK           - Derived - Velocity channel mask
         //  DERIVED_CREST_FACTOR_MASK       - Derived - Crest Factor channel mask
         //  DERIVED_MEAN_MASK               - Derived - Mean channel mask
+        //  DERIVED_VELOCITY_UNIT           - Derived - Velocity Unit
         //  DATA_PACKET_FORMAT              - The format of the data packet that will be sent out
         //  DIAGNOSTIC_INTERVAL             - The interval at which the Diagnostic Packet is sent
         //  EVENT_SAMPLE_RATE               - Event Driven Sampling: Sample Rate
@@ -201,6 +226,9 @@ namespace mscl
         //  EVENT_OPER_8                    - Event Driven Sampling: The operation for Event 8
         //  EVENT_VAL1_8                    - Event Driven Sampling: Value 1 for Event 8
         //  EVENT_VAL2_8                    - Event Driven Sampling: Value 2 for Event 8
+        //  EXCITATION_VOLTAGE              - Excitation Voltage
+        //  DEBOUNCE_FILTER                 - Debounce Filter
+        //  INTERNAL_PULLUP_RESISTOR        - Internal Pull-up Resistor
         //  ANTI_ALIASING_FILTER_1          - The anti-aliasing filter for channels (1).
         //  ANTI_ALIASING_FILTER_2          - The anti-aliasing filter for channels (2).
         //  ANTI_ALIASING_FILTER_3          - The anti-aliasing filter for channels (3).
@@ -221,6 +249,7 @@ namespace mscl
         //  GAUGE_FACTOR_4                  - The Gauge Factor (4)
         //  GAUGE_RESISTANCE                - The Gauge Resistance
         //  NUM_ACTIVE_GAUGES               - The Number of Active Gauges
+        //  LOW_BATTERY_THRESHOLD           - The threshold at which the low battery flag is sent
         //  THERMOCPL_TYPE                  - The thermocouple type for nodes with thermocouple capabilities (ie. TC-Link)
         //  FILTER_1                        - The first filter value for nodes with filter capabilities (ie. TC-Link)
         //  FILTER_2                        - The second filter value for nodes with 2 filter capabilities (ie. ENV-Link-Pro)
@@ -339,6 +368,30 @@ namespace mscl
         static const EepromLocation CH_ACTION_ID_8;
         static const EepromLocation CH_ACTION_SLOPE_8;
         static const EepromLocation CH_ACTION_OFFSET_8;
+        static const EepromLocation CH_ACTION_ID_9;
+        static const EepromLocation CH_ACTION_SLOPE_9;
+        static const EepromLocation CH_ACTION_OFFSET_9;
+        static const EepromLocation CH_ACTION_ID_10;
+        static const EepromLocation CH_ACTION_SLOPE_10;
+        static const EepromLocation CH_ACTION_OFFSET_10;
+        static const EepromLocation CH_ACTION_ID_11;
+        static const EepromLocation CH_ACTION_SLOPE_11;
+        static const EepromLocation CH_ACTION_OFFSET_11;
+        static const EepromLocation CH_ACTION_ID_12;
+        static const EepromLocation CH_ACTION_SLOPE_12;
+        static const EepromLocation CH_ACTION_OFFSET_12;
+        static const EepromLocation CH_ACTION_ID_13;
+        static const EepromLocation CH_ACTION_SLOPE_13;
+        static const EepromLocation CH_ACTION_OFFSET_13;
+        static const EepromLocation CH_ACTION_ID_14;
+        static const EepromLocation CH_ACTION_SLOPE_14;
+        static const EepromLocation CH_ACTION_OFFSET_14;
+        static const EepromLocation CH_ACTION_ID_15;
+        static const EepromLocation CH_ACTION_SLOPE_15;
+        static const EepromLocation CH_ACTION_OFFSET_15;
+        static const EepromLocation CH_ACTION_ID_16;
+        static const EepromLocation CH_ACTION_SLOPE_16;
+        static const EepromLocation CH_ACTION_OFFSET_16;
         static const EepromLocation LEGACY_BOOTLOAD_PAGE;
         static const EepromLocation LEGACY_BOOTLOAD_ENABLE_FLAG;
         static const EepromLocation LEGACY_BOOTLOAD_CHECKSUM;
@@ -361,9 +414,10 @@ namespace mscl
         static const EepromLocation DERIVED_DATA_RATE;
         static const EepromLocation DERIVED_RMS_MASK;
         static const EepromLocation DERIVED_P2P_MASK;
-        static const EepromLocation DERIVED_IPS_MASK;
+        static const EepromLocation DERIVED_VELOCITY_MASK;
         static const EepromLocation DERIVED_CREST_FACTOR_MASK;
         static const EepromLocation DERIVED_MEAN_MASK;
+        static const EepromLocation DERIVED_VELOCITY_UNIT;
         static const EepromLocation DATA_PACKET_FORMAT;
         static const EepromLocation DIAGNOSTIC_INTERVAL;
         static const EepromLocation EVENT_SAMPLE_RATE;
@@ -402,6 +456,10 @@ namespace mscl
         static const EepromLocation EVENT_OPER_8;
         static const EepromLocation EVENT_VAL1_8;
         static const EepromLocation EVENT_VAL2_8;
+        static const EepromLocation EXCITATION_VOLTAGE;
+        static const EepromLocation DEBOUNCE_FILTER;
+        static const EepromLocation INTERNAL_PULLUP_RESISTOR;
+        static const EepromLocation SENSOR_MODE;
         static const EepromLocation ANTI_ALIASING_FILTER_1;
         static const EepromLocation ANTI_ALIASING_FILTER_2;
         static const EepromLocation ANTI_ALIASING_FILTER_3;
@@ -422,6 +480,7 @@ namespace mscl
         static const EepromLocation GAUGE_FACTOR_4;
         static const EepromLocation GAUGE_RESISTANCE;
         static const EepromLocation NUM_ACTIVE_GAUGES;
+        static const EepromLocation LOW_BATTERY_THRESHOLD;
         static const EepromLocation THERMOCPL_TYPE;
         static const EepromLocation FILTER_1;
         static const EepromLocation FILTER_2;
@@ -463,5 +522,21 @@ namespace mscl
         static const EepromLocation BOOTLOADER_VER;
         static const EepromLocation FIRMWARE_UPGRADE_FLAGS;
         static const EepromLocation BOOTLOADER_FLASH_ADDRESS;
+        static const EepromLocation TEMP_SENSOR_CONFIG_1;
+        static const EepromLocation TEMP_SENSOR_CONFIG_2;
+        static const EepromLocation TEMP_SENSOR_CONFIG_3;
+        static const EepromLocation TEMP_SENSOR_CONFIG_4;
+        static const EepromLocation TEMP_SENSOR_CONFIG_5;
+        static const EepromLocation TEMP_SENSOR_CONFIG_6;
+        static const EepromLocation TEMP_SENSOR_CONFIG_7;
+        static const EepromLocation TEMP_SENSOR_CONFIG_8;
+        static const EepromLocation TEMP_SENSOR_CONFIG_9;
+        static const EepromLocation TEMP_SENSOR_CONFIG_10;
+        static const EepromLocation TEMP_SENSOR_CONFIG_11;
+        static const EepromLocation TEMP_SENSOR_CONFIG_12;
+        static const EepromLocation TEMP_SENSOR_CONFIG_13;
+        static const EepromLocation TEMP_SENSOR_CONFIG_14;
+        static const EepromLocation TEMP_SENSOR_CONFIG_15;
+        static const EepromLocation TEMP_SENSOR_CONFIG_16;
     };
 }

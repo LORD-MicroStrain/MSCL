@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -185,10 +185,10 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_minTimeBetweenBursts)
     BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs4, derivedMasks, SampleRate::Hertz(2048), 100, lxrs) == TimeSpan::Seconds(5));
     BOOST_CHECK(features->minTimeBetweenBursts(mode_raw, format_uint16, chs2, derivedMasks, SampleRate::Hertz(64), 100, lxrs) == TimeSpan::Seconds(6));
 
-    derivedMasks.emplace(WirelessTypes::derived_rms, ChannelMask(255));
-    derivedMasks.emplace(WirelessTypes::derived_peakToPeak, ChannelMask(255));
-    derivedMasks.emplace(WirelessTypes::derived_ips, ChannelMask(255));
-    derivedMasks.emplace(WirelessTypes::derived_crestFactor, ChannelMask(255));
+    derivedMasks.emplace(WirelessTypes::derivedCategory_rms, ChannelMask(255));
+    derivedMasks.emplace(WirelessTypes::derivedCategory_peakToPeak, ChannelMask(255));
+    derivedMasks.emplace(WirelessTypes::derivedCategory_velocity, ChannelMask(255));
+    derivedMasks.emplace(WirelessTypes::derivedCategory_crestFactor, ChannelMask(255));
     BOOST_CHECK(features->minTimeBetweenBursts(mode_derived, format_uint16, chs4, derivedMasks, SampleRate::Hertz(32), 100, lxrs) == TimeSpan::Seconds(8));
 }
 
@@ -399,8 +399,8 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_japan)
         WirelessTypes::TransmitPowers powers = features->transmitPowers(WirelessTypes::commProtocol_lxrs);
 
         BOOST_CHECK_EQUAL(powers.size(), 2);
-        BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_5dBm);
-        BOOST_CHECK_EQUAL(powers.at(1), WirelessTypes::power_0dBm);
+        BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_10dBm);
+        BOOST_CHECK_EQUAL(powers.at(1), WirelessTypes::power_5dBm);
     }
 }
 

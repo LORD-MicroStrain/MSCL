@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -8,6 +8,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "WirelessProtocol.h"
 #include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/Wireless/Packets/WirelessPacket.h"
+#include "mscl/MicroStrain/Wireless/NodeCommTimes.h"
 
 namespace mscl
 {
@@ -181,6 +182,7 @@ namespace mscl
 
         if(status == SUCCESS)
         {
+            NodeCommTimes::updateDeviceState(m_nodeAddress, DeviceState::deviceState_idle);
             m_result = SetToIdleStatus::setToIdleResult_success;
             m_success = true;
         }

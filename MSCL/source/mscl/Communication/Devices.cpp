@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -277,6 +277,7 @@ namespace mscl
             if(Utils::containsStr(pnpID, "VID_0483&PID_5740"))
             {
                 baudRate = 921600;
+                type = DeviceInfo::connectionType_serial;
                 return true;
             }
 
@@ -286,6 +287,7 @@ namespace mscl
                Utils::containsStr(pnpID, "VID_199B&PID_3D65"))      //Inertial in DFU (usb updater) mode
             {
                 baudRate = 921600;
+                type = DeviceInfo::connectionType_serial;
                 return true;
             }
         }
@@ -451,7 +453,8 @@ namespace mscl
         if(devType == TYPE_BASESTATION || devType == TYPE_ALL)
         {
             //currently, checking the base station information isn't a very strong search
-            if(Utils::containsStr(manufacturer, "Silicon Labs") && Utils::containsStr(vendorId, "10c4"))
+            if( (Utils::containsStr(manufacturer, "Silicon Labs") && Utils::containsStr(vendorId, "10c4")) ||
+                (Utils::containsStr(manufacturer, "LORD Sensing Systems") && Utils::containsStr(vendorId, "199b")))
             {
                 return true;
             }

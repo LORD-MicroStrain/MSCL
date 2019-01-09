@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -9,10 +9,16 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
     std::map<NodeAddress, Timestamp> NodeCommTimes::m_nodesLastCommTime;
+    std::map<NodeAddress, DeviceState> NodeCommTimes::m_nodesLastState;
 
     void NodeCommTimes::updateCommTime(NodeAddress nodeAddress)
     {
         m_nodesLastCommTime[nodeAddress].setTimeNow();
+    }
+
+    void NodeCommTimes::updateDeviceState(NodeAddress nodeAddress, DeviceState state)
+    {
+        m_nodesLastState[nodeAddress] = state;
     }
 
     const Timestamp& NodeCommTimes::getLastCommTime(NodeAddress nodeAddress)
@@ -24,6 +30,18 @@ namespace mscl
         catch(std::out_of_range&)
         {
             throw Error_NoData("The Node has not yet been communicated with.");
+        }
+    }
+
+    DeviceState NodeCommTimes::getLastDeviceState(NodeAddress nodeAddress)
+    {
+        try
+        {
+            return m_nodesLastState.at(nodeAddress);
+        }
+        catch(const std::out_of_range&)
+        {
+            return DeviceState::deviceState_unknown;
         }
     }
 }

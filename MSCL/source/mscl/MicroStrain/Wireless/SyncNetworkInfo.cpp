@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -96,9 +96,9 @@ namespace mscl
         m_txPerGroup = Utils::ceilBase2(percent * m_bytesPerSecond / m_maxBytesPerPacket);
     }
 
-    WirelessTypes::DerivedChannelTypes SyncNetworkInfo::supportedDerivedChannelTypes() const
+    WirelessTypes::DerivedChannelMasks SyncNetworkInfo::supportedDerivedCategories() const
     {
-        return m_node.features().derivedChannelTypes();
+        return m_node.features().channelsPerDerivedCategory();
     }
 
     void SyncNetworkInfo::setPendingConfig(const WirelessNodeConfig& config)

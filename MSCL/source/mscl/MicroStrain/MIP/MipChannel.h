@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -21,7 +21,7 @@ namespace mscl
     {
     public:
         //API Constructor: MipChannel
-        //    Creates an MipChannel object.
+        //    Creates a MipChannel object.
         //
         //Parameters:
         //    channelField - The <MipTypes::ChannelField> for the channel.
@@ -65,7 +65,7 @@ namespace mscl
 
         //API Function: validateSampleRate
         //    Validates the sample rate of the MipChannel object, updating it to a supported rate if necessary.
-        //    This function will be called before an MipChannel is set on the InertialNode.
+        //    This function will be called before a MipChannel is set on the InertialNode.
         //    You can call it yourself if you want to update the channel yourself to determine the true SampleRate that will be applied.
         //
         //Parameters:
@@ -77,7 +77,7 @@ namespace mscl
 
         //API Function: validateSampleRate
         //    Validates the sample rate of the MipChannel object, updating it to a supported rate if necessary.
-        //    This function will be called before an MipChannel is set on the InertialNode.
+        //    This function will be called before a MipChannel is set on the InertialNode.
         //    You can call it yourself if you want to update the channel yourself to determine the true SampleRate that will be applied.
         //
         //Parameters:

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -21,11 +21,11 @@ namespace mscl
 #ifndef SWIG
     public:
         //Constructor: MipDataPoint
-        //    Creates an MipDataPoint object with default, unknown, values
+        //    Creates a MipDataPoint object with default, unknown, values
         MipDataPoint();
 
         //Constructor: MipDataPoint
-        //    Creates an MipDataPoint object
+        //    Creates a MipDataPoint object
         //
         //Parameters:
         //    field - The <MipTypes::ChannelField> for the data point.

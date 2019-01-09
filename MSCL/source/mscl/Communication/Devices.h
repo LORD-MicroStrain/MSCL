@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -152,7 +152,7 @@ namespace mscl
         //    devType - The type of device to list
         static DeviceList listDevices(DeviceType devType);
 
-#ifdef WIN32
+#ifdef _WIN32
         //Function: matchesDevice
         //    Checks whether a given string found from WMI matches the given device
         //

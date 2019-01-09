@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -61,6 +61,8 @@ namespace mscl
         //Variable: m_port
         //    The port for the connection.
         uint16 m_port;
+
+        boost::asio::ssl::context m_sslContext;
     };
 
 }

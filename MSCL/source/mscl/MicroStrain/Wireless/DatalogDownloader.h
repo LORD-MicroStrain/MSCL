@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -145,7 +145,7 @@ namespace mscl
         //    - <Error_NotSupported>: Logged data is not supported by the Node.
         //    - <Error_NodeCommunication>: Failed to read info from the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        DatalogDownloader(const WirelessNode& node, uint16 startAddress, uint32 size);
+        DatalogDownloader(const WirelessNode& node, uint32 startAddress, uint32 size);
 
         ~DatalogDownloader();
 

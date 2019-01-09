@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -180,5 +180,7 @@ namespace mscl
         //Function: supportsEeprom1024AndAbove
         //  Checks if the Node supports reading eeprom location 1024 and above.
         virtual bool supportsEeprom1024AndAbove() const;
+
+        static void narrowDownTxPowers(WirelessTypes::TransmitPowers& txPowers, WirelessTypes::TransmitPower min, WirelessTypes::TransmitPower max);
     };
 }

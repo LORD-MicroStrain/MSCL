@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -7,6 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/MIP/MipChannel.h"
+#include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 
 namespace mscl
 {
@@ -210,6 +211,158 @@ namespace mscl
 
         public:
             Response(std::weak_ptr<ResponseCollector> collector);
+        };
+    };
+
+    //Class: AltitudeAidControl
+    //    Contains the logic for the "Altitude Aid Control" command
+    class AltitudeAidControl
+    {
+    public:
+        //Constants: Packet Bytes
+        //  CMD_ID              - CMD_EF_ALTITUDE_AID_CTRL  - The <MipTypes::Command> for this command
+        //  FIELD_DATA_BYTE     - 0xB7                      - The Data Field Descriptor byte
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_EF_ALTITUDE_AID_CTRL;
+        static const uint8 FIELD_DATA_BYTE = 0xB7;
+
+    private:
+        AltitudeAidControl() = delete;
+
+    public:
+        //Function: buildCommand_get
+        //    Builds the bytes for the "get" command.
+        static ByteStream buildCommand_get();
+
+        //Function: buildCommand_set
+        //    Builds the bytes for the "set" command. 
+        //
+        //Parameters:
+        //    enable - Whether to enable (true) or disable (false) altitude aiding.
+        static ByteStream buildCommand_set(bool enable);
+
+        class Response : public GenericMipCommand::Response
+        {
+        protected:
+            virtual MipTypes::Command commandId() const { return CMD_ID; }
+            virtual uint8 fieldDataByte() const { return FIELD_DATA_BYTE; }
+
+        public:
+            Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
+            bool parseResponse(const GenericMipCmdResponse& response) const;
+        };
+    };
+
+    //Class: PitchRollAidControl
+    //    Contains the logic for the "Pitch/Roll Aid Control" command
+    class PitchRollAidControl
+    {
+    public:
+        //Constants: Packet Bytes
+        //  CMD_ID              - CMD_EF_PITCH_ROLL_AID_CTRL- The <MipTypes::Command> for this command
+        //  FIELD_DATA_BYTE     - 0xBB                      - The Data Field Descriptor byte
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_EF_PITCH_ROLL_AID_CTRL;
+        static const uint8 FIELD_DATA_BYTE = 0xBB;
+
+    private:
+        PitchRollAidControl() = delete;
+
+    public:
+        //Function: buildCommand_get
+        //    Builds the bytes for the "get" command.
+        static ByteStream buildCommand_get();
+
+        //Function: buildCommand_set
+        //    Builds the bytes for the "set" command. 
+        //
+        //Parameters:
+        //    enable - Whether to enable (true) or disable (false) the pitch/roll aiding.
+        static ByteStream buildCommand_set(bool enable);
+
+        class Response : public GenericMipCommand::Response
+        {
+        protected:
+            virtual MipTypes::Command commandId() const { return CMD_ID; }
+            virtual uint8 fieldDataByte() const { return FIELD_DATA_BYTE; }
+
+        public:
+            Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
+            bool parseResponse(const GenericMipCmdResponse& response) const;
+        };
+    };
+
+    //Class: VelocityZUPTControl
+    //    Contains the logic for the "Velocity ZUPT Control" command
+    class VelocityZUPTControl
+    {
+    public:
+        //Constants: Packet Bytes
+        //  CMD_ID              - CMD_EF_ZERO_VEL_UPDATE_CTRL - The <MipTypes::Command> for this command
+        //  FIELD_DATA_BYTE     - 0x8D                         - The Data Field Descriptor byte
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_EF_ZERO_VEL_UPDATE_CTRL;
+        static const uint8 FIELD_DATA_BYTE = 0x8D;
+
+    private:
+        VelocityZUPTControl() = delete;
+
+    public:
+        //Function: buildCommand_get
+        //    Builds the bytes for the "get" command.
+        static ByteStream buildCommand_get();
+
+        //Function: buildCommand_set
+        //    Builds the bytes for the "set" command. 
+        //
+        //Parameters:
+        //    settingsData - The ZUPTSettingsData object containing whether the command is enabled and the threshold.
+        static ByteStream buildCommand_set(const ZUPTSettingsData& settingsData);
+
+        class Response : public GenericMipCommand::Response
+        {
+        protected:
+            virtual MipTypes::Command commandId() const { return CMD_ID; }
+            virtual uint8 fieldDataByte() const { return FIELD_DATA_BYTE; }
+
+        public:
+            Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
+            ZUPTSettingsData parseResponse(const GenericMipCmdResponse& response) const;
+        };
+    };
+
+    //Class: AngularRateZUPTControl
+    //    Contains the logic for the "Angular Rate ZUPT Control" command
+    class AngularRateZUPTControl
+    {
+    public:
+        //Constants: Packet Bytes
+        //  CMD_ID              - CMD_EF_CMDED_ZERO_ANG_RATE_UPDATE - The <MipTypes::Command> for this command
+        //  FIELD_DATA_BYTE     - 0x8E                              - The Data Field Descriptor byte
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_EF_ZERO_ANG_RATE_UPDATE_CTRL;
+        static const uint8 FIELD_DATA_BYTE = 0x8E;
+
+    private:
+        AngularRateZUPTControl() = delete;
+
+    public:
+        //Function: buildCommand_get
+        //    Builds the bytes for the "get" command.
+        static ByteStream buildCommand_get();
+
+        //Function: buildCommand_set
+        //    Builds the bytes for the "set" command. 
+        //
+        //Parameters:
+        //    settingsData - The ZUPTSettingsData object containing whether the command is enabled and the threshold.
+        static ByteStream buildCommand_set(const ZUPTSettingsData& settingsData);
+
+        class Response : public GenericMipCommand::Response
+        {
+        protected:
+            virtual MipTypes::Command commandId() const { return CMD_ID; }
+            virtual uint8 fieldDataByte() const { return FIELD_DATA_BYTE; }
+
+        public:
+            Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
+            ZUPTSettingsData parseResponse(const GenericMipCmdResponse& response) const;
         };
     };
 

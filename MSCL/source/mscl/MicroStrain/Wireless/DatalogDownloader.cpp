@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -64,7 +64,7 @@ namespace mscl
         }
     }
 
-    DatalogDownloader::DatalogDownloader(const WirelessNode& node, uint16 startAddress, uint32 size):
+    DatalogDownloader::DatalogDownloader(const WirelessNode& node, uint32 startAddress, uint32 size):
         m_node(node),
         m_foundFirstTrigger(false),
         m_outOfMemory(false),
@@ -445,9 +445,6 @@ namespace mscl
                 m_sessionInfo.sampleRate = SampleRate::FromWirelessEepromValue(rawRate);
                 m_sessionInfo.timeBetweenSweeps = m_sessionInfo.sampleRate.samplePeriod().getNanoseconds();
 
-                //update the timestampCounter with the new timestamp, and adjust sample rate if sweep type has changed
-                m_sessionInfo.tsCounter.reset(sampleRate(), newTimestamp);
-
                 //read the active channel mask
                 m_sessionInfo.activeChannels = ChannelMask(m_nodeMemory->read_uint16(Utils::littleEndian));
 
@@ -473,6 +470,9 @@ namespace mscl
                 }
 
                 m_sessionInfo.derivedTimeBetweenSweeps = m_sessionInfo.derivedRate.samplePeriod().getNanoseconds();
+
+                //update the timestampCounter with the new timestamp, and adjust sample rate if sweep type has changed
+                m_sessionInfo.tsCounter.reset(sampleRate(), newTimestamp);
 
                 //parse the raw calibration data
                 parseRawCalData();
@@ -559,14 +559,14 @@ namespace mscl
     {
         m_mathMetaDeta.clear();
         
-        WirelessTypes::DerivedChannelType id;
+        WirelessTypes::DerivedDataPacketAlgorithmId id;
         uint16 channelMask = 0;
         uint8 algItr = 0;
 
         //read and store all the math meta data
         for(algItr = 0; algItr < numActiveAlgorithms; ++algItr)
         {
-            id = static_cast<WirelessTypes::DerivedChannelType>(m_nodeMemory->read_uint8());
+            id = static_cast<WirelessTypes::DerivedDataPacketAlgorithmId>(m_nodeMemory->read_uint8());
             channelMask = m_nodeMemory->read_uint16(Utils::littleEndian);
 
             m_mathMetaDeta.emplace_back(id, ChannelMask(channelMask));
@@ -610,7 +610,7 @@ namespace mscl
         }
 
         //calibrations are applied if floating point data
-        bool calsApplied = (m_sessionInfo.dataType == WirelessTypes::dataType_float32);
+        bool calsApplied = WirelessTypes::isCalApplied(m_sessionInfo.dataType);
 
         //loop through all the channels
         for(uint8 chItr = 1; chItr <= lastActiveCh; ++chItr)
@@ -635,6 +635,7 @@ namespace mscl
 
                     //uint24 (get as a uint32)
                     case WirelessTypes::dataType_uint24:
+                        case WirelessTypes::dataType_uint24_18bitRes:
                         dataPoint = m_nodeMemory->read_uint24(dataEndian);
                         break;
 
@@ -646,11 +647,26 @@ namespace mscl
                         break;
                     }
 
+                    //uint16 value (from 24-bit node, shift bits)
+                    case WirelessTypes::dataType_uint16_24bitTrunc:
+                    {
+                        uint32 val = m_nodeMemory->read_uint16(dataEndian);
+                        dataPoint = (val << 8);
+                        break;
+                    }
+
                     //int16 (from a 20-bit device, shift bits)
                     case WirelessTypes::dataType_int16_20bitTrunc:
                     {
                         int32 val = static_cast<int32>(m_nodeMemory->read_int16(dataEndian));
                         dataPoint = (val << 6);
+                        break;
+                    }
+
+                    //int16 value (calibrated value multiplied by 10, needs divided by 10)
+                    case WirelessTypes::dataType_int16_x10:
+                    {
+                        dataPoint = static_cast<float>(m_nodeMemory->read_int16(dataEndian)) / 10.0f;
                         break;
                     }
 
@@ -709,14 +725,14 @@ namespace mscl
                     float value = m_nodeMemory->read_float(dataEndian);
 
                     //create a WirelessDataPoint and add it to the ChannelData vector
-                    WirelessChannel::ChannelId channelId = WirelessDataPacket::getMathChannelId(static_cast<WirelessTypes::DerivedChannelType>(meta.algorithmId), chNum);
+                    WirelessChannel::ChannelId channelId = WirelessDataPacket::getMathChannelId(static_cast<WirelessTypes::DerivedDataPacketAlgorithmId>(meta.algorithmId), chNum);
 
                     //create the ChannelMask property indicating which channel it was derived from
                     ChannelMask propertyChMask;
                     propertyChMask.enable(chNum);
                     WirelessDataPoint::ChannelProperties properties({
                         {std::make_pair(WirelessDataPoint::channelPropertyId_derivedFrom, Value(valueType_ChannelMask, propertyChMask))},
-                        {std::make_pair(WirelessDataPoint::channelPropertyId_derivedChannelType, Value(valueType_uint8, static_cast<uint8>(meta.algorithmId)))}
+                        {std::make_pair(WirelessDataPoint::channelPropertyId_derivedAlgorithmId, Value(valueType_uint8, static_cast<uint8>(meta.algorithmId)))}
                     });
 
                     chData.push_back(WirelessDataPoint(channelId, chNum, valueType_float, anyType(value), properties));

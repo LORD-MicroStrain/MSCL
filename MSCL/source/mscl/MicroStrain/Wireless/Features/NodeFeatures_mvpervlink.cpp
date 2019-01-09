@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -17,26 +17,26 @@ namespace mscl
         static const ChannelMask DIFFERENTIAL_CH1(BOOST_BINARY(00000001));    //ch1
         static const ChannelMask DIFFERENTIAL_CH2(BOOST_BINARY(00000010));    //ch2
 
-        m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential Channels",
+        m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_1}}
         );
 
-        m_channelGroups.emplace_back(DIFFERENTIAL_CH1, "Differential Channel 1",
+        m_channelGroups.emplace_back(DIFFERENTIAL_CH1, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_1},
                                          {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_1}}
         );
 
-        m_channelGroups.emplace_back(DIFFERENTIAL_CH2, "Differential Channel 2",
+        m_channelGroups.emplace_back(DIFFERENTIAL_CH2, "Differential",
                                      ChannelGroup::SettingsMap{
                                          {WirelessTypes::chSetting_hardwareOffset, NodeEepromMap::HW_OFFSET_2},
                                          {WirelessTypes::chSetting_autoBalance, NodeEepromMap::HW_OFFSET_2}}
         );
 
         //Channels
-        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential 1");
-        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential, "Differential 2");
+        m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential");
+        m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential, "Differential");
     }
 
     bool NodeFeatures_mvpervlink::supportsLimitedDuration() const

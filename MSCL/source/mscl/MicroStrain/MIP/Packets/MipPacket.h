@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -41,7 +41,7 @@ namespace mscl
 
     public:
         //Default Constructor: MipPacket
-        //    The default constructor for an MipPacket object
+        //    The default constructor for a MipPacket object
         MipPacket();
 
 #ifndef SWIG

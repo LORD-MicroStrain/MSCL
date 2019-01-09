@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -30,10 +30,10 @@ namespace mscl
         MipDataPacket();
 
         //Constructor: MipDataPacket
-        //    Creates an MipDataPacket object
+        //    Creates a MipDataPacket object
         //
         //Parameters:
-        //    packet - The <MipPacket> that was found to be an MipDataPacket
+        //    packet - The <MipPacket> that was found to be a MipDataPacket
         explicit MipDataPacket(const MipPacket& packet);
 
     private:
@@ -94,7 +94,8 @@ namespace mscl
         const Timestamp& collectedTimestamp() const;
 
         //API Function: utcTimestamp
-        //  Gets the <Timestamp> representing when the packet was collected by MSCL.
+        //  Gets the UTC <Timestamp> which was transmitted in the Mip Data Packet as a channel field.
+        //  Note: This will return a Timestamp of 0 if <utcTimeValid> returns false.
         //
         //Returns:
         //  A <Timestamp> representing when the packet was received by MSCL
@@ -108,10 +109,11 @@ namespace mscl
         bool utcTimeValid() const;
 
         //API Function: utcTimeFlags
-        //  Gets the <Timestamp> representing when the packet was collected by MSCL.
+        //  Gets the UTC timestamp flags that were transmitted in the Mip Data Packet.
+        //  Note: This will return 0 if <utcTimeValid> returns false.
         //
         //Returns:
-        //  A <Timestamp> representing when the packet was received by MSCL
+        //  A uint16 representing the UTC timestamp flags.
         uint16 utcTimeFlags() const;
     };
 

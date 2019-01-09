@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -15,6 +15,15 @@ namespace mscl
 {
     WirelessNodeConfig::WirelessNodeConfig()
     {
+    }
+
+    WirelessTypes::Voltage WirelessNodeConfig::curExcitationVoltage(const NodeEepromHelper& eeprom) const
+    {
+        //if its currently set in the config, return the set value
+        if(isSet(m_excitationVoltage)) { return *m_excitationVoltage; }
+
+        //not set, so read the value from the node
+        return eeprom.read_excitationVoltage();
     }
 
     WirelessTypes::TransmitPower WirelessNodeConfig::curTransmitPower(const NodeEepromHelper& eeprom) const
@@ -89,6 +98,13 @@ namespace mscl
         return eeprom.read_dataFormat();
     }
 
+    WirelessTypes::FatigueMode WirelessNodeConfig::curFatigueMode(const NodeEepromHelper& eeprom) const
+    {
+        if(isSet(m_fatigueOptions)) { return (*m_fatigueOptions).fatigueMode(); }
+
+        return eeprom.read_fatigueMode();
+    }
+
     DataModeMask WirelessNodeConfig::curDataModeMask(const NodeEepromHelper& eeprom) const
     {
         //if its currently set in the config, return the set value
@@ -137,6 +153,15 @@ namespace mscl
         return eeprom.read_settlingTime(mask);
     }
 
+    WirelessTypes::Filter WirelessNodeConfig::curLowPassFilter(const ChannelMask& mask, const NodeEepromHelper& eeprom) const
+    {
+        //if its currently set in the config, return the set value
+        if(isSet(m_lowPassFilters, mask)) { return m_lowPassFilters.at(mask); }
+
+        //not set, so read the value from the node
+        return eeprom.read_lowPassFilter(mask);
+    }
+
     void WirelessNodeConfig::curEventTriggerDurations(const NodeEepromHelper& eeprom, uint32& pre, uint32& post) const
     {
         //if its currently set in the config, return the set value
@@ -177,9 +202,9 @@ namespace mscl
         return result;
     }
 
-    ChannelMask WirelessNodeConfig::curDerivedMask(WirelessTypes::DerivedChannelType derivedChannel, const NodeEepromHelper& eeprom) const
+    ChannelMask WirelessNodeConfig::curDerivedMask(WirelessTypes::DerivedCategory category, const NodeEepromHelper& eeprom) const
     {
-        const auto& mask = m_derivedChannelMasks.find(derivedChannel);
+        const auto& mask = m_derivedChannelMasks.find(category);
 
         //if its currently set in the config, return the set value
         if(mask != m_derivedChannelMasks.end())
@@ -188,50 +213,90 @@ namespace mscl
         }
 
         //not set, so read the value from the node
-        return eeprom.read_derivedChannelMask(derivedChannel);
+        return eeprom.read_derivedChannelMask(category);
     }
 
     WirelessTypes::DerivedChannelMasks WirelessNodeConfig::curDerivedChannelMasks(const NodeEepromHelper& eeprom, const NodeFeatures& features) const
     {
         WirelessTypes::DerivedChannelMasks derivedChMasks;
-        const WirelessTypes::DerivedChannelTypes& derivedChs = features.derivedChannelTypes();
-        for(WirelessTypes::DerivedChannelType dc : derivedChs)
+        const WirelessTypes::DerivedChannelMasks& derivedChs = features.channelsPerDerivedCategory();
+        for(const auto& dc : derivedChs)
         {
-            derivedChMasks.emplace(dc, curDerivedMask(dc, eeprom));
+            derivedChMasks.emplace(dc.first, curDerivedMask(dc.first, eeprom));
         }
 
         return derivedChMasks;
     }
 
-    bool WirelessNodeConfig::isDerivedChannelEnabled(WirelessTypes::DerivedChannelType derivedChannel, const NodeEepromHelper& eeprom, const NodeFeatures& features) const
+    bool WirelessNodeConfig::isDerivedChannelEnabled(WirelessTypes::DerivedCategory category, const NodeEepromHelper& eeprom, const NodeFeatures& features) const
     {
-        if(!features.supportsDerivedChannelType(derivedChannel))
+        if(!features.supportsDerivedCategory(category))
         {
             return false;
         }
 
-        return (curDerivedMask(derivedChannel, eeprom).count() > 0);
+        return (curDerivedMask(category, eeprom).count() > 0);
     }
 
-    ConfigIssue::ConfigOption WirelessNodeConfig::findDerivedMaskConfigIssue(WirelessTypes::DerivedChannelType channel)
+    bool WirelessNodeConfig::findGroupWithChannelAndSetting(const ChannelMask& mask, WirelessTypes::ChannelGroupSetting setting, const NodeFeatures& features, ChannelGroup& foundGroup) const
     {
-        switch(channel)
+        //loop through all supported channel groups
+        for(const auto& group : features.channelGroups())
         {
-            case WirelessTypes::derived_rms:
+            for(uint8 ch = 1; ch <= ChannelMask::MAX_CHANNELS; ch++)
+            {
+                //check each channel in the group
+                if(mask.enabled(ch))
+                {
+                    //if this group has the requested setting, and at least one of the the same channels as the mask
+                    if(group.hasSettingAndChannel(setting, ch))
+                    {
+                        foundGroup = group;
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    ConfigIssue::ConfigOption WirelessNodeConfig::findDerivedMaskConfigIssue(WirelessTypes::DerivedCategory category)
+    {
+        switch(category)
+        {
+            case WirelessTypes::derivedCategory_rms:
                 return ConfigIssue::CONFIG_DERIVED_MASK_RMS;
 
-            case WirelessTypes::derived_peakToPeak:
+            case WirelessTypes::derivedCategory_peakToPeak:
                 return ConfigIssue::CONFIG_DERIVED_MASK_P2P;
 
-            case WirelessTypes::derived_ips:
+            case WirelessTypes::derivedCategory_velocity:
                 return ConfigIssue::CONFIG_DERIVED_MASK_IPS;
 
-            case WirelessTypes::derived_crestFactor:
+            case WirelessTypes::derivedCategory_crestFactor:
                 return ConfigIssue::CONFIG_DERIVED_MASK_CREST_FACTOR;
+
+            case WirelessTypes::derivedCategory_mean:
+                return ConfigIssue::CONFIG_DERIVED_MASK_MEAN;
 
             default:
                 assert(false);  //need to add support for new DerivedChannel
                 return ConfigIssue::CONFIG_DERIVED_MASK_RMS;
+        }
+    }
+
+    bool WirelessNodeConfig::isSyncSamplingMode(WirelessTypes::SamplingMode mode)
+    {
+        switch(mode)
+        {
+            case WirelessTypes::samplingMode_sync:
+            case WirelessTypes::samplingMode_syncBurst:
+            case WirelessTypes::samplingMode_syncEvent:
+                return true;
+
+            default:
+                return false;
         }
     }
 
@@ -395,6 +460,15 @@ namespace mscl
             }
         }
 
+        //Excitation Voltage
+        if(isSet(m_excitationVoltage))
+        {
+            if(!features.supportsExcitationVoltageConfig())
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_EXCITATION_VOLTAGE, "Excitation Voltage is not supported by this Node."));
+            }
+        }
+
         //Number of Active Gauges
         if(isSet(m_numActiveGauges))
         {
@@ -407,6 +481,15 @@ namespace mscl
             else if(val < 1 || val > 255)
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_NUM_ACTIVE_GAUGES, "The Number of Active Gauges is out of range (1-255)."));
+            }
+        }
+
+        //Low Battery Threshold
+        if(isSet(m_lowBatteryThreshold))
+        {
+            if(!features.supportsLowBatteryThresholdConfig())
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_LOW_BATTERY_THRESHOLD, "Low Battery Threshold configuration is not supported by this Node."));
             }
         }
 
@@ -572,6 +655,15 @@ namespace mscl
             }
         }
 
+        //Sensor Output Mode
+        if(isSet(m_sensorOutputMode))
+        {
+            if(!features.supportsSensorOutputMode())
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SENSOR_OUTPUT_MODE, "Sensor Output Mode is not supported by the Node."));
+            }
+        }
+
         //Data Mode
         bool dataModeValid = true;
         if(isSet(m_dataMode))
@@ -615,32 +707,37 @@ namespace mscl
                 }
             }
 
+            //Derived Velocity Unit
+            if(isSet(m_derivedVelocityUnit))
+            {
+                if(!features.supportsDerivedVelocityUnitConfig())
+                {
+                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DERIVED_UNIT, "Derived Velocity Unit configuration is not supported by the Node."));
+                }
+            }
+
             //Derived Channels Masks
             if(!m_derivedChannelMasks.empty())
             {
                 //for each derived channel in the map
                 for(auto& mask : m_derivedChannelMasks)
                 {
-                    if(!features.supportsDerivedChannelType(mask.first))
+                    if(!features.supportsDerivedCategory(mask.first))
                     {
-                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DERIVED_MASK, "The Derived Channel type is not supported by this Node."));
+                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DERIVED_MASK, "The Derived Channel category is not supported by this Node."));
                         break;
                     }
-                }
-
-                //for each derived channel in the map
-                for(auto& mask : m_derivedChannelMasks)
-                {
-                    uint8 lastActiveCh = mask.second.lastChEnabled();
-
-                    uint8 chItr = 0;
-                    for(chItr = 1; chItr <= lastActiveCh; ++chItr)
+                    else
                     {
-                        //if this channel is enabled in the derived channel mask
-                        if(mask.second.enabled(chItr))
+                        ChannelMask maskChs = mask.second;
+                        ChannelMask allowedChs = features.channelsPerDerivedCategory().at(mask.first);
+
+                        uint8 lastActiveCh = mask.second.lastChEnabled();
+
+                        //check if any channels are enable that aren't allowed by this category
+                        for(uint8 i = 1; i <= lastActiveCh; ++i)
                         {
-                            //if this channel is not supported by the Node
-                            if(!features.supportsChannel(chItr))
+                            if(maskChs.enabled(i) && !allowedChs.enabled(i))
                             {
                                 outIssues.push_back(ConfigIssue(findDerivedMaskConfigIssue(mask.first), "The Channel Mask is invalid for the Derived Channel."));
                                 break;
@@ -660,9 +757,13 @@ namespace mscl
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_INPUT_RANGE, "Input Range is not supported for the provided Channel Mask.", range.first));
             }
             //verify the specific input range is acceptable for the channel mask
-            else if(!features.supportsInputRange(range.second, range.first))
+            else if(!features.supportsExcitationVoltageConfig() && !features.supportsInputRange(range.second, range.first))
             {
                 outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_INPUT_RANGE, "The provided Input Range is not valid for the provided Channel Mask.", range.first));
+            }
+            else if (features.supportsExcitationVoltageConfig() && !features.supportsInputRange(range.second, range.first, curExcitationVoltage(eeprom))) {
+
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_INPUT_RANGE, "The provided Input Range is not valid for the provided Channel Mask and Excitation Voltage", range.first));
             }
         }
 
@@ -746,6 +847,39 @@ namespace mscl
             }
         }
 
+        //Temp Sensor Options
+        for(const auto& opts : m_tempSensorOptions)
+        {
+            //verify TempSensorOptions are supported for the channel mask
+            if(!features.supportsChannelSetting(WirelessTypes::chSetting_tempSensorOptions, opts.first))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_TEMP_SENSOR_OPTS, "TempSensorOptions are not supported for the provided Channel Mask.", opts.first));
+            }
+            //verify the transducer type is supported by this Node
+            else if(!features.supportsTransducerType(opts.second.transducerType()))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_TEMP_SENSOR_OPTS, "The provided Transducer Type is not supported by the Node.", opts.first));
+            }
+        }
+
+        //Debounce Filters
+        for(const auto& filters : m_debounceFilters)
+        {
+            if(!features.supportsChannelSetting(WirelessTypes::chSetting_debounceFilter, filters.first))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DEBOUNCE_FILTER, "Debounce Filter is not supported for the provided Channel Mask.", filters.first));
+            }
+        }
+
+        //Pull-up Resistors
+        for(const auto& flags : m_pullUpResistors)
+        {
+            if(!features.supportsChannelSetting(WirelessTypes::chSetting_pullUpResistor, flags.first))
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_PULLUP_RESISTOR, "Pull-Up Resistor is not supported for the provided Channel Mask.", flags.first));
+            }
+        }
+
         //return true if no issues
         return outIssues.size() == 0;
     }
@@ -768,11 +902,11 @@ namespace mscl
             //if derived enabled, verify derived channel mask is set
             if(mode.derivedModeEnabled)
             {
-                if(!isDerivedChannelEnabled(WirelessTypes::derived_rms, eeprom, features) &&
-                   !isDerivedChannelEnabled(WirelessTypes::derived_peakToPeak, eeprom, features) &&
-                   !isDerivedChannelEnabled(WirelessTypes::derived_ips, eeprom, features) &&
-                   !isDerivedChannelEnabled(WirelessTypes::derived_crestFactor, eeprom, features) &&
-                   !isDerivedChannelEnabled(WirelessTypes::derived_mean, eeprom, features)
+                if(!isDerivedChannelEnabled(WirelessTypes::derivedCategory_rms, eeprom, features) &&
+                   !isDerivedChannelEnabled(WirelessTypes::derivedCategory_peakToPeak, eeprom, features) &&
+                   !isDerivedChannelEnabled(WirelessTypes::derivedCategory_velocity, eeprom, features) &&
+                   !isDerivedChannelEnabled(WirelessTypes::derivedCategory_crestFactor, eeprom, features) &&
+                   !isDerivedChannelEnabled(WirelessTypes::derivedCategory_mean, eeprom, features)
                    )
                 {
                     //no derived channels are enabled
@@ -881,10 +1015,12 @@ namespace mscl
                 //unless sampling mode is burst, which ignores unlimited duration
                 if(!unlimitedDuration || samplingMode == WirelessTypes::samplingMode_syncBurst)
                 {
+                    const uint32 maxSweeps = features.maxSweeps(samplingMode, curDataModeMask(eeprom).toDataModeEnum(), curDataFormat(eeprom), curActiveChs(eeprom));
+
                     //verify the number of sweeps works with the other sampling settings
-                    if(curNumSweeps(eeprom) > features.maxSweeps(samplingMode, curDataModeMask(eeprom).toDataModeEnum(), curDataFormat(eeprom), curActiveChs(eeprom)))
+                    if(curNumSweeps(eeprom) > maxSweeps)
                     {
-                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SWEEPS, "The number of Sweeps exceeds the max for this Configuration."));
+                        outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SWEEPS, "The number of Sweeps exceeds the max (" + Utils::toStr(maxSweeps) + ") for this Configuration."));
                     }
                 }
             }
@@ -953,11 +1089,72 @@ namespace mscl
                         if(settlingTime > maxSettlingTime)
                         {
                             outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_FILTER_SETTLING_TIME, "The Filter Settling Time exceeds the max for the current Sample Rate.",group.channels()));
-
                             outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE,"The Filter Settling Time exceeds the max for the current Sample Rate.",group.channels()));
                         }
                     }
                 }
+            }
+        }
+
+        //verify Low Pass Filters with Sample Rate
+        if(features.supportsLowPassFilter() && 
+            (isSet(m_sampleRate) ||
+             isAnySet(m_lowPassFilters) ||
+             isSet(m_samplingMode) || 
+             isSet(m_dataCollectionMethod) ||
+             isSet(m_dataMode) ||
+             isSet(m_activeChannels))
+           )
+        {
+            WirelessTypes::SamplingMode samplingMode = curSamplingMode(eeprom);
+            WirelessTypes::DataCollectionMethod collectionMethod = curDataCollectionMethod(eeprom);
+            WirelessTypes::DataMode dataMode = curDataModeMask(eeprom).toDataModeEnum();
+            ChannelMask activeChs = curActiveChs(eeprom);
+
+            for(const auto& group : features.channelGroups())
+            {
+                for(const auto& setting : group.settings())
+                {
+                    //low pass filter setting
+                    if(setting == WirelessTypes::chSetting_lowPassFilter)
+                    {
+                        WirelessTypes::WirelessSampleRate maxRateEnum =  features.maxSampleRateForLowPassFilter(curLowPassFilter(group.channels(), eeprom),
+                                                                                                            samplingMode,
+                                                                                                            collectionMethod,
+                                                                                                            dataMode,
+                                                                                                            activeChs);
+                        SampleRate maxSampleRate = SampleRate::FromWirelessEepromValue(maxRateEnum);
+
+                        if(SampleRate::FromWirelessEepromValue(curSampleRate(eeprom)) > maxSampleRate)
+                        {
+                            if(features.hasMaxSampleRatePerFilterAndAdcChCount())
+                            {
+                                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_LOW_PASS_FILTER, "The Sample Rate exceeds the max (" + maxSampleRate.prettyStr() + ") for the selected Low Pass Filter and Active Channels.", group.channels()));
+                                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE, "The Sample Rate exceeds the max (" + maxSampleRate.prettyStr() + ") for the selected Low Pass Filter and Active Channels.", group.channels()));
+                                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_ACTIVE_CHANNELS, "The Sample Rate exceeds the max (" + maxSampleRate.prettyStr() + ") for the selected Low Pass Filter and Active Channels.", group.channels()));
+                            }
+                            else
+                            {
+                                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_LOW_PASS_FILTER, "The Sample Rate exceeds the max (" + maxSampleRate.prettyStr() + ") for the selected Low Pass Filter.", group.channels()));
+                                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLE_RATE, "The Sample Rate exceeds the max (" + maxSampleRate.prettyStr() + ") for the selected Low Pass Filter.", group.channels()));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(features.supportsFatigueConfig() &&
+           (isSet(m_dataFormat) ||
+           isSet(m_fatigueOptions)))
+        {
+            WirelessTypes::FatigueMode fatigueMode = curFatigueMode(eeprom);
+
+            if((fatigueMode == WirelessTypes::fatigueMode_angleStrain || fatigueMode == WirelessTypes::fatigueMode_distributedAngle) &&
+               curDataFormat(eeprom) != WirelessTypes::dataFormat_cal_float)
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_DATA_FORMAT, "Angle mode only supports the 4-byte float calibrated data format."));
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_FATIGUE_MODE, "Angle mode only supports the 4-byte float calibrated data format."));
             }
         }
 
@@ -1150,11 +1347,17 @@ namespace mscl
         //write gauge resistance
         if(isSet(m_gaugeResistance)) { eeprom.write_gaugeResistance(*m_gaugeResistance); }
 
+        //write excitation voltage
+        if(isSet(m_excitationVoltage)) { eeprom.write_excitationVoltage(*m_excitationVoltage); }
+
         //write number of active gauges
         if(isSet(m_numActiveGauges)) { eeprom.write_numActiveGauges(*m_numActiveGauges); }
 
         //write Fatigue Options
         if(isSet(m_fatigueOptions)) { eeprom.write_fatigueOptions(*m_fatigueOptions); }
+
+        //write Low Battery Threshold
+        if(isSet(m_lowBatteryThreshold)) { eeprom.write_lowBatteryThreshold(*m_lowBatteryThreshold); }
 
         //write Histogram Options
         if(isSet(m_histogramOptions)) { eeprom.write_histogramOptions(*m_histogramOptions); }
@@ -1228,8 +1431,17 @@ namespace mscl
             }
         }
 
+        //write Sensor Output Mode
+        if(isSet(m_sensorOutputMode))
+        {
+            eeprom.write_sensorMode(*m_sensorOutputMode);
+        }
+
         //write Derived Channels Sample Rate
         if(isSet(m_derivedDataRate)) { eeprom.write_derivedSampleRate(*m_derivedDataRate); }
+
+        //write Derived Velocity Unit
+        if(isSet(m_derivedVelocityUnit)) { eeprom.write_derivedVelocityUnit(*m_derivedVelocityUnit); }
 
         //write Derived Channel Mask(s)
         for(const auto& mask : m_derivedChannelMasks)
@@ -1237,10 +1449,21 @@ namespace mscl
             eeprom.write_derivedChannelMask(mask.first, mask.second);
         }
 
-        //write Hardware Gain(s)
-        for(const auto& range : m_inputRanges)
+        //write Input Range(s)
+        if(features.supportsExcitationVoltageConfig())
         {
-            eeprom.write_inputRange(range.first, range.second);
+            WirelessTypes::Voltage exVoltage = curExcitationVoltage(eeprom);
+            for(const auto& range : m_inputRanges)
+            {
+                eeprom.write_inputRange(range.first, exVoltage, range.second);
+            }
+        }
+        else
+        {
+            for(const auto& range : m_inputRanges)
+            {
+                eeprom.write_inputRange(range.first, range.second);
+            }
         }
 
         //write Hardware Offset(s)
@@ -1301,6 +1524,24 @@ namespace mscl
         for(const auto& type : m_thermoTypes)
         {
             eeprom.write_thermoType(type.first, type.second);
+        }
+
+        //write Temp Sensor Options
+        for(const auto& opts : m_tempSensorOptions)
+        {
+            eeprom.write_tempSensorOptions(opts.first, opts.second);
+        }
+
+        //write Debounce Filters
+        for(const auto& filters : m_debounceFilters)
+        {
+            eeprom.write_debounceFilter(filters.first, filters.second);
+        }
+
+        //write pull-up resistors
+        for(const auto& flags : m_pullUpResistors)
+        {
+            eeprom.write_pullUpResistor(flags.first, flags.second);
         }
 
         //write Communication Protocol
@@ -1521,6 +1762,17 @@ namespace mscl
         m_gaugeResistance = resistance;
     }
 
+    WirelessTypes::Voltage WirelessNodeConfig::excitationVoltage() const
+    {
+        checkValue(m_excitationVoltage, "Excitation Voltage");
+        return *m_excitationVoltage;
+    }
+
+    void WirelessNodeConfig::excitationVoltage(WirelessTypes::Voltage voltage)
+    {
+        m_excitationVoltage = voltage;
+    }
+
     uint16 WirelessNodeConfig::numActiveGauges() const
     {
         checkValue(m_numActiveGauges, "Number of Active Gauges");
@@ -1530,6 +1782,17 @@ namespace mscl
     void WirelessNodeConfig::numActiveGauges(uint16 numGauges)
     {
         m_numActiveGauges = numGauges;
+    }
+
+    float WirelessNodeConfig::lowBatteryThreshold() const
+    {
+        checkValue(m_lowBatteryThreshold, "Low Battery Threshold");
+        return *m_lowBatteryThreshold;
+    }
+
+    void WirelessNodeConfig::lowBatteryThreshold(float voltage)
+    {
+        m_lowBatteryThreshold = voltage;
     }
 
     const LinearEquation& WirelessNodeConfig::linearEquation(const ChannelMask& mask) const
@@ -1580,6 +1843,36 @@ namespace mscl
     void WirelessNodeConfig::thermocoupleType(const ChannelMask& mask, WirelessTypes::ThermocoupleType type)
     {
         setChannelMapVal(m_thermoTypes, mask, type);
+    }
+
+    TempSensorOptions WirelessNodeConfig::tempSensorOptions(const ChannelMask& mask) const
+    {
+        return getChannelMapVal(m_tempSensorOptions, mask, "Temperature Sensor Options");
+    }
+
+    void WirelessNodeConfig::tempSensorOptions(const ChannelMask& mask, const TempSensorOptions& options)
+    {
+        setChannelMapVal(m_tempSensorOptions, mask, options);
+    }
+
+    uint16 WirelessNodeConfig::debounceFilter(const ChannelMask& mask) const
+    {
+        return getChannelMapVal(m_debounceFilters, mask, "Debounce Filter");
+    }
+
+    void WirelessNodeConfig::debounceFilter(const ChannelMask& mask, uint16 milliseconds)
+    {
+        setChannelMapVal(m_debounceFilters, mask, milliseconds);
+    }
+
+    bool WirelessNodeConfig::pullUpResistor(const ChannelMask& mask) const
+    {
+        return getChannelMapVal(m_pullUpResistors, mask, "Pull-Up Resistor");
+    }
+
+    void WirelessNodeConfig::pullUpResistor(const ChannelMask& mask, bool enable)
+    {
+        setChannelMapVal(m_pullUpResistors, mask, enable);
     }
 
     const FatigueOptions& WirelessNodeConfig::fatigueOptions() const
@@ -1681,21 +1974,21 @@ namespace mscl
         m_derivedDataRate = rate;
     }
 
-    ChannelMask WirelessNodeConfig::derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType) const
+    ChannelMask WirelessNodeConfig::derivedChannelMask(WirelessTypes::DerivedCategory category) const
     {
         try
         {
-            return m_derivedChannelMasks.at(derivedChannelType);
+            return m_derivedChannelMasks.at(category);
         }
         catch(std::out_of_range&)
         {
-            throw Error_NoData("The Derived Channel Mask option has not been set for this DerivedChannelType.");
+            throw Error_NoData("The Derived Channel Mask option has not been set for this DerivedCategory.");
         }
     }
 
-    void WirelessNodeConfig::derivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType, const ChannelMask& mask)
+    void WirelessNodeConfig::derivedChannelMask(WirelessTypes::DerivedCategory category, const ChannelMask& mask)
     {
-        auto itr = m_derivedChannelMasks.find(derivedChannelType);
+        auto itr = m_derivedChannelMasks.find(category);
 
         if(itr != m_derivedChannelMasks.end())
         {
@@ -1703,8 +1996,19 @@ namespace mscl
         }
         else
         {
-            m_derivedChannelMasks.emplace(derivedChannelType, mask);
+            m_derivedChannelMasks.emplace(category, mask);
         }
+    }
+
+    WirelessTypes::DerivedVelocityUnit WirelessNodeConfig::derivedVelocityUnit() const
+    {
+        checkValue(m_derivedVelocityUnit, "Derived Velocity Unit");
+        return *m_derivedVelocityUnit;
+    }
+
+    void WirelessNodeConfig::derivedVelocityUnit(WirelessTypes::DerivedVelocityUnit unit)
+    {
+        m_derivedVelocityUnit = unit;
     }
 
     WirelessTypes::CommProtocol WirelessNodeConfig::communicationProtocol() const
@@ -1716,6 +2020,17 @@ namespace mscl
     void WirelessNodeConfig::communicationProtocol(WirelessTypes::CommProtocol commProtocol)
     {
         m_commProtocol = commProtocol;
+    }
+
+    WirelessTypes::SensorOutputMode WirelessNodeConfig::sensorOutputMode() const
+    {
+        checkValue(m_sensorOutputMode, "Sensor Output Mode");
+        return *m_sensorOutputMode;
+    }
+
+    void WirelessNodeConfig::sensorOutputMode(WirelessTypes::SensorOutputMode mode)
+    {
+        m_sensorOutputMode = mode;
     }
 
     float WirelessNodeConfig::flashBandwidth(WirelessTypes::WirelessSampleRate rawSampleRate, WirelessTypes::DataFormat dataFormat, uint8 numChannels, uint32 derivedBytesPerSweep, WirelessTypes::WirelessSampleRate derivedRate)

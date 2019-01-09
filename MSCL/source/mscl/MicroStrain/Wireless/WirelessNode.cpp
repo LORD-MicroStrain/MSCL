@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -74,6 +74,11 @@ namespace mscl
     const Timestamp& WirelessNode::lastCommunicationTime() const
     {
         return m_impl->lastCommunicationTime();
+    }
+
+    DeviceState WirelessNode::lastDeviceState() const
+    {
+        return m_impl->lastDeviceState();
     }
 
     void WirelessNode::setBaseStation(const BaseStation& basestation)
@@ -378,9 +383,39 @@ namespace mscl
         return m_impl->getHighPassFilter(mask);
     }
 
+    uint16 WirelessNode::getDebounceFilter(const ChannelMask& mask) const
+    {
+        return m_impl->getDebounceFilter(mask);
+    }
+
+    bool WirelessNode::getPullUpResistor(const ChannelMask& mask) const
+    {
+        return m_impl->getPullUpResistor(mask);
+    }
+
+    WirelessTypes::SensorOutputMode WirelessNode::getSensorOutputMode() const
+    {
+        return m_impl->getSensorOutputMode();
+    }
+
     float WirelessNode::getGaugeFactor(const ChannelMask& mask) const
     {
         return m_impl->getGaugeFactor(mask);
+    }
+
+    WirelessTypes::Voltage WirelessNode::getExcitationVoltage() const
+    {
+        return m_impl->getExcitationVoltage();
+    }
+
+    WirelessTypes::Voltage WirelessNode::getAdcVoltageRef() const
+    {
+        return m_impl->getAdcVoltageRef();
+    }
+
+    WirelessTypes::Voltage WirelessNode::getGainAmplifierVoltageRef() const
+    {
+        return m_impl->getGainAmplifierVoltageRef();
     }
 
     uint16 WirelessNode::getGaugeResistance() const
@@ -391,6 +426,11 @@ namespace mscl
     uint16 WirelessNode::getNumActiveGauges() const
     {
         return m_impl->getNumActiveGauges();
+    }
+
+    float WirelessNode::getLowBatteryThreshold() const
+    {
+        return m_impl->getLowBatteryThreshold();
     }
 
     LinearEquation WirelessNode::getLinearEquation(const ChannelMask& mask) const
@@ -416,6 +456,11 @@ namespace mscl
     WirelessTypes::ThermocoupleType WirelessNode::getThermocoupleType(const ChannelMask& mask) const
     {
         return m_impl->getThermocoupleType(mask);
+    }
+
+    TempSensorOptions WirelessNode::getTempSensorOptions(const ChannelMask& mask) const
+    {
+        return m_impl->getTempSensorOptions(mask);
     }
 
     FatigueOptions WirelessNode::getFatigueOptions() const
@@ -463,8 +508,13 @@ namespace mscl
         return m_impl->getDerivedDataRate();
     }
 
-    ChannelMask WirelessNode::getDerivedChannelMask(WirelessTypes::DerivedChannelType derivedChannelType) const
+    ChannelMask WirelessNode::getDerivedChannelMask(WirelessTypes::DerivedCategory category) const
     {
-        return m_impl->getDerivedChannelMask(derivedChannelType);
+        return m_impl->getDerivedChannelMask(category);
+    }
+
+    WirelessTypes::DerivedVelocityUnit WirelessNode::getDerivedVelocityUnit() const
+    {
+        return m_impl->getDerivedVelocityUnit();
     }
 }

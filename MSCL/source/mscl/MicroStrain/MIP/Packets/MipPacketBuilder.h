@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -20,7 +20,7 @@ namespace mscl
     {
     public:
         //Constructor: MipPacketBuilder
-        //    Creates an MipPacketBuilder object
+        //    Creates a MipPacketBuilder object
         //
         //Parameters:
         //    descriptorSet - The 1-byte Descriptor Set

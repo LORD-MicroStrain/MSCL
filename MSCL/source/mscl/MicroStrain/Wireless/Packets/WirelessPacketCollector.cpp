@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -54,6 +54,16 @@ namespace mscl
         //update the last communication time
         NodeCommTimes::updateCommTime(packet.nodeAddress());
 
+        WirelessPacket::PacketType packetType = packet.type();
+
+        //update the device state for node data packets
+        if(packetType != WirelessPacket::packetType_diagnostic &&
+           packetType != WirelessPacket::packetType_rfScanSweep &&
+           packetType != WirelessPacket::packetType_beaconEcho)
+        {
+            NodeCommTimes::updateDeviceState(packet.nodeAddress(), DeviceState::deviceState_sampling);
+        }
+
         try
         {
             if(packet.asppVersion() == WirelessPacket::aspp_v3)
@@ -61,7 +71,7 @@ namespace mscl
                 //ASPP v3 Packets
 
                 //add a different packet depending on its type
-                switch(packet.type())
+                switch(packetType)
                 {
                     case WirelessPacket::packetType_LDC_16ch:                   m_dataPackets.push_back(LdcPacket_v2_aspp3(packet));            break;
                     case WirelessPacket::packetType_LDC_math:                   m_dataPackets.push_back(LdcMathPacket_aspp3(packet));           break;
@@ -83,7 +93,7 @@ namespace mscl
                 //ASPP v1 and v2 Packets
 
                 //add a different packet depending on its type
-                switch(packet.type())
+                switch(packetType)
                 {
                     case WirelessPacket::packetType_LDC:                        m_dataPackets.push_back(LdcPacket(packet));                 break;
                     case WirelessPacket::packetType_SyncSampling:               m_dataPackets.push_back(SyncSamplingPacket(packet));        break;
@@ -104,7 +114,7 @@ namespace mscl
                     case WirelessPacket::packetType_diagnostic:                 m_dataPackets.push_back(DiagnosticPacket(packet));          break;
                     case WirelessPacket::packetType_roller:                     m_dataPackets.push_back(RollerPacket(packet));              break;
 
-                        //bad packet type, this function shouldn't have been called
+                    //bad packet type, this function shouldn't have been called
                     default:
                         throw Error("Unknown Packet Type");
                 }

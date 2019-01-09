@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -63,7 +63,7 @@ namespace mscl
             {WirelessTypes::sampleRate_1Hz}};
 
 
-    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_nonSync_gen2 = {
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_nonSync_vlink200 = {
         {WirelessTypes::sampleRate_512Hz},
         {WirelessTypes::sampleRate_256Hz},
         {WirelessTypes::sampleRate_128Hz},
@@ -85,7 +85,7 @@ namespace mscl
         {WirelessTypes::sampleRate_30Min},
         {WirelessTypes::sampleRate_60Min}};
 
-    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_sync_gen2 = {
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_sync_vlink200 = {
         {WirelessTypes::sampleRate_4096Hz},
         {WirelessTypes::sampleRate_2048Hz},
         {WirelessTypes::sampleRate_1024Hz},
@@ -110,7 +110,7 @@ namespace mscl
         {WirelessTypes::sampleRate_30Min},
         {WirelessTypes::sampleRate_60Min}};
 
-    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_log_gen2 = {
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_log_vlink200 = {
         {WirelessTypes::sampleRate_8192Hz},
         {WirelessTypes::sampleRate_4096Hz},
         {WirelessTypes::sampleRate_2048Hz},
@@ -136,7 +136,7 @@ namespace mscl
         {WirelessTypes::sampleRate_30Min},
         {WirelessTypes::sampleRate_60Min}};
 
-    const WirelessTypes::WirelessSampleRates AvailableSampleRates::burst_gen2 = {
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::burst_vlink200 = {
         {WirelessTypes::sampleRate_8192Hz},
         {WirelessTypes::sampleRate_4096Hz},
         {WirelessTypes::sampleRate_2048Hz},
@@ -349,6 +349,44 @@ namespace mscl
             {WirelessTypes::sampleRate_30Min},
             {WirelessTypes::sampleRate_60Min}};
 
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_tclink200 = {
+        {WirelessTypes::sampleRate_128Hz},
+        {WirelessTypes::sampleRate_64Hz},
+        {WirelessTypes::sampleRate_32Hz},
+        {WirelessTypes::sampleRate_16Hz},
+        {WirelessTypes::sampleRate_8Hz},
+        {WirelessTypes::sampleRate_4Hz},
+        {WirelessTypes::sampleRate_2Hz},
+        {WirelessTypes::sampleRate_1Hz},
+        {WirelessTypes::sampleRate_2Sec},
+        {WirelessTypes::sampleRate_5Sec},
+        {WirelessTypes::sampleRate_10Sec},
+        {WirelessTypes::sampleRate_30Sec},
+        {WirelessTypes::sampleRate_1Min},
+        {WirelessTypes::sampleRate_2Min},
+        {WirelessTypes::sampleRate_5Min},
+        {WirelessTypes::sampleRate_10Min},
+        {WirelessTypes::sampleRate_30Min},
+        {WirelessTypes::sampleRate_60Min}};
+
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_rtdlink200 = {
+        {WirelessTypes::sampleRate_64Hz},
+        {WirelessTypes::sampleRate_32Hz},
+        {WirelessTypes::sampleRate_16Hz},
+        {WirelessTypes::sampleRate_8Hz},
+        {WirelessTypes::sampleRate_4Hz},
+        {WirelessTypes::sampleRate_2Hz},
+        {WirelessTypes::sampleRate_1Hz},
+        {WirelessTypes::sampleRate_2Sec},
+        {WirelessTypes::sampleRate_5Sec},
+        {WirelessTypes::sampleRate_10Sec},
+        {WirelessTypes::sampleRate_30Sec},
+        {WirelessTypes::sampleRate_1Min},
+        {WirelessTypes::sampleRate_2Min},
+        {WirelessTypes::sampleRate_5Min},
+        {WirelessTypes::sampleRate_10Min},
+        {WirelessTypes::sampleRate_30Min},
+        {WirelessTypes::sampleRate_60Min}};
 
 
     const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_envlink = {
@@ -430,6 +468,37 @@ namespace mscl
         {WirelessTypes::sampleRate_8192Hz},
         {WirelessTypes::sampleRate_4096Hz},
         {WirelessTypes::sampleRate_2048Hz},
+        {WirelessTypes::sampleRate_1024Hz},
+        {WirelessTypes::sampleRate_512Hz},
+        {WirelessTypes::sampleRate_256Hz},
+        {WirelessTypes::sampleRate_128Hz},
+        {WirelessTypes::sampleRate_64Hz},
+        {WirelessTypes::sampleRate_32Hz}};
+
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::continuous_sglink200 = {
+        {WirelessTypes::sampleRate_1024Hz},
+        {WirelessTypes::sampleRate_512Hz},
+        {WirelessTypes::sampleRate_256Hz},
+        {WirelessTypes::sampleRate_128Hz},
+        {WirelessTypes::sampleRate_64Hz},
+        {WirelessTypes::sampleRate_32Hz},
+        {WirelessTypes::sampleRate_16Hz},
+        {WirelessTypes::sampleRate_8Hz},
+        {WirelessTypes::sampleRate_4Hz},
+        {WirelessTypes::sampleRate_2Hz},
+        {WirelessTypes::sampleRate_1Hz},
+        {WirelessTypes::sampleRate_2Sec},
+        {WirelessTypes::sampleRate_5Sec},
+        {WirelessTypes::sampleRate_10Sec},
+        {WirelessTypes::sampleRate_30Sec},
+        {WirelessTypes::sampleRate_1Min},
+        {WirelessTypes::sampleRate_2Min},
+        {WirelessTypes::sampleRate_5Min},
+        {WirelessTypes::sampleRate_10Min},
+        {WirelessTypes::sampleRate_30Min},
+        {WirelessTypes::sampleRate_60Min}};
+
+    const WirelessTypes::WirelessSampleRates AvailableSampleRates::burst_sglink200 = {
         {WirelessTypes::sampleRate_1024Hz},
         {WirelessTypes::sampleRate_512Hz},
         {WirelessTypes::sampleRate_256Hz},

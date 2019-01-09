@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -103,6 +103,17 @@ namespace mscl
         //Returns:
         //  true if the ChannelGroup has the given setting, false otherwise.
         bool hasSetting(WirelessTypes::ChannelGroupSetting setting) const;
+
+        //API Function: hasChannel
+        //  Helper function to check if this channel group has a specific setting and channel included in it.
+        //
+        //Parameters:
+        //  setting - The <WirelessTypes::ChannelGroupSetting> to look for.
+        //  channelNumber - The channel number (ch1 = 1, ch16 = 16) to check for.
+        //
+        //Returns:
+        //  true if the ChannelGroup has the given setting and channel, false otherwise.
+        bool hasSettingAndChannel(WirelessTypes::ChannelGroupSetting setting, uint8 channelNumber) const;
     };
 
     //API Typedef: ChannelGroups
