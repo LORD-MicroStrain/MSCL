@@ -35,6 +35,7 @@ In order to communicate with a Wireless Node, all of the following must be true:
 - The Node is powered on, and within range of the BaseStation
 - The Node is on the same frequency as the BaseStation
 - The Node is in Idle Mode (not sampling, and not sleeping)
+- The Node is on the same communication protocol as the BaseStation (LXRS vs LXRS+)
 
 If all of the above is true, you may want to try adding some retries. MSCL can perform these for you for all read/write eeprom commands:
 
