@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
                      MSCL Examples Readme
-                Copyright 2017 LORD Corporation
+                Copyright 2019 LORD Corporation
 ----------------------------------------------------------------
 
 Example projects are provided for some use cases for MSCL. This does not encompass all features of MSCL.

@@ -385,7 +385,6 @@ namespace mscl
         //    Sends the start sync sampling command to all nodes in the network.
         //
         //Exceptions:
-        //    - <Error_NodeCommunication>: Failed to start a Node Synchronized Sampling.
         //    - <Error_Connection>: A connection error has occurred.
         void sendStartToAllNodes();
 

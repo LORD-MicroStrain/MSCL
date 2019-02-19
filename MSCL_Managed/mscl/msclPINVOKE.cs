@@ -2630,7 +2630,10 @@ class msclPINVOKE {
   public static extern void WirelessNode_erase(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_WirelessNode_startNonSyncSampling")]
-  public static extern void WirelessNode_startNonSyncSampling(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern bool WirelessNode_startNonSyncSampling(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_WirelessNode_resendStartSyncSampling")]
+  public static extern bool WirelessNode_resendStartSyncSampling(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_WirelessNode_clearHistogram")]
   public static extern void WirelessNode_clearHistogram(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -2868,6 +2871,9 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_SyncNetworkInfo_status")]
   public static extern int SyncNetworkInfo_status(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_SyncNetworkInfo_startedSampling")]
+  public static extern bool SyncNetworkInfo_startedSampling(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_SyncNetworkInfo_configurationApplied")]
   public static extern bool SyncNetworkInfo_configurationApplied(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -3265,11 +3271,17 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_NodeFeatures_adcVoltageInputType")]
   public static extern int NodeFeatures_adcVoltageInputType(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_NodeFeatures_maxTransmitPower")]
-  public static extern int NodeFeatures_maxTransmitPower(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_NodeFeatures_maxTransmitPower__SWIG_0")]
+  public static extern int NodeFeatures_maxTransmitPower__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_NodeFeatures_minTransmitPower")]
-  public static extern int NodeFeatures_minTransmitPower(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_NodeFeatures_maxTransmitPower__SWIG_1")]
+  public static extern int NodeFeatures_maxTransmitPower__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_NodeFeatures_minTransmitPower__SWIG_0")]
+  public static extern int NodeFeatures_minTransmitPower__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_NodeFeatures_minTransmitPower__SWIG_1")]
+  public static extern int NodeFeatures_minTransmitPower__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_delete_BaseStationFeatures")]
   public static extern void delete_BaseStationFeatures(global::System.Runtime.InteropServices.HandleRef jarg1);

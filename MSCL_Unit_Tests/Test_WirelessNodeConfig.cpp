@@ -116,6 +116,34 @@ BOOST_AUTO_TEST_CASE(WirelessNodeConfig_setMultipleValues)
     BOOST_CHECK_NO_THROW(node.applyConfig(c));
 }
 
+BOOST_AUTO_TEST_CASE(WirelessNodeConfig_unknownTransmitPowerButLowerSoOk)
+{
+    //Tests setting multiple values in the config and writing them to a Node
+
+    std::shared_ptr<mock_WirelessNodeImpl> impl(new mock_WirelessNodeImpl(100));
+    BaseStation b = makeBaseStationWithMockImpl();
+    WirelessNode node(100, b);
+    node.setImpl(impl);
+
+    MOCK_EXPECT(impl->protocol).returns(*(WirelessProtocol::v1_5().get()));
+
+    //make the features() function return the NodeFeatures we want
+    NodeInfo info(Version(99, 9), WirelessModels::node_gLink_2g, WirelessTypes::region_usa);
+    std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
+    MOCK_EXPECT(impl->features).returns(std::ref(*(features.get())));
+
+    WirelessNodeConfig c;
+    c.transmitPower(static_cast<WirelessTypes::TransmitPower>(3));  //this transmit power is not in our supported list, but should still work ok on the node
+
+    //expect the eeprom writes
+    expectRead(impl, NodeEepromMap::FIRMWARE_VER, Value(valueType_uint16, (uint16)10));
+    expectRead(impl, NodeEepromMap::COMM_PROTOCOL, Value(valueType_uint16, (uint16)WirelessTypes::commProtocol_lxrs));
+    expectWrite(impl, NodeEepromMap::TX_POWER_LEVEL, Value(valueType_int16, (int16)3));
+    expectResetRadio(impl);
+
+    BOOST_CHECK_NO_THROW(node.applyConfig(c));
+}
+
 BOOST_AUTO_TEST_CASE(WirelessNodeConfig_failVerifyWhenApplying)
 {
     //Tests attempting to write a config that fails to verify

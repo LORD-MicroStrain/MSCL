@@ -28,7 +28,7 @@ namespace mscl
     {
     }
 
-    const MipNodeFeatures& InertialNode::features()
+    const MipNodeFeatures& InertialNode::features() const
     {
         return m_impl->features();
     }

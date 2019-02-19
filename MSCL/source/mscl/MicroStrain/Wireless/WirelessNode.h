@@ -439,7 +439,23 @@ namespace mscl
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         //    - <Error_InvalidNodeConfig>: The Configuration of the Node is not set for Non-Sync Sampling Mode.
-        void startNonSyncSampling();
+        bool startNonSyncSampling();
+
+        //API Function: resendStartSyncSampling
+        //  Important!: Use the <SyncSamplingNetwork> to start a Node in Sync Sampling mode.
+        //  Advanced Function that sends the Start Sync Sampling command to the individual Node. This command is useful when you have already used the <SyncSamplingNetwork>
+        //  object to start a network of Nodes, but need to resend the start command to a Node. For instance, if you had to set a node to idle, and haven't
+        //  changed any configuration settings. Note that this command does not enable a beacon, which is needed for a Sync Sampling network to be running.
+        //  Warning: This function is rarely what you want to use to start Sync Sampling. Instead, you should create a <SyncSamplingNetwork> object.
+        //           Failing to use the SyncSamplingNetwork object can cause the network to be misconfigured, and result in loss of data.
+        //
+        //Returns:
+        //  true if the node is known to have started sampling, false otherwise.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        //    - <Error_InvalidNodeConfig>: The Configuration of the Node is not set for Sync Sampling Mode.
+        bool resendStartSyncSampling();
 
         //API Function: clearHistogram
         //    Clears the Histogram on the Node.

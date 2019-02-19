@@ -3,8 +3,6 @@
 #   out of its sampling or sleeping mode and putting it into its
 #   idle state so that it can be communicated with.
 #   Note: Stopping a Node may take up to a maximum of 2 minutes.
-#
-# Updated: 11/02/2015
 
 # import the mscl library
 import sys
@@ -13,7 +11,7 @@ import mscl
 
 # TODO: change these constants to match your setup
 COM_PORT = "COM3"
-NODE_ADDRESS = 31849
+NODE_ADDRESS = 65364
 
 try:
     # create a Serial Connection with the specified COM Port, default baud rate of 921600

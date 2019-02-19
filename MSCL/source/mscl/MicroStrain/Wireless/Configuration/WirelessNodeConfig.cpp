@@ -496,10 +496,17 @@ namespace mscl
         //Transmit Power
         if(isSet(m_transmitPower) || isSet(m_commProtocol))
         {
+            mscl::WirelessTypes::TransmitPower txPower = curTransmitPower(eeprom);
+            mscl::WirelessTypes::CommProtocol protocol = curCommProtocol(eeprom);
+
             //verify the transmit power is supported
-            if(!features.supportsTransmitPower(curTransmitPower(eeprom), curCommProtocol(eeprom)))
+            if(!features.supportsTransmitPower(txPower, protocol))
             {
-                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_TRANSMIT_POWER, "The Transmit Power is not supported by this Node for the current Comm Protocol."));
+                //allow the user to still set a transmit power that might not be in our list, as long as its below the max
+                if(txPower > features.maxTransmitPower(protocol))
+                {
+                    outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_TRANSMIT_POWER, "The Transmit Power is not supported by this Node for the current Comm Protocol."));
+                }
             }
         }
 
@@ -1449,20 +1456,23 @@ namespace mscl
             eeprom.write_derivedChannelMask(mask.first, mask.second);
         }
 
-        //write Input Range(s)
-        if(features.supportsExcitationVoltageConfig())
+        if(!m_inputRanges.empty())
         {
-            WirelessTypes::Voltage exVoltage = curExcitationVoltage(eeprom);
-            for(const auto& range : m_inputRanges)
+            //write Input Range(s)
+            if(features.supportsExcitationVoltageConfig())
             {
-                eeprom.write_inputRange(range.first, exVoltage, range.second);
+                WirelessTypes::Voltage exVoltage = curExcitationVoltage(eeprom);
+                for(const auto& range : m_inputRanges)
+                {
+                    eeprom.write_inputRange(range.first, exVoltage, range.second);
+                }
             }
-        }
-        else
-        {
-            for(const auto& range : m_inputRanges)
+            else
             {
-                eeprom.write_inputRange(range.first, range.second);
+                for(const auto& range : m_inputRanges)
+                {
+                    eeprom.write_inputRange(range.first, range.second);
+                }
             }
         }
 

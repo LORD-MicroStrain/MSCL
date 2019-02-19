@@ -2,8 +2,6 @@
 #   This example shows how to parse incoming data from an Inertial Device.
 #   This example does not start a Node sampling. To receive data, a Node
 #   must be put into a sampling mode.
-#
-#Updated: 01/18/2016
 
 #import the mscl library
 import sys
@@ -11,7 +9,7 @@ sys.path.append("../../dependencies/Python")
 import mscl
 
 #TODO: change these constants to match your setup
-COM_PORT = "COM15"
+COM_PORT = "COM4"
 
 try:
     #create a Serial Connection with the specified COM Port, default baud rate of 921600
@@ -32,7 +30,12 @@ try:
 
             #iterate over all the data points in the packet
             for dataPoint in packet.data():
-                print dataPoint.as_string() + " ",  #Just printing this out as a string. Other methods (ie. as_float, as_uint16, as_Vector) are also available.
+
+                #print out the channel data
+                #Note: The as_string() function is being used here for simplicity. 
+                #      Other methods (ie. as_float, as_uint16, as_Vector) are also available.
+                #      To determine the format that a dataPoint is stored in, use dataPoint.storedAs().
+                print dataPoint.channelName() + ":", dataPoint.as_string() + " ",
                 
                 #if the dataPoint is invalid
                 if(dataPoint.valid() == False):

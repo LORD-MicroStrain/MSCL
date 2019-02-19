@@ -1104,6 +1104,16 @@ namespace mscl
         //  The max <WirelessTypes::TransmitPower> that is suppported for the given parameters.
         virtual WirelessTypes::TransmitPower maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const;
 
+        //API Function: maxTransmitPower
+        //  Gets the maximum <WirelessTypes::TransmitPower> that is supported for the given parameters, using the Node's current region code.
+        //
+        //Parameters:
+        //  commProtocol - The <WirelessTypes::CommProtocol> of the device.
+        //
+        //Returns:
+        //  The max <WirelessTypes::TransmitPower> that is suppported for the given parameters, and the Node's current region code.
+        virtual WirelessTypes::TransmitPower maxTransmitPower(WirelessTypes::CommProtocol commProtocol) const;
+
         //API Function: minTransmitPower
         //  Gets the minimum <WirelessTypes::TransmitPower> that is supported for the given parameters.
         //
@@ -1114,6 +1124,16 @@ namespace mscl
         //Returns:
         //  The min <WirelessTypes::TransmitPower> that is suppported for the given parameters.
         virtual WirelessTypes::TransmitPower minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const;
+
+        //API Function: minTransmitPower
+        //  Gets the minimum <WirelessTypes::TransmitPower> that is supported for the given parameters, using the Node's current region code.
+        //
+        //Parameters:
+        //  commProtocol - The <WirelessTypes::CommProtocol> of the device.
+        //
+        //Returns:
+        //  The min <WirelessTypes::TransmitPower> that is suppported for the given parameters, and the Node's current region code.
+        virtual WirelessTypes::TransmitPower minTransmitPower(WirelessTypes::CommProtocol commProtocol) const;
 
     protected:
         virtual bool hasMaxSampleRatePerFilterAndAdcChCount() const;

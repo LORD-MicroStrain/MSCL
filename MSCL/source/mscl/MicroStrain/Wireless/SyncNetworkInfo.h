@@ -150,6 +150,12 @@ namespace mscl
         //    The <NodeStatus> of the node.
         NodeStatus status() const;
 
+        //API Function: startedSampling
+        //  Checks whether a Node has successfully started sampling.
+        //  Note: if this returns false, its not 100% gauranteed that the Node isn't sampling. It's possible the
+        //        node was successfully started, but that the response never got to the BaseStation.
+        bool startedSampling() const;
+
         //API Function: configurationApplied
         //    Gets whether or not the network configuration has been successfully applied to this node.
         //

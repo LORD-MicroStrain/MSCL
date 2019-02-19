@@ -1077,7 +1077,7 @@ namespace mscl
         }
     }
 
-    void WirelessNode_Impl::startNonSyncSampling()
+    bool WirelessNode_Impl::startNonSyncSampling()
     {
         WirelessTypes::SamplingMode mode = eeHelper().read_samplingMode();
 
@@ -1097,6 +1097,33 @@ namespace mscl
         {
             NodeCommTimes::updateDeviceState(m_address, DeviceState::deviceState_sampling);
         }
+
+        return success;
+    }
+
+    bool WirelessNode_Impl::startSyncSampling()
+    {
+        WirelessTypes::SamplingMode mode = eeHelper().read_samplingMode();
+
+        //verify that the node is configured for nonSyncSampling mode
+        if(mode != WirelessTypes::samplingMode_sync &&
+           mode != WirelessTypes::samplingMode_syncBurst &&
+           mode != WirelessTypes::samplingMode_syncEvent)
+        {
+            ConfigIssues issues;
+            issues.push_back(ConfigIssue(ConfigIssue::CONFIG_SAMPLING_MODE, "Configuration is not set for Synchronized Sampling Mode."));
+            throw Error_InvalidNodeConfig(issues, m_address);
+        }
+
+        //call the node_startNonSyncSampling command from the parent BaseStation
+        const bool success = m_baseStation.node_startSyncSampling(wirelessProtocol(), m_address);
+
+        if(success)
+        {
+            NodeCommTimes::updateDeviceState(m_address, DeviceState::deviceState_sampling);
+        }
+
+        return success;
     }
 
     void WirelessNode_Impl::clearHistogram()

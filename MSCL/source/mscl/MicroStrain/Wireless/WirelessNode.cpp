@@ -181,9 +181,14 @@ namespace mscl
         m_impl->erase();
     }
 
-    void WirelessNode::startNonSyncSampling()
+    bool WirelessNode::startNonSyncSampling()
     {
-        m_impl->startNonSyncSampling();
+        return m_impl->startNonSyncSampling();
+    }
+
+    bool WirelessNode::resendStartSyncSampling()
+    {
+        return m_impl->startSyncSampling();
     }
 
     void WirelessNode::clearHistogram()

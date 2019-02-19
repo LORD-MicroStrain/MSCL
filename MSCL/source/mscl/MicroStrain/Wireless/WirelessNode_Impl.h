@@ -848,7 +848,7 @@ namespace mscl
         //Exceptions:
         //    - <Error_NodeCommunication>: Failed to erase the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
-        virtual    void erase();
+        virtual void erase();
 
         //Function: startNonSyncSampling
         //    Starts the Node in Non-Synchronized Sampling Mode.
@@ -856,7 +856,9 @@ namespace mscl
         //Exceptions:
         //    - <Error_InvalidNodeConfig>: The Configuration of the Node is not set for Non-Sync Sampling Mode.
         //    - <Error_Connection>: A connection error has occurred with the BaseStation
-        virtual void startNonSyncSampling();
+        virtual bool startNonSyncSampling();
+
+        virtual bool startSyncSampling();
 
         //Function: clearHistogram
         //    Clears the Histogram on the Node.

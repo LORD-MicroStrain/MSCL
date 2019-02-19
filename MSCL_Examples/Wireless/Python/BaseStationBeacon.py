@@ -1,8 +1,6 @@
 # MSCL Example: BaseStationBeacon
 #   This example shows how to Enable and Disable the 
 #   beacon (used for Synchronized Sampling) on a base station
-#
-# Updated: 02/25/2015
 
 from time import sleep
 
@@ -24,6 +22,10 @@ try:
     # make sure we can ping the base station
     if not baseStation.ping():
         print "Failed to ping the Base Station"
+
+    if baseStation.features().supportsBeaconStatus():
+        status = baseStation.beaconStatus()
+        print "Beacon current status: Enabled?", status.enabled(), "Time:", status.timestamp()
 
     print "Attempting to enable the beacon..."
 

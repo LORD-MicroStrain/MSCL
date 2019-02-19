@@ -45,6 +45,11 @@ namespace mscl
         return m_status;
     }
 
+    bool SyncNetworkInfo::startedSampling() const
+    {
+        return m_startedSampling;
+    }
+
     bool SyncNetworkInfo::configurationApplied() const
     {
         return m_configApplied;

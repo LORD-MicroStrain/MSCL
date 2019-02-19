@@ -342,12 +342,26 @@ namespace mscl
         //    An iterator referring to the first element in the ByteStream
         Bytes::iterator begin();
 
+        //Function: begin
+        //    Gets a constant iterator referring to the first element in the ByteStream (equivalent of std::vector::cbegin())
+        //
+        //Returns:
+        //    A const_iterator referring to the first element in the ByteStream
+        Bytes::const_iterator begin() const;
+
         //Function: end
-        //    Gets an iterator referring to the "past-the-end" element in the ByteStream. (equivalent of std::vector::begin())
+        //    Gets an iterator referring to the "past-the-end" element in the ByteStream. (equivalent of std::vector::end())
         //
         //Returns:
         //    An iterator referring to the "past-the-end" element in the ByteStream
         Bytes::iterator end();
+
+        //Function: end
+        //    Gets an iterator referring to the "past-the-end" element in the ByteStream. (equivalent of std::vector::cend())
+        //
+        //Returns:
+        //    A const_iterator referring to the "past-the-end" element in the ByteStream
+        Bytes::const_iterator end() const;
 
         //Function: calculateSimpleChecksum
         //    Calculates the simple checksum (simple addition of bytes)on the ByteStream

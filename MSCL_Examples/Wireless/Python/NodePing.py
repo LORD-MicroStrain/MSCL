@@ -11,7 +11,7 @@ import mscl
 
 # TODO: change these constants to match your setup
 COM_PORT = "COM3"
-NODE_ADDRESS = 31849
+NODE_ADDRESS = 65364
 
 try:
     # create a Serial Connection with the specified COM Port, default baud rate of 921600

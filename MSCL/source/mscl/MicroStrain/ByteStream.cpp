@@ -380,9 +380,19 @@ namespace mscl
         return m_bytes.begin();
     }
 
+    Bytes::const_iterator ByteStream::begin() const
+    {
+        return m_bytes.cbegin();
+    }
+
     Bytes::iterator ByteStream::end()
     {
         return m_bytes.end();
+    }
+
+    Bytes::const_iterator ByteStream::end() const
+    {
+        return m_bytes.cend();
     }
 
     uint16 ByteStream::calculateSimpleChecksum(std::size_t from, std::size_t to) const

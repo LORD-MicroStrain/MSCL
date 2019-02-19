@@ -238,9 +238,16 @@ public class WirelessNode : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void startNonSyncSampling() {
-    msclPINVOKE.WirelessNode_startNonSyncSampling(swigCPtr);
+  public bool startNonSyncSampling() {
+    bool ret = msclPINVOKE.WirelessNode_startNonSyncSampling(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool resendStartSyncSampling() {
+    bool ret = msclPINVOKE.WirelessNode_resendStartSyncSampling(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
   public void clearHistogram() {

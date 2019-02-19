@@ -79,7 +79,9 @@ namespace mscl
 
         virtual void erase() override;
 
-        virtual void startNonSyncSampling() override;
+        virtual bool startNonSyncSampling() override;
+
+        virtual bool startSyncSampling() override;
 
         virtual void clearHistogram() override;
 

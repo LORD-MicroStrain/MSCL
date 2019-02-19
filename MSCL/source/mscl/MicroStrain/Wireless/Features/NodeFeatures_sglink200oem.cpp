@@ -23,23 +23,47 @@ namespace mscl
         const ChannelMask SINGLE_ENDED_CHS(BOOST_BINARY(00000010));  //ch2
         const ChannelMask PULSE_CHS(BOOST_BINARY(00110000));         //ch5 and ch6
 
-        m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential",
-                                     ChannelGroup::SettingsMap{
-                                         {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_1},
-                                         {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1},
-                                         {WirelessTypes::chSetting_autoShuntCal, NodeEepromMap::CH_ACTION_SLOPE_1}}
-        );
 
-        m_channelGroups.emplace_back(SINGLE_ENDED_CHS, "Single-ended",
-                                     ChannelGroup::SettingsMap{
-                                         {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_2},
-                                         {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_2}}
-        );
+        if(info.firmwareVersion() >= Version(12, 42801))
+        {
+            m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential",
+                                         ChannelGroup::SettingsMap{
+                                             {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_1},
+                                             {WirelessTypes::chSetting_autoShuntCal, NodeEepromMap::CH_ACTION_SLOPE_1}}
+            );
+
+            m_channelGroups.emplace_back(SINGLE_ENDED_CHS, "Single-ended",
+                                         ChannelGroup::SettingsMap{
+                                             {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_2}}
+            );
+
+            //ch1 and ch2 configured with 1 low pass filter setting in this firmware
+            m_channelGroups.emplace_back(ChannelMask(BOOST_BINARY(00000011)), "Analog Input",
+                                         ChannelGroup::SettingsMap{
+                                             {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1}}
+            );
+        }
+        else
+        {
+            m_channelGroups.emplace_back(DIFFERENTIAL_CHS, "Differential",
+                                         ChannelGroup::SettingsMap{
+                                             {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_1},
+                                             {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1},
+                                             {WirelessTypes::chSetting_autoShuntCal, NodeEepromMap::CH_ACTION_SLOPE_1}}
+            );
+
+            m_channelGroups.emplace_back(SINGLE_ENDED_CHS, "Single-ended",
+                                         ChannelGroup::SettingsMap{
+                                             {WirelessTypes::chSetting_inputRange, NodeEepromMap::HW_GAIN_2},
+                                             {WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_2}}
+            );
+        }
+
 
         m_channelGroups.emplace_back(PULSE_CHS, "Pulse Input",
                                      ChannelGroup::SettingsMap{
-                                        {WirelessTypes::chSetting_debounceFilter, NodeEepromMap::DEBOUNCE_FILTER},
-                                        {WirelessTypes::chSetting_pullUpResistor, NodeEepromMap::INTERNAL_PULLUP_RESISTOR}}
+                                     {WirelessTypes::chSetting_debounceFilter, NodeEepromMap::DEBOUNCE_FILTER},
+                                     {WirelessTypes::chSetting_pullUpResistor, NodeEepromMap::INTERNAL_PULLUP_RESISTOR}}
         );
 
         //Channels
