@@ -888,6 +888,7 @@
 %catches(mscl::Error_Communication, mscl::Error_Connection)                                                                 mscl::WirelessNode::setToIdle();
 %catches(mscl::Error_NodeCommunication, mscl::Error_Connection)                                                             mscl::WirelessNode::erase();
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_InvalidNodeConfig, mscl::Error_Connection)    mscl::WirelessNode::startNonSyncSampling();
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_InvalidNodeConfig, mscl::Error_Connection)    mscl::WirelessNode::resendStartSyncSampling();
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::clearHistogram();
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::autoBalance(const ChannelMask& mask, float targetPercent);
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::autoCal_shmLink();

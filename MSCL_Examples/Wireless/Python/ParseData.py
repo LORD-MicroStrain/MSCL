@@ -39,7 +39,11 @@ try:
             print "DATA: ",
             # iterate over each point in the sweep
             for dataPoint in sweep.data():
-                # just printing this out as a string. Other methods (ie. as_float, as_uint16) are also available.
+                
+                #print out the channel data
+                #Note: The as_string() function is being used here for simplicity. 
+                #      Other methods (ie. as_float, as_uint16, as_Vector) are also available.
+                #      To determine the format that a dataPoint is stored in, use dataPoint.storedAs().
                 print dataPoint.channelName(), ":", dataPoint.as_string(),
 
             print ""

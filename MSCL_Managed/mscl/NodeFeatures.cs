@@ -683,13 +683,25 @@ public class NodeFeatures : global::System.IDisposable {
   }
 
   public virtual WirelessTypes.TransmitPower maxTransmitPower(WirelessTypes.RegionCode region, WirelessTypes.CommProtocol commProtocol) {
-    WirelessTypes.TransmitPower ret = (WirelessTypes.TransmitPower)msclPINVOKE.NodeFeatures_maxTransmitPower(swigCPtr, (int)region, (int)commProtocol);
+    WirelessTypes.TransmitPower ret = (WirelessTypes.TransmitPower)msclPINVOKE.NodeFeatures_maxTransmitPower__SWIG_0(swigCPtr, (int)region, (int)commProtocol);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual WirelessTypes.TransmitPower maxTransmitPower(WirelessTypes.CommProtocol commProtocol) {
+    WirelessTypes.TransmitPower ret = (WirelessTypes.TransmitPower)msclPINVOKE.NodeFeatures_maxTransmitPower__SWIG_1(swigCPtr, (int)commProtocol);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public virtual WirelessTypes.TransmitPower minTransmitPower(WirelessTypes.RegionCode region, WirelessTypes.CommProtocol commProtocol) {
-    WirelessTypes.TransmitPower ret = (WirelessTypes.TransmitPower)msclPINVOKE.NodeFeatures_minTransmitPower(swigCPtr, (int)region, (int)commProtocol);
+    WirelessTypes.TransmitPower ret = (WirelessTypes.TransmitPower)msclPINVOKE.NodeFeatures_minTransmitPower__SWIG_0(swigCPtr, (int)region, (int)commProtocol);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual WirelessTypes.TransmitPower minTransmitPower(WirelessTypes.CommProtocol commProtocol) {
+    WirelessTypes.TransmitPower ret = (WirelessTypes.TransmitPower)msclPINVOKE.NodeFeatures_minTransmitPower__SWIG_1(swigCPtr, (int)commProtocol);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

@@ -99,7 +99,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: Information failed to be loaded for this Node.
-        const MipNodeFeatures& features();
+        const MipNodeFeatures& features() const;
 
         //API Function: lastCommunicationTime
         //    Gets the <Timestamp> for the last time MSCL communicated with the InertialNode.

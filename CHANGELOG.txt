@@ -14,8 +14,35 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
+48.2.3 - 2019-02-14
+- fix for accel channels available for the SHM-Link-210
+
+48.2.2 - 2019-02-12
+- made InertialNode::features() const
+
+48.2.1 - 2019-02-11
+- fix for not parsing LDC (Non-Sync) start command correctly
+
+48.2.0 - 2019-02-11
+- added WirelessNode::resendStartSyncSampling, an advanced command to resend just the Start Sync Sampling command to a pre-configured Node
+
+48.1.0 - 2019-02-08
+- added SyncNetworkInfo::startedSampling() for checking if a Node has successfully started sync sampling (response heard)
+
+48.0.4 - 2019-02-01
+- fix for raw debug data parser reporting duplicating data if not parsed by a device's data/command parser
+
+48.0.3 - 2019-01-31
+- support for fw 12.42801 on SG-Link-200 and SG-Link-200-OEM only allowing 1 low pass filter config
+
+48.0.2 - 2019-01-24
+- updated WirelessNodeConfig to allow unknown transmit power levels as long as they are below the max supported
+
+48.0.1 - 2019-01-14
+- fix for reading the excitation voltage from eeprom in WirelessNodeConfig::apply when not necessary
+
 48.0.0 - 2019-01-07
-- CHANGED input range enums for the RTD channels, as they were previously incorrect.
+- CHANGED input range enums for the RTD channels, as they were previously incorrect
 
 47.1.2 - 2018-12-19
 - added enums for diagnostic data fields

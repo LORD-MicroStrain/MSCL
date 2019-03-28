@@ -43,3 +43,7 @@ node = mscl.WirelessNode(123, baseStation)
 
 node.readWriteRetries(3)
 ```
+
+### I'm attempting to connect to a device on Linux, and I'm getting a Connection error.
+
+The /dev/tty* devices usually have a group of `dialout`. You will either need to make sure the device you are accessing is owned by you, or add your user to the `dialout` group (`usermod -a -G dialout YOUR_USER_NAME`).

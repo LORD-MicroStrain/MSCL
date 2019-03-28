@@ -150,9 +150,14 @@ namespace mscl
         throw Error_NotSupported("Erase is not supported with MockWirelessNode.");
     }
 
-    void MockWirelessNode_Impl::startNonSyncSampling()
+    bool MockWirelessNode_Impl::startNonSyncSampling()
     {
         throw Error_NotSupported("Start Non-Sync Sampling is not supported with MockWirelessNode.");
+    }
+
+    bool MockWirelessNode_Impl::startSyncSampling()
+    {
+        throw Error_NotSupported("Start Sync Sampling is not supported with MockWirelessNode.");
     }
 
     void MockWirelessNode_Impl::clearHistogram()

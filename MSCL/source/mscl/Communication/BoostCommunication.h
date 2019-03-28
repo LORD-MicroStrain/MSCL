@@ -338,6 +338,8 @@ namespace mscl
             //for thread safety
             rec_mutex_lock_guard lock(m_parseFunctionMutex);
 
+            std::size_t appendPos = m_readBuffer.appendPosition();
+
             if(m_debugDataFunction || m_parseDataFunction)
             {
                 //commit any bytes that were read
@@ -347,7 +349,7 @@ namespace mscl
             if(m_debugDataFunction)
             {
                 //log the read data bytes with the debug function
-                m_debugDataFunction(m_readBuffer.bytesToRead(), true);
+                m_debugDataFunction(m_readBuffer.bytesToRead(appendPos, bytes_transferred), true);
             }
 
             if(m_parseDataFunction)

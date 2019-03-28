@@ -3,6 +3,8 @@ project
     ;
     
 exe MSCL_Example_Inertial_CPP
-    : [ glob C++/MSCL_Example_Project_C++/MSCL_Example_Project_C++/*.cpp ] /mscl-lib//mscl
+    : [ glob C++/MSCL_Inertial_Example_C++/MSCL_Inertial_Example_C++/*.cpp ]
+    [ glob C++/MSCL_Inertial_Example_C++/MSCL_Inertial_Example_C++/*.h ] 
+    /mscl-lib//mscl
     : <include>.
     ;

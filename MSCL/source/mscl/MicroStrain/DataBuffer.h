@@ -281,6 +281,13 @@ namespace mscl
         //Returns:
         //  A <Bytes> container.
         Bytes bytesToRead() const;
+
+        //Function: bytesToRead
+        //  Gets a copy of the underlying bytes in this DataBuffer from the given start position, for the given size.
+        //
+        //Returns:
+        //  A <Bytes> container.
+        Bytes bytesToRead(std::size_t startPos, std::size_t size) const;
     };
 
     //Class: ReadBufferSavePoint

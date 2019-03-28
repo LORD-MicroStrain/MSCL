@@ -1,8 +1,6 @@
 # MSCL Example: ConfigureNode
 #   This example shows how to get and set the configuration options for a Wireless Node.
 #   Warning: Running this example will change the configuration on the Wireless Node.
-#
-# Updated: 11/02/2015
 
 # import the mscl library
 import sys
@@ -11,7 +9,7 @@ import mscl
 
 # TODO: change these constants to match your setup
 COM_PORT = "COM3"
-NODE_ADDRESS = 31849
+NODE_ADDRESS = 65364
 
 
 # Function: getCurrentConfig

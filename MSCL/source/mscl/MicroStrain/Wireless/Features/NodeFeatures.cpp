@@ -1626,6 +1626,11 @@ namespace mscl
         }
     }
 
+    WirelessTypes::TransmitPower NodeFeatures::maxTransmitPower(WirelessTypes::CommProtocol commProtocol) const
+    {
+        return maxTransmitPower(m_nodeInfo.regionCode(), commProtocol);
+    }
+
     WirelessTypes::TransmitPower NodeFeatures::minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
     {
         switch(region)
@@ -1636,6 +1641,11 @@ namespace mscl
             default:
                 return WirelessTypes::power_0dBm;
         }
+    }
+
+    WirelessTypes::TransmitPower NodeFeatures::minTransmitPower(WirelessTypes::CommProtocol commProtocol) const
+    {
+        return minTransmitPower(m_nodeInfo.regionCode(), commProtocol);
     }
 
     const WirelessTypes::DataModes NodeFeatures::dataModes() const

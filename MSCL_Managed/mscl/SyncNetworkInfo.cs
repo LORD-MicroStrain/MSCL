@@ -50,6 +50,12 @@ public class SyncNetworkInfo : global::System.IDisposable {
     return ret;
   }
 
+  public bool startedSampling() {
+    bool ret = msclPINVOKE.SyncNetworkInfo_startedSampling(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public bool configurationApplied() {
     bool ret = msclPINVOKE.SyncNetworkInfo_configurationApplied(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

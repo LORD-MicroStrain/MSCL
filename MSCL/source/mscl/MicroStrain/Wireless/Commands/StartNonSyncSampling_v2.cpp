@@ -57,7 +57,7 @@ namespace mscl
         if( !packet.deliveryStopFlags().pc ||                                           //delivery stop flag
             packet.type() != WirelessPacket::packetType_nodeSuccessReply ||             //app data type
             packet.nodeAddress() != m_nodeAddress ||                                    //node address
-            payload.size() != 0x02 ||                                                   //payload length
+            (payload.size() != 0x02 && payload.size() != 0x03) ||                         //payload length
             payload.read_uint16(0) != WirelessProtocol::cmdId_startLdc_v2               //Command ID
             )            
         {

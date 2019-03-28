@@ -347,6 +347,11 @@ namespace mscl
         return result;
     }
 
+    Bytes DataBuffer::bytesToRead(std::size_t startPos, std::size_t size) const
+    {
+        return Bytes(m_data.begin() + startPos, m_data.begin() + startPos + size);
+    }
+
     //============================================================
     //ReadBufferSavePoint Methods
     ReadBufferSavePoint::ReadBufferSavePoint(DataBuffer* data) :

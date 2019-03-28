@@ -1,7 +1,5 @@
 # MSCL Example: SynchronizedSampling
 #   This example shows how to create and start a Synchronized Sampling network.
-#
-# Updated: 05/16/2017
 
 # import the mscl library
 import sys
