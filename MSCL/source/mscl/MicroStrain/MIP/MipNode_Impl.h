@@ -270,6 +270,28 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         virtual std::vector<uint16> getDescriptorSets() const;
 
+        //Function: getConfigCommandBytes
+        //    Gets the byte string for the commands to set the node's current settings.
+        //
+        //Returns:
+        //    A <MipCommandSet> containing supported config descriptors and the set command bytes.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        virtual MipCommandSet getConfigCommandBytes() const;
+
+        //Function: sendCommandBytes
+        //    Sends the <MipCommandSet> byte strings. The <MipCommandBytes> responseSuccess is updated to indicate success/failure.
+        //    Note: Unsupported commands, as indicated by the <MipCommandBytes> id, will not be sent.
+        virtual void sendCommandBytes(MipCommandSet& cmds) const;
+
+        //Function: sendCommandBytes
+        //    Sends the <MipCommandBytes> byte strings. The <MipCommandBytes> responseSuccess is updated to indicate success/failure.
+        //    Note: Unsupported commands, as indicated by the <MipCommandBytes> id, will not be sent.
+        virtual void sendCommandBytes(MipCommandBytes& cmd) const;
+
     public:
         //Function: ping
         //    Pings the node to check for communication. 
@@ -379,7 +401,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        virtual MipChannels getMessageFormat(MipTypes::DataClass dataClass);
+        virtual MipChannels getMessageFormat(MipTypes::DataClass dataClass) const;
 
         //Function: setMessageFormat
         //    Sets the current message format of the specified <MipTypes::DataClass>'s data packet.
@@ -423,7 +445,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        virtual uint8 getCommunicationMode();
+        virtual uint8 getCommunicationMode() const;
 
         //Function: setCommunicationMode
         //    Sets the communication mode for the node. 
@@ -437,6 +459,19 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         virtual void setCommunicationMode(uint8 communicationMode);
+
+        //Function: isDataStreamEnabled
+        //    Checks whether the data stream for the given data class is enabled
+        //
+        //Parameters:
+        //    dataClass - The <MipTypes::DataClass> to check.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command, or <MipTypes::InertialTypeCategory>, is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        bool isDataStreamEnabled(MipTypes::DataClass dataClass) const;
 
         //Function: enableDataStream
         //    Enables or disables continuous data streaming for the node.
@@ -473,7 +508,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        bool getAutoInitialization();
+        bool getAutoInitialization() const;
 
         //Function: setAutoInitialization
         //    Sets the state of the automatic initialization upon device startup.
@@ -499,7 +534,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        bool getAltitudeAid();
+        bool getAltitudeAid() const;
 
         //Function: setAltitudeAid
         //    Sets the state of the altitude aid upon device startup.
@@ -525,7 +560,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        bool getPitchRollAid();
+        bool getPitchRollAid() const;
 
         //Function: setPitchRollAid
         //    Sets the state of the pitch/roll aid upon device startup.
@@ -563,7 +598,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        ZUPTSettingsData getVelocityZUPT();
+        ZUPTSettingsData getVelocityZUPT() const;
 
         //Function: setAngularRateZUPT
         //    Sets the state of the angular rate ZUPT control.
@@ -588,7 +623,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        ZUPTSettingsData getAngularRateZUPT();
+        ZUPTSettingsData getAngularRateZUPT() const;
 
         //Function: setInitialAttitude
         //    Sets the initial attitude.
@@ -624,7 +659,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        EulerAngles getSensorToVehicleTransformation();
+        EulerAngles getSensorToVehicleTransformation() const;
 
         //Function: setSensorToVehicleTransformation
         //    Sets the sensor to vehicle frame transformation matrix using roll, pitch, and yaw Euler angles (in radians).
@@ -650,7 +685,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        PositionOffset getSensorToVehicleOffset();
+        PositionOffset getSensorToVehicleOffset() const;
 
         //Function: setSensorToVehicleTransformation
         //    Sets the sensor to vehicle frame offset, expressed in the sensor frame.
@@ -676,7 +711,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        PositionOffset getAntennaOffset();
+        PositionOffset getAntennaOffset() const;
 
         //Function: setAntennaOffset
         //    Sets the antenna offset, expressed in the sensor frame.
@@ -702,7 +737,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        bool getGNSSAssistedFixControl();
+        bool getGNSSAssistedFixControl() const;
 
         //Function: setGNSSAssistedFixControl
         //    Sets the GNSS Assisted Fix Control.
@@ -805,7 +840,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        ConstellationSettingsData getConstellationSettings();
+        ConstellationSettingsData getConstellationSettings() const;
 
         //Function: setSBASSettings
         //    Sets the GNSS SBAS Settings.
@@ -831,7 +866,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        SBASSettingsData getSBASSettings();
+        SBASSettingsData getSBASSettings() const;
 
         //Function: setAccelerometerBias
         //    Sets the Accelerometer Bias.
@@ -857,7 +892,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        GeometricVector getAccelerometerBias();
+        GeometricVector getAccelerometerBias() const;
 
         //Function: setGyroBias
         //    Sets the Gyro Bias.
@@ -883,7 +918,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        GeometricVector getGyroBias();
+        GeometricVector getGyroBias() const;
         
         //Function: captureGyroBias
         //    Runs the Gyro Bias capture routine on the inertial device.
@@ -922,7 +957,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        Matrix_3x3 getMagnetometerSoftIronMatrix();
+        Matrix_3x3 getMagnetometerSoftIronMatrix() const;
 
 
         //Function: setMagnetometerHardIronOffset
@@ -949,7 +984,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        GeometricVector getMagnetometerHardIronOffset();
+        GeometricVector getMagnetometerHardIronOffset() const;
 
         //Function: setConingAndScullingEnable
         //    Enables/disables coning and sculling.
@@ -975,7 +1010,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        bool getConingAndScullingEnable();
+        bool getConingAndScullingEnable() const;
 
         //Function: setUARTBaudRate
         //    Sets the baud rate.  The device can be unresponsive for as much as 250 ms following this command.
@@ -1001,7 +1036,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        uint32 getUARTBaudRate();
+        uint32 getUARTBaudRate() const;
 
         //Function: setAdvancedLowPassFilterSettings
         //    Sets the advanced low-pass filter settings.
@@ -1031,7 +1066,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        AdvancedLowPassFilterData getAdvancedLowPassFilterSettings(const MipTypes::ChannelField& dataDescriptor);
+        AdvancedLowPassFilterData getAdvancedLowPassFilterSettings(const MipTypes::ChannelField& dataDescriptor) const;
 
         //Function: setComplementaryFilterSettings
         //    Sets the complementary filter settings.
@@ -1057,7 +1092,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        ComplementaryFilterData getComplementaryFilterSettings();
+        ComplementaryFilterData getComplementaryFilterSettings() const;
 
         //Function: getBasicDeviceStatus
         //    Gets the basic device status settings.
@@ -1122,7 +1157,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        InertialTypes::VehicleModeType getVehicleDynamicsMode();
+        InertialTypes::VehicleModeType getVehicleDynamicsMode() const;
 
         //Function: setEstimationControlFlags
         //    Sets the estimation control flags.
@@ -1148,7 +1183,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        EstimationControlOptions getEstimationControlFlags();
+        EstimationControlOptions getEstimationControlFlags() const;
 
         //Function: setInclinationSource
         //    Sets the source for the inclination geographic source command.
@@ -1174,7 +1209,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        GeographicSourceOptions getInclinationSource();
+        GeographicSourceOptions getInclinationSource() const;
 
         //Function: setDeclinationSource
         //    Sets the source for the declination geographic source command.
@@ -1200,7 +1235,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        GeographicSourceOptions getDeclinationSource();
+        GeographicSourceOptions getDeclinationSource() const;
 
         //Function: setMagneticFieldMagnitudeSource
         //    Sets the source for the magnetic field magnitude geographic source command.
@@ -1226,7 +1261,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        GeographicSourceOptions getMagneticFieldMagnitudeSource();
+        GeographicSourceOptions getMagneticFieldMagnitudeSource() const;
 
         //Function: setEstimationControlFlags
         //    Sets the estimation control flags.
@@ -1252,7 +1287,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        InertialTypes::GNSS_Source getGNSS_SourceControl();
+        InertialTypes::GNSS_Source getGNSS_SourceControl() const;
 
         //Function: sendExternalGNSSUpdate
         //    sends the external GNSS update command.
@@ -1291,7 +1326,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        HeadingUpdateOptions getHeadingUpdateControl();
+        HeadingUpdateOptions getHeadingUpdateControl() const;
 
         //API Function: setAdaptiveMeasurement
         //    Sets the error adaptive measurement settings for the specified command.
@@ -1323,7 +1358,33 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        AdaptiveMeasurementData getAdaptiveMeasurement(MipTypes::Command cmd);
+        AdaptiveMeasurementData getAdaptiveMeasurement(MipTypes::Command cmd) const;
+
+        //API Function: setSignalConditioningSettings
+        //    Sets the signal conditioning settings for the node.
+        //
+        //Parameter:
+        //    data - the signal conditioning settings to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setSignalConditioningSettings(const SignalConditioningValues& data);
+
+        //API Function: getSignalConditioningSettings
+        //    Gets the signal conditioning settings for the node.
+        //
+        //Return:
+        //    <SignalConditioningValues> - The current signal conditioning settings.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        SignalConditioningValues getSignalConditioningSettings() const;
 
         //API Function: setGeometricVectors
         //    Sets the <GeometricVector> data for the specified command.
@@ -1355,7 +1416,109 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        GeometricVectors getGeometricVectors(MipTypes::Command cmd);
+        GeometricVectors getGeometricVectors(MipTypes::Command cmd) const;
+
+        //API Function: setUint8s
+        //    Sets the uint8 data for the specified command.
+        //
+        //Parameter:
+        //    cmd - the specific command to set.
+        //
+        //Parameter:
+        //    data - the collection of uint8 data to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setUint8s(MipTypes::Command cmd, const std::vector<uint8>& data);
+
+        //API Function: getUint8s
+        //    Gets the uint8 data for the specified command.
+        //
+        //Parameter:
+        //    cmd - the specific command to get.
+        //
+        //Return:
+        //    uint8 - a collection of uint8s representing the current settings for the specified command.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        std::vector<uint8> getUint8s(MipTypes::Command cmd) const;
+
+        //API Function: getUint8s
+        //    Gets the uint8 data for the specified command.
+        //
+        //Parameter:
+        //    cmd - the specific command to get.
+        //
+        //Parameter:
+        //    addlParams - any additional uint8 parameters to be included.
+        //
+        //Return:
+        //    uint8 - a collection of uint8s representing the current settings for the specified command.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        std::vector<uint8> getUint8s(MipTypes::Command cmd, const std::vector<uint8>& addlParams) const;
+
+        //API Function: setUint16s
+        //    Sets the uint16 data for the specified command.
+        //
+        //Parameter:
+        //    cmd - the specific command to set.
+        //
+        //Parameter:
+        //    data - the collection of uint16 data to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setUint16s(MipTypes::Command cmd, const std::vector<uint16>& data);
+
+        //API Function: getUint16s
+        //    Gets the uint16 data for the specified command.
+        //
+        //Parameter:
+        //    cmd - the specific command to get.
+        //
+        //Return:
+        //    uint16 - a collection of uint16s representing the current settings for the specified command.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        std::vector<uint16> getUint16s(MipTypes::Command cmd) const;
+
+        //API Function: getUint16s
+        //    Gets the uint16 data for the specified command.
+        //
+        //Parameter:
+        //    cmd - the specific command to get.
+        //
+        //Parameter:
+        //    addlParams - any additional uint16 parameters to be included.
+        //
+        //Return:
+        //    uint16 - a collection of uint16s representing the current settings for the specified command.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        std::vector<uint16> getUint16s(MipTypes::Command cmd, const std::vector<uint16>& addlParams) const;
 
         //API Function: setFloats
         //    Sets the float data for the specified command.
@@ -1387,7 +1550,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        std::vector<float> getFloats(MipTypes::Command cmd);
+        std::vector<float> getFloats(MipTypes::Command cmd) const;
 
         //API Function: setMatrix3x3s
         //    Sets the <Matrix_3x3> data for the specified command.
@@ -1419,7 +1582,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        Matrix_3x3s getMatrix3x3s(MipTypes::Command cmd);
+        Matrix_3x3s getMatrix3x3s(MipTypes::Command cmd) const;
 
         //API Function: setFixedReferencePosition
         //    Sets the <FixedReferencePositionData> data for the specified command.
@@ -1445,7 +1608,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        FixedReferencePositionData getFixedReferencePosition();
+        FixedReferencePositionData getFixedReferencePosition() const;
 
         //Function: sendExternalHeadingUpdate
         //    sends the external heading update command.
@@ -1512,6 +1675,11 @@ private:
        //    - <Error_Communication>: There was no response to the command. The command timed out.
        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-       GenericMipCmdResponse SendCommand(MipCommand& command);
+       GenericMipCmdResponse SendCommand(MipCommand& command) const;
+
+       //Function: processMipCommandBytes
+       //    Sends the <MipCommandBytes> byte strings. The <MipCommandBytes> responseSuccess is updated to indicate success/failure.
+       //    Note: Unsupported commands, as indicated by the <MipCommandBytes> id, will not be sent.
+       void processMipCommandBytes(MipCommandBytes& cmd) const;
     };
 }

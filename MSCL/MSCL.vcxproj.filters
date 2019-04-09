@@ -956,6 +956,18 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink200.h">
       <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
     </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\AvailableTransmitPowers.h">
+      <Filter>MicroStrain\Wireless\Features</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Uint8Command.h">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\SignalConditioningSettings.h">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Uint16Command.h">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp">
@@ -1808,6 +1820,18 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink200.cpp">
       <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\AvailableTransmitPowers.cpp">
+      <Filter>MicroStrain\Wireless\Features</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Uint8Command.cpp">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\SignalConditioningSettings.cpp">
+      <Filter>MicroStrain\Inertial\Commands\3DM_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Uint16Command.cpp">
+      <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

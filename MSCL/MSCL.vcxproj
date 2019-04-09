@@ -738,8 +738,11 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\RawRTCM_2_3Message.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Sensor_Commands.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\SetReferencePosition.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\SignalConditioningSettings.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\System_Commands.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\UARTBaudRate.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Uint16Command.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Uint8Command.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\VehicleDynamicsMode.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\EulerAngles.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\ExposedInertialTypes.h" />
@@ -847,6 +850,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\WirelessNodeConfig.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\DatalogDownloader.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\AvailableSampleRates.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\AvailableTransmitPowers.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_analog.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_rs232.h" />
@@ -1048,8 +1052,11 @@
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\RawRTCM_2_3Message.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Sensor_Commands.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\SetReferencePosition.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\SignalConditioningSettings.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\System_Commands.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\UARTBaudRate.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Uint16Command.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Uint8Command.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\VehicleDynamicsMode.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\EulerAngles.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\ExposedInertialTypes.cpp" />
@@ -1155,6 +1162,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\WirelessNodeConfig.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\DatalogDownloader.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\AvailableSampleRates.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\AvailableTransmitPowers.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_analog.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\BaseStationFeatures_rs232.cpp" />

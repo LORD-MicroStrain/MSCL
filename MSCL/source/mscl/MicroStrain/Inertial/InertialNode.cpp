@@ -164,6 +164,21 @@ namespace mscl
         m_impl->pollData(dataClass, fields);
     }
 
+    MipCommandSet InertialNode::getConfigCommandBytes()
+    {
+        return m_impl->getConfigCommandBytes();
+    }
+
+    void InertialNode::sendCommandBytes(MipCommandSet& cmds)
+    {
+        m_impl->sendCommandBytes(cmds);
+    }
+
+    void InertialNode::sendCommandBytes(MipCommandBytes& cmd)
+    {
+        m_impl->sendCommandBytes(cmd);
+    }
+
     uint16 InertialNode::getDataRateBase(MipTypes::DataClass dataClass)
     { 
         return m_impl->getDataRateBase(dataClass);
@@ -678,6 +693,75 @@ namespace mscl
     FixedReferencePositionData InertialNode::getFixedReferencePosition()
     {
         return m_impl->getFixedReferencePosition();
+    }
+
+    void InertialNode::setGPSDynamicsMode(const InertialTypes::GPSDynamicsMode& data)
+    {
+        std::vector<uint8> collection;
+        collection.push_back(static_cast<uint8>(data));
+        m_impl->setUint8s(MipTypes::Command::CMD_GPS_DYNAMICS_MODE, collection);
+    }
+
+    InertialTypes::GPSDynamicsMode InertialNode::getGPSDynamicsMode() const
+    {
+        uint8 mode = m_impl->getUint8s(MipTypes::Command::CMD_GPS_DYNAMICS_MODE)[0];
+        return static_cast<InertialTypes::GPSDynamicsMode>(mode);
+    }
+
+    void InertialNode::setDevicePowerState(const InertialTypes::DeviceSelector& device, const InertialTypes::PowerState& data)
+    {
+        std::vector<uint8> collection;
+        collection.push_back(static_cast<uint8>(device));
+        collection.push_back(static_cast<uint8>(data));
+        m_impl->setUint8s(MipTypes::Command::CMD_POWER_STATES, collection);
+    }
+
+    InertialTypes::PowerState InertialNode::getDevicePowerState(const InertialTypes::DeviceSelector& device) const
+    {
+        std::vector<uint8> params;
+        params.push_back(static_cast<uint8>(device));
+        uint8 data = m_impl->getUint8s(MipTypes::Command::CMD_POWER_STATES, params)[1];
+        return static_cast<InertialTypes::PowerState>(data);
+    }
+
+    void InertialNode::setDeviceStreamFormat(const InertialTypes::DeviceSelector& device, const InertialTypes::StreamFormat& data)
+    {
+        std::vector<uint8> collection;
+        collection.push_back(static_cast<uint8>(device));
+        collection.push_back(static_cast<uint8>(data));
+        m_impl->setUint8s(MipTypes::Command::CMD_DATA_STREAM_FORMAT, collection);
+    }
+
+    InertialTypes::StreamFormat InertialNode::getDeviceStreamFormat(const InertialTypes::DeviceSelector& device) const
+    {
+        std::vector<uint8> params;
+        params.push_back(static_cast<uint8>(device));
+        uint8 data = m_impl->getUint8s(MipTypes::Command::CMD_DATA_STREAM_FORMAT, params)[1];
+        return static_cast<InertialTypes::StreamFormat>(data);
+    }
+
+    void InertialNode::setSignalConditioningSettings(const SignalConditioningValues& data)
+    {
+        m_impl->setSignalConditioningSettings(data);
+    }
+
+    SignalConditioningValues InertialNode::getSignalConditioningSettings() const
+    {
+        return m_impl->getSignalConditioningSettings();
+    }
+
+    void InertialNode::setEnableDisableMeasurements(const EnableDisableMeasurements& data)
+    {
+        std::vector<uint16> collection;
+        collection.push_back(data.measurementOptions);
+        m_impl->setUint16s(MipTypes::Command::CMD_EF_ENABLE_DISABLE_MEASUREMENTS, collection);
+    }
+
+    EnableDisableMeasurements InertialNode::getEnableDisableMeasurements() const
+    {
+        EnableDisableMeasurements r;
+        r.measurementOptions = m_impl->getUint16s(MipTypes::Command::CMD_EF_ENABLE_DISABLE_MEASUREMENTS)[0];
+        return r;
     }
 
     void InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData)

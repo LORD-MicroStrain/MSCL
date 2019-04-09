@@ -238,6 +238,7 @@ namespace mscl
         //
         //    power_20dBm   - 20 - 20 dBm
         //    power_16dBm   - 16 - 16 dBm
+        //    power_15dBm   - 15 - 15 dBm
         //    power_12dBm   - 12 - 12 dBm
         //    power_11dBm   - 11 - 11 dBm
         //    power_10dBm   - 10 - 10 dBm
@@ -249,6 +250,7 @@ namespace mscl
         {
             power_20dBm   = 20,
             power_16dBm   = 16,
+            power_15dBm   = 15,
             power_12dBm   = 12,
             power_11dBm   = 11,
             power_10dBm   = 10,
@@ -838,20 +840,26 @@ namespace mscl
         //Enum: RegionCode
         //    The possible region codes for the device.
         //
-        //  region_usa      - 0
-        //  region_europe   - 1
-        //  region_japan    - 2
-        //  region_other    - 3
-        //  region_brazil   - 4
-        //  region_china    - 5
+        //  region_usa                  - 0
+        //  region_europeanUnion        - 1
+        //  region_japan                - 2
+        //  region_other                - 3
+        //  region_brazil               - 4
+        //  region_china                - 5
+        //  region_australia_newzealand - 6
+        //  region_singapore            - 7
+        //  region_canada               - 8
         enum RegionCode
         {
-            region_usa      = 0,
-            region_europe   = 1,
-            region_japan    = 2,
-            region_other    = 3,
-            region_brazil   = 4,
-            region_china    = 5
+            region_usa                  = 0,
+            region_europeanUnion        = 1,
+            region_japan                = 2,
+            region_other                = 3,
+            region_brazil               = 4,
+            region_china                = 5,
+            region_australia_newzealand = 6,
+            region_singapore            = 7,
+            region_canada               = 8
         };
 
         //API Enum: ChannelGroupSetting

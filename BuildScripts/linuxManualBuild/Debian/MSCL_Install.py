@@ -105,7 +105,7 @@ def buildMSCL(arg):
 	else:
 		subprocess.call(['mkdir', '-p', 'build/swig-python'], cwd=directory)
 		
-		mscl_call = 'MSCL//stage_python release' + arg +' -j2'
+		mscl_call = 'MSCL//stage_python release ' + flags +'-j2'
 
 		subprocess.call(call.split() + mscl_call.split(), cwd=directory)
 		subprocess.call(call.split() + mscl_call.split(), cwd=directory)

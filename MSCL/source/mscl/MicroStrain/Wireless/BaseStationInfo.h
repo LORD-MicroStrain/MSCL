@@ -44,8 +44,8 @@ namespace mscl
         //    fw - The firmware <Version> of the BaseStation.
         //    model - The <WirelessModels::BaseModel> of the BaseStation.
         //    region - The <WirelessTypes::RegionCode> of the BaseStation.
-        //    protocol_lxrs - The <WirelessProtocol> of the BaseStation for the LXRS Radio Configuration.
-        //    protocol_lxrsPlus - The <WirelessProtocol> of the BaseStation for the LXSR+ Radio Configuration.
+        //    asppVer_lxrs - The ASPP <Version> for the LXRS protocol.
+        //    asppVer_lxrsPlus - The ASPP <Version> for the LXRS+ protocol.
         BaseStationInfo(Version fw, WirelessModels::BaseModel model, WirelessTypes::RegionCode region, const Version& asppVer_lxrs, const Version& asppVer_lxrsPlus);
 
     private:

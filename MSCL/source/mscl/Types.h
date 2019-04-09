@@ -116,6 +116,10 @@ namespace mscl
     //API Typedef: Bytes
     //    typedef for a vector of bytes.
     typedef std::vector<uint8> Bytes;
+
+    //API Typedefs:
+    //  BytesCollection    - A vector of <Bytes> objects.
+    typedef std::vector<Bytes> BytesCollection;
     
     //================================================================================================================
     //API Enums: ValueType

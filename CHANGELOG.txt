@@ -14,6 +14,41 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
+48.3.5 - 2019-04-08
+- update SHM-Link-201 and SHM-Link-210 Japan transmit powers
+
+48.3.4 - 2019-04-08
+- added Canada region code
+- updated transmit powers to the latest specifications
+
+48.3.3 - 2019-04-04
+- added support for inertial Enable/Disable Measurements command (0x0D, 0x41)
+
+48.3.2 - 2019-04-03
+- added support for inertial commands:
+    - Signal Conditioning Settings (0x0C, 0x35)
+    - Device Power States (0x0C, 0x61)
+    - Device Data Stream Format (0x0C, 0x60)
+
+48.3.1 - 2019-04-02
+- added support for inertial GPS Dynamics Mode command (0x0C, 0x34)
+
+48.3.0 - 2019-03-22
+- added 15 dBm transmit power option
+- added new region code options
+- updated transmit powers to the latest specifications
+- consolidated transmit power logic into 1 file, as it was getting too complicated spread out across "Feature" classes
+
+48.2.6 - 2019-03-12
+- add function to InertialNode to send byte streams to node and listen for ACK/NACK response
+- fix bug in parsing GNSS Constellation Settings response data
+
+48.2.5 - 2019-03-08
+- add function to InertialNode to get byte streams needed to set current configuration
+
+48.2.4 - 2019-03-04
+- fix for incorrect input ranges for 40G G-Link-200-OEMs
+
 48.2.3 - 2019-02-14
 - fix for accel channels available for the SHM-Link-210
 

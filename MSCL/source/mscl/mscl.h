@@ -24,9 +24,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Communication/Connection.h"
 #include "Communication/ConnectionDebugData.h"
 #include "Communication/Devices.h"
-#ifndef UNIX_BUILD
-#include "Communication/WsdaFinder.h"
-#endif
+
+//uncomment for UPnP WSDA-Pro finder
+//#include "Communication/WsdaFinder.h"
 
 #include "MicroStrain/DataPoint.h"
 #include "MicroStrain/LinearEquation.h"

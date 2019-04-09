@@ -204,6 +204,22 @@ public class InertialNode : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public MipCommandSet getConfigCommandBytes() {
+    MipCommandSet ret = new MipCommandSet(msclPINVOKE.InertialNode_getConfigCommandBytes(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void sendCommandBytes(MipCommandSet cmds) {
+    msclPINVOKE.InertialNode_sendCommandBytes__SWIG_0(swigCPtr, MipCommandSet.getCPtr(cmds));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void sendCommandBytes(MipCommandBytes cmd) {
+    msclPINVOKE.InertialNode_sendCommandBytes__SWIG_1(swigCPtr, MipCommandBytes.getCPtr(cmd));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public ushort getDataRateBase(MipTypes.DataClass dataClass) {
     ushort ret = msclPINVOKE.InertialNode_getDataRateBase(swigCPtr, (int)dataClass);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -737,6 +753,61 @@ public class InertialNode : global::System.IDisposable {
 
   public FixedReferencePositionData getFixedReferencePosition() {
     FixedReferencePositionData ret = new FixedReferencePositionData(msclPINVOKE.InertialNode_getFixedReferencePosition(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setGPSDynamicsMode(InertialTypes.GPSDynamicsMode data) {
+    msclPINVOKE.InertialNode_setGPSDynamicsMode(swigCPtr, (int)data);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public InertialTypes.GPSDynamicsMode getGPSDynamicsMode() {
+    InertialTypes.GPSDynamicsMode ret = (InertialTypes.GPSDynamicsMode)msclPINVOKE.InertialNode_getGPSDynamicsMode(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setDevicePowerState(InertialTypes.DeviceSelector device, InertialTypes.PowerState data) {
+    msclPINVOKE.InertialNode_setDevicePowerState(swigCPtr, (int)device, (int)data);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public InertialTypes.PowerState getDevicePowerState(InertialTypes.DeviceSelector device) {
+    InertialTypes.PowerState ret = (InertialTypes.PowerState)msclPINVOKE.InertialNode_getDevicePowerState(swigCPtr, (int)device);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setDeviceStreamFormat(InertialTypes.DeviceSelector device, InertialTypes.StreamFormat data) {
+    msclPINVOKE.InertialNode_setDeviceStreamFormat(swigCPtr, (int)device, (int)data);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public InertialTypes.StreamFormat getDeviceStreamFormat(InertialTypes.DeviceSelector device) {
+    InertialTypes.StreamFormat ret = (InertialTypes.StreamFormat)msclPINVOKE.InertialNode_getDeviceStreamFormat(swigCPtr, (int)device);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setSignalConditioningSettings(SignalConditioningValues data) {
+    msclPINVOKE.InertialNode_setSignalConditioningSettings(swigCPtr, SignalConditioningValues.getCPtr(data));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public SignalConditioningValues getSignalConditioningSettings() {
+    SignalConditioningValues ret = new SignalConditioningValues(msclPINVOKE.InertialNode_getSignalConditioningSettings(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setEnableDisableMeasurements(EnableDisableMeasurements data) {
+    msclPINVOKE.InertialNode_setEnableDisableMeasurements(swigCPtr, EnableDisableMeasurements.getCPtr(data));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public EnableDisableMeasurements getEnableDisableMeasurements() {
+    EnableDisableMeasurements ret = new EnableDisableMeasurements(msclPINVOKE.InertialNode_getEnableDisableMeasurements(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

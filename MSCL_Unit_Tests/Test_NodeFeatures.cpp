@@ -350,6 +350,33 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_usa_brazil)
     }
 
     {
+        NodeInfo info(Version(10, 0), WirelessModels::node_tcLink200, WirelessTypes::region_usa);
+        std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
+
+        WirelessTypes::TransmitPowers powers = features->transmitPowers(WirelessTypes::commProtocol_lxrsPlus);
+
+        BOOST_CHECK_EQUAL(powers.size(), 4);
+        BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_16dBm);
+        BOOST_CHECK_EQUAL(powers.at(1), WirelessTypes::power_10dBm);
+        BOOST_CHECK_EQUAL(powers.at(2), WirelessTypes::power_5dBm);
+        BOOST_CHECK_EQUAL(powers.at(3), WirelessTypes::power_0dBm);
+    }
+
+    {
+        NodeInfo info(Version(10, 0), WirelessModels::node_tcLink200, WirelessTypes::region_usa);
+        std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
+
+        WirelessTypes::TransmitPowers powers = features->transmitPowers(WirelessTypes::commProtocol_lxrs);
+
+        BOOST_CHECK_EQUAL(powers.size(), 5);
+        BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_20dBm);
+        BOOST_CHECK_EQUAL(powers.at(1), WirelessTypes::power_16dBm);
+        BOOST_CHECK_EQUAL(powers.at(2), WirelessTypes::power_10dBm);
+        BOOST_CHECK_EQUAL(powers.at(3), WirelessTypes::power_5dBm);
+        BOOST_CHECK_EQUAL(powers.at(4), WirelessTypes::power_0dBm);
+    }
+
+    {
         NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, WirelessTypes::region_brazil);
         std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
@@ -366,7 +393,7 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_usa_brazil)
 BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_europe_other)
 {
     {
-        NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, WirelessTypes::region_europe);
+        NodeInfo info(Version(1, 0), WirelessModels::node_gLink_10g, WirelessTypes::region_europeanUnion);
         std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
         WirelessTypes::TransmitPowers powers = features->transmitPowers(WirelessTypes::commProtocol_lxrs);
@@ -375,6 +402,19 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_europe_other)
         BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_10dBm);
         BOOST_CHECK_EQUAL(powers.at(1), WirelessTypes::power_5dBm);
         BOOST_CHECK_EQUAL(powers.at(2), WirelessTypes::power_0dBm);
+    }
+
+    {
+        NodeInfo info(Version(10, 0), WirelessModels::node_rtdLink200, WirelessTypes::region_europeanUnion);
+        std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
+
+        WirelessTypes::TransmitPowers powers = features->transmitPowers(WirelessTypes::commProtocol_lxrs);
+
+        BOOST_CHECK_EQUAL(powers.size(), 4);
+        BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_11dBm);
+        BOOST_CHECK_EQUAL(powers.at(1), WirelessTypes::power_10dBm);
+        BOOST_CHECK_EQUAL(powers.at(2), WirelessTypes::power_5dBm);
+        BOOST_CHECK_EQUAL(powers.at(3), WirelessTypes::power_0dBm);
     }
 
     {
@@ -401,6 +441,67 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_transmitPowers_japan)
         BOOST_CHECK_EQUAL(powers.size(), 2);
         BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_10dBm);
         BOOST_CHECK_EQUAL(powers.at(1), WirelessTypes::power_5dBm);
+    }
+
+    {
+        NodeInfo info(Version(10, 0), WirelessModels::node_gLink_200_8g, WirelessTypes::region_japan);
+        std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
+
+        WirelessTypes::TransmitPowers powers = features->transmitPowers(WirelessTypes::commProtocol_lxrs);
+
+        BOOST_CHECK_EQUAL(powers.size(), 3);
+        BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_16dBm);
+        BOOST_CHECK_EQUAL(powers.at(1), WirelessTypes::power_10dBm);
+        BOOST_CHECK_EQUAL(powers.at(2), WirelessTypes::power_5dBm);
+    }
+
+    {
+        NodeInfo info(Version(10, 0), WirelessModels::node_gLink_200_8g, WirelessTypes::region_japan);
+        std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
+
+        WirelessTypes::TransmitPowers powers = features->transmitPowers(WirelessTypes::commProtocol_lxrsPlus);
+
+        BOOST_CHECK_EQUAL(powers.size(), 3);
+        BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_12dBm);
+        BOOST_CHECK_EQUAL(powers.at(1), WirelessTypes::power_5dBm);
+        BOOST_CHECK_EQUAL(powers.at(2), WirelessTypes::power_1dBm);
+    }
+
+    {
+        NodeInfo info(Version(10, 0), WirelessModels::node_sgLink200, WirelessTypes::region_japan);
+        std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
+
+        WirelessTypes::TransmitPowers powers = features->transmitPowers(WirelessTypes::commProtocol_lxrs);
+
+        BOOST_CHECK_EQUAL(powers.size(), 3);
+        BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_15dBm);
+        BOOST_CHECK_EQUAL(powers.at(1), WirelessTypes::power_10dBm);
+        BOOST_CHECK_EQUAL(powers.at(2), WirelessTypes::power_5dBm);
+    }
+
+    {
+        NodeInfo info(Version(10, 0), WirelessModels::node_tcLink200_oem, WirelessTypes::region_japan);
+        std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
+
+        WirelessTypes::TransmitPowers powers = features->transmitPowers(WirelessTypes::commProtocol_lxrsPlus);
+
+        BOOST_CHECK_EQUAL(powers.size(), 3);
+        BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_11dBm);
+        BOOST_CHECK_EQUAL(powers.at(1), WirelessTypes::power_5dBm);
+        BOOST_CHECK_EQUAL(powers.at(2), WirelessTypes::power_0dBm);
+    }
+
+    {
+        NodeInfo info(Version(10, 0), WirelessModels::node_gLink_200_40g_oem, WirelessTypes::region_japan);
+        std::shared_ptr<NodeFeatures> features = NodeFeatures::create(info);
+
+        WirelessTypes::TransmitPowers powers = features->transmitPowers(WirelessTypes::commProtocol_lxrsPlus);
+
+        BOOST_CHECK_EQUAL(powers.size(), 4);
+        BOOST_CHECK_EQUAL(powers.at(0), WirelessTypes::power_11dBm);
+        BOOST_CHECK_EQUAL(powers.at(1), WirelessTypes::power_5dBm);
+        BOOST_CHECK_EQUAL(powers.at(2), WirelessTypes::power_1dBm);
+        BOOST_CHECK_EQUAL(powers.at(3), WirelessTypes::power_0dBm);
     }
 }
 

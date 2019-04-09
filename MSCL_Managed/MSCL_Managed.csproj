@@ -90,6 +90,7 @@
     <Compile Include="mscl\Bins.cs" />
     <Compile Include="mscl\BitMask.cs" />
     <Compile Include="mscl\Bytes.cs" />
+    <Compile Include="mscl\BytesCollection.cs" />
     <Compile Include="mscl\CalCoefficients.cs" />
     <Compile Include="mscl\ChannelCalMap.cs" />
     <Compile Include="mscl\ChannelData.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="mscl\DisplacementModels.cs" />
     <Compile Include="mscl\DisplacementNode.cs" />
     <Compile Include="mscl\EepromMap.cs" />
+    <Compile Include="mscl\EnableDisableMeasurements.cs" />
     <Compile Include="mscl\EstimationControlOptions.cs" />
     <Compile Include="mscl\EulerAngles.cs" />
     <Compile Include="mscl\EventTriggerOptions.cs" />
@@ -159,7 +161,9 @@
     <Compile Include="mscl\MipChannel.cs" />
     <Compile Include="mscl\MipChannelFields.cs" />
     <Compile Include="mscl\MipChannels.cs" />
+    <Compile Include="mscl\MipCommandBytes.cs" />
     <Compile Include="mscl\MipCommands.cs" />
+    <Compile Include="mscl\MipCommandSet.cs" />
     <Compile Include="mscl\MipDataPacket.cs" />
     <Compile Include="mscl\MipDataPackets.cs" />
     <Compile Include="mscl\MipDataPoint.cs" />
@@ -188,6 +192,7 @@
     <Compile Include="mscl\SensorOutputModes.cs" />
     <Compile Include="mscl\SetToIdleStatus.cs" />
     <Compile Include="mscl\ShuntCalCmdInfo.cs" />
+    <Compile Include="mscl\SignalConditioningValues.cs" />
     <Compile Include="mscl\SnCurveSegment.cs" />
     <Compile Include="mscl\SnCurveSegments.cs" />
     <Compile Include="mscl\StorageLimitModes.cs" />

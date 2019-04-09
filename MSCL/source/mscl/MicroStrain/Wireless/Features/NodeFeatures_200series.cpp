@@ -7,6 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "NodeFeatures_200series.h"
 #include "AvailableSampleRates.h"
+#include "AvailableTransmitPowers.h"
 
 namespace mscl
 {
@@ -15,70 +16,17 @@ namespace mscl
     {
     }
 
-    WirelessTypes::TransmitPower NodeFeatures_200series::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
-    {
-        if(region == WirelessTypes::region_japan)
-        {
-            WirelessTypes::TransmitPowers result;
-
-            if(commProtocol == WirelessTypes::commProtocol_lxrs)
-            {
-                return WirelessTypes::power_16dBm;
-            }
-
-            return WirelessTypes::power_12dBm;
-        }
-
-        return NodeFeatures::maxTransmitPower(region, commProtocol);
-    }
-
-    WirelessTypes::TransmitPower NodeFeatures_200series::minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
-    {
-        if(region == WirelessTypes::region_japan)
-        {
-            WirelessTypes::TransmitPowers result;
-
-            if(commProtocol == WirelessTypes::commProtocol_lxrs)
-            {
-                return WirelessTypes::power_5dBm;
-            }
-
-            return WirelessTypes::power_1dBm;
-        }
-
-        return NodeFeatures::minTransmitPower(region, commProtocol);
-    }
-
     const WirelessTypes::TransmitPowers NodeFeatures_200series::transmitPowers(WirelessTypes::CommProtocol commProtocol) const
     {
-        WirelessTypes::RegionCode region = m_nodeInfo.regionCode();
+        return AvailableTransmitPowers::get200series(m_nodeInfo, commProtocol);
+    }
+    
+    const WirelessTypes::TransmitPowers NodeFeatures_200series::transmitPowers(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
+    {
+        //make a NodeInfo object with all the actual node's info, but with the given region instead
+        NodeInfo tempInfo(m_nodeInfo.firmwareVersion(), m_nodeInfo.model(), region);
 
-        //japan has a custom list of transmit powers for 200-series Nodes
-        if(region == WirelessTypes::region_japan)
-        {
-            if(commProtocol == WirelessTypes::commProtocol_lxrs)
-            {
-                WirelessTypes::TransmitPowers result{
-                    WirelessTypes::power_16dBm,
-                    WirelessTypes::power_10dBm,
-                    WirelessTypes::power_5dBm
-                };
-
-                return result;
-            }
-            else
-            {
-                WirelessTypes::TransmitPowers result{
-                    WirelessTypes::power_12dBm,
-                    WirelessTypes::power_5dBm,
-                    WirelessTypes::power_1dBm
-                };
-
-                return result;
-            }
-        }
-
-        return NodeFeatures::transmitPowers(commProtocol);
+        return AvailableTransmitPowers::get200series(tempInfo, commProtocol);
     }
 
     const WirelessTypes::SamplingModes NodeFeatures_200series::samplingModes() const

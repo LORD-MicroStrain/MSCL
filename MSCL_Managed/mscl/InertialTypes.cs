@@ -51,6 +51,17 @@ public class InertialTypes : global::System.IDisposable {
     AIRBORNE_HIGH_G_VEHICLE = 0x4
   }
 
+  public enum GPSDynamicsMode {
+    GPS_PORTABLE = 0x00,
+    GPS_STATIONARY = 0x02,
+    GPS_PEDESTRIAN = 0x03,
+    GPS_AUTOMOTIVE = 0x04,
+    GPS_SEA = 0x05,
+    GPS_AIRBORNE_1G = 0x06,
+    GPS_AIRBORNE_2G = 0x07,
+    GPS_AIRBORNE_4G = 0x08
+  }
+
   public enum GNSS_Source {
     INTERNAL_GNSS = 0x01,
     EXTERNAL_GNSS = 0x02
@@ -62,6 +73,23 @@ public class InertialTypes : global::System.IDisposable {
     FIXTYPE_TIMEONLY = 0x02,
     FIXTYPE_NONE = 0x03,
     FIXTYPE_INVALID = 0x04
+  }
+
+  public enum DeviceSelector {
+    DEVICE_AHRS = 0x01,
+    DEVICE_GPS = 0x02
+  }
+
+  public enum PowerState {
+    ON_FULL_PERFORMANCE = 0x01,
+    ON_LOW_POWER = 0x02,
+    SLEEP = 0x03,
+    OFF = 0x04
+  }
+
+  public enum StreamFormat {
+    STANDARD_MIP = 0x01,
+    WRAPPED_RAW = 0x02
   }
 
   public enum SensorState {

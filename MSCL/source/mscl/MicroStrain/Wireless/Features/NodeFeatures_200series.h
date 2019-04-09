@@ -32,9 +32,8 @@ namespace mscl
         NodeFeatures_200series(const NodeInfo& info);
 
     public:
-        virtual WirelessTypes::TransmitPower maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const override;
-        virtual WirelessTypes::TransmitPower minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const override;
         virtual const WirelessTypes::TransmitPowers transmitPowers(WirelessTypes::CommProtocol commProtocol) const override;
+        virtual const WirelessTypes::TransmitPowers transmitPowers(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const override;
         virtual const WirelessTypes::SamplingModes samplingModes() const override;
         virtual const WirelessTypes::DataFormats dataFormats() const override;
         virtual const WirelessTypes::StorageLimitModes storageLimitModes() const override;

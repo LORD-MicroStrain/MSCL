@@ -160,6 +160,7 @@ public:
     //  CMD_EF_PRESS_ALT_NOISE_STD_DEV              - 0x0D29    - Estimation Filter - Pressure Altitude Noise Standard Deviation
     //  CMD_EF_HARD_IRON_OFFSET_PROCESS_NOISE       - 0x0D2B    - Estimation Filter - Hard Iron Offset Process Noise
     //  CMD_EF_SOFT_IRON_OFFSET_PROCESS_NOISE       - 0x0D2C    - Estimation Filter - Soft Iron Offset Process Noise
+    //  CMD_EF_ENABLE_DISABLE_MEASUREMENTS          - 0x0D41    - Estimation Filter - Enable/Disable Measurements
     //  CMD_EF_MAG_NOISE_STD_DEV                    - 0x0D42    - Estimation Filter - Magnetometer Noise Standard Deviation
     //  CMD_EF_DECLINATION_SRC                      - 0x0D43    - Estimation Filter - Declination Source
     //  CMD_EF_GRAV_MAGNITUDE_ERR_ADAPT_MEASURE     - 0x0D44    - Estimation Filter - Gravity Magnitude Error Adaptive Measurement
@@ -249,6 +250,7 @@ public:
         CMD_EF_PRESS_ALT_NOISE_STD_DEV              = 0x0D29,
         CMD_EF_HARD_IRON_OFFSET_PROCESS_NOISE       = 0x0D2B,
         CMD_EF_SOFT_IRON_OFFSET_PROCESS_NOISE       = 0x0D2C,
+        CMD_EF_ENABLE_DISABLE_MEASUREMENTS          = 0x0D41,
         CMD_EF_MAG_NOISE_STD_DEV                    = 0x0D42,
         CMD_EF_DECLINATION_SRC                      = 0x0D43,
         CMD_EF_GRAV_MAGNITUDE_ERR_ADAPT_MEASURE     = 0x0D44,
@@ -605,5 +607,37 @@ private:
     static const std::unordered_map<ChannelId, std::string, ChannelIdHash> CHANNEL_NAMES;
 
 };
+
+//API Struct: MipCommandBytes
+//    Contains an <Command> id and a <BytesCollection> vector to store the actual bytes to send to the device for that command.
+struct MipCommandBytes
+{
+    MipTypes::Command id;
+    BytesCollection commands;
+    bool responseSuccess; // true by default - set to false on NACK
+
+    MipCommandBytes() :
+        responseSuccess(false) {}
+
+    MipCommandBytes(MipTypes::Command _id) :
+        id(_id),
+        responseSuccess(false) {}
+
+    MipCommandBytes(MipTypes::Command _id, Bytes _cmd) :
+        id(_id),
+        commands({ _cmd }),
+        responseSuccess(false) {}
+
+    MipCommandBytes(MipTypes::Command _id, BytesCollection _cmds) :
+        id(_id),
+        commands(_cmds),
+        responseSuccess(false) {}
+
+    void add(Bytes cmd) { commands.push_back(cmd); }
+};
+
+//API Typedef: MipCommandSet
+//      A vector of <MipCommandBytes>
+typedef std::vector<MipCommandBytes> MipCommandSet;
 
 }

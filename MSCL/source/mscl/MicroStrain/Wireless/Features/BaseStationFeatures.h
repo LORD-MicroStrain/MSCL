@@ -128,8 +128,7 @@ namespace mscl
         virtual uint8 analogPortCount() const;
 
         //API Function: transmitPowers
-        //    Gets a list of the <WirelessTypes::TransmitPowers> that are supported by this BaseStation,
-        //    for the specified <WirelessTypes::CommProtocol>.
+        //    Gets a list of the <WirelessTypes::TransmitPowers> that are supported by this BaseStation, for the specified <WirelessTypes::CommProtocol>.
         //    Note: This list is dependent on the <WirelessTypes::RegionCode> of the device. If this changes, this function should be called again.
         //
         //Parameters:
@@ -138,6 +137,17 @@ namespace mscl
         //Returns:
         //    A vector of <WirelessTypes::TransmitPowers> that are supported by this BaseStation.
         virtual const WirelessTypes::TransmitPowers transmitPowers(WirelessTypes::CommProtocol commProtocol) const;
+
+        //API Function: transmitPowers
+        //    Gets a list of the <WirelessTypes::TransmitPowers> that are supported by this BaseStation, for the given <WirelessTypes::RegionCode> and <WirelessTypes::CommProtocol>.
+        //
+        //Parameters:
+        //  region - The <WirelessTypes::RegionCode> to get the transmit powers for.
+        //  commProtocol - The <WirelessTypes::CommProtocol> to get the transmit powers for.
+        //
+        //Returns:
+        //    A vector of <WirelessTypes::TransmitPowers> that are supported by this BaseStation.
+        virtual const WirelessTypes::TransmitPowers transmitPowers(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const;
 
         //API Function: commProtocols
         //  Gets a list of <WirelessTypes::CommProtocols> that are supported by this BaseStation.
@@ -180,7 +190,5 @@ namespace mscl
         //Function: supportsEeprom1024AndAbove
         //  Checks if the Node supports reading eeprom location 1024 and above.
         virtual bool supportsEeprom1024AndAbove() const;
-
-        static void narrowDownTxPowers(WirelessTypes::TransmitPowers& txPowers, WirelessTypes::TransmitPower min, WirelessTypes::TransmitPower max);
     };
 }

@@ -51,6 +51,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "mscl/Utils.h"
 #include "AvailableSampleRates.h"
+#include "AvailableTransmitPowers.h"
 #include "mscl/MicroStrain/Wireless/SyncSamplingFormulas.h"
 #include "mscl/MicroStrain/Wireless/ChannelMask.h"
 #include "mscl/MicroStrain/Wireless/Configuration/InputRange.h"
@@ -1447,44 +1448,15 @@ namespace mscl
 
     const WirelessTypes::TransmitPowers NodeFeatures::transmitPowers(WirelessTypes::CommProtocol commProtocol) const
     {
-        WirelessTypes::TransmitPowers result;
+        return AvailableTransmitPowers::get(m_nodeInfo, commProtocol);
+    }
 
-        //find the max transmit power for the node's region code
-        WirelessTypes::TransmitPower maxPower = maxTransmitPower(m_nodeInfo.regionCode(), commProtocol);
-        WirelessTypes::TransmitPower minPower = minTransmitPower(m_nodeInfo.regionCode(), commProtocol);
+    const WirelessTypes::TransmitPowers NodeFeatures::transmitPowers(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
+    {
+        //make a NodeInfo object with all the actual node's info, but with the given region instead
+        NodeInfo tempInfo(m_nodeInfo.firmwareVersion(), m_nodeInfo.model(), region);
 
-        //add the power levels based on the max power we determined above
-        if(maxPower >= WirelessTypes::power_20dBm &&
-           minPower <= WirelessTypes::power_20dBm)
-        {
-            result.push_back(WirelessTypes::power_20dBm);
-        }
-
-        if(maxPower >= WirelessTypes::power_16dBm &&
-           minPower <= WirelessTypes::power_16dBm)
-        {
-            result.push_back(WirelessTypes::power_16dBm);
-        }
-
-        if(maxPower >= WirelessTypes::power_10dBm &&
-           minPower <= WirelessTypes::power_10dBm)
-        {
-            result.push_back(WirelessTypes::power_10dBm);
-        }
-
-        if(maxPower >= WirelessTypes::power_5dBm &&
-           minPower <= WirelessTypes::power_5dBm)
-        {
-            result.push_back(WirelessTypes::power_5dBm);
-        }
-
-        if(maxPower >= WirelessTypes::power_0dBm &&
-           minPower <= WirelessTypes::power_0dBm)
-        {
-            result.push_back(WirelessTypes::power_0dBm);
-        }
-
-        return result;
+        return AvailableTransmitPowers::get(tempInfo, commProtocol);
     }
 
     const WirelessTypes::CommProtocols NodeFeatures::commProtocols() const
@@ -1599,31 +1571,8 @@ namespace mscl
 
     WirelessTypes::TransmitPower NodeFeatures::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
     {
-        //determine the max power based on the region code
-        switch(region)
-        {
-            case WirelessTypes::region_japan:
-                return WirelessTypes::power_10dBm;
-
-            case WirelessTypes::region_europe:
-            case WirelessTypes::region_other:
-                return WirelessTypes::power_10dBm;
-
-            case WirelessTypes::region_usa:
-            case WirelessTypes::region_brazil:
-            case WirelessTypes::region_china:
-            default:
-            {
-                if(supportsNewTransmitPowers())
-                {
-                    return WirelessTypes::power_20dBm;
-                }
-                else
-                {
-                    return WirelessTypes::power_16dBm;
-                }
-            }
-        }
+        //transmit powers are always sorted max to min
+        return transmitPowers(region, commProtocol).at(0);
     }
 
     WirelessTypes::TransmitPower NodeFeatures::maxTransmitPower(WirelessTypes::CommProtocol commProtocol) const
@@ -1633,14 +1582,9 @@ namespace mscl
 
     WirelessTypes::TransmitPower NodeFeatures::minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
     {
-        switch(region)
-        {
-            case WirelessTypes::region_japan:
-                return WirelessTypes::power_5dBm;
-
-            default:
-                return WirelessTypes::power_0dBm;
-        }
+        //transmit powers are always sorted max to min
+        auto txPowers = transmitPowers(region, commProtocol);
+        return txPowers.at(txPowers.size() - 1);
     }
 
     WirelessTypes::TransmitPower NodeFeatures::minTransmitPower(WirelessTypes::CommProtocol commProtocol) const
@@ -1858,12 +1802,5 @@ namespace mscl
         static const Version HIGH_EEPROM_FW(10, 0);
 
         return (m_nodeInfo.firmwareVersion() >= HIGH_EEPROM_FW);
-    }
-
-    void NodeFeatures::narrowDownTxPowers(WirelessTypes::TransmitPowers& txPowers, WirelessTypes::TransmitPower min, WirelessTypes::TransmitPower max)
-    {
-        auto outOfRange = [min, max](WirelessTypes::TransmitPower power) { return (power < min || power > max); };
-
-        Utils::eraseIf(txPowers, outOfRange);
     }
 }

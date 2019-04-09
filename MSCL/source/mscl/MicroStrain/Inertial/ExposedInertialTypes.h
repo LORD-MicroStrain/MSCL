@@ -24,6 +24,29 @@ namespace mscl
             AIRBORNE_HIGH_G_VEHICLE = 0x4
         };
 
+        //API Enum: GPSDynamicsMode
+        //    The enum for possible GPS dynamics modes.
+        //
+        //  GPS_PORTABLE = 0x00,
+        //  GPS_STATIONARY = 0x02,
+        //  GPS_PEDESTRIAN = 0x03,
+        //  GPS_AUTOMOTIVE = 0x04,
+        //  GPS_SEA = 0x05,
+        //  GPS_AIRBORNE_1G = 0x06,
+        //  GPS_AIRBORNE_2G = 0x07,
+        //  GPS_AIRBORNE_4G = 0x08
+        enum GPSDynamicsMode
+        {
+            GPS_PORTABLE = 0x00,
+            GPS_STATIONARY = 0x02,
+            GPS_PEDESTRIAN = 0x03,
+            GPS_AUTOMOTIVE = 0x04,
+            GPS_SEA = 0x05,
+            GPS_AIRBORNE_1G = 0x06,
+            GPS_AIRBORNE_2G = 0x07,
+            GPS_AIRBORNE_4G = 0x08
+        };
+
         //API Enum: GNSS_Source
         //    Dictates whether GNSS source is internal or external.
         //
@@ -52,6 +75,49 @@ namespace mscl
             FIXTYPE_TIMEONLY = 0x02,
             FIXTYPE_NONE = 0x03,
             FIXTYPE_INVALID = 0x04
+        };
+
+        //============================================================================================================
+        //API Enums: DeviceSelector
+        //    The available device selectors.
+        //
+        //    DEVICE_AHRS           - 0x01
+        //    DEVICE_GPS            - 0x02
+        //============================================================================================================
+        enum DeviceSelector
+        {
+            DEVICE_AHRS = 0x01,
+            DEVICE_GPS = 0x02
+        };
+
+        //============================================================================================================
+        //API Enums: PowerState
+        //    The available device power states.
+        //
+        //    ON_FULL_PERFORMANCE     - 0x01
+        //    ON_LOW_POWER            - 0x02
+        //    SLEEP                   - 0x03
+        //    OFF                     - 0x04
+        //============================================================================================================
+        enum PowerState
+        {
+            ON_FULL_PERFORMANCE = 0x01,
+            ON_LOW_POWER = 0x02,
+            SLEEP = 0x03,
+            OFF = 0x04
+        };
+
+        //============================================================================================================
+        //API Enums: StreamFormat
+        //    The available device data stream formats.
+        //
+        //    STANDARD_MIP           - 0x01     - standard MIP (default)
+        //    WRAPPED_RAW            - 0x02     - MIP wrapper around raw sensor data
+        //============================================================================================================
+        enum StreamFormat
+        {
+            STANDARD_MIP = 0x01,
+            WRAPPED_RAW = 0x02
         };
 
         //============================================================================================================
@@ -964,4 +1030,110 @@ public:
     };
 
     typedef std::vector<InertialTypes::AdaptiveMeasurementMode> AdaptiveMeasurementModes;
+
+    //API Struct: SignalConditioningValues
+    struct SignalConditioningValues
+    {
+    public:
+        //API Enum: DataConditioningFlags
+        //    Indicates the bit value used to enable/disable data conditioning features
+        enum DataConditioningFlags
+        {
+            ENABLE_ORIENTATION_CALC = 0x0001,
+            ENABLE_CONING_SCULLING = 0x0002,
+            ENABLE_FINITE_SIZE_CORRECTION = 0x0040,
+            DISABLE_MAGNETOMETER = 0x0100,
+            DISABLE_NORTH_COMP = 0x0400,
+            DISABLE_UP_COMP = 0x0800,
+            ENABLE_QUATERNION_CALC = 0x10000
+        };
+
+        //API Enum: MagPowerBandwidthSettings
+        //    Indicates the magnetometer bandwidth and power consumption settings
+        //
+        //    HIGH = 0 - High bandwidth, highest power consumption
+        //    LOW = 1 - Bandwidth coupled to Data Rate, low power consumption (default)
+        enum MagPowerBandwidthSettings
+        {
+            HIGH = 0,
+            LOW = 1
+        };
+
+        //API Variable: dataConditioningFlags
+        uint16 dataConditioningFlags;
+
+        //API Variable: orientationCalcDecimation
+        uint16 orientationCalcDecimation;
+
+        //API Variable: accelGyroFilterWidth
+        uint8 accelGyroFilterWidth;
+
+        //API Variable: magFilterWidth
+        uint8 magFilterWidth;
+
+        //API Variable: upCompensation
+        uint16 upCompensation;
+
+        //API Variable: northCompensation
+        uint16 northCompensation;
+
+        //API Variable: magBandwidthPower
+        MagPowerBandwidthSettings magBandwidthPower;
+
+        //Constructor: SignalConditioningValues
+        SignalConditioningValues() {};
+
+        //API Function: conditioningOptionOn
+        //    Checks whether the specified conditioning option bit is 1.
+        bool conditioningOptionOn(DataConditioningFlags option) { return (dataConditioningFlags & static_cast<uint16>(option)) > 0; };
+        bool conditioningOptionOn(uint16 options) { return (dataConditioningFlags & options) > 0; };
+
+        //API Function: setConditioningOptionOn
+        //    Sets the specified conditioning option bit to 1.
+        void setConditioningOptionOn(DataConditioningFlags option) { dataConditioningFlags = dataConditioningFlags | static_cast<uint16>(option); };
+        void setConditioningOptionOn(uint16 options) { dataConditioningFlags = dataConditioningFlags | options; };
+
+        //API Function: setConditioningOptionOff
+        //    Sets the specified conditioning option bit to 0.
+        void setConditioningOptionOff(DataConditioningFlags option) { dataConditioningFlags = dataConditioningFlags & ~static_cast<uint16>(option); };
+        void setConditioningOptionOff(uint16 options) { dataConditioningFlags = dataConditioningFlags & ~options; };
+    };
+
+    //API Struct: EnableDisableMeasurements
+    struct EnableDisableMeasurements
+    {
+    public:
+        //API Enum: MeasurementOptions
+        //    Indicates the bit value used to enable/disable available measurement options
+        enum MeasurementOptions
+        {
+            ACCELEROMETER_MEASUREMENTS = 0x00000001,
+            MAGNETOMETER_MEASUREMENTS = 0x00000002
+        };
+
+        //Constructor: EnableDisableMeasurements
+        EnableDisableMeasurements() {};
+
+        //Constructor: EnableDisableMeasurements
+        EnableDisableMeasurements(uint16 option) :
+            measurementOptions(option) {};
+
+        //API Variable: measurementOptions
+        uint16 measurementOptions;
+
+        //API Function: optionEnabled
+        //    Checks whether the specified option is enabled.
+        bool optionEnabled(MeasurementOptions option) { return (measurementOptions & static_cast<uint16>(option)) > 0; };
+        bool optionEnabled(uint16 options) { return (measurementOptions & options) > 0; };
+        
+        //API Function: enableOption
+        //    Enables the specified option.
+        void enableOption(MeasurementOptions option) { measurementOptions = measurementOptions | static_cast<uint16>(option); }
+        void enableOption(uint16 options) { measurementOptions = measurementOptions | options; }
+
+        //API Function: disableOption
+        //    Disables the specified option.
+        void disableOption(MeasurementOptions option) { measurementOptions = measurementOptions & ~static_cast<uint16>(option); }
+        void disableOption(uint16 options) { measurementOptions = measurementOptions & ~options; }
+    };
 }

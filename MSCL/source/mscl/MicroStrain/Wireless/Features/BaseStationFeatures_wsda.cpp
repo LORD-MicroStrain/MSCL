@@ -22,24 +22,4 @@ namespace mscl
     {
         return false;
     }
-
-    WirelessTypes::TransmitPower BaseStationFeatures_wsda::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
-    {
-        if(region == WirelessTypes::region_japan)
-        {
-            return WirelessTypes::power_10dBm;
-        }
-
-        return BaseStationFeatures::maxTransmitPower(region, commProtocol);
-    }
-
-    WirelessTypes::TransmitPower BaseStationFeatures_wsda::minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
-    {
-        if(region == WirelessTypes::region_japan)
-        {
-            return WirelessTypes::power_5dBm;
-        }
-
-        return BaseStationFeatures::minTransmitPower(region, commProtocol);
-    }
 }

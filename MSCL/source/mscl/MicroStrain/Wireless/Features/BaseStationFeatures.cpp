@@ -12,6 +12,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "BaseStationFeatures_usb200.h"
 #include "BaseStationFeatures_wsda.h"
 #include "BaseStationFeatures_wsda2000.h"
+#include "AvailableTransmitPowers.h"
 #include "mscl/MicroStrain/Wireless/WirelessModels.h"
 
 namespace mscl
@@ -109,21 +110,12 @@ namespace mscl
 
     const WirelessTypes::TransmitPowers BaseStationFeatures::transmitPowers(WirelessTypes::CommProtocol commProtocol) const
     {
-        WirelessTypes::TransmitPowers result{
-            WirelessTypes::power_20dBm,
-            WirelessTypes::power_16dBm,
-            WirelessTypes::power_10dBm,
-            WirelessTypes::power_5dBm,
-            WirelessTypes::power_0dBm
-        };
+        return AvailableTransmitPowers::get(m_baseInfo.regionCode(), m_baseInfo.model(), m_baseInfo.firmwareVersion(), commProtocol);
+    }
 
-        //find the max transmit power for the node's region code
-        WirelessTypes::TransmitPower maxPower = maxTransmitPower(m_baseInfo.regionCode(), commProtocol);
-        WirelessTypes::TransmitPower minPower = minTransmitPower(m_baseInfo.regionCode(), commProtocol);
-
-        narrowDownTxPowers(result, minPower, maxPower);
-
-        return result;
+    const WirelessTypes::TransmitPowers BaseStationFeatures::transmitPowers(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
+    {
+        return AvailableTransmitPowers::get(region, m_baseInfo.model(), m_baseInfo.firmwareVersion(), commProtocol);
     }
 
     const WirelessTypes::CommProtocols BaseStationFeatures::commProtocols() const
@@ -143,43 +135,15 @@ namespace mscl
 
     WirelessTypes::TransmitPower BaseStationFeatures::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
     {
-        //determine the max power based on the region code
-        switch(region)
-        {
-            case WirelessTypes::region_japan:
-                return WirelessTypes::power_10dBm;
-
-            case WirelessTypes::region_europe:
-            case WirelessTypes::region_other:
-                return WirelessTypes::power_10dBm;
-
-            case WirelessTypes::region_usa:
-            case WirelessTypes::region_brazil:
-            case WirelessTypes::region_china:
-            default:
-            {
-                if(supportsNewTransmitPowers())
-                {
-                    return WirelessTypes::power_20dBm;
-                }
-                else
-                {
-                    return WirelessTypes::power_16dBm;
-                }
-            }
-        }
+        //transmit powers are always sorted max to min
+        return transmitPowers(region, commProtocol).at(0);
     }
 
     WirelessTypes::TransmitPower BaseStationFeatures::minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
     {
-        switch(region)
-        {
-            case WirelessTypes::region_japan:
-                return WirelessTypes::power_5dBm;
-
-            default:
-                return WirelessTypes::power_0dBm;
-        }
+        //transmit powers are always sorted max to min
+        auto txPowers = transmitPowers(region, commProtocol);
+        return txPowers.at(txPowers.size() - 1);
     }
 
     bool BaseStationFeatures::supportsNewTransmitPowers() const
@@ -201,12 +165,5 @@ namespace mscl
         static const Version HIGH_EEPROM_FW(4, 0);
 
         return (m_baseInfo.firmwareVersion() >= HIGH_EEPROM_FW);
-    }
-
-    void BaseStationFeatures::narrowDownTxPowers(WirelessTypes::TransmitPowers& txPowers, WirelessTypes::TransmitPower min, WirelessTypes::TransmitPower max)
-    {
-        auto outOfRange = [min, max](WirelessTypes::TransmitPower power) { return (power < min || power > max); };
-        
-        Utils::eraseIf(txPowers, outOfRange);
     }
 }

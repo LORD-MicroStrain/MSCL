@@ -587,7 +587,13 @@ public class NodeFeatures : global::System.IDisposable {
   }
 
   public virtual TransmitPowers transmitPowers(WirelessTypes.CommProtocol commProtocol) {
-    TransmitPowers ret = new TransmitPowers(msclPINVOKE.NodeFeatures_transmitPowers(swigCPtr, (int)commProtocol), true);
+    TransmitPowers ret = new TransmitPowers(msclPINVOKE.NodeFeatures_transmitPowers__SWIG_0(swigCPtr, (int)commProtocol), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual TransmitPowers transmitPowers(WirelessTypes.RegionCode region, WirelessTypes.CommProtocol commProtocol) {
+    TransmitPowers ret = new TransmitPowers(msclPINVOKE.NodeFeatures_transmitPowers__SWIG_1(swigCPtr, (int)region, (int)commProtocol), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

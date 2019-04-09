@@ -23,9 +23,6 @@ namespace mscl
         //    info - A <BaseStationInfo> object representing standard information of the <BaseStation>.
         BaseStationFeatures_usb200(const BaseStationInfo& info);
 
-        virtual WirelessTypes::TransmitPower maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const final;
-        virtual WirelessTypes::TransmitPower minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const final;
-        virtual const WirelessTypes::TransmitPowers transmitPowers(WirelessTypes::CommProtocol commProtocol) const final;
         virtual bool supportsRfSweepMode() const final;
         virtual bool supportsCustomRfSweepMode() const final;
     };

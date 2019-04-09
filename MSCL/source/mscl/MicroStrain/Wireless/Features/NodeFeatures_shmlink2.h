@@ -24,10 +24,6 @@ namespace mscl
         NodeFeatures_shmlink2(const NodeInfo& info);
 
     public:
-        virtual WirelessTypes::TransmitPower maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const final;
-
-        virtual WirelessTypes::TransmitPower minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const final;
-
         virtual const WirelessTypes::DataCollectionMethods dataCollectionMethods() const final;
 
         virtual const WirelessTypes::DataFormats dataFormats() const final;

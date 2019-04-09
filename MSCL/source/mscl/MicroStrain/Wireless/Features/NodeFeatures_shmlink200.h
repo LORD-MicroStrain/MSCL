@@ -5,13 +5,13 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "NodeFeatures.h"
+#include "NodeFeatures_200series.h"
 
 namespace mscl
 {
     //Class: NodeFeatures_shmlink200
-    //    Contains information on features for the SHM-Link 200 node. Inherits from <NodeFeatures>.
-    class NodeFeatures_shmlink200 : public NodeFeatures
+    //    Contains information on features for the SHM-Link 200 node.
+    class NodeFeatures_shmlink200 : public NodeFeatures_200series
     {
     private:
         NodeFeatures_shmlink200();    //disabled default constructor

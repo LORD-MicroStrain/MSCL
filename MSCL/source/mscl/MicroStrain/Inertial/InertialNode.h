@@ -332,6 +332,28 @@ namespace mscl
         //  - <Error_Connection>: A connection error has occurred with the InertialNode.
         void pollData(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields = MipTypes::MipChannelFields());
 
+        //Function: getConfigCommandBytes
+        //    Gets the byte string for the commands to set the node's current settings.
+        //
+        //Returns:
+        //    A <MipCommandSet> containing supported config descriptors and the set command bytes.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        MipCommandSet getConfigCommandBytes();
+
+        //Function: sendCommandBytes
+        //    Sends the <MipCommandSet> byte strings. The <MipCommandBytes> responseSuccess is updated to indicate success/failure.
+        //    Note: Unsupported commands, as indicated by the <MipCommandBytes> id, will not be sent.
+        void sendCommandBytes(MipCommandSet& cmds);
+
+        //Function: sendCommandBytes
+        //    Sends the <MipCommandBytes> byte strings. The <MipCommandBytes> responseSuccess is updated to indicate success/failure.
+        //    Note: Unsupported commands, as indicated by the <MipCommandBytes> id, will not be sent.
+        void sendCommandBytes(MipCommandBytes& cmd);
+
         //API Function: getDataRateBase
         //    Gets the Data decimation base for the data rate calculations of the specified <InertialType>.
         //
@@ -1614,6 +1636,144 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         FixedReferencePositionData getFixedReferencePosition();
+
+        //API Function: setGPSDynamicsMode
+        //    Sets the <GPSDynamicsMode>.
+        //
+        //Parameter:
+        //    data - the <GPSDynamicsMode> data to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setGPSDynamicsMode(const InertialTypes::GPSDynamicsMode& data);
+
+        //API Function: getGPSDynamicsMode
+        //    Gets the <GPSDynamicsMode> data for this device.
+        //
+        //Return:
+        //    <GPSDynamicsMode> - the current GPS dynamics mode setting.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        InertialTypes::GPSDynamicsMode getGPSDynamicsMode() const;
+
+        //API Function: setDevicePowerState
+        //    Sets the <PowerState> for the specified device.
+        //
+        //Parameter:
+        //    device - the <DeviceSelector> for which to set the power state.
+        //    data - the <PowerState> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setDevicePowerState(const InertialTypes::DeviceSelector& device, const InertialTypes::PowerState& data);
+
+        //API Function: getDevicePowerState
+        //    Gets the <PowerState> for the specified device.
+        //
+        //Parameter:
+        //    device - the <DeviceSelector> for which to get the power state.
+        //
+        //Return:
+        //    <PowerState> - the current power state of the specified device.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        InertialTypes::PowerState getDevicePowerState(const InertialTypes::DeviceSelector& device) const;
+
+        //API Function: setDeviceStreamFormat
+        //    Sets the <StreamFormat> for the specified device.
+        //
+        //Parameter:
+        //    device - the <DeviceSelector> for which to set the data stream format.
+        //    data - the <StreamFormat> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setDeviceStreamFormat(const InertialTypes::DeviceSelector& device, const InertialTypes::StreamFormat& data);
+
+        //API Function: getDeviceStreamFormat
+        //    Gets the <StreamFormat> for the specified device.
+        //
+        //Parameter:
+        //    device - the <DeviceSelector> for which to get the data stream format.
+        //
+        //Return:
+        //    <StreamFormat> - the current data stream format of the specified device.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        InertialTypes::StreamFormat getDeviceStreamFormat(const InertialTypes::DeviceSelector& device) const;
+
+        //API Function: setSignalConditioningSettings
+        //    Sets the signal conditioning settings for the node.
+        //
+        //Parameter:
+        //    data - the signal conditioning settings to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setSignalConditioningSettings(const SignalConditioningValues& data);
+
+        //API Function: getSignalConditioningSettings
+        //    Gets the signal conditioning settings for the node.
+        //
+        //Return:
+        //    <SignalConditioningValues> - The current signal conditioning settings.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        SignalConditioningValues getSignalConditioningSettings() const;
+
+        //API Function: setEnableDisableMeasurements
+        //    Enables/disables estimation filter measurement options for the node.
+        //
+        //Parameter:
+        //    data - the measurement options to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setEnableDisableMeasurements(const EnableDisableMeasurements& data);
+
+        //API Function: getEnableDisableMeasurements
+        //    Gets the currently enabled estimation filter measurement options for the node.
+        //
+        //Return:
+        //    <EnableDisableMeasurements> - The currently enabled measurement options.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        EnableDisableMeasurements getEnableDisableMeasurements() const;
 
         //API Function: sendExternalHeadingUpdate
         //    sends the external heading update command.

@@ -5,13 +5,13 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #pragma once
 
-#include "NodeFeatures.h"
+#include "NodeFeatures_200series.h"
 
 namespace mscl
 {
     //Class: NodeFeatures_shmlink201
-    //    Contains information on features for the SHM-Link 2 node. Inherits from <NodeFeatures>.
-    class NodeFeatures_shmlink201 : public NodeFeatures
+    //    Contains information on features for the SHM-Link 2 node.
+    class NodeFeatures_shmlink201 : public NodeFeatures_200series
     {
     private:
         NodeFeatures_shmlink201();    //disabled default constructor
@@ -24,10 +24,6 @@ namespace mscl
         NodeFeatures_shmlink201(const NodeInfo& info);
 
     public:
-        virtual WirelessTypes::TransmitPower maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const override;
-
-        virtual WirelessTypes::TransmitPower minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const override;
-
         virtual const WirelessTypes::DataCollectionMethods dataCollectionMethods() const final;
 
         virtual const WirelessTypes::DataFormats dataFormats() const final;

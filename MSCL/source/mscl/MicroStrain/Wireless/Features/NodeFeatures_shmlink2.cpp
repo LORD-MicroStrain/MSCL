@@ -41,26 +41,6 @@ namespace mscl
         m_channels.emplace_back(6, WirelessChannel::channel_6, WirelessTypes::chType_acceleration, "Acceleration Y");
         m_channels.emplace_back(7, WirelessChannel::channel_7, WirelessTypes::chType_acceleration, "Acceleration Z");
     }
-
-    WirelessTypes::TransmitPower NodeFeatures_shmlink2::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
-    {
-        if(region == WirelessTypes::region_japan)
-        {
-            return WirelessTypes::power_16dBm;
-        }
-
-        return NodeFeatures::maxTransmitPower(region, commProtocol);
-    }
-
-    WirelessTypes::TransmitPower NodeFeatures_shmlink2::minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
-    {
-        if(region == WirelessTypes::region_japan)
-        {
-            return WirelessTypes::power_10dBm;
-        }
-
-        return NodeFeatures::minTransmitPower(region, commProtocol);
-    }
     
     const WirelessTypes::DataCollectionMethods NodeFeatures_shmlink2::dataCollectionMethods() const
     {

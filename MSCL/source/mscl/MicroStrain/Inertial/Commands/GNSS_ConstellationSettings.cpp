@@ -46,7 +46,6 @@ namespace mscl
         returnData.maxChannelsAvailable = dataBuffer.read_uint16();
         returnData.maxChannelsToUse = dataBuffer.read_uint16();
         uint8 numberOfConstellations = dataBuffer.read_uint8();
-        returnData.constellations = Constellations(numberOfConstellations);
         for (uint8 constellationNum = 0; constellationNum < numberOfConstellations; ++constellationNum)
         {
             Constellation constellationToAdd;

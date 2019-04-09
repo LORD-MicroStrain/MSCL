@@ -95,7 +95,13 @@ public class BaseStationFeatures : global::System.IDisposable {
   }
 
   public virtual TransmitPowers transmitPowers(WirelessTypes.CommProtocol commProtocol) {
-    TransmitPowers ret = new TransmitPowers(msclPINVOKE.BaseStationFeatures_transmitPowers(swigCPtr, (int)commProtocol), true);
+    TransmitPowers ret = new TransmitPowers(msclPINVOKE.BaseStationFeatures_transmitPowers__SWIG_0(swigCPtr, (int)commProtocol), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual TransmitPowers transmitPowers(WirelessTypes.RegionCode region, WirelessTypes.CommProtocol commProtocol) {
+    TransmitPowers ret = new TransmitPowers(msclPINVOKE.BaseStationFeatures_transmitPowers__SWIG_1(swigCPtr, (int)region, (int)commProtocol), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

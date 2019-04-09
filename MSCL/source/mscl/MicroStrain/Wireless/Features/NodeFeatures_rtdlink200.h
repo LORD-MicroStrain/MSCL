@@ -10,7 +10,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
     //Class: NodeFeatures_rtdlink200
-    //    Contains information on features for the TC-Link 1CH Node.
+    //    Contains information on features for the RTD-Link-200 Node.
     class NodeFeatures_rtdlink200 : public NodeFeatures_200series
     {
     public:

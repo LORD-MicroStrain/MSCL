@@ -87,7 +87,7 @@ namespace mscl
         //to support legacy nodes, a code of 0xFFFE should be treated as Europe
         else if(code == 0xFFFE)
         {
-            code = WirelessTypes::region_europe;
+            code = WirelessTypes::region_europeanUnion;
         }
 
         return static_cast<WirelessTypes::RegionCode>(code);

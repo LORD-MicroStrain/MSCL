@@ -12,7 +12,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
     NodeFeatures_shmlink210::NodeFeatures_shmlink210(const NodeInfo& info):
-        NodeFeatures(info)
+        NodeFeatures_200series(info)
     {
         static const ChannelMask DIFF_CH1(BOOST_BINARY(00000001));  //ch1
         static const ChannelMask DIFF_CH2(BOOST_BINARY(00000010));  //ch2
@@ -47,26 +47,6 @@ namespace mscl
         m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential", 24);
         m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential, "Differential", 24);
         m_channels.emplace_back(3, WirelessChannel::channel_3, WirelessTypes::chType_fullDifferential, "Differential", 24);
-    }
-
-    WirelessTypes::TransmitPower NodeFeatures_shmlink210::maxTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
-    {
-        if(region == WirelessTypes::region_japan)
-        {
-            return WirelessTypes::power_16dBm;
-        }
-
-        return NodeFeatures::maxTransmitPower(region, commProtocol);
-    }
-
-    WirelessTypes::TransmitPower NodeFeatures_shmlink210::minTransmitPower(WirelessTypes::RegionCode region, WirelessTypes::CommProtocol commProtocol) const
-    {
-        if(region == WirelessTypes::region_japan)
-        {
-            return WirelessTypes::power_10dBm;
-        }
-
-        return NodeFeatures::minTransmitPower(region, commProtocol);
     }
     
     const WirelessTypes::DataCollectionMethods NodeFeatures_shmlink210::dataCollectionMethods() const

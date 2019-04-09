@@ -245,6 +245,7 @@ namespace std
     %template(ChannelData)              vector<mscl::WirelessDataPoint>;
     %template(MipDataPoints)            vector<mscl::MipDataPoint>;
     %template(Bytes)                    vector<unsigned char>;
+    %template(BytesCollection)          vector<vector<unsigned char>>;
     %template(DeviceList)               map<string, mscl::DeviceInfo>;
     %template(NodeDiscoveries)          vector<mscl::NodeDiscovery>;
     %template(DataSweeps)               vector<mscl::DataSweep>;
@@ -274,6 +275,7 @@ namespace std
     %template(ConfigIssues)             vector<mscl::ConfigIssue>;
     %template(MipChannelFields)         vector<mscl::MipTypes::ChannelField>;
     %template(MipCommands)              vector<mscl::MipTypes::Command>;
+    %template(MipCommandSet)            vector<mscl::MipCommandBytes>;
     %template(ChannelGroups)            vector<mscl::ChannelGroup>;
     %template(WirelessChannels)         vector<mscl::WirelessChannel>;
     %template(DamageAngles)             map<uint8_t, float>;
