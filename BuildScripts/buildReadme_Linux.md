@@ -16,6 +16,8 @@ Pre-built versions are available for download. To get it, head over to the [MSCL
 - \>= python2.7 (for Python build)
 - \>= python2.7-dev (for Python build)
 
+#### Note
+On some systems, you may get a virtual memory error when compiling MSCL (ex. `Virtual memory exhausted: Cannot allocate memory`). It may be necessary to temporarily increase your Swapfile size. For an example, see [this post](https://www.bitpi.co/2015/02/11/how-to-change-raspberry-pis-swapfile-size-on-rasbian/) explaining this for the Raspberry Pi. Keep in mind that you may want to change back to the original swapfile size when you are done compiling MSCL (especially if using an SD card), as it can cause a lot of unnecessary writes to your disk.
 
 ## Building MSCL for C++
 
