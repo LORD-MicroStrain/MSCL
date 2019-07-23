@@ -62,6 +62,12 @@ public class Matrix : global::System.IDisposable {
     return ret;
   }
 
+  public double as_doubleAt(ushort row, ushort column) {
+    double ret = msclPINVOKE.Matrix_as_doubleAt(swigCPtr, row, column);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public float as_floatAt(ushort row, ushort column) {
     float ret = msclPINVOKE.Matrix_as_floatAt(swigCPtr, row, column);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

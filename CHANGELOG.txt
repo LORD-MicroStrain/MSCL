@@ -6,13 +6,79 @@ MAJOR.MINOR.PATCH
 
 The MAJOR version is incremented when changes are made (to the public interface) that are not backwards compatible.
 The MINOR version is incremented when a new feature is added (to the public interface) or a current feature is improved upon.
-The PATCH version is incremented when a bug is fixed.
+The PATCH version is incremented when a bug is fixed or a small change is made.
 
 Major revisions will specify what caused the non-backwards compatible change. These will be specified like so:
 CHANGED - A non-backwards compatible change was made to an existing function/class.
 RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
+
+51.0.1 - 2019-07-12
+- fix for Sync Sampling network logic divide by 0.0 when no channels are active
+
+51.0.0 - 2019-07-11
+- had to move the following nested classes as SWIG wasn't generating these in Python
+    - CHANGED PpsPulseInfo to be a standalone struct (previously nested in DeviceStatusData class)
+    - CHANGED StreamInfo to be a standalone struct (previously nested in DeviceStatusData class)
+    - CHANGED DeviceMessageInfo to be a standalone struct (previously nested in DeviceStatusData class)
+    - CHANGED PortInfo to be a standalone struct (previously nested in DeviceStatusData class)
+    - CHANGED TemperatureInfo to be a standalone struct (previously nested in DeviceStatusData class)
+
+50.0.4 - 2019-07-11
+- another fix for corrupted mip packet causing a crash when parsing fields
+
+50.0.3 - 2019-07-08
+- fix reply byte for Magnetometer Capture Auto Calibration command (0x0D, 0x27)
+
+50.0.2 - 2019-07-08
+- fix for corrupted mip packet causing a crash when parsing fields
+
+50.0.1 - 2019-06-18
+- added a hasValidFlag() function to the MipDataPoint class for checking if the point was received with a valid flag
+
+50.0.0 - 2019-06-17
+- CHANGED Inertial EF FilterStatus enum, as it was previously incorrect
+    - InertialTypes::FilterStatus separated into FilterStatus_Running and FilterStatus_Initialization
+- Additional inertial data value enums added
+
+49.0.4 - 2019-06-11
+- add double support to Vector and Matrix classes
+- refactor Vector class to extend Matrix
+- allow vector DataPoint to be cast to matrix
+
+49.0.3 - 2019-06-10
+- add support for Magnetometer Capture Auto Calibration command (0x0D, 0x27)
+- add support for Tare Orientation command (0x0D, 0x21)
+
+49.0.2 - 2019-06-04
+- updated algorithm to convert GPS to UTC to get better resolution.
+
+49.0.1 - 2019-06-04
+- adding Timestamp::getLeapSeconds() and Timestamp::setLeapSeconds() functions for retrieving and adjusting
+  the number of leap seconds between GPS and UTC time used by MSCLs conversion.
+
+49.0.0 - 2019-06-04
+- RENAMED MipDataPacket::utcTimestamp() to MipDataPacket::deviceTimestamp()
+- RENAMED MipDataPacket::utcTimeValid() to MipDataPacket::deviceTimeValid()
+- RENAMED MipDataPacket::utcTimeFlags() to MipDataPacket::deviceTimeFlags()
+- parsing CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP, CH_FIELD_GNSS_GPS_TIME, and CH_FIELD_ESTFILTER_GPS_TIMESTAMP 
+  fields into deviceTimestamp packet meta-data.
+- when deviceTimestamp fields are present, using this information to better set the MipDataPacket::collectedTimestamp()
+  which helps prevent bunching up of points.
+
+48.3.9 - 2019-05-20
+- add support for MIP Device Status command (0x0C, 0x64) for additional model numbers (previously supported only GX5-45)
+
+48.3.8 - 2019-05-13
+- set timeout for Capture Gyro Bias command based on specified sampling time to allow for full 30 s range
+
+48.3.7 - 2019-05-03
+- removed MIP Channel sample rate validation
+- handle sample rates below 1 Hz for MIP channels (rate type seconds per sample instead of Hz)
+
+48.3.6 - 2019-04-15
+- added support for inertial command Get/Set Gravity Noise Minimum (0x0D, 0x2A)
 
 48.3.5 - 2019-04-08
 - update SHM-Link-201 and SHM-Link-210 Japan transmit powers

@@ -67,9 +67,6 @@ namespace mscl
                 throw Error("MipChannel (" + Utils::toStr(ch.channelField()) +") is not in the Sensor descriptor set");
             }
 
-            //validate the sample rate for the channel
-            ch.validateSampleRate(sampleRateBase);
-
             //add the field descriptor and rate decimation
             fieldData.append_uint8(ch.fieldDescriptor());
             fieldData.append_uint16(ch.rateDecimation(sampleRateBase));

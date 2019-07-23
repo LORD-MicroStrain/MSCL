@@ -65,11 +65,6 @@ public class MipTypes : global::System.IDisposable {
     RESET_TO_DEFAULT = 0x05
   }
 
-  public enum StatusSelector {
-    BASIC_STATUS_STRUCTURE = 0x01,
-    DIAGNOSTIC_STATUS_STRUCTURE = 0x02
-  }
-
   public enum EnableSetting {
     DISABLED = 0,
     ENABLED = 1
@@ -152,6 +147,7 @@ public class MipTypes : global::System.IDisposable {
     CMD_EF_MAG_CAPTURE_AUTO_CAL = 0x0D27,
     CMD_EF_GRAVITY_NOISE_STD_DEV = 0x0D28,
     CMD_EF_PRESS_ALT_NOISE_STD_DEV = 0x0D29,
+    CMD_EF_GRAVITY_NOISE_MINIMUM = 0x0D2A,
     CMD_EF_HARD_IRON_OFFSET_PROCESS_NOISE = 0x0D2B,
     CMD_EF_SOFT_IRON_OFFSET_PROCESS_NOISE = 0x0D2C,
     CMD_EF_ENABLE_DISABLE_MEASUREMENTS = 0x0D41,

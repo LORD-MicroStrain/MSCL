@@ -9,6 +9,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
+#include "mscl/MicroStrain/Inertial/InertialModels.h"
 
 namespace mscl
 {
@@ -26,17 +27,33 @@ namespace mscl
         //    std::string - the string name for this class.
         virtual std::string commandName() const { return "DeviceStatus"; }
 
-        //Function: MakeBasicStatusCommand
+        //Function: MakeGetCommand
+        //
+        //Parameters:
+        //    model - model number of the current device
+        //    statusSelector - response format (basic or diagnostic)
+        //
+        //Returns:
+        //    DeviceStatus - object set up for getting the device status.
+        static DeviceStatus MakeGetCommand(InertialModels::NodeModel model, DeviceStatusData::StatusSelector statusSelector);
+
+        //Function: MakeGetBasicCommand
+        //
+        //Parameters:
+        //    model - model number of the current device
 		//
         //Returns:
         //    DeviceStatus - object set up for getting a basic status.
-        static DeviceStatus MakeBasicStatusCommand();
+        static DeviceStatus MakeGetBasicCommand(InertialModels::NodeModel model);
 
-        //Function: MakeDiagnosticStatusCommand
+        //Function: MakeGetDiagnosticCommand
+        //
+        //Parameters:
+        //    model - model number of the current device
 		//
         //Returns:
         //    DeviceStatus - object set up for getting a diagnostic status.
-        static DeviceStatus MakeDiagnosticStatusCommand();
+        static DeviceStatus MakeGetDiagnosticCommand(InertialModels::NodeModel model);
 
         //Function: getResponseData
 		//
@@ -44,7 +61,7 @@ namespace mscl
         //    response - The <GenericMipCmdResponse> object from which to get formatted data.
 		//
         //Returns:
-        //    ConstellationSettingsData - An object with the data returned from the device.
+        //    DeviceStatusData - An object with the data returned from the device.
         static DeviceStatusData getResponseData(const GenericMipCmdResponse& response);
 
         //Function: operator ByteStream
@@ -54,7 +71,7 @@ namespace mscl
     private:
         // Function: Constructor DeviceStatus
         //    Private constructor creates a DeviceStatus object.  Use Make___Command methods to create an object.
-		DeviceStatus(MipTypes::StatusSelector status_selector);
+		DeviceStatus(InertialModels::NodeModel model, DeviceStatusData::StatusSelector status_selector);
 
         //Function: commandType
 		//
@@ -74,13 +91,13 @@ namespace mscl
         //    bool - True indicates that a response should return from the device.
         virtual bool responseExpected() const;
 
-        //Variable: m_data
-        //    The DeviceStatusData to send to the device.
-        DeviceStatusData m_data;
+        //Variable: m_model
+        //    The inertial <NodeModel> of the device.
+        InertialModels::NodeModel m_model;
 
-        //Variable: m_StatusSelector
-        //    The StatusSelector type of command to send, get/set, reset to factory defaults, et al.
-        MipTypes::StatusSelector m_StatusSelector;
+        //Variable: m_statusSelector
+        //    The <StatusSelector> to determine
+        DeviceStatusData::StatusSelector m_statusSelector;
 
     public:
 	// Destructor

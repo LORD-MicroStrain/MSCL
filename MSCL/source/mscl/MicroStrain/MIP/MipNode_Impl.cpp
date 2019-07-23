@@ -24,6 +24,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Inertial/Commands/AdaptiveMeasurement.h"
 #include "mscl/MicroStrain/Inertial/Commands/AdvancedLowPassFilterSettings.h"
 #include "mscl/MicroStrain/Inertial/Commands/CaptureGyroBias.h"
+#include "mscl/MicroStrain/Inertial/Commands/MagnetometerCaptureAutoCalibration.h"
 #include "mscl/MicroStrain/Inertial/Commands/ComplementaryFilterSettings.h"
 #include "mscl/MicroStrain/Inertial/Commands/ConingAndScullingEnable.h"
 #include "mscl/MicroStrain/Inertial/Commands/ContinuousDataStream.h"
@@ -598,6 +599,11 @@ namespace mscl
                     setCmds.push_back(MipCommandBytes(cmd, s.data()));
                 }
                 break;
+            case MipTypes::CMD_EF_MAG_CAPTURE_AUTO_CAL:
+                {
+                setCmds.push_back(MipCommandBytes(cmd));
+                }
+                break;
             case MipTypes::CMD_MAG_SOFT_IRON_MATRIX:
                 {
                     Matrix_3x3 data = getMagnetometerSoftIronMatrix();
@@ -724,6 +730,7 @@ namespace mscl
             case MipTypes::CMD_EF_GRAVITY_NOISE_STD_DEV:
             case MipTypes::CMD_EF_HARD_IRON_OFFSET_PROCESS_NOISE:
             case MipTypes::CMD_EF_MAG_NOISE_STD_DEV:
+            case MipTypes::CMD_EF_GRAVITY_NOISE_MINIMUM:
                 {
                     GeometricVectors data = getGeometricVectors(cmd);
                     GeometricVectorCommand set = GeometricVectorCommand::MakeSetCommand(cmd, data);
@@ -1127,6 +1134,12 @@ namespace mscl
         doCommand(r, VelocityZUPTControl::buildCommand_set(ZUPTSettings));
     }
 
+    void MipNode_Impl::captureTareOrientation(const TareAxisValues& axisValue) {
+        TareOrientation::Response r(m_responseCollector, false);
+        
+        doCommand(r, TareOrientation::buildCommand_set(axisValue));
+    }
+
     ZUPTSettingsData MipNode_Impl::getAngularRateZUPT() const
     {
         AngularRateZUPTControl::Response r(m_responseCollector, true);
@@ -1313,16 +1326,34 @@ namespace mscl
 
     GeometricVector MipNode_Impl::captureGyroBias(const uint16& samplingTime)
     {
-        // 5 second response timeout for this command, to allow for 1-3 sec processing on device.
+        // TODO - up to 30 s is a long timeout - should we ignore the response and just let the user
+        //      query the gyro bias command afterwards on their own? We would not know about failures in this case.
+        //      Maybe parameterize whether or not we should wait for a response?
+
+        // increase timeout to sampling time with additional buffer (at least as long as currently set timeout) to allow for processing on device.
         const uint64 originalTimeout = timeout();
-        const uint64 temporaryTimeout = 5000;
+        const uint64 temporaryTimeout = samplingTime + (originalTimeout > 2000 ? originalTimeout : 2000);
+
+        //when this goes out of scope, it will write back the original timeout (need cast for overloaded ambiguity)
+        ScopeHelper writebackTimeout(std::bind(static_cast<void(MipNode_Impl::*)(uint64)>(&MipNode_Impl::timeout), this, originalTimeout));
 
         CaptureGyroBias captureGyroBiasCmd = CaptureGyroBias::MakeCommand(samplingTime);
         std::shared_ptr<GenericMipCommand::Response> responsePtr = captureGyroBiasCmd.createResponse(m_responseCollector);
         timeout(temporaryTimeout);
         GenericMipCmdResponse response = doCommand(*responsePtr, captureGyroBiasCmd);
-        timeout(originalTimeout);
         return captureGyroBiasCmd.getResponseData(response);
+    }
+
+    void MipNode_Impl::findMagnetometerCaptureAutoCalibration()
+    {
+        MagnetometerCaptureAutoCalibration magnetometerCaptureAutoCalibrationCmd = MagnetometerCaptureAutoCalibration::MakeCommand();
+        SendCommand(magnetometerCaptureAutoCalibrationCmd);
+    }
+
+    void MipNode_Impl::saveMagnetometerCaptureAutoCalibration()
+    {
+        MagnetometerCaptureAutoCalibration magnetometerCaptureAutoCalibrationCmd = MagnetometerCaptureAutoCalibration::MakeSaveCommand();
+        SendCommand(magnetometerCaptureAutoCalibrationCmd);
     }
 
     void MipNode_Impl::setMagnetometerSoftIronMatrix(const Matrix_3x3& biasVector)
@@ -1405,14 +1436,14 @@ namespace mscl
 
     DeviceStatusData MipNode_Impl::getBasicDeviceStatus()
     {
-        DeviceStatus deviceStatus = DeviceStatus::MakeBasicStatusCommand();
+        DeviceStatus deviceStatus = DeviceStatus::MakeGetBasicCommand(InertialModels::nodeFromModelString(modelNumber()));
         GenericMipCmdResponse response = SendCommand(deviceStatus);
         return deviceStatus.getResponseData(response);
     }
 
     DeviceStatusData MipNode_Impl::getDiagnosticDeviceStatus()
     {
-        DeviceStatus deviceStatus = DeviceStatus::MakeDiagnosticStatusCommand();
+        DeviceStatus deviceStatus = DeviceStatus::MakeGetDiagnosticCommand(InertialModels::nodeFromModelString(modelNumber()));
         GenericMipCmdResponse response = SendCommand(deviceStatus);
         return deviceStatus.getResponseData(response);
     }

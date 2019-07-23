@@ -366,6 +366,43 @@ namespace mscl
         };
     };
 
+
+    //Class: TareOrientation
+    //    Contains the logic for the "Tare Orientation" command
+    class TareOrientation
+    {
+    public:
+        //Constants: Packet Bytes
+        //  CMD_ID              - CMD_EF_TARE_ORIENT - The <MipTypes::Command> for this command
+        //  FIELD_DATA_BYTE     - 0x00 - The Data Field Descriptor byte as there is no data field
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_EF_TARE_ORIENT;
+        static const uint8 FIELD_DATA_BYTE = 0xF1;
+
+    private:
+        TareOrientation() = delete;
+
+    public:
+
+        //Function: buildCommand_set
+        //    Builds the bytes for the "set" command.
+        //
+        //Parameters:
+        //    functionSelector - The function selector for how to load and save data.
+        //    axisValue - The TareAxisValues for which axes to tare.
+        static ByteStream buildCommand_set(const TareAxisValues& axisValue);
+
+        class Response : public GenericMipCommand::Response
+        {
+        protected:
+            virtual MipTypes::Command commandId() const { return CMD_ID; }
+            virtual uint8 fieldDataByte() const { return FIELD_DATA_BYTE; }
+
+        public:
+            Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
+            bool parseResponse(const GenericMipCmdResponse& response) const;
+        };
+    };
+
     //Class: AutoInitializeControl
     //    Contains the logic for the "Auto-Initialization Control" command
     class AutoInitializeControl

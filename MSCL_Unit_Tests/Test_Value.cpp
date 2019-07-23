@@ -63,7 +63,7 @@ BOOST_AUTO_TEST_CASE(Value_as_double)
 BOOST_AUTO_TEST_CASE(Value_as_uint8)
 {
     Value val_float(valueType_float, anyType((float)123.456f));
-    Value val_double(valueType_double, anyType((double)1.7E50));
+    Value val_double(valueType_double, anyType((double)13.4));
     Value val_uint16(valueType_uint16, anyType((uint16)12));
     Value val_uint32(valueType_uint32, anyType((uint32)1234567890));
     Value val_int16(valueType_int16, anyType((int16)-48));
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE(Value_as_uint8)
 
     //check the result of calling as_uint8
     BOOST_CHECK_EQUAL(val_float.as_uint8(), 123);
-    BOOST_CHECK_EQUAL(val_double.as_uint8(), 0);
+    BOOST_CHECK_EQUAL(val_double.as_uint8(), 13);
     BOOST_CHECK_EQUAL(val_uint16.as_uint8(), 12);
     BOOST_CHECK_EQUAL(val_uint32.as_uint8(), 0xd2);
     BOOST_CHECK_EQUAL(val_int16.as_uint8(), 0xd0);
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(Value_as_uint8)
 BOOST_AUTO_TEST_CASE(Value_as_uint16)
 {
     Value val_float(valueType_float, anyType((float)123.456f));
-    Value val_double(valueType_double, anyType((double)1.7E50));
+    Value val_double(valueType_double, anyType((double)49125.7));
     Value val_uint16(valueType_uint16, anyType((uint16)65531));
     Value val_uint32(valueType_uint32, anyType((uint32)1234567890));
     Value val_int16(valueType_int16, anyType((int16)-48));
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE(Value_as_uint16)
 
     //check the result of calling as_uint16
     BOOST_CHECK_EQUAL(val_float.as_uint16(), 123);
-    BOOST_CHECK_EQUAL(val_double.as_uint16(), 0);
+    BOOST_CHECK_EQUAL(val_double.as_uint16(), 49125);
     BOOST_CHECK_EQUAL(val_uint16.as_uint16(), 65531);
     BOOST_CHECK_EQUAL(val_uint32.as_uint16(), 722);
     BOOST_CHECK_EQUAL(val_int16.as_uint16(), 65488);

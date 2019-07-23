@@ -31,7 +31,7 @@ namespace mscl
 
         uint32 adcCount = bytes.read_uint32();
 
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_DISPLACEMENT, valueType_uint32, anyType(adcCount), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_DISPLACEMENT, valueType_uint32, anyType(adcCount)));
     }
 
     bool FieldParser_RawPosition::registerParser()
@@ -52,7 +52,7 @@ namespace mscl
 
         float position = bytes.read_float();
 
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_DISPLACEMENT, valueType_float, anyType(position), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_DISPLACEMENT, valueType_float, anyType(position)));
     }
 
     bool FieldParser_Position::registerParser()

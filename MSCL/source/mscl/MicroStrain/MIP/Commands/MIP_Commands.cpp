@@ -114,7 +114,16 @@ namespace mscl
             MipTypes::ChannelField channelId = static_cast<MipTypes::ChannelField>(Utils::make_uint16(descSet, fieldDesc));
 
             //create a MipChannel and add to the result
-            result.push_back(MipChannel(channelId, SampleRate::Hertz(sampleRateBase / rateDecimation)));
+            if (rateDecimation <= sampleRateBase)
+            {
+                uint32 rate = static_cast<uint32>(Utils::round(static_cast<float>(sampleRateBase) / static_cast<float>(rateDecimation)));
+                result.push_back(MipChannel(channelId, SampleRate::Hertz(rate)));
+            }
+            else
+            {
+                uint32 rate = static_cast<uint32>(Utils::round(static_cast<float>(rateDecimation) / static_cast<float>(sampleRateBase)));
+                result.push_back(MipChannel(channelId, SampleRate::Seconds(rate)));
+            }
         }
 
         //return the MipChannels result

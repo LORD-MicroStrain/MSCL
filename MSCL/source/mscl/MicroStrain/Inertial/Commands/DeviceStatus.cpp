@@ -7,18 +7,24 @@
 
 namespace mscl
 {
-    DeviceStatus::DeviceStatus(MipTypes::StatusSelector status_selector) :
-        m_StatusSelector(status_selector)
+    DeviceStatus::DeviceStatus(InertialModels::NodeModel model, DeviceStatusData::StatusSelector status_selector) :
+        m_model(model),
+        m_statusSelector(status_selector)
     { }
 
-    DeviceStatus DeviceStatus::MakeBasicStatusCommand()
+    DeviceStatus DeviceStatus::MakeGetCommand(InertialModels::NodeModel model, DeviceStatusData::StatusSelector statusSelector)
     {
-        return DeviceStatus(MipTypes::BASIC_STATUS_STRUCTURE);
+        return DeviceStatus(model, statusSelector);
     }
 
-    DeviceStatus DeviceStatus::MakeDiagnosticStatusCommand()
+    DeviceStatus DeviceStatus::MakeGetBasicCommand(InertialModels::NodeModel model)
     {
-        return DeviceStatus(MipTypes::DIAGNOSTIC_STATUS_STRUCTURE);
+        return DeviceStatus(model, DeviceStatusData::BASIC_STATUS_STRUCTURE);
+    }
+
+    DeviceStatus DeviceStatus::MakeGetDiagnosticCommand(InertialModels::NodeModel model)
+    {
+        return DeviceStatus(model, DeviceStatusData::DIAGNOSTIC_STATUS_STRUCTURE);
     }
 
     bool DeviceStatus::responseExpected() const
@@ -30,36 +36,330 @@ namespace mscl
     {
         DataBuffer dataBuffer(response.data());
         DeviceStatusData returnData;
-        if (dataBuffer.read_uint16() != InertialModels::node_3dm_gx5_45)
-            throw mscl::Error_NotSupported("This command is currently only implemented for the GX5-45 device.");
 
-        MipTypes::StatusSelector statusSelector = static_cast<MipTypes::StatusSelector>(dataBuffer.read_uint8());
+        returnData.modelNumber = dataBuffer.read_uint16();
+        InertialModels::NodeModel model = static_cast<InertialModels::NodeModel>(returnData.modelNumber);
+        returnData.statusStructure = static_cast<DeviceStatusData::StatusSelector>(dataBuffer.read_uint8());
         dataBuffer.read_uint32();   // Status flags are unused as of this writing, so just drop this on the floor.
-        returnData.systemState = dataBuffer.read_uint16();
-        returnData.systemTimerInMS = dataBuffer.read_uint32();
 
-        //for a basic structure, we're done.  Diagnostic structures have more data.
-        if (statusSelector == MipTypes::BASIC_STATUS_STRUCTURE)
-            return returnData;
+        switch (model)
+        {
+        case InertialModels::node_3dm_gq4_45:
+        {
+            returnData.systemState(static_cast<DeviceStatusData::SystemState>(dataBuffer.read_uint16()));
+            returnData.systemTimerInMS = dataBuffer.read_uint32();
 
-        returnData.gnssPowerStateOn = (dataBuffer.read_uint8() == MipTypes::ENABLED) ? true : false;
-        returnData.numberof1PPSPulses = dataBuffer.read_uint32();
-        returnData.last1PPSInMS = dataBuffer.read_uint32();
-        returnData.imuStreamIsEnabled = (dataBuffer.read_uint8() == MipTypes::ENABLED) ? true : false;
-        returnData.gnssStreamIsEnabled = (dataBuffer.read_uint8() == MipTypes::ENABLED) ? true : false;
-        returnData.estimationFilterStreamIsEnabled = (dataBuffer.read_uint8() == MipTypes::ENABLED) ? true : false;
-        returnData.outgoingIMUDroppedPacketCount = dataBuffer.read_uint32();
-        returnData.outgoingGnssDroppedPacketCount = dataBuffer.read_uint32();
-        returnData.outgoingEstimationFilterDroppedPacketCount = dataBuffer.read_uint32();
-        returnData.numOfBytesWrittenToComPort = dataBuffer.read_uint32();
-        returnData.numOfBytesWrittenFromComPort = dataBuffer.read_uint32();
-        returnData.numOfOverrunsOnWriteToComPort = dataBuffer.read_uint32();
-        returnData.numOfIMUParsingErrors = dataBuffer.read_uint32();
-        returnData.totalIMUMessagesRead = dataBuffer.read_uint32();
-        returnData.lastIMUMessageReadInMS = dataBuffer.read_uint32();
-        returnData.numOfGnssParsingErrors = dataBuffer.read_uint32();
-        returnData.totalGnssMessagesRead = dataBuffer.read_uint32();
-        returnData.lastGnssMessageReadInMS = dataBuffer.read_uint32();
+            if (returnData.statusStructure == DeviceStatusData::StatusSelector::BASIC_STATUS_STRUCTURE)
+            {
+                return returnData;
+            }
+
+            returnData.gnssPowerStateOn((dataBuffer.read_uint8() == MipTypes::ENABLED));
+
+            PpsPulseInfo gnss;
+            gnss.count = dataBuffer.read_uint32();
+            gnss.lastTimeinMS = dataBuffer.read_uint32();
+            returnData.gnss1PpsPulseInfo(gnss);
+
+            StreamInfo imuStream;
+            StreamInfo gnssStream;
+            StreamInfo efStream;
+
+            imuStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+            gnssStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+            efStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+
+            imuStream.outgoingPacketsDropped = dataBuffer.read_uint32();
+            gnssStream.outgoingPacketsDropped = dataBuffer.read_uint32();
+            efStream.outgoingPacketsDropped = dataBuffer.read_uint32();
+
+            returnData.imuStreamInfo(imuStream);
+            returnData.gnssStreamInfo(gnssStream);
+            returnData.estimationFilterStreamInfo(efStream);
+
+            PortInfo com;
+            com.bytesWritten = dataBuffer.read_uint32();
+            com.bytesRead = dataBuffer.read_uint32();
+            com.overrunsOnWrite = dataBuffer.read_uint32();
+            com.overrunsOnRead = dataBuffer.read_uint32();
+            returnData.comPortInfo(com);
+
+            DeviceMessageInfo imuMessages;
+            imuMessages.messageParsingErrors = dataBuffer.read_uint32();
+            imuMessages.messagesRead = dataBuffer.read_uint32();
+            imuMessages.lastMessageReadinMS = dataBuffer.read_uint32();
+            returnData.imuMessageInfo(imuMessages);
+
+            DeviceMessageInfo gnssMessages;
+            gnssMessages.messageParsingErrors = dataBuffer.read_uint32();
+            gnssMessages.messagesRead = dataBuffer.read_uint32();
+            gnssMessages.lastMessageReadinMS = dataBuffer.read_uint32();
+            returnData.gnssMessageInfo(gnssMessages);
+
+            returnData.magnetometerInitializationFailed((dataBuffer.read_uint8() == 0x01));
+            returnData.pressureInitializationFailed((dataBuffer.read_uint8() == 0x01));
+            returnData.gnssReceiverInitializationFailed((dataBuffer.read_uint8() == 0x01));
+        }
+        break;
+        
+        case InertialModels::node_3dm_rq1_45_lt:
+        case InertialModels::node_3dm_rq1_45_st:
+        {
+            returnData.systemState(static_cast<DeviceStatusData::SystemState>(dataBuffer.read_uint16()));
+            returnData.systemTimerInMS = dataBuffer.read_uint32();
+
+            if (returnData.statusStructure == DeviceStatusData::StatusSelector::BASIC_STATUS_STRUCTURE)
+            {
+                return returnData;
+            }
+
+            returnData.gnssPowerStateOn((dataBuffer.read_uint8() == MipTypes::ENABLED));
+            returnData.coldStartOnPowerOn((dataBuffer.read_uint8() == MipTypes::ENABLED));
+
+            TemperatureInfo temp;
+            temp.onBoardTemp = dataBuffer.read_float();
+            temp.lastReadInMS = dataBuffer.read_uint32();
+            returnData.temperatureInfo(temp);
+
+            PpsPulseInfo gnss;
+            gnss.count = dataBuffer.read_uint32();
+            gnss.lastTimeinMS = dataBuffer.read_uint32();
+            returnData.gnss1PpsPulseInfo(gnss);
+
+            StreamInfo imuStream;
+            StreamInfo gnssStream;
+            StreamInfo efStream;
+
+            imuStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+            gnssStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+            efStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+
+            imuStream.outgoingPacketsDropped = dataBuffer.read_uint32();
+            gnssStream.outgoingPacketsDropped = dataBuffer.read_uint32();
+            efStream.outgoingPacketsDropped = dataBuffer.read_uint32();
+
+            returnData.imuStreamInfo(imuStream);
+            returnData.gnssStreamInfo(gnssStream);
+            returnData.estimationFilterStreamInfo(efStream);
+
+            PortInfo com;
+            com.bytesWritten = dataBuffer.read_uint32();
+            com.bytesRead = dataBuffer.read_uint32();
+            com.overrunsOnWrite = dataBuffer.read_uint32();
+            com.overrunsOnRead = dataBuffer.read_uint32();
+            returnData.comPortInfo(com);
+
+            DeviceMessageInfo imuMessages;
+            imuMessages.messageParsingErrors = dataBuffer.read_uint32();
+            imuMessages.messagesRead = dataBuffer.read_uint32();
+            imuMessages.lastMessageReadinMS = dataBuffer.read_uint32();
+            returnData.imuMessageInfo(imuMessages);
+
+            DeviceMessageInfo gnssMessages;
+            gnssMessages.messageParsingErrors = dataBuffer.read_uint32();
+            gnssMessages.messagesRead = dataBuffer.read_uint32();
+            gnssMessages.lastMessageReadinMS = dataBuffer.read_uint32();
+            returnData.gnssMessageInfo(gnssMessages);
+        }
+        break;
+
+        case InertialModels::node_3dm_gx5_10:
+        case InertialModels::node_3dm_cx5_10:
+        case InertialModels::node_3dm_cv5_10:
+        {
+            returnData.systemTimerInMS = dataBuffer.read_uint32();
+
+            if (returnData.statusStructure == DeviceStatusData::StatusSelector::BASIC_STATUS_STRUCTURE)
+            {
+                return returnData;
+            }
+
+            returnData.hasMagnetometer(dataBuffer.read_uint8() == MipTypes::ENABLED);
+            returnData.hasPressure(dataBuffer.read_uint8() == MipTypes::ENABLED);
+            returnData.powerState(static_cast<InertialTypes::PowerState>(dataBuffer.read_uint8()));
+            returnData.gyroRange(dataBuffer.read_uint16());
+            returnData.accelRange(dataBuffer.read_uint16());
+
+            //reserved bytes, ignore value
+            dataBuffer.read_uint32();
+
+            TemperatureInfo temp;
+            temp.onBoardTemp = dataBuffer.read_float();
+            temp.lastReadInMS = dataBuffer.read_uint32();
+            temp.error = dataBuffer.read_uint8();
+            returnData.temperatureInfo(temp);
+
+            PpsPulseInfo gnss;
+            gnss.count = dataBuffer.read_uint32();
+            gnss.lastTimeinMS = dataBuffer.read_uint32();
+            returnData.gnss1PpsPulseInfo(gnss);
+
+            StreamInfo imu;
+            imu.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+            imu.outgoingPacketsDropped = dataBuffer.read_uint32();
+            returnData.imuStreamInfo(imu);
+
+            PortInfo com;
+            com.bytesWritten = dataBuffer.read_uint32();
+            com.bytesRead = dataBuffer.read_uint32();
+            com.overrunsOnWrite = dataBuffer.read_uint32();
+            com.overrunsOnRead = dataBuffer.read_uint32();
+            returnData.comPortInfo(com);
+        }
+        break;
+
+        case InertialModels::node_3dm_gx5_15:
+        case InertialModels::node_3dm_gx5_25:
+        case InertialModels::node_3dm_cx5_15:
+        case InertialModels::node_3dm_cx5_25:
+        case InertialModels::node_3dm_cv5_15:
+        case InertialModels::node_3dm_cv5_25:
+        {
+            returnData.systemState(static_cast<DeviceStatusData::SystemState>(dataBuffer.read_uint16()));
+            returnData.systemTimerInMS = dataBuffer.read_uint32();
+
+            if (returnData.statusStructure == DeviceStatusData::StatusSelector::BASIC_STATUS_STRUCTURE)
+            {
+                return returnData;
+            }
+
+            StreamInfo imuStream;
+            StreamInfo efStream;
+
+            imuStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+            efStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+
+            imuStream.outgoingPacketsDropped = dataBuffer.read_uint32();
+            efStream.outgoingPacketsDropped = dataBuffer.read_uint32();
+
+            returnData.imuStreamInfo(imuStream);
+            returnData.estimationFilterStreamInfo(efStream);
+
+            PortInfo com;
+            com.bytesWritten = dataBuffer.read_uint32();
+            com.bytesRead = dataBuffer.read_uint32();
+            com.overrunsOnWrite = dataBuffer.read_uint32();
+            com.overrunsOnRead = dataBuffer.read_uint32();
+            returnData.comPortInfo(com);
+
+            DeviceMessageInfo imuMessages;
+            imuMessages.messageParsingErrors = dataBuffer.read_uint32();
+            imuMessages.messagesRead = dataBuffer.read_uint32();
+            imuMessages.lastMessageReadinMS = dataBuffer.read_uint32();
+            returnData.imuMessageInfo(imuMessages);
+        }
+        break;
+
+        case InertialModels::node_3dm_gx4_15:
+        case InertialModels::node_3dm_gx4_25:
+        {
+            returnData.systemTimerInMS = dataBuffer.read_uint32();
+
+            if (returnData.statusStructure == DeviceStatusData::StatusSelector::BASIC_STATUS_STRUCTURE)
+            {
+                return returnData;
+            }
+
+            PpsPulseInfo gnss;
+            gnss.count = dataBuffer.read_uint32();
+            gnss.lastTimeinMS = dataBuffer.read_uint32();
+            returnData.gnss1PpsPulseInfo(gnss);
+
+            StreamInfo imuStream;
+            StreamInfo efStream;
+
+            imuStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+            efStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+
+            imuStream.outgoingPacketsDropped = dataBuffer.read_uint32();
+            efStream.outgoingPacketsDropped = dataBuffer.read_uint32();
+
+            returnData.imuStreamInfo(imuStream);
+            returnData.estimationFilterStreamInfo(efStream);
+
+            PortInfo com;
+            com.bytesWritten = dataBuffer.read_uint32();
+            com.bytesRead = dataBuffer.read_uint32();
+            com.overrunsOnWrite = dataBuffer.read_uint32();
+            com.overrunsOnRead = dataBuffer.read_uint32();
+            returnData.comPortInfo(com);
+
+            PortInfo usb;
+            usb.bytesWritten = dataBuffer.read_uint32();
+            usb.bytesRead = dataBuffer.read_uint32();
+            usb.overrunsOnWrite = dataBuffer.read_uint32();
+            usb.overrunsOnRead = dataBuffer.read_uint32();
+            returnData.usbPortInfo(usb);
+
+            DeviceMessageInfo imuMessages;
+            imuMessages.messageParsingErrors = dataBuffer.read_uint32();
+            imuMessages.messagesRead = dataBuffer.read_uint32();
+            imuMessages.lastMessageReadinMS = dataBuffer.read_uint32();
+            returnData.imuMessageInfo(imuMessages);
+        }
+        break;
+
+        case InertialModels::node_3dm_gx5_35:
+        case InertialModels::node_3dm_gx5_45:
+        case InertialModels::node_3dm_cx5_35:
+        case InertialModels::node_3dm_cx5_45:
+        case InertialModels::node_3dm_gx4_45:
+        {
+            returnData.systemState(static_cast<DeviceStatusData::SystemState>(dataBuffer.read_uint16()));
+            returnData.systemTimerInMS = dataBuffer.read_uint32();
+
+            if (returnData.statusStructure == DeviceStatusData::StatusSelector::BASIC_STATUS_STRUCTURE)
+            {
+                return returnData;
+            }
+
+            returnData.gnssPowerStateOn((dataBuffer.read_uint8() == MipTypes::ENABLED));
+
+            PpsPulseInfo gnss;
+            gnss.count = dataBuffer.read_uint32();
+            gnss.lastTimeinMS = dataBuffer.read_uint32();
+            returnData.gnss1PpsPulseInfo(gnss);
+
+            StreamInfo imuStream;
+            StreamInfo gnssStream;
+            StreamInfo efStream;
+
+            imuStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+            gnssStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+            efStream.enabled = (dataBuffer.read_uint8() == MipTypes::ENABLED);
+
+            imuStream.outgoingPacketsDropped = dataBuffer.read_uint32();
+            gnssStream.outgoingPacketsDropped = dataBuffer.read_uint32();
+            efStream.outgoingPacketsDropped = dataBuffer.read_uint32();
+
+            returnData.imuStreamInfo(imuStream);
+            returnData.gnssStreamInfo(gnssStream);
+            returnData.estimationFilterStreamInfo(efStream);
+
+            PortInfo com;
+            com.bytesWritten = dataBuffer.read_uint32();
+            com.bytesRead = dataBuffer.read_uint32();
+            com.overrunsOnWrite = dataBuffer.read_uint32();
+            com.overrunsOnRead = dataBuffer.read_uint32();
+            returnData.comPortInfo(com);
+
+            DeviceMessageInfo imuMessages;
+            imuMessages.messageParsingErrors = dataBuffer.read_uint32();
+            imuMessages.messagesRead = dataBuffer.read_uint32();
+            imuMessages.lastMessageReadinMS = dataBuffer.read_uint32();
+            returnData.imuMessageInfo(imuMessages);
+
+            DeviceMessageInfo gnssMessages;
+            gnssMessages.messageParsingErrors = dataBuffer.read_uint32();
+            gnssMessages.messagesRead = dataBuffer.read_uint32();
+            gnssMessages.lastMessageReadinMS = dataBuffer.read_uint32();
+            returnData.gnssMessageInfo(gnssMessages);
+        }
+        break;
+
+        default:
+            throw mscl::Error_NotSupported("MSCL support for Device Status (0x0C, 0x64) is not currently implemented for this device. Model number: " + std::to_string(returnData.modelNumber));
+        }
 
         return returnData;
     }
@@ -67,8 +367,8 @@ namespace mscl
     DeviceStatus::operator ByteStream() const
     {
         ByteStream byteCommand;
-        byteCommand.append_uint16(InertialModels::node_3dm_gx5_45);
-        byteCommand.append_uint8(static_cast<uint8>(m_StatusSelector));
+        byteCommand.append_uint16(static_cast<uint16>(m_model));
+        byteCommand.append_uint8(static_cast<uint8>(m_statusSelector));
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }
 

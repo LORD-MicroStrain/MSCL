@@ -44,13 +44,25 @@ public class DeviceStatusData : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public ushort systemState {
+  public ushort modelNumber {
     set {
-      msclPINVOKE.DeviceStatusData_systemState_set(swigCPtr, value);
+      msclPINVOKE.DeviceStatusData_modelNumber_set(swigCPtr, value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      ushort ret = msclPINVOKE.DeviceStatusData_systemState_get(swigCPtr);
+      ushort ret = msclPINVOKE.DeviceStatusData_modelNumber_get(swigCPtr);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
+  public DeviceStatusData.StatusSelector statusStructure {
+    set {
+      msclPINVOKE.DeviceStatusData_statusStructure_set(swigCPtr, (int)value);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      DeviceStatusData.StatusSelector ret = (DeviceStatusData.StatusSelector)msclPINVOKE.DeviceStatusData_statusStructure_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
@@ -68,220 +80,235 @@ public class DeviceStatusData : global::System.IDisposable {
     } 
   }
 
-  public bool gnssPowerStateOn {
-    set {
-      msclPINVOKE.DeviceStatusData_gnssPowerStateOn_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      bool ret = msclPINVOKE.DeviceStatusData_gnssPowerStateOn_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public DeviceStatusData.SystemState systemState() {
+    DeviceStatusData.SystemState ret = (DeviceStatusData.SystemState)msclPINVOKE.DeviceStatusData_systemState__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
-  public uint numberof1PPSPulses {
-    set {
-      msclPINVOKE.DeviceStatusData_numberof1PPSPulses_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      uint ret = msclPINVOKE.DeviceStatusData_numberof1PPSPulses_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public void systemState(DeviceStatusData.SystemState val) {
+    msclPINVOKE.DeviceStatusData_systemState__SWIG_1(swigCPtr, (int)val);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public uint last1PPSInMS {
-    set {
-      msclPINVOKE.DeviceStatusData_last1PPSInMS_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      uint ret = msclPINVOKE.DeviceStatusData_last1PPSInMS_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public bool gnssPowerStateOn() {
+    bool ret = msclPINVOKE.DeviceStatusData_gnssPowerStateOn__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
-  public bool imuStreamIsEnabled {
-    set {
-      msclPINVOKE.DeviceStatusData_imuStreamIsEnabled_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      bool ret = msclPINVOKE.DeviceStatusData_imuStreamIsEnabled_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public void gnssPowerStateOn(bool val) {
+    msclPINVOKE.DeviceStatusData_gnssPowerStateOn__SWIG_1(swigCPtr, val);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public bool gnssStreamIsEnabled {
-    set {
-      msclPINVOKE.DeviceStatusData_gnssStreamIsEnabled_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      bool ret = msclPINVOKE.DeviceStatusData_gnssStreamIsEnabled_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public PpsPulseInfo gnss1PpsPulseInfo() {
+    PpsPulseInfo ret = new PpsPulseInfo(msclPINVOKE.DeviceStatusData_gnss1PpsPulseInfo__SWIG_0(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
-  public bool estimationFilterStreamIsEnabled {
-    set {
-      msclPINVOKE.DeviceStatusData_estimationFilterStreamIsEnabled_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      bool ret = msclPINVOKE.DeviceStatusData_estimationFilterStreamIsEnabled_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public void gnss1PpsPulseInfo(PpsPulseInfo val) {
+    msclPINVOKE.DeviceStatusData_gnss1PpsPulseInfo__SWIG_1(swigCPtr, PpsPulseInfo.getCPtr(val));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public uint outgoingIMUDroppedPacketCount {
-    set {
-      msclPINVOKE.DeviceStatusData_outgoingIMUDroppedPacketCount_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      uint ret = msclPINVOKE.DeviceStatusData_outgoingIMUDroppedPacketCount_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public StreamInfo imuStreamInfo() {
+    StreamInfo ret = new StreamInfo(msclPINVOKE.DeviceStatusData_imuStreamInfo__SWIG_0(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
-  public uint outgoingGnssDroppedPacketCount {
-    set {
-      msclPINVOKE.DeviceStatusData_outgoingGnssDroppedPacketCount_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      uint ret = msclPINVOKE.DeviceStatusData_outgoingGnssDroppedPacketCount_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public void imuStreamInfo(StreamInfo val) {
+    msclPINVOKE.DeviceStatusData_imuStreamInfo__SWIG_1(swigCPtr, StreamInfo.getCPtr(val));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public uint outgoingEstimationFilterDroppedPacketCount {
-    set {
-      msclPINVOKE.DeviceStatusData_outgoingEstimationFilterDroppedPacketCount_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      uint ret = msclPINVOKE.DeviceStatusData_outgoingEstimationFilterDroppedPacketCount_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public StreamInfo gnssStreamInfo() {
+    StreamInfo ret = new StreamInfo(msclPINVOKE.DeviceStatusData_gnssStreamInfo__SWIG_0(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
-  public uint numOfBytesWrittenToComPort {
-    set {
-      msclPINVOKE.DeviceStatusData_numOfBytesWrittenToComPort_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      uint ret = msclPINVOKE.DeviceStatusData_numOfBytesWrittenToComPort_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public void gnssStreamInfo(StreamInfo val) {
+    msclPINVOKE.DeviceStatusData_gnssStreamInfo__SWIG_1(swigCPtr, StreamInfo.getCPtr(val));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public uint numOfBytesWrittenFromComPort {
-    set {
-      msclPINVOKE.DeviceStatusData_numOfBytesWrittenFromComPort_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      uint ret = msclPINVOKE.DeviceStatusData_numOfBytesWrittenFromComPort_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public StreamInfo estimationFilterStreamInfo() {
+    StreamInfo ret = new StreamInfo(msclPINVOKE.DeviceStatusData_estimationFilterStreamInfo__SWIG_0(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
-  public uint numOfOverrunsOnWriteToComPort {
-    set {
-      msclPINVOKE.DeviceStatusData_numOfOverrunsOnWriteToComPort_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      uint ret = msclPINVOKE.DeviceStatusData_numOfOverrunsOnWriteToComPort_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public void estimationFilterStreamInfo(StreamInfo val) {
+    msclPINVOKE.DeviceStatusData_estimationFilterStreamInfo__SWIG_1(swigCPtr, StreamInfo.getCPtr(val));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public uint numOfIMUParsingErrors {
-    set {
-      msclPINVOKE.DeviceStatusData_numOfIMUParsingErrors_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      uint ret = msclPINVOKE.DeviceStatusData_numOfIMUParsingErrors_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public DeviceMessageInfo imuMessageInfo() {
+    DeviceMessageInfo ret = new DeviceMessageInfo(msclPINVOKE.DeviceStatusData_imuMessageInfo__SWIG_0(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
-  public uint totalIMUMessagesRead {
-    set {
-      msclPINVOKE.DeviceStatusData_totalIMUMessagesRead_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      uint ret = msclPINVOKE.DeviceStatusData_totalIMUMessagesRead_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public void imuMessageInfo(DeviceMessageInfo val) {
+    msclPINVOKE.DeviceStatusData_imuMessageInfo__SWIG_1(swigCPtr, DeviceMessageInfo.getCPtr(val));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public uint lastIMUMessageReadInMS {
-    set {
-      msclPINVOKE.DeviceStatusData_lastIMUMessageReadInMS_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      uint ret = msclPINVOKE.DeviceStatusData_lastIMUMessageReadInMS_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public DeviceMessageInfo gnssMessageInfo() {
+    DeviceMessageInfo ret = new DeviceMessageInfo(msclPINVOKE.DeviceStatusData_gnssMessageInfo__SWIG_0(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
-  public uint numOfGnssParsingErrors {
-    set {
-      msclPINVOKE.DeviceStatusData_numOfGnssParsingErrors_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      uint ret = msclPINVOKE.DeviceStatusData_numOfGnssParsingErrors_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public void gnssMessageInfo(DeviceMessageInfo val) {
+    msclPINVOKE.DeviceStatusData_gnssMessageInfo__SWIG_1(swigCPtr, DeviceMessageInfo.getCPtr(val));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public uint totalGnssMessagesRead {
-    set {
-      msclPINVOKE.DeviceStatusData_totalGnssMessagesRead_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      uint ret = msclPINVOKE.DeviceStatusData_totalGnssMessagesRead_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public PortInfo comPortInfo() {
+    PortInfo ret = new PortInfo(msclPINVOKE.DeviceStatusData_comPortInfo__SWIG_0(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
-  public uint lastGnssMessageReadInMS {
-    set {
-      msclPINVOKE.DeviceStatusData_lastGnssMessageReadInMS_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      uint ret = msclPINVOKE.DeviceStatusData_lastGnssMessageReadInMS_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public void comPortInfo(PortInfo val) {
+    msclPINVOKE.DeviceStatusData_comPortInfo__SWIG_1(swigCPtr, PortInfo.getCPtr(val));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public PortInfo usbPortInfo() {
+    PortInfo ret = new PortInfo(msclPINVOKE.DeviceStatusData_usbPortInfo__SWIG_0(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void usbPortInfo(PortInfo val) {
+    msclPINVOKE.DeviceStatusData_usbPortInfo__SWIG_1(swigCPtr, PortInfo.getCPtr(val));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public bool hasMagnetometer() {
+    bool ret = msclPINVOKE.DeviceStatusData_hasMagnetometer__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void hasMagnetometer(bool val) {
+    msclPINVOKE.DeviceStatusData_hasMagnetometer__SWIG_1(swigCPtr, val);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public bool magnetometerInitializationFailed() {
+    bool ret = msclPINVOKE.DeviceStatusData_magnetometerInitializationFailed__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void magnetometerInitializationFailed(bool val) {
+    msclPINVOKE.DeviceStatusData_magnetometerInitializationFailed__SWIG_1(swigCPtr, val);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public bool hasPressure() {
+    bool ret = msclPINVOKE.DeviceStatusData_hasPressure__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void hasPressure(bool val) {
+    msclPINVOKE.DeviceStatusData_hasPressure__SWIG_1(swigCPtr, val);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public bool pressureInitializationFailed() {
+    bool ret = msclPINVOKE.DeviceStatusData_pressureInitializationFailed__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void pressureInitializationFailed(bool val) {
+    msclPINVOKE.DeviceStatusData_pressureInitializationFailed__SWIG_1(swigCPtr, val);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public bool gnssReceiverInitializationFailed() {
+    bool ret = msclPINVOKE.DeviceStatusData_gnssReceiverInitializationFailed__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void gnssReceiverInitializationFailed(bool val) {
+    msclPINVOKE.DeviceStatusData_gnssReceiverInitializationFailed__SWIG_1(swigCPtr, val);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public bool coldStartOnPowerOn() {
+    bool ret = msclPINVOKE.DeviceStatusData_coldStartOnPowerOn__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void coldStartOnPowerOn(bool val) {
+    msclPINVOKE.DeviceStatusData_coldStartOnPowerOn__SWIG_1(swigCPtr, val);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public TemperatureInfo temperatureInfo() {
+    TemperatureInfo ret = new TemperatureInfo(msclPINVOKE.DeviceStatusData_temperatureInfo__SWIG_0(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void temperatureInfo(TemperatureInfo val) {
+    msclPINVOKE.DeviceStatusData_temperatureInfo__SWIG_1(swigCPtr, TemperatureInfo.getCPtr(val));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public InertialTypes.PowerState powerState() {
+    InertialTypes.PowerState ret = (InertialTypes.PowerState)msclPINVOKE.DeviceStatusData_powerState__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void powerState(InertialTypes.PowerState val) {
+    msclPINVOKE.DeviceStatusData_powerState__SWIG_1(swigCPtr, (int)val);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public ushort gyroRange() {
+    ushort ret = msclPINVOKE.DeviceStatusData_gyroRange__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void gyroRange(ushort val) {
+    msclPINVOKE.DeviceStatusData_gyroRange__SWIG_1(swigCPtr, val);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public ushort accelRange() {
+    ushort ret = msclPINVOKE.DeviceStatusData_accelRange__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void accelRange(ushort val) {
+    msclPINVOKE.DeviceStatusData_accelRange__SWIG_1(swigCPtr, val);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public enum StatusSelector {
+    BASIC_STATUS_STRUCTURE = 0x01,
+    DIAGNOSTIC_STATUS_STRUCTURE = 0x02
+  }
+
+  public enum SystemState {
+    SYSTEM_INITIALIZATION = 0x0001,
+    SYSTEM_STARTUP = 0x0002,
+    SYSTEM_RUNNING = 0x0003
   }
 
 }

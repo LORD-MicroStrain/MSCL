@@ -67,6 +67,12 @@ namespace mscl
         return m_numColumns;
     }
 
+    double Matrix::as_doubleAt(uint16 row, uint16 column) const
+    {
+        //return the double at the requested position
+        return m_data.read_double(getBytePos(row, column));
+    }
+
     float Matrix::as_floatAt(uint16 row, uint16 column) const
     {
         //return the float at the requested position
@@ -89,7 +95,11 @@ namespace mscl
     {
         std::stringstream result;
 
-        result << "[";
+        if(m_numRows > 1)
+        {
+            result << "[";
+        }
+
         //for every value in the Matrix
         for (uint16 row = 0; row < m_numRows; row++)
         {
@@ -99,12 +109,20 @@ namespace mscl
                 //get the value of the value depending on how it is stored
                 switch(m_valuesType)
                 {
+                case valueType_uint8:
+                    result << as_uint8At(row, col);
+                    break;
+
                 case valueType_uint16:
                     result << as_uint16At(row, col);
                     break;
 
                 case valueType_float:
                     result << as_floatAt(row, col);
+                    break;
+
+                case valueType_double:
+                    result << as_doubleAt(row, col);
                     break;
 
                 //all other values not supported as a Vector type as of now
@@ -128,7 +146,11 @@ namespace mscl
                 result << ",";
             }
         }
-        result << "]";
+
+        if(m_numRows > 1)
+        {
+            result << "]";
+        }
 
         return result.str();
     }

@@ -62,9 +62,21 @@ public class InertialTypes : global::System.IDisposable {
     GPS_AIRBORNE_4G = 0x08
   }
 
+  public enum AxisBitfieldValues {
+    RESET_ALL_AXIS = 0x00,
+    TARE_ROLL_AXIS = 0x01,
+    TARE_PITCH_AXIS = 0x02,
+    TARE_YAW_AXIS = 0x04
+  }
+
   public enum GNSS_Source {
     INTERNAL_GNSS = 0x01,
     EXTERNAL_GNSS = 0x02
+  }
+
+  public enum GnssFixFlags {
+    FIX_SBAS_CORRECTIONS = 0x0001,
+    FIX_DGNSS_CORRECTIONS = 0x0002
   }
 
   public enum GnssFixType {
@@ -73,6 +85,11 @@ public class InertialTypes : global::System.IDisposable {
     FIXTYPE_TIMEONLY = 0x02,
     FIXTYPE_NONE = 0x03,
     FIXTYPE_INVALID = 0x04
+  }
+
+  public enum SpaceVehicleFlags {
+    SVFLAG_NAVIGATION = 0x0001,
+    SVFLAG_HEALTHY = 0x0002
   }
 
   public enum DeviceSelector {
@@ -119,7 +136,7 @@ public class InertialTypes : global::System.IDisposable {
     FILTERSTATE_RUNNING_SLN_ERROR = 0x03
   }
 
-  public enum FilterStatus {
+  public enum FilterStatus_Running {
     FILTERSTATUS_IMU_UNAVAILABLE = 0x0001,
     FILTERSTATUS_GPS_UNAVAILABLE = 0x0002,
     FILTERSTATUS_MATRIX_SINGULARITY_IN_CALC = 0x0008,
@@ -127,8 +144,30 @@ public class InertialTypes : global::System.IDisposable {
     FILTERSTATUS_VEL_COVARIANCE_HIGH_WARN = 0x0020,
     FILTERSTATUS_ATT_COVARIANCE_HIGH_WARN = 0x0040,
     FILTERSTATUS_NAN_IN_SOLUTION = 0x0080,
+    FILTERSTATUS_GYRO_BIAS_EST_HIGH_WARN = 0x0100,
+    FILTERSTATUS_ACCEL_BIAS_EST_HIGH_WARN = 0x0200,
+    FILTERSTATUS_GYRO_SCALE_FACTOR_EST_HIGH_WARN = 0x0400,
+    FILTERSTATUS_ACCEL_SCALE_FACTOR_EST_HIGH_WARN = 0x0800,
+    FILTERSTATUS_MAG_BIAS_EST_HIGH_WARN = 0x1000,
+    FILTERSTATUS_ANTENNA_OFFSET_CORRECTION_EST_HIGH_WARN = 0x2000,
+    FILTERSTATUS_HARD_IRON_OFFSET_EST_HIGH_WARN = 0x4000,
+    FILTERSTATUS_SOFT_IRON_CORRECTION_EST_HIGH_WARN = 0x8000
+  }
+
+  public enum FilterStatus_Initialization {
     FILTERSTATUS_ATT_NOT_INIT = 0x1000,
     FILTERSTATUS_POS_VEL_NOT_INIT = 0x2000
+  }
+
+  public enum DgnssBaseStatus {
+    DGNSSBASE_UDRE_SCALE_FACTOR_1_00 = 0,
+    DGNSSBASE_UDRE_SCALE_FACTOR_0_75 = 1,
+    DGNSSBASE_UDRE_SCALE_FACTOR_0_50 = 2,
+    DGNSSBASE_UDRE_SCALE_FACTOR_0_30 = 3,
+    DGNSSBASE_UDRE_SCALE_FACTOR_0_20 = 4,
+    DGNSSBASE_UDRE_SCALE_FACTOR_0_10 = 5,
+    DGNSSBASE_REFERENCE_STATION_TRANSMISSION_NOT_MONITORED = 6,
+    DGNSSBASE_REFERENCE_STATION_NOT_WORKING = 7
   }
 
   public enum HeadingSource {

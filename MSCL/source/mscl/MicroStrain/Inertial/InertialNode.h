@@ -906,6 +906,26 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
         GeometricVector captureGyroBias(const uint16& samplingTime);
 
+        //Function: findMagnetometerCaptureAutoCalibration
+        //    Runs the Magnetometer auto calibration routine on the inertial device.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void findMagnetometerCaptureAutoCalibration();
+
+        //Function: saveMagnetometerCaptureAutoCalibration
+        //    Runs the Magnetometer auto calibration routine and saves result as startup settings.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void saveMagnetometerCaptureAutoCalibration();
+
         //API Function: setMagnetometerSoftIronMatrix
         //    Sets the Magnetometer Soft Iron matrix.
         //
@@ -1285,6 +1305,19 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
         void setHeadingUpdateControl(const HeadingUpdateOptions& headingUpdateOptions);
+
+        //API Function: captureTareOrientation
+        //     uses device orientation relative to the NED frame as the sensor to vehicle transformation.
+        //
+        //Parameters:
+        //    axisValue - the <TareAxisValues> object indicating which axes to tare.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void captureTareOrientation(const TareAxisValues& axisValue);
 
         //API Function: getHeadingUpdateControl
         //    Gets the heading update control flags.
@@ -1774,6 +1807,32 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         EnableDisableMeasurements getEnableDisableMeasurements() const;
+
+        //API Function: setGravityNoiseMinimum
+        //    Sets the gravity noise minimum for the device.
+        //
+        //Parameter:
+        //    data - the gravity noise minimum to set
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setGravityNoiseMinimum(const GeometricVector& data);
+
+        //API Function: getGravityNoiseMinimum
+        //    Gets the current gravity noise minimum for the device.
+        //
+        //Return:
+        //    <GeometricVector> - The current gravity noise minimum.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GeometricVector getGravityNoiseMinimum() const;
 
         //API Function: sendExternalHeadingUpdate
         //    sends the external heading update command.

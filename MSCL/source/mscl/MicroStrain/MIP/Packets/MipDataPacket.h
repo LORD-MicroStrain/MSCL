@@ -19,11 +19,14 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
     class MipFieldParser;
+    
 
     //API Class: MipDataPacket
     //    A Mip Data Packet that contains both valid and invalid data from a MIP Device.
     class MipDataPacket : public MipPacket
     {
+        friend class MipPacketCollector;    //allow MipPacketColletor to adjust the timestamp of the packet
+
     public:
         //Constructor: MipDataPacket
         //    Creates a default constructed MipDataPacket
@@ -49,17 +52,21 @@ namespace mscl
         //    The <Timestamp> of when this packet was received
         Timestamp m_collectedTime;
 
-        //Variable: m_utcTime
-        //  The UTC timestamp provided by the Node in the data packet
-        Timestamp m_utcTime;
+        //Variable: m_deviceTime
+        //  The timestamp that was provided by the Node in the data packet
+        Timestamp m_deviceTime;
 
-        //Variable: m_utcTimeValid
-        //  Whether the utc timestamp is valid or not
-        bool m_utcTimeValid;
+        //Variable: m_hasDeviceTime
+        //  Whether the device timestamp was included in the data packet.
+        bool m_hasDeviceTime;
 
-        //Variable: m_utcTimeFlags
-        //  The flag that was transmitted with 
-        uint16 m_utcTimeFlags;
+        //Variable: m_deviceTimeValid
+        //  Whether the device timestamp is valid or not (based on flags and/or it being a reasonable timestamp)
+        bool m_deviceTimeValid;
+
+        //Variable: m_deviceTimeFlags
+        //  The flags value that the device timestamp was transmitted with.
+        uint16 m_deviceTimeFlags;
 
     private:
         //Function: parseDataFields
@@ -74,47 +81,67 @@ namespace mscl
         //    field - The <MipDataField> to parse for data points
         void parsePointsInField(const MipDataField& field);
 
-        static bool isFieldTimestamp(const MipDataField& field);
-
+        //Function: parseTimestamp
+        //  Parses a MIP timestamp field, and sets the device time member variables.
+        //
+        //Parameters:
+        //    field - The <MipDataField> to parse the time from
         void parseTimeStamp(const MipDataField& field);
+
+        //Function: timestampWithinRange
+        //  Checks if the given timestamp is within range of the <collectedTimestamp>.
+        //
+        //Parameters:
+        //  timestamp - The <Timestamp> to validate.
+        //
+        //Returns:
+        //  true if the given timestamp is within 1 hour of the <collectedTimestamp>, false otherwise.
+        bool timestampWithinRange(const Timestamp& timestamp) const;
 
     public:
         //API Function: data
-        //    Gets all the <MipDataPoints> that are contained within this packet
+        //    Gets all the <MipDataPoints> that are contained within this packet.
         //
         //Returns:
-        //    The <MipDataPoints> that are contained within this packet
+        //    The <MipDataPoints> that are contained within this packet.
         const MipDataPoints& data() const;
 
         //API Function: collectedTimestamp
         //  Gets the <Timestamp> representing when the packet was collected by MSCL.
         //
         //Returns:
-        //  A <Timestamp> representing when the packet was received by MSCL
+        //  A <Timestamp> representing when the packet was received by MSCL.
         const Timestamp& collectedTimestamp() const;
 
-        //API Function: utcTimestamp
-        //  Gets the UTC <Timestamp> which was transmitted in the Mip Data Packet as a channel field.
-        //  Note: This will return a Timestamp of 0 if <utcTimeValid> returns false.
+        //API Function: deviceTimestamp
+        //  Gets the <Timestamp> which was transmitted in the Mip Data Packet as a channel field.
+        //  Note: This will return a Timestamp of 0 if <deviceTimeValid> returns false.
         //
         //Returns:
-        //  A <Timestamp> representing when the packet was received by MSCL
-        const Timestamp& utcTimestamp() const;
+        //  A <Timestamp> that was included in the data packet itself as a field.
+        const Timestamp& deviceTimestamp() const;
 
-        //API Function: utcTimeValid
-        //  Whether the UTC Timestamp returned from the device is valid or not.
+        //API Function: hasDeviceTime
+        //  Whether the data packet had a Timestamp field included in it.
         //
         //Returns:
-        //  true if the UTC Timestamp is valid, false if not.
-        bool utcTimeValid() const;
+        //  true if the data packet included a Timestamp field, false if it did not.
+        bool hasDeviceTime() const;
 
-        //API Function: utcTimeFlags
-        //  Gets the UTC timestamp flags that were transmitted in the Mip Data Packet.
-        //  Note: This will return 0 if <utcTimeValid> returns false.
+        //API Function: deviceTimeValid
+        //  Whether the Timestamp field sent from the device is valid or not.
         //
         //Returns:
-        //  A uint16 representing the UTC timestamp flags.
-        uint16 utcTimeFlags() const;
+        //  true if the Timestamp is valid, false if not.
+        bool deviceTimeValid() const;
+
+        //API Function: deviceTimeFlags
+        //  Gets the timestamp flags that were transmitted in the Mip Data Packet.
+        //  Note: This will return 0 if <deviceTimeValid> returns false.
+        //
+        //Returns:
+        //  The uint16 flags that were sent with the device timestamp.
+        uint16 deviceTimeFlags() const;
     };
 
     //API Typedef: MipDataPackets

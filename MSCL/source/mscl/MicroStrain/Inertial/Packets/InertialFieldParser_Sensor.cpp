@@ -39,9 +39,9 @@ namespace mscl
         float z = bytes.read_float();
 
         //create the data points and add them to the result container
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z)));
     }
 
     bool FieldParser_RawAccelVector::registerParser()
@@ -66,9 +66,9 @@ namespace mscl
         float z = bytes.read_float();
 
         //create the data points and add them to the result container
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z)));
     }
 
     bool FieldParser_RawGyroVector::registerParser()
@@ -93,9 +93,9 @@ namespace mscl
         float z = bytes.read_float();
 
         //create the data points and add them to the result container
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z)));
     }
 
     bool FieldParser_RawMagVector::registerParser()
@@ -120,9 +120,9 @@ namespace mscl
         float z = bytes.read_float();
 
         //create the data points and add them to the result container
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z)));
     }
 
     bool FieldParser_ScaledAccelVector::registerParser()
@@ -147,9 +147,9 @@ namespace mscl
         float z = bytes.read_float();
 
         //create the data points and add them to the result container
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z)));
     }
 
     bool FieldParser_ScaledGyroVector::registerParser()
@@ -176,9 +176,9 @@ namespace mscl
         float z = bytes.read_float();
 
         //create the data points and add them to the result container
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z)));
     }
 
     bool FieldParser_ScaledMagVector::registerParser()
@@ -203,9 +203,9 @@ namespace mscl
         float z = bytes.read_float();
 
         //create the data points and add them to the result container
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z)));
     }
 
     bool FieldParser_DeltaThetaVector::registerParser()
@@ -230,9 +230,9 @@ namespace mscl
         float z = bytes.read_float();
 
         //create the data points and add them to the result container
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z)));
     }
 
     bool FieldParser_DeltaVelocityVector::registerParser()
@@ -253,7 +253,7 @@ namespace mscl
         Matrix data(3, 3, valueType_float, field.fieldData());
 
         //create a Matrix object with the Orientation Matrix data and create a MipDataPoint from it
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_MATRIX, valueType_Matrix, anyType(data), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_MATRIX, valueType_Matrix, anyType(data)));
     }
 
     bool FieldParser_OrientationMatrix::registerParser()
@@ -274,7 +274,7 @@ namespace mscl
         Vector data(valueType_float, field.fieldData());
 
         //create a data point and add it to the result container
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_QUATERNION, valueType_Vector, anyType(data), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_QUATERNION, valueType_Vector, anyType(data)));
     }
 
     bool FieldParser_Quaternion::registerParser()
@@ -295,7 +295,7 @@ namespace mscl
         Matrix data(3, 3, valueType_float, field.fieldData());
 
         //create a Matrix object with the Orientation Matrix data and create a MipDataPoint from it
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_MATRIX, valueType_Matrix, anyType(data), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_MATRIX, valueType_Matrix, anyType(data)));
     }
 
     bool FieldParser_OrientationUpdateMatrix::registerParser()
@@ -320,9 +320,9 @@ namespace mscl
         float yaw = bytes.read_float();
 
         //create the data points and add them to the result container
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ROLL, valueType_float, anyType(roll), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_PITCH, valueType_float, anyType(pitch), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_YAW, valueType_float, anyType(yaw), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ROLL, valueType_float, anyType(roll)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_PITCH, valueType_float, anyType(pitch)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_YAW, valueType_float, anyType(yaw)));
     }
 
     bool FieldParser_EulerAngles::registerParser()
@@ -343,7 +343,7 @@ namespace mscl
         uint32 time = field.fieldData().read_uint32(0);
 
         //create a data point and add it to the result container
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_TICK, valueType_uint32, anyType(time), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_TICK, valueType_uint32, anyType(time)));
     }
 
     bool FieldParser_InternalTimestamp::registerParser()
@@ -408,9 +408,9 @@ namespace mscl
         float z = bytes.read_float();
 
         //create the data points and add them to the result container
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z)));
     }
 
     bool FieldParser_StabilizedMagVector::registerParser()
@@ -437,9 +437,9 @@ namespace mscl
         float z = bytes.read_float();
 
         //create the data points and add them to the result container
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z)));
     }
 
     bool FieldParser_StabilizedAccelVector::registerParser()
@@ -468,7 +468,7 @@ namespace mscl
         //add data points 
         result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_TIME_OF_WEEK, valueType_double, anyType(gpsTimeOfWeek), tsValid));
         result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_WEEK_NUMBER, valueType_uint16, anyType(gpsWeekNumber), tsValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FLAGS, valueType_uint16, anyType(timestampFlags), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FLAGS, valueType_uint16, anyType(timestampFlags)));
     }
 
     bool FieldParser_GpsCorrelationTimestamp::registerParser()
@@ -491,7 +491,7 @@ namespace mscl
         float ambientPressure = bytes.read_float();
 
         //add data points 
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_PRESSURE, valueType_float, anyType(ambientPressure), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_PRESSURE, valueType_float, anyType(ambientPressure)));
     }
 
     bool FieldParser_ScaledAmbientPressure::registerParser()

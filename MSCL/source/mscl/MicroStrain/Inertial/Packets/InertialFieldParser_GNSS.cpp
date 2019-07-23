@@ -260,7 +260,7 @@ namespace mscl
 
         //add all the data points we just collected
         result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_TIMESTAMP, valueType_Timestamp, anyType(time), fullTimestampValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FLAGS, valueType_uint16, anyType(flags), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FLAGS, valueType_uint16, anyType(flags)));
     }
 
     bool FieldParser_UTCTime::registerParser()

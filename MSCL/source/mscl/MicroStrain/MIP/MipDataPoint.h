@@ -32,6 +32,16 @@ namespace mscl
         //    qualifier - The <MipTypes::ChannelQualifier> for the data point.
         //    storedAsType - The <ValueType> that represents how the internal data point value is stored.
         //    value - The value to store.
+        MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, ValueType storedAsType, anyType value);
+
+        //Constructor: MipDataPoint
+        //    Creates a MipDataPoint object with a valid flag that describes the point
+        //
+        //Parameters:
+        //    field - The <MipTypes::ChannelField> for the data point.
+        //    qualifier - The <MipTypes::ChannelQualifier> for the data point.
+        //    storedAsType - The <ValueType> that represents how the internal data point value is stored.
+        //    value - The value to store.
         //    valid - Whether the data point is flagged as valid (true) or invalid (false).
         MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, ValueType storedAsType, anyType value, bool valid);
 
@@ -44,8 +54,13 @@ namespace mscl
         //    The <MipTypes::ChannelQualifier> of the data point.
         MipTypes::ChannelQualifier m_qualifier;
 
+        //Variable: m_hasValidFlag
+        //  Whether the data point was transmitted with a valid flag.
+        //  If the point wasn't transmitted with a flag, m_valid will be set to true.
+        bool m_hasValidFlag;
+
         //Variable: m_valid
-        //    Whether the data point is valid(true) or invalid(false)
+        //    Whether the data point is valid(true) or invalid(false).
         bool m_valid;
 #endif
 
@@ -66,11 +81,22 @@ namespace mscl
         //    The <MipTypes::ChannelQualifier> for this data point.
         MipTypes::ChannelQualifier qualifier() const;
 
-        //API Function: valid
-        //    Gets whether the data point is flagged as valid(true) or invalid(false)
+        //API Function: hasValidFlag
+        //  Gets whether the data point had a valid flag transmitted in the data packet.
+        //  Note: if hasValidFlag returns false, <valid> will always return true.
         //
         //Returns:
-        //    true if the data point is valid, false if the data point is invalid
+        //  true if the data point had a valid flag associated with it, false otherwise.
+        bool hasValidFlag() const;
+
+        //API Function: valid
+        //  Gets whether the data point is valid(true) or invalid(false).
+        //  Note: if a data point was not transmitted with a flag representing its validity,
+        //        this will still return true. To determine if the data point had a flag in the
+        //        data packet, use <hasValidFlag>.
+        //
+        //Returns:
+        //  true if the data point is valid, false if the data point is invalid
         bool valid() const;
 
         //API Function: channelName

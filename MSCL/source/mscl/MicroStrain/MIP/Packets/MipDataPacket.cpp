@@ -14,17 +14,19 @@ namespace mscl
 {                    
     MipDataPacket::MipDataPacket():
         m_collectedTime(0),
-        m_utcTime(0),
-        m_utcTimeValid(false),
-        m_utcTimeFlags(0)
+        m_deviceTime(0),
+        m_hasDeviceTime(false),
+        m_deviceTimeValid(false),
+        m_deviceTimeFlags(0)
     {
     }
 
     MipDataPacket::MipDataPacket(const MipPacket& packet):
         m_collectedTime(Timestamp::timeNow()),
-        m_utcTime(0),
-        m_utcTimeValid(false),
-        m_utcTimeFlags(0)
+        m_deviceTime(0),
+        m_hasDeviceTime(false),
+        m_deviceTimeValid(false),
+        m_deviceTimeFlags(0)
     {
         //construct the data packet from the MipPacket passed in
         m_descriptorSet     = packet.descriptorSet();
@@ -45,68 +47,155 @@ namespace mscl
 
         while(payloadData.moreToRead())
         {
-            Bytes fieldBytes;
-
-            //read the field length byte
-            fieldLen = payloadData.read_uint8();
-
-            //read the field descriptor byte
-            fieldDescriptor = payloadData.read_uint8();
-
-            //read all the bytes for the current field (up to the field length)
-            for(uint32 itr = 0; itr < fieldLen - 2; itr++)
+            try
             {
-                //add the field bytes to a container
-                fieldBytes.push_back(payloadData.read_uint8());
-            } 
+                Bytes fieldBytes;
 
-            fieldType = Utils::make_uint16(m_descriptorSet, fieldDescriptor);
+                //read the field length byte
+                fieldLen = payloadData.read_uint8();
 
-            //add the field to the m_dataFields vector
-            MipDataField tempField(fieldType, fieldBytes);
-            m_dataFields.push_back(tempField);
+                //read the field descriptor byte
+                fieldDescriptor = payloadData.read_uint8();
 
-            //parse the data points that are in the existing field that we just created
-            parsePointsInField(tempField);
-        }
-    }
+                //read all the bytes for the current field (up to the field length)
+                for(uint32 itr = 0; itr < fieldLen - 2; itr++)
+                {
+                    //add the field bytes to a container
+                    fieldBytes.push_back(payloadData.read_uint8());
+                }
 
-    bool MipDataPacket::isFieldTimestamp(const MipDataField& field)
-    {
-        switch(field.fieldId())
-        {
-            //fields that we want to treat as timestamps for the whole packet
-            case MipTypes::CH_FIELD_DISP_DISPLACEMENT_TS:
-                return true;
+                fieldType = Utils::make_uint16(m_descriptorSet, fieldDescriptor);
 
-            default:
-                return false;
+                //add the field to the m_dataFields vector
+                MipDataField tempField(fieldType, fieldBytes);
+                m_dataFields.push_back(tempField);
+
+                //parse the data points that are in the existing field that we just created
+                parsePointsInField(tempField);
+            }
+            catch(...)
+            {
+                //possible corrupted packet, just break out and skip trying to parse anything else
+                break;
+            }
         }
     }
 
     void MipDataPacket::parsePointsInField(const MipDataField& field)
     {
-        if(isFieldTimestamp(field))
+        bool isTimestamp = false;
+        bool isData = true;
+
+        switch(field.fieldId())
         {
+            //fields that should only be used as timestamp, and not stored as data
+            case MipTypes::CH_FIELD_DISP_DISPLACEMENT_TS:
+                isTimestamp = true;
+                isData = false;
+                break;
+
+            //fields that will get passed along as data points as well
+            case MipTypes::CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP:
+            case MipTypes::CH_FIELD_GNSS_GPS_TIME:
+            case MipTypes::CH_FIELD_ESTFILTER_GPS_TIMESTAMP:
+                isTimestamp = true;
+                isData = true;
+                break;
+
+            default:
+                break;
+        }
+
+        if(isTimestamp)
+        {
+            m_hasDeviceTime = true;
             parseTimeStamp(field);
         }
-        else
+
+        if(isData)
         {
             MipFieldParser::parseField(field, m_points);
         }
+    }
+
+    bool MipDataPacket::timestampWithinRange(const Timestamp& timestamp) const
+    {
+        //timestamp is out of range if it is over an hour in the future
+        static const uint64 NANOS_IN_1_HOUR = 3600000000000;
+
+        //not valid if time is more than 1 hour in the past or future
+        return ((timestamp - collectedTimestamp()).getNanoseconds() < NANOS_IN_1_HOUR);
     }
 
     void MipDataPacket::parseTimeStamp(const MipDataField& field)
     {
         DataBuffer bytes(field.fieldData());
 
-        if(field.fieldId() == MipTypes::CH_FIELD_DISP_DISPLACEMENT_TS)
+        switch(field.fieldId())
         {
-            m_utcTimeFlags = bytes.read_uint8();
+            case MipTypes::CH_FIELD_DISP_DISPLACEMENT_TS:
+            {
+                m_deviceTimeFlags = bytes.read_uint8();
+                m_deviceTimeValid = (m_deviceTimeFlags == 1);
+                m_deviceTime.setTime(bytes.read_uint64());
+                break;
+            }
 
-            m_utcTimeValid = (m_utcTimeFlags == 1);
-            m_utcTime.setTime(bytes.read_uint64());
+            case MipTypes::CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP:
+            {
+                double gpsTimeOfWeek = bytes.read_double();
+                uint16 gpsWeekNumber = bytes.read_uint16();
+
+                //convert to UTC time
+                m_deviceTimeFlags = bytes.read_uint16();
+                m_deviceTime.setTime(Timestamp::gpsTimeToUtcTime(gpsTimeOfWeek, gpsWeekNumber));
+
+                //check the GPS time looks like a valid absolute timestamp
+                //Note: unfortunately, the flags that come with this packet can't be used to identify this,
+                //      so we are just checking for an old or future timestamp, since it starts at 0 when first powered on
+                m_deviceTimeValid = timestampWithinRange(m_deviceTime);
+
+                break;
+            }
+
+            case MipTypes::CH_FIELD_GNSS_GPS_TIME:
+            {
+                double gpsTimeOfWeek = bytes.read_double();
+                uint16 gpsWeekNumber = bytes.read_uint16();
+
+                //convert to UTC time
+                m_deviceTimeFlags = bytes.read_uint16();
+                m_deviceTime.setTime(Timestamp::gpsTimeToUtcTime(gpsTimeOfWeek, gpsWeekNumber));
+
+                //check the GPS time looks like a valid absolute timestamp
+                //Note: we might be able to use the flags here, but we're doing this check for the other descriptor sets anyway
+                m_deviceTimeValid = timestampWithinRange(m_deviceTime);
+
+                break;
+            }
+
+            case MipTypes::CH_FIELD_ESTFILTER_GPS_TIMESTAMP:
+            {
+                double gpsTimeOfWeek = bytes.read_double();
+                uint16 gpsWeekNumber = bytes.read_uint16();
+
+                //convert to UTC time
+                m_deviceTimeFlags = bytes.read_uint16();
+                m_deviceTime.setTime(Timestamp::gpsTimeToUtcTime(gpsTimeOfWeek, gpsWeekNumber));
+
+                //check the GPS time looks like a valid absolute timestamp
+                //Note: unfortunately, the flags that come with this packet can't be used to identify this, as it seems
+                //      they are invalid if the estimation filter isn't initialized, even if the time is initialized
+                m_deviceTimeValid = timestampWithinRange(m_deviceTime);
+
+                break;
+            }
+
+            default:
+                assert(false);  //shouldn't get to this function without being able to parse the timestamp
+                break;
         }
+
     }
 
     const MipDataPoints& MipDataPacket::data() const
@@ -119,18 +208,23 @@ namespace mscl
         return m_collectedTime;
     }
 
-    const Timestamp& MipDataPacket::utcTimestamp() const
+    const Timestamp& MipDataPacket::deviceTimestamp() const
     {
-        return m_utcTime;
+        return m_deviceTime;
     }
 
-    bool MipDataPacket::utcTimeValid() const
+    bool MipDataPacket::deviceTimeValid() const
     {
-        return m_utcTimeValid;
+        return m_deviceTimeValid;
     }
 
-    uint16 MipDataPacket::utcTimeFlags() const
+    bool MipDataPacket::hasDeviceTime() const
     {
-        return m_utcTimeFlags;
+        return m_hasDeviceTime;
+    }
+
+    uint16 MipDataPacket::deviceTimeFlags() const
+    {
+        return m_deviceTimeFlags;
     }
 }

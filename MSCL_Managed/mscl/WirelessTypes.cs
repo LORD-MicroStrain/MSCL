@@ -419,7 +419,8 @@ public class WirelessTypes : global::System.IDisposable {
     region_brazil = 4,
     region_china = 5,
     region_australia_newzealand = 6,
-    region_singapore = 7
+    region_singapore = 7,
+    region_canada = 8
   }
 
   public enum ChannelGroupSetting {

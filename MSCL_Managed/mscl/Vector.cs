@@ -10,12 +10,10 @@
 
 namespace mscl {
 
-public class Vector : global::System.IDisposable {
+public class Vector : Matrix {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
-  protected bool swigCMemOwn;
 
-  internal Vector(global::System.IntPtr cPtr, bool cMemoryOwn) {
-    swigCMemOwn = cMemoryOwn;
+  internal Vector(global::System.IntPtr cPtr, bool cMemoryOwn) : base(msclPINVOKE.Vector_SWIGUpcast(cPtr), cMemoryOwn) {
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
@@ -27,7 +25,7 @@ public class Vector : global::System.IDisposable {
     Dispose();
   }
 
-  public virtual void Dispose() {
+  public override void Dispose() {
     lock(this) {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
@@ -37,6 +35,7 @@ public class Vector : global::System.IDisposable {
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
       global::System.GC.SuppressFinalize(this);
+      base.Dispose();
     }
   }
 
@@ -44,14 +43,14 @@ public class Vector : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public ValueType valuesType() {
-    ValueType ret = (ValueType)msclPINVOKE.Vector_valuesType(swigCPtr);
+  public ushort size() {
+    ushort ret = msclPINVOKE.Vector_size(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public ushort size() {
-    ushort ret = msclPINVOKE.Vector_size(swigCPtr);
+  public double as_doubleAt(ushort index) {
+    double ret = msclPINVOKE.Vector_as_doubleAt(swigCPtr, index);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -70,12 +69,6 @@ public class Vector : global::System.IDisposable {
 
   public byte as_uint8At(ushort index) {
     byte ret = msclPINVOKE.Vector_as_uint8At(swigCPtr, index);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public override string ToString() {
-    string ret = msclPINVOKE.Vector_ToString(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

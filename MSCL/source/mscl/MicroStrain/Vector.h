@@ -12,7 +12,7 @@ namespace mscl
 {
     //API Class: Vector
     //    Represents a Vector of values
-    class Vector
+    class Vector : public Matrix
     {
     public:
         //Default Constructor: Vector
@@ -26,37 +26,30 @@ namespace mscl
 #endif
 
     private:
-        //Constant: COLUMN_POS = 0
+        //Constant: ROW_POS = 0
         //    The column position for all (row,column) Matrix functions
-        static const uint16 COLUMN_POS = 0;
-
-    private:
-        //Variable: m_size
-        //    The number of elements that are within the Vector
-        uint16 m_size;
-
-        //Variable: m_valuesType
-        //    The <ValueType> representing how each value within the Vector is stored
-        ValueType m_valuesType;
-
-        //Variable: m_data
-        //    A <Matrix> used to store and access the underlying values in the Vector
-        Matrix m_data;
+        static const uint16 ROW_POS = 0;
 
     public:
-        //API Function: valuesType
-        //    Gets how each value within the Vector is stored
-        //
-        //Returns:
-        //    A <ValueType> representing how each value in the Vector is stored
-        ValueType valuesType() const;
-
         //API Function: size
         //    Gets how many values are within the Vector
         //
         //Returns:
         //    The number of values within the Vector
         uint16 size() const;
+
+        //API Function: as_doubleAt
+        //    Gets the value stored at the given 0-based index, as an 8-byte double
+        //
+        //Parameters:
+        //    index - The 0-based index of which to get the value
+        //
+        //Returns:
+        //    The value stored at the given index, as a double
+        //
+        //Exceptions:
+        //    - std::out_of_range: The position requested is out of range
+        double as_doubleAt(uint16 index) const;
 
         //API Function: as_floatAt
         //    Gets the value stored at the given 0-based index, as a 4-byte float
@@ -96,12 +89,5 @@ namespace mscl
         //Exceptions:
         //    - std::out_of_range: The position requested is out of range
         uint8 as_uint8At(uint16 index) const;
-
-        //API Function: str
-        //    Creates a string from the Vector
-        //
-        //Returns:
-        //    A string representing the entire Vector object (ex. "[1.2,3.4,5.6]")
-        std::string str() const;
     };
 }

@@ -118,6 +118,39 @@ BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_CompletePacket)
     BOOST_CHECK_EQUAL(parser.parseAsPacket(buffer, packet), mipParserResult_completePacket);
 }
 
+BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_badPayload)
+{
+    ByteStream b;
+    b.append_uint16(0x7565);
+    b.append_uint8(0x80);
+    b.append_uint8(0x1C);    //payload length
+    b.append_uint8(0x0E);    //valid field length byte
+    b.append_uint8(0x04);
+    b.append_uint32(0x00000000);
+    b.append_uint32(0x00000000);
+    b.append_uint32(0x00000000);
+    b.append_uint8(0x0F);   //invalid field length byte (0x0E + 0x0F != 0x1C)
+    b.append_uint8(0x04);
+    b.append_uint32(0x00000000);
+    b.append_uint32(0x00000000);
+    b.append_uint32(0x00000000);
+
+    ChecksumBuilder check;
+    check.appendByteStream(b);
+    uint16 checksum = check.fletcherChecksum();
+    b.append_uint16(checksum);//append valid checksum
+
+    DataBuffer buffer(b.data());
+
+    std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
+    MipPacketCollector packetCollector;
+    MipParser parser(&packetCollector, responseCollector);
+    MipPacket packet;
+
+    //check that the result is mipParserResult_badChecksum b/c the checksum is invalid
+    BOOST_CHECK_EQUAL(parser.parseAsPacket(buffer, packet), mipParserResult_invalidPacket);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 

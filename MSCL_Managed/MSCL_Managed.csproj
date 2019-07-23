@@ -120,6 +120,7 @@
     <Compile Include="mscl\DerivedChannelMasks.cs" />
     <Compile Include="mscl\DeviceInfo.cs" />
     <Compile Include="mscl\DeviceList.cs" />
+    <Compile Include="mscl\DeviceMessageInfo.cs" />
     <Compile Include="mscl\Devices.cs" />
     <Compile Include="mscl\DeviceState.cs" />
     <Compile Include="mscl\DeviceStatusData.cs" />
@@ -180,8 +181,10 @@
     <Compile Include="mscl\NodeFeatures.cs" />
     <Compile Include="mscl\NodeInfo.cs" />
     <Compile Include="mscl\PingResponse.cs" />
+    <Compile Include="mscl\PortInfo.cs" />
     <Compile Include="mscl\Position.cs" />
     <Compile Include="mscl\PositionOffset.cs" />
+    <Compile Include="mscl\PpsPulseInfo.cs" />
     <Compile Include="mscl\RadioFeatures.cs" />
     <Compile Include="mscl\RfSweep.cs" />
     <Compile Include="mscl\SampleRate.cs" />
@@ -196,9 +199,12 @@
     <Compile Include="mscl\SnCurveSegment.cs" />
     <Compile Include="mscl\SnCurveSegments.cs" />
     <Compile Include="mscl\StorageLimitModes.cs" />
+    <Compile Include="mscl\StreamInfo.cs" />
     <Compile Include="mscl\StructuralHealth.cs" />
     <Compile Include="mscl\SyncNetworkInfo.cs" />
     <Compile Include="mscl\SyncSamplingNetwork.cs" />
+    <Compile Include="mscl\TareAxisValues.cs" />
+    <Compile Include="mscl\TemperatureInfo.cs" />
     <Compile Include="mscl\TempSensorOptions.cs" />
     <Compile Include="mscl\TimeSpan.cs" />
     <Compile Include="mscl\Timestamp.cs" />

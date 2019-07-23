@@ -59,20 +59,26 @@ public class MipDataPacket : MipPacket {
     return ret;
   }
 
-  public Timestamp utcTimestamp() {
-    Timestamp ret = new Timestamp(msclPINVOKE.MipDataPacket_utcTimestamp(swigCPtr), false);
+  public Timestamp deviceTimestamp() {
+    Timestamp ret = new Timestamp(msclPINVOKE.MipDataPacket_deviceTimestamp(swigCPtr), false);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public bool utcTimeValid() {
-    bool ret = msclPINVOKE.MipDataPacket_utcTimeValid(swigCPtr);
+  public bool hasDeviceTime() {
+    bool ret = msclPINVOKE.MipDataPacket_hasDeviceTime(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public ushort utcTimeFlags() {
-    ushort ret = msclPINVOKE.MipDataPacket_utcTimeFlags(swigCPtr);
+  public bool deviceTimeValid() {
+    bool ret = msclPINVOKE.MipDataPacket_deviceTimeValid(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public ushort deviceTimeFlags() {
+    ushort ret = msclPINVOKE.MipDataPacket_deviceTimeFlags(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

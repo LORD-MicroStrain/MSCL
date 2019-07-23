@@ -14,7 +14,6 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    
     MipParser::MipParser(MipPacketCollector* packetCollector, std::weak_ptr<ResponseCollector> responseCollector):
         m_packetCollector(packetCollector),
         m_responseCollector(responseCollector)
@@ -76,26 +75,34 @@ namespace mscl
 
         while(payloadData.moreToRead())
         {
-            Bytes fieldBytes;
-
-            //read the field length byte
-            fieldLen = payloadData.read_uint8();
-
-            //read the field descriptor byte
-            fieldDescriptor = payloadData.read_uint8();
-
-            //read all the bytes for the current field (up to the field length)
-            for(uint32 itr = 0; itr < fieldLen - 2; itr++)
+            try
             {
-                //add the field bytes to a container
-                fieldBytes.push_back(payloadData.read_uint8());
-            } 
+                Bytes fieldBytes;
 
-            fieldType = Utils::make_uint16(descriptorSet, fieldDescriptor);
+                //read the field length byte
+                fieldLen = payloadData.read_uint8();
 
-            //add the field to the m_dataFields vector
-            MipDataField tempField(fieldType, fieldBytes);
-            result.push_back(tempField);
+                //read the field descriptor byte
+                fieldDescriptor = payloadData.read_uint8();
+
+                //read all the bytes for the current field (up to the field length)
+                for(uint32 itr = 0; itr < fieldLen - 2; itr++)
+                {
+                    //add the field bytes to a container
+                    fieldBytes.push_back(payloadData.read_uint8());
+                }
+
+                fieldType = Utils::make_uint16(descriptorSet, fieldDescriptor);
+
+                //add the field to the m_dataFields vector
+                MipDataField tempField(fieldType, fieldBytes);
+                result.push_back(tempField);
+            }
+            catch(...)
+            {
+                //possible corrupted packet, just break out and skip trying to parse anything else
+                break;
+            }
         }
 
         return result;
@@ -242,7 +249,6 @@ namespace mscl
         //read byte 4
         uint8 payloadLen = data.read_uint8();                    //Payload Length
 
-
         //determine the full packet length
         uint32 packetLength = payloadLen + MipPacketInfo::MIP_NUM_BYTES_BEFORE_PAYLOAD + MipPacketInfo::MIP_NUM_BYTES_AFTER_PAYLOAD;
 
@@ -257,11 +263,31 @@ namespace mscl
         Bytes payload;
         payload.reserve(payloadLen);
 
+        uint16 fieldLengthTotal = 0;
+        uint16 nextFieldLenPos = 0;
+
         //loop through the payload
         for(uint8 payloadItr = 0; payloadItr < payloadLen; payloadItr++)
         {
+            uint8 currentByte = data.read_uint8();
+
+            //if this byte is suppossed to be the field length byte
+            if(payloadItr == nextFieldLenPos)
+            {
+                //add up the total field length bytes to verify they look correct
+                fieldLengthTotal += currentByte;
+                nextFieldLenPos += currentByte;
+            }
+
             //store the payload bytes
-            payload.push_back(data.read_uint8());                //Payload Bytes
+            payload.push_back(currentByte);                //Payload Bytes
+        }
+
+        //verify that the total field lengths add up to the payload length
+        if(fieldLengthTotal != payloadLen)
+        {
+            //Invalid Packet
+            return mipParserResult_invalidPacket;
         }
 
         //get the checksum sent in the packet

@@ -731,6 +731,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_SourceControl.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GyroBias.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\HeadingUpdateControl.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerCaptureAutoCalibration.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerHardIronOffset.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerSoftIronMatrix.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Matrix3x3Command.h" />
@@ -1045,6 +1046,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_SourceControl.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GyroBias.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\HeadingUpdateControl.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerCaptureAutoCalibration.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerHardIronOffset.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerSoftIronMatrix.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Matrix3x3Command.cpp" />

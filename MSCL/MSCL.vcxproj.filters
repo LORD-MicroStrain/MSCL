@@ -968,6 +968,9 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\Uint16Command.h">
       <Filter>MicroStrain\Inertial\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerCaptureAutoCalibration.h">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp">
@@ -1832,6 +1835,9 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\Uint16Command.cpp">
       <Filter>MicroStrain\Inertial\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerCaptureAutoCalibration.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

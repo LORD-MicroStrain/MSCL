@@ -75,4 +75,27 @@ BOOST_AUTO_TEST_CASE(Timestamp_Difference)
     BOOST_CHECK_EQUAL((ts2 - ts).getNanoseconds(), 1000);
 }
 
+BOOST_AUTO_TEST_CASE(Timestamp_gpsTime)
+{
+    BOOST_CHECK_EQUAL(Timestamp::getLeapSeconds(), 18);
+
+    BOOST_CHECK_EQUAL(Timestamp::gpsTimeToUtcTime(221592.0, 2055), static_cast<uint64>(1559050392 - Timestamp::getLeapSeconds()) * 1000000000u);
+    BOOST_CHECK_EQUAL(Timestamp::gpsTimeToUtcTime(103556.0, 1982), static_cast<uint64>(1514781956 - Timestamp::getLeapSeconds()) * 1000000000u);
+
+    //fractions of a second (there's going to be some rounding error here, so being flexible with our test)
+    uint64 fractionalGpsTime = Timestamp::gpsTimeToUtcTime(221592.75, 2055);
+    BOOST_CHECK_LT(fractionalGpsTime, (static_cast<uint64>(1559050392 - Timestamp::getLeapSeconds()) * 1000000000u) + 1000000000);
+    BOOST_CHECK_GT(fractionalGpsTime, (static_cast<uint64>(1559050392 - Timestamp::getLeapSeconds()) * 1000000000u) - 1000000000);
+
+    Timestamp::setLeapSeconds(15); //change the leap seconds value
+
+    BOOST_CHECK_EQUAL(Timestamp::gpsTimeToUtcTime(221592.0, 2055), static_cast<uint64>(1559050392 - 15) * 1000000000u);
+    BOOST_CHECK_EQUAL(Timestamp::gpsTimeToUtcTime(103556.0, 1982), static_cast<uint64>(1514781956 - 15) * 1000000000u);
+
+    Timestamp::setLeapSeconds(0); //change the leap seconds value
+
+    BOOST_CHECK_EQUAL(Timestamp::gpsTimeToUtcTime(221592.0, 2055), static_cast<uint64>(1559050392 - 0) * 1000000000u);
+    BOOST_CHECK_EQUAL(Timestamp::gpsTimeToUtcTime(103556.0, 1982), static_cast<uint64>(1514781956 - 0) * 1000000000u);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

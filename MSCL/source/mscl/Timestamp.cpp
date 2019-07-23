@@ -19,6 +19,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
+    uint8 Timestamp::s_gpsLeapSeconds = 18;
+
     //constructor
     Timestamp::Timestamp(uint64 nanoseconds/*=0*/) :
         m_nanoseconds(nanoseconds)
@@ -119,6 +121,16 @@ namespace mscl
         return result;
     }
 
+    void Timestamp::setLeapSeconds(uint8 gpsLeapSeconds)
+    {
+        Timestamp::s_gpsLeapSeconds = gpsLeapSeconds;
+    }
+
+    uint8 Timestamp::getLeapSeconds()
+    {
+        return s_gpsLeapSeconds;
+    }
+
     std::string Timestamp::str() const
     {
         std::stringstream result;
@@ -143,5 +155,15 @@ namespace mscl
         result << out << "." << std::setfill('0') << std::setw(9) << m_nanoseconds % TimeSpan::NANOSECONDS_PER_SECOND;
 
         return result.str();
+    }
+
+    uint64 Timestamp::gpsTimeToUtcTime(double timeOfWeek, uint16 weekNumber)
+    {
+        //split the seconds and subseconds out to get around the double resolution issue
+        double seconds;
+        double subseconds = modf(timeOfWeek, &seconds);
+
+        // seconds since start of Unix time = seconds between 1970 and 1980 + number of weeks since 1980 * number of seconds in a week + number of complete seconds past in current week - leap seconds since start of GPS time
+        return static_cast<uint64>((315964800 + weekNumber * 604800 + static_cast<uint64>(seconds) - Timestamp::getLeapSeconds()) * TimeSpan::NANOSECONDS_PER_SECOND) + static_cast<uint64>(std::round(subseconds * static_cast<double>(TimeSpan::NANOSECONDS_PER_SECOND)));
     }
 }

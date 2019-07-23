@@ -587,6 +587,19 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setVelocityZUPT(const ZUPTSettingsData& ZUPTSettings);
 
+        //Function: captureTareOrientation
+        //     uses device orientation relative to the NED frame as the sensor to vehicle transformation.
+        //
+        //Parameters:
+        //    axisValue - the TareAxisValues object indicating which axes to tare.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void captureTareOrientation(const TareAxisValues& axisValue);
+
         //Function: getVelocityZUPT
         //    Gets the state and threshold of the velocity ZUPT control.
         //
@@ -932,6 +945,26 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         GeometricVector captureGyroBias(const uint16& samplingTime);
+
+        //Function: findMagnetometerCaptureAutoCalibration
+        //    Runs the Magnetometer auto calibration routine on the inertial device.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void findMagnetometerCaptureAutoCalibration();
+
+        //Function: saveMagnetometerCaptureAutoCalibration
+        //    Runs the Magnetometer auto calibration routine and saves result as startup settings.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void saveMagnetometerCaptureAutoCalibration();
 
         //Function: setMagnetometerSoftIronMatrix
         //    Sets the Magnetometer Soft Iron matrix.

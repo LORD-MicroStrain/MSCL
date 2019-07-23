@@ -51,6 +51,12 @@ public class MipDataPoint : DataPoint {
     return ret;
   }
 
+  public bool hasValidFlag() {
+    bool ret = msclPINVOKE.MipDataPoint_hasValidFlag(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public bool valid() {
     bool ret = msclPINVOKE.MipDataPoint_valid(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

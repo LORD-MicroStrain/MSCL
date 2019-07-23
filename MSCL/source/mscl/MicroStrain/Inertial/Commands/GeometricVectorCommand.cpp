@@ -39,6 +39,8 @@ namespace mscl
             return "AccelerometerBiasModelParameters";
         case MipTypes::Command::CMD_EF_GYRO_BIAS_MODEL_PARAMS:
             return "GyroscopeBiasModelParameters";
+        case MipTypes::Command::CMD_EF_GRAVITY_NOISE_MINIMUM:
+            return "GravityNoiseMinimum";
         default:
             return "";
         }
@@ -62,6 +64,8 @@ namespace mscl
             return 0x8B;
         case MipTypes::Command::CMD_EF_GYRO_BIAS_MODEL_PARAMS:
             return 0x8C;
+        case MipTypes::Command::CMD_EF_GRAVITY_NOISE_MINIMUM:
+            return 0x95;
         default:
             return 0;
         }

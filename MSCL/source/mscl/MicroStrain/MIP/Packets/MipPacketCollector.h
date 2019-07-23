@@ -50,9 +50,26 @@ namespace mscl
         //    Allows the write to buffer thread to tell the reading thread when data is available
         std::condition_variable m_emptyBufferCondition;
 
+        //Variable: m_notifyDataAddedFn
+        //  The function to call when data packets are added.
         std::function<void()> m_notifyDataAddedFn;
 
+        //Variable: m_previousPackets
+        //  A map of previous <MipDataPacket>s for each <MipTypes::DataClass>
+        std::map<MipTypes::DataClass, MipDataPacket> m_previousPackets;
+
+    private:
+        //Function: adjustPacketTimestamp
+        //  Adjusts the collected timestamp of the <MipDataPacket> if possible,
+        //  by using the GPS time field in the packet and comparing it with the previous packet.
+        //
+        //Parameters:
+        //  packet - The <MipDataPacket> to adjust, if possible.
+        void adjustPacketTimestamp(MipDataPacket& packet);
+
     public:
+        //Function: requestDataAddedNotification
+        //  Register a function to call when data packets arrive
         void requestDataAddedNotification(std::function<void()> fnToCall);
 
         //Function: addDataPacket
@@ -68,7 +85,7 @@ namespace mscl
         //Parameters:
         //    packets - A vector of <MipDataPacket> to hold the result.
         //    maxPackets - The maximum number of packets to return. If this is 0 (default), all sweeps will be returned.
-        void getDataPackets(std::vector<MipDataPacket>& packets, uint32 timeout=0, uint32 maxPackets=0);
+        void getDataPackets(std::vector<MipDataPacket>& packets, uint32 timeout = 0, uint32 maxPackets = 0);
 
         //Function: totalPackets
         //    Gets the total number of data packets that are currently in the buffer.

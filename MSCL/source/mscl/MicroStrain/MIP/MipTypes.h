@@ -51,17 +51,6 @@ public:
         RESET_TO_DEFAULT = 0x05
     };
 
-    //Enums: StatusSelector
-    //    Represents the two different types of statuses returned by DeviceStatus.
-    //
-    //      BASIC_STATUS_STRUCTURE       - 0x01  used to receive a limited device status.
-    //      DIAGNOSTIC_STATUS_STRUCTURE  - 0x02  used to receive a complete device status.
-    enum StatusSelector 
-    {
-        BASIC_STATUS_STRUCTURE = 0x01,
-        DIAGNOSTIC_STATUS_STRUCTURE = 0x02,
-    };
-
     //API Enums: EnableSetting
     //    The enums for enable or disable of data.
     //
@@ -158,6 +147,7 @@ public:
     //  CMD_EF_MAG_CAPTURE_AUTO_CAL                 - 0x0D27    - Estimation Filter - Magnetometer Capture Auto Calibration
     //  CMD_EF_GRAVITY_NOISE_STD_DEV                - 0x0D28    - Estimation Filter - Gravity Noise Standard Deviation
     //  CMD_EF_PRESS_ALT_NOISE_STD_DEV              - 0x0D29    - Estimation Filter - Pressure Altitude Noise Standard Deviation
+    //  CMD_EF_GRAVITY_NOISE_MINIMUM                - 0x0D2A    - Estimation Filter - Get/Set Gravity Noise Minimum
     //  CMD_EF_HARD_IRON_OFFSET_PROCESS_NOISE       - 0x0D2B    - Estimation Filter - Hard Iron Offset Process Noise
     //  CMD_EF_SOFT_IRON_OFFSET_PROCESS_NOISE       - 0x0D2C    - Estimation Filter - Soft Iron Offset Process Noise
     //  CMD_EF_ENABLE_DISABLE_MEASUREMENTS          - 0x0D41    - Estimation Filter - Enable/Disable Measurements
@@ -248,6 +238,7 @@ public:
         CMD_EF_MAG_CAPTURE_AUTO_CAL                 = 0x0D27,
         CMD_EF_GRAVITY_NOISE_STD_DEV                = 0x0D28,
         CMD_EF_PRESS_ALT_NOISE_STD_DEV              = 0x0D29,
+        CMD_EF_GRAVITY_NOISE_MINIMUM                = 0x0D2A,
         CMD_EF_HARD_IRON_OFFSET_PROCESS_NOISE       = 0x0D2B,
         CMD_EF_SOFT_IRON_OFFSET_PROCESS_NOISE       = 0x0D2C,
         CMD_EF_ENABLE_DISABLE_MEASUREMENTS          = 0x0D41,

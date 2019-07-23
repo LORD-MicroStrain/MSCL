@@ -68,9 +68,6 @@ namespace mscl
                 throw Error("MipChannel (" + Utils::toStr(ch.channelField()) + ") is not in the Estimation Filter descriptor set");
             }
 
-            //validate the sample rate for the channel
-            ch.validateSampleRate(sampleRateBase);
-
             //add the field descriptor and rate decimation
             fieldData.append_uint8(ch.fieldDescriptor());
             fieldData.append_uint16(ch.rateDecimation(sampleRateBase));
@@ -371,6 +368,33 @@ namespace mscl
     ZUPTSettingsData AngularRateZUPTControl::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
         return MIP_Commands::parseData_ZUPTControl(response);
+    }
+    //==========================================================================================
+
+    //==========================================================================================
+    //Tare Orientation
+
+    ByteStream TareOrientation::buildCommand_set(const TareAxisValues& axisValue)
+    {
+        //container to hold the command's field data
+        ByteStream fieldData;
+
+        //add the command selector byte
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::USE_NEW_SETTINGS));
+
+        fieldData.append_uint8(static_cast<uint8>(axisValue.asUint8()));
+
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
+    }
+
+    TareOrientation::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
+        GenericMipCommand::Response(MipTypes::CMD_EF_TARE_ORIENT, collector, true, dataResponse, "Tare Orientation")
+    {
+    }
+
+    bool TareOrientation::Response::parseResponse(const GenericMipCmdResponse& response) const
+    {
+        return MIP_Commands::parseData_singleBool(response);
     }
     //==========================================================================================
 

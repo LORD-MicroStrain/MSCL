@@ -13,8 +13,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Types.h"
 
 namespace mscl
-{ 
+{
 #ifndef SWIG
+
     //Namespace: Utils
     //    Contains many commonly used utility functions.
     //    Note: Communication with our devices (wireless and inertial) is done in Big Endian.

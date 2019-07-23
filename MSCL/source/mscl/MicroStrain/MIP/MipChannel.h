@@ -63,30 +63,6 @@ namespace mscl
         //    The rate decimation that is used to determine the sample rate
         uint16 rateDecimation(uint16 sampleRateBase) const;
 
-        //API Function: validateSampleRate
-        //    Validates the sample rate of the MipChannel object, updating it to a supported rate if necessary.
-        //    This function will be called before a MipChannel is set on the InertialNode.
-        //    You can call it yourself if you want to update the channel yourself to determine the true SampleRate that will be applied.
-        //
-        //Parameters:
-        //    sampleRateBase - The sample rate base to use for validating the sample rate (see <InertialNode::getDataRateBase>).
-        //
-        //Returns:
-        //    A <SampleRate> used for reference to determine what the MipChannel's <SampleRate> got updated to, if at all.
-        const SampleRate& validateSampleRate(uint16 sampleRateBase);
-
-        //API Function: validateSampleRate
-        //    Validates the sample rate of the MipChannel object, updating it to a supported rate if necessary.
-        //    This function will be called before a MipChannel is set on the InertialNode.
-        //    You can call it yourself if you want to update the channel yourself to determine the true SampleRate that will be applied.
-        //
-        //Parameters:
-        //    node - The <InertialNode> to validate the MipChannel's sample rate for.
-        //
-        //Returns:
-        //    A <SampleRate> used for reference to determine what the MipChannel's <SampleRate> got updated to, if at all.
-        const SampleRate& validateSampleRate(InertialNode& node);
-
 #ifndef SWIG
         //Function: fieldDescriptor
         //    Gets the field descriptor byte of the Inertial Channel.

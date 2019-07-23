@@ -44,6 +44,10 @@ namespace mscl
         //    The number of nanoseconds since the unix epoch
         uint64 m_nanoseconds;
 
+        //Variable: s_gpsLeapSeconds
+        //  The (hardcoded) number of leap seconds since Jan 1 1980, used in converting GPS timestamps to UTC timestamps.
+        static uint8 s_gpsLeapSeconds;
+
     public:
 #ifndef SWIG
         //Operator: -
@@ -118,5 +122,23 @@ namespace mscl
         //Returns:
         //    A Timestamp object representing the current system time
         static Timestamp timeNow();
+
+        //API Function: setLeapSeconds
+        //  Adjusts the hardcoded number of leap seconds since Jan 1 1980, used in converting GPS timestamps to UTC timestamps.
+        //  Note: New releases of MSCL should be available when the leap seconds change. You can also adjust this
+        //        value yourself to correct your current version of MSCL without updating.
+        //
+        //Parameters:
+        //  gpsLeapSeconds - The number of leap seconds since Jan 1 1980.
+        static void setLeapSeconds(uint8 gpsLeapSeconds);
+
+        //API Function: getLeapSeconds
+        //  Gets the current number of leap seconds since Jan 1 1980, used in converting GPS timestamps to UTC timestamps.
+        static uint8 getLeapSeconds();
+
+        //Function: gpsTimeToUtcTime
+        //  Converts the gps time into the UTC time in nanoseconds since the unix epoch.
+        //  Note: this uses the value stored in <Utils::gpsLeapSeconds> in its conversion.
+        static uint64 gpsTimeToUtcTime(double timeOfWeek, uint16 weekNumber);
     };
 }

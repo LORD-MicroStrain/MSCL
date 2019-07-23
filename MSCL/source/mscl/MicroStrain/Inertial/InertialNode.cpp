@@ -254,6 +254,11 @@ namespace mscl
         return m_impl->getAngularRateZUPT();
     }
 
+    void InertialNode::captureTareOrientation(const TareAxisValues& axisValue)
+    {
+        m_impl->captureTareOrientation(axisValue);
+    }
+
     void InertialNode::setAngularRateZUPT(const ZUPTSettingsData& ZUPTSettings)
     {
         m_impl->setAngularRateZUPT(ZUPTSettings);
@@ -390,6 +395,16 @@ namespace mscl
     GeometricVector InertialNode::captureGyroBias(const uint16& samplingTime)
     {
         return m_impl->captureGyroBias(samplingTime);
+    }
+
+    void InertialNode::saveMagnetometerCaptureAutoCalibration()
+    {
+        m_impl->saveMagnetometerCaptureAutoCalibration();
+    }
+
+    void InertialNode::findMagnetometerCaptureAutoCalibration()
+    {
+        m_impl->findMagnetometerCaptureAutoCalibration();
     }
 
     void InertialNode::setMagnetometerSoftIronMatrix(const Matrix_3x3& matrix)
@@ -762,6 +777,18 @@ namespace mscl
         EnableDisableMeasurements r;
         r.measurementOptions = m_impl->getUint16s(MipTypes::Command::CMD_EF_ENABLE_DISABLE_MEASUREMENTS)[0];
         return r;
+    }
+
+    void InertialNode::setGravityNoiseMinimum(const GeometricVector& data)
+    {
+        GeometricVectors collection;
+        collection.push_back(data);
+        m_impl->setGeometricVectors(MipTypes::Command::CMD_EF_GRAVITY_NOISE_MINIMUM, collection);
+    }
+
+    GeometricVector InertialNode::getGravityNoiseMinimum() const
+    {
+        return m_impl->getGeometricVectors(MipTypes::Command::CMD_EF_GRAVITY_NOISE_MINIMUM)[0];
     }
 
     void InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData)

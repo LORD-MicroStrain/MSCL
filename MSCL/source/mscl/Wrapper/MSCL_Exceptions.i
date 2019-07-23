@@ -1018,6 +1018,8 @@
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setVelocityZUPT(const ZUPTSettingsData& ZUPTSettings);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getVelocityZUPT();
 
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::captureTareOrientation(const TareAxisValues& axisValue);
+
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setInitialAttitude(const EulerAngles& attitude);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setInitialHeading(float heading);
 %catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::InertialNode::setToIdle();
@@ -1046,6 +1048,8 @@
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getGyroBias();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setGyroBias(const GeometricVector& biasVector);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::captureGyroBias(const uint16& samplingTime);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::findMagnetometerCaptureAutoCalibration();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::saveMagnetometerCaptureAutoCalibration();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setMagnetometerSoftIronMatrix(const Matrix_3x3& matrix);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getMagnetometerSoftIronMatrix();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setMagnetometerHardIronOffset(const GeometricVector& offsetVector);
@@ -1112,8 +1116,33 @@
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getSignalConditioningSettings();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setEnableDisableMeasurements(const EnableDisableMeasurements& data);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getEnableDisableMeasurements();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setGravityNoiseMinimum(const GeometricVectors& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getGravityNoiseMinimum();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData, const TimeUpdate& timestamp);
+
+// Inertial DeviceStatusData
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::systemState();
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::gnssPowerStateOn() const;
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::gnss1PpsPulseInfo();
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::imuStreamInfo();
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::gnssStreamInfo();
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::estimationFilterStreamInfo();
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::imuMessageInfo();
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::gnssMessageInfo();
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::comPortInfo();
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::usbPortInfo();
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::hasMagnetometer() const;
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::magnetometerInitializationFailed() const;
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::hasPressure() const;
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::pressureInitializationFailed() const;
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::gnssReceiverInitializationFailed() const;
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::coldStartOnPowerOn() const;
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::temperatureInfo();
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::powerState() const;
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::gyroRange() const;
+%catches(mscl::Error_NoData)            mscl::DeviceStatusData::accelRange() const;
+
 
 //MipNodeFeatures
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)         mscl::MipNodeFeatures::supportedChannelFields(MipTypes::DataClass dataClass) const;

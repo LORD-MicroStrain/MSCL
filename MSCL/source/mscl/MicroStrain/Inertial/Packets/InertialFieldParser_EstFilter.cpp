@@ -36,9 +36,9 @@ namespace mscl
         uint16 statusFlags = bytes.read_uint16();
 
         //add all the data points we just collected
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FILTER_STATE, valueType_uint16, anyType(filterState), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_DYNAMICS_MODE, valueType_uint16, anyType(dynamicsMode), true));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FLAGS, valueType_uint16, anyType(statusFlags), true));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FILTER_STATE, valueType_uint16, anyType(filterState)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_DYNAMICS_MODE, valueType_uint16, anyType(dynamicsMode)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FLAGS, valueType_uint16, anyType(statusFlags)));
     }
 
     bool FieldParser_FilterStatus::registerParser()

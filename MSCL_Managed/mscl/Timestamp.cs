@@ -86,6 +86,23 @@ public class Timestamp : global::System.IDisposable {
     return ret;
   }
 
+  public static void setLeapSeconds(byte gpsLeapSeconds) {
+    msclPINVOKE.Timestamp_setLeapSeconds(gpsLeapSeconds);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public static byte getLeapSeconds() {
+    byte ret = msclPINVOKE.Timestamp_getLeapSeconds();
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static ulong gpsTimeToUtcTime(double timeOfWeek, ushort weekNumber) {
+    ulong ret = msclPINVOKE.Timestamp_gpsTimeToUtcTime(timeOfWeek, weekNumber);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }
 
 }

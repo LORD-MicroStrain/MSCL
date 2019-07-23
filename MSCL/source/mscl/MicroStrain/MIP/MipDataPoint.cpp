@@ -13,15 +13,26 @@ namespace mscl
         DataPoint(valueType_float, anyType(0.0f)),
         m_field(static_cast<MipTypes::ChannelField>(0)),
         m_qualifier(MipTypes::CH_UNKNOWN),
+        m_hasValidFlag(false),
         m_valid(false)
+    {
+    }
+
+    MipDataPoint::MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, ValueType storedAsType, anyType value):
+        DataPoint(storedAsType, value),
+        m_field(field),
+        m_qualifier(qualifier),
+        m_hasValidFlag(false),
+        m_valid(true)
     {
     }
 
     MipDataPoint::MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, ValueType storedAsType, anyType value, bool valid) :
         DataPoint(storedAsType, value),
-            m_field(field),
-            m_qualifier(qualifier),
-            m_valid(valid)
+        m_field(field),
+        m_qualifier(qualifier),
+        m_hasValidFlag(true),
+        m_valid(valid)
     {
     }
 
@@ -33,6 +44,11 @@ namespace mscl
     MipTypes::ChannelQualifier MipDataPoint::qualifier() const
     {
         return m_qualifier;
+    }
+
+    bool MipDataPoint::hasValidFlag() const
+    {
+        return m_hasValidFlag;
     }
 
     bool MipDataPoint::valid() const

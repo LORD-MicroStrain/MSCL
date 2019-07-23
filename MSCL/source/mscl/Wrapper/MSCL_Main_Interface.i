@@ -99,8 +99,8 @@
 #endif
 #include "../MicroStrain/SampleRate.h"
 #include "../MicroStrain/DataPoint.h"
-#include "../MicroStrain/Vector.h"
 #include "../MicroStrain/Matrix.h"
+#include "../MicroStrain/Vector.h"
 #include "../MicroStrain/Wireless/ChannelMask.h"
 #include "../MicroStrain/Wireless/ArmedDataloggingNetwork.h"
 #include "../MicroStrain/Wireless/Configuration/BaseStationConfig.h"
@@ -184,8 +184,8 @@
 #endif
 %include "../MicroStrain/Wireless/WirelessTypes.h"
 %include "../MicroStrain/SampleRate.h"
-%include "../MicroStrain/Vector.h"
 %include "../MicroStrain/Matrix.h"
+%include "../MicroStrain/Vector.h"
 %include "../MicroStrain/Wireless/StructuralHealth.h"
 %include "../MicroStrain/DataPoint.h"
 %include "../MicroStrain/Wireless/Configuration/ConfigIssue.h"

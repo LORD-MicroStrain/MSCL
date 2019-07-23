@@ -107,6 +107,11 @@ namespace SyncSamplingFormulas
 
     uint32 maxTdmaAddress(uint32 txPerGroup, uint32 groupSize, bool legacyNwk, WirelessTypes::CommProtocol protocol)
     {
+        if(txPerGroup == 0)
+        {
+            return 1;
+        }
+
         uint8 disallowedSlots = 0;
 
         if(legacyNwk)

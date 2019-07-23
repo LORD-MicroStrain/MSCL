@@ -34,36 +34,6 @@ namespace mscl
         return static_cast<uint16>(sampleRateBase / m_sampleRate.samplesPerSecond());
     }
 
-    const SampleRate& MipChannel::validateSampleRate(uint16 sampleRateBase)
-    {
-        //the lowest sample rate allowed by a MipChannel is currently 1hz
-        static const SampleRate RATE_1HZ = SampleRate::Hertz(1);
-        if(m_sampleRate < RATE_1HZ)
-        {
-            m_sampleRate = RATE_1HZ;
-        }
-        //only allow up to the sample rate base rate
-        else if(m_sampleRate.samples() > sampleRateBase)
-        {
-            m_sampleRate = SampleRate::Hertz(sampleRateBase);
-        }
-
-        //while the current sample rate isn't an even multiple of the sample rate base
-        while(sampleRateBase % m_sampleRate.samples() != 0)
-        {
-            //increment the sample rate by 1 sample per second
-            m_sampleRate += 1;
-        }
-
-        return m_sampleRate;
-    }
-
-    const SampleRate& MipChannel::validateSampleRate(InertialNode& node)
-    {
-        //get the sample rate base for this channel and call validateSampleRate
-        return validateSampleRate(node.getDataRateBase(MipTypes::channelFieldToDataClass(m_channelField)));
-    }
-
     uint8 MipChannel::fieldDescriptor() const
     {
         return Utils::lsb(static_cast<uint16>(m_channelField));

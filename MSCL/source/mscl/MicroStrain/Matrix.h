@@ -65,7 +65,7 @@ namespace mscl
         uint32 getBytePos(uint16 row, uint16 col) const;
 
         //Function: checkIndex
-        //    Checks that the given row and column indicies (0-based) are within range, throwing an exception if not
+        //    Checks that the given row and column indices (0-based) are within range, throwing an exception if not
         //
         //Parameters:
         //    row - The 0-based row index to check within range
@@ -96,6 +96,20 @@ namespace mscl
         //Returns:
         //    The number of columns in the Matrix
         uint16 columns() const;
+
+        //API Function: as_doubleAt
+        //    Gets the value stored at the given row and column (0-based), as an 8-byte double
+        //
+        //Parameters:
+        //    row - The 0-based row index of which to get the value
+        //    column - The 0-based column index of which to get the value
+        //
+        //Returns:
+        //    The value stored at the given row and column, as a double
+        //
+        //Exceptions:
+        //    - std::out_of_range: The position requested is out of range
+        double as_doubleAt(uint16 row, uint16 column) const;
 
         //API Function: as_floatAt
         //    Gets the value stored at the given row and column (0-based), as a 4-byte float

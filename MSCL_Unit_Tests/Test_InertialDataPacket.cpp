@@ -108,6 +108,35 @@ BOOST_AUTO_TEST_CASE(InertialDataPacket_ParseInvalidData)
 }
 */
 
+BOOST_AUTO_TEST_CASE(InertialDataPacket_CorruptedBytes)
+{
+    //build the payload bytes
+    ByteStream bytes;
+    bytes.append_uint16(0x0E01);        //Field Len, Data Descriptor
+    bytes.append_float(1.234f);         //Accel 1 float
+    bytes.append_float(0.0f);           //Accel 2 float
+    bytes.append_float(0.0f);           //Accel 3 float
+    bytes.append_uint16(0xFA02);        //Invalid Field Len, Data Descriptor
+    bytes.append_float(4.567f);
+    bytes.append_float(0.0f);
+    bytes.append_float(0.0f);
+
+    MipPacket p;
+    p.descriptorSet(DescriptorSet::DESC_SET_DATA_SENSOR);
+    p.payload(bytes.data());
+
+    //create a MipDataPacket with the MipPacket, which should immediately parse the data for fields and data points
+    MipDataPacket packet(p);    //make sure this doesn't throw an exception
+
+    //make sure it found the first valid data points
+    BOOST_CHECK_EQUAL(packet.data().size(), 3);
+
+    //check the data is correct
+    BOOST_CHECK_CLOSE(packet.data()[0].as_float(), 1.234, 0.0001);
+    BOOST_CHECK_EQUAL(packet.data()[1].as_float(), 0.0);
+    BOOST_CHECK_EQUAL(packet.data()[2].as_float(), 0.0);
+}
+
 
 
 BOOST_AUTO_TEST_SUITE_END()

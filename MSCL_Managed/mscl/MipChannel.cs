@@ -66,18 +66,6 @@ public class MipChannel : global::System.IDisposable {
     return ret;
   }
 
-  public SampleRate validateSampleRate(ushort sampleRateBase) {
-    SampleRate ret = new SampleRate(msclPINVOKE.MipChannel_validateSampleRate__SWIG_0(swigCPtr, sampleRateBase), false);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public SampleRate validateSampleRate(InertialNode node) {
-    SampleRate ret = new SampleRate(msclPINVOKE.MipChannel_validateSampleRate__SWIG_1(swigCPtr, InertialNode.getCPtr(node)), false);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
 }
 
 }

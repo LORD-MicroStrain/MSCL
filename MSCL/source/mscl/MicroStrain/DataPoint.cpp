@@ -49,8 +49,17 @@ namespace mscl
     {
         try
         {
-            Matrix result = any_cast<Matrix>(m_value);
-            return result;
+            switch (m_storedAs)
+            {
+                case valueType_Vector:
+                    return static_cast<Matrix>(any_cast<Vector>(m_value));
+
+                case valueType_Matrix:
+                    return any_cast<Matrix>(m_value);
+
+                default:
+                    throw Error_BadDataType();
+            }
         }
         catch(std::bad_cast&)
         {

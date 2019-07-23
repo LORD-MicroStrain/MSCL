@@ -449,6 +449,16 @@ public class InertialNode : global::System.IDisposable {
     return ret;
   }
 
+  public void findMagnetometerCaptureAutoCalibration() {
+    msclPINVOKE.InertialNode_findMagnetometerCaptureAutoCalibration(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void saveMagnetometerCaptureAutoCalibration() {
+    msclPINVOKE.InertialNode_saveMagnetometerCaptureAutoCalibration(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public void setMagnetometerSoftIronMatrix(Matrix_3x3 matrix) {
     msclPINVOKE.InertialNode_setMagnetometerSoftIronMatrix(swigCPtr, Matrix_3x3.getCPtr(matrix));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -605,6 +615,11 @@ public class InertialNode : global::System.IDisposable {
 
   public void setHeadingUpdateControl(HeadingUpdateOptions headingUpdateOptions) {
     msclPINVOKE.InertialNode_setHeadingUpdateControl(swigCPtr, HeadingUpdateOptions.getCPtr(headingUpdateOptions));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void captureTareOrientation(TareAxisValues axisValue) {
+    msclPINVOKE.InertialNode_captureTareOrientation(swigCPtr, TareAxisValues.getCPtr(axisValue));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -808,6 +823,17 @@ public class InertialNode : global::System.IDisposable {
 
   public EnableDisableMeasurements getEnableDisableMeasurements() {
     EnableDisableMeasurements ret = new EnableDisableMeasurements(msclPINVOKE.InertialNode_getEnableDisableMeasurements(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setGravityNoiseMinimum(GeometricVector data) {
+    msclPINVOKE.InertialNode_setGravityNoiseMinimum(swigCPtr, GeometricVector.getCPtr(data));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public GeometricVector getGravityNoiseMinimum() {
+    GeometricVector ret = new GeometricVector(msclPINVOKE.InertialNode_getGravityNoiseMinimum(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

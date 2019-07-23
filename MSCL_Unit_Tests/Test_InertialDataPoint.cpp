@@ -52,12 +52,16 @@ BOOST_AUTO_TEST_CASE(InertialDataPoint_asVector)
 
     //check that accessing the Vector data incorrectly throws an exception
     BOOST_CHECK_THROW(p.as_float(), Error_BadDataType);
-    BOOST_CHECK_THROW(p.as_Matrix(), Error_BadDataType);
     BOOST_CHECK_THROW(p.as_int16(), Error_BadDataType);
 
-    //check that the values are good
+    //check that the values are good...
+    //...when accessed as Vector
     BOOST_CHECK_EQUAL(p.as_Vector().as_uint16At(0), 123);
     BOOST_CHECK_EQUAL(p.as_Vector().as_uint16At(1), 456);
+
+    //...when accessed as Matrix
+    BOOST_CHECK_EQUAL(p.as_Matrix().as_uint16At(0, 0), 123);
+    BOOST_CHECK_EQUAL(p.as_Matrix().as_uint16At(0, 1), 456);
 }
 
 BOOST_AUTO_TEST_CASE(InertialDataPoint_asMatrix)
