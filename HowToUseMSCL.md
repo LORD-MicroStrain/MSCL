@@ -19,7 +19,7 @@ sys.path.append('<pathToMsclPythonFiles>')
 import mscl
 ```
 
-### .NET
+### .NET (C#, VB)
 
 Add `MSCL_Managed.dll` as a Reference to your project
 
