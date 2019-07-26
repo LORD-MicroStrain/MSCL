@@ -4,11 +4,13 @@
 
 Make sure you have the Windows/Linux drivers for our products installed. If you have installed our desktop software, [SensorConnect](http://www.microstrain.com/software/sensorconnect) on Windows, then the drivers were installed with it. If you want to install the drivers seperately, please visit our [drivers page](https://github.com/LORD-MicroStrain/Drivers).
 
+---
+
 ## Windows
 
 Download the [pre-built Windows binaries](https://github.com/LORD-MicroStrain/MSCL#mscl---the-microstrain-communication-library).
 
-### Python
+#### Python
 
 You can copy the `mscl.py` and `_mscl.pyd` files into a path where python searches for modules. If you do this, you can simply use mscl from anywhere by adding `import mscl` to the top of your python files. To find where Python looks searches for modules on your system, print `sys.path` in your python environment.
 
@@ -19,7 +21,7 @@ sys.path.append('<pathToMsclPythonFiles>')
 import mscl
 ```
 
-### .NET (C#, VB)
+#### .NET (C#, VB)
 
 Add `MSCL_Managed.dll` as a Reference to your project
 
@@ -27,7 +29,7 @@ Place `MSCL.dll` next to your executable
 
 Set your Platform Target to either `x86` or `x64`
 
-### C++
+#### C++
 
 *Note:* The C++ MSCL library depends on Boost 1.68. You can download and install the [pre-built Boost libraries](https://sourceforge.net/projects/boost/files/boost-binaries/) (recommended), or build boost from source.
 
@@ -41,6 +43,7 @@ Point your compiler to the Boost headers and lib files:
 * Link directory: `<boostInstallPath>/lib64_msvc-14.0` (or whatever folder contains the boost `.lib` files)
 * Link to: `libboost_system-vc140-mt-s-x64-1_68.lib` (or equivalent for your build environment)
 
+---
 
 ## Linux
 
@@ -61,7 +64,7 @@ sudo yum install ./<PACKAGE_NAME>.rpm   #install MSCL and it's dependencies
 
 *Note:* to uninstall MSCL, run: `sudo yum remove <PACKAGE_NAME>.rpm`
 
-### Python
+#### Python
 After installing the package, a folder was created in `/usr/share/`. The name of the folder varies depending on which package you install (`/usr/share/python2-mscl` or `/usr/share/python3-mscl`)
 
 Inside this folder, there will be two files:
@@ -82,7 +85,7 @@ sys.path.append('/usr/share/<PYTHON_MSCL_FOLDER_NAME>/')
 import mscl
 ```
 
-### C++
+#### C++
 
 After installing the package, a folder was created in `/usr/share/` called `c++-mscl`.
 
