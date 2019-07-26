@@ -68,7 +68,12 @@ Inside this folder, there will be two files:
 * `mscl.py`
 * `_mscl.so`
 
-If you copy these files into a path where python searches for modules, you can simply use mscl from anywhere by adding `import mscl` to the top of your python files. To find where Python looks searches for modules on your system, print `sys.path` in your python environment.
+If you copy these files into a path where python searches for modules, you can simply use mscl from anywhere by adding `import mscl` to the top of your python files. To find where Python looks searches for modules on your system, print `sys.path` in your python environment. For example, on one machine Python's output of `sys.path` included the folder `/usr/lib/python2.7/dist-packages`. In this scenario, we would do the following:
+
+```
+cp /usr/share/python2-mscl/mscl.py /usr/lib/python2.7/dist-packages
+cp /usr/share/python2-mscl/_mscl.so /usr/lib/python2.7/dist-packages
+```
 
 Alternatively, you can import mscl by adding the full mscl path to sys.path:
 ```py
