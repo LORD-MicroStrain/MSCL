@@ -84,4 +84,11 @@ After installing the package, a folder was created in `/usr/share/` called `c++-
 This folder contains the MSCL headers, as well as a `boost` folder with the Boost library headers and libraries. You will need to tell your compiler to include these MSCL and Boost headers, as well as link to `libmscl.so`.
 
 For example:
-```g++ -I/usr/share/c++-mscl/source -I/usr/share/c++-mscl/Boost/include YourFile.cpp -o YourProgram -L/usr/share/c++-mscl -lmscl -lstdc++ -std=c++11```
+```
+g++ -I/usr/share/c++-mscl/source -I/usr/share/c++-mscl/Boost/include YourFile.cpp -o YourProgram -L/usr/share/c++-mscl -lmscl -lstdc++ -std=c++11
+```
+
+You may also need to add `/usr/share/c++-mscl` to your `LD_LIBRARY_PATH` environment variable:
+```
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/share/c++-mscl
+```
