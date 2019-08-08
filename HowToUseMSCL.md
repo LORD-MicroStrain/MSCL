@@ -1,5 +1,16 @@
 # How to use MSCL
 
+- [Drivers](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md#drivers)
+- [Windows](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md#windows)
+  - [Python](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md#python)
+  - [.NET](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md#net-c-vb)
+  - [C++](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md#c)
+- [Linux](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md#linux)
+  - [Python](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md#python-1)
+  - [C++](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md#c-1)
+  
+---
+
 ## Drivers
 
 Make sure you have the Windows/Linux drivers for our products installed. If you have installed our desktop software, [SensorConnect](http://www.microstrain.com/software/sensorconnect) on Windows, then the drivers were installed with it. If you want to install the drivers seperately, please visit our [drivers page](https://github.com/LORD-MicroStrain/Drivers).
