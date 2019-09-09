@@ -18,28 +18,28 @@ Debian:
   * x64:
   [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/c++-mscl_52.2.1_amd64.deb) |
   [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python2-mscl_52.2.1_amd64.deb) |
-  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python3-mscl_52.2.1_amd64.deb) |
+  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python3-mscl_52.2.1_amd64.deb)
   * arm64:
   [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/c++-mscl_52.2.1_arm64.deb) |
   [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python2-mscl_52.2.1_arm64.deb) |
-  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python3-mscl_52.2.1_arm64.deb) |
+  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python3-mscl_52.2.1_arm64.deb)
   * armhf (Raspbian):
   [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/c++-mscl_52.2.1_armhf.deb) |
   [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python2-mscl_52.2.1_armhf.deb) |
-  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python3-mscl_52.2.1_armhf.deb) |
+  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python3-mscl_52.2.1_armhf.deb)
 
 RPM:
   * x64:
   [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/c++-mscl-52.2.1_x86_64.rpm) |
   [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python2-mscl-52.2.1_x86_64.rpm) |
-  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python3-mscl-52.2.1_x86_64.rpm) |
+  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python3-mscl-52.2.1_x86_64.rpm)
   * arm64:
   [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/c++-mscl-52.2.1_aarch64.rpm) |
   [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python2-mscl-52.2.1_aarch64.rpm) |
-  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python3-mscl-52.2.1_aarch64.rpm) |
+  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python3-mscl-52.2.1_aarch64.rpm)
   * CentOS:
   [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/c++-mscl-52.2.1_x86_64_centos7.6.1810.rpm) |
-  [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python2-mscl-52.2.1_x86_64_centos7.6.1810.rpm) |
+  [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v52.2.1/python2-mscl-52.2.1_x86_64_centos7.6.1810.rpm)
 
 ---
 
