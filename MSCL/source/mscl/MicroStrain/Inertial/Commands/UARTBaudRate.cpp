@@ -41,6 +41,27 @@ namespace mscl
         return returnData;
     }
 
+    uint32 UARTBaudRate::peekParameterValue(const Bytes& commandBytes)
+    {
+        // parameter index is first value after fn selector, 4 bytes long
+        uint8 index = GenericMipCommand::CMD_FN_SELCTOR_INDEX + 1;
+        uint8 size = 4;
+
+        if (commandBytes.size() < static_cast<size_t>(index + size))
+        {
+            return 0;
+        }
+
+        uint32 r = commandBytes[index];
+        for (uint8 i = 1; i < size; i++)
+        {
+            r = r << 8;
+            r |= commandBytes[index + i];
+        }
+
+        return r;
+    }
+
     UARTBaudRate::operator ByteStream() const
     {
         ByteStream byteCommand;

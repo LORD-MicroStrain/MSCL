@@ -47,8 +47,19 @@ namespace mscl
         //    response - The <GenericMipCmdResponse> object from which to get formatted data.
         //
         //Returns:
-        //    ConstellationSettingsData - An object with the data returned from the device.
+        //    uint32 - The baud rate value returned from the device.
         static uint32 getResponseData(const GenericMipCmdResponse& response);
+
+        //Function: peekParameterValue
+        //  Read the baud rate parameter value from the provided UART Baud Rate command bytes.
+        //  Note: The provided command bytes are assumed to be formatted properly, no validation occurs.
+        //
+        //Parameter:
+        //    commandBytes - The <Bytes> representing a complete UART Baud Rate command
+        //
+        //Returns:
+        //    uint32 - the baud rate parameter value within the commandBytes object, returns 0 if parameter value is beyond the bounds of commandBytes
+        static uint32 peekParameterValue(const Bytes& commandBytes);
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.

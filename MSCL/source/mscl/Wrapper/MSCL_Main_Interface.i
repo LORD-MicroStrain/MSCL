@@ -270,7 +270,7 @@ namespace std
     %template(SensorOutputModes)        vector<mscl::WirelessTypes::SensorOutputMode>;
     %template(TransducerTypes)          vector<mscl::WirelessTypes::TransducerType>;
     %template(EepromMap)                map<uint16_t, uint16_t>;
-    %template(DerivedChannelMasks)      map<mscl::WirelessTypes::DerivedCategory, mscl::ChannelMask>;
+    %template(DerivedChannelMasks)      map<enum mscl::WirelessTypes::DerivedCategory, mscl::ChannelMask>;
     %template(SampleRates)              vector<mscl::SampleRate>;
     %template(ConfigIssues)             vector<mscl::ConfigIssue>;
     %template(MipChannelFields)         vector<mscl::MipTypes::ChannelField>;
@@ -282,7 +282,7 @@ namespace std
     %template(SnCurveSegments)          map<uint8_t, mscl::SnCurveSegment>;
     %template(RfSweep)                  map<uint32_t, int16_t>;
     %template(Triggers)                 map<uint8_t, mscl::Trigger>;
-    %template(ChannelCalMap)            map<mscl::WirelessChannel::ChannelId, mscl::CalCoefficients>;
+    %template(ChannelCalMap)            map<enum mscl::WirelessChannel::ChannelId, mscl::CalCoefficients>;
     %template(ConnectionDebugDataVec)   vector<mscl::ConnectionDebugData>;
     %template(SatellitePRNs)            vector<uint16_t>;
     %template(Constellations)           vector<mscl::Constellation>;

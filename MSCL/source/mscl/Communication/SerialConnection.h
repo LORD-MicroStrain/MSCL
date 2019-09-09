@@ -59,6 +59,17 @@ namespace mscl
         //    A description of the connection
         virtual std::string description();
 
+        //API Function: updateBaudRate
+        //  Updates the serial connection baud rate.
+        //  Important: The connection to the port will be closed and re-opened at the new baud rate.
+        //
+        //Parameters:
+        //  baudRate - the baud rate at which to reestablish the connection
+        //
+        //Exceptions:
+        //  - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
+        void updateBaudRate(uint32 baudRate) override;
+
     private:
         //Function: establishConnection
         //    Initializes and opens the current connection

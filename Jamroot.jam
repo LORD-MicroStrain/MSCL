@@ -20,6 +20,3 @@ alias stage : MSCL//stage_all ;
 
 #Make the user explicitly tell bjam to build the stage alias
 explicit stage ;
-
-alias stage_dynamic : MSCL//stage_python_dynamic MSCL//stage_c++ MSCL//stage_headers ;
-explicit stage_dynamic ;

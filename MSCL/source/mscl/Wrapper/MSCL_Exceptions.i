@@ -766,6 +766,7 @@
 %catches(mscl::Error_Connection)                                                                                                            mscl::Connection::getDebugData(uint32 timeout);
 %catches(mscl::Error_Connection)                                                                                                            mscl::Connection::getDebugData();
 %catches(mscl::Error_Connection)                                                                                                            mscl::Connection::debugMode(bool enable);
+%catches(mscl::Error_Connection)                                                                                                            mscl::Connection::updateBaudRate(uint32 baudRate);
 %catches(mscl::Error_InvalidSerialPort, mscl::Error_InvalidTcpServer, mscl::Error_InvalidUnixSocket, mscl::Error_Connection, mscl::Error)   mscl::Connection::reconnect();
 
 //BaseStation
@@ -1018,7 +1019,7 @@
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setVelocityZUPT(const ZUPTSettingsData& ZUPTSettings);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getVelocityZUPT();
 
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::captureTareOrientation(const TareAxisValues& axisValue);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::tareOrientation(const TareAxisValues& axisValue);
 
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setInitialAttitude(const EulerAngles& attitude);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setInitialHeading(float heading);

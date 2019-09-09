@@ -83,6 +83,19 @@ namespace mscl
     //    Represents a base class for MIP commands
     class GenericMipCommand
     {
+    public:
+        //Constant: CMD_DESC_SET_INDEX
+        //  The byte index of a command's descriptor set identifier
+        static const uint8 CMD_DESC_SET_INDEX = 2;
+
+        //Constant: CMD_FIELD_DESC_INDEX
+        //  The byte index of a command's field descriptor
+        static const uint8 CMD_FIELD_DESC_INDEX = 5;
+
+        //Constant: CMD_FN_SELCTOR_INDEX
+        //  The byte index of a command's function selector (if present)
+        static const uint8 CMD_FN_SELCTOR_INDEX = 6;
+
     protected:
         static const uint8 FIELD_ACK_NACK_BYTE = 0xF1;
 
@@ -119,6 +132,28 @@ namespace mscl
         //Returns:
         //    A <ByteStream> containing the MIP command packet built from the given bytes
         static ByteStream buildCommand(MipTypes::Command commandId, const Bytes& fieldData = Bytes());
+        
+        //Function: peekCommandId
+        //    Read the descriptor set and field descriptor from the provided command bytes.
+        //    Note: The provided command bytes are assumed to be formatted properly, no validation occurs.
+        //
+        //Parameters:
+        //    commandBytes - The <Bytes> representing a complete MIP command
+        //
+        //Returns:
+        //    The <MipTypes::Command> ID for the provided command bytes, returns 0 if descriptor indices are beyond the bounds of commandBytes
+        static MipTypes::Command peekCommandId(const Bytes& commandBytes);
+
+        //Function: peekFunctionSelector
+        //    Read the function selector from the provided command bytes.
+        //    Note: The provided command bytes are assumed to be formatted properly, no validation occurs.
+        //
+        //Parameters:
+        //    commandBytes - The <Bytes> representing a complete MIP command with function selector
+        //
+        //Returns:
+        //    The <MipTypes::FunctionSelector> of the provided command, returns 0 if function selector index is beyond the bounds of commandBytes
+        static MipTypes::FunctionSelector peekFunctionSelector(const Bytes& commandBytes);
 
         //Function: buildCommand
         //    Builds the command for a derived MIP command, and returns a ByteStream containing the bytes to send

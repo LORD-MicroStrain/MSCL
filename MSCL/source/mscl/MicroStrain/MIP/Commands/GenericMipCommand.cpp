@@ -69,6 +69,31 @@ namespace mscl
         return buildCommand(Utils::msb(field), Utils::lsb(field), fieldData);
     }
 
+    MipTypes::Command GenericMipCommand::peekCommandId(const Bytes& commandBytes)
+    {
+        if (commandBytes.size() < static_cast<size_t>(CMD_DESC_SET_INDEX + 1)
+            || commandBytes.size() < static_cast<size_t>(CMD_FIELD_DESC_INDEX + 1))
+        {
+            return MipTypes::Command(0);
+        }
+
+        uint16 id = commandBytes[CMD_DESC_SET_INDEX];
+        id = id << 8;
+        id |= commandBytes[CMD_FIELD_DESC_INDEX];
+
+        return static_cast<MipTypes::Command>(id);
+    }
+
+    MipTypes::FunctionSelector GenericMipCommand::peekFunctionSelector(const Bytes& commandBytes)
+    {
+        if (commandBytes.size() < static_cast<size_t>(CMD_FN_SELCTOR_INDEX + 1))
+        {
+            return MipTypes::FunctionSelector(0);
+        }
+
+        return static_cast<MipTypes::FunctionSelector>(commandBytes[CMD_FN_SELCTOR_INDEX]);
+    }
+
     GenericMipCommand::Response::Response(const MipTypes::Command& command, bool ackNackResponse, bool dataResponse, std::string cmdName):
         ResponsePattern(),
         m_ackNackResponse(ackNackResponse),

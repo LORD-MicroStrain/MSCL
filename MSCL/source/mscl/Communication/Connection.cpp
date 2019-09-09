@@ -261,5 +261,10 @@ namespace mscl
         return result;
     }
 
+    void Connection::updateBaudRate(uint32 baudRate)
+    {
+        m_impl->updateBaudRate(baudRate);
+    }
+
     //====================================================================================================================================================
 }

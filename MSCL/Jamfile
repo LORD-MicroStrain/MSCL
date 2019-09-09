@@ -56,6 +56,24 @@ rule compileflags
   return $(flags) ;
 }
 
+rule boost-libs 
+{
+    local boostlib ;
+    if --static in [ modules.peek : ARGV ]
+    {
+        #TODO: Figure out if we need pthread and the libraries rules as defined below
+        boostlib = boost_system/<link>static boost_filesystem/<link>static ;
+        ECHO "Using statically linked dependencies" ;
+    }
+    else
+    {
+        boostlib = boost_system boost_filesystem pthread [ libraries ] ;
+        ECHO "NOT using statically linked dependencies" ;
+    }
+
+    return $(boostlib) ;
+}
+
 local configured-flags = [ compileflags ] ;
 
 #Define the project
@@ -77,19 +95,16 @@ lib pthread ;
 alias unixsocket_cpp : : <target-os>windows ;
 alias upnp_files : source/mscl/Communication/WsdaFinder.h source/mscl/Communication/WsdaFinder.cpp source/mscl/Communication/UpnpService.h source/mscl/Communication/UpnpService.cpp source/mscl/Communication/UpnpDeviceFinderCallback.h source/mscl/Communication/UpnpDeviceFinderCallback.cpp : <target-os>windows ;
 alias boostLibs : : <target-os>windows ;
-alias boostStaticLibs : : <target-os>windows ;
 
 #linux aliases
 alias unixsocket_cpp : source/mscl/Communication/UnixSocketConnection.cpp : <target-os>linux ;
 alias upnp_files : : <target-os>linux ;
-alias boostLibs : boost_system boost_filesystem pthread [ libraries ] : <target-os>linux ;
-alias boostStaticLibs : boost_system/<link>static : <target-os>linux ;
+alias boostLibs : [ boost-libs ] : <target-os>linux ;
 
 #darwin aliases
 alias unixsocket_cpp : source/mscl/Communication/UnixSocketConnection.cpp : <target-os>darwin ;
 alias upnp_files : : <target-os>darwin ;
-alias boostLibs : boost_system boost_filesystem  pthread [ libraries ] : <target-os>darwin ;
-alias boostStaticLibs : boost_system/<link>static : <target-os>darwin ;
+alias boostLibs : [ boost-libs ] : <target-os>darwin ;
 
 alias msclSrcs
 :   [ glob source/*.cpp ]
@@ -127,7 +142,6 @@ make $(SWIG_PYTHON) : : @common.mkdir ;
 
 #Setup dependencies for the mscl python project
 DEPENDS _mscl : $(SWIG_PYTHON) ;
-DEPENDS _mscl-dynamic : $(SWIG_PYTHON) ;
 
 alias MSCL_Main_Interface.cpp : [ cast _ swigi : source/mscl/Wrapper/MSCL_Main_Interface.i ] ;   #Reference the .i file as a swig_i file
 
@@ -135,23 +149,6 @@ alias MSCL_Main_Interface.cpp : [ cast _ swigi : source/mscl/Wrapper/MSCL_Main_I
 python-extension _mscl
 :	MSCL_Main_Interface.cpp
 	msclSrcs                                                        #Include the MSCL Source
-	boostLibs
-:	<include>source/mscl/Wrapper/
-	<swig-options>-python
-	<swig-options>-modern
-	<swig-options>"-outdir \"$(SWIG_PYTHON)\""
-	<swig-options>"$(configured-flags)"
-	<cflags>"$(configured-flags)"
-	<target-os>linux:<swig-options>-DUNIX_BUILD
-	<target-os>linux:<define>UNIX_BUILD
-	<target-os>darwin:<swig-options>-DUNIX_BUILD
-	<target-os>darwin:<define>UNIX_BUILD
-;
-
-#Define the python mscl build
-python-extension _mscl-dynamic
-:	MSCL_Main_Interface.cpp
-	mscl                                                        #Include the MSCL Source
 	boostLibs
 :	<include>source/mscl/Wrapper/
 	<swig-options>-python
@@ -180,14 +177,12 @@ install stage_c++
 ;
 explicit stage_c++ ;
 
-
 #Copy the python directory
 install stage_python
 	: _mscl [ path.glob-tree $(SWIG_PYTHON) : *.py ]
 	: <location>$(STAGING_DIR)/Python/
 ;
-explicit stage_python_x86 ;
-
+explicit stage_python ;
 
 #Copy the python (x86) directory
 install stage_python_x86
@@ -202,12 +197,6 @@ install stage_python_x64
 	: <location>$(STAGING_DIR)/Python/x64
 ;
 explicit stage_python_x64 ;
-
-install stage_python_dynamic
-:	_mscl-dynamic [ path.glob-tree $(SWIG_PYTHON) : *.py ]
-:	<location>$(STAGING_DIR)/Python
-;
-explicit stage_python_dynamic ;
 
 #Make an alias for all of the copying
 alias stage_all

@@ -171,6 +171,17 @@ namespace mscl
         //Exceptions:
         //  - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
         virtual void getDebugData(ConnectionDebugDataVec& data, uint32 timeout) = 0;
+
+        //API Function: updateBaudRate
+        //  Updates the serial connection baud rate. If this is not a serial connection, this function does nothing.
+        //  Important: The connection to the port will be closed and re-opened at the new baud rate.
+        //
+        //Parameters:
+        //  baudRate - the baud rate at which to reestablish the connection
+        //
+        //Exceptions:
+        //  - <Error_Connection>: a connection error has occurred, such as the device being unplugged.
+        virtual void updateBaudRate(uint32 baudRate) {};
     };
 
 

@@ -254,9 +254,9 @@ namespace mscl
         return m_impl->getAngularRateZUPT();
     }
 
-    void InertialNode::captureTareOrientation(const TareAxisValues& axisValue)
+    void InertialNode::tareOrientation(const TareAxisValues& axisValue)
     {
-        m_impl->captureTareOrientation(axisValue);
+        m_impl->tareOrientation(axisValue);
     }
 
     void InertialNode::setAngularRateZUPT(const ZUPTSettingsData& ZUPTSettings)
@@ -437,9 +437,9 @@ namespace mscl
         return m_impl->getConingAndScullingEnable();
     }
 
-    void InertialNode::setUARTBaudRate(uint32 baudRate)
+    void InertialNode::setUARTBaudRate(uint32 baudRate, bool resetConnection)
     {
-        m_impl->setUARTBaudRate(baudRate);
+        m_impl->setUARTBaudRate(baudRate, resetConnection);
     }
 
     uint32 InertialNode::getUARTBaudRate()

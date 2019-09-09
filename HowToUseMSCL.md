@@ -1,27 +1,14 @@
 # How to use MSCL
 
-- [Drivers](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md#drivers)
-- [Windows](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md#windows)
-  - [Python](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md#python)
-  - [.NET](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md#net-c-vb)
-  - [C++](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md#c)
-- [Linux](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md#linux)
-  - [Python](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md#python-1)
-  - [C++](https://github.com/LORD-MicroStrain/MSCL/blob/master/HowToUseMSCL.md#c-1)
-  
----
-
 ## Drivers
 
 Make sure you have the Windows/Linux drivers for our products installed. If you have installed our desktop software, [SensorConnect](http://www.microstrain.com/software/sensorconnect) on Windows, then the drivers were installed with it. If you want to install the drivers seperately, please visit our [drivers page](https://github.com/LORD-MicroStrain/Drivers).
-
----
 
 ## Windows
 
 Download the [pre-built Windows binaries](https://github.com/LORD-MicroStrain/MSCL#mscl---the-microstrain-communication-library).
 
-#### Python
+### Python
 
 You can copy the `mscl.py` and `_mscl.pyd` files into a path where python searches for modules. If you do this, you can simply use mscl from anywhere by adding `import mscl` to the top of your python files. To find where Python looks searches for modules on your system, print `sys.path` in your python environment.
 
@@ -32,7 +19,7 @@ sys.path.append('<pathToMsclPythonFiles>')
 import mscl
 ```
 
-#### .NET (C#, VB)
+### .NET
 
 Add `MSCL_Managed.dll` as a Reference to your project
 
@@ -40,7 +27,7 @@ Place `MSCL.dll` next to your executable
 
 Set your Platform Target to either `x86` or `x64`
 
-#### C++
+### C++
 
 *Note:* The C++ MSCL library depends on Boost 1.68. You can download and install the [pre-built Boost libraries](https://sourceforge.net/projects/boost/files/boost-binaries/) (recommended), or build boost from source.
 
@@ -54,7 +41,6 @@ Point your compiler to the Boost headers and lib files:
 * Link directory: `<boostInstallPath>/lib64_msvc-14.0` (or whatever folder contains the boost `.lib` files)
 * Link to: `libboost_system-vc140-mt-s-x64-1_68.lib` (or equivalent for your build environment)
 
----
 
 ## Linux
 
@@ -75,19 +61,14 @@ sudo yum install ./<PACKAGE_NAME>.rpm   #install MSCL and it's dependencies
 
 *Note:* to uninstall MSCL, run: `sudo yum remove <PACKAGE_NAME>.rpm`
 
-#### Python
+### Python
 After installing the package, a folder was created in `/usr/share/`. The name of the folder varies depending on which package you install (`/usr/share/python2-mscl` or `/usr/share/python3-mscl`)
 
 Inside this folder, there will be two files:
 * `mscl.py`
 * `_mscl.so`
 
-If you copy these files into a path where python searches for modules, you can simply use mscl from anywhere by adding `import mscl` to the top of your python files. To find where Python looks searches for modules on your system, print `sys.path` in your python environment. For example, on one machine Python's output of `sys.path` included the folder `/usr/lib/python2.7/dist-packages`. In this scenario, we would do the following:
-
-```
-cp /usr/share/python2-mscl/mscl.py /usr/lib/python2.7/dist-packages
-cp /usr/share/python2-mscl/_mscl.so /usr/lib/python2.7/dist-packages
-```
+If you copy these files into a path where python searches for modules, you can simply use mscl from anywhere by adding `import mscl` to the top of your python files. To find where Python looks searches for modules on your system, print `sys.path` in your python environment.
 
 Alternatively, you can import mscl by adding the full mscl path to sys.path:
 ```py
@@ -96,18 +77,11 @@ sys.path.append('/usr/share/<PYTHON_MSCL_FOLDER_NAME>/')
 import mscl
 ```
 
-#### C++
+### C++
 
 After installing the package, a folder was created in `/usr/share/` called `c++-mscl`.
 
 This folder contains the MSCL headers, as well as a `boost` folder with the Boost library headers and libraries. You will need to tell your compiler to include these MSCL and Boost headers, as well as link to `libmscl.so`.
 
 For example:
-```
-g++ -I/usr/share/c++-mscl/source -I/usr/share/c++-mscl/Boost/include YourFile.cpp -o YourProgram -L/usr/share/c++-mscl -lmscl -lstdc++ -std=c++11
-```
-
-You may also need to add `/usr/share/c++-mscl` to your `LD_LIBRARY_PATH` environment variable:
-```
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/share/c++-mscl
-```
+```g++ -I/usr/share/c++-mscl/source -I/usr/share/c++-mscl/Boost/include YourFile.cpp -o YourProgram -L/usr/share/c++-mscl -lmscl -lstdc++ -std=c++11```

@@ -412,6 +412,8 @@ namespace mscl
     //  A string composing the RTCM message.
     typedef std::string RTCMMessage;
 
+    //API Typedef: VehicleModeTypes
+    //  A vector of <VehicleModeType> enum values
     typedef std::vector<InertialTypes::VehicleModeType> VehicleModeTypes;
 
     ///////////////  Matrix_3x3  ///////////////
@@ -425,7 +427,7 @@ namespace mscl
         //    Creates a Matrix object.
         //
         //Parameters:
-        //    i00 i01 i02 i10 i11 i12 i20 i21 i22
+        //    a float for each matrix index (0, 0) - (2, 2)
         Matrix_3x3(float i00, float i01, float i02, float i10, float i11, float i12, float i20, float i21, float i22);
 
         //API Constructor: Matrix_3x3
@@ -469,6 +471,8 @@ namespace mscl
         std::array< std::array<float, 3>, 3 > m_array;
     };
 
+    //API Typedef: Matrix_3x3s
+    //  A vector of <Matrix_3x3> objects
     typedef std::vector<Matrix_3x3> Matrix_3x3s;
 
     ///////////////  GeometricVector  ///////////////
@@ -508,6 +512,8 @@ namespace mscl
         float z;
     };
 
+    //API Typedef: GeometricVectors
+    //  A vector of <GeometricVector> objects
     typedef std::vector<GeometricVector> GeometricVectors;
 
     ///////////////  Position  ///////////////
@@ -665,6 +671,8 @@ namespace mscl
         //  The <SatellitePRNs> for all included satellites.
         SatellitePRNs satellitePRNs;
 
+        //API Constructor: SBASSettingsData
+        //    Creates a SBASSettingsData object with default values.
         SBASSettingsData():
             enableSBAS(false),
             enableRanging(false),
@@ -696,6 +704,8 @@ namespace mscl
         bool enableL1SAIF;
     };
 
+    //API Typedef: Constellations
+    //  A vector of <Constellation> objects
     typedef std::vector<Constellation> Constellations;
 
     //API Struct: ConstellationSettingsData
@@ -766,17 +776,37 @@ namespace mscl
         uint16 cutoffFrequency;
 
     public:
+        //API Function: getDataDescriptorForCommand
+        //    Formats the given <MipTypes::ChannelField> data descriptor to be written to a <ByteStream> command.
+        //
+        //Parameters:
+        //    descriptor - the <MipTypes::ChannelField> to format
+        //
+        //Returns:
+        //    uint8 - the provided descriptor cast to uint8
         static uint8 getDataDescriptorForCommand(mscl::MipTypes::ChannelField descriptor) { return static_cast<uint8>(descriptor); }
 
+        //API Function: getDataDescriptorFromUint8
+        //    Gets the <MipTypes::ChannelField> data descriptor represented by the given <uint8> descriptor.
+        //
+        //Parameters:
+        //    descriptor - the <uint8> data descriptor
+        //
+        //Returns:
+        //    <MipTypes::ChannelField> - the provided descriptor cast to <MipTypes::ChannelField>
         static mscl::MipTypes::ChannelField getDataDescriptorFromUint8(uint8 descriptor) { return static_cast<mscl::MipTypes::ChannelField>(descriptor | 0x8000); }
     };
 
+    //API Typedef: AdvancedLowPassFilterConfig
+    //  A vector of <AdvancedLowPassFilterData> objects
     typedef std::vector<AdvancedLowPassFilterData> AdvancedLowPassFilterConfig;
 
     //API Struct: ComplementaryFilterData
     //    Contains the data needed by the <InertialNode::setComplementaryFilterSettings> class.
     struct ComplementaryFilterData
     {
+        // API Constructor: ComplementaryFilterData
+        //    Creates a ComplementaryFilterData object with default values.
         ComplementaryFilterData() :
             upCompensationEnabled(false),
             upCompensationTimeInSeconds(10),
@@ -806,6 +836,8 @@ namespace mscl
     struct PpsPulseInfo
     {
     public:
+        // API Constructor: PpsPulseInfo
+        //    Creates a PpsPulseInfo object with default values.
         PpsPulseInfo():
             count(0),
             lastTimeinMS(0)
@@ -826,6 +858,8 @@ namespace mscl
     struct StreamInfo
     {
     public:
+        // API Constructor: StreamInfo
+        //    Creates a StreamInfo object with default values.
         StreamInfo():
             enabled(false),
             outgoingPacketsDropped(0)
@@ -843,6 +877,8 @@ namespace mscl
     struct DeviceMessageInfo
     {
     public:
+        // API Constructor: DeviceMessageInfo
+        //    Creates a DeviceMessageInfo object with default values.
         DeviceMessageInfo():
             messageParsingErrors(0),
             messagesRead(0),
@@ -866,6 +902,8 @@ namespace mscl
     struct PortInfo
     {
     public:
+        // API Constructor: PortInfo
+        //    Creates a PortInfo object with default values.
         PortInfo():
             bytesWritten(0),
             bytesRead(0),
@@ -892,6 +930,8 @@ namespace mscl
     struct TemperatureInfo
     {
     public:
+        // API Constructor: TemperatureInfo
+        //    Creates a TemperatureInfo object with default values.
         TemperatureInfo():
             onBoardTemp(0),
             lastReadInMS(0),
@@ -939,6 +979,8 @@ namespace mscl
             SYSTEM_RUNNING = 0x0003
         };
 
+        // API Constructor: DeviceStatusData
+        //    Creates a DeviceStatusData object with default values.
         DeviceStatusData() {};
 
         //API Variable: model
@@ -1247,6 +1289,8 @@ namespace mscl
         bool tareYawAxis;
     };
 
+    //API Typedef: HeadingUpdateOptionsList
+    //  A vector of <HeadingUpdateOptions> objects
     typedef std::vector<HeadingUpdateOptions> HeadingUpdateOptionsList;
 
     //API Struct: Geographic Source Options
@@ -1358,6 +1402,8 @@ namespace mscl
     struct AdaptiveMeasurementData
     {
     public:
+        //API Constructor: AdaptiveMeasurementData
+        //    Initialize an AdaptiveMeasurementData object with default values
         AdaptiveMeasurementData() :
             mode(InertialTypes::AdaptiveMeasurementMode::ADAPTIVE_MEASUREMENT_DISABLE),
             lowPassFilterCutoff(0),
@@ -1390,6 +1436,8 @@ namespace mscl
         float minUncertainty;
     };
 
+    //API Typedef: AdaptiveMeasurementModes
+    //  A vector of <AdaptiveMeasurementMode> enum values
     typedef std::vector<InertialTypes::AdaptiveMeasurementMode> AdaptiveMeasurementModes;
 
     //API Struct: SignalConditioningValues

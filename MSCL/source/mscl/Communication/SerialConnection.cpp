@@ -99,4 +99,16 @@ namespace mscl
             m_established = true;
         }
     }
+
+    void SerialConnection::updateBaudRate(uint32 baudRate)
+    {
+        if (m_baudRate == baudRate)
+        {
+            return;
+        }
+
+        disconnect();
+        m_baudRate = baudRate;
+        reconnect();
+    }
 }

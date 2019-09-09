@@ -4,29 +4,29 @@ MSCL is developed by [LORD Sensing - Microstrain](http://microstrain.com) in Wil
 
 #### Downloads
 
-[Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v51.0.1/mscl_51.0.1_Documentation.zip) | 
-[Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v51.0.1/mscl_51.0.1_Examples.zip)
+[Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v48.3.5/mscl_48.3.5_Documentation.zip) | 
+[Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v48.3.5/mscl_48.3.5_Examples.zip)
 
-##### Pre-built MSCL Binaries/Packages (v51.0.1)
+##### Pre-built MSCL Binaries/Packages (v48.3.5)
 Windows:
-[C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v51.0.1/mscl_51.0.1_Windows_C++.zip) | 
-[Python 2.7](https://github.com/LORD-MicroStrain/MSCL/releases/download/v51.0.1/mscl_51.0.1_Windows_Python2.7.zip) |
-[Python 3.6](https://github.com/LORD-MicroStrain/MSCL/releases/download/v51.0.1/mscl_51.0.1_Windows_Python3.6.zip) |
-[.NET](https://github.com/LORD-MicroStrain/MSCL/releases/download/v51.0.1/mscl_51.0.1_Windows_DotNet.zip)
+[C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v48.3.5/mscl_48.3.5_Windows_C++.zip) | 
+[Python 2.7](https://github.com/LORD-MicroStrain/MSCL/releases/download/v48.3.5/mscl_48.3.5_Windows_Python2.7.zip) |
+[Python 3.6](https://github.com/LORD-MicroStrain/MSCL/releases/download/v48.3.5/mscl_48.3.5_Windows_Python3.6.zip) |
+[.NET](https://github.com/LORD-MicroStrain/MSCL/releases/download/v48.3.5/mscl_48.3.5_Windows_DotNet.zip)
 
 Ubuntu 16.04: 
-[C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v51.0.1/c++-mscl_51.0.1_amd64_ubuntu16.04.deb) |
-[Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v51.0.1/python2-mscl_51.0.1_amd64_ubuntu16.04.deb) |
-[Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v51.0.1/python3-mscl_51.0.1_amd64_ubuntu16.04.deb)
+[C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v48.3.5/c++-mscl_48.3.5_amd64_ubuntu16.04.deb) |
+[Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v48.3.5/python2-mscl_48.3.5_amd64_ubuntu16.04.deb) |
+[Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v48.3.5/python3-mscl_48.3.5_amd64_ubuntu16.04.deb)
 
 Ubuntu 18.04: 
-[C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v51.0.1/c++-mscl_51.0.1_amd64_ubuntu18.04.deb) |
-[Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v51.0.1/python2-mscl_51.0.1_amd64_ubuntu18.04.deb) |
-[Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v51.0.1/python3-mscl_51.0.1_amd64_ubuntu18.04.deb)
+[C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v48.3.5/c++-mscl_48.3.5_amd64_ubuntu18.04.deb) |
+[Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v48.3.5/python2-mscl_48.3.5_amd64_ubuntu18.04.deb) |
+[Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v48.3.5/python3-mscl_48.3.5_amd64_ubuntu18.04.deb)
 
 CentOS 7.5.1804: 
-[C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v51.0.1/c++-mscl-51.0.1-0.x86_64_centos7.5.1804.rpm) |
-[Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v51.0.1/python2-mscl-51.0.1-0.x86_64_centos7.5.1804.rpm)
+[C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v48.3.5/c++-mscl-48.3.5-0.x86_64_centos7.5.1804.rpm) |
+[Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v48.3.5/python2-mscl-48.3.5-0.x86_64_centos7.5.1804.rpm)
 
 ---
 

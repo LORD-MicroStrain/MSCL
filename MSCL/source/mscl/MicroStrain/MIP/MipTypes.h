@@ -42,13 +42,15 @@ public:
     //      SAVE_CURRENT_SETTINGS       - 0x03  saves current data to use at startup.
     //      LOAD_STARTUP_SETTINGS       - 0x04  sets current settings to startup.
     //      RESET_TO_DEFAULT            - 0x05  resets current to factory default.
+    //      USE_NEW_SETTINGS_NO_ACKNACK - 0x06  set command, requiring data to set - does not send ACK/NACK reply
     enum FunctionSelector 
     {
         USE_NEW_SETTINGS = 0x01,
         READ_BACK_CURRENT_SETTINGS = 0x02,
         SAVE_CURRENT_SETTINGS = 0x03,
         LOAD_STARTUP_SETTINGS = 0x04,
-        RESET_TO_DEFAULT = 0x05
+        RESET_TO_DEFAULT = 0x05,
+        USE_NEW_SETTINGS_NO_ACKNACK = 0x06
     };
 
     //API Enums: EnableSetting

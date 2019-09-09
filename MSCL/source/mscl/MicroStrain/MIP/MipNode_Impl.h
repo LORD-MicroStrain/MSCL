@@ -160,7 +160,7 @@ namespace mscl
         virtual const MipNodeFeatures& features() const;
 
         //Function: connection
-        //    Gets the <Connection> object that this BaseStation is using.
+        //    Gets the <Connection> object that this MIP device is using.
         Connection& connection();
 
         //Function: lastCommunicationTime
@@ -285,12 +285,20 @@ namespace mscl
         //Function: sendCommandBytes
         //    Sends the <MipCommandSet> byte strings. The <MipCommandBytes> responseSuccess is updated to indicate success/failure.
         //    Note: Unsupported commands, as indicated by the <MipCommandBytes> id, will not be sent.
-        virtual void sendCommandBytes(MipCommandSet& cmds) const;
+        //    Important: if the UART Baud Rate is changed the connection to the port will be automatically closed and re-opened at the new baud rate.
+        //
+        //Parameters:
+        //    cmds - The <MipCommandSet> of command IDs and bytes. The responseSuccess value of each will be set to true if the sent command does not error.
+        virtual void sendCommandBytes(MipCommandSet& cmds);
 
         //Function: sendCommandBytes
         //    Sends the <MipCommandBytes> byte strings. The <MipCommandBytes> responseSuccess is updated to indicate success/failure.
         //    Note: Unsupported commands, as indicated by the <MipCommandBytes> id, will not be sent.
-        virtual void sendCommandBytes(MipCommandBytes& cmd) const;
+        //    Important: if the UART Baud Rate is changed the connection to the port will be automatically closed and re-opened at the new baud rate.
+        //
+        //Parameters:
+        //    cmd - The <MipCommandBytes> to send to the device. The responseSuccess value will be set to true if the sent command does not error.
+        virtual void sendCommandBytes(MipCommandBytes& cmd);
 
     public:
         //Function: ping
@@ -587,7 +595,7 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setVelocityZUPT(const ZUPTSettingsData& ZUPTSettings);
 
-        //Function: captureTareOrientation
+        //Function: tareOrientation
         //     uses device orientation relative to the NED frame as the sensor to vehicle transformation.
         //
         //Parameters:
@@ -598,7 +606,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void captureTareOrientation(const TareAxisValues& axisValue);
+        void tareOrientation(const TareAxisValues& axisValue);
 
         //Function: getVelocityZUPT
         //    Gets the state and threshold of the velocity ZUPT control.
@@ -1047,16 +1055,18 @@ namespace mscl
 
         //Function: setUARTBaudRate
         //    Sets the baud rate.  The device can be unresponsive for as much as 250 ms following this command.
+        //    Important: The connection to the port will be automatically closed and re-opened at the new baud rate unless resetConnection parameter is false.
         //
         //Parameters:
         //    baudRate - The new baud rate.
+        //    resetConnection - Specifies whether the connection to the port should be automatically closed and re-opened at the new baud rate.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void setUARTBaudRate(uint32 baudRate);
+        void setUARTBaudRate(uint32 baudRate, bool resetConnection = true);
 
         //Function: getUARTBaudRate
         //    Gets the current baud rate for the inertial device.
@@ -1713,6 +1723,7 @@ private:
        //Function: processMipCommandBytes
        //    Sends the <MipCommandBytes> byte strings. The <MipCommandBytes> responseSuccess is updated to indicate success/failure.
        //    Note: Unsupported commands, as indicated by the <MipCommandBytes> id, will not be sent.
-       void processMipCommandBytes(MipCommandBytes& cmd) const;
+       //    Important: if the UART Baud Rate is changed the connection to the port will be automatically closed and re-opened at the new baud rate.
+       void processMipCommandBytes(MipCommandBytes& cmd);
     };
 }

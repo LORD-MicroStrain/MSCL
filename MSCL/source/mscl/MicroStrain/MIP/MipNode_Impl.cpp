@@ -839,7 +839,7 @@ namespace mscl
         return setCmds;
     }
 
-    void MipNode_Impl::sendCommandBytes(MipCommandSet& cmdSet) const
+    void MipNode_Impl::sendCommandBytes(MipCommandSet& cmdSet)
     {
         // if CMD_UART_BAUD_RATE is included, store a reference and set it last
         //  command seems to run long, and avoid interrupting connection
@@ -861,7 +861,7 @@ namespace mscl
         }
     }
 
-    void MipNode_Impl::sendCommandBytes(MipCommandBytes& cmd) const
+    void MipNode_Impl::sendCommandBytes(MipCommandBytes& cmd)
     {
         processMipCommandBytes(cmd);
     }
@@ -1134,7 +1134,7 @@ namespace mscl
         doCommand(r, VelocityZUPTControl::buildCommand_set(ZUPTSettings));
     }
 
-    void MipNode_Impl::captureTareOrientation(const TareAxisValues& axisValue) {
+    void MipNode_Impl::tareOrientation(const TareAxisValues& axisValue) {
         TareOrientation::Response r(m_responseCollector, false);
         
         doCommand(r, TareOrientation::buildCommand_set(axisValue));
@@ -1395,10 +1395,19 @@ namespace mscl
         return coningAndScullingEnable.getResponseData(response);
     }
 
-    void MipNode_Impl::setUARTBaudRate(uint32 baudRate)
+    void MipNode_Impl::setUARTBaudRate(uint32 baudRate, bool resetConnection)
     {
         UARTBaudRate baudRateCmd = UARTBaudRate::MakeSetCommand(baudRate);
         SendCommand(baudRateCmd);
+
+        if (resetConnection)
+        {
+            // .25 second delay before device accepts commands at new baud rate
+            Utils::threadSleep(250);
+
+            // update connection to new baud rate
+            m_connection.updateBaudRate(baudRate);
+        }
     }
 
     uint32 MipNode_Impl::getUARTBaudRate() const
@@ -1716,16 +1725,36 @@ namespace mscl
     }
     //=======================================================================
 
-    void MipNode_Impl::processMipCommandBytes(MipCommandBytes& cmd) const
+    void MipNode_Impl::processMipCommandBytes(MipCommandBytes& cmd)
     {
         for (size_t i = 0; i < cmd.commands.size(); i++)
         {
             try
             {
-                std::stringstream cmdId;
-                cmdId << std::hex << cmd.id;
-                GenericMipCommand::Response r(cmd.id, m_responseCollector, true, false, cmdId.str());
-                doCommand(r, ByteStream(cmd.commands[i]));
+                switch (cmd.id)
+                {
+                // detect set UART Baud Rate so that connection baud rate can be updated
+                case MipTypes::Command::CMD_UART_BAUD_RATE:
+                {
+                    MipTypes::FunctionSelector fn = GenericMipCommand::peekFunctionSelector(cmd.commands[i]);
+                    if (fn == MipTypes::FunctionSelector::USE_NEW_SETTINGS)
+                    {
+                        uint32 baudRate = UARTBaudRate::peekParameterValue(cmd.commands[i]);
+                        setUARTBaudRate(baudRate);
+                        break;
+                    }
+
+                    // if this is not a 'set' call, fall through and run the command normally
+                }
+
+                default:
+                    std::stringstream cmdId;
+                    cmdId << std::hex << cmd.id;
+                    GenericMipCommand::Response r(cmd.id, m_responseCollector, true, false, cmdId.str());
+                    doCommand(r, ByteStream(cmd.commands[i]));
+                    break;
+                }
+
                 cmd.responseSuccess = true;
             }
             catch (Error e)
