@@ -13,7 +13,7 @@ Ok, if you are making changes to MSCL's source code, or need to build MSCL from 
 - \>= Visual Studio 2015 (msvc-14.0) or MSBuild equivalent
 - \>= [Boost 1.68](http://www.boost.org/)
 - \>= [OpenSSL 1.1.0](https://www.npcglib.org/~stathis/blog/precompiled-openssl/) (optional, see below)
-- = [SWIG 3.0.6](http://swig.org/download.html) (for .NET and Python builds)
+- = [SWIG 4.0.0](http://swig.org/download.html) (for .NET and Python builds)
 - \>= [Python 2.7 or 3.6](https://www.python.org/downloads/) (for Python build)
 - [Boost.Build](http://www.boost.org/build/) (for Python build)
 
