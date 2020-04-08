@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -127,6 +127,13 @@ namespace mscl
         //    A <HeadingUpdateOptionsList> containing all the supported heading update control options for this node.
         const HeadingUpdateOptionsList supportedHeadingUpdateOptions() const;
 
+        //API Function: supportedStatusSelectors
+        //    Gets a list of the supported device data status selectors for this node.
+        //
+        //Returns:
+        //    A <StatusSelectors> containing all the supported device data status selectors for this node.
+        const StatusSelectors supportedStatusSelectors() const;
+
         //API Function: supportedEstimationControlOptions
         //    Gets an object containing the estimation control options supported by this node.
         //
@@ -147,5 +154,28 @@ namespace mscl
         //Returns:
         //    A AdaptiveMeasurementModes object containing all the supported adaptive measurement modes for this node.
         const AdaptiveMeasurementModes supportedAdaptiveMeasurementModes() const;
+
+        //API Function: supportedAccelerationConstraintOptions
+        //    Gets the acceleration constraint options supported by this device.
+        //
+        //Returns:
+        //    An KinematicConstraintOptions object containing all the supported acceleration constraint options for this device.
+        const KinematicConstraintOptions supportedAccelerationConstraintOptions() const;
+
+        //API Function: supportedVelocityConstraintOptions
+        //    Gets the velocity constraint options supported by this device.
+        //
+        //Returns:
+        //    An KinematicConstraintOptions object containing all the supported velocity constraint options for this device.
+        const KinematicConstraintOptions supportedVelocityConstraintOptions() const;
+
+        //API Function: supportedAngularConstraintOptions
+        //    Gets the angular constraint options supported by this device.
+        //
+        //Returns:
+        //    An KinematicConstraintOptions object containing all the supported angular constraint options for this device.
+        const KinematicConstraintOptions supportedAngularConstraintOptions() const;
+
+
     };
 }

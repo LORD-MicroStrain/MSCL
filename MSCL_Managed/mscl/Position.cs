@@ -44,48 +44,106 @@ public class Position : global::System.IDisposable {
     }
   }
 
-  public Position(double lat_init, double long_init, double alt_init) : this(msclPINVOKE.new_Position__SWIG_0(lat_init, long_init, alt_init), true) {
+  public static Position PositionLLH(double lat_init, double long_init, double alt_init) {
+    Position ret = new Position(msclPINVOKE.Position_PositionLLH(lat_init, long_init, alt_init), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static Position PositionECEF(double x_init, double y_init, double z_init) {
+    Position ret = new Position(msclPINVOKE.Position_PositionECEF(x_init, y_init, z_init), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public Position(double lat_init, double long_init, double alt_init, PositionVelocityReferenceFrame ref_) : this(msclPINVOKE.new_Position__SWIG_0(lat_init, long_init, alt_init, (int)ref_), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public Position() : this(msclPINVOKE.new_Position__SWIG_1(), true) {
+  public Position(double lat_init, double long_init, double alt_init) : this(msclPINVOKE.new_Position__SWIG_1(lat_init, long_init, alt_init), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public double latitude {
+  public Position() : this(msclPINVOKE.new_Position__SWIG_2(), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public PositionVelocityReferenceFrame referenceFrame {
     set {
-      msclPINVOKE.Position_latitude_set(swigCPtr, value);
+      msclPINVOKE.Position_referenceFrame_set(swigCPtr, (int)value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      double ret = msclPINVOKE.Position_latitude_get(swigCPtr);
+      PositionVelocityReferenceFrame ret = (PositionVelocityReferenceFrame)msclPINVOKE.Position_referenceFrame_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
   }
 
-  public double longitude {
-    set {
-      msclPINVOKE.Position_longitude_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      double ret = msclPINVOKE.Position_longitude_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public double latitude() {
+    double ret = msclPINVOKE.Position_latitude__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
-  public double altitude {
-    set {
-      msclPINVOKE.Position_altitude_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      double ret = msclPINVOKE.Position_altitude_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public void latitude(double latitude) {
+    msclPINVOKE.Position_latitude__SWIG_1(swigCPtr, latitude);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public double longitude() {
+    double ret = msclPINVOKE.Position_longitude__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void longitude(double longitude) {
+    msclPINVOKE.Position_longitude__SWIG_1(swigCPtr, longitude);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public double altitude() {
+    double ret = msclPINVOKE.Position_altitude__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void altitude(double altitude) {
+    msclPINVOKE.Position_altitude__SWIG_1(swigCPtr, altitude);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public double x() {
+    double ret = msclPINVOKE.Position_x__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void x(double x) {
+    msclPINVOKE.Position_x__SWIG_1(swigCPtr, x);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public double y() {
+    double ret = msclPINVOKE.Position_y__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void y(double y) {
+    msclPINVOKE.Position_y__SWIG_1(swigCPtr, y);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public double z() {
+    double ret = msclPINVOKE.Position_z__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void z(double z) {
+    msclPINVOKE.Position_z__SWIG_1(swigCPtr, z);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
 }

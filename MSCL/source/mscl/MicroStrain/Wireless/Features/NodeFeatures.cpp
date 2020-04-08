@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -20,8 +20,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeFeatures_glink2External.h"
 #include "NodeFeatures_glink2Internal.h"
 #include "NodeFeatures_glink200.h"
+#include "NodeFeatures_glink200r.h"
 #include "NodeFeatures_iepeLink.h"
-#include "NodeFeatures_mvpervlink.h"
+#include "NodeFeatures_ptlink200.h"
 #include "NodeFeatures_rtdlink.h"
 #include "NodeFeatures_rtdlink200.h"
 #include "NodeFeatures_sglink.h"
@@ -112,6 +113,9 @@ namespace mscl
         case WirelessModels::node_gLink_200_40g_oem_u_fl:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_glink200(info));
 
+        case WirelessModels::node_gLink_200_r:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_glink200r(info));
+
         case WirelessModels::node_iepeLink:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_iepeLink(info));
 
@@ -167,6 +171,9 @@ namespace mscl
         case WirelessModels::node_sgLink200_oem_qbridge_350:
         case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_sglink200oem(info));
+
+        case WirelessModels::node_ptLink200:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_ptlink200(info));
 
         case WirelessModels::node_shmLink:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_shmlink(info));
@@ -225,9 +232,6 @@ namespace mscl
         case WirelessModels::node_vLink_legacy:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_vlink_legacy(info));
 
-        case WirelessModels::node_mvPerVLink:
-            return std::unique_ptr<NodeFeatures>(new NodeFeatures_mvpervlink(info));
-
         case WirelessModels::node_wirelessImpactSensor:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_wirelessImpactSensor(info));
 
@@ -259,6 +263,23 @@ namespace mscl
                                          {WirelessTypes::chSetting_linearEquation, slopeEeprom},
                                          {WirelessTypes::chSetting_unit, actionIdEeprom},
                                          {WirelessTypes::chSetting_equationType, actionIdEeprom}}
+        );
+    }
+
+    void NodeFeatures::addCalCoeffChannelGroup_withFactoryCal(uint8 channelNumber, const std::string& name, const EepromLocation& slopeEeprom, const EepromLocation& actionIdEeprom, const EepromLocation& factorySlopeEeprom, const EepromLocation& factoryActionIdEeprom)
+    {
+        //create the channel mask
+        ChannelMask mask;
+        mask.enable(channelNumber);
+
+        m_channelGroups.emplace_back(mask, name,
+            ChannelGroup::SettingsMap{
+                { WirelessTypes::chSetting_linearEquation, slopeEeprom },
+                { WirelessTypes::chSetting_unit, actionIdEeprom },
+                { WirelessTypes::chSetting_equationType, actionIdEeprom },
+                { WirelessTypes::chSetting_factoryLinearEq, factorySlopeEeprom },
+                { WirelessTypes::chSetting_factoryUnit, factoryActionIdEeprom },
+                { WirelessTypes::chSetting_factoryEqType, factoryActionIdEeprom } }
         );
     }
 
@@ -714,6 +735,11 @@ namespace mscl
         return false;
     }
 
+    bool NodeFeatures::supportsPoll() const
+    {
+        return false;
+    }
+
     bool NodeFeatures::supportsSensorDelayConfig() const
     {
         return false;
@@ -735,6 +761,11 @@ namespace mscl
         return (sensorOutputModes().size() > 0);
     }
 
+    bool NodeFeatures::supportsCfcFilterConfiguration() const
+    {
+        return (cfcFilters().size() > 0);
+    }
+
     bool NodeFeatures::supportsAutoBalance() const
     {
         return anyChannelGroupSupports(WirelessTypes::chSetting_autoBalance);
@@ -743,6 +774,11 @@ namespace mscl
     bool NodeFeatures::supportsLegacyShuntCal() const
     {
         return anyChannelGroupSupports(WirelessTypes::chSetting_legacyShuntCal);
+    }
+
+    bool NodeFeatures::supportsGetFactoryCal() const
+    {
+        return anyChannelGroupSupports(WirelessTypes::chSetting_factoryLinearEq) && anyChannelGroupSupports(WirelessTypes::chSetting_factoryUnit);
     }
 
     bool NodeFeatures::supportsChannel(uint8 channelNumber) const
@@ -1477,6 +1513,12 @@ namespace mscl
     const WirelessTypes::SensorOutputModes NodeFeatures::sensorOutputModes() const
     {
         WirelessTypes::SensorOutputModes result;
+        return result;
+    }
+
+    const WirelessTypes::CfcFilters NodeFeatures::cfcFilters() const
+    {
+        WirelessTypes::CfcFilters result;
         return result;
     }
 

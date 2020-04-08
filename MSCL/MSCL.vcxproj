@@ -719,6 +719,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\ExternalGNSSUpdate.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\ExternalHeadingUpdate.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\ExternalHeadingUpdateWithTimestamp.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\FilterInitializationConfig.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\FloatCommand.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GeometricVectorCommand.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_AssistedFixControl.h" />
@@ -811,6 +812,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\GetLoggedData.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\PageDownload.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\PingResponse.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\Poll.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom_v2.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\ReadSingleSensor.h" />
@@ -869,10 +871,11 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_envlinkPro.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink200.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink200r.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink2External.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink2Internal.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_iepeLink.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_mvpervlink.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_ptlink200.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink200.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink.h" />
@@ -1033,6 +1036,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\ExternalGNSSUpdate.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\ExternalHeadingUpdate.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\ExternalHeadingUpdateWithTimestamp.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\FilterInitializationConfig.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\FloatCommand.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GeographicSource.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\GeometricVectorCommand.cpp" />
@@ -1124,6 +1128,7 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\GetLoggedData.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\PageDownload.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\PingResponse.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\Poll.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ReadEeprom_v2.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\ReadSingleSensor.cpp" />
@@ -1182,10 +1187,11 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_envlinkPro.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink200.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink200r.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink2External.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink2Internal.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_iepeLink.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_mvpervlink.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_ptlink200.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_rtdlink200.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_sglink.cpp" />

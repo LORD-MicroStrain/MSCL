@@ -2,6 +2,7 @@
 
 #include "mscl/Types.h"
 #include "mscl/MicroStrain/MIP/MipTypes.h"
+#include "mscl/MicroStrain/Inertial/EulerAngles.h"
 #include <array>
 #include <boost/optional.hpp>
 #include "mscl/Exceptions.h"
@@ -76,7 +77,7 @@ namespace mscl
         };
 
         //============================================================================================================
-        //API Enums: GnssFixFlags
+        //API Enum: GnssFixFlags
         //    The GNSS Fix Flags in the GPS Fix Information field
         //
         //    FIX_SBAS_CORRECTIONS      - 0x0001    - SBAS Corrections Used
@@ -89,7 +90,7 @@ namespace mscl
         };
 
         //============================================================================================================
-        //API Enums: GnssFixType
+        //API Enum: GnssFixType
         //    The GNSS Fix Types with the GPS Fix Information field
         //
         //    FIXTYPE_3D             - 0x00    - 3D Fix
@@ -108,7 +109,7 @@ namespace mscl
         };
 
         //============================================================================================================
-        //API Enums: SpaceVehicleFlags
+        //API Enum: SpaceVehicleFlags
         //    The Space Vehicle Flags in the Space Vehicle Information field
         //
         //    SVFLAG_NAVIGATION     - 0x0001    - SV Used for Navigation
@@ -121,7 +122,7 @@ namespace mscl
         };
 
         //============================================================================================================
-        //API Enums: DeviceSelector
+        //API Enum: DeviceSelector
         //    The available device selectors.
         //
         //    DEVICE_AHRS           - 0x01
@@ -134,7 +135,7 @@ namespace mscl
         };
 
         //============================================================================================================
-        //API Enums: PowerState
+        //API Enum: PowerState
         //    The available device power states.
         //
         //    ON_FULL_PERFORMANCE     - 0x01
@@ -151,7 +152,7 @@ namespace mscl
         };
 
         //============================================================================================================
-        //API Enums: StreamFormat
+        //API Enum: StreamFormat
         //    The available device data stream formats.
         //
         //    STANDARD_MIP           - 0x01     - standard MIP (default)
@@ -164,7 +165,7 @@ namespace mscl
         };
 
         //============================================================================================================
-        //API Enums: SensorState
+        //API Enum: SensorState
         //    The Sensor States with the GPS Hardware Status field
         //
         //    SENSORSTATE_OFF            - 0x00    - Sensor Off
@@ -179,7 +180,7 @@ namespace mscl
         };
 
         //============================================================================================================
-        //API Enums: AntennaState
+        //API Enum: AntennaState
         //    The Antenna States with the GPS Hardware Status field
         //
         //    ANTENNASTATE_INIT         - 0x01    - Antenna Init
@@ -198,7 +199,7 @@ namespace mscl
         };
 
         //============================================================================================================
-        //API Enums: AntennaPower
+        //API Enum: AntennaPower
         //    The Antenna Powers with the GPS Hardware Status field
         //
         //    ANTENNAPOWER_OFF           - 0x00    - Antenna Off
@@ -213,7 +214,7 @@ namespace mscl
         };
 
         //============================================================================================================
-        //API Enums: FilterState 
+        //API Enum: FilterState 
         //    The Filter States with the NAV Filter Status field
         //
         //    FILTERSTATE_STARTUP                - 0x00    - Startup
@@ -230,7 +231,7 @@ namespace mscl
         };
 
         //============================================================================================================
-        //API Enums: FilterStatus_Running
+        //API Enum: FilterStatus_Running
         //    Binary flags that give information with the NAV Filter Status field when filter is initialized and running. Each bit must be checked accordingly.
         //
         // FILTERSTATUS_IMU_UNAVAILABLE                         - 0x0001    - Filter Running, IMU Unavailable
@@ -269,7 +270,7 @@ namespace mscl
         };
 
         //============================================================================================================
-        //API Enums: FilterStatus_Initialization
+        //API Enum: FilterStatus_Initialization
         //    Binary flags that give information with the NAV Filter Status field when filter is not initialized. Each bit must be checked accordingly.
         //
         //    FILTERSTATUS_ATT_NOT_INIT                      - 0x1000    - Filter Initialization, Attitude not Initialized
@@ -282,7 +283,7 @@ namespace mscl
         };
 
         //============================================================================================================
-        //API Enums: DgnssBaseStatus
+        //API Enum: DgnssBaseStatus
         //    The Base Station Status in the DGNSS Information field. Note: 'UDRE' is User Differential Range Error.
         //
         // DGNSSBASE_UDRE_SCALE_FACTOR_1_00                         - 0     - UDRE Scale Factor = 1.0
@@ -307,7 +308,7 @@ namespace mscl
         };
 
         //============================================================================================================
-        //API Enums: HeadingSource
+        //API Enum: HeadingSource
         //    The Heading Sources with the Heading Update Source State field
         //
         //    HEADINGSOURCE_NONE                                 - 0x0000    - No source, heading updates disabled
@@ -323,8 +324,8 @@ namespace mscl
             HEADINGSOURCE_EXTERNAL_HEADING_UPDATE_CMD = 0x0004
         };
 
-        //API Enums: HeadingUpdateEnableOption
-        //    The enums to represent the different available options and combinations for the Heading Update Control command (0x0D, 0x18)
+        //API Enum: HeadingUpdateEnableOption
+        //    The enum to represent the different available options and combinations for the Heading Update Control command (0x0D, 0x18)
         //
         //      ENABLE_NONE                        - 0x00
         //      ENABLE_INTERNAL_MAGNETOMETER       - 0x01
@@ -346,8 +347,8 @@ namespace mscl
             ENABLE_ALL = 0x07
         };
 
-        //API Enums: EstimationControlOption
-        //    The enums to represent the different available options and combinations for the Estimation Control command (0x0D, 0x14)
+        //API Enum: EstimationControlOption
+        //    The enum to represent the different available options and combinations for the Estimation Control command (0x0D, 0x14)
         //
         //      ENABLE_GYRO_BIAS_ESTIMATION             - 0x0001
         //      ENABLE_ACCEL_BIAS_ESTIMATION            - 0x0002
@@ -367,8 +368,8 @@ namespace mscl
             ENABLE_SOFT_IRON_AUTO_CALIBRATION = 0x0040
         };
 
-        //API Enums: EstimationControlOption
-        //    The enums to represent the source options for Declination (0x0D, 0x43), Inclination (0x0D, 0x4C), and Magnitude Source (0x0D, 0x4D)
+        //API Enum: EstimationControlOption
+        //    The enum to represent the source options for Declination (0x0D, 0x43), Inclination (0x0D, 0x4C), and Magnitude Source (0x0D, 0x4D)
         //
         //      NONE                        - 0x0001
         //      WORLD_MAGNETIC_MODEL        - 0x0002
@@ -380,8 +381,12 @@ namespace mscl
             MANUAL = 0x03
 		};
 
-        //API Enums: AdaptiveMeasurementMode
-        //    The enums to represent the different available options and combinations for the Adaptive Measurement commands (0x0D, 0x44-0x46)
+        //API Enum: AdaptiveMeasurementMode
+        //    The enum to represent the different available options and combinations for the Adaptive Measurement commands (0x0D, 0x44-0x46)
+        //
+        //      ADAPTIVE_MEASUREMENT_DISABLE        - 0x00
+        //      ADAPTIVE_MEASUREMENT_ENABLE_FIXED   - 0x01
+        //      ADAPTIVE_MEASUREMENT_ENABLE_AUTO    - 0x02
         enum AdaptiveMeasurementMode
         {
             ADAPTIVE_MEASUREMENT_DISABLE = 0x00,
@@ -389,8 +394,32 @@ namespace mscl
             ADAPTIVE_MEASUREMENT_ENABLE_AUTO = 0x02
         };
 
-        //API Enums: ConstellationId
-        //  The enums to represent the different available constellation IDs for GNSS constellation settings
+        //API Enum: AidingMeasurementSource
+        //    The enum to represent the different available aiding measurement sources
+        //
+        //      GNSS_AIDING             - 0x0000
+        //      ALTIMETER_AIDING        - 0x0001
+        //      ODOMETER_AIDING         - 0x0002
+        //      MAGNETOMETER_AIDING     - 0x0003
+        //      EXTERNAL_HEADING_AIDING - 0x0004
+        enum AidingMeasurementSource
+        {
+            GNSS_AIDING = 0x0000,
+            ALTIMETER_AIDING = 0x0001,
+            ODOMETER_AIDING = 0x0002,
+            MAGNETOMETER_AIDING = 0x0003,
+            EXTERNAL_HEADING_AIDING = 0x0004
+        };
+
+        //API Enum: ConstellationId
+        //  The enum to represent the different available constellation IDs for GNSS constellation settings
+        //
+        //      GPS       - 0x00
+        //      SBAS      - 0x01
+        //      GALILEO   - 0x02
+        //      BEIDOU    - 0x03
+        //      QZSS      - 0x05
+        //      GLONASS   - 0x06
         enum ConstellationId
         {
             GPS = 0x00,
@@ -399,6 +428,34 @@ namespace mscl
             BEIDOU = 0x03,
             QZSS = 0x05,
             GLONASS = 0x06
+        };
+
+        //API Enum: KinematicConstraint
+        //  The enum to represent the kinematic constraint (acceleration, velocity, angular rate) options
+        //
+        //      CONSTRAINT_NONE            - 0x00
+        //      CONSTRAINT_ZERO_MAGNITUDE  - 0x01
+        //      CONSTRAINT_WHEELED_VEHICLE - 0x02
+        enum KinematicConstraint
+        {
+            CONSTRAINT_NONE            = 0x00,
+            CONSTRAINT_ZERO_MAGNITUDE  = 0x01,
+            CONSTRAINT_WHEELED_VEHICLE = 0x02
+        };
+
+        //API Enum: AutoAdaptiveFilteringLevel
+        //  The enum to represent the auto-adaptive filtering operating levels
+        //
+        //      FILTERING_OFF           - 0x00
+        //      FILTERING_CONSERVATIVE  - 0x01
+        //      FILTERING_MODERATE      - 0x02
+        //      FILTERING_AGGRESIVE     - 0x03
+        enum AutoAdaptiveFilteringLevel
+        {
+            FILTERING_OFF           = 0x00,
+            FILTERING_CONSERVATIVE  = 0x01,
+            FILTERING_MODERATE      = 0x02,
+            FILTERING_AGGRESIVE     = 0x03
         };
     };
 
@@ -475,13 +532,42 @@ namespace mscl
     //  A vector of <Matrix_3x3> objects
     typedef std::vector<Matrix_3x3> Matrix_3x3s;
 
+    //API Enum: PositionVelocityReferenceFrame
+    //    Enum representing position and velocity reference frame options.
+    //
+    //  ECEF    - 0x00  -   Earth-Centered, Earth-Fixed
+    //  LLH_NED - 0x01  -   Position: Lat/Long/Height, Velocity: North/East/Down
+    enum PositionVelocityReferenceFrame
+    {
+        ECEF = 0,
+        LLH_NED = 1
+    };
+
     ///////////////  GeometricVector  ///////////////
 
-    //API Struct: GeometricVector
+    //API Class: GeometricVector
     //    Defines a 3 dimensional, spatial vector.
-    struct GeometricVector
+    class GeometricVector
     {
     public:
+        //API Function: VectorECEF
+        //    Initializes and returns a new vector with the reference frame set to Earth-Centered, Earth-Fixed
+        //
+        //Parameters:
+        //    x_init - initial x coordinate
+        //    y_init - initial y coordinate
+        //    z_init - initial z coordinate
+        static GeometricVector VectorECEF(float x_init, float y_init, float z_init) { return GeometricVector(x_init, y_init, z_init); }
+
+        //API Function: VectorNED
+        //    Initializes and returns a new vector with the reference frame set to North-East-Down
+        //
+        //Parameters:
+        //    north - initial x coordinate
+        //    east - initial y coordinate
+        //    down - initial z coordinate
+        static GeometricVector VectorNED(float north, float east, float down) { return GeometricVector(north, east, down, PositionVelocityReferenceFrame::LLH_NED); }
+
         //API Constructor: GeometricVector
         //    Creates a GeometricVector object.
         //
@@ -489,27 +575,57 @@ namespace mscl
         //    x_init - initial x coordinate
         //    y_init - initial y coordinate
         //    z_init - initial z coordinate
-        GeometricVector(float x_init, float y_init, float z_init);
+        //    ref - reference frame (default: ECEF)
+        GeometricVector(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref = PositionVelocityReferenceFrame::ECEF);
 
         //API Constructor: GeometricVector
         //    Creates a zero-filled GeometricVector object.
+        //    Default reference frame: ECEF
         GeometricVector();
 
         //API Destructor: ~GeometricVector
         //    Destroys a TimeUpdate object.
         ~GeometricVector();
 
-        //API Variable: x
-        //  the vector's x coordinate.
-        float x;
+        //API Variable: referenceFrame
+        //    The <PositionVelocityReferenceFrame> of this vector.
+        //    Default: ECEF
+        PositionVelocityReferenceFrame referenceFrame;
+        
+        //API Function: x
+        // Only valid if referenceFrame is ECEF
+        float x() const { return vec_0; }
+        void x(float x) { vec_0 = x; };
 
-        //API Variable: y
-        //  the vector's y coordinate.
-        float y;
+        //API Function: y
+        // Only valid if referenceFrame is ECEF
+        float y() const { return vec_1; }
+        void y(float y) { vec_1 = y; };
 
-        //API Variable: z
-        //  the vector's z coordinate.
-        float z;
+        //API Function: z
+        // Only valid if referenceFrame is ECEF
+        float z() const { return vec_2; }
+        void z(float z) { vec_2 = z; };
+
+        //API Function: north
+        // Only valid if referenceFrame is LLH_NED
+        float north() const { return vec_0; }
+        void north(float north) { vec_0 = north; }
+
+        //API Function: east
+        // Only valid if referenceFrame is LLH_NED
+        float east() const { return vec_1; }
+        void east(float east) { vec_1 = east; }
+
+        //API Function: down
+        // Only valid if referenceFrame is LLH_NED
+        float down() const { return vec_2; }
+        void down(float down) { vec_2 = down; }
+
+    private:
+        //API Variable: vec_0, _1, _2
+        //  The vector values.
+        float vec_0, vec_1, vec_2;
     };
 
     //API Typedef: GeometricVectors
@@ -519,10 +635,28 @@ namespace mscl
     ///////////////  Position  ///////////////
 
     //API Struct: Position
-    //    Defines a latitude, longitude, and altitude.
-    struct Position
+    //    Defines a geographic position.
+    class Position
     {
     public:
+        //API Constructor: PositionLLH
+        //    Creates a Position object with the reference frame set to LLH
+        //
+        //Parameters:
+        //    lat_init - initial latitude
+        //    long_init - initial longitude
+        //    alt_init - initial altitude
+        static Position PositionLLH(double lat_init, double long_init, double alt_init) { return Position(lat_init, long_init, alt_init, PositionVelocityReferenceFrame::LLH_NED); }
+        
+        //API Constructor: Position
+        //    Creates a Position object with the reference frame set to ECEF
+        //
+        //Parameters:
+        //    x_init - initial x
+        //    y_init - initial y
+        //    z_init - initial z
+        static Position PositionECEF(double x_init, double y_init, double z_init) { return Position(x_init, y_init, z_init, PositionVelocityReferenceFrame::ECEF); }
+
         //API Constructor: Position
         //    Creates a Position object.
         //
@@ -530,30 +664,65 @@ namespace mscl
         //    lat_init - initial latitude
         //    long_init - initial longitude
         //    alt_init - initial altitude
-        Position(double lat_init, double long_init, double alt_init):
-            latitude(lat_init),
-            longitude(long_init),
-            altitude(alt_init) {}
+        //    ref - reference frame (default: LLH)
+        Position(double lat_init, double long_init, double alt_init, PositionVelocityReferenceFrame ref = PositionVelocityReferenceFrame::LLH_NED) :
+            position_0(lat_init),
+            position_1(long_init),
+            position_2(alt_init),
+            referenceFrame(ref) {}
 
         //API Constructor: Position
         //    Creates a zero-filled Position object.
+        //    Default reference frame: LLH
         Position() :
-            latitude(0),
-            longitude(0),
-            altitude(0) {}
+            position_0(0),
+            position_1(0),
+            position_2(0),
+            referenceFrame(PositionVelocityReferenceFrame::LLH_NED) {}
 
         //API Destructor: ~Position
         //    Destroys a TimeUpdate object.
         ~Position() {}
 
-        //API Variable: latitude
-        double latitude;
+        //API Variable: referenceFrame
+        //    The <PositionVelocityReferenceFrame> of this position.
+        //    Default: LLH
+        PositionVelocityReferenceFrame referenceFrame;
 
-        //API Variable: longitude
-        double longitude;
+        //API Function: latitude
+        // Only valid if referenceFrame is LLH_NED
+        double latitude() const { return position_0; }
+        void latitude(double latitude) { position_0 = latitude; }
 
-        //API Variable: altitude
-        double altitude;
+        //API Function: longitude
+        // Only valid if referenceFrame is LLH_NED
+        double longitude() const { return position_1; }
+        void longitude(double longitude) { position_1 = longitude; }
+
+        //API Function: altitude
+        // Only valid if referenceFrame is LLH_NED
+        double altitude() const { return position_2; }
+        void altitude(double altitude) { position_2 = altitude; }
+
+        //API Function: x
+        // Only valid if referenceFrame is ECEF
+        double x() const { return position_0; }
+        void x(double x) { position_0 = x; }
+
+        //API Function: y
+        // Only valid if referenceFrame is ECEF
+        double y() const { return position_1; }
+        void y(double y) { position_1 = y; }
+
+        //API Function: z
+        // Only valid if referenceFrame is ECEF
+        double z() const { return position_2; }
+        void z(double z) { position_2 = z; }
+
+    private:
+        //API Variable: position_0, _1, _2
+        // The position values
+        double position_0, position_1, position_2;
     };
 
     ///////////////  TimeUpdate  ///////////////
@@ -950,6 +1119,74 @@ namespace mscl
         uint8 error;
     };
 
+
+    //API Enum: DeviceStatusValues
+    //    Keys corresponding to the device status values returned by asMap.
+    //
+    //  ModelNumber                                 modelNumber
+    //  StatusStructure                             statusStructure
+    //  SystemState                                 systemState()
+    //  GnssPowerStateOn                            gnssPowerStateOn()
+    //  ImuStreamInfo_Enabled                       imuStreamInfo().enabled
+    //  ImuStreamInfo_PacketsDropped                imuStreamInfo().outgoingPacketsDropped
+    //  GnssStreamInfo_Enabled                      gnssStreamInfo().enabled
+    //  GnssStreamInfo_PacketsDropped               gnssStreamInfo().outgoingPacketsDropped
+    //  EstimationFilterStreamInfo_Enabled          estimationFilterStreamInfo().enabled
+    //  EstimationFilterStreamInfo_PacketsDropped   estimationFilterStreamInfo().outgoingPacketsDropped
+    //  ComPortInfo_BytesRead                       comPortInfo().bytesRead
+    //  ComPortInfo_BytesWritten                    comPortInfo().bytesWritten
+    //  ComPortInfo_OverrunsOnRead                  comPortInfo().overrunsOnRead
+    //  ComPortInfo_OverrunsOnWrite                 comPortInfo().overrunsOnWrite
+    //  ImuMessageInfo_LastMessageReadinMS          imuMessageInfo().lastMessageReadinMS
+    //  ImuMessageInfo_MessageParsingErrors         imuMessageInfo().messageParsingErrors
+    //  ImuMessageInfo_MessagesRead                 imuMessageInfo().messagesRead
+    //  GnssMessageInfo_LastMessageReadinMS         gnssMessageInfo().lastMessageReadinMS
+    //  GnssMessageInfo_MessageParsingErrors        gnssMessageInfo().messageParsingErrors
+    //  GnssMessageInfo_MessagesRead                gnssMessageInfo().messagesRead
+    //  TemperatureInfo_Error                       temperatureInfo().error
+    //  TemperatureInfo_LastReadInMS                temperatureInfo().lastReadInMS
+    //  TemperatureInfo_OnBoardTemp                 temperatureInfo().onBoardTemp
+    //  PowerState                                  powerState()
+    //  GyroRange                                   gyroRange()
+    //  AccelRange                                  accelRange()
+    //  HasMagnetometer                             hasMagnetometer()
+    //  HasPressure                                 hasPressure()
+    enum DeviceStatusValues
+    {
+        ModelNumber,
+        StatusStructure_Value,
+        SystemState_Value,
+        GnssPowerStateOn,
+        ImuStreamInfo_Enabled,
+        ImuStreamInfo_PacketsDropped,
+        GnssStreamInfo_Enabled,
+        GnssStreamInfo_PacketsDropped,
+        EstimationFilterStreamInfo_Enabled,
+        EstimationFilterStreamInfo_PacketsDropped,
+        ComPortInfo_BytesRead,
+        ComPortInfo_BytesWritten,
+        ComPortInfo_OverrunsOnRead,
+        ComPortInfo_OverrunsOnWrite,
+        ImuMessageInfo_LastMessageReadinMS,
+        ImuMessageInfo_MessageParsingErrors,
+        ImuMessageInfo_MessagesRead,
+        GnssMessageInfo_LastMessageReadinMS,
+        GnssMessageInfo_MessageParsingErrors,
+        GnssMessageInfo_MessagesRead,
+        TemperatureInfo_Error,
+        TemperatureInfo_LastReadInMS,
+        TemperatureInfo_OnBoardTemp,
+        PowerState,
+        GyroRange,
+        AccelRange,
+        HasMagnetometer,
+        HasPressure
+    };
+
+    //API Typedef: DeviceStatusMap
+    //  A map of <DeviceStatusValues to std::string> objects
+    typedef std::map<DeviceStatusValues, std::string> DeviceStatusMap;
+
     //API Class: DeviceStatusData
     //    Contains the data needed by the <InertialNode::getBasicDeviceStatus> method.
     class DeviceStatusData
@@ -1092,6 +1329,12 @@ namespace mscl
         uint16 accelRange() const;
         void accelRange(uint16 val);
 
+
+        //API Function: asMap
+        //  get the device status as a map
+        mscl::DeviceStatusMap asMap() const;
+
+
     private: // optional variables are private with public getters & setters
 
         //Function: checkValue
@@ -1180,6 +1423,13 @@ namespace mscl
         boost::optional<uint16> m_accelRange;
     };
 
+    
+
+    //API Typedef: StatusSelectors
+    //  A vector of <StatusSelector> objects
+    typedef std::vector<DeviceStatusData::StatusSelector> StatusSelectors;
+
+
     //API Struct: ExternalGNSSUpdateData
     //    Contains the data needed by the <InertialNode::sendExternalGNSSUpdate> method.
     struct ExternalGNSSUpdateData
@@ -1263,6 +1513,95 @@ namespace mscl
         bool useExternalHeadingMessages;
     };
 
+    //API Typedef: HeadingUpdateOptionsList
+    //  A vector of <HeadingUpdateOptions> objects
+    typedef std::vector<HeadingUpdateOptions> HeadingUpdateOptionsList;
+
+    //API Enum: FilterInitialValuesSource
+    //    Options defining which initial filter values are user-specified or automatically determined on initialization.
+    //
+    //  Automatic               - 0x00  - Automatic position, velocity, and attitude
+    //  UserSpecified_Heading   - 0x01  - Automatic position and velocity, automatic pitch and roll, and user-specified heading
+    //  UserSpecified_Attitude  - 0x02  - Automatic position and velocity, fully user-specified attitude
+    //  UserSpecified_All       - 0x03  - User-specified position, velocity, and attitude
+    enum FilterInitialValuesSource
+    {
+        Automatic = 0,
+        UserSpecified_Heading = 1,
+        UserSpecified_Attitude = 2,
+        UserSpecified_All = 3
+    };
+
+    //API Enum: HeadingAlignmentMethod
+    //    Method options for automatically determining initial filter heading
+    //
+    //  GNSS_Kinematic      - 0x00  - GNSS kinematic alignment (GNSS velocity determines initial heading)
+    //  GNSS_DualAntenna    - 0x01  - Dual-antenna GNSS alignment
+    //  Magnetometer        - 0x02  - Magnetometer heading alignment
+    enum HeadingAlignmentMethod
+    {
+        GNSS_Kinematic = 0,
+        GNSS_DualAntenna = 1,
+        Magnetometer = 2
+    };
+
+    //API Struct: FilterInitializationValues
+    //  Struct to hold values for the Filter Initialization Config command.
+    struct FilterInitializationValues
+    {
+        //API Constructor: FilterInitializationValues
+        //    Creates a FilterInitializationValues object with default values.
+        //
+        //Default values:
+        //  initialValuesSource - <FilterInitialValuesSource>::Automatic
+        //  autoHeadingAlignmentMethod - <HeadingAlignmentMethod>::GNSS_Kinematic
+        //  referenceFrame - <PositionVelocityReferenceFrame>::ECEF
+        FilterInitializationValues() :
+            initialValuesSource(FilterInitialValuesSource::Automatic),
+            autoHeadingAlignmentMethod(HeadingAlignmentMethod::GNSS_Kinematic),
+            referenceFrame(PositionVelocityReferenceFrame::ECEF) {}
+
+        //API Variable: initialValuesSource
+        FilterInitialValuesSource initialValuesSource;
+
+        //API Variable: autoHeadingAlignmentMethod
+        HeadingAlignmentMethod autoHeadingAlignmentMethod;
+
+        //API Variable: initialAttitude
+        //  Note: Only heading value will be used if initialValueSource indicates pitch/roll will be determined automatically.
+        EulerAngles initialAttitude;
+
+        //API Variable: initialPosition
+        Position initialPosition;
+
+        //API Variable: initialVelocity
+        GeometricVector initialVelocity;
+
+        //API Variable: referenceFrame
+        PositionVelocityReferenceFrame referenceFrame;
+        
+        //API Function: manualHeading
+        //    Checks the value of initialValuesSource to determine if the initial heading needs to be set manually.
+        bool manualHeading()
+        {
+            return initialValuesSource == FilterInitialValuesSource::UserSpecified_Heading
+                || initialValuesSource == FilterInitialValuesSource::UserSpecified_Attitude
+                || initialValuesSource == FilterInitialValuesSource::UserSpecified_All;
+        };
+
+        //API Function: manualAttitude
+        //    Checks the value of initialValuesSource to determine if the initial heading, pitch, and roll need to be set manually.
+        bool manualAttitude()
+        {
+            return initialValuesSource == FilterInitialValuesSource::UserSpecified_Attitude
+                || initialValuesSource == FilterInitialValuesSource::UserSpecified_All;
+        };
+
+        //API Function: manualPositionVelocity
+        //    Checks the value of initialValuesSource to determine if the initial position and velocity need to be set manually.
+        bool manualPositionVelocity() { return initialValuesSource == FilterInitialValuesSource::UserSpecified_All; }
+    };
+
     //API Struct: TareAxisValues
     //    Contains the possible axis bitfield values.
     struct TareAxisValues
@@ -1288,10 +1627,6 @@ namespace mscl
         //API Variable: tareYawAxis
         bool tareYawAxis;
     };
-
-    //API Typedef: HeadingUpdateOptionsList
-    //  A vector of <HeadingUpdateOptions> objects
-    typedef std::vector<HeadingUpdateOptions> HeadingUpdateOptionsList;
 
     //API Struct: Geographic Source Options
     //    Holds the Geographic Source Option and the fixed value if manual is selected.
@@ -1436,9 +1771,67 @@ namespace mscl
         float minUncertainty;
     };
 
+    //API Struct: KinematicConstraints
+    struct KinematicConstraints
+    {
+    public:
+        //API Constructor: KinematicConstraints
+        //  Initializes a KinematicConstraints object with default values
+        KinematicConstraints() :
+            acceleration(InertialTypes::CONSTRAINT_NONE),
+            velocity(InertialTypes::CONSTRAINT_NONE),
+            angularRate(InertialTypes::CONSTRAINT_NONE)
+        {};
+
+        //API Constructor: KinematicConstraints
+        //  Initializes a KinematicConstraints object with specified values
+        KinematicConstraints(InertialTypes::KinematicConstraint acc,
+            InertialTypes::KinematicConstraint vel,
+            InertialTypes::KinematicConstraint ar) :
+            acceleration(acc),
+            velocity(vel),
+            angularRate(ar)
+        {};
+
+        //API Variable: acceleration, velocity, angularRate
+        //  <KinematicConstraint> selections for acceleration, velocity, and angular rate
+        InertialTypes::KinematicConstraint acceleration, velocity, angularRate;
+    };
+
+    //API Struct: AutoAdaptiveFilterOptions
+    struct AutoAdaptiveFilterOptions
+    {
+    public:
+        //API Constructor: AutoAdaptiveFilterOptions
+        //  Initializes a AutoAdaptiveFilterOptions object with default values
+        AutoAdaptiveFilterOptions() :
+            level(InertialTypes::FILTERING_MODERATE),
+            timeLimit(0)
+        {};
+
+        //API Constructor: AutoAdaptiveFilterOptions
+        //  Initializes a AutoAdaptiveFilterOptions object with specified values
+        AutoAdaptiveFilterOptions(InertialTypes::AutoAdaptiveFilteringLevel lvl, uint16 limit) :
+            level(lvl),
+            timeLimit(limit)
+        {};
+
+        //API Variable: level
+        //  The auto-adaptive filter operating level
+        InertialTypes::AutoAdaptiveFilteringLevel level;
+
+        //API Variable: timeLimit
+        //  The maximum duration of measurement rejection before entering recovery mode (ms)
+        uint16 timeLimit;
+    };
+
     //API Typedef: AdaptiveMeasurementModes
     //  A vector of <AdaptiveMeasurementMode> enum values
     typedef std::vector<InertialTypes::AdaptiveMeasurementMode> AdaptiveMeasurementModes;
+
+    //API Typedef: KinematicContstraintOptions
+    //  A vector of <KinematicConstraint> values
+    typedef std::vector<InertialTypes::KinematicConstraint> KinematicConstraintOptions;
 
     //API Struct: SignalConditioningValues
     struct SignalConditioningValues

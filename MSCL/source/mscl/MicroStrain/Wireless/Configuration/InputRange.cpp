@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -126,17 +126,6 @@ namespace mscl
         {5, InputRangeEntry(WirelessTypes::range_182_8mV)},
         {6, InputRangeEntry(WirelessTypes::range_91_4mV)},
         {7, InputRangeEntry(WirelessTypes::range_45_7mV)}
-    };
-
-    const InputRangeHelper::InputRangeMap InputRangeHelper::RANGES_MVPVLINK = {
-        {0, InputRangeEntry(WirelessTypes::range_62_5mV, 20.0f)},
-        {1, InputRangeEntry(WirelessTypes::range_31_25mV, 40.0f)},
-        {2, InputRangeEntry(WirelessTypes::range_15_63mV, 80.0f)},
-        {3, InputRangeEntry(WirelessTypes::range_7_81mV, 160.0f)},
-        {4, InputRangeEntry(WirelessTypes::range_3_91mV, 320.0f)},
-        {5, InputRangeEntry(WirelessTypes::range_1_95mV, 640.0f)},
-        {6, InputRangeEntry(WirelessTypes::range_0_976mV, 1280.0f)},
-        {7, InputRangeEntry(WirelessTypes::range_0_488mV, 2560.0f)}
     };
 
     const InputRangeHelper::InputRangeMap InputRangeHelper::RANGES_GLINK200 = {
@@ -288,6 +277,9 @@ namespace mscl
                 throw Error_NotSupported("Input Range Map not found for this Node or Channel");
             }
 
+            case WirelessModels::node_ptLink200:
+                return RANGES_SGLINK200_FULLDIFF_CHS_2500mV;
+
             case WirelessModels::node_shmLink:
                 return RANGES_SHMLINK;
 
@@ -329,9 +321,6 @@ namespace mscl
                 {
                     return RANGES_ENVLINK_PRO_VOLTAGE_CHS;
                 }
-
-            case WirelessModels::node_mvPerVLink:
-                return RANGES_MVPVLINK;
 
             case WirelessModels::node_gLink_200_8g:
             case WirelessModels::node_gLink_200_8g_oem:

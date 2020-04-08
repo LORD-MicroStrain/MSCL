@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -46,6 +46,7 @@ namespace mscl
         //  node_3dm_cx5_25     - 6273 - 3DM-CX5-25
         //  node_3dm_cx5_15     - 6274 - 3DM-CX5-15
         //  node_3dm_cx5_10     - 6275 - 3DM-CX5-10
+        //  node_3dm_gq7        - 0000 - 3DM-GQ7
         //=========================================================================
         enum NodeModel
         {
@@ -77,7 +78,8 @@ namespace mscl
             node_3dm_cx5_35     = 6272,     //3DM-CX5-35
             node_3dm_cx5_25     = 6273,     //3DM-CX5-25
             node_3dm_cx5_15     = 6274,     //3DM-CX5-15
-            node_3dm_cx5_10     = 6275      //3DM-CX5-10
+            node_3dm_cx5_10     = 6275,     //3DM-CX5-10
+            node_3dm_gq7        = 0000      //3DM-GQ7
         };
 
 #ifndef SWIG
@@ -86,7 +88,7 @@ namespace mscl
         //    Converts the model number string received from an InertialNode to a <NodeModel> enum.
         //
         //Parameters:
-        //    modelNumberString - The model number string recieved in an InertialNode's Get Device Info packet.
+        //    modelNumberString - The model number string received in an InertialNode's Get Device Info packet.
         //
         //Returns:
         //    A <NodeModel> enum created from the string.

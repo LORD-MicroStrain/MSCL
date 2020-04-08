@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -135,6 +135,13 @@ namespace mscl
     bool NodeFeatures_torqueLink200::supportsExcitationVoltageConfig() const
     {
         return true;
+    }
+
+    bool NodeFeatures_torqueLink200::supportsPoll() const
+    {
+        static const Version MIN_POLL_FW(12, 44849);
+
+        return (m_nodeInfo.firmwareVersion() >= MIN_POLL_FW);
     }
 
     const WirelessTypes::WirelessSampleRates NodeFeatures_torqueLink200::sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -257,6 +257,30 @@ namespace mscl
     const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_14           (1126, valueType_uint16, "Temp Sensor Config");
     const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_15           (1128, valueType_uint16, "Temp Sensor Config");
     const EepromLocation NodeEepromMap::TEMP_SENSOR_CONFIG_16           (1130, valueType_uint16, "Temp Sensor Config");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_ID_1          (1140, valueType_uint16, "Channel Factory Action ID");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_SLOPE_1       (1142, valueType_float, "Factory Channel Slope");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_OFFSET_1      (1146, valueType_float, "Factory Channel Offset");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_ID_2          (1150, valueType_uint16, "Factory Channel Action ID");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_SLOPE_2       (1152, valueType_float, "Factory Channel Slope");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_OFFSET_2      (1156, valueType_float, "Factory Channel Offset");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_ID_3          (1160, valueType_uint16, "Factory Channel Action ID");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_SLOPE_3       (1162, valueType_float, "Factory Channel Slope");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_OFFSET_3      (1166, valueType_float, "Factory Channel Offset");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_ID_4          (1170, valueType_uint16, "Factory Channel Action ID");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_SLOPE_4       (1172, valueType_float, "Factory Channel Slope");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_OFFSET_4      (1176, valueType_float, "Factory Channel Offset");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_ID_5          (1180, valueType_uint16, "Factory Channel Action ID");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_SLOPE_5       (1182, valueType_float, "Factory Channel Slope");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_OFFSET_5      (1186, valueType_float, "Factory Channel Offset");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_ID_6          (1190, valueType_uint16, "Factory Channel Action ID");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_SLOPE_6       (1192, valueType_float, "Factory Channel Slope");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_OFFSET_6      (1196, valueType_float, "Factory Channel Offset");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_ID_7          (1200, valueType_uint16, "Factory Channel Action ID");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_SLOPE_7       (1202, valueType_float, "Factory Channel Slope");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_OFFSET_7      (1206, valueType_float, "Factory Channel Offset");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_ID_8          (1210, valueType_uint16, "Factory Channel Action ID");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_SLOPE_8       (1212, valueType_float, "Factory Channel Slope");
+    const EepromLocation NodeEepromMap::FACTORY_CH_ACTION_OFFSET_8      (1216, valueType_float, "Factory Channel Offset");
 
     bool NodeEepromMap::canUseCache_read(uint16 eepromLocation)
     {

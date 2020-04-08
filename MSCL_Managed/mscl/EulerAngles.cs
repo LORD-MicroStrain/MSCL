@@ -70,6 +70,12 @@ public class EulerAngles : global::System.IDisposable {
     return ret;
   }
 
+  public float heading() {
+    float ret = msclPINVOKE.EulerAngles_heading(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }
 
 }

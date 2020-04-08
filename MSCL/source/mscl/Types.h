@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -117,8 +117,8 @@ namespace mscl
     //    typedef for a vector of bytes.
     typedef std::vector<uint8> Bytes;
 
-    //API Typedefs:
-    //  BytesCollection    - A vector of <Bytes> objects.
+    //API Typedef: BytesCollection
+    //    A vector of <Bytes> objects.
     typedef std::vector<Bytes> BytesCollection;
     
     //================================================================================================================

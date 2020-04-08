@@ -74,6 +74,7 @@
     <Compile Include="mscl\AdvancedLowPassFilterConfig.cs" />
     <Compile Include="mscl\AdvancedLowPassFilterData.cs" />
     <Compile Include="mscl\ArmedDataloggingNetwork.cs" />
+    <Compile Include="mscl\AutoAdaptiveFilterOptions.cs" />
     <Compile Include="mscl\AutoBalanceResult.cs" />
     <Compile Include="mscl\AutoCalResult.cs" />
     <Compile Include="mscl\AutoCalResult_shmLink.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="mscl\Bytes.cs" />
     <Compile Include="mscl\BytesCollection.cs" />
     <Compile Include="mscl\CalCoefficients.cs" />
+    <Compile Include="mscl\CfcFilters.cs" />
     <Compile Include="mscl\ChannelCalMap.cs" />
     <Compile Include="mscl\ChannelData.cs" />
     <Compile Include="mscl\ChannelGroup.cs" />
@@ -124,6 +126,8 @@
     <Compile Include="mscl\Devices.cs" />
     <Compile Include="mscl\DeviceState.cs" />
     <Compile Include="mscl\DeviceStatusData.cs" />
+    <Compile Include="mscl\DeviceStatusMap.cs" />
+    <Compile Include="mscl\DeviceStatusValues.cs" />
     <Compile Include="mscl\DisplacementModels.cs" />
     <Compile Include="mscl\DisplacementNode.cs" />
     <Compile Include="mscl\EepromMap.cs" />
@@ -137,11 +141,14 @@
     <Compile Include="mscl\ExternalGNSSUpdateData.cs" />
     <Compile Include="mscl\FatigueModes.cs" />
     <Compile Include="mscl\FatigueOptions.cs" />
+    <Compile Include="mscl\FilterInitializationValues.cs" />
+    <Compile Include="mscl\FilterInitialValuesSource.cs" />
     <Compile Include="mscl\Filters.cs" />
     <Compile Include="mscl\FixedReferencePositionData.cs" />
     <Compile Include="mscl\GeographicSourceOptions.cs" />
     <Compile Include="mscl\GeometricVector.cs" />
     <Compile Include="mscl\GeometricVectors.cs" />
+    <Compile Include="mscl\HeadingAlignmentMethod.cs" />
     <Compile Include="mscl\HeadingData.cs" />
     <Compile Include="mscl\HeadingUpdateOptions.cs" />
     <Compile Include="mscl\HeadingUpdateOptionsList.cs" />
@@ -153,6 +160,8 @@
     <Compile Include="mscl\InertialTypes.cs" />
     <Compile Include="mscl\InputRangeEntry.cs" />
     <Compile Include="mscl\InputRanges.cs" />
+    <Compile Include="mscl\KinematicConstraintOptions.cs" />
+    <Compile Include="mscl\KinematicConstraints.cs" />
     <Compile Include="mscl\LinearEquation.cs" />
     <Compile Include="mscl\LoggedDataSweep.cs" />
     <Compile Include="mscl\LoggedDataSweeps.cs" />
@@ -184,6 +193,7 @@
     <Compile Include="mscl\PortInfo.cs" />
     <Compile Include="mscl\Position.cs" />
     <Compile Include="mscl\PositionOffset.cs" />
+    <Compile Include="mscl\PositionVelocityReferenceFrame.cs" />
     <Compile Include="mscl\PpsPulseInfo.cs" />
     <Compile Include="mscl\RadioFeatures.cs" />
     <Compile Include="mscl\RfSweep.cs" />
@@ -198,6 +208,7 @@
     <Compile Include="mscl\SignalConditioningValues.cs" />
     <Compile Include="mscl\SnCurveSegment.cs" />
     <Compile Include="mscl\SnCurveSegments.cs" />
+    <Compile Include="mscl\StatusSelectors.cs" />
     <Compile Include="mscl\StorageLimitModes.cs" />
     <Compile Include="mscl\StreamInfo.cs" />
     <Compile Include="mscl\StructuralHealth.cs" />
@@ -225,6 +236,7 @@
     <Compile Include="mscl\WirelessModels.cs" />
     <Compile Include="mscl\WirelessNode.cs" />
     <Compile Include="mscl\WirelessNodeConfig.cs" />
+    <Compile Include="mscl\WirelessPollData.cs" />
     <Compile Include="mscl\WirelessSampleRates.cs" />
     <Compile Include="mscl\WirelessTypes.cs" />
     <Compile Include="mscl\WsdaFinder.cs" />

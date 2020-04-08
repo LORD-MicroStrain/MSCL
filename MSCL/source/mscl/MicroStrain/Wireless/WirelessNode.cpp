@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -216,6 +216,11 @@ namespace mscl
         return m_impl->autoShuntCal(mask, commandInfo);
     }
 
+    WirelessPollData WirelessNode::poll(const ChannelMask& mask)
+    {
+        return m_impl->poll(mask);
+    }
+
     uint16 WirelessNode::readEeprom(uint16 location) const
     {
         return m_impl->readEeprom(location);
@@ -378,6 +383,11 @@ namespace mscl
         return m_impl->getAntiAliasingFilter(mask);
     }
 
+    WirelessTypes::ChannelFrequencyClass WirelessNode::getCfcFilterConfiguration() const
+    {
+        return m_impl->getCfcFilterConfiguration();
+    }
+
     WirelessTypes::Filter WirelessNode::getLowPassFilter(const ChannelMask& mask) const
     {
         return m_impl->getLowPassFilter(mask);
@@ -451,6 +461,21 @@ namespace mscl
     WirelessTypes::CalCoef_EquationType WirelessNode::getEquationType(const ChannelMask& mask) const
     {
         return m_impl->getEquationType(mask);
+    }
+
+    LinearEquation WirelessNode::getFactoryCalibrationLinearEq(const ChannelMask& mask) const
+    {
+        return m_impl->getFactoryCalibrationLinearEq(mask);
+    }
+
+    WirelessTypes::CalCoef_Unit WirelessNode::getFactoryCalibrationUnit(const ChannelMask& mask) const
+    {
+        return m_impl->getFactoryCalibrationUnit(mask);
+    }
+
+    WirelessTypes::CalCoef_EquationType WirelessNode::getFactoryCalibrationEqType(const ChannelMask& mask) const
+    {
+        return m_impl->getFactoryCalibrationEqType(mask);
     }
 
     WirelessTypes::SettlingTime WirelessNode::getFilterSettlingTime(const ChannelMask& mask) const

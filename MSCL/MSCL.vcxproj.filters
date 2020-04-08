@@ -503,9 +503,6 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_BeaconStatus.h">
       <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_mvpervlink.h">
-      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
-    </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\AutoBalance_v2.h">
       <Filter>MicroStrain\Wireless\Commands</Filter>
     </ClInclude>
@@ -971,6 +968,18 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerCaptureAutoCalibration.h">
       <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
     </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Commands\Poll.h">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink200r.h">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\FilterInitializationConfig.h">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_ptlink200.h">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp">
@@ -1380,9 +1389,6 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\BaseStation_BeaconStatus.cpp">
       <Filter>MicroStrain\Wireless\Commands</Filter>
-    </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_mvpervlink.cpp">
-      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\AutoBalance_v2.cpp">
       <Filter>MicroStrain\Wireless\Commands</Filter>
@@ -1838,6 +1844,18 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\MagnetometerCaptureAutoCalibration.cpp">
       <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Commands\Poll.cpp">
+      <Filter>MicroStrain\Wireless\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_glink200r.cpp">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\FilterInitializationConfig.cpp">
+      <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_ptlink200.cpp">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

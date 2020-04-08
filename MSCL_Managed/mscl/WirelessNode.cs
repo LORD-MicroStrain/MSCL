@@ -283,6 +283,12 @@ public class WirelessNode : global::System.IDisposable {
     return ret;
   }
 
+  public WirelessPollData poll(ChannelMask mask) {
+    WirelessPollData ret = new WirelessPollData(msclPINVOKE.WirelessNode_poll(swigCPtr, ChannelMask.getCPtr(mask)), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public ushort readEeprom(ushort location) {
     ushort ret = msclPINVOKE.WirelessNode_readEeprom(swigCPtr, location);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -425,6 +431,12 @@ public class WirelessNode : global::System.IDisposable {
     return ret;
   }
 
+  public WirelessTypes.ChannelFrequencyClass getCfcFilterConfiguration() {
+    WirelessTypes.ChannelFrequencyClass ret = (WirelessTypes.ChannelFrequencyClass)msclPINVOKE.WirelessNode_getCfcFilterConfiguration(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public WirelessTypes.Filter getLowPassFilter(ChannelMask mask) {
     WirelessTypes.Filter ret = (WirelessTypes.Filter)msclPINVOKE.WirelessNode_getLowPassFilter(swigCPtr, ChannelMask.getCPtr(mask));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -511,6 +523,24 @@ public class WirelessNode : global::System.IDisposable {
 
   public WirelessTypes.CalCoef_EquationType getEquationType(ChannelMask mask) {
     WirelessTypes.CalCoef_EquationType ret = (WirelessTypes.CalCoef_EquationType)msclPINVOKE.WirelessNode_getEquationType(swigCPtr, ChannelMask.getCPtr(mask));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public LinearEquation getFactoryCalibrationLinearEq(ChannelMask mask) {
+    LinearEquation ret = new LinearEquation(msclPINVOKE.WirelessNode_getFactoryCalibrationLinearEq(swigCPtr, ChannelMask.getCPtr(mask)), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public WirelessTypes.CalCoef_Unit getFactoryCalibrationUnit(ChannelMask mask) {
+    WirelessTypes.CalCoef_Unit ret = (WirelessTypes.CalCoef_Unit)msclPINVOKE.WirelessNode_getFactoryCalibrationUnit(swigCPtr, ChannelMask.getCPtr(mask));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public WirelessTypes.CalCoef_EquationType getFactoryCalibrationEqType(ChannelMask mask) {
+    WirelessTypes.CalCoef_EquationType ret = (WirelessTypes.CalCoef_EquationType)msclPINVOKE.WirelessNode_getFactoryCalibrationEqType(swigCPtr, ChannelMask.getCPtr(mask));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

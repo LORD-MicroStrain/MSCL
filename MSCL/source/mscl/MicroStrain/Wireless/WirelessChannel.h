@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -8,6 +8,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "WirelessTypes.h"
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -630,4 +631,8 @@ namespace mscl
     //API Typedef: WirelessChannels
     //    A typedef for a vector of <WirelessChannel> objects.
     typedef std::vector<WirelessChannel> WirelessChannels;
+
+    //API Typedef: WirelessPollData
+    //  A typedef for a map of <WirelessChannel> to float values, used when polling a Wireless Node.
+    typedef std::map<WirelessChannel::ChannelId, float> WirelessPollData;
 }

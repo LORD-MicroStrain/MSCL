@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -45,6 +45,14 @@ namespace mscl
         static const WirelessTypes::WirelessSampleRates continuous_log_glink200;
         static const WirelessTypes::WirelessSampleRates burst_glink200;
         static const WirelessTypes::WirelessSampleRates derivedOnly_glink200;
+
+        //Constants: G-Link-200-R Sample Rates
+        //  continuous_nonSync_glink200r - continuous NonSync sample rates for the G-Link-200-R
+        //  continuous_sync_glink200r    - continuous Sync sample rates for the G-Link-200-R
+        //  continuous_log_glink200r     - continuous Log Only sample rates for the G-Link-200-R
+        static const WirelessTypes::WirelessSampleRates continuous_nonSync_glink200r;
+        static const WirelessTypes::WirelessSampleRates continuous_sync_glink200r;
+        static const WirelessTypes::WirelessSampleRates continuous_log_glink200r;
 
         //Constants: G-Link-2 Sample Rates
         //    continuous_glink2    - continuous sample rates for the G-Link 2

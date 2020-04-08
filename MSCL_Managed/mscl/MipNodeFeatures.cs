@@ -80,6 +80,12 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public StatusSelectors supportedStatusSelectors() {
+    StatusSelectors ret = new StatusSelectors(msclPINVOKE.MipNodeFeatures_supportedStatusSelectors(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public EstimationControlOptions supportedEstimationControlOptions() {
     EstimationControlOptions ret = new EstimationControlOptions(msclPINVOKE.MipNodeFeatures_supportedEstimationControlOptions(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -94,6 +100,24 @@ public class MipNodeFeatures : global::System.IDisposable {
 
   public AdaptiveMeasurementModes supportedAdaptiveMeasurementModes() {
     AdaptiveMeasurementModes ret = new AdaptiveMeasurementModes(msclPINVOKE.MipNodeFeatures_supportedAdaptiveMeasurementModes(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public KinematicConstraintOptions supportedAccelerationConstraintOptions() {
+    KinematicConstraintOptions ret = new KinematicConstraintOptions(msclPINVOKE.MipNodeFeatures_supportedAccelerationConstraintOptions(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public KinematicConstraintOptions supportedVelocityConstraintOptions() {
+    KinematicConstraintOptions ret = new KinematicConstraintOptions(msclPINVOKE.MipNodeFeatures_supportedVelocityConstraintOptions(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public KinematicConstraintOptions supportedAngularConstraintOptions() {
+    KinematicConstraintOptions ret = new KinematicConstraintOptions(msclPINVOKE.MipNodeFeatures_supportedAngularConstraintOptions(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

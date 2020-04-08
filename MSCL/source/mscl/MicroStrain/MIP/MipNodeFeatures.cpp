@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -141,6 +141,45 @@ namespace mscl
                 InertialTypes::VehicleModeType::AUTOMOTIVE_VEHICLE,
                 InertialTypes::VehicleModeType::AIRBORNE_VEHICLE,
                 InertialTypes::VehicleModeType::AIRBORNE_HIGH_G_VEHICLE
+            };
+        }
+    }
+
+    const mscl::StatusSelectors MipNodeFeatures::supportedStatusSelectors() const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_DEVICE_STATUS)) {
+            return{};
+        }
+
+        InertialModels::NodeModel model = InertialModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model)
+        {
+        case InertialModels::node_3dm_gq4_45:
+        case InertialModels::node_3dm_rq1_45_lt:
+        case InertialModels::node_3dm_rq1_45_st:
+        case InertialModels::node_3dm_gx5_10:
+        case InertialModels::node_3dm_cx5_10:
+        case InertialModels::node_3dm_cv5_10:
+        case InertialModels::node_3dm_gx5_15:
+        case InertialModels::node_3dm_gx5_25:
+        case InertialModels::node_3dm_cx5_15:
+        case InertialModels::node_3dm_cx5_25:
+        case InertialModels::node_3dm_cv5_15:
+        case InertialModels::node_3dm_cv5_25:
+        case InertialModels::node_3dm_gx4_15:
+        case InertialModels::node_3dm_gx4_25:
+        case InertialModels::node_3dm_gx5_35:
+        case InertialModels::node_3dm_gx5_45:
+        case InertialModels::node_3dm_cx5_35:
+        case InertialModels::node_3dm_cx5_45:
+        case InertialModels::node_3dm_gx4_45:
+            return{
+                DeviceStatusData::StatusSelector::BASIC_STATUS_STRUCTURE,
+                DeviceStatusData::StatusSelector::DIAGNOSTIC_STATUS_STRUCTURE
+            };
+        default:
+            return{
+                DeviceStatusData::StatusSelector::BASIC_STATUS_STRUCTURE
             };
         }
     }
@@ -328,5 +367,45 @@ namespace mscl
                     InertialTypes::AdaptiveMeasurementMode::ADAPTIVE_MEASUREMENT_ENABLE_AUTO
                 };
         }
+    }
+
+    const KinematicConstraintOptions MipNodeFeatures::supportedAccelerationConstraintOptions() const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_KINEMATIC_CONSTRAINT))
+        {
+            return{ KinematicConstraintOptions(0) };
+        }
+
+        return{
+            InertialTypes::KinematicConstraint::CONSTRAINT_NONE,
+            InertialTypes::KinematicConstraint::CONSTRAINT_ZERO_MAGNITUDE
+        };
+    }
+
+    const KinematicConstraintOptions MipNodeFeatures::supportedVelocityConstraintOptions() const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_KINEMATIC_CONSTRAINT))
+        {
+            return{ KinematicConstraintOptions(0) };
+        }
+
+        return{
+            InertialTypes::KinematicConstraint::CONSTRAINT_NONE,
+            InertialTypes::KinematicConstraint::CONSTRAINT_ZERO_MAGNITUDE,
+            InertialTypes::KinematicConstraint::CONSTRAINT_WHEELED_VEHICLE
+        };
+    }
+
+    const KinematicConstraintOptions MipNodeFeatures::supportedAngularConstraintOptions() const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_KINEMATIC_CONSTRAINT))
+        {
+            return{ KinematicConstraintOptions(0) };
+        }
+
+        return{
+            InertialTypes::KinematicConstraint::CONSTRAINT_NONE,
+            InertialTypes::KinematicConstraint::CONSTRAINT_ZERO_MAGNITUDE
+        };
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -37,6 +37,26 @@ namespace mscl
         Value& operator=(const Value& other);
         bool operator==(const Value& other) const;
 
+        //Function: BOOL
+        //  Static helper function for making a Value object from a bool.
+        //
+        //Parameters:
+        //  value - The bool value.
+        //
+        //Returns:
+        //  A <Value> object holding the bool.
+        static Value BOOL(bool value);
+
+        //Function: UINT8
+        //  Static helper function for making a Value object from a uint8.
+        //
+        //Parameters:
+        //  value - The uint8 value.
+        //
+        //Returns:
+        //  A <Value> object holding the uint8.
+        static Value UINT8(uint8 value);
+
         //Function: UINT16
         //  Static helper function for making a Value object from a uint16.
         //
@@ -66,6 +86,16 @@ namespace mscl
         //Returns:
         //  A <Value> object holding the float.
         static Value FLOAT(float value);
+
+        //Function: DOUBLE
+        //  Static helper function for making a Value object from a double.
+        //
+        //Parameters:
+        //  value - The double value.
+        //
+        //Returns:
+        //  A <Value> object holding the double.
+        static Value DOUBLE(double value);
 #endif
 
     protected:

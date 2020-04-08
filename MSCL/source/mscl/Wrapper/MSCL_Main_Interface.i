@@ -143,11 +143,11 @@
 #include "../MicroStrain/Wireless/Features/NodeFeatures.h"
 #include "../MicroStrain/Wireless/Features/NodeInfo.h"
 #include "../MicroStrain/Wireless/Features/BaseStationFeatures.h"
-#include "../MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "../MicroStrain/Inertial/EulerAngles.h"
 #include "../MicroStrain/Inertial/PositionOffset.h"
 #include "../MicroStrain/Inertial/InertialModels.h"
 #include "../MicroStrain/Displacement/DisplacementModels.h"
+#include "../MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "../MicroStrain/MIP/MipTypes.h"
 #include "../MicroStrain/MIP/MipChannel.h"
 #include "../MicroStrain/MIP/MipDataField.h"
@@ -225,11 +225,11 @@
 %include "../MicroStrain/Wireless/SyncSamplingNetwork.h"
 %include "../MicroStrain/Wireless/Features/NodeFeatures.h"
 %include "../MicroStrain/Wireless/Features/BaseStationFeatures.h"
-%include "../MicroStrain/Inertial/ExposedInertialTypes.h"
 %include "../MicroStrain/Inertial/EulerAngles.h"
 %include "../MicroStrain/Inertial/PositionOffset.h"
 %include "../MicroStrain/Inertial/InertialModels.h"
 %include "../MicroStrain/Displacement/DisplacementModels.h"
+%include "../MicroStrain/Inertial/ExposedInertialTypes.h"
 %include "../MicroStrain/MIP/MipTypes.h"
 %include "../MicroStrain/MIP/MipChannel.h"
 %include "../MicroStrain/MIP/MipDataField.h"
@@ -268,9 +268,11 @@ namespace std
     %template(CommProtocols)            vector<mscl::WirelessTypes::CommProtocol>;
     %template(Voltages)                 vector<mscl::WirelessTypes::Voltage>;
     %template(SensorOutputModes)        vector<mscl::WirelessTypes::SensorOutputMode>;
+    %template(CfcFilters)               vector<mscl::WirelessTypes::ChannelFrequencyClass>;
     %template(TransducerTypes)          vector<mscl::WirelessTypes::TransducerType>;
     %template(EepromMap)                map<uint16_t, uint16_t>;
     %template(DerivedChannelMasks)      map<enum mscl::WirelessTypes::DerivedCategory, mscl::ChannelMask>;
+    %template(DeviceStatusMap)          map<enum mscl::DeviceStatusValues, std::string>;
     %template(SampleRates)              vector<mscl::SampleRate>;
     %template(ConfigIssues)             vector<mscl::ConfigIssue>;
     %template(MipChannelFields)         vector<mscl::MipTypes::ChannelField>;
@@ -283,13 +285,16 @@ namespace std
     %template(RfSweep)                  map<uint32_t, int16_t>;
     %template(Triggers)                 map<uint8_t, mscl::Trigger>;
     %template(ChannelCalMap)            map<enum mscl::WirelessChannel::ChannelId, mscl::CalCoefficients>;
+    %template(WirelessPollData)         map<enum mscl::WirelessChannel::ChannelId, float>;
     %template(ConnectionDebugDataVec)   vector<mscl::ConnectionDebugData>;
     %template(SatellitePRNs)            vector<uint16_t>;
     %template(Constellations)           vector<mscl::Constellation>;
     %template(HeadingUpdateOptionsList) vector<mscl::HeadingUpdateOptions>;
     %template(AdaptiveMeasurementModes) vector<mscl::InertialTypes::AdaptiveMeasurementMode>;
+    %template(KinematicConstraintOptions) vector<mscl::InertialTypes::KinematicConstraint>;
     %template(GeometricVectors)         vector<mscl::GeometricVector>;
     %template(Matrix_3x3s)              vector<mscl::Matrix_3x3>;
+    %template(StatusSelectors)          vector<mscl::DeviceStatusData::StatusSelector>;
     %template(VehicleModeTypes)         vector<mscl::InertialTypes::VehicleModeType>;
     %template(AdvancedLowPassFilterConfig)vector<mscl::AdvancedLowPassFilterData>;
     

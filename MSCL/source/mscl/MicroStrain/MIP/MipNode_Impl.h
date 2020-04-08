@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -128,6 +128,11 @@ namespace mscl
         //Function: onDataPacketAdded
         //  The callback function to use to get notified of data packets being added.
         void onDataPacketAdded();
+
+        //Function: buildMipCommandBytes
+        //  Used by function getConfiCommandBytes to build the <MipCommandBytes> object given a collection of <MipFieldValues> specifiers
+        //  Note: specifiers defaults to vector with single empty <MipFieldValues> entry
+        MipCommandBytes buildMipCommandBytes(MipTypes::Command cmd, std::vector<MipFieldValues> specifiers = { {} }) const;
 
     public:
         //Function: doCommand
@@ -671,6 +676,30 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setInitialHeading(float heading);
+
+        //API Function: getInitialFilterConfiguration
+        //    Gets the initial filter configuration values.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        FilterInitializationValues getInitialFilterConfiguration() const;
+
+        //API Function: setInitialFilterConfiguration
+        //    Sets the initial filter configuration values.
+        //    Note: Changes from this command will only be applied if the filter is in the Initialization state (not Running) or on filter reset.
+        //
+        //Parameters:
+        //  filterConfig - The <FilterInitializationValues> to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setInitialFilterConfiguration(FilterInitializationValues filterConfig);
 
         //Function: getSensorToVehicleTransformation
         //    Gets the sensor to vehicle frame transformation matrix using roll, pitch, and yaw Euler angles (in radians).
@@ -1702,6 +1731,53 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the DisplacementNode.
         void setDeviceTime(uint64 nanoseconds);
+
+        //API Function: get
+        //    sends the specified command with the Read Current Settings function selector.
+        //
+        //Parameter:
+        //    cmdId - the <MipTypes::Command> to send.
+        //
+        //Return:
+        //    <MipFieldValues> - The current values of the specified setting.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        MipFieldValues get(MipTypes::Command cmdId) const;
+
+        //API Function: get
+        //    sends the specified command with the Read Current Settings function selector.
+        //
+        //Parameter:
+        //    cmdId - the <MipTypes::Command> to send.
+        //    specifier - <MipFieldValues> containing any additional specifier values to send with the command.
+        //
+        //Return:
+        //    <MipFieldValues> - The current values of the specified setting.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        MipFieldValues get(MipTypes::Command cmdId, MipFieldValues specifier) const;
+
+        //API Function: set
+        //    sends the specified command with the Apply New Settings function selector.
+        //
+        //Parameter:
+        //    cmdId - the <MipTypes::Command> to send.
+        //    values - <MipFieldValues> containing the values to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void set(MipTypes::Command cmdId, MipFieldValues values);
 
 private:
        //Function: SendCommand

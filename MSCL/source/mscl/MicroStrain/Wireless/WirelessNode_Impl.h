@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -536,6 +536,19 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::HighPassFilter getHighPassFilter(const ChannelMask& mask) const;
 
+        //API Function: getCfcFilterConfiguration
+        //    Reads the channel frequency class filter option set on the Node.
+        //    See Also: <NodeFeatures::supportsCfcFilterConfiguration>
+        //
+        //Returns:
+        //    The <WirelessTypes::ChannelFrequencyClass> currently set on the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: High-Pass Filter is not supported for the provided <ChannelMask>.
+        //    - <Error_NodeCommunication>: Failed to read from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::ChannelFrequencyClass getCfcFilterConfiguration() const;
+
         //Function: getDebounceFilter
         //  Reads the Debounce Filter of the specified <ChannelMask> currently set on the Node.
         //
@@ -633,6 +646,51 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::CalCoef_EquationType getEquationType(const ChannelMask& mask) const;
+
+        //API Function: getFactoryCalibrationLinearEq
+        //    Gets the factory-calibrated linear equation for the specified <ChannelMask>.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> of the linear equation to read.
+        //
+        //Returns:
+        //    A <LinearEquation> object representing the linear equation that was set during factory calibration.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Linear Equation is not supported for the provided <ChannelMask>.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        LinearEquation getFactoryCalibrationLinearEq(const ChannelMask& mask) const;
+
+        //API Function: getFactoryCalibrationUnit
+        //    Reads the factory calibration unit for the specified <ChannelMask>.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> of the unit to read.
+        //
+        //Returns:
+        //    The <WirelessTypes::CalCoef_Unit> used during factory calibration of this <ChannelMask>
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Unit is not supported for the provided <ChannelMask>.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::CalCoef_Unit getFactoryCalibrationUnit(const ChannelMask& mask) const;
+
+        //Function: getFactoryCalibrationEqType
+        //    Reads the factory calibration <WirelessTypes::CalCoef_EquationType> for the specified <ChannelMask>.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> of the equation type to read.
+        //
+        //Returns:
+        //    The <WirelessTypes::CalCoef_EquationType> set during factory calibration for this <ChannelMask>.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The Equation Type setting is not supported for the provided <ChannelMask>.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::CalCoef_EquationType getFactoryCalibrationEqType(const ChannelMask& mask) const;
 
         //Function: getFilterSettlingTime
         //    Reads the filter settling time of the specified <ChannelMask>.
@@ -924,6 +982,21 @@ namespace mscl
         //  - <Error_NodeCommunication>: Failed to communicate with the Node.
         //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         virtual AutoShuntCalResult autoShuntCal(const ChannelMask& mask, const ShuntCalCmdInfo& commandInfo);
+
+        //Function: poll
+        //  Polls the WirelessNode to get a single sweep of calibrated data.
+        //
+        //Parameters:
+        //  chs - The <ChannelMask> to poll data for. Note: if a channel is active that isn't supported by the Node, it will be ignored.
+        //
+        //Returns:
+        //  A <WirelessPollData> map holding the result of the poll.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: Autocal shunt is not supported by the Node or ChannelMask.
+        //  - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //  - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessPollData poll(const ChannelMask& mask);
 
         //Function: readEeprom
         //    Reads a uint16 from the given eeprom location of the node. This may use a page download or a read eeprom command.

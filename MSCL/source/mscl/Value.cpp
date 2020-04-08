@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -37,6 +37,16 @@ namespace mscl
         return ((m_storedAs == other.m_storedAs) && (isSameValue(other) ));
     }
 
+    Value Value::BOOL(bool value)
+    {
+        return Value(valueType_bool, value);
+    }
+
+    Value Value::UINT8(uint8 value)
+    {
+        return Value(valueType_uint8, value);
+    }
+
     Value Value::UINT16(uint16 value)
     {
         return Value(valueType_uint16, value);
@@ -50,6 +60,11 @@ namespace mscl
     Value Value::FLOAT(float value)
     {
         return Value(valueType_float, value);
+    }
+
+    Value Value::DOUBLE(double value)
+    {
+        return Value(valueType_double, value);
     }
 
     bool Value::isSameValue(const Value& other) const

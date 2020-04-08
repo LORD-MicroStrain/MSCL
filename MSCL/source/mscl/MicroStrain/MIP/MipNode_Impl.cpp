@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -31,6 +31,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Inertial/Commands/DeviceStartupSettings.h"
 #include "mscl/MicroStrain/Inertial/Commands/DeviceStatus.h"
 #include "mscl/MicroStrain/Inertial/Commands/EstimationControlFlags.h"
+#include "mscl/MicroStrain/Inertial/Commands/FilterInitializationConfig.h"
 #include "mscl/MicroStrain/Inertial/Commands/GeographicSource.h"
 #include "mscl/MicroStrain/Inertial/Commands/EstFilter_Commands.h"
 #include "mscl/MicroStrain/Inertial/Commands/ExternalGNSSUpdate.h"
@@ -831,12 +832,73 @@ namespace mscl
                     setCmds.push_back(MipCommandBytes(cmd, s.data()));
                 }
                 break;
+            case MipTypes::CMD_EF_INITIALIZATION_CONFIG:
+                {
+                    FilterInitializationValues data = getInitialFilterConfiguration();
+                    FilterInitializationConfig set = FilterInitializationConfig::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+            case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE:
+                {
+                    std::vector<MipFieldValues> sources = {
+                        { Value::UINT16(InertialTypes::GNSS_AIDING) },
+                        { Value::UINT16(InertialTypes::ALTIMETER_AIDING) },
+                        { Value::UINT16(InertialTypes::ODOMETER_AIDING) },
+                        { Value::UINT16(InertialTypes::MAGNETOMETER_AIDING) },
+                        { Value::UINT16(InertialTypes::EXTERNAL_HEADING_AIDING) }
+                    };
+                    
+                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, sources);
+
+                    if (cmdBytes.commands.size() > 0)
+                    {
+                        setCmds.push_back(cmdBytes);
+                    }
+                }
+                break;
+            case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
+                // TODO - add this once we can get supported receivers!
+                break;
             default:
+                {
+                    MipCommandBytes add = buildMipCommandBytes(cmd);
+                    if (add.commands.size() > 0)
+                    {
+                        setCmds.push_back(add);
+                    }
+                }
                 break;
             }
         }
 
         return setCmds;
+    }
+
+    MipCommandBytes MipNode_Impl::buildMipCommandBytes(MipTypes::Command cmd, std::vector<MipFieldValues> specifiers) const
+    {
+        // if this command does not support read and write it is not a setting
+        if (!(MipCommand::supportsFunctionSelector(cmd, MipTypes::USE_NEW_SETTINGS)
+            && MipCommand::supportsFunctionSelector(cmd, MipTypes::READ_BACK_CURRENT_SETTINGS)))
+        {
+            // return empty command bytes (will not be included)
+            return MipCommandBytes(cmd);
+        }
+
+        MipCommandBytes cmdBytes(cmd);
+
+        for (MipFieldValues specifier : specifiers)
+        {
+            MipFieldValues data = get(cmd, specifier);
+            MipCommand set = MipCommand(cmd,
+                MipTypes::FunctionSelector::USE_NEW_SETTINGS,
+                data);
+            ByteStream s = (ByteStream)set;
+            cmdBytes.add(s.data());
+        }
+
+        return cmdBytes;
     }
 
     void MipNode_Impl::sendCommandBytes(MipCommandSet& cmdSet)
@@ -1166,6 +1228,19 @@ namespace mscl
         SetInitialHeading::Response r(m_responseCollector);
 
         doCommand(r, SetInitialHeading::buildCommand(heading));
+    }
+
+    FilterInitializationValues MipNode_Impl::getInitialFilterConfiguration() const
+    {
+        FilterInitializationConfig getConfig = FilterInitializationConfig::MakeGetCommand();
+        GenericMipCmdResponse response = SendCommand(getConfig);
+        return getConfig.getResponseData(response);
+    }
+
+    void MipNode_Impl::setInitialFilterConfiguration(FilterInitializationValues filterConfig)
+    {
+        FilterInitializationConfig setConfig = FilterInitializationConfig::MakeSetCommand(filterConfig);
+        SendCommand(setConfig);
     }
 
     EulerAngles MipNode_Impl::getSensorToVehicleTransformation() const
@@ -1714,6 +1789,31 @@ namespace mscl
         DeviceTime::Response r(m_responseCollector, false);
 
         doCommand(r, DeviceTime::buildCommand_get(nanoseconds));
+    }
+
+    MipFieldValues MipNode_Impl::get(MipTypes::Command cmdId) const
+    {
+        MipCommand command = MipCommand(cmdId,
+            MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS);
+        GenericMipCmdResponse response = SendCommand(command);
+        return command.getGenericResponseData(response);
+    }
+
+    MipFieldValues MipNode_Impl::get(MipTypes::Command cmdId, MipFieldValues specifier) const
+    {
+        MipCommand command = MipCommand(cmdId,
+            MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS,
+            specifier);
+        GenericMipCmdResponse response = SendCommand(command);
+        return command.getGenericResponseData(response);
+    }
+
+    void MipNode_Impl::set(MipTypes::Command cmdId, MipFieldValues values)
+    {
+        MipCommand command = MipCommand(cmdId,
+            MipTypes::FunctionSelector::USE_NEW_SETTINGS,
+            values);
+        SendCommand(command);
     }
 
     //==============================SendCommand==============================

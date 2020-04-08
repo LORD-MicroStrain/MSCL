@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -114,6 +114,7 @@ namespace mscl
                     }
                 }
 
+                case WirelessModels::node_ptLink200:
                 case WirelessModels::node_rtdLink200:
                 case WirelessModels::node_sgLink200:
                 case WirelessModels::node_sgLink200_hbridge_1K:

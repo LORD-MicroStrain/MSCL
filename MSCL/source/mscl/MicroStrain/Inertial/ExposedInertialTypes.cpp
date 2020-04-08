@@ -34,16 +34,18 @@ namespace mscl
 
     //////////  GeometricVector  //////////
 
-    GeometricVector::GeometricVector(float x_init, float y_init, float z_init) :
-        x(x_init),
-        y(y_init),
-        z(z_init)
+    GeometricVector::GeometricVector(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref) :
+        vec_0(x_init),
+        vec_1(y_init),
+        vec_2(z_init),
+        referenceFrame(ref)
     { }
 
     GeometricVector::GeometricVector() :
-        x(0),
-        y(0),
-        z(0)
+        vec_0(0),
+        vec_1(0),
+        vec_2(0),
+        referenceFrame(PositionVelocityReferenceFrame::ECEF)
     { }
 
     GeometricVector::~GeometricVector()
@@ -432,6 +434,96 @@ namespace mscl
         return tarePitchAxis * InertialTypes::TARE_PITCH_AXIS
             | tareRollAxis * InertialTypes::TARE_ROLL_AXIS
             | tareYawAxis * InertialTypes::TARE_YAW_AXIS;
+    }
+
+    mscl::DeviceStatusMap DeviceStatusData::asMap() const
+    {
+        mscl::DeviceStatusMap statusMap;
+        statusMap[ModelNumber] = std::to_string(modelNumber);
+        statusMap[StatusStructure_Value] = std::to_string(statusStructure);
+
+
+        if (isSet(m_systemState)) 
+        {
+            statusMap[SystemState_Value] = std::to_string(m_systemState.get());
+        }
+
+        if (isSet(m_gnssPowerStateOn)) {
+            statusMap[GnssPowerStateOn] = std::to_string(m_gnssPowerStateOn.get());
+        }
+
+        if (isSet(m_imuStreamInfo))
+        {
+            statusMap[ImuStreamInfo_Enabled] = std::to_string(m_imuStreamInfo.get().enabled);
+            statusMap[ImuStreamInfo_PacketsDropped] = std::to_string(m_imuStreamInfo.get().outgoingPacketsDropped);
+        }
+
+        if (isSet(m_gnssStreamInfo))
+        {
+            statusMap[GnssStreamInfo_Enabled] = std::to_string(m_gnssStreamInfo.get().enabled);
+            statusMap[GnssStreamInfo_PacketsDropped] = std::to_string(m_gnssStreamInfo.get().outgoingPacketsDropped);
+        }
+
+        if (isSet(m_estimationFilterStreamInfo))
+        {
+            statusMap[EstimationFilterStreamInfo_Enabled] = std::to_string(m_estimationFilterStreamInfo.get().enabled);
+            statusMap[EstimationFilterStreamInfo_PacketsDropped] = std::to_string(m_estimationFilterStreamInfo.get().outgoingPacketsDropped);
+        }
+
+        if (isSet(m_comPortInfo))
+        {
+            statusMap[ComPortInfo_BytesRead] = std::to_string(m_comPortInfo.get().bytesRead);
+            statusMap[ComPortInfo_BytesWritten] = std::to_string(m_comPortInfo.get().bytesWritten);
+            statusMap[ComPortInfo_OverrunsOnRead] = std::to_string(m_comPortInfo.get().overrunsOnRead);
+            statusMap[ComPortInfo_OverrunsOnWrite] = std::to_string(m_comPortInfo.get().overrunsOnWrite); // supported to features
+        }
+
+        if (isSet(m_imuMessageInfo))
+        {
+            statusMap[ImuMessageInfo_LastMessageReadinMS] = std::to_string(m_imuMessageInfo.get().lastMessageReadinMS);
+            statusMap[ImuMessageInfo_MessageParsingErrors] = std::to_string(m_imuMessageInfo.get().messageParsingErrors);
+            statusMap[ImuMessageInfo_MessagesRead] = std::to_string(m_imuMessageInfo.get().messagesRead);
+        }
+
+        if (isSet(m_gnssMessageInfo))
+        {
+            statusMap[GnssMessageInfo_LastMessageReadinMS] = std::to_string(m_gnssMessageInfo.get().lastMessageReadinMS);
+            statusMap[GnssMessageInfo_MessageParsingErrors] = std::to_string(m_gnssMessageInfo.get().messageParsingErrors);
+            statusMap[GnssMessageInfo_MessagesRead] = std::to_string(m_gnssMessageInfo.get().messagesRead);
+        }
+
+        if (isSet(m_temperatureInfo))
+        {
+            statusMap[TemperatureInfo_Error] = std::to_string(m_temperatureInfo.get().error);
+            statusMap[TemperatureInfo_LastReadInMS] = std::to_string(m_temperatureInfo.get().lastReadInMS);
+            statusMap[TemperatureInfo_OnBoardTemp] = std::to_string(m_temperatureInfo.get().onBoardTemp);
+        }
+
+        if (isSet(m_powerState))
+        {
+            statusMap[PowerState] = std::to_string(m_powerState.get());
+        }
+
+        if (isSet(m_gyroRange))
+        {
+            statusMap[GyroRange] = std::to_string(m_gyroRange.get());
+        }
+
+        if (isSet(m_accelRange))
+        {
+            statusMap[AccelRange] = std::to_string(m_accelRange.get());
+        }
+
+        if (isSet(m_hasMagnetometer))
+        {
+            statusMap[HasMagnetometer] = std::to_string(m_hasMagnetometer.get());
+        }
+
+        if (isSet(m_hasPressure))
+        {
+            statusMap[HasPressure] = std::to_string(m_hasPressure.get());
+        }
+        return statusMap;
     }
 
 }  // namespace mscl

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -554,6 +554,11 @@ namespace mscl
         return m_eepromHelper->read_highPassFilter(mask);
     }
 
+    WirelessTypes::ChannelFrequencyClass WirelessNode_Impl::getCfcFilterConfiguration() const
+    {
+        return m_eepromHelper->read_cfcFilterConfig();
+    }
+
     uint16 WirelessNode_Impl::getDebounceFilter(const ChannelMask& mask) const
     {
         return m_eepromHelper->read_debounceFilter(mask);
@@ -605,6 +610,7 @@ namespace mscl
             case WirelessModels::node_torqueLink:
                 return WirelessTypes::voltage_2700mV;
 
+            case WirelessModels::node_ptLink200:
             case WirelessModels::node_shmLink201:
             case WirelessModels::node_shmLink201_qbridge_1K:
             case WirelessModels::node_shmLink201_qbridge_348:
@@ -710,6 +716,7 @@ namespace mscl
             case WirelessModels::node_shmLink210_qbridge_3K:
                 return m_eepromHelper->read_excitationVoltage();        //gain amplifier voltage is the same as the excitation, which is read from eeprom
 
+            case WirelessModels::node_ptLink200:
             case WirelessModels::node_shmLink201:
             case WirelessModels::node_shmLink201_qbridge_1K:
             case WirelessModels::node_shmLink201_qbridge_348:
@@ -786,6 +793,7 @@ namespace mscl
             case WirelessModels::node_shmLink210_qbridge_3K:
                 return m_eepromHelper->read_excitationVoltage();        //gain amplifier voltage is the same as the excitation, which is read from eeprom
 
+            case WirelessModels::node_ptLink200:
             case WirelessModels::node_shmLink201:
             case WirelessModels::node_shmLink201_qbridge_1K:
             case WirelessModels::node_shmLink201_qbridge_348:
@@ -829,6 +837,41 @@ namespace mscl
     WirelessTypes::CalCoef_EquationType WirelessNode_Impl::getEquationType(const ChannelMask& mask) const
     {
         return m_eepromHelper->read_channelEquation(mask);
+    }
+
+    LinearEquation WirelessNode_Impl::getFactoryCalibrationLinearEq(const ChannelMask& mask) const
+    {
+        //if the node doesn't support read factory calibration
+        if (!features().supportsGetFactoryCal())
+        {
+            throw Error_NotSupported("Read Factory Calibration is not supported by this Node.");
+        }
+
+        LinearEquation result;
+        m_eepromHelper->read_channelFactoryLinearEq(mask, result);
+        return result;
+    }
+
+    WirelessTypes::CalCoef_Unit WirelessNode_Impl::getFactoryCalibrationUnit(const ChannelMask& mask) const
+    {
+        //if the node doesn't support read factory calibration
+        if (!features().supportsGetFactoryCal())
+        {
+            throw Error_NotSupported("Read Factory Calibration is not supported by this Node.");
+        }
+
+        return m_eepromHelper->read_channelFactoryUnit(mask);
+    }
+
+    WirelessTypes::CalCoef_EquationType WirelessNode_Impl::getFactoryCalibrationEqType(const ChannelMask& mask) const
+    {
+        //if the node doesn't support read factory calibration
+        if (!features().supportsGetFactoryCal())
+        {
+            throw Error_NotSupported("Read Factory Calibration is not supported by this Node.");
+        }
+
+        return m_eepromHelper->read_channelFactoryEquationType(mask);
     }
 
     WirelessTypes::SettlingTime WirelessNode_Impl::getFilterSettlingTime(const ChannelMask& mask) const
@@ -1358,6 +1401,25 @@ namespace mscl
         if(!success)
         {
             throw Error_NodeCommunication(m_address, "AutoShuntCal has failed.");
+        }
+
+        return result;
+    }
+
+    WirelessPollData WirelessNode_Impl::poll(const ChannelMask& mask)
+    {
+        //verify the node supports this operation
+        if(!features().supportsPoll())
+        {
+            throw Error_NotSupported("The Poll command is not supported by this Node.");
+        }
+
+        WirelessPollData result;
+        bool success = m_baseStation.node_poll(wirelessProtocol(), m_address, mask, result);
+
+        if(!success)
+        {
+            throw Error_NodeCommunication(m_address, "The Poll command has failed.");
         }
 
         return result;

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -135,7 +135,8 @@ namespace mscl
             CONFIG_EXCITATION_VOLTAGE           = 53,
             CONFIG_DERIVED_UNIT                 = 54,
             CONFIG_SENSOR_OUTPUT_MODE           = 55,
-            CONFIG_LOW_BATTERY_THRESHOLD        = 56
+            CONFIG_LOW_BATTERY_THRESHOLD        = 56,
+            CONFIG_CFC_FILTER                   = 57
         };
 
         ConfigIssue();    //default constructor

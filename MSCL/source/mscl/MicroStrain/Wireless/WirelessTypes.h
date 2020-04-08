@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -882,6 +882,9 @@ namespace mscl
         //  chSetting_tempSensorOptions     - 14 - Temperature Sensor Options
         //  chSetting_debounceFilter        - 15 - Debounce Filter
         //  chSetting_pullUpResistor        - 16 - Internal Pull-up Resistor
+        //  chSetting_factoryLinearEq       - 17 - Factory Calibration Linear Equation values [Read Only]
+        //  chSetting_factoryUnit           - 18 - Factory Calibration Unit [Read Only]
+        //  chSetting_factoryEqType         - 19 - Factory Calibration Equation Type [Read Only]
         enum ChannelGroupSetting
         {
             chSetting_inputRange                = 0,
@@ -900,7 +903,10 @@ namespace mscl
             chSetting_highPassFilter            = 13,
             chSetting_tempSensorOptions         = 14,
             chSetting_debounceFilter            = 15,
-            chSetting_pullUpResistor            = 16
+            chSetting_pullUpResistor            = 16,
+            chSetting_factoryLinearEq           = 17,
+            chSetting_factoryUnit               = 18,
+            chSetting_factoryEqType             = 19
         };
 
         //API Enum: AutoBalanceErrorFlag
@@ -1082,6 +1088,19 @@ namespace mscl
         {
             highPass_off = 0,
             highPass_auto = 65535
+        };
+
+        //API Enum: ChannelFrequencyClass
+        //  The channel frequency class filter options.
+        //
+        //cfc_10    - 10    - CFC-10
+        //cfc_21    - 21    - CFC-21
+        //cfc_60    - 60    - CFC-60
+        enum ChannelFrequencyClass
+        {
+            cfc_10 = 10,
+            cfc_21 = 21,
+            cfc_60 = 60
         };
 
         //API Enum: StorageLimitMode
@@ -1537,6 +1556,7 @@ namespace mscl
         //  CommProtocols               - A vector of <CommProtocol> enums.
         //  Voltages                    - A vector of <Voltage> enums.
         //  SensorOutputModes           - A vector of <SensorOutputMode> enums.
+        //  CfcFilters                  - A vector of <ChannelFrequencyClass> enums.
         //  TransducerTypes             - A vector of <TransducerType> enums.
         typedef std::vector<DataCollectionMethod> DataCollectionMethods;
         typedef std::vector<DataFormat> DataFormats;
@@ -1553,6 +1573,7 @@ namespace mscl
         typedef std::vector<CommProtocol> CommProtocols;
         typedef std::vector<Voltage> Voltages;
         typedef std::vector<SensorOutputMode> SensorOutputModes;
+        typedef std::vector<ChannelFrequencyClass> CfcFilters;
         typedef std::vector<TransducerType> TransducerTypes;
 
         //API Typedef: DerivedChannelMasks

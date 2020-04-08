@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -291,6 +291,46 @@ namespace mscl
         //  BOOTLOADER_VER                  - The bootloader version.
         //  FIRMWARE_UPGRADE_FLAGS          - The firmware upgrade flags.
         //  BOOTLOADER_FLASH_ADDRESS        - The bootloader flash address to store firmware upgrades.
+        //  TEMP_SENSOR_CONFIG_1            - Reserved for future use.
+        //  TEMP_SENSOR_CONFIG_2            - Reserved for future use.
+        //  TEMP_SENSOR_CONFIG_3            - Reserved for future use.
+        //  TEMP_SENSOR_CONFIG_4            - Reserved for future use.
+        //  TEMP_SENSOR_CONFIG_5            - Reserved for future use.
+        //  TEMP_SENSOR_CONFIG_6            - Reserved for future use.
+        //  TEMP_SENSOR_CONFIG_7            - Reserved for future use.
+        //  TEMP_SENSOR_CONFIG_8            - Reserved for future use.
+        //  TEMP_SENSOR_CONFIG_9            - Reserved for future use.
+        //  TEMP_SENSOR_CONFIG_10           - Reserved for future use.
+        //  TEMP_SENSOR_CONFIG_11           - Reserved for future use.
+        //  TEMP_SENSOR_CONFIG_12           - Reserved for future use.
+        //  TEMP_SENSOR_CONFIG_13           - Reserved for future use.
+        //  TEMP_SENSOR_CONFIG_14           - Reserved for future use.
+        //  TEMP_SENSOR_CONFIG_15           - Reserved for future use.
+        //  TEMP_SENSOR_CONFIG_16           - Reserved for future use.
+        //  FACTORY_CH_ACTION_ID_1          - The factory-calibrated channel action ID of channel 1
+        //  FACTORY_CH_ACTION_SLOPE_1       - The factory-calibrated channel action slope of channel 1
+        //  FACTORY_CH_ACTION_OFFSET_1      - The factory-calibrated channel action offset of channel 1
+        //  FACTORY_CH_ACTION_ID_2          - The factory-calibrated channel action ID of channel 2
+        //  FACTORY_CH_ACTION_SLOPE_2       - The factory-calibrated channel action slope of channel 2
+        //  FACTORY_CH_ACTION_OFFSET_2      - The factory-calibrated channel action offset of channel 2
+        //  FACTORY_CH_ACTION_ID_3          - The factory-calibrated channel action ID of channel 3
+        //  FACTORY_CH_ACTION_SLOPE_3       - The factory-calibrated channel action slope of channel 3
+        //  FACTORY_CH_ACTION_OFFSET_3      - The factory-calibrated channel action offset of channel 3
+        //  FACTORY_CH_ACTION_ID_4          - The factory-calibrated channel action ID of channel 4
+        //  FACTORY_CH_ACTION_SLOPE_4       - The factory-calibrated channel action slope of channel 4
+        //  FACTORY_CH_ACTION_OFFSET_4      - The factory-calibrated channel action offset of channel 4
+        //  FACTORY_CH_ACTION_ID_5          - The factory-calibrated channel action ID of channel 5
+        //  FACTORY_CH_ACTION_SLOPE_5       - The factory-calibrated channel action slope of channel 5
+        //  FACTORY_CH_ACTION_OFFSET_5      - The factory-calibrated channel action offset of channel 5
+        //  FACTORY_CH_ACTION_ID_6          - The factory-calibrated channel action ID of channel 6
+        //  FACTORY_CH_ACTION_SLOPE_6       - The factory-calibrated channel action slope of channel 6
+        //  FACTORY_CH_ACTION_OFFSET_6      - The factory-calibrated channel action offset of channel 6
+        //  FACTORY_CH_ACTION_ID_7          - The factory-calibrated channel action ID of channel 7
+        //  FACTORY_CH_ACTION_SLOPE_7       - The factory-calibrated channel action slope of channel 7
+        //  FACTORY_CH_ACTION_OFFSET_7      - The factory-calibrated channel action offset of channel 7
+        //  FACTORY_CH_ACTION_ID_8          - The factory-calibrated channel action ID of channel 8
+        //  FACTORY_CH_ACTION_SLOPE_8       - The factory-calibrated channel action slope of channel 8
+        //  FACTORY_CH_ACTION_OFFSET_8      - The factory-calibrated channel action offset of channel 8
         static const EepromLocation CURRENT_LOG_PAGE;
         static const EepromLocation CURRENT_PAGE_OFFSET;
         static const EepromLocation DATA_SETS_STORED;
@@ -538,5 +578,29 @@ namespace mscl
         static const EepromLocation TEMP_SENSOR_CONFIG_14;
         static const EepromLocation TEMP_SENSOR_CONFIG_15;
         static const EepromLocation TEMP_SENSOR_CONFIG_16;
+        static const EepromLocation FACTORY_CH_ACTION_ID_1;
+        static const EepromLocation FACTORY_CH_ACTION_SLOPE_1;
+        static const EepromLocation FACTORY_CH_ACTION_OFFSET_1;
+        static const EepromLocation FACTORY_CH_ACTION_ID_2;
+        static const EepromLocation FACTORY_CH_ACTION_SLOPE_2;
+        static const EepromLocation FACTORY_CH_ACTION_OFFSET_2;
+        static const EepromLocation FACTORY_CH_ACTION_ID_3;
+        static const EepromLocation FACTORY_CH_ACTION_SLOPE_3;
+        static const EepromLocation FACTORY_CH_ACTION_OFFSET_3;
+        static const EepromLocation FACTORY_CH_ACTION_ID_4;
+        static const EepromLocation FACTORY_CH_ACTION_SLOPE_4;
+        static const EepromLocation FACTORY_CH_ACTION_OFFSET_4;
+        static const EepromLocation FACTORY_CH_ACTION_ID_5;
+        static const EepromLocation FACTORY_CH_ACTION_SLOPE_5;
+        static const EepromLocation FACTORY_CH_ACTION_OFFSET_5;
+        static const EepromLocation FACTORY_CH_ACTION_ID_6;
+        static const EepromLocation FACTORY_CH_ACTION_SLOPE_6;
+        static const EepromLocation FACTORY_CH_ACTION_OFFSET_6;
+        static const EepromLocation FACTORY_CH_ACTION_ID_7;
+        static const EepromLocation FACTORY_CH_ACTION_SLOPE_7;
+        static const EepromLocation FACTORY_CH_ACTION_OFFSET_7;
+        static const EepromLocation FACTORY_CH_ACTION_ID_8;
+        static const EepromLocation FACTORY_CH_ACTION_SLOPE_8;
+        static const EepromLocation FACTORY_CH_ACTION_OFFSET_8;
     };
 }

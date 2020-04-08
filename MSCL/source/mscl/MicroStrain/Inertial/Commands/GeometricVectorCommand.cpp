@@ -105,9 +105,9 @@ namespace mscl
         for (int i = 0; i < dataPointCount; i++)
         {
             GeometricVector point;
-            point.x = buffer.read_float();
-            point.y = buffer.read_float();
-            point.z = buffer.read_float();
+            point.x(buffer.read_float());
+            point.y(buffer.read_float());
+            point.z(buffer.read_float());
             data.push_back(point);
         }
 
@@ -123,9 +123,9 @@ namespace mscl
         {
             for (size_t i = 0; i < m_data.size(); i++)
             {
-                byteCommand.append_float(m_data[i].x);
-                byteCommand.append_float(m_data[i].y);
-                byteCommand.append_float(m_data[i].z);
+                byteCommand.append_float(m_data[i].x());
+                byteCommand.append_float(m_data[i].y());
+                byteCommand.append_float(m_data[i].z());
             }
         }
 

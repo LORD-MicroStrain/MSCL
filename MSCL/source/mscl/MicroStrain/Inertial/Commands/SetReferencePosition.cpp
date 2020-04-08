@@ -40,9 +40,9 @@ namespace mscl
         bool enabled;
         enabled = dataBuffer.read_uint8() == MipTypes::ENABLED;
         Position reference;
-        reference.latitude = dataBuffer.read_double();
-        reference.longitude = dataBuffer.read_double();
-        reference.altitude = dataBuffer.read_double();
+        reference.latitude(dataBuffer.read_double());
+        reference.longitude(dataBuffer.read_double());
+        reference.altitude(dataBuffer.read_double());
 
         FixedReferencePositionData data(enabled, reference);
 
@@ -59,9 +59,9 @@ namespace mscl
         {
             MipTypes::EnableSetting enableByte = m_data.enable ? MipTypes::ENABLED : MipTypes::DISABLED;
             byteCommand.append_uint8(static_cast<uint8>(enableByte));
-            byteCommand.append_double(m_data.referencePosition.latitude);
-            byteCommand.append_double(m_data.referencePosition.longitude);
-            byteCommand.append_double(m_data.referencePosition.altitude);
+            byteCommand.append_double(m_data.referencePosition.latitude());
+            byteCommand.append_double(m_data.referencePosition.longitude());
+            byteCommand.append_double(m_data.referencePosition.altitude());
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data());
     }

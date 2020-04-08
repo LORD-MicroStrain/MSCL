@@ -235,6 +235,17 @@ public class WirelessNodeConfig : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public WirelessTypes.ChannelFrequencyClass cfcFilterConfig() {
+    WirelessTypes.ChannelFrequencyClass ret = (WirelessTypes.ChannelFrequencyClass)msclPINVOKE.WirelessNodeConfig_cfcFilterConfig__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void cfcFilterConfig(WirelessTypes.ChannelFrequencyClass cfc) {
+    msclPINVOKE.WirelessNodeConfig_cfcFilterConfig__SWIG_1(swigCPtr, (int)cfc);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public WirelessTypes.Filter lowPassFilter(ChannelMask mask) {
     WirelessTypes.Filter ret = (WirelessTypes.Filter)msclPINVOKE.WirelessNodeConfig_lowPassFilter__SWIG_0(swigCPtr, ChannelMask.getCPtr(mask));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

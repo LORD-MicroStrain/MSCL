@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -39,6 +39,7 @@ namespace mscl
         //  node_gLink_200_40g_oem_mmcx         - 63056141 - G-Link-200-40g-OEM (MMCX Antenna)
         //  node_gLink_200_8g_oem_u_fl          - 63056182 - G-Link-200-8g-OEM (U.Fl Antenna)
         //  node_gLink_200_40g_oem_u_fl         - 63056142 - G-Link-200-40g-OEM (U.Fl Antenna)
+        //  node_gLink_200_r                    - 63056200 - G-Link-200-R
         //  node_sgLink_oem_S                   - 63081000 - SG-Link 0EM -S (non-xr)
         //  node_sgLink                         - 63083000 - SG-Link
         //  node_sgLink200                      - 63083300 - SG-Link-200, Full Bridge
@@ -94,7 +95,8 @@ namespace mscl
         //  node_wattLink_3Y480                 - 63234100 - Watt-Link 3Y480
         //  node_wattLink_3D480                 - 63234200 - Watt-Link 3D480
         //  node_wattLink_3Y600                 - 63235100 - Watt-Link 3Y600
-        //  node_mvPerVLink                     - 63250200 - mV/V-Link
+        //  node_mvPerVLink                     - 63250200 - mV/V-Link - REMOVED: support removed, this model number now mapped to PT-Link-200
+        //  node_ptLink200                      - 63250200 - PT-Link-200
         //  node_rtdLink                        - 63260000 - RTD-Link
         //  node_shmLink2_cust1_oldNumber       - 63290000 - SHM-Link 2 - Custom 1 (old model number)
         //  node_shmLink2_cust1                 - 63290100 - SHM-Link 2 - Custom 1
@@ -138,6 +140,7 @@ namespace mscl
             node_gLink_200_40g_oem_mmcx         = 63056141,     //G-Link-200-40g-OEM (MMCX Antenna)
             node_gLink_200_8g_oem_u_fl          = 63056182,     //G-Link-200-8g-OEM (U.Fl Antenna)
             node_gLink_200_40g_oem_u_fl         = 63056142,     //G-Link-200-40g-OEM (U.Fl Antenna)
+            node_gLink_200_r                    = 63056200,     //G-Link-200-R
             node_sgLink_oem_S                   = 63081000,     //SG-Link 0EM -S (non-xr)
             node_sgLink                         = 63083000,     //SG-Link
             node_sgLink200                      = 63083300,     //SG-Link-200, Full Bridge
@@ -193,7 +196,7 @@ namespace mscl
             node_wattLink_3Y480                 = 63234100,     //Watt-Link 3Y480
             node_wattLink_3D480                 = 63234200,     //Watt-Link 3D480
             node_wattLink_3Y600                 = 63235100,     //Watt-Link 3Y600
-            node_mvPerVLink                     = 63250200,     //mV/V-Link
+            node_ptLink200                      = 63250200,     //PT-Link-200
             node_rtdLink                        = 63260000,     //RTD-Link
             node_shmLink2_cust1_oldNumber       = 63290000,     //SHM-Link 2 - Custom 1 (old model number)
             node_shmLink2_cust1                 = 63290100,     //SHM-Link 2 - Custom 1

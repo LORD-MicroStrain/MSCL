@@ -444,7 +444,10 @@ public class WirelessTypes : global::System.IDisposable {
     chSetting_highPassFilter = 13,
     chSetting_tempSensorOptions = 14,
     chSetting_debounceFilter = 15,
-    chSetting_pullUpResistor = 16
+    chSetting_pullUpResistor = 16,
+    chSetting_factoryLinearEq = 17,
+    chSetting_factoryUnit = 18,
+    chSetting_factoryEqType = 19
   }
 
   public enum AutoBalanceErrorFlag {
@@ -532,6 +535,12 @@ public class WirelessTypes : global::System.IDisposable {
   public enum HighPassFilter {
     highPass_off = 0,
     highPass_auto = 65535
+  }
+
+  public enum ChannelFrequencyClass {
+    cfc_10 = 10,
+    cfc_21 = 21,
+    cfc_60 = 60
   }
 
   public enum StorageLimitMode {

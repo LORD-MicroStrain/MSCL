@@ -838,6 +838,7 @@
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::inputRange(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::hardwareOffset(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::antiAliasingFilter(const ChannelMask& mask) const;
+%catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::cfcFilterConfig() const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::lowPassFilter(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::highPassFilter(const ChannelMask& mask) const;
 %catches(mscl::Error_NoData)            mscl::WirelessNodeConfig::gaugeFactor(const ChannelMask& mask) const;
@@ -895,6 +896,7 @@
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::autoCal_shmLink();
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::autoCal_shmLink201();
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::autoShuntCal(const ChannelMask& mask, const ShuntCalCmdInfo& commandInfo);
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::poll(const ChannelMask& mask);
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::testCommunicationProtocol(WirelessTypes::CommProtocol protocol);
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::verifyConfig(const WirelessNodeConfig& config, ConfigIssues& outIssues) const;
 %catches(mscl::Error_NotSupported, mscl::Error_InvalidNodeConfig, mscl::Error_NodeCommunication, mscl::Error_Connection)    mscl::WirelessNode::applyConfig(const WirelessNodeConfig& config);
@@ -915,6 +917,7 @@
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getInputRange(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getHardwareOffset(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getAntiAliasingFilter(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getCfcFilterConfiguration() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getLowPassFilter(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getHighPassFilter(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getDebounceFilter(const ChannelMask& mask) const;
@@ -932,7 +935,10 @@
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getTempSensorOptions(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getLinearEquation(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getUnit(const ChannelMask& mask) const;
-%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getEquation(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getEquationType(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getFactoryCalibrationLinearEq(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getFactoryCalibrationUnit(const ChannelMask& mask) const;
+%catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getFactoryCalibrationEqType(const ChannelMask& mask) const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getFatigueOptions() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getHistogramOptions() const;
 %catches(mscl::Error_NotSupported, mscl::Error_NodeCommunication, mscl::Error_Connection)                                   mscl::WirelessNode::getActivitySense() const;
@@ -1032,6 +1038,8 @@
 %catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::pollData(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields);
 %catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::pollData(MipTypes::DataClass dataClass);
 %catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getConfigCommandBytes();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getInitialFilterConfiguration();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setInitialFilterConfiguration(FilterInitializationValues filterConfig);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getSensorToVehicleTransformation();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setSensorToVehicleTransformation(const EulerAngles& angles);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getGNSSAssistedFixControl();
@@ -1121,6 +1129,14 @@
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getGravityNoiseMinimum();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData, const TimeUpdate& timestamp);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::aidingMeasurementEnabled(mscl::InertialTypes::AidingMeasurementSource aidingSource) const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::enableDisableAidingMeasurement(mscl::InertialTypes::AidingMeasurementSource aidingSource, bool enable);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getKinematicConstraints() const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setKinematicConstraints(mscl::KinematicConstraints constraintOptions);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getAdaptiveFilterOptions() const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setAdaptiveFilterOptions(mscl::AutoAdaptiveFilterOptions options);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getMultiAntennaOffset(uint8 receiverId) const;
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setMultiAntennaOffset(uint8 receiverId, mscl::PositionOffset offset);
 
 // Inertial DeviceStatusData
 %catches(mscl::Error_NoData)            mscl::DeviceStatusData::systemState();

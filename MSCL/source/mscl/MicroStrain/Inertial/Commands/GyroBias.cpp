@@ -50,9 +50,9 @@ namespace mscl
         // Only fill in data if set command is being sent.
         if (m_functionSelector == MipTypes::USE_NEW_SETTINGS)
         {    // Put in X, Y, and Z values of vector.
-            byteCommand.append_float(m_gyroBiasVector.x);
-            byteCommand.append_float(m_gyroBiasVector.y);
-            byteCommand.append_float(m_gyroBiasVector.z);
+            byteCommand.append_float(m_gyroBiasVector.x());
+            byteCommand.append_float(m_gyroBiasVector.y());
+            byteCommand.append_float(m_gyroBiasVector.z());
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
     }

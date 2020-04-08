@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -877,6 +877,51 @@ namespace mscl
         return unitVal;
     }
 
+    void NodeEepromHelper::read_channelFactoryLinearEq(const ChannelMask& mask, LinearEquation& result) const
+    {
+        //find the eeproms
+        const EepromLocation& slopeEeprom = m_node->features().findEeprom(WirelessTypes::chSetting_factoryLinearEq, mask);
+        const EepromLocation& offsetEeprom = NodeEepromMap::getOffsetEeprom(slopeEeprom);
+
+        //read the slope from eeprom
+        result.slope(read(slopeEeprom).as_float());
+
+        //read the offset from eeprom
+        result.offset(read(offsetEeprom).as_float());
+    }
+
+    WirelessTypes::CalCoef_EquationType NodeEepromHelper::read_channelFactoryEquationType(const ChannelMask& mask) const
+    {
+        //calculate the correct unit eeprom location for this channel
+        const EepromLocation& eepromLocation = m_node->features().findEeprom(WirelessTypes::chSetting_factoryEqType, mask);
+
+        //read the action id from eeprom
+        uint16 actionIdVal = read(eepromLocation).as_uint16();
+
+        //the unit is the lsb of the actionId
+        return static_cast<WirelessTypes::CalCoef_EquationType>(Utils::msb(actionIdVal));
+    }
+
+    WirelessTypes::CalCoef_Unit NodeEepromHelper::read_channelFactoryUnit(const ChannelMask& mask) const
+    {
+        //calculate the correct unit eeprom location for this channel
+        const EepromLocation& eepromLocation = m_node->features().findEeprom(WirelessTypes::chSetting_factoryUnit, mask);
+
+        //read the action id from eeprom
+        uint16 actionIdVal = read(eepromLocation).as_uint16();
+
+        //the unit is the lsb of the actionId
+        WirelessTypes::CalCoef_Unit unitVal = static_cast<WirelessTypes::CalCoef_Unit>(Utils::lsb(actionIdVal));
+
+        //check for uninitialized value
+        if (unitVal == 0xAA || unitVal == 0xFF)
+        {
+            unitVal = WirelessTypes::unit_none;
+        }
+
+        return unitVal;
+    }
+
     WirelessTypes::CalCoef_EquationType NodeEepromHelper::read_channelEquation(const ChannelMask& mask) const
     {
         //calculate the correct unit eeprom location for this channel
@@ -1150,6 +1195,18 @@ namespace mscl
     {
         const EepromLocation& eeprom = m_node->features().findEeprom(WirelessTypes::chSetting_antiAliasingFilter, mask);
         write(eeprom, Value::UINT16(static_cast<uint16>(filter)));
+    }
+
+    WirelessTypes::ChannelFrequencyClass NodeEepromHelper::read_cfcFilterConfig() const
+    {
+        // CFC Filter Config option value stored in first Anti-Aliasing Filter EEPROM location (440)
+        return static_cast<WirelessTypes::ChannelFrequencyClass>(read(NodeEepromMap::ANTI_ALIASING_FILTER_1).as_uint16());
+    }
+
+    void NodeEepromHelper::write_cfcFilterConfig(WirelessTypes::ChannelFrequencyClass cfc)
+    {
+        // CFC Filter Config option value stored in first Anti-Aliasing Filter EEPROM location (440)
+        write(NodeEepromMap::ANTI_ALIASING_FILTER_1, Value::UINT16(static_cast<uint16>(cfc)));
     }
 
     WirelessTypes::Filter NodeEepromHelper::read_lowPassFilter(const ChannelMask& mask) const

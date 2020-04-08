@@ -257,6 +257,12 @@ public class InertialNode : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public bool isDataStreamEnabled(MipTypes.DataClass dataClass) {
+    bool ret = msclPINVOKE.InertialNode_isDataStreamEnabled(swigCPtr, (int)dataClass);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public void enableDataStream(MipTypes.DataClass dataClass, bool enable) {
     msclPINVOKE.InertialNode_enableDataStream__SWIG_0(swigCPtr, (int)dataClass, enable);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -334,6 +340,17 @@ public class InertialNode : global::System.IDisposable {
 
   public void setInitialHeading(float heading) {
     msclPINVOKE.InertialNode_setInitialHeading(swigCPtr, heading);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public FilterInitializationValues getInitialFilterConfiguration() {
+    FilterInitializationValues ret = new FilterInitializationValues(msclPINVOKE.InertialNode_getInitialFilterConfiguration(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setInitialFilterConfiguration(FilterInitializationValues filterConfig) {
+    msclPINVOKE.InertialNode_setInitialFilterConfiguration(swigCPtr, FilterInitializationValues.getCPtr(filterConfig));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -854,6 +871,50 @@ public class InertialNode : global::System.IDisposable {
 
   public void sendExternalHeadingUpdate(HeadingData headingData, TimeUpdate timestamp) {
     msclPINVOKE.InertialNode_sendExternalHeadingUpdate__SWIG_1(swigCPtr, HeadingData.getCPtr(headingData), TimeUpdate.getCPtr(timestamp));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public bool aidingMeasurementEnabled(InertialTypes.AidingMeasurementSource aidingSource) {
+    bool ret = msclPINVOKE.InertialNode_aidingMeasurementEnabled(swigCPtr, (int)aidingSource);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void enableDisableAidingMeasurement(InertialTypes.AidingMeasurementSource aidingSource, bool enable) {
+    msclPINVOKE.InertialNode_enableDisableAidingMeasurement(swigCPtr, (int)aidingSource, enable);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public KinematicConstraints getKinematicConstraints() {
+    KinematicConstraints ret = new KinematicConstraints(msclPINVOKE.InertialNode_getKinematicConstraints(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setKinematicConstraints(KinematicConstraints constraintOptions) {
+    msclPINVOKE.InertialNode_setKinematicConstraints(swigCPtr, KinematicConstraints.getCPtr(constraintOptions));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public AutoAdaptiveFilterOptions getAdaptiveFilterOptions() {
+    AutoAdaptiveFilterOptions ret = new AutoAdaptiveFilterOptions(msclPINVOKE.InertialNode_getAdaptiveFilterOptions(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setAdaptiveFilterOptions(AutoAdaptiveFilterOptions options) {
+    msclPINVOKE.InertialNode_setAdaptiveFilterOptions(swigCPtr, AutoAdaptiveFilterOptions.getCPtr(options));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public PositionOffset getMultiAntennaOffset(byte receiverId) {
+    PositionOffset ret = new PositionOffset(msclPINVOKE.InertialNode_getMultiAntennaOffset(swigCPtr, receiverId), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setMultiAntennaOffset(byte receiverId, PositionOffset offset) {
+    msclPINVOKE.InertialNode_setMultiAntennaOffset(swigCPtr, receiverId, PositionOffset.getCPtr(offset));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

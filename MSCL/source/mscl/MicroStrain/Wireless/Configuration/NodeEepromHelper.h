@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -658,6 +658,50 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         WirelessTypes::CalCoef_EquationType read_channelEquation(const ChannelMask& mask) const;
 
+        //Function: read_channelFactoryLinearEq()
+        //    Reads the factory calibration slope and offset for the specified <ChannelMask> from the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to read the linear equation for.
+        //    result - The <LinearEquation> that will hold the result.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Read Factory Linear Equation is not supported for the given <ChannelMask> or Node.
+        //    - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void read_channelFactoryLinearEq(const ChannelMask& mask, LinearEquation& result) const;
+
+        //Function: read_channelFactoryEquationType
+        //    Reads the factory calibration <WirelessTypes::CalCoef_EquationType> for the specified channel from the Node.
+        //    This assumes the channel is supported by the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to read the equation id for.
+        //
+        //Returns:
+        //    The <WirelessTypes::CalCoef_EquationType> for the given channel.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Read Factory Calibration Equation ID is not supported for the given <ChannelMask> or Node.
+        //    - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::CalCoef_EquationType read_channelFactoryEquationType(const ChannelMask& mask) const;
+
+        //Function: read_channelFactoryUnit
+        //    Reads the factory calibration <WirelessTypes::CalCoef_Unit> for the specified <ChannelMask> from the Node.
+        //
+        //Parameters:
+        //    mask - The <ChannelMask> to read the unit for.
+        //
+        //Returns:
+        //    The <WirelessTypes::CalCoef_Unit> for the given channel.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Get Factory Calibration Unit is not supported for the given <ChannelMask> or Node.
+        //    - <Error_NodeCommunication>: Failed to read the value from the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::CalCoef_Unit read_channelFactoryUnit(const ChannelMask& mask) const;
+
         //Function: read_transmitPower
         //    Reads the <WirelessTypes::TransmitPower> that is currently set on the Node.
         //
@@ -996,6 +1040,30 @@ namespace mscl
         //    - <Error_NodeCommunication>: Failed to communicate with the Node.
         //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
         void write_antiAliasingFilter(const ChannelMask& mask, WirelessTypes::Filter filter);
+
+        //Function: read_cfcFilterConfig
+        //    Reads the channel frequency class filter option set on the Node.
+        //
+        //Returns:
+        //    The <WirelessTypes::ChannelFrequencyClass> representing the channel frequency class filter currently set to the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Channel frequency class filter is not supported for the Node.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        WirelessTypes::ChannelFrequencyClass read_cfcFilterConfig() const;
+
+        //Function: write_cfcFilterConfig
+        //    Writes the specified channel frequency class filter option to the Node.
+        //
+        //Parameters:
+        //    cfc - The <WirelessTypes::ChannelFrequencyClass> representing the channel frequency class filter to write to the Node.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: Channel frequency class filter is not supported for the Node.
+        //    - <Error_NodeCommunication>: Failed to communicate with the Node.
+        //    - <Error_Connection>: A connection error has occurred with the parent BaseStation.
+        void write_cfcFilterConfig(WirelessTypes::ChannelFrequencyClass cfc);
 
         //Function: read_lowPassFilter
         //    Reads the low-pass filter for the specified <ChannelMask> from the Node.

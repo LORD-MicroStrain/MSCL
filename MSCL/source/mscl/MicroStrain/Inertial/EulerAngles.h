@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -47,10 +47,17 @@ namespace mscl
         float pitch() const;
 
         //API Function: yaw
-        //    Gets the yaw angle.
+        //    Gets the yaw (heading) angle.
         //
         //Returns:
-        //    The yaw Euler Angle.
+        //    The yaw (heading) Euler Angle.
         float yaw() const;
+
+        //API Function: heading
+        //    Gets the heading (yaw) angle.
+        //
+        //Returns:
+        //    The heading (yaw) Euler Angle.
+        float heading() const;
     };
 }

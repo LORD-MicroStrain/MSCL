@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -67,9 +67,13 @@ namespace mscl
         static const Version ASPP_1_6 = Version(1, 6);
         static const Version ASPP_1_7 = Version(1, 7);
         static const Version ASPP_1_8 = Version(1, 8);
+        static const Version ASPP_1_9 = Version(1, 9);
         static const Version ASPP_3_0 = Version(3, 0);
+        static const Version ASPP_3_1 = Version(3, 1);
 
+        if(asppVersion >= ASPP_3_1) { return v3_1(); }
         if(asppVersion >= ASPP_3_0) { return v3_0(); }
+        if(asppVersion >= ASPP_1_9) { return v1_9(); }
         if(asppVersion >= ASPP_1_8) { return v1_8(); }
         if(asppVersion >= ASPP_1_7) { return v1_7(); }
         if(asppVersion >= ASPP_1_6) { return v1_6(); }
@@ -120,6 +124,7 @@ namespace mscl
         result->m_autoCal_shm201        = nullptr;
         result->m_getDiagnosticInfo     = nullptr;
         result->m_batchEepromRead       = nullptr;
+        result->m_poll                  = nullptr;
 
         return result;
     }
@@ -216,14 +221,13 @@ namespace mscl
     std::unique_ptr<WirelessProtocol> WirelessProtocol::v1_6()
     {
         using namespace std::placeholders;
-        static const WirelessPacket::AsppVersion ASPP1 = WirelessPacket::aspp_v1;
 
         std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_5();
 
         //changes from v1.5
 
         //Base Commands
-        result->m_setToIdle = std::bind(&BaseStation_Impl::protocol_node_setToIdle_v2, _1, ASPP1, _2, _3);
+        result->m_setToIdle = std::bind(&BaseStation_Impl::protocol_node_setToIdle_v2, _1, WirelessPacket::aspp_v1, _2, _3);
 
         return result;
     }
@@ -231,14 +235,13 @@ namespace mscl
     std::unique_ptr<WirelessProtocol> WirelessProtocol::v1_7()
     {
         using namespace std::placeholders;
-        static const WirelessPacket::AsppVersion ASPP1 = WirelessPacket::aspp_v1;
 
         std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_6();
 
         //changes from v1.6
 
         //Base Commands
-        result->m_testNodeCommProtocol = std::bind(&BaseStation_Impl::protocol_node_testCommProtocol, _1, ASPP1, _2, _3);
+        result->m_testNodeCommProtocol = std::bind(&BaseStation_Impl::protocol_node_testCommProtocol, _1, WirelessPacket::aspp_v1, _2, _3);
 
         return result;
     }
@@ -246,14 +249,27 @@ namespace mscl
     std::unique_ptr<WirelessProtocol> WirelessProtocol::v1_8()
     {
         using namespace std::placeholders;
-        static const WirelessPacket::AsppVersion ASPP1 = WirelessPacket::aspp_v1;
 
         std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_7();
 
-        //changes from v1.6
+        //changes from v1.7
 
         //Node Commands
-        result->m_sleep = std::bind(&BaseStation_Impl::protocol_node_sleep_v2, _1, ASPP1, _2);
+        result->m_sleep = std::bind(&BaseStation_Impl::protocol_node_sleep_v2, _1, WirelessPacket::aspp_v1, _2);
+
+        return result;
+    }
+
+    std::unique_ptr<WirelessProtocol> WirelessProtocol::v1_9()
+    {
+        using namespace std::placeholders;
+
+        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v1_8();
+
+        //changes from v1.8
+
+        //Node Commands
+        result->m_poll = std::bind(&BaseStation_Impl::protocol_node_poll, _1, WirelessPacket::aspp_v1, _2, _3, _4);
 
         return result;
     }
@@ -299,6 +315,21 @@ namespace mscl
         result->m_autoCal_shm201        = std::bind(&BaseStation_Impl::protocol_node_autocal_shm201_v1, _1, ASPP3, _2, _3);
         result->m_getDiagnosticInfo     = std::bind(&BaseStation_Impl::protocol_node_getDiagnosticInfo_v1, _1, ASPP3, _2, _3);
         result->m_batchEepromRead       = std::mem_fn(&BaseStation_Impl::protocol_node_batchEepromRead_v1);
+        result->m_poll                  = nullptr;
+
+        return result;
+    }
+
+    std::unique_ptr<WirelessProtocol> WirelessProtocol::v3_1()
+    {
+        using namespace std::placeholders;
+
+        std::unique_ptr<WirelessProtocol> result = WirelessProtocol::v3_0();
+
+        //changes from v3.0
+
+        //Node Commands
+        result->m_poll = std::bind(&BaseStation_Impl::protocol_node_poll, _1, WirelessPacket::aspp_v3, _2, _3, _4);
 
         return result;
     }

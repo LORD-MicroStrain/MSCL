@@ -14,6 +14,79 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
+55.0.1 - 2020-04-3
+- Added asMap function for DeviceStatusData returned by the DeviceStatus command
+    - returns a map of DeviceStatusValues and string values representing the device status
+- Added supportedStatusSelectors() to check which devices support diagnostic vs basic status data
+
+55.0.0 - 2020-02-28
+- CHANGED WirelessModels::NodeModel::node_ptLink200_gy to node_ptLink200
+- CHANGED NodeFeatures_ptlink200_gy to NodeFeatures_ptlink200
+- include new inertial filter settings commands to InertialNode::getConfigCommandBytes
+    - Aiding Measurement Enable (0x0D,0x50)
+    - Kinematic Constraint (0x0D,0x51)
+    - Adaptive Filter Options (0x0D,0x53)
+
+54.1.2 - 2020-02-27
+- fix latitude/longitude switch in write Filter Initialization Config command (0x0D, 0x52) (GQ7)
+
+54.1.1 - 2020-02-27
+- Remove function selector from inertial Reset command (0x0D, 0x01) to avoid invalid parameter error
+
+54.1.0 - 2020-02-17
+- Added support for new inertial commands (GQ7)
+    - Aiding Measurement Enable (0x0D,0x50)
+    - Kinematic Constraint (0x0D,0x51)
+    - Adaptive Filter Options (0x0D,0x53)
+    - Multi Antenna Offset (0x0D,0x54)
+- add generic functionality to MipCommand class to simplify adding new command support
+
+54.0.0 - 2020-02-13
+- CHANGED GeometricVector from a struct to a class
+    - x, y, and z are now get/set functions, not public variables
+    - added north, east, and down get/set functions
+    - added referenceFrame to indicate whether values are ECEF (x, y, z) or NED (north, east, down)
+- CHANGED Position from a struct to a class
+    - latitude, longitude, altitude are now get/set functions, not public variables
+    - added x, y, and z get/set functions
+    - added referenceFrame to indicate whether values are ECEF (x, y, z) or LLH (latitude, longitude, altitude)
+- Added support for get/set Filter Initialization Config command (0x0D, 0x52) (GQ7)
+- Added heading accessor function to EulerAngles class - heading() and yaw() get/set the same value
+
+53.1.0 - 2020-02-04
+- Add ability to read factory calibration values (slope, offset, unit) on supported nodes (PT-Link-200-GY)
+
+53.0.0 - 2020-01-09
+- REMOVED support for the mV/V-Link (unreleased product)
+- REMOVED InputRangeMap InputRangeHelper::RANGES_MVPVLINK
+- CHANGED WirelessModels value 63250200 from node_mvPerVLink to node_ptLink200_gy
+- Add support for the PT-Link-200-GY
+
+52.5.0 - 2020-01-06
+- add InertialNode::isDataStreamEnabled() - command (0x0C, 0x11) function selector 0x02 (read current)
+
+52.4.4 - 2019-12-18
+- revert linux symlink port name resolution changes pending additional testing
+
+52.4.3 - 2019-11-25
+- resolve symlink port names for serial ports on linux
+
+52.4.2 - 2019-11-20
+- update ChannelFrequencyClass enum values (CFC Filter options EEPROM values)
+
+52.4.1 - 2019-11-15
+- update supported sample rates for G-Link-200-R
+
+52.4.0 - 2019-11-15
+- add support for G-Link-200-R
+- add support for CFC Filter Configuration option (G-Link-200-R only)
+
+52.3.1 - 2019-10-09
+- enabled support for poll command for V-Link-200 on firmware version 12.45139 and above
+
+52.3.0 - 2019-09-09
+- added Poll functionality for supported products
+
 52.2.1 - 2019-09-03
 - update jam files for static dependency support
 

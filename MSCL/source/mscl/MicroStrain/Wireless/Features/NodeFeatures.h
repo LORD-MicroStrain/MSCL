@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -94,6 +94,10 @@ namespace mscl
         //Function: addCalCoeffChannelGroup
         //    Adds a cal coefficient (Linear Equation, unit, equation type) to the channel groups for the specified channel.
         void addCalCoeffChannelGroup(uint8 channelNumber, const std::string& name, const EepromLocation& slopeEeprom, const EepromLocation& actionIdEeprom);
+
+        //Function: addCalCoeffChannelGroup_withFactoryCal
+        //    Adds a cal coefficient with factory cal values (Linear Equation, unit, equation type, factory cal) to the channel groups for the specified channel.
+        void addCalCoeffChannelGroup_withFactoryCal(uint8 channelNumber, const std::string& name, const EepromLocation& slopeEeprom, const EepromLocation& actionIdEeprom, const EepromLocation& factorySlopeEeprom, const EepromLocation& factoryActionIdEeprom);
 
         //Function: maxFilterSettlingTime_A
         //    Gets the max filter settling time allowed by the given <SampleRate>. 
@@ -424,6 +428,13 @@ namespace mscl
         //  true if the Node supports Auto Shunt Cal for at least 1 <ChannelGroup>, false otherwise.
         virtual bool supportsAutoShuntCal() const;
 
+        //API Function: supportsGetFactoryCal
+        //  Checks if the Node has factory calibrations stored for any of its <ChannelGroups>.
+        //
+        //Returns:
+        //  true if the Node has factory calibration values for at least 1 <ChannelGroup>, false otherwise.
+        virtual bool supportsGetFactoryCal() const;
+
         //API Function: supportsLimitedDuration
         //    Checks if the Node supports setting a limited duration of sampling.
         //
@@ -452,6 +463,13 @@ namespace mscl
         //  true if the Node can store logged data, false otherwise.
         virtual bool supportsLoggedData() const;
 
+        //API Function: supportsPoll
+        //  Checks if the Node supports the poll command.
+        //
+        //Returns:
+        //  true if the Node supporting the poll command, false otherwise.
+        virtual bool supportsPoll() const;
+
         //API Function: supportsSensorDelayConfig
         //  Checks if the Node supports configuration of sensor delay.
         //
@@ -472,6 +490,13 @@ namespace mscl
         //Returns:
         //  true if the Node supports setting the Sensor Output Mode, false otherwise
         virtual bool supportsSensorOutputMode() const;
+
+        //API Function: supportsCfcFilterConfiguration
+        //  Checks if the Node supports configuration of the channel frequency class filter.
+        //
+        //Returns:
+        //  true if the Node supports setting the channel frequency class filter, false otherwise
+        virtual bool supportsCfcFilterConfiguration() const;
 
         //API Function: supportsChannel
         //    Checks if a specific channel is supported (can be enabled) by this Node.
@@ -1004,6 +1029,13 @@ namespace mscl
         //Returns:
         //  A vector of <WirelessTypes::SensorOutputModes> that are supported by this Node.
         virtual const WirelessTypes::SensorOutputModes sensorOutputModes() const;
+
+        //API Function: cfcFilters
+        //  Gets a list of <WirelessTypes::ChannelFrequencyClass> options that are supportedby this Node.
+        //
+        //Returns:
+        //  A vector of <WirelessTypes::ChannelFrequencyClass> options that are supported by this Node.
+        virtual const WirelessTypes::CfcFilters cfcFilters() const;
 
         //API Function: histogramTransmitRates
         //    Gets a list of the Histogram Transmit Rates that are supported by this Node.

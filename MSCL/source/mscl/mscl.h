@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -37,10 +37,10 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "MicroStrain/Displacement/DisplacementModels.h"
 #include "MicroStrain/Displacement/DisplacementNode.h"
 
-#include "MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "MicroStrain/Inertial/EulerAngles.h"
 #include "MicroStrain/Inertial/PositionOffset.h"
 #include "MicroStrain/Inertial/InertialModels.h"
+#include "MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "MicroStrain/Inertial/InertialNode.h"
 
 #include "MicroStrain/MIP/MipChannel.h"

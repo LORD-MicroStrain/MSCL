@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -148,6 +148,10 @@ namespace mscl
         //  The function pointer for the Test Node Communication Protocol command.
         std::function<bool(BaseStation_Impl*, NodeAddress, WirelessTypes::CommProtocol)> m_testNodeCommProtocol;
 
+        //Variable: m_poll
+        //  The function pointer for the Node Poll command.
+        std::function<bool(BaseStation_Impl*, NodeAddress, const ChannelMask&, WirelessPollData&)> m_poll;
+
     public:
         //Constant: BASE_STATION_ADDRESS
         //  The address of our generic Base Station.
@@ -210,9 +214,17 @@ namespace mscl
         //  Static function to create a WirelessProtocol with version 1.8.
         static std::unique_ptr<WirelessProtocol> v1_8();
 
+        //Function: v1_9
+        //  Static function to create a WirelessProtocol with version 1.9.
+        static std::unique_ptr<WirelessProtocol> v1_9();
+
         //Function: v3_0
         //  Static function to create a WirelessProtocol with version 3.0.
         static std::unique_ptr<WirelessProtocol> v3_0();
+
+        //Function: v3_1
+        //  Static function to create a WirelessProtocol with version 3.1.
+        static std::unique_ptr<WirelessProtocol> v3_1();
 
     public:
         bool supportsBeaconStatus() const;
@@ -269,6 +281,7 @@ namespace mscl
         //  cmdId_base_setBeacon_v1         - 0xBEAC    - Base Station Enable/Disable Beacon (v1)
         //  cmdId_base_setBeacon_v2         - 0xBEAC    - Base Station Enable/Disable Beacon (v2)
         //  cmdId_base_getBeaconStatus_v1   - 0xBEAD    - Base Station Get Beacon Status (v1)
+        //  cmdId_poll                      - 0xDA7A    - Poll (v1)
         enum CommandID
         {
             cmdId_basePing                  = 0x01,
@@ -312,6 +325,7 @@ namespace mscl
             cmdId_base_setBeacon_v1         = 0xBEAC,
             cmdId_base_setBeacon_v2         = 0xBEAC,
             cmdId_base_getBeaconStatus_v1   = 0xBEAD,
+            cmdId_poll                      = 0xDA7A
         };
     };
 }

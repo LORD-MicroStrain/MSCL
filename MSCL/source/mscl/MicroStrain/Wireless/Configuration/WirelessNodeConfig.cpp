@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -794,6 +794,15 @@ namespace mscl
             }
         }
 
+        //Channel Frequency Class Filter
+        if (isSet(m_cfcFilterConfig))
+        {
+            if (!features.supportsCfcFilterConfiguration())
+            {
+                outIssues.push_back(ConfigIssue(ConfigIssue::CONFIG_CFC_FILTER, "CFC Filter Configuration is not supported by the Node."));
+            }
+        }
+
         //Low-Pass Filter(s)
         for(const auto& filter : m_lowPassFilters)
         {
@@ -1488,6 +1497,9 @@ namespace mscl
             eeprom.write_antiAliasingFilter(filter.first, filter.second);
         }
 
+        //write CFC config option
+        if (isSet(m_cfcFilterConfig)) { eeprom.write_cfcFilterConfig(*m_cfcFilterConfig); }
+
         //write low-pass filter(s)
         for(const auto& filter : m_lowPassFilters)
         {
@@ -1729,6 +1741,17 @@ namespace mscl
     void WirelessNodeConfig::antiAliasingFilter(const ChannelMask& mask, WirelessTypes::Filter filter)
     {
         setChannelMapVal(m_antiAliasingFilters, mask, filter);
+    }
+
+    WirelessTypes::ChannelFrequencyClass WirelessNodeConfig::cfcFilterConfig() const
+    {
+        checkValue(m_cfcFilterConfig, "Channel Frequency Class Filter");
+        return *m_cfcFilterConfig;
+    }
+
+    void WirelessNodeConfig::cfcFilterConfig(WirelessTypes::ChannelFrequencyClass cfc)
+    {
+        m_cfcFilterConfig = cfc;
     }
 
     WirelessTypes::Filter WirelessNodeConfig::lowPassFilter(const ChannelMask& mask) const

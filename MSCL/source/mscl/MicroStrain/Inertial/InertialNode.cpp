@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -18,7 +18,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    InertialNode::InertialNode(Connection connection): 
+    InertialNode::InertialNode(Connection connection) :
         m_impl(std::make_shared<MipNode_Impl>(connection))
     {
     }
@@ -34,7 +34,7 @@ namespace mscl
     }
 
     MipDataPackets InertialNode::getDataPackets(uint32 timeout, uint32 maxPackets)
-    { 
+    {
         MipDataPackets packets;
         m_impl->getDataPackets(packets, timeout, maxPackets);
         return packets;
@@ -104,14 +104,14 @@ namespace mscl
         return m_impl->deviceOptions();
     }
 
-    uint32 InertialNode::totalPackets()                                                            
-    { 
-        return m_impl->totalPackets(); 
+    uint32 InertialNode::totalPackets()
+    {
+        return m_impl->totalPackets();
     }
 
-    void InertialNode::timeout(uint64 timeout)                                        
-    { 
-        m_impl->timeout(timeout); 
+    void InertialNode::timeout(uint64 timeout)
+    {
+        m_impl->timeout(timeout);
     }
 
     uint64 InertialNode::timeout() const
@@ -124,9 +124,9 @@ namespace mscl
         return deviceName(serialNumber());
     }
 
-    bool InertialNode::ping()                                                        
-    { 
-        return m_impl->ping(); 
+    bool InertialNode::ping()
+    {
+        return m_impl->ping();
     }
 
     void InertialNode::setToIdle()
@@ -139,12 +139,12 @@ namespace mscl
         return m_impl->cyclePower();
     }
 
-	void InertialNode::resume()
-	{
-		m_impl->resume();
-	}
+    void InertialNode::resume()
+    {
+        m_impl->resume();
+    }
 
-	void InertialNode::saveSettingsAsStartup()
+    void InertialNode::saveSettingsAsStartup()
     {
         return m_impl->saveSettingsAsStartup();
     }
@@ -180,17 +180,17 @@ namespace mscl
     }
 
     uint16 InertialNode::getDataRateBase(MipTypes::DataClass dataClass)
-    { 
+    {
         return m_impl->getDataRateBase(dataClass);
     }
 
     MipChannels InertialNode::getActiveChannelFields(MipTypes::DataClass dataClass)
-    { 
+    {
         return m_impl->getMessageFormat(dataClass);
     }
 
     void InertialNode::setActiveChannelFields(MipTypes::DataClass dataClass, const MipChannels& channels)
-    { 
+    {
         m_impl->setMessageFormat(dataClass, channels);
     }
 
@@ -199,14 +199,19 @@ namespace mscl
         m_impl->saveMessageFormat(dataClass);
     }
 
-    uint8 InertialNode::getCommunicationMode()                                                    
-    { 
-        return m_impl->getCommunicationMode(); 
+    uint8 InertialNode::getCommunicationMode()
+    {
+        return m_impl->getCommunicationMode();
     }
 
-    void InertialNode::setCommunicationMode(uint8 communicationMode)                            
-    { 
-        m_impl->setCommunicationMode(communicationMode); 
+    void InertialNode::setCommunicationMode(uint8 communicationMode)
+    {
+        m_impl->setCommunicationMode(communicationMode);
+    }
+
+    bool InertialNode::isDataStreamEnabled(MipTypes::DataClass dataClass)
+    {
+        return m_impl->isDataStreamEnabled(dataClass);
     }
 
     void InertialNode::enableDataStream(MipTypes::DataClass dataClass, bool enable)
@@ -282,6 +287,16 @@ namespace mscl
     void InertialNode::setInitialHeading(float heading)
     {
         m_impl->setInitialHeading(heading);
+    }
+
+    FilterInitializationValues InertialNode::getInitialFilterConfiguration()
+    {
+        return m_impl->getInitialFilterConfiguration();
+    }
+
+    void InertialNode::setInitialFilterConfiguration(FilterInitializationValues filterConfig)
+    {
+        m_impl->setInitialFilterConfiguration(filterConfig);
     }
 
     EulerAngles InertialNode::getSensorToVehicleTransformation()
@@ -799,5 +814,74 @@ namespace mscl
     void InertialNode::sendExternalHeadingUpdate(const HeadingData& headingData, const TimeUpdate& timestamp)
     {
         m_impl->sendExternalHeadingUpdate(headingData, timestamp);
+    }
+
+    bool InertialNode::aidingMeasurementEnabled(InertialTypes::AidingMeasurementSource aidingSource) const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE,
+            { Value::UINT16(static_cast<uint16>(aidingSource)) });
+        
+        // command echoes aiding source and current enabled setting - only need to return enabled
+        return data[1].as_bool();
+    }
+
+    void InertialNode::enableDisableAidingMeasurement(InertialTypes::AidingMeasurementSource aidingSource, bool enable)
+    {
+        m_impl->set(MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE, {
+            Value::UINT16(static_cast<uint16>(aidingSource)),
+            Value::BOOL(enable) });
+    }
+
+    KinematicConstraints InertialNode::getKinematicConstraints() const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_EF_KINEMATIC_CONSTRAINT);
+        return KinematicConstraints(
+            static_cast<InertialTypes::KinematicConstraint>(data[0].as_uint8()),  // acceleration
+            static_cast<InertialTypes::KinematicConstraint>(data[1].as_uint8()),  // velocity
+            static_cast<InertialTypes::KinematicConstraint>(data[2].as_uint8())); // angular rate
+    }
+
+    void InertialNode::setKinematicConstraints(KinematicConstraints constraintOptions)
+    {
+        m_impl->set(MipTypes::CMD_EF_KINEMATIC_CONSTRAINT, {
+            Value::UINT8(static_cast<uint8>(constraintOptions.acceleration)),
+            Value::UINT8(static_cast<uint8>(constraintOptions.velocity)),
+            Value::UINT8(static_cast<uint8>(constraintOptions.angularRate)) });
+    }
+
+    AutoAdaptiveFilterOptions InertialNode::getAdaptiveFilterOptions() const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS);
+        return AutoAdaptiveFilterOptions(
+            static_cast<InertialTypes::AutoAdaptiveFilteringLevel>(data[0].as_uint8()),
+            data[1].as_uint16());
+    }
+
+    void InertialNode::setAdaptiveFilterOptions(AutoAdaptiveFilterOptions options)
+    {
+        m_impl->set(MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS, {
+            Value::UINT8(static_cast<uint8>(options.level)),
+            Value::UINT16(options.timeLimit) });
+    }
+
+    PositionOffset InertialNode::getMultiAntennaOffset(uint8 receiverId) const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET, {
+            Value::UINT8(receiverId) });
+
+        // skip data[0]: echoed receiver ID
+        return PositionOffset(
+            data[1].as_float(),  // x
+            data[2].as_float(),  // y
+            data[3].as_float()); // z
+    }
+
+    void InertialNode::setMultiAntennaOffset(uint8 receiverId, PositionOffset offset)
+    {
+        m_impl->set(MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET, {
+            Value::UINT8(receiverId),
+            Value::FLOAT(offset.x()),
+            Value::FLOAT(offset.y()),
+            Value::FLOAT(offset.z()) });
     }
 }

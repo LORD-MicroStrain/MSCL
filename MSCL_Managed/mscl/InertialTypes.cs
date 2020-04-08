@@ -214,6 +214,14 @@ public class InertialTypes : global::System.IDisposable {
     ADAPTIVE_MEASUREMENT_ENABLE_AUTO = 0x02
   }
 
+  public enum AidingMeasurementSource {
+    GNSS_AIDING = 0x0000,
+    ALTIMETER_AIDING = 0x0001,
+    ODOMETER_AIDING = 0x0002,
+    MAGNETOMETER_AIDING = 0x0003,
+    EXTERNAL_HEADING_AIDING = 0x0004
+  }
+
   public enum ConstellationId {
     GPS = 0x00,
     SBAS = 0x01,
@@ -221,6 +229,19 @@ public class InertialTypes : global::System.IDisposable {
     BEIDOU = 0x03,
     QZSS = 0x05,
     GLONASS = 0x06
+  }
+
+  public enum KinematicConstraint {
+    CONSTRAINT_NONE = 0x00,
+    CONSTRAINT_ZERO_MAGNITUDE = 0x01,
+    CONSTRAINT_WHEELED_VEHICLE = 0x02
+  }
+
+  public enum AutoAdaptiveFilteringLevel {
+    FILTERING_OFF = 0x00,
+    FILTERING_CONSERVATIVE = 0x01,
+    FILTERING_MODERATE = 0x02,
+    FILTERING_AGGRESIVE = 0x03
   }
 
 }

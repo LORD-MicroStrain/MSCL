@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -107,14 +107,8 @@ namespace mscl
     //Reset Filter
     ByteStream ResetFilter::buildCommand()
     {
-        //container to hold the command's field data
-        ByteStream fieldData;
-
-        //add the command selector byte
-        fieldData.append_uint8(static_cast<uint8>(MipTypes::USE_NEW_SETTINGS));
-
         //build and return the command bytes
-        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
+        return GenericMipCommand::buildCommand(CMD_ID);
     }
 
     ResetFilter::Response::Response(std::weak_ptr<ResponseCollector> collector):

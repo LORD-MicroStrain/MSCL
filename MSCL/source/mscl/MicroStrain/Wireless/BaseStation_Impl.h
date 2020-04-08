@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -837,6 +837,10 @@ namespace mscl
         //    Performs Version 1 of the Node Test Communication Protocol command.
         bool protocol_node_testCommProtocol(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, WirelessTypes::CommProtocol protocol);
 
+        //Function: protocol_node_poll
+        //    Performs Version 1 of the Node Poll command.
+        bool protocol_node_poll(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, const ChannelMask& chs, WirelessPollData& result);
+
     public:
         //Function: node_ping
         //    Pings the specified Node.
@@ -1175,6 +1179,22 @@ namespace mscl
         //  - <Error_NotSupported>: The given communication protocol is not supported by the BaseStation.
         //  - <Error_Connection>: A connection error has occurred with the BaseStation.
         bool node_testCommProtocol(NodeAddress nodeAddress, WirelessTypes::CommProtocol commProtocol);
+
+        //Function: node_poll
+        //  Polls the WirelessNode to get a single sweep of calibrated data.
+        //
+        //Parameters:
+        //  nodeProtocol - The <WirelessProtocol> for the Node.
+        //  nodeAddress - The node address of the Node to send the command to.
+        //  chs - The <ChannelMask> to poll data for. Note: if a channel is active that isn't supported by the Node, it will be ignored.
+        //  result - The <WirelessPollData> map holding the result of the poll.
+        //
+        //Returns:
+        //  true if the command was successful, false otherwise.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: A connection error has occurred with the BaseStation.
+        bool node_poll(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, const ChannelMask& chs, WirelessPollData& result);
 
     private:
         //Function: node_autocal

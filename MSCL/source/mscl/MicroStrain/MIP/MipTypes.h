@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -9,7 +9,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include "mscl/Types.h"
+#include "mscl/Value.h"
 
 namespace mscl
 {
@@ -162,6 +162,11 @@ public:
     //  CMD_EF_PITCH_ROLL_AID_CTRL                  - 0x0D4B    - Estimation Filter - Pitch-Roll Aiding Control
     //  CMD_EF_INCLINATION_SRC                      - 0x0D4C    - Estimation Filter - Inclination Source
     //  CMD_EF_FIELD_MAGNITUDE_SRC                  - 0x0D4D    - Estimation Filter - Magnetic Field Magnitude Source
+    //  CMD_EF_AIDING_MEASUREMENT_ENABLE            - 0x0D50    - Estimation Filter - Aiding Measurement Enabled
+    //  CMD_EF_KINEMATIC_CONSTRAINT                 - 0x0D51    - Estimation Filter - Kinematic Constraint
+    //  CMD_EF_INITIALIZATION_CONFIG                - 0x0D52    - Estimation Filter - Initialization Configuration
+    //  CMD_EF_ADAPTIVE_FILTER_OPTIONS              - 0x0D53    - Estimation Filter - Adaptive Filter Options
+    //  CMD_EF_MULTI_ANTENNA_OFFSET                 - 0x0D54    - Estimation Filter - Multi Antenna Offset
     //  CMD_COMMUNICATION_MODE                      - 0x7F10    - Communication Mode
     //  CMD_HARDWARE_CTRL                           - 0x7F11    - Hardware Control
     //  CMD_GET_ANALOG_DISPLACEMENT_CALS            - 0x1101    - Get Analog Output to Displacement Slope and Offset
@@ -253,6 +258,11 @@ public:
         CMD_EF_PITCH_ROLL_AID_CTRL                  = 0x0D4B,
         CMD_EF_INCLINATION_SRC                      = 0x0D4C,
         CMD_EF_FIELD_MAGNITUDE_SRC                  = 0x0D4D,
+        CMD_EF_AIDING_MEASUREMENT_ENABLE            = 0x0D50,
+        CMD_EF_KINEMATIC_CONSTRAINT                 = 0x0D51,
+        CMD_EF_INITIALIZATION_CONFIG                = 0x0D52,
+        CMD_EF_ADAPTIVE_FILTER_OPTIONS              = 0x0D53,
+        CMD_EF_MULTI_ANTENNA_OFFSET                 = 0x0D54,
         CMD_COMMUNICATION_MODE                      = 0x7F10,
         CMD_HARDWARE_CTRL                           = 0x7F11,
         CMD_GET_ANALOG_DISPLACEMENT_CALS            = 0x1101,
@@ -633,4 +643,15 @@ struct MipCommandBytes
 //      A vector of <MipCommandBytes>
 typedef std::vector<MipCommandBytes> MipCommandSet;
 
+//API Typedef: MipFieldFormat
+//      A <ValueType> vector
+typedef std::vector<ValueType> MipFieldFormat;
+
+//API Typedef: MipFieldValues
+//      A <Value> vector
+typedef std::vector<Value> MipFieldValues;
+
+//API Typedef: MipFunctionSelectors
+//      A <MipTypes::FunctionSelector> vector
+typedef std::vector<MipTypes::FunctionSelector> MipFunctionSelectors;
 }

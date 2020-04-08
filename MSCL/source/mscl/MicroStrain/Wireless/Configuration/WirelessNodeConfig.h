@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -182,6 +182,10 @@ namespace mscl
         //Variable: m_antiAliasingFilters
         //  The map of <ChannelMask> to anti-aliasing filters to set.
         std::map<ChannelMask, WirelessTypes::Filter> m_antiAliasingFilters;
+
+        //Variable: m_cfcFilterConfig
+        //  The <WirelessTypes::ChannelFrequencyClass> option to set.
+        boost::optional<WirelessTypes::ChannelFrequencyClass> m_cfcFilterConfig;
 
         //Variable: m_lowPassFilters
         //  The map of <ChannelMask> to low-pass filters to set.
@@ -715,6 +719,17 @@ namespace mscl
         //API Function: antiAliasingFilter
         //    Sets the anti-aliasing filter for the given <ChannelMask> in this Config object.
         void antiAliasingFilter(const ChannelMask& mask, WirelessTypes::Filter filter);
+
+        //API Function: cfcFilterConfig
+        //    Gets the <WirelessTypes::ChannelFrequencyClass> in this Config object, if set.
+        //
+        //Exceptions:
+        //    <Error_NoData> - The requested value has not been set.
+        WirelessTypes::ChannelFrequencyClass cfcFilterConfig() const;
+
+        //API Function: cfcFilterConfig
+        //    Sets the channel frequency class filter in this Config object.
+        void cfcFilterConfig(WirelessTypes::ChannelFrequencyClass cfc);
 
         //API Function: lowPassFilter
         //    Gets the low pass <WirelessTypes::Filter> for the given <ChannelMask> in this Config object, if set.

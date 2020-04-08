@@ -254,6 +254,12 @@ public class NodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public virtual bool supportsGetFactoryCal() {
+    bool ret = msclPINVOKE.NodeFeatures_supportsGetFactoryCal(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public virtual bool supportsLimitedDuration() {
     bool ret = msclPINVOKE.NodeFeatures_supportsLimitedDuration(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -278,6 +284,12 @@ public class NodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public virtual bool supportsPoll() {
+    bool ret = msclPINVOKE.NodeFeatures_supportsPoll(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public virtual bool supportsSensorDelayConfig() {
     bool ret = msclPINVOKE.NodeFeatures_supportsSensorDelayConfig(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -292,6 +304,12 @@ public class NodeFeatures : global::System.IDisposable {
 
   public virtual bool supportsSensorOutputMode() {
     bool ret = msclPINVOKE.NodeFeatures_supportsSensorOutputMode(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool supportsCfcFilterConfiguration() {
+    bool ret = msclPINVOKE.NodeFeatures_supportsCfcFilterConfiguration(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -610,6 +628,12 @@ public class NodeFeatures : global::System.IDisposable {
 
   public virtual SensorOutputModes sensorOutputModes() {
     SensorOutputModes ret = new SensorOutputModes(msclPINVOKE.NodeFeatures_sensorOutputModes(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual CfcFilters cfcFilters() {
+    CfcFilters ret = new CfcFilters(msclPINVOKE.NodeFeatures_cfcFilters(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

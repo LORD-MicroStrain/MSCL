@@ -44,48 +44,106 @@ public class GeometricVector : global::System.IDisposable {
     }
   }
 
-  public GeometricVector(float x_init, float y_init, float z_init) : this(msclPINVOKE.new_GeometricVector__SWIG_0(x_init, y_init, z_init), true) {
+  public static GeometricVector VectorECEF(float x_init, float y_init, float z_init) {
+    GeometricVector ret = new GeometricVector(msclPINVOKE.GeometricVector_VectorECEF(x_init, y_init, z_init), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static GeometricVector VectorNED(float north, float east, float down) {
+    GeometricVector ret = new GeometricVector(msclPINVOKE.GeometricVector_VectorNED(north, east, down), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public GeometricVector(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref_) : this(msclPINVOKE.new_GeometricVector__SWIG_0(x_init, y_init, z_init, (int)ref_), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public GeometricVector() : this(msclPINVOKE.new_GeometricVector__SWIG_1(), true) {
+  public GeometricVector(float x_init, float y_init, float z_init) : this(msclPINVOKE.new_GeometricVector__SWIG_1(x_init, y_init, z_init), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public float x {
+  public GeometricVector() : this(msclPINVOKE.new_GeometricVector__SWIG_2(), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public PositionVelocityReferenceFrame referenceFrame {
     set {
-      msclPINVOKE.GeometricVector_x_set(swigCPtr, value);
+      msclPINVOKE.GeometricVector_referenceFrame_set(swigCPtr, (int)value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      float ret = msclPINVOKE.GeometricVector_x_get(swigCPtr);
+      PositionVelocityReferenceFrame ret = (PositionVelocityReferenceFrame)msclPINVOKE.GeometricVector_referenceFrame_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
   }
 
-  public float y {
-    set {
-      msclPINVOKE.GeometricVector_y_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      float ret = msclPINVOKE.GeometricVector_y_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public float x() {
+    float ret = msclPINVOKE.GeometricVector_x__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
-  public float z {
-    set {
-      msclPINVOKE.GeometricVector_z_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      float ret = msclPINVOKE.GeometricVector_z_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public void x(float x) {
+    msclPINVOKE.GeometricVector_x__SWIG_1(swigCPtr, x);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public float y() {
+    float ret = msclPINVOKE.GeometricVector_y__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void y(float y) {
+    msclPINVOKE.GeometricVector_y__SWIG_1(swigCPtr, y);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public float z() {
+    float ret = msclPINVOKE.GeometricVector_z__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void z(float z) {
+    msclPINVOKE.GeometricVector_z__SWIG_1(swigCPtr, z);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public float north() {
+    float ret = msclPINVOKE.GeometricVector_north__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void north(float north) {
+    msclPINVOKE.GeometricVector_north__SWIG_1(swigCPtr, north);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public float east() {
+    float ret = msclPINVOKE.GeometricVector_east__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void east(float east) {
+    msclPINVOKE.GeometricVector_east__SWIG_1(swigCPtr, east);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public float down() {
+    float ret = msclPINVOKE.GeometricVector_down__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void down(float down) {
+    msclPINVOKE.GeometricVector_down__SWIG_1(swigCPtr, down);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
 }

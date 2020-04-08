@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -49,6 +49,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "Commands/GetDiagnosticInfo.h"
 #include "Commands/LongPing.h"
 #include "Commands/PageDownload.h"
+#include "Commands/Poll.h"
 #include "Commands/ReadEeprom.h"
 #include "Commands/ReadEeprom_v2.h"
 #include "Commands/ReadSingleSensor.h"
@@ -1215,6 +1216,50 @@ namespace mscl
         return doNodeCommand(nodeAddress, command, response);
     }
 
+    bool BaseStation_Impl::protocol_node_poll(WirelessPacket::AsppVersion asppVer, NodeAddress nodeAddress, const ChannelMask& chs, WirelessPollData& result)
+    {
+        Poll::Response response(nodeAddress, m_responseCollector);
+
+        ByteStream command = Poll::buildCommand(asppVer, nodeAddress, chs);
+
+        //send the command
+        m_connection.write(command);
+
+        //wait for the response or timeout
+        response.wait(m_nodeCommandsTimeout);
+
+        if(response.baseReceived() && !response.fullyMatched())
+        {
+            //base received the command and sent to node, wait for the new timeout for the Node's response
+            response.wait(response.baseReceivedWaitTime() + timeoutToAdd());
+        }
+
+        //if the poll process has started, but not completed
+        if(response.started() && !response.fullyMatched())
+        {
+            //update last comm times
+            NodeCommTimes::updateCommTime(nodeAddress);
+
+            //the Node tells us how much time it takes to complete, so ask for that and
+            //convert the seconds to milliseconds, and add some extra buffer time
+            uint64 timeToWait = static_cast<uint64>(response.timeToComplete() * 1000.0) + 500;
+
+            response.wait(timeToWait);
+        }
+
+        //if the poll process has finished
+        if(response.fullyMatched())
+        {
+            //update last comm times
+            NodeCommTimes::updateCommTime(nodeAddress);
+
+            //give the response data to the result object
+            result = response.result();
+        }
+
+        return response.success();
+    }
+
     Value BaseStation_Impl::readEeprom(const EepromLocation& location) const
     {
         try
@@ -1633,6 +1678,11 @@ namespace mscl
 
         //this depends on the protocol of the Base Station, not the Node
         return protocol(communicationProtocol()).m_testNodeCommProtocol(this, nodeAddress, commProtocol);
+    }
+
+    bool BaseStation_Impl::node_poll(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, const ChannelMask& chs, WirelessPollData& result)
+    {
+        return nodeProtocol.m_poll(this, nodeAddress, chs, result);
     }
 
     bool BaseStation_Impl::node_autocal(NodeAddress nodeAddress, const ByteStream& command, AutoCal::Response& response, AutoCalResult& result)

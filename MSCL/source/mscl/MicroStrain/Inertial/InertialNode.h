@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2019 LORD Corporation. All rights reserved.
+Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -40,7 +40,7 @@ namespace mscl
         //    connection - The Connection object used for communication.
         //
         //Exceptions:
-        //    - <Error_Connection>: A problem occured with the Connection.
+        //    - <Error_Connection>: A problem occurred with the Connection.
         explicit InertialNode(Connection connection);
 
         virtual ~InertialNode() {}
@@ -450,6 +450,19 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setCommunicationMode(uint8 communicationMode);
 
+        //API Function: isDataStreamEnabled
+        //    Checks whether continuous data streaming is enabled for the specified data class.
+        //
+        //Parameters:
+        //    dataClass - The <MipTypes::DataClass> to enable/disable streaming for.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command or <MipTypes::DataClass> is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        bool isDataStreamEnabled(MipTypes::DataClass dataClass);
+
         //API Function: enableDataStream
         //    Enables or disables continuous data streaming for the node.
         //
@@ -606,7 +619,7 @@ namespace mscl
 
         //API Function: setInitialAttitude
         //    Sets the initial attitude.
-        //    Node: This command can only be issues in the "INIT" state and should be used with a
+        //    Note: This command can only be issued in the "INIT" state and should be used with a
         //          good estimate of the vehicle attitude.
         //
         //Parameters:
@@ -621,7 +634,7 @@ namespace mscl
 
         //API Function: setInitialHeading
         //    Sets the initial heading.
-        //    Node: This command can only be issues in the "INIT" state and should be used with a
+        //    Note: This command can only be issued in the "INIT" state and should be used with a
         //          good estimate of heading. The device will use this value in conjunction with the
         //          output of the accelerometers to determine the initial attitude estimate.
         //
@@ -634,6 +647,30 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setInitialHeading(float heading);
+
+        //API Function: getInitialFilterConfiguration
+        //    Gets the initial filter configuration values.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        FilterInitializationValues getInitialFilterConfiguration();
+
+        //API Function: setInitialFilterConfiguration
+        //    Sets the initial filter configuration values.
+        //    Note: Changes from this command will only be applied if the filter is in the Initialization state (not Running) or on filter reset.
+        //
+        //Parameters:
+        //  filterConfig - The <FilterInitializationValues> to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setInitialFilterConfiguration(FilterInitializationValues filterConfig);
 
         //API Function: getSensorToVehicleTransformation
         //    Gets the sensor to vehicle frame transformation matrix using roll, pitch, and yaw Euler angles.
@@ -1854,7 +1891,7 @@ namespace mscl
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
-        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void sendExternalHeadingUpdate(const HeadingData& headingData);
 
         //API Function: sendExternalHeadingUpdate
@@ -1868,8 +1905,120 @@ namespace mscl
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
-        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void sendExternalHeadingUpdate(const HeadingData& headingData, const TimeUpdate& timestamp);
+
+        //API Function: aidingMeasurementEnabled
+        //    sends the Aiding Measurement Enable command (0x0D, 0x50) to check whether the specified aiding source is currently enabled.
+        //
+        //Parameter:
+        //    aidingSource - the <AidingMeasurementSource> to check.
+        //
+        //Return:
+        //    bool - The current state of the specified aiding measurement source - true: enabled, false: disabled.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        bool aidingMeasurementEnabled(InertialTypes::AidingMeasurementSource aidingSource) const;
+
+        //API Function: enableDisableAidingMeasurement
+        //    sends the Aiding Measurement Enable command (0x0D, 0x50) to enable/disable the specified aiding source.
+        //
+        //Parameter:
+        //    aidingSource - the <AidingMeasurementSource> to enable/disable.
+        //    enable - true: enable, false: disable
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void enableDisableAidingMeasurement(InertialTypes::AidingMeasurementSource aidingSource, bool enable);
+
+        //API Function: getKinematicConstraints
+        //    sends the Kinematic Constraint command (0x0D, 0x51) to get the currently configured acceleration, velocity, and angular rate constraint options.
+        //
+        //Return:
+        //    <KinematicConstraints> - The current kinematic constraint options set on the device.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        KinematicConstraints getKinematicConstraints() const;
+
+        //API Function: setKinematicConstraints
+        //    sends the Kinematic Constraint command (0x0D, 0x51) to set the acceleration, velocity, and angular rate constraints to the specified options.
+        //
+        //Parameter:
+        //    constraintOptions - the <KinematicConstraints> to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setKinematicConstraints(KinematicConstraints constraintOptions);
+
+        //API Function: getAdaptiveFilterOptions
+        //    sends the Adaptive Filter Options command (0x0D, 0x53) to get the currently configured auto-adaptive filtering options.
+        //
+        //Return:
+        //    <AutoAdaptiveFilterOptions> - The current auto-adaptive filter options set on the device.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        AutoAdaptiveFilterOptions getAdaptiveFilterOptions() const;
+
+        //API Function: setAdaptiveFilterOptions
+        //    sends the Adaptive Filter Options command (0x0D, 0x53) to set the auto-adaptive filtering options to the specified values.
+        //
+        //Parameter:
+        //    options - the <AutoAdaptiveFilterOptions> to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setAdaptiveFilterOptions(AutoAdaptiveFilterOptions options);
+
+        //API Function: getMultiAntennaOffset
+        //    sends the Multi Antenna Offset command (0x0D, 0x54) to get the currently configured antenna offset for the specified receiver ID.
+        //
+        //Parameter:
+        //    receiverId - the receiver ID to return the offset of.
+        //
+        //Return:
+        //    <PositionOffset> - The currently configured antenna offset of the specified receiver.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        PositionOffset getMultiAntennaOffset(uint8 receiverId) const;
+
+        //API Function: setMultiAntennaOffset
+        //    sends the Aiding Measurement Enable command (0x0D, 0x50) to set the position offset of the specified receiver ID.
+        //
+        //Parameter:
+        //    receiverId - the receiver ID.
+        //    offset - the <PositionOffset> of the specified receiver.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setMultiAntennaOffset(uint8 receiverId, PositionOffset offset);
     };
     
 }
