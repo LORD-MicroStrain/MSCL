@@ -17,26 +17,32 @@ namespace mscl
         m_node(node),
         m_deviceInfo(std::bind(&MipNode_Impl::getDeviceInfo, m_node)),
         m_descriptors(std::bind(&MipNode_Impl::getDescriptorSets, m_node)),
-        m_ahrsImuSampleRates(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_AHRS_IMU)),
-        m_gnssSampleRates(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_GNSS)),
-        m_estfilterSampleRates(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_ESTFILTER)),
-        m_displacementSampleRates(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_DISPLACEMENT))
+        m_sampleRates({
+            { MipTypes::CLASS_AHRS_IMU, Utils::Lazy<SampleRates>(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_AHRS_IMU))},
+            { MipTypes::CLASS_GNSS, Utils::Lazy<SampleRates>(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_GNSS)) },
+            { MipTypes::CLASS_ESTFILTER, Utils::Lazy<SampleRates>(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_ESTFILTER)) },
+            { MipTypes::CLASS_DISPLACEMENT, Utils::Lazy<SampleRates>(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_DISPLACEMENT)) },
+            { MipTypes::CLASS_GNSS1, Utils::Lazy<SampleRates>(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_GNSS1)) },
+            { MipTypes::CLASS_GNSS2, Utils::Lazy<SampleRates>(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_GNSS2)) },
+            { MipTypes::CLASS_GNSS3, Utils::Lazy<SampleRates>(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_GNSS3)) },
+            { MipTypes::CLASS_GNSS4, Utils::Lazy<SampleRates>(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_GNSS4)) },
+            { MipTypes::CLASS_GNSS5, Utils::Lazy<SampleRates>(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_GNSS5)) },
+        }),
+        m_receiverInfo(std::bind(&MipNode_Impl::getGnssReceiverInfo, m_node))
     {
     }
 
     MipNodeInfo::MipNodeInfo(const MipDeviceInfo& info,
-                                       const std::vector<uint16>& supportedDescriptors,
-                                       const SampleRates& sensorRates,
-                                       const SampleRates& gnssRates, 
-                                       const SampleRates& estFilterRates,
-                                       const SampleRates& displacementRates) :
+                                const std::vector<uint16>& supportedDescriptors,
+                                const std::map<MipTypes::DataClass, SampleRates>& sampleRates) :
         m_deviceInfo(info),
         m_descriptors(supportedDescriptors),
-        m_ahrsImuSampleRates(sensorRates),
-        m_gnssSampleRates(gnssRates),
-        m_estfilterSampleRates(estFilterRates),
-        m_displacementSampleRates(displacementRates)
+        m_receiverInfo({})
     {
+        for (auto dataClass : sampleRates)
+        {
+            m_sampleRates.emplace(dataClass.first, dataClass.second);
+        }
     }
 
     const MipDeviceInfo& MipNodeInfo::deviceInfo() const
@@ -51,23 +57,16 @@ namespace mscl
 
     const SampleRates& MipNodeInfo::supportedSampleRates(MipTypes::DataClass dataClass) const
     {
-        //set the SampleRates pointer depending on the category that is being asked for
-        switch(dataClass)
+        if (m_sampleRates.find(dataClass) == m_sampleRates.end())
         {
-            case MipTypes::CLASS_AHRS_IMU:
-                return *m_ahrsImuSampleRates;
-
-            case MipTypes::CLASS_GNSS:
-                return *m_gnssSampleRates;
-
-            case MipTypes::CLASS_ESTFILTER:
-                return *m_estfilterSampleRates;
-
-            case MipTypes::CLASS_DISPLACEMENT:
-                return *m_displacementSampleRates;
-
-            default:
-                throw Error("Invalid DataClass.");
+            throw Error("Invalid DataClass.");
         }
+
+        return *m_sampleRates.at(dataClass);
+    }
+
+    const GnssReceivers& MipNodeInfo::gnssReceiverInfo() const
+    {
+        return *m_receiverInfo;
     }
 }

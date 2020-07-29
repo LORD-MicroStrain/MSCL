@@ -178,6 +178,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataRateBase_Sensor)
     ByteStream data;
     data.append_uint16(2000);
 
+    expectNodeInfo_InertialNode(impl);
+
     //make the doCommand function return the response that we want
     MOCK_EXPECT(impl->doCommand).once().returns(GenericMipCmdResponse::ResponseSuccess("", data));
 
@@ -192,6 +194,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataRateBase_Gps)
 
     ByteStream data;
     data.append_uint16(100);
+
+    expectNodeInfo_InertialNode(impl);
 
     //make the doCommand function return the response that we want
     MOCK_EXPECT(impl->doCommand).once().returns(GenericMipCmdResponse::ResponseSuccess("", data));
@@ -208,6 +212,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataRateBase_EstFilter)
     ByteStream data;
     data.append_uint16(4000);
 
+    expectNodeInfo_InertialNode(impl);
+
     //make the doCommand function return the response that we want
     MOCK_EXPECT(impl->doCommand).once().returns(GenericMipCmdResponse::ResponseSuccess("", data));
 
@@ -220,6 +226,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataRateBase_notSupported_EstFilter)
     std::shared_ptr<mock_InertialNodeImpl> impl(new mock_InertialNodeImpl());
     InertialNode node(impl);
 
+    expectNodeInfo_InertialNode(impl);
+
     //make the doCommand function throw an exception
     MOCK_EXPECT(impl->doCommand).once().throws(Error_NotSupported());
 
@@ -231,6 +239,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataRateBase_error_EstFilter)
 {
     std::shared_ptr<mock_InertialNodeImpl> impl(new mock_InertialNodeImpl());
     InertialNode node(impl);
+
+    expectNodeInfo_InertialNode(impl);
 
     //make the doCommand function throw an exception
     MOCK_EXPECT(impl->doCommand).once().throws(Error_MipCmdFailed());
@@ -256,6 +266,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_getMessageFormat_Sensor)
 
     ByteStream dataRateBase;
     dataRateBase.append_uint16(sampleRateBase);
+
+    expectNodeInfo_InertialNode(impl);
 
     //expect the getDataRateBase command
     MOCK_EXPECT(impl->doCommand).once().returns(GenericMipCmdResponse::ResponseSuccess("", dataRateBase));
@@ -295,6 +307,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_getMessageFormat_Gps)
     ByteStream dataRateBase;
     dataRateBase.append_uint16(sampleRateBase);
 
+    expectNodeInfo_InertialNode(impl);
+
     //expect the getDataRateBase command
     MOCK_EXPECT(impl->doCommand).once().returns(GenericMipCmdResponse::ResponseSuccess("", dataRateBase));
 
@@ -327,6 +341,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_getMessageFormat_EstFilter)
     ByteStream dataRateBase;
     dataRateBase.append_uint16(sampleRateBase);
 
+    expectNodeInfo_InertialNode(impl);
+
     //expect the getDataRateBase command
     MOCK_EXPECT(impl->doCommand).once().returns(GenericMipCmdResponse::ResponseSuccess("", dataRateBase));
 
@@ -356,6 +372,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_Sensor)
     ByteStream dataRateBase;
     dataRateBase.append_uint16(100);
 
+    expectNodeInfo_InertialNode(impl);
+
     //expect the getDataRateBase command
     MOCK_EXPECT(impl->doCommand).once().returns(GenericMipCmdResponse::ResponseSuccess("", dataRateBase));
 
@@ -376,6 +394,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_InvalidChannels_Sensor)
     ByteStream dataRateBase;
     dataRateBase.append_uint16(100);
 
+    expectNodeInfo_InertialNode(impl);
+
     //expect the getDataRateBase command
     MOCK_EXPECT(impl->doCommand).once().returns(GenericMipCmdResponse::ResponseSuccess("", dataRateBase));
 
@@ -393,6 +413,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_Gps)
 
     ByteStream dataRateBase;
     dataRateBase.append_uint16(100);
+
+    expectNodeInfo_InertialNode(impl);
 
     //expect the getDataRateBase command
     MOCK_EXPECT(impl->doCommand).once().returns(GenericMipCmdResponse::ResponseSuccess("", dataRateBase));
@@ -414,6 +436,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_InvalidChannels_Gps)
     ByteStream dataRateBase;
     dataRateBase.append_uint16(100);
 
+    expectNodeInfo_InertialNode(impl);
+
     //expect the getDataRateBase command
     MOCK_EXPECT(impl->doCommand).once().returns(GenericMipCmdResponse::ResponseSuccess("", dataRateBase));
 
@@ -430,6 +454,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_EstFilter)
 
     ByteStream dataRateBase;
     dataRateBase.append_uint16(100);
+
+    expectNodeInfo_InertialNode(impl);
 
     //expect the getDataRateBase command
     MOCK_EXPECT(impl->doCommand).once().returns(GenericMipCmdResponse::ResponseSuccess("", dataRateBase));
@@ -449,6 +475,8 @@ BOOST_AUTO_TEST_CASE(InertialNode_setMessageFormat_InvalidChannels_EstFilter)
 
     ByteStream dataRateBase;
     dataRateBase.append_uint16(100);
+
+    expectNodeInfo_InertialNode(impl);
 
     //expect the getDataRateBase command
     MOCK_EXPECT(impl->doCommand).once().returns(GenericMipCmdResponse::ResponseSuccess("", dataRateBase));
@@ -499,7 +527,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_supportedSampleRates_4)
     ByteStream dataRateBase;
     dataRateBase.append_uint16(4);
 
-    //setup the node info mock expections
+    //setup the node info mock expectations
     expectNodeInfo_InertialNode(impl);
 
     //expect the getDataRateBase command
@@ -520,6 +548,9 @@ BOOST_AUTO_TEST_CASE(InertialNode_enableDataStream_success)
 
     ByteStream data;
 
+    //setup the node info mock expectations
+    expectNodeInfo_InertialNode(impl);
+
     //expect a success response
     MOCK_EXPECT(impl->doCommand).once().returns(GenericMipCmdResponse::ResponseSuccess("", data));
 
@@ -532,6 +563,9 @@ BOOST_AUTO_TEST_CASE(InertialNode_enableDataStream_fail)
     InertialNode node(impl);
 
     ByteStream data;
+
+    //setup the node info mock expectations
+    expectNodeInfo_InertialNode(impl);
 
     //expect a fail response
     MOCK_EXPECT(impl->doCommand).once().throws(Error_MipCmdFailed());

@@ -19,6 +19,12 @@ namespace mscl
     {
     }
 
+    Value::Value():
+        m_value(0.0f),
+        m_storedAs(ValueType::valueType_float)
+    {
+    }
+
     Value::Value(const Value& other):
         m_value(other.m_value),
         m_storedAs(other.m_storedAs)

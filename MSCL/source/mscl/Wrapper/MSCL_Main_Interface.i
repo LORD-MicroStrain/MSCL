@@ -147,8 +147,9 @@
 #include "../MicroStrain/Inertial/PositionOffset.h"
 #include "../MicroStrain/Inertial/InertialModels.h"
 #include "../MicroStrain/Displacement/DisplacementModels.h"
-#include "../MicroStrain/Inertial/ExposedInertialTypes.h"
+#include "../MicroStrain/RTK/RTKModels.h"
 #include "../MicroStrain/MIP/MipTypes.h"
+#include "../MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "../MicroStrain/MIP/MipChannel.h"
 #include "../MicroStrain/MIP/MipDataField.h"
 #include "../MicroStrain/MIP/Packets/MipDataPacket.h"
@@ -156,6 +157,7 @@
 #include "../MicroStrain/MIP/MipNodeFeatures.h"
 #include "../MicroStrain/Inertial/InertialNode.h"
 #include "../MicroStrain/Displacement/DisplacementNode.h"
+#include "../MicroStrain/RTK/RTKNode.h"
 #include "../MicroStrain/MIP/Packets/MipPacket.h"
 %}
 
@@ -229,8 +231,9 @@
 %include "../MicroStrain/Inertial/PositionOffset.h"
 %include "../MicroStrain/Inertial/InertialModels.h"
 %include "../MicroStrain/Displacement/DisplacementModels.h"
-%include "../MicroStrain/Inertial/ExposedInertialTypes.h"
+%include "../MicroStrain/RTK/RTKModels.h"
 %include "../MicroStrain/MIP/MipTypes.h"
+%include "../MicroStrain/Inertial/ExposedInertialTypes.h"
 %include "../MicroStrain/MIP/MipChannel.h"
 %include "../MicroStrain/MIP/MipDataField.h"
 %include "../MicroStrain/MIP/Packets/MipPacket.h"
@@ -239,6 +242,7 @@
 %include "../MicroStrain/MIP/MipNodeFeatures.h"
 %include "../MicroStrain/Inertial/InertialNode.h"
 %include "../MicroStrain/Displacement/DisplacementNode.h"
+%include "../MicroStrain/RTK/RTKNode.h"
 
 namespace std
 {
@@ -278,6 +282,8 @@ namespace std
     %template(MipChannelFields)         vector<mscl::MipTypes::ChannelField>;
     %template(MipCommands)              vector<mscl::MipTypes::Command>;
     %template(MipCommandSet)            vector<mscl::MipCommandBytes>;
+    %template(MipFieldValues)           vector<mscl::Value>;
+    %template(GnssReceivers)            vector<mscl::GnssReceiverInfo>;
     %template(ChannelGroups)            vector<mscl::ChannelGroup>;
     %template(WirelessChannels)         vector<mscl::WirelessChannel>;
     %template(DamageAngles)             map<uint8_t, float>;
@@ -297,6 +303,7 @@ namespace std
     %template(StatusSelectors)          vector<mscl::DeviceStatusData::StatusSelector>;
     %template(VehicleModeTypes)         vector<mscl::InertialTypes::VehicleModeType>;
     %template(AdvancedLowPassFilterConfig)vector<mscl::AdvancedLowPassFilterData>;
+    %template(PpsInputOutputOptions)    vector<mscl::InertialTypes::PpsInputOutput>;
     
 
 #ifndef UNIX_BUILD

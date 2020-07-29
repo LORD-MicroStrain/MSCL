@@ -215,6 +215,21 @@ namespace mscl
         return SampleUtils::convertToSampleRate(eepromValue);
     }
 
+    SampleRate SampleRate::FromInertialRateDecimationInfo(uint16 baseRate, uint16 rateDecimation)
+    {
+        //create a MipChannel and add to the result
+        if (rateDecimation <= baseRate)
+        {
+            uint32 rate = static_cast<uint32>(Utils::round(static_cast<float>(baseRate) / static_cast<float>(rateDecimation)));
+            return SampleRate::Hertz(rate);
+        }
+        else
+        {
+            uint32 rate = static_cast<uint32>(Utils::round(static_cast<float>(rateDecimation) / static_cast<float>(baseRate)));
+            return SampleRate::Seconds(rate);
+        }
+    }
+
     inline SampleRate fromTimeSpan(const TimeSpan& timeSpan)
     {
         if(timeSpan > TimeSpan::Seconds(1))

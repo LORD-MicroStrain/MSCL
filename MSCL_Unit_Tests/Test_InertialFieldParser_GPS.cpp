@@ -6,6 +6,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/MIP/Packets/MipFieldParser.h"
 #include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
 #include "mscl/MicroStrain/MIP/MipDataPoint.h"
+#include "mscl/MicroStrain/MIP/MipTypes.h"
 #include "mscl/MicroStrain/Inertial/Packets/InertialFieldParser_GNSS.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 
@@ -29,7 +30,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_LLHPosition_parse)
     bytes.append_uint16(29);        //valid flags (0001 1101)
 
     //Create the Data Field
-    MipDataField field(MipTypes::CH_FIELD_GNSS_LLH_POSITION, bytes.data());
+    MipDataField field(MipTypes::CH_FIELD_GNSS_3_LLH_POSITION, bytes.data());
 
     MipDataPoints data;
 
@@ -39,52 +40,58 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_LLHPosition_parse)
     BOOST_CHECK_EQUAL(data.size(), 6);
 
     //Latitude
-    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_GNSS_LLH_POSITION);
+    BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_GNSS_3_LLH_POSITION);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_LATITUDE);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_double);
     BOOST_CHECK_EQUAL(data.at(0).valid(), true);
     BOOST_CHECK_CLOSE(data.at(0).as_double(), 1.2, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
+    BOOST_CHECK_EQUAL(data.at(0).channelName(), "gnss3_latitude");
 
     //Longitude
-    BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_GNSS_LLH_POSITION);
+    BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_GNSS_3_LLH_POSITION);
     BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_LONGITUDE);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_double);
     BOOST_CHECK_EQUAL(data.at(1).valid(), true);
     BOOST_CHECK_CLOSE(data.at(1).as_double(), 3.4, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
+    BOOST_CHECK_EQUAL(data.at(1).channelName(), "gnss3_longitude");
 
     //Height Above Ellipsoid
-    BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_GNSS_LLH_POSITION);
+    BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_GNSS_3_LLH_POSITION);
     BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_HEIGHT_ABOVE_ELLIPSOID);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_double);
     BOOST_CHECK_EQUAL(data.at(2).valid(), false);
     BOOST_CHECK_CLOSE(data.at(2).as_double(), 5.67, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
+    BOOST_CHECK_EQUAL(data.at(2).channelName(), "gnss3_heightAboveElipsoid");
 
     //Height Above MSL
-    BOOST_CHECK_EQUAL(data.at(3).field(), MipTypes::CH_FIELD_GNSS_LLH_POSITION);
+    BOOST_CHECK_EQUAL(data.at(3).field(), MipTypes::CH_FIELD_GNSS_3_LLH_POSITION);
     BOOST_CHECK_EQUAL(data.at(3).qualifier(), MipTypes::CH_HEIGHT_ABOVE_MSL);
     BOOST_CHECK_EQUAL(data.at(3).storedAs(), valueType_double);
     BOOST_CHECK_EQUAL(data.at(3).valid(), true);
     BOOST_CHECK_CLOSE(data.at(3).as_double(), 7.89, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(3).channelName());
+    BOOST_CHECK_EQUAL(data.at(3).channelName(), "gnss3_heightAboveMSL");
 
     //Horizontal Accuracy
-    BOOST_CHECK_EQUAL(data.at(4).field(), MipTypes::CH_FIELD_GNSS_LLH_POSITION);
+    BOOST_CHECK_EQUAL(data.at(4).field(), MipTypes::CH_FIELD_GNSS_3_LLH_POSITION);
     BOOST_CHECK_EQUAL(data.at(4).qualifier(), MipTypes::CH_HORIZONTAL_ACCURACY);
     BOOST_CHECK_EQUAL(data.at(4).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(4).valid(), true);
     BOOST_CHECK_CLOSE(data.at(4).as_double(), 1.23, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(4).channelName());
+    BOOST_CHECK_EQUAL(data.at(4).channelName(), "gnss3_horizontalAccuracy");
 
     //Vertical Accuracy
-    BOOST_CHECK_EQUAL(data.at(5).field(), MipTypes::CH_FIELD_GNSS_LLH_POSITION);
+    BOOST_CHECK_EQUAL(data.at(5).field(), MipTypes::CH_FIELD_GNSS_3_LLH_POSITION);
     BOOST_CHECK_EQUAL(data.at(5).qualifier(), MipTypes::CH_VERTICAL_ACCURACY);
     BOOST_CHECK_EQUAL(data.at(5).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(5).valid(), true);
     BOOST_CHECK_CLOSE(data.at(5).as_double(), 2.34, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(5).channelName());
+    BOOST_CHECK_EQUAL(data.at(5).channelName(), "gnss3_verticalAccuracy");
 }
 
 BOOST_AUTO_TEST_CASE(InertialFieldParser_ECEFPosition_parse)
@@ -115,6 +122,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ECEFPosition_parse)
     BOOST_CHECK_EQUAL(data.at(0).valid(), false);
     BOOST_CHECK_CLOSE(data.at(0).as_double(), 1.2, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
+    BOOST_CHECK_EQUAL(data.at(0).channelName(), "ecefPosX");
 
     //y position
     BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_GNSS_ECEF_POSITION);
@@ -123,6 +131,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ECEFPosition_parse)
     BOOST_CHECK_EQUAL(data.at(1).valid(), false);
     BOOST_CHECK_CLOSE(data.at(1).as_double(), 3.4, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
+    BOOST_CHECK_EQUAL(data.at(1).channelName(), "ecefPosY");
 
     //z position
     BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_GNSS_ECEF_POSITION);
@@ -131,6 +140,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ECEFPosition_parse)
     BOOST_CHECK_EQUAL(data.at(2).valid(), false);
     BOOST_CHECK_CLOSE(data.at(2).as_double(), 5.67, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
+    BOOST_CHECK_EQUAL(data.at(2).channelName(), "ecefPosZ");
 
     //position accuracy
     BOOST_CHECK_EQUAL(data.at(3).field(), MipTypes::CH_FIELD_GNSS_ECEF_POSITION);
@@ -139,6 +149,7 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_ECEFPosition_parse)
     BOOST_CHECK_EQUAL(data.at(3).valid(), true);
     BOOST_CHECK_CLOSE(data.at(3).as_double(), 7.89, 0.0001);
     BOOST_CHECK_NO_THROW(data.at(3).channelName());
+    BOOST_CHECK_EQUAL(data.at(3).channelName(), "ecefPosAccuracy");
 }
 
 BOOST_AUTO_TEST_CASE(InertialFieldParser_NEDVelocity_parse)

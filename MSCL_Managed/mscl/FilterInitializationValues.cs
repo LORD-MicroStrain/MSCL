@@ -48,6 +48,18 @@ public class FilterInitializationValues : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public bool autoInitialize {
+    set {
+      msclPINVOKE.FilterInitializationValues_autoInitialize_set(swigCPtr, value);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      bool ret = msclPINVOKE.FilterInitializationValues_autoInitialize_get(swigCPtr);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
   public FilterInitialValuesSource initialValuesSource {
     set {
       msclPINVOKE.FilterInitializationValues_initialValuesSource_set(swigCPtr, (int)value);
@@ -62,11 +74,12 @@ public class FilterInitializationValues : global::System.IDisposable {
 
   public HeadingAlignmentMethod autoHeadingAlignmentMethod {
     set {
-      msclPINVOKE.FilterInitializationValues_autoHeadingAlignmentMethod_set(swigCPtr, (int)value);
+      msclPINVOKE.FilterInitializationValues_autoHeadingAlignmentMethod_set(swigCPtr, HeadingAlignmentMethod.getCPtr(value));
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      HeadingAlignmentMethod ret = (HeadingAlignmentMethod)msclPINVOKE.FilterInitializationValues_autoHeadingAlignmentMethod_get(swigCPtr);
+      global::System.IntPtr cPtr = msclPINVOKE.FilterInitializationValues_autoHeadingAlignmentMethod_get(swigCPtr);
+      HeadingAlignmentMethod ret = (cPtr == global::System.IntPtr.Zero) ? null : new HeadingAlignmentMethod(cPtr, false);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 

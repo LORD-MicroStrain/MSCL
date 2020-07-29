@@ -44,8 +44,9 @@ namespace mscl
         DataBuffer buffer(response.data());
         FilterInitializationValues data;
 
+		data.autoInitialize = !(buffer.read_uint8() > 0);
         data.initialValuesSource = static_cast<FilterInitialValuesSource>(buffer.read_uint8());
-        data.autoHeadingAlignmentMethod = static_cast<HeadingAlignmentMethod>(buffer.read_uint8());
+        data.autoHeadingAlignmentMethod = HeadingAlignmentMethod(buffer.read_uint8());
         
         float heading = buffer.read_float();
         float pitch = buffer.read_float();
@@ -74,8 +75,9 @@ namespace mscl
 
         if (m_functionSelector == MipTypes::USE_NEW_SETTINGS)
         {
+			byteCommand.append_uint8(!m_data.autoInitialize);
             byteCommand.append_uint8(static_cast<uint8>(m_data.initialValuesSource));
-            byteCommand.append_uint8(static_cast<uint8>(m_data.autoHeadingAlignmentMethod));
+            byteCommand.append_uint8(m_data.autoHeadingAlignmentMethod.value);
             byteCommand.append_float(m_data.initialAttitude.heading());
             byteCommand.append_float(m_data.initialAttitude.pitch());
             byteCommand.append_float(m_data.initialAttitude.roll());

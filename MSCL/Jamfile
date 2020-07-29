@@ -116,6 +116,8 @@ alias msclSrcs
 	[ glob source/mscl/MicroStrain/Inertial/Packets/*.cpp ]
 	[ glob source/mscl/MicroStrain/Displacement/*.cpp ]
 	[ glob source/mscl/MicroStrain/Displacement/Commands/*.cpp ]
+	[ glob source/mscl/MicroStrain/RTK/*.cpp ]
+	[ glob source/mscl/MicroStrain/RTK/Commands/*.cpp ]
 	[ glob source/mscl/MicroStrain/MIP/*.cpp ]
 	[ glob source/mscl/MicroStrain/MIP/Commands/*.cpp ]
 	[ glob source/mscl/MicroStrain/MIP/Packets/*.cpp ]

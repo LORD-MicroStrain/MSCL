@@ -18,6 +18,22 @@ namespace mscl
     bool _forceLibraryToIncludeCompilationUnit_GNSS;
 
     //=====================================================================================================================================================
+    //                                                        MipGnssFieldParser
+    bool MipGnssFieldParser::registerGnssParser(MipTypes::ChannelField chField, const MipFieldParser* parser)
+    {
+        bool registered = true;
+        MipTypes::MipChannelFields fields = MipTypes::getChannelFields_allDataClasses(chField);
+        for (MipTypes::ChannelField field : fields)
+        {
+            // any failures should return false
+            registered = registered && MipFieldParser::registerParser(field, parser);
+        }
+
+        return registered;
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
     //                                                        FieldParser_LLHPosition
     const MipTypes::ChannelField FieldParser_LLHPosition::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_LLH_POSITION;
     const bool FieldParser_LLHPosition::REGISTERED = FieldParser_LLHPosition::registerParser();    //register the parser immediately
@@ -44,19 +60,21 @@ namespace mscl
         bool horizValid        = pointIsValid(flags, HORIZ_ACCUR_FLAG);
         bool vertValid        = pointIsValid(flags, VERT_ACCUR_FLAG);
 
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
         //add all the data points we just collected
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_LATITUDE, valueType_double, anyType(latitude), latLongValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_LONGITUDE, valueType_double, anyType(longitude), latLongValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_HEIGHT_ABOVE_ELLIPSOID, valueType_double, anyType(heightAboveEllipsoid), ellipsoidValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_HEIGHT_ABOVE_MSL, valueType_double, anyType(heightAboveMSL), mslValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_HORIZONTAL_ACCURACY, valueType_float, anyType(horizAccuracy), horizValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_VERTICAL_ACCURACY, valueType_float, anyType(vertAccuracy), vertValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_LATITUDE, valueType_double, anyType(latitude), latLongValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_LONGITUDE, valueType_double, anyType(longitude), latLongValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_HEIGHT_ABOVE_ELLIPSOID, valueType_double, anyType(heightAboveEllipsoid), ellipsoidValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_HEIGHT_ABOVE_MSL, valueType_double, anyType(heightAboveMSL), mslValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_HORIZONTAL_ACCURACY, valueType_float, anyType(horizAccuracy), horizValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_VERTICAL_ACCURACY, valueType_float, anyType(vertAccuracy), vertValid));
     }
 
     bool FieldParser_LLHPosition::registerParser()
     {
         static FieldParser_LLHPosition p;
-        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
@@ -82,17 +100,19 @@ namespace mscl
         bool ecefPosValid    = pointIsValid(flags, ECEF_POS_FLAG);
         bool posAccurValid    = pointIsValid(flags, POS_ACCURACY_FLAG);
 
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
         //add all the data points we just collected
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_double, anyType(xPos), ecefPosValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_double, anyType(yPos), ecefPosValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_double, anyType(zPos), ecefPosValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_POSITION_ACCURACY, valueType_float, anyType(posAccuracy), posAccurValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_X, valueType_double, anyType(xPos), ecefPosValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_Y, valueType_double, anyType(yPos), ecefPosValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_Z, valueType_double, anyType(zPos), ecefPosValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_POSITION_ACCURACY, valueType_float, anyType(posAccuracy), posAccurValid));
     }
 
     bool FieldParser_ECEFPosition::registerParser()
     {
         static FieldParser_ECEFPosition p;
-        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
@@ -126,21 +146,23 @@ namespace mscl
         bool speedAccurValid    = pointIsValid(flags, SPEED_ACCUR_FLAG);
         bool headingAccurValid    = pointIsValid(flags, HEADING_ACCUR_FLAG);
 
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
         //add all the data points we just collected
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_NORTH, valueType_float, anyType(north), nedVelocityValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_EAST, valueType_float, anyType(east), nedVelocityValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_DOWN, valueType_float, anyType(down), nedVelocityValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_SPEED, valueType_float, anyType(speed), speedValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_GROUND_SPEED, valueType_float, anyType(groundSpeed), groundSpeedValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_HEADING, valueType_float, anyType(heading), headingValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_SPEED_ACCURACY, valueType_float, anyType(speedAccuracy), speedAccurValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_HEADING_ACCURACY, valueType_float, anyType(headingAccuracy), headingAccurValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_NORTH, valueType_float, anyType(north), nedVelocityValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_EAST, valueType_float, anyType(east), nedVelocityValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_DOWN, valueType_float, anyType(down), nedVelocityValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_SPEED, valueType_float, anyType(speed), speedValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_GROUND_SPEED, valueType_float, anyType(groundSpeed), groundSpeedValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_HEADING, valueType_float, anyType(heading), headingValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_SPEED_ACCURACY, valueType_float, anyType(speedAccuracy), speedAccurValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_HEADING_ACCURACY, valueType_float, anyType(headingAccuracy), headingAccurValid));
     }
 
     bool FieldParser_NEDVelocity::registerParser()
     {
         static FieldParser_NEDVelocity p;
-        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
@@ -166,17 +188,19 @@ namespace mscl
         bool ecefVelocityValid    = pointIsValid(flags, ECEF_VELOCITY_FLAG);
         bool accuracyValid        = pointIsValid(flags, VELOCITY_ACCUR_FLAG);
 
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
         //add all the data points we just collected
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(xVelocity), ecefVelocityValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(yVelocity), ecefVelocityValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(zVelocity), ecefVelocityValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_VELOCITY_ACCURACY, valueType_float, anyType(velocityAccuracy), accuracyValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_X, valueType_float, anyType(xVelocity), ecefVelocityValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_Y, valueType_float, anyType(yVelocity), ecefVelocityValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_Z, valueType_float, anyType(zVelocity), ecefVelocityValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_VELOCITY_ACCURACY, valueType_float, anyType(velocityAccuracy), accuracyValid));
     }
 
     bool FieldParser_ECEFVelocity::registerParser()
     {
         static FieldParser_ECEFVelocity p;
-        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
@@ -210,20 +234,22 @@ namespace mscl
         bool nValid    = pointIsValid(flags, NDOP_FLAG);
         bool eValid    = pointIsValid(flags, EDOP_FLAG);
 
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
         //add all the data points we just collected
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_GEOMETRIC_DOP, valueType_float, anyType(geometric), gValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_POSITION_DOP, valueType_float, anyType(position), pValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_HORIZONTAL_DOP, valueType_float, anyType(horizontal), hValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_VERTICAL_DOP, valueType_float, anyType(vertical), vValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_TIME_DOP, valueType_float, anyType(time), tValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_NORTHING_DOP, valueType_float, anyType(northing), nValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_EASTING_DOP, valueType_float, anyType(easting), eValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_GEOMETRIC_DOP, valueType_float, anyType(geometric), gValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_POSITION_DOP, valueType_float, anyType(position), pValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_HORIZONTAL_DOP, valueType_float, anyType(horizontal), hValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_VERTICAL_DOP, valueType_float, anyType(vertical), vValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_TIME_DOP, valueType_float, anyType(time), tValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_NORTHING_DOP, valueType_float, anyType(northing), nValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_EASTING_DOP, valueType_float, anyType(easting), eValid));
     }
 
     bool FieldParser_DOP::registerParser()
     {
         static FieldParser_DOP p;
-        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
@@ -258,15 +284,17 @@ namespace mscl
         //create a Timestamp from the values
         Timestamp time(year, month, day, hour, minute, second, millisecond);
 
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
         //add all the data points we just collected
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_TIMESTAMP, valueType_Timestamp, anyType(time), fullTimestampValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FLAGS, valueType_uint16, anyType(flags)));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_TIMESTAMP, valueType_Timestamp, anyType(time), fullTimestampValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_FLAGS, valueType_uint16, anyType(flags)));
     }
 
     bool FieldParser_UTCTime::registerParser()
     {
         static FieldParser_UTCTime p;
-        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
@@ -290,15 +318,17 @@ namespace mscl
         bool towValid    = pointIsValid(flags, TOW_VALID);
         bool weekValid    = pointIsValid(flags, WEEK_NUM_VALID);
 
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
         //add data points for the values we just collected
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_TIME_OF_WEEK, valueType_double, anyType(gpsTimeOfWeek), towValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_WEEK_NUMBER, valueType_uint16, anyType(gpsWeekNumber), weekValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_TIME_OF_WEEK, valueType_double, anyType(gpsTimeOfWeek), towValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_WEEK_NUMBER, valueType_uint16, anyType(gpsWeekNumber), weekValid));
     }
 
     bool FieldParser_GPSTime::registerParser()
     {
         static FieldParser_GPSTime p;
-        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
@@ -324,16 +354,18 @@ namespace mscl
         bool driftValid    = pointIsValid(flags, DRIFT_VALID);
         bool accurValid = pointIsValid(flags, ACCUR_VALID);
 
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
         //add data points for the values we just collected
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_BIAS, valueType_double, anyType(clockBias), biasValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_DRIFT, valueType_double, anyType(clockDrift), driftValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ACCURACY_ESTIMATE, valueType_double, anyType(accuracy), accurValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_BIAS, valueType_double, anyType(clockBias), biasValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_DRIFT, valueType_double, anyType(clockDrift), driftValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_ACCURACY_ESTIMATE, valueType_double, anyType(accuracy), accurValid));
     }
 
     bool FieldParser_ClockInfo::registerParser()
     {
         static FieldParser_ClockInfo p;
-        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
@@ -359,16 +391,18 @@ namespace mscl
         bool numSvsValid    = pointIsValid(flags, NUM_SVS_VALID);
         bool fixFlagsValid    = pointIsValid(flags, FIX_FLAGS_VALID);
 
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
         //add data points for the values we just collected
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FIX_TYPE, valueType_uint8, anyType(fixType), fixTypeValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_SV_COUNT, valueType_uint8, anyType(numSvs), numSvsValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FLAGS, valueType_uint16, anyType(fixFlags), fixFlagsValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_FIX_TYPE, valueType_uint8, anyType(fixType), fixTypeValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_SV_COUNT, valueType_uint8, anyType(numSvs), numSvsValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_FLAGS, valueType_uint16, anyType(fixFlags), fixFlagsValid));
     }
 
     bool FieldParser_GPSFixInfo::registerParser()
     {
         static FieldParser_GPSFixInfo p;
-        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
@@ -401,19 +435,21 @@ namespace mscl
         bool elevationValid    = pointIsValid(flags, ELEVATION_VALID);
         bool svFlagsValid    = pointIsValid(flags, SV_FLAGS_VALID);
 
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
         //add data points for the values we just collected
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_CHANNEL, valueType_uint8, anyType(channel), channelValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ID, valueType_uint8, anyType(vehicleId), svIdValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_CARRIER_TO_NOISE_RATIO, valueType_uint16, anyType(ratio), ratioValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_AZIMUTH, valueType_int16, anyType(azimuth), azimuthValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ELEVATION, valueType_int16, anyType(elevation), elevationValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FLAGS, valueType_uint16, anyType(svFlags), svFlagsValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_CHANNEL, valueType_uint8, anyType(channel), channelValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_ID, valueType_uint8, anyType(vehicleId), svIdValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_CARRIER_TO_NOISE_RATIO, valueType_uint16, anyType(ratio), ratioValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_AZIMUTH, valueType_int16, anyType(azimuth), azimuthValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_ELEVATION, valueType_int16, anyType(elevation), elevationValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_FLAGS, valueType_uint16, anyType(svFlags), svFlagsValid));
     }
 
     bool FieldParser_SpaceVehicleInfo::registerParser()
     {
         static FieldParser_SpaceVehicleInfo p;
-        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
@@ -439,16 +475,18 @@ namespace mscl
         bool antennaStateValid = pointIsValid(flags, ANTENNA_STATE_VALID);
         bool antennaPowerValid = pointIsValid(flags, ANTENNA_POWER_VALID);
 
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
         //add data points for the values we just collected
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_SENSOR_STATE, valueType_uint8, anyType(sensorState), sensorStateValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ANTENNA_STATE, valueType_uint8, anyType(antennaState), antennaStateValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ANTENNA_POWER, valueType_uint8, anyType(antennaPower), antennaPowerValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_SENSOR_STATE, valueType_uint8, anyType(sensorState), sensorStateValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_ANTENNA_STATE, valueType_uint8, anyType(antennaState), antennaStateValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_ANTENNA_POWER, valueType_uint8, anyType(antennaPower), antennaPowerValid));
     }
 
     bool FieldParser_HardwareStatus::registerParser()
     {
         static FieldParser_HardwareStatus p;
-        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
@@ -476,17 +514,19 @@ namespace mscl
         bool baseStatusValid = pointIsValid(flags, BASE_STATUS_VALID);
         bool numChsValid = pointIsValid(flags, NUM_CHANNELS_VALID);
 
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
         //add data points for the values we just collected
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_AGE, valueType_float, anyType(newestAge), ageValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ID, valueType_int16, anyType(baseId), baseIdValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_STATUS, valueType_int16, anyType(baseStatus), baseStatusValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_NUM_CHANNELS, valueType_uint16, anyType(numChs), numChsValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_AGE, valueType_float, anyType(newestAge), ageValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_ID, valueType_int16, anyType(baseId), baseIdValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_STATUS, valueType_int16, anyType(baseStatus), baseStatusValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_NUM_CHANNELS, valueType_uint16, anyType(numChs), numChsValid));
     }
 
     bool FieldParser_DGNSSInfo::registerParser()
     {
         static FieldParser_DGNSSInfo p;
-        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 
@@ -515,17 +555,221 @@ namespace mscl
         bool correctionValid = pointIsValid(flags, CORRECTION_VALID);
         bool rateCorrectionValid = pointIsValid(flags, RATE_CORRECTION_VALID);
 
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
         //add data points for the values we just collected
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ID, valueType_uint8, anyType(spaceVehicleId), svIdValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_AGE, valueType_float, anyType(age), ageValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_CORRECTION, valueType_float, anyType(correction), correctionValid));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_RATE_CORRECTION, valueType_float, anyType(rateCorrection), rateCorrectionValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_ID, valueType_uint8, anyType(spaceVehicleId), svIdValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_AGE, valueType_float, anyType(age), ageValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_CORRECTION, valueType_float, anyType(correction), correctionValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_RATE_CORRECTION, valueType_float, anyType(rateCorrection), rateCorrectionValid));
     }
 
     bool FieldParser_DGNSSChannelStatus::registerParser()
     {
         static FieldParser_DGNSSChannelStatus p;
-        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_ClockInfo2
+    const MipTypes::ChannelField FieldParser_ClockInfo2::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_CLOCK_INFO_2;
+    const bool FieldParser_ClockInfo2::REGISTERED = FieldParser_ClockInfo2::registerParser();    //register the parser immediately
+
+    void FieldParser_ClockInfo2::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the data
+        double clockBias = bytes.read_double();
+        double clockDrift = bytes.read_double();
+        double biasAccuracy = bytes.read_double();
+        double driftAccuracy = bytes.read_double();
+
+        //get the flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool biasValid = pointIsValid(flags, BIAS_VALID);
+        bool driftValid = pointIsValid(flags, DRIFT_VALID);
+        bool biasAccurValid = pointIsValid(flags, BIAS_ACCUR_VALID);
+        bool driftAccurValid = pointIsValid(flags, DRIFT_ACCUR_VALID);
+
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
+        //add data points for the values we just collected
+        result.push_back(MipDataPoint(chField, MipTypes::CH_BIAS, valueType_double, anyType(clockBias), biasValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_DRIFT, valueType_double, anyType(clockDrift), driftValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_BIAS_ACCURACY_ESTIMATE, valueType_double, anyType(biasAccuracy), biasAccurValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_DRIFT_ACCURACY_ESTIMATE, valueType_double, anyType(driftAccuracy), driftAccurValid));
+    }
+
+    bool FieldParser_ClockInfo2::registerParser()
+    {
+        static FieldParser_ClockInfo2 p;
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_GPSLeapSeconds
+    const MipTypes::ChannelField FieldParser_GPSLeapSeconds::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_GPS_LEAP_SECONDS;
+    const bool FieldParser_GPSLeapSeconds::REGISTERED = FieldParser_GPSLeapSeconds::registerParser();    //register the parser immediately
+
+    void FieldParser_GPSLeapSeconds::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the data
+        uint8 seconds = bytes.read_uint8();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+
+        //get whether points are valid or invalid from the flags
+        bool secondsValid = pointIsValid(flags, SECONDS_VALID);
+
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
+        //add data points for the values we just collected
+        result.push_back(MipDataPoint(chField, MipTypes::CH_SECONDS, valueType_uint8, anyType(seconds), secondsValid));
+    }
+
+    bool FieldParser_GPSLeapSeconds::registerParser()
+    {
+        static FieldParser_GPSLeapSeconds p;
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_RTKCorrectionsStatus
+    const MipTypes::ChannelField FieldParser_RTKCorrectionsStatus::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS;
+    const bool FieldParser_RTKCorrectionsStatus::REGISTERED = FieldParser_RTKCorrectionsStatus::registerParser();    //register the parser immediately
+
+    void FieldParser_RTKCorrectionsStatus::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the data
+        uint32 dataRecievedEpoch = bytes.read_uint32();
+        uint32 numParsedPackets = bytes.read_uint32();
+        float gpsCorrectionLatency = bytes.read_float();
+        float glonassCorrectionLatency = bytes.read_float();
+        float galileoCorrectionLatency = bytes.read_float();
+        float beidouCorrectionLatency = bytes.read_float();
+        bytes.read_uint32();
+        bytes.read_uint32();
+        bytes.read_uint32();
+        bytes.read_uint32();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool valid = pointIsValid(flags, VALID);
+
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
+        //add data points for the values we just collected
+        result.push_back(MipDataPoint(chField, MipTypes::CH_DATA_RECEIVED_EPOCH, valueType_uint32, anyType(dataRecievedEpoch), valid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_NUM_PACKETS, valueType_uint32, anyType(numParsedPackets), valid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_GPS_CORRECTION_LATENCY, valueType_float, anyType(gpsCorrectionLatency), valid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_GLONASS_CORRECTION_LATENCY, valueType_float, anyType(glonassCorrectionLatency), valid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_GALILEO_CORRECTION_LATENCY, valueType_float, anyType(galileoCorrectionLatency), valid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_BEIDOU_CORRECTION_LATENCY, valueType_float, anyType(beidouCorrectionLatency), valid));
+    }
+
+    bool FieldParser_RTKCorrectionsStatus::registerParser()
+    {
+        static FieldParser_RTKCorrectionsStatus p;
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_GPSIonosphericCorrection
+    const MipTypes::ChannelField FieldParser_GPSIonosphericCorrection::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION;
+    const bool FieldParser_GPSIonosphericCorrection::REGISTERED = FieldParser_GPSIonosphericCorrection::registerParser();    //register the parser immediately
+
+    void FieldParser_GPSIonosphericCorrection::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the data
+        double timeOfWeek = bytes.read_double();
+        uint16 weekNumber = bytes.read_uint16();
+        Matrix alpha(2, 2, valueType_double, field.fieldData());
+        Matrix beta(2, 2, valueType_double, field.fieldData());
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool timeOfWeekValid = pointIsValid(flags, TIME_OF_WEEK_VALID);
+        bool weekNumberValid = pointIsValid(flags, WEEK_NUMBER_VALID);
+        bool alphaValid = pointIsValid(flags, ALPHA_VALID);
+        bool betaValid = pointIsValid(flags, BETA_VALID);
+
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
+        //add data points for the values we just collected
+        result.push_back(MipDataPoint(chField, MipTypes::CH_TIME_OF_WEEK, valueType_double, anyType(timeOfWeek), timeOfWeekValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_WEEK_NUMBER, valueType_uint16, anyType(weekNumber), weekNumberValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_ALPHA, valueType_Matrix, anyType(alpha), alphaValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_BETA, valueType_Matrix, anyType(beta), betaValid));
+    }
+
+    bool FieldParser_GPSIonosphericCorrection::registerParser()
+    {
+        static FieldParser_GPSIonosphericCorrection p;
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_IonosphericCorrection
+    const MipTypes::ChannelField FieldParser_IonosphericCorrection::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_IONOSPHERIC_CORRECTION;
+    const bool FieldParser_IonosphericCorrection::REGISTERED = FieldParser_IonosphericCorrection::registerParser();    //register the parser immediately
+
+    void FieldParser_IonosphericCorrection::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the data
+        double timeOfWeek = bytes.read_double();
+        uint16 weekNumber = bytes.read_uint16();
+        Vector alpha(valueType_double, field.fieldData());
+        uint8 disturbanceFlags = bytes.read_uint8();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool timeOfWeekValid = pointIsValid(flags, TIME_OF_WEEK_VALID);
+        bool weekNumberValid = pointIsValid(flags, WEEK_NUMBER_VALID);
+        bool alphaValid = pointIsValid(flags, ALPHA_VALID);
+        bool disturbanceFlagsValid = pointIsValid(flags, DISTURBANCE_FLAGS_VALID);
+
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
+        //add data points for the values we just collected
+        result.push_back(MipDataPoint(chField, MipTypes::CH_TIME_OF_WEEK, valueType_double , anyType(timeOfWeek), timeOfWeekValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_WEEK_NUMBER, valueType_uint16, anyType(weekNumber), weekNumberValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_ALPHA, valueType_Vector, anyType(alpha), alphaValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_DISTURBANCE_FLAGS, valueType_uint8, anyType(disturbanceFlags), disturbanceFlagsValid));
+    }
+
+    bool FieldParser_IonosphericCorrection::registerParser()
+    {
+        static FieldParser_IonosphericCorrection p;
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
 }

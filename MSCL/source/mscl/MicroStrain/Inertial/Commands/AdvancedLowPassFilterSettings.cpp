@@ -57,9 +57,12 @@ namespace mscl
         if (m_functionSelector == MipTypes::USE_NEW_SETTINGS)
         {
             MipTypes::EnableSetting applyLowPassFilter = m_data.applyLowPassFilter ? MipTypes::ENABLED : MipTypes::DISABLED;
+            uint16 freq = m_data.manualFilterBandwidthConfig == AdvancedLowPassFilterData::USER_SPECIFIED_CUTOFF_FREQ ? m_data.cutoffFrequency : 0x0000;
+
             byteCommand.append_uint8(static_cast<uint8>(applyLowPassFilter));
             byteCommand.append_uint8(static_cast<uint8>(m_data.manualFilterBandwidthConfig));
-            byteCommand.append_uint16(static_cast<uint16>(m_data.cutoffFrequency));
+            byteCommand.append_uint16(freq);
+            byteCommand.append_uint8(0x00);
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
     }

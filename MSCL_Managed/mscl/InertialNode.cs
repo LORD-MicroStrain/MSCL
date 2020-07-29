@@ -183,8 +183,13 @@ public class InertialNode : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public void saveSettingsAsStartup(MipCommands cmdIds) {
+    msclPINVOKE.InertialNode_saveSettingsAsStartup__SWIG_0(swigCPtr, MipCommands.getCPtr(cmdIds));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public void saveSettingsAsStartup() {
-    msclPINVOKE.InertialNode_saveSettingsAsStartup(swigCPtr);
+    msclPINVOKE.InertialNode_saveSettingsAsStartup__SWIG_1(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -243,6 +248,11 @@ public class InertialNode : global::System.IDisposable {
 
   public void saveActiveChannelFields(MipTypes.DataClass dataClass) {
     msclPINVOKE.InertialNode_saveActiveChannelFields(swigCPtr, (int)dataClass);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void setFactoryStreamingChannels(InertialTypes.FactoryStreamingOption option) {
+    msclPINVOKE.InertialNode_setFactoryStreamingChannels(swigCPtr, (int)option);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -333,6 +343,16 @@ public class InertialNode : global::System.IDisposable {
     return ret;
   }
 
+  public void cmdedVelZUPT() {
+    msclPINVOKE.InertialNode_cmdedVelZUPT(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void cmdedAngRateZUPT() {
+    msclPINVOKE.InertialNode_cmdedAngRateZUPT(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public void setInitialAttitude(EulerAngles attitude) {
     msclPINVOKE.InertialNode_setInitialAttitude(swigCPtr, EulerAngles.getCPtr(attitude));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -354,14 +374,69 @@ public class InertialNode : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public EulerAngles getSensorToVehicleTransformation() {
-    EulerAngles ret = new EulerAngles(msclPINVOKE.InertialNode_getSensorToVehicleTransformation(swigCPtr), true);
+  public EulerAngles getSensorToVehicleRotation_eulerAngles() {
+    EulerAngles ret = new EulerAngles(msclPINVOKE.InertialNode_getSensorToVehicleRotation_eulerAngles(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void setSensorToVehicleTransformation(EulerAngles angles) {
-    msclPINVOKE.InertialNode_setSensorToVehicleTransformation(swigCPtr, EulerAngles.getCPtr(angles));
+  public void setSensorToVehicleRotation_eulerAngles(EulerAngles angles) {
+    msclPINVOKE.InertialNode_setSensorToVehicleRotation_eulerAngles(swigCPtr, EulerAngles.getCPtr(angles));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public Matrix_3x3 getSensorToVehicleRotation_matrix() {
+    Matrix_3x3 ret = new Matrix_3x3(msclPINVOKE.InertialNode_getSensorToVehicleRotation_matrix(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setSensorToVehicleRotation_matrix(Matrix_3x3 dcm) {
+    msclPINVOKE.InertialNode_setSensorToVehicleRotation_matrix(swigCPtr, Matrix_3x3.getCPtr(dcm));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public Quaternion getSensorToVehicleRotation_quaternion() {
+    Quaternion ret = new Quaternion(msclPINVOKE.InertialNode_getSensorToVehicleRotation_quaternion(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setSensorToVehicleRotation_quaternion(Quaternion rotation) {
+    msclPINVOKE.InertialNode_setSensorToVehicleRotation_quaternion(swigCPtr, Quaternion.getCPtr(rotation));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public EulerAngles getSensorToVehicleTransform_eulerAngles() {
+    EulerAngles ret = new EulerAngles(msclPINVOKE.InertialNode_getSensorToVehicleTransform_eulerAngles(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setSensorToVehicleTransform_eulerAngles(EulerAngles angles) {
+    msclPINVOKE.InertialNode_setSensorToVehicleTransform_eulerAngles(swigCPtr, EulerAngles.getCPtr(angles));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public Matrix_3x3 getSensorToVehicleTransform_matrix() {
+    Matrix_3x3 ret = new Matrix_3x3(msclPINVOKE.InertialNode_getSensorToVehicleTransform_matrix(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setSensorToVehicleTransform_matrix(Matrix_3x3 dcm) {
+    msclPINVOKE.InertialNode_setSensorToVehicleTransform_matrix(swigCPtr, Matrix_3x3.getCPtr(dcm));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public Quaternion getSensorToVehicleTransform_quaternion() {
+    Quaternion ret = new Quaternion(msclPINVOKE.InertialNode_getSensorToVehicleTransform_quaternion(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setSensorToVehicleTransform_quaternion(Quaternion transformation) {
+    msclPINVOKE.InertialNode_setSensorToVehicleTransform_quaternion(swigCPtr, Quaternion.getCPtr(transformation));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -915,6 +990,28 @@ public class InertialNode : global::System.IDisposable {
 
   public void setMultiAntennaOffset(byte receiverId, PositionOffset offset) {
     msclPINVOKE.InertialNode_setMultiAntennaOffset(swigCPtr, receiverId, PositionOffset.getCPtr(offset));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public InertialTypes.PpsInputOutput getPpsSource() {
+    InertialTypes.PpsInputOutput ret = (InertialTypes.PpsInputOutput)msclPINVOKE.InertialNode_getPpsSource(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setPpsSource(InertialTypes.PpsInputOutput ppsSource) {
+    msclPINVOKE.InertialNode_setPpsSource(swigCPtr, (int)ppsSource);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public InertialTypes.PpsInputOutput getPpsOutput() {
+    InertialTypes.PpsInputOutput ret = (InertialTypes.PpsInputOutput)msclPINVOKE.InertialNode_getPpsOutput(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setPpsOutput(InertialTypes.PpsInputOutput ppsOutput) {
+    msclPINVOKE.InertialNode_setPpsOutput(swigCPtr, (int)ppsOutput);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

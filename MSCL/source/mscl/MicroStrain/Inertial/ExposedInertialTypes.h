@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mscl/Types.h"
+#include "mscl/MicroStrain/Matrix.h"
 #include "mscl/MicroStrain/MIP/MipTypes.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
 #include <array>
@@ -98,14 +99,19 @@ namespace mscl
         //    FIXTYPE_TIMEONLY       - 0x02    - Time Only
         //    FIXTYPE_NONE           - 0x03    - None
         //    FIXTYPE_INVALID        - 0x04    - Invalid
-        //============================================================================================================
+		//    FIXTYPE_RTK_FLOAT      - 0x05    - RTK Float
+		//    FIXTYPE_RTK_FIX        - 0x06    - RTK Fixed
+		//
+		//============================================================================================================
         enum GnssFixType
         {
             FIXTYPE_3D = 0x00,
             FIXTYPE_2D = 0x01,
             FIXTYPE_TIMEONLY = 0x02,
             FIXTYPE_NONE = 0x03,
-            FIXTYPE_INVALID = 0x04
+            FIXTYPE_INVALID = 0x04,
+			FIXTYPE_RTK_FLOAT = 0x05,
+			FIXTYPE_FTK_FIXED = 0x06,
         };
 
         //============================================================================================================
@@ -216,24 +222,34 @@ namespace mscl
         //============================================================================================================
         //API Enum: FilterState 
         //    The Filter States with the NAV Filter Status field
+		//    Refer to device documentation for supported filter states.
         //
         //    FILTERSTATE_STARTUP                - 0x00    - Startup
         //    FILTERSTATE_INIT                   - 0x01    - Initialization (see status flags)
         //    FILTERSTATE_RUNNING_SLN_VALID      - 0x02    - Running, Solution Valid
         //    FILTERSTATE_RUNNING_SLN_ERROR      - 0x03    - Running, Solution Error (see status flags)
-        //============================================================================================================
+        //
+		//    FILTERSTATE_VERT_GYRO              - 0x02    - Vertical gyro mode
+		//    FILTERSTATE_AHRS                   - 0x03    - AHRS mode
+		//    FILTERSTATE_FULL_NAV               - 0x04    - Full navigation mode
+		//============================================================================================================
         enum FilterState
         {
-            FILTERSTATE_STARTUP = 0x00,
-            FILTERSTATE_INIT = 0x01,
-            FILTERSTATE_RUNNING_SLN_VALID = 0x02,
-            FILTERSTATE_RUNNING_SLN_ERROR = 0x03
-        };
+            FILTERSTATE_STARTUP            = 0x00,
+            FILTERSTATE_INIT               = 0x01,
+            FILTERSTATE_RUNNING_SLN_VALID  = 0x02,
+            FILTERSTATE_RUNNING_SLN_ERROR  = 0x03,
 
+			FILTERSTATE_VERT_GYRO          = 0x02,
+			FILTERSTATE_AHRS               = 0x03,
+			FILTERSTATE_FULL_NAV           = 0x04
+		};
+        
         //============================================================================================================
         //API Enum: FilterStatus_Running
         //    Binary flags that give information with the NAV Filter Status field when filter is initialized and running. Each bit must be checked accordingly.
-        //
+		//    Refer to device documentation for supported filter status flags.
+		//
         // FILTERSTATUS_IMU_UNAVAILABLE                         - 0x0001    - Filter Running, IMU Unavailable
         // FILTERSTATUS_GPS_UNAVAILABLE                         - 0x0002    - Filter Running, GPS Unavailable
         // FILTERSTATUS_MATRIX_SINGULARITY_IN_CALC              - 0x0008    - Filter Running, Matrix Singularity in Calculation
@@ -249,7 +265,16 @@ namespace mscl
         // FILTERSTATUS_ANTENNA_OFFSET_CORRECTION_EST_HIGH_WARN - 0x2000    - Filter Running, GNSS Antenna Offset Correction Estimate High Warning
         // FILTERSTATUS_HARD_IRON_OFFSET_EST_HIGH_WARN          - 0x4000    - Filter Running, Hard Iron Offset Estimate High Warning
         // FILTERSTATUS_SOFT_IRON_CORRECTION_EST_HIGH_WARN      - 0x8000    - Filter Running, Soft Iron Correction Estimate High Warning
-        //============================================================================================================
+        //
+		// FILTERSTATUS_ROLL_PITCH_WARNING                      - 0x0004    - Filter Running, Roll/Pitch angle warning 
+		// FILTERSTATUS_HEADING_WARNING                         - 0x0008    - Filter Running, Heading angle warning
+		// FILTERSTATUS_POSITION_WARNING                        - 0x0010    - Filter Running, Position warning
+		// FILTERSTATUS_VELOCITY_WARNING                        - 0x0020    - Filter Running, Velocity warning
+		// FILTERSTATUS_IMU_BIAS_WARNING                        - 0x0040    - Filter Running, IMU bias warning
+		// FILTERSTATUS_GNSS_CLK_WARNING                        - 0x0080    - Filter Running, GNSS clock warning
+		// FILTERSTATUS_ANT_LEVER_ARM_WARNING                   - 0x0100    - Filter Running, Antenna lever arm warning
+		// FILTERSTATUS_MOUNTING_TRANSFORM_WARNING              - 0x0200    - Filter Running, Mounting transformation warning
+		//============================================================================================================
         enum FilterStatus_Running
         {
             FILTERSTATUS_IMU_UNAVAILABLE = 0x0001,
@@ -266,8 +291,18 @@ namespace mscl
             FILTERSTATUS_MAG_BIAS_EST_HIGH_WARN = 0x1000,
             FILTERSTATUS_ANTENNA_OFFSET_CORRECTION_EST_HIGH_WARN = 0x2000,
             FILTERSTATUS_HARD_IRON_OFFSET_EST_HIGH_WARN = 0x4000,
-            FILTERSTATUS_SOFT_IRON_CORRECTION_EST_HIGH_WARN = 0x8000
-        };
+            FILTERSTATUS_SOFT_IRON_CORRECTION_EST_HIGH_WARN = 0x8000,
+
+			FILTERSTATUS_ROLL_PITCH_WARNING = 0x0004,
+			FILTERSTATUS_HEADING_WARNING = 0x0008,
+			FILTERSTATUS_POSITION_WARNING = 0x0010,
+			FILTERSTATUS_VELOCITY_WARNING = 0x0020,
+			FILTERSTATUS_IMU_BIAS_WARNING = 0x0040,
+			FILTERSTATUS_GNSS_CLK_WARNING = 0x0080,
+			FILTERSTATUS_ANT_LEVER_ARM_WARNING = 0x0100,
+			FILTERSTATUS_MOUNTING_TRANSFORM_WARNING = 0x0200,
+		};
+
 
         //============================================================================================================
         //API Enum: FilterStatus_Initialization
@@ -397,18 +432,20 @@ namespace mscl
         //API Enum: AidingMeasurementSource
         //    The enum to represent the different available aiding measurement sources
         //
-        //      GNSS_AIDING             - 0x0000
-        //      ALTIMETER_AIDING        - 0x0001
-        //      ODOMETER_AIDING         - 0x0002
-        //      MAGNETOMETER_AIDING     - 0x0003
-        //      EXTERNAL_HEADING_AIDING - 0x0004
+        //      GNSS_POS_VEL_AIDING     - 0x0000
+        //      GNSS_HEADING_AIDING     - 0x0001
+        //      ALTIMETER_AIDING        - 0x0002
+        //      ODOMETER_AIDING         - 0x0003
+        //      MAGNETOMETER_AIDING     - 0x0004
+        //      EXTERNAL_HEADING_AIDING - 0x0005
         enum AidingMeasurementSource
         {
-            GNSS_AIDING = 0x0000,
-            ALTIMETER_AIDING = 0x0001,
-            ODOMETER_AIDING = 0x0002,
-            MAGNETOMETER_AIDING = 0x0003,
-            EXTERNAL_HEADING_AIDING = 0x0004
+            GNSS_POS_VEL_AIDING = 0x0000,
+            GNSS_HEADING_AIDING = 0x0001,
+            ALTIMETER_AIDING = 0x0002,
+            ODOMETER_AIDING = 0x0003,
+            MAGNETOMETER_AIDING = 0x0004,
+            EXTERNAL_HEADING_AIDING = 0x0005
         };
 
         //API Enum: ConstellationId
@@ -457,6 +494,40 @@ namespace mscl
             FILTERING_MODERATE      = 0x02,
             FILTERING_AGGRESIVE     = 0x03
         };
+
+        //API Enum: FactoryStreamingOption
+        //  The enum to represent the factory streaming action options
+        //
+        //      FACTORY_STREAMING_OVERWRITE - 0x00
+        //      FACTORY_STREAMING_ADDITIVE  - 0x02
+        enum FactoryStreamingOption
+        {
+            FACTORY_STREAMING_OVERWRITE = 0x00,
+            FACTORY_STREAMING_ADDITIVE  = 0x02
+        };
+
+        //API Enum: PpsInputOutput
+        //  The enum to represent the PPS source and output options
+        //
+        //      PPS_OUTPUT_DISABLED   - 0x00
+        //      PPS_INPUT_RECEIVER_1  - 0x01
+        //      PPS_INPUT_RECEIVER_2  - 0x02
+        //      PPS_SOURCE_GENERATED  - 0x03
+        //      PPS_IO_GPIO_1         - 0x04
+        //      PPS_IO_GPIO_2         - 0x05
+        //      PPS_IO_GPIO_3         - 0x06
+        //      PPS_IO_GPIO_4         - 0x07
+        enum PpsInputOutput
+        {
+            PPS_OUTPUT_DISABLED     = 0x00,
+            PPS_INPUT_RECEIVER_1    = 0x01,
+            PPS_INPUT_RECEIVER_2    = 0x02,
+            PPS_SOURCE_GENERATED    = 0x03,
+            PPS_IO_GPIO_1           = 0x04,
+            PPS_IO_GPIO_2           = 0x05,
+            PPS_IO_GPIO_3           = 0x06,
+            PPS_IO_GPIO_4           = 0x07
+        };
     };
 
 
@@ -473,6 +544,10 @@ namespace mscl
     //  A vector of <VehicleModeType> enum values
     typedef std::vector<InertialTypes::VehicleModeType> VehicleModeTypes;
 
+    //API Typedef: PpsInputOutputOptions
+    //  A vector of <InertialTypes::PpsInputOutput> values
+    typedef std::vector<InertialTypes::PpsInputOutput> PpsInputOutputOptions;
+
     ///////////////  Matrix_3x3  ///////////////
 
     //API Class: Matrix_3x3
@@ -488,6 +563,11 @@ namespace mscl
         Matrix_3x3(float i00, float i01, float i02, float i10, float i11, float i12, float i20, float i21, float i22);
 
         //API Constructor: Matrix_3x3
+        //      Creates a Matrix object based on a <MipFieldValues> object
+        //      Note: MipFieldValues format must be 9 floats
+        Matrix_3x3(MipFieldValues data);
+
+        //API Constructor: Matrix_3x3
         //    Creates a zero-filled Matrix object.
         Matrix_3x3() {}
 
@@ -495,7 +575,7 @@ namespace mscl
         //    Destroys a Matrix_3x3 object.
         ~Matrix_3x3();
 
-        //Function: set
+        //API Function: set
         //  Sets matrix index to passed in float value.
         //
         //Parameters:
@@ -514,13 +594,19 @@ namespace mscl
         float operator() (uint8 row, uint8 col) const;
 #endif
 
-        //Function: at
+        //API Function: at
         //  Gets value at matrix index (row, col).
         //
         //Parameters:
         //  row - the row to set.
         //  col - the column to set.
         float at(uint8 row, uint8 col) const;
+
+        std::string str() const;
+
+        //API Function: asMipFieldValues
+        //  Gets the current matrix values formatted as a <MipFieldValues> object
+        MipFieldValues asMipFieldValues() const;
 
     private:
         //Variable: m_array
@@ -531,6 +617,46 @@ namespace mscl
     //API Typedef: Matrix_3x3s
     //  A vector of <Matrix_3x3> objects
     typedef std::vector<Matrix_3x3> Matrix_3x3s;
+
+    //API Class: Quaternion
+    //  A four-element implementation of <Matrix>
+    class Quaternion : public Matrix
+    {
+    public:
+        //API Constructor: Quaternion
+        //  Creates a zero-filled Quaternion object
+        Quaternion();
+
+        //API Constructor: Quaternion
+        //  Creates a Quaternion object with the specified elements
+        //
+        //Parameters:
+        //  four floats representing the quaternion elements
+        Quaternion(float q0, float q1, float q2, float q3);
+
+        //API Constructor: Quaternion
+        //  Creates a Quaternion object based on specified <MipFieldValues> data
+        //
+        //Parameters:
+        //  <MipFieldValues> - format must be 4 floats
+        Quaternion(MipFieldValues data);
+
+        //API Function: at
+        // get the float element at the specified index
+        float at(uint8 index) const;
+
+        //API Function: set
+        // set the float element at the specified index
+        void set(uint8 index, float val);
+
+        //API Function: normalize
+        // normalize the quaternion value
+        void normalize();
+
+        //API Function: asMipFieldValues
+        //  Gets the current quaternion values formatted as a <MipFieldValues> object
+        MipFieldValues asMipFieldValues() const;
+    };
 
     //API Enum: PositionVelocityReferenceFrame
     //    Enum representing position and velocity reference frame options.
@@ -1532,17 +1658,73 @@ namespace mscl
         UserSpecified_All = 3
     };
 
-    //API Enum: HeadingAlignmentMethod
+    //API Enum: HeadingAlignmentOption
     //    Method options for automatically determining initial filter heading
     //
-    //  GNSS_Kinematic      - 0x00  - GNSS kinematic alignment (GNSS velocity determines initial heading)
     //  GNSS_DualAntenna    - 0x01  - Dual-antenna GNSS alignment
-    //  Magnetometer        - 0x02  - Magnetometer heading alignment
-    enum HeadingAlignmentMethod
+    //  GNSS_Kinematic      - 0x02  - GNSS kinematic alignment (GNSS velocity determines initial heading)
+    //  Magnetometer        - 0x04  - Magnetometer heading alignment
+    enum HeadingAlignmentOption
     {
-        GNSS_Kinematic = 0,
-        GNSS_DualAntenna = 1,
-        Magnetometer = 2
+        GNSS_DualAntenna = 0x01,
+        GNSS_Kinematic = 0x02,
+        Magnetometer = 0x04
+    };
+
+    //API Struct: HeadingAlignmentMethod
+    //  Struct to create and interact with a HeadingAlignmentOption bitfield
+    struct HeadingAlignmentMethod
+    {
+        //API Constructor: HeadingAlignmentMethod
+        //  Default constructor, value = 0
+        HeadingAlignmentMethod() {}
+
+        //API Constructor: HeadingAlignmentMethod
+        //  Construct HeadingAlignmentMethod object with specified initial value.
+        //
+        //Parameters:
+        //  val - uint8 intial value
+        HeadingAlignmentMethod(uint8 val) :
+            value(val)
+        {}
+        
+        //API Variable: value
+        //  The HeadingAlignmentMethod bitfield value
+        uint8 value;
+
+        //API Function: select
+        //  Add a <HeadingAlignmentOption> to the bitfield.
+        //
+        //Parameters:
+        //  option - <HeadingAlignmentOption> to enable
+        void select(HeadingAlignmentOption option)
+        {
+            value = value | static_cast<uint8>(option);
+        }
+
+        //API Function: deselect
+        //  Remove a <HeadingAlignmentOption> from the bitfield.
+        //
+        //Parameters:
+        //  option - <HeadingAlignmentOption> to disable
+        void deselect(HeadingAlignmentOption option)
+        {
+            uint8 r = value & static_cast<uint8>(option); // remove any bits from option that are not already selected
+            value = value ^ r;
+        }
+
+        //API Function: deselect
+        //  Checks whether the specified <HeadingAlignmentOption> is included in the bitfield.
+        //
+        //Parameters:
+        //  option - <HeadingAlignmentOption> to check
+        //
+        //Returns:
+        //  bool - true: specified <HeadingAlignmentOption> included in bitfield, false: option not included
+        bool selected(HeadingAlignmentOption  option)
+        {
+            return (value & static_cast<uint8>(option)) > 0;
+        }
     };
 
     //API Struct: FilterInitializationValues
@@ -1558,8 +1740,11 @@ namespace mscl
         //  referenceFrame - <PositionVelocityReferenceFrame>::ECEF
         FilterInitializationValues() :
             initialValuesSource(FilterInitialValuesSource::Automatic),
-            autoHeadingAlignmentMethod(HeadingAlignmentMethod::GNSS_Kinematic),
+            autoHeadingAlignmentMethod(HeadingAlignmentOption::GNSS_Kinematic),
             referenceFrame(PositionVelocityReferenceFrame::ECEF) {}
+
+		//API Variable: autoInitialize
+		bool autoInitialize;
 
         //API Variable: initialValuesSource
         FilterInitialValuesSource initialValuesSource;
@@ -1937,5 +2122,29 @@ namespace mscl
         //    Disables the specified option.
         void disableOption(MeasurementOptions option) { measurementOptions = measurementOptions & ~static_cast<uint16>(option); }
         void disableOption(uint16 options) { measurementOptions = measurementOptions & ~options; }
+    };
+
+    //API Struct: RTKDeviceStatusFlags
+    struct RTKDeviceStatusFlags
+    {
+    public:
+        //Constructor: RTKDeviceStatusFlags
+        RTKDeviceStatusFlags() {};
+
+        //Constructor: RTKDeviceStatusFlags
+        RTKDeviceStatusFlags(bool modemEnabled, bool modemConnected, bool clientConnected) :
+            modemEnabled(modemEnabled),
+            modemConnected(modemConnected),
+            clientConnected(clientConnected)
+        {};
+
+        //API Variable: modemEnabled
+        bool modemEnabled;
+
+        //API Variable: modemConnected
+        bool modemConnected;
+
+        //API Variable: clientConnected
+        bool clientConnected;
     };
 }

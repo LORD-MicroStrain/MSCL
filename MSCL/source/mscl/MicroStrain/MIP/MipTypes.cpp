@@ -11,8 +11,17 @@ namespace mscl
 {
     std::string MipTypes::channelName(ChannelField field, ChannelQualifier qualifier)
     {
+        // handle "duplicate" GNSS data sets
+        ChannelField keyField = field;
+        std::string prepend = "";
+        if (MipTypes::isGnssChannelField(field))
+        {
+            keyField = MipTypes::getChannelField_baseDataClass(field);
+            prepend = MipTypes::getChannelNamePrependText(field);
+        }
+
         //try to find the channel in the map
-        auto result = CHANNEL_NAMES.find(ChannelId(field, qualifier));
+        auto result = CHANNEL_NAMES.find(ChannelId(keyField, qualifier));
 
         //if we failed to find the channel
         if(result == CHANNEL_NAMES.end())
@@ -22,7 +31,7 @@ namespace mscl
         }
 
         //replace any unsupported sensorcloud characters
-        std::string sensorcloudFilteredName = result->second;
+        std::string sensorcloudFilteredName = prepend + result->second;
         Utils::filterSensorcloudName(sensorcloudFilteredName);
 
         //found the channel, return the name
@@ -101,6 +110,12 @@ namespace mscl
 
         {ChannelId(CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE, CH_PRESSURE), "scaledAmbientPressure"},
 
+        {ChannelId(CH_FIELD_SENSOR_RAW_AMBIENT_PRESSURE, CH_PRESSURE), "rawAmbientPressure"},
+
+        {ChannelId(CH_FIELD_SENSOR_TEMPERATURE_STATISTICS, CH_MIN_TEMP), "minTemp"},
+        {ChannelId(CH_FIELD_SENSOR_TEMPERATURE_STATISTICS, CH_MAX_TEMP), "maxTemp"},
+        {ChannelId(CH_FIELD_SENSOR_TEMPERATURE_STATISTICS, CH_MEAN_TEMP), "meanTemp"},
+
         {ChannelId(CH_FIELD_GNSS_LLH_POSITION, CH_LATITUDE), "latitude"},
         {ChannelId(CH_FIELD_GNSS_LLH_POSITION, CH_LONGITUDE), "longitude"},
         {ChannelId(CH_FIELD_GNSS_LLH_POSITION, CH_HEIGHT_ABOVE_ELLIPSOID), "heightAboveElipsoid"},
@@ -169,6 +184,31 @@ namespace mscl
         {ChannelId(CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS, CH_AGE), "dgnssAge"},
         {ChannelId(CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS, CH_CORRECTION), "dgnssPseudorangeCorrection"},
         {ChannelId(CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS, CH_RATE_CORRECTION), "dgnssPseudorangeRateCorrection"},
+
+        { ChannelId(CH_FIELD_GNSS_CLOCK_INFO_2, CH_BIAS), "gpsClockBias" },
+        { ChannelId(CH_FIELD_GNSS_CLOCK_INFO_2, CH_DRIFT), "gpsClockDrift" },
+        { ChannelId(CH_FIELD_GNSS_CLOCK_INFO_2, CH_BIAS_ACCURACY_ESTIMATE), "gpsClockBiasAccuracy" },
+        { ChannelId(CH_FIELD_GNSS_CLOCK_INFO_2, CH_DRIFT_ACCURACY_ESTIMATE), "gpsClockDriftAccuracy" },
+
+        { ChannelId(CH_FIELD_GNSS_GPS_LEAP_SECONDS, CH_SECONDS), "gpsLeapSeconds" },
+
+        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_DATA_RECEIVED_EPOCH), "dataReceivedEpoch" },
+        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_NUM_PACKETS), "numPackets" },
+        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_GPS_CORRECTION_LATENCY), "gpsCorrectionLatency" },
+        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_GLONASS_CORRECTION_LATENCY), "glonassCorrectionLatency" },
+        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_GALILEO_CORRECTION_LATENCY), "galileoCorrectionLatency" },
+        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_BEIDOU_CORRECTION_LATENCY), "beidouCorrectionLatency" },
+
+        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_TIME_OF_WEEK), "timeOfWeek" },
+        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_WEEK_NUMBER), "weekNumber" },
+        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_ALPHA), "alpha" },
+        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_BETA), "beta" },
+
+        { ChannelId(CH_FIELD_GNSS_IONOSPHERIC_CORRECTION, CH_TIME_OF_WEEK), "timeOfWeek" },
+        { ChannelId(CH_FIELD_GNSS_IONOSPHERIC_CORRECTION, CH_WEEK_NUMBER), "weekNumber" },
+        { ChannelId(CH_FIELD_GNSS_IONOSPHERIC_CORRECTION, CH_ALPHA), "alpha" },
+        { ChannelId(CH_FIELD_GNSS_IONOSPHERIC_CORRECTION, CH_DISTURBANCE_FLAGS), "disturbanceFlags" },
+
 
         {ChannelId(CH_FIELD_ESTFILTER_ESTIMATED_LLH_POS, CH_LATITUDE), "estLatitude"},
         {ChannelId(CH_FIELD_ESTFILTER_ESTIMATED_LLH_POS, CH_LONGITUDE), "estLongitude"},
@@ -275,6 +315,10 @@ namespace mscl
 
         {ChannelId(CH_FIELD_ESTFILTER_PRESSURE_ALTITUDE, CH_ALTITUDE), "estPressureAlt"},
 
+        {ChannelId(CH_FIELD_ESTFILTER_MAG_BIAS, CH_X), "estMagBiasX"},
+        {ChannelId(CH_FIELD_ESTFILTER_MAG_BIAS, CH_Y), "estMagBiasY"},
+        {ChannelId(CH_FIELD_ESTFILTER_MAG_BIAS, CH_Z), "estMagBiasZ"},
+
         {ChannelId(CH_FIELD_ESTFILTER_MAG_AUTO_HARD_IRON_OFFSET, CH_X), "estMagAutoHardIronOffsetX"},
         {ChannelId(CH_FIELD_ESTFILTER_MAG_AUTO_HARD_IRON_OFFSET, CH_Y), "estMagAutoHardIronOffsetY"},
         {ChannelId(CH_FIELD_ESTFILTER_MAG_AUTO_HARD_IRON_OFFSET, CH_Z), "estMagAutoHardIronOffsetZ"},
@@ -284,6 +328,10 @@ namespace mscl
         {ChannelId(CH_FIELD_ESTFILTER_MAG_AUTO_HARD_IRON_OFFSET_UNCERT, CH_X), "estMagAutoHardIronOffsetXUncert"},
         {ChannelId(CH_FIELD_ESTFILTER_MAG_AUTO_HARD_IRON_OFFSET_UNCERT, CH_Y), "estMagAutoHardIronOffsetYUncert"},
         {ChannelId(CH_FIELD_ESTFILTER_MAG_AUTO_HARD_IRON_OFFSET_UNCERT, CH_Z), "estMagAutoHardIronOffsetZUncert"},
+
+        {ChannelId(CH_FIELD_ESTFILTER_MAG_BIAS_UNCERT, CH_X), "estMagBiasOffsetXUncert"},
+        {ChannelId(CH_FIELD_ESTFILTER_MAG_BIAS_UNCERT, CH_Y), "estMagBiasOffsetYUncert"},
+        {ChannelId(CH_FIELD_ESTFILTER_MAG_BIAS_UNCERT, CH_Z), "estMagBiasOffsetZUncert"},
 
         {ChannelId(CH_FIELD_ESTFILTER_MAG_AUTO_SOFT_IRON_MATRIX_UNCERT, CH_MATRIX), "estMagAutoSoftIronMatrixUncert"},
 
@@ -298,4 +346,78 @@ namespace mscl
         {ChannelId(CH_FIELD_DISP_DISPLACEMENT_RAW, CH_DISPLACEMENT), "rawDisplacement"},
         {ChannelId(CH_FIELD_DISP_DISPLACEMENT_MM, CH_DISPLACEMENT), "displacementMillimeters"},
     });
+
+    std::vector<MipTypes::DataClass> MipTypes::GNSS_DATA_CLASSES()
+    {
+        return {
+            DataClass::CLASS_GNSS,
+            DataClass::CLASS_GNSS1,
+            DataClass::CLASS_GNSS2,
+            DataClass::CLASS_GNSS3,
+            DataClass::CLASS_GNSS4,
+            DataClass::CLASS_GNSS5
+        };
+    }
+
+    MipTypes::MipChannelFields MipTypes::getChannelFields_allDataClasses(MipTypes::ChannelField chField)
+    {
+        MipChannelFields fields;
+        if (!MipTypes::isGnssChannelField(chField))
+        {
+            fields.push_back(chField);
+            return fields;
+        }
+
+        for (DataClass descSet : GNSS_DATA_CLASSES())
+        {
+            fields.push_back(MipTypes::getChannelField_toDataClass(chField, descSet));
+        }
+
+        return fields;
+    }
+
+    MipTypes::ChannelField MipTypes::getChannelField_baseDataClass(MipTypes::ChannelField chField)
+    {
+        if (!MipTypes::isGnssChannelField(chField))
+        {
+            return chField;
+        }
+
+        return MipTypes::getChannelField_toDataClass(chField, DataClass::CLASS_GNSS);
+    }
+
+    MipTypes::ChannelField MipTypes::getChannelField_toDataClass(MipTypes::ChannelField chField, MipTypes::DataClass dataClass)
+    {
+        uint8 fieldDesc = Utils::lsb(static_cast<uint16>(chField));
+        uint16 newChField = Utils::make_uint16(static_cast<uint8>(dataClass), fieldDesc);
+        return ChannelField(newChField);
+    }
+
+    std::string MipTypes::getChannelNamePrependText(MipTypes::ChannelField chField)
+    {
+        switch (MipTypes::channelFieldToDataClass(chField))
+        {
+        case DataClass::CLASS_GNSS1:
+            return "gnss1_";
+        case DataClass::CLASS_GNSS2:
+            return "gnss2_";
+        case DataClass::CLASS_GNSS3:
+            return "gnss3_";
+        case DataClass::CLASS_GNSS4:
+            return "gnss4_";
+        case DataClass::CLASS_GNSS5:
+            return "gnss5_";
+
+        case DataClass::CLASS_GNSS:
+        default:
+            return "";
+        }
+    }
+
+    bool MipTypes::isGnssChannelField(MipTypes::ChannelField chField)
+    {
+        std::vector<DataClass> classes = GNSS_DATA_CLASSES();
+        return std::find(classes.begin(), classes.end(), MipTypes::channelFieldToDataClass(chField))
+            != classes.end();
+    }
 }

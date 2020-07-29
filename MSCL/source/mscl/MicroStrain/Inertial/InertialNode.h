@@ -288,6 +288,19 @@ namespace mscl
         void resume();
 
         //API Function: saveSettingsAsStartup
+        //    Save the current value of the specified settings commands as a startup setting.
+        //
+        //Parameters:
+        //  cmdIds - <MipTypes::MipCommands> list of IDs of the settings commands to save
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void saveSettingsAsStartup(MipTypes::MipCommands cmdIds);
+
+        //API Function: saveSettingsAsStartup
         //  Saves all of the current settings as the Node's startup settings.
         //  Note: A brief data disturbance may occur when calling this command.
         //
@@ -423,6 +436,20 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         //    - <Error>: An <MipChannel> in the channels parameter is not part of the specified <MipTypes::DataClass>'s descriptor set.
         void saveActiveChannelFields(MipTypes::DataClass dataClass);
+
+        //Function: setFactoryStreamingChannels
+        //    Applies the factory streaming channels to the message format based on the specified action option.
+        //
+        //Parameters:
+        //    option - The <InertialTypes::FactoryStreamingOption> action to apply the factory streaming channels (overwrite or add to current message format).
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command or <MipTypes::DataClass> is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        //    - <Error>: An <MipChannel> in the channels parameter is not part of the specified <MipTypes::DataClass>'s descriptor set.
+        void setFactoryStreamingChannels(InertialTypes::FactoryStreamingOption option);
 
         //API Function: getCommunicationMode
         //    Gets the current communication mode that the node is in.
@@ -617,6 +644,26 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         ZUPTSettingsData getAngularRateZUPT();
 
+        //Function: cmdedVelZUPT
+        //    Performs Commanded Zero Velocity Update.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void cmdedVelZUPT();
+
+        //Function: cmdedAngRateZUPT
+        //    Performs Commanded Zero Angular Rate Update.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void cmdedAngRateZUPT();
+
         //API Function: setInitialAttitude
         //    Sets the initial attitude.
         //    Note: This command can only be issued in the "INIT" state and should be used with a
@@ -672,9 +719,10 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setInitialFilterConfiguration(FilterInitializationValues filterConfig);
 
-        //API Function: getSensorToVehicleTransformation
-        //    Gets the sensor to vehicle frame transformation matrix using roll, pitch, and yaw Euler angles.
+        //API Function: getSensorToVehicleRotation_eulerAngles
+        //    Gets the sensor to vehicle frame rotation using roll, pitch, and yaw Euler angles.
         //    These angles define the rotation from the sensor body from to the fixed vehicle frame.
+        //    Note: The rotation is stored in the device as a quaternion. When Euler angles are read back from the device, they may not be equivalent in value to the Euler angles used to set the rotation, but they are functionally equivalent.
         //
         //Returns:
         //    The <EulerAngles> object containing the roll, pitch, and yaw result (in radians).
@@ -684,11 +732,12 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        EulerAngles getSensorToVehicleTransformation();
+        EulerAngles getSensorToVehicleRotation_eulerAngles();
 
-        //API Function: setSensorToVehicleTransformation
-        //    Sets the sensor to vehicle frame transformation matrix using roll, pitch, and yaw Euler angles (in radians).
+        //API Function: setSensorToVehicleRotation_eulerAngles
+        //    Sets the sensor to vehicle frame rotation using roll, pitch, and yaw Euler angles (in radians).
         //    These angles define the rotation from the sensor body from to the fixed vehicle frame.
+        //    Note: The rotation is stored in the device as a quaternion. When Euler angles are read back from the device, they may not be equivalent in value to the Euler angles used to set the rotation, but they are functionally equivalent.
         //
         //Parameters:
         //    angles - The <EulerAngles> object containing the roll, pitch, and yaw (in radians) to set.
@@ -698,7 +747,157 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void setSensorToVehicleTransformation(const EulerAngles& angles);
+        void setSensorToVehicleRotation_eulerAngles(const EulerAngles& angles);
+
+        //API Function: getSensorToVehicleRotation_matrix
+        //    Gets the sensor to vehicle frame rotation in a row-major direction cosine matrix format.
+        //    This matrix defines the rotation from the sensor body from to the fixed vehicle frame.
+        //    Note: The rotation is stored in the device as a quaternion. When the matrix values are read back from the device, they may not be equivalent in value to the values used to set the rotation, but they are functionally equivalent.
+        //
+        //Returns:
+        //    The <Matrix_3x3> object representing the sensor to vehicle frame rotation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        Matrix_3x3 getSensorToVehicleRotation_matrix();
+
+        //API Function: setSensorToVehicleRotation_matrix
+        //    Sets the sensor to vehicle frame rotation with a row-major direction cosine matrix. The specified matrix must be orthonormal.
+        //    This matrix defines the rotation from the sensor body from to the fixed vehicle frame.
+        //    Note: The rotation is stored in the device as a quaternion. When the matrix values are read back from the device, they may not be equivalent in value to the values used to set the rotation, but they are functionally equivalent.
+        //
+        //Parameters:
+        //    dcm - The <Matrix_3x3> object containing the direction cosine matrix values to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setSensorToVehicleRotation_matrix(const Matrix_3x3& dcm);
+
+        //API Function: getSensorToVehicleRotation_quaternion
+        //    Gets the sensor to vehicle frame rotation in quaternion format.
+        //    This quaternion defines the rotation from the sensor body from to the fixed vehicle frame.
+        //    Note: When the quaternion elements are read back from the device, they may not be equivalent in value to the quaternion used to set the rotation, due to normalization.
+        //
+        //Returns:
+        //    The <Quaternion> object representing the sensor rotation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        Quaternion getSensorToVehicleRotation_quaternion();
+
+        //API Function: setSensorToVehicleRotation_quaternion
+        //    Sets the sensor to vehicle frame rotation in quaternion format.
+        //    This quaternion defines the rotation from the sensor body from to the fixed vehicle frame.
+        //    Note: When the quaternion elements are read back from the device, they may not be equivalent in value to the quaternion used to set the rotation, due to normalization.
+        //
+        //Parameters:
+        //    rotation - The <Quaternion> object representing the sensor rotation to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setSensorToVehicleRotation_quaternion(const Quaternion& rotation);
+
+        //API Function: getSensorToVehicleTransform_eulerAngles
+        //    Gets the sensor to vehicle frame transformation using roll, pitch, and yaw Euler angles.
+        //    These angles define the transformation from the sensor body from to the fixed vehicle frame.
+        //    Note: The transformation is stored in the device as a quaternion. When Euler angles are read back from the device, they may not be equivalent in value to the Euler angles used to set the transformation, but they are functionally equivalent.
+        //
+        //Returns:
+        //    The <EulerAngles> object containing the roll, pitch, and yaw result (in radians).
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        EulerAngles getSensorToVehicleTransform_eulerAngles();
+
+        //API Function: setSensorToVehicleTransform_eulerAngles
+        //    Sets the sensor to vehicle frame transformation using roll, pitch, and yaw Euler angles (in radians).
+        //    These angles define the transformation from the sensor body from to the fixed vehicle frame.
+        //    Note: The transformation is stored in the device as a quaternion. When Euler angles are read back from the device, they may not be equivalent in value to the Euler angles used to set the transformation, but they are functionally equivalent.
+        //
+        //Parameters:
+        //    angles - The <EulerAngles> object containing the roll, pitch, and yaw (in radians) to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setSensorToVehicleTransform_eulerAngles(const EulerAngles& angles);
+
+        //API Function: getSensorToVehicleTransform_matrix
+        //    Gets the sensor to vehicle frame transformation in a row-major direction cosine matrix format.
+        //    This matrix defines the transformation from the sensor body from to the fixed vehicle frame.
+        //    Note: The transformation is stored in the device as a quaternion. When the matrix values are read back from the device, they may not be equivalent in value to the values used to set the transformation, but they are functionally equivalent.
+        //
+        //Returns:
+        //    The <Matrix_3x3> object representing the sensor to vehicle frame transformation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        Matrix_3x3 getSensorToVehicleTransform_matrix();
+
+        //API Function: setSensorToVehicleTransform_matrix
+        //    Sets the sensor to vehicle frame transformation with a row-major direction cosine matrix. The specified matrix must be orthonormal.
+        //    This matrix defines the transformation from the sensor body from to the fixed vehicle frame.
+        //    Note: The transformation is stored in the device as a quaternion. When the matrix values are read back from the device, they may not be equivalent in value to the values used to set the transformation, but they are functionally equivalent.
+        //
+        //Parameters:
+        //    dcm - The <Matrix_3x3> object containing the direction cosine matrix values to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setSensorToVehicleTransform_matrix(const Matrix_3x3& dcm);
+
+        //API Function: getSensorToVehicleTransform_quaternion
+        //    Gets the sensor to vehicle frame transformation in quaternion format.
+        //    This quaternion defines the transformation from the sensor body from to the fixed vehicle frame.
+        //    Note: When the quaternion elements are read back from the device, they may not be equivalent in value to the quaternion used to set the transformation, due to normalization.
+        //
+        //Returns:
+        //    The <Quaternion> object representing the sensor transformation.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        Quaternion getSensorToVehicleTransform_quaternion();
+
+        //API Function: setSensorToVehicleTransform_quaternion
+        //    Sets the sensor to vehicle frame transformation in quaternion format.
+        //    This quaternion defines the transformation from the sensor body from to the fixed vehicle frame.
+        //    Note: When the quaternion elements are read back from the device, they may not be equivalent in value to the quaternion used to set the transformation, due to normalization.
+        //
+        //Parameters:
+        //    transformation - The <Quaternion> object representing the sensor transformation to set.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setSensorToVehicleTransform_quaternion(const Quaternion& transformation);
 
         //API Function: getSensorToVehicleOffset
         //    Gets the sensor to vehicle frame offset, expressed in the sensor frame.
@@ -1354,7 +1553,7 @@ namespace mscl
         void setHeadingUpdateControl(const HeadingUpdateOptions& headingUpdateOptions);
 
         //API Function: tareOrientation
-        //     uses device orientation relative to the NED frame as the sensor to vehicle transformation.
+        //     uses device orientation relative to the NED frame as the sensor to vehicle rotation.
         //
         //Parameters:
         //    axisValue - the <TareAxisValues> object indicating which axes to tare.
@@ -2019,6 +2218,57 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setMultiAntennaOffset(uint8 receiverId, PositionOffset offset);
+
+        //API Function: getPpsSource
+        //    Gets the PPS source currently configured on the device.
+        //
+        //Return:
+        //    <InertialTypes::PpsInputOutput> - The currently configured PPS source
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        InertialTypes::PpsInputOutput getPpsSource() const;
+
+        //API Function: setPpsSource
+        //    Sets the PPS source.
+        //
+        //Parameter:
+        //    ppsSource - the <InertialTypes::PpsInputOutput> PPS source.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setPpsSource(InertialTypes::PpsInputOutput ppsSource);
+
+        //API Function: getPpsOutput
+        //    Gets the PPS output currently configured on the device.
+        //
+        //Return:
+        //    <InertialTypes::PpsInputOutput> - The currently configured PPS output
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        InertialTypes::PpsInputOutput getPpsOutput() const;
+
+        //API Function: setPpsOutput
+        //    Set the PPS output configuration.
+        //
+        //Parameter:
+        //    ppsOutput - the <InertialTypes::PpsInputOutput> PPS output configuration.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setPpsOutput(InertialTypes::PpsInputOutput ppsOutput);
     };
-    
 }

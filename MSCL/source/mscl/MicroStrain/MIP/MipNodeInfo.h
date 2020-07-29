@@ -36,7 +36,7 @@ namespace mscl
         //Parameters:
         //    info - The <MipDeviceInfo> containing information about the device.
         //    supportedDescriptors - The descriptor set ids that are supported by this device.
-        MipNodeInfo(const MipDeviceInfo& info, const std::vector<uint16>& supportedDescriptors, const SampleRates& sensorRates, const SampleRates& gnssRates, const SampleRates& estFilterRates, const SampleRates& displacementRates);
+        MipNodeInfo(const MipDeviceInfo& info, const std::vector<uint16>& supportedDescriptors, const std::map<MipTypes::DataClass, SampleRates>& sampleRates);
 
     private:
         MipNodeInfo();    //disabled default constructor
@@ -54,21 +54,13 @@ namespace mscl
         //  A vector of descriptors supported by the Node (lazy loaded).
         Utils::Lazy<std::vector<uint16>> m_descriptors;
 
-        //Variable: m_ahrsImuSampleRates
-        //  Contains the sample rates for the Sensor group (lazy loaded).
-        Utils::Lazy<SampleRates> m_ahrsImuSampleRates;
+        //Variable: m_sampleRates
+        //  Contains the sample rates for each MIP data set (lazy loaded).
+        std::map<MipTypes::DataClass, Utils::Lazy<SampleRates>> m_sampleRates;
 
-        //Variable: m_gnssSampleRates
-        //  Contains the sample rates for the GNSS group (lazy loaded).
-        Utils::Lazy<SampleRates> m_gnssSampleRates;
-
-        //Variable: m_estfilterSampleRates
-        //  Contains the sample rates for the Estimation Filter group (lazy loaded).
-        Utils::Lazy<SampleRates> m_estfilterSampleRates;
-
-        //Variable: m_displacementSampleRates
-        //  Contains the sample rates for the Displacement group (lazy loaded).
-        Utils::Lazy<SampleRates> m_displacementSampleRates;
+        //Variable: m_receiverInfo
+        //  The <GnssReceiverInfo> of the Node (lazy loaded).
+        Utils::Lazy<GnssReceivers> m_receiverInfo;
 
     public:
         //Function: deviceInfo
@@ -82,6 +74,10 @@ namespace mscl
         //Function: supportedSampleRates
         //  Gets the <SampleRates> supported by the Node for the given <MipTypes::DataClass>.
         const SampleRates& supportedSampleRates(MipTypes::DataClass dataClass) const;
+
+        //Function: gnssReceiverInfo
+        // Gets the <GnssReceiverInfo> for all supported receivers
+        const GnssReceivers& gnssReceiverInfo() const;
     };
 
 }

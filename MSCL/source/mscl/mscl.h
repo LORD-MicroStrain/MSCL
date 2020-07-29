@@ -37,6 +37,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "MicroStrain/Displacement/DisplacementModels.h"
 #include "MicroStrain/Displacement/DisplacementNode.h"
 
+#include "MicroStrain/RTK/RTKModels.h"
+#include "MicroStrain/RTK/RTKNode.h"
+
 #include "MicroStrain/Inertial/EulerAngles.h"
 #include "MicroStrain/Inertial/PositionOffset.h"
 #include "MicroStrain/Inertial/InertialModels.h"

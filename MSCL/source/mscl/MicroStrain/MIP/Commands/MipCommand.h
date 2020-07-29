@@ -13,7 +13,8 @@ public:
     //  Constructor to build MIP command based on Command ID and function selector
     MipCommand(MipTypes::Command cmdId, MipTypes::FunctionSelector fn) :
         m_commandId(cmdId),
-        m_functionSelector(fn)
+        m_functionSelector(fn),
+        m_responseExpected(fn == MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS)
     {};
 
     //Constructor: MipCommand
@@ -21,7 +22,21 @@ public:
     MipCommand(MipTypes::Command cmdId, MipTypes::FunctionSelector fn, MipFieldValues vals) :
         m_commandId(cmdId),
         m_functionSelector(fn),
-        m_data(vals)
+        m_data(vals),
+        m_responseExpected(fn == MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS)
+    {};
+
+    MipCommand(MipTypes::Command cmdId, bool resExpected = false) :
+        m_commandId(cmdId),
+        m_functionSelector(MipTypes::FunctionSelector(0)),
+        m_responseExpected(resExpected)
+    {};
+
+    MipCommand(MipTypes::Command cmdId, MipFieldValues vals, bool resExpected = false) :
+        m_commandId(cmdId),
+        m_functionSelector(MipTypes::FunctionSelector(0)),
+        m_data(vals),
+        m_responseExpected(resExpected)
     {};
 
     //Function: createResponse
@@ -94,11 +109,28 @@ private:
 
     MipFieldValues m_data;
 
+    bool m_responseExpected;
+
+    //Function: isKnownCommand
+    //  checks whether the command name is defined to determine if this command is defined in MSCL
+    //
+    //Returns:
+    //    bool - whether definition info for this command id is known
+    bool isKnownCommand() const;
+
+    MipResponseMatchValues buildMatchData() const;
+
     static std::string getCommandName(MipTypes::Command id);
 
     static uint8 getFieldDataByte(MipTypes::Command id);
 
     static MipFieldFormat getResponseFieldFormat(MipTypes::Command id);
+
+    static MipFieldFormat getResponseVectorPartFormat(MipTypes::Command id, uint8 nestedLevel = 0, uint8 sequenceCount = 0);
+
+    static int stringLength(MipTypes::Command id);
+
+    static void populateGenericResponseData(MipTypes::Command id, DataBuffer& buffer, const MipFieldFormat& format, MipFieldValues& outData, uint8 vectorNestedLevel = 0, uint8 vectorSequenceCount = 0);
 };
 
 }

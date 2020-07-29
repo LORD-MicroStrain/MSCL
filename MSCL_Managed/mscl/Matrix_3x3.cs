@@ -48,7 +48,11 @@ public class Matrix_3x3 : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public Matrix_3x3() : this(msclPINVOKE.new_Matrix_3x3__SWIG_1(), true) {
+  public Matrix_3x3(MipFieldValues data) : this(msclPINVOKE.new_Matrix_3x3__SWIG_1(MipFieldValues.getCPtr(data)), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public Matrix_3x3() : this(msclPINVOKE.new_Matrix_3x3__SWIG_2(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -59,6 +63,18 @@ public class Matrix_3x3 : global::System.IDisposable {
 
   public float at(byte row, byte col) {
     float ret = msclPINVOKE.Matrix_3x3_at(swigCPtr, row, col);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override string ToString() {
+    string ret = msclPINVOKE.Matrix_3x3_ToString(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public MipFieldValues asMipFieldValues() {
+    MipFieldValues ret = new MipFieldValues(msclPINVOKE.Matrix_3x3_asMipFieldValues(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

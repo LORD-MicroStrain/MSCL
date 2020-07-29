@@ -150,6 +150,13 @@ namespace mscl
         //    DESC_SET_DATA_SENSOR      - 0x80    - Data Packet, Sensor Set
         //    DESC_SET_DATA_GNSS        - 0x81    - Data Packet, GNSS Set
         //    DESC_SET_DATA_EST_FILTER  - 0x82    - Data Packet, Estimation Filter Set
+        //    DESC_SET_DATA_DISPLACEMENT- 0x90    - Data Packet, Displacement Set
+        //    DESC_SET_DATA_GNSS_1      - 0x91    - Data Packet, GNSS 1 Set
+        //    DESC_SET_DATA_GNSS_2      - 0x92    - Data Packet, GNSS 2 Set
+        //    DESC_SET_DATA_GNSS_3      - 0x93    - Data Packet, GNSS 3 Set
+        //    DESC_SET_DATA_RTK         - 0x93    - Data Packet, RTK (GNSS 3) Set
+        //    DESC_SET_DATA_GNSS_4      - 0x94    - Data Packet, GNSS 4 Set
+        //    DESC_SET_DATA_GNSS_5      - 0x95    - Data Packet, GNSS 5 Set
         //=====================================================================================================
         enum
         {
@@ -160,7 +167,13 @@ namespace mscl
             DESC_SET_DATA_SENSOR         = MipTypes::CLASS_AHRS_IMU,
             DESC_SET_DATA_GNSS           = MipTypes::CLASS_GNSS,
             DESC_SET_DATA_EST_FILTER     = MipTypes::CLASS_ESTFILTER,
-            DESC_SET_DATA_DISPLACEMENT   = MipTypes::CLASS_DISPLACEMENT
+            DESC_SET_DATA_DISPLACEMENT   = MipTypes::CLASS_DISPLACEMENT,
+            DESC_SET_DATA_GNSS_1         = MipTypes::CLASS_GNSS1,
+            DESC_SET_DATA_GNSS_2         = MipTypes::CLASS_GNSS2,
+            DESC_SET_DATA_GNSS_3         = MipTypes::CLASS_GNSS3,
+            DESC_SET_DATA_RTK            = MipTypes::CLASS_RTK,
+            DESC_SET_DATA_GNSS_4         = MipTypes::CLASS_GNSS4,
+            DESC_SET_DATA_GNSS_5         = MipTypes::CLASS_GNSS5
         };
     };
 #endif

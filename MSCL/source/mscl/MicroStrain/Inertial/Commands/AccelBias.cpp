@@ -37,7 +37,10 @@ namespace mscl
     GeometricVector AccelBias::getResponseData(const GenericMipCmdResponse& response)
     {
         DataBuffer dataBuffer(response.data());
-        GeometricVector returnData { dataBuffer.read_float(), dataBuffer.read_float(), dataBuffer.read_float() };
+        GeometricVector returnData;
+        returnData.x(dataBuffer.read_float());
+        returnData.y(dataBuffer.read_float());
+        returnData.z(dataBuffer.read_float());
         return returnData;
     }
 

@@ -393,6 +393,46 @@ namespace mscl
     //==========================================================================================
 
     //==========================================================================================
+    //Commanded Velocity Zupt
+    ByteStream CmdedVelZupt::buildCommand_get()
+    {
+        //container to hold the command's field data
+        ByteStream fieldData;
+
+        //add the command selector byte
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::READ_BACK_CURRENT_SETTINGS));
+
+        //build and return the command bytes
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
+    }
+
+    CmdedVelZupt::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
+        GenericMipCommand::Response(MipTypes::CMD_EF_CMDED_ZERO_VEL_UPDATE, collector, true, false, "Commanded Zero Velocity Update")
+    {
+    }
+    //==========================================================================================
+
+    //==========================================================================================
+    //Commanded Angular Zupt
+    ByteStream CmdedAngularZupt::buildCommand_get()
+    {
+        //container to hold the command's field data
+        ByteStream fieldData;
+
+        //add the command selector byte
+        fieldData.append_uint8(static_cast<uint8>(MipTypes::READ_BACK_CURRENT_SETTINGS));
+
+        //build and return the command bytes
+        return GenericMipCommand::buildCommand(CMD_ID, fieldData.data());
+    }
+
+    CmdedAngularZupt::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse) :
+        GenericMipCommand::Response(MipTypes::CMD_EF_CMDED_ZERO_ANG_RATE_UPDATE, collector, true, false, "Commanded Zero Angular Rate Update")
+    {
+    }
+    //==========================================================================================
+
+    //==========================================================================================
     //Sensor to Vehicle Frame Transformation
     ByteStream SensorToVehicFrameTrans::buildCommand_get()
     {
@@ -424,7 +464,7 @@ namespace mscl
     }
 
     SensorToVehicFrameTrans::Response::Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse):
-        GenericMipCommand::Response(MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANS, collector, true, dataResponse, "Sensor to Vehicle Frame Transformation")
+        GenericMipCommand::Response(MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_EULER, collector, true, dataResponse, "Sensor to Vehicle Frame Transformation")
     {
     }
 

@@ -13,6 +13,18 @@ namespace mscl
         m_array = { firstRow,{ i10, i11, i12 },{ i20, i21, i22 } };
     }
 
+    Matrix_3x3::Matrix_3x3(MipFieldValues data)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                int index = (i * 3) + j;
+                m_array[i][j] = data[index].as_float();
+            }
+        }
+    }
+
     Matrix_3x3::~Matrix_3x3()
     { }
 
@@ -20,8 +32,7 @@ namespace mscl
     {
         m_array[row][col] = value;
     }
-
-
+    
     float Matrix_3x3::operator() (uint8 row, uint8 col) const
     {
         return m_array.at(row).at(col);
@@ -30,6 +41,138 @@ namespace mscl
     float Matrix_3x3::at(uint8 row, uint8 col) const
     {
         return (*this)(row, col);
+    }
+
+    std::string Matrix_3x3::str() const
+    {
+        std::stringstream result;
+        result << "[";
+
+        //for every value in the Matrix
+        for (uint16 row = 0; row < 3; row++)
+        {
+            result << "[";
+            for (uint16 col = 0; col < 3; col++)
+            {
+                result << m_array[row][col];
+
+                //if this isn't the last column in the row
+                if (col != 2)
+                {
+                    //add a separator
+                    result << ",";
+                }
+            }
+            result << "]";
+
+            //if this isn't the last row
+            if (row != 2)
+            {
+                //add a separator
+                result << ",";
+            }
+        }
+
+        result << "]";
+
+        return result.str();
+    }
+
+    MipFieldValues Matrix_3x3::asMipFieldValues() const
+    {
+        MipFieldValues m;
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                m.push_back(Value::FLOAT(m_array[i][j]));
+            }
+        }
+
+        return m;
+    }
+
+    //////////  Quaternion  //////////
+    Quaternion::Quaternion() :
+        Matrix(1, 4, ValueType::valueType_float, ByteStream())
+    {
+        m_data.append_float(0);
+        m_data.append_float(0);
+        m_data.append_float(0);
+        m_data.append_float(0);
+    }
+
+    Quaternion::Quaternion(float q0, float q1, float q2, float q3) :
+        Matrix(1, 4, ValueType::valueType_float, ByteStream())
+    {
+        m_data.append_float(q0);
+        m_data.append_float(q1);
+        m_data.append_float(q2);
+        m_data.append_float(q3);
+    }
+
+    Quaternion::Quaternion(MipFieldValues data) :
+        Matrix(1, 4, ValueType::valueType_float, ByteStream())
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            m_data.append_float(data[i].as_float());
+        }
+    }
+
+    float Quaternion::at(uint8 index) const
+    {
+        return as_floatAt(0, index);
+    }
+
+    void Quaternion::set(uint8 index, float val)
+    {
+        uint32 pos = getBytePos(0, index);
+        ByteStream valB;
+        valB.append_float(val);
+
+        for (uint32 i = 0; i < 4; i++)
+        {
+            uint32 replaceIndex = pos + i;
+            m_data.data()[replaceIndex] = valB[i];
+        }
+    }
+
+    void Quaternion::normalize()
+    {
+        float magnitude = 0.0f;
+        for (uint8 i = 0; i < 4; i++)
+        {
+            float val = at(i);
+            magnitude += val * val;
+        }
+
+        magnitude = sqrt(magnitude);
+
+        if (magnitude == 0)
+        {
+            return;
+        }
+
+        ByteStream b;
+        for (uint8 i = 0; i < 4; i++)
+        {
+            float val = at(i);
+            b.append_float(val / magnitude);
+        }
+
+        m_data = b;
+    }
+
+    MipFieldValues Quaternion::asMipFieldValues() const
+    {
+        MipFieldValues m;
+        for (uint8 i = 0; i < 4; i++)
+        {
+            m.push_back(Value::FLOAT(at(i)));
+        }
+
+        return m;
     }
 
     //////////  GeometricVector  //////////

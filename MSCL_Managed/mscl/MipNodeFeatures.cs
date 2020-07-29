@@ -44,6 +44,12 @@ public class MipNodeFeatures : global::System.IDisposable {
     }
   }
 
+  public static bool isChannelField(ushort descriptor) {
+    bool ret = msclPINVOKE.MipNodeFeatures_isChannelField(descriptor);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public bool supportsCategory(MipTypes.DataClass dataClass) {
     bool ret = msclPINVOKE.MipNodeFeatures_supportsCategory(swigCPtr, (int)dataClass);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -70,6 +76,18 @@ public class MipNodeFeatures : global::System.IDisposable {
 
   public SampleRates supportedSampleRates(MipTypes.DataClass dataClass) {
     SampleRates ret = new SampleRates(msclPINVOKE.MipNodeFeatures_supportedSampleRates(swigCPtr, (int)dataClass), false);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public GnssReceivers gnssReceiverInfo() {
+    GnssReceivers ret = new GnssReceivers(msclPINVOKE.MipNodeFeatures_gnssReceiverInfo(swigCPtr), false);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool useLegacyIdsForEnableDataStream() {
+    bool ret = msclPINVOKE.MipNodeFeatures_useLegacyIdsForEnableDataStream(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -118,6 +136,18 @@ public class MipNodeFeatures : global::System.IDisposable {
 
   public KinematicConstraintOptions supportedAngularConstraintOptions() {
     KinematicConstraintOptions ret = new KinematicConstraintOptions(msclPINVOKE.MipNodeFeatures_supportedAngularConstraintOptions(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public PpsInputOutputOptions supportedPpsSourceOptions() {
+    PpsInputOutputOptions ret = new PpsInputOutputOptions(msclPINVOKE.MipNodeFeatures_supportedPpsSourceOptions(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public PpsInputOutputOptions supportedPpsOutputOptions() {
+    PpsInputOutputOptions ret = new PpsInputOutputOptions(msclPINVOKE.MipNodeFeatures_supportedPpsOutputOptions(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

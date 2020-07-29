@@ -40,10 +40,6 @@ namespace mscl
         //    The number of columns in the Matrix
         uint16 m_numColumns;
 
-        //Variable: m_data
-        //    A vector of vectors making the matrix that contains all the data values
-        ByteStream m_data;
-
         //Variable: m_valuesType
         //    How each value within the Matrix is stored
         ValueType m_valuesType;
@@ -52,7 +48,12 @@ namespace mscl
         //    The size of each values' type within the Matrix
         uint32 m_valuesTypeSize;
 
-    private:        
+    protected:
+        //Variable: m_data
+        //    A vector of vectors making the matrix that contains all the data values
+        ByteStream m_data;
+
+    protected:        
         //Function: getBytePos
         //    Gets the byte position to read in data from the m_data <ByteStream>
         //

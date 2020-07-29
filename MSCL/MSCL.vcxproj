@@ -781,6 +781,9 @@
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacketBuilder.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacketCollector.h" />
+    <ClInclude Include="source\mscl\MicroStrain\RTK\Commands\DeviceStatusFlags.h" />
+    <ClInclude Include="source\mscl\MicroStrain\RTK\RTKModels.h" />
+    <ClInclude Include="source\mscl\MicroStrain\RTK\RTKNode.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\ArmedDataloggingNetwork.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStationAnalogPair.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStationButton.h" />
@@ -1099,6 +1102,9 @@
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacketBuilder.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacketCollector.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\RTK\Commands\DeviceStatusFlags.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\RTK\RTKModels.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\RTK\RTKNode.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\ArmedDataloggingNetwork.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStationAnalogPair.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStationButton.cpp" />
@@ -1357,6 +1363,7 @@
     <ClCompile Include="source\mscl\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="source\mscl\Wrapper\MSCL_Exceptions.i" />
     <None Include="source\mscl\Wrapper\MSCL_Main_Interface.i" />
   </ItemGroup>

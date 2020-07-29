@@ -98,6 +98,11 @@ namespace mscl
             case MipTypes::CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP:
             case MipTypes::CH_FIELD_GNSS_GPS_TIME:
             case MipTypes::CH_FIELD_ESTFILTER_GPS_TIMESTAMP:
+            case MipTypes::CH_FIELD_GNSS_1_GPS_TIME:
+            case MipTypes::CH_FIELD_GNSS_2_GPS_TIME:
+            case MipTypes::CH_FIELD_GNSS_3_GPS_TIME:
+            case MipTypes::CH_FIELD_GNSS_4_GPS_TIME:
+            case MipTypes::CH_FIELD_GNSS_5_GPS_TIME:
                 isTimestamp = true;
                 isData = true;
                 break;
@@ -159,6 +164,11 @@ namespace mscl
             }
 
             case MipTypes::CH_FIELD_GNSS_GPS_TIME:
+            case MipTypes::CH_FIELD_GNSS_1_GPS_TIME:
+            case MipTypes::CH_FIELD_GNSS_2_GPS_TIME:
+            case MipTypes::CH_FIELD_GNSS_3_GPS_TIME:
+            case MipTypes::CH_FIELD_GNSS_4_GPS_TIME:
+            case MipTypes::CH_FIELD_GNSS_5_GPS_TIME:
             {
                 double gpsTimeOfWeek = bytes.read_double();
                 uint16 gpsWeekNumber = bytes.read_uint16();

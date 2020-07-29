@@ -124,6 +124,12 @@ public class SampleRate : global::System.IDisposable {
     return ret;
   }
 
+  public static SampleRate FromInertialRateDecimationInfo(ushort baseRate, ushort rateDecimation) {
+    SampleRate ret = new SampleRate(msclPINVOKE.SampleRate_FromInertialRateDecimationInfo(baseRate, rateDecimation), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public enum RateType {
     rateType_seconds = 0,
     rateType_hertz = 1,

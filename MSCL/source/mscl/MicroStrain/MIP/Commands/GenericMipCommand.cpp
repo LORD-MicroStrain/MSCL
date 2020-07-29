@@ -94,12 +94,24 @@ namespace mscl
         return static_cast<MipTypes::FunctionSelector>(commandBytes[CMD_FN_SELCTOR_INDEX]);
     }
 
-    GenericMipCommand::Response::Response(const MipTypes::Command& command, bool ackNackResponse, bool dataResponse, std::string cmdName):
+    GenericMipCommand::Response::Response(const MipTypes::Command& command, bool ackNackResponse, bool dataResponse, std::string cmdName, uint8 fieldDataByte):
         ResponsePattern(),
         m_ackNackResponse(ackNackResponse),
         m_dataResponse(dataResponse),
         m_command(command),
-        m_commandName(cmdName)
+        m_commandName(cmdName),
+		m_fieldDataByte(fieldDataByte)
+    {
+    }
+
+    GenericMipCommand::Response::Response(const MipTypes::Command& command, bool ackNackResponse, bool dataResponse, std::string cmdName, MipResponseMatchValues matchData, uint8 fieldDataByte):
+        ResponsePattern(),
+        m_ackNackResponse(ackNackResponse),
+        m_dataResponse(dataResponse),
+        m_command(command),
+        m_commandName(cmdName),
+        m_matchData(matchData),
+		m_fieldDataByte(fieldDataByte)
     {
     }
 
@@ -110,6 +122,18 @@ namespace mscl
         m_dataResponse(dataResponse),
         m_command(command),
         m_commandName(cmdName),
+        m_fieldDataByte(fieldDataByte)
+    {
+    }
+
+    GenericMipCommand::Response::Response(const MipTypes::Command& command, std::weak_ptr<ResponseCollector> collector,
+        bool ackNackResponse, bool dataResponse, const std::string& cmdName, MipResponseMatchValues matchData, uint8 fieldDataByte) :
+        ResponsePattern(collector),
+        m_ackNackResponse(ackNackResponse),
+        m_dataResponse(dataResponse),
+        m_command(command),
+        m_commandName(cmdName),
+        m_matchData(matchData),
         m_fieldDataByte(fieldDataByte)
     {
     }
@@ -238,6 +262,11 @@ namespace mscl
             return false;
         }
 
+        if (!checkMatchData(field))
+        {
+            return false;
+        }
+
         //if we made it here, the packet matches the response pattern
 
         //set the response to a success
@@ -248,6 +277,70 @@ namespace mscl
 
         //notify that the response was matched
         m_matchCondition.notify();
+
+        return true;
+    }
+
+    bool GenericMipCommand::Response::checkMatchData(const MipDataField& field) const
+    {
+        if (m_matchData.size() <= 0)
+        {
+            return true;
+        }
+
+        for (auto entry : m_matchData)
+        {
+            ByteStream data = field.fieldData();
+            size_t index = entry.first;
+            ValueType type = entry.second.storedAs();
+            switch (type)
+            {
+            case valueType_bool:
+                if (data.size() <= index + 1
+                    || (data.read_uint8(index) > 0) != entry.second.as_bool())
+                {
+                    return false;
+                }
+                break;
+            case valueType_uint8:
+                if (data.size() <= index + 1
+                    || data.read_uint8(index) != entry.second.as_uint8())
+                {
+                    return false;
+                }
+                break;
+            case valueType_uint16:
+                if (data.size() <= index + 2
+                    || data.read_uint16(index) != entry.second.as_uint16())
+                {
+                    return false;
+                }
+                break;
+            case valueType_uint32:
+                if (data.size() <= index + 4
+                    || data.read_uint32(index) != entry.second.as_uint32())
+                {
+                    return false;
+                }
+                break;
+            case valueType_float:
+                if (data.size() <= index + 4
+                    || data.read_float(index) != entry.second.as_float())
+                {
+                    return false;
+                }
+                break;
+            case valueType_double:
+                if (data.size() <= index + 8
+                    || data.read_double(index) != entry.second.as_double())
+                {
+                    return false;
+                }
+                break;
+            default:
+                break;
+            }
+        }
 
         return true;
     }

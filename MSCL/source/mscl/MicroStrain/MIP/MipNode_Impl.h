@@ -131,6 +131,7 @@ namespace mscl
 
         //Function: buildMipCommandBytes
         //  Used by function getConfiCommandBytes to build the <MipCommandBytes> object given a collection of <MipFieldValues> specifiers
+        //  Only works for commands with set parameters formatted the same as get reply field data
         //  Note: specifiers defaults to vector with single empty <MipFieldValues> entry
         MipCommandBytes buildMipCommandBytes(MipTypes::Command cmd, std::vector<MipFieldValues> specifiers = { {} }) const;
 
@@ -261,6 +262,19 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         virtual MipDeviceInfo getDeviceInfo() const;
+
+        //Function: getGnssReceiverInfo
+        //    Gets the GNSS receiver info for this node, representing available GNSS receiver ports and the data set over which each is output.
+        //    Sends the "Get GNSS Receiver Info" command to the device. 
+        //
+        //Returns:
+        //    The supported GNSS receiver info retrieved from the "Get GNSS Receiver Info" command.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        virtual GnssReceivers getGnssReceiverInfo() const;
 
         //Function: getDescriptorSets
         //    Gets the supported descriptor sets for this node, representing which commands and data sets are available.
@@ -601,7 +615,7 @@ namespace mscl
         void setVelocityZUPT(const ZUPTSettingsData& ZUPTSettings);
 
         //Function: tareOrientation
-        //     uses device orientation relative to the NED frame as the sensor to vehicle transformation.
+        //     uses device orientation relative to the NED frame as the sensor to vehicle rotation.
         //
         //Parameters:
         //    axisValue - the TareAxisValues object indicating which axes to tare.
@@ -650,6 +664,26 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         ZUPTSettingsData getAngularRateZUPT() const;
+
+        //Function: cmdedVelZUPT
+        //    Performs Commanded Zero Velocity Update.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void cmdedVelZUPT();
+
+        //Function: cmdedAngRateZUPT
+        //    Performs Commanded Zero Angular Rate Update.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void cmdedAngRateZUPT();
 
         //Function: setInitialAttitude
         //    Sets the initial attitude.
@@ -701,18 +735,18 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setInitialFilterConfiguration(FilterInitializationValues filterConfig);
 
-        //Function: getSensorToVehicleTransformation
-        //    Gets the sensor to vehicle frame transformation matrix using roll, pitch, and yaw Euler angles (in radians).
+        //Function: getSensorToVehicleRotation
+        //    Gets the sensor to vehicle frame rotation matrix using roll, pitch, and yaw Euler angles (in radians).
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command or <MipTypes::DataClass> is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        EulerAngles getSensorToVehicleTransformation() const;
+        EulerAngles getSensorToVehicleRotation() const;
 
-        //Function: setSensorToVehicleTransformation
-        //    Sets the sensor to vehicle frame transformation matrix using roll, pitch, and yaw Euler angles (in radians).
+        //Function: setSensorToVehicleRotation
+        //    Sets the sensor to vehicle frame rotation matrix using roll, pitch, and yaw Euler angles (in radians).
         //
         //Parameters:
         //    angles - The <EulerAngles> object containing the roll, pitch, and yaw to set.
@@ -722,7 +756,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void setSensorToVehicleTransformation(const EulerAngles& angles);
+        void setSensorToVehicleRotation(const EulerAngles& angles);
 
         //Function: getSensorToVehicleOffset
         //    Gets the sensor to vehicle frame offset, expressed in the sensor frame.
@@ -737,7 +771,7 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         PositionOffset getSensorToVehicleOffset() const;
 
-        //Function: setSensorToVehicleTransformation
+        //Function: setSensorToVehicleRotation
         //    Sets the sensor to vehicle frame offset, expressed in the sensor frame.
         //
         //Parameters:
@@ -1732,6 +1766,19 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the DisplacementNode.
         void setDeviceTime(uint64 nanoseconds);
 
+        //Function: getDeviceStatusFlags
+        //    Gets the status flags for an RTK device.
+        //
+        //Return:
+        //    <RTKDeviceStatusFlags> - The RTK device status.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        RTKDeviceStatusFlags getDeviceStatusFlags() const;
+
         //API Function: get
         //    sends the specified command with the Read Current Settings function selector.
         //
@@ -1778,6 +1825,33 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void set(MipTypes::Command cmdId, MipFieldValues values);
+
+        //API Function: saveAsStartup
+        //    sends the specified command with the Save as Startup Settings function selector.
+        //
+        //Parameter:
+        //    cmdId - the <MipTypes::Command> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void saveAsStartup(MipTypes::Command cmdId);
+
+        //API Function: saveAsStartup
+        //    sends the specified command with the Save as Startup Settings function selector.
+        //
+        //Parameter:
+        //    cmdId - the <MipTypes::Command> to send.
+        //    specifier - <MipFieldValues> containing any additional specifier values to send with the command.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void saveAsStartup(MipTypes::Command cmdId, MipFieldValues specifier);
 
 private:
        //Function: SendCommand

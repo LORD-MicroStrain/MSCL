@@ -23,6 +23,11 @@ namespace mscl
         case DescriptorSet::DESC_SET_DATA_GNSS:
         case DescriptorSet::DESC_SET_DATA_EST_FILTER:
         case DescriptorSet::DESC_SET_DATA_DISPLACEMENT:
+        case DescriptorSet::DESC_SET_DATA_GNSS_1:
+        case DescriptorSet::DESC_SET_DATA_GNSS_2:
+        case DescriptorSet::DESC_SET_DATA_GNSS_3:
+        case DescriptorSet::DESC_SET_DATA_GNSS_4:
+        case DescriptorSet::DESC_SET_DATA_GNSS_5:
             return true;
 
         //any other packet type is not a data packet

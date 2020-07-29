@@ -196,6 +196,10 @@ namespace mscl
             //    The field data byte.
             uint8 m_fieldDataByte;
 
+            //Variable: m_matchData
+            //     The <MipResponseMatchValues> map to check when determining a response data match
+            MipResponseMatchValues m_matchData;
+
             //Variable: m_result
             //    The <GenericMipCmdResponse> that holds the result of the GenericMipCommand
             GenericMipCmdResponse m_result;
@@ -221,8 +225,12 @@ namespace mscl
             //    Gets the ack/nack byte that should be received with the ack/nack field
             uint8 fieldAckNackByte() const;
 
+            //Function: checkMatchData
+            //     Function to loop through the <MipResponseMatchValues> and check that they match in the response data
+            bool checkMatchData(const MipDataField& field) const;
+
         public:
-            //Default Constructor: Response
+            //Constructor: Response
             //    Creates a default constructor Response.
             //    Note: You will need to use the <setResponseCollector> function before being used.
             //
@@ -230,7 +238,18 @@ namespace mscl
             //    ackNackResponse - Whether or not an ack/nack response field is expected
             //    dataResponse - Whether or not a data response field is expected
             //    cmdName - The name of the command (to be used in exceptions that may be thrown)
-            Response(const MipTypes::Command&, bool ackNackResponse, bool dataResponse, std::string cmdName);
+            Response(const MipTypes::Command&, bool ackNackResponse, bool dataResponse, std::string cmdName, uint8 fieldDataByte = 0);
+
+            //Constructor: Response
+            //    Creates a default constructor Response.
+            //    Note: You will need to use the <setResponseCollector> function before being used.
+            //
+            //Parameters:
+            //    ackNackResponse - Whether or not an ack/nack response field is expected
+            //    dataResponse - Whether or not a data response field is expected
+            //    cmdName - The name of the command (to be used in exceptions that may be thrown)
+            //    matchData - <MipResponseMatchValues> location/value map of data to check to determine a response match
+            Response(const MipTypes::Command&, bool ackNackResponse, bool dataResponse, std::string cmdName, MipResponseMatchValues matchData, uint8 fieldDataByte = 0);
 
             //Constructor: Response
             //    Creates a Response object
@@ -242,6 +261,18 @@ namespace mscl
             //    cmdName - The name of the command (to be used in exceptions that may be thrown)
             Response(const MipTypes::Command&, std::weak_ptr<ResponseCollector> collector, bool ackNackResponse,
                      bool dataResponse, const std::string& cmdName, uint8 fieldDataByte = 0);
+
+            //Constructor: Response
+            //    Creates a Response object
+            //
+            //Parameters:
+            //    collector - The <ResponseCollector> used to register and unregister the response
+            //    ackNackResponse - Whether or not an ack/nack response field is expected
+            //    dataResponse - Whether or not a data response field is expected
+            //    cmdName - The name of the command (to be used in exceptions that may be thrown)
+            //    matchData - <MipResponseMatchValues> location/value map of data to check to determine a response match
+            Response(const MipTypes::Command&, std::weak_ptr<ResponseCollector> collector, bool ackNackResponse,
+                bool dataResponse, const std::string& cmdName, MipResponseMatchValues matchData, uint8 fieldDataByte = 0);
 
             virtual ~Response(){};
 

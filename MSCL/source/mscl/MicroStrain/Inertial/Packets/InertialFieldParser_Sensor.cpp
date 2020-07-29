@@ -479,6 +479,33 @@ namespace mscl
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
+    //                                                        FieldParser_TemperatureStatistics
+    const MipTypes::ChannelField FieldParser_TemperatureStatistics::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_TEMPERATURE_STATISTICS;
+    const bool FieldParser_TemperatureStatistics::REGISTERED = FieldParser_TemperatureStatistics::registerParser();    //register the parser immediately
+
+    void FieldParser_TemperatureStatistics::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the data
+        float minTemp = bytes.read_float();
+        float maxTemp = bytes.read_float();
+        float meanTemp = bytes.read_float();
+
+        //add data points 
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_MIN_TEMP, valueType_float, anyType(minTemp)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_MAX_TEMP, valueType_float, anyType(maxTemp)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_MEAN_TEMP, valueType_float, anyType(meanTemp)));
+    }
+
+    bool FieldParser_TemperatureStatistics::registerParser()
+    {
+        static FieldParser_TemperatureStatistics p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
     //                                                        FieldParser_ScaledAmbientPressure
     const MipTypes::ChannelField FieldParser_ScaledAmbientPressure::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE;
     const bool FieldParser_ScaledAmbientPressure::REGISTERED = FieldParser_ScaledAmbientPressure::registerParser();    //register the parser immediately
@@ -498,6 +525,32 @@ namespace mscl
     {
         //create a static parser object
         static FieldParser_ScaledAmbientPressure p;
+
+        //register the parser
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_RawAmbientPressure
+    const MipTypes::ChannelField FieldParser_RawAmbientPressure::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_RAW_AMBIENT_PRESSURE;
+    const bool FieldParser_RawAmbientPressure::REGISTERED = FieldParser_RawAmbientPressure::registerParser();    //register the parser immediately
+
+    void FieldParser_RawAmbientPressure::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the data
+        float ambientPressure = bytes.read_float();
+
+        //add data points 
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_PRESSURE, valueType_float, anyType(ambientPressure)));
+    }
+
+    bool FieldParser_RawAmbientPressure::registerParser()
+    {
+        //create a static parser object
+        static FieldParser_RawAmbientPressure p;
 
         //register the parser
         return MipFieldParser::registerParser(FIELD_TYPE, &p);

@@ -10,10 +10,76 @@
 
 namespace mscl {
 
-public enum HeadingAlignmentMethod {
-  GNSS_Kinematic = 0,
-  GNSS_DualAntenna = 1,
-  Magnetometer = 2
+public class HeadingAlignmentMethod : global::System.IDisposable {
+  private global::System.Runtime.InteropServices.HandleRef swigCPtr;
+  protected bool swigCMemOwn;
+
+  internal HeadingAlignmentMethod(global::System.IntPtr cPtr, bool cMemoryOwn) {
+    swigCMemOwn = cMemoryOwn;
+    swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
+  }
+
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(HeadingAlignmentMethod obj) {
+    return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
+  }
+
+  ~HeadingAlignmentMethod() {
+    Dispose(false);
+  }
+
+  public void Dispose() {
+    Dispose(true);
+    global::System.GC.SuppressFinalize(this);
+  }
+
+  protected virtual void Dispose(bool disposing) {
+    lock(this) {
+      if (swigCPtr.Handle != global::System.IntPtr.Zero) {
+        if (swigCMemOwn) {
+          swigCMemOwn = false;
+          msclPINVOKE.delete_HeadingAlignmentMethod(swigCPtr);
+        }
+        swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
+      }
+    }
+  }
+
+  public HeadingAlignmentMethod() : this(msclPINVOKE.new_HeadingAlignmentMethod__SWIG_0(), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public HeadingAlignmentMethod(byte val) : this(msclPINVOKE.new_HeadingAlignmentMethod__SWIG_1(val), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public byte value {
+    set {
+      msclPINVOKE.HeadingAlignmentMethod_value_set(swigCPtr, value);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      byte ret = msclPINVOKE.HeadingAlignmentMethod_value_get(swigCPtr);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
+  public void select(HeadingAlignmentOption option) {
+    msclPINVOKE.HeadingAlignmentMethod_select(swigCPtr, (int)option);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void deselect(HeadingAlignmentOption option) {
+    msclPINVOKE.HeadingAlignmentMethod_deselect(swigCPtr, (int)option);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public bool selected(HeadingAlignmentOption option) {
+    bool ret = msclPINVOKE.HeadingAlignmentMethod_selected(swigCPtr, (int)option);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }
 
 }

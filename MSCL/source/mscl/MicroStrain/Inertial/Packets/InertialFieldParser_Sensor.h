@@ -313,12 +313,47 @@ namespace mscl
         static const bool REGISTERED;
     };
 
+    //Class: FieldParser_GpsCorrelationTimestamp
+    //    The field parser for GPS Correlation Timestamp
+    class FieldParser_TemperatureStatistics : public MipFieldParser
+    {
+    private:
+        //Constants: Valid Flags
+        //    TS_FLAG    - b00000001    - The flag position for checking the Timestamp Valid flag
+
+        FieldParser_TemperatureStatistics() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const MipTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
     //Class: FieldParser_ScaledAmbientPressure
     //    The field parser for Scaled Ambient Pressure.
     class FieldParser_ScaledAmbientPressure : public MipFieldParser
     {
     private:
         FieldParser_ScaledAmbientPressure() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const MipTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_RawAmbientPressure
+    //    The field parser for Raw Ambient Pressure.
+    class FieldParser_RawAmbientPressure : public MipFieldParser
+    {
+    private:
+        FieldParser_RawAmbientPressure() {};        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;

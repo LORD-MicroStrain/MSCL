@@ -18,8 +18,6 @@ namespace mscl
     //    <DataPoint>
     class Value
     {
-    private:
-        Value();    //default constructor disabled
         
     public:
         virtual ~Value(){}
@@ -33,6 +31,7 @@ namespace mscl
         //    value - The data that is to be stored
         Value(ValueType type, const anyType& value);
 
+        Value();
         Value(const Value& other);
         Value& operator=(const Value& other);
         bool operator==(const Value& other) const;

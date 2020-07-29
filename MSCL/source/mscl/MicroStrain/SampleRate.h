@@ -173,6 +173,17 @@ namespace mscl
         //    - <Error_UnknownSampleRate>: The given <WirelessTypes::WirelessSampleRate> is invalid or unknown.
         static SampleRate FromWirelessEepromValue(WirelessTypes::WirelessSampleRate eepromValue);
 
+        //API Function: FromInertialRateDecimationInfo
+        //    Creates a SampleRate object from the base rate and rate decimation value read from an inertial device
+        //
+        //Parameters:
+        //    uint16 - The data base rate
+        //    uint16 - The rate decimation value
+        //
+        //Returns:
+        //    A SampleRate object built from the given parameter.
+        static SampleRate FromInertialRateDecimationInfo(uint16 baseRate, uint16 rateDecimation);
+
     private:
         //Variable: m_rateType
         //    The type of the sample rate

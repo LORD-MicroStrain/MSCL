@@ -148,7 +148,10 @@
     <Compile Include="mscl\GeographicSourceOptions.cs" />
     <Compile Include="mscl\GeometricVector.cs" />
     <Compile Include="mscl\GeometricVectors.cs" />
+    <Compile Include="mscl\GnssReceiverInfo.cs" />
+    <Compile Include="mscl\GnssReceivers.cs" />
     <Compile Include="mscl\HeadingAlignmentMethod.cs" />
+    <Compile Include="mscl\HeadingAlignmentOption.cs" />
     <Compile Include="mscl\HeadingData.cs" />
     <Compile Include="mscl\HeadingUpdateOptions.cs" />
     <Compile Include="mscl\HeadingUpdateOptionsList.cs" />
@@ -178,6 +181,7 @@
     <Compile Include="mscl\MipDataPackets.cs" />
     <Compile Include="mscl\MipDataPoint.cs" />
     <Compile Include="mscl\MipDataPoints.cs" />
+    <Compile Include="mscl\MipFieldValues.cs" />
     <Compile Include="mscl\MipNodeFeatures.cs" />
     <Compile Include="mscl\MipPacket.cs" />
     <Compile Include="mscl\MipTypes.cs" />
@@ -194,9 +198,14 @@
     <Compile Include="mscl\Position.cs" />
     <Compile Include="mscl\PositionOffset.cs" />
     <Compile Include="mscl\PositionVelocityReferenceFrame.cs" />
+    <Compile Include="mscl\PpsInputOutputOptions.cs" />
     <Compile Include="mscl\PpsPulseInfo.cs" />
+    <Compile Include="mscl\Quaternion.cs" />
     <Compile Include="mscl\RadioFeatures.cs" />
     <Compile Include="mscl\RfSweep.cs" />
+    <Compile Include="mscl\RTKDeviceStatusFlags.cs" />
+    <Compile Include="mscl\RTKModels.cs" />
+    <Compile Include="mscl\RTKNode.cs" />
     <Compile Include="mscl\SampleRate.cs" />
     <Compile Include="mscl\SampleRates.cs" />
     <Compile Include="mscl\SamplingModes.cs" />

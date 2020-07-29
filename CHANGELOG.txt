@@ -14,6 +14,99 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
+57.2.2 - 2020-07-28
+- Add additional options to following enums for new product support:
+    - InertialTypes::GnssFixType
+    - InertialTypes::FilterState
+    - InertialTypes::FilterStatus_Running
+
+57.2.1 - 2020-07-27
+- Add support for MIP Commands:
+    - Commanded Zero-Velocity Update (0x0D, 0x22)
+    - Commanded Zero-Angular Rate Update (0x0D, 0x23)
+
+57.2.0 - 2020-07-21
+- Update GQ7 and RTK model numbers:
+    - 3DM-GQ7: 6284
+    - RTK: 6285
+- Add support for MIP Commands:
+    - Receiver Info (0x0E, 0x01)
+    - Generic Poll Data (0x0C,0x0D)
+    - Sensor to Vehicle Frame Transformation Euler (0x0C,0x31)
+    - Sensor to Vehicle Frame Transformation Quaternion (0x0C,0x32)
+    - Sensor to Vehicle Frame Transformation DCM (0x0C,0x33)
+- Get config command bytes for Multi-Antenna Offset (0x0D,0x54) based on reported receivers
+- Update enum definitions:
+    - AidingMeasurementSource
+    - HeadingAlignmentOption (add HeadingAlignmentMethod view)
+    - PpsInputOutput
+
+57.1.4 - 2020-07-17
+- MipCommand: allow function selector to be included for undefined commands despite being reported as 'not supported'
+
+57.1.3 - 2020-07-15
+- Fixed data response parsing for inertial commands:
+    - Accel Bias (0x0C,0x37)
+    - Gyro Bias (0x0C,0x38)
+    - Capture Gyro Bias (0x0C,0x39)
+    - Magnetometer Hard Iron Offset (0x0C,0x3A)
+- updated inertial command Advanced Low-Pass Filter Settings (0x0C,0x50) to send 0 for cutoff frequency when automatic specified
+
+57.1.2 - 2020-07-14
+- Added response descriptor parameter to GenericMipCommand::Response constructor  
+
+57.1.1 - 2020-07-10
+- Added support for MIP Commands:
+    - Factory Streaming (0x0C,0x10): InertialNode::setFactoryStreamingChannels()
+    - PPS Source (0x0C,0x28): InertialNode::get/setPpsSource()
+    - PPS Output (0x0C,0x29): InertialNode::get/setPpsOutput()
+
+57.1.0 - 2020-06-30
+- Added support for existing GNSS MIP data fields for new GNSS data sets (0x91-95)
+- Fixed bug that prevented function selector byte being included in MIP packet when using MipCommand class for undefined command IDs
+
+57.0.0 - 2020-06-29
+- CHANGED constructor MipNodeInfo(MipDeviceInfo, vector<uint16>, mscl::SampleRates, mscl::SampleRates, mscl::SampleRates) to MipNodeInfo(MipDeviceInfo, vector<uint16>, map<mscl::MipTypes::DataClass, mscl::SampleRates>) to better support more possible supported data classes
+- Added data set descriptors for MIP data sets GNSS 1-5 (0x91-95) to MipTypes::DataClass and DescriptorSet
+- Add MipNodeFeatures::useLegacyIdsForEnableDataStream() to support parameter definition changes in the Data Stream Control command (0x0C, 0x11)
+
+56.1.2 - 2020-06-19
+- Add support for new generic Message Format (0x0C, 0x0F) and Get Base Rate (0x0C, 0x0E) MIP commands
+- Add function SampleRate::FromInertialRateDecimationInfo() to build a SampleRate object from base rate and rate decimation values
+
+56.1.1 - 2020-06-19
+- Added FilterInitializationValues::autoInitialize to support command definition change
+
+56.0.1 - 2020-06-17
+- Added support for RTK device type
+- Added support for Get RTK Device Status Flags (0x0F,0x01)
+
+56.0.0 - 2020-05-28
+- RENAMED InertialNode::get/setSensorToVehicleTransformation() to get/setSensorToVehicleRotation_eulerAngles() for accuracy
+- RENAMED MipTypes::Command::CMD_EF_SENS_VEHIC_FRAME_TRANS to CMD_EF_SENS_VEHIC_FRAME_ROTATION_EULER
+- Added support for commands:
+    - Sensor to Vehicle Frame Rotation DCM (0x0D,0x4E)
+    - Sensor to Vehicle Frame Rotation Quaternion (0x0D,0x4F)
+- Added class Quaternion (extends Matrix)
+
+55.0.4 - 2020-05-21
+- Added InertialNode::saveSettingsAsStartup that accepts a list of commmand IDs and saves only those specified
+
+55.0.3 - 2020-05-21
+- Added support for fields:
+    - GNSS RTK Corrections Status (0x81,0x31)
+    - GPS Ionospheric Correction (0x81,0x71)
+    - GNSS Ionospheric Correction (0x81,0x73)
+    - GNSS Clock Info 2 (0x81,0x10)
+    - GNSS GPS Leap Seconds (0x81,0x11)
+
+55.0.2 - 2020-05-14
+- Added support for fields:
+    - AHRS Data: Raw Pressure (0x80, 0x16)
+    - AHRS Data: Temperature Abs (0x80, 0x14)
+    - Filter Data: Mag Bias (0x82, 0x1A)
+    - Filter Data: Mag Bias Uncertainty (0x82, 0x1B)
+
 55.0.1 - 2020-04-3
 - Added asMap function for DeviceStatusData returned by the DeviceStatus command
     - returns a map of DeviceStatusValues and string values representing the device status

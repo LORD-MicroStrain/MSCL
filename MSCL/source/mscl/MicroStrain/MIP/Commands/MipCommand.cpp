@@ -10,14 +10,19 @@ namespace mscl
     std::shared_ptr<GenericMipCommand::Response> MipCommand::createResponse(std::weak_ptr<ResponseCollector> collector)
     {
         std::shared_ptr<GenericMipCommand::Response> responseToSend(new GenericMipCommand::Response(commandType(),
-            collector, true, responseExpected(), commandName(), fieldDataByte()));
+            collector, true, responseExpected(), commandName(), buildMatchData(), fieldDataByte()));
         return responseToSend;
     }
 
     MipCommand::operator ByteStream() const
     {
         ByteStream command;
-        command.append_uint8(static_cast<uint8>(m_functionSelector));
+
+        if (MipCommand::supportsFunctionSelector(m_commandId, m_functionSelector)
+            || (!isKnownCommand() && m_functionSelector != MipTypes::FunctionSelector(0))) // allows undefined commands to be manually sent with fn selectors (ex: for save as startup)
+        {
+            command.append_uint8(static_cast<uint8>(m_functionSelector));
+        }
 
         for (Value val : m_data)
         {
@@ -56,32 +61,7 @@ namespace mscl
         DataBuffer buffer(response.data());
         MipFieldValues data;
 
-        for (ValueType type : responseFormat)
-        {
-            switch (type)
-            {
-            case valueType_bool:
-                data.push_back(Value::BOOL((buffer.read_uint8() > 0)));
-                break;
-            case valueType_uint8:
-                data.push_back(Value::UINT8(buffer.read_uint8()));
-                break;
-            case valueType_uint16:
-                data.push_back(Value::UINT16(buffer.read_uint16()));
-                break;
-            case valueType_uint32:
-                data.push_back(Value::UINT32(buffer.read_uint32()));
-                break;
-            case valueType_float:
-                data.push_back(Value::FLOAT(buffer.read_float()));
-                break;
-            case valueType_double:
-                data.push_back(Value::DOUBLE(buffer.read_double()));
-                break;
-            default:
-                break;
-            }
-        }
+        populateGenericResponseData(m_commandId, buffer, responseFormat, data);
 
         return data;
     }
@@ -91,14 +71,34 @@ namespace mscl
         return MipCommand::getCommandName(m_commandId);
     }
 
+    bool MipCommand::isKnownCommand() const
+    {
+        return MipCommand::getCommandName(m_commandId) != "";
+    }
+
     MipFunctionSelectors MipCommand::supportedFunctionSelectors(MipTypes::Command cmd)
     {
         switch (cmd)
         {
+        case MipTypes::CMD_GET_BASE_RATE:
+        case MipTypes::CMD_FACTORY_STREAMING:
+        case MipTypes::CMD_GNSS_RECEIVER_INFO:
+        case MipTypes::CMD_POLL:
+            return {};
+
         case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE:
         case MipTypes::CMD_EF_KINEMATIC_CONSTRAINT:
         case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS:
         case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
+        case MipTypes::CMD_MESSAGE_FORMAT:
+        case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
+        case MipTypes::CMD_PPS_SOURCE:
+        case MipTypes::CMD_PPS_OUTPUT:
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM:
             return {
                 MipTypes::FunctionSelector::USE_NEW_SETTINGS,
                 MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS,
@@ -106,6 +106,7 @@ namespace mscl
                 MipTypes::FunctionSelector::LOAD_STARTUP_SETTINGS,
                 MipTypes::FunctionSelector::RESET_TO_DEFAULT
             };
+
         default:
             return {};
         }
@@ -124,7 +125,32 @@ namespace mscl
 
     bool MipCommand::responseExpected() const
     {
-        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS;
+        return m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS
+            || m_responseExpected;
+    }
+
+    MipResponseMatchValues MipCommand::buildMatchData() const
+    {
+        MipResponseMatchValues matchData;
+
+        if (m_data.size() <= 0)
+        {
+            return matchData;
+        }
+
+        switch (m_commandId)
+        {
+        case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
+        case MipTypes::CMD_GET_BASE_RATE:
+        case MipTypes::CMD_MESSAGE_FORMAT:
+            // check that the desc set identifier is echoed back in the response
+            matchData.emplace(0, m_data[0]);
+            break;
+        default:
+            break;
+        }
+
+        return matchData;
     }
 
     std::string MipCommand::getCommandName(MipTypes::Command id)
@@ -139,6 +165,32 @@ namespace mscl
             return "AdaptiveFilterOptions";
         case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
             return "MultiAntennaOffset";
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
+            return "SensorToVehicleFrameRotationDCM";
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
+            return "SensorToVehicleFrameRotationQuaternion";
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
+            return "SensorToVehicleFrameTransformationEulerAngles";
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
+            return "SensorToVehicleFrameTransformationQuaternion";
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM:
+            return "SensorToVehicleFrameTransformationDCM";
+        case MipTypes::CMD_GET_BASE_RATE:
+            return "GetDataBaseRate";
+        case MipTypes::CMD_MESSAGE_FORMAT:
+            return "MessageFormat";
+        case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
+            return "ContinuousDataStream";
+        case MipTypes::CMD_FACTORY_STREAMING:
+            return "FactoryStreaming";
+        case MipTypes::CMD_PPS_SOURCE:
+            return "PpsSource";
+        case MipTypes::CMD_PPS_OUTPUT:
+            return "PpsOutput";
+        case MipTypes::CMD_GNSS_RECEIVER_INFO:
+            return "GnssReceiverInfo";
+        case MipTypes::CMD_POLL:
+            return "PollData";
         default:
             return "";
         }
@@ -156,8 +208,40 @@ namespace mscl
             return 0xD3;
         case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
             return 0xD4;
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
+            return 0xBE;
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
+            return 0xBF;
+        case MipTypes::CMD_GET_BASE_RATE:
+            return 0x8E;
+        case MipTypes::CMD_MESSAGE_FORMAT:
+            return 0x8F;
+        case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
+            return 0x85;
+        case MipTypes::CMD_PPS_SOURCE:
+            return 0xA8;
+        case MipTypes::CMD_PPS_OUTPUT:
+            return 0xA9;
+        case MipTypes::CMD_GNSS_RECEIVER_INFO:
+            return 0x80;
+
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER: //0xB1
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT: //0xB2
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM: //0xB3
         default:
-            return 0;
+        {
+            // this pattern is not true for all commands - may result in communication failures
+            uint8 cmdDesc = Utils::lsb(static_cast<uint16>(id));
+
+            // 0xF0-FF are reserved
+            // any command desc over 0x70 cannot follow this pattern and needs to be manually defined
+            if (cmdDesc >= 0x70)
+            {
+                return 0;
+            }
+
+            return cmdDesc | 0x80;
+        }
         }
     }
 
@@ -188,8 +272,185 @@ namespace mscl
                 ValueType::valueType_float,
                 ValueType::valueType_float
             };
+
+        case MipTypes::CMD_MESSAGE_FORMAT:
+            return {
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint8,
+                ValueType::valueType_Vector
+            };
+
+        case MipTypes::CMD_GET_BASE_RATE:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint16
+            };
+
+        case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_bool
+            };
+
+        case MipTypes::CMD_PPS_OUTPUT:
+        case MipTypes::CMD_PPS_SOURCE:
+            return{ ValueType::valueType_uint8 };
+
+        case MipTypes::CMD_GNSS_RECEIVER_INFO:
+            return{
+                ValueType::valueType_uint8, // num receivers
+                ValueType::valueType_Vector // receiver info
+            };
+
+        // Euler Angles (float[3])
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
+            return{
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+                ValueType::valueType_float
+            };
+
+        
+        // 3x3 Matrix
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM:
+            return {
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+                ValueType::valueType_float
+            };
+
+        // Quaternion
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
+            return{
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+                ValueType::valueType_float
+            };
+
         default:
-            return MipFieldFormat(0);
+            // no defined format, read out vector of uint8
+            return{ ValueType::valueType_Vector };
+        }
+    }
+
+    MipFieldFormat MipCommand::getResponseVectorPartFormat(MipTypes::Command id, uint8 nestedLevel, uint8 sequenceCount)
+    {
+        switch (id)
+        {
+        case MipTypes::CMD_MESSAGE_FORMAT:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint16
+            };
+
+        case MipTypes::CMD_GNSS_RECEIVER_INFO:
+            return{
+                ValueType::valueType_uint8, // receiver id
+                ValueType::valueType_uint8, // associated data set
+                ValueType::valueType_string // ascii description of receiver
+            };
+
+        default:
+            // no defined format, read out vector of uint8
+            return{ ValueType::valueType_uint8 };
+        }
+    }
+
+    int MipCommand::stringLength(MipTypes::Command id)
+    {
+        switch (id)
+        {
+        case MipTypes::CMD_GNSS_RECEIVER_INFO: return 32;
+
+        default: return -1;
+        }
+    }
+
+    void MipCommand::populateGenericResponseData(MipTypes::Command id, DataBuffer& buffer, const MipFieldFormat& format, MipFieldValues& outData, uint8 vectorNestedLevel, uint8 vectorSequenceCount)
+    {
+        for (ValueType type : format)
+        {
+            switch (type)
+            {
+            case valueType_bool:
+                outData.push_back(Value::BOOL((buffer.read_uint8() > 0)));
+                break;
+            case valueType_uint8:
+                outData.push_back(Value::UINT8(buffer.read_uint8()));
+                break;
+            case valueType_uint16:
+                outData.push_back(Value::UINT16(buffer.read_uint16()));
+                break;
+            case valueType_uint32:
+                outData.push_back(Value::UINT32(buffer.read_uint32()));
+                break;
+            case valueType_float:
+                outData.push_back(Value::FLOAT(buffer.read_float()));
+                break;
+            case valueType_double:
+                outData.push_back(Value::DOUBLE(buffer.read_double()));
+                break;
+
+            case valueType_string:
+            {
+                size_t count = stringLength(id);
+                if (count <= 0)
+                {
+                    // no count - read until end of buffer
+                    count = buffer.size();
+                }
+
+                std::string str;
+                for (size_t i = 0; i < count; i++)
+                {
+                    str += static_cast<char>(buffer.read_uint8());
+                }
+
+                outData.push_back(Value(ValueType::valueType_string, str));
+            }
+            break;
+
+            case valueType_Vector:
+            {
+                MipFieldFormat vectorFormat = MipCommand::getResponseVectorPartFormat(id, vectorNestedLevel, vectorSequenceCount);
+                size_t count = 0;
+                if (outData.size() > 0)
+                {
+                    // assume previous value is count if exists, cast to uint32 to be safe
+                    count = outData.back().as_uint32();
+                }
+                else
+                {
+                    // no count - read element format until end of buffer
+                    size_t elementSize = 0;
+                    for (ValueType t : vectorFormat)
+                    {
+                        elementSize += Utils::valueTypeSize(t);
+                    }
+
+                    count = buffer.size() / elementSize;
+                }
+
+                for (size_t i = 0; i < count; i++)
+                {
+                    MipCommand::populateGenericResponseData(id, buffer, vectorFormat, outData);
+                }
+            }
+            break;
+            default:
+                break;
+            }
         }
     }
 }  // namespace mscl

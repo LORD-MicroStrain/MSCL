@@ -38,10 +38,10 @@ namespace mscl
         MipPacket::Payload fieldData(field.fieldData());
 
         //verify the field is the minimum size
-        if(fieldData.size() < 2)
+        /*if(fieldData.size() < 2)
         {
             return false;
-        }
+        }*/
 
         //call match from the super class as well
         return GenericMipCommand::Response::match_data(field);

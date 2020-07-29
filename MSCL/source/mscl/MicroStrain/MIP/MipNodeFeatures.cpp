@@ -32,6 +32,11 @@ namespace mscl
             case MipTypes::CLASS_AHRS_IMU:
             case MipTypes::CLASS_GNSS:
             case MipTypes::CLASS_ESTFILTER:
+            case MipTypes::CLASS_GNSS1:
+            case MipTypes::CLASS_GNSS2:
+            case MipTypes::CLASS_GNSS3:
+            case MipTypes::CLASS_GNSS4:
+            case MipTypes::CLASS_GNSS5:
                 return true;
 
             default:
@@ -112,6 +117,11 @@ namespace mscl
         return m_nodeInfo.supportedSampleRates(dataClass);
     }
 
+    const GnssReceivers& MipNodeFeatures::gnssReceiverInfo() const
+    {
+        return m_nodeInfo.gnssReceiverInfo();
+    }
+
     const VehicleModeTypes MipNodeFeatures::supportedVehicleModeTypes() const
     {
         if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_VEHIC_DYNAMICS_MODE))
@@ -181,6 +191,47 @@ namespace mscl
             return{
                 DeviceStatusData::StatusSelector::BASIC_STATUS_STRUCTURE
             };
+        }
+    }
+
+    bool MipNodeFeatures::useLegacyIdsForEnableDataStream() const
+    {
+        InertialModels::NodeModel model = InertialModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model)
+        {
+        case InertialModels::node_3dm:
+        case InertialModels::node_fasA:
+        case InertialModels::node_3dm_gx2:
+        case InertialModels::node_3dm_dh3:
+        case InertialModels::node_3dm_gx3_15:
+        case InertialModels::node_3dm_gx3_25:
+        case InertialModels::node_3dm_gx3_35:
+        case InertialModels::node_3dm_gx3_45:
+        case InertialModels::node_3dm_rq1_45_lt:
+        case InertialModels::node_3dm_gx4_15:
+        case InertialModels::node_3dm_gx4_25:
+        case InertialModels::node_3dm_gx4_45:
+        case InertialModels::node_3dm_rq1_45_st:
+        case InertialModels::node_mv5_ar:
+        case InertialModels::node_3dm_gx5_10:
+        case InertialModels::node_3dm_gx5_15:
+        case InertialModels::node_3dm_gx5_25:
+        case InertialModels::node_3dm_gx5_35:
+        case InertialModels::node_3dm_gx5_45:
+        case InertialModels::node_3dm_cv5_10:
+        case InertialModels::node_3dm_cv5_15:
+        case InertialModels::node_3dm_cv5_25:
+        case InertialModels::node_3dm_cv5_45:
+        case InertialModels::node_3dm_gq4_45:
+        case InertialModels::node_3dm_cx5_45:
+        case InertialModels::node_3dm_cx5_35:
+        case InertialModels::node_3dm_cx5_25:
+        case InertialModels::node_3dm_cx5_15:
+        case InertialModels::node_3dm_cx5_10:
+            return true;
+
+        default:
+            return false;
         }
     }
 
@@ -406,6 +457,36 @@ namespace mscl
         return{
             InertialTypes::KinematicConstraint::CONSTRAINT_NONE,
             InertialTypes::KinematicConstraint::CONSTRAINT_ZERO_MAGNITUDE
+        };
+    }
+
+    const PpsInputOutputOptions MipNodeFeatures::supportedPpsSourceOptions() const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_PPS_SOURCE))
+        {
+            return{ PpsInputOutputOptions(0) };
+        }
+
+        return{
+            InertialTypes::PpsInputOutput::PPS_INPUT_RECEIVER_1,
+            InertialTypes::PpsInputOutput::PPS_INPUT_RECEIVER_2,
+            InertialTypes::PpsInputOutput::PPS_SOURCE_GENERATED,
+            InertialTypes::PpsInputOutput::PPS_IO_GPIO_1,
+            InertialTypes::PpsInputOutput::PPS_IO_GPIO_3
+        };
+    }
+
+    const PpsInputOutputOptions MipNodeFeatures::supportedPpsOutputOptions() const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_PPS_OUTPUT))
+        {
+            return{ PpsInputOutputOptions(0) };
+        }
+
+        return{
+            InertialTypes::PpsInputOutput::PPS_OUTPUT_DISABLED,
+            InertialTypes::PpsInputOutput::PPS_IO_GPIO_1,
+            InertialTypes::PpsInputOutput::PPS_IO_GPIO_3
         };
     }
 }

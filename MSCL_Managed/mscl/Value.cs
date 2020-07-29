@@ -110,6 +110,10 @@ public class Value : global::System.IDisposable {
     return ret;
   }
 
+  public Value() : this(msclPINVOKE.new_Value(), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
 }
 
 }

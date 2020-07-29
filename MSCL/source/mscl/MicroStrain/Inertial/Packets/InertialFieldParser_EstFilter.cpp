@@ -839,6 +839,38 @@ namespace mscl
     }
     //=====================================================================================================================================================
 
+    //=====================================================================================================================================================
+    //                                                        FieldParser_MagBias
+    const MipTypes::ChannelField FieldParser_MagBias::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_MAG_BIAS;
+    const bool FieldParser_MagBias::REGISTERED = FieldParser_MagBias::registerParser();    //register the parser immediately
+
+    void FieldParser_MagBias::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the values
+        float x = bytes.read_float();
+        float y = bytes.read_float();
+        float z = bytes.read_float();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool valid = pointIsValid(flags, VALID_FLAG);
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z), valid));
+    }
+
+    bool FieldParser_MagBias::registerParser()
+    {
+        static FieldParser_MagBias p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_CompensatedAccel
@@ -1030,6 +1062,39 @@ namespace mscl
     bool FieldParser_MagAutoHardIronOffsetUncert::registerParser()
     {
         static FieldParser_MagAutoHardIronOffsetUncert p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_MagBiasUncert
+    const MipTypes::ChannelField FieldParser_MagBiasUncert::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_MAG_BIAS_UNCERT;
+    const bool FieldParser_MagBiasUncert::REGISTERED = FieldParser_MagBiasUncert::registerParser();    //register the parser immediately
+
+    void FieldParser_MagBiasUncert::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the values
+        float x = bytes.read_float();
+        float y = bytes.read_float();
+        float z = bytes.read_float();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool valid = pointIsValid(flags, VALID_FLAG);
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z), valid));
+    }
+
+    bool FieldParser_MagBiasUncert::registerParser()
+    {
+        static FieldParser_MagBiasUncert p;
         return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================

@@ -64,6 +64,12 @@
     <Filter Include="MicroStrain\Displacement\Commands">
       <UniqueIdentifier>{2d816ebe-dc87-4cd4-b97f-9e952ba15164}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MicroStrain\RTK">
+      <UniqueIdentifier>{4160275e-7fa9-4c22-8578-607d82e2b2bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MicroStrain\RTK\Commands">
+      <UniqueIdentifier>{a49d32a6-b691-45ec-b639-26ffa719c426}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\mscl\Exceptions.h" />
@@ -980,6 +986,15 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_ptlink200.h">
       <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
     </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\RTK\RTKNode.h">
+      <Filter>MicroStrain\RTK</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\RTK\RTKModels.h">
+      <Filter>MicroStrain\RTK</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\RTK\Commands\DeviceStatusFlags.h">
+      <Filter>MicroStrain\RTK\Commands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp">
@@ -1857,6 +1872,15 @@
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_ptlink200.cpp">
       <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
     </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\RTK\RTKNode.cpp">
+      <Filter>MicroStrain\RTK</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\RTK\RTKModels.cpp">
+      <Filter>MicroStrain\RTK</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\RTK\Commands\DeviceStatusFlags.cpp">
+      <Filter>MicroStrain\RTK\Commands</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="source\mscl\Wrapper\MSCL_Exceptions.i">
@@ -1865,5 +1889,6 @@
     <None Include="source\mscl\Wrapper\MSCL_Main_Interface.i">
       <Filter>_Wrapper</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

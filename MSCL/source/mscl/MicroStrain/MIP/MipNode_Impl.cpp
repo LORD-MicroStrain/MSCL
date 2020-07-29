@@ -20,6 +20,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Displacement/Commands/DeviceTime.h"
 #include "mscl/MicroStrain/Displacement/Commands/DisplacementOutputDataRate.h"
 #include "mscl/MicroStrain/Displacement/Commands/GetAnalogToDisplacementCals.h"
+#include "mscl/MicroStrain/RTK/Commands/DeviceStatusFlags.h"
 #include "mscl/MicroStrain/Inertial/Commands/AccelBias.h"
 #include "mscl/MicroStrain/Inertial/Commands/AdaptiveMeasurement.h"
 #include "mscl/MicroStrain/Inertial/Commands/AdvancedLowPassFilterSettings.h"
@@ -375,6 +376,23 @@ namespace mscl
 
     void MipNode_Impl::pollData(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields)
     {
+        if (features().supportsCommand(MipTypes::CMD_POLL)) // Use generic poll if supported
+        {
+            MipFieldValues params;
+            params.push_back(Value::UINT8(static_cast<uint8>(dataClass)));
+            params.push_back(Value::BOOL(false)); // don't suppress ACK/NACK
+            params.push_back(Value::UINT8(static_cast<uint8>(fields.size())));
+
+            for (MipTypes::ChannelField ch : fields)
+            {
+                uint8 desc = Utils::lsb(static_cast<uint16>(ch));
+                params.push_back(Value::UINT8(desc));
+            }
+
+            set(MipTypes::CMD_POLL, params);
+            return;
+        }
+
         switch(dataClass)
         {
             case MipTypes::CLASS_AHRS_IMU:
@@ -412,6 +430,24 @@ namespace mscl
         return r.parseResponse(doCommand(r, GetDeviceInfo::buildCommand(), false));
     }
 
+    GnssReceivers MipNode_Impl::getGnssReceiverInfo() const
+    {
+        MipFieldValues ret = get(MipTypes::Command::CMD_GNSS_RECEIVER_INFO);
+
+        uint8 count = ret[0].as_uint8();
+        GnssReceivers receivers;
+        for (uint8 i = 0; i < count; i++)
+        {
+            uint8 index = (i * 3) + 1; // three values per element, first value count
+            receivers.push_back(GnssReceiverInfo(
+                ret[index].as_uint8(),                                       // receiver id
+                static_cast<MipTypes::DataClass>(ret[index + 1].as_uint8()), // associated data set
+                ret[index + 2].as_string()));                                // ascii desc
+        }
+
+        return receivers;
+    }
+
     std::vector<uint16> MipNode_Impl::getDescriptorSets() const
     {
         std::vector<uint16> descriptors;
@@ -442,12 +478,26 @@ namespace mscl
 
         std::vector<uint16> descriptors = info().descriptors();
         const MipNodeFeatures& feat = features();
+        std::vector<MipTypes::DataClass> dataClasses = {
+            MipTypes::DataClass::CLASS_AHRS_IMU,
+            MipTypes::DataClass::CLASS_GNSS,
+            MipTypes::DataClass::CLASS_ESTFILTER,
+            MipTypes::DataClass::CLASS_DISPLACEMENT,
+            MipTypes::DataClass::CLASS_GNSS1,
+            MipTypes::DataClass::CLASS_GNSS2,
+            MipTypes::DataClass::CLASS_GNSS3, // RTK
+            MipTypes::DataClass::CLASS_GNSS4,
+            MipTypes::DataClass::CLASS_GNSS5
+        };
 
         // build command set in numeric order by command id
         std::sort(descriptors.begin(), descriptors.end());
         
         for (size_t i = 0; i < descriptors.size(); i++)
         {
+            // only add commands
+            if (MipNodeFeatures::isChannelField(descriptors[i])) { continue; }
+
             MipTypes::Command cmd = static_cast<MipTypes::Command>(descriptors[i]);
             switch (cmd)
             {
@@ -481,26 +531,31 @@ namespace mscl
             case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
                 {
                     MipCommandBytes cmdBytes(cmd);
+                    std::vector<MipFieldValues> sources;
 
-                    MipTypes::DataClass dc = MipTypes::DataClass::CLASS_AHRS_IMU;
-                    if (feat.supportsCategory(dc)) {
-                        bool enabled = isDataStreamEnabled(dc);
-                        ByteStream s = ContinuousDataStream::buildCommand_set(dc, enabled);
-                        cmdBytes.add(s.data());
+                    if (feat.useLegacyIdsForEnableDataStream())
+                    {
+                        for (MipTypes::DataClass option : dataClasses)
+                        {
+                            if (feat.supportsCategory(option))
+                            {
+                                bool enabled = isDataStreamEnabled(option);
+                                ByteStream s = ContinuousDataStream::buildCommand_set(option, enabled);
+                                cmdBytes.add(s.data());
+                            }
+                        }
                     }
+                    else
+                    {
+                        for (MipTypes::DataClass option : dataClasses)
+                        {
+                            if (feat.supportsCategory(option))
+                            {
+                                sources.push_back({ Value::UINT8(static_cast<uint8>(option)) });
+                            }
+                        }
 
-                    dc = MipTypes::DataClass::CLASS_GNSS;
-                    if (feat.supportsCategory(dc)) {
-                        bool enabled = isDataStreamEnabled(dc);
-                        ByteStream s = ContinuousDataStream::buildCommand_set(dc, enabled);
-                        cmdBytes.add(s.data());
-                    }
-
-                    dc = MipTypes::DataClass::CLASS_ESTFILTER;
-                    if (feat.supportsCategory(dc)) {
-                        bool enabled = isDataStreamEnabled(dc);
-                        ByteStream s = ContinuousDataStream::buildCommand_set(dc, enabled);
-                        cmdBytes.add(s.data());
+                        cmdBytes = buildMipCommandBytes(cmd, sources);
                     }
                     
                     if (cmdBytes.commands.size() > 0)
@@ -600,11 +655,6 @@ namespace mscl
                     setCmds.push_back(MipCommandBytes(cmd, s.data()));
                 }
                 break;
-            case MipTypes::CMD_EF_MAG_CAPTURE_AUTO_CAL:
-                {
-                setCmds.push_back(MipCommandBytes(cmd));
-                }
-                break;
             case MipTypes::CMD_MAG_SOFT_IRON_MATRIX:
                 {
                     Matrix_3x3 data = getMagnetometerSoftIronMatrix();
@@ -672,9 +722,9 @@ namespace mscl
                     setCmds.push_back(MipCommandBytes(cmd, s.data()));
                 }
                 break;
-            case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANS:
+            case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_EULER:
                 {
-                    EulerAngles data = getSensorToVehicleTransformation();
+                    EulerAngles data = getSensorToVehicleRotation();
                     ByteStream s = SensorToVehicFrameTrans::buildCommand_set(data);
                     setCmds.push_back(MipCommandBytes(cmd, s.data()));
                 }
@@ -840,10 +890,31 @@ namespace mscl
                     setCmds.push_back(MipCommandBytes(cmd, s.data()));
                 }
                 break;
+            case MipTypes::CMD_MESSAGE_FORMAT:
+            {
+                std::vector<MipFieldValues> sources;
+
+                for (MipTypes::DataClass option : dataClasses)
+                {
+                    if (features().supportsCategory(option))
+                    {
+                        sources.push_back({ Value::UINT8(static_cast<uint8>(option)) });
+                    }
+                }
+
+                MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, sources);
+
+                if (cmdBytes.commands.size() > 0)
+                {
+                    setCmds.push_back(cmdBytes);
+                }
+            }
+                break;
             case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE:
                 {
                     std::vector<MipFieldValues> sources = {
-                        { Value::UINT16(InertialTypes::GNSS_AIDING) },
+                        { Value::UINT16(InertialTypes::GNSS_POS_VEL_AIDING) },
+                        { Value::UINT16(InertialTypes::GNSS_HEADING_AIDING) },
                         { Value::UINT16(InertialTypes::ALTIMETER_AIDING) },
                         { Value::UINT16(InertialTypes::ODOMETER_AIDING) },
                         { Value::UINT16(InertialTypes::MAGNETOMETER_AIDING) },
@@ -859,7 +930,21 @@ namespace mscl
                 }
                 break;
             case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
-                // TODO - add this once we can get supported receivers!
+                {
+                    GnssReceivers supportedReceivers = features().gnssReceiverInfo();
+                    std::vector<MipFieldValues> receivers;
+                    for (GnssReceiverInfo info : supportedReceivers)
+                    {
+                        receivers.push_back({ Value::UINT8(info.id) });
+                    }
+
+                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, receivers);
+
+                    if (cmdBytes.commands.size() > 0)
+                    {
+                        setCmds.push_back(cmdBytes);
+                    }
+                }
                 break;
             default:
                 {
@@ -930,6 +1015,15 @@ namespace mscl
 
     uint16 MipNode_Impl::getDataRateBase(MipTypes::DataClass dataClass) const
     {
+        if (features().supportsCommand(MipTypes::CMD_GET_BASE_RATE))
+        {
+            MipFieldValues data = get(MipTypes::CMD_GET_BASE_RATE,
+                { Value::UINT8(static_cast<uint8>(dataClass)) });
+
+            // skip first value - echo data class
+            return data[1].as_uint16();
+        }
+
         switch(dataClass)
         {
             case MipTypes::CLASS_AHRS_IMU:
@@ -985,6 +1079,28 @@ namespace mscl
         //get the sample rate base for this category
         uint16 sampleRateBase = getDataRateBase(type);
 
+        if (features().supportsCommand(MipTypes::CMD_MESSAGE_FORMAT))
+        {
+            MipFieldValues data = get(MipTypes::CMD_MESSAGE_FORMAT,
+                { Value::UINT8(static_cast<uint8>(type)) });
+
+            MipChannels chs;
+            uint8 descSet = data[0].as_uint8();
+            uint8 count = data[1].as_uint8();
+            for (uint8 i = 0; i < count; i++)
+            {
+                uint8 index = 2 + (i * 2);
+                uint8 desc = data[index].as_uint8();
+                uint16 decimation = data[index + 1].as_uint16();
+
+                MipTypes::ChannelField channelId = static_cast<MipTypes::ChannelField>(Utils::make_uint16(descSet, desc));
+                chs.push_back(MipChannel(channelId,
+                    SampleRate::FromInertialRateDecimationInfo(sampleRateBase, decimation)));
+            }
+
+            return chs;
+        }
+
         switch(type)
         {
             case MipTypes::CLASS_AHRS_IMU:
@@ -1021,6 +1137,28 @@ namespace mscl
     {
         //get the sample rate base set for this category
         uint16 sampleRateBase = getDataRateBase(dataClass);
+
+        if (features().supportsCommand(MipTypes::CMD_MESSAGE_FORMAT))
+        {
+            MipFieldValues params;
+            params.push_back(Value::UINT8(static_cast<uint8>(dataClass)));
+            params.push_back(Value::UINT8(static_cast<uint8>(channels.size())));
+
+            for (MipChannel ch : channels)
+            {
+                if(static_cast<MipTypes::DataClass>(ch.descriptorSet()) != dataClass)
+                {
+                    throw Error("MipChannel (" + Utils::toStr(ch.channelField()) + ") is not in the Sensor descriptor set");
+                }
+
+                params.push_back(Value::UINT8(ch.fieldDescriptor()));
+                params.push_back(Value::UINT16(ch.rateDecimation(sampleRateBase)));
+            }
+
+            set(MipTypes::CMD_MESSAGE_FORMAT, params);
+
+            return;
+        }
 
         switch(dataClass)
         {
@@ -1059,6 +1197,13 @@ namespace mscl
 
     void MipNode_Impl::saveMessageFormat(MipTypes::DataClass type)
     {
+        if (features().supportsCommand(MipTypes::CMD_MESSAGE_FORMAT))
+        {
+            saveAsStartup(MipTypes::CMD_MESSAGE_FORMAT,
+                { Value::UINT8(static_cast<uint8>(type)) });
+            return;
+        }
+
         switch (type)
         {
             case MipTypes::CLASS_AHRS_IMU:
@@ -1117,20 +1262,37 @@ namespace mscl
 
     bool MipNode_Impl::isDataStreamEnabled(MipTypes::DataClass dataClass) const
     {
-        //set the expected response
-        ContinuousDataStream::Response r(m_responseCollector, true, dataClass);
+        if (features().useLegacyIdsForEnableDataStream())
+        {
+            //set the expected response
+            ContinuousDataStream::Response r(m_responseCollector, true, dataClass);
 
-        //send the command, wait for the response, and parse the result
-        return r.parseResponse(doCommand(r, ContinuousDataStream::buildCommand_get(dataClass)));
+            //send the command, wait for the response, and parse the result
+            return r.parseResponse(doCommand(r, ContinuousDataStream::buildCommand_get(dataClass)));
+        }
+
+        // ignore first return value - echoed data class
+        return get(MipTypes::Command::CMD_CONTINUOUS_DATA_STREAM,
+        { Value::UINT8(static_cast<uint8>(dataClass)) })[1].as_bool();
     }
 
     void MipNode_Impl::enableDataStream(MipTypes::DataClass dataClass, bool enable)
     {
-        //set the expected response
-        ContinuousDataStream::Response r(m_responseCollector, false, dataClass);
+        if (features().useLegacyIdsForEnableDataStream())
+        {
+            //set the expected response
+            ContinuousDataStream::Response r(m_responseCollector, false, dataClass);
 
-        //send the command and wait for the response
-        doCommand(r, ContinuousDataStream::buildCommand_set(dataClass, enable));
+            //send the command and wait for the response
+            doCommand(r, ContinuousDataStream::buildCommand_set(dataClass, enable));
+            return;
+        }
+
+        set(MipTypes::Command::CMD_CONTINUOUS_DATA_STREAM,
+        {
+            Value::UINT8(static_cast<uint8>(dataClass)),
+            Value::BOOL(enable)
+        });
     }
 
     void MipNode_Impl::resetFilter()
@@ -1243,14 +1405,28 @@ namespace mscl
         SendCommand(setConfig);
     }
 
-    EulerAngles MipNode_Impl::getSensorToVehicleTransformation() const
+    void MipNode_Impl::cmdedVelZUPT()
+    {
+        CmdedVelZupt::Response r(m_responseCollector, false);
+
+        doCommand(r, CmdedVelZupt::buildCommand_get());
+    }
+
+    void MipNode_Impl::cmdedAngRateZUPT()
+    {
+        CmdedAngularZupt::Response r(m_responseCollector, false);
+
+        doCommand(r, CmdedAngularZupt::buildCommand_get());
+    }
+
+    EulerAngles MipNode_Impl::getSensorToVehicleRotation() const
     {
         SensorToVehicFrameTrans::Response r(m_responseCollector, true);
 
         return r.parseResponse(doCommand(r, SensorToVehicFrameTrans::buildCommand_get()));
     }
 
-    void MipNode_Impl::setSensorToVehicleTransformation(const EulerAngles& angles)
+    void MipNode_Impl::setSensorToVehicleRotation(const EulerAngles& angles)
     {
         SensorToVehicFrameTrans::Response r(m_responseCollector, false);
 
@@ -1791,6 +1967,13 @@ namespace mscl
         doCommand(r, DeviceTime::buildCommand_get(nanoseconds));
     }
 
+    RTKDeviceStatusFlags MipNode_Impl::getDeviceStatusFlags() const
+    {
+        DeviceStatusFlags::Response r(m_responseCollector);
+
+        return r.parseResponse(doCommand(r, DeviceStatusFlags::buildCommand_get()));
+    }
+
     MipFieldValues MipNode_Impl::get(MipTypes::Command cmdId) const
     {
         MipCommand command = MipCommand(cmdId,
@@ -1813,6 +1996,21 @@ namespace mscl
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::USE_NEW_SETTINGS,
             values);
+        SendCommand(command);
+    }
+
+    void MipNode_Impl::saveAsStartup(MipTypes::Command cmdId)
+    {
+        MipCommand command = MipCommand(cmdId,
+            MipTypes::FunctionSelector::SAVE_CURRENT_SETTINGS);
+        SendCommand(command);
+    }
+
+    void MipNode_Impl::saveAsStartup(MipTypes::Command cmdId, MipFieldValues specifier)
+    {
+        MipCommand command = MipCommand(cmdId,
+            MipTypes::FunctionSelector::SAVE_CURRENT_SETTINGS,
+            specifier);
         SendCommand(command);
     }
 

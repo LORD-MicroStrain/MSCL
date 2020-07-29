@@ -55,7 +55,7 @@ namespace mscl
         static std::unique_ptr<MipNodeFeatures> create(const MipNodeInfo& info);
 #endif
 
-    private:
+    public:
         //Function: isChannelField
         //  Checks if the uint16 descriptor value is a Channel field or not.
         //
@@ -63,7 +63,6 @@ namespace mscl
         //  true if the descriptor is a data channel field, false otherwise.
         static bool isChannelField(uint16 descriptor);
 
-    public:
         //API Function: supportsCategory
         //    Checks whether or not a given <MipTypes::DataClass> is supported by the Node.
         //
@@ -119,6 +118,24 @@ namespace mscl
         //    - <Error_NotSupported>: The <MipTypes::DataClass> is not supported by this node.
         //    - <Error_Connection>: A connection error has occurred with the Node.
         const SampleRates& supportedSampleRates(MipTypes::DataClass dataClass) const;
+
+        //API Function: gnssReceiverInfo
+        //    Gets a list of <GnssReceiverInfo> for supported GNSS receivers.
+        //
+        //Returns:
+        //    A <GnssReceivers> list containing <GnssReceiverInfo> for supported receivers
+        //
+        //Exceptions:
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Communication>: Timed out waiting for a response.
+        //    - <Error_Connection>: A connection error has occurred with the Node.
+        const GnssReceivers& gnssReceiverInfo() const;
+
+        //API Function: useLegacyIdsForEnableDataStream
+        //
+        //Returns:
+        //  true if the device uses Legacy IDs for the IMU/AHRS, GNSS, and EF data sets in the Enable Data Stream command (0x0C, 0x11)
+        bool useLegacyIdsForEnableDataStream() const;
 
         //API Function: supportedHeadingUpdateOptions
         //    Gets a list of the supported heading update control options for this node.
@@ -176,6 +193,18 @@ namespace mscl
         //    An KinematicConstraintOptions object containing all the supported angular constraint options for this device.
         const KinematicConstraintOptions supportedAngularConstraintOptions() const;
 
+        //API Function: supportedPpsSourceOptions
+        //    Gets the PPS source options supported by this device.
+        //
+        //Returns:
+        //    A <PpsInputOutputOptions> list containing all the supported options.
+        const PpsInputOutputOptions supportedPpsSourceOptions() const;
 
+        //API Function: supportedPpsOutputOptions
+        //    Gets the PPS output options supported by this device.
+        //
+        //Returns:
+        //    A <PpsInputOutputOptions> object containing all options.
+        const PpsInputOutputOptions supportedPpsOutputOptions() const;
     };
 }

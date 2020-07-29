@@ -144,6 +144,14 @@ namespace mscl
         m_impl->resume();
     }
 
+    void InertialNode::saveSettingsAsStartup(MipTypes::MipCommands cmdIds)
+    {
+        for (MipTypes::Command cmd : cmdIds)
+        {
+            m_impl->saveAsStartup(cmd);
+        }
+    }
+
     void InertialNode::saveSettingsAsStartup()
     {
         return m_impl->saveSettingsAsStartup();
@@ -197,6 +205,13 @@ namespace mscl
     void InertialNode::saveActiveChannelFields(MipTypes::DataClass dataClass)
     {
         m_impl->saveMessageFormat(dataClass);
+    }
+
+    void InertialNode::setFactoryStreamingChannels(InertialTypes::FactoryStreamingOption option)
+    {
+        m_impl->set(MipTypes::Command::CMD_FACTORY_STREAMING, {
+            Value::UINT8(static_cast<uint8>(option)),
+            Value::UINT8(0) });
     }
 
     uint8 InertialNode::getCommunicationMode()
@@ -269,6 +284,16 @@ namespace mscl
         m_impl->setAngularRateZUPT(ZUPTSettings);
     }
 
+    void InertialNode::cmdedVelZUPT()
+    {
+        m_impl->cmdedVelZUPT();
+    }
+
+    void InertialNode::cmdedAngRateZUPT()
+    {
+        m_impl->cmdedAngRateZUPT();
+    }
+
     bool InertialNode::getAutoInitialization()
     {
         return m_impl->getAutoInitialization();
@@ -299,14 +324,74 @@ namespace mscl
         m_impl->setInitialFilterConfiguration(filterConfig);
     }
 
-    EulerAngles InertialNode::getSensorToVehicleTransformation()
+    EulerAngles InertialNode::getSensorToVehicleRotation_eulerAngles()
     {
-        return m_impl->getSensorToVehicleTransformation();
+        return m_impl->getSensorToVehicleRotation();
     }
 
-    void InertialNode::setSensorToVehicleTransformation(const EulerAngles& angles)
+    void InertialNode::setSensorToVehicleRotation_eulerAngles(const EulerAngles& angles)
     {
-        m_impl->setSensorToVehicleTransformation(angles);
+        m_impl->setSensorToVehicleRotation(angles);
+    }
+
+    Matrix_3x3 InertialNode::getSensorToVehicleRotation_matrix()
+    {
+        return Matrix_3x3(m_impl->get(MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM));
+    }
+
+    void InertialNode::setSensorToVehicleRotation_matrix(const Matrix_3x3& dcm)
+    {
+        m_impl->set(MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM,
+            dcm.asMipFieldValues());
+    }
+
+    Quaternion InertialNode::getSensorToVehicleRotation_quaternion()
+    {
+        return Quaternion(m_impl->get(MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT));
+    }
+
+    void InertialNode::setSensorToVehicleRotation_quaternion(const Quaternion& rotation)
+    {
+        m_impl->set(MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT,
+            rotation.asMipFieldValues());
+    }
+
+    EulerAngles InertialNode::getSensorToVehicleTransform_eulerAngles()
+    {
+        MipFieldValues res = m_impl->get(MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER);
+        return EulerAngles(res[0].as_float(), res[1].as_float(), res[2].as_float());
+    }
+
+    void InertialNode::setSensorToVehicleTransform_eulerAngles(const EulerAngles& ea)
+    {
+        MipFieldValues params = {
+            Value::FLOAT(ea.roll()),
+            Value::FLOAT(ea.pitch()),
+            Value::FLOAT(ea.yaw())
+        };
+        m_impl->set(MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER, params);
+    }
+
+    Matrix_3x3 InertialNode::getSensorToVehicleTransform_matrix()
+    {
+        return Matrix_3x3(m_impl->get(MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM));
+    }
+
+    void InertialNode::setSensorToVehicleTransform_matrix(const Matrix_3x3& dcm)
+    {
+        m_impl->set(MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM,
+            dcm.asMipFieldValues());
+    }
+
+    Quaternion InertialNode::getSensorToVehicleTransform_quaternion()
+    {
+        return Quaternion(m_impl->get(MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT));
+    }
+
+    void InertialNode::setSensorToVehicleTransform_quaternion(const Quaternion& transformation)
+    {
+        m_impl->set(MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT,
+            transformation.asMipFieldValues());
     }
 
     PositionOffset InertialNode::getSensorToVehicleOffset()
@@ -883,5 +968,27 @@ namespace mscl
             Value::FLOAT(offset.x()),
             Value::FLOAT(offset.y()),
             Value::FLOAT(offset.z()) });
+    }
+
+    InertialTypes::PpsInputOutput InertialNode::getPpsSource() const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_PPS_SOURCE);
+        return static_cast<InertialTypes::PpsInputOutput>(data[0].as_uint8());
+    }
+
+    void InertialNode::setPpsSource(InertialTypes::PpsInputOutput ppsSource)
+    {
+        m_impl->set(MipTypes::CMD_PPS_SOURCE, { Value::UINT8(static_cast<uint8>(ppsSource)) });
+    }
+
+    InertialTypes::PpsInputOutput InertialNode::getPpsOutput() const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_PPS_OUTPUT);
+        return static_cast<InertialTypes::PpsInputOutput>(data[0].as_uint8());
+    }
+
+    void InertialNode::setPpsOutput(InertialTypes::PpsInputOutput ppsOutput)
+    {
+        m_impl->set(MipTypes::CMD_PPS_OUTPUT, { Value::UINT8(static_cast<uint8>(ppsOutput)) });
     }
 }

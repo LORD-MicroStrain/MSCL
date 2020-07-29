@@ -637,6 +637,26 @@ namespace mscl
         static const bool REGISTERED;
     };
 
+    //Class: FieldParser_MagBias
+    //    The field parser for Estimated Mag Auto Hard Iron Offset data
+    class FieldParser_MagBias : public MipFieldParser
+    {
+    private:
+        //Constants: Valid Flags
+        //    VALID_FLAG        - b00000001 - The flag position for checking the Mag Bias flag
+        static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
+        
+        FieldParser_MagBias() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const MipTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
     //Class: FieldParser_MagAutoSoftIronMatrix
     //    The field parser for Estimated Mag Auto Soft Iron Matrix data
     class FieldParser_MagAutoSoftIronMatrix: public MipFieldParser
@@ -669,6 +689,26 @@ namespace mscl
 
     private:
         FieldParser_MagAutoHardIronOffsetUncert() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const MipTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_MagBiasUncert
+    //    The field parser for Estimated Mag Bias Uncertainty data
+    class FieldParser_MagBiasUncert : public MipFieldParser
+    {
+    private:
+        //Constants: Valid Flags
+        //    VALID_FLAG        - b00000001 - The flag position for checking the Mag Bias Uncertainty flag
+        static const uint16 VALID_FLAG = BOOST_BINARY(00000001);
+
+        FieldParser_MagBiasUncert() {};        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;

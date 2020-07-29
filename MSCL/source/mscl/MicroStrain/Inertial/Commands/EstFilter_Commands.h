@@ -441,15 +441,76 @@ namespace mscl
         };
     };
 
+    //Class: CmdedVelZupt
+    //    Contains the logic for the "Commanded Zero Velocity Update" command
+    class CmdedVelZupt
+    {
+    public:
+        //Constants: Packet Bytes
+        //  CMD_ID              - CMD_EF_CMDED_ZERO_VEL_UPDATE    - The <MipTypes::Command> for this command
+        //  FIELD_DATA_BYTE     - 0xF1                                      - The Data Field Descriptor byte
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_EF_CMDED_ZERO_VEL_UPDATE;
+        static const uint8 FIELD_DATA_BYTE = 0xF1;
+
+    private:
+        CmdedVelZupt() = delete;
+
+    public:
+        //Function: buildCommand_get
+        //    Builds the bytes for the "get" command.
+        static ByteStream buildCommand_get();
+
+        class Response : public GenericMipCommand::Response
+        {
+        protected:
+            virtual MipTypes::Command commandId() const { return CMD_ID; }
+            virtual uint8 fieldDataByte() const { return FIELD_DATA_BYTE; }
+
+        public:
+            Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
+        };
+    };
+
+
+    //Class: CmdedAngularZupt
+    //    Contains the logic for the "Commanded Zero Angular Rate Update" command
+    class CmdedAngularZupt
+    {
+    public:
+        //Constants: Packet Bytes
+        //  CMD_ID              - CMD_EF_CMDED_ZERO_ANG_RATE_UPDATE    - The <MipTypes::Command> for this command
+        //  FIELD_DATA_BYTE     - 0xF1                                      - The Data Field Descriptor byte
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_EF_CMDED_ZERO_ANG_RATE_UPDATE;
+        static const uint8 FIELD_DATA_BYTE = 0xF1;
+
+    private:
+        CmdedAngularZupt() = delete;
+
+    public:
+        //Function: buildCommand_get
+        //    Builds the bytes for the "get" command.
+        static ByteStream buildCommand_get();
+
+        class Response : public GenericMipCommand::Response
+        {
+        protected:
+            virtual MipTypes::Command commandId() const { return CMD_ID; }
+            virtual uint8 fieldDataByte() const { return FIELD_DATA_BYTE; }
+
+        public:
+            Response(std::weak_ptr<ResponseCollector> collector, bool dataResponse);
+        };
+    };
+
     //Class: SensorToVehicFrameTrans
     //    Contains the logic for the "Sensor to Vehicle Frame Transformation" command
     class SensorToVehicFrameTrans
     {
     public:
         //Constants: Packet Bytes
-        //  CMD_ID              - CMD_EF_SENS_VEHIC_FRAME_TRANS     - The <MipTypes::Command> for this command
-        //  FIELD_DATA_BYTE     - 0x81                              - The Data Field Descriptor byte
-        static const MipTypes::Command CMD_ID = MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANS;
+        //  CMD_ID              - CMD_EF_SENS_VEHIC_FRAME_ROTATION_EULER    - The <MipTypes::Command> for this command
+        //  FIELD_DATA_BYTE     - 0x81                                      - The Data Field Descriptor byte
+        static const MipTypes::Command CMD_ID = MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_EULER;
         static const uint8 FIELD_DATA_BYTE = 0x81;
 
     private:
