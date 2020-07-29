@@ -4,42 +4,42 @@ MSCL is developed by [LORD Sensing - Microstrain](http://microstrain.com) in Wil
 
 #### Downloads
 
-[Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/mscl_55.0.1_Documentation.zip) | 
-[Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/mscl_55.0.1_Examples.zip)
+[Offline Documentation](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/mscl_57.2.2_Documentation.zip) | 
+[Offline Example Code](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/mscl_57.2.2_Examples.zip)
 
-##### Pre-built MSCL Binaries/Packages (v55.0.1)
+##### Pre-built MSCL Binaries/Packages (v57.2.2)
 Windows:
-[C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/mscl_55.0.1_Windows_C++.zip) | 
-[Python 2.7](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/mscl_55.0.1_Windows_Python2.7.zip) |
-[Python 3.6](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/mscl_55.0.1_Windows_Python3.6.zip) |
-[.NET](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/mscl_55.0.1_Windows_DotNet.zip)
+[C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/mscl_57.2.2_Windows_C++.zip) | 
+[Python 2.7](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/mscl_57.2.2_Windows_Python2.7.zip) |
+[Python 3.6](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/mscl_57.2.2_Windows_Python3.6.zip) |
+[.NET](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/mscl_57.2.2_Windows_DotNet.zip)
 
 Debian:
   * x64:
-  [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/c++-mscl_55.0.1_amd64.deb) |
-  [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/python2-mscl_55.0.1_amd64.deb) |
-  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/python3-mscl_55.0.1_amd64.deb)
+  [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/c++-mscl_57.2.2_amd64.deb) |
+  [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/python2-mscl_57.2.2_amd64.deb) |
+  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/python3-mscl_57.2.2_amd64.deb)
   * arm64:
-  [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/c++-mscl_55.0.1_arm64.deb) |
-  [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/python2-mscl_55.0.1_arm64.deb) |
-  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/python3-mscl_55.0.1_arm64.deb)
+  [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/c++-mscl_57.2.2_arm64.deb) |
+  [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/python2-mscl_57.2.2_arm64.deb) |
+  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/python3-mscl_57.2.2_arm64.deb)
   * armhf (Raspbian):
-  [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/c++-mscl_55.0.1_armhf.deb) |
-  [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/python2-mscl_55.0.1_armhf.deb) |
-  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/python3-mscl_55.0.1_armhf.deb)
+  [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/c++-mscl_57.2.2_armhf.deb) |
+  [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/python2-mscl_57.2.2_armhf.deb) |
+  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/python3-mscl_57.2.2_armhf.deb)
 
 RPM:
   * x64:
-  [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/c++-mscl-55.0.1_x86_64.rpm) |
-  [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/python2-mscl-55.0.1_x86_64.rpm) |
-  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/python3-mscl-55.0.1_x86_64.rpm)
+  [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/c++-mscl-57.2.2_x86_64.rpm) |
+  [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/python2-mscl-57.2.2_x86_64.rpm) |
+  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/python3-mscl-57.2.2_x86_64.rpm)
   * arm64:
-  [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/c++-mscl-55.0.1_aarch64.rpm) |
-  [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/python2-mscl-55.0.1_aarch64.rpm) |
-  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/python3-mscl-55.0.1_aarch64.rpm)
+  [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/c++-mscl-57.2.2_aarch64.rpm) |
+  [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/python2-mscl-57.2.2_aarch64.rpm) |
+  [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/python3-mscl-57.2.2_aarch64.rpm)
   * CentOS:
-  [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/c++-mscl-55.0.1_x86_64_centos7.6.1810.rpm) |
-  [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v55.0.1/python2-mscl-55.0.1_x86_64_centos7.6.1810.rpm)
+  [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/c++-mscl-57.2.2_x86_64_centos7.6.1810.rpm) |
+  [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v57.2.2/python2-mscl-57.2.2_x86_64_centos7.6.1810.rpm)
 
 ---
 
