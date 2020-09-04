@@ -80,6 +80,12 @@ public class Value : global::System.IDisposable {
     return ret;
   }
 
+  public virtual sbyte as_int8() {
+    sbyte ret = msclPINVOKE.Value_as_int8(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public virtual short as_int16() {
     short ret = msclPINVOKE.Value_as_int16(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

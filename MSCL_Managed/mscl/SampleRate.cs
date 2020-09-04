@@ -118,6 +118,12 @@ public class SampleRate : global::System.IDisposable {
     return ret;
   }
 
+  public static SampleRate Decimation(uint rateDecimation) {
+    SampleRate ret = new SampleRate(msclPINVOKE.SampleRate_Decimation(rateDecimation), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public static SampleRate FromWirelessEepromValue(WirelessTypes.WirelessSampleRate eepromValue) {
     SampleRate ret = new SampleRate(msclPINVOKE.SampleRate_FromWirelessEepromValue((int)eepromValue), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -133,7 +139,8 @@ public class SampleRate : global::System.IDisposable {
   public enum RateType {
     rateType_seconds = 0,
     rateType_hertz = 1,
-    rateType_event = 2
+    rateType_event = 2,
+    rateType_decimation = 3
   }
 
 }

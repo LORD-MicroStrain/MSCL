@@ -323,6 +323,13 @@ namespace mscl
                     return false;
                 }
                 break;
+            case valueType_int8:
+                if (data.size() <= index + 1
+                    || data.read_int8(index) != entry.second.as_int8())
+                {
+                    return false;
+                }
+                break;
             case valueType_float:
                 if (data.size() <= index + 4
                     || data.read_float(index) != entry.second.as_float())

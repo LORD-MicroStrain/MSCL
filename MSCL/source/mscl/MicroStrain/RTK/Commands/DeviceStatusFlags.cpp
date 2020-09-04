@@ -21,10 +21,6 @@ namespace mscl
 
     RTKDeviceStatusFlags DeviceStatusFlags::Response::parseResponse(const GenericMipCmdResponse& response) const
     {
-        bool modemEnabled = response.data().read_uint8(0) == 1;
-        bool modemConnected = response.data().read_uint8(1) == 1;
-        bool clientConnected = response.data().read_uint8(2) == 1;
-
-        return RTKDeviceStatusFlags(modemEnabled, modemConnected, clientConnected);
+        return RTKDeviceStatusFlags(response.data().read_uint32(0));
     }
 }

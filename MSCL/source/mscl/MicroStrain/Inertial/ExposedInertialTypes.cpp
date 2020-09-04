@@ -591,6 +591,12 @@ namespace mscl
             statusMap[SystemState_Value] = std::to_string(m_systemState.get());
         }
 
+        if (isSet(m_gnss1PpsPulseInfo))
+        {
+            statusMap[gnss1PpsPulseInfo_Count] = std::to_string(m_gnss1PpsPulseInfo.get().count);
+            statusMap[gnss1PpsPulseInfo_LastTimeinMS] = std::to_string(m_gnss1PpsPulseInfo.get().lastTimeinMS);
+        }
+
         if (isSet(m_gnssPowerStateOn)) {
             statusMap[GnssPowerStateOn] = std::to_string(m_gnssPowerStateOn.get());
         }
@@ -669,4 +675,159 @@ namespace mscl
         return statusMap;
     }
 
+    uint8 RTKDeviceStatusFlags::state() const
+    {
+        return static_cast<uint8>(get(ValueMap::STATE));
+    }
+    
+    void RTKDeviceStatusFlags::state(uint8 state)
+    {
+        set(ValueMap::STATE, state);
+    }
+
+    uint8 RTKDeviceStatusFlags::statusCode() const
+    {
+        return static_cast<uint8>(get(ValueMap::STATUS_CODE));
+    }
+
+    void RTKDeviceStatusFlags::statusCode(uint8 code)
+    {
+        set(ValueMap::STATUS_CODE, code);
+    }
+
+    RTKDeviceStatusFlags::ResetReason RTKDeviceStatusFlags::resetReason() const
+    {
+        return static_cast<ResetReason>(get(ValueMap::RESET_REASON));
+    }
+
+    void RTKDeviceStatusFlags::resetReason(RTKDeviceStatusFlags::ResetReason reason)
+    {
+        set(ValueMap::RESET_REASON, static_cast<uint32>(reason));
+    }
+
+    bool RTKDeviceStatusFlags::modemPowered() const
+    {
+        return get(ValueMap::MODEM_POWERED) > 0;
+    }
+
+    void RTKDeviceStatusFlags::modemPowered(bool powered)
+    {
+        set(ValueMap::MODEM_POWERED, (powered ? 1 : 0));
+    }
+
+    bool RTKDeviceStatusFlags::cellConnected()
+    {
+        return get(ValueMap::CELL_CONNECTED) > 0;
+    }
+
+    void RTKDeviceStatusFlags::cellConnected(bool connected)
+    {
+        set(ValueMap::CELL_CONNECTED, (connected ? 1 : 0));
+    }
+
+    bool RTKDeviceStatusFlags::serverConnected()
+    {
+        return get(ValueMap::SERVER_CONNECTED) > 0;
+    }
+
+    void RTKDeviceStatusFlags::serverConnected(bool connected)
+    {
+        set(ValueMap::SERVER_CONNECTED, (connected ? 1 : 0));
+    }
+
+    bool RTKDeviceStatusFlags::dataEnabled()
+    {
+        return get(ValueMap::DATA_ENABLED) > 0;
+    }
+
+    void RTKDeviceStatusFlags::dataEnabled(bool enabled)
+    {
+        set(ValueMap::DATA_ENABLED, (enabled ? 1 : 0));
+    }
+
+    GnssSignalConfiguration::GnssSignalConfiguration()
+    {
+        m_gpsSignals = Bitfield(0);
+        m_glonassSignals = Bitfield(0);
+        m_galileoSignals = Bitfield(0);
+        m_beidouSignals = Bitfield(0);
+    }
+
+    void GnssSignalConfiguration::enableGpsSignal(GnssSignalConfiguration::GpsSignal signal, bool enable)
+    {
+        m_gpsSignals.set(signal, (enable ? 1 : 0));
+    }
+
+    bool GnssSignalConfiguration::gpsSignalEnabled(GnssSignalConfiguration::GpsSignal signal)
+    {
+        return m_gpsSignals.get(signal) > 0;
+    }
+
+    void GnssSignalConfiguration::enableGlonassSignal(GnssSignalConfiguration::GlonassSignal signal, bool enable)
+    {
+        m_glonassSignals.set(signal, (enable ? 1 : 0));
+    }
+
+    bool GnssSignalConfiguration::glonassSignalEnabled(GnssSignalConfiguration::GlonassSignal signal)
+    {
+        return m_glonassSignals.get(signal) > 0;
+    }
+
+    void GnssSignalConfiguration::enableGalileoSignal(GnssSignalConfiguration::GalileoSignal signal, bool enable)
+    {
+        m_galileoSignals.set(signal, (enable ? 1 : 0));
+    }
+
+    bool GnssSignalConfiguration::galileoSignalEnabled(GnssSignalConfiguration::GalileoSignal signal)
+    {
+        return m_galileoSignals.get(signal) > 0;
+    }
+
+    void GnssSignalConfiguration::enableBeiDouSignal(GnssSignalConfiguration::BeiDouSignal signal, bool enable)
+    {
+        m_beidouSignals.set(signal, (enable ? 1 : 0));
+    }
+
+    bool GnssSignalConfiguration::beidouSignalEnabled(GnssSignalConfiguration::BeiDouSignal signal)
+    {
+        return m_beidouSignals.get(signal) > 0;
+    }
+
+    uint8 PositionReferenceConfiguration::source() const
+    {
+        if (autoConfig)
+        {
+            return static_cast<uint8>(Source::AUTO);
+        }
+
+        return (position.referenceFrame == PositionVelocityReferenceFrame::ECEF
+            ? static_cast<uint8>(Source::MANUAL_ECEF)
+            : static_cast<uint8>(Source::MANUAL_LLH));
+    }
+
+    PositionReferenceConfiguration PositionReferenceConfiguration::fromResponseData(MipFieldValues resData)
+    {
+        if (resData.size() < 4)
+        {
+            throw Error_BadDataType();
+        }
+
+        PositionReferenceConfiguration ref;
+        Source source = static_cast<Source>(resData[0].as_uint8());
+        
+        if (source == Source::AUTO)
+        {
+            ref.autoConfig = true;
+        }
+
+        ref.position = Position(
+            resData[1].as_double(),
+            resData[2].as_double(),
+            resData[3].as_double(),
+            (source == Source::MANUAL_ECEF
+                ? PositionVelocityReferenceFrame::ECEF
+                : PositionVelocityReferenceFrame::LLH_NED));
+
+        return ref;
+    }
 }  // namespace mscl

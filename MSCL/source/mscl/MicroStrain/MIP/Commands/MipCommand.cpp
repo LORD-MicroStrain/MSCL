@@ -41,6 +41,9 @@ namespace mscl
             case valueType_uint32:
                 command.append_uint32(val.as_uint32());
                 break;
+            case valueType_int8:
+                command.append_int8(val.as_int8());
+                break;
             case valueType_float:
                 command.append_float(val.as_float());
                 break;
@@ -80,18 +83,15 @@ namespace mscl
     {
         switch (cmd)
         {
+        // 0x0C
+        case MipTypes::CMD_POLL:
         case MipTypes::CMD_GET_BASE_RATE:
         case MipTypes::CMD_FACTORY_STREAMING:
+        // Ox0E
         case MipTypes::CMD_GNSS_RECEIVER_INFO:
-        case MipTypes::CMD_POLL:
             return {};
 
-        case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE:
-        case MipTypes::CMD_EF_KINEMATIC_CONSTRAINT:
-        case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS:
-        case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
-        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
-        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
+        // 0x0C
         case MipTypes::CMD_MESSAGE_FORMAT:
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
         case MipTypes::CMD_PPS_SOURCE:
@@ -99,6 +99,20 @@ namespace mscl
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM:
+        //case MipTypes::CMD_ODOMETER_SETTINGS:
+        // 0x0D
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
+        case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE:
+        case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS:
+        case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
+        case MipTypes::CMD_EF_RELATIVE_POSITION_REF:
+        case MipTypes::CMD_EF_VERTICAL_GYRO_CONSTRAINT:
+        case MipTypes::CMD_EF_WHEELED_VEHICLE_CONSTRAINT:
+        case MipTypes::CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL:
+        // 0x0E
+        case MipTypes::CMD_GNSS_SIGNAL_CONFIG:
+        case MipTypes::CMD_GNSS_RTK_CONFIG:
             return {
                 MipTypes::FunctionSelector::USE_NEW_SETTINGS,
                 MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS,
@@ -157,40 +171,55 @@ namespace mscl
     {
         switch (id)
         {
-        case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE:
-            return "AidingMeasurementEnable";
-        case MipTypes::CMD_EF_KINEMATIC_CONSTRAINT:
-            return "KinematicConstraint";
-        case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS:
-            return "AdaptiveFilterOptions";
-        case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
-            return "MultiAntennaOffset";
-        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
-            return "SensorToVehicleFrameRotationDCM";
-        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
-            return "SensorToVehicleFrameRotationQuaternion";
+        // 0x0C
+        case MipTypes::CMD_GET_BASE_RATE:
+            return "GetDataBaseRate";
+        case MipTypes::CMD_MESSAGE_FORMAT:
+            return "MessageFormat";
+        case MipTypes::CMD_POLL:
+            return "PollData";
+        case MipTypes::CMD_FACTORY_STREAMING:
+            return "FactoryStreaming";
+        case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
+            return "ContinuousDataStream";
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
             return "SensorToVehicleFrameTransformationEulerAngles";
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
             return "SensorToVehicleFrameTransformationQuaternion";
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM:
             return "SensorToVehicleFrameTransformationDCM";
-        case MipTypes::CMD_GET_BASE_RATE:
-            return "GetDataBaseRate";
-        case MipTypes::CMD_MESSAGE_FORMAT:
-            return "MessageFormat";
-        case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
-            return "ContinuousDataStream";
-        case MipTypes::CMD_FACTORY_STREAMING:
-            return "FactoryStreaming";
         case MipTypes::CMD_PPS_SOURCE:
             return "PpsSource";
         case MipTypes::CMD_PPS_OUTPUT:
             return "PpsOutput";
+        //case MipTypes::CMD_ODOMETER_SETTINGS:
+        //    return "OdometerSettings";
+        // 0x0D
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
+            return "SensorToVehicleFrameRotationDCM";
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
+            return "SensorToVehicleFrameRotationQuaternion";
+        case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE:
+            return "AidingMeasurementEnable";
+        case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS:
+            return "AdaptiveFilterOptions";
+        case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
+            return "MultiAntennaOffset";
+        case MipTypes::CMD_EF_RELATIVE_POSITION_REF:
+            return "RelativePositionReference";
+        case MipTypes::CMD_EF_VERTICAL_GYRO_CONSTRAINT:
+            return "VerticalGyroConstraint";
+        case MipTypes::CMD_EF_WHEELED_VEHICLE_CONSTRAINT:
+            return "WheeledVehicleConstraint";
+        case MipTypes::CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL:
+            return "GnssAntennaLeverArmCalibration";
+        // 0x0E
         case MipTypes::CMD_GNSS_RECEIVER_INFO:
             return "GnssReceiverInfo";
-        case MipTypes::CMD_POLL:
-            return "PollData";
+        case MipTypes::CMD_GNSS_SIGNAL_CONFIG:
+            return "GnssSignalConfiguration";
+        case MipTypes::CMD_GNSS_RTK_CONFIG:
+            return "GnssRtkConfiguration";
         default:
             return "";
         }
@@ -200,34 +229,37 @@ namespace mscl
     {
         switch (id)
         {
-        case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE:
-            return 0xD0;
-        case MipTypes::CMD_EF_KINEMATIC_CONSTRAINT:
-            return 0xD1;
-        case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS:
-            return 0xD3;
-        case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
-            return 0xD4;
+
+        // 0x0C
+        case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
+            return 0x85;
+        // 0x0D
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
             return 0xBE;
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
             return 0xBF;
-        case MipTypes::CMD_GET_BASE_RATE:
-            return 0x8E;
-        case MipTypes::CMD_MESSAGE_FORMAT:
-            return 0x8F;
-        case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
-            return 0x85;
-        case MipTypes::CMD_PPS_SOURCE:
-            return 0xA8;
-        case MipTypes::CMD_PPS_OUTPUT:
-            return 0xA9;
-        case MipTypes::CMD_GNSS_RECEIVER_INFO:
-            return 0x80;
 
+        // 0x0C
+        case MipTypes::CMD_GET_BASE_RATE: //0x8E
+        case MipTypes::CMD_MESSAGE_FORMAT: //0x8F
+        case MipTypes::CMD_PPS_SOURCE: //0xA8
+        case MipTypes::CMD_PPS_OUTPUT: //0xA9
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER: //0xB1
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT: //0xB2
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM: //0xB3
+        //case MipTypes::CMD_ODOMETER_SETTINGS: //0xC3
+        case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE: //0xD0
+        // 0x0D
+        case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS: //0xD3
+        case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET: //0xD4
+        case MipTypes::CMD_EF_RELATIVE_POSITION_REF: //0xD5
+        case MipTypes::CMD_EF_VERTICAL_GYRO_CONSTRAINT: //0xE2
+        case MipTypes::CMD_EF_WHEELED_VEHICLE_CONSTRAINT: //0xE3
+        case MipTypes::CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL: //0xE4
+        // 0x0E
+        case MipTypes::CMD_GNSS_RECEIVER_INFO: //0x81
+        case MipTypes::CMD_GNSS_SIGNAL_CONFIG: //0x82
+        case MipTypes::CMD_GNSS_RTK_CONFIG: //0x90
         default:
         {
             // this pattern is not true for all commands - may result in communication failures
@@ -249,41 +281,18 @@ namespace mscl
     {
         switch (id)
         {
-        case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE:
-            return {
-                ValueType::valueType_uint16,
-                ValueType::valueType_bool
-            };
-        case MipTypes::CMD_EF_KINEMATIC_CONSTRAINT:
-            return {
-                ValueType::valueType_uint8,
-                ValueType::valueType_uint8,
-                ValueType::valueType_uint8
-            };
-        case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS:
-            return {
-                ValueType::valueType_uint8,
-                ValueType::valueType_uint16
-            };
-        case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
-            return {
-                ValueType::valueType_uint8,
-                ValueType::valueType_float,
-                ValueType::valueType_float,
-                ValueType::valueType_float
-            };
-
-        case MipTypes::CMD_MESSAGE_FORMAT:
-            return {
-                ValueType::valueType_uint8,
-                ValueType::valueType_uint8,
-                ValueType::valueType_Vector
-            };
-
+        // 0x0C
         case MipTypes::CMD_GET_BASE_RATE:
             return{
                 ValueType::valueType_uint8,
                 ValueType::valueType_uint16
+            };
+
+        case MipTypes::CMD_MESSAGE_FORMAT:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint8,
+                ValueType::valueType_Vector
             };
 
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
@@ -292,17 +301,87 @@ namespace mscl
                 ValueType::valueType_bool
             };
 
-        case MipTypes::CMD_PPS_OUTPUT:
         case MipTypes::CMD_PPS_SOURCE:
+        case MipTypes::CMD_PPS_OUTPUT:
             return{ ValueType::valueType_uint8 };
 
+        //case MipTypes::CMD_ODOMETER_SETTINGS:
+        //    return{
+        //        ValueType::valueType_uint8,
+        //        ValueType::valueType_int8,
+        //        ValueType::valueType_int8,
+        //        ValueType::valueType_int8,
+        //        ValueType::valueType_float,
+        //        ValueType::valueType_float,
+        //        ValueType::valueType_float
+        //    };
+
+
+        // 0x0D
+        case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE:
+            return{
+                ValueType::valueType_uint16,
+                ValueType::valueType_bool
+            };
+
+        case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint16
+            };
+
+        case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+                ValueType::valueType_float
+            };
+
+        case MipTypes::CMD_EF_RELATIVE_POSITION_REF:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_double,
+                ValueType::valueType_double,
+                ValueType::valueType_double
+            };
+
+        case MipTypes::CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL:
+            return{
+                ValueType::valueType_bool,
+                ValueType::valueType_float
+            };
+
+
+        // 0x0E
         case MipTypes::CMD_GNSS_RECEIVER_INFO:
             return{
                 ValueType::valueType_uint8, // num receivers
                 ValueType::valueType_Vector // receiver info
             };
 
+        case MipTypes::CMD_GNSS_SIGNAL_CONFIG:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint8
+            };
+
+        
+        // Single Bool
+            // 0x0D
+        case MipTypes::CMD_EF_VERTICAL_GYRO_CONSTRAINT:
+        case MipTypes::CMD_EF_WHEELED_VEHICLE_CONSTRAINT:
+            // 0x0E
+        case MipTypes::CMD_GNSS_RTK_CONFIG:
+            return{
+                ValueType::valueType_bool
+            };
+
+
         // Euler Angles (float[3])
+            // 0x0C
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
             return{
                 ValueType::valueType_float,
@@ -310,10 +389,12 @@ namespace mscl
                 ValueType::valueType_float
             };
 
-        
+
         // 3x3 Matrix
-        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
+            // 0x0C
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM:
+            // 0x0D
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
             return {
                 ValueType::valueType_float,
                 ValueType::valueType_float,
@@ -328,9 +409,12 @@ namespace mscl
                 ValueType::valueType_float
             };
 
+
         // Quaternion
-        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
+            // 0x0C
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
+            // 0x0D
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
             return{
                 ValueType::valueType_float,
                 ValueType::valueType_float,
@@ -394,6 +478,9 @@ namespace mscl
                 break;
             case valueType_uint32:
                 outData.push_back(Value::UINT32(buffer.read_uint32()));
+                break;
+            case valueType_int8:
+                outData.push_back(Value::INT8(buffer.read_int8()));
                 break;
             case valueType_float:
                 outData.push_back(Value::FLOAT(buffer.read_float()));

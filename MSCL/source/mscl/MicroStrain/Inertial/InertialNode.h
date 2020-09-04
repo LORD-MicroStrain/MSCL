@@ -594,6 +594,58 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setPitchRollAid(bool enable);
 
+        //API Function: enableVerticalGyroConstraint
+        //    Enables or disables the Vertical Gyro Constraint control.
+        //
+        //Parameters:
+        //    bool - true: enable, false: disable
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void enableVerticalGyroConstraint(bool enable);
+
+        //API Function: verticalGyroConstraintEnabled
+        //    Gets the enabled/disabled state of the Vertical Gyro Constraint control.
+        //
+        //Returns:
+        //    bool indicating whether or not the constraint is enabled
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        bool verticalGyroConstraintEnabled() const;
+
+        //API Function: enableWheeledVehicleConstraint
+        //    Enables or disables the Wheeled Vehicle Constraint control.
+        //
+        //Parameters:
+        //    bool - true: enable, false: disable
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void enableWheeledVehicleConstraint(bool enable);
+
+        //API Function: wheeledVehicleConstraintEnabled
+        //    Gets the enabled/disabled state of the Wheeled Vehicle Constraint control.
+        //
+        //Returns:
+        //    bool indicating whether or not the constraint is enabled
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        bool wheeledVehicleConstraintEnabled() const;
+
         //API Function: setVelocityZUPT
         //    Sets the state of the velocity ZUPT control.
         //
@@ -2137,32 +2189,6 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void enableDisableAidingMeasurement(InertialTypes::AidingMeasurementSource aidingSource, bool enable);
 
-        //API Function: getKinematicConstraints
-        //    sends the Kinematic Constraint command (0x0D, 0x51) to get the currently configured acceleration, velocity, and angular rate constraint options.
-        //
-        //Return:
-        //    <KinematicConstraints> - The current kinematic constraint options set on the device.
-        //
-        //Exceptions:
-        //    - <Error_NotSupported>: The command is not supported by this Node.
-        //    - <Error_Communication>: There was no response to the command. The command timed out.
-        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
-        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        KinematicConstraints getKinematicConstraints() const;
-
-        //API Function: setKinematicConstraints
-        //    sends the Kinematic Constraint command (0x0D, 0x51) to set the acceleration, velocity, and angular rate constraints to the specified options.
-        //
-        //Parameter:
-        //    constraintOptions - the <KinematicConstraints> to set.
-        //
-        //Exceptions:
-        //    - <Error_NotSupported>: The command is not supported by this Node.
-        //    - <Error_Communication>: There was no response to the command. The command timed out.
-        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
-        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void setKinematicConstraints(KinematicConstraints constraintOptions);
-
         //API Function: getAdaptiveFilterOptions
         //    sends the Adaptive Filter Options command (0x0D, 0x53) to get the currently configured auto-adaptive filtering options.
         //
@@ -2270,5 +2296,135 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setPpsOutput(InertialTypes::PpsInputOutput ppsOutput);
+
+        //API Function: getOdometerConfig
+        //    Gets the currently configured odometer settings.
+        //
+        //Return:
+        //    <OdometerConfiguration> - The currently configured odometer settings
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        //OdometerConfiguration getOdometerConfig() const;
+
+        //API Function: setOdometerConfig
+        //    Set the odometer configuration.
+        //
+        //Parameter:
+        //    config - the <OdometerConfiguration> to apply.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        //void setOdometerConfig(OdometerConfiguration config);
+
+        //API Function: getAntennaLeverArmCal
+        //    Gets the currently configured GNSS antenna lever arm calibration configuration.
+        //
+        //Return:
+        //    <AntennaLeverArmCalConfiguration> - The currently configured antenna lever arm calibration settings
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        AntennaLeverArmCalConfiguration getAntennaLeverArmCal() const;
+
+        //API Function: setAntennaLeverArmCal
+        //    Set the GNSS antenna lever arm calibration configuration.
+        //
+        //Parameter:
+        //    config - the <AntennaLeverArmCalConfiguration> to apply.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setAntennaLeverArmCal(AntennaLeverArmCalConfiguration config);
+
+        //API Function: getRelativePositionReference
+        //    Gets the currently configured reference for relative position values.
+        //
+        //Return:
+        //    <PositionReferenceConfiguration> - The current relative position reference configuration
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        PositionReferenceConfiguration getRelativePositionReference() const;
+
+        //API Function: setRelativePositionReference
+        //    Set the reference for relative position values.
+        //
+        //Parameter:
+        //    ref - the <PositionReferenceConfiguration> to apply.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setRelativePositionReference(PositionReferenceConfiguration ref);
+
+        //API Function: getGnssSignalConfig
+        //    Gets the device's current GNSS signal configuration.
+        //
+        //Return:
+        //    <GnssSignalConfiguration> - The current GNSS signal configuration
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        GnssSignalConfiguration getGnssSignalConfig() const;
+
+        //API Function: setGnssSignalConfig
+        //    Set the GNSS signal configuration.
+        //
+        //Parameter:
+        //    config - the <GnssSignalConfiguration> to apply.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setGnssSignalConfig(GnssSignalConfiguration config);
+
+        //API Function: rtkEnabled
+        //    Reads whether RTK input is currently enabled on the device.
+        //
+        //Return:
+        //    bool - true: enabled, false: disabled
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        bool rtkEnabled() const;
+
+        //API Function: enableRtk
+        //    Enables or disables RTK input into the device.
+        //
+        //Parameter:
+        //    enable - true: enable RTK input, false: disable
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void enableRtk(bool enable);
     };
 }

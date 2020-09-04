@@ -702,6 +702,7 @@
     <ClInclude Include="source\mscl\HighResClock.h" />
     <ClInclude Include="source\mscl\Histogram.h" />
     <ClInclude Include="source\mscl\LibVersion.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Bitfield.h" />
     <ClInclude Include="source\mscl\MicroStrain\Displacement\Commands\DeviceTime.h" />
     <ClInclude Include="source\mscl\MicroStrain\Displacement\Commands\DisplacementOutputDataRate.h" />
     <ClInclude Include="source\mscl\MicroStrain\Displacement\Commands\GetAnalogToDisplacementCals.h" />
@@ -1022,6 +1023,7 @@
     <ClCompile Include="source\mscl\Communication\WsdaFinder.cpp" />
     <ClCompile Include="source\mscl\HighResClock.cpp" />
     <ClCompile Include="source\mscl\Histogram.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Bitfield.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Displacement\Commands\DeviceTime.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Displacement\Commands\DisplacementOutputDataRate.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Displacement\Commands\GetAnalogToDisplacementCals.cpp" />

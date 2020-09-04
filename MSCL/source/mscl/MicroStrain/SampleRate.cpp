@@ -79,6 +79,9 @@ namespace mscl
             case rateType_event:
                 return "Event";
 
+            case rateType_decimation:
+                return Utils::toStr(m_samples) + "-decimation";
+
             default:
                 assert(false);    //unknown sample rate type
                 return "Unknown";
@@ -124,6 +127,16 @@ namespace mscl
             case rateType_event:
                 return "Event";
 
+            case rateType_decimation:
+                if (m_samples <= 1)
+                {
+                    return "Every sample";
+                }
+                else
+                {
+                    return "Every " + Utils::toStr(m_samples) + " samples";
+                }
+
             default:
                 assert(false);    //unknown sample rate type
                 return "Unknown";
@@ -144,6 +157,7 @@ namespace mscl
 
                 //unknown sample rates
             case rateType_event:
+            case rateType_decimation:
             default:
                 throw Error_UnknownSampleRate();
         }
@@ -161,6 +175,7 @@ namespace mscl
 
                 //unknown sample rates
             case rateType_event:
+            case rateType_decimation:
             default:
                 throw Error_UnknownSampleRate();
         }
@@ -210,6 +225,11 @@ namespace mscl
         return SampleRate(rateType_event, 0);
     }
 
+    SampleRate SampleRate::Decimation(uint32 rateDecimation)
+    {
+        return SampleRate(rateType_decimation, rateDecimation);
+    }
+
     SampleRate SampleRate::FromWirelessEepromValue(WirelessTypes::WirelessSampleRate eepromValue)
     {
         return SampleUtils::convertToSampleRate(eepromValue);
@@ -217,15 +237,20 @@ namespace mscl
 
     SampleRate SampleRate::FromInertialRateDecimationInfo(uint16 baseRate, uint16 rateDecimation)
     {
-        //create a MipChannel and add to the result
-        if (rateDecimation <= baseRate)
+        uint16 decimationActual = rateDecimation == 0 ? 1 : rateDecimation;
+
+        if (baseRate == 0)
         {
-            uint32 rate = static_cast<uint32>(Utils::round(static_cast<float>(baseRate) / static_cast<float>(rateDecimation)));
+            return SampleRate::Decimation(decimationActual);
+        }
+        else if (decimationActual <= baseRate)
+        {
+            uint32 rate = static_cast<uint32>(Utils::round(static_cast<float>(baseRate) / static_cast<float>(decimationActual)));
             return SampleRate::Hertz(rate);
         }
         else
         {
-            uint32 rate = static_cast<uint32>(Utils::round(static_cast<float>(rateDecimation) / static_cast<float>(baseRate)));
+            uint32 rate = static_cast<uint32>(Utils::round(static_cast<float>(decimationActual) / static_cast<float>(baseRate)));
             return SampleRate::Seconds(rate);
         }
     }

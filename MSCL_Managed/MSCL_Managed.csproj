@@ -69,10 +69,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="mscl\ActivitySense.cs" />
+    <Compile Include="mscl\AdaptiveFilterLevels.cs" />
     <Compile Include="mscl\AdaptiveMeasurementData.cs" />
     <Compile Include="mscl\AdaptiveMeasurementModes.cs" />
     <Compile Include="mscl\AdvancedLowPassFilterConfig.cs" />
     <Compile Include="mscl\AdvancedLowPassFilterData.cs" />
+    <Compile Include="mscl\AntennaLeverArmCalConfiguration.cs" />
     <Compile Include="mscl\ArmedDataloggingNetwork.cs" />
     <Compile Include="mscl\AutoAdaptiveFilterOptions.cs" />
     <Compile Include="mscl\AutoBalanceResult.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="mscl\BeaconStatus.cs" />
     <Compile Include="mscl\Bin.cs" />
     <Compile Include="mscl\Bins.cs" />
+    <Compile Include="mscl\Bitfield.cs" />
     <Compile Include="mscl\BitMask.cs" />
     <Compile Include="mscl\Bytes.cs" />
     <Compile Include="mscl\BytesCollection.cs" />
@@ -150,6 +153,7 @@
     <Compile Include="mscl\GeometricVectors.cs" />
     <Compile Include="mscl\GnssReceiverInfo.cs" />
     <Compile Include="mscl\GnssReceivers.cs" />
+    <Compile Include="mscl\GnssSignalConfiguration.cs" />
     <Compile Include="mscl\HeadingAlignmentMethod.cs" />
     <Compile Include="mscl\HeadingAlignmentOption.cs" />
     <Compile Include="mscl\HeadingData.cs" />
@@ -163,8 +167,6 @@
     <Compile Include="mscl\InertialTypes.cs" />
     <Compile Include="mscl\InputRangeEntry.cs" />
     <Compile Include="mscl\InputRanges.cs" />
-    <Compile Include="mscl\KinematicConstraintOptions.cs" />
-    <Compile Include="mscl\KinematicConstraints.cs" />
     <Compile Include="mscl\LinearEquation.cs" />
     <Compile Include="mscl\LoggedDataSweep.cs" />
     <Compile Include="mscl\LoggedDataSweeps.cs" />
@@ -193,10 +195,12 @@
     <Compile Include="mscl\NodeDiscovery.cs" />
     <Compile Include="mscl\NodeFeatures.cs" />
     <Compile Include="mscl\NodeInfo.cs" />
+    <Compile Include="mscl\OdometerConfiguration.cs" />
     <Compile Include="mscl\PingResponse.cs" />
     <Compile Include="mscl\PortInfo.cs" />
     <Compile Include="mscl\Position.cs" />
     <Compile Include="mscl\PositionOffset.cs" />
+    <Compile Include="mscl\PositionReferenceConfiguration.cs" />
     <Compile Include="mscl\PositionVelocityReferenceFrame.cs" />
     <Compile Include="mscl\PpsInputOutputOptions.cs" />
     <Compile Include="mscl\PpsPulseInfo.cs" />

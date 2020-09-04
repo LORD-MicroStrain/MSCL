@@ -420,44 +420,32 @@ namespace mscl
         }
     }
 
-    const KinematicConstraintOptions MipNodeFeatures::supportedAccelerationConstraintOptions() const
+    const AdaptiveFilterLevels MipNodeFeatures::supportedAdaptiveFilterLevels() const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_KINEMATIC_CONSTRAINT))
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_ADAPTIVE_FILTER_OPTIONS))
         {
-            return{ KinematicConstraintOptions(0) };
+            return{ AdaptiveFilterLevels(0) };
         }
 
-        return{
-            InertialTypes::KinematicConstraint::CONSTRAINT_NONE,
-            InertialTypes::KinematicConstraint::CONSTRAINT_ZERO_MAGNITUDE
-        };
-    }
-
-    const KinematicConstraintOptions MipNodeFeatures::supportedVelocityConstraintOptions() const
-    {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_KINEMATIC_CONSTRAINT))
+        InertialModels::NodeModel model = InertialModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model)
         {
-            return{ KinematicConstraintOptions(0) };
+        case InertialModels::node_3dm_gx5_45:
+        case InertialModels::node_3dm_cv5_45:
+            return{
+                InertialTypes::AutoAdaptiveFilteringLevel::FILTERING_OFF,
+                InertialTypes::AutoAdaptiveFilteringLevel::FILTERING_MODERATE
+            };
+
+        case InertialModels::node_3dm_gq7:
+        default:
+            return{
+                InertialTypes::AutoAdaptiveFilteringLevel::FILTERING_OFF,
+                InertialTypes::AutoAdaptiveFilteringLevel::FILTERING_CONSERVATIVE,
+                InertialTypes::AutoAdaptiveFilteringLevel::FILTERING_MODERATE,
+                InertialTypes::AutoAdaptiveFilteringLevel::FILTERING_AGGRESIVE
+            };
         }
-
-        return{
-            InertialTypes::KinematicConstraint::CONSTRAINT_NONE,
-            InertialTypes::KinematicConstraint::CONSTRAINT_ZERO_MAGNITUDE,
-            InertialTypes::KinematicConstraint::CONSTRAINT_WHEELED_VEHICLE
-        };
-    }
-
-    const KinematicConstraintOptions MipNodeFeatures::supportedAngularConstraintOptions() const
-    {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_KINEMATIC_CONSTRAINT))
-        {
-            return{ KinematicConstraintOptions(0) };
-        }
-
-        return{
-            InertialTypes::KinematicConstraint::CONSTRAINT_NONE,
-            InertialTypes::KinematicConstraint::CONSTRAINT_ZERO_MAGNITUDE
-        };
     }
 
     const PpsInputOutputOptions MipNodeFeatures::supportedPpsSourceOptions() const

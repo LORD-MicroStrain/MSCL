@@ -194,20 +194,21 @@ namespace mscl
 
         { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_DATA_RECEIVED_EPOCH), "dataReceivedEpoch" },
         { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_NUM_PACKETS), "numPackets" },
+        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_STATUS), "rtkStatusFlags" },
         { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_GPS_CORRECTION_LATENCY), "gpsCorrectionLatency" },
         { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_GLONASS_CORRECTION_LATENCY), "glonassCorrectionLatency" },
         { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_GALILEO_CORRECTION_LATENCY), "galileoCorrectionLatency" },
         { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_BEIDOU_CORRECTION_LATENCY), "beidouCorrectionLatency" },
 
-        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_TIME_OF_WEEK), "timeOfWeek" },
-        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_WEEK_NUMBER), "weekNumber" },
-        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_ALPHA), "alpha" },
-        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_BETA), "beta" },
+        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_TIME_OF_WEEK), "gpsCorrectionTimeOfWeek" },
+        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_WEEK_NUMBER), "gpsCorrectionWeekNumber" },
+        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_ALPHA), "gpsCorrectionAlpha" },
+        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_BETA), "gpsCorrectionBeta" },
 
-        { ChannelId(CH_FIELD_GNSS_IONOSPHERIC_CORRECTION, CH_TIME_OF_WEEK), "timeOfWeek" },
-        { ChannelId(CH_FIELD_GNSS_IONOSPHERIC_CORRECTION, CH_WEEK_NUMBER), "weekNumber" },
-        { ChannelId(CH_FIELD_GNSS_IONOSPHERIC_CORRECTION, CH_ALPHA), "alpha" },
-        { ChannelId(CH_FIELD_GNSS_IONOSPHERIC_CORRECTION, CH_DISTURBANCE_FLAGS), "disturbanceFlags" },
+        { ChannelId(CH_FIELD_GNSS_IONOSPHERIC_CORRECTION, CH_TIME_OF_WEEK), "gnssCorrectionTimeOfWeek" },
+        { ChannelId(CH_FIELD_GNSS_IONOSPHERIC_CORRECTION, CH_WEEK_NUMBER), "gnssCorrectionWeekNumber" },
+        { ChannelId(CH_FIELD_GNSS_IONOSPHERIC_CORRECTION, CH_ALPHA), "gnssCorrectionAlpha" },
+        { ChannelId(CH_FIELD_GNSS_IONOSPHERIC_CORRECTION, CH_DISTURBANCE_FLAGS), "gnssCorrectionDisturbanceFlags" },
 
 
         {ChannelId(CH_FIELD_ESTFILTER_ESTIMATED_LLH_POS, CH_LATITUDE), "estLatitude"},

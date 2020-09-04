@@ -14,6 +14,57 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
+58.0.7 - 2020-09-04
+- Added reporting for DeviceStatusData::asMap() of
+    - gnss1PpsPulseInfo_LastTimeinMS
+    - gnss1PpsPulseInfo_Count
+
+58.0.6 - 2020-08-21
+- Fixed Bitfield values in GNSS Signal Configuration (0x0E,0x02) constructor
+
+58.0.5 - 2020-08-19
+- Added Bitfield class to handle reading and writing masked values within a bitfield
+- Added support for reading and writing signed int8 to ByteStream, DataPoint, and Value classes
+- Added GNSS and RTK command set IDs to MipPacketInfo and DescriptorSet enums
+- Added support for inertial commands:
+    - Relative Position Configuration (0x0D,0x55)
+    - GNSS Antenna Cal Control (0x0D,0x64)
+    - GNSS Signal Configuration (0x0E,0x02)
+    - GNSS RTK Dongle Configuration (0x0E,0x10)
+- Added MipNodeFeatures::supportedAdaptiveFilterLevels to support varied level availability across devices
+- Added InertialTypes::HeadingSource::HEADINGSOURCE_GNSS_DUAL_ANTENNA
+
+58.0.4 - 2020-08-07
+- CHANGED InertialTypes::GnssFixType::FIXTYPE_FTK_FIXED to FIXTYPE_RTK_FIXED (typo)
+
+58.0.3 - 2020-08-06
+- Changed RTKDeviceStatusFlags::ResetReason enum values to their base values outside of the StatusFlags (uint32) context
+- Added InertialTypes::FilterStatus_Running::FILTERSTATUS_CONDITION to mask the Condition bits in the Prospect Filter Status bitfield
+- Added InertialTypes::FilterCondition enum to represent the FILTERSTATUS_CONDITION option values
+
+58.0.2 - 2020-08-03
+- Updated RTKDeviceStatusFlags to reflect bitfield definition changes
+- Changed MipTyes::CHANNEL_NAMES entries for GPS and GNSS Ionospheric Corrections channel field/qualifiers to ensure they're unique
+
+58.0.1 - 2020-08-03
+- Update inertial field parsers for:
+    - GNSS RTK Corrections Status (0x81,0x31) - added RTK status data point, fixed valid flags
+    - GPS Ionospheric Correction (0x81,0x71) - fixed matrix parsing, fixed valid flags
+    - GNSS Ionospheric Correction (0x81,0x73) - fixed vector parsing, fixed valid flags
+
+58.0.0 - 2020-07-30
+- REMOVED support for inertial command Kinematic Constraint Control (0x0D,0x51) (no device support):
+    - InertialNode::get/setKinematicConstraints()
+    - MipNodeFeatures::supportedAccelerationConstraintOptions(), supportedVelocityConstraintOptions(), supportedAngularConstraintOptions()
+    - MipTypes::Command::CMD_EF_KINEMATIC_CONSTRAINT
+    - InertialTypes::KinematicConstraint
+    - struct KinematicConstraints
+    - type KinematicConstraintOptions
+- Added support for inertial commands
+    - Vertical Gyro Constraint Control (0x0D,0x62)
+    - Wheeled Vehicle Constraint Control (0x0D,0x63)
+- Added new Sample Rate type (decimation) to support inertial data sets with an unknown base rate (SampleRate::Decimation(), RateType::rateType_decimation)
+
 57.2.2 - 2020-07-28
 - Add additional options to following enums for new product support:
     - InertialTypes::GnssFixType

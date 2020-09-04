@@ -101,6 +101,7 @@
 #include "../MicroStrain/DataPoint.h"
 #include "../MicroStrain/Matrix.h"
 #include "../MicroStrain/Vector.h"
+#include "../MicroStrain/Bitfield.h"
 #include "../MicroStrain/Wireless/ChannelMask.h"
 #include "../MicroStrain/Wireless/ArmedDataloggingNetwork.h"
 #include "../MicroStrain/Wireless/Configuration/BaseStationConfig.h"
@@ -188,6 +189,7 @@
 %include "../MicroStrain/SampleRate.h"
 %include "../MicroStrain/Matrix.h"
 %include "../MicroStrain/Vector.h"
+%include "../MicroStrain/Bitfield.h"
 %include "../MicroStrain/Wireless/StructuralHealth.h"
 %include "../MicroStrain/DataPoint.h"
 %include "../MicroStrain/Wireless/Configuration/ConfigIssue.h"
@@ -297,11 +299,11 @@ namespace std
     %template(Constellations)           vector<mscl::Constellation>;
     %template(HeadingUpdateOptionsList) vector<mscl::HeadingUpdateOptions>;
     %template(AdaptiveMeasurementModes) vector<mscl::InertialTypes::AdaptiveMeasurementMode>;
-    %template(KinematicConstraintOptions) vector<mscl::InertialTypes::KinematicConstraint>;
     %template(GeometricVectors)         vector<mscl::GeometricVector>;
     %template(Matrix_3x3s)              vector<mscl::Matrix_3x3>;
     %template(StatusSelectors)          vector<mscl::DeviceStatusData::StatusSelector>;
     %template(VehicleModeTypes)         vector<mscl::InertialTypes::VehicleModeType>;
+    %template(AdaptiveFilterLevels)     vector<mscl::InertialTypes::AutoAdaptiveFilteringLevel>;
     %template(AdvancedLowPassFilterConfig)vector<mscl::AdvancedLowPassFilterData>;
     %template(PpsInputOutputOptions)    vector<mscl::InertialTypes::PpsInputOutput>;
     

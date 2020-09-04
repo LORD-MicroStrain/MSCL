@@ -56,6 +56,12 @@ namespace mscl
         m_bytes.push_back(value);
     }
 
+    //add a single byte to the bytestream
+    void ByteStream::append_int8(int8 value)
+    {
+        m_bytes.push_back(static_cast<uint8>(value));
+    }
+
     //add a WORD (2 bytes) to the bytestream
     void ByteStream::append_int16(int16 value, Utils::Endianness endian /*= Utils::bigEndian*/)
     {

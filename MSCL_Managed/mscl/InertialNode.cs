@@ -321,6 +321,28 @@ public class InertialNode : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public void enableVerticalGyroConstraint(bool enable) {
+    msclPINVOKE.InertialNode_enableVerticalGyroConstraint(swigCPtr, enable);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public bool verticalGyroConstraintEnabled() {
+    bool ret = msclPINVOKE.InertialNode_verticalGyroConstraintEnabled(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void enableWheeledVehicleConstraint(bool enable) {
+    msclPINVOKE.InertialNode_enableWheeledVehicleConstraint(swigCPtr, enable);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public bool wheeledVehicleConstraintEnabled() {
+    bool ret = msclPINVOKE.InertialNode_wheeledVehicleConstraintEnabled(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public void setVelocityZUPT(ZUPTSettingsData ZUPTSettings) {
     msclPINVOKE.InertialNode_setVelocityZUPT(swigCPtr, ZUPTSettingsData.getCPtr(ZUPTSettings));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -960,17 +982,6 @@ public class InertialNode : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public KinematicConstraints getKinematicConstraints() {
-    KinematicConstraints ret = new KinematicConstraints(msclPINVOKE.InertialNode_getKinematicConstraints(swigCPtr), true);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public void setKinematicConstraints(KinematicConstraints constraintOptions) {
-    msclPINVOKE.InertialNode_setKinematicConstraints(swigCPtr, KinematicConstraints.getCPtr(constraintOptions));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
   public AutoAdaptiveFilterOptions getAdaptiveFilterOptions() {
     AutoAdaptiveFilterOptions ret = new AutoAdaptiveFilterOptions(msclPINVOKE.InertialNode_getAdaptiveFilterOptions(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -1012,6 +1023,50 @@ public class InertialNode : global::System.IDisposable {
 
   public void setPpsOutput(InertialTypes.PpsInputOutput ppsOutput) {
     msclPINVOKE.InertialNode_setPpsOutput(swigCPtr, (int)ppsOutput);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public AntennaLeverArmCalConfiguration getAntennaLeverArmCal() {
+    AntennaLeverArmCalConfiguration ret = new AntennaLeverArmCalConfiguration(msclPINVOKE.InertialNode_getAntennaLeverArmCal(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setAntennaLeverArmCal(AntennaLeverArmCalConfiguration config) {
+    msclPINVOKE.InertialNode_setAntennaLeverArmCal(swigCPtr, AntennaLeverArmCalConfiguration.getCPtr(config));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public PositionReferenceConfiguration getRelativePositionReference() {
+    PositionReferenceConfiguration ret = new PositionReferenceConfiguration(msclPINVOKE.InertialNode_getRelativePositionReference(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setRelativePositionReference(PositionReferenceConfiguration ref_) {
+    msclPINVOKE.InertialNode_setRelativePositionReference(swigCPtr, PositionReferenceConfiguration.getCPtr(ref_));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public GnssSignalConfiguration getGnssSignalConfig() {
+    GnssSignalConfiguration ret = new GnssSignalConfiguration(msclPINVOKE.InertialNode_getGnssSignalConfig(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setGnssSignalConfig(GnssSignalConfiguration config) {
+    msclPINVOKE.InertialNode_setGnssSignalConfig(swigCPtr, GnssSignalConfiguration.getCPtr(config));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public bool rtkEnabled() {
+    bool ret = msclPINVOKE.InertialNode_rtkEnabled(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void enableRtk(bool enable) {
+    msclPINVOKE.InertialNode_enableRtk(swigCPtr, enable);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

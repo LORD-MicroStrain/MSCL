@@ -140,6 +140,7 @@ namespace mscl
         //  CMD_CF_REALIGN_NORTH                        - 0x0C3D    - Complimentary Filter - Realign North
         //  CMD_CONING_SCULLING                         - 0x0C3E    - Coning and Sculling Enable
         //  CMD_UART_BAUD_RATE                          - 0x0C40    - UART Baud Rate
+        //  CMD_ODOMETER_SETTINGS                       - 0x0C43    - Configure Odometer Settings
         //  CMD_LOWPASS_FILTER_SETTINGS                 - 0x0C50    - Advanced Low-Pass Filter Settings
         //  CMD_COMPLEMENTARY_FILTER_SETTINGS           - 0x0C51    - Complementary Filter Settings
         //  CMD_DATA_STREAM_FORMAT                      - 0x0C60    - Device Data Stream Format
@@ -190,11 +191,16 @@ namespace mscl
         //  CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM        - 0x0D4E    - Estimation Filter - Sensor to Vehicle Frame Rotation Direction Cosine Matrix
         //  CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT       - 0x0D4F    - Estimation Filter - Sensor to Vehicle Frame Rotation Quaternion
         //  CMD_EF_AIDING_MEASUREMENT_ENABLE            - 0x0D50    - Estimation Filter - Aiding Measurement Enabled
-        //  CMD_EF_KINEMATIC_CONSTRAINT                 - 0x0D51    - Estimation Filter - Kinematic Constraint
         //  CMD_EF_INITIALIZATION_CONFIG                - 0x0D52    - Estimation Filter - Initialization Configuration
         //  CMD_EF_ADAPTIVE_FILTER_OPTIONS              - 0x0D53    - Estimation Filter - Adaptive Filter Options
         //  CMD_EF_MULTI_ANTENNA_OFFSET                 - 0x0D54    - Estimation Filter - Multi Antenna Offset
-        //  CMD_GNSS_RECEIVER_INFO                      - 0x0E01    - GNSS - Receiver Info
+        //  CMD_EF_RELATIVE_POSITION_REF                - 0x0D55    - Estimation Filter - Reference Location for Relative Position Outputs
+        //  CMD_EF_VERTICAL_GYRO_CONSTRAINT             - 0x0D62    - Estimation Filter - Vertical Gyro Constraint Enable/Disable
+        //  CMD_EF_WHEELED_VEHICLE_CONSTRAINT           - 0x0D63    - Estimation Filter - Wheeled Vehicle Constraint Enable/Disable
+        //  CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL           - 0x0D64    - Estimation Filter - GNSS Antenna Lever Arm Calibration Control
+        //  CMD_GNSS_RECEIVER_INFO                      - 0x0E01    - GNSS Receiver Info
+        //  CMD_GNSS_SIGNAL_CONFIG                      - 0x0E02    - GNSS Signal Configuration
+        //  CMD_GNSS_RTK_CONFIG                         - 0x0E10    - GNSS RTK Configuration
         //  CMD_COMMUNICATION_MODE                      - 0x7F10    - Communication Mode
         //  CMD_HARDWARE_CTRL                           - 0x7F11    - Hardware Control
         //  CMD_GET_ANALOG_DISPLACEMENT_CALS            - 0x1101    - Get Analog Output to Displacement Slope and Offset
@@ -249,6 +255,7 @@ namespace mscl
             CMD_CF_REALIGN_NORTH = 0x0C3D,
             CMD_CONING_SCULLING = 0x0C3E,
             CMD_UART_BAUD_RATE = 0x0C40,
+            CMD_ODOMETER_SETTINGS= 0x0C43,
             CMD_LOWPASS_FILTER_SETTINGS = 0x0C50,
             CMD_COMPLEMENTARY_FILTER_SETTINGS = 0x0C51,
             CMD_DATA_STREAM_FORMAT = 0x0C60,
@@ -299,11 +306,16 @@ namespace mscl
             CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM = 0x0D4E,
             CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT = 0x0D4F,
             CMD_EF_AIDING_MEASUREMENT_ENABLE = 0x0D50,
-            CMD_EF_KINEMATIC_CONSTRAINT = 0x0D51,
             CMD_EF_INITIALIZATION_CONFIG = 0x0D52,
             CMD_EF_ADAPTIVE_FILTER_OPTIONS = 0x0D53,
             CMD_EF_MULTI_ANTENNA_OFFSET = 0x0D54,
+            CMD_EF_RELATIVE_POSITION_REF = 0x0D55,
+            CMD_EF_VERTICAL_GYRO_CONSTRAINT = 0x0D62,
+            CMD_EF_WHEELED_VEHICLE_CONSTRAINT = 0x0D63,
+            CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL = 0x0D64,
             CMD_GNSS_RECEIVER_INFO = 0x0E01,
+            CMD_GNSS_SIGNAL_CONFIG = 0x0E02,
+            CMD_GNSS_RTK_CONFIG = 0x0E10,
             CMD_COMMUNICATION_MODE = 0x7F10,
             CMD_HARDWARE_CTRL = 0x7F11,
             CMD_GET_ANALOG_DISPLACEMENT_CALS = 0x1101,

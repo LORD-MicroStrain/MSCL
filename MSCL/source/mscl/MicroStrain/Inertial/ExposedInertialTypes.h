@@ -2,6 +2,7 @@
 
 #include "mscl/Types.h"
 #include "mscl/MicroStrain/Matrix.h"
+#include "mscl/MicroStrain/Bitfield.h"
 #include "mscl/MicroStrain/MIP/MipTypes.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
 #include <array>
@@ -111,7 +112,7 @@ namespace mscl
             FIXTYPE_NONE = 0x03,
             FIXTYPE_INVALID = 0x04,
 			FIXTYPE_RTK_FLOAT = 0x05,
-			FIXTYPE_FTK_FIXED = 0x06,
+			FIXTYPE_RTK_FIXED = 0x06,
         };
 
         //============================================================================================================
@@ -266,7 +267,8 @@ namespace mscl
         // FILTERSTATUS_HARD_IRON_OFFSET_EST_HIGH_WARN          - 0x4000    - Filter Running, Hard Iron Offset Estimate High Warning
         // FILTERSTATUS_SOFT_IRON_CORRECTION_EST_HIGH_WARN      - 0x8000    - Filter Running, Soft Iron Correction Estimate High Warning
         //
-		// FILTERSTATUS_ROLL_PITCH_WARNING                      - 0x0004    - Filter Running, Roll/Pitch angle warning 
+		// FILTERSTATUS_CONDITION                               - 0x0003    - Filter Running, Filter Condition Indicator (mask for bits 1 and 2)
+		// FILTERSTATUS_ROLL_PITCH_WARNING                      - 0x0004    - Filter Running, Roll/Pitch angle warning
 		// FILTERSTATUS_HEADING_WARNING                         - 0x0008    - Filter Running, Heading angle warning
 		// FILTERSTATUS_POSITION_WARNING                        - 0x0010    - Filter Running, Position warning
 		// FILTERSTATUS_VELOCITY_WARNING                        - 0x0020    - Filter Running, Velocity warning
@@ -293,6 +295,7 @@ namespace mscl
             FILTERSTATUS_HARD_IRON_OFFSET_EST_HIGH_WARN = 0x4000,
             FILTERSTATUS_SOFT_IRON_CORRECTION_EST_HIGH_WARN = 0x8000,
 
+            FILTERSTATUS_CONDITION = 0x0003,
 			FILTERSTATUS_ROLL_PITCH_WARNING = 0x0004,
 			FILTERSTATUS_HEADING_WARNING = 0x0008,
 			FILTERSTATUS_POSITION_WARNING = 0x0010,
@@ -315,6 +318,21 @@ namespace mscl
         {
             FILTERSTATUS_ATT_NOT_INIT = 0x1000,
             FILTERSTATUS_POS_VEL_NOT_INIT = 0x2000
+        };
+
+        //============================================================================================================
+        //API Enum: FilterCondition
+        //    Enum of possible filter conditions. On supported devices the filter condition is included in the Filter Status Flags value.
+        //
+        //    STABLE                      - 0x01    - Filter stable
+        //    CONVERGING                  - 0x02    - Filter converging
+        //    UNSTABLE                    - 0x03    - Filter unstable
+        //============================================================================================================
+        enum FilterCondition
+        {
+            STABLE      = 0x01,
+            CONVERGING  = 0x02,
+            UNSTABLE    = 0x03
         };
 
         //============================================================================================================
@@ -350,13 +368,15 @@ namespace mscl
         //    HEADINGSOURCE_INTERNAL_MAGNETOMETER                - 0x0001    - Internal Magnetometer
         //    HEADINGSOURCE_INTERNAL_GPS_VELOCITY_VECTOR         - 0x0002    - Internal GPS Velocity Vector
         //    HEADINGSOURCE_EXTERNAL_HEADING_UPDATE_CMD          - 0x0004    - External Heading Update Command
+        //    HEADINGSOURCE_GNSS_DUAL_ANTENNA                    - 0x0008    - GNSS Dual Antenna
         //============================================================================================================
         enum HeadingSource
         {
             HEADINGSOURCE_NONE = 0x0000,
             HEADINGSOURCE_INTERNAL_MAGNETOMETER = 0x0001,
             HEADINGSOURCE_INTERNAL_GPS_VELOCITY_VECTOR = 0x0002,
-            HEADINGSOURCE_EXTERNAL_HEADING_UPDATE_CMD = 0x0004
+            HEADINGSOURCE_EXTERNAL_HEADING_UPDATE_CMD = 0x0004,
+            HEADINGSOURCE_GNSS_DUAL_ANTENNA = 0x0008
         };
 
         //API Enum: HeadingUpdateEnableOption
@@ -467,19 +487,6 @@ namespace mscl
             GLONASS = 0x06
         };
 
-        //API Enum: KinematicConstraint
-        //  The enum to represent the kinematic constraint (acceleration, velocity, angular rate) options
-        //
-        //      CONSTRAINT_NONE            - 0x00
-        //      CONSTRAINT_ZERO_MAGNITUDE  - 0x01
-        //      CONSTRAINT_WHEELED_VEHICLE - 0x02
-        enum KinematicConstraint
-        {
-            CONSTRAINT_NONE            = 0x00,
-            CONSTRAINT_ZERO_MAGNITUDE  = 0x01,
-            CONSTRAINT_WHEELED_VEHICLE = 0x02
-        };
-
         //API Enum: AutoAdaptiveFilteringLevel
         //  The enum to represent the auto-adaptive filtering operating levels
         //
@@ -530,8 +537,6 @@ namespace mscl
         };
     };
 
-
-
     //API Typedef: SatellitePRNs
     //  A vector of <uint16> PRN#s for satellites.
     typedef std::vector<uint16> SatellitePRNs;
@@ -543,6 +548,10 @@ namespace mscl
     //API Typedef: VehicleModeTypes
     //  A vector of <VehicleModeType> enum values
     typedef std::vector<InertialTypes::VehicleModeType> VehicleModeTypes;
+
+    //API Typedef: AdaptiveFilterLevels
+    // A vector of <AutoAdaptiveFilteringLevel> enum values
+    typedef std::vector<InertialTypes::AutoAdaptiveFilteringLevel> AdaptiveFilterLevels;
 
     //API Typedef: PpsInputOutputOptions
     //  A vector of <InertialTypes::PpsInputOutput> values
@@ -1252,6 +1261,8 @@ namespace mscl
     //  ModelNumber                                 modelNumber
     //  StatusStructure                             statusStructure
     //  SystemState                                 systemState()
+    //  gnss1PpsPulseInfo_Count                     gnss1PpsPulseInfo().count
+    //  gnss1PpsPulseInfo_LastTimeinMS              gnss1PpsPulseInfo().lastTimeinMS
     //  GnssPowerStateOn                            gnssPowerStateOn()
     //  ImuStreamInfo_Enabled                       imuStreamInfo().enabled
     //  ImuStreamInfo_PacketsDropped                imuStreamInfo().outgoingPacketsDropped
@@ -1282,6 +1293,8 @@ namespace mscl
         ModelNumber,
         StatusStructure_Value,
         SystemState_Value,
+        gnss1PpsPulseInfo_Count,
+        gnss1PpsPulseInfo_LastTimeinMS,
         GnssPowerStateOn,
         ImuStreamInfo_Enabled,
         ImuStreamInfo_PacketsDropped,
@@ -1956,33 +1969,6 @@ namespace mscl
         float minUncertainty;
     };
 
-    //API Struct: KinematicConstraints
-    struct KinematicConstraints
-    {
-    public:
-        //API Constructor: KinematicConstraints
-        //  Initializes a KinematicConstraints object with default values
-        KinematicConstraints() :
-            acceleration(InertialTypes::CONSTRAINT_NONE),
-            velocity(InertialTypes::CONSTRAINT_NONE),
-            angularRate(InertialTypes::CONSTRAINT_NONE)
-        {};
-
-        //API Constructor: KinematicConstraints
-        //  Initializes a KinematicConstraints object with specified values
-        KinematicConstraints(InertialTypes::KinematicConstraint acc,
-            InertialTypes::KinematicConstraint vel,
-            InertialTypes::KinematicConstraint ar) :
-            acceleration(acc),
-            velocity(vel),
-            angularRate(ar)
-        {};
-
-        //API Variable: acceleration, velocity, angularRate
-        //  <KinematicConstraint> selections for acceleration, velocity, and angular rate
-        InertialTypes::KinematicConstraint acceleration, velocity, angularRate;
-    };
-
     //API Struct: AutoAdaptiveFilterOptions
     struct AutoAdaptiveFilterOptions
     {
@@ -2013,10 +1999,6 @@ namespace mscl
     //API Typedef: AdaptiveMeasurementModes
     //  A vector of <AdaptiveMeasurementMode> enum values
     typedef std::vector<InertialTypes::AdaptiveMeasurementMode> AdaptiveMeasurementModes;
-
-    //API Typedef: KinematicContstraintOptions
-    //  A vector of <KinematicConstraint> values
-    typedef std::vector<InertialTypes::KinematicConstraint> KinematicConstraintOptions;
 
     //API Struct: SignalConditioningValues
     struct SignalConditioningValues
@@ -2125,26 +2107,247 @@ namespace mscl
     };
 
     //API Struct: RTKDeviceStatusFlags
-    struct RTKDeviceStatusFlags
+    class RTKDeviceStatusFlags : public Bitfield
     {
+    public:
+        //API Enum: ValueMap
+        //  Map indicating the bits that define each value
+        //      STATE               - 0x000000FF - Device State:        00000000000000000000000011111111
+        //      STATUS_CODE         - 0x0000FF00 - Status Code:         00000000000000001111111100000000
+        //      RESET_REASON        - 0x00030000 - Reset Reason:        00000000000000110000000000000000
+        //      MODEM_POWERED       - 0x00040000 - Modem Powered:       00000000000001000000000000000000
+        //      CELL_CONNECTED      - 0x00080000 - Cell Connected:      00000000000010000000000000000000
+        //      SERVER_CONNECTED    - 0x00100000 - Server Connected:    00000000000100000000000000000000
+        //      DATA_ENABLED        - 0x00200000 - Data Enabled:        00000000001000000000000000000000
+        enum ValueMap
+        {
+            STATE               = 0x000000FF, // 00000000000000000000000011111111
+            STATUS_CODE         = 0x0000FF00, // 00000000000000001111111100000000
+            RESET_REASON        = 0x00030000, // 00000000000000110000000000000000
+            MODEM_POWERED       = 0x00040000, // 00000000000001000000000000000000
+            CELL_CONNECTED      = 0x00080000, // 00000000000010000000000000000000
+            SERVER_CONNECTED    = 0x00100000, // 00000000000100000000000000000000
+            DATA_ENABLED        = 0x00200000  // 00000000001000000000000000000000
+        };
+
+        //API Enum: ResetReason
+        //  Possible RTK reset reason values
+        //      POWER_ON        - 0x00000000 - Reset due to Power-on
+        //      HARDWARE_RESET  - 0x00010000 - Hardware reset
+        //      SOFT_RESET      - 0x00020000 - Soft reset
+        //      WATCHDOG_RESET  - 0x00030000 - Watchdog reset
+        enum ResetReason
+        {
+            POWER_ON        = 0x00,
+            HARDWARE_RESET  = 0x01,
+            SOFT_RESET      = 0x02,
+            WATCHDOG_RESET  = 0x03
+        };
+
     public:
         //Constructor: RTKDeviceStatusFlags
         RTKDeviceStatusFlags() {};
 
         //Constructor: RTKDeviceStatusFlags
-        RTKDeviceStatusFlags(bool modemEnabled, bool modemConnected, bool clientConnected) :
-            modemEnabled(modemEnabled),
-            modemConnected(modemConnected),
-            clientConnected(clientConnected)
+        RTKDeviceStatusFlags(uint32 flags) :
+            Bitfield(static_cast<uint64>(flags))
         {};
 
-        //API Variable: modemEnabled
-        bool modemEnabled;
+    public:
+        //API Function: state
+        uint8 state() const;
+        void state(uint8 state);
 
-        //API Variable: modemConnected
-        bool modemConnected;
+        //API Function: statusCode
+        uint8 statusCode() const;
+        void statusCode(uint8 code);
 
-        //API Variable: clientConnected
-        bool clientConnected;
+        //API Function: resetReason
+        ResetReason resetReason() const;
+        void resetReason(ResetReason reason);
+
+        //API Function: modemPowered
+        bool modemPowered() const;
+        void modemPowered(bool powered);
+
+        //API Function: cellConnected
+        bool cellConnected();
+        void cellConnected(bool connected);
+
+        //API Function: serverConnected
+        bool serverConnected();
+        void serverConnected(bool connected);
+
+        //API Function: dataEnabled
+        bool dataEnabled();
+        void dataEnabled(bool enabled);
+    };
+
+    //API Class: GnssSignalConfiguration
+    class GnssSignalConfiguration
+    {
+    public:
+        //API Enum: GpsSignal
+        //  Available GPS signals.
+        //      L1CA    - 0x01 - L1CA:  00000001
+        //      L2C     - 0x02 - L2C:   00000010
+        enum GpsSignal
+        {
+            L1CA = 0x01,
+            L2C  = 0x02
+        };
+
+        //API Enum: GlonassSignal
+        //  Available GLONASS signals.
+        //      L1OF    - 0x01 - L1OF:  00000001
+        //      L2OF    - 0x02 - L2OF:  00000010
+        enum GlonassSignal
+        {
+            L1OF = 0x01,
+            L2OF = 0x02
+        };
+
+        //API Enum: GalileoSignal
+        //  Available Galileo signals.
+        //      E1  - 0x01 - E1:   00000001
+        //      E5B - 0x02 - E5B:  00000010
+        enum GalileoSignal
+        {
+            E1  = 0x01,
+            E5B = 0x02
+        };
+
+        //API Enum: BeiDouSignal
+        //  Available BeiDou signals.
+        //      B1  - 0x01 - B1:    00000001
+        //      B2  - 0x02 - B2:    00000010
+        enum BeiDouSignal
+        {
+            B1 = 0x01,
+            B2 = 0x02
+        };
+
+    public:
+        //API Constructor: GnssSignalConfiguration
+        GnssSignalConfiguration();
+
+    private:
+        Bitfield m_gpsSignals;
+        Bitfield m_glonassSignals;
+        Bitfield m_galileoSignals;
+        Bitfield m_beidouSignals;
+
+    public:
+        //API Function: enableGpsSignal
+        //  Enable or disable specified GPS signal
+        void enableGpsSignal(GpsSignal signal, bool enable = true);
+
+        //API Function: gpsSignalEnabled
+        //  Check whether the specified GPS signal is enabled
+        bool gpsSignalEnabled(GpsSignal signal);
+
+        //API Function: gpsSignalValue
+        //  Gets or sets the underlying value for the GPS signal bitfield
+        void gpsSignalValue(uint8 val) { m_gpsSignals.value(val); };
+        uint8 gpsSignalValue() { return static_cast<uint8>(m_gpsSignals.value()); };
+
+        //API Function: enableGlonassSignal
+        //  Enable or disable specified GLONASS signal
+        void enableGlonassSignal(GlonassSignal signal, bool enable = true);
+
+        //API Function: glonassSignalEnabled
+        //  Check whether the specified GLONASS signal is enabled
+        bool glonassSignalEnabled(GlonassSignal signal);
+
+        //API Function: glonassSignalValue
+        //  Gets or sets the underlying value for the GLONASS signal bitfield
+        void glonassSignalValue(uint8 val) { m_glonassSignals.value(val); };
+        uint8 glonassSignalValue() { return static_cast<uint8>(m_glonassSignals.value()); };
+
+        //API Function: enableGalileoSignal
+        //  Enable or disable specified Galileo signal
+        void enableGalileoSignal(GalileoSignal signal, bool enable = true);
+
+        //API Function: galileoSignalEnabled
+        //  Check whether the specified Galileo signal is enabled
+        bool galileoSignalEnabled(GalileoSignal signal);
+
+        //API Function: galileoSignalValue
+        //  Gets or sets the underlying value for the Galileo signal bitfield
+        void galileoSignalValue(uint8 val) { m_galileoSignals.value(val); };
+        uint8 galileoSignalValue() { return static_cast<uint8>(m_galileoSignals.value()); };
+
+        //API Function: enableBeiDouSignal
+        //  Enable or disable specified BeiDou signal
+        void enableBeiDouSignal(BeiDouSignal signal, bool enable = true);
+
+        //API Function: beidouSignalEnabled
+        //  Check whether the specified BeiDou signal is enabled
+        bool beidouSignalEnabled(BeiDouSignal signal);
+
+        //API Function: beidouSignalValue
+        //  Gets or sets the underlying value for the BeiDou signal bitfield
+        void beidouSignalValue(uint8 val) { m_beidouSignals.value(val); };
+        uint8 beidouSignalValue() { return static_cast<uint8>(m_beidouSignals.value()); };
+    };
+
+    //API Struct: PositionReferenceConfiguration
+    struct PositionReferenceConfiguration
+    {
+        //API Variable: autoConfig
+        //  Indicates whether the position reference is automatically determined (position value ignored if true).
+        bool autoConfig = false;
+
+        //API Variable: position
+        //  The reference position value.
+        Position position;
+
+        //API Function: source (get)
+        //  Uses the autoConfig and position values to determine the source ID to send to the device.
+        uint8 source() const;
+
+        //API Function: fromResponseData
+        //  Builds a PositionReferenceConfiguration object from a MipFieldValues object with format:
+        //      uint8       - source
+        //      double[3]   - position
+        static PositionReferenceConfiguration fromResponseData(MipFieldValues resData);
+
+    private:
+        enum Source
+        {
+            AUTO        = 0x00,
+            MANUAL_ECEF = 0x01,
+            MANUAL_LLH  = 0x02
+        };
+    };
+
+    //API Struct: AntennaLeverArmCalConfiguration
+    struct AntennaLeverArmCalConfiguration
+    {
+        //API Variable: enabled
+        //  Enable or disable lever arm error tracking
+        bool enabled;
+
+        //API Variable: maxOffsetError
+        //  Maximum offset error magnitude
+        float maxOffsetError;
+    };
+
+    //API Struct: OdometerConfiguration
+    struct OdometerConfiguration
+    {
+        //API Enum: Mode
+        //  Odometer mode options
+        //      DISABLED    - 0x01 - Encoder is disabled
+        //      SINGLE      - 0x02 - Single pulse input; one direction only
+        //      QUADRATURE  - 0x03 - Quadrature encoder mode
+        enum Mode
+        {
+            DISABLED    = 0x01,
+            SINGLE      = 0x02,
+            QUADRATURE  = 0x03
+        };
+
+        Mode mode;
     };
 }

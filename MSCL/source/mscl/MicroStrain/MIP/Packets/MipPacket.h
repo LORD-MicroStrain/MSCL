@@ -107,8 +107,10 @@ namespace mscl
         //    MIP_PACKET_SOP1                   - 0x75      - The first (start of packet) byte of any inertial packet
         //    MIP_PACKET_SOP2                   - 0x65      - The second (start of packet) byte of any inertial packet
         //    COMMAND_SET_BASE                  - 0x01      - The Base command set is common to many MicroStrain devices.
-        //    COMMAND_SET_3DM                   - 0x0C      - The 3DM command set is common to the MicroStrain Inertial sensors that support the MIP packet protocol.  
+        //    COMMAND_SET_3DM                   - 0x0C      - The 3DM command set is common to the MicroStrain Inertial sensors that support the MIP packet protocol.
         //    COMMAND_SET_NAV_FILTER            - 0x0D      - The Navigation Filter command set is specific to MicroStrain Inertial Navigation sensors.
+        //    COMMAND_SET_GNSS                  - 0x0E      - The GNSS command set is specific to newer Microstrain Inertial sensors that have GNSS receivers.
+        //    COMMAND_SET_RTK                   - 0x0F      - The RTK command set is specific to communication with MIP RTK devices.
         //    COMMAND_SET_SYSTEM                - 0x7F      - The System Command set provides a set of advanced commands that are specific to devices.
         //=====================================================================================================
         enum
@@ -119,6 +121,8 @@ namespace mscl
             COMMAND_SET_BASE                = 0x01,
             COMMAND_SET_3DM                 = 0x0C,
             COMMAND_SET_NAV_FILTER          = 0x0D,
+            COMMAND_SET_GNSS                = 0x0E,
+            COMMAND_SET_RTK                 = 0x0F,
             COMMAND_SET_SYSTEM              = 0x7F
         };
 
@@ -146,6 +150,8 @@ namespace mscl
         //    DESC_SET_CMD_BASE         - 0x01    - Command Packet, Base Set
         //    DESC_SET_CMD_3DM          - 0x0C    - Command Packet, 3DM Set
         //    DESC_SET_CMD_NAV          - 0x0D    - Command Packet, Navigation Filter Set
+        //    DESC_SET_CMD_GNSS         - 0x0E    - Command Packet, GNSS Set
+        //    DESC_SET_CMD_RTK          - 0x0F    - Command Packet, RTK Set
         //    DESC_SET_CMD_SYS          - 0x7F    - Command Packet, System Set
         //    DESC_SET_DATA_SENSOR      - 0x80    - Data Packet, Sensor Set
         //    DESC_SET_DATA_GNSS        - 0x81    - Data Packet, GNSS Set
@@ -163,6 +169,8 @@ namespace mscl
             DESC_SET_CMD_BASE            = MipPacketInfo::COMMAND_SET_BASE,
             DESC_SET_CMD_3DM             = MipPacketInfo::COMMAND_SET_3DM,
             DESC_SET_CMD_NAV             = MipPacketInfo::COMMAND_SET_NAV_FILTER,
+            DESC_SET_CMD_GNSS            = MipPacketInfo::COMMAND_SET_GNSS,
+            DESC_SET_CMD_RTK             = MipPacketInfo::COMMAND_SET_RTK,
             DESC_SET_CMD_SYS             = MipPacketInfo::COMMAND_SET_SYSTEM,
             DESC_SET_DATA_SENSOR         = MipTypes::CLASS_AHRS_IMU,
             DESC_SET_DATA_GNSS           = MipTypes::CLASS_GNSS,

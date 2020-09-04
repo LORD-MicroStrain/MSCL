@@ -995,6 +995,9 @@
     <ClInclude Include="source\mscl\MicroStrain\RTK\Commands\DeviceStatusFlags.h">
       <Filter>MicroStrain\RTK\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Bitfield.h">
+      <Filter>MicroStrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp">
@@ -1880,6 +1883,9 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\RTK\Commands\DeviceStatusFlags.cpp">
       <Filter>MicroStrain\RTK\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Bitfield.cpp">
+      <Filter>MicroStrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

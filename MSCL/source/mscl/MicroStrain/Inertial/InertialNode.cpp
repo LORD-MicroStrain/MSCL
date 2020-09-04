@@ -259,6 +259,28 @@ namespace mscl
         m_impl->setPitchRollAid(enable);
     }
 
+    void InertialNode::enableVerticalGyroConstraint(bool enable)
+    {
+        m_impl->set(MipTypes::CMD_EF_VERTICAL_GYRO_CONSTRAINT,
+        { Value::BOOL(enable) });
+    }
+
+    bool InertialNode::verticalGyroConstraintEnabled() const
+    {
+        return m_impl->get(MipTypes::CMD_EF_VERTICAL_GYRO_CONSTRAINT)[0].as_bool();
+    }
+
+    void InertialNode::enableWheeledVehicleConstraint(bool enable)
+    {
+        m_impl->set(MipTypes::CMD_EF_WHEELED_VEHICLE_CONSTRAINT,
+        { Value::BOOL(enable) });
+    }
+
+    bool InertialNode::wheeledVehicleConstraintEnabled() const
+    {
+        return m_impl->get(MipTypes::CMD_EF_WHEELED_VEHICLE_CONSTRAINT)[0].as_bool();
+    }
+
     ZUPTSettingsData InertialNode::getVelocityZUPT()
     {
         return m_impl->getVelocityZUPT();
@@ -917,23 +939,6 @@ namespace mscl
             Value::BOOL(enable) });
     }
 
-    KinematicConstraints InertialNode::getKinematicConstraints() const
-    {
-        MipFieldValues data = m_impl->get(MipTypes::CMD_EF_KINEMATIC_CONSTRAINT);
-        return KinematicConstraints(
-            static_cast<InertialTypes::KinematicConstraint>(data[0].as_uint8()),  // acceleration
-            static_cast<InertialTypes::KinematicConstraint>(data[1].as_uint8()),  // velocity
-            static_cast<InertialTypes::KinematicConstraint>(data[2].as_uint8())); // angular rate
-    }
-
-    void InertialNode::setKinematicConstraints(KinematicConstraints constraintOptions)
-    {
-        m_impl->set(MipTypes::CMD_EF_KINEMATIC_CONSTRAINT, {
-            Value::UINT8(static_cast<uint8>(constraintOptions.acceleration)),
-            Value::UINT8(static_cast<uint8>(constraintOptions.velocity)),
-            Value::UINT8(static_cast<uint8>(constraintOptions.angularRate)) });
-    }
-
     AutoAdaptiveFilterOptions InertialNode::getAdaptiveFilterOptions() const
     {
         MipFieldValues data = m_impl->get(MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS);
@@ -990,5 +995,97 @@ namespace mscl
     void InertialNode::setPpsOutput(InertialTypes::PpsInputOutput ppsOutput)
     {
         m_impl->set(MipTypes::CMD_PPS_OUTPUT, { Value::UINT8(static_cast<uint8>(ppsOutput)) });
+    }
+
+    //OdometerConfiguration InertialNode::getOdometerConfig() const
+    //{
+    //    MipFieldValues data = m_impl->get(MipTypes::CMD_ODOMETER_SETTINGS);
+    //    OdometerConfiguration config;
+    //    config.mode = static_cast<OdometerConfiguration::Mode>(data[0].as_uint8());
+    //    return config;
+    //}
+
+    //void InertialNode::setOdometerConfig(OdometerConfiguration config)
+    //{
+    //    m_impl->set(MipTypes::CMD_ODOMETER_SETTINGS, {
+    //        Value::UINT8(static_cast<uint8>(config.mode)),
+    //        Value::INT8(0),
+    //        Value::INT8(0),
+    //        Value::INT8(0),
+    //        Value::FLOAT(0.0f),
+    //        Value::FLOAT(0.0f),
+    //        Value::FLOAT(0.0f)
+    //    });
+    //}
+
+    AntennaLeverArmCalConfiguration InertialNode::getAntennaLeverArmCal() const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL);
+        AntennaLeverArmCalConfiguration config;
+        config.enabled = data[0].as_uint8() > 0;
+        config.maxOffsetError = data[1].as_float();
+        return config;
+    }
+
+    void InertialNode::setAntennaLeverArmCal(AntennaLeverArmCalConfiguration config)
+    {
+        m_impl->set(MipTypes::CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL, {
+            Value::UINT8(config.enabled ? 1 : 0),
+            Value::FLOAT(config.maxOffsetError)
+        });
+    }
+
+    PositionReferenceConfiguration InertialNode::getRelativePositionReference() const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_EF_RELATIVE_POSITION_REF);
+        return PositionReferenceConfiguration::fromResponseData(data);
+    }
+
+    void InertialNode::setRelativePositionReference(PositionReferenceConfiguration ref)
+    {
+        m_impl->set(MipTypes::CMD_EF_RELATIVE_POSITION_REF, {
+            Value::UINT8(ref.source()),
+            Value::DOUBLE(ref.position.x()),
+            Value::DOUBLE(ref.position.y()),
+            Value::DOUBLE(ref.position.z()),
+        });
+    }
+
+    GnssSignalConfiguration InertialNode::getGnssSignalConfig() const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_GNSS_SIGNAL_CONFIG);
+        GnssSignalConfiguration config;
+        config.gpsSignalValue(data[0].as_uint8());
+        config.glonassSignalValue(data[1].as_uint8());
+        config.galileoSignalValue(data[2].as_uint8());
+        config.beidouSignalValue(data[3].as_uint8());
+        return config;
+    }
+
+    void InertialNode::setGnssSignalConfig(GnssSignalConfiguration config)
+    {
+        m_impl->set(MipTypes::CMD_GNSS_SIGNAL_CONFIG, {
+            Value::UINT8(config.gpsSignalValue()),
+            Value::UINT8(config.glonassSignalValue()),
+            Value::UINT8(config.galileoSignalValue()),
+            Value::UINT8(config.beidouSignalValue()),
+            Value::UINT32(0)
+        });
+    }
+
+    bool InertialNode::rtkEnabled() const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_GNSS_RTK_CONFIG);
+        return data[0].as_uint8() > 0;
+    }
+
+    void InertialNode::enableRtk(bool enable)
+    {
+        m_impl->set(MipTypes::CMD_GNSS_RTK_CONFIG, {
+            Value::UINT8(enable ? 1 : 0),
+            Value::UINT8(0),
+            Value::UINT8(0),
+            Value::UINT8(0)
+        });
     }
 }

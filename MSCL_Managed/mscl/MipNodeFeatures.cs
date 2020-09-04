@@ -122,20 +122,8 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
-  public KinematicConstraintOptions supportedAccelerationConstraintOptions() {
-    KinematicConstraintOptions ret = new KinematicConstraintOptions(msclPINVOKE.MipNodeFeatures_supportedAccelerationConstraintOptions(swigCPtr), true);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public KinematicConstraintOptions supportedVelocityConstraintOptions() {
-    KinematicConstraintOptions ret = new KinematicConstraintOptions(msclPINVOKE.MipNodeFeatures_supportedVelocityConstraintOptions(swigCPtr), true);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public KinematicConstraintOptions supportedAngularConstraintOptions() {
-    KinematicConstraintOptions ret = new KinematicConstraintOptions(msclPINVOKE.MipNodeFeatures_supportedAngularConstraintOptions(swigCPtr), true);
+  public AdaptiveFilterLevels supportedAdaptiveFilterLevels() {
+    AdaptiveFilterLevels ret = new AdaptiveFilterLevels(msclPINVOKE.MipNodeFeatures_supportedAdaptiveFilterLevels(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

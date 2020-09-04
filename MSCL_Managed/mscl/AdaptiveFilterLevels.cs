@@ -10,21 +10,21 @@
 
 namespace mscl {
 
-public class KinematicConstraintOptions : global::System.IDisposable, global::System.Collections.IEnumerable, global::System.Collections.Generic.IEnumerable<InertialTypes.KinematicConstraint>
+public class AdaptiveFilterLevels : global::System.IDisposable, global::System.Collections.IEnumerable, global::System.Collections.Generic.IEnumerable<InertialTypes.AutoAdaptiveFilteringLevel>
  {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
 
-  internal KinematicConstraintOptions(global::System.IntPtr cPtr, bool cMemoryOwn) {
+  internal AdaptiveFilterLevels(global::System.IntPtr cPtr, bool cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(KinematicConstraintOptions obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(AdaptiveFilterLevels obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  ~KinematicConstraintOptions() {
+  ~AdaptiveFilterLevels() {
     Dispose(false);
   }
 
@@ -38,25 +38,25 @@ public class KinematicConstraintOptions : global::System.IDisposable, global::Sy
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_KinematicConstraintOptions(swigCPtr);
+          msclPINVOKE.delete_AdaptiveFilterLevels(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
     }
   }
 
-  public KinematicConstraintOptions(global::System.Collections.IEnumerable c) : this() {
+  public AdaptiveFilterLevels(global::System.Collections.IEnumerable c) : this() {
     if (c == null)
       throw new global::System.ArgumentNullException("c");
-    foreach (InertialTypes.KinematicConstraint element in c) {
+    foreach (InertialTypes.AutoAdaptiveFilteringLevel element in c) {
       this.Add(element);
     }
   }
 
-  public KinematicConstraintOptions(global::System.Collections.Generic.IEnumerable<InertialTypes.KinematicConstraint> c) : this() {
+  public AdaptiveFilterLevels(global::System.Collections.Generic.IEnumerable<InertialTypes.AutoAdaptiveFilteringLevel> c) : this() {
     if (c == null)
       throw new global::System.ArgumentNullException("c");
-    foreach (InertialTypes.KinematicConstraint element in c) {
+    foreach (InertialTypes.AutoAdaptiveFilteringLevel element in c) {
       this.Add(element);
     }
   }
@@ -73,7 +73,7 @@ public class KinematicConstraintOptions : global::System.IDisposable, global::Sy
     }
   }
 
-  public InertialTypes.KinematicConstraint this[int index]  {
+  public InertialTypes.AutoAdaptiveFilteringLevel this[int index]  {
     get {
       return getitem(index);
     }
@@ -105,17 +105,17 @@ public class KinematicConstraintOptions : global::System.IDisposable, global::Sy
     }
   }
 
-  public void CopyTo(InertialTypes.KinematicConstraint[] array)
+  public void CopyTo(InertialTypes.AutoAdaptiveFilteringLevel[] array)
   {
     CopyTo(0, array, 0, this.Count);
   }
 
-  public void CopyTo(InertialTypes.KinematicConstraint[] array, int arrayIndex)
+  public void CopyTo(InertialTypes.AutoAdaptiveFilteringLevel[] array, int arrayIndex)
   {
     CopyTo(0, array, arrayIndex, this.Count);
   }
 
-  public void CopyTo(int index, InertialTypes.KinematicConstraint[] array, int arrayIndex, int count)
+  public void CopyTo(int index, InertialTypes.AutoAdaptiveFilteringLevel[] array, int arrayIndex, int count)
   {
     if (array == null)
       throw new global::System.ArgumentNullException("array");
@@ -133,22 +133,22 @@ public class KinematicConstraintOptions : global::System.IDisposable, global::Sy
       array.SetValue(getitemcopy(index+i), arrayIndex+i);
   }
 
-  public InertialTypes.KinematicConstraint[] ToArray() {
-    InertialTypes.KinematicConstraint[] array = new InertialTypes.KinematicConstraint[this.Count];
+  public InertialTypes.AutoAdaptiveFilteringLevel[] ToArray() {
+    InertialTypes.AutoAdaptiveFilteringLevel[] array = new InertialTypes.AutoAdaptiveFilteringLevel[this.Count];
     this.CopyTo(array);
     return array;
   }
 
-  global::System.Collections.Generic.IEnumerator<InertialTypes.KinematicConstraint> global::System.Collections.Generic.IEnumerable<InertialTypes.KinematicConstraint>.GetEnumerator() {
-    return new KinematicConstraintOptionsEnumerator(this);
+  global::System.Collections.Generic.IEnumerator<InertialTypes.AutoAdaptiveFilteringLevel> global::System.Collections.Generic.IEnumerable<InertialTypes.AutoAdaptiveFilteringLevel>.GetEnumerator() {
+    return new AdaptiveFilterLevelsEnumerator(this);
   }
 
   global::System.Collections.IEnumerator global::System.Collections.IEnumerable.GetEnumerator() {
-    return new KinematicConstraintOptionsEnumerator(this);
+    return new AdaptiveFilterLevelsEnumerator(this);
   }
 
-  public KinematicConstraintOptionsEnumerator GetEnumerator() {
-    return new KinematicConstraintOptionsEnumerator(this);
+  public AdaptiveFilterLevelsEnumerator GetEnumerator() {
+    return new AdaptiveFilterLevelsEnumerator(this);
   }
 
   // Type-safe enumerator
@@ -156,15 +156,15 @@ public class KinematicConstraintOptions : global::System.IDisposable, global::Sy
   /// whenever the collection is modified. This has been done for changes in the size of the
   /// collection but not when one of the elements of the collection is modified as it is a bit
   /// tricky to detect unmanaged code that modifies the collection under our feet.
-  public sealed class KinematicConstraintOptionsEnumerator : global::System.Collections.IEnumerator
-    , global::System.Collections.Generic.IEnumerator<InertialTypes.KinematicConstraint>
+  public sealed class AdaptiveFilterLevelsEnumerator : global::System.Collections.IEnumerator
+    , global::System.Collections.Generic.IEnumerator<InertialTypes.AutoAdaptiveFilteringLevel>
   {
-    private KinematicConstraintOptions collectionRef;
+    private AdaptiveFilterLevels collectionRef;
     private int currentIndex;
     private object currentObject;
     private int currentSize;
 
-    public KinematicConstraintOptionsEnumerator(KinematicConstraintOptions collection) {
+    public AdaptiveFilterLevelsEnumerator(AdaptiveFilterLevels collection) {
       collectionRef = collection;
       currentIndex = -1;
       currentObject = null;
@@ -172,7 +172,7 @@ public class KinematicConstraintOptions : global::System.IDisposable, global::Sy
     }
 
     // Type-safe iterator Current
-    public InertialTypes.KinematicConstraint Current {
+    public InertialTypes.AutoAdaptiveFilteringLevel Current {
       get {
         if (currentIndex == -1)
           throw new global::System.InvalidOperationException("Enumeration not started.");
@@ -180,7 +180,7 @@ public class KinematicConstraintOptions : global::System.IDisposable, global::Sy
           throw new global::System.InvalidOperationException("Enumeration finished.");
         if (currentObject == null)
           throw new global::System.InvalidOperationException("Collection modified.");
-        return (InertialTypes.KinematicConstraint)currentObject;
+        return (InertialTypes.AutoAdaptiveFilteringLevel)currentObject;
       }
     }
 
@@ -218,112 +218,112 @@ public class KinematicConstraintOptions : global::System.IDisposable, global::Sy
   }
 
   public void Clear() {
-    msclPINVOKE.KinematicConstraintOptions_Clear(swigCPtr);
+    msclPINVOKE.AdaptiveFilterLevels_Clear(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void Add(InertialTypes.KinematicConstraint x) {
-    msclPINVOKE.KinematicConstraintOptions_Add(swigCPtr, (int)x);
+  public void Add(InertialTypes.AutoAdaptiveFilteringLevel x) {
+    msclPINVOKE.AdaptiveFilterLevels_Add(swigCPtr, (int)x);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   private uint size() {
-    uint ret = msclPINVOKE.KinematicConstraintOptions_size(swigCPtr);
+    uint ret = msclPINVOKE.AdaptiveFilterLevels_size(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private uint capacity() {
-    uint ret = msclPINVOKE.KinematicConstraintOptions_capacity(swigCPtr);
+    uint ret = msclPINVOKE.AdaptiveFilterLevels_capacity(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private void reserve(uint n) {
-    msclPINVOKE.KinematicConstraintOptions_reserve(swigCPtr, n);
+    msclPINVOKE.AdaptiveFilterLevels_reserve(swigCPtr, n);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public KinematicConstraintOptions() : this(msclPINVOKE.new_KinematicConstraintOptions__SWIG_0(), true) {
+  public AdaptiveFilterLevels() : this(msclPINVOKE.new_AdaptiveFilterLevels__SWIG_0(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public KinematicConstraintOptions(KinematicConstraintOptions other) : this(msclPINVOKE.new_KinematicConstraintOptions__SWIG_1(KinematicConstraintOptions.getCPtr(other)), true) {
+  public AdaptiveFilterLevels(AdaptiveFilterLevels other) : this(msclPINVOKE.new_AdaptiveFilterLevels__SWIG_1(AdaptiveFilterLevels.getCPtr(other)), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public KinematicConstraintOptions(int capacity) : this(msclPINVOKE.new_KinematicConstraintOptions__SWIG_2(capacity), true) {
+  public AdaptiveFilterLevels(int capacity) : this(msclPINVOKE.new_AdaptiveFilterLevels__SWIG_2(capacity), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  private InertialTypes.KinematicConstraint getitemcopy(int index) {
-    InertialTypes.KinematicConstraint ret = (InertialTypes.KinematicConstraint)msclPINVOKE.KinematicConstraintOptions_getitemcopy(swigCPtr, index);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  private InertialTypes.KinematicConstraint getitem(int index) {
-    InertialTypes.KinematicConstraint ret = (InertialTypes.KinematicConstraint)msclPINVOKE.KinematicConstraintOptions_getitem(swigCPtr, index);
+  private InertialTypes.AutoAdaptiveFilteringLevel getitemcopy(int index) {
+    InertialTypes.AutoAdaptiveFilteringLevel ret = (InertialTypes.AutoAdaptiveFilteringLevel)msclPINVOKE.AdaptiveFilterLevels_getitemcopy(swigCPtr, index);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  private void setitem(int index, InertialTypes.KinematicConstraint val) {
-    msclPINVOKE.KinematicConstraintOptions_setitem(swigCPtr, index, (int)val);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void AddRange(KinematicConstraintOptions values) {
-    msclPINVOKE.KinematicConstraintOptions_AddRange(swigCPtr, KinematicConstraintOptions.getCPtr(values));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public KinematicConstraintOptions GetRange(int index, int count) {
-    global::System.IntPtr cPtr = msclPINVOKE.KinematicConstraintOptions_GetRange(swigCPtr, index, count);
-    KinematicConstraintOptions ret = (cPtr == global::System.IntPtr.Zero) ? null : new KinematicConstraintOptions(cPtr, true);
+  private InertialTypes.AutoAdaptiveFilteringLevel getitem(int index) {
+    InertialTypes.AutoAdaptiveFilteringLevel ret = (InertialTypes.AutoAdaptiveFilteringLevel)msclPINVOKE.AdaptiveFilterLevels_getitem(swigCPtr, index);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void Insert(int index, InertialTypes.KinematicConstraint x) {
-    msclPINVOKE.KinematicConstraintOptions_Insert(swigCPtr, index, (int)x);
+  private void setitem(int index, InertialTypes.AutoAdaptiveFilteringLevel val) {
+    msclPINVOKE.AdaptiveFilterLevels_setitem(swigCPtr, index, (int)val);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void InsertRange(int index, KinematicConstraintOptions values) {
-    msclPINVOKE.KinematicConstraintOptions_InsertRange(swigCPtr, index, KinematicConstraintOptions.getCPtr(values));
+  public void AddRange(AdaptiveFilterLevels values) {
+    msclPINVOKE.AdaptiveFilterLevels_AddRange(swigCPtr, AdaptiveFilterLevels.getCPtr(values));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public AdaptiveFilterLevels GetRange(int index, int count) {
+    global::System.IntPtr cPtr = msclPINVOKE.AdaptiveFilterLevels_GetRange(swigCPtr, index, count);
+    AdaptiveFilterLevels ret = (cPtr == global::System.IntPtr.Zero) ? null : new AdaptiveFilterLevels(cPtr, true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void Insert(int index, InertialTypes.AutoAdaptiveFilteringLevel x) {
+    msclPINVOKE.AdaptiveFilterLevels_Insert(swigCPtr, index, (int)x);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void InsertRange(int index, AdaptiveFilterLevels values) {
+    msclPINVOKE.AdaptiveFilterLevels_InsertRange(swigCPtr, index, AdaptiveFilterLevels.getCPtr(values));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void RemoveAt(int index) {
-    msclPINVOKE.KinematicConstraintOptions_RemoveAt(swigCPtr, index);
+    msclPINVOKE.AdaptiveFilterLevels_RemoveAt(swigCPtr, index);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void RemoveRange(int index, int count) {
-    msclPINVOKE.KinematicConstraintOptions_RemoveRange(swigCPtr, index, count);
+    msclPINVOKE.AdaptiveFilterLevels_RemoveRange(swigCPtr, index, count);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public static KinematicConstraintOptions Repeat(InertialTypes.KinematicConstraint value, int count) {
-    global::System.IntPtr cPtr = msclPINVOKE.KinematicConstraintOptions_Repeat((int)value, count);
-    KinematicConstraintOptions ret = (cPtr == global::System.IntPtr.Zero) ? null : new KinematicConstraintOptions(cPtr, true);
+  public static AdaptiveFilterLevels Repeat(InertialTypes.AutoAdaptiveFilteringLevel value, int count) {
+    global::System.IntPtr cPtr = msclPINVOKE.AdaptiveFilterLevels_Repeat((int)value, count);
+    AdaptiveFilterLevels ret = (cPtr == global::System.IntPtr.Zero) ? null : new AdaptiveFilterLevels(cPtr, true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public void Reverse() {
-    msclPINVOKE.KinematicConstraintOptions_Reverse__SWIG_0(swigCPtr);
+    msclPINVOKE.AdaptiveFilterLevels_Reverse__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void Reverse(int index, int count) {
-    msclPINVOKE.KinematicConstraintOptions_Reverse__SWIG_1(swigCPtr, index, count);
+    msclPINVOKE.AdaptiveFilterLevels_Reverse__SWIG_1(swigCPtr, index, count);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void SetRange(int index, KinematicConstraintOptions values) {
-    msclPINVOKE.KinematicConstraintOptions_SetRange(swigCPtr, index, KinematicConstraintOptions.getCPtr(values));
+  public void SetRange(int index, AdaptiveFilterLevels values) {
+    msclPINVOKE.AdaptiveFilterLevels_SetRange(swigCPtr, index, AdaptiveFilterLevels.getCPtr(values));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

@@ -658,6 +658,7 @@ namespace mscl
         //get the data
         uint32 dataRecievedEpoch = bytes.read_uint32();
         uint32 numParsedPackets = bytes.read_uint32();
+        uint32 status = bytes.read_uint32();
         float gpsCorrectionLatency = bytes.read_float();
         float glonassCorrectionLatency = bytes.read_float();
         float galileoCorrectionLatency = bytes.read_float();
@@ -671,17 +672,24 @@ namespace mscl
         uint16 flags = bytes.read_uint16();
 
         //get whether points are valid or invalid from the flags
-        bool valid = pointIsValid(flags, VALID);
+        bool dataReceivedValid = pointIsValid(flags, DATA_RECEIVED_VALID);
+        bool parsedPacketsValid = pointIsValid(flags, PARSED_PACKETS_VALID);
+        bool statusValid = pointIsValid(flags, STATUS_VALID);
+        bool gpsValid = pointIsValid(flags, GPS_LATENCY_VALID);
+        bool glonassValid = pointIsValid(flags, GLONASS_LATENCY_VALID);
+        bool galileoValid = pointIsValid(flags, GALILEO_LATENCY_VALID);
+        bool beidouValid = pointIsValid(flags, BEIDOU_LATENCY_VALID);
 
         MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
 
         //add data points for the values we just collected
-        result.push_back(MipDataPoint(chField, MipTypes::CH_DATA_RECEIVED_EPOCH, valueType_uint32, anyType(dataRecievedEpoch), valid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_NUM_PACKETS, valueType_uint32, anyType(numParsedPackets), valid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_GPS_CORRECTION_LATENCY, valueType_float, anyType(gpsCorrectionLatency), valid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_GLONASS_CORRECTION_LATENCY, valueType_float, anyType(glonassCorrectionLatency), valid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_GALILEO_CORRECTION_LATENCY, valueType_float, anyType(galileoCorrectionLatency), valid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_BEIDOU_CORRECTION_LATENCY, valueType_float, anyType(beidouCorrectionLatency), valid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_DATA_RECEIVED_EPOCH, valueType_uint32, anyType(dataRecievedEpoch), dataReceivedValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_NUM_PACKETS, valueType_uint32, anyType(numParsedPackets), parsedPacketsValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_STATUS, valueType_uint32, anyType(status), statusValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_GPS_CORRECTION_LATENCY, valueType_float, anyType(gpsCorrectionLatency), gpsValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_GLONASS_CORRECTION_LATENCY, valueType_float, anyType(glonassCorrectionLatency), glonassValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_GALILEO_CORRECTION_LATENCY, valueType_float, anyType(galileoCorrectionLatency), galileoValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_BEIDOU_CORRECTION_LATENCY, valueType_float, anyType(beidouCorrectionLatency), beidouValid));
     }
 
     bool FieldParser_RTKCorrectionsStatus::registerParser()
@@ -704,8 +712,20 @@ namespace mscl
         //get the data
         double timeOfWeek = bytes.read_double();
         uint16 weekNumber = bytes.read_uint16();
-        Matrix alpha(2, 2, valueType_double, field.fieldData());
-        Matrix beta(2, 2, valueType_double, field.fieldData());
+
+        ByteStream alphaData;
+        for (int i = 0; i < 4; i++)
+        {
+            alphaData.append_double(bytes.read_double());
+        }
+        Matrix alpha(2, 2, valueType_double, alphaData);
+
+        ByteStream betaData;
+        for (int i = 0; i < 4; i++)
+        {
+            betaData.append_double(bytes.read_double());
+        }
+        Matrix beta(2, 2, valueType_double, betaData);
 
         //get the valid flags
         uint16 flags = bytes.read_uint16();
@@ -745,7 +765,13 @@ namespace mscl
         //get the data
         double timeOfWeek = bytes.read_double();
         uint16 weekNumber = bytes.read_uint16();
-        Vector alpha(valueType_double, field.fieldData());
+
+        ByteStream alphaData;
+        for (int i = 0; i < 3; i++)
+        {
+            alphaData.append_double(bytes.read_double());
+        }
+        Vector alpha(valueType_double, alphaData);
         uint8 disturbanceFlags = bytes.read_uint8();
 
         //get the valid flags

@@ -123,22 +123,23 @@ namespace mscl
     
     //================================================================================================================
     //API Enums: ValueType
-    //  valueType_float                     - 0 - The value is stored as a 4-byte float .
-    //  valueType_double                    - 1 - The value is stored as an 8-byte double.
-    //  valueType_uint8                     - 2 - The value is stored as a 1-byte unsigned integer.
-    //  valueType_uint16                    - 3 - The value is stored as a 2-byte unsigned integer.
-    //  valueType_uint32                    - 4 - The value is stored as a 4-byte unsigned integer.
-    //  valueType_int16                     - 5 - The value is stored as a 2-byte signed integer.
-    //  valueType_int32                     - 6 - The value is stored as a 4-byte signed integer.
-    //  valueType_bool                      - 7 - The value is stored as a 1-byte boolean.
-    //  valueType_Vector                    - 8 - The value is stored as a <Vector> object.
-    //  valueType_Matrix                    - 9 - The value is stored as a <Matrix> object.
-    //  valueType_Timestamp                 - 10 - The value is stored as a <Timestamp> object.
-    //  valueType_string                    - 11 - The value is stored as a string.
-    //  valueType_Bytes                     - 12 - The value is stored as a <Bytes> object.
-    //  valueType_StructuralHealth          - 13 - The value is stored as a <StructuralHealth> object.
-    //  valueType_RfSweep                   - 14 - The value is stored as an <RfSweep> object.
-    //  valueType_ChannelMask               - 15 - The value is stored as a <ChannelMask> object.
+    //  valueType_float                     - 0     - The value is stored as a 4-byte float .
+    //  valueType_double                    - 1     - The value is stored as an 8-byte double.
+    //  valueType_uint8                     - 2     - The value is stored as a 1-byte unsigned integer.
+    //  valueType_uint16                    - 3     - The value is stored as a 2-byte unsigned integer.
+    //  valueType_uint32                    - 4     - The value is stored as a 4-byte unsigned integer.
+    //  valueType_int8                      - 16    - The value is stored as a 1-byte signed integer.
+    //  valueType_int16                     - 5     - The value is stored as a 2-byte signed integer.
+    //  valueType_int32                     - 6     - The value is stored as a 4-byte signed integer.
+    //  valueType_bool                      - 7     - The value is stored as a 1-byte boolean.
+    //  valueType_Vector                    - 8     - The value is stored as a <Vector> object.
+    //  valueType_Matrix                    - 9     - The value is stored as a <Matrix> object.
+    //  valueType_Timestamp                 - 10    - The value is stored as a <Timestamp> object.
+    //  valueType_string                    - 11    - The value is stored as a string.
+    //  valueType_Bytes                     - 12    - The value is stored as a <Bytes> object.
+    //  valueType_StructuralHealth          - 13    - The value is stored as a <StructuralHealth> object.
+    //  valueType_RfSweep                   - 14    - The value is stored as an <RfSweep> object.
+    //  valueType_ChannelMask               - 15    - The value is stored as a <ChannelMask> object.
     //================================================================================================================
     enum ValueType
     {
@@ -147,6 +148,7 @@ namespace mscl
         valueType_uint8                     = 2,
         valueType_uint16                    = 3,
         valueType_uint32                    = 4,
+        valueType_int8                      = 16,
         valueType_int16                     = 5,
         valueType_int32                     = 6,
         valueType_bool                      = 7,

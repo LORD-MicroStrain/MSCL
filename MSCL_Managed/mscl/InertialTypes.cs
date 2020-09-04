@@ -90,7 +90,7 @@ public class InertialTypes : global::System.IDisposable {
     FIXTYPE_NONE = 0x03,
     FIXTYPE_INVALID = 0x04,
     FIXTYPE_RTK_FLOAT = 0x05,
-    FIXTYPE_FTK_FIXED = 0x06
+    FIXTYPE_RTK_FIXED = 0x06
   }
 
   public enum SpaceVehicleFlags {
@@ -161,6 +161,7 @@ public class InertialTypes : global::System.IDisposable {
     FILTERSTATUS_ANTENNA_OFFSET_CORRECTION_EST_HIGH_WARN = 0x2000,
     FILTERSTATUS_HARD_IRON_OFFSET_EST_HIGH_WARN = 0x4000,
     FILTERSTATUS_SOFT_IRON_CORRECTION_EST_HIGH_WARN = 0x8000,
+    FILTERSTATUS_CONDITION = 0x0003,
     FILTERSTATUS_ROLL_PITCH_WARNING = 0x0004,
     FILTERSTATUS_HEADING_WARNING = 0x0008,
     FILTERSTATUS_POSITION_WARNING = 0x0010,
@@ -174,6 +175,12 @@ public class InertialTypes : global::System.IDisposable {
   public enum FilterStatus_Initialization {
     FILTERSTATUS_ATT_NOT_INIT = 0x1000,
     FILTERSTATUS_POS_VEL_NOT_INIT = 0x2000
+  }
+
+  public enum FilterCondition {
+    STABLE = 0x01,
+    CONVERGING = 0x02,
+    UNSTABLE = 0x03
   }
 
   public enum DgnssBaseStatus {
@@ -191,7 +198,8 @@ public class InertialTypes : global::System.IDisposable {
     HEADINGSOURCE_NONE = 0x0000,
     HEADINGSOURCE_INTERNAL_MAGNETOMETER = 0x0001,
     HEADINGSOURCE_INTERNAL_GPS_VELOCITY_VECTOR = 0x0002,
-    HEADINGSOURCE_EXTERNAL_HEADING_UPDATE_CMD = 0x0004
+    HEADINGSOURCE_EXTERNAL_HEADING_UPDATE_CMD = 0x0004,
+    HEADINGSOURCE_GNSS_DUAL_ANTENNA = 0x0008
   }
 
   public enum HeadingUpdateEnableOption {
@@ -243,12 +251,6 @@ public class InertialTypes : global::System.IDisposable {
     BEIDOU = 0x03,
     QZSS = 0x05,
     GLONASS = 0x06
-  }
-
-  public enum KinematicConstraint {
-    CONSTRAINT_NONE = 0x00,
-    CONSTRAINT_ZERO_MAGNITUDE = 0x01,
-    CONSTRAINT_WHEELED_VEHICLE = 0x02
   }
 
   public enum AutoAdaptiveFilteringLevel {

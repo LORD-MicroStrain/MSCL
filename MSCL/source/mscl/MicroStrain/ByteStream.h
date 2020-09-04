@@ -74,6 +74,14 @@ namespace mscl
         //    value - The 1-byte uint8 to be added to the byte stream
         void append_uint8(uint8 value);
 
+        //Function: append_int8
+        //    Appends a 1-byte signed integer to the byte stream
+        //
+        //Parameters:
+        //    value - The 1-byte int8 to be added to the byte stream
+        //    endian - The <Utils::Endianness> to append the bytes in.
+        void append_int8(int8 value);
+
         //Function: append_int16
         //    Appends a 2-byte signed integer to the byte stream
         //

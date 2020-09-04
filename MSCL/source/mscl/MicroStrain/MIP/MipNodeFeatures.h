@@ -169,29 +169,15 @@ namespace mscl
         //    Gets an object containing the adaptive measurement modes supported by this node.
         //
         //Returns:
-        //    A AdaptiveMeasurementModes object containing all the supported adaptive measurement modes for this node.
+        //    An AdaptiveMeasurementModes object containing all the supported adaptive measurement modes for this node.
         const AdaptiveMeasurementModes supportedAdaptiveMeasurementModes() const;
 
-        //API Function: supportedAccelerationConstraintOptions
-        //    Gets the acceleration constraint options supported by this device.
+        //API Function: supportedAdaptiveFilterLevels
+        //    Gets an object containing the adaptive filtering levels supported by this node.
         //
         //Returns:
-        //    An KinematicConstraintOptions object containing all the supported acceleration constraint options for this device.
-        const KinematicConstraintOptions supportedAccelerationConstraintOptions() const;
-
-        //API Function: supportedVelocityConstraintOptions
-        //    Gets the velocity constraint options supported by this device.
-        //
-        //Returns:
-        //    An KinematicConstraintOptions object containing all the supported velocity constraint options for this device.
-        const KinematicConstraintOptions supportedVelocityConstraintOptions() const;
-
-        //API Function: supportedAngularConstraintOptions
-        //    Gets the angular constraint options supported by this device.
-        //
-        //Returns:
-        //    An KinematicConstraintOptions object containing all the supported angular constraint options for this device.
-        const KinematicConstraintOptions supportedAngularConstraintOptions() const;
+        //    An AdaptiveFilterLevels object containing all the supported adaptive filtering levels for this node.
+        const AdaptiveFilterLevels supportedAdaptiveFilterLevels() const;
 
         //API Function: supportedPpsSourceOptions
         //    Gets the PPS source options supported by this device.

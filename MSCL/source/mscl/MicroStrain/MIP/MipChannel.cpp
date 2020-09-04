@@ -31,6 +31,11 @@ namespace mscl
 
     uint16 MipChannel::rateDecimation(uint16 sampleRateBase) const
     {
+        if (m_sampleRate.rateType() == SampleRate::rateType_decimation)
+        {
+            return static_cast<uint16>(m_sampleRate.samples());
+        }
+
         return static_cast<uint16>(sampleRateBase / m_sampleRate.samplesPerSecond());
     }
 

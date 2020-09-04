@@ -28,13 +28,15 @@ namespace mscl
         //API Enums: RateType
         //    rateType_seconds      - 0 - Sample rate type of seconds    (less than 1 Hz) 
         //    rateType_hertz        - 1 - Sample rate type of Hertz        (1 Hz and above)
-        //    rateType_event        - 2 - Event triggered, No sample rate
+        //    rateType_event        - 2 - Event triggered, no sample rate
+        //    rateType_decimation   - 3 - Every x sample sent, no sample rate
         //=====================================================================================================
         enum RateType
         {
             rateType_seconds      = 0,
             rateType_hertz        = 1,
-            rateType_event        = 2
+            rateType_event        = 2,
+            rateType_decimation   = 3
         };
 
     public:
@@ -153,12 +155,19 @@ namespace mscl
         //    A SampleRate object built from the given parameter
         static SampleRate Seconds(uint32 secondsBetweenSamples);
 
-        //API Function: Seconds
+        //API Function: Event
         //    Creates a SampleRate object with the asynchronous/event type.
         //
         //Returns:
         //    A SampleRate object of the event type.
         static SampleRate Event();
+
+        //API Function: Decimation
+        //    Creates a SampleRate object with the decimation type.
+        //
+        //Returns:
+        //    A SampleRate object of the decimation type.
+        static SampleRate Decimation(uint32 rateDecimation);
 
         //API Function: FromWirelessEepromValue
         //    Creates a SampleRate object from the <WirelessTypes::WirelessSampleRate> value (the value that gets stored in eeprom).

@@ -448,8 +448,20 @@ namespace mscl
     {
     private:
         //Constants: Valid Flags
-        //    VALID                - b00000001 - The flag position for checking the RTK Corrections Status flag
-        static const uint16 VALID = BOOST_BINARY(00000001);
+        //    DATA_RECEIVED_VALID       - b00000001 - The flag position for checking the Time of Week flag
+        //    PARSED_PACKETS_VALID      - b00000010 - The flag position for checking the Week Number flag
+        //    STATUS_VALID              - b00000100 - The flag position for checking the Alpha Ionospheric Correction Terms flag
+        //    GPS_LATENCY_VALID         - b00001000 - The flag position for checking the Beta Ionospheric Correction Terms flag
+        //    GLONASS_LATENCY_VALID     - b00010000 - The flag position for checking the Beta Ionospheric Correction Terms flag
+        //    GALILEO_LATENCY_VALID     - b00100000 - The flag position for checking the Beta Ionospheric Correction Terms flag
+        //    BEIDOU_LATENCY_VALID      - b01000000 - The flag position for checking the Beta Ionospheric Correction Terms flag
+        static const uint16 DATA_RECEIVED_VALID       = BOOST_BINARY(00000001);
+        static const uint16 PARSED_PACKETS_VALID      = BOOST_BINARY(00000010);
+        static const uint16 STATUS_VALID              = BOOST_BINARY(00000100);
+        static const uint16 GPS_LATENCY_VALID         = BOOST_BINARY(00001000);
+        static const uint16 GLONASS_LATENCY_VALID     = BOOST_BINARY(00010000);
+        static const uint16 GALILEO_LATENCY_VALID     = BOOST_BINARY(00100000);
+        static const uint16 BEIDOU_LATENCY_VALID      = BOOST_BINARY(01000000);
 
     private:
         FieldParser_RTKCorrectionsStatus() {};        //default constructor disabled
@@ -474,9 +486,9 @@ namespace mscl
         //    ALPHA_VALID               - b00000100 - The flag position for checking the Alpha Ionospheric Correction Terms flag
         //    BETA_VALID                - b00001000 - The flag position for checking the Beta Ionospheric Correction Terms flag
         static const uint16 TIME_OF_WEEK_VALID = BOOST_BINARY(00000001);
-        static const uint16 WEEK_NUMBER_VALID = BOOST_BINARY(00000001);
-        static const uint16 ALPHA_VALID = BOOST_BINARY(00000001);
-        static const uint16 BETA_VALID = BOOST_BINARY(00000001);
+        static const uint16 WEEK_NUMBER_VALID = BOOST_BINARY(00000010);
+        static const uint16 ALPHA_VALID = BOOST_BINARY(00000100);
+        static const uint16 BETA_VALID = BOOST_BINARY(00001000);
 
     private:
         FieldParser_GPSIonosphericCorrection() {};        //default constructor disabled
@@ -502,9 +514,9 @@ namespace mscl
         //    ALPHA_VALID               - b00000100 - The flag position for checking the Alpha Ionospheric Correction Terms flag
         //    DISTURBANCE_FLAGS_VALID   - b00001000 - The flag position for checking the Region Disturbance Flags Valid flag
         static const uint16 TIME_OF_WEEK_VALID = BOOST_BINARY(00000001);
-        static const uint16 WEEK_NUMBER_VALID = BOOST_BINARY(00000001);
-        static const uint16 ALPHA_VALID = BOOST_BINARY(00000001);
-        static const uint16 DISTURBANCE_FLAGS_VALID = BOOST_BINARY(00000001);
+        static const uint16 WEEK_NUMBER_VALID = BOOST_BINARY(00000010);
+        static const uint16 ALPHA_VALID = BOOST_BINARY(00000100);
+        static const uint16 DISTURBANCE_FLAGS_VALID = BOOST_BINARY(00001000);
 
     private:
         FieldParser_IonosphericCorrection() {};        //default constructor disabled

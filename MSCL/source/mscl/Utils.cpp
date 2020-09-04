@@ -38,6 +38,7 @@ namespace mscl
                 return 2;
 
             case valueType_uint8:
+            case valueType_int8:
             case valueType_bool:
                 return 1;
 
