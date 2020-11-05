@@ -69,18 +69,6 @@ public class PositionReferenceConfiguration : global::System.IDisposable {
     } 
   }
 
-  public byte source() {
-    byte ret = msclPINVOKE.PositionReferenceConfiguration_source(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public static PositionReferenceConfiguration fromResponseData(MipFieldValues resData) {
-    PositionReferenceConfiguration ret = new PositionReferenceConfiguration(msclPINVOKE.PositionReferenceConfiguration_fromResponseData(MipFieldValues.getCPtr(resData)), true);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
   public PositionReferenceConfiguration() : this(msclPINVOKE.new_PositionReferenceConfiguration(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }

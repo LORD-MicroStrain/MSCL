@@ -425,25 +425,25 @@ namespace mscl
 
         //get the valid flags
         uint16 flags = bytes.read_uint16();
-
-
+        
         //get whether points are valid or invalid from the flags
         bool channelValid    = pointIsValid(flags, CHANNEL_VALID);
-        bool svIdValid        = pointIsValid(flags, SV_ID_VALID);
         bool ratioValid        = pointIsValid(flags, RATIO_VALID);
         bool azimuthValid    = pointIsValid(flags, AZIMUTH_VALID);
         bool elevationValid    = pointIsValid(flags, ELEVATION_VALID);
         bool svFlagsValid    = pointIsValid(flags, SV_FLAGS_VALID);
 
         MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+        MipChannelIdentifiers addlIds = {
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_SATELLITE_ID, vehicleId)
+        };
 
         //add data points for the values we just collected
-        result.push_back(MipDataPoint(chField, MipTypes::CH_CHANNEL, valueType_uint8, anyType(channel), channelValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_ID, valueType_uint8, anyType(vehicleId), svIdValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_CARRIER_TO_NOISE_RATIO, valueType_uint16, anyType(ratio), ratioValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_AZIMUTH, valueType_int16, anyType(azimuth), azimuthValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_ELEVATION, valueType_int16, anyType(elevation), elevationValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_FLAGS, valueType_uint16, anyType(svFlags), svFlagsValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_CHANNEL, addlIds, valueType_uint8, channel, channelValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_CARRIER_TO_NOISE_RATIO, addlIds, valueType_uint16, anyType(ratio), ratioValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_AZIMUTH, addlIds, valueType_int16, anyType(azimuth), azimuthValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_ELEVATION, addlIds, valueType_int16, anyType(elevation), elevationValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_FLAGS, addlIds, valueType_uint16, anyType(svFlags), svFlagsValid));
     }
 
     bool FieldParser_SpaceVehicleInfo::registerParser()
@@ -509,18 +509,20 @@ namespace mscl
         uint16 flags = bytes.read_uint16();
 
         //get whether points are valid or invalid from the flags
-        bool ageValid = pointIsValid(flags, LATEST_AGE_VALID);
         bool baseIdValid = pointIsValid(flags, BASE_ID_VALID);
-        bool baseStatusValid = pointIsValid(flags, BASE_STATUS_VALID);
-        bool numChsValid = pointIsValid(flags, NUM_CHANNELS_VALID);
+        bool ageValid = pointIsValid(flags, LATEST_AGE_VALID) & baseIdValid;
+        bool baseStatusValid = pointIsValid(flags, BASE_STATUS_VALID) & baseIdValid;
+        bool numChsValid = pointIsValid(flags, NUM_CHANNELS_VALID) & baseIdValid;
 
         MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+        MipChannelIdentifiers addlIds = {
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_BASE_STATION_ID, baseId)
+        };
 
         //add data points for the values we just collected
-        result.push_back(MipDataPoint(chField, MipTypes::CH_AGE, valueType_float, anyType(newestAge), ageValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_ID, valueType_int16, anyType(baseId), baseIdValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_STATUS, valueType_int16, anyType(baseStatus), baseStatusValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_NUM_CHANNELS, valueType_uint16, anyType(numChs), numChsValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_AGE, addlIds, valueType_float, anyType(newestAge), ageValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_STATUS, addlIds, valueType_int16, anyType(baseStatus), baseStatusValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_NUM_CHANNELS, addlIds, valueType_uint16, anyType(numChs), numChsValid));
     }
 
     bool FieldParser_DGNSSInfo::registerParser()
@@ -551,17 +553,19 @@ namespace mscl
 
         //get whether points are valid or invalid from the flags
         bool svIdValid = pointIsValid(flags, SV_ID_VALID);
-        bool ageValid = pointIsValid(flags, AGE_VALID);
-        bool correctionValid = pointIsValid(flags, CORRECTION_VALID);
-        bool rateCorrectionValid = pointIsValid(flags, RATE_CORRECTION_VALID);
+        bool ageValid = pointIsValid(flags, AGE_VALID) & svIdValid;
+        bool correctionValid = pointIsValid(flags, CORRECTION_VALID) & svIdValid;
+        bool rateCorrectionValid = pointIsValid(flags, RATE_CORRECTION_VALID) & svIdValid;
 
         MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+        MipChannelIdentifiers addlIds = {
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_SATELLITE_ID, spaceVehicleId)
+        };
 
         //add data points for the values we just collected
-        result.push_back(MipDataPoint(chField, MipTypes::CH_ID, valueType_uint8, anyType(spaceVehicleId), svIdValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_AGE, valueType_float, anyType(age), ageValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_CORRECTION, valueType_float, anyType(correction), correctionValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_RATE_CORRECTION, valueType_float, anyType(rateCorrection), rateCorrectionValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_AGE, addlIds, valueType_float, anyType(age), ageValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_CORRECTION, addlIds, valueType_float, anyType(correction), correctionValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_RATE_CORRECTION, addlIds, valueType_float, anyType(rateCorrection), rateCorrectionValid));
     }
 
     bool FieldParser_DGNSSChannelStatus::registerParser()
@@ -645,6 +649,222 @@ namespace mscl
     }
     //=====================================================================================================================================================
 
+    //=====================================================================================================================================================
+    //                                                        FieldParser_GnssSatelliteStatus
+    const MipTypes::ChannelField FieldParser_GnssSatelliteStatus::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_SATELLITE_STATUS;
+    const bool FieldParser_GnssSatelliteStatus::REGISTERED = FieldParser_GnssSatelliteStatus::registerParser();    //register the parser immediately
+
+    void FieldParser_GnssSatelliteStatus::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the data
+        uint8 index = bytes.read_uint8();
+        uint8 count = bytes.read_uint8();
+        
+        double tow = bytes.read_double();
+        uint16 weekNum = bytes.read_uint16();
+
+        uint8 gnssId = bytes.read_uint8();
+        uint8 satelliteId = bytes.read_uint8();
+
+        float elevation = bytes.read_float();
+        float azimuth = bytes.read_float();
+        bool health = bytes.read_uint8() > 0;
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool towValid = pointIsValid(flags, TOW_VALID);
+        bool weekNumValid = pointIsValid(flags, WEEK_NUMBER_VALID);
+        bool elevationValid = pointIsValid(flags, ELEVATION_VALID);
+        bool azimuthValid = pointIsValid(flags, AZIMUTH_VALID);
+        bool healthValid = pointIsValid(flags, HEALTH_VALID);
+
+        // identifiers
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
+        MipChannelIdentifiers addlIds = {
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_CONSTELLATION, gnssId),
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_SATELLITE_ID, satelliteId)
+        };
+
+        //add data points for the values we just collected
+        result.push_back(MipDataPoint(chField, MipTypes::CH_INDEX, addlIds, valueType_uint8, anyType(index)));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_COUNT, addlIds, valueType_uint8, anyType(count)));
+
+        result.push_back(MipDataPoint(chField, MipTypes::CH_TIME_OF_WEEK, addlIds, valueType_double, anyType(tow), towValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_WEEK_NUMBER, addlIds, valueType_uint16, anyType(weekNum), weekNumValid));
+
+        result.push_back(MipDataPoint(chField, MipTypes::CH_ELEVATION, addlIds, valueType_float, anyType(elevation), elevationValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_AZIMUTH, addlIds, valueType_float, anyType(azimuth), azimuthValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_HEALTH, addlIds, valueType_bool, anyType(health), healthValid));
+    }
+
+    bool FieldParser_GnssSatelliteStatus::registerParser()
+    {
+        static FieldParser_GnssSatelliteStatus p;
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_GnssRawObservation
+    const MipTypes::ChannelField FieldParser_GnssRawObservation::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_RAW_OBSERVATION;
+    const bool FieldParser_GnssRawObservation::REGISTERED = FieldParser_GnssRawObservation::registerParser();    //register the parser immediately
+
+    void FieldParser_GnssRawObservation::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the data
+        uint8 index = bytes.read_uint8();
+        uint8 count = bytes.read_uint8();
+
+        double tow = bytes.read_double();
+        uint16 weekNum = bytes.read_uint16();
+
+        uint16 recId = bytes.read_uint16();
+        
+        // tracking channel will currently always be 0 - read over the bytes, but don't bother storing it
+        bytes.read_uint8();
+
+        uint8 gnssId = bytes.read_uint8();
+        uint8 satelliteId = bytes.read_uint8();
+        uint8 signalId = bytes.read_uint8();
+
+        float signalStrenth = bytes.read_float();
+        uint8 signalQuality = bytes.read_uint8();
+
+        double pseudorange = bytes.read_double();
+        double carrierPhase = bytes.read_double();
+        float doppler = bytes.read_float();
+
+        float rangeUnc = bytes.read_float();
+        float phaseUnc = bytes.read_float();
+        float dopplerUnc = bytes.read_float();
+
+        float lockTime = bytes.read_float();
+
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool towValid = pointIsValid(flags, TOW_VALID);
+        bool weekNumValid = pointIsValid(flags, WEEK_NUMBER_VALID);
+
+        //bool chIdValid = pointIsValid(flags, CHANNEL_VALID);
+        bool signalStrenthValid = pointIsValid(flags, SIGNAL_STRENGTH_VALID);
+        bool qualityValid = pointIsValid(flags, QUALITY_VALID);
+        bool psuedorangeValid = pointIsValid(flags, PSEUDORANGE_VALID);
+        bool carrierPhaseValid = pointIsValid(flags, CARRIER_PHASE_VALID);
+        bool dopplerValid = pointIsValid(flags, DOPPLER_VALID);
+        bool rangeUncValid = pointIsValid(flags, RANGE_UNC_VALID);
+        bool carrierPhaseUncValid = pointIsValid(flags, CARRIER_PHASE_UNC_VALID);
+        bool dopplerUncValid = pointIsValid(flags, DOPPLER_UNC_VALID);
+        bool lockTimeValid = pointIsValid(flags, LOCK_TIME_VALID);
+
+        // identifiers
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
+        MipChannelIdentifiers addlIds = {
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_RECEIVER_ID, recId),
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_CONSTELLATION, gnssId),
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_SATELLITE_ID, satelliteId),
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_SIGNAL_ID, signalId)
+        };
+
+        //add data points for the values we just collected
+        result.push_back(MipDataPoint(chField, MipTypes::CH_INDEX, addlIds, valueType_uint8, anyType(index)));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_COUNT, addlIds, valueType_uint8, anyType(count)));
+
+        // don't include tracking channel for now - currently never populate, will always be 0
+        //result.push_back(MipDataPoint(chField, MipTypes::CH_CHANNEL, addlIds, valueType_uint8, chId, chIdValid));
+
+        result.push_back(MipDataPoint(chField, MipTypes::CH_TIME_OF_WEEK, addlIds, valueType_double, anyType(tow), towValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_WEEK_NUMBER, addlIds, valueType_uint16, anyType(weekNum), weekNumValid));
+
+        result.push_back(MipDataPoint(chField, MipTypes::CH_SIGNAL_STRENGTH, addlIds, valueType_float, anyType(signalStrenth), signalStrenthValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_SIGNAL_QUALITY, addlIds, valueType_uint8, anyType(signalQuality), qualityValid));
+
+        result.push_back(MipDataPoint(chField, MipTypes::CH_RANGE, addlIds, valueType_double, anyType(pseudorange), psuedorangeValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_CARRIER_PHASE, addlIds, valueType_double, anyType(carrierPhase), carrierPhaseValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_DOPPLER, addlIds, valueType_float, anyType(doppler), dopplerValid));
+
+        result.push_back(MipDataPoint(chField, MipTypes::CH_RANGE_UNC, addlIds, valueType_float, anyType(rangeUnc), rangeUncValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_CARRIER_PHASE_UNC, addlIds, valueType_float, anyType(phaseUnc), carrierPhaseUncValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_DOPPLER_UNC, addlIds, valueType_float, anyType(dopplerUnc), dopplerUncValid));
+
+        result.push_back(MipDataPoint(chField, MipTypes::CH_DELTA_TIME, addlIds, valueType_float, anyType(lockTime), lockTimeValid));
+    }
+
+    bool FieldParser_GnssRawObservation::registerParser()
+    {
+        static FieldParser_GnssRawObservation p;
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_GnssStationInfo
+    const MipTypes::ChannelField FieldParser_GnssStationInfo::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_STATION_INFO;
+    const bool FieldParser_GnssStationInfo::REGISTERED = FieldParser_GnssStationInfo::registerParser();    //register the parser immediately
+
+    void FieldParser_GnssStationInfo::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the data
+        double tow = bytes.read_double();
+        uint16 weekNum = bytes.read_uint16();
+
+        double posX = bytes.read_double();
+        double posY = bytes.read_double();
+        double posZ = bytes.read_double();
+
+        float height = bytes.read_float();
+        
+        uint16 stationId = bytes.read_uint16();
+        uint16 indicators = bytes.read_uint16();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool towValid = pointIsValid(flags, TOW_VALID);
+        bool weekNumValid = pointIsValid(flags, WEEK_NUMBER_VALID);
+        bool ecefPosValid = pointIsValid(flags, ECEF_POS_VALID);
+        bool heightValid = pointIsValid(flags, HEIGHT_VALID);
+        bool indicatorsValid = pointIsValid(flags, INDICATORS_VALID);
+
+        // identifiers
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
+        MipChannelIdentifiers addlIds = {
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_BASE_STATION_ID, stationId)
+        };
+
+        //add data points for the values we just collected
+        result.push_back(MipDataPoint(chField, MipTypes::CH_TIME_OF_WEEK, addlIds, valueType_double, anyType(tow), towValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_WEEK_NUMBER, addlIds, valueType_uint16, anyType(weekNum), weekNumValid));
+
+        result.push_back(MipDataPoint(chField, MipTypes::CH_X, addlIds, valueType_double, anyType(posX), ecefPosValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_Y, addlIds, valueType_double, anyType(posY), ecefPosValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_Z, addlIds, valueType_double, anyType(posZ), ecefPosValid));
+
+        result.push_back(MipDataPoint(chField, MipTypes::CH_HEIGHT, addlIds, valueType_float, anyType(height), heightValid));
+
+        result.push_back(MipDataPoint(chField, MipTypes::CH_STATUS, addlIds, valueType_uint16, anyType(indicators), indicatorsValid));
+    }
+
+    bool FieldParser_GnssStationInfo::registerParser()
+    {
+        static FieldParser_GnssStationInfo p;
+        return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_RTKCorrectionsStatus
@@ -656,9 +876,10 @@ namespace mscl
         DataBuffer bytes(field.fieldData());
 
         //get the data
-        uint32 dataRecievedEpoch = bytes.read_uint32();
-        uint32 numParsedPackets = bytes.read_uint32();
-        uint32 status = bytes.read_uint32();
+        double tow = bytes.read_double();
+        uint16 weekNum = bytes.read_uint16();
+        uint16 epochStatus = bytes.read_uint16();
+        uint32 rtkStatus = bytes.read_uint32();
         float gpsCorrectionLatency = bytes.read_float();
         float glonassCorrectionLatency = bytes.read_float();
         float galileoCorrectionLatency = bytes.read_float();
@@ -672,9 +893,10 @@ namespace mscl
         uint16 flags = bytes.read_uint16();
 
         //get whether points are valid or invalid from the flags
-        bool dataReceivedValid = pointIsValid(flags, DATA_RECEIVED_VALID);
-        bool parsedPacketsValid = pointIsValid(flags, PARSED_PACKETS_VALID);
-        bool statusValid = pointIsValid(flags, STATUS_VALID);
+        bool towValid = pointIsValid(flags, TOW_VALID);
+        bool weekNumValid = pointIsValid(flags, WEEK_NUMBER_VALID);
+        bool epochStatusValid = pointIsValid(flags, EPOCH_STATUS_VALID);
+        bool rtkStatusValid = pointIsValid(flags, RTK_STATUS_VALID);
         bool gpsValid = pointIsValid(flags, GPS_LATENCY_VALID);
         bool glonassValid = pointIsValid(flags, GLONASS_LATENCY_VALID);
         bool galileoValid = pointIsValid(flags, GALILEO_LATENCY_VALID);
@@ -683,9 +905,10 @@ namespace mscl
         MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
 
         //add data points for the values we just collected
-        result.push_back(MipDataPoint(chField, MipTypes::CH_DATA_RECEIVED_EPOCH, valueType_uint32, anyType(dataRecievedEpoch), dataReceivedValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_NUM_PACKETS, valueType_uint32, anyType(numParsedPackets), parsedPacketsValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_STATUS, valueType_uint32, anyType(status), statusValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_TIME_OF_WEEK, valueType_double, anyType(tow), towValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_WEEK_NUMBER, valueType_uint16, anyType(weekNum), weekNumValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_STATUS, valueType_uint16, anyType(epochStatus), epochStatusValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_FLAGS, valueType_uint32, anyType(rtkStatus), rtkStatusValid));
         result.push_back(MipDataPoint(chField, MipTypes::CH_GPS_CORRECTION_LATENCY, valueType_float, anyType(gpsCorrectionLatency), gpsValid));
         result.push_back(MipDataPoint(chField, MipTypes::CH_GLONASS_CORRECTION_LATENCY, valueType_float, anyType(glonassCorrectionLatency), glonassValid));
         result.push_back(MipDataPoint(chField, MipTypes::CH_GALILEO_CORRECTION_LATENCY, valueType_float, anyType(galileoCorrectionLatency), galileoValid));
@@ -698,7 +921,6 @@ namespace mscl
         return MipGnssFieldParser::registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
 
     //=====================================================================================================================================================
     //                                                        FieldParser_GPSIonosphericCorrection
@@ -755,7 +977,7 @@ namespace mscl
 
     //=====================================================================================================================================================
     //                                                        FieldParser_IonosphericCorrection
-    const MipTypes::ChannelField FieldParser_IonosphericCorrection::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_IONOSPHERIC_CORRECTION;
+    const MipTypes::ChannelField FieldParser_IonosphericCorrection::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_GALILEO_IONOSPHERIC_CORRECTION;
     const bool FieldParser_IonosphericCorrection::REGISTERED = FieldParser_IonosphericCorrection::registerParser();    //register the parser immediately
 
     void FieldParser_IonosphericCorrection::parse(const MipDataField& field, MipDataPoints& result) const

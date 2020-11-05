@@ -12,14 +12,24 @@ namespace mscl
     std::string MipTypes::channelName(ChannelField field, ChannelQualifier qualifier)
     {
         // handle "duplicate" GNSS data sets
+        // handle shared data fields
         ChannelField keyField = field;
         std::string prepend = "";
-        if (MipTypes::isGnssChannelField(field))
+        std::string append = "";
+
+        if (MipTypes::isGnssChannelField(field)
+            || MipTypes::isSharedChannelField(field))
         {
             keyField = MipTypes::getChannelField_baseDataClass(field);
             prepend = MipTypes::getChannelNamePrependText(field);
+            
+            // only get append string if field not already differentiated by class by prepend string
+            if (prepend == "")
+            {
+                append = MipTypes::getChannelNameAppendText(field);
+            }
         }
-
+        
         //try to find the channel in the map
         auto result = CHANNEL_NAMES.find(ChannelId(keyField, qualifier));
 
@@ -31,7 +41,7 @@ namespace mscl
         }
 
         //replace any unsupported sensorcloud characters
-        std::string sensorcloudFilteredName = prepend + result->second;
+        std::string sensorcloudFilteredName = prepend + result->second + append;
         Utils::filterSensorcloudName(sensorcloudFilteredName);
 
         //found the channel, return the name
@@ -109,12 +119,15 @@ namespace mscl
         {ChannelId(CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP, CH_FLAGS), "gpsCorrelTimestampFlags"},
 
         {ChannelId(CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE, CH_PRESSURE), "scaledAmbientPressure"},
+                
+        {ChannelId(CH_FIELD_SENSOR_ODOMETER_DATA, CH_SPEED), "odometer_speed"},
+        {ChannelId(CH_FIELD_SENSOR_ODOMETER_DATA, CH_SPEED_ACCURACY), "odometer_uncert"},
 
         {ChannelId(CH_FIELD_SENSOR_RAW_AMBIENT_PRESSURE, CH_PRESSURE), "rawAmbientPressure"},
 
-        {ChannelId(CH_FIELD_SENSOR_TEMPERATURE_STATISTICS, CH_MIN_TEMP), "minTemp"},
-        {ChannelId(CH_FIELD_SENSOR_TEMPERATURE_STATISTICS, CH_MAX_TEMP), "maxTemp"},
-        {ChannelId(CH_FIELD_SENSOR_TEMPERATURE_STATISTICS, CH_MEAN_TEMP), "meanTemp"},
+        {ChannelId(CH_FIELD_SENSOR_TEMPERATURE_STATISTICS, CH_MIN_TEMP), "tempStats_min"},
+        {ChannelId(CH_FIELD_SENSOR_TEMPERATURE_STATISTICS, CH_MAX_TEMP), "tempStats_max"},
+        {ChannelId(CH_FIELD_SENSOR_TEMPERATURE_STATISTICS, CH_MEAN_TEMP), "tempStats_mean"},
 
         {ChannelId(CH_FIELD_GNSS_LLH_POSITION, CH_LATITUDE), "latitude"},
         {ChannelId(CH_FIELD_GNSS_LLH_POSITION, CH_LONGITUDE), "longitude"},
@@ -164,26 +177,23 @@ namespace mscl
         {ChannelId(CH_FIELD_GNSS_FIX_INFO, CH_SV_COUNT), "gnssFixSvCount"},
         {ChannelId(CH_FIELD_GNSS_FIX_INFO, CH_FLAGS), "gnssFixFlags"},
 
-        {ChannelId(CH_FIELD_GNSS_SPACE_VEHICLE_INFO, CH_CHANNEL), "spaceVehicleChannel"},
-        {ChannelId(CH_FIELD_GNSS_SPACE_VEHICLE_INFO, CH_ID), "spaceVehicleId"},
-        {ChannelId(CH_FIELD_GNSS_SPACE_VEHICLE_INFO, CH_CARRIER_TO_NOISE_RATIO), "spaceVehicleCarrierToNoiseRatio"},
-        {ChannelId(CH_FIELD_GNSS_SPACE_VEHICLE_INFO, CH_AZIMUTH), "spaceVehicleAzimuth"},
-        {ChannelId(CH_FIELD_GNSS_SPACE_VEHICLE_INFO, CH_ELEVATION), "spaceVehicleElevation"},
-        {ChannelId(CH_FIELD_GNSS_SPACE_VEHICLE_INFO, CH_FLAGS), "spaceVehicleFlags"},
+        {ChannelId(CH_FIELD_GNSS_SPACE_VEHICLE_INFO, CH_CHANNEL), "svi_trackingChannel" },
+        {ChannelId(CH_FIELD_GNSS_SPACE_VEHICLE_INFO, CH_CARRIER_TO_NOISE_RATIO), "svi_carrierToNoiseRatio"},
+        {ChannelId(CH_FIELD_GNSS_SPACE_VEHICLE_INFO, CH_AZIMUTH), "svi_azimuth"},
+        {ChannelId(CH_FIELD_GNSS_SPACE_VEHICLE_INFO, CH_ELEVATION), "svi_elevation"},
+        {ChannelId(CH_FIELD_GNSS_SPACE_VEHICLE_INFO, CH_FLAGS), "svi_flags"},
 
         {ChannelId(CH_FIELD_GNSS_HARDWARE_STATUS, CH_SENSOR_STATE), "sensorState"},
         {ChannelId(CH_FIELD_GNSS_HARDWARE_STATUS, CH_ANTENNA_STATE), "antennaState"},
         {ChannelId(CH_FIELD_GNSS_HARDWARE_STATUS, CH_ANTENNA_POWER), "antennaPower"},
 
-        {ChannelId(CH_FIELD_GNSS_DGNSS_INFO, CH_AGE), "dgnssNewestAge"},
-        {ChannelId(CH_FIELD_GNSS_DGNSS_INFO, CH_ID), "dgnssBaseStationId"},
-        {ChannelId(CH_FIELD_GNSS_DGNSS_INFO, CH_STATUS), "dgnssBaseStationStatus"},
-        {ChannelId(CH_FIELD_GNSS_DGNSS_INFO, CH_NUM_CHANNELS), "dgnssNumChannels"},
+        {ChannelId(CH_FIELD_GNSS_DGNSS_INFO, CH_AGE), "dgnss_newestAge"},
+        {ChannelId(CH_FIELD_GNSS_DGNSS_INFO, CH_STATUS), "dgnss_baseStationStatus"},
+        {ChannelId(CH_FIELD_GNSS_DGNSS_INFO, CH_NUM_CHANNELS), "dgnss_numChannels"},
 
-        {ChannelId(CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS, CH_ID), "dgnssSpaceVehicleId"},
-        {ChannelId(CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS, CH_AGE), "dgnssAge"},
-        {ChannelId(CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS, CH_CORRECTION), "dgnssPseudorangeCorrection"},
-        {ChannelId(CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS, CH_RATE_CORRECTION), "dgnssPseudorangeRateCorrection"},
+        {ChannelId(CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS, CH_AGE), "dgnss_age"},
+        {ChannelId(CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS, CH_CORRECTION), "dgnss_pseudorangeCorr"},
+        {ChannelId(CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS, CH_RATE_CORRECTION), "dgnss_pseudorangeRateCorr"},
 
         { ChannelId(CH_FIELD_GNSS_CLOCK_INFO_2, CH_BIAS), "gpsClockBias" },
         { ChannelId(CH_FIELD_GNSS_CLOCK_INFO_2, CH_DRIFT), "gpsClockDrift" },
@@ -192,23 +202,54 @@ namespace mscl
 
         { ChannelId(CH_FIELD_GNSS_GPS_LEAP_SECONDS, CH_SECONDS), "gpsLeapSeconds" },
 
-        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_DATA_RECEIVED_EPOCH), "dataReceivedEpoch" },
-        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_NUM_PACKETS), "numPackets" },
-        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_STATUS), "rtkStatusFlags" },
-        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_GPS_CORRECTION_LATENCY), "gpsCorrectionLatency" },
-        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_GLONASS_CORRECTION_LATENCY), "glonassCorrectionLatency" },
-        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_GALILEO_CORRECTION_LATENCY), "galileoCorrectionLatency" },
-        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_BEIDOU_CORRECTION_LATENCY), "beidouCorrectionLatency" },
+        { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_INDEX), "satStatus_index" },
+        { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_COUNT), "satStatus_count" },
+        { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_TIME_OF_WEEK), "satStatus_tow" },
+        { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_WEEK_NUMBER), "satStatus_weekNumber" },
+        { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_ELEVATION), "satStatus_elevation" },
+        { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_AZIMUTH), "satStatus_azimuth" },
+        { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_HEALTH), "satStatus_satelliteHealth" },
 
-        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_TIME_OF_WEEK), "gpsCorrectionTimeOfWeek" },
-        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_WEEK_NUMBER), "gpsCorrectionWeekNumber" },
-        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_ALPHA), "gpsCorrectionAlpha" },
-        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_BETA), "gpsCorrectionBeta" },
+        { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_INDEX), "rawObs_index" },
+        { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_COUNT), "rawObs_count" },
+        { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_TIME_OF_WEEK), "rawObs_tow" },
+        { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_WEEK_NUMBER), "rawObs_weekNumber" },
+        { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_SIGNAL_STRENGTH), "rawObs_sigStrength" },
+        { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_SIGNAL_QUALITY), "rawObs_sigQuality" },
+        { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_DELTA_TIME), "rawObs_lockTime" },
+        { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_RANGE), "rawObs_pseudorange" },
+        { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_RANGE_UNC), "rawObs_pseudorange_unc" },
+        { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_CARRIER_PHASE), "rawObs_carrierPhase" },
+        { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_CARRIER_PHASE_UNC), "rawObs_carrierPhase_unc" },
+        { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_DOPPLER), "rawObs_doppler" },
+        { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_DOPPLER_UNC), "rawObs_doppler_unc" },
 
-        { ChannelId(CH_FIELD_GNSS_IONOSPHERIC_CORRECTION, CH_TIME_OF_WEEK), "gnssCorrectionTimeOfWeek" },
-        { ChannelId(CH_FIELD_GNSS_IONOSPHERIC_CORRECTION, CH_WEEK_NUMBER), "gnssCorrectionWeekNumber" },
-        { ChannelId(CH_FIELD_GNSS_IONOSPHERIC_CORRECTION, CH_ALPHA), "gnssCorrectionAlpha" },
-        { ChannelId(CH_FIELD_GNSS_IONOSPHERIC_CORRECTION, CH_DISTURBANCE_FLAGS), "gnssCorrectionDisturbanceFlags" },
+        { ChannelId(CH_FIELD_GNSS_STATION_INFO, CH_TIME_OF_WEEK), "gnssBaseInfo_tow" },
+        { ChannelId(CH_FIELD_GNSS_STATION_INFO, CH_WEEK_NUMBER), "gnssBaseInfo_weekNumber" },
+        { ChannelId(CH_FIELD_GNSS_STATION_INFO, CH_X), "gnssBaseInfo_pos_x" },
+        { ChannelId(CH_FIELD_GNSS_STATION_INFO, CH_Y), "gnssBaseInfo_pos_y" },
+        { ChannelId(CH_FIELD_GNSS_STATION_INFO, CH_Z), "gnssBaseInfo_pos_z" },
+        { ChannelId(CH_FIELD_GNSS_STATION_INFO, CH_HEIGHT), "gnssBaseInfo_pos_height" },
+        { ChannelId(CH_FIELD_GNSS_STATION_INFO, CH_STATUS), "gnssBaseInfo_status" },
+
+        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_TIME_OF_WEEK), "rtkCorrStatus_tow" },
+        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_WEEK_NUMBER), "rtkCorrStatus_weekNumber" },
+        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_STATUS), "rtkCorrStatus_status" },
+        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_FLAGS), "rtkCorrStatus_rtkStatusFlags" },
+        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_GPS_CORRECTION_LATENCY), "rtkCorrStatus_gpsCorrLatency" },
+        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_GLONASS_CORRECTION_LATENCY), "rtkCorrStatus_glonassCorrLatency" },
+        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_GALILEO_CORRECTION_LATENCY), "rtkCorrStatus_galileoCorrLatency" },
+        { ChannelId(CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS, CH_BEIDOU_CORRECTION_LATENCY), "rtkCorrStatus_beidouCorrLatency" },
+
+        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_TIME_OF_WEEK), "gpsCorrTimeOfWeek" },
+        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_WEEK_NUMBER), "gpsCorrWeekNumber" },
+        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_ALPHA), "gpsCorrAlpha" },
+        { ChannelId(CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION, CH_BETA), "gpsCorrBeta" },
+
+        { ChannelId(CH_FIELD_GNSS_GALILEO_IONOSPHERIC_CORRECTION, CH_TIME_OF_WEEK), "galileoCorrTimeOfWeek" },
+        { ChannelId(CH_FIELD_GNSS_GALILEO_IONOSPHERIC_CORRECTION, CH_WEEK_NUMBER), "galileoCorrWeekNumber" },
+        { ChannelId(CH_FIELD_GNSS_GALILEO_IONOSPHERIC_CORRECTION, CH_ALPHA), "galileoCorrAlpha" },
+        { ChannelId(CH_FIELD_GNSS_GALILEO_IONOSPHERIC_CORRECTION, CH_DISTURBANCE_FLAGS), "galileoCorrDisturbanceFlags" },
 
 
         {ChannelId(CH_FIELD_ESTFILTER_ESTIMATED_LLH_POS, CH_LATITUDE), "estLatitude"},
@@ -335,6 +376,12 @@ namespace mscl
         {ChannelId(CH_FIELD_ESTFILTER_MAG_BIAS_UNCERT, CH_Z), "estMagBiasOffsetZUncert"},
 
         {ChannelId(CH_FIELD_ESTFILTER_MAG_AUTO_SOFT_IRON_MATRIX_UNCERT, CH_MATRIX), "estMagAutoSoftIronMatrixUncert"},
+        
+        {ChannelId(CH_FIELD_ESTFILTER_MAG_COVARIANCE_MATRIX, CH_MATRIX), "estMagCovarianceMatrix"},
+
+        {ChannelId(CH_FIELD_ESTFILTER_MAG_RESIDUAL_VECTOR, CH_X), "estMagResidualVector_x"},
+        {ChannelId(CH_FIELD_ESTFILTER_MAG_RESIDUAL_VECTOR, CH_Y), "estMagResidualVector_y"},
+        {ChannelId(CH_FIELD_ESTFILTER_MAG_RESIDUAL_VECTOR, CH_Z), "estMagResidualVector_z"},
 
         {ChannelId(CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION, CH_X), "estGnssAntennaOffsetCorrectX"},
         {ChannelId(CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION, CH_Y), "estGnssAntennaOffsetCorrectY"},
@@ -344,8 +391,61 @@ namespace mscl
         {ChannelId(CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION_UNCERT, CH_Y), "estGnssAntennaOffsetCorrectYUncert"},
         {ChannelId(CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION_UNCERT, CH_Z), "estGnssAntennaOffsetCorrectZUncert"},
 
+        { ChannelId(CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION, CH_BIAS), "gnssClockCorr_bias" },
+        { ChannelId(CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION, CH_DRIFT), "gnssClockCorr_biasDrift" },
+
+        { ChannelId(CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION_UNCERT, CH_BIAS), "gnssClockCorr_uncert_bias" },
+        { ChannelId(CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION_UNCERT, CH_DRIFT), "gnssClockCorr_uncert_biasDrift" },
+
+        { ChannelId(CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION, CH_X), "estGnssAntennaOffsetCorrect_x" },
+        { ChannelId(CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION, CH_Y), "estGnssAntennaOffsetCorrect_y" },
+        { ChannelId(CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION, CH_Z), "estGnssAntennaOffsetCorrect_z" },
+
+        { ChannelId(CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION_UNCERT, CH_X), "estGnssAntennaOffsetCorrect_uncert_x" },
+        { ChannelId(CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION_UNCERT, CH_Y), "estGnssAntennaOffsetCorrect_uncert_y" },
+        { ChannelId(CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION_UNCERT, CH_Z), "estGnssAntennaOffsetCorrect_uncert_z" },
+
+        { ChannelId(CH_FIELD_ESTFILTER_ECEF_POS_UNCERT, CH_X), "estEcefPos_uncert_x" },
+        { ChannelId(CH_FIELD_ESTFILTER_ECEF_POS_UNCERT, CH_Y), "estEcefPos_uncert_y" },
+        { ChannelId(CH_FIELD_ESTFILTER_ECEF_POS_UNCERT, CH_Z), "estEcefPos_uncert_z" },
+
+        { ChannelId(CH_FIELD_ESTFILTER_ECEF_VEL_UNCERT, CH_X), "estEcefVel_uncert_x" },
+        { ChannelId(CH_FIELD_ESTFILTER_ECEF_VEL_UNCERT, CH_Y), "estEcefVel_uncert_y" },
+        { ChannelId(CH_FIELD_ESTFILTER_ECEF_VEL_UNCERT, CH_Z), "estEcefVel_uncert_z" },
+
+        { ChannelId(CH_FIELD_ESTFILTER_ECEF_POS, CH_X), "estEcefPos_x" },
+        { ChannelId(CH_FIELD_ESTFILTER_ECEF_POS, CH_Y), "estEcefPos_y" },
+        { ChannelId(CH_FIELD_ESTFILTER_ECEF_POS, CH_Z), "estEcefPos_z" },
+
+        { ChannelId(CH_FIELD_ESTFILTER_ECEF_VEL, CH_X), "estEcefVel_x" },
+        { ChannelId(CH_FIELD_ESTFILTER_ECEF_VEL, CH_Y), "estEcefVel_y" },
+        { ChannelId(CH_FIELD_ESTFILTER_ECEF_VEL, CH_Z), "estEcefVel_z" },
+
+        { ChannelId(CH_FIELD_ESTFILTER_NED_RELATIVE_POS, CH_X), "estNedRelPos_x" },
+        { ChannelId(CH_FIELD_ESTFILTER_NED_RELATIVE_POS, CH_Y), "estNedRelPos_y" },
+        { ChannelId(CH_FIELD_ESTFILTER_NED_RELATIVE_POS, CH_Z), "estNedRelPos_z" },
+
+        { ChannelId(CH_FIELD_ESTFILTER_POSITION_AIDING_STATUS, CH_TIME_OF_WEEK), "gnssAiding_pos_lastValidTow" },
+        { ChannelId(CH_FIELD_ESTFILTER_POSITION_AIDING_STATUS, CH_STATUS), "gnssAiding_pos_status" },
+
+        { ChannelId(CH_FIELD_ESTFILTER_ATTITUDE_AIDING_STATUS, CH_TIME_OF_WEEK), "gnssAiding_att_lastValidTow" },
+        { ChannelId(CH_FIELD_ESTFILTER_ATTITUDE_AIDING_STATUS, CH_STATUS), "gnssAiding_att_status" },
+
+        { ChannelId(CH_FIELD_ESTFILTER_AIDING_MEASURE_SUMMARY, CH_TIME_OF_WEEK), "aidingSummary_lastValidTow" },
+        { ChannelId(CH_FIELD_ESTFILTER_AIDING_MEASURE_SUMMARY, CH_STATUS), "aidingSummary_status" },
+
         {ChannelId(CH_FIELD_DISP_DISPLACEMENT_RAW, CH_DISPLACEMENT), "rawDisplacement"},
         {ChannelId(CH_FIELD_DISP_DISPLACEMENT_MM, CH_DISPLACEMENT), "displacementMillimeters"},
+
+        // Shared Inertial Channels
+        { ChannelId(CH_FIELD_SENSOR_SHARED_TICKS, CH_TICK), "timeInfo_ticks" },
+
+        { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_TICKS, CH_DELTA_TICK), "timeInfo_deltaTicks" },
+
+        { ChannelId(CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP, CH_TIME_OF_WEEK), "timeInfo_tow" },
+        { ChannelId(CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP, CH_WEEK_NUMBER), "timeInfo_weekNumber" },
+
+        { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP, CH_DELTA_TIME), "timeInfo_deltaTime" },
     });
 
     std::vector<MipTypes::DataClass> MipTypes::GNSS_DATA_CLASSES()
@@ -360,18 +460,50 @@ namespace mscl
         };
     }
 
+    std::vector<MipTypes::DataClass> MipTypes::INERTIAL_DATA_CLASSES()
+    {
+        return{
+            DataClass::CLASS_AHRS_IMU,
+            DataClass::CLASS_ESTFILTER,
+            DataClass::CLASS_GNSS,
+            DataClass::CLASS_GNSS1,
+            DataClass::CLASS_GNSS2,
+            DataClass::CLASS_GNSS3,
+            DataClass::CLASS_GNSS4,
+            DataClass::CLASS_GNSS5
+        };
+    }
+
+    std::vector<uint8> MipTypes::SHARED_DATA_FIELDS()
+    {
+        return{
+            Utils::lsb(MipTypes::ChannelField::CH_FIELD_SENSOR_SHARED_TICKS),
+            Utils::lsb(MipTypes::ChannelField::CH_FIELD_SENSOR_SHARED_DELTA_TICKS),
+            Utils::lsb(MipTypes::ChannelField::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP),
+            Utils::lsb(MipTypes::ChannelField::CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP)
+        };
+    }
+
     MipTypes::MipChannelFields MipTypes::getChannelFields_allDataClasses(MipTypes::ChannelField chField)
     {
         MipChannelFields fields;
-        if (!MipTypes::isGnssChannelField(chField))
+        if (MipTypes::isSharedChannelField(chField))
+        {
+            for (DataClass descSet : INERTIAL_DATA_CLASSES())
+            {
+                fields.push_back(MipTypes::getChannelField_toDataClass(chField, descSet));
+            }
+        }
+        else if (MipTypes::isGnssChannelField(chField)) // if shared field, already have all GNSS entries
+        {
+            for (DataClass descSet : GNSS_DATA_CLASSES())
+            {
+                fields.push_back(MipTypes::getChannelField_toDataClass(chField, descSet));
+            }
+        }
+        else
         {
             fields.push_back(chField);
-            return fields;
-        }
-
-        for (DataClass descSet : GNSS_DATA_CLASSES())
-        {
-            fields.push_back(MipTypes::getChannelField_toDataClass(chField, descSet));
         }
 
         return fields;
@@ -379,12 +511,17 @@ namespace mscl
 
     MipTypes::ChannelField MipTypes::getChannelField_baseDataClass(MipTypes::ChannelField chField)
     {
-        if (!MipTypes::isGnssChannelField(chField))
+        if (MipTypes::isSharedChannelField(chField))
         {
-            return chField;
+            return MipTypes::getChannelField_toDataClass(chField, DataClass::CLASS_AHRS_IMU);
         }
 
-        return MipTypes::getChannelField_toDataClass(chField, DataClass::CLASS_GNSS);
+        if (MipTypes::isGnssChannelField(chField))
+        {
+            return MipTypes::getChannelField_toDataClass(chField, DataClass::CLASS_GNSS);
+        }
+
+        return chField;
     }
 
     MipTypes::ChannelField MipTypes::getChannelField_toDataClass(MipTypes::ChannelField chField, MipTypes::DataClass dataClass)
@@ -415,10 +552,221 @@ namespace mscl
         }
     }
 
+    std::string MipTypes::getChannelNameAppendText(MipTypes::ChannelField chField)
+    {
+        if (!MipTypes::isSharedChannelField(chField))
+        {
+            return "";
+        }
+
+        switch (MipTypes::channelFieldToDataClass(chField))
+        {
+        case DataClass::CLASS_AHRS_IMU:
+            return "_ahrsImu";
+        case DataClass::CLASS_ESTFILTER:
+            return "_estFilter";
+        case DataClass::CLASS_GNSS:
+            return "_gnss";
+
+        case DataClass::CLASS_GNSS1:
+            return "_gnss1";
+        case DataClass::CLASS_GNSS2:
+            return "_gnss2";
+        case DataClass::CLASS_GNSS3:
+            return "_gnss3";
+        case DataClass::CLASS_GNSS4:
+            return "_gnss4";
+        case DataClass::CLASS_GNSS5:
+            return "_gnss5";
+
+        default:
+            return "";
+        }
+    }
+
     bool MipTypes::isGnssChannelField(MipTypes::ChannelField chField)
     {
         std::vector<DataClass> classes = GNSS_DATA_CLASSES();
         return std::find(classes.begin(), classes.end(), MipTypes::channelFieldToDataClass(chField))
             != classes.end();
+    }
+
+    bool MipTypes::isSharedChannelField(MipTypes::ChannelField chField)
+    {
+        uint8 fieldId = Utils::lsb(static_cast<uint16>(chField));
+        std::vector<uint8> fields = SHARED_DATA_FIELDS();
+        return std::find(fields.begin(), fields.end(), fieldId)
+            != fields.end();
+    }
+
+    size_t MipChannelIdentifier::TypeHash::operator()(const MipChannelIdentifier::Type& type) const
+    {
+        return static_cast<size_t>(type);
+    }
+
+    size_t MipChannelIdentifier::TypeIdHash::operator()(const MipChannelIdentifier::TypeId& id) const
+    {
+        return id.first ^ id.second;
+    }
+
+    size_t MipChannelIdentifier::SpecifierIdHash::operator()(const MipChannelIdentifier::SpecifierId& id) const
+    {
+        return std::get<0>(id) ^ std::get<1>(id) ^ std::get<2>(id);
+    }
+
+    const std::unordered_map<MipChannelIdentifier::Type, std::string, MipChannelIdentifier::TypeHash> MipChannelIdentifier::TYPE_NAMES(
+    {
+        { Type::GNSS_RECEIVER_ID, "rec" },
+        { Type::GNSS_BASE_STATION_ID, "gnssBase" },
+        { Type::GNSS_CONSTELLATION, "gnssId" },
+        { Type::GNSS_SATELLITE_ID, "sat" },
+        { Type::GNSS_SIGNAL_ID, "sig" },
+        { Type::AIDING_MEASUREMENT_TYPE, "aidType" }
+    });
+
+    const std::unordered_map<MipChannelIdentifier::TypeId, std::string, MipChannelIdentifier::TypeIdHash> MipChannelIdentifier::TRANSLATED_TYPE_NAMES(
+    {
+        { TypeId(Type::AIDING_MEASUREMENT_TYPE, AidingMeasurementTypes::GNSS), "gnss" },
+        { TypeId(Type::AIDING_MEASUREMENT_TYPE, AidingMeasurementTypes::DUAL_ANTENNA), "dualAnt" },
+        { TypeId(Type::AIDING_MEASUREMENT_TYPE, AidingMeasurementTypes::HEADING), "heading" },
+        { TypeId(Type::AIDING_MEASUREMENT_TYPE, AidingMeasurementTypes::PRESSURE), "pressure" },
+        { TypeId(Type::AIDING_MEASUREMENT_TYPE, AidingMeasurementTypes::MAGNETOMETER), "mag" },
+        { TypeId(Type::AIDING_MEASUREMENT_TYPE, AidingMeasurementTypes::SPEED), "speed" },
+        
+        { TypeId(Type::GNSS_CONSTELLATION, GnssConstellationIds::GPS), "gps" },
+        { TypeId(Type::GNSS_CONSTELLATION, GnssConstellationIds::GLONASS), "glonass" },
+        { TypeId(Type::GNSS_CONSTELLATION, GnssConstellationIds::GALILEO), "galileo" },
+        { TypeId(Type::GNSS_CONSTELLATION, GnssConstellationIds::BEIDOU), "beidou" },
+
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GPS_L1CA), "sig-L1CA" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GPS_L1P), "sig-L1P" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GPS_L1Z), "sig-L1Z" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GPS_L2CA), "sig-L2CA" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GPS_L2P), "sig-L2P" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GPS_L2Z), "sig-L2Z" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GPS_L2CL), "sig-L2CL" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GPS_L2CM), "sig-L2CM" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GPS_L2CML), "sig-L2CML" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GPS_L5I), "sig-L5I" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GPS_L5Q), "sig-L5Q" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GPS_L5IQ), "sig-L5IQ" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GPS_L1CD), "sig-L1CD" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GPS_L1CP), "sig-L1CP" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GPS_L1CDP), "sig-L1CDP" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GLONASS_G1CA), "sig-G1CA" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GLONASS_G1P), "sig-G1P" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GLONASS_G2C), "sig-G2C" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GLONASS_G2P), "sig-G2P" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E1C), "sig-E1C" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E1A), "sig-E1A" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E1B), "sig-E1B" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E1BC), "sig-E1BC" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E1ABC), "sig-E1ABC" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E6C), "sig-E6C" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E6A), "sig-E6A" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E6B), "sig-E6B" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E6BC), "sig-E6BC" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E6ABC), "sig-E6ABC" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E5BI), "sig-E5BI" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E5BQ), "sig-E5BQ" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E5BIQ), "sig-E5BIQ" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E5ABI), "sig-E5ABI" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E5ABQ), "sig-E5ABQ" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E5ABIQ), "sig-E5ABIQ" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E5AI), "sig-E5AI" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E5AQ), "sig-E5AQ" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::GALILEO_E5AIQ), "sig-E5AIQ" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::SBAS_L1CA), "sig-L1CA" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::SBAS_L5I), "sig-L5I" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::SBAS_L5Q), "sig-L5Q" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::SBAS_L5IQ), "sig-L5IQ" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::QZSS_L1CA), "sig-L1CA" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::QZSS_LEXS), "sig-LEXS" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::QZSS_LEXL), "sig-LEXL" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::QZSS_LEXSL), "sig-LEXSL" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::QZSS_L2CM), "sig-L2CM" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::QZSS_L2CL), "sig-L2CL" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::QZSS_L2CML), "sig-L2CML" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::QZSS_L5I), "sig-L5I" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::QZSS_L5Q), "sig-L5Q" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::QZSS_L5IQ), "sig-L5IQ" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::QZSS_L1CD), "sig-L1CD" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::QZSS_L1CP), "sig-L1CP" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::QZSS_L1CDP), "sig-L1CDP" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::BEIDOU_B1I), "sig-B1I" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::BEIDOU_B1Q), "sig-B1Q" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::BEIDOU_B1IQ), "sig-B1IQ" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::BEIDOU_B3I), "sig-B3I" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::BEIDOU_B3Q), "sig-B3Q" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::BEIDOU_B3IQ), "sig-B3IQ" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::BEIDOU_B2I), "sig-B2I" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::BEIDOU_B2Q), "sig-B2Q" },
+        { TypeId(Type::GNSS_SIGNAL_ID, GnssSignalIds::BEIDOU_B2IQ), "sig-B2IQ" },
+    });
+
+    const std::unordered_map<MipChannelIdentifier::SpecifierId, std::string, MipChannelIdentifier::SpecifierIdHash> MipChannelIdentifier::SPECIFIER_NAMES(
+    {
+        { SpecifierId(Type::AIDING_MEASUREMENT_TYPE, AidingMeasurementTypes::GNSS, 1), "rec" },
+        { SpecifierId(Type::AIDING_MEASUREMENT_TYPE, AidingMeasurementTypes::GNSS, 2), "rec" }
+    });
+
+    bool mscl::MipChannelIdentifier::hasSpecifier() const
+    {
+        std::string throwaway;
+        return hasSpecifier(throwaway);
+    }
+
+    bool mscl::MipChannelIdentifier::hasSpecifier(std::string& specifierName) const
+    {
+        //try to find the type in the map
+        auto entry = SPECIFIER_NAMES.find(SpecifierId(m_type, m_id, m_specifier));
+
+        //if we failed to find the channel
+        if (entry == SPECIFIER_NAMES.end())
+        {
+            specifierName = "";
+            return false;
+        }
+
+        specifierName = entry->second;
+        return true;
+    }
+
+    std::string MipChannelIdentifier::name(bool standardizedFormat) const
+    {
+        //try to find the type in the map
+        auto typeName = TYPE_NAMES.find(m_type);
+
+        //if we failed to find the channel
+        if (typeName == TYPE_NAMES.end())
+        {
+            assert(false);
+            return "unknownId_" + Utils::toStr(m_id);
+        }
+
+        std::string sensorcloudFilteredName = typeName->second + "_" + Utils::toStr(m_id);
+
+        // add switch here to consolidate Type, ID pair where relevant
+        // Ex: <GNSS_CONSTELLATION, 2> can just be "glonass" instead of "gnssConstellation_2"
+        // Only apply this if standardizedFormat parameter is false
+        if (!standardizedFormat)
+        {
+            auto translated = TRANSLATED_TYPE_NAMES.find(TypeId(m_type, m_id));
+            if (translated != TRANSLATED_TYPE_NAMES.end())
+            {
+                sensorcloudFilteredName = translated->second;
+            }
+        }
+
+        std::string specifierName;
+        if (hasSpecifier(specifierName))
+        {
+            sensorcloudFilteredName += "_" + specifierName + "_" + Utils::toStr(m_specifier);
+        }
+
+        Utils::filterSensorcloudName(sensorcloudFilteredName);
+
+        //found the channel, return the name
+        return sensorcloudFilteredName;
     }
 }

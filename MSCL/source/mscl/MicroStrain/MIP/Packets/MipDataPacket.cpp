@@ -86,7 +86,9 @@ namespace mscl
         bool isTimestamp = false;
         bool isData = true;
 
-        switch(field.fieldId())
+        MipTypes::ChannelField id = MipTypes::getChannelField_baseDataClass(static_cast<MipTypes::ChannelField>(field.fieldId()));
+
+        switch(id)
         {
             //fields that should only be used as timestamp, and not stored as data
             case MipTypes::CH_FIELD_DISP_DISPLACEMENT_TS:
@@ -98,11 +100,7 @@ namespace mscl
             case MipTypes::CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP:
             case MipTypes::CH_FIELD_GNSS_GPS_TIME:
             case MipTypes::CH_FIELD_ESTFILTER_GPS_TIMESTAMP:
-            case MipTypes::CH_FIELD_GNSS_1_GPS_TIME:
-            case MipTypes::CH_FIELD_GNSS_2_GPS_TIME:
-            case MipTypes::CH_FIELD_GNSS_3_GPS_TIME:
-            case MipTypes::CH_FIELD_GNSS_4_GPS_TIME:
-            case MipTypes::CH_FIELD_GNSS_5_GPS_TIME:
+            case MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP:
                 isTimestamp = true;
                 isData = true;
                 break;
@@ -111,7 +109,8 @@ namespace mscl
                 break;
         }
 
-        if(isTimestamp)
+        // don't re-process if a different timestamp already found
+        if(isTimestamp && !m_hasDeviceTime)
         {
             m_hasDeviceTime = true;
             parseTimeStamp(field);
@@ -136,7 +135,9 @@ namespace mscl
     {
         DataBuffer bytes(field.fieldData());
 
-        switch(field.fieldId())
+        MipTypes::ChannelField id = MipTypes::getChannelField_baseDataClass(static_cast<MipTypes::ChannelField>(field.fieldId()));
+
+        switch (id)
         {
             case MipTypes::CH_FIELD_DISP_DISPLACEMENT_TS:
             {
@@ -163,12 +164,8 @@ namespace mscl
                 break;
             }
 
+            case MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP:
             case MipTypes::CH_FIELD_GNSS_GPS_TIME:
-            case MipTypes::CH_FIELD_GNSS_1_GPS_TIME:
-            case MipTypes::CH_FIELD_GNSS_2_GPS_TIME:
-            case MipTypes::CH_FIELD_GNSS_3_GPS_TIME:
-            case MipTypes::CH_FIELD_GNSS_4_GPS_TIME:
-            case MipTypes::CH_FIELD_GNSS_5_GPS_TIME:
             {
                 double gpsTimeOfWeek = bytes.read_double();
                 uint16 gpsWeekNumber = bytes.read_uint16();

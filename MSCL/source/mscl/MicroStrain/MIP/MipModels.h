@@ -6,16 +6,18 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #pragma once
 
+#include <string>
+
 namespace mscl
 {
-    //API Class: InertialModels
-    //    Contains the models of Inertial hardware.
-    class InertialModels
+    //API Class: MipModels
+    //    Contains the models of MIP devices.
+    class MipModels
     {
     public:
         //=========================================================================
         //API Enum: NodeModel
-        //  The model numbers for each of the Inertial Nodes.
+        //  The model numbers for each of the MIP devices.
         //
         //  node_3dm            - 6201 - 3DM
         //  node_fasA           - 6207 - FAS-A
@@ -47,6 +49,7 @@ namespace mscl
         //  node_3dm_cx5_15     - 6274 - 3DM-CX5-15
         //  node_3dm_cx5_10     - 6275 - 3DM-CX5-10
         //  node_3dm_gq7        - 6284 - 3DM-GQ7
+        //  node_3dm_rtk        - 6285 - 3DM-RTK
         //=========================================================================
         enum NodeModel
         {
@@ -79,7 +82,8 @@ namespace mscl
             node_3dm_cx5_25     = 6273,     //3DM-CX5-25
             node_3dm_cx5_15     = 6274,     //3DM-CX5-15
             node_3dm_cx5_10     = 6275,     //3DM-CX5-10
-            node_3dm_gq7        = 6284      //3DM-GQ7
+            node_3dm_gq7        = 6284,      //3DM-GQ7
+            node_3dm_rtk        = 6285      //3DM-RTK
         };
 
 #ifndef SWIG

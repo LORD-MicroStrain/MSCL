@@ -749,11 +749,11 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\VehicleDynamicsMode.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\EulerAngles.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\ExposedInertialTypes.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialModels.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_EstFilter.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialNode.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GNSS.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Sensor.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Shared.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\PositionOffset.h" />
     <ClInclude Include="source\mscl\MicroStrain\LinearEquation.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\CyclePower.h" />
@@ -771,6 +771,8 @@
     <ClInclude Include="source\mscl\MicroStrain\MIP\MipChannel.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\MipDataField.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\MipDataPoint.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\MipModels.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\MipNode.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\MipNodeFeatures.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\MipNodeInfo.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\MipNode_Impl.h" />
@@ -783,7 +785,6 @@
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacketBuilder.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacketCollector.h" />
     <ClInclude Include="source\mscl\MicroStrain\RTK\Commands\DeviceStatusFlags.h" />
-    <ClInclude Include="source\mscl\MicroStrain\RTK\RTKModels.h" />
     <ClInclude Include="source\mscl\MicroStrain\RTK\RTKNode.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\ArmedDataloggingNetwork.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\BaseStationAnalogPair.h" />
@@ -1071,11 +1072,11 @@
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Commands\VehicleDynamicsMode.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\EulerAngles.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\ExposedInertialTypes.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialModels.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_EstFilter.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialNode.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GNSS.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Sensor.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Shared.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\PositionOffset.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\LinearEquation.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\CyclePower.cpp" />
@@ -1093,6 +1094,8 @@
     <ClCompile Include="source\mscl\MicroStrain\MIP\MipChannel.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\MipDataField.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\MipDataPoint.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\MipModels.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\MipNode.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\MipNodeFeatures.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\MipNodeInfo.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\MipNode_Impl.cpp" />
@@ -1105,7 +1108,6 @@
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacketBuilder.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacketCollector.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\RTK\Commands\DeviceStatusFlags.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\RTK\RTKModels.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\RTK\RTKNode.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\ArmedDataloggingNetwork.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\BaseStationAnalogPair.cpp" />

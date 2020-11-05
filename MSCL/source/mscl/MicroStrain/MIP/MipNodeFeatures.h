@@ -183,14 +183,46 @@ namespace mscl
         //    Gets the PPS source options supported by this device.
         //
         //Returns:
-        //    A <PpsInputOutputOptions> list containing all the supported options.
-        const PpsInputOutputOptions supportedPpsSourceOptions() const;
+        //    A <PpsSourceOptions> list containing all the supported options.
+        const PpsSourceOptions supportedPpsSourceOptions() const;
 
-        //API Function: supportedPpsOutputOptions
-        //    Gets the PPS output options supported by this device.
+        //API Function: supportedGpioPinModes
+        //    Gets the Pin Mode options supported by this device based on the selected feature and behavior.
+        //
+        //Parameters:
+        //    feature - the <GpioConfiguration::Feature>
+        //    behavior - the behavior ID to look up supported pin modes for
+        //               Depending on feature option, behavior IDs defined by <GpioConfiguration::GpioBehavior>, <GpioConfiguration::PpsBehavior>, <GpioConfiguration::EncoderBehavior>
         //
         //Returns:
-        //    A <PpsInputOutputOptions> object containing all options.
-        const PpsInputOutputOptions supportedPpsOutputOptions() const;
+        //    A <GpioPinModeOptions> list containing all the supported options.
+        const GpioPinModeOptions supportedGpioPinModes(GpioConfiguration::Feature feature, uint8 behavior) const;
+
+        //API Function: supportedGpioBehaviors
+        //    Gets the GPIO Behavior options supported by this device based on the selected feature.
+        //
+        //Parameters:
+        //      feature - the <GpioConfiguration::Feature>
+        //
+        //Returns:
+        //    A <GpioBehaviorModes> list containing all the supported options.
+        const GpioBehaviorModes supportedGpioBehaviors(GpioConfiguration::Feature feature) const;
+
+        //API Function: supportedGpioFeatures
+        //    Gets the GPIO Feature options supported by this device for the specified GPIO pin.
+        //
+        //Parameters:
+        //      pin - the pin ID to look up supported features
+        //
+        //Returns:
+        //    A <GpioFeatureOptions> list containing all the supported options.
+        const GpioFeatureBehaviors supportedGpioFeatures(uint8 pin) const;
+
+        //API Function: supportedGpioConfigurations
+        //    Gets a map of supported GPIO configuration options for each supported pin
+        //
+        //Returns:
+        //    A <GpioPinOptions> map of supported GPIO pin configurations
+        const GpioPinOptions supportedGpioConfigurations() const;
     };
 }

@@ -128,14 +128,32 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
-  public PpsInputOutputOptions supportedPpsSourceOptions() {
-    PpsInputOutputOptions ret = new PpsInputOutputOptions(msclPINVOKE.MipNodeFeatures_supportedPpsSourceOptions(swigCPtr), true);
+  public PpsSourceOptions supportedPpsSourceOptions() {
+    PpsSourceOptions ret = new PpsSourceOptions(msclPINVOKE.MipNodeFeatures_supportedPpsSourceOptions(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public PpsInputOutputOptions supportedPpsOutputOptions() {
-    PpsInputOutputOptions ret = new PpsInputOutputOptions(msclPINVOKE.MipNodeFeatures_supportedPpsOutputOptions(swigCPtr), true);
+  public GpioPinModeOptions supportedGpioPinModes(GpioConfiguration.Feature feature, byte behavior) {
+    GpioPinModeOptions ret = new GpioPinModeOptions(msclPINVOKE.MipNodeFeatures_supportedGpioPinModes(swigCPtr, (int)feature, behavior), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public GpioBehaviorModes supportedGpioBehaviors(GpioConfiguration.Feature feature) {
+    GpioBehaviorModes ret = new GpioBehaviorModes(msclPINVOKE.MipNodeFeatures_supportedGpioBehaviors(swigCPtr, (int)feature), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public GpioFeatureBehaviors supportedGpioFeatures(byte pin) {
+    GpioFeatureBehaviors ret = new GpioFeatureBehaviors(msclPINVOKE.MipNodeFeatures_supportedGpioFeatures(swigCPtr, pin), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public GpioPinOptions supportedGpioConfigurations() {
+    GpioPinOptions ret = new GpioPinOptions(msclPINVOKE.MipNodeFeatures_supportedGpioConfigurations(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

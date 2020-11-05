@@ -566,55 +566,54 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_SpaceVehicleInfo_parse)
     MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
-    BOOST_CHECK_EQUAL(data.size(), 6);
+    BOOST_CHECK_EQUAL(data.size(), 5);
+
+    //verify additional identifiers assigned correctly
+    BOOST_CHECK_EQUAL(data.at(0).hasAddlIdentifiers(), true);
+
+    //space vehicle id
+    BOOST_CHECK_EQUAL(data.at(0).addlIdentifiers().at(0).identifierType(), MipChannelIdentifier::Type::GNSS_SATELLITE_ID);
+    BOOST_CHECK_EQUAL(data.at(0).addlIdentifiers().at(0).id(), 2);
 
     //channel
     BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_CHANNEL);
     BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_uint8);
     BOOST_CHECK_EQUAL(data.at(0).valid(), true);
-    BOOST_CHECK_EQUAL(data.at(0).as_uint8(), 1);
+    BOOST_CHECK_EQUAL(data.at(0).as_uint16(), 1);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
-    //space vehicle id
+    //carrier to noise ratio
     BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO);
-    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_ID);
-    BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_uint8);
-    BOOST_CHECK_EQUAL(data.at(1).valid(), false);
-    BOOST_CHECK_EQUAL(data.at(1).as_uint8(), 2);
+    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_CARRIER_TO_NOISE_RATIO);
+    BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_uint16);
+    BOOST_CHECK_EQUAL(data.at(1).valid(), true);
+    BOOST_CHECK_EQUAL(data.at(1).as_uint16(), 3);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
-    //carrier to noise ratio
+    //azimuth
     BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO);
-    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_CARRIER_TO_NOISE_RATIO);
-    BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_uint16);
+    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_AZIMUTH);
+    BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_int16);
     BOOST_CHECK_EQUAL(data.at(2).valid(), true);
-    BOOST_CHECK_EQUAL(data.at(2).as_uint16(), 3);
+    BOOST_CHECK_EQUAL(data.at(2).as_int16(), -123);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
 
-    //azimuth
+    //elevation
     BOOST_CHECK_EQUAL(data.at(3).field(), MipTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO);
-    BOOST_CHECK_EQUAL(data.at(3).qualifier(), MipTypes::CH_AZIMUTH);
+    BOOST_CHECK_EQUAL(data.at(3).qualifier(), MipTypes::CH_ELEVATION);
     BOOST_CHECK_EQUAL(data.at(3).storedAs(), valueType_int16);
-    BOOST_CHECK_EQUAL(data.at(3).valid(), true);
-    BOOST_CHECK_EQUAL(data.at(3).as_int16(), -123);
+    BOOST_CHECK_EQUAL(data.at(3).valid(), false);
+    BOOST_CHECK_EQUAL(data.at(3).as_int16(), -32000);
     BOOST_CHECK_NO_THROW(data.at(3).channelName());
 
-    //elevation
-    BOOST_CHECK_EQUAL(data.at(4).field(), MipTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO);
-    BOOST_CHECK_EQUAL(data.at(4).qualifier(), MipTypes::CH_ELEVATION);
-    BOOST_CHECK_EQUAL(data.at(4).storedAs(), valueType_int16);
-    BOOST_CHECK_EQUAL(data.at(4).valid(), false);
-    BOOST_CHECK_EQUAL(data.at(4).as_int16(), -32000);
-    BOOST_CHECK_NO_THROW(data.at(4).channelName());
-
     //space vehicle flags
-    BOOST_CHECK_EQUAL(data.at(5).field(), MipTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO);
-    BOOST_CHECK_EQUAL(data.at(5).qualifier(), MipTypes::CH_FLAGS);
-    BOOST_CHECK_EQUAL(data.at(5).storedAs(), valueType_uint16);
-    BOOST_CHECK_EQUAL(data.at(5).valid(), true);
-    BOOST_CHECK_EQUAL(data.at(5).as_uint16(), 2);
-    BOOST_CHECK_NO_THROW(data.at(5).channelName());
+    BOOST_CHECK_EQUAL(data.at(4).field(), MipTypes::CH_FIELD_GNSS_SPACE_VEHICLE_INFO);
+    BOOST_CHECK_EQUAL(data.at(4).qualifier(), MipTypes::CH_FLAGS);
+    BOOST_CHECK_EQUAL(data.at(4).storedAs(), valueType_uint16);
+    BOOST_CHECK_EQUAL(data.at(4).valid(), true);
+    BOOST_CHECK_EQUAL(data.at(4).as_uint16(), 2);
+    BOOST_CHECK_NO_THROW(data.at(4).channelName());
 }
 
 BOOST_AUTO_TEST_CASE(InertialFieldParser_HardwareStatus_parse)
@@ -681,7 +680,14 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DgpsInfo_parse)
     MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
-    BOOST_CHECK_EQUAL(data.size(), 4);
+    BOOST_CHECK_EQUAL(data.size(), 3);
+
+    //verify additional identifiers assigned correctly
+    BOOST_CHECK_EQUAL(data.at(0).hasAddlIdentifiers(), true);
+
+    //base station id
+    BOOST_CHECK_EQUAL(data.at(0).addlIdentifiers().at(0).identifierType(), MipChannelIdentifier::Type::GNSS_BASE_STATION_ID);
+    BOOST_CHECK_EQUAL(data.at(0).addlIdentifiers().at(0).id(), 1);
 
     BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_GNSS_DGNSS_INFO);
     BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_AGE);
@@ -691,25 +697,18 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DgpsInfo_parse)
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
     BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_GNSS_DGNSS_INFO);
-    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_ID);
+    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_STATUS);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_int16);
     BOOST_CHECK_EQUAL(data.at(1).valid(), true);
-    BOOST_CHECK_EQUAL(data.at(1).as_int16(), 1);
+    BOOST_CHECK_EQUAL(data.at(1).as_int16(), 2);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
     BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_GNSS_DGNSS_INFO);
-    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_STATUS);
-    BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_int16);
-    BOOST_CHECK_EQUAL(data.at(2).valid(), true);
-    BOOST_CHECK_EQUAL(data.at(2).as_int16(), 2);
+    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_NUM_CHANNELS);
+    BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_uint16);
+    BOOST_CHECK_EQUAL(data.at(2).valid(), false);
+    BOOST_CHECK_EQUAL(data.at(2).as_uint16(), 3);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
-
-    BOOST_CHECK_EQUAL(data.at(3).field(), MipTypes::CH_FIELD_GNSS_DGNSS_INFO);
-    BOOST_CHECK_EQUAL(data.at(3).qualifier(), MipTypes::CH_NUM_CHANNELS);
-    BOOST_CHECK_EQUAL(data.at(3).storedAs(), valueType_uint16);
-    BOOST_CHECK_EQUAL(data.at(3).valid(), false);
-    BOOST_CHECK_EQUAL(data.at(3).as_uint16(), 3);
-    BOOST_CHECK_NO_THROW(data.at(3).channelName());
 }
 
 BOOST_AUTO_TEST_CASE(InertialFieldParser_DgpsChannelStatus_parse)
@@ -731,35 +730,35 @@ BOOST_AUTO_TEST_CASE(InertialFieldParser_DgpsChannelStatus_parse)
     MipFieldParser::parseField(field, data);
 
     //verify the field was parsed correctly
-    BOOST_CHECK_EQUAL(data.size(), 4);
+    BOOST_CHECK_EQUAL(data.size(), 3);
+
+    //verify additional identifiers assigned correctly
+    BOOST_CHECK_EQUAL(data.at(0).hasAddlIdentifiers(), true);
+
+    //space vehicle id
+    BOOST_CHECK_EQUAL(data.at(0).addlIdentifiers().at(0).identifierType(), MipChannelIdentifier::Type::GNSS_SATELLITE_ID);
+    BOOST_CHECK_EQUAL(data.at(0).addlIdentifiers().at(0).id(), 1);
 
     BOOST_CHECK_EQUAL(data.at(0).field(), MipTypes::CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS);
-    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_ID);
-    BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_uint8);
+    BOOST_CHECK_EQUAL(data.at(0).qualifier(), MipTypes::CH_AGE);
+    BOOST_CHECK_EQUAL(data.at(0).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(0).valid(), true);
-    BOOST_CHECK_EQUAL(data.at(0).as_uint8(), 1);
+    BOOST_CHECK_CLOSE(data.at(0).as_float(), 1.23, 0.001);
     BOOST_CHECK_NO_THROW(data.at(0).channelName());
 
     BOOST_CHECK_EQUAL(data.at(1).field(), MipTypes::CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS);
-    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_AGE);
+    BOOST_CHECK_EQUAL(data.at(1).qualifier(), MipTypes::CH_CORRECTION);
     BOOST_CHECK_EQUAL(data.at(1).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(1).valid(), true);
-    BOOST_CHECK_CLOSE(data.at(1).as_float(), 1.23, 0.001);
+    BOOST_CHECK_CLOSE(data.at(1).as_float(), 7.125, 0.001);
     BOOST_CHECK_NO_THROW(data.at(1).channelName());
 
     BOOST_CHECK_EQUAL(data.at(2).field(), MipTypes::CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS);
-    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_CORRECTION);
+    BOOST_CHECK_EQUAL(data.at(2).qualifier(), MipTypes::CH_RATE_CORRECTION);
     BOOST_CHECK_EQUAL(data.at(2).storedAs(), valueType_float);
     BOOST_CHECK_EQUAL(data.at(2).valid(), true);
-    BOOST_CHECK_CLOSE(data.at(2).as_float(), 7.125, 0.001);
+    BOOST_CHECK_CLOSE(data.at(2).as_float(), 457.01, 0.001);
     BOOST_CHECK_NO_THROW(data.at(2).channelName());
-
-    BOOST_CHECK_EQUAL(data.at(3).field(), MipTypes::CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS);
-    BOOST_CHECK_EQUAL(data.at(3).qualifier(), MipTypes::CH_RATE_CORRECTION);
-    BOOST_CHECK_EQUAL(data.at(3).storedAs(), valueType_float);
-    BOOST_CHECK_EQUAL(data.at(3).valid(), true);
-    BOOST_CHECK_CLOSE(data.at(3).as_float(), 457.01, 0.001);
-    BOOST_CHECK_NO_THROW(data.at(3).channelName());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

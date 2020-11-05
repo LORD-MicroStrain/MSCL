@@ -14,6 +14,8 @@ public enum DeviceStatusValues {
   ModelNumber,
   StatusStructure_Value,
   SystemState_Value,
+  gnss1PpsPulseInfo_Count,
+  gnss1PpsPulseInfo_LastTimeinMS,
   GnssPowerStateOn,
   ImuStreamInfo_Enabled,
   ImuStreamInfo_PacketsDropped,

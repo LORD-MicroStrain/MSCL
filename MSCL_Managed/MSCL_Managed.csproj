@@ -130,6 +130,7 @@
     <Compile Include="mscl\DeviceState.cs" />
     <Compile Include="mscl\DeviceStatusData.cs" />
     <Compile Include="mscl\DeviceStatusMap.cs" />
+    <Compile Include="mscl\DeviceStatusValueMap.cs" />
     <Compile Include="mscl\DeviceStatusValues.cs" />
     <Compile Include="mscl\DisplacementModels.cs" />
     <Compile Include="mscl\DisplacementNode.cs" />
@@ -151,9 +152,15 @@
     <Compile Include="mscl\GeographicSourceOptions.cs" />
     <Compile Include="mscl\GeometricVector.cs" />
     <Compile Include="mscl\GeometricVectors.cs" />
+    <Compile Include="mscl\GnssAidingStatus.cs" />
     <Compile Include="mscl\GnssReceiverInfo.cs" />
     <Compile Include="mscl\GnssReceivers.cs" />
     <Compile Include="mscl\GnssSignalConfiguration.cs" />
+    <Compile Include="mscl\GpioBehaviorModes.cs" />
+    <Compile Include="mscl\GpioConfiguration.cs" />
+    <Compile Include="mscl\GpioFeatureBehaviors.cs" />
+    <Compile Include="mscl\GpioPinModeOptions.cs" />
+    <Compile Include="mscl\GpioPinOptions.cs" />
     <Compile Include="mscl\HeadingAlignmentMethod.cs" />
     <Compile Include="mscl\HeadingAlignmentOption.cs" />
     <Compile Include="mscl\HeadingData.cs" />
@@ -162,7 +169,6 @@
     <Compile Include="mscl\HighPassFilters.cs" />
     <Compile Include="mscl\Histogram.cs" />
     <Compile Include="mscl\HistogramOptions.cs" />
-    <Compile Include="mscl\InertialModels.cs" />
     <Compile Include="mscl\InertialNode.cs" />
     <Compile Include="mscl\InertialTypes.cs" />
     <Compile Include="mscl\InputRangeEntry.cs" />
@@ -175,6 +181,8 @@
     <Compile Include="mscl\Matrix_3x3s.cs" />
     <Compile Include="mscl\MipChannel.cs" />
     <Compile Include="mscl\MipChannelFields.cs" />
+    <Compile Include="mscl\MipChannelIdentifier.cs" />
+    <Compile Include="mscl\MipChannelIdentifiers.cs" />
     <Compile Include="mscl\MipChannels.cs" />
     <Compile Include="mscl\MipCommandBytes.cs" />
     <Compile Include="mscl\MipCommands.cs" />
@@ -184,6 +192,8 @@
     <Compile Include="mscl\MipDataPoint.cs" />
     <Compile Include="mscl\MipDataPoints.cs" />
     <Compile Include="mscl\MipFieldValues.cs" />
+    <Compile Include="mscl\MipModels.cs" />
+    <Compile Include="mscl\MipNode.cs" />
     <Compile Include="mscl\MipNodeFeatures.cs" />
     <Compile Include="mscl\MipPacket.cs" />
     <Compile Include="mscl\MipTypes.cs" />
@@ -202,13 +212,12 @@
     <Compile Include="mscl\PositionOffset.cs" />
     <Compile Include="mscl\PositionReferenceConfiguration.cs" />
     <Compile Include="mscl\PositionVelocityReferenceFrame.cs" />
-    <Compile Include="mscl\PpsInputOutputOptions.cs" />
     <Compile Include="mscl\PpsPulseInfo.cs" />
+    <Compile Include="mscl\PpsSourceOptions.cs" />
     <Compile Include="mscl\Quaternion.cs" />
     <Compile Include="mscl\RadioFeatures.cs" />
     <Compile Include="mscl\RfSweep.cs" />
     <Compile Include="mscl\RTKDeviceStatusFlags.cs" />
-    <Compile Include="mscl\RTKModels.cs" />
     <Compile Include="mscl\RTKNode.cs" />
     <Compile Include="mscl\SampleRate.cs" />
     <Compile Include="mscl\SampleRates.cs" />

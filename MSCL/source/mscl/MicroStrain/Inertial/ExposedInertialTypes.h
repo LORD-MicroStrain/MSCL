@@ -513,27 +513,100 @@ namespace mscl
             FACTORY_STREAMING_ADDITIVE  = 0x02
         };
 
-        //API Enum: PpsInputOutput
-        //  The enum to represent the PPS source and output options
+        //API Enum: PpsSource
+        //  The enum to represent the PPS source options
         //
-        //      PPS_OUTPUT_DISABLED   - 0x00
-        //      PPS_INPUT_RECEIVER_1  - 0x01
-        //      PPS_INPUT_RECEIVER_2  - 0x02
-        //      PPS_SOURCE_GENERATED  - 0x03
-        //      PPS_IO_GPIO_1         - 0x04
-        //      PPS_IO_GPIO_2         - 0x05
-        //      PPS_IO_GPIO_3         - 0x06
-        //      PPS_IO_GPIO_4         - 0x07
-        enum PpsInputOutput
+        //      PPS_DISABLED    - 0x00
+        //      PPS_RECEIVER_1  - 0x01
+        //      PPS_RECEIVER_2  - 0x02
+        //      PPS_GPIO        - 0x03
+        //      PPS_GENERATED   - 0x04
+        enum PpsSource
         {
-            PPS_OUTPUT_DISABLED     = 0x00,
-            PPS_INPUT_RECEIVER_1    = 0x01,
-            PPS_INPUT_RECEIVER_2    = 0x02,
-            PPS_SOURCE_GENERATED    = 0x03,
-            PPS_IO_GPIO_1           = 0x04,
-            PPS_IO_GPIO_2           = 0x05,
-            PPS_IO_GPIO_3           = 0x06,
-            PPS_IO_GPIO_4           = 0x07
+            PPS_DISABLED    = 0x00,
+            PPS_RECEIVER_1  = 0x01,
+            PPS_RECEIVER_2  = 0x02,
+            PPS_GPIO        = 0x03,
+            PPS_GENERATED   = 0x04
+        };
+
+        //API Enum: GnssAidingStatus
+        //  Bitmask for the GNSS Position and Attitude Aiding Status field values
+        //  Note: GNSS constellation entries are defined by the corresponding constellation enum in <GnssSignalConfiguration>
+        //    GNSS_AIDING_TIGHT_COUPLING  - 0x0001  - 0000 0000 0000 0001
+        //    GNSS_AIDING_DIFFERENTIAL    - 0x0002  - 0000 0000 0000 0010
+        //    GNSS_AIDING_INTEGER_FIX     - 0x0004  - 0000 0000 0000 0100
+        //    GNSS_AIDING_GPS             - 0x0018  - 0000 0000 0001 1000
+        //    GNSS_AIDING_GLONASS         - 0x0060  - 0000 0000 0110 0000
+        //    GNSS_AIDING_GALILEO         - 0x0180  - 0000 0001 1000 0000
+        //    GNSS_AIDING_BEIDOU          - 0x0600  - 0000 0110 0000 0000
+        enum GnssAidingStatus
+        {
+            GNSS_AIDING_TIGHT_COUPLING = 0x0001, // 0000 0000 0000 0001
+            GNSS_AIDING_DIFFERENTIAL = 0x0002, // 0000 0000 0000 0010
+            GNSS_AIDING_INTEGER_FIX = 0x0004, // 0000 0000 0000 0100
+            GNSS_AIDING_GPS = 0x0018, // 0000 0000 0001 1000
+            GNSS_AIDING_GLONASS = 0x0060, // 0000 0000 0110 0000
+            GNSS_AIDING_GALILEO = 0x0180, // 0000 0001 1000 0000
+            GNSS_AIDING_BEIDOU = 0x0600, // 0000 0110 0000 0000
+        };
+
+        //API Enum: AidingMeasurementStatus
+        //  Bit definitions for the Aiding Measurement Summary Status field values
+        //    AIDING_MEASUREMENT_ENABLED                - 0x0001  - 0000 0000 0000 0001
+        //    AIDING_MEASUREMENT_USED                   - 0x0002  - 0000 0000 0000 0010
+        //    AIDING_MEASUREMENT_WARNING_RESIDUAL_HIGH  - 0x0004  - 0000 0000 0000 0100
+        //    AIDING_MEASUREMENT_WARNING_SAMPLE_TIME    - 0x0008  - 0000 0000 0000 1000
+        //    AIDING_MEASUREMENT_CONFIG_ERROR           - 0x0010  - 0000 0000 0001 0000
+        //    AIDING_MEASUREMENT_MAX_COUNT_EXCEEDED     - 0x0020  - 0000 0000 0010 0000
+        enum AidingMeasurementStatus
+        {
+            AIDING_MEASUREMENT_ENABLED                = 0x0001, // 0000 0000 0000 0001
+            AIDING_MEASUREMENT_USED                   = 0x0002, // 0000 0000 0000 0010
+            AIDING_MEASUREMENT_WARNING_RESIDUAL_HIGH  = 0x0004, // 0000 0000 0000 0100
+            AIDING_MEASUREMENT_WARNING_SAMPLE_TIME    = 0x0008, // 0000 0000 0000 1000
+            AIDING_MEASUREMENT_CONFIG_ERROR           = 0x0010, // 0000 0000 0001 0000
+            AIDING_MEASUREMENT_MAX_COUNT_EXCEEDED     = 0x0020, // 0000 0000 0010 0000
+        };
+
+        //API Enum: RtkCorrectionsStatus
+        //  Bit definitions for the RTK Corrections Epoch Status field value
+        //      RTK_CORRECTION_ANTENNA_POS_RECEIVED     - 0x0001  - 0000 0000 0000 0001
+        //      RTK_CORRECTION_ANTENNA_DESC_RECEIVED    - 0x0002  - 0000 0000 0000 0010
+        //      RTK_CORRECTION_GPS_RECEIVED             - 0x0004  - 0000 0000 0000 0100
+        //      RTK_CORRECTION_GLONASS_RECEIVED         - 0x0008  - 0000 0000 0000 1000
+        //      RTK_CORRECTION_GALILEO_RECEIVED         - 0x0010  - 0000 0000 0001 0000
+        //      RTK_CORRECTION_BEIDOU_RECEIVED          - 0x0020  - 0000 0000 0010 0000
+        //      RTK_CORRECTION_USING_GPS_MSM            - 0x0040  - 0000 0000 0100 0000
+        //      RTK_CORRECTION_USING_GLONASS_MSM        - 0x0080  - 0000 0000 1000 0000
+        enum RtkCorrectionsStatus
+        {
+            RTK_CORRECTION_ANTENNA_POS_RECEIVED     = 0x0001, // 0000 0000 0000 0001
+            RTK_CORRECTION_ANTENNA_DESC_RECEIVED    = 0x0002, // 0000 0000 0000 0010
+            RTK_CORRECTION_GPS_RECEIVED             = 0x0004, // 0000 0000 0000 0100
+            RTK_CORRECTION_GLONASS_RECEIVED         = 0x0008, // 0000 0000 0000 1000
+            RTK_CORRECTION_GALILEO_RECEIVED         = 0x0010, // 0000 0000 0001 0000
+            RTK_CORRECTION_BEIDOU_RECEIVED          = 0x0020, // 0000 0000 0010 0000
+            RTK_CORRECTION_USING_GPS_MSM            = 0x0040, // 0000 0000 0100 0000
+            RTK_CORRECTION_USING_GLONASS_MSM        = 0x0080, // 0000 0000 1000 0000
+        };
+
+        //API Enum: GnssSignalQuality
+        //  Value definitions for the GNSS Raw Observation Signal Quality field value
+        //      SIGNAL_QUALITY_NONE         - 0x00 - None
+        //      SIGNAL_QUALITY_SEARCHING    - 0x01 - Searching
+        //      SIGNAL_QUALITY_ACQUIRED     - 0x02 - Acquired
+        //      SIGNAL_QUALITY_UNUSABLE     - 0x03 - Unusable
+        //      SIGNAL_QUALITY_TIME_LOCKED  - 0x04 - Time Locked
+        //      SIGNAL_QUALITY_FULLY_LOCKED - 0x05 - Fully Locked
+        enum GnssSignalQuality
+        {
+            SIGNAL_QUALITY_NONE         = 0x00,
+            SIGNAL_QUALITY_SEARCHING    = 0x01,
+            SIGNAL_QUALITY_ACQUIRED     = 0x02,
+            SIGNAL_QUALITY_UNUSABLE     = 0x03,
+            SIGNAL_QUALITY_TIME_LOCKED  = 0x04,
+            SIGNAL_QUALITY_FULLY_LOCKED = 0x05,
         };
     };
 
@@ -553,9 +626,9 @@ namespace mscl
     // A vector of <AutoAdaptiveFilteringLevel> enum values
     typedef std::vector<InertialTypes::AutoAdaptiveFilteringLevel> AdaptiveFilterLevels;
 
-    //API Typedef: PpsInputOutputOptions
-    //  A vector of <InertialTypes::PpsInputOutput> values
-    typedef std::vector<InertialTypes::PpsInputOutput> PpsInputOutputOptions;
+    //API Typedef: PpsSourceOptions
+    //  A vector of <InertialTypes::PpsSource> values
+    typedef std::vector<InertialTypes::PpsSource> PpsSourceOptions;
 
     ///////////////  Matrix_3x3  ///////////////
 
@@ -670,12 +743,12 @@ namespace mscl
     //API Enum: PositionVelocityReferenceFrame
     //    Enum representing position and velocity reference frame options.
     //
-    //  ECEF    - 0x00  -   Earth-Centered, Earth-Fixed
-    //  LLH_NED - 0x01  -   Position: Lat/Long/Height, Velocity: North/East/Down
+    //  ECEF    - 0x01  -   Earth-Centered, Earth-Fixed
+    //  LLH_NED - 0x02  -   Position: Lat/Long/Height, Velocity: North/East/Down
     enum PositionVelocityReferenceFrame
     {
-        ECEF = 0,
-        LLH_NED = 1
+        ECEF    = 0x01,
+        LLH_NED = 0x02
     };
 
     ///////////////  GeometricVector  ///////////////
@@ -1256,7 +1329,7 @@ namespace mscl
 
 
     //API Enum: DeviceStatusValues
-    //    Keys corresponding to the device status values returned by asMap.
+    //    Keys corresponding to the device status values returned by <DeviceStatusData::asMap>, <DeviceStatusData::asValueMap>.
     //
     //  ModelNumber                                 modelNumber
     //  StatusStructure                             statusStructure
@@ -1323,8 +1396,12 @@ namespace mscl
     };
 
     //API Typedef: DeviceStatusMap
-    //  A map of <DeviceStatusValues to std::string> objects
+    //  A map of <DeviceStatusValues>, string entries.
     typedef std::map<DeviceStatusValues, std::string> DeviceStatusMap;
+
+    //API Typedef: DeviceStatusValueMap
+    //  A map of <DeviceStatusValues>, <Value> entries.
+    typedef std::map<DeviceStatusValues, Value> DeviceStatusValueMap;
 
     //API Class: DeviceStatusData
     //    Contains the data needed by the <InertialNode::getBasicDeviceStatus> method.
@@ -1334,12 +1411,12 @@ namespace mscl
         //API Enum: StatusSelector
         //    Represents the two different types of statuses returned by DeviceStatus.
         //
-        //      BASIC_STATUS_STRUCTURE       - 0x01  used to receive a limited device status.
-        //      DIAGNOSTIC_STATUS_STRUCTURE  - 0x02  used to receive a complete device status.
+        //      BASIC_STATUS_STRUCTURE       - 0x01 - used to receive a limited device status.
+        //      DIAGNOSTIC_STATUS_STRUCTURE  - 0x02 - used to receive a complete device status.
         enum StatusSelector
         {
             BASIC_STATUS_STRUCTURE = 0x01,
-            DIAGNOSTIC_STATUS_STRUCTURE = 0x02,
+            DIAGNOSTIC_STATUS_STRUCTURE = 0x02
         };
 
         //API Enum: SystemState
@@ -1468,10 +1545,13 @@ namespace mscl
         uint16 accelRange() const;
         void accelRange(uint16 val);
 
-
         //API Function: asMap
         //  get the device status as a map
         mscl::DeviceStatusMap asMap() const;
+
+        //API Function: asValueMap
+        //  get the device status as value map
+        mscl::DeviceStatusValueMap asValueMap() const;
 
 
     private: // optional variables are private with public getters & setters
@@ -2110,25 +2190,30 @@ namespace mscl
     class RTKDeviceStatusFlags : public Bitfield
     {
     public:
-        //API Enum: ValueMap
-        //  Map indicating the bits that define each value
-        //      STATE               - 0x000000FF - Device State:        00000000000000000000000011111111
-        //      STATUS_CODE         - 0x0000FF00 - Status Code:         00000000000000001111111100000000
-        //      RESET_REASON        - 0x00030000 - Reset Reason:        00000000000000110000000000000000
-        //      MODEM_POWERED       - 0x00040000 - Modem Powered:       00000000000001000000000000000000
-        //      CELL_CONNECTED      - 0x00080000 - Cell Connected:      00000000000010000000000000000000
-        //      SERVER_CONNECTED    - 0x00100000 - Server Connected:    00000000000100000000000000000000
-        //      DATA_ENABLED        - 0x00200000 - Data Enabled:        00000000001000000000000000000000
-        enum ValueMap
-        {
-            STATE               = 0x000000FF, // 00000000000000000000000011111111
-            STATUS_CODE         = 0x0000FF00, // 00000000000000001111111100000000
-            RESET_REASON        = 0x00030000, // 00000000000000110000000000000000
-            MODEM_POWERED       = 0x00040000, // 00000000000001000000000000000000
-            CELL_CONNECTED      = 0x00080000, // 00000000000010000000000000000000
-            SERVER_CONNECTED    = 0x00100000, // 00000000000100000000000000000000
-            DATA_ENABLED        = 0x00200000  // 00000000001000000000000000000000
-        };
+        //API Constants:
+        //  Bitmasks indicating the bits that define each value
+        //      STATE	                - 0x000000FF - Device State            00000000000000000000000011111111
+        //      STATUS_CODE             - 0x00003F00 - Status Code             00000000000000000011111100000000
+        //      CORRECTIONS_TIMED_OUT   - 0x00004000 - Corrections Timed Out   00000000000000000100000000000000
+        //      SERVICE_UNAVAILABLE     - 0x00008000 - Service Unavailable     00000000000000001000000000000000
+        //      RESET_REASON            - 0x00030000 - Reset Reason            00000000000000110000000000000000
+        //      MODEM_POWERED           - 0x00040000 - Modem Powered           00000000000001000000000000000000
+        //      CELL_CONNECTED          - 0x00080000 - Cell Connected          00000000000010000000000000000000
+        //      SERVER_CONNECTED        - 0x00100000 - Server Connected        00000000000100000000000000000000
+        //      DATA_ENABLED            - 0x00200000 - Data Enabled            00000000001000000000000000000000
+        //      RSSI                    - 0x0FC00000 - RSSI                    00001111110000000000000000000000
+        //      SIGNAL_QUALITY          - 0xF0000000 - Signal Quality          11110000000000000000000000000000
+        static const uint32 STATE                       = 0x000000FF; // 00000000000000000000000011111111
+        static const uint32 STATUS_CODE                 = 0x00003F00; // 00000000000000000011111100000000
+        static const uint32 CORRECTIONS_TIMED_OUT       = 0x00004000; // 00000000000000000100000000000000
+        static const uint32 SERVICE_UNAVAILABLE         = 0x00008000; // 00000000000000001000000000000000
+        static const uint32 RESET_REASON                = 0x00030000; // 00000000000000110000000000000000
+        static const uint32 MODEM_POWERED               = 0x00040000; // 00000000000001000000000000000000
+        static const uint32 CELL_CONNECTED              = 0x00080000; // 00000000000010000000000000000000
+        static const uint32 SERVER_CONNECTED            = 0x00100000; // 00000000000100000000000000000000
+        static const uint32 DATA_ENABLED                = 0x00200000; // 00000000001000000000000000000000
+        static const uint32 RSSI                        = 0x0FC00000; // 00001111110000000000000000000000
+        static const uint32 SIGNAL_QUALITY              = 0xF0000000; // 11110000000000000000000000000000
 
         //API Enum: ResetReason
         //  Possible RTK reset reason values
@@ -2156,11 +2241,19 @@ namespace mscl
     public:
         //API Function: state
         uint8 state() const;
-        void state(uint8 state);
+        void state(uint8 rtkState);
 
         //API Function: statusCode
         uint8 statusCode() const;
         void statusCode(uint8 code);
+
+        //API Function: correctionsTimedOut
+        bool correctionsTimedOut() const;
+        void correctionsTimedOut(bool timedOut);
+
+        //API Function: serviceUnavailable
+        bool serviceUnavailable() const;
+        void serviceUnavailable(bool available);
 
         //API Function: resetReason
         ResetReason resetReason() const;
@@ -2181,6 +2274,14 @@ namespace mscl
         //API Function: dataEnabled
         bool dataEnabled();
         void dataEnabled(bool enabled);
+
+        //API Function: rssi
+        uint8 rssi();
+        void rssi(uint8 rtkRssi);
+
+        //API Function: signalQuality                    
+        uint8 signalQuality();
+        void signalQuality(uint8 quality);
     };
 
     //API Class: GnssSignalConfiguration
@@ -2301,24 +2402,6 @@ namespace mscl
         //API Variable: position
         //  The reference position value.
         Position position;
-
-        //API Function: source (get)
-        //  Uses the autoConfig and position values to determine the source ID to send to the device.
-        uint8 source() const;
-
-        //API Function: fromResponseData
-        //  Builds a PositionReferenceConfiguration object from a MipFieldValues object with format:
-        //      uint8       - source
-        //      double[3]   - position
-        static PositionReferenceConfiguration fromResponseData(MipFieldValues resData);
-
-    private:
-        enum Source
-        {
-            AUTO        = 0x00,
-            MANUAL_ECEF = 0x01,
-            MANUAL_LLH  = 0x02
-        };
     };
 
     //API Struct: AntennaLeverArmCalConfiguration
@@ -2333,21 +2416,156 @@ namespace mscl
         float maxOffsetError;
     };
 
-    //API Struct: OdometerConfiguration
-    struct OdometerConfiguration
+    //API Class: OdometerConfiguration
+    class OdometerConfiguration
     {
+    public:
         //API Enum: Mode
         //  Odometer mode options
-        //      DISABLED    - 0x01 - Encoder is disabled
-        //      SINGLE      - 0x02 - Single pulse input; one direction only
-        //      QUADRATURE  - 0x03 - Quadrature encoder mode
+        //      DISABLED    - 0x00 - Encoder is disabled
+        //      SINGLE      - 0x01 - Single pulse input; one direction only
+        //      QUADRATURE  - 0x02 - Quadrature encoder mode
         enum Mode
         {
-            DISABLED    = 0x01,
-            SINGLE      = 0x02,
-            QUADRATURE  = 0x03
+            DISABLED    = 0x00,
+            SINGLE      = 0x01,
+            QUADRATURE  = 0x02
         };
 
-        Mode mode;
+    public:
+        OdometerConfiguration() {};
+
+        //API Function: mode
+        //  Get/Set the mode
+        Mode mode() const;
+        void mode(Mode m);
+
+        //API Function: uncertainty
+        //  Get/Set the uncertainty (m/m)
+        float uncertainty() const;
+        void uncertainty(float unc);
+
+        //API Function: scaling
+        //  Get/Set the scaling value directly (pulses per meter)
+        float scaling() const;
+        void scaling(float scale);
+
+        //API Function: scaling
+        //  Set the scaling by specifying the encoder resolution and the wheel radius.
+        //  Scaling = encoder resultion / (2pi * radius)
+        //
+        //Parameters:
+        //  resolution - encoder resolution (pulses per revolution)
+        //  radius - wheel radius (meters)
+        //
+        //Note: 0 is an invalid value for both radius and resolution and will resulting in scaling = 0
+        void scaling(float resolution, float radius);
+
+    private:
+        //API Variable: m_mode
+        Mode m_mode;
+
+        //API Variable: m_scaling
+        float m_scaling;
+
+        //API Variable: m_unc
+        float m_unc;
     };
+
+    //API Struct: GpioConfiguration
+    struct GpioConfiguration
+    {
+        //API Enum: Feature
+        //  GPIO Feature options
+        //      UNUSED_FEATURE    - 0x00 - Pin is unused
+        //      GPIO_FEATURE      - 0x01 - Encoder is disabled
+        //      PPS_FEATURE       - 0x02 - Single pulse input; one direction only
+        //      ENCODER_FEATURE   - 0x03 - Quadrature encoder mode
+        enum Feature
+        {
+            UNUSED_FEATURE = 0x00,
+            GPIO_FEATURE = 0x01,
+            PPS_FEATURE = 0x02,
+            ENCODER_FEATURE = 0x03
+        };
+
+        //API Enum: GpioBehavior
+        //  GPIO Pin behavior
+        //      UNUSED_BEHAVIOR              - 0x00 - Unused
+        //      GPIO_INPUT_BEHAVIOR          - 0x01 - Input
+        //      GPIO_OUTPUT_LOW_BEHAVIOR     - 0x02 - Output on low
+        //      GPIO_OUTPUT_HIGH_BEHAVIOR    - 0x03 - Output on high
+        enum GpioBehavior
+        {
+            UNUSED_BEHAVIOR = 0x00,
+            GPIO_INPUT_BEHAVIOR = 0x01,
+            GPIO_OUTPUT_LOW_BEHAVIOR = 0x02,
+            GPIO_OUTPUT_HIGH_BEHAVIOR = 0x03
+        };
+
+        //API Enum: PpsBehavior
+        //  PPS Pin behavior
+        //      UNUSED      - 0x00 - Pin is unused
+        //      PPS_INPUT   - 0x01 - Input
+        //      PPS_OUTPUT  - 0x02 - Single pulse input; one direction only
+        enum PpsBehavior
+        {
+            PPS_UNUSED = 0x00,
+            PPS_INPUT = 0x01,
+            PPS_OUTPUT = 0x02
+        };
+
+        //API Enum: EncoderBehavior
+        //  Encoder Pin behavior
+        //      UNUSED      - 0x00 - Pin is unused
+        //      ENCODER_A   - 0x01 - Encoder is disabled
+        //      ENCODER_B   - 0x02 - Single pulse input; one direction only
+        enum EncoderBehavior
+        {
+            ENCODER_UNUSED = 0x00,
+            ENCODER_A = 0x01,
+            ENCODER_B = 0x02
+        };
+
+        //API Enum: PinModes
+        //  PinModes for the pinMode Bitfield
+        //      OPEN_DRAIN  - 0x01
+        //      PULLDOWN    - 0x02
+        //      PULLUP      - 0x04
+        enum PinModes
+        {
+            OPEN_DRAIN = 0x01,
+            PULLDOWN = 0x02,
+            PULLUP = 0x04
+        };
+
+        Bitfield pinMode;
+
+        uint8 pin;
+
+        Feature feature;
+
+        uint8 behavior;
+
+        //API Function: pinModeValue
+        //  Gets or sets the underlying value for the pin mode bitfield
+        void pinModeValue(uint8 val) { pinMode.value(val); };
+        uint8 pinModeValue() { return static_cast<uint8>(pinMode.value()); };
+    };
+
+    //API Typedef: PinModes
+    //  A vector of <GpioConfiguration::PinModes> representing masked pin modes
+    typedef std::vector<GpioConfiguration::PinModes> GpioPinModeOptions;
+
+    //API Typedef: BehaviorModes
+    //  A map of uint behavior ID, <GpioPinModeOptions> pairs
+    typedef std::map<uint8, GpioPinModeOptions> GpioBehaviorModes;
+
+    //API Typedef: FeatureBehaviors
+    //  A map of <GpioConfiguration::Feature>, <GpioBehaviorModes> pairs
+    typedef std::map<GpioConfiguration::Feature, GpioBehaviorModes> GpioFeatureBehaviors;
+
+    //API Typedef: GpioPinOptions
+    // A map of uint GPIO pin ID, <GpioFeatureBehaviors> pairs
+    typedef std::map<uint8, GpioFeatureBehaviors> GpioPinOptions;
 }

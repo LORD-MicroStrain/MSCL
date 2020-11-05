@@ -10,9 +10,14 @@
 
 namespace mscl {
 
-public enum PositionVelocityReferenceFrame {
-  ECEF = 0x01,
-  LLH_NED = 0x02
+public enum GnssAidingStatus {
+  GNSS_AIDING_TIGHT_COUPLING = 0x0001,
+  GNSS_AIDING_DIFFERENTIAL = 0x0002,
+  GNSS_AIDING_INTEGER_FIX = 0x0004,
+  GNSS_AIDING_GPS = 0x0018,
+  GNSS_AIDING_GLONASS = 0x0060,
+  GNSS_AIDING_GALILEO = 0x0180,
+  GNSS_AIDING_BEIDOU = 0x0600
 }
 
 }

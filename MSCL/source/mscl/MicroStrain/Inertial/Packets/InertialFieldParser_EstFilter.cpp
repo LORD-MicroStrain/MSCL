@@ -1128,6 +1128,63 @@ namespace mscl
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
+    //                                                        FieldParser_MagCovarianceMatrix
+    const MipTypes::ChannelField FieldParser_MagCovarianceMatrix::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_MAG_COVARIANCE_MATRIX;
+    const bool FieldParser_MagCovarianceMatrix::REGISTERED = FieldParser_MagCovarianceMatrix::registerParser();    //register the parser immediately
+
+    void FieldParser_MagCovarianceMatrix::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+        ByteStream mat;
+        for (uint8 i = 0; i < 9; i++)
+        {
+            mat.append_float(bytes.read_float());
+        }
+        //create a Matrix to store as the data point
+        Matrix data(3, 3, valueType_float, mat);
+
+        //read the flags value
+        bool valid = bytes.read_uint16() > 0;
+
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_MATRIX, valueType_Matrix, anyType(data), valid));
+    }
+
+    bool FieldParser_MagCovarianceMatrix::registerParser()
+    {
+        static FieldParser_MagCovarianceMatrix p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_MagResidualVector
+    const MipTypes::ChannelField FieldParser_MagResidualVector::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_MAG_RESIDUAL_VECTOR;
+    const bool FieldParser_MagResidualVector::REGISTERED = FieldParser_MagResidualVector::registerParser();    //register the parser immediately
+
+    void FieldParser_MagResidualVector::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+        
+        float x = bytes.read_float();
+        float y = bytes.read_float();
+        float z = bytes.read_float();
+
+        //read the flags value
+        bool valid = bytes.read_uint16() > 0;
+
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z), valid));
+    }
+
+    bool FieldParser_MagResidualVector::registerParser()
+    {
+        static FieldParser_MagResidualVector p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
     //                                                        FieldParser_GnssAntennaOffsetCorrection
     const MipTypes::ChannelField FieldParser_GnssAntennaOffsetCorrection::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION;
     const bool FieldParser_GnssAntennaOffsetCorrection::REGISTERED = FieldParser_GnssAntennaOffsetCorrection::registerParser();    //register the parser immediately
@@ -1189,6 +1246,411 @@ namespace mscl
     bool FieldParser_GnssAntennaOffsetCorrectionUncert::registerParser()
     {
         static FieldParser_GnssAntennaOffsetCorrectionUncert p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_GnssClockCorrection
+    const MipTypes::ChannelField FieldParser_GnssClockCorrection::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION;
+    const bool FieldParser_GnssClockCorrection::REGISTERED = FieldParser_GnssClockCorrection::registerParser();    //register the parser immediately
+
+    void FieldParser_GnssClockCorrection::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        uint8 receiver = bytes.read_uint8();
+        float bias = bytes.read_float();
+        float biasDrift = bytes.read_float();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool valid = pointIsValid(flags, VALID_FLAG);
+
+        // additional identifiers
+        MipChannelIdentifiers addlIds = {
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_RECEIVER_ID, receiver)
+        };
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_BIAS, addlIds, valueType_float, anyType(bias), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_DRIFT, addlIds, valueType_float, anyType(biasDrift), valid));
+    }
+
+    bool FieldParser_GnssClockCorrection::registerParser()
+    {
+        static FieldParser_GnssClockCorrection p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_GnssClockCorrectionUncert
+    const MipTypes::ChannelField FieldParser_GnssClockCorrectionUncert::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION_UNCERT;
+    const bool FieldParser_GnssClockCorrectionUncert::REGISTERED = FieldParser_GnssClockCorrectionUncert::registerParser();    //register the parser immediately
+
+    void FieldParser_GnssClockCorrectionUncert::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        uint8 receiver = bytes.read_uint8();
+        float bias = bytes.read_float();
+        float biasDrift = bytes.read_float();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool valid = pointIsValid(flags, VALID_FLAG);
+
+        // additional identifiers
+        MipChannelIdentifiers addlIds = {
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_RECEIVER_ID, receiver)
+        };
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_BIAS, addlIds, valueType_float, anyType(bias), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_DRIFT, addlIds, valueType_float, anyType(biasDrift), valid));
+    }
+
+    bool FieldParser_GnssClockCorrectionUncert::registerParser()
+    {
+        static FieldParser_GnssClockCorrectionUncert p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_GnssMultiAntennaOffsetCorrection
+    const MipTypes::ChannelField FieldParser_GnssMultiAntennaOffsetCorrection::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION;
+    const bool FieldParser_GnssMultiAntennaOffsetCorrection::REGISTERED = FieldParser_GnssMultiAntennaOffsetCorrection::registerParser();    //register the parser immediately
+
+    void FieldParser_GnssMultiAntennaOffsetCorrection::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        uint8 receiver = bytes.read_uint8();
+        float x = bytes.read_float();
+        float y = bytes.read_float();
+        float z = bytes.read_float();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool valid = pointIsValid(flags, VALID_FLAG);
+
+        // additional identifiers
+        MipChannelIdentifiers addlIds = {
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_RECEIVER_ID, receiver)
+        };
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, addlIds, valueType_float, anyType(x), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, addlIds, valueType_float, anyType(y), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, addlIds, valueType_float, anyType(z), valid));
+    }
+
+    bool FieldParser_GnssMultiAntennaOffsetCorrection::registerParser()
+    {
+        static FieldParser_GnssMultiAntennaOffsetCorrection p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_GnssMultiAntennaOffsetCorrectionUncert
+    const MipTypes::ChannelField FieldParser_GnssMultiAntennaOffsetCorrectionUncert::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION_UNCERT;
+    const bool FieldParser_GnssMultiAntennaOffsetCorrectionUncert::REGISTERED = FieldParser_GnssMultiAntennaOffsetCorrectionUncert::registerParser();    //register the parser immediately
+
+    void FieldParser_GnssMultiAntennaOffsetCorrectionUncert::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        uint8 receiver = bytes.read_uint8();
+        float x = bytes.read_float();
+        float y = bytes.read_float();
+        float z = bytes.read_float();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool valid = pointIsValid(flags, VALID_FLAG);
+
+        // additional identifiers
+        MipChannelIdentifiers addlIds = {
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_RECEIVER_ID, receiver)
+        };
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, addlIds, valueType_float, anyType(x), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, addlIds, valueType_float, anyType(y), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, addlIds, valueType_float, anyType(z), valid));
+    }
+
+    bool FieldParser_GnssMultiAntennaOffsetCorrectionUncert::registerParser()
+    {
+        static FieldParser_GnssMultiAntennaOffsetCorrectionUncert p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+    
+    //=====================================================================================================================================================
+    //                                                        FieldParser_EcefPositionUncert
+    const MipTypes::ChannelField FieldParser_EcefPositionUncert::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ECEF_POS_UNCERT;
+    const bool FieldParser_EcefPositionUncert::REGISTERED = FieldParser_EcefPositionUncert::registerParser();    //register the parser immediately
+
+    void FieldParser_EcefPositionUncert::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        float x = bytes.read_float();
+        float y = bytes.read_float();
+        float z = bytes.read_float();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool valid = pointIsValid(flags, VALID_FLAG);
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z), valid));
+    }
+
+    bool FieldParser_EcefPositionUncert::registerParser()
+    {
+        static FieldParser_EcefPositionUncert p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_EcefVelocityUncert
+    const MipTypes::ChannelField FieldParser_EcefVelocityUncert::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ECEF_VEL_UNCERT;
+    const bool FieldParser_EcefVelocityUncert::REGISTERED = FieldParser_EcefVelocityUncert::registerParser();    //register the parser immediately
+
+    void FieldParser_EcefVelocityUncert::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        float x = bytes.read_float();
+        float y = bytes.read_float();
+        float z = bytes.read_float();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool valid = pointIsValid(flags, VALID_FLAG);
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z), valid));
+    }
+
+    bool FieldParser_EcefVelocityUncert::registerParser()
+    {
+        static FieldParser_EcefVelocityUncert p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_EcefPosition
+    const MipTypes::ChannelField FieldParser_EcefPosition::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ECEF_POS;
+    const bool FieldParser_EcefPosition::REGISTERED = FieldParser_EcefPosition::registerParser();    //register the parser immediately
+
+    void FieldParser_EcefPosition::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        double x = bytes.read_double();
+        double y = bytes.read_double();
+        double z = bytes.read_double();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool valid = pointIsValid(flags, VALID_FLAG);
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_double, anyType(x), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_double, anyType(y), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_double, anyType(z), valid));
+    }
+
+    bool FieldParser_EcefPosition::registerParser()
+    {
+        static FieldParser_EcefPosition p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_EcefVelocity
+    const MipTypes::ChannelField FieldParser_EcefVelocity::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ECEF_VEL;
+    const bool FieldParser_EcefVelocity::REGISTERED = FieldParser_EcefVelocity::registerParser();    //register the parser immediately
+
+    void FieldParser_EcefVelocity::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        float x = bytes.read_float();
+        float y = bytes.read_float();
+        float z = bytes.read_float();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool valid = pointIsValid(flags, VALID_FLAG);
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_float, anyType(x), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_float, anyType(y), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_float, anyType(z), valid));
+    }
+
+    bool FieldParser_EcefVelocity::registerParser()
+    {
+        static FieldParser_EcefVelocity p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_NedRelativePos
+    const MipTypes::ChannelField FieldParser_NedRelativePos::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_NED_RELATIVE_POS;
+    const bool FieldParser_NedRelativePos::REGISTERED = FieldParser_NedRelativePos::registerParser();    //register the parser immediately
+
+    void FieldParser_NedRelativePos::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        double x = bytes.read_double();
+        double y = bytes.read_double();
+        double z = bytes.read_double();
+
+        //get the valid flags
+        uint16 flags = bytes.read_uint16();
+
+        //get whether points are valid or invalid from the flags
+        bool valid = pointIsValid(flags, VALID_FLAG);
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_X, valueType_double, anyType(x), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Y, valueType_double, anyType(y), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_Z, valueType_double, anyType(z), valid));
+    }
+
+    bool FieldParser_NedRelativePos::registerParser()
+    {
+        static FieldParser_NedRelativePos p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_FilterPosAidingStatus
+    const MipTypes::ChannelField FieldParser_FilterPosAidingStatus::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_POSITION_AIDING_STATUS;
+    const bool FieldParser_FilterPosAidingStatus::REGISTERED = FieldParser_FilterPosAidingStatus::registerParser();    //register the parser immediately
+
+    void FieldParser_FilterPosAidingStatus::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        uint8 recId = bytes.read_uint8();
+        float tow = bytes.read_float();
+        uint16 status = bytes.read_uint16();
+
+        //additional identifiers
+        MipChannelIdentifiers addlIds = {
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_RECEIVER_ID, recId)
+        };
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_TIME_OF_WEEK, addlIds, valueType_float, anyType(tow)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_STATUS, addlIds, valueType_uint16, anyType(status)));
+    }
+
+    bool FieldParser_FilterPosAidingStatus::registerParser()
+    {
+        static FieldParser_FilterPosAidingStatus p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_FilterAttAidingStatus
+    const MipTypes::ChannelField FieldParser_FilterAttAidingStatus::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ATTITUDE_AIDING_STATUS;
+    const bool FieldParser_FilterAttAidingStatus::REGISTERED = FieldParser_FilterAttAidingStatus::registerParser();    //register the parser immediately
+
+    void FieldParser_FilterAttAidingStatus::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        float tow = bytes.read_float();
+        uint16 status = bytes.read_uint16();
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_TIME_OF_WEEK, valueType_float, anyType(tow)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_STATUS, valueType_uint16, anyType(status)));
+    }
+
+    bool FieldParser_FilterAttAidingStatus::registerParser()
+    {
+        static FieldParser_FilterAttAidingStatus p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_FilterAidingSummary
+    const MipTypes::ChannelField FieldParser_FilterAidingSummary::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_AIDING_MEASURE_SUMMARY;
+    const bool FieldParser_FilterAidingSummary::REGISTERED = FieldParser_FilterAidingSummary::registerParser();    //register the parser immediately
+
+    void FieldParser_FilterAidingSummary::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        float tow = bytes.read_float();
+        uint8 source = bytes.read_uint8();
+        uint8 type = bytes.read_uint8();
+        uint8 status = bytes.read_uint8();
+
+        //additional identifiers
+        MipChannelIdentifiers addlIds = {
+          MipChannelIdentifier(MipChannelIdentifier::Type::AIDING_MEASUREMENT_TYPE, type, source)
+        };
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_TIME_OF_WEEK, addlIds, valueType_float, anyType(tow)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_STATUS, addlIds, valueType_uint8, anyType(status)));
+    }
+
+    bool FieldParser_FilterAidingSummary::registerParser()
+    {
+        static FieldParser_FilterAidingSummary p;
         return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================

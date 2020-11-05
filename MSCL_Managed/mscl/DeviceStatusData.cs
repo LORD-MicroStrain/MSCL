@@ -310,6 +310,12 @@ public class DeviceStatusData : global::System.IDisposable {
     return ret;
   }
 
+  public DeviceStatusValueMap asValueMap() {
+    DeviceStatusValueMap ret = new DeviceStatusValueMap(msclPINVOKE.DeviceStatusData_asValueMap(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public enum StatusSelector {
     BASIC_STATUS_STRUCTURE = 0x01,
     DIAGNOSTIC_STATUS_STRUCTURE = 0x02

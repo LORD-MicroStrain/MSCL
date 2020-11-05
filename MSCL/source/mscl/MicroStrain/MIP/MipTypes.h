@@ -123,7 +123,6 @@ namespace mscl
         //  CMD_GNSS_ASSIST_FIX_CONTROL                 - 0x0C23    - GNSS Assisted Fix Control
         //  CMD_GNSS_ASSIST_TIME_UPDATE                 - 0x0C24    - GNSS Assisted Time Update
         //  CMD_PPS_SOURCE                              - 0x0C28    - PPS Source
-        //  CMD_PPS_OUTPUT                              - 0x0C29    - PPS Output
         //  CMD_SAVE_STARTUP_SETTINGS                   - 0x0C30    - Device Startup Settings
         //  CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER     - 0x0C31    - Sensor to Vehicle Frame Transformation Euler Angles
         //  CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT      - 0x0C32    - Sensor to Vehicle Frame Transformation Quaternion
@@ -140,6 +139,7 @@ namespace mscl
         //  CMD_CF_REALIGN_NORTH                        - 0x0C3D    - Complimentary Filter - Realign North
         //  CMD_CONING_SCULLING                         - 0x0C3E    - Coning and Sculling Enable
         //  CMD_UART_BAUD_RATE                          - 0x0C40    - UART Baud Rate
+        //  CMD_GPIO_CONFIGURATION                      - 0x0C41    - Configure GPIO Pins
         //  CMD_ODOMETER_SETTINGS                       - 0x0C43    - Configure Odometer Settings
         //  CMD_LOWPASS_FILTER_SETTINGS                 - 0x0C50    - Advanced Low-Pass Filter Settings
         //  CMD_COMPLEMENTARY_FILTER_SETTINGS           - 0x0C51    - Complementary Filter Settings
@@ -151,6 +151,7 @@ namespace mscl
         //  CMD_EF_INIT_ATTITUDE                        - 0x0D02    - Estimation Filter - Set Initial Attitude
         //  CMD_EF_INIT_HEADING                         - 0x0D03    - Estimation Filter - Set Initial Heading
         //  CMD_EF_INIT_ATTITUDE_FROM_AHRS              - 0x0D04    - Estimation Filter - Set Initial Attitude from AHRS
+        //  CMD_EF_RUN_FILTER                           - 0x0D05    - Estimation Filter - Run Filter if configured to wait for run command
         //  CMD_EF_VEHIC_DYNAMICS_MODE                  - 0x0D10    - Estimation Filter - Vehicle Dynamics Mode
         //  CMD_EF_SENS_VEHIC_FRAME_ROTATION_EULER      - 0x0D11    - Estimation Filter - Sensor to Vehicle Frame Rotation Euler Angles
         //  CMD_EF_SENS_VEHIC_FRAME_OFFSET              - 0x0D12    - Estimation Filter - Sensor to Vehicle Frame Offset
@@ -195,6 +196,7 @@ namespace mscl
         //  CMD_EF_ADAPTIVE_FILTER_OPTIONS              - 0x0D53    - Estimation Filter - Adaptive Filter Options
         //  CMD_EF_MULTI_ANTENNA_OFFSET                 - 0x0D54    - Estimation Filter - Multi Antenna Offset
         //  CMD_EF_RELATIVE_POSITION_REF                - 0x0D55    - Estimation Filter - Reference Location for Relative Position Outputs
+        //  CMD_EF_SPEED_MEASUREMENT_OFFSET             - 0x0D61    - Estimation Filter - Speed Measurement Lever Arm Offset
         //  CMD_EF_VERTICAL_GYRO_CONSTRAINT             - 0x0D62    - Estimation Filter - Vertical Gyro Constraint Enable/Disable
         //  CMD_EF_WHEELED_VEHICLE_CONSTRAINT           - 0x0D63    - Estimation Filter - Wheeled Vehicle Constraint Enable/Disable
         //  CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL           - 0x0D64    - Estimation Filter - GNSS Antenna Lever Arm Calibration Control
@@ -238,7 +240,6 @@ namespace mscl
             CMD_GNSS_ASSIST_FIX_CONTROL = 0x0C23,
             CMD_GNSS_ASSIST_TIME_UPDATE = 0x0C24,
             CMD_PPS_SOURCE = 0x0C28,
-            CMD_PPS_OUTPUT = 0x0C29,
             CMD_SAVE_STARTUP_SETTINGS = 0x0C30,
             CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER = 0x0C31,
             CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT = 0x0C32,
@@ -255,7 +256,8 @@ namespace mscl
             CMD_CF_REALIGN_NORTH = 0x0C3D,
             CMD_CONING_SCULLING = 0x0C3E,
             CMD_UART_BAUD_RATE = 0x0C40,
-            CMD_ODOMETER_SETTINGS= 0x0C43,
+            CMD_GPIO_CONFIGURATION = 0x0C41,
+            CMD_ODOMETER_SETTINGS = 0x0C43,
             CMD_LOWPASS_FILTER_SETTINGS = 0x0C50,
             CMD_COMPLEMENTARY_FILTER_SETTINGS = 0x0C51,
             CMD_DATA_STREAM_FORMAT = 0x0C60,
@@ -266,6 +268,7 @@ namespace mscl
             CMD_EF_INIT_ATTITUDE = 0x0D02,
             CMD_EF_INIT_HEADING = 0x0D03,
             CMD_EF_INIT_ATTITUDE_FROM_AHRS = 0x0D04,
+            CMD_EF_RUN_FILTER = 0x0D05,
             CMD_EF_VEHIC_DYNAMICS_MODE = 0x0D10,
             CMD_EF_SENS_VEHIC_FRAME_ROTATION_EULER = 0x0D11,
             CMD_EF_SENS_VEHIC_FRAME_OFFSET = 0x0D12,
@@ -310,6 +313,7 @@ namespace mscl
             CMD_EF_ADAPTIVE_FILTER_OPTIONS = 0x0D53,
             CMD_EF_MULTI_ANTENNA_OFFSET = 0x0D54,
             CMD_EF_RELATIVE_POSITION_REF = 0x0D55,
+            CMD_EF_SPEED_MEASUREMENT_OFFSET = 0x0D61,
             CMD_EF_VERTICAL_GYRO_CONSTRAINT = 0x0D62,
             CMD_EF_WHEELED_VEHICLE_CONSTRAINT = 0x0D63,
             CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL = 0x0D64,
@@ -343,11 +347,16 @@ namespace mscl
         //  CH_FIELD_SENSOR_INTERNAL_TIMESTAMP                      - 0x800E    - Internal Timestamp
         //  CH_FIELD_SENSOR_BEACONED_TIMESTAMP                      - 0x800F    - Beaconed Timestamp    
         //  CH_FIELD_SENSOR_STABILIZED_MAG_VEC                      - 0x8010    - Stabilized Mag Vector (North)
-        //  CH_FIELD_SENSOR_STABILIZED_ACCEL_VEC                    - 0x8011    - Stabliized Accel Vector (Up)
+        //  CH_FIELD_SENSOR_STABILIZED_ACCEL_VEC                    - 0x8011    - Stabilized Accel Vector (Up)
         //  CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP               - 0x8012    - GPS Correlation Timestamp
         //  CH_FIELD_SENSOR_TEMPERATURE_STATISTICS                  - 0x8014    - Temperature Statistics
         //  CH_FIELD_SENSOR_RAW_AMBIENT_PRESSURE                    - 0x8016    - Raw Ambient Pressure
         //  CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE                 - 0x8017    - Scaled Ambient Pressure
+        //  CH_FIELD_SENSOR_ODOMETER_DATA                           - 0x8040    - Odometer Data
+        //  CH_FIELD_SENSOR_SHARED_TICKS                            - 0x80D1    - Ticks
+        //  CH_FIELD_SENSOR_SHARED_DELTA_TICKS                      - 0x80D2    - Delta Ticks
+        //  CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP                    - 0x80D3    - GPS Timestamp
+        //  CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP                  - 0x80D4    - Delta GPS Timestamp
         //  CH_FIELD_GNSS_LLH_POSITION                              - 0x8103    - LLH Position
         //  CH_FIELD_GNSS_ECEF_POSITION                             - 0x8104    - ECEF Position
         //  CH_FIELD_GNSS_NED_VELOCITY                              - 0x8105    - NED Velocity
@@ -363,9 +372,19 @@ namespace mscl
         //  CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS                      - 0x810F    - Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_CLOCK_INFO_2                              - 0x8110    - GNSS Clock Info 2
         //  CH_FIELD_GNSS_GPS_LEAP_SECONDS                          - 0x8111    - GNSS GPS Leap Seconds
+        //  CH_FIELD_GNSS_SATELLITE_STATUS                          - 0x8120    - GNSS Satellite Status
+        //  CH_FIELD_GNSS_RAW_OBSERVATION                           - 0x8122    - GNSS Raw Observation data
+        //  CH_FIELD_GNSS_STATION_INFO                              - 0x8130    - GNSS Base Station Info
         //  CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS                    - 0x8131    - GNSS RTK Corrections Status
+        //  CH_FIELD_GNSS_GPS_EPHEMERIS                             - 0x8161    - GNSS GPS Ephemeris
+        //  CH_FIELD_GNSS_GLONASS_EPHEMERIS                         - 0x8162    - GNSS GLONASS Ephemeris
+        //  CH_FIELD_GNSS_GALILEO_EPHEMERIS                         - 0x8163    - GNSS Galileo Ephemeris
         //  CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION                - 0x8171    - GPS Ionospheric Correction
-        //  CH_FIELD_GNSS_IONOSPHERIC_CORRECTION                    - 0x8173    - GNSS Ionospheric Correction
+        //  CH_FIELD_GNSS_GALILEO_IONOSPHERIC_CORRECTION            - 0x8173    - Galileo Ionospheric Correction
+        //  CH_FIELD_GNSS_SHARED_TICKS                              - 0x81D1    - Ticks
+        //  CH_FIELD_GNSS_SHARED_DELTA_TICKS                        - 0x81D2    - Delta Ticks
+        //  CH_FIELD_GNSS_SHARED_GPS_TIMESTAMP                      - 0x81D3    - GPS Timestamp
+        //  CH_FIELD_GNSS_SHARED_DELTA_TIMESTAMP                    - 0x81D4    - Delta GPS Timestamp
         //  CH_FIELD_ESTFILTER_ESTIMATED_LLH_POS                    - 0x8201    - Estimated LLH Position
         //  CH_FIELD_ESTFILTER_ESTIMATED_NED_VELOCITY               - 0x8202    - Estimated NED Velocity
         //  CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_QUATERNION          - 0x8203    - Estimated Orientation Quaternion
@@ -400,8 +419,26 @@ namespace mscl
         //  CH_FIELD_ESTFILTER_MAG_AUTO_SOFT_IRON_MATRIX            - 0x8226    - Mag Auto Soft Iron Matrix
         //  CH_FIELD_ESTFILTER_MAG_AUTO_HARD_IRON_OFFSET_UNCERT     - 0x8228    - Mag Auto Hard Iron Offset Uncertainty
         //  CH_FIELD_ESTFILTER_MAG_AUTO_SOFT_IRON_MATRIX_UNCERT     - 0x8229    - Mag Auto Soft Iron Matrix Uncertainty
+        //  CH_FIELD_ESTFILTER_MAG_COVARIANCE_MATRIX                - 0x822A    - Magnetometer Covariance Matrix
+        //  CH_FIELD_ESTFILTER_MAG_RESIDUAL_VECTOR                  - 0x822C    - Magnetometer Residual Vector
         //  CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION              - 0x8230    - GNSS Antenna Offset Correction
         //  CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION_UNCERT       - 0x8231    - GNSS Antenna Offset Correction Uncertainty
+        //  CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION                - 0x8232    - GNSS Clock Correction
+        //  CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION_UNCERT         - 0x8233    - GNSS Clock Correction Uncertainty
+        //  CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION        - 0x8234    - GNSS Multi-Antenna Offset Correction 
+        //  CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION_UNCERT - 0x8235    - GNSS Multi-Antenna Offset Correction Uncertainty
+        //  CH_FIELD_ESTFILTER_ECEF_POS_UNCERT                      - 0x8236    - ECEF Position Uncertainty
+        //  CH_FIELD_ESTFILTER_ECEF_VEL_UNCERT                      - 0x8237    - ECEF Velocity Uncertainty
+        //  CH_FIELD_ESTFILTER_ECEF_POS                             - 0x8240    - ECEF Position
+        //  CH_FIELD_ESTFILTER_ECEF_VEL                             - 0x8241    - ECEF Velocity
+        //  CH_FIELD_ESTFILTER_NED_RELATIVE_POS                     - 0x8242    - NED Relative Position
+        //  CH_FIELD_ESTFILTER_POSITION_AIDING_STATUS               - 0x8243    - GNSS Position Aiding Status
+        //  CH_FIELD_ESTFILTER_ATTITUDE_AIDING_STATUS               - 0x8244    - GNSS Attitude Aiding Status
+        //  CH_FIELD_ESTFILTER_AIDING_MEASURE_SUMMARY               - 0x8246    - Filter Aiding Measurement Summary
+        //  CH_FIELD_ESTFILTER_SHARED_TICKS                         - 0x82D1    - Ticks
+        //  CH_FIELD_ESTFILTER_SHARED_DELTA_TICKS                   - 0x82D2    - Delta Ticks
+        //  CH_FIELD_ESTFILTER_SHARED_GPS_TIMESTAMP                 - 0x82D3    - GPS Timestamp
+        //  CH_FIELD_ESTFILTER_SHARED_DELTA_TIMESTAMP               - 0x82D4    - Delta GPS Timestamp
         //  CH_FIELD_DISP_POSITION                                  - 0x9001    - Position
         //  CH_FIELD_DISP_RAW_POSITION                              - 0x9002    - Raw Position
         //  CH_FIELD_DISP_DISPLACEMENT_TS                           - 0x9004    - Displacement Device Timestamp
@@ -420,9 +457,19 @@ namespace mscl
         //  CH_FIELD_GNSS_1_DGNSS_CHANNEL_STATUS                    - 0x910F    - GNSS 1 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_1_CLOCK_INFO_2                            - 0x9110    - GNSS 1 Clock Info 2
         //  CH_FIELD_GNSS_1_GPS_LEAP_SECONDS                        - 0x9111    - GNSS 1 GPS Leap Seconds
+        //  CH_FIELD_GNSS_1_SATELLITE_STATUS                        - 0x9120    - GNSS 1 Satellite Status
+        //  CH_FIELD_GNSS_1_RAW_OBSERVATION                         - 0x9122    - GNSS 1 Raw Observation data
+        //  CH_FIELD_GNSS_1_STATION_INFO                            - 0x9130    - GNSS 1 Base Station Info
         //  CH_FIELD_GNSS_1_RTK_CORRECTIONS_STATUS                  - 0x9131    - GNSS 1 RTK Corrections Status
+        //  CH_FIELD_GNSS_1_GPS_EPHEMERIS                           - 0x9161    - GNSS 1 GPS Ephemeris
+        //  CH_FIELD_GNSS_1_GLONASS_EPHEMERIS                       - 0x9162    - GNSS 1 GLONASS Ephemeris
+        //  CH_FIELD_GNSS_1_GALILEO_EPHEMERIS                       - 0x9163    - GNSS 1 Galileo Ephemeris
         //  CH_FIELD_GNSS_1_GPS_IONOSPHERIC_CORRECTION              - 0x9171    - GNSS 1 GPS Ionospheric Correction
-        //  CH_FIELD_GNSS_1_IONOSPHERIC_CORRECTION                  - 0x9173    - GNSS 1 GNSS Ionospheric Correction
+        //  CH_FIELD_GNSS_1_GALILEO_IONOSPHERIC_CORRECTION          - 0x9173    - GNSS 1 Galileo Ionospheric Correction
+        //  CH_FIELD_GNSS_1_SHARED_TICKS                            - 0x91D1    - Ticks
+        //  CH_FIELD_GNSS_1_SHARED_DELTA_TICKS                      - 0x91D2    - Delta Ticks
+        //  CH_FIELD_GNSS_1_SHARED_GPS_TIMESTAMP                    - 0x91D3    - GPS Timestamp
+        //  CH_FIELD_GNSS_1_SHARED_DELTA_TIMESTAMP                  - 0x91D4    - Delta GPS Timestamp
         //  CH_FIELD_GNSS_2_LLH_POSITION                            - 0x9203    - GNSS 2 LLH Position
         //  CH_FIELD_GNSS_2_ECEF_POSITION                           - 0x9204    - GNSS 2 ECEF Position
         //  CH_FIELD_GNSS_2_NED_VELOCITY                            - 0x9205    - GNSS 2 NED Velocity
@@ -438,9 +485,19 @@ namespace mscl
         //  CH_FIELD_GNSS_2_DGNSS_CHANNEL_STATUS                    - 0x920F    - GNSS 2 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_2_CLOCK_INFO_2                            - 0x9210    - GNSS 2 Clock Info 2
         //  CH_FIELD_GNSS_2_GPS_LEAP_SECONDS                        - 0x9211    - GNSS 2 GPS Leap Seconds
+        //  CH_FIELD_GNSS_2_SATELLITE_STATUS                        - 0x9220    - GNSS 2 Satellite Status
+        //  CH_FIELD_GNSS_2_RAW_OBSERVATION                         - 0x9222    - GNSS 2 Raw Observation data
+        //  CH_FIELD_GNSS_2_STATION_INFO                            - 0x9230    - GNSS 2 Base Station Info
         //  CH_FIELD_GNSS_2_RTK_CORRECTIONS_STATUS                  - 0x9231    - GNSS 2 RTK Corrections Status
+        //  CH_FIELD_GNSS_2_GPS_EPHEMERIS                           - 0x9261    - GNSS 2 GPS Ephemeris
+        //  CH_FIELD_GNSS_2_GLONASS_EPHEMERIS                       - 0x9262    - GNSS 2 GLONASS Ephemeris
+        //  CH_FIELD_GNSS_2_GALILEO_EPHEMERIS                       - 0x9263    - GNSS 2 Galileo Ephemeris
         //  CH_FIELD_GNSS_2_GPS_IONOSPHERIC_CORRECTION              - 0x9271    - GNSS 2 GPS Ionospheric Correction
-        //  CH_FIELD_GNSS_2_IONOSPHERIC_CORRECTION                  - 0x9273    - GNSS 2 GNSS Ionospheric Correction
+        //  CH_FIELD_GNSS_2_GALILEO_IONOSPHERIC_CORRECTION          - 0x9273    - GNSS 2 Galileo Ionospheric Correction
+        //  CH_FIELD_GNSS_2_SHARED_TICKS                            - 0x92D1    - Ticks
+        //  CH_FIELD_GNSS_2_SHARED_DELTA_TICKS                      - 0x92D2    - Delta Ticks
+        //  CH_FIELD_GNSS_2_SHARED_GPS_TIMESTAMP                    - 0x92D3    - GPS Timestamp
+        //  CH_FIELD_GNSS_2_SHARED_DELTA_TIMESTAMP                  - 0x92D4    - Delta GPS Timestamp
         //  CH_FIELD_GNSS_3_LLH_POSITION                            - 0x9303    - GNSS 3 LLH Position
         //  CH_FIELD_GNSS_3_ECEF_POSITION                           - 0x9304    - GNSS 3 ECEF Position
         //  CH_FIELD_GNSS_3_NED_VELOCITY                            - 0x9305    - GNSS 3 NED Velocity
@@ -456,9 +513,19 @@ namespace mscl
         //  CH_FIELD_GNSS_3_DGNSS_CHANNEL_STATUS                    - 0x930F    - GNSS 3 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_3_CLOCK_INFO_2                            - 0x9310    - GNSS 3 Clock Info 2
         //  CH_FIELD_GNSS_3_GPS_LEAP_SECONDS                        - 0x9311    - GNSS 3 GPS Leap Seconds
+        //  CH_FIELD_GNSS_3_SATELLITE_STATUS                        - 0x9320    - GNSS 3 Satellite Status
+        //  CH_FIELD_GNSS_3_RAW_OBSERVATION                         - 0x9322    - GNSS 3 Raw Observation data
+        //  CH_FIELD_GNSS_3_STATION_INFO                            - 0x9330    - GNSS 3 Base Station Info
         //  CH_FIELD_GNSS_3_RTK_CORRECTIONS_STATUS                  - 0x9331    - GNSS 3 RTK Corrections Status
+        //  CH_FIELD_GNSS_3_GPS_EPHEMERIS                           - 0x9361    - GNSS 3 GPS Ephemeris
+        //  CH_FIELD_GNSS_3_GLONASS_EPHEMERIS                       - 0x9362    - GNSS 3 GLONASS Ephemeris
+        //  CH_FIELD_GNSS_3_GALILEO_EPHEMERIS                       - 0x9363    - GNSS 3 Galileo Ephemeris
         //  CH_FIELD_GNSS_3_GPS_IONOSPHERIC_CORRECTION              - 0x9371    - GNSS 3 GPS Ionospheric Correction
-        //  CH_FIELD_GNSS_3_IONOSPHERIC_CORRECTION                  - 0x9373    - GNSS 3 GNSS Ionospheric Correction
+        //  CH_FIELD_GNSS_3_GALILEO_IONOSPHERIC_CORRECTION          - 0x9373    - GNSS 3 Galileo Ionospheric Correction
+        //  CH_FIELD_GNSS_3_SHARED_TICKS                            - 0x93D1    - Ticks
+        //  CH_FIELD_GNSS_3_SHARED_DELTA_TICKS                      - 0x93D2    - Delta Ticks
+        //  CH_FIELD_GNSS_3_SHARED_GPS_TIMESTAMP                    - 0x93D3    - GPS Timestamp
+        //  CH_FIELD_GNSS_3_SHARED_DELTA_TIMESTAMP                  - 0x93D4    - Delta GPS Timestamp
         //  CH_FIELD_GNSS_4_LLH_POSITION                            - 0x9403    - GNSS 4 LLH Position
         //  CH_FIELD_GNSS_4_ECEF_POSITION                           - 0x9404    - GNSS 4 ECEF Position
         //  CH_FIELD_GNSS_4_NED_VELOCITY                            - 0x9405    - GNSS 4 NED Velocity
@@ -474,9 +541,19 @@ namespace mscl
         //  CH_FIELD_GNSS_4_DGNSS_CHANNEL_STATUS                    - 0x940F    - GNSS 4 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_4_CLOCK_INFO_2                            - 0x9410    - GNSS 4 Clock Info 2
         //  CH_FIELD_GNSS_4_GPS_LEAP_SECONDS                        - 0x9411    - GNSS 4 GPS Leap Seconds
+        //  CH_FIELD_GNSS_4_SATELLITE_STATUS                        - 0x9420    - GNSS 4 Satellite Status
+        //  CH_FIELD_GNSS_4_RAW_OBSERVATION                         - 0x9422    - GNSS 4 Raw Observation data
+        //  CH_FIELD_GNSS_4_STATION_INFO                            - 0x9430    - GNSS 4 Base Station Info
         //  CH_FIELD_GNSS_4_RTK_CORRECTIONS_STATUS                  - 0x9431    - GNSS 4 RTK Corrections Status
+        //  CH_FIELD_GNSS_4_GPS_EPHEMERIS                           - 0x9461    - GNSS 4 GPS Ephemeris
+        //  CH_FIELD_GNSS_4_GLONASS_EPHEMERIS                       - 0x9462    - GNSS 4 GLONASS Ephemeris
+        //  CH_FIELD_GNSS_4_GALILEO_EPHEMERIS                       - 0x9463    - GNSS 4 Galileo Ephemeris
         //  CH_FIELD_GNSS_4_GPS_IONOSPHERIC_CORRECTION              - 0x9471    - GNSS 4 GPS Ionospheric Correction
-        //  CH_FIELD_GNSS_4_IONOSPHERIC_CORRECTION                  - 0x9473    - GNSS 4 GNSS Ionospheric Correction
+        //  CH_FIELD_GNSS_4_GALILEO_IONOSPHERIC_CORRECTION          - 0x9473    - GNSS 4 Galileo Ionospheric Correction
+        //  CH_FIELD_GNSS_4_SHARED_TICKS                            - 0x94D1    - Ticks
+        //  CH_FIELD_GNSS_4_SHARED_DELTA_TICKS                      - 0x94D2    - Delta Ticks
+        //  CH_FIELD_GNSS_4_SHARED_GPS_TIMESTAMP                    - 0x94D3    - GPS Timestamp
+        //  CH_FIELD_GNSS_4_SHARED_DELTA_TIMESTAMP                  - 0x94D4    - Delta GPS Timestamp
         //  CH_FIELD_GNSS_5_LLH_POSITION                            - 0x9503    - GNSS 5 LLH Position
         //  CH_FIELD_GNSS_5_ECEF_POSITION                           - 0x9504    - GNSS 5 ECEF Position
         //  CH_FIELD_GNSS_5_NED_VELOCITY                            - 0x9505    - GNSS 5 NED Velocity
@@ -492,9 +569,19 @@ namespace mscl
         //  CH_FIELD_GNSS_5_DGNSS_CHANNEL_STATUS                    - 0x950F    - GNSS 5 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_5_CLOCK_INFO_2                            - 0x9510    - GNSS 5 Clock Info 2
         //  CH_FIELD_GNSS_5_GPS_LEAP_SECONDS                        - 0x9511    - GNSS 5 GPS Leap Seconds
+        //  CH_FIELD_GNSS_5_SATELLITE_STATUS                        - 0x9520    - GNSS 5 Satellite Status
+        //  CH_FIELD_GNSS_5_RAW_OBSERVATION                         - 0x9522    - GNSS 5 Raw Observation data
+        //  CH_FIELD_GNSS_5_STATION_INFO                            - 0x9530    - GNSS 5 Base Station Info
         //  CH_FIELD_GNSS_5_RTK_CORRECTIONS_STATUS                  - 0x9531    - GNSS 5 RTK Corrections Status
+        //  CH_FIELD_GNSS_5_GPS_EPHEMERIS                           - 0x9561    - GNSS 5 GPS Ephemeris
+        //  CH_FIELD_GNSS_5_GLONASS_EPHEMERIS                       - 0x9562    - GNSS 5 GLONASS Ephemeris
+        //  CH_FIELD_GNSS_5_GALILEO_EPHEMERIS                       - 0x9563    - GNSS 5 Galileo Ephemeris
         //  CH_FIELD_GNSS_5_GPS_IONOSPHERIC_CORRECTION              - 0x9571    - GNSS 5 GPS Ionospheric Correction
-        //  CH_FIELD_GNSS_5_IONOSPHERIC_CORRECTION                  - 0x9573    - GNSS 5 GNSS Ionospheric Correction
+        //  CH_FIELD_GNSS_5_GALILEO_IONOSPHERIC_CORRECTION          - 0x9573    - GNSS 5 Galileo Ionospheric Correction
+        //  CH_FIELD_GNSS_5_SHARED_TICKS                            - 0x95D1    - Ticks
+        //  CH_FIELD_GNSS_5_SHARED_DELTA_TICKS                      - 0x95D2    - Delta Ticks
+        //  CH_FIELD_GNSS_5_SHARED_GPS_TIMESTAMP                    - 0x95D3    - GPS Timestamp
+        //  CH_FIELD_GNSS_5_SHARED_DELTA_TIMESTAMP                  - 0x95D4    - Delta GPS Timestamp
         //====================================================================================================
         enum ChannelField
         {
@@ -518,6 +605,11 @@ namespace mscl
             CH_FIELD_SENSOR_TEMPERATURE_STATISTICS = 0x8014,
             CH_FIELD_SENSOR_RAW_AMBIENT_PRESSURE = 0x8016,
             CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE = 0x8017,
+            CH_FIELD_SENSOR_ODOMETER_DATA = 0x8040,
+            CH_FIELD_SENSOR_SHARED_TICKS           = 0x80D1,
+            CH_FIELD_SENSOR_SHARED_DELTA_TICKS     = 0x80D2,
+            CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP   = 0x80D3,
+            CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP = 0x80D4,
             CH_FIELD_GNSS_LLH_POSITION = 0x8103,
             CH_FIELD_GNSS_ECEF_POSITION = 0x8104,
             CH_FIELD_GNSS_NED_VELOCITY = 0x8105,
@@ -533,9 +625,19 @@ namespace mscl
             CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS = 0x810F,
             CH_FIELD_GNSS_CLOCK_INFO_2 = 0x8110,
             CH_FIELD_GNSS_GPS_LEAP_SECONDS = 0x8111,
+            CH_FIELD_GNSS_SATELLITE_STATUS = 0x8120,
+            CH_FIELD_GNSS_RAW_OBSERVATION = 0x8122,
+            CH_FIELD_GNSS_STATION_INFO = 0x8130,
             CH_FIELD_GNSS_RTK_CORRECTIONS_STATUS = 0x8131,
+            CH_FIELD_GNSS_GPS_EPHEMERIS      = 0x8161,
+            CH_FIELD_GNSS_GLONASS_EPHEMERIS  = 0x8162,
+            CH_FIELD_GNSS_GALILEO_EPHEMERIS  = 0x8163,
             CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION = 0x8171,
-            CH_FIELD_GNSS_IONOSPHERIC_CORRECTION = 0x8173,
+            CH_FIELD_GNSS_GALILEO_IONOSPHERIC_CORRECTION = 0x8173,
+            CH_FIELD_GNSS_SHARED_TICKS           = 0x81D1,
+            CH_FIELD_GNSS_SHARED_DELTA_TICKS     = 0x81D2,
+            CH_FIELD_GNSS_SHARED_GPS_TIMESTAMP   = 0x81D3,
+            CH_FIELD_GNSS_SHARED_DELTA_TIMESTAMP = 0x81D4,
             CH_FIELD_ESTFILTER_ESTIMATED_LLH_POS = 0x8201,    //TODO: rename? (no estimated?, look at gx4?)
             CH_FIELD_ESTFILTER_ESTIMATED_NED_VELOCITY = 0x8202,
             CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_QUATERNION = 0x8203,
@@ -570,8 +672,26 @@ namespace mscl
             CH_FIELD_ESTFILTER_MAG_AUTO_SOFT_IRON_MATRIX = 0x8226,
             CH_FIELD_ESTFILTER_MAG_AUTO_HARD_IRON_OFFSET_UNCERT = 0x8228,
             CH_FIELD_ESTFILTER_MAG_AUTO_SOFT_IRON_MATRIX_UNCERT = 0x8229,
+            CH_FIELD_ESTFILTER_MAG_COVARIANCE_MATRIX = 0x822A,
+            CH_FIELD_ESTFILTER_MAG_RESIDUAL_VECTOR = 0x822C,
             CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION = 0x8230,
             CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION_UNCERT = 0x8231,
+            CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION = 0x8232,
+            CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION_UNCERT = 0x8233,
+            CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION = 0x8234,
+            CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION_UNCERT = 0x8235,
+            CH_FIELD_ESTFILTER_ECEF_POS_UNCERT = 0x8236,
+            CH_FIELD_ESTFILTER_ECEF_VEL_UNCERT = 0x8237,
+            CH_FIELD_ESTFILTER_ECEF_POS = 0x8240,
+            CH_FIELD_ESTFILTER_ECEF_VEL = 0x8241,
+            CH_FIELD_ESTFILTER_NED_RELATIVE_POS = 0x8242,
+            CH_FIELD_ESTFILTER_POSITION_AIDING_STATUS = 0x8243,
+            CH_FIELD_ESTFILTER_ATTITUDE_AIDING_STATUS = 0x8244,
+            CH_FIELD_ESTFILTER_AIDING_MEASURE_SUMMARY = 0x8246,
+            CH_FIELD_ESTFILTER_SHARED_TICKS           = 0x82D1,
+            CH_FIELD_ESTFILTER_SHARED_DELTA_TICKS     = 0x82D2,
+            CH_FIELD_ESTFILTER_SHARED_GPS_TIMESTAMP   = 0x82D3,
+            CH_FIELD_ESTFILTER_SHARED_DELTA_TIMESTAMP = 0x82D4,
             CH_FIELD_DISP_DISPLACEMENT_RAW = 0x9001,
             CH_FIELD_DISP_DISPLACEMENT_MM = 0x9002,
             CH_FIELD_DISP_DISPLACEMENT_TS = 0x9004,
@@ -590,9 +710,19 @@ namespace mscl
             CH_FIELD_GNSS_1_DGNSS_CHANNEL_STATUS = 0x910F,
             CH_FIELD_GNSS_1_CLOCK_INFO_2 = 0x9110,
             CH_FIELD_GNSS_1_GPS_LEAP_SECONDS = 0x9111,
+            CH_FIELD_GNSS_1_SATELLITE_STATUS = 0x9120,
+            CH_FIELD_GNSS_1_RAW_OBSERVATION = 0x9122,
+            CH_FIELD_GNSS_1_STATION_INFO = 0x9130,
             CH_FIELD_GNSS_1_RTK_CORRECTIONS_STATUS = 0x9131,
+            CH_FIELD_GNSS_1_GPS_EPHEMERIS     = 0x9161,
+            CH_FIELD_GNSS_1_GLONASS_EPHEMERIS = 0x9162,
+            CH_FIELD_GNSS_1_GALILEO_EPHEMERIS = 0x9163,
             CH_FIELD_GNSS_1_GPS_IONOSPHERIC_CORRECTION = 0x9171,
-            CH_FIELD_GNSS_1_IONOSPHERIC_CORRECTION = 0x9173,
+            CH_FIELD_GNSS_1_GALILEO_IONOSPHERIC_CORRECTION = 0x9173,
+            CH_FIELD_GNSS_1_SHARED_TICKS           = 0x91D1,
+            CH_FIELD_GNSS_1_SHARED_DELTA_TICKS     = 0x91D2,
+            CH_FIELD_GNSS_1_SHARED_GPS_TIMESTAMP   = 0x91D3,
+            CH_FIELD_GNSS_1_SHARED_DELTA_TIMESTAMP = 0x91D4,
             CH_FIELD_GNSS_2_LLH_POSITION = 0x9203,
             CH_FIELD_GNSS_2_ECEF_POSITION = 0x9204,
             CH_FIELD_GNSS_2_NED_VELOCITY = 0x9205,
@@ -608,9 +738,19 @@ namespace mscl
             CH_FIELD_GNSS_2_DGNSS_CHANNEL_STATUS = 0x920F,
             CH_FIELD_GNSS_2_CLOCK_INFO_2 = 0x9210,
             CH_FIELD_GNSS_2_GPS_LEAP_SECONDS = 0x9211,
+            CH_FIELD_GNSS_2_SATELLITE_STATUS = 0x9220,
+            CH_FIELD_GNSS_2_RAW_OBSERVATION = 0x9222,
+            CH_FIELD_GNSS_2_STATION_INFO = 0x9230,
             CH_FIELD_GNSS_2_RTK_CORRECTIONS_STATUS = 0x9231,
+            CH_FIELD_GNSS_2_GPS_EPHEMERIS     = 0x9261,
+            CH_FIELD_GNSS_2_GLONASS_EPHEMERIS = 0x9262,
+            CH_FIELD_GNSS_2_GALILEO_EPHEMERIS = 0x9263,
             CH_FIELD_GNSS_2_GPS_IONOSPHERIC_CORRECTION = 0x9271,
-            CH_FIELD_GNSS_2_IONOSPHERIC_CORRECTION = 0x9273,
+            CH_FIELD_GNSS_2_GALILEO_IONOSPHERIC_CORRECTION = 0x9273,
+            CH_FIELD_GNSS_2_SHARED_TICKS           = 0x92D1,
+            CH_FIELD_GNSS_2_SHARED_DELTA_TICKS     = 0x92D2,
+            CH_FIELD_GNSS_2_SHARED_GPS_TIMESTAMP   = 0x92D3,
+            CH_FIELD_GNSS_2_SHARED_DELTA_TIMESTAMP = 0x92D4,
             CH_FIELD_GNSS_3_LLH_POSITION = 0x9303,
             CH_FIELD_GNSS_3_ECEF_POSITION = 0x9304,
             CH_FIELD_GNSS_3_NED_VELOCITY = 0x9305,
@@ -626,9 +766,19 @@ namespace mscl
             CH_FIELD_GNSS_3_DGNSS_CHANNEL_STATUS = 0x930F,
             CH_FIELD_GNSS_3_CLOCK_INFO_2 = 0x9310,
             CH_FIELD_GNSS_3_GPS_LEAP_SECONDS = 0x9311,
+            CH_FIELD_GNSS_3_SATELLITE_STATUS = 0x9320,
+            CH_FIELD_GNSS_3_RAW_OBSERVATION = 0x9322,
+            CH_FIELD_GNSS_3_STATION_INFO = 0x9330,
             CH_FIELD_GNSS_3_RTK_CORRECTIONS_STATUS = 0x9331,
+            CH_FIELD_GNSS_3_GPS_EPHEMERIS     = 0x9361,
+            CH_FIELD_GNSS_3_GLONASS_EPHEMERIS = 0x9362,
+            CH_FIELD_GNSS_3_GALILEO_EPHEMERIS = 0x9363,
             CH_FIELD_GNSS_3_GPS_IONOSPHERIC_CORRECTION = 0x9371,
-            CH_FIELD_GNSS_3_IONOSPHERIC_CORRECTION = 0x9373,
+            CH_FIELD_GNSS_3_GALILEO_IONOSPHERIC_CORRECTION = 0x9373,
+            CH_FIELD_GNSS_3_SHARED_TICKS           = 0x93D1,
+            CH_FIELD_GNSS_3_SHARED_DELTA_TICKS     = 0x93D2,
+            CH_FIELD_GNSS_3_SHARED_GPS_TIMESTAMP   = 0x93D3,
+            CH_FIELD_GNSS_3_SHARED_DELTA_TIMESTAMP = 0x93D4,
             CH_FIELD_GNSS_4_LLH_POSITION = 0x9403,
             CH_FIELD_GNSS_4_ECEF_POSITION = 0x9404,
             CH_FIELD_GNSS_4_NED_VELOCITY = 0x9405,
@@ -644,9 +794,19 @@ namespace mscl
             CH_FIELD_GNSS_4_DGNSS_CHANNEL_STATUS = 0x940F,
             CH_FIELD_GNSS_4_CLOCK_INFO_2 = 0x9410,
             CH_FIELD_GNSS_4_GPS_LEAP_SECONDS = 0x9411,
+            CH_FIELD_GNSS_4_SATELLITE_STATUS = 0x9420,
+            CH_FIELD_GNSS_4_RAW_OBSERVATION = 0x9422,
+            CH_FIELD_GNSS_4_STATION_INFO = 0x9430,
             CH_FIELD_GNSS_4_RTK_CORRECTIONS_STATUS = 0x9431,
+            CH_FIELD_GNSS_4_GPS_EPHEMERIS     = 0x9461,
+            CH_FIELD_GNSS_4_GLONASS_EPHEMERIS = 0x9462,
+            CH_FIELD_GNSS_4_GALILEO_EPHEMERIS = 0x9463,
             CH_FIELD_GNSS_4_GPS_IONOSPHERIC_CORRECTION = 0x9471,
-            CH_FIELD_GNSS_4_IONOSPHERIC_CORRECTION = 0x9473,
+            CH_FIELD_GNSS_4_GALILEO_IONOSPHERIC_CORRECTION = 0x9473,
+            CH_FIELD_GNSS_4_SHARED_TICKS           = 0x94D1,
+            CH_FIELD_GNSS_4_SHARED_DELTA_TICKS     = 0x94D2,
+            CH_FIELD_GNSS_4_SHARED_GPS_TIMESTAMP   = 0x94D3,
+            CH_FIELD_GNSS_4_SHARED_DELTA_TIMESTAMP = 0x94D4,
             CH_FIELD_GNSS_5_LLH_POSITION = 0x9503,
             CH_FIELD_GNSS_5_ECEF_POSITION = 0x9504,
             CH_FIELD_GNSS_5_NED_VELOCITY = 0x9505,
@@ -662,9 +822,19 @@ namespace mscl
             CH_FIELD_GNSS_5_DGNSS_CHANNEL_STATUS = 0x950F,
             CH_FIELD_GNSS_5_CLOCK_INFO_2 = 0x9510,
             CH_FIELD_GNSS_5_GPS_LEAP_SECONDS = 0x9511,
+            CH_FIELD_GNSS_5_SATELLITE_STATUS = 0x9520,
+            CH_FIELD_GNSS_5_RAW_OBSERVATION = 0x9522,
+            CH_FIELD_GNSS_5_STATION_INFO = 0x9530,
             CH_FIELD_GNSS_5_RTK_CORRECTIONS_STATUS = 0x9531,
+            CH_FIELD_GNSS_5_GPS_EPHEMERIS     = 0x9561,
+            CH_FIELD_GNSS_5_GLONASS_EPHEMERIS = 0x9562,
+            CH_FIELD_GNSS_5_GALILEO_EPHEMERIS = 0x9563,
             CH_FIELD_GNSS_5_GPS_IONOSPHERIC_CORRECTION = 0x9571,
-            CH_FIELD_GNSS_5_IONOSPHERIC_CORRECTION = 0x9573
+            CH_FIELD_GNSS_5_GALILEO_IONOSPHERIC_CORRECTION = 0x9573,
+            CH_FIELD_GNSS_5_SHARED_TICKS           = 0x95D1,
+            CH_FIELD_GNSS_5_SHARED_DELTA_TICKS     = 0x95D2,
+            CH_FIELD_GNSS_5_SHARED_GPS_TIMESTAMP   = 0x95D3,
+            CH_FIELD_GNSS_5_SHARED_DELTA_TIMESTAMP = 0x95D4,
         };
 
         //====================================================================================================
@@ -672,16 +842,16 @@ namespace mscl
         //    The enums for different MIP Channel Qualifiers.
         //    This combined with the <ChannelField> produces a unique identifier for each individual channel that is collected.
         //
-        //    CH_UNKNOWN                    - 0 - Unknown Channel
-        //    CH_X                          - 1 - X
-        //    CH_Y                          - 2 - Y
-        //    CH_Z                          - 3 - Z
-        //    CH_MATRIX                     - 4 - Matrix
-        //    CH_QUATERNION                 - 5 - Quaternion
-        //    CH_ROLL                       - 6 - Roll
-        //    CH_PITCH                      - 7 - Pitch
-        //    CH_YAW                        - 8 - Yaw
-        //    CH_TICK                       - 9 - Tick
+        //    CH_UNKNOWN                    - 0  - Unknown Channel
+        //    CH_X                          - 1  - X
+        //    CH_Y                          - 2  - Y
+        //    CH_Z                          - 3  - Z
+        //    CH_MATRIX                     - 4  - Matrix
+        //    CH_QUATERNION                 - 5  - Quaternion
+        //    CH_ROLL                       - 6  - Roll
+        //    CH_PITCH                      - 7  - Pitch
+        //    CH_YAW                        - 8  - Yaw
+        //    CH_TICK                       - 9  - Tick
         //    CH_TIMESTAMP                  - 10 - Timestamp
         //    CH_STATUS                     - 11 - Status
         //    CH_TIME_OF_WEEK               - 12 - Time of Week
@@ -690,6 +860,7 @@ namespace mscl
         //    CH_LONGITUDE                  - 15 - Longitude
         //    CH_HEIGHT_ABOVE_ELLIPSOID     - 16 - Height Above Ellipsoid
         //    CH_HEIGHT_ABOVE_MSL           - 17 - Height Above MSL
+        //    CH_HEIGHT                     - 81 - Height (Other reference point)
         //    CH_HORIZONTAL_ACCURACY        - 18 - Horizontal Accuracy
         //    CH_VERTICAL_ACCURACY          - 19 - Vertical Accuracy
         //    CH_POSITION_ACCURACY          - 20 - Position Accuracy
@@ -747,15 +918,27 @@ namespace mscl
         //    CH_BIAS_ACCURACY_ESTIMATE     - 72 - Bias Accuracy Estimate
         //    CH_DRIFT_ACCURACY_ESTIMATE    - 73 - Drift Accuracy Estimate
         //    CH_SECONDS                    - 74 - Seconds
-        //    CH_DATA_RECEIVED_EPOCH        - 75 - Data Received Epoch
         //    CH_NUM_PACKETS                - 76 - Num Packets
         //    CH_GPS_CORRECTION_LATENCY     - 77 - GPS Correction Latency
         //    CH_GLONASS_CORRECTION_LATENCY - 78 - Glonass Correction Latency
         //    CH_GALILEO_CORRECTION_LATENCY - 79 - Galileo Correction Latency
         //    CH_BEIDOU_CORRECTION_LATENCY  - 80 - Beidou Correction Latency
+        //    CH_HEALTH                     - 82 - Satellite Health
+        //    CH_INDEX                      - 83 - Index
+        //    CH_COUNT                      - 84 - Count
+        //    CH_SIGNAL_STRENGTH            - 85 - Signal Strength
+        //    CH_SIGNAL_QUALITY             - 86 - Signal Quality
+        //    CH_RANGE                      - 87 - Range
+        //    CH_RANGE_UNC                  - 88 - Range Uncertainty
         //    CH_ALPHA                      - 90 - Alpha
         //    CH_BETA                       - 91 - Beta
         //    CH_DISTURBANCE_FLAGS          - 92 - Disturbance Flags
+        //    CH_CARRIER_PHASE              - 93 - Carrier Phase
+        //    CH_CARRIER_PHASE_UNC          - 94 - Carrier Phase Uncertainty
+        //    CH_DOPPLER                    - 95 - Doppler
+        //    CH_DOPPLER_UNC                - 96 - Doppler Uncertainty
+        //    CH_DELTA_TIME                 - 97 - Delta Time
+        //    CH_DELTA_TICK                 - 98 - Delta Tick
         //====================================================================================================
         enum ChannelQualifier
         {
@@ -834,15 +1017,28 @@ namespace mscl
             CH_BIAS_ACCURACY_ESTIMATE = 72,
             CH_DRIFT_ACCURACY_ESTIMATE = 73,
             CH_SECONDS = 74,
-            CH_DATA_RECEIVED_EPOCH = 75,
             CH_NUM_PACKETS = 76,
             CH_GPS_CORRECTION_LATENCY = 77,
             CH_GLONASS_CORRECTION_LATENCY = 78,
             CH_GALILEO_CORRECTION_LATENCY = 79,
             CH_BEIDOU_CORRECTION_LATENCY = 80,
+            CH_HEIGHT = 81,
+            CH_HEALTH = 82,
+            CH_INDEX = 83,
+            CH_COUNT = 84,
+            CH_SIGNAL_STRENGTH = 85,
+            CH_SIGNAL_QUALITY = 86,
+            CH_RANGE = 87,
+            CH_RANGE_UNC = 88,
             CH_ALPHA = 90,
             CH_BETA = 91,
-            CH_DISTURBANCE_FLAGS = 92
+            CH_DISTURBANCE_FLAGS = 92,
+            CH_CARRIER_PHASE = 93,
+            CH_CARRIER_PHASE_UNC = 94,
+            CH_DOPPLER = 95,
+            CH_DOPPLER_UNC = 96,
+            CH_DELTA_TIME = 97,
+            CH_DELTA_TICK = 98
         };
 
         //API Typedefs:
@@ -928,6 +1124,16 @@ namespace mscl
         //  string - text to prepend the channel name
         static std::string getChannelNamePrependText(ChannelField chField);
 
+        //API Function: getChannelNameAppendText
+        //  Gets the text to append to the channel name to distinguish between different shared data fields
+        //
+        //Parameters:
+        //  chField - the <ChannelField> to get the channel name of
+        //
+        //Returns:
+        //  string - text to append to the channel name
+        static std::string getChannelNameAppendText(ChannelField chField);
+
         //API Function: isGnssChannelField
         //  Checks whether the provided <ChannelField> is within a GNSS data set.
         //
@@ -938,6 +1144,16 @@ namespace mscl
         //  bool - true if chField is GNSS data, false if it is not
         static bool isGnssChannelField(ChannelField chField);
 
+        //API Function: isSharedChannelField
+        //  Checks whether the provided <ChannelField> is a shared field amongst all inertial data sets.
+        //
+        //Parameters:
+        //  chField - the <ChannelField> value to check
+        //
+        //Returns:
+        //  bool - true if chField is a shared data field, false if it is not
+        static bool isSharedChannelField(ChannelField chField);
+
     private:
         //Const: CHANNEL_NAMES
         //    An unordered_map mapping each <ChannelId> to its respective name (universal SensorCloud name).
@@ -947,7 +1163,325 @@ namespace mscl
         //  vector of <DataClass> values containing all GNSS data class descriptors that have the same field descriptors.
         //  was a const but ran into static initialization order issues with registering GNSS field parsers.
         static std::vector<DataClass> GNSS_DATA_CLASSES();
+
+        //Function: INERTIAL_DATA_CLASSES
+        //  vector of <DataClass> values containing all inertial data class descriptors that have the same field descriptors.
+        //  was a const but ran into static initialization order issues with registering shared field parsers.
+        static std::vector<DataClass> INERTIAL_DATA_CLASSES();
+
+        //Function: SHARED_DATA_FIELDS
+        //  vector of <uint8> values containing all shared inertial data field descriptors.
+        //  was a const but ran into static initialization order issues with registering shared field parsers.
+        static std::vector<uint8> SHARED_DATA_FIELDS();
     };
+
+    //API Class: MipChannelIdentifier
+    //  A single additional identifier for a MipDataPoint. Contains a uint value with an identifier type specifier.
+    class MipChannelIdentifier
+    {
+    public:
+        //API Enum: Type
+        //  Identifier type options - indicates what the <MipChannelIdentifier::id> value represents.
+        //      GNSS_RECEIVER_ID        - GNSS Receiver ID
+        //      GNSS_BASE_STATION_ID   - Differential GNSS Base Station ID
+        //      GNSS_CONSTELLATION      - GNSS Constellation ID
+        //      GNSS_SATELLITE_ID       - GNSS Satellite ID
+        //      GNSS_SIGNAL_ID          - GNSS Signal ID
+        //      AIDING_MEASUREMENT_TYPE - Filter Aiding Measurement Type
+        enum Type
+        {
+            // when adding to this list, be sure to add name string to TYPE_NAMES map
+            // Type option order will determine the order they are added to the full channel identifier string
+            GNSS_RECEIVER_ID,
+            GNSS_BASE_STATION_ID,
+            GNSS_CONSTELLATION,
+            GNSS_SATELLITE_ID,
+            GNSS_SIGNAL_ID,
+            AIDING_MEASUREMENT_TYPE
+        };
+
+        //API Enum: AidingMeasurementTypes
+        //  ID definitions when Type is <MipChannelIdentifier::Type::AIDING_MEASUREMENT_TYPE>
+        //      GNSS            - 0x01 - GNSS
+        //      DUAL_ANTENNA    - 0x02 - Dual Antenna
+        //      HEADING         - 0x03 - Heading
+        //      PRESSURE        - 0x04 - Pressure
+        //      MAGNETOMETER    - 0x05 - Magnetometer
+        //      SPEED           - 0x06 - Speed
+        enum AidingMeasurementTypes
+        {
+            GNSS            = 0x01,
+            DUAL_ANTENNA    = 0x02,
+            HEADING         = 0x03,
+            PRESSURE        = 0x04,
+            MAGNETOMETER    = 0x05,
+            SPEED           = 0x06
+        };
+
+        //API Enum: GnssConstellationIds
+        //  ID definitions when Type is <MipChannelIdentifier::Type::GNSS_CONSTELLATION>
+        //      UNKNOWN_CONSTELLATION - 0 - Unknown
+        //      GPS                   - 1 - GPS
+        //      GLONASS               - 2 - GLONASS
+        //      GALILEO               - 3 - Galileo
+        //      BEIDOU                - 4 - BeiDou
+        enum GnssConstellationIds
+        {
+            UNKNOWN_CONSTELLATION = 0,
+            GPS                   = 1,
+            GLONASS               = 2,
+            GALILEO               = 3,
+            BEIDOU                = 4
+        };
+
+        //API Enum: GnssSignalIds
+        //  ID definitions when Type is <MipChannelIdentifier::Type::GNSS_SIGNAL_ID>
+        //      UNKNOWN         - 0
+        //      GPS_L1CA        - 1
+        //      GPS_L1P         - 2
+        //      GPS_L1Z         - 3
+        //      GPS_L2CA        - 4
+        //      GPS_L2P         - 5
+        //      GPS_L2Z         - 6
+        //      GPS_L2CL        - 7
+        //      GPS_L2CM        - 8
+        //      GPS_L2CML       - 9
+        //      GPS_L5I         - 10
+        //      GPS_L5Q         - 11
+        //      GPS_L5IQ        - 12
+        //      GPS_L1CD        - 13
+        //      GPS_L1CP        - 14
+        //      GPS_L1CDP       - 15
+        //      GLONASS_G1CA    - 32
+        //      GLONASS_G1P     - 33
+        //      GLONASS_G2C     - 34
+        //      GLONASS_G2P     - 35
+        //      GALILEO_E1C     - 64
+        //      GALILEO_E1A     - 65
+        //      GALILEO_E1B     - 66
+        //      GALILEO_E1BC    - 67
+        //      GALILEO_E1ABC   - 68
+        //      GALILEO_E6C     - 69
+        //      GALILEO_E6A     - 70
+        //      GALILEO_E6B     - 71
+        //      GALILEO_E6BC    - 72
+        //      GALILEO_E6ABC   - 73
+        //      GALILEO_E5BI    - 74
+        //      GALILEO_E5BQ    - 75
+        //      GALILEO_E5BIQ   - 76
+        //      GALILEO_E5ABI   - 77
+        //      GALILEO_E5ABQ   - 78
+        //      GALILEO_E5ABIQ  - 79
+        //      GALILEO_E5AI    - 80
+        //      GALILEO_E5AQ    - 81
+        //      GALILEO_E5AIQ   - 82
+        //      SBAS_L1CA       - 96
+        //      SBAS_L5I        - 97
+        //      SBAS_L5Q        - 98
+        //      SBAS_L5IQ       - 99
+        //      QZSS_L1CA       - 128
+        //      QZSS_LEXS       - 129
+        //      QZSS_LEXL       - 130
+        //      QZSS_LEXSL      - 131
+        //      QZSS_L2CM       - 132
+        //      QZSS_L2CL       - 133
+        //      QZSS_L2CML      - 134
+        //      QZSS_L5I        - 135
+        //      QZSS_L5Q        - 136
+        //      QZSS_L5IQ       - 137
+        //      QZSS_L1CD       - 138
+        //      QZSS_L1CP       - 139
+        //      QZSS_L1CDP      - 140
+        //      BEIDOU_B1I      - 160
+        //      BEIDOU_B1Q      - 161
+        //      BEIDOU_B1IQ     - 162
+        //      BEIDOU_B3I      - 163
+        //      BEIDOU_B3Q      - 164
+        //      BEIDOU_B3IQ     - 165
+        //      BEIDOU_B2I      - 166
+        //      BEIDOU_B2Q      - 167
+        //      BEIDOU_B2IQ     - 168
+        enum GnssSignalIds
+        {
+            UNKNOWN_SIGNAL  = 0,
+            GPS_L1CA        = 1,
+            GPS_L1P         = 2,
+            GPS_L1Z         = 3,
+            GPS_L2CA        = 4,
+            GPS_L2P         = 5,
+            GPS_L2Z         = 6,
+            GPS_L2CL        = 7,
+            GPS_L2CM        = 8,
+            GPS_L2CML       = 9,
+            GPS_L5I         = 10,
+            GPS_L5Q         = 11,
+            GPS_L5IQ        = 12,
+            GPS_L1CD        = 13,
+            GPS_L1CP        = 14,
+            GPS_L1CDP       = 15,
+            GLONASS_G1CA    = 32,
+            GLONASS_G1P     = 33,
+            GLONASS_G2C     = 34,
+            GLONASS_G2P     = 35,
+            GALILEO_E1C     = 64,
+            GALILEO_E1A     = 65,
+            GALILEO_E1B     = 66,
+            GALILEO_E1BC    = 67,
+            GALILEO_E1ABC   = 68,
+            GALILEO_E6C     = 69,
+            GALILEO_E6A     = 70,
+            GALILEO_E6B     = 71,
+            GALILEO_E6BC    = 72,
+            GALILEO_E6ABC   = 73,
+            GALILEO_E5BI    = 74,
+            GALILEO_E5BQ    = 75,
+            GALILEO_E5BIQ   = 76,
+            GALILEO_E5ABI   = 77,
+            GALILEO_E5ABQ   = 78,
+            GALILEO_E5ABIQ  = 79,
+            GALILEO_E5AI    = 80,
+            GALILEO_E5AQ    = 81,
+            GALILEO_E5AIQ   = 82,
+            SBAS_L1CA       = 96,
+            SBAS_L5I        = 97,
+            SBAS_L5Q        = 98,
+            SBAS_L5IQ       = 99,
+            QZSS_L1CA       = 128,
+            QZSS_LEXS       = 129,
+            QZSS_LEXL       = 130,
+            QZSS_LEXSL      = 131,
+            QZSS_L2CM       = 132,
+            QZSS_L2CL       = 133,
+            QZSS_L2CML      = 134,
+            QZSS_L5I        = 135,
+            QZSS_L5Q        = 136,
+            QZSS_L5IQ       = 137,
+            QZSS_L1CD       = 138,
+            QZSS_L1CP       = 139,
+            QZSS_L1CDP      = 140,
+            BEIDOU_B1I      = 160,
+            BEIDOU_B1Q      = 161,
+            BEIDOU_B1IQ     = 162,
+            BEIDOU_B3I      = 163,
+            BEIDOU_B3Q      = 164,
+            BEIDOU_B3IQ     = 165,
+            BEIDOU_B2I      = 166,
+            BEIDOU_B2Q      = 167,
+            BEIDOU_B2IQ     = 168,
+        };
+
+#ifndef SWIG
+        // Linux environments fail to automatically hash Type
+        struct TypeHash
+        {
+            size_t operator()(const MipChannelIdentifier::Type& type) const;
+        };
+
+        //Typedef: TypeId
+        //    A typedef for a <MipChannelIdentifier::Type>, uint32 pair.
+        typedef std::pair<Type, uint32> TypeId;
+        struct TypeIdHash
+        {
+            size_t operator()(const MipChannelIdentifier::TypeId& id) const;
+        };
+
+        typedef std::tuple<Type, uint32, uint32> SpecifierId;
+        struct SpecifierIdHash
+        {
+            size_t operator()(const MipChannelIdentifier::SpecifierId& id) const;
+        };
+#endif
+
+    public:
+        //API Constructor: MipChannelIdentifier
+        //  Default constructor
+        MipChannelIdentifier() {}
+
+        //API Constructor: MipChannelIdentifier
+        //  Construct MipChannelIdentifier object with specified <MipChannelIdentifier::Type> and ID values.
+        //
+        //Parameters:
+        //  identifierType - <MipChannelIdentifer::Type> specifies the type of identifier this represents
+        //  id - the identifier value
+        MipChannelIdentifier(Type identiferType, uint32 id) :
+            m_type(identiferType),
+            m_id(id) {}
+
+        //API Constructor: MipChannelIdentifier
+        //  Construct MipChannelIdentifier object with specified <MipChannelIdentifier::Type> and ID values.
+        //
+        //Parameters:
+        //  identifierType - <MipChannelIdentifer::Type> specifies the type of identifier this represents
+        //  id - the identifier value
+        //  specifier - the optional additional specifier
+        MipChannelIdentifier(Type identiferType, uint32 id, uint32 specifier) :
+            m_type(identiferType),
+            m_id(id),
+            m_specifier(specifier) {}
+
+        ~MipChannelIdentifier() {}
+
+    public:
+        //API Function: identifierType
+        //  Returns the <MipChannelIdentifier::Type> specifier of this identifier.
+        Type identifierType() const { return m_type; }
+
+        //API Function: id
+        //  Returns the identifier value.
+        uint32 id() const { return m_id; }
+
+        //API Function: hasSpecifier
+        //  Indicates whether this identifier has an optional additional specifier.
+        bool hasSpecifier() const;
+
+        //API Function: specifier
+        //  Returns the optional additional specifier value.
+        //  Note: this is only valid and applicable if hasSpecifier returns true - value may be non-zero regardless.
+        uint32 specifier() const { return m_specifier; }
+
+        //API Function: name
+        //  Returns the string representation of this identifier based on type and value.
+        //
+        //Parameters:
+        //  standardizedFormat - specify whether the format should be left consistent for all identifier types or consolidated where relevant
+        //      Ex: <GNSS_CONSTELLATION, 2> - if true: "gnssConstellation_2", if false: "glonass"
+        std::string name(bool standardizedFormat = true) const;
+
+    private:
+        //Variable: m_type
+        //  The <MipChannelIdentifier::Type> indicator of this identifier.
+        Type m_type;
+
+        //Variable: m_id
+        //  The value of this identifier.
+        uint32 m_id;
+
+        //Variable: m_specifier
+        //  An option additional specifier for this identifier.
+        uint32 m_specifier;
+
+        //API Function: hasSpecifier
+        //  Indicates whether this identifier has an optional additional specifier.
+        //Parameters:
+        //  specifierName - string reference that is set to the specifier name if found
+        bool hasSpecifier(std::string& specifierName) const;
+
+        //Const: TYPE_NAMES
+        //  A map of <MipChannelIdentifier::Type> values and their string labels.
+        static const std::unordered_map<Type, std::string, TypeHash> TYPE_NAMES;
+
+        //Const: TRANSLATED_TYPE_NAMES
+        //  A map of <MipChannelIdentifier::TypeId> values and their string labels.
+        static const std::unordered_map<TypeId, std::string, TypeIdHash> TRANSLATED_TYPE_NAMES;
+
+        //Const: SPECIFIER_NAMES
+        //  A map of <MipChannelIdentifier::SpecifierId> values and their string labels.
+        static const std::unordered_map<SpecifierId, std::string, SpecifierIdHash> SPECIFIER_NAMES;
+    };
+
+    //API Typedef: MipChannelIdentifiers
+    //  A vector of <MipChannelIdentifier> values, used to assign additional identifiers to a <MipDataPoint>
+    typedef std::vector<MipChannelIdentifier> MipChannelIdentifiers;
 
     //API Struct: MipCommandBytes
     //    Contains an <Command> id and a <BytesCollection> vector to store the actual bytes to send to the device for that command.

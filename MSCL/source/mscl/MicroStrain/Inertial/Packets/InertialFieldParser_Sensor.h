@@ -363,4 +363,20 @@ namespace mscl
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
+
+    //Class: FieldParser_OdometerData
+    //    The field parser for the Odometer Data field.
+    class FieldParser_OdometerData : public MipFieldParser
+    {
+    private:
+        FieldParser_OdometerData() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const MipTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
 }

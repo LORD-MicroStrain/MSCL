@@ -5,12 +5,12 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
 #include "stdafx.h"
 
-#include "RTKModels.h"
+#include "MipModels.h"
 #include "mscl/Utils.h"
 
 namespace mscl
 {
-    RTKModels::NodeModel RTKModels::nodeFromModelString(const std::string& modelNumberString)
+    MipModels::NodeModel MipModels::nodeFromModelString(const std::string& modelNumberString)
     {
         std::string trimmedString = modelNumberString;
 
@@ -19,7 +19,7 @@ namespace mscl
 
         //the length of an Inertial Model Number
         static const std::size_t MODEL_NUM_LEN = 4;
-
+        
         //trim off everything except for the first part of the model number
         trimmedString = trimmedString.substr(0, MODEL_NUM_LEN);
 
@@ -35,6 +35,6 @@ namespace mscl
         }
 
         //cast to a NodeModel and return
-        return static_cast<RTKModels::NodeModel>(modelNum);
+        return static_cast<MipModels::NodeModel>(modelNum);
     }
 }

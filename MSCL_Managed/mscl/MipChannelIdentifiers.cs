@@ -10,21 +10,21 @@
 
 namespace mscl {
 
-public class PpsInputOutputOptions : global::System.IDisposable, global::System.Collections.IEnumerable, global::System.Collections.Generic.IEnumerable<InertialTypes.PpsInputOutput>
+public class MipChannelIdentifiers : global::System.IDisposable, global::System.Collections.IEnumerable, global::System.Collections.Generic.IEnumerable<MipChannelIdentifier>
  {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
 
-  internal PpsInputOutputOptions(global::System.IntPtr cPtr, bool cMemoryOwn) {
+  internal MipChannelIdentifiers(global::System.IntPtr cPtr, bool cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(PpsInputOutputOptions obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(MipChannelIdentifiers obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  ~PpsInputOutputOptions() {
+  ~MipChannelIdentifiers() {
     Dispose(false);
   }
 
@@ -38,25 +38,25 @@ public class PpsInputOutputOptions : global::System.IDisposable, global::System.
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_PpsInputOutputOptions(swigCPtr);
+          msclPINVOKE.delete_MipChannelIdentifiers(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
     }
   }
 
-  public PpsInputOutputOptions(global::System.Collections.IEnumerable c) : this() {
+  public MipChannelIdentifiers(global::System.Collections.IEnumerable c) : this() {
     if (c == null)
       throw new global::System.ArgumentNullException("c");
-    foreach (InertialTypes.PpsInputOutput element in c) {
+    foreach (MipChannelIdentifier element in c) {
       this.Add(element);
     }
   }
 
-  public PpsInputOutputOptions(global::System.Collections.Generic.IEnumerable<InertialTypes.PpsInputOutput> c) : this() {
+  public MipChannelIdentifiers(global::System.Collections.Generic.IEnumerable<MipChannelIdentifier> c) : this() {
     if (c == null)
       throw new global::System.ArgumentNullException("c");
-    foreach (InertialTypes.PpsInputOutput element in c) {
+    foreach (MipChannelIdentifier element in c) {
       this.Add(element);
     }
   }
@@ -73,7 +73,7 @@ public class PpsInputOutputOptions : global::System.IDisposable, global::System.
     }
   }
 
-  public InertialTypes.PpsInputOutput this[int index]  {
+  public MipChannelIdentifier this[int index]  {
     get {
       return getitem(index);
     }
@@ -105,17 +105,17 @@ public class PpsInputOutputOptions : global::System.IDisposable, global::System.
     }
   }
 
-  public void CopyTo(InertialTypes.PpsInputOutput[] array)
+  public void CopyTo(MipChannelIdentifier[] array)
   {
     CopyTo(0, array, 0, this.Count);
   }
 
-  public void CopyTo(InertialTypes.PpsInputOutput[] array, int arrayIndex)
+  public void CopyTo(MipChannelIdentifier[] array, int arrayIndex)
   {
     CopyTo(0, array, arrayIndex, this.Count);
   }
 
-  public void CopyTo(int index, InertialTypes.PpsInputOutput[] array, int arrayIndex, int count)
+  public void CopyTo(int index, MipChannelIdentifier[] array, int arrayIndex, int count)
   {
     if (array == null)
       throw new global::System.ArgumentNullException("array");
@@ -133,22 +133,22 @@ public class PpsInputOutputOptions : global::System.IDisposable, global::System.
       array.SetValue(getitemcopy(index+i), arrayIndex+i);
   }
 
-  public InertialTypes.PpsInputOutput[] ToArray() {
-    InertialTypes.PpsInputOutput[] array = new InertialTypes.PpsInputOutput[this.Count];
+  public MipChannelIdentifier[] ToArray() {
+    MipChannelIdentifier[] array = new MipChannelIdentifier[this.Count];
     this.CopyTo(array);
     return array;
   }
 
-  global::System.Collections.Generic.IEnumerator<InertialTypes.PpsInputOutput> global::System.Collections.Generic.IEnumerable<InertialTypes.PpsInputOutput>.GetEnumerator() {
-    return new PpsInputOutputOptionsEnumerator(this);
+  global::System.Collections.Generic.IEnumerator<MipChannelIdentifier> global::System.Collections.Generic.IEnumerable<MipChannelIdentifier>.GetEnumerator() {
+    return new MipChannelIdentifiersEnumerator(this);
   }
 
   global::System.Collections.IEnumerator global::System.Collections.IEnumerable.GetEnumerator() {
-    return new PpsInputOutputOptionsEnumerator(this);
+    return new MipChannelIdentifiersEnumerator(this);
   }
 
-  public PpsInputOutputOptionsEnumerator GetEnumerator() {
-    return new PpsInputOutputOptionsEnumerator(this);
+  public MipChannelIdentifiersEnumerator GetEnumerator() {
+    return new MipChannelIdentifiersEnumerator(this);
   }
 
   // Type-safe enumerator
@@ -156,15 +156,15 @@ public class PpsInputOutputOptions : global::System.IDisposable, global::System.
   /// whenever the collection is modified. This has been done for changes in the size of the
   /// collection but not when one of the elements of the collection is modified as it is a bit
   /// tricky to detect unmanaged code that modifies the collection under our feet.
-  public sealed class PpsInputOutputOptionsEnumerator : global::System.Collections.IEnumerator
-    , global::System.Collections.Generic.IEnumerator<InertialTypes.PpsInputOutput>
+  public sealed class MipChannelIdentifiersEnumerator : global::System.Collections.IEnumerator
+    , global::System.Collections.Generic.IEnumerator<MipChannelIdentifier>
   {
-    private PpsInputOutputOptions collectionRef;
+    private MipChannelIdentifiers collectionRef;
     private int currentIndex;
     private object currentObject;
     private int currentSize;
 
-    public PpsInputOutputOptionsEnumerator(PpsInputOutputOptions collection) {
+    public MipChannelIdentifiersEnumerator(MipChannelIdentifiers collection) {
       collectionRef = collection;
       currentIndex = -1;
       currentObject = null;
@@ -172,7 +172,7 @@ public class PpsInputOutputOptions : global::System.IDisposable, global::System.
     }
 
     // Type-safe iterator Current
-    public InertialTypes.PpsInputOutput Current {
+    public MipChannelIdentifier Current {
       get {
         if (currentIndex == -1)
           throw new global::System.InvalidOperationException("Enumeration not started.");
@@ -180,7 +180,7 @@ public class PpsInputOutputOptions : global::System.IDisposable, global::System.
           throw new global::System.InvalidOperationException("Enumeration finished.");
         if (currentObject == null)
           throw new global::System.InvalidOperationException("Collection modified.");
-        return (InertialTypes.PpsInputOutput)currentObject;
+        return (MipChannelIdentifier)currentObject;
       }
     }
 
@@ -218,112 +218,112 @@ public class PpsInputOutputOptions : global::System.IDisposable, global::System.
   }
 
   public void Clear() {
-    msclPINVOKE.PpsInputOutputOptions_Clear(swigCPtr);
+    msclPINVOKE.MipChannelIdentifiers_Clear(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void Add(InertialTypes.PpsInputOutput x) {
-    msclPINVOKE.PpsInputOutputOptions_Add(swigCPtr, (int)x);
+  public void Add(MipChannelIdentifier x) {
+    msclPINVOKE.MipChannelIdentifiers_Add(swigCPtr, MipChannelIdentifier.getCPtr(x));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   private uint size() {
-    uint ret = msclPINVOKE.PpsInputOutputOptions_size(swigCPtr);
+    uint ret = msclPINVOKE.MipChannelIdentifiers_size(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private uint capacity() {
-    uint ret = msclPINVOKE.PpsInputOutputOptions_capacity(swigCPtr);
+    uint ret = msclPINVOKE.MipChannelIdentifiers_capacity(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private void reserve(uint n) {
-    msclPINVOKE.PpsInputOutputOptions_reserve(swigCPtr, n);
+    msclPINVOKE.MipChannelIdentifiers_reserve(swigCPtr, n);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public PpsInputOutputOptions() : this(msclPINVOKE.new_PpsInputOutputOptions__SWIG_0(), true) {
+  public MipChannelIdentifiers() : this(msclPINVOKE.new_MipChannelIdentifiers__SWIG_0(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public PpsInputOutputOptions(PpsInputOutputOptions other) : this(msclPINVOKE.new_PpsInputOutputOptions__SWIG_1(PpsInputOutputOptions.getCPtr(other)), true) {
+  public MipChannelIdentifiers(MipChannelIdentifiers other) : this(msclPINVOKE.new_MipChannelIdentifiers__SWIG_1(MipChannelIdentifiers.getCPtr(other)), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public PpsInputOutputOptions(int capacity) : this(msclPINVOKE.new_PpsInputOutputOptions__SWIG_2(capacity), true) {
+  public MipChannelIdentifiers(int capacity) : this(msclPINVOKE.new_MipChannelIdentifiers__SWIG_2(capacity), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  private InertialTypes.PpsInputOutput getitemcopy(int index) {
-    InertialTypes.PpsInputOutput ret = (InertialTypes.PpsInputOutput)msclPINVOKE.PpsInputOutputOptions_getitemcopy(swigCPtr, index);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  private InertialTypes.PpsInputOutput getitem(int index) {
-    InertialTypes.PpsInputOutput ret = (InertialTypes.PpsInputOutput)msclPINVOKE.PpsInputOutputOptions_getitem(swigCPtr, index);
+  private MipChannelIdentifier getitemcopy(int index) {
+    MipChannelIdentifier ret = new MipChannelIdentifier(msclPINVOKE.MipChannelIdentifiers_getitemcopy(swigCPtr, index), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  private void setitem(int index, InertialTypes.PpsInputOutput val) {
-    msclPINVOKE.PpsInputOutputOptions_setitem(swigCPtr, index, (int)val);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void AddRange(PpsInputOutputOptions values) {
-    msclPINVOKE.PpsInputOutputOptions_AddRange(swigCPtr, PpsInputOutputOptions.getCPtr(values));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public PpsInputOutputOptions GetRange(int index, int count) {
-    global::System.IntPtr cPtr = msclPINVOKE.PpsInputOutputOptions_GetRange(swigCPtr, index, count);
-    PpsInputOutputOptions ret = (cPtr == global::System.IntPtr.Zero) ? null : new PpsInputOutputOptions(cPtr, true);
+  private MipChannelIdentifier getitem(int index) {
+    MipChannelIdentifier ret = new MipChannelIdentifier(msclPINVOKE.MipChannelIdentifiers_getitem(swigCPtr, index), false);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void Insert(int index, InertialTypes.PpsInputOutput x) {
-    msclPINVOKE.PpsInputOutputOptions_Insert(swigCPtr, index, (int)x);
+  private void setitem(int index, MipChannelIdentifier val) {
+    msclPINVOKE.MipChannelIdentifiers_setitem(swigCPtr, index, MipChannelIdentifier.getCPtr(val));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void InsertRange(int index, PpsInputOutputOptions values) {
-    msclPINVOKE.PpsInputOutputOptions_InsertRange(swigCPtr, index, PpsInputOutputOptions.getCPtr(values));
+  public void AddRange(MipChannelIdentifiers values) {
+    msclPINVOKE.MipChannelIdentifiers_AddRange(swigCPtr, MipChannelIdentifiers.getCPtr(values));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public MipChannelIdentifiers GetRange(int index, int count) {
+    global::System.IntPtr cPtr = msclPINVOKE.MipChannelIdentifiers_GetRange(swigCPtr, index, count);
+    MipChannelIdentifiers ret = (cPtr == global::System.IntPtr.Zero) ? null : new MipChannelIdentifiers(cPtr, true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void Insert(int index, MipChannelIdentifier x) {
+    msclPINVOKE.MipChannelIdentifiers_Insert(swigCPtr, index, MipChannelIdentifier.getCPtr(x));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void InsertRange(int index, MipChannelIdentifiers values) {
+    msclPINVOKE.MipChannelIdentifiers_InsertRange(swigCPtr, index, MipChannelIdentifiers.getCPtr(values));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void RemoveAt(int index) {
-    msclPINVOKE.PpsInputOutputOptions_RemoveAt(swigCPtr, index);
+    msclPINVOKE.MipChannelIdentifiers_RemoveAt(swigCPtr, index);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void RemoveRange(int index, int count) {
-    msclPINVOKE.PpsInputOutputOptions_RemoveRange(swigCPtr, index, count);
+    msclPINVOKE.MipChannelIdentifiers_RemoveRange(swigCPtr, index, count);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public static PpsInputOutputOptions Repeat(InertialTypes.PpsInputOutput value, int count) {
-    global::System.IntPtr cPtr = msclPINVOKE.PpsInputOutputOptions_Repeat((int)value, count);
-    PpsInputOutputOptions ret = (cPtr == global::System.IntPtr.Zero) ? null : new PpsInputOutputOptions(cPtr, true);
+  public static MipChannelIdentifiers Repeat(MipChannelIdentifier value, int count) {
+    global::System.IntPtr cPtr = msclPINVOKE.MipChannelIdentifiers_Repeat(MipChannelIdentifier.getCPtr(value), count);
+    MipChannelIdentifiers ret = (cPtr == global::System.IntPtr.Zero) ? null : new MipChannelIdentifiers(cPtr, true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public void Reverse() {
-    msclPINVOKE.PpsInputOutputOptions_Reverse__SWIG_0(swigCPtr);
+    msclPINVOKE.MipChannelIdentifiers_Reverse__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void Reverse(int index, int count) {
-    msclPINVOKE.PpsInputOutputOptions_Reverse__SWIG_1(swigCPtr, index, count);
+    msclPINVOKE.MipChannelIdentifiers_Reverse__SWIG_1(swigCPtr, index, count);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void SetRange(int index, PpsInputOutputOptions values) {
-    msclPINVOKE.PpsInputOutputOptions_SetRange(swigCPtr, index, PpsInputOutputOptions.getCPtr(values));
+  public void SetRange(int index, MipChannelIdentifiers values) {
+    msclPINVOKE.MipChannelIdentifiers_SetRange(swigCPtr, index, MipChannelIdentifiers.getCPtr(values));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

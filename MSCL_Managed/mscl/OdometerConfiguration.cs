@@ -44,26 +44,52 @@ public class OdometerConfiguration : global::System.IDisposable {
     }
   }
 
-  public OdometerConfiguration.Mode mode {
-    set {
-      msclPINVOKE.OdometerConfiguration_mode_set(swigCPtr, (int)value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      OdometerConfiguration.Mode ret = (OdometerConfiguration.Mode)msclPINVOKE.OdometerConfiguration_mode_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
-  }
-
   public OdometerConfiguration() : this(msclPINVOKE.new_OdometerConfiguration(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public OdometerConfiguration.Mode mode() {
+    OdometerConfiguration.Mode ret = (OdometerConfiguration.Mode)msclPINVOKE.OdometerConfiguration_mode__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void mode(OdometerConfiguration.Mode m) {
+    msclPINVOKE.OdometerConfiguration_mode__SWIG_1(swigCPtr, (int)m);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public float uncertainty() {
+    float ret = msclPINVOKE.OdometerConfiguration_uncertainty__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void uncertainty(float unc) {
+    msclPINVOKE.OdometerConfiguration_uncertainty__SWIG_1(swigCPtr, unc);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public float scaling() {
+    float ret = msclPINVOKE.OdometerConfiguration_scaling__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void scaling(float scale) {
+    msclPINVOKE.OdometerConfiguration_scaling__SWIG_1(swigCPtr, scale);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void scaling(float resolution, float radius) {
+    msclPINVOKE.OdometerConfiguration_scaling__SWIG_2(swigCPtr, resolution, radius);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public enum Mode {
-    DISABLED = 0x01,
-    SINGLE = 0x02,
-    QUADRATURE = 0x03
+    DISABLED = 0x00,
+    SINGLE = 0x01,
+    QUADRATURE = 0x02
   }
 
 }

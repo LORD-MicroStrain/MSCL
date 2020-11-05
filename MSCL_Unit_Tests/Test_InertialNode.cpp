@@ -164,7 +164,7 @@ BOOST_AUTO_TEST_CASE(InertialNode_info)
     BOOST_CHECK_EQUAL(node.firmwareVersion().str(), "1.1.17");
     BOOST_CHECK_EQUAL(node.modelName(), "ABCDABCDABCDABCD");
     BOOST_CHECK_EQUAL(node.modelNumber(), "6251-12345");
-    BOOST_CHECK_EQUAL(node.model(), InertialModels::node_3dm_gx5_45);
+    BOOST_CHECK_EQUAL(node.model(), MipModels::node_3dm_gx5_45);
     BOOST_CHECK_EQUAL(node.serialNumber(), "ABCDABCDABCDABCD");
     BOOST_CHECK_EQUAL(node.lotNumber(), "ABCDABCDABCDABCD");
     BOOST_CHECK_EQUAL(node.deviceOptions(), "ABCDABCDABCDABCD");

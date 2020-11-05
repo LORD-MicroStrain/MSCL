@@ -54,12 +54,21 @@ namespace mscl
         // shift until all zeros removed from right-hand side of map (least significant bit is 1)
         uint64 shiftMap = mask;
         uint8 count = 0;
-        while (shiftMap % 2 != 1)
+
+        if (shiftMap == 0) 
         {
-            shiftMap = shiftMap >> 1;
-            count++;
+            throw Error_NoData("The bitfield mask is unset");
         }
 
+        else
+        {
+            while (shiftMap % 2 != 1)
+            {
+                shiftMap = shiftMap >> 1;
+                count++;
+            }
+        }
+    
         return count;
     }
 }

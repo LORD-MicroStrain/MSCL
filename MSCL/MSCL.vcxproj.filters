@@ -323,9 +323,6 @@
     <ClInclude Include="source\mscl\MicroStrain\Wireless\LoggedDataSweep.h">
       <Filter>MicroStrain\Wireless</Filter>
     </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\InertialModels.h">
-      <Filter>MicroStrain\Inertial</Filter>
-    </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\BaseStationEeprom.h">
       <Filter>MicroStrain\Wireless\Configuration</Filter>
     </ClInclude>
@@ -989,14 +986,20 @@
     <ClInclude Include="source\mscl\MicroStrain\RTK\RTKNode.h">
       <Filter>MicroStrain\RTK</Filter>
     </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\RTK\RTKModels.h">
-      <Filter>MicroStrain\RTK</Filter>
-    </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\RTK\Commands\DeviceStatusFlags.h">
       <Filter>MicroStrain\RTK\Commands</Filter>
     </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Bitfield.h">
       <Filter>MicroStrain</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\MIP\MipNode.h">
+      <Filter>MicroStrain\MIP</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\MIP\MipModels.h">
+      <Filter>MicroStrain\MIP</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Shared.h">
+      <Filter>MicroStrain\Inertial\Packets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1221,9 +1224,6 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\LoggedDataSweep.cpp">
       <Filter>MicroStrain\Wireless</Filter>
-    </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\InertialModels.cpp">
-      <Filter>MicroStrain\Inertial</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\BaseStationEeprom.cpp">
       <Filter>MicroStrain\Wireless\Configuration</Filter>
@@ -1878,14 +1878,20 @@
     <ClCompile Include="source\mscl\MicroStrain\RTK\RTKNode.cpp">
       <Filter>MicroStrain\RTK</Filter>
     </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\RTK\RTKModels.cpp">
-      <Filter>MicroStrain\RTK</Filter>
-    </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\RTK\Commands\DeviceStatusFlags.cpp">
       <Filter>MicroStrain\RTK\Commands</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Bitfield.cpp">
       <Filter>MicroStrain</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\MIP\MipNode.cpp">
+      <Filter>MicroStrain\MIP</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\MIP\MipModels.cpp">
+      <Filter>MicroStrain\MIP</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Shared.cpp">
+      <Filter>MicroStrain\Inertial\Packets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

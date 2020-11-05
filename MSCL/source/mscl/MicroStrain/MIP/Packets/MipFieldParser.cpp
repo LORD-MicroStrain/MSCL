@@ -26,6 +26,9 @@ namespace mscl
         extern bool _forceLibraryToIncludeCompilationUnit_NAV;
         _forceLibraryToIncludeCompilationUnit_NAV = true;
 
+        extern bool _forceLibraryToIncludeCompilationUnit_Shared;
+        _forceLibraryToIncludeCompilationUnit_Shared = true;
+
         extern bool _forceLibraryToIncludeCompilationUnit_Displacement;
         _forceLibraryToIncludeCompilationUnit_Displacement = true;
     

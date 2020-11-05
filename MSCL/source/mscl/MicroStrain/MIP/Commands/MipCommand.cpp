@@ -87,6 +87,8 @@ namespace mscl
         case MipTypes::CMD_POLL:
         case MipTypes::CMD_GET_BASE_RATE:
         case MipTypes::CMD_FACTORY_STREAMING:
+        // 0x0D
+        case MipTypes::CMD_EF_RUN_FILTER:
         // Ox0E
         case MipTypes::CMD_GNSS_RECEIVER_INFO:
             return {};
@@ -95,11 +97,11 @@ namespace mscl
         case MipTypes::CMD_MESSAGE_FORMAT:
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
         case MipTypes::CMD_PPS_SOURCE:
-        case MipTypes::CMD_PPS_OUTPUT:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM:
-        //case MipTypes::CMD_ODOMETER_SETTINGS:
+        case MipTypes::CMD_GPIO_CONFIGURATION:
+        case MipTypes::CMD_ODOMETER_SETTINGS:
         // 0x0D
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
@@ -107,6 +109,7 @@ namespace mscl
         case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS:
         case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
         case MipTypes::CMD_EF_RELATIVE_POSITION_REF:
+        case MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET:
         case MipTypes::CMD_EF_VERTICAL_GYRO_CONSTRAINT:
         case MipTypes::CMD_EF_WHEELED_VEHICLE_CONSTRAINT:
         case MipTypes::CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL:
@@ -190,11 +193,15 @@ namespace mscl
             return "SensorToVehicleFrameTransformationDCM";
         case MipTypes::CMD_PPS_SOURCE:
             return "PpsSource";
-        case MipTypes::CMD_PPS_OUTPUT:
-            return "PpsOutput";
-        //case MipTypes::CMD_ODOMETER_SETTINGS:
-        //    return "OdometerSettings";
+        //case MipTypes::CMD_PPS_OUTPUT:
+        //    return "PpsOutput";
+        case MipTypes::CMD_GPIO_CONFIGURATION:
+            return "GpioConfiguration";
+        case MipTypes::CMD_ODOMETER_SETTINGS:
+            return "OdometerSettings";
         // 0x0D
+        case MipTypes::CMD_EF_RUN_FILTER:
+            return "RunEstimationFilter";
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
             return "SensorToVehicleFrameRotationDCM";
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
@@ -207,6 +214,8 @@ namespace mscl
             return "MultiAntennaOffset";
         case MipTypes::CMD_EF_RELATIVE_POSITION_REF:
             return "RelativePositionReference";
+        case MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET:
+            return "SpeedMeasurementLeverArmOffset";
         case MipTypes::CMD_EF_VERTICAL_GYRO_CONSTRAINT:
             return "VerticalGyroConstraint";
         case MipTypes::CMD_EF_WHEELED_VEHICLE_CONSTRAINT:
@@ -243,16 +252,17 @@ namespace mscl
         case MipTypes::CMD_GET_BASE_RATE: //0x8E
         case MipTypes::CMD_MESSAGE_FORMAT: //0x8F
         case MipTypes::CMD_PPS_SOURCE: //0xA8
-        case MipTypes::CMD_PPS_OUTPUT: //0xA9
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER: //0xB1
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT: //0xB2
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM: //0xB3
-        //case MipTypes::CMD_ODOMETER_SETTINGS: //0xC3
+        case MipTypes::CMD_GPIO_CONFIGURATION: //0xC1
+        case MipTypes::CMD_ODOMETER_SETTINGS: //0xC3
         case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE: //0xD0
         // 0x0D
         case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS: //0xD3
         case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET: //0xD4
         case MipTypes::CMD_EF_RELATIVE_POSITION_REF: //0xD5
+        case MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET: //0xE1
         case MipTypes::CMD_EF_VERTICAL_GYRO_CONSTRAINT: //0xE2
         case MipTypes::CMD_EF_WHEELED_VEHICLE_CONSTRAINT: //0xE3
         case MipTypes::CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL: //0xE4
@@ -302,19 +312,22 @@ namespace mscl
             };
 
         case MipTypes::CMD_PPS_SOURCE:
-        case MipTypes::CMD_PPS_OUTPUT:
             return{ ValueType::valueType_uint8 };
 
-        //case MipTypes::CMD_ODOMETER_SETTINGS:
-        //    return{
-        //        ValueType::valueType_uint8,
-        //        ValueType::valueType_int8,
-        //        ValueType::valueType_int8,
-        //        ValueType::valueType_int8,
-        //        ValueType::valueType_float,
-        //        ValueType::valueType_float,
-        //        ValueType::valueType_float
-        //    };
+        case MipTypes::CMD_ODOMETER_SETTINGS:
+            return{
+                ValueType::valueType_uint8, // mode
+                ValueType::valueType_float, // scaling
+                ValueType::valueType_float  // uncertainty
+            };
+
+        case MipTypes::CMD_GPIO_CONFIGURATION:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_int8,
+                ValueType::valueType_int8,
+                ValueType::valueType_int8
+            };
 
 
         // 0x0D
@@ -341,9 +354,18 @@ namespace mscl
         case MipTypes::CMD_EF_RELATIVE_POSITION_REF:
             return{
                 ValueType::valueType_uint8,
+                ValueType::valueType_uint8,
                 ValueType::valueType_double,
                 ValueType::valueType_double,
                 ValueType::valueType_double
+            };
+
+        case MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+                ValueType::valueType_float,
             };
 
         case MipTypes::CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL:

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "ExposedInertialTypes.h"
+#include <boost/math/constants/constants.hpp>
 
 namespace mscl
 {
@@ -582,167 +583,220 @@ namespace mscl
     mscl::DeviceStatusMap DeviceStatusData::asMap() const
     {
         mscl::DeviceStatusMap statusMap;
-        statusMap[ModelNumber] = std::to_string(modelNumber);
-        statusMap[StatusStructure_Value] = std::to_string(statusStructure);
+        mscl::DeviceStatusValueMap m = asValueMap();
 
+        for (auto kv : m)
+        {
+            statusMap[kv.first] = kv.second.as_string();
+        }
+
+        return statusMap;
+    }
+
+    mscl::DeviceStatusValueMap DeviceStatusData::asValueMap() const
+    {
+        mscl::DeviceStatusValueMap statusMap;
+        statusMap[ModelNumber] = mscl::Value::UINT16(modelNumber);
+        statusMap[StatusStructure_Value] = mscl::Value::UINT8(static_cast<uint8>(statusStructure));
 
         if (isSet(m_systemState)) 
         {
-            statusMap[SystemState_Value] = std::to_string(m_systemState.get());
+            statusMap[SystemState_Value] = mscl::Value::UINT16(static_cast<uint16>(m_systemState.get()));
         }
 
         if (isSet(m_gnss1PpsPulseInfo))
         {
-            statusMap[gnss1PpsPulseInfo_Count] = std::to_string(m_gnss1PpsPulseInfo.get().count);
-            statusMap[gnss1PpsPulseInfo_LastTimeinMS] = std::to_string(m_gnss1PpsPulseInfo.get().lastTimeinMS);
+            statusMap[gnss1PpsPulseInfo_Count] = mscl::Value::UINT32(m_gnss1PpsPulseInfo.get().count);
+            statusMap[gnss1PpsPulseInfo_LastTimeinMS] = mscl::Value::UINT32(m_gnss1PpsPulseInfo.get().lastTimeinMS);
         }
 
         if (isSet(m_gnssPowerStateOn)) {
-            statusMap[GnssPowerStateOn] = std::to_string(m_gnssPowerStateOn.get());
+            statusMap[GnssPowerStateOn] = mscl::Value::BOOL(m_gnssPowerStateOn.get());
         }
 
         if (isSet(m_imuStreamInfo))
         {
-            statusMap[ImuStreamInfo_Enabled] = std::to_string(m_imuStreamInfo.get().enabled);
-            statusMap[ImuStreamInfo_PacketsDropped] = std::to_string(m_imuStreamInfo.get().outgoingPacketsDropped);
+            statusMap[ImuStreamInfo_Enabled] = mscl::Value::BOOL(m_imuStreamInfo.get().enabled);
+            statusMap[ImuStreamInfo_PacketsDropped] = mscl::Value::UINT32(m_imuStreamInfo.get().outgoingPacketsDropped);
         }
 
         if (isSet(m_gnssStreamInfo))
         {
-            statusMap[GnssStreamInfo_Enabled] = std::to_string(m_gnssStreamInfo.get().enabled);
-            statusMap[GnssStreamInfo_PacketsDropped] = std::to_string(m_gnssStreamInfo.get().outgoingPacketsDropped);
+            statusMap[GnssStreamInfo_Enabled] = mscl::Value::BOOL(m_gnssStreamInfo.get().enabled);
+            statusMap[GnssStreamInfo_PacketsDropped] = mscl::Value::UINT32(m_gnssStreamInfo.get().outgoingPacketsDropped);
         }
 
         if (isSet(m_estimationFilterStreamInfo))
         {
-            statusMap[EstimationFilterStreamInfo_Enabled] = std::to_string(m_estimationFilterStreamInfo.get().enabled);
-            statusMap[EstimationFilterStreamInfo_PacketsDropped] = std::to_string(m_estimationFilterStreamInfo.get().outgoingPacketsDropped);
+            statusMap[EstimationFilterStreamInfo_Enabled] = mscl::Value::BOOL(m_estimationFilterStreamInfo.get().enabled);
+            statusMap[EstimationFilterStreamInfo_PacketsDropped] = mscl::Value::UINT32(m_estimationFilterStreamInfo.get().outgoingPacketsDropped);
         }
 
         if (isSet(m_comPortInfo))
         {
-            statusMap[ComPortInfo_BytesRead] = std::to_string(m_comPortInfo.get().bytesRead);
-            statusMap[ComPortInfo_BytesWritten] = std::to_string(m_comPortInfo.get().bytesWritten);
-            statusMap[ComPortInfo_OverrunsOnRead] = std::to_string(m_comPortInfo.get().overrunsOnRead);
-            statusMap[ComPortInfo_OverrunsOnWrite] = std::to_string(m_comPortInfo.get().overrunsOnWrite); // supported to features
+            statusMap[ComPortInfo_BytesRead] = mscl::Value::UINT32(m_comPortInfo.get().bytesRead);
+            statusMap[ComPortInfo_BytesWritten] = mscl::Value::UINT32(m_comPortInfo.get().bytesWritten);
+            statusMap[ComPortInfo_OverrunsOnRead] = mscl::Value::UINT32(m_comPortInfo.get().overrunsOnRead);
+            statusMap[ComPortInfo_OverrunsOnWrite] = mscl::Value::UINT32(m_comPortInfo.get().overrunsOnWrite); // supported to features
         }
 
         if (isSet(m_imuMessageInfo))
         {
-            statusMap[ImuMessageInfo_LastMessageReadinMS] = std::to_string(m_imuMessageInfo.get().lastMessageReadinMS);
-            statusMap[ImuMessageInfo_MessageParsingErrors] = std::to_string(m_imuMessageInfo.get().messageParsingErrors);
-            statusMap[ImuMessageInfo_MessagesRead] = std::to_string(m_imuMessageInfo.get().messagesRead);
+            statusMap[ImuMessageInfo_LastMessageReadinMS] = mscl::Value::UINT32(m_imuMessageInfo.get().lastMessageReadinMS);
+            statusMap[ImuMessageInfo_MessageParsingErrors] = mscl::Value::UINT32(m_imuMessageInfo.get().messageParsingErrors);
+            statusMap[ImuMessageInfo_MessagesRead] = mscl::Value::UINT32(m_imuMessageInfo.get().messagesRead);
         }
 
         if (isSet(m_gnssMessageInfo))
         {
-            statusMap[GnssMessageInfo_LastMessageReadinMS] = std::to_string(m_gnssMessageInfo.get().lastMessageReadinMS);
-            statusMap[GnssMessageInfo_MessageParsingErrors] = std::to_string(m_gnssMessageInfo.get().messageParsingErrors);
-            statusMap[GnssMessageInfo_MessagesRead] = std::to_string(m_gnssMessageInfo.get().messagesRead);
+            statusMap[GnssMessageInfo_LastMessageReadinMS] = mscl::Value::UINT32(m_gnssMessageInfo.get().lastMessageReadinMS);
+            statusMap[GnssMessageInfo_MessageParsingErrors] = mscl::Value::UINT32(m_gnssMessageInfo.get().messageParsingErrors);
+            statusMap[GnssMessageInfo_MessagesRead] = mscl::Value::UINT32(m_gnssMessageInfo.get().messagesRead);
         }
 
         if (isSet(m_temperatureInfo))
         {
-            statusMap[TemperatureInfo_Error] = std::to_string(m_temperatureInfo.get().error);
-            statusMap[TemperatureInfo_LastReadInMS] = std::to_string(m_temperatureInfo.get().lastReadInMS);
-            statusMap[TemperatureInfo_OnBoardTemp] = std::to_string(m_temperatureInfo.get().onBoardTemp);
+            statusMap[TemperatureInfo_Error] = mscl::Value::UINT8(m_temperatureInfo.get().error);
+            statusMap[TemperatureInfo_LastReadInMS] = mscl::Value::UINT32(m_temperatureInfo.get().lastReadInMS);
+            statusMap[TemperatureInfo_OnBoardTemp] = mscl::Value::FLOAT(m_temperatureInfo.get().onBoardTemp);
         }
 
         if (isSet(m_powerState))
         {
-            statusMap[PowerState] = std::to_string(m_powerState.get());
+            statusMap[PowerState] = mscl::Value::UINT8(static_cast<uint8>(m_powerState.get()));
         }
 
         if (isSet(m_gyroRange))
         {
-            statusMap[GyroRange] = std::to_string(m_gyroRange.get());
+            statusMap[GyroRange] = mscl::Value::UINT16(m_gyroRange.get());
         }
 
         if (isSet(m_accelRange))
         {
-            statusMap[AccelRange] = std::to_string(m_accelRange.get());
+            statusMap[AccelRange] = mscl::Value::UINT16(m_accelRange.get());
         }
 
         if (isSet(m_hasMagnetometer))
         {
-            statusMap[HasMagnetometer] = std::to_string(m_hasMagnetometer.get());
+            statusMap[HasMagnetometer] = mscl::Value::BOOL(m_hasMagnetometer.get());
         }
 
         if (isSet(m_hasPressure))
         {
-            statusMap[HasPressure] = std::to_string(m_hasPressure.get());
+            statusMap[HasPressure] = mscl::Value::BOOL(m_hasPressure.get());
         }
+
         return statusMap;
     }
 
     uint8 RTKDeviceStatusFlags::state() const
     {
-        return static_cast<uint8>(get(ValueMap::STATE));
+        return static_cast<uint8>(get(STATE));
     }
     
-    void RTKDeviceStatusFlags::state(uint8 state)
+    void RTKDeviceStatusFlags::state(uint8 rtkState)
     {
-        set(ValueMap::STATE, state);
+        set(STATE, rtkState);
     }
 
     uint8 RTKDeviceStatusFlags::statusCode() const
     {
-        return static_cast<uint8>(get(ValueMap::STATUS_CODE));
+        return static_cast<uint8>(get(STATUS_CODE));
     }
 
     void RTKDeviceStatusFlags::statusCode(uint8 code)
     {
-        set(ValueMap::STATUS_CODE, code);
+        set(STATUS_CODE, code);
+    }
+
+    bool RTKDeviceStatusFlags::correctionsTimedOut() const
+    {
+        return get(CORRECTIONS_TIMED_OUT) > 0;
+    }
+
+    void RTKDeviceStatusFlags::correctionsTimedOut(bool timedOut)
+    {
+        set(CORRECTIONS_TIMED_OUT, (timedOut ? 1 : 0));
+    }
+
+    bool RTKDeviceStatusFlags::serviceUnavailable() const
+    {
+        return get(SERVICE_UNAVAILABLE) > 0;
+    }
+
+    void RTKDeviceStatusFlags::serviceUnavailable(bool available)
+    {
+        set(SERVICE_UNAVAILABLE, (available ? 1 : 0));
     }
 
     RTKDeviceStatusFlags::ResetReason RTKDeviceStatusFlags::resetReason() const
     {
-        return static_cast<ResetReason>(get(ValueMap::RESET_REASON));
+        return static_cast<ResetReason>(get(RESET_REASON));
     }
 
     void RTKDeviceStatusFlags::resetReason(RTKDeviceStatusFlags::ResetReason reason)
     {
-        set(ValueMap::RESET_REASON, static_cast<uint32>(reason));
+        set(RESET_REASON, static_cast<uint32>(reason));
     }
 
     bool RTKDeviceStatusFlags::modemPowered() const
     {
-        return get(ValueMap::MODEM_POWERED) > 0;
+        return get(MODEM_POWERED) > 0;
     }
 
     void RTKDeviceStatusFlags::modemPowered(bool powered)
     {
-        set(ValueMap::MODEM_POWERED, (powered ? 1 : 0));
+        set(MODEM_POWERED, (powered ? 1 : 0));
     }
 
     bool RTKDeviceStatusFlags::cellConnected()
     {
-        return get(ValueMap::CELL_CONNECTED) > 0;
+        return get(CELL_CONNECTED) > 0;
     }
 
     void RTKDeviceStatusFlags::cellConnected(bool connected)
     {
-        set(ValueMap::CELL_CONNECTED, (connected ? 1 : 0));
+        set(CELL_CONNECTED, (connected ? 1 : 0));
     }
 
     bool RTKDeviceStatusFlags::serverConnected()
     {
-        return get(ValueMap::SERVER_CONNECTED) > 0;
+        return get(SERVER_CONNECTED) > 0;
     }
 
     void RTKDeviceStatusFlags::serverConnected(bool connected)
     {
-        set(ValueMap::SERVER_CONNECTED, (connected ? 1 : 0));
+        set(SERVER_CONNECTED, (connected ? 1 : 0));
     }
 
     bool RTKDeviceStatusFlags::dataEnabled()
     {
-        return get(ValueMap::DATA_ENABLED) > 0;
+        return get(DATA_ENABLED) > 0;
     }
 
     void RTKDeviceStatusFlags::dataEnabled(bool enabled)
     {
-        set(ValueMap::DATA_ENABLED, (enabled ? 1 : 0));
+        set(DATA_ENABLED, (enabled ? 1 : 0));
+    }
+
+    uint8 RTKDeviceStatusFlags::rssi() 
+    {
+        return static_cast<uint8>(get(RSSI));
+    }
+
+    void RTKDeviceStatusFlags::rssi(uint8 rtkRssi)
+    {
+        set(RSSI, rtkRssi);
+    }
+
+    uint8 RTKDeviceStatusFlags::signalQuality() 
+    {
+        return static_cast<uint8>(get(SIGNAL_QUALITY));
+    }
+
+    void RTKDeviceStatusFlags::signalQuality(uint8 quality)
+    {
+        set(SIGNAL_QUALITY, quality);
     }
 
     GnssSignalConfiguration::GnssSignalConfiguration()
@@ -793,41 +847,56 @@ namespace mscl
         return m_beidouSignals.get(signal) > 0;
     }
 
-    uint8 PositionReferenceConfiguration::source() const
+    OdometerConfiguration::Mode OdometerConfiguration::mode() const
     {
-        if (autoConfig)
-        {
-            return static_cast<uint8>(Source::AUTO);
-        }
-
-        return (position.referenceFrame == PositionVelocityReferenceFrame::ECEF
-            ? static_cast<uint8>(Source::MANUAL_ECEF)
-            : static_cast<uint8>(Source::MANUAL_LLH));
+        return m_mode;
     }
 
-    PositionReferenceConfiguration PositionReferenceConfiguration::fromResponseData(MipFieldValues resData)
+    void OdometerConfiguration::mode(OdometerConfiguration::Mode m)
     {
-        if (resData.size() < 4)
+        m_mode = m;
+    }
+
+    float OdometerConfiguration::scaling() const
+    {
+        return m_scaling;
+    }
+
+    void OdometerConfiguration::scaling(float scale)
+    {
+        if (scale == INFINITY)
         {
-            throw Error_BadDataType();
+            m_scaling = 0;
+            return;
         }
 
-        PositionReferenceConfiguration ref;
-        Source source = static_cast<Source>(resData[0].as_uint8());
-        
-        if (source == Source::AUTO)
+        m_scaling = scale;
+    }
+
+    void OdometerConfiguration::scaling(float resolution, float radius)
+    {
+        if (resolution == 0 || radius == 0)
         {
-            ref.autoConfig = true;
+            m_scaling = 0;
         }
 
-        ref.position = Position(
-            resData[1].as_double(),
-            resData[2].as_double(),
-            resData[3].as_double(),
-            (source == Source::MANUAL_ECEF
-                ? PositionVelocityReferenceFrame::ECEF
-                : PositionVelocityReferenceFrame::LLH_NED));
+        float mPerRev = radius * 2 * boost::math::constants::pi<float>();
+        m_scaling = resolution / mPerRev;
+    }
 
-        return ref;
+    float OdometerConfiguration::uncertainty() const
+    {
+        return m_unc;
+    }
+
+    void OdometerConfiguration::uncertainty(float unc)
+    {
+        if (unc == INFINITY)
+        {
+            m_unc = 0.01f;
+            return;
+        }
+
+        m_unc = unc;
     }
 }  // namespace mscl

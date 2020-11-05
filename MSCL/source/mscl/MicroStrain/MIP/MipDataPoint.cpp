@@ -27,10 +27,30 @@ namespace mscl
     {
     }
 
+    MipDataPoint::MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, MipChannelIdentifiers addlIds, ValueType storedAsType, anyType value):
+        DataPoint(storedAsType, value),
+        m_field(field),
+        m_qualifier(qualifier),
+        m_addlIdentifiers(addlIds),
+        m_hasValidFlag(false),
+        m_valid(true)
+    {
+    }
+
     MipDataPoint::MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, ValueType storedAsType, anyType value, bool valid) :
         DataPoint(storedAsType, value),
         m_field(field),
         m_qualifier(qualifier),
+        m_hasValidFlag(true),
+        m_valid(valid)
+    {
+    }
+
+    MipDataPoint::MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, MipChannelIdentifiers addlIds, ValueType storedAsType, anyType value, bool valid):
+        DataPoint(storedAsType, value),
+        m_field(field),
+        m_qualifier(qualifier),
+        m_addlIdentifiers(addlIds),
         m_hasValidFlag(true),
         m_valid(valid)
     {
@@ -46,6 +66,16 @@ namespace mscl
         return m_qualifier;
     }
 
+    bool MipDataPoint::hasAddlIdentifiers() const
+    {
+        return m_addlIdentifiers.size() > 0;
+    }
+
+    MipChannelIdentifiers MipDataPoint::addlIdentifiers() const
+    {
+        return m_addlIdentifiers;
+    }
+
     bool MipDataPoint::hasValidFlag() const
     {
         return m_hasValidFlag;
@@ -56,8 +86,17 @@ namespace mscl
         return m_valid;
     }
 
-    std::string MipDataPoint::channelName() const
+    std::string MipDataPoint::channelName(bool includeAddlIds, bool consolidatedFormat) const
     {
-        return MipTypes::channelName(m_field, m_qualifier);
+        std::string post = "";
+        if (hasAddlIdentifiers() && includeAddlIds)
+        {
+            for (auto id : m_addlIdentifiers)
+            {
+                post += "_" + id.name(!consolidatedFormat);
+            }
+        }
+
+        return MipTypes::channelName(m_field, m_qualifier) + post;
     }
 }

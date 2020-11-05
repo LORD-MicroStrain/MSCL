@@ -345,9 +345,23 @@ namespace mscl
 
     void MipNode_Impl::saveSettingsAsStartup()
     {
-        DeviceStartupSettings::Response r(m_responseCollector);
+        // if combined command supported, use that
+        if (features().supportsCommand(MipTypes::Command::CMD_SAVE_STARTUP_SETTINGS))
+        {
+            DeviceStartupSettings::Response r(m_responseCollector);
+            doCommand(r, DeviceStartupSettings::buildCommand_saveAsStartup(), false);
+            return;
+        }
 
-        doCommand(r, DeviceStartupSettings::buildCommand_saveAsStartup(), false);
+        // otherwise loop through supported descriptors and run each manually
+        MipTypes::MipCommands cmds = features().supportedCommands();
+        for (MipTypes::Command cmd : cmds)
+        {
+            if (MipCommand::supportsFunctionSelector(cmd, MipTypes::SAVE_CURRENT_SETTINGS))
+            {
+                saveAsStartup(cmd);
+            }
+        }
     }
 
     void MipNode_Impl::loadStartupSettings()
@@ -946,6 +960,63 @@ namespace mscl
                     }
                 }
                 break;
+            case MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET:
+            {
+                std::vector<MipFieldValues> reserved = {
+                    {Value::UINT8(1)}
+                };
+
+                MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, reserved);
+
+                if (cmdBytes.commands.size() > 0)
+                {
+                    setCmds.push_back(cmdBytes);
+                }
+                break;
+            }
+            case MipTypes::CMD_GPIO_CONFIGURATION:
+            {
+                GpioPinOptions gpioOptions = features().supportedGpioConfigurations();
+                std::vector<MipFieldValues> pins;
+                for (auto& kv : gpioOptions)
+                {
+                    pins.push_back({ Value::UINT8(static_cast<uint8>(kv.first)) });
+                }
+
+                MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, pins);
+
+                if (cmdBytes.commands.size() > 0)
+                {
+                    setCmds.push_back(cmdBytes);
+                }
+                break;
+            }
+            case MipTypes::CMD_GNSS_SIGNAL_CONFIG:
+            {
+                MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, { {} }, {
+                    Value::UINT32(0)
+                });
+
+                if (cmdBytes.commands.size() > 0)
+                {
+                    setCmds.push_back(cmdBytes);
+                }
+                break;
+            }
+            case MipTypes::CMD_GNSS_RTK_CONFIG:
+            {
+                MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, { {} }, {
+                    Value::UINT8(0),
+                    Value::UINT8(0),
+                    Value::UINT8(0)
+                });
+
+                if (cmdBytes.commands.size() > 0)
+                {
+                    setCmds.push_back(cmdBytes);
+                }
+                break;
+            }
             default:
                 {
                     MipCommandBytes add = buildMipCommandBytes(cmd);
@@ -961,7 +1032,7 @@ namespace mscl
         return setCmds;
     }
 
-    MipCommandBytes MipNode_Impl::buildMipCommandBytes(MipTypes::Command cmd, std::vector<MipFieldValues> specifiers) const
+    MipCommandBytes MipNode_Impl::buildMipCommandBytes(MipTypes::Command cmd, std::vector<MipFieldValues> specifiers, MipFieldValues trailingReserved) const
     {
         // if this command does not support read and write it is not a setting
         if (!(MipCommand::supportsFunctionSelector(cmd, MipTypes::USE_NEW_SETTINGS)
@@ -975,7 +1046,16 @@ namespace mscl
 
         for (MipFieldValues specifier : specifiers)
         {
+            // get data to set
             MipFieldValues data = get(cmd, specifier);
+
+            // insert hard-coded reserved values at end
+            if (trailingReserved.size() > 0)
+            {
+                data.insert(data.end(), trailingReserved.begin(), trailingReserved.end());
+            }
+
+            // build set command
             MipCommand set = MipCommand(cmd,
                 MipTypes::FunctionSelector::USE_NEW_SETTINGS,
                 data);
@@ -1245,7 +1325,7 @@ namespace mscl
         CommunicationMode::Response r(m_responseCollector, true);
 
         //send the command, wait for the response, and parse the result
-        return r.parseResponse(doCommand(r, CommunicationMode::buildCommand_get()));
+        return r.parseResponse(doCommand(r, CommunicationMode::buildCommand_get(), false));
     }
 
     void MipNode_Impl::setCommunicationMode(uint8 communicationMode)
@@ -1696,14 +1776,14 @@ namespace mscl
 
     DeviceStatusData MipNode_Impl::getBasicDeviceStatus()
     {
-        DeviceStatus deviceStatus = DeviceStatus::MakeGetBasicCommand(InertialModels::nodeFromModelString(modelNumber()));
+        DeviceStatus deviceStatus = DeviceStatus::MakeGetBasicCommand(MipModels::nodeFromModelString(modelNumber()));
         GenericMipCmdResponse response = SendCommand(deviceStatus);
         return deviceStatus.getResponseData(response);
     }
 
     DeviceStatusData MipNode_Impl::getDiagnosticDeviceStatus()
     {
-        DeviceStatus deviceStatus = DeviceStatus::MakeGetDiagnosticCommand(InertialModels::nodeFromModelString(modelNumber()));
+        DeviceStatus deviceStatus = DeviceStatus::MakeGetDiagnosticCommand(MipModels::nodeFromModelString(modelNumber()));
         GenericMipCmdResponse response = SendCommand(deviceStatus);
         return deviceStatus.getResponseData(response);
     }
@@ -2011,6 +2091,18 @@ namespace mscl
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::SAVE_CURRENT_SETTINGS,
             specifier);
+        SendCommand(command);
+    }
+
+    void MipNode_Impl::run(MipTypes::Command cmdId)
+    {
+        MipCommand command = MipCommand(cmdId);
+        SendCommand(command);
+    }
+
+    void MipNode_Impl::run(MipTypes::Command cmdId, MipFieldValues specifier)
+    {
+        MipCommand command = MipCommand(cmdId, specifier);
         SendCommand(command);
     }
 

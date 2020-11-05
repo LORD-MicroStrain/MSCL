@@ -133,7 +133,7 @@ namespace mscl
         //  Used by function getConfiCommandBytes to build the <MipCommandBytes> object given a collection of <MipFieldValues> specifiers
         //  Only works for commands with set parameters formatted the same as get reply field data
         //  Note: specifiers defaults to vector with single empty <MipFieldValues> entry
-        MipCommandBytes buildMipCommandBytes(MipTypes::Command cmd, std::vector<MipFieldValues> specifiers = { {} }) const;
+        MipCommandBytes buildMipCommandBytes(MipTypes::Command cmd, std::vector<MipFieldValues> specifiers = { {} }, MipFieldValues trailingReserved = {}) const;
 
     public:
         //Function: doCommand
@@ -1852,6 +1852,33 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void saveAsStartup(MipTypes::Command cmdId, MipFieldValues specifier);
+
+        //API Function: run
+        //    Runs the specified command without a function selector. No data response expected.
+        //
+        //Parameter:
+        //    cmdId - the <MipTypes::Command> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void run(MipTypes::Command cmdId);
+
+        //API Function: run
+        //    Runs the specified command with the provided specifier values and no function selector. No data response expected.
+        //
+        //Parameter:
+        //    cmdId - the <MipTypes::Command> to send.
+        //    specifier - <MipFieldValues> containing any additional specifier values to send with the command.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void run(MipTypes::Command cmdId, MipFieldValues specifier);
 
 private:
        //Function: SendCommand

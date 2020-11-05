@@ -46,6 +46,18 @@ public class MipDataPoint : DataPoint {
     return ret;
   }
 
+  public bool hasAddlIdentifiers() {
+    bool ret = msclPINVOKE.MipDataPoint_hasAddlIdentifiers(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public MipChannelIdentifiers addlIdentifiers() {
+    MipChannelIdentifiers ret = new MipChannelIdentifiers(msclPINVOKE.MipDataPoint_addlIdentifiers(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public bool hasValidFlag() {
     bool ret = msclPINVOKE.MipDataPoint_hasValidFlag(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -58,8 +70,20 @@ public class MipDataPoint : DataPoint {
     return ret;
   }
 
+  public string channelName(bool includeAddlIds, bool consolidatedFormat) {
+    string ret = msclPINVOKE.MipDataPoint_channelName__SWIG_0(swigCPtr, includeAddlIds, consolidatedFormat);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public string channelName(bool includeAddlIds) {
+    string ret = msclPINVOKE.MipDataPoint_channelName__SWIG_1(swigCPtr, includeAddlIds);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public string channelName() {
-    string ret = msclPINVOKE.MipDataPoint_channelName(swigCPtr);
+    string ret = msclPINVOKE.MipDataPoint_channelName__SWIG_2(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

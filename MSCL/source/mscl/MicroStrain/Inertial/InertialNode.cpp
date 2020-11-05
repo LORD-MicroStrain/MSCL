@@ -18,21 +18,6 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    InertialNode::InertialNode(Connection connection) :
-        m_impl(std::make_shared<MipNode_Impl>(connection))
-    {
-    }
-
-    InertialNode::InertialNode(std::shared_ptr<MipNode_Impl> impl) :
-        m_impl(impl)
-    {
-    }
-
-    const MipNodeFeatures& InertialNode::features() const
-    {
-        return m_impl->features();
-    }
-
     MipDataPackets InertialNode::getDataPackets(uint32 timeout, uint32 maxPackets)
     {
         MipDataPackets packets;
@@ -40,121 +25,9 @@ namespace mscl
         return packets;
     }
 
-    GenericMipCmdResponse InertialNode::doCommand(GenericMipCommand::Response& response, const ByteStream& command, bool verifySupported) const
-    {
-        return m_impl->doCommand(response, command, verifySupported);
-    }
-
-    std::string InertialNode::deviceName(const std::string& serial)
-    {
-        //replace any unsupported sensorcloud characters
-        std::string sensorcloudFilteredName = "inertial-" + serial;
-        Utils::filterSensorcloudName(sensorcloudFilteredName);
-
-        return sensorcloudFilteredName;
-    }
-
-    Connection& InertialNode::connection()
-    {
-        return m_impl->connection();
-    }
-
-    const Timestamp& InertialNode::lastCommunicationTime() const
-    {
-        return m_impl->lastCommunicationTime();
-    }
-
-    DeviceState InertialNode::lastDeviceState() const
-    {
-        return m_impl->lastDeviceState();
-    }
-
-    Version InertialNode::firmwareVersion() const
-    {
-        return m_impl->firmwareVersion();
-    }
-
-    InertialModels::NodeModel InertialNode::model() const
-    {
-        return InertialModels::nodeFromModelString(modelNumber());
-    }
-
-    std::string InertialNode::modelName() const
-    {
-        return m_impl->modelName();
-    }
-
-    std::string InertialNode::modelNumber() const
-    {
-        return m_impl->modelNumber();
-    }
-
-    std::string InertialNode::serialNumber() const
-    {
-        return m_impl->serialNumber();
-    }
-
-    std::string InertialNode::lotNumber() const
-    {
-        return m_impl->lotNumber();
-    }
-
-    std::string InertialNode::deviceOptions() const
-    {
-        return m_impl->deviceOptions();
-    }
-
     uint32 InertialNode::totalPackets()
     {
         return m_impl->totalPackets();
-    }
-
-    void InertialNode::timeout(uint64 timeout)
-    {
-        m_impl->timeout(timeout);
-    }
-
-    uint64 InertialNode::timeout() const
-    {
-        return m_impl->timeout();
-    }
-
-    std::string InertialNode::name()
-    {
-        return deviceName(serialNumber());
-    }
-
-    bool InertialNode::ping()
-    {
-        return m_impl->ping();
-    }
-
-    void InertialNode::setToIdle()
-    {
-        m_impl->setToIdle();
-    }
-
-    bool InertialNode::cyclePower()
-    {
-        return m_impl->cyclePower();
-    }
-
-    void InertialNode::resume()
-    {
-        m_impl->resume();
-    }
-
-    void InertialNode::saveSettingsAsStartup(MipTypes::MipCommands cmdIds)
-    {
-        for (MipTypes::Command cmd : cmdIds)
-        {
-            m_impl->saveAsStartup(cmd);
-        }
-    }
-
-    void InertialNode::saveSettingsAsStartup()
-    {
-        return m_impl->saveSettingsAsStartup();
     }
 
     void InertialNode::loadStartupSettings()
@@ -170,21 +43,6 @@ namespace mscl
     void InertialNode::pollData(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields /*= MipTypes::MipChannelFields()*/)
     {
         m_impl->pollData(dataClass, fields);
-    }
-
-    MipCommandSet InertialNode::getConfigCommandBytes()
-    {
-        return m_impl->getConfigCommandBytes();
-    }
-
-    void InertialNode::sendCommandBytes(MipCommandSet& cmds)
-    {
-        m_impl->sendCommandBytes(cmds);
-    }
-
-    void InertialNode::sendCommandBytes(MipCommandBytes& cmd)
-    {
-        m_impl->sendCommandBytes(cmd);
     }
 
     uint16 InertialNode::getDataRateBase(MipTypes::DataClass dataClass)
@@ -229,14 +87,24 @@ namespace mscl
         return m_impl->isDataStreamEnabled(dataClass);
     }
 
-    void InertialNode::enableDataStream(MipTypes::DataClass dataClass, bool enable)
+    void InertialNode::enableDataStream(MipTypes::DataClass dataClass, bool enable, bool resumeStreaming)
     {
         m_impl->enableDataStream(dataClass, enable);
+
+        if (enable && resumeStreaming && !features().useLegacyIdsForEnableDataStream())
+        {
+            m_impl->resume();
+    }
     }
 
     void InertialNode::resetFilter()
     {
         m_impl->resetFilter();
+    }
+
+    void InertialNode::runFilter()
+    {
+        m_impl->run(MipTypes::CMD_EF_RUN_FILTER);
     }
 
     bool InertialNode::getAltitudeAid()
@@ -975,48 +843,57 @@ namespace mscl
             Value::FLOAT(offset.z()) });
     }
 
-    InertialTypes::PpsInputOutput InertialNode::getPpsSource() const
+    InertialTypes::PpsSource InertialNode::getPpsSource() const
     {
         MipFieldValues data = m_impl->get(MipTypes::CMD_PPS_SOURCE);
-        return static_cast<InertialTypes::PpsInputOutput>(data[0].as_uint8());
+        return static_cast<InertialTypes::PpsSource>(data[0].as_uint8());
     }
 
-    void InertialNode::setPpsSource(InertialTypes::PpsInputOutput ppsSource)
+    void InertialNode::setPpsSource(InertialTypes::PpsSource ppsSource)
     {
         m_impl->set(MipTypes::CMD_PPS_SOURCE, { Value::UINT8(static_cast<uint8>(ppsSource)) });
     }
 
-    InertialTypes::PpsInputOutput InertialNode::getPpsOutput() const
+    OdometerConfiguration InertialNode::getOdometerConfig() const
     {
-        MipFieldValues data = m_impl->get(MipTypes::CMD_PPS_OUTPUT);
-        return static_cast<InertialTypes::PpsInputOutput>(data[0].as_uint8());
+        MipFieldValues data = m_impl->get(MipTypes::CMD_ODOMETER_SETTINGS);
+        OdometerConfiguration config;
+        config.mode(static_cast<OdometerConfiguration::Mode>(data[0].as_uint8()));
+        config.scaling(data[1].as_float());
+        config.uncertainty(data[2].as_float());
+        return config;
     }
 
-    void InertialNode::setPpsOutput(InertialTypes::PpsInputOutput ppsOutput)
+    void InertialNode::setOdometerConfig(OdometerConfiguration config)
     {
-        m_impl->set(MipTypes::CMD_PPS_OUTPUT, { Value::UINT8(static_cast<uint8>(ppsOutput)) });
+        m_impl->set(MipTypes::CMD_ODOMETER_SETTINGS, {
+            Value::UINT8(static_cast<uint8>(config.mode())),
+            Value::FLOAT(config.scaling()),
+            Value::FLOAT(config.uncertainty())
+        });
     }
 
-    //OdometerConfiguration InertialNode::getOdometerConfig() const
-    //{
-    //    MipFieldValues data = m_impl->get(MipTypes::CMD_ODOMETER_SETTINGS);
-    //    OdometerConfiguration config;
-    //    config.mode = static_cast<OdometerConfiguration::Mode>(data[0].as_uint8());
-    //    return config;
-    //}
+    GpioConfiguration InertialNode::getGpioConfig(uint8 pin) const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_GPIO_CONFIGURATION, {
+            Value::UINT8(pin) });
+        GpioConfiguration config;
+        config.pin = data[0].as_uint8();
+        config.feature = static_cast<GpioConfiguration::Feature>(data[1].as_uint8());
+        config.behavior = data[2].as_uint8();
+        config.pinModeValue(data[3].as_uint8());
+        return config;
+    }
 
-    //void InertialNode::setOdometerConfig(OdometerConfiguration config)
-    //{
-    //    m_impl->set(MipTypes::CMD_ODOMETER_SETTINGS, {
-    //        Value::UINT8(static_cast<uint8>(config.mode)),
-    //        Value::INT8(0),
-    //        Value::INT8(0),
-    //        Value::INT8(0),
-    //        Value::FLOAT(0.0f),
-    //        Value::FLOAT(0.0f),
-    //        Value::FLOAT(0.0f)
-    //    });
-    //}
+    void InertialNode::setGpioConfig(GpioConfiguration config)
+    {
+        m_impl->set(MipTypes::CMD_GPIO_CONFIGURATION, {
+            Value::UINT8(static_cast<uint8>(config.pin)),
+            Value::INT8(static_cast<uint8>(config.feature)),
+            Value::INT8(static_cast<uint8>(config.behavior)),
+            Value::INT8(static_cast<uint8>(config.pinModeValue()))
+        });
+    }
 
     AntennaLeverArmCalConfiguration InertialNode::getAntennaLeverArmCal() const
     {
@@ -1038,16 +915,43 @@ namespace mscl
     PositionReferenceConfiguration InertialNode::getRelativePositionReference() const
     {
         MipFieldValues data = m_impl->get(MipTypes::CMD_EF_RELATIVE_POSITION_REF);
-        return PositionReferenceConfiguration::fromResponseData(data);
+        PositionReferenceConfiguration ref;
+        ref.autoConfig = data[0].as_uint8() == 0; // saved to device as enum - auto: 0, manual: 1
+        ref.position = Position(
+            data[2].as_double(), data[3].as_double(), data[4].as_double(),
+            static_cast<PositionVelocityReferenceFrame>(data[1].as_uint8()));
+
+        return ref;
     }
 
     void InertialNode::setRelativePositionReference(PositionReferenceConfiguration ref)
     {
         m_impl->set(MipTypes::CMD_EF_RELATIVE_POSITION_REF, {
-            Value::UINT8(ref.source()),
+            Value::UINT8((ref.autoConfig ? 0x00 : 0x01)), // saved to device as enum - auto: 0, manual: 1
+            Value::UINT8(static_cast<uint8>(ref.position.referenceFrame)),
             Value::DOUBLE(ref.position.x()),
             Value::DOUBLE(ref.position.y()),
             Value::DOUBLE(ref.position.z()),
+        });
+    }
+
+    PositionOffset InertialNode::getSpeedMeasurementOffset() const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET, {
+            Value::UINT8(1) // reserved, placeholder source value
+        });
+
+        // skip first element - reserved, placeholder source value
+        return PositionOffset(data[1].as_float(), data[2].as_float(), data[3].as_float());
+    }
+
+    void InertialNode::setSpeedMeasurementOffset(PositionOffset offset)
+    {
+        m_impl->set(MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET, {
+            Value::UINT8(1), // reserved, placeholder source value
+            Value::FLOAT(offset.x()),
+            Value::FLOAT(offset.y()),
+            Value::FLOAT(offset.z()),
         });
     }
 

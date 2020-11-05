@@ -556,4 +556,33 @@ namespace mscl
         return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_OdometerData
+    const MipTypes::ChannelField FieldParser_OdometerData::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_ODOMETER_DATA;
+    const bool FieldParser_OdometerData::REGISTERED = FieldParser_OdometerData::registerParser();    //register the parser immediately
+
+    void FieldParser_OdometerData::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the data
+        float speed = bytes.read_float();
+        float unc = bytes.read_float();
+        bool valid = bytes.read_uint16() > 0;
+
+        //add data points 
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_SPEED, valueType_float, anyType(speed), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_SPEED_ACCURACY, valueType_float, anyType(unc), valid));
+    }
+
+    bool FieldParser_OdometerData::registerParser()
+    {
+        //create a static parser object
+        static FieldParser_OdometerData p;
+
+        //register the parser
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
 }

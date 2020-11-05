@@ -35,6 +35,17 @@ namespace mscl
         MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, ValueType storedAsType, anyType value);
 
         //Constructor: MipDataPoint
+        //    Creates a MipDataPoint object with additional identifier values that describe the point
+        //
+        //Parameters:
+        //    field - The <MipTypes::ChannelField> for the data point.
+        //    qualifier - The <MipTypes::ChannelQualifier> for the data point.
+        //    addlIds - The <MipChannelIdentifiers> to further identify the data point.
+        //    storedAsType - The <ValueType> that represents how the internal data point value is stored.
+        //    value - The value to store.
+        MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, MipChannelIdentifiers addlIds, ValueType storedAsType, anyType value);
+
+        //Constructor: MipDataPoint
         //    Creates a MipDataPoint object with a valid flag that describes the point
         //
         //Parameters:
@@ -45,6 +56,18 @@ namespace mscl
         //    valid - Whether the data point is flagged as valid (true) or invalid (false).
         MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, ValueType storedAsType, anyType value, bool valid);
 
+        //Constructor: MipDataPoint
+        //    Creates a MipDataPoint object with additional identifier values and a valid flag that describes the point
+        //
+        //Parameters:
+        //    field - The <MipTypes::ChannelField> for the data point.
+        //    qualifier - The <MipTypes::ChannelQualifier> for the data point.
+        //    addlIds - The <MipChannelIdentifiers> to further identify the data point.
+        //    storedAsType - The <ValueType> that represents how the internal data point value is stored.
+        //    value - The value to store.
+        //    valid - Whether the data point is flagged as valid (true) or invalid (false).
+        MipDataPoint(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, MipChannelIdentifiers addlIds, ValueType storedAsType, anyType value, bool valid);
+
     private:
         //Variable: m_field;
         //    The <MipTypes::ChannelField> of the data point.
@@ -53,6 +76,10 @@ namespace mscl
         //Variable: m_qualifier
         //    The <MipTypes::ChannelQualifier> of the data point.
         MipTypes::ChannelQualifier m_qualifier;
+
+        //Variable: m_addlIdentifiers
+        //  A <MipChannelIdentifiers> list of additional identifiers for this data point ie GNSS constellation and satellite ID
+        MipChannelIdentifiers m_addlIdentifiers;
 
         //Variable: m_hasValidFlag
         //  Whether the data point was transmitted with a valid flag.
@@ -81,6 +108,20 @@ namespace mscl
         //    The <MipTypes::ChannelQualifier> for this data point.
         MipTypes::ChannelQualifier qualifier() const;
 
+        //API Function: hasAddlIdentifiers
+        //  Indicates whether or not this data point has additional data identifiers.
+        //
+        //Returns:
+        //  true if additional <MipChannelIdentifiers> have been assigned to this data point. 
+        bool hasAddlIdentifiers() const;
+
+        //API Function: addlIdentifiers
+        //  Get the additional identifier values assigned to this data point.
+        //
+        //Returns:
+        //  <MipChannelIdentifiers> - the additional identifiers for this data point.
+        MipChannelIdentifiers addlIdentifiers() const;
+
         //API Function: hasValidFlag
         //  Gets whether the data point had a valid flag transmitted in the data packet.
         //  Note: if hasValidFlag returns false, <valid> will always return true.
@@ -103,12 +144,16 @@ namespace mscl
         //    Gets the name of the channel. 
         //    This is the universal channel name that should be used for uploading to SensorCloud.
         //
+        //Parameters:
+        //    includeAddlIds - default: true - when true, includes the additional identifiers in the channel name string if present.
+        //    consolidatedFormat - default: false - consolidate additional identifiers into interpreted strings when relevant. Ex: when false: "aidingMeasurement_5", when true: "magnetometer"
+        //
         //Returns:
         //    The name of the channel.
         //
         //Exceptions:
         //    - <Error>: Unknown channel.
-        std::string channelName() const;
+        std::string channelName(bool includeAddlIds = true, bool consolidatedFormat = false) const;
     };
 
     //API Typedef: MipDataPoints

@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(InertialNodeInfo_loadNodeInfo)
 
     //verify the result is good
     BOOST_CHECK_EQUAL(node.firmwareVersion().str(), "1.1.17");
-    BOOST_CHECK_EQUAL(node.model(), InertialModels::node_3dm_dh3);
+    BOOST_CHECK_EQUAL(node.model(), MipModels::node_3dm_dh3);
     BOOST_CHECK_EQUAL(node.modelName(), "ABCDABCDABCDABCD");
     BOOST_CHECK_EQUAL(node.modelNumber(), "6219-12345");
     BOOST_CHECK_EQUAL(node.serialNumber(), "ABCDABCDABCDABCD");

@@ -48,8 +48,8 @@ public class RTKDeviceStatusFlags : Bitfield {
     return ret;
   }
 
-  public void state(byte state) {
-    msclPINVOKE.RTKDeviceStatusFlags_state__SWIG_1(swigCPtr, state);
+  public void state(byte rtkState) {
+    msclPINVOKE.RTKDeviceStatusFlags_state__SWIG_1(swigCPtr, rtkState);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -61,6 +61,28 @@ public class RTKDeviceStatusFlags : Bitfield {
 
   public void statusCode(byte code) {
     msclPINVOKE.RTKDeviceStatusFlags_statusCode__SWIG_1(swigCPtr, code);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public bool correctionsTimedOut() {
+    bool ret = msclPINVOKE.RTKDeviceStatusFlags_correctionsTimedOut__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void correctionsTimedOut(bool timedOut) {
+    msclPINVOKE.RTKDeviceStatusFlags_correctionsTimedOut__SWIG_1(swigCPtr, timedOut);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public bool serviceUnavailable() {
+    bool ret = msclPINVOKE.RTKDeviceStatusFlags_serviceUnavailable__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void serviceUnavailable(bool available) {
+    msclPINVOKE.RTKDeviceStatusFlags_serviceUnavailable__SWIG_1(swigCPtr, available);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -119,16 +141,39 @@ public class RTKDeviceStatusFlags : Bitfield {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public enum ValueMap {
-    STATE = 0x000000FF,
-    STATUS_CODE = 0x0000FF00,
-    RESET_REASON = 0x00030000,
-    MODEM_POWERED = 0x00040000,
-    CELL_CONNECTED = 0x00080000,
-    SERVER_CONNECTED = 0x00100000,
-    DATA_ENABLED = 0x00200000
+  public byte rssi() {
+    byte ret = msclPINVOKE.RTKDeviceStatusFlags_rssi__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
+  public void rssi(byte rtkRssi) {
+    msclPINVOKE.RTKDeviceStatusFlags_rssi__SWIG_1(swigCPtr, rtkRssi);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public byte signalQuality() {
+    byte ret = msclPINVOKE.RTKDeviceStatusFlags_signalQuality__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void signalQuality(byte quality) {
+    msclPINVOKE.RTKDeviceStatusFlags_signalQuality__SWIG_1(swigCPtr, quality);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public static readonly uint STATE = msclPINVOKE.RTKDeviceStatusFlags_STATE_get();
+  public static readonly uint STATUS_CODE = msclPINVOKE.RTKDeviceStatusFlags_STATUS_CODE_get();
+  public static readonly uint CORRECTIONS_TIMED_OUT = msclPINVOKE.RTKDeviceStatusFlags_CORRECTIONS_TIMED_OUT_get();
+  public static readonly uint SERVICE_UNAVAILABLE = msclPINVOKE.RTKDeviceStatusFlags_SERVICE_UNAVAILABLE_get();
+  public static readonly uint RESET_REASON = msclPINVOKE.RTKDeviceStatusFlags_RESET_REASON_get();
+  public static readonly uint MODEM_POWERED = msclPINVOKE.RTKDeviceStatusFlags_MODEM_POWERED_get();
+  public static readonly uint CELL_CONNECTED = msclPINVOKE.RTKDeviceStatusFlags_CELL_CONNECTED_get();
+  public static readonly uint SERVER_CONNECTED = msclPINVOKE.RTKDeviceStatusFlags_SERVER_CONNECTED_get();
+  public static readonly uint DATA_ENABLED = msclPINVOKE.RTKDeviceStatusFlags_DATA_ENABLED_get();
+  public static readonly uint RSSI = msclPINVOKE.RTKDeviceStatusFlags_RSSI_get();
+  public static readonly uint SIGNAL_QUALITY = msclPINVOKE.RTKDeviceStatusFlags_SIGNAL_QUALITY_get();
   public enum ResetReason {
     POWER_ON = 0x00,
     HARDWARE_RESET = 0x01,

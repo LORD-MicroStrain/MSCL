@@ -290,13 +290,11 @@ namespace mscl
     private:
         //Constants: Valid Flags
         //    CHANNEL_VALID          - b00000001 - The flag position for checking the Channel flag
-        //    SV_ID_VALID            - b00000010 - The flag position for checking the Space Vehicle ID flag
         //    RATIO_VALID            - b00000100 - The flag position for checking the Carrier to Noise Ratio flag
         //    AZIMUTH_VALID          - b00001000 - The flag position for checking the Azimuth flag
         //    ELEVATION_VALID        - b00010000 - The flag position for checking the Elevation flag
         //    SV_FLAGS_VALID         - b00100000 - The flag position for checking the Space Vehicle Flags flag
         static const uint16 CHANNEL_VALID          = BOOST_BINARY(00000001);
-        static const uint16 SV_ID_VALID            = BOOST_BINARY(00000010);
         static const uint16 RATIO_VALID            = BOOST_BINARY(00000100);
         static const uint16 AZIMUTH_VALID          = BOOST_BINARY(00001000);
         static const uint16 ELEVATION_VALID        = BOOST_BINARY(00010000);
@@ -442,26 +440,130 @@ namespace mscl
         static const bool REGISTERED;
     };
 
+    //Class: FieldParser_GnssSatelliteStatus
+    //    The field parser for GNSS Satellite Status data
+    class FieldParser_GnssSatelliteStatus : public MipGnssFieldParser
+    {
+    private:
+        //Constants: Valid Flags
+        //    TOW_VALID                 - b00000001 - The flag position for checking the Time of Week flag
+        //    WEEK_NUMBER_VALID         - b00000010 - The flag position for checking the Week Number flag
+        //    AZIMUTH_VALID             - b00100000
+        //    HEALTH_VALID              - b01000000
+        static const uint16 TOW_VALID = BOOST_BINARY(00000001);
+        static const uint16 WEEK_NUMBER_VALID = BOOST_BINARY(00000010);
+        static const uint16 ELEVATION_VALID = BOOST_BINARY(00010000);
+        static const uint16 AZIMUTH_VALID = BOOST_BINARY(00100000);
+        static const uint16 HEALTH_VALID = BOOST_BINARY(01000000);
+
+    private:
+        FieldParser_GnssSatelliteStatus() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const MipTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_GnssRawObservation
+    //    The field parser for GNSS Raw Observation data
+    class FieldParser_GnssRawObservation : public MipGnssFieldParser
+    {
+    private:
+        //Constants: Valid Flags
+        //    TOW_VALID                 - b0000000000000001 - The flag position for checking the Time of Week flag
+        //    WEEK_NUMBER_VALID         - b0000000000000010 - The flag position for checking the Week Number flag
+        //    CHANNEL_VALID             - b0000000000001000
+        //    SIGNAL_STRENGTH_VALID     - b0000000010000000
+        //    QUALITY_VALID             - b0000000100000000
+        //    PSEUDORANGE_VALID         - b0000001000000000
+        //    CARRIER_PHASE_VALID       - b0000010000000000
+        //    DOPPLER_VALID             - b0000100000000000
+        //    RANGE_UNC_VALID           - b0001000000000000
+        //    CARRIER_PHASE_UNC_VALID   - b0010000000000000
+        //    DOPPLER_UNC_VALID         - b0100000000000000
+        //    LOCK_TIME_VALID           - b1000000000000000
+        static const uint16 TOW_VALID               = 1;      //BOOST_BINARY(0000000000000001);
+        static const uint16 WEEK_NUMBER_VALID       = 2;      //BOOST_BINARY(0000000000000010);
+        static const uint16 CHANNEL_VALID           = 8;      //BOOST_BINARY(0000000000001000);
+        static const uint16 SIGNAL_STRENGTH_VALID   = 128;    //BOOST_BINARY(0000000010000000);
+        static const uint16 QUALITY_VALID           = 256;    //BOOST_BINARY(0000000100000000);
+        static const uint16 PSEUDORANGE_VALID       = 512;    //BOOST_BINARY(0000001000000000);
+        static const uint16 CARRIER_PHASE_VALID     = 1024;   //BOOST_BINARY(0000010000000000);
+        static const uint16 DOPPLER_VALID           = 2048;   //BOOST_BINARY(0000100000000000);
+        static const uint16 RANGE_UNC_VALID         = 4096;   //BOOST_BINARY(0001000000000000);
+        static const uint16 CARRIER_PHASE_UNC_VALID = 8192;   //BOOST_BINARY(0010000000000000);
+        static const uint16 DOPPLER_UNC_VALID       = 16384;  //BOOST_BINARY(0100000000000000);
+        static const uint16 LOCK_TIME_VALID         = 32768;  //BOOST_BINARY(1000000000000000);
+
+    private:
+        FieldParser_GnssRawObservation() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const MipTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_GnssStationInfo
+    //    The field parser for GNSS Base Station Info data
+    class FieldParser_GnssStationInfo : public MipGnssFieldParser
+    {
+    private:
+        //Constants: Valid Flags
+        //    TOW_VALID                 - b00000001 - The flag position for checking the Time of Week flag
+        //    WEEK_NUMBER_VALID         - b00000010 - The flag position for checking the Week Number flag
+        //    ECEF_POS_VALID            - b00000100 - The flag position for checking the ECEF Position flag
+        //    HEIGHT_VALID              - b00001000 - The flag position for checking the Height flag
+        //    STATION_ID_VALID          - b00010000 - The flag position for checking the Base Station ID flag
+        //    INDICATORS_VALID          - b00100000 - The flag position for checking the Indicators flag
+        static const uint16 TOW_VALID = BOOST_BINARY(00000001);
+        static const uint16 WEEK_NUMBER_VALID = BOOST_BINARY(00000010);
+        static const uint16 ECEF_POS_VALID = BOOST_BINARY(00000100);
+        static const uint16 HEIGHT_VALID = BOOST_BINARY(00001000);
+        static const uint16 STATION_ID_VALID = BOOST_BINARY(00010000);
+        static const uint16 INDICATORS_VALID = BOOST_BINARY(00100000);
+
+    private:
+        FieldParser_GnssStationInfo() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const MipTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
     //Class: FieldParser_RTKCorrectionsStatus
     //    The field parser for RTK Corrections Status Data
     class FieldParser_RTKCorrectionsStatus : public MipGnssFieldParser
     {
     private:
         //Constants: Valid Flags
-        //    DATA_RECEIVED_VALID       - b00000001 - The flag position for checking the Time of Week flag
-        //    PARSED_PACKETS_VALID      - b00000010 - The flag position for checking the Week Number flag
-        //    STATUS_VALID              - b00000100 - The flag position for checking the Alpha Ionospheric Correction Terms flag
-        //    GPS_LATENCY_VALID         - b00001000 - The flag position for checking the Beta Ionospheric Correction Terms flag
-        //    GLONASS_LATENCY_VALID     - b00010000 - The flag position for checking the Beta Ionospheric Correction Terms flag
-        //    GALILEO_LATENCY_VALID     - b00100000 - The flag position for checking the Beta Ionospheric Correction Terms flag
-        //    BEIDOU_LATENCY_VALID      - b01000000 - The flag position for checking the Beta Ionospheric Correction Terms flag
-        static const uint16 DATA_RECEIVED_VALID       = BOOST_BINARY(00000001);
-        static const uint16 PARSED_PACKETS_VALID      = BOOST_BINARY(00000010);
-        static const uint16 STATUS_VALID              = BOOST_BINARY(00000100);
-        static const uint16 GPS_LATENCY_VALID         = BOOST_BINARY(00001000);
-        static const uint16 GLONASS_LATENCY_VALID     = BOOST_BINARY(00010000);
-        static const uint16 GALILEO_LATENCY_VALID     = BOOST_BINARY(00100000);
-        static const uint16 BEIDOU_LATENCY_VALID      = BOOST_BINARY(01000000);
+        //    TOW_VALID                 - b00000001 - The flag position for checking the Time of Week flag
+        //    WEEK_NUMBER_VALID         - b00000010 - The flag position for checking the Week Number flag
+        //    EPOCH_STATUS_VALID        - b00000100 - The flag position for checking the Epoch Status flag
+        //    RTK_STATUS_VALID          - b00001000 - The flag position for checking the RTK Status flag
+        //    GPS_LATENCY_VALID         - b00010000 - The flag position for checking the GPS Correction Latency flag
+        //    GLONASS_LATENCY_VALID     - b00100000 - The flag position for checking the GLONASS Correction Latency flag
+        //    GALILEO_LATENCY_VALID     - b01000000 - The flag position for checking the Galileo Correction Latency flag
+        //    BEIDOU_LATENCY_VALID      - b10000000 - The flag position for checking the BeiDou Correction Latency flag
+        static const uint16 TOW_VALID                 = BOOST_BINARY(00000001);
+        static const uint16 WEEK_NUMBER_VALID         = BOOST_BINARY(00000010);
+        static const uint16 EPOCH_STATUS_VALID        = BOOST_BINARY(00000100);
+        static const uint16 RTK_STATUS_VALID          = BOOST_BINARY(00001000);
+        static const uint16 GPS_LATENCY_VALID         = BOOST_BINARY(00010000);
+        static const uint16 GLONASS_LATENCY_VALID     = BOOST_BINARY(00100000);
+        static const uint16 GALILEO_LATENCY_VALID     = BOOST_BINARY(01000000);
+        static const uint16 BEIDOU_LATENCY_VALID      = BOOST_BINARY(10000000);
 
     private:
         FieldParser_RTKCorrectionsStatus() {};        //default constructor disabled

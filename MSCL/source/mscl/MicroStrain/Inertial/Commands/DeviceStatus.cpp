@@ -7,22 +7,22 @@
 
 namespace mscl
 {
-    DeviceStatus::DeviceStatus(InertialModels::NodeModel model, DeviceStatusData::StatusSelector status_selector) :
+    DeviceStatus::DeviceStatus(MipModels::NodeModel model, DeviceStatusData::StatusSelector status_selector) :
         m_model(model),
         m_statusSelector(status_selector)
     { }
 
-    DeviceStatus DeviceStatus::MakeGetCommand(InertialModels::NodeModel model, DeviceStatusData::StatusSelector statusSelector)
+    DeviceStatus DeviceStatus::MakeGetCommand(MipModels::NodeModel model, DeviceStatusData::StatusSelector statusSelector)
     {
         return DeviceStatus(model, statusSelector);
     }
 
-    DeviceStatus DeviceStatus::MakeGetBasicCommand(InertialModels::NodeModel model)
+    DeviceStatus DeviceStatus::MakeGetBasicCommand(MipModels::NodeModel model)
     {
         return DeviceStatus(model, DeviceStatusData::BASIC_STATUS_STRUCTURE);
     }
 
-    DeviceStatus DeviceStatus::MakeGetDiagnosticCommand(InertialModels::NodeModel model)
+    DeviceStatus DeviceStatus::MakeGetDiagnosticCommand(MipModels::NodeModel model)
     {
         return DeviceStatus(model, DeviceStatusData::DIAGNOSTIC_STATUS_STRUCTURE);
     }
@@ -38,13 +38,13 @@ namespace mscl
         DeviceStatusData returnData;
 
         returnData.modelNumber = dataBuffer.read_uint16();
-        InertialModels::NodeModel model = static_cast<InertialModels::NodeModel>(returnData.modelNumber);
+        MipModels::NodeModel model = static_cast<MipModels::NodeModel>(returnData.modelNumber);
         returnData.statusStructure = static_cast<DeviceStatusData::StatusSelector>(dataBuffer.read_uint8());
         dataBuffer.read_uint32();   // Status flags are unused as of this writing, so just drop this on the floor.
 
         switch (model)
         {
-        case InertialModels::node_3dm_gq4_45:
+        case MipModels::node_3dm_gq4_45:
         {
             returnData.systemState(static_cast<DeviceStatusData::SystemState>(dataBuffer.read_uint16()));
             returnData.systemTimerInMS = dataBuffer.read_uint32();
@@ -102,8 +102,8 @@ namespace mscl
         }
         break;
         
-        case InertialModels::node_3dm_rq1_45_lt:
-        case InertialModels::node_3dm_rq1_45_st:
+        case MipModels::node_3dm_rq1_45_lt:
+        case MipModels::node_3dm_rq1_45_st:
         {
             returnData.systemState(static_cast<DeviceStatusData::SystemState>(dataBuffer.read_uint16()));
             returnData.systemTimerInMS = dataBuffer.read_uint32();
@@ -163,9 +163,9 @@ namespace mscl
         }
         break;
 
-        case InertialModels::node_3dm_gx5_10:
-        case InertialModels::node_3dm_cx5_10:
-        case InertialModels::node_3dm_cv5_10:
+        case MipModels::node_3dm_gx5_10:
+        case MipModels::node_3dm_cx5_10:
+        case MipModels::node_3dm_cv5_10:
         {
             returnData.systemTimerInMS = dataBuffer.read_uint32();
 
@@ -208,12 +208,12 @@ namespace mscl
         }
         break;
 
-        case InertialModels::node_3dm_gx5_15:
-        case InertialModels::node_3dm_gx5_25:
-        case InertialModels::node_3dm_cx5_15:
-        case InertialModels::node_3dm_cx5_25:
-        case InertialModels::node_3dm_cv5_15:
-        case InertialModels::node_3dm_cv5_25:
+        case MipModels::node_3dm_gx5_15:
+        case MipModels::node_3dm_gx5_25:
+        case MipModels::node_3dm_cx5_15:
+        case MipModels::node_3dm_cx5_25:
+        case MipModels::node_3dm_cv5_15:
+        case MipModels::node_3dm_cv5_25:
         {
             returnData.systemState(static_cast<DeviceStatusData::SystemState>(dataBuffer.read_uint16()));
             returnData.systemTimerInMS = dataBuffer.read_uint32();
@@ -250,8 +250,8 @@ namespace mscl
         }
         break;
 
-        case InertialModels::node_3dm_gx4_15:
-        case InertialModels::node_3dm_gx4_25:
+        case MipModels::node_3dm_gx4_15:
+        case MipModels::node_3dm_gx4_25:
         {
             returnData.systemTimerInMS = dataBuffer.read_uint32();
 
@@ -299,11 +299,11 @@ namespace mscl
         }
         break;
 
-        case InertialModels::node_3dm_gx5_35:
-        case InertialModels::node_3dm_gx5_45:
-        case InertialModels::node_3dm_cx5_35:
-        case InertialModels::node_3dm_cx5_45:
-        case InertialModels::node_3dm_gx4_45:
+        case MipModels::node_3dm_gx5_35:
+        case MipModels::node_3dm_gx5_45:
+        case MipModels::node_3dm_cx5_35:
+        case MipModels::node_3dm_cx5_45:
+        case MipModels::node_3dm_gx4_45:
         {
             returnData.systemState(static_cast<DeviceStatusData::SystemState>(dataBuffer.read_uint16()));
             returnData.systemTimerInMS = dataBuffer.read_uint32();

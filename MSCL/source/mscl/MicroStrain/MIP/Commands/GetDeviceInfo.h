@@ -8,7 +8,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/Version.h"
 #include "mscl/MicroStrain/MIP/Commands/MipCmdResponse.h"
-#include "mscl/MicroStrain/Inertial/InertialModels.h"
+#include "mscl/MicroStrain/MIP/MipModels.h"
 
 #include <string>
 

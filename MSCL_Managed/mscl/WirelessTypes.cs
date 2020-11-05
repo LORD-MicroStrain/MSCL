@@ -275,7 +275,10 @@ public class WirelessTypes : global::System.IDisposable {
     unit_resistance_ohm = 100,
     unit_resistance_milliohm = 101,
     unit_resistance_kiloohm = 102,
-    unit_velocity_mmPerSec = 103
+    unit_velocity_mmPerSec = 103,
+    unit_mass_grams = 104,
+    unit_mass_ton = 105,
+    unit_mass_tonne = 106
   }
 
   public enum ChannelType {

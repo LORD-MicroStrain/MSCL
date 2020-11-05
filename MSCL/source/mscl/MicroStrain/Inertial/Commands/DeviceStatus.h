@@ -9,7 +9,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "mscl/MicroStrain/MIP/Commands/MipCommand.h"
-#include "mscl/MicroStrain/Inertial/InertialModels.h"
+#include "mscl/MicroStrain/MIP/MipModels.h"
 
 namespace mscl
 {
@@ -35,7 +35,7 @@ namespace mscl
         //
         //Returns:
         //    DeviceStatus - object set up for getting the device status.
-        static DeviceStatus MakeGetCommand(InertialModels::NodeModel model, DeviceStatusData::StatusSelector statusSelector);
+        static DeviceStatus MakeGetCommand(MipModels::NodeModel model, DeviceStatusData::StatusSelector statusSelector);
 
         //Function: MakeGetBasicCommand
         //
@@ -44,7 +44,7 @@ namespace mscl
 		//
         //Returns:
         //    DeviceStatus - object set up for getting a basic status.
-        static DeviceStatus MakeGetBasicCommand(InertialModels::NodeModel model);
+        static DeviceStatus MakeGetBasicCommand(MipModels::NodeModel model);
 
         //Function: MakeGetDiagnosticCommand
         //
@@ -53,7 +53,7 @@ namespace mscl
 		//
         //Returns:
         //    DeviceStatus - object set up for getting a diagnostic status.
-        static DeviceStatus MakeGetDiagnosticCommand(InertialModels::NodeModel model);
+        static DeviceStatus MakeGetDiagnosticCommand(MipModels::NodeModel model);
 
         //Function: getResponseData
 		//
@@ -71,7 +71,7 @@ namespace mscl
     private:
         // Function: Constructor DeviceStatus
         //    Private constructor creates a DeviceStatus object.  Use Make___Command methods to create an object.
-		DeviceStatus(InertialModels::NodeModel model, DeviceStatusData::StatusSelector status_selector);
+		DeviceStatus(MipModels::NodeModel model, DeviceStatusData::StatusSelector status_selector);
 
         //Function: commandType
 		//
@@ -93,7 +93,7 @@ namespace mscl
 
         //Variable: m_model
         //    The inertial <NodeModel> of the device.
-        InertialModels::NodeModel m_model;
+        MipModels::NodeModel m_model;
 
         //Variable: m_statusSelector
         //    The <StatusSelector> to determine

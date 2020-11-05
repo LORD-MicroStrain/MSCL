@@ -348,8 +348,11 @@ namespace mscl
         //    unit_freq_kiloHertz                 - 64  - Kilohertz
         //    unit_irradiance_wattsPerSqMeter     - 47  - Watts per Square Meter
         //    unit_magneticFlux_gauss             - 89  - Gauss
+        //    unit_mass_grams                     - 104 - Grams
         //    unit_mass_kilograms                 - 18  - kilograms
         //    unit_mass_pound                     - 49  - Pound
+        //    unit_mass_ton                       - 105 - Ton
+        //    unit_mass_tonne                     - 106 - Tonne (Metric Ton)
         //    unit_other_bits                     - 1   - raw bits
         //    unit_other_mVperV                   - 33  - milliVolt/Volt
         //    unit_other_percentLife              - 36  - % Life
@@ -520,7 +523,10 @@ namespace mscl
             unit_resistance_ohm                 = 100,
             unit_resistance_milliohm            = 101,
             unit_resistance_kiloohm             = 102,
-            unit_velocity_mmPerSec              = 103
+            unit_velocity_mmPerSec              = 103,
+            unit_mass_grams                     = 104,
+            unit_mass_ton                       = 105,
+            unit_mass_tonne                     = 106
 
             //170 (0xAA) needs to be reserved - treated as none
             //255 (0xFF) needs to be reserved - treated as none

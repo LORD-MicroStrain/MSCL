@@ -10,12 +10,10 @@
 
 namespace mscl {
 
-public class InertialNode : global::System.IDisposable {
+public class InertialNode : MipNode {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
-  protected bool swigCMemOwn;
 
-  internal InertialNode(global::System.IntPtr cPtr, bool cMemoryOwn) {
-    swigCMemOwn = cMemoryOwn;
+  internal InertialNode(global::System.IntPtr cPtr, bool cMemoryOwn) : base(msclPINVOKE.InertialNode_SWIGUpcast(cPtr), cMemoryOwn) {
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
@@ -23,16 +21,7 @@ public class InertialNode : global::System.IDisposable {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  ~InertialNode() {
-    Dispose(false);
-  }
-
-  public void Dispose() {
-    Dispose(true);
-    global::System.GC.SuppressFinalize(this);
-  }
-
-  protected virtual void Dispose(bool disposing) {
+  protected override void Dispose(bool disposing) {
     lock(this) {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
@@ -41,83 +30,12 @@ public class InertialNode : global::System.IDisposable {
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
+      base.Dispose(disposing);
     }
   }
 
   public InertialNode(Connection connection) : this(msclPINVOKE.new_InertialNode(Connection.getCPtr(connection)), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public static string deviceName(string serial) {
-    string ret = msclPINVOKE.InertialNode_deviceName(serial);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public Connection connection() {
-    Connection ret = new Connection(msclPINVOKE.InertialNode_connection(swigCPtr), false);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public MipNodeFeatures features() {
-    MipNodeFeatures ret = new MipNodeFeatures(msclPINVOKE.InertialNode_features(swigCPtr), false);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public Timestamp lastCommunicationTime() {
-    Timestamp ret = new Timestamp(msclPINVOKE.InertialNode_lastCommunicationTime(swigCPtr), false);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public DeviceState lastDeviceState() {
-    DeviceState ret = (DeviceState)msclPINVOKE.InertialNode_lastDeviceState(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public Version firmwareVersion() {
-    Version ret = new Version(msclPINVOKE.InertialNode_firmwareVersion(swigCPtr), true);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public InertialModels.NodeModel model() {
-    InertialModels.NodeModel ret = (InertialModels.NodeModel)msclPINVOKE.InertialNode_model(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public string modelName() {
-    string ret = msclPINVOKE.InertialNode_modelName(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public string modelNumber() {
-    string ret = msclPINVOKE.InertialNode_modelNumber(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public string serialNumber() {
-    string ret = msclPINVOKE.InertialNode_serialNumber(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public string lotNumber() {
-    string ret = msclPINVOKE.InertialNode_lotNumber(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public string deviceOptions() {
-    string ret = msclPINVOKE.InertialNode_deviceOptions(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
   }
 
   public MipDataPackets getDataPackets(uint timeout, uint maxPackets) {
@@ -144,55 +62,6 @@ public class InertialNode : global::System.IDisposable {
     return ret;
   }
 
-  public void timeout(ulong timeout) {
-    msclPINVOKE.InertialNode_timeout__SWIG_0(swigCPtr, timeout);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public ulong timeout() {
-    ulong ret = msclPINVOKE.InertialNode_timeout__SWIG_1(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public string name() {
-    string ret = msclPINVOKE.InertialNode_name(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public bool ping() {
-    bool ret = msclPINVOKE.InertialNode_ping(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public void setToIdle() {
-    msclPINVOKE.InertialNode_setToIdle(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public bool cyclePower() {
-    bool ret = msclPINVOKE.InertialNode_cyclePower(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public void resume() {
-    msclPINVOKE.InertialNode_resume(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void saveSettingsAsStartup(MipCommands cmdIds) {
-    msclPINVOKE.InertialNode_saveSettingsAsStartup__SWIG_0(swigCPtr, MipCommands.getCPtr(cmdIds));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void saveSettingsAsStartup() {
-    msclPINVOKE.InertialNode_saveSettingsAsStartup__SWIG_1(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
   public void loadStartupSettings() {
     msclPINVOKE.InertialNode_loadStartupSettings(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -210,22 +79,6 @@ public class InertialNode : global::System.IDisposable {
 
   public void pollData(MipTypes.DataClass dataClass) {
     msclPINVOKE.InertialNode_pollData__SWIG_1(swigCPtr, (int)dataClass);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public MipCommandSet getConfigCommandBytes() {
-    MipCommandSet ret = new MipCommandSet(msclPINVOKE.InertialNode_getConfigCommandBytes(swigCPtr), true);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public void sendCommandBytes(MipCommandSet cmds) {
-    msclPINVOKE.InertialNode_sendCommandBytes__SWIG_0(swigCPtr, MipCommandSet.getCPtr(cmds));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void sendCommandBytes(MipCommandBytes cmd) {
-    msclPINVOKE.InertialNode_sendCommandBytes__SWIG_1(swigCPtr, MipCommandBytes.getCPtr(cmd));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -256,13 +109,13 @@ public class InertialNode : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public byte getCommunicationMode() {
+  public override byte getCommunicationMode() {
     byte ret = msclPINVOKE.InertialNode_getCommunicationMode(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void setCommunicationMode(byte communicationMode) {
+  public override void setCommunicationMode(byte communicationMode) {
     msclPINVOKE.InertialNode_setCommunicationMode(swigCPtr, communicationMode);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
@@ -273,18 +126,28 @@ public class InertialNode : global::System.IDisposable {
     return ret;
   }
 
+  public void enableDataStream(MipTypes.DataClass dataClass, bool enable, bool resumeStreaming) {
+    msclPINVOKE.InertialNode_enableDataStream__SWIG_0(swigCPtr, (int)dataClass, enable, resumeStreaming);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public void enableDataStream(MipTypes.DataClass dataClass, bool enable) {
-    msclPINVOKE.InertialNode_enableDataStream__SWIG_0(swigCPtr, (int)dataClass, enable);
+    msclPINVOKE.InertialNode_enableDataStream__SWIG_1(swigCPtr, (int)dataClass, enable);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void enableDataStream(MipTypes.DataClass dataClass) {
-    msclPINVOKE.InertialNode_enableDataStream__SWIG_1(swigCPtr, (int)dataClass);
+    msclPINVOKE.InertialNode_enableDataStream__SWIG_2(swigCPtr, (int)dataClass);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void resetFilter() {
     msclPINVOKE.InertialNode_resetFilter(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void runFilter() {
+    msclPINVOKE.InertialNode_runFilter(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -1004,25 +867,36 @@ public class InertialNode : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public InertialTypes.PpsInputOutput getPpsSource() {
-    InertialTypes.PpsInputOutput ret = (InertialTypes.PpsInputOutput)msclPINVOKE.InertialNode_getPpsSource(swigCPtr);
+  public InertialTypes.PpsSource getPpsSource() {
+    InertialTypes.PpsSource ret = (InertialTypes.PpsSource)msclPINVOKE.InertialNode_getPpsSource(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void setPpsSource(InertialTypes.PpsInputOutput ppsSource) {
+  public void setPpsSource(InertialTypes.PpsSource ppsSource) {
     msclPINVOKE.InertialNode_setPpsSource(swigCPtr, (int)ppsSource);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public InertialTypes.PpsInputOutput getPpsOutput() {
-    InertialTypes.PpsInputOutput ret = (InertialTypes.PpsInputOutput)msclPINVOKE.InertialNode_getPpsOutput(swigCPtr);
+  public OdometerConfiguration getOdometerConfig() {
+    OdometerConfiguration ret = new OdometerConfiguration(msclPINVOKE.InertialNode_getOdometerConfig(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void setPpsOutput(InertialTypes.PpsInputOutput ppsOutput) {
-    msclPINVOKE.InertialNode_setPpsOutput(swigCPtr, (int)ppsOutput);
+  public void setOdometerConfig(OdometerConfiguration config) {
+    msclPINVOKE.InertialNode_setOdometerConfig(swigCPtr, OdometerConfiguration.getCPtr(config));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public GpioConfiguration getGpioConfig(byte pin) {
+    GpioConfiguration ret = new GpioConfiguration(msclPINVOKE.InertialNode_getGpioConfig(swigCPtr, pin), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setGpioConfig(GpioConfiguration config) {
+    msclPINVOKE.InertialNode_setGpioConfig(swigCPtr, GpioConfiguration.getCPtr(config));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -1045,6 +919,17 @@ public class InertialNode : global::System.IDisposable {
 
   public void setRelativePositionReference(PositionReferenceConfiguration ref_) {
     msclPINVOKE.InertialNode_setRelativePositionReference(swigCPtr, PositionReferenceConfiguration.getCPtr(ref_));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public PositionOffset getSpeedMeasurementOffset() {
+    PositionOffset ret = new PositionOffset(msclPINVOKE.InertialNode_getSpeedMeasurementOffset(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setSpeedMeasurementOffset(PositionOffset offset) {
+    msclPINVOKE.InertialNode_setSpeedMeasurementOffset(swigCPtr, PositionOffset.getCPtr(offset));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

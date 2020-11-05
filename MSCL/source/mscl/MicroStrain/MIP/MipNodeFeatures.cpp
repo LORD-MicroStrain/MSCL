@@ -129,22 +129,22 @@ namespace mscl
             return VehicleModeTypes(0);
         }
 
-        InertialModels::NodeModel model = InertialModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
+        MipModels::NodeModel model = MipModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
         switch (model)
         {
         
-        case InertialModels::node_3dm_gx3_45:
+        case MipModels::node_3dm_gx3_45:
             return{
                 InertialTypes::VehicleModeType::PORTABLE_VEHICLE,
                 InertialTypes::VehicleModeType::AUTOMOTIVE_VEHICLE,
                 InertialTypes::VehicleModeType::AIRBORNE_VEHICLE
             };
 
-        case InertialModels::node_3dm_gx5_45:
-        case InertialModels::node_3dm_gx4_45:
-        case InertialModels::node_3dm_gq4_45:
-        case InertialModels::node_3dm_rq1_45_lt:
-        case InertialModels::node_3dm_rq1_45_st:
+        case MipModels::node_3dm_gx5_45:
+        case MipModels::node_3dm_gx4_45:
+        case MipModels::node_3dm_gq4_45:
+        case MipModels::node_3dm_rq1_45_lt:
+        case MipModels::node_3dm_rq1_45_st:
         default:
             return{
                 InertialTypes::VehicleModeType::PORTABLE_VEHICLE,
@@ -161,28 +161,28 @@ namespace mscl
             return{};
         }
 
-        InertialModels::NodeModel model = InertialModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
+        MipModels::NodeModel model = MipModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
         switch (model)
         {
-        case InertialModels::node_3dm_gq4_45:
-        case InertialModels::node_3dm_rq1_45_lt:
-        case InertialModels::node_3dm_rq1_45_st:
-        case InertialModels::node_3dm_gx5_10:
-        case InertialModels::node_3dm_cx5_10:
-        case InertialModels::node_3dm_cv5_10:
-        case InertialModels::node_3dm_gx5_15:
-        case InertialModels::node_3dm_gx5_25:
-        case InertialModels::node_3dm_cx5_15:
-        case InertialModels::node_3dm_cx5_25:
-        case InertialModels::node_3dm_cv5_15:
-        case InertialModels::node_3dm_cv5_25:
-        case InertialModels::node_3dm_gx4_15:
-        case InertialModels::node_3dm_gx4_25:
-        case InertialModels::node_3dm_gx5_35:
-        case InertialModels::node_3dm_gx5_45:
-        case InertialModels::node_3dm_cx5_35:
-        case InertialModels::node_3dm_cx5_45:
-        case InertialModels::node_3dm_gx4_45:
+        case MipModels::node_3dm_gq4_45:
+        case MipModels::node_3dm_rq1_45_lt:
+        case MipModels::node_3dm_rq1_45_st:
+        case MipModels::node_3dm_gx5_10:
+        case MipModels::node_3dm_cx5_10:
+        case MipModels::node_3dm_cv5_10:
+        case MipModels::node_3dm_gx5_15:
+        case MipModels::node_3dm_gx5_25:
+        case MipModels::node_3dm_cx5_15:
+        case MipModels::node_3dm_cx5_25:
+        case MipModels::node_3dm_cv5_15:
+        case MipModels::node_3dm_cv5_25:
+        case MipModels::node_3dm_gx4_15:
+        case MipModels::node_3dm_gx4_25:
+        case MipModels::node_3dm_gx5_35:
+        case MipModels::node_3dm_gx5_45:
+        case MipModels::node_3dm_cx5_35:
+        case MipModels::node_3dm_cx5_45:
+        case MipModels::node_3dm_gx4_45:
             return{
                 DeviceStatusData::StatusSelector::BASIC_STATUS_STRUCTURE,
                 DeviceStatusData::StatusSelector::DIAGNOSTIC_STATUS_STRUCTURE
@@ -196,38 +196,38 @@ namespace mscl
 
     bool MipNodeFeatures::useLegacyIdsForEnableDataStream() const
     {
-        InertialModels::NodeModel model = InertialModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
+        MipModels::NodeModel model = MipModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
         switch (model)
         {
-        case InertialModels::node_3dm:
-        case InertialModels::node_fasA:
-        case InertialModels::node_3dm_gx2:
-        case InertialModels::node_3dm_dh3:
-        case InertialModels::node_3dm_gx3_15:
-        case InertialModels::node_3dm_gx3_25:
-        case InertialModels::node_3dm_gx3_35:
-        case InertialModels::node_3dm_gx3_45:
-        case InertialModels::node_3dm_rq1_45_lt:
-        case InertialModels::node_3dm_gx4_15:
-        case InertialModels::node_3dm_gx4_25:
-        case InertialModels::node_3dm_gx4_45:
-        case InertialModels::node_3dm_rq1_45_st:
-        case InertialModels::node_mv5_ar:
-        case InertialModels::node_3dm_gx5_10:
-        case InertialModels::node_3dm_gx5_15:
-        case InertialModels::node_3dm_gx5_25:
-        case InertialModels::node_3dm_gx5_35:
-        case InertialModels::node_3dm_gx5_45:
-        case InertialModels::node_3dm_cv5_10:
-        case InertialModels::node_3dm_cv5_15:
-        case InertialModels::node_3dm_cv5_25:
-        case InertialModels::node_3dm_cv5_45:
-        case InertialModels::node_3dm_gq4_45:
-        case InertialModels::node_3dm_cx5_45:
-        case InertialModels::node_3dm_cx5_35:
-        case InertialModels::node_3dm_cx5_25:
-        case InertialModels::node_3dm_cx5_15:
-        case InertialModels::node_3dm_cx5_10:
+        case MipModels::node_3dm:
+        case MipModels::node_fasA:
+        case MipModels::node_3dm_gx2:
+        case MipModels::node_3dm_dh3:
+        case MipModels::node_3dm_gx3_15:
+        case MipModels::node_3dm_gx3_25:
+        case MipModels::node_3dm_gx3_35:
+        case MipModels::node_3dm_gx3_45:
+        case MipModels::node_3dm_rq1_45_lt:
+        case MipModels::node_3dm_gx4_15:
+        case MipModels::node_3dm_gx4_25:
+        case MipModels::node_3dm_gx4_45:
+        case MipModels::node_3dm_rq1_45_st:
+        case MipModels::node_mv5_ar:
+        case MipModels::node_3dm_gx5_10:
+        case MipModels::node_3dm_gx5_15:
+        case MipModels::node_3dm_gx5_25:
+        case MipModels::node_3dm_gx5_35:
+        case MipModels::node_3dm_gx5_45:
+        case MipModels::node_3dm_cv5_10:
+        case MipModels::node_3dm_cv5_15:
+        case MipModels::node_3dm_cv5_25:
+        case MipModels::node_3dm_cv5_45:
+        case MipModels::node_3dm_gq4_45:
+        case MipModels::node_3dm_cx5_45:
+        case MipModels::node_3dm_cx5_35:
+        case MipModels::node_3dm_cx5_25:
+        case MipModels::node_3dm_cx5_15:
+        case MipModels::node_3dm_cx5_10:
             return true;
 
         default:
@@ -242,12 +242,12 @@ namespace mscl
             return{ HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_NONE) };
         }
 
-        InertialModels::NodeModel model = InertialModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
+        MipModels::NodeModel model = MipModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
         switch (model)
         {
-        case InertialModels::node_3dm_gx4_45:
-        case InertialModels::node_3dm_gx3_45:
-        case InertialModels::node_3dm_gq4_45:
+        case MipModels::node_3dm_gx4_45:
+        case MipModels::node_3dm_gx3_45:
+        case MipModels::node_3dm_gq4_45:
             return{
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_NONE),
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_INTERNAL_MAGNETOMETER),
@@ -255,43 +255,43 @@ namespace mscl
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_EXTERNAL_MESSAGES)
             };
 
-        case InertialModels::node_3dm_gx5_25:
-        case InertialModels::node_3dm_gx4_25:
-        case InertialModels::node_3dm_cv5_25:
+        case MipModels::node_3dm_gx5_25:
+        case MipModels::node_3dm_gx4_25:
+        case MipModels::node_3dm_cv5_25:
             return{
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_NONE),
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_INTERNAL_MAGNETOMETER),
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_EXTERNAL_MESSAGES)
             };
 
-        case InertialModels::node_3dm_rq1_45_lt:
-        case InertialModels::node_3dm_rq1_45_st:
+        case MipModels::node_3dm_rq1_45_lt:
+        case MipModels::node_3dm_rq1_45_st:
             return{
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_NONE),
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_INTERNAL_GNSS),
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_EXTERNAL_MESSAGES)
             };
 
-        case InertialModels::node_3dm_gx5_15:
-        case InertialModels::node_3dm_cv5_15:
+        case MipModels::node_3dm_gx5_15:
+        case MipModels::node_3dm_cv5_15:
             return{
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_NONE),
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_EXTERNAL_MESSAGES)
             };
 
-        case InertialModels::node_3dm_gx5_45:
-        case InertialModels::node_3dm_gx5_35:
-        case InertialModels::node_3dm_gx5_10:
-        case InertialModels::node_3dm_gx4_15:
-        case InertialModels::node_3dm_gx3_15:
-        case InertialModels::node_3dm_gx3_25:
-        case InertialModels::node_3dm_gx3_35:
-        case InertialModels::node_3dm_gx2:
-        case InertialModels::node_3dm_cv5_45:
-        case InertialModels::node_3dm_cv5_10:
-        case InertialModels::node_3dm:
-        case InertialModels::node_fasA:
-        case InertialModels::node_3dm_dh3:
+        case MipModels::node_3dm_gx5_45:
+        case MipModels::node_3dm_gx5_35:
+        case MipModels::node_3dm_gx5_10:
+        case MipModels::node_3dm_gx4_15:
+        case MipModels::node_3dm_gx3_15:
+        case MipModels::node_3dm_gx3_25:
+        case MipModels::node_3dm_gx3_35:
+        case MipModels::node_3dm_gx2:
+        case MipModels::node_3dm_cv5_45:
+        case MipModels::node_3dm_cv5_10:
+        case MipModels::node_3dm:
+        case MipModels::node_fasA:
+        case MipModels::node_3dm_dh3:
         default:
             return{
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_NONE),
@@ -314,23 +314,23 @@ namespace mscl
             return{ EstimationControlOptions(0) };
         }
 
-        InertialModels::NodeModel model = InertialModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
+        MipModels::NodeModel model = MipModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
         switch (model)
         {
-        case InertialModels::node_3dm_gx5_15:
-        case InertialModels::node_3dm_gx4_25:
-        case InertialModels::node_3dm_gx4_15:
-        case InertialModels::node_3dm_gx3_45:
-        case InertialModels::node_3dm_cv5_25:
-        case InertialModels::node_3dm_cv5_15:
+        case MipModels::node_3dm_gx5_15:
+        case MipModels::node_3dm_gx4_25:
+        case MipModels::node_3dm_gx4_15:
+        case MipModels::node_3dm_gx3_45:
+        case MipModels::node_3dm_cv5_25:
+        case MipModels::node_3dm_cv5_15:
             return EstimationControlOptions(
                 InertialTypes::EstimationControlOption::ENABLE_GYRO_BIAS_ESTIMATION
             );
 
-        case InertialModels::node_3dm_gx4_45:
-        case InertialModels::node_3dm_rq1_45_lt:
-        case InertialModels::node_3dm_rq1_45_st:
-        case InertialModels::node_3dm_gq4_45:
+        case MipModels::node_3dm_gx4_45:
+        case MipModels::node_3dm_rq1_45_lt:
+        case MipModels::node_3dm_rq1_45_st:
+        case MipModels::node_3dm_gq4_45:
             return EstimationControlOptions(
                 InertialTypes::EstimationControlOption::ENABLE_GYRO_BIAS_ESTIMATION |
                 InertialTypes::EstimationControlOption::ENABLE_ACCEL_BIAS_ESTIMATION |
@@ -339,25 +339,25 @@ namespace mscl
                 InertialTypes::EstimationControlOption::ENABLE_GNSS_ANTENNA_OFFSET_ESTIMATION
             );
 
-        case InertialModels::node_3dm_gx5_25:
+        case MipModels::node_3dm_gx5_25:
             return EstimationControlOptions(
                 InertialTypes::EstimationControlOption::ENABLE_GYRO_BIAS_ESTIMATION |
                 InertialTypes::EstimationControlOption::ENABLE_HARD_IRON_AUTO_CALIBRATION |
                 InertialTypes::EstimationControlOption::ENABLE_SOFT_IRON_AUTO_CALIBRATION
             );
 
-        case InertialModels::node_3dm_gx5_45:
-        case InertialModels::node_3dm_gx5_35:
-        case InertialModels::node_3dm_gx5_10:
-        case InertialModels::node_3dm_gx3_15:
-        case InertialModels::node_3dm_gx3_25:
-        case InertialModels::node_3dm_gx3_35:
-        case InertialModels::node_3dm_gx2:
-        case InertialModels::node_3dm_cv5_45:
-        case InertialModels::node_3dm_cv5_10:
-        case InertialModels::node_3dm:
-        case InertialModels::node_fasA:
-        case InertialModels::node_3dm_dh3:
+        case MipModels::node_3dm_gx5_45:
+        case MipModels::node_3dm_gx5_35:
+        case MipModels::node_3dm_gx5_10:
+        case MipModels::node_3dm_gx3_15:
+        case MipModels::node_3dm_gx3_25:
+        case MipModels::node_3dm_gx3_35:
+        case MipModels::node_3dm_gx2:
+        case MipModels::node_3dm_cv5_45:
+        case MipModels::node_3dm_cv5_10:
+        case MipModels::node_3dm:
+        case MipModels::node_fasA:
+        case MipModels::node_3dm_dh3:
         default:
             return EstimationControlOptions(
                 InertialTypes::EstimationControlOption::ENABLE_GYRO_BIAS_ESTIMATION |
@@ -380,37 +380,37 @@ namespace mscl
             return{ AdaptiveMeasurementModes(0) };
         }
 
-        InertialModels::NodeModel model = InertialModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
+        MipModels::NodeModel model = MipModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
         switch (model)
         {
-            case InertialModels::node_3dm_gx4_45:
-            case InertialModels::node_3dm_gx4_25:
-            case InertialModels::node_3dm_gx4_15:
-            case InertialModels::node_3dm_gx3_45:
-            case InertialModels::node_3dm_gx3_35:
-            case InertialModels::node_3dm_gx3_25:
-            case InertialModels::node_3dm_gx3_15:
-            case InertialModels::node_3dm_gx2:
-            case InertialModels::node_3dm_rq1_45_lt:
-            case InertialModels::node_3dm_rq1_45_st:
-            case InertialModels::node_3dm_gq4_45:
-            case InertialModels::node_3dm:
-            case InertialModels::node_fasA:
-            case InertialModels::node_3dm_dh3:
+            case MipModels::node_3dm_gx4_45:
+            case MipModels::node_3dm_gx4_25:
+            case MipModels::node_3dm_gx4_15:
+            case MipModels::node_3dm_gx3_45:
+            case MipModels::node_3dm_gx3_35:
+            case MipModels::node_3dm_gx3_25:
+            case MipModels::node_3dm_gx3_15:
+            case MipModels::node_3dm_gx2:
+            case MipModels::node_3dm_rq1_45_lt:
+            case MipModels::node_3dm_rq1_45_st:
+            case MipModels::node_3dm_gq4_45:
+            case MipModels::node_3dm:
+            case MipModels::node_fasA:
+            case MipModels::node_3dm_dh3:
                 return {
                     InertialTypes::AdaptiveMeasurementMode::ADAPTIVE_MEASUREMENT_DISABLE,
                     InertialTypes::AdaptiveMeasurementMode::ADAPTIVE_MEASUREMENT_ENABLE_FIXED 
                 };
 
-            case InertialModels::node_3dm_gx5_45:
-            case InertialModels::node_3dm_gx5_35:
-            case InertialModels::node_3dm_gx5_25:
-            case InertialModels::node_3dm_gx5_15:
-            case InertialModels::node_3dm_gx5_10:
-            case InertialModels::node_3dm_cv5_45:
-            case InertialModels::node_3dm_cv5_25:
-            case InertialModels::node_3dm_cv5_15:
-            case InertialModels::node_3dm_cv5_10:
+            case MipModels::node_3dm_gx5_45:
+            case MipModels::node_3dm_gx5_35:
+            case MipModels::node_3dm_gx5_25:
+            case MipModels::node_3dm_gx5_15:
+            case MipModels::node_3dm_gx5_10:
+            case MipModels::node_3dm_cv5_45:
+            case MipModels::node_3dm_cv5_25:
+            case MipModels::node_3dm_cv5_15:
+            case MipModels::node_3dm_cv5_10:
             default:
                 return {
                     InertialTypes::AdaptiveMeasurementMode::ADAPTIVE_MEASUREMENT_DISABLE,
@@ -427,17 +427,17 @@ namespace mscl
             return{ AdaptiveFilterLevels(0) };
         }
 
-        InertialModels::NodeModel model = InertialModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
+        MipModels::NodeModel model = MipModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
         switch (model)
         {
-        case InertialModels::node_3dm_gx5_45:
-        case InertialModels::node_3dm_cv5_45:
+        case MipModels::node_3dm_gx5_45:
+        case MipModels::node_3dm_cv5_45:
             return{
                 InertialTypes::AutoAdaptiveFilteringLevel::FILTERING_OFF,
                 InertialTypes::AutoAdaptiveFilteringLevel::FILTERING_MODERATE
             };
 
-        case InertialModels::node_3dm_gq7:
+        case MipModels::node_3dm_gq7:
         default:
             return{
                 InertialTypes::AutoAdaptiveFilteringLevel::FILTERING_OFF,
@@ -448,33 +448,138 @@ namespace mscl
         }
     }
 
-    const PpsInputOutputOptions MipNodeFeatures::supportedPpsSourceOptions() const
+    const PpsSourceOptions MipNodeFeatures::supportedPpsSourceOptions() const
     {
         if (!supportsCommand(mscl::MipTypes::Command::CMD_PPS_SOURCE))
         {
-            return{ PpsInputOutputOptions(0) };
+            return{ PpsSourceOptions(0) };
         }
 
         return{
-            InertialTypes::PpsInputOutput::PPS_INPUT_RECEIVER_1,
-            InertialTypes::PpsInputOutput::PPS_INPUT_RECEIVER_2,
-            InertialTypes::PpsInputOutput::PPS_SOURCE_GENERATED,
-            InertialTypes::PpsInputOutput::PPS_IO_GPIO_1,
-            InertialTypes::PpsInputOutput::PPS_IO_GPIO_3
+            InertialTypes::PpsSource::PPS_DISABLED,
+            InertialTypes::PpsSource::PPS_RECEIVER_1,
+            InertialTypes::PpsSource::PPS_RECEIVER_2,
+            InertialTypes::PpsSource::PPS_GPIO,
+            InertialTypes::PpsSource::PPS_GENERATED
         };
     }
 
-    const PpsInputOutputOptions MipNodeFeatures::supportedPpsOutputOptions() const
+    const GpioPinModeOptions MipNodeFeatures::supportedGpioPinModes(GpioConfiguration::Feature feature, uint8 behavior) const
     {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_PPS_OUTPUT))
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_GPIO_CONFIGURATION))
         {
-            return{ PpsInputOutputOptions(0) };
+            return{ GpioPinModeOptions(0) };
         }
 
+        if ((feature == GpioConfiguration::ENCODER_FEATURE && behavior != GpioConfiguration::EncoderBehavior::ENCODER_UNUSED)
+            || (feature == GpioConfiguration::GPIO_FEATURE && behavior == GpioConfiguration::GpioBehavior::GPIO_INPUT_BEHAVIOR))
+        {
+            return{
+                GpioConfiguration::PinModes(0),
+                GpioConfiguration::PinModes::PULLUP,
+                GpioConfiguration::PinModes::PULLDOWN
+            };
+        }
+
+        if (feature == GpioConfiguration::GPIO_FEATURE
+            && (behavior == GpioConfiguration::GpioBehavior::GPIO_OUTPUT_LOW_BEHAVIOR || behavior == GpioConfiguration::GpioBehavior::GPIO_OUTPUT_HIGH_BEHAVIOR))
+        {
+            return{
+            GpioConfiguration::PinModes(0),
+            GpioConfiguration::PinModes::OPEN_DRAIN,
+            GpioConfiguration::PinModes(GpioConfiguration::PinModes::OPEN_DRAIN | GpioConfiguration::PinModes::PULLUP)
+            };
+        }
+
+        return{ GpioPinModeOptions(0) };
+    }
+
+    const GpioBehaviorModes MipNodeFeatures::supportedGpioBehaviors(GpioConfiguration::Feature feature) const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_GPIO_CONFIGURATION))
+        {
+            return{};
+        }
+
+        switch (feature)
+        {
+        case GpioConfiguration::Feature::GPIO_FEATURE:
+            return{
+            { GpioConfiguration::GpioBehavior::GPIO_INPUT_BEHAVIOR, supportedGpioPinModes(GpioConfiguration::GPIO_FEATURE, GpioConfiguration::GpioBehavior::GPIO_INPUT_BEHAVIOR) },
+            { GpioConfiguration::GpioBehavior::GPIO_OUTPUT_LOW_BEHAVIOR, supportedGpioPinModes(GpioConfiguration::GPIO_FEATURE, GpioConfiguration::GpioBehavior::GPIO_OUTPUT_LOW_BEHAVIOR) },
+            { GpioConfiguration::GpioBehavior::GPIO_OUTPUT_HIGH_BEHAVIOR, supportedGpioPinModes(GpioConfiguration::GPIO_FEATURE, GpioConfiguration::GpioBehavior::GPIO_OUTPUT_HIGH_BEHAVIOR) }
+            };
+
+        case GpioConfiguration::Feature::PPS_FEATURE:
+            return{
+                { GpioConfiguration::PpsBehavior::PPS_INPUT, GpioPinModeOptions(0) },
+                { GpioConfiguration::PpsBehavior::PPS_OUTPUT, GpioPinModeOptions(0) }
+            };
+
+        case GpioConfiguration::Feature::ENCODER_FEATURE:
+            return{
+                { GpioConfiguration::EncoderBehavior::ENCODER_A, supportedGpioPinModes(GpioConfiguration::ENCODER_FEATURE, GpioConfiguration::EncoderBehavior::ENCODER_A) },
+                { GpioConfiguration::EncoderBehavior::ENCODER_B, supportedGpioPinModes(GpioConfiguration::ENCODER_FEATURE, GpioConfiguration::EncoderBehavior::ENCODER_A) }
+            };
+
+        default:
+            return{};
+        }
+    }
+
+    const GpioFeatureBehaviors MipNodeFeatures::supportedGpioFeatures(uint8 pin) const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_GPIO_CONFIGURATION))
+        {
+            return{};
+        }
+
+        GpioPinOptions options = supportedGpioConfigurations();
+        
+        if (options.find(pin) == options.end())
+        {
+            return{};
+        }
+
+        return options[pin];
+    }
+
+    const GpioPinOptions MipNodeFeatures::supportedGpioConfigurations() const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_GPIO_CONFIGURATION))
+        {
+            return{};
+        }
+
+        GpioFeatureBehaviors pin1Features = {
+            { GpioConfiguration::Feature::UNUSED_FEATURE, {} },
+            { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
+            { GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE) },
+            { GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE) }
+        };
+
+        GpioFeatureBehaviors pin2Features = {
+            { GpioConfiguration::Feature::UNUSED_FEATURE, {} },
+            { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
+            { GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE) }
+        };
+
+        GpioFeatureBehaviors pin3Features = {
+            { GpioConfiguration::Feature::UNUSED_FEATURE, {} },
+            { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
+            { GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE) },
+        };
+
+        GpioFeatureBehaviors pin4Features = {
+            { GpioConfiguration::Feature::UNUSED_FEATURE, {} },
+            { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
+        };
+
         return{
-            InertialTypes::PpsInputOutput::PPS_OUTPUT_DISABLED,
-            InertialTypes::PpsInputOutput::PPS_IO_GPIO_1,
-            InertialTypes::PpsInputOutput::PPS_IO_GPIO_3
+            { 1, pin1Features },
+            { 2, pin2Features },
+            { 3, pin3Features },
+            { 4, pin4Features }
         };
     }
 }

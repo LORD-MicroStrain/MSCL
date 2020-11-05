@@ -146,9 +146,8 @@
 #include "../MicroStrain/Wireless/Features/BaseStationFeatures.h"
 #include "../MicroStrain/Inertial/EulerAngles.h"
 #include "../MicroStrain/Inertial/PositionOffset.h"
-#include "../MicroStrain/Inertial/InertialModels.h"
+#include "../MicroStrain/MIP/MipModels.h"
 #include "../MicroStrain/Displacement/DisplacementModels.h"
-#include "../MicroStrain/RTK/RTKModels.h"
 #include "../MicroStrain/MIP/MipTypes.h"
 #include "../MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "../MicroStrain/MIP/MipChannel.h"
@@ -156,6 +155,7 @@
 #include "../MicroStrain/MIP/Packets/MipDataPacket.h"
 #include "../MicroStrain/MIP/MipDataPoint.h"
 #include "../MicroStrain/MIP/MipNodeFeatures.h"
+#include "../MicroStrain/MIP/MipNode.h"
 #include "../MicroStrain/Inertial/InertialNode.h"
 #include "../MicroStrain/Displacement/DisplacementNode.h"
 #include "../MicroStrain/RTK/RTKNode.h"
@@ -231,9 +231,8 @@
 %include "../MicroStrain/Wireless/Features/BaseStationFeatures.h"
 %include "../MicroStrain/Inertial/EulerAngles.h"
 %include "../MicroStrain/Inertial/PositionOffset.h"
-%include "../MicroStrain/Inertial/InertialModels.h"
+%include "../MicroStrain/MIP/MipModels.h"
 %include "../MicroStrain/Displacement/DisplacementModels.h"
-%include "../MicroStrain/RTK/RTKModels.h"
 %include "../MicroStrain/MIP/MipTypes.h"
 %include "../MicroStrain/Inertial/ExposedInertialTypes.h"
 %include "../MicroStrain/MIP/MipChannel.h"
@@ -242,6 +241,7 @@
 %include "../MicroStrain/MIP/MipDataPoint.h"
 %include "../MicroStrain/MIP/Packets/MipDataPacket.h"
 %include "../MicroStrain/MIP/MipNodeFeatures.h"
+%include "../MicroStrain/MIP/MipNode.h"
 %include "../MicroStrain/Inertial/InertialNode.h"
 %include "../MicroStrain/Displacement/DisplacementNode.h"
 %include "../MicroStrain/RTK/RTKNode.h"
@@ -279,10 +279,12 @@ namespace std
     %template(EepromMap)                map<uint16_t, uint16_t>;
     %template(DerivedChannelMasks)      map<enum mscl::WirelessTypes::DerivedCategory, mscl::ChannelMask>;
     %template(DeviceStatusMap)          map<enum mscl::DeviceStatusValues, std::string>;
+    %template(DeviceStatusValueMap)     map<enum mscl::DeviceStatusValues, mscl::Value>;
     %template(SampleRates)              vector<mscl::SampleRate>;
     %template(ConfigIssues)             vector<mscl::ConfigIssue>;
     %template(MipChannelFields)         vector<mscl::MipTypes::ChannelField>;
     %template(MipCommands)              vector<mscl::MipTypes::Command>;
+    %template(MipChannelIdentifiers)    vector<mscl::MipChannelIdentifier>;
     %template(MipCommandSet)            vector<mscl::MipCommandBytes>;
     %template(MipFieldValues)           vector<mscl::Value>;
     %template(GnssReceivers)            vector<mscl::GnssReceiverInfo>;
@@ -305,7 +307,12 @@ namespace std
     %template(VehicleModeTypes)         vector<mscl::InertialTypes::VehicleModeType>;
     %template(AdaptiveFilterLevels)     vector<mscl::InertialTypes::AutoAdaptiveFilteringLevel>;
     %template(AdvancedLowPassFilterConfig)vector<mscl::AdvancedLowPassFilterData>;
-    %template(PpsInputOutputOptions)    vector<mscl::InertialTypes::PpsInputOutput>;
+    %template(PpsSourceOptions)         vector<mscl::InertialTypes::PpsSource>;
+    %template(GpioPinModeOptions)       vector<mscl::GpioConfiguration::PinModes>;
+    %template(GpioBehaviorModes)        map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>;
+    %template(GpioFeatureBehaviors)     map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>;
+    %template(GpioPinOptions)           map<uint8_t, map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>>;
+
     
 
 #ifndef UNIX_BUILD
