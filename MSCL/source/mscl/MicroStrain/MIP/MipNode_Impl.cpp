@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -21,6 +21,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "mscl/MicroStrain/Displacement/Commands/DisplacementOutputDataRate.h"
 #include "mscl/MicroStrain/Displacement/Commands/GetAnalogToDisplacementCals.h"
 #include "mscl/MicroStrain/RTK/Commands/DeviceStatusFlags.h"
+#include "mscl/MicroStrain/RTK/Commands/ActivationCode.h"
 #include "mscl/MicroStrain/Inertial/Commands/AccelBias.h"
 #include "mscl/MicroStrain/Inertial/Commands/AdaptiveMeasurement.h"
 #include "mscl/MicroStrain/Inertial/Commands/AdvancedLowPassFilterSettings.h"
@@ -81,7 +82,7 @@ namespace mscl
         m_packetCollector.requestDataAddedNotification(std::bind(&MipNode_Impl::onDataPacketAdded, this));
 
         //build the parser with the MipNode_Impl's packet collector and response collector
-        m_parser.reset(new MipParser(&m_packetCollector, m_responseCollector));
+        m_parser.reset(new MipParser(&m_packetCollector, m_responseCollector, &m_rawBytePacketCollector));
 
         //register the parse function with the connection
         m_connection.registerParser(std::bind(&MipNode_Impl::parseData, this, std::placeholders::_1));
@@ -106,6 +107,11 @@ namespace mscl
     DeviceState MipNode_Impl::lastDeviceState() const
     {
         return m_lastDeviceState;
+    }
+
+    void MipNode_Impl::resetNodeInfo()
+    {
+        m_nodeInfo.reset();
     }
 
     Version MipNode_Impl::firmwareVersion() const
@@ -209,12 +215,20 @@ namespace mscl
         }
     }
 
-    void MipNode_Impl::getDataPackets(std::vector<MipDataPacket>& packets, uint32 timeout, uint32 maxPackets)//maxPackets=0
+    void MipNode_Impl::getDataPackets(MipDataPackets& packets, uint32 timeout, uint32 maxPackets)//maxPackets=0
     {
         //check if a connection error has occurred
         m_connection.throwIfError();
 
         return m_packetCollector.getDataPackets(packets, timeout, maxPackets);
+    }
+
+    void MipNode_Impl::getRawBytePackets(RawBytePackets& packets, uint32 timeout, uint32 maxPackets)//maxPackets=0
+    {
+        //check if a connection error has occurred
+        m_connection.throwIfError();
+
+        return m_rawBytePacketCollector.getRawBytePackets(packets, timeout, maxPackets);
     }
 
     uint32 MipNode_Impl::totalPackets()
@@ -234,6 +248,12 @@ namespace mscl
 
     GenericMipCmdResponse MipNode_Impl::doCommand(GenericMipCommand::Response& response, const ByteStream& command, bool verifySupported) const
     {
+        RawBytePacket rawBytePacket;
+        rawBytePacket.payload(command.data());
+        rawBytePacket.source(RawBytePacket::FROM_SEND);
+        rawBytePacket.type(RawBytePacket::COMMAND_PACKET);
+
+        m_rawBytePacketCollector.addRawBytePacket(rawBytePacket);
         response.setResponseCollector(m_responseCollector);
         
         if(verifySupported)
@@ -266,6 +286,13 @@ namespace mscl
         GenericMipCommand::Response response(cmdId, m_responseCollector, ackNackResponse, dataResponse, "", responseDataDescriptor);
 
         ByteStream command = GenericMipCommand::buildCommand(cmdId, fieldData);
+
+        RawBytePacket rawBytePacket;
+        rawBytePacket.payload(command.data());
+        rawBytePacket.source(RawBytePacket::FROM_SEND);
+        rawBytePacket.type(RawBytePacket::COMMAND_PACKET);
+
+        m_rawBytePacketCollector.addRawBytePacket(rawBytePacket);
 
         //send the command to the device
         m_connection.write(command);
@@ -693,6 +720,23 @@ namespace mscl
                     setCmds.push_back(MipCommandBytes(cmd, s.data()));
                 }
                 break;
+            case MipTypes::CMD_COMM_PORT_SPEED:
+            {
+                CommPortInfo ports = features().getCommPortInfo();
+                std::vector<MipFieldValues> ids;
+                for (auto& port : ports)
+                {
+                    ids.push_back({ Value::UINT8(port.id) });
+                }
+
+                MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, ids);
+
+                if (cmdBytes.commands.size() > 0)
+                {
+                    setCmds.push_back(cmdBytes);
+                }
+                break;
+            }
             case MipTypes::CMD_LOWPASS_FILTER_SETTINGS:
                 {
                     MipCommandBytes cmdBytes(cmd);
@@ -1068,23 +1112,36 @@ namespace mscl
 
     void MipNode_Impl::sendCommandBytes(MipCommandSet& cmdSet)
     {
-        // if CMD_UART_BAUD_RATE is included, store a reference and set it last
+        // if CMD_UART_BAUD_RATE or CMD_COMM_PORT_SPEED are included, store a reference and set it last
         //  command seems to run long, and avoid interrupting connection
-        MipCommandBytes* setBaudRate = nullptr;
+        MipCommandBytes* uartBaudRate = nullptr;
+        MipCommandBytes* commPortSpeed = nullptr;
 
         for (size_t i = 0; i < cmdSet.size(); i++)
         {
             MipCommandBytes& cmds = cmdSet[i];
-            if (cmds.id == MipTypes::CMD_UART_BAUD_RATE) {
-                setBaudRate = &cmds;
+            if (cmds.id == MipTypes::CMD_UART_BAUD_RATE)
+            {
+                uartBaudRate = &cmds;
                 continue;
             }
+            else if (cmds.id == MipTypes::CMD_COMM_PORT_SPEED)
+            {
+                commPortSpeed = &cmds;
+                continue;
+            }
+
             processMipCommandBytes(cmds);
         }
 
-        if (setBaudRate != nullptr)
+        if (commPortSpeed != nullptr)
         {
-            processMipCommandBytes(*setBaudRate);
+            processMipCommandBytes(*commPortSpeed);
+        }
+
+        if (uartBaudRate != nullptr)
+        {
+            processMipCommandBytes(*uartBaudRate);
         }
     }
 
@@ -1728,8 +1785,23 @@ namespace mscl
 
     void MipNode_Impl::setUARTBaudRate(uint32 baudRate, bool resetConnection)
     {
-        UARTBaudRate baudRateCmd = UARTBaudRate::MakeSetCommand(baudRate);
-        SendCommand(baudRateCmd);
+        setUARTBaudRate(baudRate, 1, resetConnection);
+    }
+
+    void MipNode_Impl::setUARTBaudRate(uint32 baudRate, uint8 portId, bool resetConnection)
+    {
+        if (features().supportsCommand(MipTypes::Command::CMD_COMM_PORT_SPEED))
+        {
+            set(MipTypes::CMD_COMM_PORT_SPEED, {
+                Value::UINT8(portId),
+                Value::UINT32(baudRate)
+            });
+        }
+        else
+        {
+            UARTBaudRate baudRateCmd = UARTBaudRate::MakeSetCommand(baudRate);
+            SendCommand(baudRateCmd);
+        }
 
         if (resetConnection)
         {
@@ -1741,11 +1813,20 @@ namespace mscl
         }
     }
 
-    uint32 MipNode_Impl::getUARTBaudRate() const
+    uint32 MipNode_Impl::getUARTBaudRate(uint8 portId) const
     {
-        UARTBaudRate baudRateCmd = UARTBaudRate::MakeGetCommand();
-        GenericMipCmdResponse response = SendCommand(baudRateCmd);
-        return baudRateCmd.getResponseData(response);
+        if (features().supportsCommand(MipTypes::Command::CMD_COMM_PORT_SPEED))
+        {
+            return get(MipTypes::CMD_COMM_PORT_SPEED, {
+                Value::UINT8(portId)
+            })[1].as_uint32(); // first value echoes portId
+        }
+        else
+        {
+            UARTBaudRate baudRateCmd = UARTBaudRate::MakeGetCommand();
+            GenericMipCmdResponse response = SendCommand(baudRateCmd);
+            return baudRateCmd.getResponseData(response);
+        }
     }
 
     void MipNode_Impl::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data)
@@ -2054,6 +2135,13 @@ namespace mscl
         return r.parseResponse(doCommand(r, DeviceStatusFlags::buildCommand_get()));
     }
 
+    std::string MipNode_Impl::getActivationCode() const
+    {
+        ActivationCode::Response r(m_responseCollector);
+
+        return r.parseResponse(doCommand(r, ActivationCode::buildCommand_get()));
+    }
+
     MipFieldValues MipNode_Impl::get(MipTypes::Command cmdId) const
     {
         MipCommand command = MipCommand(cmdId,
@@ -2094,6 +2182,36 @@ namespace mscl
         SendCommand(command);
     }
 
+    void MipNode_Impl::loadStartup(MipTypes::Command cmdId)
+    {
+        MipCommand command = MipCommand(cmdId,
+            MipTypes::FunctionSelector::LOAD_STARTUP_SETTINGS);
+        SendCommand(command);
+    }
+
+    void MipNode_Impl::loadStartup(MipTypes::Command cmdId, MipFieldValues specifier)
+    {
+        MipCommand command = MipCommand(cmdId,
+            MipTypes::FunctionSelector::LOAD_STARTUP_SETTINGS,
+            specifier);
+        SendCommand(command);
+    }
+
+    void MipNode_Impl::loadDefault(MipTypes::Command cmdId)
+    {
+        MipCommand command = MipCommand(cmdId,
+            MipTypes::FunctionSelector::RESET_TO_DEFAULT);
+        SendCommand(command);
+    }
+
+    void MipNode_Impl::loadDefault(MipTypes::Command cmdId, MipFieldValues specifier)
+    {
+        MipCommand command = MipCommand(cmdId,
+            MipTypes::FunctionSelector::RESET_TO_DEFAULT,
+            specifier);
+        SendCommand(command);
+    }
+
     void MipNode_Impl::run(MipTypes::Command cmdId)
     {
         MipCommand command = MipCommand(cmdId);
@@ -2125,12 +2243,26 @@ namespace mscl
                 {
                 // detect set UART Baud Rate so that connection baud rate can be updated
                 case MipTypes::Command::CMD_UART_BAUD_RATE:
+                case MipTypes::Command::CMD_COMM_PORT_SPEED:
                 {
                     MipTypes::FunctionSelector fn = GenericMipCommand::peekFunctionSelector(cmd.commands[i]);
                     if (fn == MipTypes::FunctionSelector::USE_NEW_SETTINGS)
                     {
-                        uint32 baudRate = UARTBaudRate::peekParameterValue(cmd.commands[i]);
-                        setUARTBaudRate(baudRate);
+                        uint8 portId = 1;
+                        uint32 baudRate;
+                        if (cmd.id == MipTypes::Command::CMD_UART_BAUD_RATE)
+                        {
+                            baudRate = UARTBaudRate::peekParameterValue(cmd.commands[i]);
+                        }
+                        else // CMD_COMM_PORT_SPEED
+                        {
+                            DataBuffer d(cmd.commands[i]);
+                            d.skipBytes(GenericMipCommand::CMD_FN_SELCTOR_INDEX + 1);// read params after fn selector
+                            portId = d.read_uint8();
+                            baudRate = d.read_uint32();
+                        }
+
+                        setUARTBaudRate(baudRate, portId);
                         break;
                     }
 

@@ -103,6 +103,7 @@
     <Compile Include="mscl\ChannelGroups.cs" />
     <Compile Include="mscl\ChannelGroupSettings.cs" />
     <Compile Include="mscl\ChannelMask.cs" />
+    <Compile Include="mscl\CommPortInfo.cs" />
     <Compile Include="mscl\CommProtocols.cs" />
     <Compile Include="mscl\ComplementaryFilterData.cs" />
     <Compile Include="mscl\ConfigIssue.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="mscl\DataSweeps.cs" />
     <Compile Include="mscl\DefaultModes.cs" />
     <Compile Include="mscl\DerivedChannelMasks.cs" />
+    <Compile Include="mscl\DeviceCommPort.cs" />
     <Compile Include="mscl\DeviceInfo.cs" />
     <Compile Include="mscl\DeviceList.cs" />
     <Compile Include="mscl\DeviceMessageInfo.cs" />
@@ -185,6 +187,8 @@
     <Compile Include="mscl\MipChannelIdentifiers.cs" />
     <Compile Include="mscl\MipChannels.cs" />
     <Compile Include="mscl\MipCommandBytes.cs" />
+    <Compile Include="mscl\MipCommandParameters.cs" />
+    <Compile Include="mscl\MipCommandParamPair.cs" />
     <Compile Include="mscl\MipCommands.cs" />
     <Compile Include="mscl\MipCommandSet.cs" />
     <Compile Include="mscl\MipDataPacket.cs" />
@@ -216,6 +220,8 @@
     <Compile Include="mscl\PpsSourceOptions.cs" />
     <Compile Include="mscl\Quaternion.cs" />
     <Compile Include="mscl\RadioFeatures.cs" />
+    <Compile Include="mscl\RawBytePacket.cs" />
+    <Compile Include="mscl\RawBytePackets.cs" />
     <Compile Include="mscl\RfSweep.cs" />
     <Compile Include="mscl\RTKDeviceStatusFlags.cs" />
     <Compile Include="mscl\RTKNode.cs" />

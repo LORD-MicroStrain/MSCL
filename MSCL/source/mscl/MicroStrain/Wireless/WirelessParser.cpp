@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -33,15 +33,16 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    WirelessParser::WirelessParser(WirelessPacketCollector& packetCollector, std::weak_ptr<ResponseCollector> responseCollector):
+    WirelessParser::WirelessParser(WirelessPacketCollector& packetCollector, std::weak_ptr<ResponseCollector> responseCollector, RawBytePacketCollector& rawBytePacketCollector):
         m_packetCollector(packetCollector),
-        m_responseCollector(responseCollector)
+        m_responseCollector(responseCollector),
+        m_rawBytePacketCollector(rawBytePacketCollector)
     {}
 
     bool WirelessParser::processPacket(const WirelessPacket& packet, std::size_t lastReadPos)
     {
         //if this is a data packet
-        if(packet.isDataPacket())
+        if(WirelessPacket::isDataPacket(packet.type()))
         {
             //store the data packet with the packet collector
             m_packetCollector.addDataPacket(packet);
@@ -109,6 +110,10 @@ namespace mscl
 
     void WirelessParser::parse(DataBuffer& data, WirelessTypes::Frequency freq)
     {
+        mscl::Bytes rawBytes;
+
+        RawBytePacket rawBytePacket;
+
         ParsePacketResult parseResult;    //holds the result of verifying whether it was a valid ASPP packet or not
 
         WirelessPacket packet;
@@ -142,12 +147,33 @@ namespace mscl
                 //check if the packet is a valid ASPP packet, starting at this byte
                 parseResult = parseAsPacket(data, packet, freq);
 
+                size_t position = data.readPosition();
+                uint8 nextByte;
+
                 //check the result of the parseAsPacket command
                 switch(parseResult)
                 {
                     //good packet, process it and then look for the next
                     case parsePacketResult_completePacket:
+                        if (rawBytes.size() > 0)
+                        {
+                            addRawBytePacket(rawBytes, false, false, WirelessPacket::PacketType::packetType_NotFound);
+                        }
+                        position = data.readPosition();
+                        savepoint.revert();
+
+                        //Read out the "in packet" bytes into the rawBytes buffer...
+                        nextByte = data.peekByte();
+                        while (data.readPosition() < position)
+                        {
+                            rawBytes.push_back(data.read_uint8());
+                        }
+                        //savepoint.revert();
+
+                        //Push the "in packet" raw bytes into the debugPacket buffer as a ConnectionDebugData
+                        
                         processPacket(packet, lastReadPosition);
+                        addRawBytePacket(rawBytes, true, true, packet.type());
                         savepoint.commit();
                         continue;    //packet has been processed, move to the next byte after the packet
 
@@ -158,6 +184,10 @@ namespace mscl
                     //somethings incorrect in the packet, move passed the AA and start looking for the next packet
                     case parsePacketResult_invalidPacket:
                     case parsePacketResult_badChecksum:
+                        if (rawBytes.size() > 0)
+                        {
+                            addRawBytePacket(rawBytes, false, true, WirelessPacket::PacketType::packetType_NotFound);
+                        }
                         savepoint.commit();
                         break;
 
@@ -197,7 +227,8 @@ namespace mscl
                     //    Even though this looks like it could be the start of an ASPP packet,
                     //    if we find any full ASPP packets inside of the these bytes, we need 
                     //    to pick them up and move on.
-                    if(!findPacketInBytes(data, freq))
+                    WirelessPacket::PacketType type = findPacketInBytes(data, freq);
+                    if (type == WirelessPacket::PacketType::packetType_NotFound)
                     {
                         //if the read position in the bytes has been moved external to this function
                         if(data.bytesRemaining() != bytesRemaining)
@@ -211,7 +242,24 @@ namespace mscl
                     }
                     else
                     {
+                        size_t position = data.readPosition();
+
+                        if (rawBytes.size() > 0)
+                        {
+                            addRawBytePacket(rawBytes, false, false, WirelessPacket::PacketType::packetType_NotFound);
+                        }
+                        position = data.readPosition();
+                        savepoint.revert();
+
+                        //Read out the "in packet" bytes into the debugPacket buffer...
+                        while (data.readPosition() < position)
+                        {
+                            rawBytes.push_back(data.read_uint8());
+                        }
                         savepoint.commit();
+
+                        addRawBytePacket(rawBytes, true, true, type);
+                        
                     }
                 }
             }
@@ -228,13 +276,13 @@ namespace mscl
                 else
                 {
                     //move to the next byte
-                    data.read_uint8();
+                    rawBytes.push_back(data.read_uint8());
                 }
             }
         }
     }
 
-    bool WirelessParser::findPacketInBytes(DataBuffer& data, WirelessTypes::Frequency freq)
+    WirelessPacket::PacketType WirelessParser::findPacketInBytes(DataBuffer& data, WirelessTypes::Frequency freq)
     {
         //create a read save point for the DataBuffer
         ReadBufferSavePoint savePoint(&data);
@@ -260,7 +308,7 @@ namespace mscl
                     //was a data packet, or a response packet we were expecting
                     packetParseSavePoint.commit();
                     savePoint.commit();
-                    return true;
+                    return packet.type();
                 }
                 else
                 {
@@ -273,7 +321,7 @@ namespace mscl
         }
 
         //we didn't find any packet in the bytes buffer
-        return false;
+        return WirelessPacket::PacketType::packetType_NotFound;
     }
 
     WirelessParser::ParsePacketResult WirelessParser::parseAsPacket_ASPP_v1(DataBuffer& data, WirelessPacket& packet, WirelessTypes::Frequency freq)
@@ -797,6 +845,25 @@ namespace mscl
 
         //it is not a duplicate packet
         return false;
+    }
+
+    void WirelessParser::addRawBytePacket(Bytes& rawBytePacket, bool valid = true, bool packetFound = true, WirelessPacket::PacketType wirelessType = WirelessPacket::PacketType::packetType_NotFound)
+    {
+
+        RawBytePacket packet;
+        packet.payload(rawBytePacket);
+
+        if (valid)
+        {
+            packet.type(WirelessPacket::isDataPacket(wirelessType) ? RawBytePacket::DATA_PACKET : RawBytePacket::COMMAND_PACKET);
+        }
+        else
+        {
+            packet.type(packetFound ? RawBytePacket::INVALID_PACKET : RawBytePacket::NO_PACKET_FOUND);
+        }
+
+        m_rawBytePacketCollector.addRawBytePacket(packet);
+        rawBytePacket.clear();
     }
 
     const bool operator < (const WirelessParser::DuplicateCheckKey& key1, const WirelessParser::DuplicateCheckKey& key2)

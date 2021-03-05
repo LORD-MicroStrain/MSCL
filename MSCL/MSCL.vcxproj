@@ -671,6 +671,8 @@
     <ClInclude Include="source\mscl\Communication\Connection.h" />
     <ClInclude Include="source\mscl\Communication\ConnectionDebugData.h" />
     <ClInclude Include="source\mscl\Communication\Connection_Impl.h" />
+    <ClInclude Include="source\mscl\Communication\RawBytePacket.h" />
+    <ClInclude Include="source\mscl\Communication\RawBytePacketCollector.h" />
     <ClInclude Include="source\mscl\Communication\Devices.h" />
     <ClInclude Include="source\mscl\Communication\MockConnection.h" />
     <ClInclude Include="source\mscl\Communication\NativeSerialPort.h" />
@@ -784,6 +786,7 @@
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacketBuilder.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacketCollector.h" />
+    <ClInclude Include="source\mscl\MicroStrain\RTK\Commands\ActivationCode.h" />
     <ClInclude Include="source\mscl\MicroStrain\RTK\Commands\DeviceStatusFlags.h" />
     <ClInclude Include="source\mscl\MicroStrain\RTK\RTKNode.h" />
     <ClInclude Include="source\mscl\MicroStrain\Wireless\ArmedDataloggingNetwork.h" />
@@ -1001,6 +1004,8 @@
     <ClCompile Include="source\mscl\Communication\Connection.cpp" />
     <ClCompile Include="source\mscl\Communication\ConnectionDebugData.cpp" />
     <ClCompile Include="source\mscl\Communication\Devices.cpp" />
+    <ClCompile Include="source\mscl\Communication\RawBytePacket.cpp" />
+    <ClCompile Include="source\mscl\Communication\RawBytePacketCollector.cpp" />
     <ClCompile Include="source\mscl\Communication\SerialConnection.cpp" />
     <ClCompile Include="source\mscl\Communication\TcpIpConnection.cpp" />
     <ClCompile Include="source\mscl\Communication\UnixSocketConnection.cpp">
@@ -1107,6 +1112,7 @@
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacketBuilder.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacketCollector.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\RTK\Commands\ActivationCode.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\RTK\Commands\DeviceStatusFlags.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\RTK\RTKNode.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Wireless\ArmedDataloggingNetwork.cpp" />

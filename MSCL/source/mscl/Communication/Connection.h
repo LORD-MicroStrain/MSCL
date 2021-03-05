@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -11,6 +11,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include <memory>
 #include "mscl/Types.h"
 #include "ConnectionDebugData.h"
+#include "RawBytePacketCollector.h"
 
 namespace mscl
 {

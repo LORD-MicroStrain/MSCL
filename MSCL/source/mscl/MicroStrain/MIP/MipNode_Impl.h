@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -61,12 +61,16 @@ namespace mscl
         Connection m_connection;
 
         //Variable: m_packetCollector
-        //    The <MipPacketCollector> used to store interial data packets
+        //    The <MipPacketCollector> used to store inertial data packets
         MipPacketCollector m_packetCollector;
 
         //Variable: m_responseCollector
         //    The response collector used to find and store wireless command responses
         std::shared_ptr<ResponseCollector> m_responseCollector;
+
+        //Variable: m_rawBytePacketCollector
+        //    The <RawBytePacketCollector> associated with this parser and its parent device
+        mutable RawBytePacketCollector m_rawBytePacketCollector;
 
         //Variable: m_parser
         //    The <MipParser> in charge of parsing all incoming data to this device
@@ -180,6 +184,10 @@ namespace mscl
         //  Gets the last known <DeviceState> for the Node.
         DeviceState lastDeviceState() const;
 
+        //Function: resetNodeInfo
+        //  Clears cached info read from device (ie fw version, receiver info, etc.)
+        void resetNodeInfo();
+
         //Function: firmwareVersion
         //    Gets the firmware <Version> of the Node.
         Version firmwareVersion() const;
@@ -228,6 +236,18 @@ namespace mscl
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the Node.
         void getDataPackets(std::vector<MipDataPacket>& packets, uint32 timeout = 0, uint32 maxPackets = 0);
+
+        //Function: getRawBytePackets
+        //    Gets up to the requested amount of raw byte packets that have been collected.
+        //
+        //Parameters:
+        //    packets - A vector of <RawBytePacket> to hold the result.
+        //    timeout - the timeout, in milliseconds, to wait for the data if necessary (default of 0)
+        //    maxPackets - The maximum number of packets to return. If this is 0 (default), all packets will be returned.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: A connection error has occurred with the Node.
+        void getRawBytePackets(RawBytePackets& packets, uint32 timeout = 0, uint32 maxPackets = 0);
 
         //Function: totalPackets
         //    Gets the total number of data packets that are currently in the buffer.
@@ -1122,7 +1142,7 @@ namespace mscl
         //
         //Parameters:
         //    baudRate - The new baud rate.
-        //    resetConnection - Specifies whether the connection to the port should be automatically closed and re-opened at the new baud rate.
+        //    resetConnection - (Optional) Specifies whether the connection to the port should be automatically closed and re-opened at the new baud rate.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
@@ -1131,8 +1151,27 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setUARTBaudRate(uint32 baudRate, bool resetConnection = true);
 
+        //Function: setUARTBaudRate
+        //    Sets the baud rate.  The device can be unresponsive for as much as 250 ms following this command.
+        //    Important: The connection to the port will be automatically closed and re-opened at the new baud rate unless resetConnection parameter is false.
+        //
+        //Parameters:
+        //    baudRate - The new baud rate.
+        //    portId - Specify the port id to set the baud rate. This value is ignored if device does not support command: Comm Port Speed (0x01,0x09)
+        //    resetConnection - (Optional) Specifies whether the connection to the port should be automatically closed and re-opened at the new baud rate.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setUARTBaudRate(uint32 baudRate, uint8 portId, bool resetConnection = true);
+
         //Function: getUARTBaudRate
         //    Gets the current baud rate for the inertial device.
+        //
+        //Parameters:
+        //  portId - (Optional) Specify the port id to read the baud rate. This value is ignored if device does not support command: Comm Port Speed (0x01,0x09)
         //
         //Return:
         //    uint8 current baud rate.
@@ -1142,7 +1181,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        uint32 getUARTBaudRate() const;
+        uint32 getUARTBaudRate(uint8 portId = 1) const;
 
         //Function: setAdvancedLowPassFilterSettings
         //    Sets the advanced low-pass filter settings.
@@ -1779,6 +1818,19 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         RTKDeviceStatusFlags getDeviceStatusFlags() const;
 
+        //API Function: getActivationCode
+        //    Gets the Activation Code of the RTK device.
+        //
+        //Returns:
+        //    The 32 character Activation Code for the device.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        std::string getActivationCode() const;
+
         //API Function: get
         //    sends the specified command with the Read Current Settings function selector.
         //
@@ -1852,6 +1904,60 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void saveAsStartup(MipTypes::Command cmdId, MipFieldValues specifier);
+
+        //API Function: loadStartup
+        //    sends the specified command with the Load Startup Settings function selector.
+        //
+        //Parameter:
+        //    cmdId - the <MipTypes::Command> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void loadStartup(MipTypes::Command cmdId);
+
+        //API Function: loadStartup
+        //    sends the specified command with the Load Startup Settings function selector.
+        //
+        //Parameter:
+        //    cmdId - the <MipTypes::Command> to send.
+        //    specifier - <MipFieldValues> containing any additional specifier values to send with the command.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void loadStartup(MipTypes::Command cmdId, MipFieldValues specifier);
+
+        //API Function: loadDefault
+        //    sends the specified command with the Load Default Settings function selector.
+        //
+        //Parameter:
+        //    cmdId - the <MipTypes::Command> to send.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void loadDefault(MipTypes::Command cmdId);
+
+        //API Function: loadDefault
+        //    sends the specified command with the Load Default Settings function selector.
+        //
+        //Parameter:
+        //    cmdId - the <MipTypes::Command> to send.
+        //    specifier - <MipFieldValues> containing any additional specifier values to send with the command.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void loadDefault(MipTypes::Command cmdId, MipFieldValues specifier);
 
         //API Function: run
         //    Runs the specified command without a function selector. No data response expected.

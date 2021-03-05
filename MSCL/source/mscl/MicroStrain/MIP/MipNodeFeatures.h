@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -130,6 +130,13 @@ namespace mscl
         //    - <Error_Communication>: Timed out waiting for a response.
         //    - <Error_Connection>: A connection error has occurred with the Node.
         const GnssReceivers& gnssReceiverInfo() const;
+
+        //API Function: commPortInfo
+        //    Gets a list of <DeviceCommPort> info objects for each comm port on the device.
+        //
+        //Returns:
+        //    A <CommPortInfo> list containing <DeviceCommPort> info for supported receivers
+        const CommPortInfo getCommPortInfo() const;
 
         //API Function: useLegacyIdsForEnableDataStream
         //

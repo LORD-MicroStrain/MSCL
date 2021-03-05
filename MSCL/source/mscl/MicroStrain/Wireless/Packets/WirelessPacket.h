@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -51,6 +51,8 @@ namespace mscl
 
         //=====================================================================================================
         //Enums: PacketType
+        
+        //  packetType_NotFound                     - -2   - No Packet Found
         //  packetType_unknown                      - -1   - Unknown Packet Type
         //  packetType_nodeCommand                  - 0x00 - Node Command Packet
         //  packetType_nodeErrorReply               - 0x02 - Node Command Error Reply Packet
@@ -87,6 +89,7 @@ namespace mscl
         //=====================================================================================================
         enum PacketType
         {
+            packetType_NotFound                     = -2,
             packetType_unknown                      = -1,
         
             packetType_nodeCommand                  = 0x00,
@@ -214,7 +217,14 @@ namespace mscl
         //
         //Returns:
         //    true if the packet is a data packet, false otherwise.
-        bool isDataPacket() const;
+        //bool isDataPacket() const;
+
+        //Function: isDataPacket
+        //    Gets whether or not the packet is a Data packet.
+        //
+        //Returns:
+        //    true if the packet is a data packet, false otherwise.
+        static bool isDataPacket(PacketType type);
 
         //Function: isDiscoveryPacket
         //    Gets whether or not the packet is a Node Discovery packet.

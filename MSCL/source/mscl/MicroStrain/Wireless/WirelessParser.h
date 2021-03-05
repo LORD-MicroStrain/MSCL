@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -10,6 +10,8 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "mscl/Types.h"
 #include "Packets/WirelessPacket.h"
+
+#include "../../Communication/RawBytePacketCollector.h"
 
 namespace mscl
 {
@@ -55,7 +57,8 @@ namespace mscl
         //Parameters:
         //    packetCollector - the <WirelessPacketCollector> to be associated with this parser
         //    responseCollector - the <ResponseCollector> to be associated with this parser
-        WirelessParser(WirelessPacketCollector& packetCollector, std::weak_ptr<ResponseCollector> responseCollector);
+        //    rawBytePacketCollector - the <RawBytePacketCollector> to be associated with this parser
+        WirelessParser(WirelessPacketCollector& packetCollector, std::weak_ptr<ResponseCollector> responseCollector, RawBytePacketCollector& rawBytePacketCollector);
 
         WirelessParser() = delete;
         WirelessParser(const WirelessParser&) = delete;
@@ -73,6 +76,10 @@ namespace mscl
         //Variable: m_responseCollector
         //    The <ResponseCollector> associated with this parser and it's parent base station
         std::weak_ptr<ResponseCollector> m_responseCollector;
+
+        //Variable: m_rawBytePacketCollector
+        //    The <RawBytePacketCollector> associated with this parser and its parent device
+        RawBytePacketCollector& m_rawBytePacketCollector;
 
         //Variable: m_lastPacketMap
         //    A <DuplicateCheckMap> containing node addresses and their uniqueId values
@@ -187,8 +194,8 @@ namespace mscl
         //    freq - The <WirelessTypes::Frequency> that this data was collected on
         //
         //Returns:
-        //    true if an ASPP packet is found, false otherwise
-        bool findPacketInBytes(DataBuffer& data, WirelessTypes::Frequency freq);
+        //    type of ASPP Packet found
+        WirelessPacket::PacketType findPacketInBytes(DataBuffer& data, WirelessTypes::Frequency freq);
 
         //Function: parse
         //    Takes a <DataBuffer> and finds the next ASPP Wireless Packet, 
@@ -201,6 +208,8 @@ namespace mscl
         //    data - A <DataBuffer> containing bytes that should be parsed for MicroStrain packets.
         //    freq - The <WirelessTypes::Frequency> representing the radio frequency that this data was collected on.
         void parse(DataBuffer& data, WirelessTypes::Frequency freq);
+
+        void addRawBytePacket(Bytes& rawBytePacket, bool valid, bool packetFound, WirelessPacket::PacketType wirelessType);
     };
 
     //Function: operator <

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -1041,6 +1041,54 @@ namespace mscl
     {
     private:
         FieldParser_FilterAidingSummary() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const MipTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_OdometerScaleError
+    //    The field parser for the filter Odometer Scale Factor Error
+    class FieldParser_OdometerScaleError : public MipFieldParser
+    {
+    private:
+        FieldParser_OdometerScaleError() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const MipTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_OdometerScaleErrorUncert
+    //    The field parser for the filter Odometer Scale Factor Error Uncertainty
+    class FieldParser_OdometerScaleErrorUncert : public MipFieldParser
+    {
+    private:
+        FieldParser_OdometerScaleErrorUncert() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const MipTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_DualAntennaStatus
+    //    The field parser for the filter GNSS Dual Antenna Status data
+    class FieldParser_DualAntennaStatus : public MipFieldParser
+    {
+    private:
+        FieldParser_DualAntennaStatus() {};        //default constructor disabled
 
     public:
         virtual void parse(const MipDataField& field, MipDataPoints& result) const override;

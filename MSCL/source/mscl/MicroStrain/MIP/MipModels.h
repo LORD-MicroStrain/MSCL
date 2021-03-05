@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -48,6 +48,8 @@ namespace mscl
         //  node_3dm_cx5_25     - 6273 - 3DM-CX5-25
         //  node_3dm_cx5_15     - 6274 - 3DM-CX5-15
         //  node_3dm_cx5_10     - 6275 - 3DM-CX5-10
+        //  node_3dm_cl5_15     - 6280 - 3DM-CL5-15
+        //  node_3dm_cl5_25     - 6281 - 3DM-CL5-25
         //  node_3dm_gq7        - 6284 - 3DM-GQ7
         //  node_3dm_rtk        - 6285 - 3DM-RTK
         //=========================================================================
@@ -82,7 +84,9 @@ namespace mscl
             node_3dm_cx5_25     = 6273,     //3DM-CX5-25
             node_3dm_cx5_15     = 6274,     //3DM-CX5-15
             node_3dm_cx5_10     = 6275,     //3DM-CX5-10
-            node_3dm_gq7        = 6284,      //3DM-GQ7
+            node_3dm_cl5_15     = 6280,     //3DM-CL5-15
+            node_3dm_cl5_25     = 6281,     //3DM-CL5-25
+            node_3dm_gq7        = 6284,     //3DM-GQ7
             node_3dm_rtk        = 6285      //3DM-RTK
         };
 

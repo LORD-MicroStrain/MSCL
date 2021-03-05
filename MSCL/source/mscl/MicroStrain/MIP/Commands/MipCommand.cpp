@@ -89,10 +89,13 @@ namespace mscl
         case MipTypes::CMD_FACTORY_STREAMING:
         // 0x0D
         case MipTypes::CMD_EF_RUN_FILTER:
+        case MipTypes::CMD_EF_EXTERN_SPEED_UPDATE:
         // Ox0E
         case MipTypes::CMD_GNSS_RECEIVER_INFO:
             return {};
 
+        // 0x01
+        case MipTypes::CMD_COMM_PORT_SPEED:
         // 0x0C
         case MipTypes::CMD_MESSAGE_FORMAT:
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
@@ -174,6 +177,9 @@ namespace mscl
     {
         switch (id)
         {
+        // 0x01
+        case MipTypes::CMD_COMM_PORT_SPEED:
+            return "CommPortSpeed";
         // 0x0C
         case MipTypes::CMD_GET_BASE_RATE:
             return "GetDataBaseRate";
@@ -214,6 +220,8 @@ namespace mscl
             return "MultiAntennaOffset";
         case MipTypes::CMD_EF_RELATIVE_POSITION_REF:
             return "RelativePositionReference";
+        case MipTypes::CMD_EF_EXTERN_SPEED_UPDATE:
+            return "ExternalSpeedMeasurementUpdate";
         case MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET:
             return "SpeedMeasurementLeverArmOffset";
         case MipTypes::CMD_EF_VERTICAL_GYRO_CONSTRAINT:
@@ -248,6 +256,8 @@ namespace mscl
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
             return 0xBF;
 
+        // 0x01
+        case MipTypes::CMD_COMM_PORT_SPEED: //0x89
         // 0x0C
         case MipTypes::CMD_GET_BASE_RATE: //0x8E
         case MipTypes::CMD_MESSAGE_FORMAT: //0x8F
@@ -291,6 +301,14 @@ namespace mscl
     {
         switch (id)
         {
+        // 0x01
+        case MipTypes::CMD_COMM_PORT_SPEED:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint32
+            };
+
+
         // 0x0C
         case MipTypes::CMD_GET_BASE_RATE:
             return{

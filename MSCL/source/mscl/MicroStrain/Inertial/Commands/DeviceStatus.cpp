@@ -214,6 +214,8 @@ namespace mscl
         case MipModels::node_3dm_cx5_25:
         case MipModels::node_3dm_cv5_15:
         case MipModels::node_3dm_cv5_25:
+        case MipModels::node_3dm_cl5_15:
+        case MipModels::node_3dm_cl5_25:
         {
             returnData.systemState(static_cast<DeviceStatusData::SystemState>(dataBuffer.read_uint16()));
             returnData.systemTimerInMS = dataBuffer.read_uint32();

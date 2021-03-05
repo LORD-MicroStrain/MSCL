@@ -14,6 +14,56 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
+61.1.6 - 2021-03-04
+- Add support for inertial command Input Speed Measurement (0x0D,0x60)
+
+61.1.5 - 2021-02-12
+- Add support for inertial data field GNSS Dual Antenna Status (0x82,0x49)
+
+61.1.4 - 2020-01-28
+- Update RTKDeviceStatusFlags to reflect field definition changes
+    - Changed all bitmask constants (names and values)
+    - Changed all accessor functions
+    - ResetReason enum: changed HARDWARE_RESET to UNKNOWN, WATCHDOG_RESET to HARDWARE_ERROR_RESET
+
+61.1.3 - 2020-01-11
+- Add support for RTK Command Activation Code (0x0F, 0x07)
+
+61.1.2 - 2020-01-09
+- Add RawBytePacket collection for Wireless Base Stations
+    - Add RawBytePacket parsing to WirelessParser
+    - Add RawBytePacketCollector to BaseStation
+    - Add function BaseStation::getRawBytePackets() to get raw byte packets 
+
+61.1.1 - 2020-01-05
+- Add RawBytePacket collection for MipNodes
+    - Add RawBytePacket parsing to MipParser
+    - Add RawBytePacketCollector to MipNode
+    - Add function MipNode::getRawBytePackets() to get raw byte packets 
+
+61.1.0 - 2021-01-04
+- Add support for 3DM-CL5-15, -25
+
+61.0.20 - 2020-12-10
+- Add support for inertial data fields:
+    - Odometer Scale Factor Error (0x82,0x47)
+    - Odometer Scale Factor Error Uncertainty (0x82,0x48)
+
+61.0.19 - 2020-12-04
+- Add function MipNode::clearDeviceInfo() to reset the associated MipNodeInfo object, forcing that information to be re-read from the device
+
+61.0.18 - 2020-12-02
+- Moved loadStartupSettings() and loadFactoryDefaultSettings() from InertialNode to MipNode (base class) - now available on RTKNode as well
+- Add additional parameter options to MipNode::saveSettingsAsStartup(), loadStartupSettings(), loadFactoryDefaultSettings()
+    - list of command IDs (MipTypes::MipCommands) to perform the action for
+    - list of command IDs and parameters to perform the action for commands that require identifier(s) (message format, enable streaming, comm port speed, etc.)
+
+61.0.17 - 2020-12-01
+- Add support for MIP command Comm Port Speed (0x01,0x09) - automatically used by MipNode::get/setUARTBaudRate() if supported
+- Moved get/setUARTBaudRate from InertialNode to MipNode (base class) - now available on RTKNode as well
+    - add option port ID parameter
+- Add MipNodeFeatures::getCommPortInfo() returns supported port IDs and types of MIP device
+
 61.0.16 - 2020-11-02
 - Add function DeviceStatusData::asValueMap() to get a map of all populated inertial device status values for the target device
 - Update RTKDeviceStatusFlags to include additional values after definition change

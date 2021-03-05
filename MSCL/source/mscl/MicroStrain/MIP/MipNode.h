@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -139,6 +139,10 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: Information failed to be loaded for this Node.
         const MipNodeFeatures& features() const;
+
+        //API Function: clearDeviceInfo
+        //    Clears cached device info (ie fw version, model number, receiver info, etc.), forcing it to be re-read from the device the next time it is used.
+        void clearDeviceInfo();
 
         //API Function: lastCommunicationTime
         //    Gets the <Timestamp> for the last time MSCL communicated with the MipNode.
@@ -335,8 +339,18 @@ namespace mscl
         //API Function: saveSettingsAsStartup
         //    Save the current value of the specified settings commands as a startup setting.
         //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void saveSettingsAsStartup();
+
+        //API Function: saveSettingsAsStartup
+        //    Save the current value of the specified settings commands as a startup setting.
+        //
         //Parameters:
-        //  cmdIds - <MipTypes::MipCommands> list of IDs of the settings commands to save
+        //  cmdIds - (Optional) <MipTypes::MipCommands> list of IDs of the settings commands to save
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
@@ -346,13 +360,147 @@ namespace mscl
         void saveSettingsAsStartup(MipTypes::MipCommands cmdIds);
 
         //API Function: saveSettingsAsStartup
-        //  Saves all of the current settings as the Node's startup settings.
-        //  Note: A brief data disturbance may occur when calling this command.
+        //    Save the current value of the specified settings commands as a startup setting.
+        //
+        //Parameters:
+        //  cmdParams - (Optional) <MipCommandParameters> map of command IDs with associated parameters to save (if required, ie: message format, comm port speed, etc.)
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void saveSettingsAsStartup(MipCommandParameters cmdParams);
+
+        //API Function: loadStartupSettings
+        //  Loads the saved startup settings onto the Node as its current settings.
+        //  This function is useful if you have powered on the Node, made changes to its settings, and
+        //  want to get back to its startup settings.
         //
         //Exceptions:
         //  - <Error_Communication>: There was no response to the command. The command timed out.
         //  - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //  - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void saveSettingsAsStartup();
+        void loadStartupSettings();
+
+        //API Function: loadStartupSettings
+        //  Loads the saved startup settings onto the Node as its current settings.
+        //  This function is useful if you have powered on the Node, made changes to its settings, and
+        //  want to get back to its startup settings.
+        //
+        //Parameters:
+        //  cmdIds - (Optional) <MipTypes::MipCommands> list of IDs of the settings commands to load
+        //
+        //Exceptions:
+        //  - <Error_Communication>: There was no response to the command. The command timed out.
+        //  - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //  - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void loadStartupSettings(MipTypes::MipCommands cmdIds);
+
+        //API Function: loadStartupSettings
+        //  Loads the saved startup settings onto the Node as its current settings.
+        //  This function is useful if you have powered on the Node, made changes to its settings, and
+        //  want to get back to its startup settings.
+        //
+        //Parameters:
+        //  cmdParams - (Optional) <MipCommandParameters> map of command IDs with associated parameters to load (if required, ie: message format, comm port speed, etc.)
+        //
+        //Exceptions:
+        //  - <Error_Communication>: There was no response to the command. The command timed out.
+        //  - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //  - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void loadStartupSettings(MipCommandParameters cmdParams);
+
+        //API Function: loadFactoryDefaultSettings
+        //  Loads the factory default settings onto the Node as its current settings.
+        //
+        //Exceptions:
+        //  - <Error_Communication>: There was no response to the command. The command timed out.
+        //  - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //  - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void loadFactoryDefaultSettings();
+
+        //API Function: loadFactoryDefaultSettings
+        //  Loads the factory default settings onto the Node as its current settings.
+        //
+        //Parameters:
+        //  cmdIds - (Optional) <MipTypes::MipCommands> list of IDs of the settings commands to load
+        //
+        //Exceptions:
+        //  - <Error_Communication>: There was no response to the command. The command timed out.
+        //  - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //  - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void loadFactoryDefaultSettings(MipTypes::MipCommands cmdIds);
+
+        //API Function: loadFactoryDefaultSettings
+        //  Loads the factory default settings onto the Node as its current settings.
+        //
+        //Parameters:
+        //  cmdParams - (Optional) <MipCommandParameters> map of command IDs with associated parameters to load (if required, ie: message format, comm port speed, etc.)
+        //
+        //Exceptions:
+        //  - <Error_Communication>: There was no response to the command. The command timed out.
+        //  - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //  - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void loadFactoryDefaultSettings(MipCommandParameters cmdParams);
+
+        //API Function: setUARTBaudRate
+        //    Sets the baud rate.  The device can be unresponsive for as much as 250 ms following this command.
+        //    Important: The connection to the port will be automatically closed and re-opened at the new baud rate unless resetConnection parameter is false.
+        //
+        //Parameters:
+        //    baudRate - The new baud rate.
+        //    resetConnection - (Optional) Specifies whether the connection to the port should be automatically closed and re-opened at the new baud rate.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void setUARTBaudRate(uint32 baudRate, bool resetConnection = true);
+
+        //API Function: setUARTBaudRate
+        //    Sets the baud rate.  The device can be unresponsive for as much as 250 ms following this command.
+        //    Important: The connection to the port will be automatically closed and re-opened at the new baud rate unless resetConnection parameter is false.
+        //
+        //Parameters:
+        //    baudRate - The new baud rate.
+        //    portId - Specify the port id to set the baud rate. This value is ignored if device does not support command: Comm Port Speed (0x01,0x09)
+        //    resetConnection - (Optional) Specifies whether the connection to the port should be automatically closed and re-opened at the new baud rate.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
+        void setUARTBaudRate(uint32 baudRate, uint8 portId, bool resetConnection = true);
+
+        //API Function: getUARTBaudRate
+        //    Gets the current baud rate for the inertial device.
+        //
+        //Parameters:
+        //  portId - (Optional) Specify the port id to read the baud rate. This value is ignored if device does not support command: Comm Port Speed (0x01,0x09)
+        //
+        //Return:
+        //    uint8 current baud rate.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        uint32 getUARTBaudRate(uint8 portId = 1);
+
+        //API Function: getRawBytePackets
+        //    Gets up to the requested amount of raw byte packets that have been collected.
+        //
+        //Parameters:
+        //    packets - A vector of <RawBytePacket> to hold the result.
+        //    timeout - the timeout, in milliseconds, to wait for the data if necessary (default of 0)
+        //    maxPackets - The maximum number of packets to return. If this is 0 (default), all packets will be returned.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: A connection error has occurred with the Node.
+        RawBytePackets getRawBytePackets(uint32 timeout = 0, uint32 maxPackets = 0);
     };
 }

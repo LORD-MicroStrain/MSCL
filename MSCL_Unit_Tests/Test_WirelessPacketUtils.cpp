@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -58,7 +58,8 @@ BOOST_AUTO_TEST_CASE(WirelessPacketUtils_IntegrityCheckTrue_LDC)
 
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     WirelessPacketCollector packetCollector;
-    WirelessParser parser(packetCollector, rc);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(packetCollector, rc, rawBytePacketCollector);
 
     //build the packet by calling parseAsPacket
     BOOST_CHECK_EQUAL(parser.parseAsPacket(b, packet, WirelessTypes::freq_11), WirelessParser::parsePacketResult_completePacket);
@@ -95,7 +96,8 @@ BOOST_AUTO_TEST_CASE(WirelessPacketUtils_IntegrityCheckTrue_BufferedLdc)
 
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     WirelessPacketCollector packetCollector;
-    WirelessParser parser(packetCollector, rc);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(packetCollector, rc, rawBytePacketCollector);
 
     //build the packet by calling parseAsPacket
     BOOST_CHECK_EQUAL(parser.parseAsPacket(b, packet, WirelessTypes::freq_15), WirelessParser::parsePacketResult_completePacket);
@@ -133,7 +135,8 @@ BOOST_AUTO_TEST_CASE(WirelessPacketUtils_IntegrityCheckTrue_Ldc16ch)
 
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     WirelessPacketCollector packetCollector;
-    WirelessParser parser(packetCollector, rc);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(packetCollector, rc, rawBytePacketCollector);
 
     //build the packet by calling parseAsPacket
     BOOST_CHECK_EQUAL(parser.parseAsPacket(b, packet, WirelessTypes::freq_15), WirelessParser::parsePacketResult_completePacket);
@@ -176,7 +179,8 @@ BOOST_AUTO_TEST_CASE(WirelessPacketUtils_IntegrityCheckTrue_SyncSampling16ch_noC
 
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     WirelessPacketCollector packetCollector;
-    WirelessParser parser(packetCollector, rc);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(packetCollector, rc, rawBytePacketCollector);
 
     BOOST_CHECK_EQUAL(WirelessPacketUtils::packetIntegrityCheck(packet), false);
 }
@@ -218,7 +222,8 @@ BOOST_AUTO_TEST_CASE(WirelessPacketUtils_IntegrityCheckTrue_SyncSampling16ch)
 
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     WirelessPacketCollector packetCollector;
-    WirelessParser parser(packetCollector, rc);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(packetCollector, rc, rawBytePacketCollector);
 
     //build the packet by calling parseAsPacket
     BOOST_CHECK_EQUAL(parser.parseAsPacket(b, packet, WirelessTypes::freq_15), WirelessParser::parsePacketResult_completePacket);
@@ -255,7 +260,8 @@ BOOST_AUTO_TEST_CASE(WirelessPacketUtils_IntegrityCheckTrue_BufferedLdc16ch)
 
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     WirelessPacketCollector packetCollector;
-    WirelessParser parser(packetCollector, rc);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(packetCollector, rc, rawBytePacketCollector);
 
     //build the packet by calling parseAsPacket
     BOOST_CHECK_EQUAL(parser.parseAsPacket(b, packet, WirelessTypes::freq_15), WirelessParser::parsePacketResult_completePacket);
@@ -300,7 +306,8 @@ BOOST_AUTO_TEST_CASE(WirelessPacketUtils_IntegrityCheckTrue_AsyncDigital)
 
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     WirelessPacketCollector packetCollector;
-    WirelessParser parser(packetCollector, rc);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(packetCollector, rc, rawBytePacketCollector);
 
     //build the packet by calling parseAsPacket
     BOOST_CHECK_EQUAL(parser.parseAsPacket(b, packet, WirelessTypes::freq_15), WirelessParser::parsePacketResult_completePacket);
@@ -348,7 +355,8 @@ BOOST_AUTO_TEST_CASE(WirelessPacketUtils_IntegrityCheckTrue_AsyncDigitalAnalog)
 
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     WirelessPacketCollector packetCollector;
-    WirelessParser parser(packetCollector, rc);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(packetCollector, rc, rawBytePacketCollector);
 
     //build the packet by calling parseAsPacket
     BOOST_CHECK_EQUAL(parser.parseAsPacket(b, packet, WirelessTypes::freq_15), WirelessParser::parsePacketResult_completePacket);
@@ -395,7 +403,8 @@ BOOST_AUTO_TEST_CASE(WirelessPacketUtils_CorrectPacketType_TCLink)
 
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     WirelessPacketCollector packetCollector;
-    WirelessParser parser(packetCollector, rc);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(packetCollector, rc, rawBytePacketCollector);
 
     //build the packet by calling parseAsPacket
     BOOST_CHECK_EQUAL(parser.parseAsPacket(b, packet, WirelessTypes::freq_15), WirelessParser::parsePacketResult_completePacket);

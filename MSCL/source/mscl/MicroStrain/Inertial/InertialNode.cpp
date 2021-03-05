@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -28,16 +28,6 @@ namespace mscl
     uint32 InertialNode::totalPackets()
     {
         return m_impl->totalPackets();
-    }
-
-    void InertialNode::loadStartupSettings()
-    {
-        return m_impl->loadStartupSettings();
-    }
-
-    void InertialNode::loadFactoryDefaultSettings()
-    {
-        return m_impl->loadFactoryDefaultSettings();
     }
 
     void InertialNode::pollData(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields /*= MipTypes::MipChannelFields()*/)
@@ -425,16 +415,6 @@ namespace mscl
     bool InertialNode::getConingAndScullingEnable()
     {
         return m_impl->getConingAndScullingEnable();
-    }
-
-    void InertialNode::setUARTBaudRate(uint32 baudRate, bool resetConnection)
-    {
-        m_impl->setUARTBaudRate(baudRate, resetConnection);
-    }
-
-    uint32 InertialNode::getUARTBaudRate()
-    {
-        return m_impl->getUARTBaudRate();
     }
 
     void InertialNode::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterConfig& data)
@@ -932,6 +912,16 @@ namespace mscl
             Value::DOUBLE(ref.position.x()),
             Value::DOUBLE(ref.position.y()),
             Value::DOUBLE(ref.position.z()),
+        });
+    }
+
+    void InertialNode::sendExternalSpeedMeasurementUpdate(float tow, float speed, float unc)
+    {
+        m_impl->run(MipTypes::Command::CMD_EF_EXTERN_SPEED_UPDATE, {
+            Value::UINT8(1), // reserved (source, currently should always be 1)
+            Value::FLOAT(tow),
+            Value::FLOAT(speed),
+            Value::FLOAT(unc)
         });
     }
 

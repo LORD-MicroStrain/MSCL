@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -30,7 +30,8 @@ BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_NotEnoughData)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     MipPacketCollector packetCollector;
-    MipParser parser(&packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    MipParser parser(&packetCollector, responseCollector, &rawBytePacketCollector);
     MipPacket packet;
 
     //check that the result is mipParserResult_notEnoughData b/c there isn't enough data to be a MIP packet 
@@ -59,7 +60,8 @@ BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_InvalidPacket)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     MipPacketCollector packetCollector;
-    MipParser parser(&packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    MipParser parser(&packetCollector, responseCollector, &rawBytePacketCollector);
     MipPacket packet;
 
     //check that the result is mipParserResult_invalidPacket b/c the first bytes aren't the start of a packet
@@ -83,7 +85,8 @@ BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_BadChecksum)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     MipPacketCollector packetCollector;
-    MipParser parser(&packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    MipParser parser(&packetCollector, responseCollector, &rawBytePacketCollector);
     MipPacket packet;
 
     //check that the result is mipParserResult_badChecksum b/c the checksum is invalid
@@ -111,7 +114,8 @@ BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_CompletePacket)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     MipPacketCollector packetCollector;
-    MipParser parser(&packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    MipParser parser(&packetCollector, responseCollector, &rawBytePacketCollector);
     MipPacket packet;
 
     //check that the result is mipParserResult_completePacket b/c the packet is valid
@@ -144,7 +148,8 @@ BOOST_AUTO_TEST_CASE(InertialParser_parseAsPacket_badPayload)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     MipPacketCollector packetCollector;
-    MipParser parser(&packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    MipParser parser(&packetCollector, responseCollector, &rawBytePacketCollector);
     MipPacket packet;
 
     //check that the result is mipParserResult_badChecksum b/c the checksum is invalid
@@ -175,7 +180,8 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket_AfterBadBytes)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     MipPacketCollector packetCollector;
-    MipParser parser(&packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    MipParser parser(&packetCollector, responseCollector, &rawBytePacketCollector);
     MipPacket packet;
 
     MipDataPackets dataPackets;
@@ -190,7 +196,7 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket_AfterBadBytes)
     //calling getNextDataPacket now should return a legitimate MipDataPacket
     packetCollector.getDataPackets(dataPackets, 0);
 
-    BOOST_CHECK_EQUAL(dataPackets.at(0).isDataPacket(), true);
+    BOOST_CHECK_EQUAL(dataPackets.at(0).isDataPacket(dataPackets.at(0).descriptorSet()), true);
     BOOST_CHECK_EQUAL(dataPackets.at(0).descriptorSet(), DescriptorSet::DESC_SET_DATA_SENSOR);
 }
 
@@ -215,7 +221,8 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     MipPacketCollector packetCollector;
-    MipParser parser(&packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    MipParser parser(&packetCollector, responseCollector, &rawBytePacketCollector);
     MipPacket packet;
 
     MipDataPackets dataPackets;
@@ -230,7 +237,7 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket)
     //calling getNextDataPacket now should return a legitimate MipDataPacket
     packetCollector.getDataPackets(dataPackets);
 
-    BOOST_CHECK_EQUAL(dataPackets.at(0).isDataPacket(), true);
+    BOOST_CHECK_EQUAL(dataPackets.at(0).isDataPacket(dataPackets.at(0).descriptorSet()), true);
     BOOST_CHECK_EQUAL(dataPackets.at(0).descriptorSet(), DescriptorSet::DESC_SET_DATA_SENSOR);
 }
 
@@ -254,7 +261,8 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_responsePacket_notExpected)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     MipPacketCollector packetCollector;
-    MipParser parser(&packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    MipParser parser(&packetCollector, responseCollector, &rawBytePacketCollector);
     MipPacket packet;
 
     MipDataPackets dataPackets;
@@ -288,7 +296,8 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_badChecksum)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     MipPacketCollector packetCollector;
-    MipParser parser(&packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    MipParser parser(&packetCollector, responseCollector, &rawBytePacketCollector);
     MipPacket packet;
 
     MipDataPackets dataPackets;
@@ -336,7 +345,8 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_notEnoughData)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     MipPacketCollector packetCollector;
-    MipParser parser(&packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    MipParser parser(&packetCollector, responseCollector, &rawBytePacketCollector);
     MipPacket packet;
 
     MipDataPackets dataPackets;
@@ -376,7 +386,8 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket_AfterNotEnoughData)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     MipPacketCollector packetCollector;
-    MipParser parser(&packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    MipParser parser(&packetCollector, responseCollector, &rawBytePacketCollector);
     MipPacket packet;
 
     MipDataPackets dataPackets;
@@ -392,7 +403,7 @@ BOOST_AUTO_TEST_CASE(InertialParser_parse_validDataPacket_AfterNotEnoughData)
 
     BOOST_CHECK_EQUAL(dataPackets.size(), 1);
 
-    BOOST_CHECK_EQUAL(dataPackets.at(0).isDataPacket(), true);
+    BOOST_CHECK_EQUAL(dataPackets.at(0).isDataPacket(dataPackets.at(0).descriptorSet()), true);
     BOOST_CHECK_EQUAL(dataPackets.at(0).descriptorSet(), DescriptorSet::DESC_SET_DATA_SENSOR);
 }
 

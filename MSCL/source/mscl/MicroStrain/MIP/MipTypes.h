@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -100,7 +100,8 @@ namespace mscl
         //  CMD_GET_DESCRIPTOR_SETS                     - 0x0104    - Get Device Descriptor Sets
         //  CMD_BUILT_IN_TEST                           - 0x0105    - Device Build-In Test
         //  CMD_RESUME                                  - 0x0106    - Resume
-        //  CMD_GET_EXT_DESCRIPTOR_SETS                 - 0x0107    - Get Extedned Device Descriptor Sets
+        //  CMD_GET_EXT_DESCRIPTOR_SETS                 - 0x0107    - Get Extended Device Descriptor Sets
+        //  CMD_COMM_PORT_SPEED                         - 0x0109    - Comm Port Speed (Baud Rate)
         //  CMD_GPS_TIME_UPDATE                         - 0x0172    - GPS Time Update
         //  CMD_RESET                                   - 0x017E    - Device Reset
         //  CMD_POLL_SENSOR_DATA                        - 0x0C01    - Poll Sensor Data
@@ -196,6 +197,7 @@ namespace mscl
         //  CMD_EF_ADAPTIVE_FILTER_OPTIONS              - 0x0D53    - Estimation Filter - Adaptive Filter Options
         //  CMD_EF_MULTI_ANTENNA_OFFSET                 - 0x0D54    - Estimation Filter - Multi Antenna Offset
         //  CMD_EF_RELATIVE_POSITION_REF                - 0x0D55    - Estimation Filter - Reference Location for Relative Position Outputs
+        //  CMD_EF_EXTERN_SPEED_UPDATE                  - 0x0D60    - Estimation Filter - External Speed Measurement Update (Input Speed Measurement)
         //  CMD_EF_SPEED_MEASUREMENT_OFFSET             - 0x0D61    - Estimation Filter - Speed Measurement Lever Arm Offset
         //  CMD_EF_VERTICAL_GYRO_CONSTRAINT             - 0x0D62    - Estimation Filter - Vertical Gyro Constraint Enable/Disable
         //  CMD_EF_WHEELED_VEHICLE_CONSTRAINT           - 0x0D63    - Estimation Filter - Wheeled Vehicle Constraint Enable/Disable
@@ -209,6 +211,7 @@ namespace mscl
         //  CMD_DISPLACEMENT_OUTPUT_RATE                - 0x1102    - Displacement Output Data Rate
         //  CMD_DISPLACEMENT_DEVICE_TIME                - 0x1104    - Displacement Device Time
         //  CMD_RTK_DEVICE_STATUS_FLAGS                 - 0x0F01    - Get RTK Device Status Flags
+        //  CMD_RTK_ACTIVATION_CODE                     - 0x0F07    - Get RTK Activation Code
         enum Command
         {
             CMD_PING = 0x0101,
@@ -218,6 +221,7 @@ namespace mscl
             CMD_BUILT_IN_TEST = 0x0105,
             CMD_RESUME = 0x0106,
             CMD_GET_EXT_DESCRIPTOR_SETS = 0x0107,
+            CMD_COMM_PORT_SPEED = 0x0109,
             CMD_GPS_TIME_UPDATE = 0x0172,
             CMD_RESET = 0x017E,
             CMD_POLL_SENSOR_DATA = 0x0C01,
@@ -313,6 +317,7 @@ namespace mscl
             CMD_EF_ADAPTIVE_FILTER_OPTIONS = 0x0D53,
             CMD_EF_MULTI_ANTENNA_OFFSET = 0x0D54,
             CMD_EF_RELATIVE_POSITION_REF = 0x0D55,
+            CMD_EF_EXTERN_SPEED_UPDATE = 0x0D60,
             CMD_EF_SPEED_MEASUREMENT_OFFSET = 0x0D61,
             CMD_EF_VERTICAL_GYRO_CONSTRAINT = 0x0D62,
             CMD_EF_WHEELED_VEHICLE_CONSTRAINT = 0x0D63,
@@ -325,7 +330,8 @@ namespace mscl
             CMD_GET_ANALOG_DISPLACEMENT_CALS = 0x1101,
             CMD_DISPLACEMENT_OUTPUT_RATE = 0x1102,
             CMD_DISPLACEMENT_DEVICE_TIME = 0x1104,
-            CMD_RTK_DEVICE_STATUS_FLAGS = 0x0F01
+            CMD_RTK_DEVICE_STATUS_FLAGS = 0x0F01,
+            CMD_RTK_ACTIVATION_CODE = 0x0F07
         };
 
         //====================================================================================================
@@ -435,6 +441,9 @@ namespace mscl
         //  CH_FIELD_ESTFILTER_POSITION_AIDING_STATUS               - 0x8243    - GNSS Position Aiding Status
         //  CH_FIELD_ESTFILTER_ATTITUDE_AIDING_STATUS               - 0x8244    - GNSS Attitude Aiding Status
         //  CH_FIELD_ESTFILTER_AIDING_MEASURE_SUMMARY               - 0x8246    - Filter Aiding Measurement Summary
+        //  CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR          - 0x8247    - Odometer Scale Factor Error
+        //  CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR_UNCERT   - 0X8248    - Odometer Scale Factor Error Uncertainty
+        //  CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS             - 0x8249    - GNSS Dual Antenna Status
         //  CH_FIELD_ESTFILTER_SHARED_TICKS                         - 0x82D1    - Ticks
         //  CH_FIELD_ESTFILTER_SHARED_DELTA_TICKS                   - 0x82D2    - Delta Ticks
         //  CH_FIELD_ESTFILTER_SHARED_GPS_TIMESTAMP                 - 0x82D3    - GPS Timestamp
@@ -688,6 +697,9 @@ namespace mscl
             CH_FIELD_ESTFILTER_POSITION_AIDING_STATUS = 0x8243,
             CH_FIELD_ESTFILTER_ATTITUDE_AIDING_STATUS = 0x8244,
             CH_FIELD_ESTFILTER_AIDING_MEASURE_SUMMARY = 0x8246,
+            CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR          = 0x8247,
+            CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR_UNCERT   = 0X8248,
+            CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS             = 0x8249,
             CH_FIELD_ESTFILTER_SHARED_TICKS           = 0x82D1,
             CH_FIELD_ESTFILTER_SHARED_DELTA_TICKS     = 0x82D2,
             CH_FIELD_ESTFILTER_SHARED_GPS_TIMESTAMP   = 0x82D3,
@@ -842,103 +854,105 @@ namespace mscl
         //    The enums for different MIP Channel Qualifiers.
         //    This combined with the <ChannelField> produces a unique identifier for each individual channel that is collected.
         //
-        //    CH_UNKNOWN                    - 0  - Unknown Channel
-        //    CH_X                          - 1  - X
-        //    CH_Y                          - 2  - Y
-        //    CH_Z                          - 3  - Z
-        //    CH_MATRIX                     - 4  - Matrix
-        //    CH_QUATERNION                 - 5  - Quaternion
-        //    CH_ROLL                       - 6  - Roll
-        //    CH_PITCH                      - 7  - Pitch
-        //    CH_YAW                        - 8  - Yaw
-        //    CH_TICK                       - 9  - Tick
-        //    CH_TIMESTAMP                  - 10 - Timestamp
-        //    CH_STATUS                     - 11 - Status
-        //    CH_TIME_OF_WEEK               - 12 - Time of Week
-        //    CH_WEEK_NUMBER                - 13 - Week Number
-        //    CH_LATITUDE                   - 14 - Latitude
-        //    CH_LONGITUDE                  - 15 - Longitude
-        //    CH_HEIGHT_ABOVE_ELLIPSOID     - 16 - Height Above Ellipsoid
-        //    CH_HEIGHT_ABOVE_MSL           - 17 - Height Above MSL
-        //    CH_HEIGHT                     - 81 - Height (Other reference point)
-        //    CH_HORIZONTAL_ACCURACY        - 18 - Horizontal Accuracy
-        //    CH_VERTICAL_ACCURACY          - 19 - Vertical Accuracy
-        //    CH_POSITION_ACCURACY          - 20 - Position Accuracy
-        //    CH_NORTH                      - 21 - North
-        //    CH_EAST                       - 22 - East
-        //    CH_DOWN                       - 23 - Down
-        //    CH_SPEED                      - 24 - Speed
-        //    CH_GROUND_SPEED               - 25 - Ground Speed
-        //    CH_HEADING                    - 26 - Heading
-        //    CH_SPEED_ACCURACY             - 27 - Speed Accuracy
-        //    CH_HEADING_ACCURACY           - 28 - Heading Accuracy
-        //    CH_VELOCITY_ACCURACY          - 29 - Velocity Accuracy
-        //    CH_GEOMETRIC_DOP              - 30 - Geometric DOP
-        //    CH_POSITION_DOP               - 31 - Position DOP
-        //    CH_HORIZONTAL_DOP             - 32 - Horizontal DOP
-        //    CH_VERTICAL_DOP               - 33 - Vertical DOP
-        //    CH_TIME_DOP                   - 34 - Time DOP
-        //    CH_NORTHING_DOP               - 35 - Northing DOP
-        //    CH_EASTING_DOP                - 36 - Easting DOP
-        //    CH_FLAGS                      - 37 - Flags
-        //    CH_BIAS                       - 38 - Bias
-        //    CH_DRIFT                      - 39 - Drift
-        //    CH_ACCURACY_ESTIMATE          - 40 - Accuracy Estimate
-        //    CH_FIX_TYPE                   - 41 - Fix Type
-        //    CH_SV_COUNT                   - 42 - Number of Space Vehicles used for solution
-        //    CH_CHANNEL                    - 43 - Channel Number
-        //    CH_ID                         - 44 - ID Number
-        //    CH_CARRIER_TO_NOISE_RATIO     - 45 - Carrier to Noise Ratio
-        //    CH_AZIMUTH                    - 46 - Azimuth
-        //    CH_ELEVATION                  - 47 - Elevation
-        //    CH_SENSOR_STATE               - 48 - Sensor State
-        //    CH_ANTENNA_STATE              - 49 - Antenna State
-        //    CH_ANTENNA_POWER              - 50 - Antenna Power
-        //    CH_FILTER_STATE               - 51 - Filter State
-        //    CH_DYNAMICS_MODE              - 52 - Dynamics Mode
-        //    CH_MAGNITUDE                  - 53 - Magnitude
-        //    CH_HEADING_UNCERTAINTY        - 54 - Heading Uncertainty
-        //    CH_SOURCE                     - 55 - Source
-        //    CH_INCLINATION                - 56 - Inclination
-        //    CH_DECLINATION                - 57 - Declination
-        //    CH_PRESSURE                   - 58 - Pressure
-        //    CH_AGE                        - 59 - Age
-        //    CH_NUM_CHANNELS               - 60 - Number of Channels
-        //    CH_CORRECTION                 - 61 - Correction
-        //    CH_RATE_CORRECTION            - 62 - Rate Correction
-        //    CH_GEOMETRIC_ALTITUDE         - 63 - Geometric Altitude
-        //    CH_GEOPOTENTIAL_ALTITUDE      - 64 - Geopotential Altitude
-        //    CH_TEMPERATURE                - 65 - Temperature
-        //    CH_DENSITY                    - 66 - Density
-        //    CH_ALTITUDE                   - 67 - Altitude
-        //    CH_DISPLACEMENT               - 68 - Displacement
-        //    CH_MAX_TEMP                   - 69 - Max Temp
-        //    CH_MIN_TEMP                   - 70 - Min Temp
-        //    CH_MEAN_TEMP                  - 71 - Mean Temp
-        //    CH_BIAS_ACCURACY_ESTIMATE     - 72 - Bias Accuracy Estimate
-        //    CH_DRIFT_ACCURACY_ESTIMATE    - 73 - Drift Accuracy Estimate
-        //    CH_SECONDS                    - 74 - Seconds
-        //    CH_NUM_PACKETS                - 76 - Num Packets
-        //    CH_GPS_CORRECTION_LATENCY     - 77 - GPS Correction Latency
-        //    CH_GLONASS_CORRECTION_LATENCY - 78 - Glonass Correction Latency
-        //    CH_GALILEO_CORRECTION_LATENCY - 79 - Galileo Correction Latency
-        //    CH_BEIDOU_CORRECTION_LATENCY  - 80 - Beidou Correction Latency
-        //    CH_HEALTH                     - 82 - Satellite Health
-        //    CH_INDEX                      - 83 - Index
-        //    CH_COUNT                      - 84 - Count
-        //    CH_SIGNAL_STRENGTH            - 85 - Signal Strength
-        //    CH_SIGNAL_QUALITY             - 86 - Signal Quality
-        //    CH_RANGE                      - 87 - Range
-        //    CH_RANGE_UNC                  - 88 - Range Uncertainty
-        //    CH_ALPHA                      - 90 - Alpha
-        //    CH_BETA                       - 91 - Beta
-        //    CH_DISTURBANCE_FLAGS          - 92 - Disturbance Flags
-        //    CH_CARRIER_PHASE              - 93 - Carrier Phase
-        //    CH_CARRIER_PHASE_UNC          - 94 - Carrier Phase Uncertainty
-        //    CH_DOPPLER                    - 95 - Doppler
-        //    CH_DOPPLER_UNC                - 96 - Doppler Uncertainty
-        //    CH_DELTA_TIME                 - 97 - Delta Time
-        //    CH_DELTA_TICK                 - 98 - Delta Tick
+        //    CH_UNKNOWN                    - 0   - Unknown Channel
+        //    CH_X                          - 1   - X
+        //    CH_Y                          - 2   - Y
+        //    CH_Z                          - 3   - Z
+        //    CH_MATRIX                     - 4   - Matrix
+        //    CH_QUATERNION                 - 5   - Quaternion
+        //    CH_ROLL                       - 6   - Roll
+        //    CH_PITCH                      - 7   - Pitch
+        //    CH_YAW                        - 8   - Yaw
+        //    CH_TICK                       - 9   - Tick
+        //    CH_TIMESTAMP                  - 10  - Timestamp
+        //    CH_STATUS                     - 11  - Status
+        //    CH_TIME_OF_WEEK               - 12  - Time of Week
+        //    CH_WEEK_NUMBER                - 13  - Week Number
+        //    CH_LATITUDE                   - 14  - Latitude
+        //    CH_LONGITUDE                  - 15  - Longitude
+        //    CH_HEIGHT_ABOVE_ELLIPSOID     - 16  - Height Above Ellipsoid
+        //    CH_HEIGHT_ABOVE_MSL           - 17  - Height Above MSL
+        //    CH_HEIGHT                     - 81  - Height (Other reference point)
+        //    CH_HORIZONTAL_ACCURACY        - 18  - Horizontal Accuracy
+        //    CH_VERTICAL_ACCURACY          - 19  - Vertical Accuracy
+        //    CH_POSITION_ACCURACY          - 20  - Position Accuracy
+        //    CH_NORTH                      - 21  - North
+        //    CH_EAST                       - 22  - East
+        //    CH_DOWN                       - 23  - Down
+        //    CH_SPEED                      - 24  - Speed
+        //    CH_GROUND_SPEED               - 25  - Ground Speed
+        //    CH_HEADING                    - 26  - Heading
+        //    CH_SPEED_ACCURACY             - 27  - Speed Accuracy
+        //    CH_HEADING_ACCURACY           - 28  - Heading Accuracy
+        //    CH_VELOCITY_ACCURACY          - 29  - Velocity Accuracy
+        //    CH_GEOMETRIC_DOP              - 30  - Geometric DOP
+        //    CH_POSITION_DOP               - 31  - Position DOP
+        //    CH_HORIZONTAL_DOP             - 32  - Horizontal DOP
+        //    CH_VERTICAL_DOP               - 33  - Vertical DOP
+        //    CH_TIME_DOP                   - 34  - Time DOP
+        //    CH_NORTHING_DOP               - 35  - Northing DOP
+        //    CH_EASTING_DOP                - 36  - Easting DOP
+        //    CH_FLAGS                      - 37  - Flags
+        //    CH_BIAS                       - 38  - Bias
+        //    CH_DRIFT                      - 39  - Drift
+        //    CH_ACCURACY_ESTIMATE          - 40  - Accuracy Estimate
+        //    CH_FIX_TYPE                   - 41  - Fix Type
+        //    CH_SV_COUNT                   - 42  - Number of Space Vehicles used for solution
+        //    CH_CHANNEL                    - 43  - Channel Number
+        //    CH_ID                         - 44  - ID Number
+        //    CH_CARRIER_TO_NOISE_RATIO     - 45  - Carrier to Noise Ratio
+        //    CH_AZIMUTH                    - 46  - Azimuth
+        //    CH_ELEVATION                  - 47  - Elevation
+        //    CH_SENSOR_STATE               - 48  - Sensor State
+        //    CH_ANTENNA_STATE              - 49  - Antenna State
+        //    CH_ANTENNA_POWER              - 50  - Antenna Power
+        //    CH_FILTER_STATE               - 51  - Filter State
+        //    CH_DYNAMICS_MODE              - 52  - Dynamics Mode
+        //    CH_MAGNITUDE                  - 53  - Magnitude
+        //    CH_HEADING_UNCERTAINTY        - 54  - Heading Uncertainty
+        //    CH_SOURCE                     - 55  - Source
+        //    CH_INCLINATION                - 56  - Inclination
+        //    CH_DECLINATION                - 57  - Declination
+        //    CH_PRESSURE                   - 58  - Pressure
+        //    CH_AGE                        - 59  - Age
+        //    CH_NUM_CHANNELS               - 60  - Number of Channels
+        //    CH_CORRECTION                 - 61  - Correction
+        //    CH_RATE_CORRECTION            - 62  - Rate Correction
+        //    CH_GEOMETRIC_ALTITUDE         - 63  - Geometric Altitude
+        //    CH_GEOPOTENTIAL_ALTITUDE      - 64  - Geopotential Altitude
+        //    CH_TEMPERATURE                - 65  - Temperature
+        //    CH_DENSITY                    - 66  - Density
+        //    CH_ALTITUDE                   - 67  - Altitude
+        //    CH_DISPLACEMENT               - 68  - Displacement
+        //    CH_MAX_TEMP                   - 69  - Max Temp
+        //    CH_MIN_TEMP                   - 70  - Min Temp
+        //    CH_MEAN_TEMP                  - 71  - Mean Temp
+        //    CH_BIAS_ACCURACY_ESTIMATE     - 72  - Bias Accuracy Estimate
+        //    CH_DRIFT_ACCURACY_ESTIMATE    - 73  - Drift Accuracy Estimate
+        //    CH_SECONDS                    - 74  - Seconds
+        //    CH_NUM_PACKETS                - 76  - Num Packets
+        //    CH_GPS_CORRECTION_LATENCY     - 77  - GPS Correction Latency
+        //    CH_GLONASS_CORRECTION_LATENCY - 78  - Glonass Correction Latency
+        //    CH_GALILEO_CORRECTION_LATENCY - 79  - Galileo Correction Latency
+        //    CH_BEIDOU_CORRECTION_LATENCY  - 80  - Beidou Correction Latency
+        //    CH_HEALTH                     - 82  - Satellite Health
+        //    CH_INDEX                      - 83  - Index
+        //    CH_COUNT                      - 84  - Count
+        //    CH_SIGNAL_STRENGTH            - 85  - Signal Strength
+        //    CH_SIGNAL_QUALITY             - 86  - Signal Quality
+        //    CH_RANGE                      - 87  - Range
+        //    CH_RANGE_UNC                  - 88  - Range Uncertainty
+        //    CH_ALPHA                      - 90  - Alpha
+        //    CH_BETA                       - 91  - Beta
+        //    CH_DISTURBANCE_FLAGS          - 92  - Disturbance Flags
+        //    CH_CARRIER_PHASE              - 93  - Carrier Phase
+        //    CH_CARRIER_PHASE_UNC          - 94  - Carrier Phase Uncertainty
+        //    CH_DOPPLER                    - 95  - Doppler
+        //    CH_DOPPLER_UNC                - 96  - Doppler Uncertainty
+        //    CH_DELTA_TIME                 - 97  - Delta Time
+        //    CH_DELTA_TICK                 - 98  - Delta Tick
+        //    CH_ERROR                      - 99  - Measurement Error
+        //    CH_ERROR_UNC                  - 100 - Measurement Error Uncertainty
         //====================================================================================================
         enum ChannelQualifier
         {
@@ -1038,7 +1052,9 @@ namespace mscl
             CH_DOPPLER = 95,
             CH_DOPPLER_UNC = 96,
             CH_DELTA_TIME = 97,
-            CH_DELTA_TICK = 98
+            CH_DELTA_TICK = 98,
+            CH_ERROR     = 99,
+            CH_ERROR_UNC = 100
         };
 
         //API Typedefs:
@@ -1523,6 +1539,10 @@ namespace mscl
     //      A <Value> vector
     typedef std::vector<Value> MipFieldValues;
 
+    //API Typedef: MipCommandParameters
+    //      A list of <MipCommandParameterList> command/parameter definitions
+    typedef std::vector<std::pair<MipTypes::Command, MipFieldValues>> MipCommandParameters;
+
     //API Typedef: MipFunctionSelectors
     //      A <MipTypes::FunctionSelector> vector
     typedef std::vector<MipTypes::FunctionSelector> MipFunctionSelectors;
@@ -1563,4 +1583,40 @@ namespace mscl
     //API Typedef: GnssReceivers
     //  A vector of <GnssReceiverInfo>
     typedef std::vector<GnssReceiverInfo> GnssReceivers;
+
+    //API Struct: DeviceCommPort
+    //  Stores info related to device comm ports (id, type)
+    struct DeviceCommPort
+    {
+        //API Enum: Type
+        //  Available comm port type definitions
+        //      PRIMARY - 0
+        //      AUX     - 1
+        enum Type
+        {
+            PRIMARY = 0,
+            AUX     = 1
+        };
+
+        //API Constructor: DeviceCommPort
+        //  Constructs DeviceCommPort object with default values
+        DeviceCommPort() {};
+
+        //API Constructor: DeviceCommPort
+        //  Constructs DeviceCommPort object with specified values
+        DeviceCommPort(Type portType, uint8 portId) :
+            type(portType),
+            id(portId)
+        {};
+
+        //API Variable: type
+        // Port type (primary, aux, etc.)
+        Type type;
+
+        //API Variable: id
+        // Port ID
+        uint8 id;
+    };
+
+    typedef std::vector<DeviceCommPort> CommPortInfo;
 }

@@ -48,8 +48,8 @@ public class MipPacket : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public bool isDataPacket() {
-    bool ret = msclPINVOKE.MipPacket_isDataPacket(swigCPtr);
+  public static bool isDataPacket(byte descriptorSet) {
+    bool ret = msclPINVOKE.MipPacket_isDataPacket(descriptorSet);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

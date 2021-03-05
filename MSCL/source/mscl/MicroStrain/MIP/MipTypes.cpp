@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -433,6 +433,15 @@ namespace mscl
 
         { ChannelId(CH_FIELD_ESTFILTER_AIDING_MEASURE_SUMMARY, CH_TIME_OF_WEEK), "aidingSummary_lastValidTow" },
         { ChannelId(CH_FIELD_ESTFILTER_AIDING_MEASURE_SUMMARY, CH_STATUS), "aidingSummary_status" },
+
+        { ChannelId(CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR, CH_ERROR), "odometer_scaleFactorError" },
+        { ChannelId(CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR_UNCERT, CH_ERROR_UNC), "odometer_scaleFactorError_unc" },
+
+        { ChannelId(CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS, CH_TIME_OF_WEEK), "estDualAntennaStatus_tow" },
+        { ChannelId(CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS, CH_HEADING), "estDualAntennaStatus_heading" },
+        { ChannelId(CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS, CH_HEADING_UNCERTAINTY), "estDualAntennaStatus_uncert_heading" },
+        { ChannelId(CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS, CH_FIX_TYPE), "estDualAntennaStatus_fixType" },
+        { ChannelId(CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS, CH_STATUS), "estDualAntennaStatus_status" },
 
         {ChannelId(CH_FIELD_DISP_DISPLACEMENT_RAW, CH_DISPLACEMENT), "rawDisplacement"},
         {ChannelId(CH_FIELD_DISP_DISPLACEMENT_MM, CH_DISPLACEMENT), "displacementMillimeters"},

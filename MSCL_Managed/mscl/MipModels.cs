@@ -78,6 +78,8 @@ public class MipModels : global::System.IDisposable {
     node_3dm_cx5_25 = 6273,
     node_3dm_cx5_15 = 6274,
     node_3dm_cx5_10 = 6275,
+    node_3dm_cl5_15 = 6280,
+    node_3dm_cl5_25 = 6281,
     node_3dm_gq7 = 6284,
     node_3dm_rtk = 6285
   }

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -122,6 +122,24 @@ namespace mscl
         return m_nodeInfo.gnssReceiverInfo();
     }
 
+    const CommPortInfo MipNodeFeatures::getCommPortInfo() const
+    {
+        MipModels::NodeModel model = MipModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model)
+        {
+        case MipModels::node_3dm_gq7:
+            return{
+                DeviceCommPort(DeviceCommPort::Type::PRIMARY, 1),
+                DeviceCommPort(DeviceCommPort::Type::AUX, 2)
+            };
+
+        default:
+            return{
+                DeviceCommPort(DeviceCommPort::Type::PRIMARY, 1)
+            };
+        }
+    }
+
     const VehicleModeTypes MipNodeFeatures::supportedVehicleModeTypes() const
     {
         if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_VEHIC_DYNAMICS_MODE))
@@ -176,6 +194,8 @@ namespace mscl
         case MipModels::node_3dm_cx5_25:
         case MipModels::node_3dm_cv5_15:
         case MipModels::node_3dm_cv5_25:
+        case MipModels::node_3dm_cl5_15:
+        case MipModels::node_3dm_cl5_25:
         case MipModels::node_3dm_gx4_15:
         case MipModels::node_3dm_gx4_25:
         case MipModels::node_3dm_gx5_35:
@@ -228,6 +248,8 @@ namespace mscl
         case MipModels::node_3dm_cx5_25:
         case MipModels::node_3dm_cx5_15:
         case MipModels::node_3dm_cx5_10:
+        case MipModels::node_3dm_cl5_15:
+        case MipModels::node_3dm_cl5_25:
             return true;
 
         default:
@@ -258,6 +280,7 @@ namespace mscl
         case MipModels::node_3dm_gx5_25:
         case MipModels::node_3dm_gx4_25:
         case MipModels::node_3dm_cv5_25:
+        case MipModels::node_3dm_cl5_25:
             return{
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_NONE),
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_INTERNAL_MAGNETOMETER),
@@ -274,6 +297,7 @@ namespace mscl
 
         case MipModels::node_3dm_gx5_15:
         case MipModels::node_3dm_cv5_15:
+        case MipModels::node_3dm_cl5_15:
             return{
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_NONE),
                 HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_EXTERNAL_MESSAGES)
@@ -323,6 +347,8 @@ namespace mscl
         case MipModels::node_3dm_gx3_45:
         case MipModels::node_3dm_cv5_25:
         case MipModels::node_3dm_cv5_15:
+        case MipModels::node_3dm_cl5_25:
+        case MipModels::node_3dm_cl5_15:
             return EstimationControlOptions(
                 InertialTypes::EstimationControlOption::ENABLE_GYRO_BIAS_ESTIMATION
             );
@@ -411,6 +437,8 @@ namespace mscl
             case MipModels::node_3dm_cv5_25:
             case MipModels::node_3dm_cv5_15:
             case MipModels::node_3dm_cv5_10:
+            case MipModels::node_3dm_cl5_25:
+            case MipModels::node_3dm_cl5_15:
             default:
                 return {
                     InertialTypes::AdaptiveMeasurementMode::ADAPTIVE_MEASUREMENT_DISABLE,

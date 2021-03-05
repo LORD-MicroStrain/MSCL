@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -431,5 +431,12 @@ namespace mscl
     bool BaseStation::node_poll(const WirelessProtocol& nodeProtocol, NodeAddress nodeAddress, const ChannelMask& chs, WirelessPollData& result)
     {
         return m_impl->node_poll(nodeProtocol, nodeAddress, chs, result);
+    }
+
+    RawBytePackets BaseStation::getRawBytePackets(uint32 timeout, uint32 maxPackets)
+    {
+        RawBytePackets packets;
+        m_impl->getRawBytePackets(packets, timeout, maxPackets);
+        return packets;
     }
 }

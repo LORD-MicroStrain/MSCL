@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -73,5 +73,18 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the RTKNode.
         RTKDeviceStatusFlags getDeviceStatusFlags() const;
+
+        //API Function: getActivationCode
+        //    Gets the Activation Code of the RTK device.
+        //
+        //Returns:
+        //    The 32 character Activation Code for the device.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the RTKNode.
+        std::string getActivationCode() const;
     };
 }

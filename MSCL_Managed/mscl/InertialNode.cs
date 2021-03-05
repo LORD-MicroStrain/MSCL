@@ -62,16 +62,6 @@ public class InertialNode : MipNode {
     return ret;
   }
 
-  public void loadStartupSettings() {
-    msclPINVOKE.InertialNode_loadStartupSettings(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void loadFactoryDefaultSettings() {
-    msclPINVOKE.InertialNode_loadFactoryDefaultSettings(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
   public void pollData(MipTypes.DataClass dataClass, MipChannelFields fields) {
     msclPINVOKE.InertialNode_pollData__SWIG_0(swigCPtr, (int)dataClass, MipChannelFields.getCPtr(fields));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -469,22 +459,6 @@ public class InertialNode : MipNode {
 
   public bool getConingAndScullingEnable() {
     bool ret = msclPINVOKE.InertialNode_getConingAndScullingEnable(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public void setUARTBaudRate(uint baudRate, bool resetConnection) {
-    msclPINVOKE.InertialNode_setUARTBaudRate__SWIG_0(swigCPtr, baudRate, resetConnection);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void setUARTBaudRate(uint baudRate) {
-    msclPINVOKE.InertialNode_setUARTBaudRate__SWIG_1(swigCPtr, baudRate);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public uint getUARTBaudRate() {
-    uint ret = msclPINVOKE.InertialNode_getUARTBaudRate(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -919,6 +893,11 @@ public class InertialNode : MipNode {
 
   public void setRelativePositionReference(PositionReferenceConfiguration ref_) {
     msclPINVOKE.InertialNode_setRelativePositionReference(swigCPtr, PositionReferenceConfiguration.getCPtr(ref_));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void sendExternalSpeedMeasurementUpdate(float tow, float speed, float unc) {
+    msclPINVOKE.InertialNode_sendExternalSpeedMeasurementUpdate(swigCPtr, tow, speed, unc);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

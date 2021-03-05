@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -14,9 +14,9 @@ namespace mscl
         m_descriptorSet(0)
     {}
 
-    bool MipPacket::isDataPacket() const
+    bool MipPacket::isDataPacket(uint8 descriptorSet) 
     {
-        switch(m_descriptorSet)
+        switch(descriptorSet)
         {
         //actual Data packets
         case DescriptorSet::DESC_SET_DATA_SENSOR:

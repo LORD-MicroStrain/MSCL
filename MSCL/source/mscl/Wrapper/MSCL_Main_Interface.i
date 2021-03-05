@@ -4,6 +4,7 @@
 %include "std_string.i"     // SWIG file needed for std::string
 %include "std_vector.i"     // SWIG file needed for std::vector
 %include "std_map.i"        // SWIG file needed for std::map
+%include "std_pair.i"       // SWIG file needed for std::pair
 %include "std_shared_ptr.i" // SWIG file needed for std::shared_ptr
 //%include "std_array.i"      // SWIG file needed for std::array
 
@@ -153,6 +154,7 @@
 #include "../MicroStrain/MIP/MipChannel.h"
 #include "../MicroStrain/MIP/MipDataField.h"
 #include "../MicroStrain/MIP/Packets/MipDataPacket.h"
+#include "../Communication/RawBytePacket.h"
 #include "../MicroStrain/MIP/MipDataPoint.h"
 #include "../MicroStrain/MIP/MipNodeFeatures.h"
 #include "../MicroStrain/MIP/MipNode.h"
@@ -240,6 +242,7 @@
 %include "../MicroStrain/MIP/Packets/MipPacket.h"
 %include "../MicroStrain/MIP/MipDataPoint.h"
 %include "../MicroStrain/MIP/Packets/MipDataPacket.h"
+%include "../Communication/RawBytePacket.h"
 %include "../MicroStrain/MIP/MipNodeFeatures.h"
 %include "../MicroStrain/MIP/MipNode.h"
 %include "../MicroStrain/Inertial/InertialNode.h"
@@ -257,6 +260,7 @@ namespace std
     %template(DataSweeps)               vector<mscl::DataSweep>;
     %template(LoggedDataSweeps)         vector<mscl::LoggedDataSweep>;
     %template(MipDataPackets)           vector<mscl::MipDataPacket>;
+    %template(RawBytePackets)           vector<mscl::RawBytePacket>;
     %template(MipChannels)              vector<mscl::MipChannel>;
     %template(DataCollectionMethods)    vector<mscl::WirelessTypes::DataCollectionMethod>;
     %template(DataFormats)              vector<mscl::WirelessTypes::DataFormat>;
@@ -287,7 +291,10 @@ namespace std
     %template(MipChannelIdentifiers)    vector<mscl::MipChannelIdentifier>;
     %template(MipCommandSet)            vector<mscl::MipCommandBytes>;
     %template(MipFieldValues)           vector<mscl::Value>;
+    %template(MipCommandParamPair)      pair<mscl::MipTypes::Command, vector<mscl::Value>>;
+    %template(MipCommandParameters)     vector<pair<mscl::MipTypes::Command, vector<mscl::Value>>>;
     %template(GnssReceivers)            vector<mscl::GnssReceiverInfo>;
+    %template(CommPortInfo)             vector<mscl::DeviceCommPort>;
     %template(ChannelGroups)            vector<mscl::ChannelGroup>;
     %template(WirelessChannels)         vector<mscl::WirelessChannel>;
     %template(DamageAngles)             map<uint8_t, float>;

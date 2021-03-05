@@ -55,6 +55,12 @@ public class RTKNode : MipNode {
     return ret;
   }
 
+  public string getActivationCode() {
+    string ret = msclPINVOKE.RTKNode_getActivationCode(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }
 
 }

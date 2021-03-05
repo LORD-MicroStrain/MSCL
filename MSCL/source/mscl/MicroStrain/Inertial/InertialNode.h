@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -59,26 +59,6 @@ namespace mscl
         //Returns:
         //    The total number of data packets that are currently in the buffer.
         uint32 totalPackets();
-
-        //API Function: loadStartupSettings
-        //  Loads the saved startup settings onto the Node as its current settings.
-        //  This function is useful if you have powered on the Node, made changes to its settings, and
-        //  want to get back to its startup settings.
-        //
-        //Exceptions:
-        //  - <Error_Communication>: There was no response to the command. The command timed out.
-        //  - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
-        //  - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void loadStartupSettings();
-
-        //API Function: loadFactoryDefaultSettings
-        //  Loads the factory default settings onto the Node as its current settings.
-        //
-        //Exceptions:
-        //  - <Error_Communication>: There was no response to the command. The command timed out.
-        //  - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
-        //  - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void loadFactoryDefaultSettings();
 
         //API Function: pollData
         //  Polls the device for a message with the specified fields, for the specified data class.
@@ -157,7 +137,7 @@ namespace mscl
         //    - <Error>: An <MipChannel> in the channels parameter is not part of the specified <MipTypes::DataClass>'s descriptor set.
         void saveActiveChannelFields(MipTypes::DataClass dataClass);
 
-        //Function: setFactoryStreamingChannels
+        //API Function: setFactoryStreamingChannels
         //    Applies the factory streaming channels to the message format based on the specified action option.
         //
         //Parameters:
@@ -1031,34 +1011,6 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         bool getConingAndScullingEnable();
-
-        //API Function: setUARTBaudRate
-        //    Sets the baud rate.  The device can be unresponsive for as much as 250 ms following this command.
-        //    Important: The connection to the port will be automatically closed and re-opened at the new baud rate unless resetConnection parameter is false.
-        //
-        //Parameters:
-        //    baudRate - The new baud rate.
-        //    resetConnection - Specifies whether the connection to the port should be automatically closed and re-opened at the new baud rate.
-        //
-        //Exceptions:
-        //    - <Error_NotSupported>: The command is not supported by this Node.
-        //    - <Error_Communication>: There was no response to the command. The command timed out.
-        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
-        //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
-        void setUARTBaudRate(uint32 baudRate, bool resetConnection = true);
-
-        //API Function: getUARTBaudRate
-        //    Gets the current baud rate for the inertial device.
-        //
-        //Return:
-        //    uint8 current baud rate.
-        //
-        //Exceptions:
-        //    - <Error_NotSupported>: The command is not supported by this Node.
-        //    - <Error_Communication>: There was no response to the command. The command timed out.
-        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
-        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        uint32 getUARTBaudRate();
 
         //API Function: setAdvancedLowPassFilterSettings
         //    Sets the advanced low-pass filter settings.
@@ -2106,6 +2058,21 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setRelativePositionReference(PositionReferenceConfiguration ref);
+
+        //API Function: sendExternalSpeedMeasurementUpdate
+        //    Sends an external speed measurement update to be used as a filter input.
+        //
+        //Parameter:
+        //    tow - the time of week of the measurement (s)
+        //    speed - the speed measurement value (m/s)
+        //    unc - the speed measurement uncertainty (m/s)
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void sendExternalSpeedMeasurementUpdate(float tow, float speed, float unc);
 
         //API Function: getSpeedMeasurementOffset
         //    Gets the currently configured lever arm offset for the speed measurement.

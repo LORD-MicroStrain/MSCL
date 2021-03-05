@@ -42,47 +42,47 @@ public class RTKDeviceStatusFlags : Bitfield {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public byte state() {
-    byte ret = msclPINVOKE.RTKDeviceStatusFlags_state__SWIG_0(swigCPtr);
+  public RTKDeviceStatusFlags.ControllerState controllerState() {
+    RTKDeviceStatusFlags.ControllerState ret = (RTKDeviceStatusFlags.ControllerState)msclPINVOKE.RTKDeviceStatusFlags_controllerState__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void state(byte rtkState) {
-    msclPINVOKE.RTKDeviceStatusFlags_state__SWIG_1(swigCPtr, rtkState);
+  public void controllerState(RTKDeviceStatusFlags.ControllerState state) {
+    msclPINVOKE.RTKDeviceStatusFlags_controllerState__SWIG_1(swigCPtr, (int)state);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public byte statusCode() {
-    byte ret = msclPINVOKE.RTKDeviceStatusFlags_statusCode__SWIG_0(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public void statusCode(byte code) {
-    msclPINVOKE.RTKDeviceStatusFlags_statusCode__SWIG_1(swigCPtr, code);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public bool correctionsTimedOut() {
-    bool ret = msclPINVOKE.RTKDeviceStatusFlags_correctionsTimedOut__SWIG_0(swigCPtr);
+  public RTKDeviceStatusFlags.PlatformState platformState() {
+    RTKDeviceStatusFlags.PlatformState ret = (RTKDeviceStatusFlags.PlatformState)msclPINVOKE.RTKDeviceStatusFlags_platformState__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void correctionsTimedOut(bool timedOut) {
-    msclPINVOKE.RTKDeviceStatusFlags_correctionsTimedOut__SWIG_1(swigCPtr, timedOut);
+  public void platformState(RTKDeviceStatusFlags.PlatformState state) {
+    msclPINVOKE.RTKDeviceStatusFlags_platformState__SWIG_1(swigCPtr, (int)state);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public bool serviceUnavailable() {
-    bool ret = msclPINVOKE.RTKDeviceStatusFlags_serviceUnavailable__SWIG_0(swigCPtr);
+  public RTKDeviceStatusFlags.ControllerStatusCode controllerStatusCode() {
+    RTKDeviceStatusFlags.ControllerStatusCode ret = (RTKDeviceStatusFlags.ControllerStatusCode)msclPINVOKE.RTKDeviceStatusFlags_controllerStatusCode__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void serviceUnavailable(bool available) {
-    msclPINVOKE.RTKDeviceStatusFlags_serviceUnavailable__SWIG_1(swigCPtr, available);
+  public void controllerStatusCode(RTKDeviceStatusFlags.ControllerStatusCode status) {
+    msclPINVOKE.RTKDeviceStatusFlags_controllerStatusCode__SWIG_1(swigCPtr, (int)status);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public RTKDeviceStatusFlags.PlatformStatusCode platformStatusCode() {
+    RTKDeviceStatusFlags.PlatformStatusCode ret = (RTKDeviceStatusFlags.PlatformStatusCode)msclPINVOKE.RTKDeviceStatusFlags_platformStatusCode__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void platformStatusCode(RTKDeviceStatusFlags.PlatformStatusCode status) {
+    msclPINVOKE.RTKDeviceStatusFlags_platformStatusCode__SWIG_1(swigCPtr, (int)status);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -97,61 +97,6 @@ public class RTKDeviceStatusFlags : Bitfield {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public bool modemPowered() {
-    bool ret = msclPINVOKE.RTKDeviceStatusFlags_modemPowered__SWIG_0(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public void modemPowered(bool powered) {
-    msclPINVOKE.RTKDeviceStatusFlags_modemPowered__SWIG_1(swigCPtr, powered);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public bool cellConnected() {
-    bool ret = msclPINVOKE.RTKDeviceStatusFlags_cellConnected__SWIG_0(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public void cellConnected(bool connected) {
-    msclPINVOKE.RTKDeviceStatusFlags_cellConnected__SWIG_1(swigCPtr, connected);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public bool serverConnected() {
-    bool ret = msclPINVOKE.RTKDeviceStatusFlags_serverConnected__SWIG_0(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public void serverConnected(bool connected) {
-    msclPINVOKE.RTKDeviceStatusFlags_serverConnected__SWIG_1(swigCPtr, connected);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public bool dataEnabled() {
-    bool ret = msclPINVOKE.RTKDeviceStatusFlags_dataEnabled__SWIG_0(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public void dataEnabled(bool enabled) {
-    msclPINVOKE.RTKDeviceStatusFlags_dataEnabled__SWIG_1(swigCPtr, enabled);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public byte rssi() {
-    byte ret = msclPINVOKE.RTKDeviceStatusFlags_rssi__SWIG_0(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public void rssi(byte rtkRssi) {
-    msclPINVOKE.RTKDeviceStatusFlags_rssi__SWIG_1(swigCPtr, rtkRssi);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
   public byte signalQuality() {
     byte ret = msclPINVOKE.RTKDeviceStatusFlags_signalQuality__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -163,22 +108,55 @@ public class RTKDeviceStatusFlags : Bitfield {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public static readonly uint STATE = msclPINVOKE.RTKDeviceStatusFlags_STATE_get();
-  public static readonly uint STATUS_CODE = msclPINVOKE.RTKDeviceStatusFlags_STATUS_CODE_get();
-  public static readonly uint CORRECTIONS_TIMED_OUT = msclPINVOKE.RTKDeviceStatusFlags_CORRECTIONS_TIMED_OUT_get();
-  public static readonly uint SERVICE_UNAVAILABLE = msclPINVOKE.RTKDeviceStatusFlags_SERVICE_UNAVAILABLE_get();
+  public static readonly uint CONTROLLER_STATE = msclPINVOKE.RTKDeviceStatusFlags_CONTROLLER_STATE_get();
+  public static readonly uint PLATFORM_STATE = msclPINVOKE.RTKDeviceStatusFlags_PLATFORM_STATE_get();
+  public static readonly uint CONTROLLER_STATUS_CODE = msclPINVOKE.RTKDeviceStatusFlags_CONTROLLER_STATUS_CODE_get();
+  public static readonly uint PLATFORM_STATUS_CODE = msclPINVOKE.RTKDeviceStatusFlags_PLATFORM_STATUS_CODE_get();
   public static readonly uint RESET_REASON = msclPINVOKE.RTKDeviceStatusFlags_RESET_REASON_get();
-  public static readonly uint MODEM_POWERED = msclPINVOKE.RTKDeviceStatusFlags_MODEM_POWERED_get();
-  public static readonly uint CELL_CONNECTED = msclPINVOKE.RTKDeviceStatusFlags_CELL_CONNECTED_get();
-  public static readonly uint SERVER_CONNECTED = msclPINVOKE.RTKDeviceStatusFlags_SERVER_CONNECTED_get();
-  public static readonly uint DATA_ENABLED = msclPINVOKE.RTKDeviceStatusFlags_DATA_ENABLED_get();
-  public static readonly uint RSSI = msclPINVOKE.RTKDeviceStatusFlags_RSSI_get();
   public static readonly uint SIGNAL_QUALITY = msclPINVOKE.RTKDeviceStatusFlags_SIGNAL_QUALITY_get();
+  public enum ControllerState {
+    IDLE = 0x00,
+    ACTIVE = 0x04
+  }
+
+  public enum PlatformState {
+    MODEM_OFF = 0x00,
+    MODEM_POWERING_ON = 0x01,
+    MODEM_CONFIGURE = 0x02,
+    MODEM_POWERING_DOWN = 0x03,
+    MODEM_READY = 0x04,
+    MODEM_CONNECTING = 0x05,
+    MODEM_DISCONNECTING = 0x06,
+    MODEM_CONNECTED = 0x07,
+    SERVICE_CONNECTING = 0x08,
+    SERVICE_CONNECTION_FAILED = 0x09,
+    SERVICE_CONNECTION_CANCELED = 0x0A,
+    SERVICE_DISCONNECTING = 0x0B,
+    SERVICE_CONNECTED = 0x0C,
+    PLATFORM_ERROR = 0x0D,
+    RESET_MODEM = 0x0E
+  }
+
+  public enum ControllerStatusCode {
+    CONTROLLER_OK = 0x00,
+    WAITING_NMEA = 0x01,
+    RTK_TIMEOUT = 0x02,
+    RTK_UNAVAILABLE = 0x03,
+    CONFIG_INVALID = 0x07
+  }
+
+  public enum PlatformStatusCode {
+    PLATFORM_OK = 0x00,
+    RTK_CONNECTION_DROPPED = 0x04,
+    CELL_CONNECTION_DROPPED = 0x06,
+    MODEM_ERROR = 0x07
+  }
+
   public enum ResetReason {
     POWER_ON = 0x00,
-    HARDWARE_RESET = 0x01,
+    UNKNOWN = 0x01,
     SOFT_RESET = 0x02,
-    WATCHDOG_RESET = 0x03
+    HARDWARE_ERROR_RESET = 0x03
   }
 
 }

@@ -90,6 +90,11 @@ public class MipNode : global::System.IDisposable {
     return ret;
   }
 
+  public void clearDeviceInfo() {
+    msclPINVOKE.MipNode_clearDeviceInfo(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public Timestamp lastCommunicationTime() {
     Timestamp ret = new Timestamp(msclPINVOKE.MipNode_lastCommunicationTime(swigCPtr), false);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -194,14 +199,99 @@ public class MipNode : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void saveSettingsAsStartup(MipCommands cmdIds) {
-    msclPINVOKE.MipNode_saveSettingsAsStartup__SWIG_0(swigCPtr, MipCommands.getCPtr(cmdIds));
+  public void saveSettingsAsStartup() {
+    msclPINVOKE.MipNode_saveSettingsAsStartup__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void saveSettingsAsStartup() {
-    msclPINVOKE.MipNode_saveSettingsAsStartup__SWIG_1(swigCPtr);
+  public void saveSettingsAsStartup(MipCommands cmdIds) {
+    msclPINVOKE.MipNode_saveSettingsAsStartup__SWIG_1(swigCPtr, MipCommands.getCPtr(cmdIds));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void saveSettingsAsStartup(MipCommandParameters cmdParams) {
+    msclPINVOKE.MipNode_saveSettingsAsStartup__SWIG_2(swigCPtr, MipCommandParameters.getCPtr(cmdParams));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void loadStartupSettings() {
+    msclPINVOKE.MipNode_loadStartupSettings__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void loadStartupSettings(MipCommands cmdIds) {
+    msclPINVOKE.MipNode_loadStartupSettings__SWIG_1(swigCPtr, MipCommands.getCPtr(cmdIds));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void loadStartupSettings(MipCommandParameters cmdParams) {
+    msclPINVOKE.MipNode_loadStartupSettings__SWIG_2(swigCPtr, MipCommandParameters.getCPtr(cmdParams));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void loadFactoryDefaultSettings() {
+    msclPINVOKE.MipNode_loadFactoryDefaultSettings__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void loadFactoryDefaultSettings(MipCommands cmdIds) {
+    msclPINVOKE.MipNode_loadFactoryDefaultSettings__SWIG_1(swigCPtr, MipCommands.getCPtr(cmdIds));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void loadFactoryDefaultSettings(MipCommandParameters cmdParams) {
+    msclPINVOKE.MipNode_loadFactoryDefaultSettings__SWIG_2(swigCPtr, MipCommandParameters.getCPtr(cmdParams));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void setUARTBaudRate(uint baudRate, bool resetConnection) {
+    msclPINVOKE.MipNode_setUARTBaudRate__SWIG_0(swigCPtr, baudRate, resetConnection);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void setUARTBaudRate(uint baudRate) {
+    msclPINVOKE.MipNode_setUARTBaudRate__SWIG_1(swigCPtr, baudRate);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void setUARTBaudRate(uint baudRate, byte portId, bool resetConnection) {
+    msclPINVOKE.MipNode_setUARTBaudRate__SWIG_2(swigCPtr, baudRate, portId, resetConnection);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void setUARTBaudRate(uint baudRate, byte portId) {
+    msclPINVOKE.MipNode_setUARTBaudRate__SWIG_3(swigCPtr, baudRate, portId);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public uint getUARTBaudRate(byte portId) {
+    uint ret = msclPINVOKE.MipNode_getUARTBaudRate__SWIG_0(swigCPtr, portId);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public uint getUARTBaudRate() {
+    uint ret = msclPINVOKE.MipNode_getUARTBaudRate__SWIG_1(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public RawBytePackets getRawBytePackets(uint timeout, uint maxPackets) {
+    RawBytePackets ret = new RawBytePackets(msclPINVOKE.MipNode_getRawBytePackets__SWIG_0(swigCPtr, timeout, maxPackets), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public RawBytePackets getRawBytePackets(uint timeout) {
+    RawBytePackets ret = new RawBytePackets(msclPINVOKE.MipNode_getRawBytePackets__SWIG_1(swigCPtr, timeout), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public RawBytePackets getRawBytePackets() {
+    RawBytePackets ret = new RawBytePackets(msclPINVOKE.MipNode_getRawBytePackets__SWIG_2(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
 }

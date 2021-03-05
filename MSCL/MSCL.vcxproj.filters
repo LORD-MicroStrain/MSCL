@@ -1001,6 +1001,15 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Shared.h">
       <Filter>MicroStrain\Inertial\Packets</Filter>
     </ClInclude>
+    <ClInclude Include="source\mscl\Communication\RawBytePacketCollector.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\Communication\RawBytePacket.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\RTK\Commands\ActivationCode.h">
+      <Filter>MicroStrain\RTK\Commands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp">
@@ -1892,6 +1901,15 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Shared.cpp">
       <Filter>MicroStrain\Inertial\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\Communication\RawBytePacketCollector.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\Communication\RawBytePacket.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\RTK\Commands\ActivationCode.cpp">
+      <Filter>MicroStrain\RTK\Commands</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

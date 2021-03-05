@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -7,6 +7,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #include "mscl/Types.h"
 #include "Packets/MipPacket.h"
+#include "../../Communication/RawBytePacketCollector.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
 #include <memory>
 
@@ -41,20 +42,25 @@ namespace mscl
         //
         //Parameters:
         //    packetCollector - the <MipPacketCollector> to be associated with this parser
-        MipParser(MipPacketCollector* packetCollector, std::weak_ptr<ResponseCollector> responseCollector);
+        //    rawBytePacketCollector - the <RawBytePacketCollector> to be associated with this parser
+        MipParser(MipPacketCollector* packetCollector, std::weak_ptr<ResponseCollector> responseCollector, RawBytePacketCollector* rawBytePacketCollector);
 
     private:
         MipParser(const MipParser&);                //copy constructor disabled
-        MipParser& operator=(const MipParser&);    //assignement operator disabled
+        MipParser& operator=(const MipParser&);    //assignment operator disabled
 
     private:
         //Variable: m_packetCollector
-        //    The <MipPacketCollector> associated with this parser and it's parent device
+        //    The <MipPacketCollector> associated with this parser and its parent device
         MipPacketCollector* m_packetCollector;
 
         //Variable: m_responseCollector
-        //    The <ResponseCollector> associated with this parser and it's parent device
+        //    The <ResponseCollector> associated with this parser and its parent device
         std::weak_ptr<ResponseCollector> m_responseCollector;
+
+        //Variable: m_rawBytePacketCollector
+        //    The <RawBytePacketCollector> associated with this parser and its parent device
+        RawBytePacketCollector* m_rawBytePacketCollector;
 
     private:
         //Function: processPacket
@@ -118,5 +124,17 @@ namespace mscl
         //Parameters:
         //    data - A <DataBuffer> containing bytes that should be parsed for MIP packets
         void parse(DataBuffer& data);
+
+        //Function: getCommandDescriptor
+        //    Takes a <Bytes> and finds the command descriptor.
+        //
+        //    If a command descriptor is found, return the command descriptor
+        //    If a command descriptor is not found, return 0x0.
+        //
+        //Parameters:
+        //    packet - A <Bytes> containing bytes of a raw MIP Packet.
+        static uint8 getCommandDescriptor(Bytes packet);
+
+        void addRawBytePacket(Bytes& rawBytePacket, bool valid, bool packetFound);
     };
 }

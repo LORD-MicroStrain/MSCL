@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -1651,6 +1651,86 @@ namespace mscl
     bool FieldParser_FilterAidingSummary::registerParser()
     {
         static FieldParser_FilterAidingSummary p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_OdometerScaleError
+    const MipTypes::ChannelField FieldParser_OdometerScaleError::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR;
+    const bool FieldParser_OdometerScaleError::REGISTERED = FieldParser_OdometerScaleError::registerParser();    //register the parser immediately
+
+    void FieldParser_OdometerScaleError::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        float error = bytes.read_float();
+        bool valid = bytes.read_uint16() > 0;
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ERROR, valueType_float, anyType(error), valid));
+    }
+
+    bool FieldParser_OdometerScaleError::registerParser()
+    {
+        static FieldParser_OdometerScaleError p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_OdometerScaleErrorUncert
+    const MipTypes::ChannelField FieldParser_OdometerScaleErrorUncert::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR_UNCERT;
+    const bool FieldParser_OdometerScaleErrorUncert::REGISTERED = FieldParser_OdometerScaleErrorUncert::registerParser();    //register the parser immediately
+
+    void FieldParser_OdometerScaleErrorUncert::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        float unc = bytes.read_float();
+        bool valid = bytes.read_uint16() > 0;
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_ERROR_UNC, valueType_float, anyType(unc), valid));
+    }
+
+    bool FieldParser_OdometerScaleErrorUncert::registerParser()
+    {
+        static FieldParser_OdometerScaleErrorUncert p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_DualAntennaStatus
+    const MipTypes::ChannelField FieldParser_DualAntennaStatus::FIELD_TYPE = MipTypes::CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS;
+    const bool FieldParser_DualAntennaStatus::REGISTERED = FieldParser_DualAntennaStatus::registerParser();    //register the parser immediately
+
+    void FieldParser_DualAntennaStatus::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //read the data
+        float tow = bytes.read_float();
+        float heading = bytes.read_float();
+        float headingUnc = bytes.read_float();
+        uint8 fixType = bytes.read_uint8();
+        uint16 status = bytes.read_uint16();
+        bool valid = bytes.read_uint16() > 0;
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_TIME_OF_WEEK, valueType_float, anyType(tow), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_HEADING, valueType_float, anyType(heading), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_HEADING_UNCERTAINTY, valueType_float, anyType(headingUnc), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_FIX_TYPE, valueType_uint8, anyType(fixType), valid));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_STATUS, valueType_uint16, anyType(status), valid));
+    }
+
+    bool FieldParser_DualAntennaStatus::registerParser()
+    {
+        static FieldParser_DualAntennaStatus p;
         return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================

@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -17,23 +17,23 @@ BOOST_AUTO_TEST_CASE(InertialPacket_isDataPacket)
 
     //initially, the packet is set to an unknown descriptor set, so isn't a data packet
     BOOST_CHECK_EQUAL(p.descriptorSet(), 0);
-    BOOST_CHECK_EQUAL(p.isDataPacket(), false);
+    BOOST_CHECK_EQUAL(p.isDataPacket(p.descriptorSet()), false);
 
     //set the descriptor set to a command set, still isn't a data packet
     p.descriptorSet(DescriptorSet::DESC_SET_CMD_3DM);
-    BOOST_CHECK_EQUAL(p.isDataPacket(), false);
+    BOOST_CHECK_EQUAL(p.isDataPacket(p.descriptorSet()), false);
 
     //set the descriptor set to a data set, check that isDataPacket returns true
     p.descriptorSet(DescriptorSet::DESC_SET_DATA_SENSOR);
-    BOOST_CHECK_EQUAL(p.isDataPacket(), true);
+    BOOST_CHECK_EQUAL(p.isDataPacket(p.descriptorSet()), true);
 
     //set the descriptor set to a data set, check that isDataPacket returns true
     p.descriptorSet(DescriptorSet::DESC_SET_DATA_GNSS);
-    BOOST_CHECK_EQUAL(p.isDataPacket(), true);
+    BOOST_CHECK_EQUAL(p.isDataPacket(p.descriptorSet()), true);
 
     //set the descriptor set to a data set, check that isDataPacket returns true
     p.descriptorSet(DescriptorSet::DESC_SET_DATA_EST_FILTER);
-    BOOST_CHECK_EQUAL(p.isDataPacket(), true);
+    BOOST_CHECK_EQUAL(p.isDataPacket(p.descriptorSet()), true);
 }
 
 BOOST_AUTO_TEST_CASE(InertialPacket_Payload)

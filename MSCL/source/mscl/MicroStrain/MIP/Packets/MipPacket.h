@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -79,7 +79,7 @@ namespace mscl
         //
         //Returns:
         //    true if the packet is a data packet, false otherwise
-        bool isDataPacket() const;
+        static bool isDataPacket(uint8 descriptorSet);
 
         //API Function: descriptorSet
         //    Gets the descriptor set of the MipPacket
@@ -136,7 +136,8 @@ namespace mscl
         {
             MIP_MIN_PACKET_SIZE             = 8,
             MIP_NUM_BYTES_BEFORE_PAYLOAD    = 4,
-            MIP_NUM_BYTES_AFTER_PAYLOAD     = 2
+            MIP_NUM_BYTES_AFTER_PAYLOAD     = 2,
+            MIP_DESCRIPTOR_BYTE             = 2
         };
     };
 

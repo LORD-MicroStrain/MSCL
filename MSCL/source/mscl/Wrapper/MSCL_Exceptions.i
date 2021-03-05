@@ -1011,11 +1011,18 @@
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::MipNode::setCommunicationMode(uint8 communicationMode);
 %catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::MipNode::saveSettingsAsStartup(MipTypes::MipCommands cmdIds);
 %catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::MipNode::saveSettingsAsStartup();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::MipNode::setUARTBaudRate(uint32 baudRate);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::MipNode::setUARTBaudRate(uint32 baudRate, bool resetConnection);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::MipNode::setUARTBaudRate(uint32 baudRate, uint8 portId);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::MipNode::setUARTBaudRate(uint32 baudRate, uint8 portId, bool resetConnection);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::MipNode::getUARTBaudRate();
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::MipNode::getUARTBaudRate(uint8 portId);
 
 
 //RTKNode
 %catches(mscl::Error_Communication, mscl::Error_Connection, mscl::Error)                                                            mscl::RTKNode::RTKNode(Connection connection);
 %catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::RTKNode::getDeviceStatusFlags() const;
+%catches(mscl::Error_Communication, mscl::Error_MipCmdFailed, mscl::Error_Connection)                                               mscl::RTKNode::getActivationCode() const;
 
 //InertialNode
 %catches(mscl::Error_Communication, mscl::Error_Connection, mscl::Error)                                                            mscl::InertialNode::InertialNode(Connection connection);
@@ -1089,8 +1096,6 @@
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getMagnetometerHardIronOffset();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setConingAndScullingEnable(bool enable);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getConingAndScullingEnable();
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setUARTBaudRate(uint32 baudRate);
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getUARTBaudRate();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterConfig& data);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getAdvancedLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setComplementaryFilterSettings(const ComplementaryFilterData& data);
@@ -1169,6 +1174,7 @@
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setAntennaLeverArmCal(AntennaLeverArmCalConfiguration config);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getRelativePositionReference() const;
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setRelativePositionReference(PositionReferenceConfiguration ref);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::sendExternalSpeedMeasurementUpdate(float tow, float speed, float unc);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getSpeedMeasurementOffset() const;
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setSpeedMeasurementOffset(PositionOffset offset);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getGnssSignalConfig() const;

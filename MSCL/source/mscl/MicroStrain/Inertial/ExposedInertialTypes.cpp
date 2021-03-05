@@ -689,44 +689,44 @@ namespace mscl
         return statusMap;
     }
 
-    uint8 RTKDeviceStatusFlags::state() const
+    RTKDeviceStatusFlags::ControllerState RTKDeviceStatusFlags::controllerState() const
     {
-        return static_cast<uint8>(get(STATE));
+        return static_cast<ControllerState>(get(CONTROLLER_STATE));
     }
     
-    void RTKDeviceStatusFlags::state(uint8 rtkState)
+    void RTKDeviceStatusFlags::controllerState(RTKDeviceStatusFlags::ControllerState state)
     {
-        set(STATE, rtkState);
+        set(CONTROLLER_STATE, state);
     }
 
-    uint8 RTKDeviceStatusFlags::statusCode() const
+    RTKDeviceStatusFlags::PlatformState RTKDeviceStatusFlags::platformState() const
     {
-        return static_cast<uint8>(get(STATUS_CODE));
+        return static_cast<PlatformState>(get(PLATFORM_STATE));
     }
 
-    void RTKDeviceStatusFlags::statusCode(uint8 code)
+    void RTKDeviceStatusFlags::platformState(RTKDeviceStatusFlags::PlatformState state)
     {
-        set(STATUS_CODE, code);
+        set(PLATFORM_STATE, state);
     }
 
-    bool RTKDeviceStatusFlags::correctionsTimedOut() const
+    RTKDeviceStatusFlags::ControllerStatusCode RTKDeviceStatusFlags::controllerStatusCode() const
     {
-        return get(CORRECTIONS_TIMED_OUT) > 0;
+        return static_cast<ControllerStatusCode>(get(CONTROLLER_STATUS_CODE));
     }
 
-    void RTKDeviceStatusFlags::correctionsTimedOut(bool timedOut)
+    void RTKDeviceStatusFlags::controllerStatusCode(RTKDeviceStatusFlags::ControllerStatusCode status)
     {
-        set(CORRECTIONS_TIMED_OUT, (timedOut ? 1 : 0));
+        set(CONTROLLER_STATUS_CODE, status);
     }
 
-    bool RTKDeviceStatusFlags::serviceUnavailable() const
+    RTKDeviceStatusFlags::PlatformStatusCode RTKDeviceStatusFlags::platformStatusCode() const
     {
-        return get(SERVICE_UNAVAILABLE) > 0;
+        return static_cast<PlatformStatusCode>(get(PLATFORM_STATUS_CODE));
     }
 
-    void RTKDeviceStatusFlags::serviceUnavailable(bool available)
+    void RTKDeviceStatusFlags::platformStatusCode(RTKDeviceStatusFlags::PlatformStatusCode status)
     {
-        set(SERVICE_UNAVAILABLE, (available ? 1 : 0));
+        set(PLATFORM_STATUS_CODE, status);
     }
 
     RTKDeviceStatusFlags::ResetReason RTKDeviceStatusFlags::resetReason() const
@@ -739,57 +739,7 @@ namespace mscl
         set(RESET_REASON, static_cast<uint32>(reason));
     }
 
-    bool RTKDeviceStatusFlags::modemPowered() const
-    {
-        return get(MODEM_POWERED) > 0;
-    }
-
-    void RTKDeviceStatusFlags::modemPowered(bool powered)
-    {
-        set(MODEM_POWERED, (powered ? 1 : 0));
-    }
-
-    bool RTKDeviceStatusFlags::cellConnected()
-    {
-        return get(CELL_CONNECTED) > 0;
-    }
-
-    void RTKDeviceStatusFlags::cellConnected(bool connected)
-    {
-        set(CELL_CONNECTED, (connected ? 1 : 0));
-    }
-
-    bool RTKDeviceStatusFlags::serverConnected()
-    {
-        return get(SERVER_CONNECTED) > 0;
-    }
-
-    void RTKDeviceStatusFlags::serverConnected(bool connected)
-    {
-        set(SERVER_CONNECTED, (connected ? 1 : 0));
-    }
-
-    bool RTKDeviceStatusFlags::dataEnabled()
-    {
-        return get(DATA_ENABLED) > 0;
-    }
-
-    void RTKDeviceStatusFlags::dataEnabled(bool enabled)
-    {
-        set(DATA_ENABLED, (enabled ? 1 : 0));
-    }
-
-    uint8 RTKDeviceStatusFlags::rssi() 
-    {
-        return static_cast<uint8>(get(RSSI));
-    }
-
-    void RTKDeviceStatusFlags::rssi(uint8 rtkRssi)
-    {
-        set(RSSI, rtkRssi);
-    }
-
-    uint8 RTKDeviceStatusFlags::signalQuality() 
+    uint8 RTKDeviceStatusFlags::signalQuality() const
     {
         return static_cast<uint8>(get(SIGNAL_QUALITY));
     }

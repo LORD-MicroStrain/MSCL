@@ -101,7 +101,7 @@ namespace mscl
         //    FIXTYPE_NONE           - 0x03    - None
         //    FIXTYPE_INVALID        - 0x04    - Invalid
 		//    FIXTYPE_RTK_FLOAT      - 0x05    - RTK Float
-		//    FIXTYPE_RTK_FIX        - 0x06    - RTK Fixed
+		//    FIXTYPE_RTK_FIXED      - 0x06    - RTK Fixed
 		//
 		//============================================================================================================
         enum GnssFixType
@@ -113,6 +113,38 @@ namespace mscl
             FIXTYPE_INVALID = 0x04,
 			FIXTYPE_RTK_FLOAT = 0x05,
 			FIXTYPE_RTK_FIXED = 0x06,
+        };
+
+        //============================================================================================================
+        //API Enum: DualAntennaFixType
+        //    The GNSS Dual Antenna Fix Types in the Estimation Filter GNSS Dual Antenna Status field
+        //
+        //    FIXTYPE_DUAL_ANTENNA_NONE       - 0x00    - None
+        //    FIXTYPE_DUAL_ANTENNA_FLOAT      - 0x01    - Dual Antenna Float
+        //    FIXTYPE_DUAL_ANTENNA_FIXED      - 0x02    - Dual Antenna Fixed
+        //
+        //============================================================================================================
+        enum DualAntennaFixType
+        {
+            FIXTYPE_DUAL_ANTENNA_NONE = 0x00,
+            FIXTYPE_DUAL_ANTENNA_FLOAT = 0x01,
+            FIXTYPE_DUAL_ANTENNA_FIXED = 0x02,
+        };
+
+        //============================================================================================================
+        //API Enum: DualAntennaStatusFlags
+        //    The bitmask definition for GNSS Dual Antenna Status in the Estimation Filter GNSS Dual Antenna Status field
+        //
+        //    DATA_VALID_REC_1      - 0x01    - Receiver 1 Data Valid - 0000 0001
+        //    DATA_VALID_REC_2      - 0x02    - Receiver 2 Data Valid - 0000 0010
+        //    ANTENNA_OFFSETS_VALID - 0x04    - Antenna Offsets Valid - 0000 0100
+        //
+        //============================================================================================================
+        enum DualAntennaStatusFlags
+        {
+            DATA_VALID_REC_1        = 0x01, // 0000 0001
+            DATA_VALID_REC_2        = 0x02, // 0000 0010
+            ANTENNA_OFFSETS_VALID   = 0x04  // 0000 0100
         };
 
         //============================================================================================================
@@ -1704,18 +1736,18 @@ namespace mscl
     struct HeadingUpdateOptions
     {
     public:
-        //Function: operator <InertialTypes::HeadingUpdateEnableOption>
+        //API Function: operator <InertialTypes::HeadingUpdateEnableOption>
         //  Converts this class to a <InertialTypes::HeadingUpdateEnableOption>.
         InertialTypes::HeadingUpdateEnableOption AsOptionId() const;
 
-        //Constructor: HeadingUpdateOptions
+        //API Constructor: HeadingUpdateOptions
         HeadingUpdateOptions() :
             useInternalMagnetometer(false),
             useInternalGNSSVelocityVector(false),
             useExternalHeadingMessages(false)
         { }
 
-        //Constructor: HeadingUpdateOptions
+        //API Constructor: HeadingUpdateOptions
         //  Updates this class from a <InertialTypes::HeadingUpdateEnableOption> according to the Communications Protocol.
         //
         //Parameters:
@@ -2192,41 +2224,107 @@ namespace mscl
     public:
         //API Constants:
         //  Bitmasks indicating the bits that define each value
-        //      STATE	                - 0x000000FF - Device State            00000000000000000000000011111111
-        //      STATUS_CODE             - 0x00003F00 - Status Code             00000000000000000011111100000000
-        //      CORRECTIONS_TIMED_OUT   - 0x00004000 - Corrections Timed Out   00000000000000000100000000000000
-        //      SERVICE_UNAVAILABLE     - 0x00008000 - Service Unavailable     00000000000000001000000000000000
-        //      RESET_REASON            - 0x00030000 - Reset Reason            00000000000000110000000000000000
-        //      MODEM_POWERED           - 0x00040000 - Modem Powered           00000000000001000000000000000000
-        //      CELL_CONNECTED          - 0x00080000 - Cell Connected          00000000000010000000000000000000
-        //      SERVER_CONNECTED        - 0x00100000 - Server Connected        00000000000100000000000000000000
-        //      DATA_ENABLED            - 0x00200000 - Data Enabled            00000000001000000000000000000000
-        //      RSSI                    - 0x0FC00000 - RSSI                    00001111110000000000000000000000
-        //      SIGNAL_QUALITY          - 0xF0000000 - Signal Quality          11110000000000000000000000000000
-        static const uint32 STATE                       = 0x000000FF; // 00000000000000000000000011111111
-        static const uint32 STATUS_CODE                 = 0x00003F00; // 00000000000000000011111100000000
-        static const uint32 CORRECTIONS_TIMED_OUT       = 0x00004000; // 00000000000000000100000000000000
-        static const uint32 SERVICE_UNAVAILABLE         = 0x00008000; // 00000000000000001000000000000000
-        static const uint32 RESET_REASON                = 0x00030000; // 00000000000000110000000000000000
-        static const uint32 MODEM_POWERED               = 0x00040000; // 00000000000001000000000000000000
-        static const uint32 CELL_CONNECTED              = 0x00080000; // 00000000000010000000000000000000
-        static const uint32 SERVER_CONNECTED            = 0x00100000; // 00000000000100000000000000000000
-        static const uint32 DATA_ENABLED                = 0x00200000; // 00000000001000000000000000000000
-        static const uint32 RSSI                        = 0x0FC00000; // 00001111110000000000000000000000
-        static const uint32 SIGNAL_QUALITY              = 0xF0000000; // 11110000000000000000000000000000
+        //      CONTROLLER_STATE            - 0x00000007 - Controller State         (00000000000000000000000000000111)
+        //      PLATFORM_STATE              - 0x000000F8 - Platform State           (00000000000000000000000011111000)
+        //      CONTROLLER_STATUS_CODE      - 0x00000700 - Controller Status Code   (00000000000000000000011100000000)
+        //      PLATFORM_STATUS_CODE        - 0x00003800 - Platform Status Code     (00000000000000000011100000000000)
+        //      RESET_REASON                - 0x0000C000 - Reset Reason             (00000000000000001100000000000000)
+        //      SIGNAL_QUALITY              - 0x000F0000 - Signal Quality           (00000000000011110000000000000000)
+        static const uint32 CONTROLLER_STATE            = 0x00000007; // 00000000000000000000000000000111
+        static const uint32 PLATFORM_STATE              = 0x000000F8; // 00000000000000000000000011111000
+        static const uint32 CONTROLLER_STATUS_CODE      = 0x00000700; // 00000000000000000000011100000000
+        static const uint32 PLATFORM_STATUS_CODE        = 0x00003800; // 00000000000000000011100000000000
+        static const uint32 RESET_REASON                = 0x0000C000; // 00000000000000001100000000000000
+        static const uint32 SIGNAL_QUALITY              = 0x000F0000; // 00000000000011110000000000000000
 
+        //API Enum: ControllerState
+        //  Controller state values
+        //      IDLE            - 0x00 - Idle
+        //      ACTIVE          - 0x04 - Active
+        enum ControllerState
+        {
+            IDLE            = 0x00,
+            ACTIVE          = 0x04,
+        };
+
+        //API Enum: PlatformState
+        //  Platform state values
+        //      MODEM_OFF                       - 0x00 - Modem Off
+        //      MODEM_POWERING_ON               - 0x01 - Modem Powering On
+        //      MODEM_CONFIGURE                 - 0x02 - Configuring Modem
+        //      MODEM_POWERING_DOWN             - 0x03 - Modem Powering Down
+        //      MODEM_READY                     - 0x04 - Modem Ready
+        //      MODEM_CONNECTING                - 0x05 - Modem Connecting to Network
+        //      MODEM_DISCONNECTING             - 0x06 - Modem Disconnecting from Network
+        //      MODEM_CONNECTED                 - 0x07 - Modem Connected
+        //      SERVICE_CONNECTING              - 0x08 - Connecting to RTK Service
+        //      SERVICE_CONNECTION_FAILED       - 0x09 - Connection to RTK Service Failed
+        //      SERVICE_CONNECTION_CANCELED     - 0x0A - Connection to RTK Service Canceled
+        //      SERVICE_DISCONNECTING           - 0x0B - Disconnecting from RTK Service
+        //      SERVICE_CONNECTED               - 0x0C - Connected to RTK Service
+        //      PLATFORM_ERROR                  - 0x0D - Platform Error
+        //      RESET_MODEM                     - 0x0E - Reset Modem
+        enum PlatformState
+        {
+            MODEM_OFF                       = 0x00,
+            MODEM_POWERING_ON               = 0x01,
+            MODEM_CONFIGURE                 = 0x02,
+            MODEM_POWERING_DOWN             = 0x03,
+            MODEM_READY                     = 0x04,
+            MODEM_CONNECTING                = 0x05,
+            MODEM_DISCONNECTING             = 0x06,
+            MODEM_CONNECTED                 = 0x07,
+            SERVICE_CONNECTING              = 0x08,
+            SERVICE_CONNECTION_FAILED       = 0x09,
+            SERVICE_CONNECTION_CANCELED     = 0x0A,
+            SERVICE_DISCONNECTING           = 0x0B,
+            SERVICE_CONNECTED               = 0x0C,
+            PLATFORM_ERROR                  = 0x0D,
+            RESET_MODEM                     = 0x0E
+        };
+
+        //API Enum: ControllerStatusCode
+        //  Controller status code values
+        //      CONTROLLER_OK   - 0x00 - Controller OK
+        //      WAITING_NMEA    - 0x01 - Awaiting NMEA
+        //      RTK_TIMEOUT     - 0x02 - RTK Timed Out
+        //      RTK_UNAVAILABLE - 0x03 - RTK Unavailable
+        //      CONFIG_INVALID  - 0x07 - Invalid Configuration
+        enum ControllerStatusCode
+        {
+            CONTROLLER_OK   = 0x00,
+            WAITING_NMEA    = 0x01,
+            RTK_TIMEOUT     = 0x02,
+            RTK_UNAVAILABLE = 0x03,
+            CONFIG_INVALID  = 0x07
+        };
+
+        //API Enum: PlatformStatusCode
+        //  Platform status code values
+        //      PLATFORM_OK             - 0x00 - Platform OK
+        //      RTK_CONNECTION_DROPPED  - 0x04 - RTK Service Connection Broken
+        //      CELL_CONNECTION_DROPPED - 0x06 - Cell Connection Dropped
+        //      MODEM_ERROR             - 0x07 - Modem Error
+        enum PlatformStatusCode
+        {
+            PLATFORM_OK             = 0x00,
+            RTK_CONNECTION_DROPPED  = 0x04,
+            CELL_CONNECTION_DROPPED = 0x06,
+            MODEM_ERROR             = 0x07
+        };
+        
         //API Enum: ResetReason
         //  Possible RTK reset reason values
-        //      POWER_ON        - 0x00000000 - Reset due to Power-on
-        //      HARDWARE_RESET  - 0x00010000 - Hardware reset
-        //      SOFT_RESET      - 0x00020000 - Soft reset
-        //      WATCHDOG_RESET  - 0x00030000 - Watchdog reset
+        //      POWER_ON                - 0x00 - Reset due to Power-on
+        //      UNKNOWN                 - 0x01 - Hardware reset
+        //      SOFT_RESET              - 0x02 - Soft reset
+        //      HARDWARE_ERROR_RESET    - 0x03 - Watchdog reset
         enum ResetReason
         {
-            POWER_ON        = 0x00,
-            HARDWARE_RESET  = 0x01,
-            SOFT_RESET      = 0x02,
-            WATCHDOG_RESET  = 0x03
+            POWER_ON                = 0x00,
+            UNKNOWN                 = 0x01,
+            SOFT_RESET              = 0x02,
+            HARDWARE_ERROR_RESET    = 0x03
         };
 
     public:
@@ -2239,48 +2337,28 @@ namespace mscl
         {};
 
     public:
-        //API Function: state
-        uint8 state() const;
-        void state(uint8 rtkState);
+        //API Function: controllerState
+        ControllerState controllerState() const;
+        void controllerState(ControllerState state);
 
-        //API Function: statusCode
-        uint8 statusCode() const;
-        void statusCode(uint8 code);
+        //API Function: platformState
+        PlatformState platformState() const;
+        void platformState(PlatformState state);
 
-        //API Function: correctionsTimedOut
-        bool correctionsTimedOut() const;
-        void correctionsTimedOut(bool timedOut);
+        //API Function: controllerStatusCode
+        ControllerStatusCode controllerStatusCode() const;
+        void controllerStatusCode(ControllerStatusCode status);
 
-        //API Function: serviceUnavailable
-        bool serviceUnavailable() const;
-        void serviceUnavailable(bool available);
+        //API Function: platformStatusCode
+        PlatformStatusCode platformStatusCode() const;
+        void platformStatusCode(PlatformStatusCode status);
 
         //API Function: resetReason
         ResetReason resetReason() const;
         void resetReason(ResetReason reason);
 
-        //API Function: modemPowered
-        bool modemPowered() const;
-        void modemPowered(bool powered);
-
-        //API Function: cellConnected
-        bool cellConnected();
-        void cellConnected(bool connected);
-
-        //API Function: serverConnected
-        bool serverConnected();
-        void serverConnected(bool connected);
-
-        //API Function: dataEnabled
-        bool dataEnabled();
-        void dataEnabled(bool enabled);
-
-        //API Function: rssi
-        uint8 rssi();
-        void rssi(uint8 rtkRssi);
-
-        //API Function: signalQuality                    
-        uint8 signalQuality();
+        //API Function: signalQuality
+        uint8 signalQuality() const;
         void signalQuality(uint8 quality);
     };
 

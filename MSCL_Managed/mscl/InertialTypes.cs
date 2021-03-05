@@ -93,6 +93,18 @@ public class InertialTypes : global::System.IDisposable {
     FIXTYPE_RTK_FIXED = 0x06
   }
 
+  public enum DualAntennaFixType {
+    FIXTYPE_DUAL_ANTENNA_NONE = 0x00,
+    FIXTYPE_DUAL_ANTENNA_FLOAT = 0x01,
+    FIXTYPE_DUAL_ANTENNA_FIXED = 0x02
+  }
+
+  public enum DualAntennaStatusFlags {
+    DATA_VALID_REC_1 = 0x01,
+    DATA_VALID_REC_2 = 0x02,
+    ANTENNA_OFFSETS_VALID = 0x04
+  }
+
   public enum SpaceVehicleFlags {
     SVFLAG_NAVIGATION = 0x0001,
     SVFLAG_HEALTHY = 0x0002

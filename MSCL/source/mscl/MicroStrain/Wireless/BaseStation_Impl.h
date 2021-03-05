@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -82,6 +82,10 @@ namespace mscl
         //Variable: m_responseCollector
         //    The response collector used to find and store wireless command responses
         std::shared_ptr<ResponseCollector> m_responseCollector;
+
+        //Variable: m_rawBytePacketCollector
+        //    The <RawBytePacketCollector> associated with this parser and its parent device
+        mutable RawBytePacketCollector m_rawBytePacketCollector;
 
         //Variable: m_parser
         //    The wireless parser in charge of parsing all incoming data to this base station
@@ -364,6 +368,18 @@ namespace mscl
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the BaseStation
         void getData(std::vector<DataSweep>& sweeps, uint32 timeout = 0, uint32 maxSweeps = 0);
+
+        //Function: getRawBytePackets
+        //    Gets up to the requested amount of raw byte packets that have been collected.
+        //
+        //Parameters:
+        //    packets - A vector of <RawBytePacket> to hold the result.
+        //    timeout - the timeout, in milliseconds, to wait for the data if necessary (default of 0)
+        //    maxPackets - The maximum number of packets to return. If this is 0 (default), all packets will be returned.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: A connection error has occurred with the Node.
+        void getRawBytePackets(RawBytePackets& packets, uint32 timeout = 0, uint32 maxPackets = 0);
 
         //Function: totalData
         //    Gets the number of <DataSweep>s that are currently in the data buffer.

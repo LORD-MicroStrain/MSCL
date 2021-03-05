@@ -86,6 +86,12 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public CommPortInfo getCommPortInfo() {
+    CommPortInfo ret = new CommPortInfo(msclPINVOKE.MipNodeFeatures_getCommPortInfo(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public bool useLegacyIdsForEnableDataStream() {
     bool ret = msclPINVOKE.MipNodeFeatures_useLegacyIdsForEnableDataStream(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

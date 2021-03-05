@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -34,7 +34,8 @@ BOOST_AUTO_TEST_CASE(WirelessParser_parseAsPacket_NotEnoughData)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     WirelessPacketCollector m_packetCollector;
-    WirelessParser parser(m_packetCollector, responseCollector);
+    RawBytePacketCollector m_rawBytePacketCollector;
+    WirelessParser parser(m_packetCollector, responseCollector, m_rawBytePacketCollector);
     WirelessPacket packet;
 
     BOOST_CHECK_EQUAL(parser.parseAsPacket(b, packet, WirelessTypes::freq_14), WirelessParser::parsePacketResult_notEnoughData);
@@ -69,7 +70,8 @@ BOOST_AUTO_TEST_CASE(WirelessParser_parseAsPacket_InvalidPacket)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     WirelessPacketCollector m_packetCollector;
-    WirelessParser parser(m_packetCollector, responseCollector);
+    RawBytePacketCollector m_rawBytePacketCollector;
+    WirelessParser parser(m_packetCollector, responseCollector, m_rawBytePacketCollector);
     WirelessPacket packet;
 
     BOOST_CHECK_EQUAL(parser.parseAsPacket(b, packet, WirelessTypes::freq_14), WirelessParser::parsePacketResult_invalidPacket);
@@ -96,7 +98,8 @@ BOOST_AUTO_TEST_CASE(WirelessParser_parseAsPacket_IntegrityCheck_InvalidPacket)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     WirelessPacketCollector m_packetCollector;
-    WirelessParser parser(m_packetCollector, responseCollector);
+    RawBytePacketCollector m_rawBytePacketCollector;
+    WirelessParser parser(m_packetCollector, responseCollector, m_rawBytePacketCollector);
     WirelessPacket packet;
 
     BOOST_CHECK_EQUAL(parser.parseAsPacket(b, packet, WirelessTypes::freq_14), WirelessParser::parsePacketResult_invalidPacket);
@@ -124,7 +127,8 @@ BOOST_AUTO_TEST_CASE(WirelessParser_parseAsPacket_InvalidChecksum)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     WirelessPacketCollector m_packetCollector;
-    WirelessParser parser(m_packetCollector, responseCollector);
+    RawBytePacketCollector m_rawBytePacketCollector;
+    WirelessParser parser(m_packetCollector, responseCollector, m_rawBytePacketCollector);
     WirelessPacket packet;
 
     BOOST_CHECK_EQUAL(parser.parseAsPacket(b, packet, WirelessTypes::freq_14), WirelessParser::parsePacketResult_badChecksum);
@@ -152,7 +156,8 @@ BOOST_AUTO_TEST_CASE(WirelessParser_parseAsPacket_CompletePacket)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     WirelessPacketCollector m_packetCollector;
-    WirelessParser parser(m_packetCollector, responseCollector);
+    RawBytePacketCollector m_rawBytePacketCollector;
+    WirelessParser parser(m_packetCollector, responseCollector, m_rawBytePacketCollector);
     WirelessPacket packet;
 
     BOOST_CHECK_EQUAL(parser.parseAsPacket(b, packet, WirelessTypes::freq_14), WirelessParser::parsePacketResult_completePacket);
@@ -193,7 +198,8 @@ BOOST_AUTO_TEST_CASE(WirelessParser_parseAsPacket_Duplicate)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     WirelessPacketCollector m_packetCollector;
-    WirelessParser parser(m_packetCollector, responseCollector);
+    RawBytePacketCollector m_rawBytePacketCollector;
+    WirelessParser parser(m_packetCollector, responseCollector, m_rawBytePacketCollector);
     WirelessPacket packet;
 
     BOOST_CHECK_EQUAL(parser.parseAsPacket(b, packet, WirelessTypes::freq_14), WirelessParser::parsePacketResult_completePacket);
@@ -237,7 +243,8 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_DataPacket)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     WirelessPacketCollector packetCollector;
-    WirelessParser parser(packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(packetCollector, responseCollector, rawBytePacketCollector);
 
     DataSweeps sweeps;
     packetCollector.getDataSweeps(sweeps);
@@ -284,7 +291,8 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Duplicate)
 
     std::shared_ptr<ResponseCollector> responseCollector(new ResponseCollector);
     WirelessPacketCollector packetCollector;
-    WirelessParser parser(packetCollector, responseCollector);
+    RawBytePacketCollector m_rawBytePacketCollector;
+    WirelessParser parser(packetCollector, responseCollector, m_rawBytePacketCollector);
 
     DataSweeps sweeps;
     packetCollector.getDataSweeps(sweeps);
@@ -351,12 +359,12 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_ResponsePacket_NoMatch)
 
     //create the response for the LongPing command that we will NOT be matching
     LongPing::Response response(123, rc);
-
+    RawBytePacketCollector rawBytePacketCollector;
     //build the long ping command to send
     ByteStream pingCommand = LongPing::buildCommand(WirelessPacket::aspp_v1, 123);
 
     WirelessPacketCollector packetCollector;
-    WirelessParser parser(packetCollector, rc);
+    WirelessParser parser(packetCollector, rc, rawBytePacketCollector);
 
     DataSweeps sweeps;
     packetCollector.getDataSweeps(sweeps);
@@ -392,11 +400,13 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_ResponsePacket_Match_Packet)
     //create the response for the LongPing command that we will be matching
     LongPing::Response response(367, rc);
 
+    RawBytePacketCollector rawBytePacketCollector;
+
     //build the long ping command to send
     ByteStream pingCommand = LongPing::buildCommand(WirelessPacket::aspp_v1, 367);
 
     WirelessPacketCollector packetCollector;
-    WirelessParser parser(packetCollector, rc);
+    WirelessParser parser(packetCollector, rc, rawBytePacketCollector);
 
     DataSweeps sweeps;
     packetCollector.getDataSweeps(sweeps);
@@ -436,7 +446,8 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Bad_Checksum)
 
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     WirelessPacketCollector packetCollector;
-    WirelessParser parser(packetCollector, rc);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(packetCollector, rc, rawBytePacketCollector);
 
     DataSweeps sweeps;
     packetCollector.getDataSweeps(sweeps);
@@ -478,7 +489,8 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Bad_Followed_By_Good)
 
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     WirelessPacketCollector packetCollector;
-    WirelessParser parser(packetCollector, rc);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(packetCollector, rc, rawBytePacketCollector);
 
     DataSweeps sweeps;
     packetCollector.getDataSweeps(sweeps);
@@ -518,7 +530,8 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_Bad)
 
     std::shared_ptr<ResponseCollector> rc(new ResponseCollector);
     WirelessPacketCollector packetCollector;
-    WirelessParser parser(packetCollector, rc);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(packetCollector, rc, rawBytePacketCollector);
 
     DataSweeps sweeps;
     packetCollector.getDataSweeps(sweeps);
@@ -558,7 +571,8 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_StartSyncSampling_1node)
     StartSyncSampling::Response response1(373, responseCollector);
 
     WirelessPacketCollector m_packetCollector;
-    WirelessParser parser(m_packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(m_packetCollector, responseCollector, rawBytePacketCollector);
     WirelessPacket packet;
 
     parser.parse(b, WirelessTypes::freq_14);
@@ -610,7 +624,8 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_StartSyncSampling_2nodes_sequentially)
     StartSyncSampling::Response response1(373, responseCollector);
 
     WirelessPacketCollector m_packetCollector;
-    WirelessParser parser(m_packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(m_packetCollector, responseCollector, rawBytePacketCollector);
     WirelessPacket packet;
 
     parser.parse(b, WirelessTypes::freq_14);
@@ -669,7 +684,8 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_StartSyncSampling_2nodes_sameTime)
     StartSyncSampling::Response response2(58, responseCollector);
 
     WirelessPacketCollector m_packetCollector;
-    WirelessParser parser(m_packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(m_packetCollector, responseCollector, rawBytePacketCollector);
     WirelessPacket packet;
 
     parser.parse(b, WirelessTypes::freq_14);
@@ -735,7 +751,8 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_StartSyncSampling_2nodes_extraBytes)
     StartSyncSampling::Response response2(58, responseCollector);
 
     WirelessPacketCollector m_packetCollector;
-    WirelessParser parser(m_packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(m_packetCollector, responseCollector, rawBytePacketCollector);
     WirelessPacket packet;
 
     parser.parse(eb, WirelessTypes::freq_14);
@@ -775,7 +792,8 @@ BOOST_AUTO_TEST_CASE(WirelessParser_Parse_PageDownload)
     PageDownload::Response response(responseCollector);
 
     WirelessPacketCollector m_packetCollector;
-    WirelessParser parser(m_packetCollector, responseCollector);
+    RawBytePacketCollector rawBytePacketCollector;
+    WirelessParser parser(m_packetCollector, responseCollector, rawBytePacketCollector);
     WirelessPacket packet;
 
     parser.parse(b, WirelessTypes::freq_14);

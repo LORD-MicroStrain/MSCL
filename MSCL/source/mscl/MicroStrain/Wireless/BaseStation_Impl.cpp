@@ -1,5 +1,5 @@
 /*******************************************************************************
-Copyright(c) 2015-2020 Parker Hannifin Corp. All rights reserved.
+Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
 
 MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 *******************************************************************************/
@@ -84,7 +84,7 @@ namespace mscl
         m_responseCollector->setConnection(&m_connection);
 
         //build the parser with the base station's packet collector and response collector
-        m_parser.reset(new WirelessParser(m_packetCollector, m_responseCollector));
+        m_parser.reset(new WirelessParser(m_packetCollector, m_responseCollector, m_rawBytePacketCollector));
 
         //register the parse function with the connection
         m_connection.registerParser(std::bind(&BaseStation_Impl::parseData, this, std::placeholders::_1));
@@ -120,7 +120,7 @@ namespace mscl
         m_responseCollector->setConnection(&m_connection);
 
         //build the parser with the base station's packet collector and response collector
-        m_parser.reset(new WirelessParser(m_packetCollector, m_responseCollector));
+        m_parser.reset(new WirelessParser(m_packetCollector, m_responseCollector, m_rawBytePacketCollector));
 
         //register the parse function with the connection
         m_connection.registerParser(std::bind(&BaseStation_Impl::parseData, this, std::placeholders::_1));
@@ -199,6 +199,13 @@ namespace mscl
 
     bool BaseStation_Impl::doCommand(WirelessResponsePattern& response, const ByteStream& cmdBytes, uint64 timeout)
     {
+        RawBytePacket rawBytePacket;
+        rawBytePacket.payload(cmdBytes.data());
+        rawBytePacket.source(RawBytePacket::FROM_SEND);
+        rawBytePacket.type(RawBytePacket::COMMAND_PACKET);
+
+        m_rawBytePacketCollector.addRawBytePacket(rawBytePacket);
+
         //set the response collector of the ResponsePattern (registers response as well)
         response.setResponseCollector(m_responseCollector);
 
@@ -383,6 +390,14 @@ namespace mscl
         m_connection.throwIfError();
 
         return m_packetCollector.getDataSweeps(sweeps, timeout, maxSweeps);
+    }
+
+    void BaseStation_Impl::getRawBytePackets(RawBytePackets& packets, uint32 timeout, uint32 maxPackets)//maxPackets=0
+    {
+        //check if a connection error has occurred
+        m_connection.throwIfError();
+
+        return m_rawBytePacketCollector.getRawBytePackets(packets, timeout, maxPackets);
     }
 
     uint32 BaseStation_Impl::totalData()
