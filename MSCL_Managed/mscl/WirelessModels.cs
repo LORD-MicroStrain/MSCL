@@ -139,6 +139,7 @@ public class WirelessModels : global::System.IDisposable {
     node_shmLink210_fullbridge = 63290170,
     node_shmLink210_qbridge_3K = 63290171,
     node_torqueLink = 63309999,
+    node_torqueLink200_3ch = 63313000,
     node_torqueLink200 = 63319999,
     node_sgLink_herm = 65010000,
     node_sgLink_herm_2600 = 65011110,

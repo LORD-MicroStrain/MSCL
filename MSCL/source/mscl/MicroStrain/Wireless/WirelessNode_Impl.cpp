@@ -643,6 +643,7 @@ namespace mscl
             case WirelessModels::node_sgLink200_oem_qbridge_350:
             case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
             case WirelessModels::node_torqueLink200:
+            case WirelessModels::node_torqueLink200_3ch:
                 assert(false);
                 throw Error("This Node should read Excitation Voltage from EEPROM!");
 
@@ -712,6 +713,7 @@ namespace mscl
             case WirelessModels::node_sgLink200_oem_qbridge_350:
             case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
             case WirelessModels::node_torqueLink200:
+            case WirelessModels::node_torqueLink200_3ch:
             case WirelessModels::node_shmLink210_fullbridge:
             case WirelessModels::node_shmLink210_qbridge_3K:
                 return m_eepromHelper->read_excitationVoltage();        //gain amplifier voltage is the same as the excitation, which is read from eeprom
@@ -789,6 +791,7 @@ namespace mscl
             case WirelessModels::node_sgLink200_oem_qbridge_350:
             case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
             case WirelessModels::node_torqueLink200:
+            case WirelessModels::node_torqueLink200_3ch:
             case WirelessModels::node_shmLink210_fullbridge:
             case WirelessModels::node_shmLink210_qbridge_3K:
                 return m_eepromHelper->read_excitationVoltage();        //gain amplifier voltage is the same as the excitation, which is read from eeprom

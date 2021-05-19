@@ -162,6 +162,15 @@ namespace mscl
         //  The last known <DeviceState>.
         DeviceState lastDeviceState() const;
 
+        //API Function: setLastDeviceState
+        //  Most users will not need this functionality.
+        //  The device state defaults to unknown on connection but then automatically updates to streaming upon receiving data packets or idle when the set to idle command is sent.
+        //  Setting this will not stop auto-detection - the manually set value will be overwritten when the value would otherwise be set.
+        //
+        //Parameters:
+        //  state - the <DeviceState> to set
+        void setLastDeviceState(DeviceState state);
+
         //API Function: firmwareVersion
         //    Gets the firmware <Version> of the MipNode.
         //

@@ -261,6 +261,7 @@ namespace mscl
             case WirelessModels::node_sgLink200_oem_qbridge_120_ufl:
             case WirelessModels::node_sgLink200_oem_qbridge_350:
             case WirelessModels::node_sgLink200_oem_qbridge_350_ufl:
+            case WirelessModels::node_torqueLink200_3ch:
             case WirelessModels::node_torqueLink200:
             {
                 if(channelType == WirelessTypes::chType_fullDifferential)

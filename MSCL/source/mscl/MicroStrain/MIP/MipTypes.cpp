@@ -36,7 +36,6 @@ namespace mscl
         //if we failed to find the channel
         if(result == CHANNEL_NAMES.end())
         {
-            assert(false);
             return "unknown_" + Utils::toStr(field) + "-" + Utils::toStr(qualifier);
         }
 
@@ -425,13 +424,13 @@ namespace mscl
         { ChannelId(CH_FIELD_ESTFILTER_NED_RELATIVE_POS, CH_Y), "estNedRelPos_y" },
         { ChannelId(CH_FIELD_ESTFILTER_NED_RELATIVE_POS, CH_Z), "estNedRelPos_z" },
 
-        { ChannelId(CH_FIELD_ESTFILTER_POSITION_AIDING_STATUS, CH_TIME_OF_WEEK), "gnssAiding_pos_lastValidTow" },
+        { ChannelId(CH_FIELD_ESTFILTER_POSITION_AIDING_STATUS, CH_TIME_OF_WEEK), "gnssAiding_pos_tow" },
         { ChannelId(CH_FIELD_ESTFILTER_POSITION_AIDING_STATUS, CH_STATUS), "gnssAiding_pos_status" },
 
-        { ChannelId(CH_FIELD_ESTFILTER_ATTITUDE_AIDING_STATUS, CH_TIME_OF_WEEK), "gnssAiding_att_lastValidTow" },
+        { ChannelId(CH_FIELD_ESTFILTER_ATTITUDE_AIDING_STATUS, CH_TIME_OF_WEEK), "gnssAiding_att_tow" },
         { ChannelId(CH_FIELD_ESTFILTER_ATTITUDE_AIDING_STATUS, CH_STATUS), "gnssAiding_att_status" },
 
-        { ChannelId(CH_FIELD_ESTFILTER_AIDING_MEASURE_SUMMARY, CH_TIME_OF_WEEK), "aidingSummary_lastValidTow" },
+        { ChannelId(CH_FIELD_ESTFILTER_AIDING_MEASURE_SUMMARY, CH_TIME_OF_WEEK), "aidingSummary_tow" },
         { ChannelId(CH_FIELD_ESTFILTER_AIDING_MEASURE_SUMMARY, CH_STATUS), "aidingSummary_status" },
 
         { ChannelId(CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR, CH_ERROR), "odometer_scaleFactorError" },
@@ -749,7 +748,6 @@ namespace mscl
         //if we failed to find the channel
         if (typeName == TYPE_NAMES.end())
         {
-            assert(false);
             return "unknownId_" + Utils::toStr(m_id);
         }
 

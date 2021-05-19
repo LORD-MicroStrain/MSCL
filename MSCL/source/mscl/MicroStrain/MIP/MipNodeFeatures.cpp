@@ -345,9 +345,7 @@ namespace mscl
         case MipModels::node_3dm_gx4_25:
         case MipModels::node_3dm_gx4_15:
         case MipModels::node_3dm_gx3_45:
-        case MipModels::node_3dm_cv5_25:
         case MipModels::node_3dm_cv5_15:
-        case MipModels::node_3dm_cl5_25:
         case MipModels::node_3dm_cl5_15:
             return EstimationControlOptions(
                 InertialTypes::EstimationControlOption::ENABLE_GYRO_BIAS_ESTIMATION
@@ -366,6 +364,8 @@ namespace mscl
             );
 
         case MipModels::node_3dm_gx5_25:
+        case MipModels::node_3dm_cv5_25:
+        case MipModels::node_3dm_cl5_25:
             return EstimationControlOptions(
                 InertialTypes::EstimationControlOption::ENABLE_GYRO_BIAS_ESTIMATION |
                 InertialTypes::EstimationControlOption::ENABLE_HARD_IRON_AUTO_CALIBRATION |

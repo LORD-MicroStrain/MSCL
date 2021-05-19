@@ -1010,6 +1010,9 @@
     <ClInclude Include="source\mscl\MicroStrain\RTK\Commands\ActivationCode.h">
       <Filter>MicroStrain\RTK\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_torqueLink200_3ch.h">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp">
@@ -1910,6 +1913,9 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\RTK\Commands\ActivationCode.cpp">
       <Filter>MicroStrain\RTK\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_torqueLink200_3ch.cpp">
+      <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

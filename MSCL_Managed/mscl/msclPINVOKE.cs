@@ -5208,6 +5208,9 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNode_lastDeviceState")]
   public static extern int MipNode_lastDeviceState(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNode_setLastDeviceState")]
+  public static extern void MipNode_setLastDeviceState(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNode_firmwareVersion")]
   public static extern global::System.IntPtr MipNode_firmwareVersion(global::System.Runtime.InteropServices.HandleRef jarg1);
 

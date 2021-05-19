@@ -80,6 +80,11 @@ namespace mscl
         return m_impl->lastDeviceState();
     }
 
+    void MipNode::setLastDeviceState(DeviceState state)
+    {
+        m_impl->setLastDeviceState(state);
+    }
+
     Version MipNode::firmwareVersion() const
     {
         return m_impl->firmwareVersion();

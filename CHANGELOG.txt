@@ -14,6 +14,27 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
+62.0.0 - 2021-05-19
+- update inertial time of week channel names from _lastValidTow to _tow for accuracy:
+    - GNSS Position Aiding Status (0x82,0x43)
+    - GNSS Attitude Aiding Status (0x82,0x44)
+    - Aiding Measurement Summary (0x82,0x46)
+
+61.2.3 - 2021-05-18
+- Fix InertialTypes::GnssAidingStatus enum values, add NO_FIX and CONFIG_ERROR entries - definition for status value of fields: GNSS Position Aiding Status (0x82,0x43), GNSS Attitude Aiding Status (0x82,0x44)
+
+61.2.2 - 2021-04-20
+- Add ability to set lastDeviceState on MipNode objects (MipNode::setLastDeviceState())
+
+61.2.1 - 2021-04-16
+- Fix available options for Estimation Control Flags (0x0D,0x14) config command for CV5-25 (MipNodeFeatures::supportedEstimationControlOptions()) - hard, soft iron auto calibration now available
+
+61.2.0 - 2021-03-23
+- Add support for Torque-Link-200-3ch
+
+61.1.7 - 2021-03-22
+- Remove assert(false) from MipTypes::channelName() and MipChannelIdentifier::name() on undefined channel field/qualifier or identifier type
+
 61.1.6 - 2021-03-04
 - Add support for inertial command Input Speed Measurement (0x0D,0x60)
 

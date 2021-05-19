@@ -107,6 +107,11 @@ public class MipNode : global::System.IDisposable {
     return ret;
   }
 
+  public void setLastDeviceState(DeviceState state) {
+    msclPINVOKE.MipNode_setLastDeviceState(swigCPtr, (int)state);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public Version firmwareVersion() {
     Version ret = new Version(msclPINVOKE.MipNode_firmwareVersion(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

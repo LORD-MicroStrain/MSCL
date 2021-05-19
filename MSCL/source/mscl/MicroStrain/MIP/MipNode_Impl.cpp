@@ -109,6 +109,11 @@ namespace mscl
         return m_lastDeviceState;
     }
 
+    void MipNode_Impl::setLastDeviceState(DeviceState state)
+    {
+        m_lastDeviceState = state;
+    }
+
     void MipNode_Impl::resetNodeInfo()
     {
         m_nodeInfo.reset();
