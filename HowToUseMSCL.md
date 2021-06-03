@@ -85,3 +85,10 @@ This folder contains the MSCL headers, as well as a `boost` folder with the Boos
 
 For example:
 ```g++ -I/usr/share/c++-mscl/source -I/usr/share/c++-mscl/Boost/include YourFile.cpp -o YourProgram -L/usr/share/c++-mscl -lmscl -lstdc++ -std=c++11```
+
+#### A couple common issues:
+**Build error:** `/usr/bin/ld: /usr/share/c++-mscl/libmscl.so: undefined reference to 'pthread_...`  
+*Resolution:* add `-pthread` argument prior to linking MSCL (`... -pthread -L/usr/share/c++-mscl...`)
+
+**Runtime error:** `error while loading shared libraries: libmscl.so: cannot open shared object file: No such file or directory`  
+*Resolution:* in addition to linking at compile time, the application also needs to be able to find MSCL at runtime. There are a few ways to resolve this, one of which is to specify the runtime MSCL path in the build command: `... -L/usr/share/c++-mscl -Wl,-rpath,/usr/share/c++-mscl...`
