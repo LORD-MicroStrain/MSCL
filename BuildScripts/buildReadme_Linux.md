@@ -28,7 +28,7 @@ On some systems, you may get a virtual memory error when compiling MSCL (ex. `Vi
 5. Open a terminal to the location of the `config.cfg` file and run the following command: `python MSCL_Install.py` (see note below for optional parameters).
 6. The latest MSCL will automatically be downloaded, as well as it's dependencies. The build process will take a while, but once it is complete, the package will be installed in `/usr/share/`.
 
-Note: OpenSSL and Beast are optional and are used for creating secure WebSocket connections to an ethernet connected WSDA from anywhere in the world. If this is a feature you do not want, you can avoid adding these extra dependencies by adding `--without-ssl` (for OpenSSL) and `--without-websockets` (for Beast) as parameters to the MSCL_Install.py command run above.
+Note: OpenSSL and Boost are optional and are used for creating secure WebSocket connections to an ethernet connected WSDA from anywhere in the world. If this is a feature you do not want, you can avoid adding these extra dependencies by adding `--without-ssl` (for OpenSSL) and `--without-websockets` (for Boost) as parameters to the MSCL_Install.py command run above.
 
 ## Building MSCL for Python
 
@@ -39,4 +39,4 @@ Note: OpenSSL and Beast are optional and are used for creating secure WebSocket 
 5. Open a terminal to the location of the `config.cfg` file and run the following command: `python MSCL_Install.py` (see note below for optional parameters).
 6. The latest MSCL will automatically be downloaded, as well as it's dependencies. The build process will take a while, but once it is complete, the package will be installed in `/usr/share/`.
 
-Note: OpenSSL and Beast are optional and are used for creating secure WebSocket connections to an ethernet connected WSDA from anywhere in the world. If this is a feature you do not want, you can avoid adding these extra dependencies by adding `--without-ssl` (for OpenSSL) and `--without-websockets` (for Beast) as parameters to the MSCL_Install.py command run above.
+Note: OpenSSL and Boost are optional and are used for creating secure WebSocket connections to an ethernet connected WSDA from anywhere in the world. If this is a feature you do not want, you can avoid adding these extra dependencies by adding `--without-ssl` (for OpenSSL) and `--without-websockets` (for Boost) as parameters to the MSCL_Install.py command run above.
