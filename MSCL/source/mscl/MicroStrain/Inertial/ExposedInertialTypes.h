@@ -963,7 +963,6 @@ namespace mscl
         //    Default: LLH
         PositionVelocityReferenceFrame referenceFrame;
 
-
     private:
         //API Variable: position_0, _1, _2
         // The position values
