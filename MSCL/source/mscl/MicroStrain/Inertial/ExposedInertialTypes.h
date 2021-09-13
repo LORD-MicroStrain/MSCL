@@ -928,11 +928,6 @@ namespace mscl
         //    Destroys a TimeUpdate object.
         ~Position() {}
 
-        //API Variable: referenceFrame
-        //    The <PositionVelocityReferenceFrame> of this position.
-        //    Default: LLH
-        PositionVelocityReferenceFrame referenceFrame;
-
         //API Function: latitude
         // Only valid if referenceFrame is LLH_NED
         double latitude() const { return position_0; }
@@ -962,6 +957,12 @@ namespace mscl
         // Only valid if referenceFrame is ECEF
         double z() const { return position_2; }
         void z(double z) { position_2 = z; }
+
+        //API Variable: referenceFrame
+        //    The <PositionVelocityReferenceFrame> of this position.
+        //    Default: LLH
+        PositionVelocityReferenceFrame referenceFrame;
+
 
     private:
         //API Variable: position_0, _1, _2
