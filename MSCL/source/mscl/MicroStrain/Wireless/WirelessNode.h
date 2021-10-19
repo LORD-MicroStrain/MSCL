@@ -332,7 +332,7 @@ namespace mscl
         //    Gets the number of bytes available for data storage on the Node.
         //
         //Returns:
-        //    The number of bytes avaialbe
+        //    The number of bytes available
         //
         //Exceptions:
         //    - <Error_NotSupported>: Attempted to read an unsupported option. The device firmware is not compatible with this version of MSCL.

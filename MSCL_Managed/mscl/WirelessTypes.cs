@@ -427,7 +427,8 @@ public class WirelessTypes : global::System.IDisposable {
     region_china = 5,
     region_australia_newzealand = 6,
     region_singapore = 7,
-    region_canada = 8
+    region_canada = 8,
+    region_southAfrica = 9
   }
 
   public enum ChannelGroupSetting {
@@ -685,6 +686,8 @@ public class WirelessTypes : global::System.IDisposable {
     range_0to322_58ohm = 130,
     range_0to158_73ohm = 131,
     range_0to78_74ohm = 132,
+    range_39_0625mV = 133,
+    range_19_5313mV = 134,
     range_invalid = 65535
   }
 

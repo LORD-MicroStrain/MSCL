@@ -47,6 +47,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 #include "NodeFeatures_torqueLink.h"
 #include "NodeFeatures_torqueLink200.h"
 #include "NodeFeatures_torqueLink200_3ch.h"
+#include "NodeFeatures_torqueLink200_3ch_s.h"
 #include "NodeFeatures_vlink200.h"
 #include "NodeFeatures_vlink.h"
 #include "NodeFeatures_vlink_legacy.h"
@@ -247,6 +248,9 @@ namespace mscl
 
         case WirelessModels::node_torqueLink200:
             return std::unique_ptr<NodeFeatures>(new NodeFeatures_torqueLink200(info));
+
+        case WirelessModels::node_torqueLink200_3ch_s:
+            return std::unique_ptr<NodeFeatures>(new NodeFeatures_torqueLink200_3ch_s(info));
 
         //TODO: add Watt-Link
 

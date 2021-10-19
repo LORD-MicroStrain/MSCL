@@ -1,5 +1,6 @@
 #pragma once
 
+#include <thread>
 #include "mscl/mscl.h"
 
 static void enableDisableBeacon(mscl::BaseStation& base)

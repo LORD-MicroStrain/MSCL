@@ -1,4 +1,4 @@
-﻿Format: 2.0 (Development Release 08-22-2015)
+﻿Format: 2.0.2
 
 # This is the file you use to provide information about your project.  It can
 # also be used to specify input and output settings so you don't have to
@@ -29,10 +29,12 @@ Timestamp: Updated mm/dd/yyyy
 # This is where you specify general information about your project.
 #
 # Style: [style]
-#    The style to apply to the generated output.
+#    The style to apply to the generated documentation.  It can be the name of
+#    a CSS file in the project configuration folder or a subfolder that
+#    contains Style.txt.  Do not include ".css" if using a CSS file.
 
 
-# Input
+# Source Code
 # ------------------------------------------------------------------------
 
 Source Folder: ..\..\..\MSCL\source\mscl
@@ -43,9 +45,10 @@ Source Folder: ..\..\..\MSCL\source\mscl
 # scanning.  If you use any of these options on the command line, this entire
 # section is ignored except for names and numbers.
 #
-# All paths are relative to the project folder, which lets this file remain
-# portable across computers and not cause problems in version control systems.
-# You can enter absolute paths and they will be converted automatically.
+# All paths are relative to the project configuration folder, which lets this
+# file remain portable across computers and not cause problems in version
+# control systems.  You can enter absolute paths and they will be converted
+# automatically.
 #
 # Source Folder: [path]
 #    Name: [name]
@@ -53,15 +56,12 @@ Source Folder: ..\..\..\MSCL\source\mscl
 #    Specifies a folder which will be searched for source files.  If you have
 #    more than one, add the Name property to set how it will show up in the
 #    menu.
-#
-# Image Folder: [path]
-#    Specifies a folder which will be searched for image files.
 
 
-# Filtering
+# Source Filtering
 # ------------------------------------------------------------------------
 
-# If there are any subfolders of the input folders that you would like Natural
+# If there are any subfolders in the source code that you would like Natural
 # Docs to ignore, they can be specified here.  If you use any of these options
 # on the command line, this entire section is ignored.
 #
@@ -69,13 +69,16 @@ Source Folder: ..\..\..\MSCL\source\mscl
 #    Tells Natural Docs to skip this folder when scanning files.
 #
 # Ignore Source Folder Pattern: [pattern]
-#    Tells Natural Docs to skip all folders which match this pattern when
+#    Tells Natural Docs to skip all folder names which match this pattern when
 #    scanning files.  ? matches a single character, * matches zero or more
 #    characters.  It applies to the entire folder name, so "cli" will not
 #    match "client", although "cli*" will.
+#
+#    The data folders of common version control systems (.git, .svn, .cvs, .hg)
+#    are ignored automatically.  You do not have to specify them here.
 
 
-# Output
+# Generated Documentation
 # ------------------------------------------------------------------------
 
 HTML Output Folder: ..\..\..\Output\Documentation\MSCL_Docs
@@ -85,9 +88,10 @@ HTML Output Folder: ..\..\..\Output\Documentation\MSCL_Docs
 # to build and where it should be put.  If you use any of these options on the
 # command line, this entire section is ignored except for secondary settings.
 #
-# All paths are relative to the project folder, which lets this file remain
-# portable across computers and not cause problems in version control systems.
-# You can enter absolute paths and they will be converted automatically.
+# All paths are relative to the project configuration folder, which lets this
+# file remain portable across computers and not cause problems in version
+# control systems.  You can enter absolute paths and they will be converted
+# automatically.
 #
 # You can override any of the project information settings under each entry,
 # so if you have multiple output folders you can give them each different

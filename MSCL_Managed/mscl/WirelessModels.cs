@@ -141,6 +141,7 @@ public class WirelessModels : global::System.IDisposable {
     node_torqueLink = 63309999,
     node_torqueLink200_3ch = 63313000,
     node_torqueLink200 = 63319999,
+    node_torqueLink200_3ch_s = 63323350,
     node_sgLink_herm = 65010000,
     node_sgLink_herm_2600 = 65011110,
     node_sgLink_herm_2700 = 65011210,

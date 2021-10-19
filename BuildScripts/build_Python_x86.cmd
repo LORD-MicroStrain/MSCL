@@ -21,14 +21,21 @@ echo Building MSCL for Python x86... (bjam)
 echo ********************************
 echo.
 
-SET msclCxxFlags="/I"C:/Python27/include" /I"C:/Dev/Lib/boost/boost_1_68_0" /I"C:/Dev/Lib/openssl/include""
-IF NOT [%1]==[] SET msclCxxFlags=%1
-IF [%1]==["none"] SET msclCxxFlags=" "
+SET pythonDir=C:/Python27
+IF NOT [%1]==[] SET pythonDir=%1
+IF [%1]==["none"] SET pythonDir=" "
+SET pythonDir=%pythonDir:"=%
 
-SET msclLinkFlags="/LIBPATH:"C:/Python27/libs" /LIBPATH:"C:/Dev/Lib/boost/boost_1_68_0/lib32-msvc-14.0" /LIBPATH:"C:/Dev/Lib/openssl/lib" libboost_system-vc140-mt-s-x32-1_68.lib libsslMT.lib libcryptoMT.lib crypt32.lib ws2_32.lib gdi32.lib advapi32.lib user32.lib"
-IF NOT [%2]==[] SET msclLinkFlags=%2
-IF [%2]==["none"] SET msclLinkFlags=" "
+SET extraMsclCxxFlags=""
+IF NOT [%2]==[] SET extraMsclCxxFlags=%2
 
+SET extraMsclLinkFlags=""
+IF NOT [%3]==[] SET extraMsclLinkFlags=%3
+
+SET msclCxxFlags="%extraMsclCxxFlags:"=% /bigobj /I"%pythonDir%/include" /I"%LIB_PATH%/boost/boost_1_68_0" /I"%LIB_PATH%/openssl/include""
+SET msclLinkFlags="%extraMsclLinkFlags:"=% /LIBPATH:"%pythonDir%/libs" /LIBPATH:"%LIB_PATH%/boost/boost_1_68_0/lib32-msvc-14.0" /LIBPATH:"%LIB_PATH%/openssl/lib" libsslMT.lib libcryptoMT.lib crypt32.lib Advapi32.lib"
+
+echo pythonDir: %pythonDir%
 echo msclCxxFlags: %msclCxxFlags%
 echo msclLinkFlags: %msclLinkFlags%
 
@@ -42,9 +49,21 @@ mkdir build\swig-python
 REM build the python version of MSCL (have to do this twice to copy the .py output file (BUG))
 echo Running BJAM (1)
 REM linkflags=/SUBSYSTEM:WINDOWS",5.01"
-bjam MSCL//stage_python_x86 runtime-link=static link=static release toolset=msvc-14.0 cxxflags=%msclCxxFlags% linkflags=%msclLinkFlags% address-model=32 -j4
+bjam MSCL//stage_python_x86 release -j %NUMBER_OF_PROCESSORS% ^
+    runtime-link=static ^
+    link=shared ^
+    toolset=msvc-14.0 ^
+    address-model=32 ^
+    cxxflags=%msclCxxFlags% ^
+    linkflags=%msclLinkFlags%
 echo Running BJAM (2)
-bjam MSCL//stage_python_x86 runtime-link=static link=static release toolset=msvc-14.0 cxxflags=%msclCxxFlags% linkflags=%msclLinkFlags% address-model=32 -j4
+bjam MSCL//stage_python_x86 release -j %NUMBER_OF_PROCESSORS% ^
+    runtime-link=static ^
+    link=shared ^
+    toolset=msvc-14.0 ^
+    address-model=32 ^
+    cxxflags=%msclCxxFlags% ^
+    linkflags=%msclLinkFlags%
 
 REM rename _mscl.dll to _mscl.pyd 
 echo Renaming _mscl.dll to _mscl.pyd

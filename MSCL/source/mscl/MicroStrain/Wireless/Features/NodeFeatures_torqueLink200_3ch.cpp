@@ -11,9 +11,14 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 namespace mscl
 {
-    NodeFeatures_torqueLink200_3ch::NodeFeatures_torqueLink200_3ch(const NodeInfo& info):
+    NodeFeatures_torqueLink200_3ch::NodeFeatures_torqueLink200_3ch(const NodeInfo& info, bool ext):
         NodeFeatures_200series(info)
     {
+        if (ext)
+        {
+            return;
+        }
+
         addCalCoeffChannelGroup(1, "Differential", NodeEepromMap::CH_ACTION_SLOPE_1, NodeEepromMap::CH_ACTION_ID_1);
         addCalCoeffChannelGroup(2, "Differential", NodeEepromMap::CH_ACTION_SLOPE_2, NodeEepromMap::CH_ACTION_ID_2);
         addCalCoeffChannelGroup(3, "Differential", NodeEepromMap::CH_ACTION_SLOPE_3, NodeEepromMap::CH_ACTION_ID_3);

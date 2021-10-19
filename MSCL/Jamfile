@@ -4,6 +4,10 @@ import cast ;
 import path ;
 import common ;
 import set ;
+import "class" : new ;
+import type ;
+import project ;
+import targets ;
 
 #Setup path variables
 path-constant SWIG_PYTHON : $(BUILD_DIR)/swig-python ;
@@ -147,8 +151,25 @@ DEPENDS _mscl : $(SWIG_PYTHON) ;
 
 alias MSCL_Main_Interface.cpp : [ cast _ swigi : source/mscl/Wrapper/MSCL_Main_Interface.i ] ;   #Reference the .i file as a swig_i file
 
+# Register a type so we can remove the prefix
+type.register MSCL_PYTHON_EXTENSION : : SHARED_LIB ;
+type.set-generated-target-prefix MSCL_PYTHON_EXTENSION : : "" ;
+
+rule mscl-python-extension ( name : sources * : requirements * : default-build * :
+                        usage-requirements * )
+{
+    local project = [ project.current ] ;
+
+    targets.main-target-alternative
+        [ new typed-target $(name) : $(project) : MSCL_PYTHON_EXTENSION
+            : [ targets.main-target-sources $(sources) : $(name) ]
+            : [ targets.main-target-requirements $(requirements) : $(project) ]
+            : [ targets.main-target-default-build $(default-build) : $(project) ]
+        ] ;
+}
+
 #Define the python mscl build
-python-extension _mscl
+mscl-python-extension _mscl
 :	MSCL_Main_Interface.cpp
 	msclSrcs                                                        #Include the MSCL Source
 	boostLibs

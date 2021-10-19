@@ -55,6 +55,7 @@ namespace mscl
             case WirelessTypes::region_canada:
             case WirelessTypes::region_brazil:
             case WirelessTypes::region_china:
+            case WirelessTypes::region_southAfrica:
             default:
             {
                 return{
@@ -189,6 +190,7 @@ namespace mscl
                     }
                 }
                 else if(info.regionCode() == WirelessTypes::region_usa ||
+                        info.regionCode() == WirelessTypes::region_southAfrica ||
                         info.regionCode() == WirelessTypes::region_canada)
                 {
                     if(commProtocol == WirelessTypes::commProtocol_lxrsPlus)
@@ -247,6 +249,7 @@ namespace mscl
             case WirelessTypes::region_canada:
             case WirelessTypes::region_brazil:
             case WirelessTypes::region_china:
+            case WirelessTypes::region_southAfrica:
             default:
             {
                 //if firmware supports 20dBm
@@ -333,6 +336,7 @@ namespace mscl
             case WirelessTypes::region_canada:
             case WirelessTypes::region_brazil:
             case WirelessTypes::region_china:
+            case WirelessTypes::region_southAfrica:
             default:
             {
                 //if firmware supports 20dBm

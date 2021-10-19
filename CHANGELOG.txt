@@ -14,6 +14,22 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
+62.1.2 - 2021-10-18
+- Fixes Windows python build, and updates windows python build scripts to work easier out of the box
+
+62.1.1 - 2021-10-13
+- Updates documentation definitions to work with new version of NaturalDocs
+
+62.1.0 - 2021-10-12
+- Add support for Torque-Link-200-3ch (s)
+
+62.0.2 - 2021-08-17
+- set South Africa region to the same as US instead of EU
+- add merge option for factory streaming channel as enum mscl::InertialTypes::FACTORY_STREAMING_MERGE
+
+62.0.1 - 2021-05-27
+- add entry for South Africa to WirelessTypes::RegionCode enum (region_southAfrica) - set available transmit powers to the same as EU (RegionCode::region_europeanUnion)
+
 62.0.0 - 2021-05-19
 - update inertial time of week channel names from _lastValidTow to _tow for accuracy:
     - GNSS Position Aiding Status (0x82,0x43)

@@ -88,6 +88,7 @@ namespace mscl
         static const InputRangeMap RANGES_TCLINK_200_OEM;
         static const InputRangeMap RANGES_TCLINK_200;
         static const InputRangeMap RANGES_RTDLINK_200;
+        static const InputRangeMap RANGES_TORQUELINK200_3CH_S_FULLDIFF_CHS_2500mV;
 
     private:
         //Function: getRangeMap

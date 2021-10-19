@@ -29,11 +29,11 @@ mkdir %API_DOCS_PROJECT_DIR%
 echo (buildDocs.cmd) Creating MSCL Full (Internal) Documentation
 
 REM create the documentation using NaturalDocs
-call NaturalDocs -i "..\MSCL\source\mscl" -o FramedHTML %OUTPUT_DIR% -p %DOCS_PROJECT_DIR% -s msclDocsStyle
+call %LIB_PATH%\NaturalDocs\NaturalDocs -i "..\MSCL\source\mscl" -o FramedHTML %OUTPUT_DIR% -p %DOCS_PROJECT_DIR% -s msclDocsStyle
 
 echo (buildDocs.cmd) Creating MSCL API Documentation
 
-call NaturalDocs -i "..\MSCL\source\mscl" -o FramedHTML %API_OUTPUT_DIR% -p %API_DOCS_PROJECT_DIR% -s msclDocsStyle
+call %LIB_PATH%\NaturalDocs\NaturalDocs -i "..\MSCL\source\mscl" -o FramedHTML %API_OUTPUT_DIR% -p %API_DOCS_PROJECT_DIR% -s msclDocsStyle
 
 echo.
 echo (buildDocs.cmd) DONE

@@ -1,4 +1,4 @@
-﻿Format: 2.0 (Development Release 05-04-2015)
+﻿Format: 2.0.2
 
 # This is the Natural Docs languages file for this project.  If you change
 # anything here, it will apply to THIS PROJECT ONLY.  You can edit the version
@@ -54,8 +54,8 @@
 #
 # Aliases: [alias] [alias] ...
 # [Add/Replace] Aliases: [alias] [alias] ...
-#    Defines alternate names for the language that can be used in code block
-#    tags like (start c++ code).
+#    Defines alternate names for the language that can be used to start a code
+#    block.
 #
 #
 # Properties for Basic Language Support Only
@@ -89,7 +89,7 @@
 #    Defines whether the language's identifiers are case sensitive.  The
 #    default is yes.
 #
-# [Topic Type] Prototype Enders: [symbol] [symbol] ...
+# [Comment Type] Prototype Enders: [symbol] [symbol] ...
 #    When defined, Natural Docs will attempt to get a prototype from the code
-#    immediately following the topic type.  It stops when it reaches one of
+#    immediately following the comment type.  It stops when it reaches one of
 #    these symbols.  Use \n for line breaks.

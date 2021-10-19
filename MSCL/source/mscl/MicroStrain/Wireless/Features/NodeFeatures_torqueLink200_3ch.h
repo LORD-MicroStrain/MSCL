@@ -21,7 +21,10 @@ namespace mscl
 
         //Constructor: NodeFeatures_torqueLink200_3ch
         //    Creates a NodeFeatures_torqueLink200_3ch object.
-        NodeFeatures_torqueLink200_3ch(const NodeInfo& info);
+        //Parameters:
+        //  info - NodeInfo object for reference features
+        //  ext - bool indicating whether this is being called from a child class (default false)
+        NodeFeatures_torqueLink200_3ch(const NodeInfo& info, bool ext = false);
 
         virtual bool supportsSensorDelayConfig() const override;
 

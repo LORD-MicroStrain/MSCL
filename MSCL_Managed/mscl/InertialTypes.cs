@@ -274,6 +274,7 @@ public class InertialTypes : global::System.IDisposable {
 
   public enum FactoryStreamingOption {
     FACTORY_STREAMING_OVERWRITE = 0x00,
+    FACTORY_STREAMING_MERGE = 0x01,
     FACTORY_STREAMING_ADDITIVE = 0x02
   }
 

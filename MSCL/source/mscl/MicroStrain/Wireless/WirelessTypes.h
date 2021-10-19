@@ -855,6 +855,7 @@ namespace mscl
         //  region_australia_newzealand - 6
         //  region_singapore            - 7
         //  region_canada               - 8
+        //  region_southAfrica          - 9
         enum RegionCode
         {
             region_usa                  = 0,
@@ -865,7 +866,8 @@ namespace mscl
             region_china                = 5,
             region_australia_newzealand = 6,
             region_singapore            = 7,
-            region_canada               = 8
+            region_canada               = 8,
+            region_southAfrica          = 9
         };
 
         //API Enum: ChannelGroupSetting
@@ -1256,6 +1258,8 @@ namespace mscl
         //  range_0to322ohm                 - 130       - 0 to 322 ohms
         //  range_0to161ohm                 - 131       - 0 to 161 ohms
         //  range_0to80ohm                  - 132       - 0 to 80 ohms
+        //  range_39_0625mV                 - 133       - +- 39.0625 milliVolts
+        //  range_19_5313mV                 - 134       - +- 19.5313 milliVolts
         //  range_invalid                   - 65535     - invalid input range
         enum InputRange
         {
@@ -1410,6 +1414,9 @@ namespace mscl
             range_0to322_58ohm  = 130,  //0 to 322.58 ohms
             range_0to158_73ohm  = 131,  //0 to 158.73 ohms
             range_0to78_74ohm   = 132,  //0 to 78.74 ohms
+
+            range_39_0625mV     = 133,  //+- 39.0625 milliVolts
+            range_19_5313mV     = 134,  //+- 19.5313 milliVolts
 
             range_invalid       = 65535  //invalid input range
         };

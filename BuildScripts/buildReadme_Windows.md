@@ -137,16 +137,22 @@ using msvc
 ;
 ```
 
-Edit the include (/I) and library (/LIBPATH) paths in the following command, and then run from the top level MSCL source directory.
+Run the following command from the top level MSCL source directory.
 
 For 32-bit Python:
 ```
-"BuildScripts\build_Python_x86.cmd" "/bigobj /I"E:/Python27/include" /I"E:/Lib/boost/boost_1_68_0" /I"E:/Lib/openssl/include"" "/LIBPATH:"E:/Python27/libs" /LIBPATH:"E:/Lib/boost/boost_1_68_0/lib32-msvc-14.0" /LIBPATH:"E:/Lib/openssl/lib" libboost_system-vc140-mt-s-x32-1_68.lib libsslMT.lib libcryptoMT.lib crypt32.lib ws2_32.lib gdi32.lib advapi32.lib user32.lib"
+"BuildScripts\build_Python_x86.cmd" "E:\Python27"
+
+REM To add custom compile and link flags
+"BuildScripts\build_Python_x86.cmd" "E:\Python27" "/I:C:\dir" "/LIBPATH:C:\dir"
 ```
 
 For 64-bit Python:
 ```
-"BuildScripts\build_Python_x64.cmd" "/bigobj /I"E:/Python27_64/include" /I"E:/Lib/boost/boost_1_68_0" /I"E:/Lib/openssl/include64"" "/LIBPATH:"E:/Python27_64/libs" /LIBPATH:"E:/Lib/boost/boost_1_68_0/lib64-msvc-14.0" /LIBPATH:"E:/Lib/openssl/lib64" libboost_system-vc140-mt-s-x64-1_68.lib libsslMT.lib libcryptoMT.lib crypt32.lib ws2_32.lib gdi32.lib advapi32.lib user32.lib"
+"BuildScripts\build_Python_x64.cmd" "E:\Python27"
+
+REM To add custom compile and link flags
+"BuildScripts\build_Python_x64.cmd" "E:\Python27_64" "/I:C:\dir" "/LIBPATH:C:\dir"
 ```
 
 Output: 

@@ -1,9 +1,9 @@
-﻿Format: 2.0 (Development Release 08-22-2015)
+﻿Format: 2.0.2
 
-# This is the Natural Docs topics file for this project.  If you change anything
-# here, it will apply to THIS PROJECT ONLY.  You can edit the version in
-# Natural Docs' Config folder to make the changes apply to all projects, but
-# it's recommended that you edit this version instead.
+# This is the Natural Docs comments file for this project.  If you change
+# anything here, it will apply to THIS PROJECT ONLY.  You can edit the version
+# in Natural Docs' Config folder to make the changes apply to all projects,
+# but it's recommended that you edit this version instead.
 
 
 # Ignored Keywords
@@ -18,21 +18,16 @@
 #    ...
 
 
-# Tags
-# ------------------------------------------------------------------------
-
 Tags:
    API
-
-
-# Topic Types
+# Comment Types
 # ------------------------------------------------------------------------
 # The syntax reference is after the definitions.
 
-Alter Topic Type: Class
+Alter Comment Type: Class
 
-   Display Name from Locale: Topics.txt.Class.DisplayName
-   Plural Display Name from Locale: Topics.txt.Class.PluralDisplayName
+   Display Name from Locale: Comments.txt.Class.DisplayName
+   Plural Display Name from Locale: Comments.txt.Class.PluralDisplayName
 
    Scope: Start
    Flags: Code, Variable Type, Class Hierarchy
@@ -43,10 +38,10 @@ Alter Topic Type: Class
       api namespace, api namespaces
 
 
-Alter Topic Type: Interface
+Alter Comment Type: Interface
 
-   Display Name from Locale: Topics.txt.Interface.DisplayName
-   Plural Display Name from Locale: Topics.txt.Interface.PluralDisplayName
+   Display Name from Locale: Comments.txt.Interface.DisplayName
+   Plural Display Name from Locale: Comments.txt.Interface.PluralDisplayName
 
    Index: with Class
    Scope: Start
@@ -56,10 +51,10 @@ Alter Topic Type: Interface
       api interface, api interfaces
 
 
-Alter Topic Type: Struct
+Alter Comment Type: Struct
 
-   Display Name from Locale: Topics.txt.Struct.DisplayName
-   Plural Display Name from Locale: Topics.txt.Struct.PluralDisplayName
+   Display Name from Locale: Comments.txt.Struct.DisplayName
+   Plural Display Name from Locale: Comments.txt.Struct.PluralDisplayName
 
    Index: with Class
    Scope: Start
@@ -70,10 +65,10 @@ Alter Topic Type: Struct
       api structure, api structures
 
 
-Alter Topic Type: Section
+Alter Comment Type: Section
 
-   Display Name from Locale: Topics.txt.Section.DisplayName
-   Plural Display Name from Locale: Topics.txt.Section.PluralDisplayName
+   Display Name from Locale: Comments.txt.Section.DisplayName
+   Plural Display Name from Locale: Comments.txt.Section.PluralDisplayName
 
    Index: No
    Scope: End
@@ -84,10 +79,10 @@ Alter Topic Type: Section
       api title
 
 
-Alter Topic Type: Group
+Alter Comment Type: Group
 
-   Display Name from Locale: Topics.txt.Group.DisplayName
-   Plural Display Name from Locale: Topics.txt.Group.PluralDisplayName
+   Display Name from Locale: Comments.txt.Group.DisplayName
+   Plural Display Name from Locale: Comments.txt.Group.PluralDisplayName
 
    Index: No
    Flags: Documentation
@@ -96,10 +91,10 @@ Alter Topic Type: Group
       api group
 
 
-Alter Topic Type: Information
+Alter Comment Type: Information
 
-   Display Name from Locale: Topics.txt.Information.DisplayName
-   Plural Display Name from Locale: Topics.txt.Information.PluralDisplayName
+   Display Name from Locale: Comments.txt.Information.DisplayName
+   Plural Display Name from Locale: Comments.txt.Information.PluralDisplayName
 
    Index: No
    Flags: Documentation
@@ -109,10 +104,10 @@ Alter Topic Type: Information
       api about, api list
 
 
-Alter Topic Type: File
+Alter Comment Type: File
 
-   Display Name from Locale: Topics.txt.File.DisplayName
-   Plural Display Name from Locale: Topics.txt.File.PluralDisplayName
+   Display Name from Locale: Comments.txt.File.DisplayName
+   Plural Display Name from Locale: Comments.txt.File.PluralDisplayName
 
    Scope: Always Global
    Flags: File
@@ -126,10 +121,10 @@ Alter Topic Type: File
       api header, api headers
 
 
-Alter Topic Type: Type
+Alter Comment Type: Type
 
-   Display Name from Locale: Topics.txt.Type.DisplayName
-   Plural Display Name from Locale: Topics.txt.Type.PluralDisplayName
+   Display Name from Locale: Comments.txt.Type.DisplayName
+   Plural Display Name from Locale: Comments.txt.Type.PluralDisplayName
 
    Flags: Code, Variable Type
 
@@ -138,10 +133,10 @@ Alter Topic Type: Type
       api typedef, api typedefs
 
 
-Alter Topic Type: Enumeration
+Alter Comment Type: Enumeration
 
-   Display Name from Locale: Topics.txt.Enumeration.DisplayName
-   Plural Display Name from Locale: Topics.txt.Enumeration.PluralDisplayName
+   Display Name from Locale: Comments.txt.Enumeration.DisplayName
+   Plural Display Name from Locale: Comments.txt.Enumeration.PluralDisplayName
 
    Index: with Type
    Flags: Code, Variable Type, Enum
@@ -151,10 +146,10 @@ Alter Topic Type: Enumeration
       api enumeration, api enumerations
 
 
-Alter Topic Type: Delegate
+Alter Comment Type: Delegate
 
-   Display Name from Locale: Topics.txt.Delegate.DisplayName
-   Plural Display Name from Locale: Topics.txt.Delegate.PluralDisplayName
+   Display Name from Locale: Comments.txt.Delegate.DisplayName
+   Plural Display Name from Locale: Comments.txt.Delegate.PluralDisplayName
 
    Index: with Type
    Flags: Code, Variable Type
@@ -163,10 +158,10 @@ Alter Topic Type: Delegate
       api delegate, api delegates
 
 
-Alter Topic Type: Function
+Alter Comment Type: Function
 
-   Display Name from Locale: Topics.txt.Function.DisplayName
-   Plural Display Name from Locale: Topics.txt.Function.PluralDisplayName
+   Display Name from Locale: Comments.txt.Function.DisplayName
+   Plural Display Name from Locale: Comments.txt.Function.PluralDisplayName
 
    Flags: Code
 
@@ -184,10 +179,10 @@ Alter Topic Type: Function
       api destructor, api destructors
 
 
-Alter Topic Type: Operator
+Alter Comment Type: Operator
 
-   Display Name from Locale: Topics.txt.Operator.DisplayName
-   Plural Display Name from Locale: Topics.txt.Operator.PluralDisplayName
+   Display Name from Locale: Comments.txt.Operator.DisplayName
+   Plural Display Name from Locale: Comments.txt.Operator.PluralDisplayName
 
    Index: with Function
    Flags: Code
@@ -196,10 +191,10 @@ Alter Topic Type: Operator
       api operator, api operators
 
 
-Alter Topic Type: Macro
+Alter Comment Type: Macro
 
-   Display Name from Locale: Topics.txt.Macro.DisplayName
-   Plural Display Name from Locale: Topics.txt.Macro.PluralDisplayName
+   Display Name from Locale: Comments.txt.Macro.DisplayName
+   Plural Display Name from Locale: Comments.txt.Macro.PluralDisplayName
 
    Flags: Code
 
@@ -209,10 +204,10 @@ Alter Topic Type: Macro
       api macro, api macros
 
 
-Alter Topic Type: Property
+Alter Comment Type: Property
 
-   Display Name from Locale: Topics.txt.Property.DisplayName
-   Plural Display Name from Locale: Topics.txt.Property.PluralDisplayName
+   Display Name from Locale: Comments.txt.Property.DisplayName
+   Plural Display Name from Locale: Comments.txt.Property.PluralDisplayName
 
    Index: with Function
    Flags: Code
@@ -222,10 +217,10 @@ Alter Topic Type: Property
       api prop, api props
 
 
-Alter Topic Type: Event
+Alter Comment Type: Event
 
-   Display Name from Locale: Topics.txt.Event.DisplayName
-   Plural Display Name from Locale: Topics.txt.Event.PluralDisplayName
+   Display Name from Locale: Comments.txt.Event.DisplayName
+   Plural Display Name from Locale: Comments.txt.Event.PluralDisplayName
 
    Flags: Code
 
@@ -233,10 +228,10 @@ Alter Topic Type: Event
       api event, api events
 
 
-Alter Topic Type: Constant
+Alter Comment Type: Constant
 
-   Display Name from Locale: Topics.txt.Constant.DisplayName
-   Plural Display Name from Locale: Topics.txt.Constant.PluralDisplayName
+   Display Name from Locale: Comments.txt.Constant.DisplayName
+   Plural Display Name from Locale: Comments.txt.Constant.PluralDisplayName
 
    Flags: Code
 
@@ -245,10 +240,10 @@ Alter Topic Type: Constant
       api const, api consts
 
 
-Alter Topic Type: Variable
+Alter Comment Type: Variable
 
-   Display Name from Locale: Topics.txt.Variable.DisplayName
-   Plural Display Name from Locale: Topics.txt.Variable.PluralDisplayName
+   Display Name from Locale: Comments.txt.Variable.DisplayName
+   Plural Display Name from Locale: Comments.txt.Variable.PluralDisplayName
 
    Flags: Code
 
@@ -297,10 +292,10 @@ Alter Topic Type: Variable
       api handle, api handles
 
 
-Alter Topic Type: Database
+Alter Comment Type: Database
 
-   Display Name from Locale: Topics.txt.Database.DisplayName
-   Plural Display Name from Locale: Topics.txt.Database.PluralDisplayName
+   Display Name from Locale: Comments.txt.Database.DisplayName
+   Plural Display Name from Locale: Comments.txt.Database.PluralDisplayName
 
    Scope: Start
    Flags: Code, Database Hierarchy
@@ -310,10 +305,10 @@ Alter Topic Type: Database
       api db, api dbs
 
 
-Alter Topic Type: Database Table
+Alter Comment Type: Database Table
 
-   Display Name from Locale: Topics.txt.DatabaseTable.DisplayName
-   Plural Display Name from Locale: Topics.txt.DatabaseTable.PluralDisplayName
+   Display Name from Locale: Comments.txt.DatabaseTable.DisplayName
+   Plural Display Name from Locale: Comments.txt.DatabaseTable.PluralDisplayName
 
    Scope: Start
    Flags: Code, Database Hierarchy
@@ -326,10 +321,10 @@ Alter Topic Type: Database Table
       api dbtable, api dbtables
 
 
-Alter Topic Type: Database Field
+Alter Comment Type: Database Field
 
-   Display Name from Locale: Topics.txt.DatabaseField.DisplayName
-   Plural Display Name from Locale: Topics.txt.DatabaseField.PluralDisplayName
+   Display Name from Locale: Comments.txt.DatabaseField.DisplayName
+   Plural Display Name from Locale: Comments.txt.DatabaseField.PluralDisplayName
 
    Flags: Code
 
@@ -345,10 +340,10 @@ Alter Topic Type: Database Field
       api column, api columns
 
 
-Alter Topic Type: Database View
+Alter Comment Type: Database View
 
-   Display Name from Locale: Topics.txt.DatabaseView.DisplayName
-   Plural Display Name from Locale: Topics.txt.DatabaseView.PluralDisplayName
+   Display Name from Locale: Comments.txt.DatabaseView.DisplayName
+   Plural Display Name from Locale: Comments.txt.DatabaseView.PluralDisplayName
 
    Scope: Start
    Flags: Code, Database Hierarchy
@@ -361,10 +356,10 @@ Alter Topic Type: Database View
       api dbview, api dbviews
 
 
-Alter Topic Type: Database Index
+Alter Comment Type: Database Index
 
-   Display Name from Locale: Topics.txt.DatabaseIndex.DisplayName
-   Plural Display Name from Locale: Topics.txt.DatabaseIndex.PluralDisplayName
+   Display Name from Locale: Comments.txt.DatabaseIndex.DisplayName
+   Plural Display Name from Locale: Comments.txt.DatabaseIndex.PluralDisplayName
 
    Flags: Code
 
@@ -392,10 +387,10 @@ Alter Topic Type: Database Index
       api dbprimarykey, api dbprimarykeys
 
 
-Alter Topic Type: Database Cursor
+Alter Comment Type: Database Cursor
 
-   Display Name from Locale: Topics.txt.DatabaseCursor.DisplayName
-   Plural Display Name from Locale: Topics.txt.DatabaseCursor.PluralDisplayName
+   Display Name from Locale: Comments.txt.DatabaseCursor.DisplayName
+   Plural Display Name from Locale: Comments.txt.DatabaseCursor.PluralDisplayName
 
    Flags: Code
 
@@ -407,10 +402,10 @@ Alter Topic Type: Database Cursor
       api dbcursor, api dbcursors
 
 
-Alter Topic Type: Database Trigger
+Alter Comment Type: Database Trigger
 
-   Display Name from Locale: Topics.txt.DatabaseTrigger.DisplayName
-   Plural Display Name from Locale: Topics.txt.DatabaseTrigger.PluralDisplayName
+   Display Name from Locale: Comments.txt.DatabaseTrigger.DisplayName
+   Plural Display Name from Locale: Comments.txt.DatabaseTrigger.PluralDisplayName
 
    Flags: Code
 
@@ -422,42 +417,37 @@ Alter Topic Type: Database Trigger
       api dbtrigger, api dbtriggers
 
 
-# Each Natural Docs topic has a corresponding type which determine things
-# like how they are indexed.  You can define your own here or override the
-# settings of the existing ones.
+# Each Natural Docs comment has a corresponding type which determine its
+# behavior.  You can define your own here or override the settings of the
+# existing ones.
 #
-# Topic Type: [name]
-# Alter Topic Type: [name]
-#    Creates a new topic type or changes an existing one.
+# Comment Type: [name]
+# Alter Comment Type: [name]
+#    Creates a new comment type or changes an existing one.
 #
 # Display Name: [name]
 # Plural Display Name: [name]
-#    The singular and plural name of the topic type as it should appear in the
-#    output.
+#    The singular and plural name of the comment type as it should appear in
+#    the output.
 #
 # Simple Identifier: [name]
-#    The name of the topic type using only the letters A to Z.  No spaces,
-#    numbers, symbols, or Unicode allowed.  Defaults to the topic type name
+#    The name of the comment type using only the letters A to Z.  No spaces,
+#    numbers, symbols, or Unicode allowed.  Defaults to the comment type name
 #    minus any unacceptable characters.  This is used to generate things like
 #    CSS class names.
 #
-# Index: [yes|no|with [topic type]]
-#    Whether an index should be generated for the topic type.  Defaults to
-#    yes.  If "with [topic type]" is specified, the type is indexed but only
-#    as part of the other topic type's index.
-#
 # Scope: [normal|start|end|always global]
-#    How the topic affects scope.  Defaults to normal.
-#    normal        - The topic stays within the current scope.
-#    start         - The topic starts a new scope for all the topics beneath
-#                    it, like class topics.
-#    end           - The topic resets the scope back to global for all the
-#                    topics beneath it, like section topics.
-#    always global - The topic is defined as a global symbol, but does not
-#                    change the scope for any other topics.
+#    How the comment affects scope.  Defaults to normal.
+#    normal        - The comment stays within the current scope.
+#    start         - The comment starts a new scope for all the comments
+#                    beneath it, like class comments.
+#    end           - The comment resets the scope back to global for all the
+#                    comments beneath it, like section comments.
+#    always global - The comment is defined as a global symbol, but does not
+#                    change the scope for any other comments.
 #
 # Flags: [flag], [flag], ...
-#    A combination of settings that apply to the topic type.
+#    A combination of settings that apply to the comment type.
 #    Code, File, or Documentation
 #        Whether it's used to describe a code element, a file, or is a
 #        standalone documentation comment.  Defaults to Code.
@@ -474,8 +464,8 @@ Alter Topic Type: Database Trigger
 #    [keyword]
 #    [keyword], [plural keyword]
 #    ...
-#    A list of the topic type's keywords.  Each line after the heading is the
-#    keyword and optionally its plural form for list topics.  You can reuse
-#    existing keywords to change their definition.  When using
-#    "Alter Topic Type", these keywords are added to the existing ones rather
-#    than replacing them.
+#    A list of the comment type's keywords.  Each line after the heading is
+#    the keyword and optionally its plural form for list comments.  You can
+#    reuse existing keywords to change their definition.  When using
+#    "Alter Comment Type", these keywords are added to the existing ones
+#    rather than replacing them.

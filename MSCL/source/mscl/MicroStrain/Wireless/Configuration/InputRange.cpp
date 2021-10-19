@@ -217,6 +217,17 @@ namespace mscl
         {128, InputRangeEntry(WirelessTypes::range_0to78_74ohm, 128.0f)}
     };
 
+    const InputRangeHelper::InputRangeMap InputRangeHelper::RANGES_TORQUELINK200_3CH_S_FULLDIFF_CHS_2500mV = {
+        { 0, InputRangeEntry(WirelessTypes::range_156_25mV, 16.0f) },
+        { 1, InputRangeEntry(WirelessTypes::range_78_125mV, 32.0f) },
+        { 2, InputRangeEntry(WirelessTypes::range_39_0625mV, 64.0f) },
+        { 3, InputRangeEntry(WirelessTypes::range_19_5313mV, 128.0f) },
+        { 4, InputRangeEntry(WirelessTypes::range_9_766mV, 256.0f) },
+        { 5, InputRangeEntry(WirelessTypes::range_4_88mV, 512.0f) },
+        { 6, InputRangeEntry(WirelessTypes::range_2_44mV, 1024.0f) },
+        { 7, InputRangeEntry(WirelessTypes::range_1_22mV, 2048.0f) }
+    };
+
     const InputRangeHelper::InputRangeMap& InputRangeHelper::getRangeMap(WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType channelType, WirelessTypes::Voltage excitationVoltage)
     {
         switch(nodeType)
@@ -274,8 +285,14 @@ namespace mscl
                     if(excitationVoltage == WirelessTypes::voltage_1500mV)      { return RANGES_SGLINK200_SINGLEENDED_CHS_1500mV; }
                     else if(excitationVoltage == WirelessTypes::voltage_2500mV) { return RANGES_SGLINK200_SINGLEENDED_CHS_2500mV; }
                 }
+            }
 
-                throw Error_NotSupported("Input Range Map not found for this Node or Channel");
+            case WirelessModels::node_torqueLink200_3ch_s:
+            {
+                if (channelType == WirelessTypes::chType_fullDifferential)
+                {
+                    return RANGES_TORQUELINK200_3CH_S_FULLDIFF_CHS_2500mV;
+                }
             }
 
             case WirelessModels::node_ptLink200:

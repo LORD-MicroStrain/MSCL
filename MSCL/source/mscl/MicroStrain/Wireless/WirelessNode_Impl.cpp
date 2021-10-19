@@ -619,6 +619,7 @@ namespace mscl
             case WirelessModels::node_shmLink201_fullbridge:
             case WirelessModels::node_shmLink210_fullbridge:
             case WirelessModels::node_shmLink210_qbridge_3K:
+            case WirelessModels::node_torqueLink200_3ch_s:
                 return WirelessTypes::voltage_2500mV;
 
             case WirelessModels::node_sgLink200:
@@ -725,6 +726,7 @@ namespace mscl
             case WirelessModels::node_shmLink201_hbridge_1K:
             case WirelessModels::node_shmLink201_hbridge_348:
             case WirelessModels::node_shmLink201_fullbridge:
+            case WirelessModels::node_torqueLink200_3ch_s:
                 return WirelessTypes::voltage_2500mV;
 
             default:
@@ -803,6 +805,7 @@ namespace mscl
             case WirelessModels::node_shmLink201_hbridge_1K:
             case WirelessModels::node_shmLink201_hbridge_348:
             case WirelessModels::node_shmLink201_fullbridge:
+            case WirelessModels::node_torqueLink200_3ch_s:
                 return WirelessTypes::voltage_2500mV;
 
             default:

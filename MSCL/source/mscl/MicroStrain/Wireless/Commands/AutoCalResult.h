@@ -273,23 +273,23 @@ namespace mscl
         //  Gets the median of the baseline data sampled during the shunt calibration.
         float baseMedian() const;
         
-        //API Function: 
+        //API Function: baseMin
         //  Gets the minimum of the baseline data sampled during the shunt calibration.
         float baseMin() const;
         
-        //API Function: 
+        //API Function: baseMax
         //  Gets the maximum of the baseline data sampled during the shunt calibration.
         float baseMax() const;
         
-        //API Function: 
+        //API Function: shuntMedian
         //  Gets the median of the shunted data sampled during the shunt calibration.
         float shuntMedian() const;
         
-        //API Function: 
+        //API Function: shuntMin
         //  Gets the minimum of the shunted data sampled during the shunt calibration.
         float shuntMin() const;
         
-        //API Function: 
+        //API Function: shuntMax
         //  Gets the maximum of the shunted data sampled during the shunt calibration.
         float shuntMax() const;
 
