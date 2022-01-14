@@ -41,12 +41,6 @@ namespace mscl
                                         { WirelessTypes::chSetting_autoShuntCal, NodeEepromMap::CH_ACTION_SLOPE_3 } }
         );
 
-        //all channels configured with 1 low pass filter setting in this firmware
-        m_channelGroups.emplace_back(DIFFERENTIAL_ALL, "Differential",
-                                    ChannelGroup::SettingsMap{
-                                        { WirelessTypes::chSetting_lowPassFilter, NodeEepromMap::LOW_PASS_FILTER_1 } }
-        );
-
         //Channels
         m_channels.emplace_back(1, WirelessChannel::channel_1, WirelessTypes::chType_fullDifferential, "Differential", 24);
         m_channels.emplace_back(2, WirelessChannel::channel_2, WirelessTypes::chType_fullDifferential, "Differential", 24);

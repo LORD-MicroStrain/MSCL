@@ -3273,6 +3273,9 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NodeFeatures_maxSensorDelay")]
   public static extern uint NodeFeatures_maxSensorDelay(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NodeFeatures_defaultSensorDelay")]
+  public static extern uint NodeFeatures_defaultSensorDelay(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NodeFeatures_maxEventTriggerTotalDuration")]
   public static extern uint NodeFeatures_maxEventTriggerTotalDuration(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, global::System.Runtime.InteropServices.HandleRef jarg5, global::System.Runtime.InteropServices.HandleRef jarg6, global::System.Runtime.InteropServices.HandleRef jarg7);
 
@@ -3459,11 +3462,158 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_PositionOffset")]
   public static extern void delete_PositionOffset(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModels_modelNumbersEqual")]
+  public static extern bool MipModels_modelNumbersEqual(int jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModels_modelNumberFromStr")]
+  public static extern int MipModels_modelNumberFromStr(string jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModels_modelNumberFromParts")]
+  public static extern int MipModels_modelNumberFromParts(int jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModels_nodeModelFromStr")]
+  public static extern int MipModels_nodeModelFromStr(string jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModels_modifierFromStr")]
+  public static extern uint MipModels_modifierFromStr(string jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModels_nodeModelFromModelNumber")]
+  public static extern int MipModels_nodeModelFromModelNumber(int jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModels_modifierFromModelNumber")]
+  public static extern uint MipModels_modifierFromModelNumber(int jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModels_stringFromModelNumber")]
+  public static extern string MipModels_stringFromModelNumber(int jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_MipModels")]
   public static extern global::System.IntPtr new_MipModels();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_MipModels")]
   public static extern void delete_MipModels(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_none_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_none_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_dh3_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_dh3_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_gx3_15_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_gx3_15_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_gx3_25_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_gx3_25_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_gx3_35_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_gx3_35_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_gx3_45_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_gx3_45_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_rq1_45_lt_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_rq1_45_lt_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_rq1_45_st_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_rq1_45_st_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_gx4_15_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_gx4_15_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_gx4_25_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_gx4_25_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_gx4_45_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_gx4_45_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_mv5_ar_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_mv5_ar_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_gx5_10_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_gx5_10_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_gx5_15_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_gx5_15_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_gx5_25_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_gx5_25_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_gx5_35_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_gx5_35_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_gx5_45_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_gx5_45_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_cv5_10_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_cv5_10_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_cv5_15_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_cv5_15_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_cv5_25_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_cv5_25_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_cv5_45_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_cv5_45_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_gq4_45_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_gq4_45_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_cx5_45_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_cx5_45_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_cx5_35_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_cx5_35_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_cx5_25_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_cx5_25_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_cx5_15_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_cx5_15_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_cx5_10_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_cx5_10_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_cl5_15_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_cl5_15_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_cl5_25_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_cl5_25_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_gq7_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_gq7_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_rtk_v1_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_rtk_v1_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_rtk_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_rtk_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_MipModel__SWIG_0")]
+  public static extern global::System.IntPtr new_MipModel__SWIG_0(string jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_MipModel__SWIG_1")]
+  public static extern global::System.IntPtr new_MipModel__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_equals")]
+  public static extern bool MipModel_equals(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_ToString")]
+  public static extern string MipModel_ToString(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_nodeModel")]
+  public static extern int MipModel_nodeModel(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_modifier")]
+  public static extern uint MipModel_modifier(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_modelNumber")]
+  public static extern int MipModel_modelNumber(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_baseModel")]
+  public static extern global::System.IntPtr MipModel_baseModel(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_MipModel")]
+  public static extern void delete_MipModel(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_DisplacementModels")]
   public static extern global::System.IntPtr new_DisplacementModels();
@@ -4770,23 +4920,38 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_EnableDisableMeasurements")]
   public static extern void delete_EnableDisableMeasurements(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_CONTROLLER_STATE_get")]
-  public static extern uint RTKDeviceStatusFlags_CONTROLLER_STATE_get();
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_MODEM_STATE_get")]
+  public static extern uint RTKDeviceStatusFlags_MODEM_STATE_get();
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_PLATFORM_STATE_get")]
-  public static extern uint RTKDeviceStatusFlags_PLATFORM_STATE_get();
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_CONNECTION_TYPE_get")]
+  public static extern uint RTKDeviceStatusFlags_CONNECTION_TYPE_get();
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_CONTROLLER_STATUS_CODE_get")]
-  public static extern uint RTKDeviceStatusFlags_CONTROLLER_STATUS_CODE_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_PLATFORM_STATUS_CODE_get")]
-  public static extern uint RTKDeviceStatusFlags_PLATFORM_STATUS_CODE_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_RESET_REASON_get")]
-  public static extern uint RTKDeviceStatusFlags_RESET_REASON_get();
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_RSSI_get")]
+  public static extern uint RTKDeviceStatusFlags_RSSI_get();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_SIGNAL_QUALITY_get")]
   public static extern uint RTKDeviceStatusFlags_SIGNAL_QUALITY_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_TOWER_CHANGE_INDICATOR_get")]
+  public static extern uint RTKDeviceStatusFlags_TOWER_CHANGE_INDICATOR_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_NMEA_TIMEOUT_get")]
+  public static extern uint RTKDeviceStatusFlags_NMEA_TIMEOUT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_SERVER_TIMEOUT_get")]
+  public static extern uint RTKDeviceStatusFlags_SERVER_TIMEOUT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_RTCM_TIMEOUT_get")]
+  public static extern uint RTKDeviceStatusFlags_RTCM_TIMEOUT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_DEVICE_OUT_OF_RANGE_get")]
+  public static extern uint RTKDeviceStatusFlags_DEVICE_OUT_OF_RANGE_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_CORRECTIONS_UNAVAILABLE_get")]
+  public static extern uint RTKDeviceStatusFlags_CORRECTIONS_UNAVAILABLE_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_VERSION_get")]
+  public static extern uint RTKDeviceStatusFlags_VERSION_get();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_RTKDeviceStatusFlags__SWIG_0")]
   public static extern global::System.IntPtr new_RTKDeviceStatusFlags__SWIG_0();
@@ -4794,35 +4959,29 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_RTKDeviceStatusFlags__SWIG_1")]
   public static extern global::System.IntPtr new_RTKDeviceStatusFlags__SWIG_1(uint jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_controllerState__SWIG_0")]
-  public static extern int RTKDeviceStatusFlags_controllerState__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_RTKDeviceStatusFlags__SWIG_2")]
+  public static extern global::System.IntPtr new_RTKDeviceStatusFlags__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_controllerState__SWIG_1")]
-  public static extern void RTKDeviceStatusFlags_controllerState__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_version")]
+  public static extern byte RTKDeviceStatusFlags_version(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_platformState__SWIG_0")]
-  public static extern int RTKDeviceStatusFlags_platformState__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_modemState__SWIG_0")]
+  public static extern int RTKDeviceStatusFlags_modemState__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_platformState__SWIG_1")]
-  public static extern void RTKDeviceStatusFlags_platformState__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_modemState__SWIG_1")]
+  public static extern void RTKDeviceStatusFlags_modemState__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_controllerStatusCode__SWIG_0")]
-  public static extern int RTKDeviceStatusFlags_controllerStatusCode__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_connectionType__SWIG_0")]
+  public static extern int RTKDeviceStatusFlags_connectionType__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_controllerStatusCode__SWIG_1")]
-  public static extern void RTKDeviceStatusFlags_controllerStatusCode__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_connectionType__SWIG_1")]
+  public static extern void RTKDeviceStatusFlags_connectionType__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_platformStatusCode__SWIG_0")]
-  public static extern int RTKDeviceStatusFlags_platformStatusCode__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_rssi__SWIG_0")]
+  public static extern sbyte RTKDeviceStatusFlags_rssi__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_platformStatusCode__SWIG_1")]
-  public static extern void RTKDeviceStatusFlags_platformStatusCode__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_resetReason__SWIG_0")]
-  public static extern int RTKDeviceStatusFlags_resetReason__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_resetReason__SWIG_1")]
-  public static extern void RTKDeviceStatusFlags_resetReason__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_rssi__SWIG_1")]
+  public static extern void RTKDeviceStatusFlags_rssi__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_signalQuality__SWIG_0")]
   public static extern byte RTKDeviceStatusFlags_signalQuality__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -4830,8 +4989,116 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_signalQuality__SWIG_1")]
   public static extern void RTKDeviceStatusFlags_signalQuality__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_towerChangeIndicator__SWIG_0")]
+  public static extern byte RTKDeviceStatusFlags_towerChangeIndicator__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_towerChangeIndicator__SWIG_1")]
+  public static extern void RTKDeviceStatusFlags_towerChangeIndicator__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_nmeaTimeout__SWIG_0")]
+  public static extern byte RTKDeviceStatusFlags_nmeaTimeout__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_nmeaTimeout__SWIG_1")]
+  public static extern void RTKDeviceStatusFlags_nmeaTimeout__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_serverTimeout__SWIG_0")]
+  public static extern byte RTKDeviceStatusFlags_serverTimeout__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_serverTimeout__SWIG_1")]
+  public static extern void RTKDeviceStatusFlags_serverTimeout__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_rtcmTimeout__SWIG_0")]
+  public static extern byte RTKDeviceStatusFlags_rtcmTimeout__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_rtcmTimeout__SWIG_1")]
+  public static extern void RTKDeviceStatusFlags_rtcmTimeout__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_deviceOutOfRange__SWIG_0")]
+  public static extern byte RTKDeviceStatusFlags_deviceOutOfRange__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_deviceOutOfRange__SWIG_1")]
+  public static extern void RTKDeviceStatusFlags_deviceOutOfRange__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_correctionsUnavailable__SWIG_0")]
+  public static extern byte RTKDeviceStatusFlags_correctionsUnavailable__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_correctionsUnavailable__SWIG_1")]
+  public static extern void RTKDeviceStatusFlags_correctionsUnavailable__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_RTKDeviceStatusFlags")]
   public static extern void delete_RTKDeviceStatusFlags(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_CONTROLLER_STATE_get")]
+  public static extern uint RTKDeviceStatusFlags_v1_CONTROLLER_STATE_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_PLATFORM_STATE_get")]
+  public static extern uint RTKDeviceStatusFlags_v1_PLATFORM_STATE_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_CONTROLLER_STATUS_CODE_get")]
+  public static extern uint RTKDeviceStatusFlags_v1_CONTROLLER_STATUS_CODE_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_PLATFORM_STATUS_CODE_get")]
+  public static extern uint RTKDeviceStatusFlags_v1_PLATFORM_STATUS_CODE_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_RESET_REASON_get")]
+  public static extern uint RTKDeviceStatusFlags_v1_RESET_REASON_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_SIGNAL_QUALITY_get")]
+  public static extern uint RTKDeviceStatusFlags_v1_SIGNAL_QUALITY_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_VERSION_get")]
+  public static extern uint RTKDeviceStatusFlags_v1_VERSION_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_RTKDeviceStatusFlags_v1__SWIG_0")]
+  public static extern global::System.IntPtr new_RTKDeviceStatusFlags_v1__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_RTKDeviceStatusFlags_v1__SWIG_1")]
+  public static extern global::System.IntPtr new_RTKDeviceStatusFlags_v1__SWIG_1(uint jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_RTKDeviceStatusFlags_v1__SWIG_2")]
+  public static extern global::System.IntPtr new_RTKDeviceStatusFlags_v1__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_version")]
+  public static extern byte RTKDeviceStatusFlags_v1_version(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_controllerState__SWIG_0")]
+  public static extern int RTKDeviceStatusFlags_v1_controllerState__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_controllerState__SWIG_1")]
+  public static extern void RTKDeviceStatusFlags_v1_controllerState__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_platformState__SWIG_0")]
+  public static extern int RTKDeviceStatusFlags_v1_platformState__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_platformState__SWIG_1")]
+  public static extern void RTKDeviceStatusFlags_v1_platformState__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_controllerStatusCode__SWIG_0")]
+  public static extern int RTKDeviceStatusFlags_v1_controllerStatusCode__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_controllerStatusCode__SWIG_1")]
+  public static extern void RTKDeviceStatusFlags_v1_controllerStatusCode__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_platformStatusCode__SWIG_0")]
+  public static extern int RTKDeviceStatusFlags_v1_platformStatusCode__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_platformStatusCode__SWIG_1")]
+  public static extern void RTKDeviceStatusFlags_v1_platformStatusCode__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_resetReason__SWIG_0")]
+  public static extern int RTKDeviceStatusFlags_v1_resetReason__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_resetReason__SWIG_1")]
+  public static extern void RTKDeviceStatusFlags_v1_resetReason__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_signalQuality__SWIG_0")]
+  public static extern byte RTKDeviceStatusFlags_v1_signalQuality__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_signalQuality__SWIG_1")]
+  public static extern void RTKDeviceStatusFlags_v1_signalQuality__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_RTKDeviceStatusFlags_v1")]
+  public static extern void delete_RTKDeviceStatusFlags_v1(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GnssSignalConfiguration")]
   public static extern global::System.IntPtr new_GnssSignalConfiguration();
@@ -5215,7 +5482,7 @@ class msclPINVOKE {
   public static extern global::System.IntPtr MipNode_firmwareVersion(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNode_model")]
-  public static extern int MipNode_model(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern global::System.IntPtr MipNode_model(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNode_modelName")]
   public static extern string MipNode_modelName(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -5921,6 +6188,9 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKNode_getActivationCode")]
   public static extern string RTKNode_getActivationCode(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKNode_getStatusBitfieldVersion")]
+  public static extern byte RTKNode_getStatusBitfieldVersion(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ChannelData_Clear")]
   public static extern void ChannelData_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -10187,6 +10457,9 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_SWIGUpcast")]
   public static extern global::System.IntPtr RTKDeviceStatusFlags_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_SWIGUpcast")]
+  public static extern global::System.IntPtr RTKDeviceStatusFlags_v1_SWIGUpcast(global::System.IntPtr jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_SWIGUpcast")]
   public static extern global::System.IntPtr MipDataPoint_SWIGUpcast(global::System.IntPtr jarg1);

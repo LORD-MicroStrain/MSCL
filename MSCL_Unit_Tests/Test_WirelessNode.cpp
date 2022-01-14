@@ -320,7 +320,7 @@ BOOST_AUTO_TEST_CASE(WirelessNode_frequency)
     BOOST_CHECK_EQUAL(node.frequency(), WirelessTypes::freq_18);
 
     //try to change again, but fail
-    MOCK_EXPECT(impl->node_writeEeprom).once().with(mock::any, 123, 90, mock::any).returns(false);    //change frequency write
+    MOCK_EXPECT(impl->node_writeEeprom).exactly(4).with(mock::any, 123, 90, mock::any).returns(false);    //change frequency write
     BOOST_CHECK_THROW(node.changeFrequency(WirelessTypes::freq_12), Error_NodeCommunication);
 }
 

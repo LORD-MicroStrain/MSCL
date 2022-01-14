@@ -90,9 +90,9 @@ namespace mscl
         return m_impl->firmwareVersion();
     }
 
-    MipModels::NodeModel MipNode::model() const
+    MipModel MipNode::model() const
     {
-        return MipModels::nodeFromModelString(modelNumber());
+        return MipModel(modelNumber());
     }
 
     std::string MipNode::modelName() const

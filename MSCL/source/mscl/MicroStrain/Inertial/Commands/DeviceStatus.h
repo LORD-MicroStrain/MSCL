@@ -22,7 +22,7 @@ namespace mscl
     {
     public:
         //Function: commandName
-		//
+        //
         //Returns:
         //    std::string - the string name for this class.
         virtual std::string commandName() const { return "DeviceStatus"; }
@@ -41,7 +41,7 @@ namespace mscl
         //
         //Parameters:
         //    model - model number of the current device
-		//
+        //
         //Returns:
         //    DeviceStatus - object set up for getting a basic status.
         static DeviceStatus MakeGetBasicCommand(MipModels::NodeModel model);
@@ -50,16 +50,16 @@ namespace mscl
         //
         //Parameters:
         //    model - model number of the current device
-		//
+        //
         //Returns:
         //    DeviceStatus - object set up for getting a diagnostic status.
         static DeviceStatus MakeGetDiagnosticCommand(MipModels::NodeModel model);
 
         //Function: getResponseData
-		//
+        //
         //Parameter:
         //    response - The <GenericMipCmdResponse> object from which to get formatted data.
-		//
+        //
         //Returns:
         //    DeviceStatusData - An object with the data returned from the device.
         static DeviceStatusData getResponseData(const GenericMipCmdResponse& response);
@@ -71,22 +71,22 @@ namespace mscl
     private:
         // Function: Constructor DeviceStatus
         //    Private constructor creates a DeviceStatus object.  Use Make___Command methods to create an object.
-		DeviceStatus(MipModels::NodeModel model, DeviceStatusData::StatusSelector status_selector);
+        DeviceStatus(MipModels::NodeModel model, DeviceStatusData::StatusSelector status_selector);
 
         //Function: commandType
-		//
+        //
         //Returns:
         //    MipTypes::Command - the command ID.
         virtual MipTypes::Command commandType() const { return MipTypes::CMD_DEVICE_STATUS; }
 
         //Function: fieldDataByte
-		//
+        //
         //Returns:
         //    uint8 - the byte ID for field data in the reply.
         virtual uint8 fieldDataByte() const { return 0x90; }
 
         //Function: responseExpected
-		//
+        //
         //Returns:
         //    bool - True indicates that a response should return from the device.
         virtual bool responseExpected() const;
@@ -100,7 +100,7 @@ namespace mscl
         DeviceStatusData::StatusSelector m_statusSelector;
 
     public:
-	// Destructor
+    // Destructor
         ~DeviceStatus() { }
     };
 

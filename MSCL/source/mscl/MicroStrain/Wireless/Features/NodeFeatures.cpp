@@ -1132,7 +1132,7 @@ namespace mscl
         return SyncSamplingFormulas::minTimeBetweenBursts(rawBytesPerSweep, derivedBytesPerSweep, rawSampleRate, sweepsPerBurst, commProtocol);
     }
 
-    uint32 NodeFeatures::minSensorDelay() const
+    const uint32 NodeFeatures::minSensorDelay() const
     {
         if(!supportsSensorDelayConfig())
         {
@@ -1143,15 +1143,15 @@ namespace mscl
         //V2 - Microseconds
         //V3 - Seconds or Milliseconds
         //V4 - Seconds, Milliseconds, or Microseconds
-        switch(sensorDelayVersion())
+        switch (sensorDelayVersion())
         {
-            case 1:
-            case 3:
-                return 1000;    //1 millisecond
+            case WirelessTypes::delayVersion_v1:
+            case WirelessTypes::delayVersion_v3:
+                return static_cast<uint32>(TimeSpan::MilliSeconds(1).getMicroseconds());     //1 millisecond
 
-            case 2:
-            case 4:
-                return 1;       //1 microsecond
+            case WirelessTypes::delayVersion_v2:
+            case WirelessTypes::delayVersion_v4:
+                return 600;                                                                             //600 microseconds
 
             default:
                 assert(false);  //need to add a case for a new sensor delay version
@@ -1159,33 +1159,44 @@ namespace mscl
         }
     }
 
-    uint32 NodeFeatures::maxSensorDelay() const
+    const uint32 NodeFeatures::maxSensorDelay() const
     {
         if(!supportsSensorDelayConfig())
         {
             throw Error_NotSupported("Sensor Delay is not supported by this Node.");
         }
 
+        // writing limit of 16 bits (65,535)
         //V1 - Milliseconds
         //V2 - Microseconds
         //V3 - Seconds or Milliseconds
         //V4 - Seconds, Milliseconds, or Microseconds
-        switch(sensorDelayVersion())
+        switch (sensorDelayVersion())
         {
-            case 1:
-                return 500000;      //500 milliseconds
+            case WirelessTypes::delayVersion_v2:
+                return 65000;                                                           //65,000 microseconds, max writing limit rounded
 
-            case 2:
-                return 65535;       //65535 microseconds
+            case WirelessTypes::delayVersion_v1:
+                return static_cast<uint32>(TimeSpan::Minutes(1).getMicroseconds());     //1 minute, max writing limit rounded (60,000 ms)
 
-            case 3:
-            case 4:
-                return 600000000;   //10 minutes
+            case WirelessTypes::delayVersion_v3:
+            case WirelessTypes::delayVersion_v4:
+                return static_cast<uint32>(TimeSpan::Minutes(5).getMicroseconds());     //5 minutes
 
             default:
                 assert(false);  //need to add a case for a new sensor delay version
                 throw Error_NotSupported("Unknown Sensor Delay Version");
         }
+    }
+
+    const uint32 NodeFeatures::defaultSensorDelay() const
+    {
+        if (!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+        
+        return static_cast<uint32>(TimeSpan::MilliSeconds(1).getMicroseconds());    //1 millisecond
     }
 
     uint32 NodeFeatures::maxEventTriggerTotalDuration(WirelessTypes::DataMode dataMode,
@@ -1283,19 +1294,19 @@ namespace mscl
         switch(sensorDelayVersion())
         {
             //milliseconds only
-            case 1:
+            case WirelessTypes::delayVersion_v1:
                 result = static_cast<uint32>(std::ceil(static_cast<float>(delay / 1000.0f))) * 1000;
                 break;
 
             //microseconds only
-            case 2:
+            case WirelessTypes::delayVersion_v2:
                 result = delay;
                 break;
 
             //milliseconds or seconds
-            case 3:
+            case WirelessTypes::delayVersion_v3:
             {
-                //if <= 500 milliseconds
+                //if <= 500 milliseconds then keep as milliseconds
                 if(delay <= 500000)
                 {
                     //set in milliseconds
@@ -1303,30 +1314,30 @@ namespace mscl
                     Utils::checkBounds_min(result, static_cast<uint32>(1000));      //1 millisecond
                     Utils::checkBounds_max(result, static_cast<uint32>(500000));    //500 milliseconds
                 }
+                //round up to seconds
                 else
                 {
                     //set in seconds (PWUWU)
                     result = static_cast<uint32>(std::ceil(static_cast<float>(delay / 1000000.0f))) * 1000000;
                     Utils::checkBounds_min(result, static_cast<uint32>(1000000));   //1 second
-                    Utils::checkBounds_max(result, maxSensorDelay());
                 }
                 break;
             }
 
             //microseconds, milliseconds, or seconds
-            case 4:
+            case WirelessTypes::delayVersion_v4:
             {
-                //if we can represent the value in microseconds
+                //keep the value in microseconds
                 if(delay <= 16383)
                 {
                     result = delay;
                 }
-                //if we can represent the value in milliseconds
+                //round up to milliseconds
                 else if(delay <= 16383000)
                 {
                     result = static_cast<uint32>(std::ceil(static_cast<float>(delay / 1000.0f))) * 1000;
                 }
-                //if we can only represent the value in seconds
+                //round up to seconds
                 else
                 {
                     result = static_cast<uint32>(std::ceil(static_cast<float>(delay / 1000000.0f))) * 1000000;
@@ -1739,13 +1750,11 @@ namespace mscl
         {
             return 1;
         }
-        else
-        {
-            return 2;
-        }
+
+        return 2;
     }
 
-    uint8 NodeFeatures::sensorDelayVersion() const
+    WirelessTypes::DelayVersion NodeFeatures::sensorDelayVersion() const
     {
         //V1 - Milliseconds
         //V2 - Microseconds
@@ -1754,42 +1763,40 @@ namespace mscl
 
         static const Version V4(10, 31758);
 
-        if(m_nodeInfo.firmwareVersion() >= V4)
+        if (m_nodeInfo.firmwareVersion() >= V4)
         {
-            return 4;
+            return WirelessTypes::delayVersion_v4;
         }
-        else 
+
+        switch (m_nodeInfo.model())
         {
-            switch(m_nodeInfo.model())
-            {
-                //certain models support Sensor Delay v3 (Seconds or Milliseconds)
-                case WirelessModels::node_vLink:
-                case WirelessModels::node_iepeLink:
-                    return 3;
+            //certain models support Sensor Delay v3 (Seconds or Milliseconds)
+            case WirelessModels::node_vLink:
+            case WirelessModels::node_iepeLink:
+                return WirelessTypes::delayVersion_v3;
 
-                //certain models support Sensor Delay v2 (Microseconds)
-                case WirelessModels::node_shmLink:
-                case WirelessModels::node_shmLink200:
-                case WirelessModels::node_shmLink201:
-                case WirelessModels::node_shmLink201_qbridge_1K:
-                case WirelessModels::node_shmLink201_qbridge_348:
-                case WirelessModels::node_shmLink201_hbridge_1K:
-                case WirelessModels::node_shmLink201_hbridge_348:
-                case WirelessModels::node_shmLink201_fullbridge:
-                case WirelessModels::node_shmLink2_cust1_oldNumber:
-                case WirelessModels::node_shmLink2_cust1:
-                case WirelessModels::node_sgLink_herm:
-                case WirelessModels::node_sgLink_herm_2600:
-                case WirelessModels::node_sgLink_herm_2700:
-                case WirelessModels::node_sgLink_herm_2800:
-                case WirelessModels::node_sgLink_herm_2900:
-                case WirelessModels::node_sgLink_rgd:
-                    return 2;
+            //certain models support Sensor Delay v2 (Microseconds)
+            case WirelessModels::node_shmLink:
+            case WirelessModels::node_shmLink200:
+            case WirelessModels::node_shmLink201:
+            case WirelessModels::node_shmLink201_qbridge_1K:
+            case WirelessModels::node_shmLink201_qbridge_348:
+            case WirelessModels::node_shmLink201_hbridge_1K:
+            case WirelessModels::node_shmLink201_hbridge_348:
+            case WirelessModels::node_shmLink201_fullbridge:
+            case WirelessModels::node_shmLink2_cust1_oldNumber:
+            case WirelessModels::node_shmLink2_cust1:
+            case WirelessModels::node_sgLink_herm:
+            case WirelessModels::node_sgLink_herm_2600:
+            case WirelessModels::node_sgLink_herm_2700:
+            case WirelessModels::node_sgLink_herm_2800:
+            case WirelessModels::node_sgLink_herm_2900:
+            case WirelessModels::node_sgLink_rgd:
+                return WirelessTypes::delayVersion_v2;
 
-                //everything else supports Sensor Delay v1 (Milliseconds)
-                default:
-                    return 1;
-            }
+            //everything else supports Sensor Delay v1 (Milliseconds)
+            default:
+                return WirelessTypes::delayVersion_v1;
         }
     }
 

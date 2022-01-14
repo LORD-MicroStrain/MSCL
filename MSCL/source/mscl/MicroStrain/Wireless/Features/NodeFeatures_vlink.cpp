@@ -155,4 +155,34 @@ namespace mscl
             return NodeFeatures::maxSampleRate(samplingMode, channels, dataCollectionMethod, dataMode);
         }
     }
+
+    const uint32 NodeFeatures_vlink::minSensorDelay() const
+    {
+        if (!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+
+        return static_cast<uint32>(TimeSpan::MilliSeconds(1).getMicroseconds());     //1 millisecond
+    }
+
+    const uint32 NodeFeatures_vlink::maxSensorDelay() const
+    {
+        if (!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+
+        return static_cast<uint32>(TimeSpan::Seconds(1).getMicroseconds());                      //1 second
+    }
+
+    const uint32 NodeFeatures_vlink::defaultSensorDelay() const
+    {
+        if (!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+
+        return static_cast<uint32>(TimeSpan::MilliSeconds(10).getMicroseconds());     //10 milliseconds
+    }
 }

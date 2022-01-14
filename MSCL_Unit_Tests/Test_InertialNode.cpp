@@ -20,7 +20,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 using namespace mscl;
 
-void expectNodeInfo_InertialNode(std::shared_ptr<mock_InertialNodeImpl> node, const std::string& modelNumber="6251-12345")
+void expectNodeInfo_InertialNode(std::shared_ptr<mock_InertialNodeImpl> node, const std::string& modelNumber="6251-4220")
 {
     //========================================================================================
     //BUILD THE RESPONSE TO THE getDeviceInfo COMMAND
@@ -157,14 +157,14 @@ BOOST_AUTO_TEST_CASE(InertialNode_info)
     std::shared_ptr<mock_InertialNodeImpl> impl(new mock_InertialNodeImpl());
     InertialNode node(impl);
 
-    //setup the node info mock expections
+    //setup the node info mock expectations
     expectNodeInfo_InertialNode(impl);
 
     //verify the result is good
     BOOST_CHECK_EQUAL(node.firmwareVersion().str(), "1.1.17");
     BOOST_CHECK_EQUAL(node.modelName(), "ABCDABCDABCDABCD");
-    BOOST_CHECK_EQUAL(node.modelNumber(), "6251-12345");
-    BOOST_CHECK_EQUAL(node.model(), MipModels::node_3dm_gx5_45);
+    BOOST_CHECK_EQUAL(node.modelNumber(), "6251-4220");
+    BOOST_CHECK_EQUAL(node.model().nodeModel(), MipModels::node_3dm_gx5_45);
     BOOST_CHECK_EQUAL(node.serialNumber(), "ABCDABCDABCDABCD");
     BOOST_CHECK_EQUAL(node.lotNumber(), "ABCDABCDABCDABCD");
     BOOST_CHECK_EQUAL(node.deviceOptions(), "ABCDABCDABCDABCD");

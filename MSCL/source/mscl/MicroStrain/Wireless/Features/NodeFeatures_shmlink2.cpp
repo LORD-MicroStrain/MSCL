@@ -191,4 +191,24 @@ namespace mscl
 
         return modes;
     }
+
+    const uint32 NodeFeatures_shmlink2::minSensorDelay() const
+    {
+        if (!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+
+        return static_cast<uint32>(TimeSpan::MilliSeconds(1).getMicroseconds());    //1 millisecond
+    }
+
+    const uint32 NodeFeatures_shmlink2::defaultSensorDelay() const
+    {
+        if (!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+        
+        return static_cast<uint32>(TimeSpan::MilliSeconds(5).getMicroseconds());    //5 milliseconds
+    }
 }

@@ -1418,6 +1418,8 @@ namespace mscl
             range_39_0625mV     = 133,  //+- 39.0625 milliVolts
             range_19_5313mV     = 134,  //+- 19.5313 milliVolts
 
+            range_125mV         = 135,  //+- 125 milliVolts
+
             range_invalid       = 65535  //invalid input range
         };
 
@@ -1549,6 +1551,21 @@ namespace mscl
         {
             externalPower_notConnected = 0,
             externalPower_connected = 1
+        };
+
+        //API Enum: DelayVersion
+        //  Types of delays that individual sensors can support.
+        //
+        //  V1 - Milliseconds
+        //  V2 - Microseconds
+        //  V3 - Seconds or Milliseconds
+        //  V4 - Seconds, Milliseconds, or Microseconds
+        enum DelayVersion
+        {
+            delayVersion_v1 = 0,    // V1 - Milliseconds
+            delayVersion_v2 = 1,    // V2 - Microseconds
+            delayVersion_v3 = 2,    // V3 - Seconds or Milliseconds
+            delayVersion_v4 = 3     // V4 - Seconds, Milliseconds, or Microseconds
         };
 
     public:

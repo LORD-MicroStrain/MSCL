@@ -29,5 +29,11 @@ namespace mscl
         virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
 
         virtual WirelessTypes::WirelessSampleRate maxSampleRate(WirelessTypes::SamplingMode samplingMode, const ChannelMask& channels, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+
+        const uint32 minSensorDelay() const override;
+
+        const uint32 maxSensorDelay() const override;
+
+        const uint32 defaultSensorDelay() const override;
     };
 }

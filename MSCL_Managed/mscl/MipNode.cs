@@ -118,8 +118,8 @@ public class MipNode : global::System.IDisposable {
     return ret;
   }
 
-  public MipModels.NodeModel model() {
-    MipModels.NodeModel ret = (MipModels.NodeModel)msclPINVOKE.MipNode_model(swigCPtr);
+  public MipModel model() {
+    MipModel ret = new MipModel(msclPINVOKE.MipNode_model(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

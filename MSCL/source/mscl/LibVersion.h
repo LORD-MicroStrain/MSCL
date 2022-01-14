@@ -10,9 +10,9 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 
 #ifndef SWIG
 //update with each release
-#define MSCL_MAJOR 62
+#define MSCL_MAJOR 63
 #define MSCL_MINOR 1
-#define MSCL_PATCH 2
+#define MSCL_PATCH 0
 #endif
 
 namespace mscl

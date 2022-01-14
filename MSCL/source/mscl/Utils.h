@@ -367,6 +367,13 @@ namespace mscl
         //    src - The string to trim whitespace from. This will be changed to hold the result.
         void strTrimRight(std::string& src);
 
+        //Function: strTrim
+        //    Trims all whitespace from the left and right of a string.
+        //
+        //Parameters:
+        //    src - The string to trim whitespace from. This will be changed to hold the result.
+        void strTrim(std::string& src);
+
         //Function: filterSensorcloudName
         //    Replaces characters that are not supported by SensorCloud with a '-' character.
         //

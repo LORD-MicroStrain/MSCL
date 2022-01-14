@@ -476,75 +476,78 @@ namespace mscl
         }
         else
         {
-            uint8 delayVersion = m_node->features().sensorDelayVersion();
+            const TimeSpan delay{TimeSpan::MicroSeconds(microseconds)};
 
-            TimeSpan delay{TimeSpan::MicroSeconds(microseconds)};
-
-            //Milliseconds only
-            if(delayVersion == 1)
+            switch (m_node->features().sensorDelayVersion())
             {
-                valueToWrite = static_cast<uint16>(delay.getMilliseconds());
-            }
-            //Microseconds only
-            else if(delayVersion == 2)
-            {
-                valueToWrite = static_cast<uint16>(delay.getMicroseconds());
-            }
-            //Seconds or Milliseconds
-            else if(delayVersion == 3)
-            {
-                if(delay <= TimeSpan::MilliSeconds(500))
+                //Milliseconds only
+                case WirelessTypes::delayVersion_v1:
                 {
-                    //the delay needs to be stored as milliseconds
                     valueToWrite = static_cast<uint16>(delay.getMilliseconds());
-
-                    //set the most significant bit off to signify milliseconds
-                    Utils::setBit(valueToWrite, 15, false);
                 }
-                else
-                {
-                    //the delay needs to be stored as seconds
-                    valueToWrite = static_cast<uint16>(delay.getSeconds());
-
-                    //set the most significant bit on to signify seconds
-                    Utils::setBit(valueToWrite, 15, true);
-                }
-            }
-            //Seconds, Milliseconds, or Microseconds
-            else if(delayVersion == 4)
-            {
-                //if we can represent the value in microseconds
-                if(microseconds <= 16383)
+                //Microseconds only
+                case WirelessTypes::delayVersion_v2:
                 {
                     valueToWrite = static_cast<uint16>(delay.getMicroseconds());
-
-                    //0b00 - Microseconds
-                    Utils::setBit(valueToWrite, 15, false);
-                    Utils::setBit(valueToWrite, 14, false);
                 }
-                //if we can represent the value in milliseconds
-                else if(microseconds <= 16383000)
+                //Seconds or Milliseconds
+                case WirelessTypes::delayVersion_v3:
                 {
-                    valueToWrite = static_cast<uint16>(delay.getMilliseconds());
+                    //if we can represent the value in milliseconds
+                    if (delay <= TimeSpan::MilliSeconds(500))
+                    {
+                        //the delay needs to be stored as milliseconds
+                        valueToWrite = static_cast<uint16>(delay.getMilliseconds());
 
-                    //0b01 - Milliseconds
-                    Utils::setBit(valueToWrite, 15, false);
-                    Utils::setBit(valueToWrite, 14, true);
+                        //set the most significant bit off to signify milliseconds
+                        Utils::setBit(valueToWrite, 15, false);
+                    }
+                    //round to seconds
+                    else
+                    {
+                        //the delay needs to be stored as seconds
+                        valueToWrite = static_cast<uint16>(delay.getSeconds());
+
+                        //set the most significant bit on to signify seconds
+                        Utils::setBit(valueToWrite, 15, true);
+                    }
                 }
-                //if we can only represent the value in seconds
-                else
+                //Seconds, Milliseconds, or Microseconds
+                case WirelessTypes::delayVersion_v4:
                 {
-                    //the delay needs to be stored as seconds
-                    valueToWrite = static_cast<uint16>(delay.getSeconds());
+                    //if we can represent the value in microseconds
+                    if (microseconds <= 16383)
+                    {
+                        valueToWrite = static_cast<uint16>(delay.getMicroseconds());
 
-                    //0b10 - Seconds
-                    Utils::setBit(valueToWrite, 15, true);
-                    Utils::setBit(valueToWrite, 14, false);
+                        //0b00 - Microseconds
+                        Utils::setBit(valueToWrite, 15, false);
+                        Utils::setBit(valueToWrite, 14, false);
+                    }
+                    //round to milliseconds
+                    else if (microseconds <= 16383000)
+                    {
+                        valueToWrite = static_cast<uint16>(delay.getMilliseconds());
+
+                        //0b01 - Milliseconds
+                        Utils::setBit(valueToWrite, 15, false);
+                        Utils::setBit(valueToWrite, 14, true);
+                    }
+                    //round to seconds
+                    else
+                    {
+                        //the delay needs to be stored as seconds
+                        valueToWrite = static_cast<uint16>(delay.getSeconds());
+
+                        //0b10 - Seconds
+                        Utils::setBit(valueToWrite, 15, true);
+                        Utils::setBit(valueToWrite, 14, false);
+                    }
                 }
             }
         }
 
-        write(NodeEepromMap::SAMPLING_DELAY, Value::UINT16(static_cast<uint16>(valueToWrite)));
+        write(NodeEepromMap::SAMPLING_DELAY, Value::UINT16(valueToWrite));
     }
 
     uint32 NodeEepromHelper::read_sensorDelay() const
@@ -570,71 +573,104 @@ namespace mscl
                 }
             }
         }
-
-        uint8 delayVersion = m_node->features().sensorDelayVersion();
-
-        //Milliseconds only
-        if(delayVersion == 1)
+        
+        switch (m_node->features().sensorDelayVersion())
         {
-            //if outside the max milliseconds range, defaults to 5ms
-            if(eeVal > 500)
+            //Milliseconds only
+            case WirelessTypes::delayVersion_v1:
             {
-                eeVal = 5;
-            }
-
-            return static_cast<uint32>(TimeSpan::MilliSeconds(eeVal).getMicroseconds());
-        }
-        //Microseconds only
-        else if(delayVersion == 2)
-        {
-            return static_cast<uint32>(eeVal);
-        }
-        //Seconds or Milliseconds
-        else if(delayVersion == 3)
-        {
-            //if the most significant bit is set, the value is in Seconds
-            if(Utils::bitIsSet(eeVal, 15))
-            {
-                //ignore the most significant bit
-                Utils::setBit(eeVal, 15, false);
-
-                //if outside the max seconds (10 minutes), defaults to 5ms
-                if(eeVal > 600)
+                if (m_node->features().supportsSensorDelayConfig())
                 {
-                    return static_cast<uint32>(TimeSpan::MilliSeconds(5).getMicroseconds());
+                    //if outside the max delay, return the max delay
+                    if (static_cast<uint32>(TimeSpan::MilliSeconds(eeVal).getMicroseconds()) > m_node->features().maxSensorDelay())
+                    {
+                        return m_node->features().maxSensorDelay();
+                    }
+                }
+                //legacy support
+                else
+                {
+                    //if outside the max milliseconds range, defaults to max
+                    if (TimeSpan::MilliSeconds(eeVal).getSeconds() > 60)     // 1 minute
+                    {
+                        return static_cast<uint32>(TimeSpan::Minutes(1).getMicroseconds());
+                    }
                 }
 
-                return static_cast<uint32>(TimeSpan::Seconds(eeVal).getMicroseconds());
+                return static_cast<uint32>(TimeSpan::MilliSeconds(eeVal).getMicroseconds());
             }
-            else
+            //Microseconds only
+            case WirelessTypes::delayVersion_v2:
             {
+                return static_cast<uint32>(eeVal);
+            }
+            //Seconds or Milliseconds
+            case WirelessTypes::delayVersion_v3:
+            {
+                //if the most significant bit is set, the value is in Seconds
+                if (Utils::bitIsSet(eeVal, 15))
+                {
+                    //ignore the most significant bit
+                    Utils::setBit(eeVal, 15, false);
+
+                    const TimeSpan seconds(TimeSpan::Seconds(eeVal));
+
+                    if (m_node->features().supportsSensorDelayConfig())
+                    {
+                        //if outside the max delay, return the max delay
+                        if (static_cast<uint32>(seconds.getMicroseconds()) > m_node->features().maxSensorDelay())
+                        {
+                            return m_node->features().maxSensorDelay();
+                        }
+                    }
+                    //legacy support
+                    else
+                    {
+                        //if outside the max seconds (5 minutes), defaults to 5ms
+                        if (eeVal > 300)
+                        {
+                            return static_cast<uint32>(TimeSpan::MilliSeconds(1).getMicroseconds());
+                        }
+                    }
+
+                    return static_cast<uint32>(seconds.getMicroseconds());
+                }
+
                 //the value is in milliseconds
                 return static_cast<uint32>(TimeSpan::MilliSeconds(eeVal).getMicroseconds());
             }
-        }
-        //Seconds, Milliseconds, or Microseconds
-        else if(delayVersion == 4)
-        {
-            //0b10 - Seconds
-            if(Utils::bitIsSet(eeVal, 15))
+            //Seconds, Milliseconds, or Microseconds
+            case WirelessTypes::delayVersion_v4:
             {
-                //ignore the top 2 bits
-                Utils::setBit(eeVal, 15, false);
-                Utils::setBit(eeVal, 14, false);
-
-                //max of 10 minutes
-                if(eeVal > 600)
+                //0b10 - Seconds
+                if (Utils::bitIsSet(eeVal, 15))
                 {
-                    //defaults back to the max
-                    eeVal = 600;
+                    //ignore the top 2 bits
+                    Utils::setBit(eeVal, 15, false);
+                    Utils::setBit(eeVal, 14, false);
+
+                    if (m_node->features().supportsSensorDelayConfig())
+                    {
+                        //if outside the max delay, return the max delay
+                        if (static_cast<uint32>(TimeSpan::Seconds(eeVal).getMicroseconds()) > m_node->features().maxSensorDelay())
+                        {
+                            return m_node->features().maxSensorDelay();
+                        }
+                    }
+                    //legacy support
+                    else
+                    {
+                        if (eeVal > 300)
+                        {
+                            eeVal = 300;
+                        }
+                    }
+
+                    return static_cast<uint32>(TimeSpan::Seconds(eeVal).getMicroseconds());
                 }
 
-                return static_cast<uint32>(TimeSpan::Seconds(eeVal).getMicroseconds());
-            }
-            else
-            {
                 //0b01 - Milliseconds
-                if(Utils::bitIsSet(eeVal, 14))
+                if (Utils::bitIsSet(eeVal, 14))
                 {
                     //ignore the top 2 bits 
                     Utils::setBit(eeVal, 15, false);
@@ -642,15 +678,13 @@ namespace mscl
 
                     return static_cast<uint32>(TimeSpan::MilliSeconds(eeVal).getMicroseconds());
                 }
-                //0b00 - Microseconds
-                else
-                {
-                    //ignore the top 2 bits
-                    Utils::setBit(eeVal, 15, false);
-                    Utils::setBit(eeVal, 14, false);
 
-                    return static_cast<uint32>(eeVal);
-                }
+                //0b00 - Microseconds
+                //ignore the top 2 bits
+                Utils::setBit(eeVal, 15, false);
+                Utils::setBit(eeVal, 14, false);
+
+                return static_cast<uint32>(eeVal);
             }
         }
 

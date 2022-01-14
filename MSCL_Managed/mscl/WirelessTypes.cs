@@ -688,6 +688,7 @@ public class WirelessTypes : global::System.IDisposable {
     range_0to78_74ohm = 132,
     range_39_0625mV = 133,
     range_19_5313mV = 134,
+    range_125mV = 135,
     range_invalid = 65535
   }
 
@@ -751,6 +752,13 @@ public class WirelessTypes : global::System.IDisposable {
   public enum ExternalPowerIndicator {
     externalPower_notConnected = 0,
     externalPower_connected = 1
+  }
+
+  public enum DelayVersion {
+    delayVersion_v1 = 0,
+    delayVersion_v2 = 1,
+    delayVersion_v3 = 2,
+    delayVersion_v4 = 3
   }
 
   public static readonly short UNKNOWN_RSSI = msclPINVOKE.WirelessTypes_UNKNOWN_RSSI_get();

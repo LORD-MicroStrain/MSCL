@@ -34,7 +34,7 @@ namespace mscl
 
         NodeEepromSettings():
             useGroupRead(true),
-            numRetries(0),
+            numRetries(3),
             useEepromCache(true)
         {
         }

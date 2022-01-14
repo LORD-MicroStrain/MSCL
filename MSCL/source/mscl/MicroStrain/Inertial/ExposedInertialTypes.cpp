@@ -689,54 +689,48 @@ namespace mscl
         return statusMap;
     }
 
-    RTKDeviceStatusFlags::ControllerState RTKDeviceStatusFlags::controllerState() const
+    RTKDeviceStatusFlags::RTKDeviceStatusFlags(const RTKDeviceStatusFlags_v1 rtk_v1) :
+        Bitfield(rtk_v1.value())
+    {}
+
+    RTKDeviceStatusFlags::operator RTKDeviceStatusFlags_v1() const
     {
-        return static_cast<ControllerState>(get(CONTROLLER_STATE));
-    }
-    
-    void RTKDeviceStatusFlags::controllerState(RTKDeviceStatusFlags::ControllerState state)
-    {
-        set(CONTROLLER_STATE, state);
+        return RTKDeviceStatusFlags_v1(static_cast<uint32>(value()));
     }
 
-    RTKDeviceStatusFlags::PlatformState RTKDeviceStatusFlags::platformState() const
+    uint8 RTKDeviceStatusFlags::version() const
     {
-        return static_cast<PlatformState>(get(PLATFORM_STATE));
+        return static_cast<uint8>(get(VERSION));
     }
 
-    void RTKDeviceStatusFlags::platformState(RTKDeviceStatusFlags::PlatformState state)
+    RTKDeviceStatusFlags::ModemState RTKDeviceStatusFlags::modemState() const
     {
-        set(PLATFORM_STATE, state);
+        return static_cast<ModemState>(get(MODEM_STATE));
     }
 
-    RTKDeviceStatusFlags::ControllerStatusCode RTKDeviceStatusFlags::controllerStatusCode() const
+    void RTKDeviceStatusFlags::modemState(const ModemState state)
     {
-        return static_cast<ControllerStatusCode>(get(CONTROLLER_STATUS_CODE));
+        set(MODEM_STATE, state);
     }
 
-    void RTKDeviceStatusFlags::controllerStatusCode(RTKDeviceStatusFlags::ControllerStatusCode status)
+    RTKDeviceStatusFlags::ConnectionType RTKDeviceStatusFlags::connectionType() const
     {
-        set(CONTROLLER_STATUS_CODE, status);
+        return static_cast<ConnectionType>(get(CONNECTION_TYPE));
     }
 
-    RTKDeviceStatusFlags::PlatformStatusCode RTKDeviceStatusFlags::platformStatusCode() const
+    void RTKDeviceStatusFlags::connectionType(const ConnectionType state)
     {
-        return static_cast<PlatformStatusCode>(get(PLATFORM_STATUS_CODE));
+        set(CONNECTION_TYPE, state);
     }
 
-    void RTKDeviceStatusFlags::platformStatusCode(RTKDeviceStatusFlags::PlatformStatusCode status)
+    int8 RTKDeviceStatusFlags::rssi() const
     {
-        set(PLATFORM_STATUS_CODE, status);
+        return -1 * static_cast<int8>(get(RSSI));
     }
 
-    RTKDeviceStatusFlags::ResetReason RTKDeviceStatusFlags::resetReason() const
+    void RTKDeviceStatusFlags::rssi(const uint8 value)
     {
-        return static_cast<ResetReason>(get(RESET_REASON));
-    }
-
-    void RTKDeviceStatusFlags::resetReason(RTKDeviceStatusFlags::ResetReason reason)
-    {
-        set(RESET_REASON, static_cast<uint32>(reason));
+        set(RSSI, value);
     }
 
     uint8 RTKDeviceStatusFlags::signalQuality() const
@@ -744,7 +738,137 @@ namespace mscl
         return static_cast<uint8>(get(SIGNAL_QUALITY));
     }
 
-    void RTKDeviceStatusFlags::signalQuality(uint8 quality)
+    void RTKDeviceStatusFlags::signalQuality(const uint8 quality)
+    {
+        set(SIGNAL_QUALITY, quality);
+    }
+
+    uint8 RTKDeviceStatusFlags::towerChangeIndicator() const
+    {
+        return static_cast<uint8>(get(TOWER_CHANGE_INDICATOR));
+    }
+
+    void RTKDeviceStatusFlags::towerChangeIndicator(const uint8 value)
+    {
+        set(TOWER_CHANGE_INDICATOR, value);
+    }
+
+    uint8 RTKDeviceStatusFlags::nmeaTimeout() const
+    {
+        return static_cast<uint8>(get(NMEA_TIMEOUT));
+    }
+
+    void RTKDeviceStatusFlags::nmeaTimeout(const uint8 timeout)
+    {
+        set(NMEA_TIMEOUT, timeout);
+    }
+
+    uint8 RTKDeviceStatusFlags::serverTimeout() const
+    {
+        return static_cast<uint8>(get(SERVER_TIMEOUT));
+    }
+
+    void RTKDeviceStatusFlags::serverTimeout(const uint8 timeout)
+    {
+        set(SERVER_TIMEOUT, timeout);
+    }
+
+    uint8 RTKDeviceStatusFlags::rtcmTimeout() const
+    {
+        return static_cast<uint8>(get(RTCM_TIMEOUT));
+    }
+
+    void RTKDeviceStatusFlags::rtcmTimeout(const uint8 timeout)
+    {
+        set(RTCM_TIMEOUT, timeout);
+    }
+
+    uint8 RTKDeviceStatusFlags::deviceOutOfRange() const
+    {
+        return static_cast<uint8>(get(DEVICE_OUT_OF_RANGE));
+    }
+
+    void RTKDeviceStatusFlags::deviceOutOfRange(const uint8 outOfRange)
+    {
+        set(DEVICE_OUT_OF_RANGE, outOfRange);
+    }
+
+    uint8 RTKDeviceStatusFlags::correctionsUnavailable() const
+    {
+        return static_cast<uint8>(get(CORRECTIONS_UNAVAILABLE));
+    }
+
+    void RTKDeviceStatusFlags::correctionsUnavailable(const uint8 unavailable)
+    {
+        set(CORRECTIONS_UNAVAILABLE, unavailable);
+    }
+
+    RTKDeviceStatusFlags_v1::operator RTKDeviceStatusFlags() const
+    {
+        return RTKDeviceStatusFlags(static_cast<uint32>(value()));
+    }
+
+    uint8 RTKDeviceStatusFlags_v1::version() const
+    {
+        return static_cast<uint8>(get(VERSION));
+    }
+
+    RTKDeviceStatusFlags_v1::ControllerState RTKDeviceStatusFlags_v1::controllerState() const
+    {
+        return static_cast<ControllerState>(get(CONTROLLER_STATE));
+    }
+
+    void RTKDeviceStatusFlags_v1::controllerState(RTKDeviceStatusFlags_v1::ControllerState state)
+    {
+        set(CONTROLLER_STATE, state);
+    }
+
+    RTKDeviceStatusFlags_v1::PlatformState RTKDeviceStatusFlags_v1::platformState() const
+    {
+        return static_cast<PlatformState>(get(PLATFORM_STATE));
+    }
+
+    void RTKDeviceStatusFlags_v1::platformState(RTKDeviceStatusFlags_v1::PlatformState state)
+    {
+        set(PLATFORM_STATE, state);
+    }
+
+    RTKDeviceStatusFlags_v1::ControllerStatusCode RTKDeviceStatusFlags_v1::controllerStatusCode() const
+    {
+        return static_cast<ControllerStatusCode>(get(CONTROLLER_STATUS_CODE));
+    }
+
+    void RTKDeviceStatusFlags_v1::controllerStatusCode(RTKDeviceStatusFlags_v1::ControllerStatusCode status)
+    {
+        set(CONTROLLER_STATUS_CODE, status);
+    }
+
+    RTKDeviceStatusFlags_v1::PlatformStatusCode RTKDeviceStatusFlags_v1::platformStatusCode() const
+    {
+        return static_cast<PlatformStatusCode>(get(PLATFORM_STATUS_CODE));
+    }
+
+    void RTKDeviceStatusFlags_v1::platformStatusCode(RTKDeviceStatusFlags_v1::PlatformStatusCode status)
+    {
+        set(PLATFORM_STATUS_CODE, status);
+    }
+
+    RTKDeviceStatusFlags_v1::ResetReason RTKDeviceStatusFlags_v1::resetReason() const
+    {
+        return static_cast<ResetReason>(get(RESET_REASON));
+    }
+
+    void RTKDeviceStatusFlags_v1::resetReason(RTKDeviceStatusFlags_v1::ResetReason reason)
+    {
+        set(RESET_REASON, static_cast<uint32>(reason));
+    }
+
+    uint8 RTKDeviceStatusFlags_v1::signalQuality() const
+    {
+        return static_cast<uint8>(get(SIGNAL_QUALITY));
+    }
+
+    void RTKDeviceStatusFlags_v1::signalQuality(uint8 quality)
     {
         set(SIGNAL_QUALITY, quality);
     }

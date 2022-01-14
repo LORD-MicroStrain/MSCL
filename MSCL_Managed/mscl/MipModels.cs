@@ -44,14 +44,59 @@ public class MipModels : global::System.IDisposable {
     }
   }
 
+  public static bool modelNumbersEqual(MipModels.ModelNumber model1, MipModels.ModelNumber model2) {
+    bool ret = msclPINVOKE.MipModels_modelNumbersEqual((int)model1, (int)model2);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static MipModels.ModelNumber modelNumberFromStr(string modelNumberString) {
+    MipModels.ModelNumber ret = (MipModels.ModelNumber)msclPINVOKE.MipModels_modelNumberFromStr(modelNumberString);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static MipModels.ModelNumber modelNumberFromParts(MipModels.NodeModel nodeModel, MipModels.Modifier modifier) {
+    MipModels.ModelNumber ret = (MipModels.ModelNumber)msclPINVOKE.MipModels_modelNumberFromParts((int)nodeModel, (int)modifier);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static MipModels.NodeModel nodeModelFromStr(string modelNumberString) {
+    MipModels.NodeModel ret = (MipModels.NodeModel)msclPINVOKE.MipModels_nodeModelFromStr(modelNumberString);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static uint modifierFromStr(string modelNumberString) {
+    uint ret = msclPINVOKE.MipModels_modifierFromStr(modelNumberString);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static MipModels.NodeModel nodeModelFromModelNumber(MipModels.ModelNumber modelNumber) {
+    MipModels.NodeModel ret = (MipModels.NodeModel)msclPINVOKE.MipModels_nodeModelFromModelNumber((int)modelNumber);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static uint modifierFromModelNumber(MipModels.ModelNumber modelNumber) {
+    uint ret = msclPINVOKE.MipModels_modifierFromModelNumber((int)modelNumber);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static string stringFromModelNumber(MipModels.ModelNumber modelNumber) {
+    string ret = msclPINVOKE.MipModels_stringFromModelNumber((int)modelNumber);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public MipModels() : this(msclPINVOKE.new_MipModels(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public enum NodeModel {
-    node_3dm = 6201,
-    node_fasA = 6207,
-    node_3dm_gx2 = 6215,
     node_3dm_dh3 = 6219,
     node_3dm_gx3_15 = 6227,
     node_3dm_gx3_25 = 6223,
@@ -82,6 +127,46 @@ public class MipModels : global::System.IDisposable {
     node_3dm_cl5_25 = 6281,
     node_3dm_gq7 = 6284,
     node_3dm_rtk = 6285
+  }
+
+  public enum Modifier {
+    placeholder_matchAll = 9999,
+    rtk_v1 = 0000,
+    rtk_v2 = 0100
+  }
+
+  public enum ModelNumber {
+    model_3dm_dh3 = 62199999,
+    model_3dm_gx3_15 = 62279999,
+    model_3dm_gx3_25 = 62239999,
+    model_3dm_gx3_35 = 62259999,
+    model_3dm_gx3_45 = 62289999,
+    model_3dm_rq1_45_lt = 62329999,
+    model_3dm_gx4_15 = 62339999,
+    model_3dm_gx4_25 = 62349999,
+    model_3dm_gx4_45 = 62369999,
+    model_3dm_rq1_45_st = 62399999,
+    model_mv5_ar = 62439999,
+    model_3dm_gx5_10 = 62559999,
+    model_3dm_gx5_15 = 62549999,
+    model_3dm_gx5_25 = 62539999,
+    model_3dm_gx5_35 = 62529999,
+    model_3dm_gx5_45 = 62519999,
+    model_3dm_cv5_10 = 62599999,
+    model_3dm_cv5_15 = 62589999,
+    model_3dm_cv5_25 = 62579999,
+    model_3dm_cv5_45 = 62569999,
+    model_3dm_gq4_45 = 62509999,
+    model_3dm_cx5_45 = 62719999,
+    model_3dm_cx5_35 = 62729999,
+    model_3dm_cx5_25 = 62739999,
+    model_3dm_cx5_15 = 62749999,
+    model_3dm_cx5_10 = 62759999,
+    model_3dm_cl5_15 = 62809999,
+    model_3dm_cl5_25 = 62819999,
+    model_3dm_gq7 = 62849999,
+    model_3dm_rtk_v1 = 62850000,
+    model_3dm_rtk = 62850100
   }
 
 }

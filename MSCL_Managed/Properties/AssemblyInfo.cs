@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("LORD Sensing")]
 [assembly: AssemblyProduct("MSCL")]
-[assembly: AssemblyCopyright("Copyright © 2020 Parker Hannifin Corp")]
+[assembly: AssemblyCopyright("Copyright © 2021 Parker Hannifin Corp")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,5 +33,5 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 //
 //update with each release
-[assembly: AssemblyVersion("62.1.2.0")]
-[assembly: AssemblyFileVersion("62.1.2.0")]
+[assembly: AssemblyVersion("63.1.0.0")]
+[assembly: AssemblyFileVersion("63.1.0.0")]

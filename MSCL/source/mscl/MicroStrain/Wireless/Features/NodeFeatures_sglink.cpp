@@ -37,4 +37,34 @@ namespace mscl
     {
         return true;
     }
+
+    const uint32 NodeFeatures_sglink::minSensorDelay() const
+    {
+        if (!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+
+        return static_cast<uint32>(TimeSpan::MilliSeconds(1).getMicroseconds());     //1 millisecond
+    }
+
+    const uint32 NodeFeatures_sglink::maxSensorDelay() const
+    {
+        if (!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+        
+        return static_cast<uint32>(TimeSpan::Seconds(1).getMicroseconds());                      //1 second
+    }
+
+    const uint32 NodeFeatures_sglink::defaultSensorDelay() const
+    {
+        if (!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+
+        return static_cast<uint32>(TimeSpan::MilliSeconds(5).getMicroseconds());     //5 milliseconds
+    }
 }

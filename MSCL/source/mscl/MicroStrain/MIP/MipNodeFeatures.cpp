@@ -124,8 +124,8 @@ namespace mscl
 
     const CommPortInfo MipNodeFeatures::getCommPortInfo() const
     {
-        MipModels::NodeModel model = MipModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
-        switch (model)
+        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_gq7:
             return{
@@ -147,8 +147,8 @@ namespace mscl
             return VehicleModeTypes(0);
         }
 
-        MipModels::NodeModel model = MipModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
-        switch (model)
+        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
         {
         
         case MipModels::node_3dm_gx3_45:
@@ -179,8 +179,8 @@ namespace mscl
             return{};
         }
 
-        MipModels::NodeModel model = MipModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
-        switch (model)
+        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_gq4_45:
         case MipModels::node_3dm_rq1_45_lt:
@@ -216,12 +216,9 @@ namespace mscl
 
     bool MipNodeFeatures::useLegacyIdsForEnableDataStream() const
     {
-        MipModels::NodeModel model = MipModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
-        switch (model)
+        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
         {
-        case MipModels::node_3dm:
-        case MipModels::node_fasA:
-        case MipModels::node_3dm_gx2:
         case MipModels::node_3dm_dh3:
         case MipModels::node_3dm_gx3_15:
         case MipModels::node_3dm_gx3_25:
@@ -264,8 +261,8 @@ namespace mscl
             return{ HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_NONE) };
         }
 
-        MipModels::NodeModel model = MipModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
-        switch (model)
+        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_gx4_45:
         case MipModels::node_3dm_gx3_45:
@@ -310,11 +307,8 @@ namespace mscl
         case MipModels::node_3dm_gx3_15:
         case MipModels::node_3dm_gx3_25:
         case MipModels::node_3dm_gx3_35:
-        case MipModels::node_3dm_gx2:
         case MipModels::node_3dm_cv5_45:
         case MipModels::node_3dm_cv5_10:
-        case MipModels::node_3dm:
-        case MipModels::node_fasA:
         case MipModels::node_3dm_dh3:
         default:
             return{
@@ -338,8 +332,8 @@ namespace mscl
             return{ EstimationControlOptions(0) };
         }
 
-        MipModels::NodeModel model = MipModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
-        switch (model)
+        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_gx5_15:
         case MipModels::node_3dm_gx4_25:
@@ -378,11 +372,8 @@ namespace mscl
         case MipModels::node_3dm_gx3_15:
         case MipModels::node_3dm_gx3_25:
         case MipModels::node_3dm_gx3_35:
-        case MipModels::node_3dm_gx2:
         case MipModels::node_3dm_cv5_45:
         case MipModels::node_3dm_cv5_10:
-        case MipModels::node_3dm:
-        case MipModels::node_fasA:
         case MipModels::node_3dm_dh3:
         default:
             return EstimationControlOptions(
@@ -406,8 +397,8 @@ namespace mscl
             return{ AdaptiveMeasurementModes(0) };
         }
 
-        MipModels::NodeModel model = MipModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
-        switch (model)
+        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
         {
             case MipModels::node_3dm_gx4_45:
             case MipModels::node_3dm_gx4_25:
@@ -416,12 +407,9 @@ namespace mscl
             case MipModels::node_3dm_gx3_35:
             case MipModels::node_3dm_gx3_25:
             case MipModels::node_3dm_gx3_15:
-            case MipModels::node_3dm_gx2:
             case MipModels::node_3dm_rq1_45_lt:
             case MipModels::node_3dm_rq1_45_st:
             case MipModels::node_3dm_gq4_45:
-            case MipModels::node_3dm:
-            case MipModels::node_fasA:
             case MipModels::node_3dm_dh3:
                 return {
                     InertialTypes::AdaptiveMeasurementMode::ADAPTIVE_MEASUREMENT_DISABLE,
@@ -455,8 +443,8 @@ namespace mscl
             return{ AdaptiveFilterLevels(0) };
         }
 
-        MipModels::NodeModel model = MipModels::nodeFromModelString(m_nodeInfo.deviceInfo().modelNumber);
-        switch (model)
+        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_gx5_45:
         case MipModels::node_3dm_cv5_45:

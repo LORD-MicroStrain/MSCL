@@ -184,16 +184,16 @@ namespace mscl
         Version firmwareVersion() const;
 
         //API Function: model
-        //    Gets the <MipModels::NodeModel> of the MipNode.
+        //    Gets the <MipModel> of the MipNode.
         //
         //Returns:
-        //    The <MipModels::NodeModel> of the MipNode.
+        //    The <MipModel> of the MipNode.
         //
         //Exceptions:
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: Information failed to be loaded for this Node.
-        MipModels::NodeModel model() const;
+        MipModel model() const;
 
         //API Function: modelName
         //    Gets the model name of the MipNode (ie. "3DM-GX3-45").

@@ -14,6 +14,31 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
+63.1.0 - 2022-01-13
+- Added RTK (v2) 6285-0100 bitfield status support and set as default
+- Updated RTK (v1) 6285-0000 bitfield status to have _v1 suffix
+
+63.0.1 - 2022-01-06
+- Increase default readWriteRetries for BaseStation and WirelessNode objects from 0
+    - BaseStation default: 2
+    - WirelessNode default: 3
+
+63.0.0 - 2022-01-05
+- Add enum MipModels::Modifier to represent the second half of a MIP model number for select models
+- Add enum MipModels::ModelNumber as an integer representation of full MIP device model numbers
+- Add functions to properly compare model numbers with placeholder modifier values
+- Add MipModel class to represent a MIP model number that keeps track of full model number, node model (first part), and modifier (second part)
+    - Add MipModel object constants to represent known products
+- MipNode::model() now returns a MipModel object instead of MipModels::NodeModel enum value
+- Remove unsupported MipModels::NodeModel enum values: node_3dm, node_fasA, node_3dm_gx2
+
+62.2.1 - 2022-01-05
+- Update Torque-Link-200-3ch (s) gain values
+
+62.2.0 - 2021-11-22
+- Update wireless sensor warmup delay min/max values
+- Add wireless sensor warmup delay default values
+
 62.1.2 - 2021-10-18
 - Fixes Windows python build, and updates windows python build scripts to work easier out of the box
 

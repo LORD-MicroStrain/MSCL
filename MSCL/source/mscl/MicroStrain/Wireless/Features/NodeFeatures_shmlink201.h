@@ -67,5 +67,9 @@ namespace mscl
         virtual const WirelessTypes::WirelessSampleRates histogramTransmitRates() const final;
 
         virtual const WirelessTypes::FatigueModes fatigueModes() const final;
+
+        const uint32 minSensorDelay() const override;
+
+        const uint32 defaultSensorDelay() const override;
     };
 }

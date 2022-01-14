@@ -172,4 +172,24 @@ namespace mscl
     {
         return true;
     }
+
+    const uint32 NodeFeatures_shmlink201FullBridge::minSensorDelay() const
+    {
+        if (!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+
+        return 350;     //350 microseconds
+    }
+
+    const uint32 NodeFeatures_shmlink201FullBridge::defaultSensorDelay() const
+    {
+        if (!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+        
+        return 350;     //350 microseconds
+    }
 }

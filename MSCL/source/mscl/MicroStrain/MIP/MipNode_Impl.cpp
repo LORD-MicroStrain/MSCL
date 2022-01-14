@@ -1862,14 +1862,14 @@ namespace mscl
 
     DeviceStatusData MipNode_Impl::getBasicDeviceStatus()
     {
-        DeviceStatus deviceStatus = DeviceStatus::MakeGetBasicCommand(MipModels::nodeFromModelString(modelNumber()));
+        DeviceStatus deviceStatus = DeviceStatus::MakeGetBasicCommand(MipModel(modelNumber()).baseModel().nodeModel());
         GenericMipCmdResponse response = SendCommand(deviceStatus);
         return deviceStatus.getResponseData(response);
     }
 
     DeviceStatusData MipNode_Impl::getDiagnosticDeviceStatus()
     {
-        DeviceStatus deviceStatus = DeviceStatus::MakeGetDiagnosticCommand(MipModels::nodeFromModelString(modelNumber()));
+        DeviceStatus deviceStatus = DeviceStatus::MakeGetDiagnosticCommand(MipModel(modelNumber()).baseModel().nodeModel());
         GenericMipCmdResponse response = SendCommand(deviceStatus);
         return deviceStatus.getResponseData(response);
     }

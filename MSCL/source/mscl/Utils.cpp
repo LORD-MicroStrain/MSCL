@@ -463,6 +463,12 @@ namespace mscl
             }
         }
 
+        void strTrim(std::string& src)
+        {
+            strTrimLeft(src);
+            strTrimRight(src);
+        }
+
         void filterSensorcloudName(std::string& str)
         {
             //replace all characters that don't match (a-z)(A-Z)(0-9)-_. with a '-'

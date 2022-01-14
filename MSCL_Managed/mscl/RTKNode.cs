@@ -61,6 +61,12 @@ public class RTKNode : MipNode {
     return ret;
   }
 
+  public byte getStatusBitfieldVersion() {
+    byte ret = msclPINVOKE.RTKNode_getStatusBitfieldVersion(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }
 
 }

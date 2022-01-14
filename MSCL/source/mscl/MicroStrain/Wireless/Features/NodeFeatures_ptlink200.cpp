@@ -130,4 +130,24 @@ namespace mscl
                 throw Error_NotSupported("The sampling mode is not supported by this Node");
         }
     }
+
+    const uint32 NodeFeatures_ptlink200::minSensorDelay() const
+    {
+        if (!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+        
+        return static_cast<uint32>(TimeSpan::MilliSeconds(5).getMicroseconds());    //5 milliseconds
+    }
+
+    const uint32 NodeFeatures_ptlink200::defaultSensorDelay() const
+    {
+        if (!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+
+        return static_cast<uint32>(TimeSpan::MilliSeconds(10).getMicroseconds());    //10 milliseconds
+    }
 }

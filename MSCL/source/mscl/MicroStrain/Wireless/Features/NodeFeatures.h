@@ -865,7 +865,7 @@ namespace mscl
         //
         //Exceptions:
         //  - <Error_NotSupported>: The sensor delay feature is not supported by this Node.
-        virtual uint32 minSensorDelay() const;
+        virtual const uint32 minSensorDelay() const;
 
         //API Function: maxSensorDelay
         //  Gets the maximum sensor delay value (in microseconds) that is supported.
@@ -875,7 +875,17 @@ namespace mscl
         //
         //Exceptions:
         //  - <Error_NotSupported>: The sensor delay feature is not supported by this Node.
-        virtual uint32 maxSensorDelay() const;
+        virtual const uint32 maxSensorDelay() const;
+
+        //API Function: defaultSensorDelay
+        //  Gets the default sensor delay value (in microseconds) that is supported.
+        //
+        //Returns:
+        //  The default sensor delay value, in microseconds.
+        //
+        //Exceptions:
+        //  - <Error_NotSupported>: The sensor delay feature is not supported by this Node.
+        virtual const uint32 defaultSensorDelay() const;
 
         //API Function: maxEventTriggerTotalDuration
         //  Gets the max event trigger duration (in milliseconds) that can be applied for both the pre and post event durations (combined).
@@ -1211,7 +1221,7 @@ namespace mscl
 
         //Function: sensorDelayVersion
         //  Gets the version of sensor delay that the Node supports.
-        virtual uint8 sensorDelayVersion() const;
+        virtual WirelessTypes::DelayVersion sensorDelayVersion() const;
 
         //Function: usesLegacySensorDelayAlwaysOn
         //  Checks if the Node uses the legacy value of 10,000 for always on (true)

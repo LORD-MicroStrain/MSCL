@@ -66,7 +66,7 @@ namespace mscl
         //  Gets the status flags for the RTK device.
         //
         //Returns:
-        //  RTKDeviceStatusFlags - The struct containing modem and client connection status.
+        //  RTKDeviceStatusFlags - The RTKDeviceStatusFlags containing modem and client connection status.
         //
         //Exceptions:
         //    - <Error_Communication>: There was no response to the command. The command timed out.
@@ -86,5 +86,19 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the RTKNode.
         std::string getActivationCode() const;
+
+        //API Function: getStatusBitfieldVersion
+        //  Extracts the bitfield version number from the RTK status flag.
+        //  0 - V1
+        //  1 - V2
+        //
+        //Returns:
+        //  uint8 - The uint8 bitfield value containing the RTK version number.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the RTKNode.
+        uint8 getStatusBitfieldVersion() const;
     };
 }

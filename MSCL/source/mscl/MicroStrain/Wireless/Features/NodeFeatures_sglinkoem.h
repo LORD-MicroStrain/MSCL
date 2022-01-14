@@ -24,5 +24,11 @@ namespace mscl
         NodeFeatures_sglinkoem(const NodeInfo& info);
 
         virtual bool supportsSensorDelayConfig() const override;
+
+        const uint32 minSensorDelay() const override;
+
+        const uint32 maxSensorDelay() const override;
+
+        const uint32 defaultSensorDelay() const override;
     };
 }

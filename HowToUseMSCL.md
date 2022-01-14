@@ -61,6 +61,16 @@ sudo yum install ./<PACKAGE_NAME>.rpm   #install MSCL and it's dependencies
 
 *Note:* to uninstall MSCL, run: `sudo yum remove <PACKAGE_NAME>.rpm`
 
+### Udev
+
+Download the [udev](https://github.com/LORD-MicroStrain/microstrain_inertial/blob/ros/microstrain_inertial_driver/debian/udev) file from our ROS driver, and copy it to `/usr/lib/udev/rules.d/100-microstrain.rules` on Ubuntu or `/etc/udev/rules.d/100-microstrain.rules` on debian, CentOS, or Redhat
+
+Once the udev rule is installed, the devices will appear as follows in the file system, where {serial} is the serial number of the device:
+
+* `/dev/microstrain_main_{serial}` - All GX5 devices, and the main port of GQ7 devices
+* `/dev/microstrain_aux_{serial}` - The aux port of GQ7 devices
+* `/dev/microstrain_rtk_{serial}` - 3DM-RTK devices
+
 ### Python
 After installing the package, a folder was created in `/usr/share/`. The name of the folder varies depending on which package you install (`/usr/share/python2-mscl` or `/usr/share/python3-mscl`)
 

@@ -218,14 +218,14 @@ namespace mscl
     };
 
     const InputRangeHelper::InputRangeMap InputRangeHelper::RANGES_TORQUELINK200_3CH_S_FULLDIFF_CHS_2500mV = {
-        { 0, InputRangeEntry(WirelessTypes::range_156_25mV, 16.0f) },
-        { 1, InputRangeEntry(WirelessTypes::range_78_125mV, 32.0f) },
-        { 2, InputRangeEntry(WirelessTypes::range_39_0625mV, 64.0f) },
-        { 3, InputRangeEntry(WirelessTypes::range_19_5313mV, 128.0f) },
-        { 4, InputRangeEntry(WirelessTypes::range_9_766mV, 256.0f) },
-        { 5, InputRangeEntry(WirelessTypes::range_4_88mV, 512.0f) },
-        { 6, InputRangeEntry(WirelessTypes::range_2_44mV, 1024.0f) },
-        { 7, InputRangeEntry(WirelessTypes::range_1_22mV, 2048.0f) }
+        { 0, InputRangeEntry(WirelessTypes::range_125mV, 20.0f) },
+        { 1, InputRangeEntry(WirelessTypes::range_62_5mV, 40.0f) },
+        { 2, InputRangeEntry(WirelessTypes::range_31_25mV, 80.0f) },
+        { 3, InputRangeEntry(WirelessTypes::range_15_63mV, 160.0f) },
+        { 4, InputRangeEntry(WirelessTypes::range_7_81mV, 320.0f) },
+        { 5, InputRangeEntry(WirelessTypes::range_3_91mV, 640.0f) },
+        { 6, InputRangeEntry(WirelessTypes::range_1_95mV, 1280.0f) },
+        { 7, InputRangeEntry(WirelessTypes::range_0_976mV, 2560.0f) }
     };
 
     const InputRangeHelper::InputRangeMap& InputRangeHelper::getRangeMap(WirelessModels::NodeModel nodeType, WirelessTypes::ChannelType channelType, WirelessTypes::Voltage excitationVoltage)

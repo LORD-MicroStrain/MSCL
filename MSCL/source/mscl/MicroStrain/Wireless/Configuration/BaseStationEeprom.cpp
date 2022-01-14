@@ -13,7 +13,7 @@ MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
 namespace mscl
 {
     BaseStationEeprom::BaseStationEeprom(BaseStation_Impl* base):
-        Eeprom(true, 0),
+        Eeprom(true, 2),
         m_baseStation(base)
     { }
 

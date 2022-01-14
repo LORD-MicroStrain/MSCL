@@ -196,6 +196,7 @@
     <Compile Include="mscl\MipDataPoint.cs" />
     <Compile Include="mscl\MipDataPoints.cs" />
     <Compile Include="mscl\MipFieldValues.cs" />
+    <Compile Include="mscl\MipModel.cs" />
     <Compile Include="mscl\MipModels.cs" />
     <Compile Include="mscl\MipNode.cs" />
     <Compile Include="mscl\MipNodeFeatures.cs" />
@@ -224,6 +225,7 @@
     <Compile Include="mscl\RawBytePackets.cs" />
     <Compile Include="mscl\RfSweep.cs" />
     <Compile Include="mscl\RTKDeviceStatusFlags.cs" />
+    <Compile Include="mscl\RTKDeviceStatusFlags_v1.cs" />
     <Compile Include="mscl\RTKNode.cs" />
     <Compile Include="mscl\SampleRate.cs" />
     <Compile Include="mscl\SampleRates.cs" />

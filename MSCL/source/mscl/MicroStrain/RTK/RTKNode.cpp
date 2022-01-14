@@ -37,4 +37,9 @@ namespace mscl
     {
         return m_impl->getActivationCode();
     }
+
+    uint8 RTKNode::getStatusBitfieldVersion() const
+    {
+        return getDeviceStatusFlags().version();
+    }
 }

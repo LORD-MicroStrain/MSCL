@@ -218,4 +218,50 @@ namespace mscl
 
         return modes;
     }
+
+    const uint32 NodeFeatures_shmlink210::minSensorDelay() const
+    {
+        if (!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+
+        //V1 - Milliseconds
+        //V4 - Seconds, Milliseconds, or Microseconds
+        switch (sensorDelayVersion())
+        {
+            case WirelessTypes::delayVersion_v1:
+                return static_cast<uint32>(TimeSpan::MilliSeconds(1).getMicroseconds());    //1 millisecond
+                
+            case WirelessTypes::delayVersion_v4:
+                return 350;     //350 microseconds
+
+            default:
+                assert(false);  //need to add a case for a new sensor delay version
+                throw Error_NotSupported("Unknown Sensor Delay Version");
+        }
+    }
+
+    const uint32 NodeFeatures_shmlink210::defaultSensorDelay() const
+    {
+        if (!supportsSensorDelayConfig())
+        {
+            throw Error_NotSupported("Sensor Delay is not supported by this Node.");
+        }
+
+        //V1 - Milliseconds
+        //V4 - Seconds, Milliseconds, or Microseconds
+        switch (sensorDelayVersion())
+        {
+            case WirelessTypes::delayVersion_v1:
+                return static_cast<uint32>(TimeSpan::MilliSeconds(1).getMicroseconds());    //1 millisecond
+
+            case WirelessTypes::delayVersion_v4:
+                return 350;     //350 microseconds
+
+            default:
+                assert(false);  //need to add a case for a new sensor delay version
+                throw Error_NotSupported("Unknown Sensor Delay Version");
+        }
+    }
 }

@@ -2223,24 +2223,156 @@ namespace mscl
         void disableOption(uint16 options) { measurementOptions = measurementOptions & ~options; }
     };
 
+    class RTKDeviceStatusFlags_v1;
+
     //API Struct: RTKDeviceStatusFlags
     class RTKDeviceStatusFlags : public Bitfield
     {
     public:
         //API Constants:
         //  Bitmasks indicating the bits that define each value
-        //      CONTROLLER_STATE            - 0x00000007 - Controller State         (00000000000000000000000000000111)
-        //      PLATFORM_STATE              - 0x000000F8 - Platform State           (00000000000000000000000011111000)
-        //      CONTROLLER_STATUS_CODE      - 0x00000700 - Controller Status Code   (00000000000000000000011100000000)
-        //      PLATFORM_STATUS_CODE        - 0x00003800 - Platform Status Code     (00000000000000000011100000000000)
-        //      RESET_REASON                - 0x0000C000 - Reset Reason             (00000000000000001100000000000000)
-        //      SIGNAL_QUALITY              - 0x000F0000 - Signal Quality           (00000000000011110000000000000000)
-        static const uint32 CONTROLLER_STATE            = 0x00000007; // 00000000000000000000000000000111
-        static const uint32 PLATFORM_STATE              = 0x000000F8; // 00000000000000000000000011111000
-        static const uint32 CONTROLLER_STATUS_CODE      = 0x00000700; // 00000000000000000000011100000000
-        static const uint32 PLATFORM_STATUS_CODE        = 0x00003800; // 00000000000000000011100000000000
-        static const uint32 RESET_REASON                = 0x0000C000; // 00000000000000001100000000000000
-        static const uint32 SIGNAL_QUALITY              = 0x000F0000; // 00000000000011110000000000000000
+        //      MODEM_STATE             - 0x0000000F - Modem State                  0000 0000 0000 0000 0000 0000 0000 1111
+        //      CONNECTION_TYPE         - 0x000000F0 - Connection Type              0000 0000 0000 0000 0000 0000 1111 0000
+        //      RSSI                    - 0x0000FF00 - RSSI                         0000 0000 0000 0000 1111 1111 0000 0000
+        //      SIGNAL_QUALITY          - 0x000F0000 - Signal Quality               0000 0000 0000 1111 0000 0000 0000 0000
+        //      TOWER_CHANGE_INDICATOR  - 0x00F00000 - Tower Change Indicator       0000 0000 1111 0000 0000 0000 0000 0000
+        //      NMEA_TIMEOUT            - 0x01000000 - NMEA Timeout                 0000 0001 0000 0000 0000 0000 0000 0000
+        //      SERVER_TIMEOUT          - 0x02000000 - Server Timeout               0000 0010 0000 0000 0000 0000 0000 0000
+        //      RTCM_TIMEOUT            - 0x04000000 - RTCM Timeout                 0000 0100 0000 0000 0000 0000 0000 0000
+        //      DEVICE_OUT_OF_RANGE     - 0x08000000 - Device Out-of-Range          0000 1000 0000 0000 0000 0000 0000 0000
+        //      CORRECTIONS_UNAVAILABLE - 0x10000000 - Corrections Unavailable      0001 0000 0000 0000 0000 0000 0000 0000
+        //      VERSION                 - 0xC0000000 - Version                      1100 0000 0000 0000 0000 0000 0000 0000
+        static constexpr uint32 MODEM_STATE             = 0x0000000F; // 0000 0000 0000 0000 0000 0000 0000 1111
+        static constexpr uint32 CONNECTION_TYPE         = 0x000000F0; // 0000 0000 0000 0000 0000 0000 1111 0000
+        static constexpr uint32 RSSI                    = 0x0000FF00; // 0000 0000 0000 0000 1111 1111 0000 0000
+        static constexpr uint32 SIGNAL_QUALITY          = 0x000F0000; // 0000 0000 0000 1111 0000 0000 0000 0000
+        static constexpr uint32 TOWER_CHANGE_INDICATOR  = 0x00F00000; // 0000 0000 1111 0000 0000 0000 0000 0000
+        static constexpr uint32 NMEA_TIMEOUT            = 0x01000000; // 0000 0001 0000 0000 0000 0000 0000 0000
+        static constexpr uint32 SERVER_TIMEOUT          = 0x02000000; // 0000 0010 0000 0000 0000 0000 0000 0000
+        static constexpr uint32 RTCM_TIMEOUT            = 0x04000000; // 0000 0100 0000 0000 0000 0000 0000 0000
+        static constexpr uint32 DEVICE_OUT_OF_RANGE     = 0x08000000; // 0000 1000 0000 0000 0000 0000 0000 0000
+        static constexpr uint32 CORRECTIONS_UNAVAILABLE = 0x10000000; // 0001 0000 0000 0000 0000 0000 0000 0000
+        static constexpr uint32 VERSION                 = 0xC0000000; // 1100 0000 0000 0000 0000 0000 0000 0000
+
+        //API Enum: ModemState
+        //  Modem state values
+        //      OFF                         - 0x00 - Off
+        //      NO_NETWORK                  - 0x01 - No Network
+        //      NETWORK_CONNECTED           - 0x02 - Network Connected
+        //      CONFIGURING_DATA_CONTEXT    - 0x03 - Configuring Data Context
+        //      ACTIVATING_DATA_CONTEXT     - 0x04 - Activating Data Context
+        //      CONFIGURING_SOCKET          - 0x05 - Configuring Socket
+        //      WAITING_ON_SERVER_HANDSHAKE - 0x06 - Waiting on Server Handshake
+        //      CONNECTED_AND_IDLE          - 0x07 - Connected + Idle
+        //      CONNECTED_AND_STREAMING     - 0x08 - Connected + Streaming
+        enum ModemState
+        {
+            OFF                         = 0x00, // Off
+            NO_NETWORK                  = 0x01, // No Network
+            NETWORK_CONNECTED           = 0x02, // Network Connected
+            CONFIGURING_DATA_CONTEXT    = 0x03, // Configuring Data Context
+            ACTIVATING_DATA_CONTEXT     = 0x04, // Activating Data Context
+            CONFIGURING_SOCKET          = 0x05, // Configuring Socket
+            WAITING_ON_SERVER_HANDSHAKE = 0x06, // Waiting on Server Handshake
+            CONNECTED_AND_IDLE          = 0x07, // Connected + Idle
+            CONNECTED_AND_STREAMING     = 0x08, // Connected + Streaming
+        };
+
+        //API Enum: ConnectionType
+        //  Connection types
+        //      NO_CONNECTION - 0x00 - No Connection
+        //      CONNECTION_2G - 0x02 - 2G
+        //      CONNECTION_3G - 0x03 - 3G
+        //      CONNECTION_4G - 0x04 - 4G
+        //      CONNECTION_5G - 0x05 - 5G
+        enum ConnectionType
+        {
+            NO_CONNECTION = 0x00,
+            CONNECTION_2G = 0x02,
+            CONNECTION_3G = 0x03,
+            CONNECTION_4G = 0x04,
+            CONNECTION_5G = 0x05,
+        };
+        
+        //Constructor: RTKDeviceStatusFlags
+        RTKDeviceStatusFlags() {}
+
+        //Constructor: RTKDeviceStatusFlags
+        RTKDeviceStatusFlags(const uint32 flags) :
+            Bitfield(static_cast<uint64>(flags))
+        {}
+
+        //Constructor: RTKDeviceStatusFlags
+        RTKDeviceStatusFlags(RTKDeviceStatusFlags_v1 rtk_v1);
+#ifndef SWIG
+        // API Function: explicit conversion from RTKDeviceStatusFlags to RTKDeviceStatusFlags_v1
+        // Only C++ compatible
+        explicit operator RTKDeviceStatusFlags_v1() const;
+#endif
+        //API Function: version
+        uint8 version() const;
+        
+        //API Function: modemState
+        ModemState modemState() const;
+        void modemState(ModemState state);
+
+        //API Function: connectionType
+        ConnectionType connectionType() const;
+        void connectionType(ConnectionType state);
+
+        //API Function: rssi
+        int8 rssi() const;
+        void rssi(uint8 value);
+
+        //API Function: signalQuality
+        uint8 signalQuality() const;
+        void signalQuality(uint8 quality);
+
+        //API Function: towerChangeIndicator
+        uint8 towerChangeIndicator() const;
+        void towerChangeIndicator(uint8 value);
+
+        //API Function: nmeaTimeout
+        uint8 nmeaTimeout() const;
+        void nmeaTimeout(uint8 timeout);
+
+        //API Function: serverTimeout
+        uint8 serverTimeout() const;
+        void serverTimeout(uint8 timeout);
+
+        //API Function: rtcmTimeout
+        uint8 rtcmTimeout() const;
+        void rtcmTimeout(uint8 timeout);
+
+        //API Function: deviceOutOfRange
+        uint8 deviceOutOfRange() const;
+        void deviceOutOfRange(uint8 outOfRange);
+
+        //API Function: correctionsUnavailable
+        uint8 correctionsUnavailable() const;
+        void correctionsUnavailable(uint8 unavailable);
+    };
+    
+    //API Struct: RTKDeviceStatusFlags_v1
+    class RTKDeviceStatusFlags_v1 : public Bitfield
+    {
+    public:
+        //API Constants:
+        //  Bitmasks indicating the bits that define each value
+        //      CONTROLLER_STATE            - 0x00000007 - Controller State         0000 0000 0000 0000 0000 0000 0000 0111
+        //      PLATFORM_STATE              - 0x000000F8 - Platform State           0000 0000 0000 0000 0000 0000 1111 1000
+        //      CONTROLLER_STATUS_CODE      - 0x00000700 - Controller Status Code   0000 0000 0000 0000 0000 0111 0000 0000
+        //      PLATFORM_STATUS_CODE        - 0x00003800 - Platform Status Code     0000 0000 0000 0000 0011 1000 0000 0000
+        //      RESET_REASON                - 0x0000C000 - Reset Reason             0000 0000 0000 0000 1100 0000 0000 0000
+        //      SIGNAL_QUALITY              - 0x000F0000 - Signal Quality           0000 0000 0000 1111 0000 0000 0000 0000
+        //      VERSION                     - 0xC0000000 - Version                  1100 0000 0000 0000 0000 0000 0000 0000
+        static constexpr uint32 CONTROLLER_STATE = 0x00000007; // 0000 0000 0000 0000 0000 0000 0000 0111
+        static constexpr uint32 PLATFORM_STATE = 0x000000F8; // 0000 0000 0000 0000 0000 0000 1111 1000
+        static constexpr uint32 CONTROLLER_STATUS_CODE = 0x00000700; // 0000 0000 0000 0000 0000 0111 0000 0000
+        static constexpr uint32 PLATFORM_STATUS_CODE = 0x00003800; // 0000 0000 0000 0000 0011 1000 0000 0000
+        static constexpr uint32 RESET_REASON = 0x0000C000; // 0000 0000 0000 0000 1100 0000 0000 0000
+        static constexpr uint32 SIGNAL_QUALITY = 0x000F0000; // 0000 0000 0000 1111 0000 0000 0000 0000
+        static constexpr uint32 VERSION = 0xC0000000; // 1100 0000 0000 0000 0000 0000 0000 0000
 
         //API Enum: ControllerState
         //  Controller state values
@@ -2248,8 +2380,8 @@ namespace mscl
         //      ACTIVE          - 0x04 - Active
         enum ControllerState
         {
-            IDLE            = 0x00,
-            ACTIVE          = 0x04,
+            IDLE = 0x00,
+            ACTIVE = 0x04,
         };
 
         //API Enum: PlatformState
@@ -2271,21 +2403,21 @@ namespace mscl
         //      RESET_MODEM                     - 0x0E - Reset Modem
         enum PlatformState
         {
-            MODEM_OFF                       = 0x00,
-            MODEM_POWERING_ON               = 0x01,
-            MODEM_CONFIGURE                 = 0x02,
-            MODEM_POWERING_DOWN             = 0x03,
-            MODEM_READY                     = 0x04,
-            MODEM_CONNECTING                = 0x05,
-            MODEM_DISCONNECTING             = 0x06,
-            MODEM_CONNECTED                 = 0x07,
-            SERVICE_CONNECTING              = 0x08,
-            SERVICE_CONNECTION_FAILED       = 0x09,
-            SERVICE_CONNECTION_CANCELED     = 0x0A,
-            SERVICE_DISCONNECTING           = 0x0B,
-            SERVICE_CONNECTED               = 0x0C,
-            PLATFORM_ERROR                  = 0x0D,
-            RESET_MODEM                     = 0x0E
+            MODEM_OFF = 0x00,
+            MODEM_POWERING_ON = 0x01,
+            MODEM_CONFIGURE = 0x02,
+            MODEM_POWERING_DOWN = 0x03,
+            MODEM_READY = 0x04,
+            MODEM_CONNECTING = 0x05,
+            MODEM_DISCONNECTING = 0x06,
+            MODEM_CONNECTED = 0x07,
+            SERVICE_CONNECTING = 0x08,
+            SERVICE_CONNECTION_FAILED = 0x09,
+            SERVICE_CONNECTION_CANCELED = 0x0A,
+            SERVICE_DISCONNECTING = 0x0B,
+            SERVICE_CONNECTED = 0x0C,
+            PLATFORM_ERROR = 0x0D,
+            RESET_MODEM = 0x0E
         };
 
         //API Enum: ControllerStatusCode
@@ -2297,11 +2429,11 @@ namespace mscl
         //      CONFIG_INVALID  - 0x07 - Invalid Configuration
         enum ControllerStatusCode
         {
-            CONTROLLER_OK   = 0x00,
-            WAITING_NMEA    = 0x01,
-            RTK_TIMEOUT     = 0x02,
+            CONTROLLER_OK = 0x00,
+            WAITING_NMEA = 0x01,
+            RTK_TIMEOUT = 0x02,
             RTK_UNAVAILABLE = 0x03,
-            CONFIG_INVALID  = 0x07
+            CONFIG_INVALID = 0x07
         };
 
         //API Enum: PlatformStatusCode
@@ -2312,12 +2444,12 @@ namespace mscl
         //      MODEM_ERROR             - 0x07 - Modem Error
         enum PlatformStatusCode
         {
-            PLATFORM_OK             = 0x00,
-            RTK_CONNECTION_DROPPED  = 0x04,
+            PLATFORM_OK = 0x00,
+            RTK_CONNECTION_DROPPED = 0x04,
             CELL_CONNECTION_DROPPED = 0x06,
-            MODEM_ERROR             = 0x07
+            MODEM_ERROR = 0x07
         };
-        
+
         //API Enum: ResetReason
         //  Possible RTK reset reason values
         //      POWER_ON                - 0x00 - Reset due to Power-on
@@ -2326,22 +2458,32 @@ namespace mscl
         //      HARDWARE_ERROR_RESET    - 0x03 - Watchdog reset
         enum ResetReason
         {
-            POWER_ON                = 0x00,
-            UNKNOWN                 = 0x01,
-            SOFT_RESET              = 0x02,
-            HARDWARE_ERROR_RESET    = 0x03
+            POWER_ON = 0x00,
+            UNKNOWN = 0x01,
+            SOFT_RESET = 0x02,
+            HARDWARE_ERROR_RESET = 0x03
         };
 
-    public:
-        //Constructor: RTKDeviceStatusFlags
-        RTKDeviceStatusFlags() {};
+        //Constructor: RTKDeviceStatusFlags_v1
+        RTKDeviceStatusFlags_v1() {}
 
-        //Constructor: RTKDeviceStatusFlags
-        RTKDeviceStatusFlags(uint32 flags) :
+        //Constructor: RTKDeviceStatusFlags_v1
+        RTKDeviceStatusFlags_v1(uint32 flags) :
             Bitfield(static_cast<uint64>(flags))
-        {};
+        {}
 
-    public:
+        //Constructor: RTKDeviceStatusFlags_v1
+        RTKDeviceStatusFlags_v1(RTKDeviceStatusFlags rtk) :
+            Bitfield(rtk.value())
+        {}
+#ifndef SWIG
+        // API Function: explicit conversion from RTKDeviceStatusFlags_v1 to RTKDeviceStatusFlags
+        // Only C++ compatible
+        explicit operator RTKDeviceStatusFlags() const;
+#endif
+        //API Function: version
+        uint8 version() const;
+
         //API Function: controllerState
         ControllerState controllerState() const;
         void controllerState(ControllerState state);

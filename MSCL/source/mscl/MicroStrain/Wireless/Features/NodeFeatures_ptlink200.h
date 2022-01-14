@@ -36,6 +36,10 @@ namespace mscl
         virtual bool supportsPoll() const override;
 
         virtual const WirelessTypes::WirelessSampleRates sampleRates(WirelessTypes::SamplingMode samplingMode, WirelessTypes::DataCollectionMethod dataCollectionMethod, WirelessTypes::DataMode dataMode) const override;
+
+        const uint32 minSensorDelay() const override;
+
+        const uint32 defaultSensorDelay() const override;
     };
 }
 

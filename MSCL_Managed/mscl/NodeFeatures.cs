@@ -536,6 +536,12 @@ public class NodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public virtual uint defaultSensorDelay() {
+    uint ret = msclPINVOKE.NodeFeatures_defaultSensorDelay(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public virtual uint maxEventTriggerTotalDuration(WirelessTypes.DataMode dataMode, WirelessTypes.DataFormat dataFormat, ChannelMask rawChannels, DerivedChannelMasks derivedChannelMasks, SampleRate rawSampleRate, SampleRate derivedDataRate) {
     uint ret = msclPINVOKE.NodeFeatures_maxEventTriggerTotalDuration(swigCPtr, (int)dataMode, (int)dataFormat, ChannelMask.getCPtr(rawChannels), DerivedChannelMasks.getCPtr(derivedChannelMasks), SampleRate.getCPtr(rawSampleRate), SampleRate.getCPtr(derivedDataRate));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

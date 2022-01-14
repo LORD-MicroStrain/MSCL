@@ -562,12 +562,12 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeSensorDelay_v1)
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
     BOOST_CHECK_EQUAL(features->minSensorDelay(), 1 * 1000);
-    BOOST_CHECK_EQUAL(features->maxSensorDelay(), 500 * 1000);
+    BOOST_CHECK_EQUAL(features->maxSensorDelay(), 1000 * 1000);
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(0), 0);
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(1 * 1000), 1 * 1000);      //minimum (besides off)
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(500 * 1000), 500 * 1000);  //maximum
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(1), 1 * 1000);             //out of range min
-    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(1000 * 1000), 500 * 1000); //out of range max
+    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(2000 * 1000), 1000 * 1000); //out of range max
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(481541), 482 * 1000);
 }
 
@@ -577,12 +577,12 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeSensorDelay_v2)
     NodeInfo info(Version(1, 0), WirelessModels::node_shmLink, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
-    BOOST_CHECK_EQUAL(features->minSensorDelay(), 1);
-    BOOST_CHECK_EQUAL(features->maxSensorDelay(), 65535);
+    BOOST_CHECK_EQUAL(features->minSensorDelay(), 600);
+    BOOST_CHECK_EQUAL(features->maxSensorDelay(), 65000);
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(0), 0);
-    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(1), 1);            //minimum (besides off)
-    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(65535), 65535);    //maximum
-    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(481), 481);
+    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(600), 600);                //minimum (besides off)
+    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(65000), 65000);            //maximum
+    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(981), 981);
 }
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeSensorDelay_v3)
@@ -592,19 +592,19 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeSensorDelay_v3)
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
     BOOST_CHECK_EQUAL(features->minSensorDelay(), 1 * 1000);
-    BOOST_CHECK_EQUAL(features->maxSensorDelay(), 600000000);
+    BOOST_CHECK_EQUAL(features->maxSensorDelay(), 1000000);
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(0), 0);
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(1 * 1000), 1 * 1000);      //minimum (besides off)
-    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(600000000), 600000000);    //maximum
+    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(1000000), 1000000);        //maximum
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(3), 1 * 1000);             //out of range min
-    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(750004103), 600000000);    //out of range max
+    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(750004103), 1000000);      //out of range max
 
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(500 * 1000), 500 * 1000);  //can go up to 500ms before switching to seconds
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(501 * 1000), 1000000);     //can go up to 500ms before switching to seconds
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(439748), 440 * 1000);
 
-    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(5000001), 6000000);        //seconds (PWUWU)
-    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(700000000), 600000000);     //max of 10 minutes
+    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(900001), 1000000);         //seconds (PWUWU)
+    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(2000000), 1000000);        //max of 1 second
 }
 
 BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeSensorDelay_v4)
@@ -613,12 +613,12 @@ BOOST_AUTO_TEST_CASE(NodeFeatures_normalizeSensorDelay_v4)
     NodeInfo info(Version(11, 0), WirelessModels::node_vLink200, WirelessTypes::region_usa);
     std::unique_ptr<NodeFeatures> features = NodeFeatures::create(info);
 
-    BOOST_CHECK_EQUAL(features->minSensorDelay(), 1);
-    BOOST_CHECK_EQUAL(features->maxSensorDelay(), 600000000);
+    BOOST_CHECK_EQUAL(features->minSensorDelay(), 1000);
+    BOOST_CHECK_EQUAL(features->maxSensorDelay(), 300000000);
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(0), 0);
-    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(1), 1);                    //minimum (besides off)
-    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(600000000), 600000000);    //maximum
-    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(750004103), 600000000);    //out of range max
+    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(1000), 1000);              //minimum (besides off)
+    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(300000000), 300000000);    //maximum
+    BOOST_CHECK_EQUAL(features->normalizeSensorDelay(750004103), 300000000);    //out of range max
 
 
     BOOST_CHECK_EQUAL(features->normalizeSensorDelay(16383), 16383);            //can go up to 16383 microseconds before switching to milliseconds

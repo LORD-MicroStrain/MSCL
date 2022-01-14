@@ -52,5 +52,9 @@ namespace mscl
         virtual bool supportsGaugeResistance() const final;
 
         virtual bool supportsNumActiveGauges() const final;
+
+        const uint32 minSensorDelay() const override;
+
+        const uint32 defaultSensorDelay() const override;
     };
 }
