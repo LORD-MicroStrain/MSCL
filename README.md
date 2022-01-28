@@ -24,7 +24,7 @@ Debian:
   [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v63.1.0/python2-mscl_63.1.0_arm64.deb) |
   [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v63.1.0/python3-mscl_63.1.0_arm64.deb)
   * armhf (Raspbian):
-  [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v663.1.0/c++-mscl_63.1.0_armhf.deb) |
+  [C++](https://github.com/LORD-MicroStrain/MSCL/releases/download/v63.1.0/c++-mscl_63.1.0_armhf.deb) |
   [Python 2](https://github.com/LORD-MicroStrain/MSCL/releases/download/v63.1.0/python2-mscl_63.1.0_armhf.deb) |
   [Python 3](https://github.com/LORD-MicroStrain/MSCL/releases/download/v63.1.0/python3-mscl_63.1.0_armhf.deb)
 
