@@ -365,7 +365,7 @@ namespace mscl
         {
             return false;
         }
-    }
+	}
 
     void MipNode_Impl::resume()
     {
@@ -381,15 +381,6 @@ namespace mscl
         // if combined command supported, use that
         if (features().supportsCommand(MipTypes::Command::CMD_SAVE_STARTUP_SETTINGS))
         {
-            uint64 tempTimeout = timeout();
-
-            //when this goes out of scope, it will write back the original timeout (need cast for overloaded ambiguity)
-            ScopeHelper writebackTimeout(std::bind(static_cast<void(MipNode_Impl::*)(uint64)>(&MipNode_Impl::timeout), this, tempTimeout));
-
-            //change the timeout to a minimum of 2.5s
-            Utils::checkBounds_min(tempTimeout, static_cast<uint64>(2500));
-            timeout(tempTimeout);
-
             DeviceStartupSettings::Response r(m_responseCollector);
             doCommand(r, DeviceStartupSettings::buildCommand_saveAsStartup(), false);
             return;
@@ -425,15 +416,6 @@ namespace mscl
 
     void MipNode_Impl::loadFactoryDefaultSettings()
     {
-        uint64 tempTimeout = timeout();
-
-        //when this goes out of scope, it will write back the original timeout (need cast for overloaded ambiguity)
-        ScopeHelper writebackTimeout(std::bind(static_cast<void(MipNode_Impl::*)(uint64)>(&MipNode_Impl::timeout), this, tempTimeout));
-
-        //change the timeout to a minimum of 1200
-        Utils::checkBounds_min(tempTimeout, static_cast<uint64>(1200));
-        timeout(tempTimeout);
-
         DeviceStartupSettings::Response r(m_responseCollector);
 
         doCommand(r, DeviceStartupSettings::buildCommand_loadDefault(), false);
@@ -2206,6 +2188,15 @@ namespace mscl
             specifier);
         GenericMipCmdResponse response = SendCommand(command);
         return command.getGenericResponseData(response);
+    }
+
+    ByteStream MipNode_Impl::get_RawResponseData(MipTypes::Command cmdId, MipFieldValues specifier) const
+    {
+		MipCommand command = MipCommand(cmdId,
+			MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS,
+			specifier);
+        const GenericMipCmdResponse response = SendCommand(command);
+		return response.data();
     }
 
     void MipNode_Impl::set(MipTypes::Command cmdId, MipFieldValues values)
