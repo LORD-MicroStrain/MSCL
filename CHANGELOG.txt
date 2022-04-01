@@ -14,14 +14,6 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
-64.2.2 - 2022-03-08
-- Reverted defaul MIP command timeout to 250 ms
-- Increased timeout for MipNode::saveSettingsAsStartup() to 2500 ms
-- Increased timeout for MipNode::loadFactoryDefaultSettings() to 1200 ms
-
-64.2.1 - 2022-02-28
-- Increased Mip Node commands default timeout 250ms->500ms
-
 64.2.0 - 2022-02-17
 - Added support for GPIO State (0x0C,0x42)
 

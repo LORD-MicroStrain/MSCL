@@ -77,6 +77,10 @@ namespace mscl
         //  CONFIG_DERIVED_UNIT                 - 54 - Derived Unit
         //  CONFIG_SENSOR_OUTPUT_MODE           - 55 - Sensor Output Mode
         //  CONFIG_LOW_BATTERY_THRESHOLD        - 56 - Low Battery Threshold
+        //  CONFIG_CFC_FILTER                   - 57 - CFC Filter
+        //  CONFIG_GPIO                         - 58 - GPIO Configuration
+        //  CONFIG_GPIO_PIN_FEATURE             - 59 - GPIO Pin Feature
+        //  CONFIG_GPIO_PIN_BEHAVIOR            - 60 - GPIO Pin Behavior
         enum ConfigOption
         {
             CONFIG_SAMPLING_MODE                = 0,
@@ -136,7 +140,10 @@ namespace mscl
             CONFIG_DERIVED_UNIT                 = 54,
             CONFIG_SENSOR_OUTPUT_MODE           = 55,
             CONFIG_LOW_BATTERY_THRESHOLD        = 56,
-            CONFIG_CFC_FILTER                   = 57
+            CONFIG_CFC_FILTER                   = 57,
+            CONFIG_GPIO                         = 58,
+            CONFIG_GPIO_PIN_FEATURE             = 59,
+            CONFIG_GPIO_PIN_BEHAVIOR            = 60
         };
 
         ConfigIssue();    //default constructor

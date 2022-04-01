@@ -884,8 +884,45 @@ namespace mscl
         return data[1].as_bool();
     }
 
-    void InertialNode::setGpioState(uint8 pin, bool state)
+    void InertialNode::setGpioState(uint8 pin, bool state, bool checkConfig)
     {
+        if (checkConfig)
+        {
+            const GpioConfiguration gpioConfig = getGpioConfig(pin);
+            const bool featureGpio = gpioConfig.feature == GpioConfiguration::Feature::GPIO_FEATURE;
+            const bool behaviorOutput = gpioConfig.behavior == GpioConfiguration::GPIO_OUTPUT_HIGH_BEHAVIOR ||
+                gpioConfig.behavior == GpioConfiguration::GPIO_OUTPUT_LOW_BEHAVIOR;
+
+            if (!featureGpio || !behaviorOutput)
+            {
+                ConfigIssues issues;
+                const std::string pinString = "GPIO pin " + Value::UINT8(pin).as_string() + " ";
+
+                // GPIO configuration feature not set to GPIO
+                if (!featureGpio)
+                {
+                    issues.push_back(ConfigIssue(ConfigIssue::CONFIG_GPIO_PIN_FEATURE,
+                        pinString + "configuration feature is not set to GPIO."));
+                }
+
+                // GPIO configuration behavior not set to Output
+                if (!behaviorOutput)
+                {
+                    issues.push_back(ConfigIssue(ConfigIssue::CONFIG_GPIO_PIN_BEHAVIOR,
+                        pinString + "configuration behavior is not set to Output."));
+                }
+
+                // Other GPIO issue
+                if (issues.empty())
+                {
+                    issues.push_back(ConfigIssue(ConfigIssue::CONFIG_GPIO,
+                        pinString + "configuration issues."));
+                }
+
+                throw Error_InvalidConfig(issues);
+            }
+        }
+
         m_impl->set(MipTypes::CMD_GPIO_STATE, {
             Value::UINT8(pin),
             Value::BOOL(state)

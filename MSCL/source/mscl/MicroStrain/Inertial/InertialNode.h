@@ -2026,19 +2026,21 @@ namespace mscl
         //API Function: setGpioState
         //    Sends the GPIO State command (0x0C, 0x42) to temporarily set the state of the specified pin.
         //
-        //    GPIO pin state can only be manually set if the pin <GpioConfiguration::Feature> is GPIO and
-        //    the <GpioConfiguration::GpioBehavior> is Output (low or high).
+        //    Note: GPIO pin state can only be manually set if the pin <GpioConfiguration::Feature> is GPIO
+        //          and the <GpioConfiguration::GpioBehavior> is Output (low or high).
         //
         //Parameter:
         //    pin - The pin to set the state of.
         //    state - The on/off state to set the pin.
+        //    checkConfig - Check the GPIO config to make sure the pin can be set.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void setGpioState(uint8 pin, bool state);
+        //    - <Error_InvalidConfig>: Some configuration settings are invalid.
+        void setGpioState(uint8 pin, bool state, bool checkConfig = true);
 
         //API Function: getAntennaLeverArmCal
         //    Gets the currently configured GNSS antenna lever arm calibration configuration.
