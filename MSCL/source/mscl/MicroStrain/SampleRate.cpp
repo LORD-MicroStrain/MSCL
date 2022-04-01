@@ -197,6 +197,16 @@ namespace mscl
         return SampleUtils::convertFromSampleRate(*this);
     }
 
+    uint16 SampleRate::toDecimation(uint16 sampleRateBase) const
+    {
+        if (m_rateType == SampleRate::rateType_decimation)
+        {
+            return static_cast<uint16>(m_samples);
+        }
+
+        return static_cast<uint16>(sampleRateBase / samplesPerSecond());
+    }
+
     SampleRate SampleRate::Hertz(uint32 samplesPerSecond)
     {
         //check the parameter is within the nanoseconds range

@@ -9,6 +9,7 @@
 #include "mscl/Types.h"
 #include "mscl/MicroStrain/Matrix.h"
 #include "mscl/MicroStrain/Bitfield.h"
+#include "mscl/MicroStrain/SampleRate.h"
 #include "mscl/MicroStrain/MIP/MipTypes.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
 #include <array>
@@ -2803,4 +2804,69 @@ namespace mscl
     //API Typedef: GpioPinOptions
     // A map of uint GPIO pin ID, <GpioFeatureBehaviors> pairs
     typedef std::map<uint8, GpioFeatureBehaviors> GpioPinOptions;
+
+    //API Struct: GpioParameters
+    struct EventActionGpioParameters
+    {
+        //API Enum: Mode
+        //  Modes for behavior of the GPIO pin
+        //      DISABLED      - 0x00
+        //      ACTIVE_HIGH   - 0x01
+        //      ACTIVE_LOW    - 0x02
+        //      ONESHOT_HIGH  - 0x05
+        //      ONESHOW_LOW   - 0x06
+        //      TOGGLE        - 0x07
+        enum Mode
+        {
+            DISABLED = 0x00,
+            ACTIVE_HIGH = 0x01,
+            ACTIVE_LOW = 0x02,
+            ONESHOT_HIGH = 0x05,
+            ONESHOT_LOW = 0x06,
+            TOGGLE = 0x07
+        };
+
+        uint8 pin;
+        Mode mode;
+    };
+
+    //API Struct: MessageParameters
+    struct EventActionMessageParameters
+    {
+        static constexpr uint8 MAX_DESCRIPTORS = 12;
+
+        mscl::MipTypes::DataClass descriptorSet;
+        mscl::SampleRate decimation;
+        uint8 numFields;
+        std::array<mscl::MipTypes::ChannelField, MAX_DESCRIPTORS> descriptors;
+    };
+
+    //API Union: Parameters
+    union EventActionParameters {
+        EventActionGpioParameters gpio;
+        EventActionMessageParameters message;
+
+        EventActionParameters() : message() {}
+    };
+
+    //API Struct: EventActionConfiguration
+    struct EventActionConfiguration
+    {
+        //API Enum: Type
+        //  Types for the event action
+        //      NONE     - 0x00
+        //      GPIO     - 0x01
+        //      MESSAGE  - 0x02
+        enum Type
+        {
+            NONE = 0x00,
+            GPIO = 0x01,
+            MESSAGE = 0x02
+        };
+
+        uint8 instance;
+        uint8 trigger;
+        Type type;
+        EventActionParameters parameters;
+    };
 }

@@ -876,6 +876,72 @@ namespace mscl
         });
     }
 
+    EventActionConfiguration InertialNode::getEventActionConfig(uint8 instance)
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_EVENT_ACTION_CONFIGURATION, {
+            Value::UINT8(instance)    
+        });
+
+        EventActionConfiguration config;
+        config.instance = data[0].as_uint8();
+        config.trigger = data[1].as_uint8();
+        config.type = static_cast<EventActionConfiguration::Type>(data[2].as_uint8());
+
+        switch(config.type)
+        {
+        case EventActionConfiguration::Type::NONE:
+            break;
+        case EventActionConfiguration::Type::GPIO:
+            config.parameters.gpio.pin = data[3].as_uint8();
+            config.parameters.gpio.mode = static_cast<EventActionGpioParameters::Mode>(data[4].as_uint8());
+            break;
+        case EventActionConfiguration::Type::MESSAGE:
+            config.parameters.message.descriptorSet = static_cast<MipTypes::DataClass>(data[3].as_uint8());
+            config.parameters.message.decimation = SampleRate::Decimation(data[4].as_uint16());
+            config.parameters.message.numFields = data[6].as_uint8();
+            for (uint8 i = 0; i < std::min({static_cast<size_t>(config.parameters.message.numFields), config.parameters.message.descriptors.size()}); i++)
+                config.parameters.message.descriptors[i] = static_cast<MipTypes::ChannelField>(Utils::make_uint16(config.parameters.message.descriptorSet, data[7 + i].as_uint8(), Utils::Endianness::bigEndian));
+            break;
+        default:
+            break;
+        }
+
+        return config;
+    }
+
+    void InertialNode::setEventActionConfig(EventActionConfiguration config)
+    {
+        mscl::MipFieldValues mip_values = {
+            Value::UINT8(static_cast<uint8>(config.instance)),
+            Value::UINT8(static_cast<uint8>(config.trigger)),
+            Value::UINT8(static_cast<uint8>(config.type))
+        };
+
+        switch(config.type)
+        {
+        case EventActionConfiguration::Type::NONE:
+            break;
+        case EventActionConfiguration::Type::GPIO:
+        {
+            mip_values.push_back(Value::UINT8(static_cast<uint8>(config.parameters.gpio.pin)));
+            mip_values.push_back(Value::UINT8(static_cast<uint8>(config.parameters.gpio.mode)));
+            break;
+        }
+        case EventActionConfiguration::Type::MESSAGE:
+        {
+            mip_values.push_back(Value::UINT8(static_cast<uint8>(config.parameters.message.descriptorSet)));
+            mip_values.push_back(Value::UINT16(static_cast<uint16>(config.parameters.message.decimation.toDecimation(m_impl->getDataRateBase(config.parameters.message.descriptorSet)))));
+            mip_values.push_back(Value::UINT8(static_cast<uint8>(config.parameters.message.numFields)));
+            for (uint8 i = 0; i < std::min({static_cast<size_t>(config.parameters.message.numFields), config.parameters.message.descriptors.size()}); i++)
+                mip_values.push_back(Value::UINT8(static_cast<uint8>(Utils::lsb(config.parameters.message.descriptors[i]))));
+            break;
+        }
+        default:
+            break;
+        }
+        m_impl->set(MipTypes::CMD_EVENT_ACTION_CONFIGURATION, mip_values);
+    }
+
     bool InertialNode::getGpioState(uint8 pin) const
     {
         MipFieldValues data = m_impl->get(MipTypes::CMD_GPIO_STATE, {

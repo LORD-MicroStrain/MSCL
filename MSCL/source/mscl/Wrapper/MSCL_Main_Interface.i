@@ -3,6 +3,7 @@
 %include "stdint.i"         // SWIG file needed for standard fixed-width types
 %include "std_string.i"     // SWIG file needed for std::string
 %include "std_vector.i"     // SWIG file needed for std::vector
+%include "std_array.i"      // SWIG file needed for std::array
 %include "std_map.i"        // SWIG file needed for std::map
 %include "std_pair.i"       // SWIG file needed for std::pair
 %include "std_shared_ptr.i" // SWIG file needed for std::shared_ptr
@@ -320,8 +321,7 @@ namespace std
     %template(GpioBehaviorModes)                map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>;
     %template(GpioFeatureBehaviors)             map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>;
     %template(GpioPinOptions)                   map<uint8_t, map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>>;
-
-
+    %template(EventDescriptors)                 array<mscl::MipTypes::ChannelField, mscl::EventActionMessageParameters::MAX_DESCRIPTORS>;
 
 #ifndef UNIX_BUILD
     %template(WsdaMap)                  map<string, mscl::WsdaInfo>;

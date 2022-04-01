@@ -2007,6 +2007,35 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setGpioConfig(GpioConfiguration config);
 
+        //API Function: getEventActionConfig
+        //    Gets an event action configuration.
+        //
+        //Parameter:
+        //    instance - the instance number of the event action config to fetch
+        //
+        //Return:
+        //    <EventActionConfiguration> - The event action configuration with the specified instance ID
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        EventActionConfiguration getEventActionConfig(uint8 instance);
+
+        //API Function: setEventActionConfig
+        //    Set the event action configuration.
+        //
+        //Parameter:
+        //    config - the <EventActionConfiguration> to apply.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setEventActionConfig(EventActionConfiguration config);
+
         //API Function: getGpioState
         //    Sends the GPIO State command (0x0C, 0x42) to get the current state of the specified pin.
         //
