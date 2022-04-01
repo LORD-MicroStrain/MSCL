@@ -1,8 +1,8 @@
-/*******************************************************************************
-Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
-
-MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
-*******************************************************************************/
+/*****************************************************************************************
+**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**                                                                                      **
+**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+*****************************************************************************************/
 
 #pragma once
 
@@ -52,6 +52,8 @@ namespace mscl
         //  node_3dm_cl5_25     - 6281 - 3DM-CL5-25
         //  node_3dm_gq7        - 6284 - 3DM-GQ7
         //  node_3dm_rtk        - 6285 - 3DM-RTK
+        //  node_3dm_cv7_ahrs   - 6286 - 3DM-CV7-AHRS
+        //  node_3dm_cv7_ar     - 6287 - 3DM-CV7-AR
         //=========================================================================
         enum NodeModel
         {
@@ -84,7 +86,9 @@ namespace mscl
             node_3dm_cl5_15 = 6280,     //3DM-CL5-15
             node_3dm_cl5_25 = 6281,     //3DM-CL5-25
             node_3dm_gq7 = 6284,     //3DM-GQ7
-            node_3dm_rtk = 6285      //3DM-RTK
+            node_3dm_rtk = 6285,     //3DM-RTK
+            node_3dm_cv7_ahrs = 6286, //3DM-CV7-AHRS
+            node_3dm_cv7_ar   = 6287  //3DM-CV7-AR
         };
 
         //=========================================================================
@@ -145,6 +149,8 @@ namespace mscl
         //  model_3dm_gq7        - 62849999 - 3DM-GQ7
         //  model_3dm_rtk_v1     - 62850000 - 3DM-RTK v1
         //  model_3dm_rtk        - 62850100 - 3DM-RTK
+        //  model_3dm_cv7_ahrs   - 62869999 - 3DM-CV7-AHRS
+        //  model_3dm_cv7_ar     - 62879999 - 3DM-CV7-AR
         //=========================================================================
         enum ModelNumber
         {
@@ -179,6 +185,8 @@ namespace mscl
             model_3dm_gq7        = 62849999, // 3DM-GQ7
             model_3dm_rtk_v1     = 62850000, // 3DM-RTK v1
             model_3dm_rtk        = 62850100, // 3DM-RTK
+            model_3dm_cv7_ahrs   = 62869999, // 3DM-CV7-AHRS
+            model_3dm_cv7_ar     = 62879999, // 3DM-CV7-AR
         };
 
         //API Function: modelNumberEqual
@@ -317,6 +325,8 @@ namespace mscl
         //  mip_model_3dm_gq7        - 62849999 - 3DM-GQ7
         //  mip_model_3dm_rtk_v1     - 62850000 - 3DM-RTK v1
         //  mip_model_3dm_rtk        - 62850100 - 3DM-RTK
+        //  mip_model_3dm_cv7_ahrs   - 62869999 - 3DM-CV7-AHRS
+        //  mip_model_3dm_cv7_ar     - 62879999 - 3DM-CV7-AR
         //=========================================================================
         static const MipModel mip_model_none;           //undefined
         static const MipModel mip_model_3dm_dh3;        //3DM-DH3
@@ -350,6 +360,8 @@ namespace mscl
         static const MipModel mip_model_3dm_gq7;        //3DM-GQ7
         static const MipModel mip_model_3dm_rtk_v1;     //3DM-RTK v1
         static const MipModel mip_model_3dm_rtk;        //3DM-RTK
+        static const MipModel mip_model_3dm_cv7_ahrs;   //3DM-CV7-AHRS
+        static const MipModel mip_model_3dm_cv7_ar;     //3DM-CV7-AR
 
     private:
         MipModel(); // hide default constructor

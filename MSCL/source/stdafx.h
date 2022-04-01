@@ -1,9 +1,8 @@
-/*******************************************************************************
-Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
-
-MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
-*******************************************************************************/
-//precompiled header file
+/*****************************************************************************************
+**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**                                                                                      **
+**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+*****************************************************************************************/
 
 #ifdef _MSC_VER
 #pragma warning( disable : 4100 )                                  //"unreferenced formal parameter"

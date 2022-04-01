@@ -1,8 +1,9 @@
-/*******************************************************************************
-Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
+/*****************************************************************************************
+**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**                                                                                      **
+**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+*****************************************************************************************/
 
-MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
-*******************************************************************************/
 #include "stdafx.h"
 
 #include "AvailableTransmitPowers.h"
@@ -250,6 +251,7 @@ namespace mscl
             case WirelessTypes::region_brazil:
             case WirelessTypes::region_china:
             case WirelessTypes::region_southAfrica:
+            case WirelessTypes::region_indonesia:
             default:
             {
                 //if firmware supports 20dBm
@@ -337,6 +339,7 @@ namespace mscl
             case WirelessTypes::region_brazil:
             case WirelessTypes::region_china:
             case WirelessTypes::region_southAfrica:
+            case WirelessTypes::region_indonesia:
             default:
             {
                 //if firmware supports 20dBm

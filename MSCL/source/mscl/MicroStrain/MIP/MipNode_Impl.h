@@ -1,8 +1,9 @@
-/*******************************************************************************
-Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
+/*****************************************************************************************
+**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**                                                                                      **
+**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+*****************************************************************************************/
 
-MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
-*******************************************************************************/
 #pragma once
 
 #include <memory>
@@ -332,22 +333,22 @@ namespace mscl
         virtual MipCommandSet getConfigCommandBytes() const;
 
         //Function: sendCommandBytes
-        //    Sends the <MipCommandSet> byte strings. The <MipCommandBytes> responseSuccess is updated to indicate success/failure.
+        //    Sends the <MipCommandSet> byte strings. The <MipCommandBytes> sendCmdFailed is updated to indicate success/failure.
         //    Note: Unsupported commands, as indicated by the <MipCommandBytes> id, will not be sent.
         //    Important: if the UART Baud Rate is changed the connection to the port will be automatically closed and re-opened at the new baud rate.
         //
         //Parameters:
-        //    cmds - The <MipCommandSet> of command IDs and bytes. The responseSuccess value of each will be set to true if the sent command does not error.
-        virtual void sendCommandBytes(MipCommandSet& cmds);
+        //    cmds - The <MipCommandSet> of command IDs and bytes. The sendCmdFailed value of each will be set to true if the sent command errors.
+        void sendCommandBytes(MipCommandSet& cmds);
 
         //Function: sendCommandBytes
-        //    Sends the <MipCommandBytes> byte strings. The <MipCommandBytes> responseSuccess is updated to indicate success/failure.
+        //    Sends the <MipCommandBytes> byte strings. The <MipCommandBytes> sendCmdFailed is updated to indicate success/failure.
         //    Note: Unsupported commands, as indicated by the <MipCommandBytes> id, will not be sent.
         //    Important: if the UART Baud Rate is changed the connection to the port will be automatically closed and re-opened at the new baud rate.
         //
         //Parameters:
-        //    cmd - The <MipCommandBytes> to send to the device. The responseSuccess value will be set to true if the sent command does not error.
-        virtual void sendCommandBytes(MipCommandBytes& cmd);
+        //    cmd - The <MipCommandBytes> to send to the device. The sendCmdFailed value will be set to true if the sent command errors.
+        void sendCommandBytes(MipCommandBytes& cmd);
 
     public:
         //Function: ping
@@ -2014,7 +2015,7 @@ private:
        GenericMipCmdResponse SendCommand(MipCommand& command) const;
 
        //Function: processMipCommandBytes
-       //    Sends the <MipCommandBytes> byte strings. The <MipCommandBytes> responseSuccess is updated to indicate success/failure.
+       //    Sends the <MipCommandBytes> byte strings. The <MipCommandBytes> sendCmdFailed is updated to indicate success/failure.
        //    Note: Unsupported commands, as indicated by the <MipCommandBytes> id, will not be sent.
        //    Important: if the UART Baud Rate is changed the connection to the port will be automatically closed and re-opened at the new baud rate.
        void processMipCommandBytes(MipCommandBytes& cmd);

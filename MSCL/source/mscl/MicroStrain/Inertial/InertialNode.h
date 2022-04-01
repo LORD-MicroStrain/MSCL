@@ -1,8 +1,8 @@
-/*******************************************************************************
-Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
-
-MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
-*******************************************************************************/
+/*****************************************************************************************
+**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**                                                                                      **
+**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+*****************************************************************************************/
 
 #pragma once
 
@@ -2006,6 +2006,39 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setGpioConfig(GpioConfiguration config);
+
+        //API Function: getGpioState
+        //    Sends the GPIO State command (0x0C, 0x42) to get the current state of the specified pin.
+        //
+        //Parameter:
+        //    pin - The pin to return the state of.
+        //
+        //Return:
+        //    bool - The current state of the GPIO pin.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        bool getGpioState(uint8 pin) const;
+
+        //API Function: setGpioState
+        //    Sends the GPIO State command (0x0C, 0x42) to temporarily set the state of the specified pin.
+        //
+        //    GPIO pin state can only be manually set if the pin <GpioConfiguration::Feature> is GPIO and
+        //    the <GpioConfiguration::GpioBehavior> is Output (low or high).
+        //
+        //Parameter:
+        //    pin - The pin to set the state of.
+        //    state - The on/off state to set the pin.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setGpioState(uint8 pin, bool state);
 
         //API Function: getAntennaLeverArmCal
         //    Gets the currently configured GNSS antenna lever arm calibration configuration.

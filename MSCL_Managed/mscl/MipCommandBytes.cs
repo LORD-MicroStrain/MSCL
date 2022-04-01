@@ -69,13 +69,25 @@ public class MipCommandBytes : global::System.IDisposable {
     } 
   }
 
-  public bool responseSuccess {
+  public bool buildCmdFailed {
     set {
-      msclPINVOKE.MipCommandBytes_responseSuccess_set(swigCPtr, value);
+      msclPINVOKE.MipCommandBytes_buildCmdFailed_set(swigCPtr, value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      bool ret = msclPINVOKE.MipCommandBytes_responseSuccess_get(swigCPtr);
+      bool ret = msclPINVOKE.MipCommandBytes_buildCmdFailed_get(swigCPtr);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
+  public bool sendCmdFailed {
+    set {
+      msclPINVOKE.MipCommandBytes_sendCmdFailed_set(swigCPtr, value);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      bool ret = msclPINVOKE.MipCommandBytes_sendCmdFailed_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
@@ -100,6 +112,12 @@ public class MipCommandBytes : global::System.IDisposable {
   public void add(Bytes cmd) {
     msclPINVOKE.MipCommandBytes_add(swigCPtr, Bytes.getCPtr(cmd));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public bool valid() {
+    bool ret = msclPINVOKE.MipCommandBytes_valid(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
 }

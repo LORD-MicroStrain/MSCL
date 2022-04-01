@@ -1,8 +1,8 @@
-/*******************************************************************************
-Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
-
-MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
-*******************************************************************************/
+/*****************************************************************************************
+**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**                                                                                      **
+**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+*****************************************************************************************/
 
 #pragma once
 
@@ -185,6 +185,13 @@ namespace mscl
         //Returns:
         //    An AdaptiveFilterLevels object containing all the supported adaptive filtering levels for this node.
         const AdaptiveFilterLevels supportedAdaptiveFilterLevels() const;
+
+        //API Function: supportedAidingMeasurementOptions
+        //    Gets the aiding measurement sources supported by this device.
+        //
+        //Returns:
+        //    A <AidingMeasurementSourceOptions> list containing all the supported options.
+        const AidingMeasurementSourceOptions supportedAidingMeasurementOptions() const;
 
         //API Function: supportedPpsSourceOptions
         //    Gets the PPS source options supported by this device.

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32106.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6774763C-6C1F-42EF-89B8-47D897DA4B94}"
 	ProjectSection(SolutionItems) = preProject
@@ -16,6 +16,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSCL_Managed", "MSCL_Manage
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MSCL_Unit_Tests", "MSCL_Unit_Tests\MSCL_Unit_Tests.vcxproj", "{50B79FA8-35FA-40A4-866C-559719455197}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sample_mscl_cpp", "sample_mscl_cpp\sample_mscl_cpp.vcxproj", "{E56B7B0F-50A0-4C14-995C-2D67B770BD05}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD} = {6E258AAE-2FB3-45C8-AFF2-1350FBBA18BD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -166,6 +171,52 @@ Global
 		{50B79FA8-35FA-40A4-866C-559719455197}.Release(Python)|Win32.ActiveCfg = Release (C++)|Win32
 		{50B79FA8-35FA-40A4-866C-559719455197}.Release(Python)|x64.ActiveCfg = Release (C++)|x64
 		{50B79FA8-35FA-40A4-866C-559719455197}.Release(Python)|x64.Build.0 = Release (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (.NET)|Any CPU.ActiveCfg = Release (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (.NET)|Any CPU.Build.0 = Release (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (.NET)|Mixed Platforms.ActiveCfg = Debug (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (.NET)|Mixed Platforms.Build.0 = Debug (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (.NET)|Win32.ActiveCfg = Debug (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (.NET)|Win32.Build.0 = Debug (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (.NET)|x64.ActiveCfg = Debug (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (.NET)|x64.Build.0 = Debug (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (C++)|Any CPU.ActiveCfg = Debug (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (C++)|Mixed Platforms.ActiveCfg = Debug (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (C++)|Mixed Platforms.Build.0 = Debug (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (C++)|Win32.ActiveCfg = Debug (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (C++)|Win32.Build.0 = Debug (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (C++)|x64.ActiveCfg = Debug (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (C++)|x64.Build.0 = Debug (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (.NET)|Any CPU.ActiveCfg = Release (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (.NET)|Any CPU.Build.0 = Release (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (.NET)|Mixed Platforms.ActiveCfg = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (.NET)|Mixed Platforms.Build.0 = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (.NET)|Win32.ActiveCfg = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (.NET)|Win32.Build.0 = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (.NET)|x64.ActiveCfg = Release (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (.NET)|x64.Build.0 = Release (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (C++)|Any CPU.ActiveCfg = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (C++)|Mixed Platforms.ActiveCfg = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (C++)|Mixed Platforms.Build.0 = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (C++)|Win32.ActiveCfg = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (C++)|Win32.Build.0 = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (C++)|x64.ActiveCfg = Release (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (C++)|x64.Build.0 = Release (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (Java)|Any CPU.ActiveCfg = Release (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (Java)|Any CPU.Build.0 = Release (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (Java)|Mixed Platforms.ActiveCfg = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (Java)|Mixed Platforms.Build.0 = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (Java)|Win32.ActiveCfg = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (Java)|Win32.Build.0 = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (Java)|x64.ActiveCfg = Release (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (Java)|x64.Build.0 = Release (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release(Python)|Any CPU.ActiveCfg = Release (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release(Python)|Any CPU.Build.0 = Release (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release(Python)|Mixed Platforms.ActiveCfg = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release(Python)|Mixed Platforms.Build.0 = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release(Python)|Win32.ActiveCfg = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release(Python)|Win32.Build.0 = Release (C++)|Win32
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release(Python)|x64.ActiveCfg = Release (C++)|x64
+		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release(Python)|x64.Build.0 = Release (C++)|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

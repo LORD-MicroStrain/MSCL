@@ -1932,5 +1932,6 @@
       <Filter>_Wrapper</Filter>
     </None>
     <None Include="ClassDiagram.cd" />
+    <None Include="MSCL.licenseheader" />
   </ItemGroup>
 </Project>

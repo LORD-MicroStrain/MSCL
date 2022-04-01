@@ -1,44 +1,8 @@
-/*******************************************************************************
-Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
-
-MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
-*******************************************************************************/
-/*
- * Endianness.h
- *
- * Helper functions to convert between endianness.
- *
- * !!! Note !!!
- * Benchmarking two methods for byte swapping: binary shifting vs std::swap
- *
- * Hypothesis:
- * Binary shifting is faster than std::swap
- *
- * Method:
- * Run both methods simultaneously in different threads.  Use a condition to start both threads
- * and a reference to a boolean to stop them.  Run for 60 sec, counting the number of times the
- * method was able to run. Each iteration the method would byte-swap 0x0123456789ABCDEFull.
- *
- * Test 1: Run on Gumstix Verdex Pro Marvell pxa270 600 MHz (g++ 4.3.3)
- * Trial 1: std::swap 14673040, shift 20183977
- * Trial 2: std::swap 17438625, shift 23938981
- * Trial 3: std::swap 14781441, shift 20304302
- *
- * Test 2: Run on Intel Core 2 Duo 6600 2.4 GHz x 2 (g++ 4.6.3)
- * Trial 1: std::swap 425702346, shift 214479561
- * Trial 2: std::swap 445304733, shift 198929287
- * Trial 3: std::swap 444895078, shift 201440733
- *
- * Conclusion:
- * Shift is only marginally faster on gumstix, but std::swap is consistently over twice as fast
- * on an x86 CPU.  The likely cause of the difference is that the Intel chip has much more
- * sophisticated branch prediction and dma facilities.  Std::swap should be used for byte-
- * swapping as it will likely be faster on future platforms.
- *
- *  Created on: Jan 18, 2012
- *      Author: j_herbst
- *     Edited on: Sept 26, 2013 by r_stoneback
- */
+/*****************************************************************************************
+**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**                                                                                      **
+**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+*****************************************************************************************/
 
 #pragma once
 

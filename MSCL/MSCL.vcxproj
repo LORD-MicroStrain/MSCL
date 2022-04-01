@@ -1378,6 +1378,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="MSCL.licenseheader" />
     <None Include="source\mscl\Wrapper\MSCL_Exceptions.i" />
     <None Include="source\mscl\Wrapper\MSCL_Main_Interface.i" />
   </ItemGroup>

@@ -43,9 +43,9 @@ public class ChannelMask : global::System.IDisposable {
       }
     }
   }
- 
+
     public override bool Equals(object obj){ChannelMask other = obj as ChannelMask; return this.__eq__(other);}
-    public override int GetHashCode(){ return (int)(toMask()); } 
+    public override int GetHashCode(){ return (int)(toMask()); }
     public static bool operator<(ChannelMask v1, ChannelMask v2) { return v1.__lt__(v2); }
     public static bool operator>(ChannelMask v1, ChannelMask v2) { return v1.__gt__(v2); }
 

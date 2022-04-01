@@ -43,13 +43,13 @@ public class Version : global::System.IDisposable {
       }
     }
   }
- 
+
     public override bool Equals(object obj){Version other = obj as Version; return this.__eq__(other);}
     public override int GetHashCode(){ return (int)(majorPart() ^ minorPart() ^ patchPart()); }
-    public static bool operator<(Version v1, Version v2){return v1.__lt__(v2);} 
-    public static bool operator<=(Version v1, Version v2){return v1.__le__(v2);} 
-    public static bool operator>(Version v1, Version v2){return v1.__gt__(v2);} 
-    public static bool operator>=(Version v1, Version v2){return v1.__ge__(v2);} 
+    public static bool operator<(Version v1, Version v2){return v1.__lt__(v2);}
+    public static bool operator<=(Version v1, Version v2){return v1.__le__(v2);}
+    public static bool operator>(Version v1, Version v2){return v1.__gt__(v2);}
+    public static bool operator>=(Version v1, Version v2){return v1.__ge__(v2);}
 
   public Version() : this(msclPINVOKE.new_Version__SWIG_0(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

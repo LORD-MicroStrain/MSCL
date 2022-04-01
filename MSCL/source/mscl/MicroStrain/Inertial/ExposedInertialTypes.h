@@ -1,3 +1,9 @@
+/*****************************************************************************************
+**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**                                                                                      **
+**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+*****************************************************************************************/
+
 #pragma once
 
 #include "mscl/Types.h"
@@ -666,6 +672,10 @@ namespace mscl
     //API Typedef: PpsSourceOptions
     //  A vector of <InertialTypes::PpsSource> values
     typedef std::vector<InertialTypes::PpsSource> PpsSourceOptions;
+
+    //API Typedef: AidingMeasurementSourceOptions
+    //  A vector of <InertialTypes::AidingMeasurementSource> values
+    typedef std::vector<InertialTypes::AidingMeasurementSource> AidingMeasurementSourceOptions;
 
     ///////////////  Matrix_3x3  ///////////////
 

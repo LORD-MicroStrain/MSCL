@@ -1,8 +1,8 @@
-/*******************************************************************************
-Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
-
-MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
-*******************************************************************************/
+/*****************************************************************************************
+**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**                                                                                      **
+**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+*****************************************************************************************/
 
 #pragma once
 
@@ -856,6 +856,7 @@ namespace mscl
         //  region_singapore            - 7
         //  region_canada               - 8
         //  region_southAfrica          - 9
+        //  region_indonesia            - 10
         enum RegionCode
         {
             region_usa                  = 0,
@@ -867,7 +868,8 @@ namespace mscl
             region_australia_newzealand = 6,
             region_singapore            = 7,
             region_canada               = 8,
-            region_southAfrica          = 9
+            region_southAfrica          = 9,
+            region_indonesia            = 10
         };
 
         //API Enum: ChannelGroupSetting

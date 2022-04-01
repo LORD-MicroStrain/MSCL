@@ -74,6 +74,7 @@
     <Compile Include="mscl\AdaptiveMeasurementModes.cs" />
     <Compile Include="mscl\AdvancedLowPassFilterConfig.cs" />
     <Compile Include="mscl\AdvancedLowPassFilterData.cs" />
+    <Compile Include="mscl\AidingMeasurementSourceOptions.cs" />
     <Compile Include="mscl\AntennaLeverArmCalConfiguration.cs" />
     <Compile Include="mscl\ArmedDataloggingNetwork.cs" />
     <Compile Include="mscl\AutoAdaptiveFilterOptions.cs" />

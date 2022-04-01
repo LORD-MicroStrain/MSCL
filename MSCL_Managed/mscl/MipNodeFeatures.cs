@@ -134,6 +134,12 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public AidingMeasurementSourceOptions supportedAidingMeasurementOptions() {
+    AidingMeasurementSourceOptions ret = new AidingMeasurementSourceOptions(msclPINVOKE.MipNodeFeatures_supportedAidingMeasurementOptions(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public PpsSourceOptions supportedPpsSourceOptions() {
     PpsSourceOptions ret = new PpsSourceOptions(msclPINVOKE.MipNodeFeatures_supportedPpsSourceOptions(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

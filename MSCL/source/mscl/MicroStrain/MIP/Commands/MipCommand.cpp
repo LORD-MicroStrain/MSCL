@@ -1,3 +1,9 @@
+/*****************************************************************************************
+**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**                                                                                      **
+**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+*****************************************************************************************/
+
 #include "stdafx.h"
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "MipCommand.h"
@@ -94,6 +100,15 @@ namespace mscl
         case MipTypes::CMD_GNSS_RECEIVER_INFO:
             return {};
 
+        /****   Read, Write     ****/
+        // 0x0C
+        case MipTypes::CMD_GPIO_STATE:
+            return{
+                MipTypes::FunctionSelector::USE_NEW_SETTINGS,
+                MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS
+            };
+
+        /****   Read, Write, Save, Load, Default    ****/
         // 0x01
         case MipTypes::CMD_COMM_PORT_SPEED:
         // 0x0C
@@ -199,10 +214,10 @@ namespace mscl
             return "SensorToVehicleFrameTransformationDCM";
         case MipTypes::CMD_PPS_SOURCE:
             return "PpsSource";
-        //case MipTypes::CMD_PPS_OUTPUT:
-        //    return "PpsOutput";
         case MipTypes::CMD_GPIO_CONFIGURATION:
             return "GpioConfiguration";
+        case MipTypes::CMD_GPIO_STATE:
+            return "GpioState";
         case MipTypes::CMD_ODOMETER_SETTINGS:
             return "OdometerSettings";
         // 0x0D
@@ -266,6 +281,7 @@ namespace mscl
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT: //0xB2
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM: //0xB3
         case MipTypes::CMD_GPIO_CONFIGURATION: //0xC1
+        case MipTypes::CMD_GPIO_STATE: //0xC2
         case MipTypes::CMD_ODOMETER_SETTINGS: //0xC3
         case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE: //0xD0
         // 0x0D
@@ -345,6 +361,12 @@ namespace mscl
                 ValueType::valueType_int8,
                 ValueType::valueType_int8,
                 ValueType::valueType_int8
+            };
+
+        case MipTypes::CMD_GPIO_STATE:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_bool
             };
 
 

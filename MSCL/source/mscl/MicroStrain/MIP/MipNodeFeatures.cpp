@@ -1,8 +1,9 @@
-/*******************************************************************************
-Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
+/*****************************************************************************************
+**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**                                                                                      **
+**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+*****************************************************************************************/
 
-MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
-*******************************************************************************/
 #include "stdafx.h"
 
 #include <functional>
@@ -454,6 +455,8 @@ namespace mscl
             };
 
         case MipModels::node_3dm_gq7:
+        case MipModels::node_3dm_cv7_ahrs:
+        case MipModels::node_3dm_cv7_ar:
         default:
             return{
                 InertialTypes::AutoAdaptiveFilteringLevel::FILTERING_OFF,
@@ -464,6 +467,36 @@ namespace mscl
         }
     }
 
+    const AidingMeasurementSourceOptions MipNodeFeatures::supportedAidingMeasurementOptions() const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_AIDING_MEASUREMENT_ENABLE))
+        {
+            return{ AidingMeasurementSourceOptions(0) };
+        }
+
+        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+
+        switch(model.baseModel().nodeModel())
+        {
+            case MipModels::node_3dm_cv7_ahrs:
+            case MipModels::node_3dm_cv7_ar:
+                return {
+                    InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
+                };
+
+            default:
+                return {
+                    InertialTypes::AidingMeasurementSource::GNSS_POS_VEL_AIDING,
+                    InertialTypes::AidingMeasurementSource::GNSS_HEADING_AIDING,
+                    InertialTypes::AidingMeasurementSource::ALTIMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::ODOMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
+                };
+        }
+    }
+
     const PpsSourceOptions MipNodeFeatures::supportedPpsSourceOptions() const
     {
         if (!supportsCommand(mscl::MipTypes::Command::CMD_PPS_SOURCE))
@@ -471,13 +504,26 @@ namespace mscl
             return{ PpsSourceOptions(0) };
         }
 
-        return{
-            InertialTypes::PpsSource::PPS_DISABLED,
-            InertialTypes::PpsSource::PPS_RECEIVER_1,
-            InertialTypes::PpsSource::PPS_RECEIVER_2,
-            InertialTypes::PpsSource::PPS_GPIO,
-            InertialTypes::PpsSource::PPS_GENERATED
-        };
+        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ahrs:
+        case MipModels::node_3dm_cv7_ar:
+            return{
+                InertialTypes::PpsSource::PPS_DISABLED,
+                InertialTypes::PpsSource::PPS_GPIO,
+                InertialTypes::PpsSource::PPS_GENERATED
+            };
+
+        default:
+            return{
+                InertialTypes::PpsSource::PPS_DISABLED,
+                InertialTypes::PpsSource::PPS_RECEIVER_1,
+                InertialTypes::PpsSource::PPS_RECEIVER_2,
+                InertialTypes::PpsSource::PPS_GPIO,
+                InertialTypes::PpsSource::PPS_GENERATED
+            };
+        }
     }
 
     const GpioPinModeOptions MipNodeFeatures::supportedGpioPinModes(GpioConfiguration::Feature feature, uint8 behavior) const

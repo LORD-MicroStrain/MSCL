@@ -126,7 +126,9 @@ public class MipModels : global::System.IDisposable {
     node_3dm_cl5_15 = 6280,
     node_3dm_cl5_25 = 6281,
     node_3dm_gq7 = 6284,
-    node_3dm_rtk = 6285
+    node_3dm_rtk = 6285,
+    node_3dm_cv7_ahrs = 6286,
+    node_3dm_cv7_ar = 6287
   }
 
   public enum Modifier {
@@ -166,7 +168,9 @@ public class MipModels : global::System.IDisposable {
     model_3dm_cl5_25 = 62819999,
     model_3dm_gq7 = 62849999,
     model_3dm_rtk_v1 = 62850000,
-    model_3dm_rtk = 62850100
+    model_3dm_rtk = 62850100,
+    model_3dm_cv7_ahrs = 62869999,
+    model_3dm_cv7_ar = 62879999
   }
 
 }

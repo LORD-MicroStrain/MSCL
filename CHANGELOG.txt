@@ -14,10 +14,34 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
+64.2.2 - 2022-03-08
+- Reverted defaul MIP command timeout to 250 ms
+- Increased timeout for MipNode::saveSettingsAsStartup() to 2500 ms
+- Increased timeout for MipNode::loadFactoryDefaultSettings() to 1200 ms
+
+64.2.1 - 2022-02-28
+- Increased Mip Node commands default timeout 250ms->500ms
+
+64.2.0 - 2022-02-17
+- Added support for GPIO State (0x0C,0x42)
+
+64.0.1 - 2022-02-15
+- Added Indonesia region code for wireless devices
+
+64.0.0 - 2022-01-28
+- RENAMED and inverted MipTypes::MipCommandBytes::responseSuccess to sendCmdFailed
+- Changed MipNode::getConfigCommandBytes() to catch exceptions thrown when reading settings from the device, instead buildCmdFailed is set to true for the corresponding entry in the returned MipCommandSet
+
+63.2.0 - 2022-01-28
+- Added aiding measurement filter supported check
+
+63.1.1 - 2022-01-20
+- Add model information for 3DM-CV7-AHRS (6286) and 3DM-CV7-AR (6287)
+
 63.1.0 - 2022-01-13
 - Added RTK (v2) 6285-0100 bitfield status support and set as default
 - Updated RTK (v1) 6285-0000 bitfield status to have _v1 suffix
-
+	
 63.0.1 - 2022-01-06
 - Increase default readWriteRetries for BaseStation and WirelessNode objects from 0
     - BaseStation default: 2

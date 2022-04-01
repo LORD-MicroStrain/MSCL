@@ -1,8 +1,9 @@
-/*******************************************************************************
-Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
+/*****************************************************************************************
+**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**                                                                                      **
+**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+*****************************************************************************************/
 
-MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
-*******************************************************************************/
 #include "stdafx.h"
 #include "InertialNode.h"
 
@@ -873,6 +874,22 @@ namespace mscl
             Value::INT8(static_cast<uint8>(config.behavior)),
             Value::INT8(static_cast<uint8>(config.pinModeValue()))
         });
+    }
+
+    bool InertialNode::getGpioState(uint8 pin) const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_GPIO_STATE, {
+            Value::UINT8(pin) });
+
+        return data[1].as_bool();
+    }
+
+    void InertialNode::setGpioState(uint8 pin, bool state)
+    {
+        m_impl->set(MipTypes::CMD_GPIO_STATE, {
+            Value::UINT8(pin),
+            Value::BOOL(state)
+            });
     }
 
     AntennaLeverArmCalConfiguration InertialNode::getAntennaLeverArmCal() const

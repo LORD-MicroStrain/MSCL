@@ -1,8 +1,9 @@
-/*******************************************************************************
-Copyright(c) 2015-2021 Parker Hannifin Corp. All rights reserved.
+/*****************************************************************************************
+**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**                                                                                      **
+**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+*****************************************************************************************/
 
-MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
-*******************************************************************************/
 #include "stdafx.h"
 
 #include "MipModels.h"
@@ -157,6 +158,8 @@ namespace mscl
     const MipModel MipModel::mip_model_3dm_gq7(MipModels::ModelNumber::model_3dm_gq7);        //3DM-GQ7
     const MipModel MipModel::mip_model_3dm_rtk_v1(MipModels::ModelNumber::model_3dm_rtk_v1);     //3DM-RTK v1
     const MipModel MipModel::mip_model_3dm_rtk(MipModels::ModelNumber::model_3dm_rtk);        //3DM-RTK
+    const MipModel MipModel::mip_model_3dm_cv7_ahrs(MipModels::ModelNumber::model_3dm_cv7_ahrs);        //3DM-CV7-AHRS
+    const MipModel MipModel::mip_model_3dm_cv7_ar(MipModels::ModelNumber::model_3dm_cv7_ar);        //3DM-CV7-AR
 
     MipModel::MipModel() :
         m_modelStr(""),

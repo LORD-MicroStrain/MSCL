@@ -874,6 +874,17 @@ public class InertialNode : MipNode {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public bool getGpioState(byte pin) {
+    bool ret = msclPINVOKE.InertialNode_getGpioState(swigCPtr, pin);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setGpioState(byte pin, bool state) {
+    msclPINVOKE.InertialNode_setGpioState(swigCPtr, pin, state);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public AntennaLeverArmCalConfiguration getAntennaLeverArmCal() {
     AntennaLeverArmCalConfiguration ret = new AntennaLeverArmCalConfiguration(msclPINVOKE.InertialNode_getAntennaLeverArmCal(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
