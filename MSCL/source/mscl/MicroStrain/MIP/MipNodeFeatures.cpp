@@ -644,4 +644,14 @@ namespace mscl
             { 4, pin4Features }
         };
     }
+
+    const EventSupportInfo MipNodeFeatures::getEventActionInfo() const
+    {
+		return m_nodeInfo.eventActionInfo();
+    }
+
+    const EventSupportInfo MipNodeFeatures::getEventTriggerInfo() const
+    {
+		return m_nodeInfo.eventTriggerInfo();
+    }
 }

@@ -124,6 +124,7 @@ namespace mscl
         //  CMD_GNSS_ASSIST_FIX_CONTROL                 - 0x0C23    - GNSS Assisted Fix Control
         //  CMD_GNSS_ASSIST_TIME_UPDATE                 - 0x0C24    - GNSS Assisted Time Update
         //  CMD_PPS_SOURCE                              - 0x0C28    - PPS Source
+        //  CMD_EVENT_SUPPORT                           - 0x0C2A    - Event Support
         //  CMD_SAVE_STARTUP_SETTINGS                   - 0x0C30    - Device Startup Settings
         //  CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER     - 0x0C31    - Sensor to Vehicle Frame Transformation Euler Angles
         //  CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT      - 0x0C32    - Sensor to Vehicle Frame Transformation Quaternion
@@ -245,6 +246,7 @@ namespace mscl
             CMD_GNSS_ASSIST_FIX_CONTROL             = 0x0C23,
             CMD_GNSS_ASSIST_TIME_UPDATE             = 0x0C24,
             CMD_PPS_SOURCE                          = 0x0C28,
+            CMD_EVENT_SUPPORT                       = 0x0C2A,
             CMD_SAVE_STARTUP_SETTINGS               = 0x0C30,
             CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER = 0x0C31,
             CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT  = 0x0C32,
@@ -1670,4 +1672,46 @@ namespace mscl
     };
 
     typedef std::vector<DeviceCommPort> CommPortInfo;
+
+    //API Struct: EventTypeInfo
+    //  Information about event trigger or action types
+    struct EventTypeInfo
+    {
+		EventTypeInfo(const uint8 type, const uint8 maxInstances) :
+            type(type),
+            maxInstances(maxInstances)
+        { }
+
+		// Trigger or action type
+		uint8 type;
+		// Maximum supported instances for the type
+		uint8 maxInstances;
+    };
+
+    //API Typedef: EventSupportInfo
+    //  A vector of <EventTypeInfo>
+	typedef std::vector<EventTypeInfo> EventTypes;
+
+	//API Struct EventSupportInfo
+	struct EventSupportInfo
+	{
+		//API Enum: Query
+		// What type of information to retrieve
+		//      TRIGGERS  - 0x01 - Query the supported trigger types and max count for each
+		//      ACTIONS   - 0x02 - Query the supported action types and max count for each
+		enum Query
+		{
+			TRIGGERS = 0x01,
+			ACTIONS  = 0x02
+		};
+
+		// Type of information 
+		Query query;
+
+        // Maximum number of supported triggers/actions
+		uint8 maxInstances;
+
+        // Event info
+		EventTypes entries;
+	};
 }
