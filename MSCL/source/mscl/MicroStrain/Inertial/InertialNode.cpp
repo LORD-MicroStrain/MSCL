@@ -892,6 +892,22 @@ namespace mscl
             });
     }
 
+    EventControlMode InertialNode::getEventControl(const uint8 instance) const
+    {
+		const MipFieldValues data = m_impl->get(MipTypes::CMD_EVENT_CONTROL, {
+			Value::UINT8(instance) });
+
+		return static_cast<EventControlMode>(data[1].as_uint8());
+    }
+
+    void InertialNode::setEventControl(const uint8 instance, const EventControlMode mode) const
+    {
+		m_impl->set(MipTypes::CMD_EVENT_CONTROL, {
+			Value::UINT8(instance),
+			Value::UINT8(static_cast<uint8>(mode))
+		});
+    }
+
     AntennaLeverArmCalConfiguration InertialNode::getAntennaLeverArmCal() const
     {
         MipFieldValues data = m_impl->get(MipTypes::CMD_EF_GNSS_ANTENNA_LEVER_ARM_CAL);
