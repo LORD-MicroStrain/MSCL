@@ -365,7 +365,7 @@ namespace mscl
         {
             return false;
         }
-	}
+    }
 
     void MipNode_Impl::resume()
     {
@@ -2192,11 +2192,11 @@ namespace mscl
 
     ByteStream MipNode_Impl::get_RawResponseData(MipTypes::Command cmdId, MipFieldValues specifier) const
     {
-		MipCommand command = MipCommand(cmdId,
-			MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS,
-			specifier);
+        MipCommand command = MipCommand(cmdId,
+            MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS,
+            specifier);
         const GenericMipCmdResponse response = SendCommand(command);
-		return response.data();
+        return response.data();
     }
 
     void MipNode_Impl::set(MipTypes::Command cmdId, MipFieldValues values)
