@@ -102,9 +102,9 @@ namespace mscl
 
         /****   Read, Write     ****/
         // 0x0C
-		case MipTypes::CMD_EVENT_CONTROL:
+        case MipTypes::CMD_EVENT_CONTROL:
         case MipTypes::CMD_GPIO_STATE:
-            return{
+            return {
                 MipTypes::FunctionSelector::USE_NEW_SETTINGS,
                 MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS
             };
@@ -215,8 +215,8 @@ namespace mscl
             return "SensorToVehicleFrameTransformationDCM";
         case MipTypes::CMD_PPS_SOURCE:
             return "PpsSource";
-		case MipTypes::CMD_EVENT_CONTROL:
-			return "EventControl";
+        case MipTypes::CMD_EVENT_CONTROL:
+            return "EventControl";
         case MipTypes::CMD_GPIO_CONFIGURATION:
             return "GpioConfiguration";
         case MipTypes::CMD_GPIO_STATE:
@@ -268,8 +268,8 @@ namespace mscl
         // 0x0C
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
             return 0x85;
-		case MipTypes::CMD_EVENT_CONTROL:
-			return 0xB5;
+        case MipTypes::CMD_EVENT_CONTROL:
+            return 0xB5;
         // 0x0D
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
             return 0xBE;
