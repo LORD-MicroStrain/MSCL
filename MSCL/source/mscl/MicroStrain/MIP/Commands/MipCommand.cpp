@@ -352,6 +352,14 @@ namespace mscl
         case MipTypes::CMD_PPS_SOURCE:
             return{ ValueType::valueType_uint8 };
 
+        case MipTypes::CMD_EVENT_SUPPORT:
+            return {
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint8,
+                ValueType::valueType_Vector,
+			};
+
         case MipTypes::CMD_ODOMETER_SETTINGS:
             return{
                 ValueType::valueType_uint8, // mode
@@ -502,6 +510,12 @@ namespace mscl
             return{
                 ValueType::valueType_uint8,
                 ValueType::valueType_uint16
+            };
+
+        case MipTypes::CMD_EVENT_SUPPORT:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint8
             };
 
         case MipTypes::CMD_GNSS_RECEIVER_INFO:
