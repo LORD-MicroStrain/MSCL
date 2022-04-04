@@ -215,7 +215,7 @@ namespace mscl
         case MipTypes::CMD_PPS_SOURCE:
             return "PpsSource";
         case MipTypes::CMD_EVENT_SUPPORT:
-			return "EventSupport";
+            return "EventSupport";
         case MipTypes::CMD_GPIO_CONFIGURATION:
             return "GpioConfiguration";
         case MipTypes::CMD_GPIO_STATE:

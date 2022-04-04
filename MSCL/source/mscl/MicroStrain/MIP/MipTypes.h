@@ -1677,41 +1677,41 @@ namespace mscl
     //  Information about event trigger or action types
     struct EventTypeInfo
     {
-		EventTypeInfo(const uint8 type, const uint8 maxInstances) :
+        EventTypeInfo(const uint8 type, const uint8 maxInstances) :
             type(type),
             maxInstances(maxInstances)
         { }
 
-		// Trigger or action type
-		uint8 type;
-		// Maximum supported instances for the type
-		uint8 maxInstances;
+        // Trigger or action type
+        uint8 type;
+        // Maximum supported instances for the type
+        uint8 maxInstances;
     };
 
     //API Typedef: EventSupportInfo
     //  A vector of <EventTypeInfo>
-	typedef std::vector<EventTypeInfo> EventTypes;
+    typedef std::vector<EventTypeInfo> EventTypes;
 
-	//API Struct EventSupportInfo
-	struct EventSupportInfo
-	{
-		//API Enum: Query
-		// What type of information to retrieve
-		//      TRIGGERS  - 0x01 - Query the supported trigger types and max count for each
-		//      ACTIONS   - 0x02 - Query the supported action types and max count for each
-		enum Query
-		{
-			TRIGGERS = 0x01,
-			ACTIONS  = 0x02
-		};
+    //API Struct EventSupportInfo
+    struct EventSupportInfo
+    {
+        //API Enum: Query
+        // What type of information to retrieve
+        //      TRIGGERS  - 0x01 - Query the supported trigger types and max count for each
+        //      ACTIONS   - 0x02 - Query the supported action types and max count for each
+        enum Query
+        {
+            TRIGGERS = 0x01,
+            ACTIONS  = 0x02
+        };
 
-		// Type of information 
-		Query query;
+        // Type of information 
+        Query query;
 
         // Maximum number of supported triggers/actions
-		uint8 maxInstances;
+        uint8 maxInstances;
 
         // Event info
-		EventTypes entries;
-	};
+        EventTypes entries;
+    };
 }

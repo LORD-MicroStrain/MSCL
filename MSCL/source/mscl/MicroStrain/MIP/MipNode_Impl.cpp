@@ -2191,28 +2191,28 @@ namespace mscl
         return r.parseResponse(doCommand(r, ActivationCode::buildCommand_get()));
     }
 
-	EventSupportInfo MipNode_Impl::getEventInfo(const EventSupportInfo::Query query) const
-	{
+    EventSupportInfo MipNode_Impl::getEventInfo(const EventSupportInfo::Query query) const
+    {
         const MipFieldValues response = get(MipTypes::Command::CMD_EVENT_SUPPORT,
                     { Value::UINT8(static_cast<uint8>(query)) }
-		);
+        );
 
-		EventSupportInfo info{};
+        EventSupportInfo info{};
 
-		info.query = static_cast<EventSupportInfo::Query>(response[0].as_int8());
-		info.maxInstances = response[1].as_int8();
+        info.query = static_cast<EventSupportInfo::Query>(response[0].as_int8());
+        info.maxInstances = response[1].as_int8();
 
-		const uint8 count = response[2].as_int8();
-		for (uint8 entryNumber = 0; entryNumber < count; entryNumber++)
-		{
+        const uint8 count = response[2].as_int8();
+        for (uint8 entryNumber = 0; entryNumber < count; entryNumber++)
+        {
             const uint8 index = entryNumber * 2 + 3; // two values per element, first value count
-			info.entries.push_back(
-				EventTypeInfo(response[index].as_int8(), response[index + 1].as_int8())
-			);
-		}
+            info.entries.push_back(
+                EventTypeInfo(response[index].as_int8(), response[index + 1].as_int8())
+            );
+        }
 
-		return info;
-	}
+        return info;
+    }
 
     MipFieldValues MipNode_Impl::get(MipTypes::Command cmdId) const
     {

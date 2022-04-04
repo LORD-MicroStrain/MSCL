@@ -647,11 +647,11 @@ namespace mscl
 
     const EventSupportInfo MipNodeFeatures::getEventActionInfo() const
     {
-		return m_nodeInfo.eventActionInfo();
+        return m_nodeInfo.eventActionInfo();
     }
 
     const EventSupportInfo MipNodeFeatures::getEventTriggerInfo() const
     {
-		return m_nodeInfo.eventTriggerInfo();
+        return m_nodeInfo.eventTriggerInfo();
     }
 }
