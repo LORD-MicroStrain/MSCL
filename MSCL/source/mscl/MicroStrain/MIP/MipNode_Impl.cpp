@@ -365,7 +365,7 @@ namespace mscl
         {
             return false;
         }
-	}
+    }
 
     void MipNode_Impl::resume()
     {
