@@ -1002,7 +1002,7 @@ namespace mscl
 
     EventTriggerStatus InertialNode::getEventTriggerStatus(const std::vector<uint8> instances) const
     {
-        std::vector<Value> specifier = { Value::INT8(instances.size()) };
+        std::vector<Value> specifier = { Value::UINT8(static_cast<uint8>(instances.size())) };
 
         for (const uint8& instance : instances)
         {
