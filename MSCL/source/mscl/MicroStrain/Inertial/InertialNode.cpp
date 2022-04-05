@@ -999,4 +999,32 @@ namespace mscl
             Value::UINT8(0)
         });
     }
+
+    EventActionStatus InertialNode::getEventActionStatus(const std::vector<uint8> instances) const
+    {
+        std::vector<Value> specifier = { Value::UINT8(static_cast<uint8>(instances.size())) };
+
+        for (const uint8& instance : instances)
+        {
+            specifier.push_back(Value::UINT8(instance));
+        }
+
+        const MipFieldValues data = m_impl->get(MipTypes::CMD_EVENT_ACTION_STATUS, specifier);
+
+        const uint8 size = data[0].as_uint8();
+
+        EventActionStatus status(size);
+
+        for (int index = 0; index < size; ++index)
+        {
+            const int indexOffset = index * 2 + 1;
+
+            status.push_back({
+                data[indexOffset].as_uint8(),    // type
+                data[indexOffset + 1].as_uint8() // trigger instance
+            });
+        }
+
+        return status;
+    }
 }

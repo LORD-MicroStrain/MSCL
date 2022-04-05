@@ -2184,5 +2184,22 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void enableRtk(bool enable);
+
+        //API Function: getEventActionStatus
+        //    Sends the Event Action Status command (0x0C, 0x2D) to get the current status of the specified actions.
+        //    If number of instances is 0, this will return the status of all the actions.
+        //
+        //Parameter:
+        //    instances - A <vector> of action instance IDs to check the status of.
+        //
+        //Return:
+        //    <EventActionStatus> - A <vector> of action statuses of the specified actions, or all actions.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        EventActionStatus getEventActionStatus(std::vector<uint8> instances = std::vector<uint8>()) const;
     };
 }

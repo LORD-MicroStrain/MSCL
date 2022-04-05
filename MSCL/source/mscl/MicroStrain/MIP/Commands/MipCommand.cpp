@@ -214,6 +214,8 @@ namespace mscl
             return "SensorToVehicleFrameTransformationDCM";
         case MipTypes::CMD_PPS_SOURCE:
             return "PpsSource";
+        case MipTypes::CMD_EVENT_ACTION_STATUS:
+            return "EventActionStatus";
         case MipTypes::CMD_GPIO_CONFIGURATION:
             return "GpioConfiguration";
         case MipTypes::CMD_GPIO_STATE:
@@ -265,6 +267,8 @@ namespace mscl
         // 0x0C
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
             return 0x85;
+        case MipTypes::CMD_EVENT_ACTION_STATUS:
+            return 0xB7;
         // 0x0D
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
             return 0xBE;
@@ -347,6 +351,12 @@ namespace mscl
 
         case MipTypes::CMD_PPS_SOURCE:
             return{ ValueType::valueType_uint8 };
+
+        case MipTypes::CMD_EVENT_ACTION_STATUS:
+            return{
+                ValueType::valueType_uint8, // count
+                ValueType::valueType_Vector // status info
+            };
 
         case MipTypes::CMD_ODOMETER_SETTINGS:
             return{
@@ -505,6 +515,12 @@ namespace mscl
                 ValueType::valueType_uint8, // receiver id
                 ValueType::valueType_uint8, // associated data set
                 ValueType::valueType_string // ascii description of receiver
+            };
+
+        case MipTypes::CMD_EVENT_ACTION_STATUS:
+            return{
+                ValueType::valueType_uint8, // type
+                ValueType::valueType_uint8  // status
             };
 
         default:
