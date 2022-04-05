@@ -38,7 +38,7 @@ namespace mscl
 #ifndef SWIG
         InertialNode(std::shared_ptr<MipNode_Impl> impl) : MipNode(impl) {}; //constructor with direct underlying implementation for this class.
 #endif
-        
+
         //API Function: getDataPackets
         //    Gets up to the requested amount of data packets that have been collected.
         //
@@ -47,7 +47,7 @@ namespace mscl
         //    maxPackets - The maximum number of packets to return. If this is 0 (default), all packets will be returned.
         //
         //Returns:
-        //    A vector of <MipDataPacket>s containing all the data packets that are available up to the requested number of packets. 
+        //    A vector of <MipDataPacket>s containing all the data packets that are available up to the requested number of packets.
         //
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
@@ -165,7 +165,7 @@ namespace mscl
         uint8 getCommunicationMode() override;
 
         //API Function: setCommunicationMode
-        //    Sets the communication mode for the node. 
+        //    Sets the communication mode for the node.
         //    Note: The node info will be reset when doing this and therefore will require being fetched again the next time it is requested.
         //
         //Parameters:
@@ -1040,7 +1040,7 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         AdvancedLowPassFilterConfig getAdvancedLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors);
-        
+
         //API Function: setComplementaryFilterSettings
         //    Sets the complementary filter settings.
         //
@@ -1092,7 +1092,7 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         DeviceStatusData getDiagnosticDeviceStatus();
-        
+
         //API Function: sendRawRTCM_2_3Message
         //    Sends a raw RTCM 2.3 message.
         //
@@ -1993,7 +1993,7 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         GpioConfiguration getGpioConfig(uint8 pin) const;
-        
+
         //API Function: setGpioConfig
         //    Set the GPIO configuration.
         //
@@ -2184,5 +2184,22 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void enableRtk(bool enable);
+
+        //API Function: getEventTriggerStatus
+        //    Sends the Event Trigger Status command (0x0C, 0x2C) to get the current status of the specified triggers.
+        //    If number of instances is 0, this will return the status of all the triggers.
+        //
+        //Parameter:
+        //    instances - A <vector> of trigger instance IDs to check the status of.
+        //
+        //Return:
+        //    <EventTriggerStatus> - A <vector> of trigger statuses of the specified triggers, or all triggers.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        EventTriggerStatus getEventTriggerStatus(std::vector<uint8> instances = std::vector<uint8>()) const;
     };
 }
