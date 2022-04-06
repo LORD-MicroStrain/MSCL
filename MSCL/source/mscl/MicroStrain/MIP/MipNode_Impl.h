@@ -36,8 +36,8 @@ namespace mscl
     {
     private:
         //Constant: COMMANDS_DEFAULT_TIMEOUT
-        //    The default timeout for Inertial commands (500 milliseconds)
-        static const uint64 COMMANDS_DEFAULT_TIMEOUT = 500;
+        //    The default timeout for Inertial commands (250 milliseconds)
+        static const uint64 COMMANDS_DEFAULT_TIMEOUT = 250;
 
     public:
         //Constructor: MipNode_Impl
