@@ -44,23 +44,6 @@ public class EventTriggerConfiguration : global::System.IDisposable {
     }
   }
 
-  public EventTriggerConfiguration() : this(msclPINVOKE.new_EventTriggerConfiguration(), true) {
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public EventTriggerParameters parameters {
-    set {
-      msclPINVOKE.EventTriggerConfiguration_parameters_set(swigCPtr, EventTriggerParameters.getCPtr(value));
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      global::System.IntPtr cPtr = msclPINVOKE.EventTriggerConfiguration_parameters_get(swigCPtr);
-      EventTriggerParameters ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventTriggerParameters(cPtr, false);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
-  }
-
   public byte instance {
     set {
       msclPINVOKE.EventTriggerConfiguration_instance_set(swigCPtr, value);
@@ -83,6 +66,23 @@ public class EventTriggerConfiguration : global::System.IDisposable {
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
+  }
+
+  public EventTriggerParameters parameters {
+    set {
+      msclPINVOKE.EventTriggerConfiguration_parameters_set(swigCPtr, EventTriggerParameters.getCPtr(value));
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      global::System.IntPtr cPtr = msclPINVOKE.EventTriggerConfiguration_parameters_get(swigCPtr);
+      EventTriggerParameters ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventTriggerParameters(cPtr, false);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
+  public EventTriggerConfiguration() : this(msclPINVOKE.new_EventTriggerConfiguration(), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public enum Trigger {

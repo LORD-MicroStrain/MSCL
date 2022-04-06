@@ -44,26 +44,26 @@ public class EventTriggerCombinationParameter : global::System.IDisposable {
     }
   }
 
-  public ushort combination {
+  public ushort logicTable {
     set {
-      msclPINVOKE.EventTriggerCombinationParameter_combination_set(swigCPtr, value);
+      msclPINVOKE.EventTriggerCombinationParameter_logicTable_set(swigCPtr, value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      ushort ret = msclPINVOKE.EventTriggerCombinationParameter_combination_get(swigCPtr);
+      ushort ret = msclPINVOKE.EventTriggerCombinationParameter_logicTable_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
   }
 
-  public SWIGTYPE_p_unsigned_char inputTriggers {
+  public EventInputTriggers inputTriggers {
     set {
-      msclPINVOKE.EventTriggerCombinationParameter_inputTriggers_set(swigCPtr, SWIGTYPE_p_unsigned_char.getCPtr(value));
+      msclPINVOKE.EventTriggerCombinationParameter_inputTriggers_set(swigCPtr, EventInputTriggers.getCPtr(value));
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
       global::System.IntPtr cPtr = msclPINVOKE.EventTriggerCombinationParameter_inputTriggers_get(swigCPtr);
-      SWIGTYPE_p_unsigned_char ret = (cPtr == global::System.IntPtr.Zero) ? null : new SWIGTYPE_p_unsigned_char(cPtr, false);
+      EventInputTriggers ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventInputTriggers(cPtr, false);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
@@ -73,22 +73,20 @@ public class EventTriggerCombinationParameter : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public enum Combination {
-    LOGIC_NEVER = 0x0000,
-    LOGIC_ALWAYS = 0xFFFF,
-    LOGIC_NONE = 0x0001,
-    LOGIC_OR = 0xFFFE,
-    LOGIC_NAND = 0x7FFF,
-    LOGIC_XOR_ONE = 0x0116,
-    LOGIC_ONLY_A = 0x0002,
-    LOGIC_ONLY_B = 0x0004,
-    LOGIC_ONLY_C = 0x0010,
-    LOGIC_ONLY_D = 0x0100,
-    LOGIC_AND_AB = 0x8888,
-    LOGIC_AB_OR_C = 0xF8F8,
-    LOGIC_AND = 0x8000
-  }
-
+  public static readonly byte MAX_INPUT_TRIGGERS = msclPINVOKE.EventTriggerCombinationParameter_MAX_INPUT_TRIGGERS_get();
+  public static readonly ushort LOGIC_NEVER = msclPINVOKE.EventTriggerCombinationParameter_LOGIC_NEVER_get();
+  public static readonly ushort LOGIC_ALWAYS = msclPINVOKE.EventTriggerCombinationParameter_LOGIC_ALWAYS_get();
+  public static readonly ushort LOGIC_NONE = msclPINVOKE.EventTriggerCombinationParameter_LOGIC_NONE_get();
+  public static readonly ushort LOGIC_OR = msclPINVOKE.EventTriggerCombinationParameter_LOGIC_OR_get();
+  public static readonly ushort LOGIC_NAND = msclPINVOKE.EventTriggerCombinationParameter_LOGIC_NAND_get();
+  public static readonly ushort LOGIC_XOR_ONE = msclPINVOKE.EventTriggerCombinationParameter_LOGIC_XOR_ONE_get();
+  public static readonly ushort LOGIC_ONLY_A = msclPINVOKE.EventTriggerCombinationParameter_LOGIC_ONLY_A_get();
+  public static readonly ushort LOGIC_ONLY_B = msclPINVOKE.EventTriggerCombinationParameter_LOGIC_ONLY_B_get();
+  public static readonly ushort LOGIC_ONLY_C = msclPINVOKE.EventTriggerCombinationParameter_LOGIC_ONLY_C_get();
+  public static readonly ushort LOGIC_ONLY_D = msclPINVOKE.EventTriggerCombinationParameter_LOGIC_ONLY_D_get();
+  public static readonly ushort LOGIC_AND_AB = msclPINVOKE.EventTriggerCombinationParameter_LOGIC_AND_AB_get();
+  public static readonly ushort LOGIC_AB_OR_C = msclPINVOKE.EventTriggerCombinationParameter_LOGIC_AB_OR_C_get();
+  public static readonly ushort LOGIC_AND = msclPINVOKE.EventTriggerCombinationParameter_LOGIC_AND_get();
 }
 
 }

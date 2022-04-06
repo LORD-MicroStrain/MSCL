@@ -44,25 +44,13 @@ public class EventTriggerThresholdParameter : global::System.IDisposable {
     }
   }
 
-  public byte descriptorSet {
+  public MipTypes.ChannelField channelField {
     set {
-      msclPINVOKE.EventTriggerThresholdParameter_descriptorSet_set(swigCPtr, value);
+      msclPINVOKE.EventTriggerThresholdParameter_channelField_set(swigCPtr, (int)value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      byte ret = msclPINVOKE.EventTriggerThresholdParameter_descriptorSet_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
-  }
-
-  public byte fieldDescriptor {
-    set {
-      msclPINVOKE.EventTriggerThresholdParameter_fieldDescriptor_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      byte ret = msclPINVOKE.EventTriggerThresholdParameter_fieldDescriptor_get(swigCPtr);
+      MipTypes.ChannelField ret = (MipTypes.ChannelField)msclPINVOKE.EventTriggerThresholdParameter_channelField_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 

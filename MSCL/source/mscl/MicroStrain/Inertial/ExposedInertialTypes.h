@@ -2859,25 +2859,27 @@ namespace mscl
     //API Struct: EventTriggerCombinationParameter
     struct EventTriggerCombinationParameter
     {
-        const uint16 LOGIC_NEVER   = 0x0000; // Never active
-        const uint16 LOGIC_ALWAYS  = 0xFFFF; // Always active
-        const uint16 LOGIC_NONE    = 0x0001; // Only if no inputs
-        const uint16 LOGIC_OR      = 0xFFFE; // Any input or multiple inputs
-        const uint16 LOGIC_NAND    = 0x7FFF; // Not all inputs
-        const uint16 LOGIC_XOR_ONE = 0x0116; // Any single input (XOR)
-        const uint16 LOGIC_ONLY_A  = 0x0002; // Only input A
-        const uint16 LOGIC_ONLY_B  = 0x0004; // Only input B
-        const uint16 LOGIC_ONLY_C  = 0x0010; // Only input C
-        const uint16 LOGIC_ONLY_D  = 0x0100; // Only input D
-        const uint16 LOGIC_AND_AB  = 0x8888; // Both A and B
-        const uint16 LOGIC_AB_OR_C = 0xF8F8; // Both A and B, or C
-        const uint16 LOGIC_AND     = 0x8000; // All inputs (unused inputs are ignored)
+        static constexpr uint8 MAX_INPUT_TRIGGERS = 4;
+
+        static constexpr uint16 LOGIC_NEVER   = 0x0000; // Never active
+        static constexpr uint16 LOGIC_ALWAYS  = 0xFFFF; // Always active
+        static constexpr uint16 LOGIC_NONE    = 0x0001; // Only if no inputs
+        static constexpr uint16 LOGIC_OR      = 0xFFFE; // Any input or multiple inputs
+        static constexpr uint16 LOGIC_NAND    = 0x7FFF; // Not all inputs
+        static constexpr uint16 LOGIC_XOR_ONE = 0x0116; // Any single input (XOR)
+        static constexpr uint16 LOGIC_ONLY_A  = 0x0002; // Only input A
+        static constexpr uint16 LOGIC_ONLY_B  = 0x0004; // Only input B
+        static constexpr uint16 LOGIC_ONLY_C  = 0x0010; // Only input C
+        static constexpr uint16 LOGIC_ONLY_D  = 0x0100; // Only input D
+        static constexpr uint16 LOGIC_AND_AB  = 0x8888; // Both A and B
+        static constexpr uint16 LOGIC_AB_OR_C = 0xF8F8; // Both A and B, or C
+        static constexpr uint16 LOGIC_AND     = 0x8000; // All inputs (unused inputs are ignored)
 
         // The last column of a truth table describing the output given the state of each input
         uint16 logicTable;
 
         // List of trigger IDs for inputs
-        uint8 inputTriggers[4];
+        std::array<uint8, MAX_INPUT_TRIGGERS> inputTriggers;
     };
 
     // API Union: EventTriggerParameters
