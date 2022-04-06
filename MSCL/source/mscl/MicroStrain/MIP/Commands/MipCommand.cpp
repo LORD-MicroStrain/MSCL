@@ -358,7 +358,7 @@ namespace mscl
                 ValueType::valueType_uint8,
                 ValueType::valueType_uint8,
                 ValueType::valueType_Vector,
-			};
+            };
 
         case MipTypes::CMD_ODOMETER_SETTINGS:
             return{
