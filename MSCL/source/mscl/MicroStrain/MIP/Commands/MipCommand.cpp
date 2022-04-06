@@ -353,11 +353,11 @@ namespace mscl
         case MipTypes::CMD_PPS_SOURCE:
             return{ ValueType::valueType_uint8 };
 
-		case MipTypes::CMD_EVENT_CONTROL:
-			return{
-				ValueType::valueType_uint8,
-				ValueType::valueType_uint8
-			};
+        case MipTypes::CMD_EVENT_CONTROL:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint8
+            };
 
         case MipTypes::CMD_ODOMETER_SETTINGS:
             return{
