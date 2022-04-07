@@ -518,7 +518,7 @@ namespace mscl
             };
 
         case MipTypes::CMD_EVENT_TRIGGER_STATUS:
-            return {
+            return{
                 ValueType::valueType_uint8, // type
                 ValueType::valueType_uint8  // status
             };
