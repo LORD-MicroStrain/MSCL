@@ -1011,17 +1011,16 @@ namespace mscl
 
         const MipFieldValues data = m_impl->get(MipTypes::CMD_EVENT_ACTION_STATUS, specifier);
 
-        const uint8 size = data[0].as_uint8();
+        const uint8 count = data[0].as_uint8();
 
-        EventActionStatus status(size);
+        EventActionStatus status(count);
 
-        for (int index = 0; index < size; ++index)
+        // Data values start at index 1 and have 2 data entries
+        for (int index = 1; index < count * 2 + 1; index += 2)
         {
-            const int indexOffset = index * 2 + 1;
-
             status.push_back({
-                data[indexOffset].as_uint8(),    // type
-                data[indexOffset + 1].as_uint8() // trigger instance
+                data[index].as_uint8(),    // type
+                data[index + 1].as_uint8() // trigger instance
             });
         }
 
