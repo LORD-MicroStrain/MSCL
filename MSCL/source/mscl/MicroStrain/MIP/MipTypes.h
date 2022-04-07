@@ -1701,8 +1701,8 @@ namespace mscl
         //      ACTIONS   - 0x02 - Query the supported action types and max count for each
         enum Query
         {
-            TRIGGERS = 0x01,
-            ACTIONS  = 0x02
+            TRIGGERS = 0x01, // Query the supported trigger types and max count for each
+            ACTIONS  = 0x02  // Query the supported action types and max count for each
         };
 
         // Type of information 

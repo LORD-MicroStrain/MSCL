@@ -2199,15 +2199,16 @@ namespace mscl
 
         EventSupportInfo info{};
 
-        info.query = static_cast<EventSupportInfo::Query>(response[0].as_int8());
-        info.maxInstances = response[1].as_int8();
+        info.query = static_cast<EventSupportInfo::Query>(response[0].as_uint8());
+        info.maxInstances = response[1].as_uint8();
 
-        const uint8 count = response[2].as_int8();
-        for (uint8 entryNumber = 0; entryNumber < count; entryNumber++)
+        const uint8 numEntries = response[2].as_uint8();
+
+        // Response index starts at 3 and each entry has 2 data values
+        for (int index = 3; index < numEntries * 2 + 3; index += 2)
         {
-            const uint8 index = entryNumber * 2 + 3; // two values per element, first value count
             info.entries.push_back(
-                EventTypeInfo(response[index].as_int8(), response[index + 1].as_int8())
+                EventTypeInfo(response[index].as_uint8(), response[index + 1].as_uint8())
             );
         }
 
