@@ -102,7 +102,6 @@ namespace mscl
 
         /****   Read, Write     ****/
         // 0x0C
-        case MipTypes::CMD_EVENT_CONTROL:
         case MipTypes::CMD_GPIO_STATE:
             return {
                 MipTypes::FunctionSelector::USE_NEW_SETTINGS,
@@ -116,6 +115,7 @@ namespace mscl
         case MipTypes::CMD_MESSAGE_FORMAT:
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
         case MipTypes::CMD_PPS_SOURCE:
+        case MipTypes::CMD_EVENT_CONTROL:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM:
