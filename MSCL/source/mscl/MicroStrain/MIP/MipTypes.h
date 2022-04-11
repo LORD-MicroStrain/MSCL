@@ -1102,9 +1102,13 @@ namespace mscl
         //    A typedef for a <ChannelField>, <ChannelQualifier> pair.
         typedef std::pair<ChannelField, ChannelQualifier> ChannelId;
 
-        //Typedef: ChannelQualifierName
+        //Typedef: ChannelIndex
         //    A typedef for a <ChannelQualifier>, int pair.
         typedef std::pair<ChannelQualifier, int> ChannelIndex;
+
+        //Typedef: ChannelFieldQualifiers
+        //    A typedef map for mapping a vector of <ChannelIndex> to <ChannelField>
+        typedef std::map<ChannelField, std::vector<ChannelIndex>> ChannelFieldQualifiers;
 
         //Function: channelFieldToDataClass
         //    Gets the <DataClass> for a <MipTypes::ChannelField>.
@@ -1208,6 +1212,16 @@ namespace mscl
         //  bool - true if chField is a shared data field, false if it is not
         static bool isSharedChannelField(ChannelField chField);
 
+        //API Function: channelFieldQualifiers
+        //    Gets a map containing all the channel qualifiers and their indices of the specified <ChannelField>s.
+        //
+        //Parameters:
+        //    fields - <MipChannelFields> of the channels.
+        //
+        //Returns:
+        //    A map of <ChannelField> and their respective <ChannelIndex>.
+        static ChannelFieldQualifiers channelFieldQualifiers(MipChannelFields fields);
+
     private:
         //Const: CHANNEL_NAMES
         //    An unordered_map mapping each <ChannelId> to its respective name (universal SensorCloud name).
@@ -1215,7 +1229,7 @@ namespace mscl
 
         //Const: CHANNEL_INDICES
         //    A map mapping each <ChannelField>'s <ChannelQualifier> to its respective index.
-        static const std::map<ChannelField, std::vector<ChannelIndex>> CHANNEL_INDICES;
+        static const ChannelFieldQualifiers CHANNEL_INDICES;
 
         //Function: GNSS_DATA_CLASSES
         //  vector of <DataClass> values containing all GNSS data class descriptors that have the same field descriptors.

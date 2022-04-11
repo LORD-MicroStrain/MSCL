@@ -644,4 +644,123 @@ namespace mscl
             { 4, pin4Features }
         };
     }
+
+    MipTypes::ChannelFieldQualifiers MipNodeFeatures::supportedEventThresholdChannelQualifiers() const
+    {
+        //TODO: Uncomment when merged with 3DMEventTriggerCommand
+        // if (!supportsCommand(mscl::MipTypes::Command::CMD_EVENT_TRIGGER_CONFIGURATION))
+        // {
+        //     return{ MipTypes::ChannelFieldQualifiers() };
+        // }
+
+        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ahrs:
+        case MipModels::node_3dm_cv7_ar:
+            return MipTypes::channelFieldQualifiers(supportedEventThresholdChannelFields());
+
+        default:
+            return{ MipTypes::ChannelFieldQualifiers() };
+        }
+    }
+
+    MipTypes::MipChannelFields MipNodeFeatures::supportedEventThresholdChannelFields() const
+    {
+        //TODO: Uncomment when merged with 3DMEventTriggerCommand
+        // if (!supportsCommand(mscl::MipTypes::Command::CMD_EVENT_TRIGGER_CONFIGURATION))
+        // {
+        //     return{ MipTypes::ChannelFieldQualifiers() };
+        // }
+
+        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ahrs:
+        case MipModels::node_3dm_cv7_ar:
+            return{
+                // 0x80: Sensor Data
+
+                // (0x80, 0x04)
+                MipTypes::CH_FIELD_SENSOR_SCALED_ACCEL_VEC,
+                // (0x80, 0x05)
+                MipTypes::CH_FIELD_SENSOR_SCALED_GYRO_VEC,
+                // (0x80, 0x06)
+                MipTypes::CH_FIELD_SENSOR_SCALED_MAG_VEC,
+                // (0x80, 0x09)
+                MipTypes::CH_FIELD_SENSOR_ORIENTATION_MATRIX,
+                // (0x80, 0x0A)
+                MipTypes::CH_FIELD_SENSOR_ORIENTATION_QUATERNION,
+                // (0x80, 0x0C)
+                MipTypes::CH_FIELD_SENSOR_EULER_ANGLES,
+                // (0x80, 0x17)
+                MipTypes::CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE,
+                // (0x80, 0xD3)
+                MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP,
+                // (0x80, 0xD5)
+                MipTypes::CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP,
+                // (0x80, 0xD7)
+                MipTypes::CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,
+
+
+                // 0x82 Filter Data
+
+                // (0x82, 0x03)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_QUATERNION,
+                // (0x82, 0x05)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_EULER,
+                // (0x82, 0x06)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_GYRO_BIAS,
+                // (0x82, 0x07)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ACCEL_BIAS,
+                // (0x82, 0x0A)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ATT_UNCERT_EULER,
+                // (0x82, 0x0B)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_GYRO_BIAS_UNCERT,
+                // (0x82, 0x0C)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ACCEL_BIAS_UNCERT,
+                // (0x82, 0x0D)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_LINEAR_ACCEL,
+                // (0x82, 0x0E)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ANGULAR_RATE,
+                // (0x82, 0x10)
+                MipTypes::CH_FIELD_ESTFILTER_FILTER_STATUS,
+                // (0x82, 0x12)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ATT_UNCERT_QUAT,
+                // (0x82, 0x13)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_GRAVITY_VECTOR,
+                // (0x82, 0x1C)
+                MipTypes::CH_FIELD_ESTFILTER_COMPENSATED_ACCEL,
+                // (0x82, 0x21)
+                MipTypes::CH_FIELD_ESTFILTER_PRESSURE_ALTITUDE,
+                // (0x82, 0xD3)
+                MipTypes::CH_FIELD_ESTFILTER_SHARED_GPS_TIMESTAMP,
+                // (0x82, 0xD5)
+                MipTypes::CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP,
+                // (0x82, 0xD7)
+                MipTypes::CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP/*,
+
+
+                // 0xA0 System Data
+
+                // (0xA0, 0x01)
+                MipTypes::CH_FIELD_SYSTEM_BUILT_IN_TEST,
+                // (0xA0, 0x02)
+                MipTypes::CH_FIELD_SYSTEM_TIME_SYNC_STATUS,
+                // (0xA0, 0x03)
+                MipTypes::CH_FIELD_SYSTEM_GPIO_STATE,
+                // (0xA0, 0xD3)
+                MipTypes::CH_FIELD_SYSTEM_SHARED_GPS_TIMESTAMP,
+                // (0xA0, 0xD5)
+                MipTypes::CH_FIELD_SYSTEM_SHARED_REFERENCE_TIMESTAMP,
+                // (0xA0, 0xD7)
+                MipTypes::CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP*/
+            };
+
+        default:
+            return{};
+        }
+    }
 }

@@ -238,5 +238,19 @@ namespace mscl
         //Returns:
         //    A <GpioPinOptions> map of supported GPIO pin configurations
         const GpioPinOptions supportedGpioConfigurations() const;
+
+        //Function: supportedEventThresholdChannelQualifiers
+        //    Gets the supported channel fields/qualifiers for event threshold configuration.
+        //
+        //Return:
+        //    <ChannelFieldQualifiers> - The supported channel fields/qualifiers.
+        MipTypes::ChannelFieldQualifiers supportedEventThresholdChannelQualifiers() const;
+
+        //Function: supportedEventThresholdChannelFields
+        //    Gets the supported channel fields for event threshold configuration.
+        //
+        //Return:
+        //    <MipChannelFields> - The supported channel fields.
+        MipTypes::MipChannelFields supportedEventThresholdChannelFields() const;
     };
 }

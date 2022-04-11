@@ -458,7 +458,7 @@ namespace mscl
     });
 
 
-    const std::map<MipTypes::ChannelField, std::vector<MipTypes::ChannelIndex>> MipTypes::CHANNEL_INDICES(
+    const MipTypes::ChannelFieldQualifiers MipTypes::CHANNEL_INDICES(
     {
         // 0x80: Sensor Data
 
@@ -639,7 +639,55 @@ namespace mscl
         { CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP,{
             ChannelIndex(CH_NANOSECONDS, 1),
             ChannelIndex(CH_VALID_FLAGS, 2)
-        } }
+        } }/*,
+
+
+        // 0xA0 System Data
+
+        // (0xA0, 0x01)
+        { CH_FIELD_SYSTEM_BUILT_IN_TEST,{
+            // TODO: Figure out channel qualifiers
+            ChannelIndex(CH_, 1),
+            ChannelIndex(CH_, 2),
+            ChannelIndex(CH_, 3),
+            ChannelIndex(CH_, 4),
+            ChannelIndex(CH_, 5),
+            ChannelIndex(CH_, 6),
+            ChannelIndex(CH_, 7),
+            ChannelIndex(CH_, 8),
+            ChannelIndex(CH_, 9),
+            ChannelIndex(CH_, 10),
+            ChannelIndex(CH_, 11),
+            ChannelIndex(CH_, 12),
+            ChannelIndex(CH_, 13),
+            ChannelIndex(CH_, 14),
+            ChannelIndex(CH_, 15),
+            ChannelIndex(CH_, 16)
+        } },
+        // (0xA0, 0x02)
+        { CH_FIELD_SYSTEM_TIME_SYNC_STATUS,{
+            ChannelIndex(CH_TIME_SYNC,     1),
+            ChannelIndex(CH_LAST_PPS_RCVD, 2)
+        } },
+        // (0xA0, 0x03)
+        { CH_FIELD_SYSTEM_GPIO_STATE,{
+            ChannelIndex(CH_GPIO_STATES, 1)
+        } },
+        // (0xA0, 0xD3)
+        { CH_FIELD_SYSTEM_SHARED_GPS_TIMESTAMP,{
+            ChannelIndex(CH_TIME_OF_WEEK, 1),
+            ChannelIndex(CH_WEEK_NUMBER,  2),
+            ChannelIndex(CH_VALID_FLAGS,  3)
+        } },
+        // (0xA0, 0xD5)
+        { CH_FIELD_SYSTEM_SHARED_REFERENCE_TIMESTAMP,{
+            ChannelIndex(CH_NANOSECONDS, 1)
+        } },
+        // (0xA0, 0xD7)
+        { CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP,{
+            ChannelIndex(CH_NANOSECONDS, 1),
+            ChannelIndex(CH_VALID_FLAGS, 2)
+        } }*/
     });
 
     std::vector<MipTypes::DataClass> MipTypes::GNSS_DATA_CLASSES()
@@ -791,6 +839,23 @@ namespace mscl
         std::vector<uint8> fields = SHARED_DATA_FIELDS();
         return std::find(fields.begin(), fields.end(), fieldId)
             != fields.end();
+    }
+
+    MipTypes::ChannelFieldQualifiers MipTypes::channelFieldQualifiers(const MipChannelFields fields)
+    {
+        ChannelFieldQualifiers fieldQualifiers{};
+
+        for (auto& field : fields)
+        {
+            auto found = CHANNEL_INDICES.find(field);
+
+            if (found != CHANNEL_INDICES.end())
+            {
+                fieldQualifiers.emplace(found);
+            }
+        }
+
+        return fieldQualifiers;
     }
 
     size_t MipChannelIdentifier::TypeHash::operator()(const MipChannelIdentifier::Type& type) const
