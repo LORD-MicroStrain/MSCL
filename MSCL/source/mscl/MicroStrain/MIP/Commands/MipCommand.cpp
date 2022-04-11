@@ -115,6 +115,7 @@ namespace mscl
         case MipTypes::CMD_MESSAGE_FORMAT:
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
         case MipTypes::CMD_PPS_SOURCE:
+        case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM:
@@ -206,6 +207,8 @@ namespace mscl
             return "FactoryStreaming";
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
             return "ContinuousDataStream";
+        case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
+            return "EventTriggerConfiguration";
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
             return "SensorToVehicleFrameTransformationEulerAngles";
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
@@ -265,6 +268,8 @@ namespace mscl
         // 0x0C
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
             return 0x85;
+        case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
+            return 0xB6;
         // 0x0D
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
             return 0xBE;

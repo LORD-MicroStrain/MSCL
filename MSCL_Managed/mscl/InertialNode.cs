@@ -885,6 +885,17 @@ public class InertialNode : MipNode {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public EventTriggerConfiguration getEventTriggerConfig(byte instance) {
+    EventTriggerConfiguration ret = new EventTriggerConfiguration(msclPINVOKE.InertialNode_getEventTriggerConfig(swigCPtr, instance), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setEventTriggerConfig(EventTriggerConfiguration config) {
+    msclPINVOKE.InertialNode_setEventTriggerConfig(swigCPtr, EventTriggerConfiguration.getCPtr(config));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public AntennaLeverArmCalConfiguration getAntennaLeverArmCal() {
     AntennaLeverArmCalConfiguration ret = new AntennaLeverArmCalConfiguration(msclPINVOKE.InertialNode_getAntennaLeverArmCal(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
