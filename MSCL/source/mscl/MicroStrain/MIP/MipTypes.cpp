@@ -457,6 +457,191 @@ namespace mscl
         { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP, CH_DELTA_TIME), "timeInfo_deltaTime" },
     });
 
+
+    const std::map<MipTypes::ChannelField, std::vector<MipTypes::ChannelIndex>> MipTypes::CHANNEL_INDICES(
+    {
+        // 0x80: Sensor Data
+
+        // (0x80, 0x04)
+        { CH_FIELD_SENSOR_SCALED_ACCEL_VEC, {
+            ChannelIndex(CH_X, 1),
+            ChannelIndex(CH_Y, 2),
+            ChannelIndex(CH_Z, 3)
+        } },
+        // (0x80, 0x05)
+        { CH_FIELD_SENSOR_SCALED_GYRO_VEC, {
+            ChannelIndex(CH_X, 1),
+            ChannelIndex(CH_Y, 2),
+            ChannelIndex(CH_Z, 3)
+        } },
+        // (0x80, 0x06)
+        { CH_FIELD_SENSOR_SCALED_MAG_VEC, {
+            ChannelIndex(CH_X, 1),
+            ChannelIndex(CH_Y, 2),
+            ChannelIndex(CH_Z, 3)
+        } },
+        // (0x80, 0x09)
+        { CH_FIELD_SENSOR_ORIENTATION_MATRIX, {
+            ChannelIndex(CH_M0, 1),
+            ChannelIndex(CH_M1, 2),
+            ChannelIndex(CH_M2, 3),
+            ChannelIndex(CH_M3, 4),
+            ChannelIndex(CH_M4, 5),
+            ChannelIndex(CH_M5, 6),
+            ChannelIndex(CH_M6, 7),
+            ChannelIndex(CH_M7, 8),
+            ChannelIndex(CH_M8, 9),
+        } },
+        // (0x80, 0x0A)
+        { CH_FIELD_SENSOR_ORIENTATION_QUATERNION,{
+            ChannelIndex(CH_W, 1),
+            ChannelIndex(CH_X, 2),
+            ChannelIndex(CH_Y, 3),
+            ChannelIndex(CH_Z, 4)
+        } },
+        // (0x80, 0x0C)
+        { CH_FIELD_SENSOR_EULER_ANGLES,{
+            ChannelIndex(CH_ROLL,  1),
+            ChannelIndex(CH_PITCH, 2),
+            ChannelIndex(CH_YAW,   3)
+        } },
+        // (0x80, 0x17)
+        { CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE,{
+            ChannelIndex(CH_PRESSURE, 1)
+        } },
+        // (0x80, 0xD3)
+        { CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP,{
+            ChannelIndex(CH_TIME_OF_WEEK, 1),
+            ChannelIndex(CH_WEEK_NUMBER,  2),
+            ChannelIndex(CH_VALID_FLAGS,  3)
+        } },
+        // (0x80, 0xD5)
+        { CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP,{
+            ChannelIndex(CH_NANOSECONDS, 1)
+        } },
+        // (0x80, 0xD7)
+        { CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,{
+            ChannelIndex(CH_NANOSECONDS, 1),
+            ChannelIndex(CH_VALID_FLAGS, 2)
+        } },
+
+
+        // 0x82 Filter Data
+
+        // (0x82, 0x03)
+        { CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_QUATERNION,{
+            ChannelIndex(CH_W,           1),
+            ChannelIndex(CH_X,           2),
+            ChannelIndex(CH_Y,           3),
+            ChannelIndex(CH_Z,           4),
+            ChannelIndex(CH_VALID_FLAGS, 5)
+        } },
+        // (0x82, 0x05)
+        { CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_EULER,{
+            ChannelIndex(CH_ROLL,        1),
+            ChannelIndex(CH_PITCH,       2),
+            ChannelIndex(CH_YAW,         3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x06)
+        { CH_FIELD_ESTFILTER_ESTIMATED_GYRO_BIAS,{
+            ChannelIndex(CH_X,           1),
+            ChannelIndex(CH_Y,           2),
+            ChannelIndex(CH_Z,           3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x07)
+        { CH_FIELD_ESTFILTER_ESTIMATED_ACCEL_BIAS,{
+            ChannelIndex(CH_X,           1),
+            ChannelIndex(CH_Y,           2),
+            ChannelIndex(CH_Z,           3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x0A)
+        { CH_FIELD_ESTFILTER_ESTIMATED_ATT_UNCERT_EULER,{
+            ChannelIndex(CH_ROLL,        1),
+            ChannelIndex(CH_PITCH,       2),
+            ChannelIndex(CH_YAW,         3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x0B)
+        { CH_FIELD_ESTFILTER_ESTIMATED_GYRO_BIAS_UNCERT,{
+            ChannelIndex(CH_X,           1),
+            ChannelIndex(CH_Y,           2),
+            ChannelIndex(CH_Z,           3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x0C)
+        { CH_FIELD_ESTFILTER_ESTIMATED_ACCEL_BIAS_UNCERT,{
+            ChannelIndex(CH_X,           1),
+            ChannelIndex(CH_Y,           2),
+            ChannelIndex(CH_Z,           3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x0D)
+        { CH_FIELD_ESTFILTER_ESTIMATED_LINEAR_ACCEL,{
+            ChannelIndex(CH_X,           1),
+            ChannelIndex(CH_Y,           2),
+            ChannelIndex(CH_Z,           3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x0E)
+        { CH_FIELD_ESTFILTER_ESTIMATED_ANGULAR_RATE,{
+            ChannelIndex(CH_X,           1),
+            ChannelIndex(CH_Y,           2),
+            ChannelIndex(CH_Z,           3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x10)
+        { CH_FIELD_ESTFILTER_FILTER_STATUS,{
+            ChannelIndex(CH_FILTER_STATE,  1),
+            ChannelIndex(CH_DYNAMICS_MODE, 2),
+            ChannelIndex(CH_FLAGS,         3)
+        } },
+        // (0x82, 0x12)
+        { CH_FIELD_ESTFILTER_ESTIMATED_ATT_UNCERT_QUAT,{
+            ChannelIndex(CH_W,           1),
+            ChannelIndex(CH_X,           2),
+            ChannelIndex(CH_Y,           3),
+            ChannelIndex(CH_Z,           4),
+            ChannelIndex(CH_VALID_FLAGS, 5)
+        } },
+        // (0x82, 0x13)
+        { CH_FIELD_ESTFILTER_ESTIMATED_GRAVITY_VECTOR,{
+            ChannelIndex(CH_X,           1),
+            ChannelIndex(CH_Y,           2),
+            ChannelIndex(CH_Z,           3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x1C)
+        { CH_FIELD_ESTFILTER_COMPENSATED_ACCEL,{
+            ChannelIndex(CH_X,           1),
+            ChannelIndex(CH_Y,           2),
+            ChannelIndex(CH_Z,           3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x21)
+        { CH_FIELD_ESTFILTER_PRESSURE_ALTITUDE,{
+            ChannelIndex(CH_ALTITUDE,    1),
+            ChannelIndex(CH_VALID_FLAGS, 2)
+        } },
+        // (0x82, 0xD3)
+        { CH_FIELD_ESTFILTER_SHARED_GPS_TIMESTAMP,{
+            ChannelIndex(CH_TIME_OF_WEEK, 1),
+            ChannelIndex(CH_WEEK_NUMBER,  2),
+            ChannelIndex(CH_VALID_FLAGS,  3)
+        } },
+        // (0x82, 0xD5)
+        { CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP,{
+            ChannelIndex(CH_NANOSECONDS, 1)
+        } },
+        // (0x82, 0xD7)
+        { CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP,{
+            ChannelIndex(CH_NANOSECONDS, 1),
+            ChannelIndex(CH_VALID_FLAGS, 2)
+        } }
+    });
+
     std::vector<MipTypes::DataClass> MipTypes::GNSS_DATA_CLASSES()
     {
         return {

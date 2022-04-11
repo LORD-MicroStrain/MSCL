@@ -365,6 +365,8 @@ namespace mscl
         //  CH_FIELD_SENSOR_SHARED_DELTA_TICKS                      - 0x80D2    - Delta Ticks
         //  CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP                    - 0x80D3    - GPS Timestamp
         //  CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP                  - 0x80D4    - Delta GPS Timestamp
+        //  CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP              - 0x80D5    - Internal Reference Timestamp
+        //  CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP               - 0x80D7    - External Timestamp
         //  CH_FIELD_GNSS_LLH_POSITION                              - 0x8103    - LLH Position
         //  CH_FIELD_GNSS_ECEF_POSITION                             - 0x8104    - ECEF Position
         //  CH_FIELD_GNSS_NED_VELOCITY                              - 0x8105    - NED Velocity
@@ -450,6 +452,8 @@ namespace mscl
         //  CH_FIELD_ESTFILTER_SHARED_DELTA_TICKS                   - 0x82D2    - Delta Ticks
         //  CH_FIELD_ESTFILTER_SHARED_GPS_TIMESTAMP                 - 0x82D3    - GPS Timestamp
         //  CH_FIELD_ESTFILTER_SHARED_DELTA_TIMESTAMP               - 0x82D4    - Delta GPS Timestamp
+        //  CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP           - 0x82D5    - Internal Reference Timestamp
+        //  CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP            - 0x82D7    - External Timestamp
         //  CH_FIELD_DISP_POSITION                                  - 0x9001    - Position
         //  CH_FIELD_DISP_RAW_POSITION                              - 0x9002    - Raw Position
         //  CH_FIELD_DISP_DISPLACEMENT_TS                           - 0x9004    - Displacement Device Timestamp
@@ -621,6 +625,8 @@ namespace mscl
             CH_FIELD_SENSOR_SHARED_DELTA_TICKS                      = 0x80D2,
             CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP                    = 0x80D3,
             CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP                  = 0x80D4,
+            CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP              = 0x80D5,
+            CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP               = 0x80D7,
             CH_FIELD_GNSS_LLH_POSITION                              = 0x8103,
             CH_FIELD_GNSS_ECEF_POSITION                             = 0x8104,
             CH_FIELD_GNSS_NED_VELOCITY                              = 0x8105,
@@ -706,6 +712,8 @@ namespace mscl
             CH_FIELD_ESTFILTER_SHARED_DELTA_TICKS                   = 0x82D2,
             CH_FIELD_ESTFILTER_SHARED_GPS_TIMESTAMP                 = 0x82D3,
             CH_FIELD_ESTFILTER_SHARED_DELTA_TIMESTAMP               = 0x82D4,
+            CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP           = 0x82D5,
+            CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP            = 0x82D7,
             CH_FIELD_DISP_DISPLACEMENT_RAW                          = 0x9001,
             CH_FIELD_DISP_DISPLACEMENT_MM                           = 0x9002,
             CH_FIELD_DISP_DISPLACEMENT_TS                           = 0x9004,
@@ -955,6 +963,18 @@ namespace mscl
         //    CH_DELTA_TICK                 - 98  - Delta Tick
         //    CH_ERROR                      - 99  - Measurement Error
         //    CH_ERROR_UNC                  - 100 - Measurement Error Uncertainty
+        //    CH_W                          - 101 - W
+        //    CH_M0                         - 102 - Matrix M0
+        //    CH_M1                         - 103 - Matrix M1
+        //    CH_M2                         - 104 - Matrix M2
+        //    CH_M3                         - 105 - Matrix M3
+        //    CH_M4                         - 106 - Matrix M4
+        //    CH_M5                         - 107 - Matrix M5
+        //    CH_M6                         - 108 - Matrix M6
+        //    CH_M7                         - 109 - Matrix M7
+        //    CH_M8                         - 110 - Matrix M8
+        //    CH_NANOSECONDS                - 111 - Nanoseconds
+        //    CH_VALID_FLAGS                - 112 - Valid Flags
         //====================================================================================================
         enum ChannelQualifier
         {
@@ -1056,7 +1076,19 @@ namespace mscl
             CH_DELTA_TIME                 = 97,
             CH_DELTA_TICK                 = 98,
             CH_ERROR                      = 99,
-            CH_ERROR_UNC                  = 100
+            CH_ERROR_UNC                  = 100,
+            CH_W                          = 101,
+            CH_M0                         = 102,
+            CH_M1                         = 103,
+            CH_M2                         = 104,
+            CH_M3                         = 105,
+            CH_M4                         = 106,
+            CH_M5                         = 107,
+            CH_M6                         = 108,
+            CH_M7                         = 109,
+            CH_M8                         = 110,
+            CH_NANOSECONDS                = 111,
+            CH_VALID_FLAGS                = 112
         };
 
         //API Typedefs:
@@ -1069,6 +1101,10 @@ namespace mscl
         //Typedef: ChannelId
         //    A typedef for a <ChannelField>, <ChannelQualifier> pair.
         typedef std::pair<ChannelField, ChannelQualifier> ChannelId;
+
+        //Typedef: ChannelQualifierName
+        //    A typedef for a <ChannelQualifier>, int pair.
+        typedef std::pair<ChannelQualifier, int> ChannelIndex;
 
         //Function: channelFieldToDataClass
         //    Gets the <DataClass> for a <MipTypes::ChannelField>.
@@ -1176,6 +1212,10 @@ namespace mscl
         //Const: CHANNEL_NAMES
         //    An unordered_map mapping each <ChannelId> to its respective name (universal SensorCloud name).
         static const std::unordered_map<ChannelId, std::string, ChannelIdHash> CHANNEL_NAMES;
+
+        //Const: CHANNEL_INDICES
+        //    A map mapping each <ChannelField>'s <ChannelQualifier> to its respective index.
+        static const std::map<ChannelField, std::vector<ChannelIndex>> CHANNEL_INDICES;
 
         //Function: GNSS_DATA_CLASSES
         //  vector of <DataClass> values containing all GNSS data class descriptors that have the same field descriptors.
