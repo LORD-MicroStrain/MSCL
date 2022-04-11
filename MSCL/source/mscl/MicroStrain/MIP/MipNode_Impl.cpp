@@ -2208,6 +2208,15 @@ namespace mscl
         return command.getGenericResponseData(response);
     }
 
+    ByteStream MipNode_Impl::get_RawResponseData(MipTypes::Command cmdId, MipFieldValues specifier) const
+    {
+        MipCommand command = MipCommand(cmdId,
+            MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS,
+            specifier);
+        const GenericMipCmdResponse response = SendCommand(command);
+        return response.data();
+    }
+
     void MipNode_Impl::set(MipTypes::Command cmdId, MipFieldValues values)
     {
         MipCommand command = MipCommand(cmdId,

@@ -2803,4 +2803,119 @@ namespace mscl
     //API Typedef: GpioPinOptions
     // A map of uint GPIO pin ID, <GpioFeatureBehaviors> pairs
     typedef std::map<uint8, GpioFeatureBehaviors> GpioPinOptions;
+
+    //API Struct: EventTriggerGpioParameter
+    struct EventTriggerGpioParameter
+    {
+        //API Enum: Mode
+        //  How the pin state affects the trigger
+        //      DISABLED   - 0x00 - The pin will have no effect and the trigger will never activate
+        //      WHILE_HIGH - 0x01 - The trigger will be active while the pin is high
+        //      WHILE_LOW  - 0x02 - The trigger will be active while the pin is low
+        //      EDGE       - 0x04 - Use if the pin is configured for time-stamping via the 3DM GPIO Configuration command (0x0C41)
+        enum Mode
+        {
+            DISABLED   = 0X00,  // The pin will have no effect and the trigger will never activate
+            WHILE_HIGH = 0X01,  // The trigger will be active while the pin is high
+            WHILE_LOW  = 0X02,  // The trigger will be active while the pin is low
+            EDGE       = 0X04   // Use if the pin is configured for time-stamping via the 3DM GPIO Configuration command (0x0C41)
+        };
+
+        // GPIO pin number
+        uint8 pin;
+
+        // GPIO pin mode
+        Mode mode;
+    };
+
+    //API Struct: EventTriggerThresholdParameter
+    struct EventTriggerThresholdParameter
+    {
+        //API Enum: Type
+        //  How the pin state affects the trigger
+        //      WINDOW_TYPE   - 0x01 - Window comparison
+        //      INTERVAL_TYPE - 0x02 - Trigger at evenly-spaced intervals
+        enum Type
+        {
+            WINDOW_TYPE   = 0x01, // Window comparison
+            INTERVAL_TYPE = 0x02  // Trigger at evenly-spaced intervals
+        };
+
+        // MIP channel field
+        MipTypes::ChannelField channelField;
+
+        // 1-based index of the target parameter within the MIP field
+        uint8 parameterId;
+
+        // Determines the type of comparison
+        Type type;
+
+        // Low threshold
+        double lowThreshold;
+        // High threshold
+        double highThreshold;
+    };
+
+    //API Struct: EventTriggerCombinationParameter
+    struct EventTriggerCombinationParameter
+    {
+        static constexpr uint8 MAX_INPUT_TRIGGERS = 4;
+
+        static constexpr uint16 LOGIC_NEVER   = 0x0000; // Never active
+        static constexpr uint16 LOGIC_ALWAYS  = 0xFFFF; // Always active
+        static constexpr uint16 LOGIC_NONE    = 0x0001; // Only if no inputs
+        static constexpr uint16 LOGIC_OR      = 0xFFFE; // Any input or multiple inputs
+        static constexpr uint16 LOGIC_NAND    = 0x7FFF; // Not all inputs
+        static constexpr uint16 LOGIC_XOR_ONE = 0x0116; // Any single input (XOR)
+        static constexpr uint16 LOGIC_ONLY_A  = 0x0002; // Only input A
+        static constexpr uint16 LOGIC_ONLY_B  = 0x0004; // Only input B
+        static constexpr uint16 LOGIC_ONLY_C  = 0x0010; // Only input C
+        static constexpr uint16 LOGIC_ONLY_D  = 0x0100; // Only input D
+        static constexpr uint16 LOGIC_AND_AB  = 0x8888; // Both A and B
+        static constexpr uint16 LOGIC_AB_OR_C = 0xF8F8; // Both A and B, or C
+        static constexpr uint16 LOGIC_AND     = 0x8000; // All inputs (unused inputs are ignored)
+
+        // The last column of a truth table describing the output given the state of each input
+        uint16 logicTable;
+
+        // List of trigger IDs for inputs
+        std::array<uint8, MAX_INPUT_TRIGGERS> inputTriggers;
+    };
+
+    // API Union: EventTriggerParameters
+    union EventTriggerParameters
+    {
+        EventTriggerGpioParameter        gpio;        // GPIO parameters
+        EventTriggerThresholdParameter   threshold;   // Threshold parameters
+        EventTriggerCombinationParameter combination; // Combination parameters
+
+        EventTriggerParameters() : combination() {}
+    };
+
+    //API Struct: EventTriggerConfiguration
+    struct EventTriggerConfiguration
+    {
+        //API Enum: Trigger
+        //  Type of trigger to configure
+        //      NONE                - 0x00 - No trigger selected. The state will always be inactive
+        //      GPIO_TRIGGER        - 0x01 - Trigger based on the state of a GPIO pin
+        //      THRESHOLD_TRIGGER   - 0x02 - Compare a data quantity against a high and low threshold
+        //      COMBINATION_TRIGGER - 0x7F - Logical combination of two or more triggers
+        enum Trigger
+        {
+            NONE                = 0x00, // No trigger selected. The state will always be inactive
+            GPIO_TRIGGER        = 0x01, // Trigger based on the state of a GPIO pin
+            THRESHOLD_TRIGGER   = 0x02, // Compare a data quantity against a high and low threshold
+            COMBINATION_TRIGGER = 0x7F  // Logical combination of two or more triggers
+        };
+
+        // Trigger number
+        uint8 instance;
+
+        // Type of trigger
+        Trigger trigger;
+
+        // Trigger parameters
+        EventTriggerParameters parameters;
+    };
 }

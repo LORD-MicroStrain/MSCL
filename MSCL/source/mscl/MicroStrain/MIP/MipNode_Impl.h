@@ -1875,6 +1875,23 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         MipFieldValues get(MipTypes::Command cmdId, MipFieldValues specifier) const;
 
+        //API Function: get_RawResponseData
+        //    sends the specified command with the Read Current Settings function selector.
+        //
+        //Parameter:
+        //    cmdId - the <MipTypes::Command> to send.
+        //    specifier - <MipFieldValues> containing any additional specifier values to send with the command.
+        //
+        //Return:
+        //    <ByteStream> - The raw response values.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        ByteStream get_RawResponseData(MipTypes::Command cmdId, MipFieldValues specifier) const;
+
         //API Function: set
         //    sends the specified command with the Apply New Settings function selector.
         //

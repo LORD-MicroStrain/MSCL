@@ -124,6 +124,7 @@ namespace mscl
         //  CMD_GNSS_ASSIST_FIX_CONTROL                 - 0x0C23    - GNSS Assisted Fix Control
         //  CMD_GNSS_ASSIST_TIME_UPDATE                 - 0x0C24    - GNSS Assisted Time Update
         //  CMD_PPS_SOURCE                              - 0x0C28    - PPS Source
+        //  CMD_EVENT_TRIGGER_CONFIGURATION             - 0x0C2E    - Event Trigger Configuration
         //  CMD_SAVE_STARTUP_SETTINGS                   - 0x0C30    - Device Startup Settings
         //  CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER     - 0x0C31    - Sensor to Vehicle Frame Transformation Euler Angles
         //  CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT      - 0x0C32    - Sensor to Vehicle Frame Transformation Quaternion
@@ -245,6 +246,7 @@ namespace mscl
             CMD_GNSS_ASSIST_FIX_CONTROL             = 0x0C23,
             CMD_GNSS_ASSIST_TIME_UPDATE             = 0x0C24,
             CMD_PPS_SOURCE                          = 0x0C28,
+            CMD_EVENT_TRIGGER_CONFIGURATION         = 0x0C2E,
             CMD_SAVE_STARTUP_SETTINGS               = 0x0C30,
             CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER = 0x0C31,
             CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT  = 0x0C32,
@@ -351,9 +353,9 @@ namespace mscl
         //  CH_FIELD_SENSOR_ORIENTATION_MATRIX                      - 0x8009    - Orientation Matrix
         //  CH_FIELD_SENSOR_ORIENTATION_QUATERNION                  - 0x800A    - Quaternion
         //  CH_FIELD_SENSOR_ORIENTATION_UPDATE_MATRIX               - 0x800B    - Orientation Update Matrix
-        //  CH_FIELD_SENSOR_EULER_ANGLES                            - 0x800C    - Euler Angles 
+        //  CH_FIELD_SENSOR_EULER_ANGLES                            - 0x800C    - Euler Angles
         //  CH_FIELD_SENSOR_INTERNAL_TIMESTAMP                      - 0x800E    - Internal Timestamp
-        //  CH_FIELD_SENSOR_BEACONED_TIMESTAMP                      - 0x800F    - Beaconed Timestamp    
+        //  CH_FIELD_SENSOR_BEACONED_TIMESTAMP                      - 0x800F    - Beaconed Timestamp
         //  CH_FIELD_SENSOR_STABILIZED_MAG_VEC                      - 0x8010    - Stabilized Mag Vector (North)
         //  CH_FIELD_SENSOR_STABILIZED_ACCEL_VEC                    - 0x8011    - Stabilized Accel Vector (Up)
         //  CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP               - 0x8012    - GPS Correlation Timestamp
@@ -433,7 +435,7 @@ namespace mscl
         //  CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION_UNCERT       - 0x8231    - GNSS Antenna Offset Correction Uncertainty
         //  CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION                - 0x8232    - GNSS Clock Correction
         //  CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION_UNCERT         - 0x8233    - GNSS Clock Correction Uncertainty
-        //  CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION        - 0x8234    - GNSS Multi-Antenna Offset Correction 
+        //  CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION        - 0x8234    - GNSS Multi-Antenna Offset Correction
         //  CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION_UNCERT - 0x8235    - GNSS Multi-Antenna Offset Correction Uncertainty
         //  CH_FIELD_ESTFILTER_ECEF_POS_UNCERT                      - 0x8236    - ECEF Position Uncertainty
         //  CH_FIELD_ESTFILTER_ECEF_VEL_UNCERT                      - 0x8237    - ECEF Velocity Uncertainty
