@@ -647,11 +647,10 @@ namespace mscl
 
     MipTypes::ChannelFieldQualifiers MipNodeFeatures::supportedEventThresholdChannelQualifiers() const
     {
-        //TODO: Uncomment when merged with 3DMEventTriggerCommand
-        // if (!supportsCommand(mscl::MipTypes::Command::CMD_EVENT_TRIGGER_CONFIGURATION))
-        // {
-        //     return{ MipTypes::ChannelFieldQualifiers() };
-        // }
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_EVENT_TRIGGER_CONFIGURATION))
+        {
+            return{ MipTypes::ChannelFieldQualifiers() };
+        }
 
         const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
 
@@ -668,11 +667,10 @@ namespace mscl
 
     MipTypes::MipChannelFields MipNodeFeatures::supportedEventThresholdChannelFields() const
     {
-        //TODO: Uncomment when merged with 3DMEventTriggerCommand
-        // if (!supportsCommand(mscl::MipTypes::Command::CMD_EVENT_TRIGGER_CONFIGURATION))
-        // {
-        //     return{ MipTypes::ChannelFieldQualifiers() };
-        // }
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_EVENT_TRIGGER_CONFIGURATION))
+        {
+            return{ MipTypes::MipChannelFields() };
+        }
 
         const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
 

@@ -2841,19 +2841,57 @@ namespace mscl
             INTERVAL_TYPE = 0x02  // Trigger at evenly-spaced intervals
         };
 
-        // MIP channel field
-        MipTypes::ChannelField channelField;
-
-        // 1-based index of the target parameter within the MIP field
-        uint8 parameterId;
-
-        // Determines the type of comparison
+        //API Variable: type
+        //  Determines the type of comparison
         Type type;
 
+
+        //API Variable: lowThreshold
         // Low threshold
         double lowThreshold;
+
+        //API Variable: highThreshold
         // High threshold
         double highThreshold;
+
+
+        //API Function: channel
+        //  Set the channel field and qualifier from a <ChannelId>
+        void channel(MipTypes::ChannelId channelId);
+
+        //API Function: channel
+        //  Set the channel field and qualifier
+        void channel(MipTypes::ChannelField channelField, MipTypes::ChannelQualifier channelQualifier);
+
+        //API Function: channel
+        //  Set the channel field and qualifier index
+        void channel(MipTypes::ChannelField channelField, uint8 index);
+
+
+        //API Function: channelId
+        //  Get the channel field and qualifier as a <ChannelId>
+        MipTypes::ChannelId channelId() const;
+
+        //API Function: channelField
+        //  Get the channel field
+        MipTypes::ChannelField channelField() const;
+
+        //API Function: channelQualifier
+        //  Get the channel qualifier
+        MipTypes::ChannelQualifier channelQualifier() const;
+
+        //API Function: channelIndex
+        //  Get the channel qualifier index
+        uint8 channelIndex() const;
+
+    private:
+        //API Variable: m_channelQualifier
+        // 1-based index of the target qualifier within the MIP field
+        MipTypes::ChannelQualifier m_channelQualifier;
+
+        //API Variable: m_channelField
+        // MIP channel field
+        MipTypes::ChannelField m_channelField;
     };
 
     //API Struct: EventTriggerCombinationParameter

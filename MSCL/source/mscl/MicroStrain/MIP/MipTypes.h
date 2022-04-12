@@ -1224,6 +1224,40 @@ namespace mscl
         //    A map of <ChannelField> and their respective <ChannelIndex>.
         static ChannelFieldQualifiers channelFieldQualifiers(MipChannelFields fields);
 
+        //API Function: channelFieldQualifier
+        //    Gets the <ChannelQualifier> of the <ChannelField> based on the index.
+        //
+        //Parameters:
+        //    field - <ChannelField> of the channel.
+        //    index - 1-based index of the channel field qualifier
+        //
+        //Returns:
+        //    A <ChannelQualifier> that corresponds to the index or <CH_UNKNOWN> if not found.
+        static ChannelQualifier channelFieldQualifier(ChannelField field, int index);
+
+        //API Function: channelFieldQualifierIndex
+        //    Gets the index of the <ChannelQualifier> in the <ChannelField>.
+        //
+        //Parameters:
+        //    channelId - <ChannelId> of the channel.
+        //
+        //Returns:
+        //    A <ChannelQualifier> 1-based index in the <ChannelField>, or 0 if the <ChannelQualifier>
+        //    isn't in the <ChannelField>.
+        static int channelFieldQualifierIndex(ChannelId channelId);
+
+        //API Function: channelFieldQualifierIndex
+        //    Gets the index of the <ChannelQualifier> in the <ChannelField>.
+        //
+        //Parameters:
+        //    channelField - <ChannelField> of the channel.
+        //    channelQualifier - <ChannelQualifier> of the channel.
+        //
+        //Returns:
+        //    A <ChannelQualifier> 1-based index in the <ChannelField>, or 0 if the <ChannelQualifier>
+        //    isn't in the <ChannelField>.
+        static int channelFieldQualifierIndex(ChannelField channelField, ChannelQualifier channelQualifier);
+
     private:
         //Const: CHANNEL_NAMES
         //    An unordered_map mapping each <ChannelId> to its respective name (universal SensorCloud name).

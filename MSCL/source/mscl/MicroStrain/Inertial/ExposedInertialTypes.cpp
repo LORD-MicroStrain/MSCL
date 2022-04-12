@@ -964,6 +964,45 @@ namespace mscl
         m_scaling = resolution / mPerRev;
     }
 
+    void EventTriggerThresholdParameter::channel(const MipTypes::ChannelId channelId)
+    {
+        m_channelField = channelId.first;
+        m_channelQualifier = channelId.second;
+    }
+
+    void EventTriggerThresholdParameter::channel(const MipTypes::ChannelField channelField,
+        const MipTypes::ChannelQualifier channelQualifier)
+    {
+        m_channelField = channelField;
+        m_channelQualifier = channelQualifier;
+    }
+
+    void EventTriggerThresholdParameter::channel(const MipTypes::ChannelField channelField, const uint8 index)
+    {
+        m_channelField = channelField;
+        m_channelQualifier = MipTypes::channelFieldQualifier(m_channelField, index);
+    }
+
+    MipTypes::ChannelId EventTriggerThresholdParameter::channelId() const
+    {
+        return{ m_channelField, m_channelQualifier };
+    }
+
+    MipTypes::ChannelField EventTriggerThresholdParameter::channelField() const
+    {
+        return m_channelField;
+    }
+
+    MipTypes::ChannelQualifier EventTriggerThresholdParameter::channelQualifier() const
+    {
+        return m_channelQualifier;
+    }
+
+    uint8 EventTriggerThresholdParameter::channelIndex() const
+    {
+        return static_cast<uint8>(MipTypes::channelFieldQualifierIndex(m_channelField, m_channelQualifier));
+    }
+
     float OdometerConfiguration::uncertainty() const
     {
         return m_unc;

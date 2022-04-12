@@ -851,11 +851,78 @@ namespace mscl
 
             if (found != CHANNEL_INDICES.end())
             {
-                fieldQualifiers.emplace(found);
+                fieldQualifiers.emplace(found->first, found->second);
             }
         }
 
         return fieldQualifiers;
+    }
+
+    MipTypes::ChannelQualifier MipTypes::channelFieldQualifier(const ChannelField field, const int index)
+    {
+        // Find the channel field if it exists
+        const auto channelField = CHANNEL_INDICES.find(field);
+
+        // Channel field doesn't exist so the channel is unknown
+        if (channelField == CHANNEL_INDICES.end())
+        {
+            return CH_UNKNOWN;
+        }
+
+        const auto channelQualifiers = channelField->second;
+
+        // Find the channel qualifier with the specified index
+        const auto channelQualifier = std::find_if(channelQualifiers.begin(), channelQualifiers.end(),
+            [&](const ChannelIndex& qualifierNamePair)
+            {
+                return qualifierNamePair.second == index;
+            }
+        );
+
+        // Found the qualifier
+        if (channelQualifier != channelQualifiers.end())
+        {
+            return channelQualifier->first;
+        }
+
+        // Qualifier not found
+        return CH_UNKNOWN;
+    }
+
+    int MipTypes::channelFieldQualifierIndex(const ChannelId channelId)
+    {
+        return channelFieldQualifierIndex(channelId.first, channelId.second);
+    }
+
+    int MipTypes::channelFieldQualifierIndex(const ChannelField channelField, const ChannelQualifier channelQualifier)
+    {
+        // Find the channel field if it exists
+        const auto field = CHANNEL_INDICES.find(channelField);
+
+        // Channel field doesn't exist
+        if (field == CHANNEL_INDICES.end())
+        {
+            return 0;
+        }
+
+        const auto channelQualifiers = field->second;
+
+        // Find the channel qualifier with the specified index
+        const auto qualifier = std::find_if(channelQualifiers.begin(), channelQualifiers.end(),
+            [&](const ChannelIndex& qualifierNamePair)
+        {
+            return qualifierNamePair.first == channelQualifier;
+        }
+        );
+
+        // Found the qualifier
+        if (qualifier != channelQualifiers.end())
+        {
+            return qualifier->second;
+        }
+
+        // Qualifier not found
+        return 0;
     }
 
     size_t MipChannelIdentifier::TypeHash::operator()(const MipChannelIdentifier::Type& type) const
