@@ -93,6 +93,7 @@ namespace mscl
         case MipTypes::CMD_POLL:
         case MipTypes::CMD_GET_BASE_RATE:
         case MipTypes::CMD_FACTORY_STREAMING:
+        case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
         // 0x0D
         case MipTypes::CMD_EF_RUN_FILTER:
         case MipTypes::CMD_EF_EXTERN_SPEED_UPDATE:
@@ -121,6 +122,7 @@ namespace mscl
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM:
         case MipTypes::CMD_GPIO_CONFIGURATION:
         case MipTypes::CMD_ODOMETER_SETTINGS:
+        case MipTypes::CMD_SENSOR_RANGE:
         // 0x0D
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
@@ -179,9 +181,12 @@ namespace mscl
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
         case MipTypes::CMD_GET_BASE_RATE:
         case MipTypes::CMD_MESSAGE_FORMAT:
-            // check that the desc set identifier is echoed back in the response
+        case MipTypes::CMD_SENSOR_RANGE:
+        case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
+            // check that the identifier is echoed back in the response
             matchData.emplace(0, m_data[0]);
             break;
+
         default:
             break;
         }
@@ -223,6 +228,10 @@ namespace mscl
             return "GpioState";
         case MipTypes::CMD_ODOMETER_SETTINGS:
             return "OdometerSettings";
+        case MipTypes::CMD_SENSOR_RANGE:
+            return "SensorRange";
+        case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
+            return "SupportedSensorRanges";
         // 0x0D
         case MipTypes::CMD_EF_RUN_FILTER:
             return "RunEstimationFilter";
@@ -288,8 +297,10 @@ namespace mscl
         case MipTypes::CMD_GPIO_CONFIGURATION: //0xC1
         case MipTypes::CMD_GPIO_STATE: //0xC2
         case MipTypes::CMD_ODOMETER_SETTINGS: //0xC3
-        case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE: //0xD0
+        case MipTypes::CMD_SENSOR_RANGE: //0xD2
+        case MipTypes::CMD_SUPPORTED_SENSOR_RANGES: //0xD3
         // 0x0D
+        case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE: //0xD0
         case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS: //0xD3
         case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET: //0xD4
         case MipTypes::CMD_EF_RELATIVE_POSITION_REF: //0xD5
@@ -358,6 +369,19 @@ namespace mscl
                 ValueType::valueType_uint8, // mode
                 ValueType::valueType_float, // scaling
                 ValueType::valueType_float  // uncertainty
+            };
+
+        case MipTypes::CMD_SENSOR_RANGE:
+            return{
+                ValueType::valueType_uint8, // sensor
+                ValueType::valueType_uint8  // range
+            };
+
+        case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint8,
+                ValueType::valueType_Vector
             };
 
         case MipTypes::CMD_GPIO_CONFIGURATION:
@@ -511,6 +535,11 @@ namespace mscl
                 ValueType::valueType_uint8, // associated data set
                 ValueType::valueType_string // ascii description of receiver
             };
+
+        case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_float };
 
         default:
             // no defined format, read out vector of uint8

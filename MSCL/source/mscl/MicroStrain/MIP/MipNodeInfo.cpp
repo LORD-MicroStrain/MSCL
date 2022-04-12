@@ -29,7 +29,8 @@ namespace mscl
             { MipTypes::CLASS_GNSS4, Utils::Lazy<SampleRates>(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_GNSS4)) },
             { MipTypes::CLASS_GNSS5, Utils::Lazy<SampleRates>(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_GNSS5)) },
         }),
-        m_receiverInfo(std::bind(&MipNode_Impl::getGnssReceiverInfo, m_node))
+        m_receiverInfo(std::bind(&MipNode_Impl::getGnssReceiverInfo, m_node)),
+        m_sensorRanges(std::bind(&MipNode_Impl::getSupportedSensorRanges, m_node))
     {
     }
 
@@ -38,7 +39,8 @@ namespace mscl
                                 const std::map<MipTypes::DataClass, SampleRates>& sampleRates) :
         m_deviceInfo(info),
         m_descriptors(supportedDescriptors),
-        m_receiverInfo({})
+        m_receiverInfo({}),
+        m_sensorRanges(SupportedSensorRanges())
     {
         for (auto dataClass : sampleRates)
         {
@@ -69,5 +71,10 @@ namespace mscl
     const GnssReceivers& MipNodeInfo::gnssReceiverInfo() const
     {
         return *m_receiverInfo;
+    }
+
+    const SupportedSensorRanges& MipNodeInfo::supportedSensorRanges() const
+    {
+        return *m_sensorRanges;
     }
 }

@@ -2,6 +2,7 @@ BuildScripts\updateLicense
 BuildScripts\_testPythonBuild.cmd
 GettingStartedGuide
 sample_mscl_cpp/
+MSCL/source/mscl/Wrapper/MSCL_Wrap.cpp
 
 
 ## Ignore Visual Studio temporary files, build results, and

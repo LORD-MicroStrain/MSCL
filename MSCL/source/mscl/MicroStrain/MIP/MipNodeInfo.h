@@ -62,6 +62,10 @@ namespace mscl
         //  The <GnssReceiverInfo> of the Node (lazy loaded).
         Utils::Lazy<GnssReceivers> m_receiverInfo;
 
+        //Variable: m_sensorRanges
+        //  The <SupportedSensorRanges> of this device (lazy loaded).
+        Utils::Lazy<SupportedSensorRanges> m_sensorRanges;
+
     public:
         //Function: deviceInfo
         //  Gets the <MipDeviceInfo> of the Node.
@@ -78,6 +82,10 @@ namespace mscl
         //Function: gnssReceiverInfo
         // Gets the <GnssReceiverInfo> for all supported receivers
         const GnssReceivers& gnssReceiverInfo() const;
+
+        //Function: supportedSensorRanges
+        // Gets the <SupportedSensorRanges> for this device
+        const SupportedSensorRanges& supportedSensorRanges() const;
     };
 
 }

@@ -179,6 +179,12 @@ namespace mscl
                 saveSettingsAsStartup(params);
                 break;
             }
+            case MipTypes::Command::CMD_SENSOR_RANGE:
+            {
+                // requires all param (or specify types individually)
+                m_impl->saveAsStartup(cmd, { Value::UINT8(SensorRange::Type::ALL) });
+                break;
+            }
 
             default:
                 m_impl->saveAsStartup(cmd);
@@ -217,6 +223,12 @@ namespace mscl
                     params.emplace_back(cmd, val);
                 }
                 loadStartupSettings(params);
+                break;
+            }
+            case MipTypes::Command::CMD_SENSOR_RANGE:
+            {
+                // requires all param (or specify types individually)
+                m_impl->loadStartup(cmd, { Value::UINT8(SensorRange::Type::ALL) });
                 break;
             }
 
@@ -259,9 +271,15 @@ namespace mscl
                 loadFactoryDefaultSettings(params);
                 break;
             }
+            case MipTypes::Command::CMD_SENSOR_RANGE:
+            {
+                // requires all param (or specify types individually)
+                m_impl->loadDefault(cmd, { Value::UINT8(SensorRange::Type::ALL) });
+                break;
+            }
 
             default:
-                m_impl->loadStartup(cmd);
+                m_impl->loadDefault(cmd);
                 break;
             }
         }

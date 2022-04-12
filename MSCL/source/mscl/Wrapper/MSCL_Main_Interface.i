@@ -294,6 +294,8 @@ namespace std
     %template(MipCommandParamPair)              pair<mscl::MipTypes::Command, vector<mscl::Value>>;
     %template(MipCommandParameters)             vector<pair<mscl::MipTypes::Command, vector<mscl::Value>>>;
     %template(GnssReceivers)                    vector<mscl::GnssReceiverInfo>;
+    %template(SensorRanges)                     vector<mscl::SensorRange>;
+    %template(SensorRangeOptions)               map<enum mscl::SensorRange::Type, vector<mscl::SensorRange>>;
     %template(CommPortInfo)                     vector<mscl::DeviceCommPort>;
     %template(ChannelGroups)                    vector<mscl::ChannelGroup>;
     %template(WirelessChannels)                 vector<mscl::WirelessChannel>;

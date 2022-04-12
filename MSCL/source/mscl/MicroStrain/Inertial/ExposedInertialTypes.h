@@ -106,10 +106,10 @@ namespace mscl
         //    FIXTYPE_TIMEONLY       - 0x02    - Time Only
         //    FIXTYPE_NONE           - 0x03    - None
         //    FIXTYPE_INVALID        - 0x04    - Invalid
-		//    FIXTYPE_RTK_FLOAT      - 0x05    - RTK Float
-		//    FIXTYPE_RTK_FIXED      - 0x06    - RTK Fixed
-		//
-		//============================================================================================================
+        //    FIXTYPE_RTK_FLOAT      - 0x05    - RTK Float
+        //    FIXTYPE_RTK_FIXED      - 0x06    - RTK Fixed
+        //
+        //============================================================================================================
         enum GnssFixType
         {
             FIXTYPE_3D = 0x00,
@@ -117,8 +117,8 @@ namespace mscl
             FIXTYPE_TIMEONLY = 0x02,
             FIXTYPE_NONE = 0x03,
             FIXTYPE_INVALID = 0x04,
-			FIXTYPE_RTK_FLOAT = 0x05,
-			FIXTYPE_RTK_FIXED = 0x06,
+            FIXTYPE_RTK_FLOAT = 0x05,
+            FIXTYPE_RTK_FIXED = 0x06,
         };
 
         //============================================================================================================
@@ -261,17 +261,17 @@ namespace mscl
         //============================================================================================================
         //API Enum: FilterState 
         //    The Filter States with the NAV Filter Status field
-		//    Refer to device documentation for supported filter states.
+        //    Refer to device documentation for supported filter states.
         //
         //    FILTERSTATE_STARTUP                - 0x00    - Startup
         //    FILTERSTATE_INIT                   - 0x01    - Initialization (see status flags)
         //    FILTERSTATE_RUNNING_SLN_VALID      - 0x02    - Running, Solution Valid
         //    FILTERSTATE_RUNNING_SLN_ERROR      - 0x03    - Running, Solution Error (see status flags)
         //
-		//    FILTERSTATE_VERT_GYRO              - 0x02    - Vertical gyro mode
-		//    FILTERSTATE_AHRS                   - 0x03    - AHRS mode
-		//    FILTERSTATE_FULL_NAV               - 0x04    - Full navigation mode
-		//============================================================================================================
+        //    FILTERSTATE_VERT_GYRO              - 0x02    - Vertical gyro mode
+        //    FILTERSTATE_AHRS                   - 0x03    - AHRS mode
+        //    FILTERSTATE_FULL_NAV               - 0x04    - Full navigation mode
+        //============================================================================================================
         enum FilterState
         {
             FILTERSTATE_STARTUP            = 0x00,
@@ -279,16 +279,16 @@ namespace mscl
             FILTERSTATE_RUNNING_SLN_VALID  = 0x02,
             FILTERSTATE_RUNNING_SLN_ERROR  = 0x03,
 
-			FILTERSTATE_VERT_GYRO          = 0x02,
-			FILTERSTATE_AHRS               = 0x03,
-			FILTERSTATE_FULL_NAV           = 0x04
-		};
+            FILTERSTATE_VERT_GYRO          = 0x02,
+            FILTERSTATE_AHRS               = 0x03,
+            FILTERSTATE_FULL_NAV           = 0x04
+        };
         
         //============================================================================================================
         //API Enum: FilterStatus_Running
         //    Binary flags that give information with the NAV Filter Status field when filter is initialized and running. Each bit must be checked accordingly.
-		//    Refer to device documentation for supported filter status flags.
-		//
+        //    Refer to device documentation for supported filter status flags.
+        //
         // FILTERSTATUS_IMU_UNAVAILABLE                         - 0x0001    - Filter Running, IMU Unavailable
         // FILTERSTATUS_GPS_UNAVAILABLE                         - 0x0002    - Filter Running, GPS Unavailable
         // FILTERSTATUS_MATRIX_SINGULARITY_IN_CALC              - 0x0008    - Filter Running, Matrix Singularity in Calculation
@@ -305,16 +305,16 @@ namespace mscl
         // FILTERSTATUS_HARD_IRON_OFFSET_EST_HIGH_WARN          - 0x4000    - Filter Running, Hard Iron Offset Estimate High Warning
         // FILTERSTATUS_SOFT_IRON_CORRECTION_EST_HIGH_WARN      - 0x8000    - Filter Running, Soft Iron Correction Estimate High Warning
         //
-		// FILTERSTATUS_CONDITION                               - 0x0003    - Filter Running, Filter Condition Indicator (mask for bits 1 and 2)
-		// FILTERSTATUS_ROLL_PITCH_WARNING                      - 0x0004    - Filter Running, Roll/Pitch angle warning
-		// FILTERSTATUS_HEADING_WARNING                         - 0x0008    - Filter Running, Heading angle warning
-		// FILTERSTATUS_POSITION_WARNING                        - 0x0010    - Filter Running, Position warning
-		// FILTERSTATUS_VELOCITY_WARNING                        - 0x0020    - Filter Running, Velocity warning
-		// FILTERSTATUS_IMU_BIAS_WARNING                        - 0x0040    - Filter Running, IMU bias warning
-		// FILTERSTATUS_GNSS_CLK_WARNING                        - 0x0080    - Filter Running, GNSS clock warning
-		// FILTERSTATUS_ANT_LEVER_ARM_WARNING                   - 0x0100    - Filter Running, Antenna lever arm warning
-		// FILTERSTATUS_MOUNTING_TRANSFORM_WARNING              - 0x0200    - Filter Running, Mounting transformation warning
-		//============================================================================================================
+        // FILTERSTATUS_CONDITION                               - 0x0003    - Filter Running, Filter Condition Indicator (mask for bits 1 and 2)
+        // FILTERSTATUS_ROLL_PITCH_WARNING                      - 0x0004    - Filter Running, Roll/Pitch angle warning
+        // FILTERSTATUS_HEADING_WARNING                         - 0x0008    - Filter Running, Heading angle warning
+        // FILTERSTATUS_POSITION_WARNING                        - 0x0010    - Filter Running, Position warning
+        // FILTERSTATUS_VELOCITY_WARNING                        - 0x0020    - Filter Running, Velocity warning
+        // FILTERSTATUS_IMU_BIAS_WARNING                        - 0x0040    - Filter Running, IMU bias warning
+        // FILTERSTATUS_GNSS_CLK_WARNING                        - 0x0080    - Filter Running, GNSS clock warning
+        // FILTERSTATUS_ANT_LEVER_ARM_WARNING                   - 0x0100    - Filter Running, Antenna lever arm warning
+        // FILTERSTATUS_MOUNTING_TRANSFORM_WARNING              - 0x0200    - Filter Running, Mounting transformation warning
+        //============================================================================================================
         enum FilterStatus_Running
         {
             FILTERSTATUS_IMU_UNAVAILABLE = 0x0001,
@@ -334,15 +334,15 @@ namespace mscl
             FILTERSTATUS_SOFT_IRON_CORRECTION_EST_HIGH_WARN = 0x8000,
 
             FILTERSTATUS_CONDITION = 0x0003,
-			FILTERSTATUS_ROLL_PITCH_WARNING = 0x0004,
-			FILTERSTATUS_HEADING_WARNING = 0x0008,
-			FILTERSTATUS_POSITION_WARNING = 0x0010,
-			FILTERSTATUS_VELOCITY_WARNING = 0x0020,
-			FILTERSTATUS_IMU_BIAS_WARNING = 0x0040,
-			FILTERSTATUS_GNSS_CLK_WARNING = 0x0080,
-			FILTERSTATUS_ANT_LEVER_ARM_WARNING = 0x0100,
-			FILTERSTATUS_MOUNTING_TRANSFORM_WARNING = 0x0200,
-		};
+            FILTERSTATUS_ROLL_PITCH_WARNING = 0x0004,
+            FILTERSTATUS_HEADING_WARNING = 0x0008,
+            FILTERSTATUS_POSITION_WARNING = 0x0010,
+            FILTERSTATUS_VELOCITY_WARNING = 0x0020,
+            FILTERSTATUS_IMU_BIAS_WARNING = 0x0040,
+            FILTERSTATUS_GNSS_CLK_WARNING = 0x0080,
+            FILTERSTATUS_ANT_LEVER_ARM_WARNING = 0x0100,
+            FILTERSTATUS_MOUNTING_TRANSFORM_WARNING = 0x0200,
+        };
 
 
         //============================================================================================================
@@ -472,7 +472,7 @@ namespace mscl
             NONE = 0x01,
             WORLD_MAGNETIC_MODEL = 0x02,
             MANUAL = 0x03
-		};
+        };
 
         //API Enum: AdaptiveMeasurementMode
         //    The enum to represent the different available options and combinations for the Adaptive Measurement commands (0x0D, 0x44-0x46)
@@ -1883,8 +1883,8 @@ namespace mscl
             autoHeadingAlignmentMethod(HeadingAlignmentOption::GNSS_Kinematic),
             referenceFrame(PositionVelocityReferenceFrame::ECEF) {}
 
-		//API Variable: autoInitialize
-		bool autoInitialize;
+        //API Variable: autoInitialize
+        bool autoInitialize;
 
         //API Variable: initialValuesSource
         FilterInitialValuesSource initialValuesSource;
