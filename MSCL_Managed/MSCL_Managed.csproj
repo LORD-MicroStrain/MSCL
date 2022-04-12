@@ -253,8 +253,6 @@
     <Compile Include="mscl\StreamInfo.cs" />
     <Compile Include="mscl\StructuralHealth.cs" />
     <Compile Include="mscl\SupportedSensorRanges.cs" />
-    <Compile Include="mscl\SWIGTYPE_p_std__arrayT_unsigned_char_4_t.cs" />
-    <Compile Include="mscl\SWIGTYPE_p_unsigned_char.cs" />
     <Compile Include="mscl\SyncNetworkInfo.cs" />
     <Compile Include="mscl\SyncSamplingNetwork.cs" />
     <Compile Include="mscl\TareAxisValues.cs" />
