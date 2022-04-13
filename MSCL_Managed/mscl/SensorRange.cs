@@ -44,6 +44,10 @@ public class SensorRange : global::System.IDisposable {
     }
   }
 
+  public SensorRange() : this(msclPINVOKE.new_SensorRange(), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public SensorRange.Type type() {
     SensorRange.Type ret = (SensorRange.Type)msclPINVOKE.SensorRange_type(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

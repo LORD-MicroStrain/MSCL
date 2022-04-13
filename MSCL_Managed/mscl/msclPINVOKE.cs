@@ -3780,6 +3780,9 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_DeviceCommPort")]
   public static extern void delete_DeviceCommPort(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_SensorRange")]
+  public static extern global::System.IntPtr new_SensorRange();
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRange_type")]
   public static extern int SensorRange_type(global::System.Runtime.InteropServices.HandleRef jarg1);
 
@@ -3792,14 +3795,14 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_SensorRange")]
   public static extern void delete_SensorRange(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_SupportedSensorRanges")]
+  public static extern global::System.IntPtr new_SupportedSensorRanges();
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SupportedSensorRanges_options")]
   public static extern global::System.IntPtr SupportedSensorRanges_options(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SupportedSensorRanges_lookupRecommended")]
   public static extern global::System.IntPtr SupportedSensorRanges_lookupRecommended(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, float jarg3);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_SupportedSensorRanges")]
-  public static extern global::System.IntPtr new_SupportedSensorRanges();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_SupportedSensorRanges")]
   public static extern void delete_SupportedSensorRanges(global::System.Runtime.InteropServices.HandleRef jarg1);
