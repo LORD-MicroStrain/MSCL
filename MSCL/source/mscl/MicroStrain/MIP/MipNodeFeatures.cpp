@@ -663,4 +663,44 @@ namespace mscl
             { 4, pin4Features }
         };
     }
+
+    GeographicSources MipNodeFeatures::supportedDeclinationOptions() const
+    {
+        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ahrs:
+        case MipModels::node_3dm_cv7_ar:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
+        default:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+        }
+    }
+
+    GeographicSources MipNodeFeatures::supportedInclinationOptions()
+    {
+        return{
+            InertialTypes::GeographicSourceOption::NONE,
+            InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+            InertialTypes::GeographicSourceOption::MANUAL
+        };
+    }
+
+    GeographicSources MipNodeFeatures::supportedMagneticMagnitudeOptions()
+    {
+        return{
+            InertialTypes::GeographicSourceOption::NONE,
+            InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+            InertialTypes::GeographicSourceOption::MANUAL
+        };
+    }
 }

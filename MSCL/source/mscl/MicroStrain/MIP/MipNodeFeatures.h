@@ -265,5 +265,26 @@ namespace mscl
         //Returns:
         //    A <GpioPinOptions> map of supported GPIO pin configurations
         const GpioPinOptions supportedGpioConfigurations() const;
+
+        //API Function: supportedDeclinationOptions
+        //    Gets a vector of supported declination options
+        //
+        //Returns:
+        //    A <GeographicSources> vector of supported declination options
+        GeographicSources supportedDeclinationOptions() const;
+
+        //API Function: supportedInclinationOptions
+        //    Gets a vector of supported inclination options
+        //
+        //Returns:
+        //    A <GeographicSources> vector of supported inclination options
+        static GeographicSources supportedInclinationOptions();
+
+        //API Function: supportedMagneticMagnitudeOptions
+        //    Gets a vector of supported magnetic magnitude options
+        //
+        //Returns:
+        //    A <GeographicSources> vector of supported magnetic magnitude options
+        static GeographicSources supportedMagneticMagnitudeOptions();
     };
 }

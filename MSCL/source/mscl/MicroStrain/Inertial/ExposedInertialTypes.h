@@ -461,7 +461,7 @@ namespace mscl
             ENABLE_SOFT_IRON_AUTO_CALIBRATION = 0x0040
         };
 
-        //API Enum: EstimationControlOption
+        //API Enum: GeographicSourceOption
         //    The enum to represent the source options for Declination (0x0D, 0x43), Inclination (0x0D, 0x4C), and Magnitude Source (0x0D, 0x4D)
         //
         //      NONE                        - 0x0001
@@ -676,6 +676,10 @@ namespace mscl
     //API Typedef: AidingMeasurementSourceOptions
     //  A vector of <InertialTypes::AidingMeasurementSource> values
     typedef std::vector<InertialTypes::AidingMeasurementSource> AidingMeasurementSourceOptions;
+
+    //API Typedef: GeographicSources
+    //  A vector of <InertialTypes::GeographicSourceOption> values
+    typedef std::vector<InertialTypes::GeographicSourceOption> GeographicSources;
 
     ///////////////  Matrix_3x3  ///////////////
 
