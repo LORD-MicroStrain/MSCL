@@ -539,7 +539,8 @@ namespace mscl
         case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
             return{
                 ValueType::valueType_uint8,
-                ValueType::valueType_float };
+                ValueType::valueType_float
+            };
 
         default:
             // no defined format, read out vector of uint8

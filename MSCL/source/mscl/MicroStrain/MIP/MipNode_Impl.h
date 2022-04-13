@@ -309,7 +309,7 @@ namespace mscl
 
         //Function: getSupportedSensorRanges
         //    Gets the supported sensor ranges for this device.
-        //    Sends the Supported Ranges command (0x0C,0x53) to the device. 
+        //    Sends the Supported Ranges command (0x0C,0x53) to the device.
         //
         //Returns:
         //    The supported sensor range information.
