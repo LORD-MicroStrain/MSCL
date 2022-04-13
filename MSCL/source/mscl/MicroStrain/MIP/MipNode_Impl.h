@@ -307,6 +307,19 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         virtual GnssReceivers getGnssReceiverInfo() const;
 
+        //Function: getSupportedSensorRanges
+        //    Gets the supported sensor ranges for this device.
+        //    Sends the Supported Ranges command (0x0C,0x53) to the device.
+        //
+        //Returns:
+        //    The supported sensor range information.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        virtual SupportedSensorRanges getSupportedSensorRanges() const;
+
         //Function: getDescriptorSets
         //    Gets the supported descriptor sets for this node, representing which commands and data sets are available.
         //    Sends the "Get Device Descriptor Sets" command to the device. 

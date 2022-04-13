@@ -854,6 +854,39 @@ namespace mscl
         });
     }
 
+    SensorRange InertialNode::getSensorRange(SensorRange::Type sensorRangeType) const
+    {
+        MipFieldValues ret = m_impl->get(MipTypes::Command::CMD_SENSOR_RANGE, {
+            Value::UINT8(static_cast<uint8>(sensorRangeType)) });
+        uint8 rangeIndex = ret[1].as_uint8();
+
+        SensorRanges rangeOptions = features().supportedSensorRanges(sensorRangeType);
+
+        for (SensorRange range : rangeOptions)
+        {
+            if (range.id() == rangeIndex)
+            {
+                return range;
+            }
+        }
+
+        return SensorRange(sensorRangeType, rangeIndex);
+    }
+
+    void InertialNode::setSensorRange(SensorRange range)
+    {
+        m_impl->set(MipTypes::Command::CMD_SENSOR_RANGE, {
+            Value::UINT8(static_cast<uint8>(range.type())), // sensor range type
+            Value::UINT8(range.id()) }); // range index
+    }
+
+    void InertialNode::setSensorRange(SensorRange::Type type, uint8 rangeId)
+    {
+        m_impl->set(MipTypes::Command::CMD_SENSOR_RANGE, {
+            Value::UINT8(static_cast<uint8>(type)), // sensor range type
+            Value::UINT8(rangeId) }); // range index
+    }
+
     GpioConfiguration InertialNode::getGpioConfig(uint8 pin) const
     {
         MipFieldValues data = m_impl->get(MipTypes::CMD_GPIO_CONFIGURATION, {
