@@ -664,7 +664,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GeographicSource.h" />
     <ClInclude Include="source\mscl\Bin.h" />
     <ClInclude Include="source\mscl\BitMask.h" />
     <ClInclude Include="source\mscl\Communication\BoostCommunication.h" />

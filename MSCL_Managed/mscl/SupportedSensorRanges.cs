@@ -44,6 +44,10 @@ public class SupportedSensorRanges : global::System.IDisposable {
     }
   }
 
+  public SupportedSensorRanges() : this(msclPINVOKE.new_SupportedSensorRanges(), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public SensorRangeOptions options() {
     SensorRangeOptions ret = new SensorRangeOptions(msclPINVOKE.SupportedSensorRanges_options(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -54,10 +58,6 @@ public class SupportedSensorRanges : global::System.IDisposable {
     SensorRange ret = new SensorRange(msclPINVOKE.SupportedSensorRanges_lookupRecommended(swigCPtr, (int)type, range), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
-  }
-
-  public SupportedSensorRanges() : this(msclPINVOKE.new_SupportedSensorRanges(), true) {
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
 }

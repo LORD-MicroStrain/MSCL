@@ -1729,10 +1729,10 @@ namespace mscl
             m_id(index)
         {};
 
+    public:
         // needed for SWIG - should not be used
         SensorRange() {};
 
-    public:
         //API Function: type
         // The SensorRange::Type of this range
         Type type() const { return m_type; };
@@ -1764,6 +1764,8 @@ namespace mscl
         SensorRangeOptions m_options;
 
     public:
+        SupportedSensorRanges() {};
+
         //API Function: options
         // Get the supported sensor range options
         //
