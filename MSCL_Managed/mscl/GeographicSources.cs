@@ -10,21 +10,21 @@
 
 namespace mscl {
 
-public class SensorRanges : global::System.IDisposable, global::System.Collections.IEnumerable, global::System.Collections.Generic.IEnumerable<SensorRange>
+public class GeographicSources : global::System.IDisposable, global::System.Collections.IEnumerable, global::System.Collections.Generic.IEnumerable<InertialTypes.GeographicSourceOption>
  {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
 
-  internal SensorRanges(global::System.IntPtr cPtr, bool cMemoryOwn) {
+  internal GeographicSources(global::System.IntPtr cPtr, bool cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(SensorRanges obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(GeographicSources obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  ~SensorRanges() {
+  ~GeographicSources() {
     Dispose(false);
   }
 
@@ -38,25 +38,25 @@ public class SensorRanges : global::System.IDisposable, global::System.Collectio
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_SensorRanges(swigCPtr);
+          msclPINVOKE.delete_GeographicSources(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
     }
   }
 
-  public SensorRanges(global::System.Collections.IEnumerable c) : this() {
+  public GeographicSources(global::System.Collections.IEnumerable c) : this() {
     if (c == null)
       throw new global::System.ArgumentNullException("c");
-    foreach (SensorRange element in c) {
+    foreach (InertialTypes.GeographicSourceOption element in c) {
       this.Add(element);
     }
   }
 
-  public SensorRanges(global::System.Collections.Generic.IEnumerable<SensorRange> c) : this() {
+  public GeographicSources(global::System.Collections.Generic.IEnumerable<InertialTypes.GeographicSourceOption> c) : this() {
     if (c == null)
       throw new global::System.ArgumentNullException("c");
-    foreach (SensorRange element in c) {
+    foreach (InertialTypes.GeographicSourceOption element in c) {
       this.Add(element);
     }
   }
@@ -73,7 +73,7 @@ public class SensorRanges : global::System.IDisposable, global::System.Collectio
     }
   }
 
-  public SensorRange this[int index]  {
+  public InertialTypes.GeographicSourceOption this[int index]  {
     get {
       return getitem(index);
     }
@@ -105,17 +105,17 @@ public class SensorRanges : global::System.IDisposable, global::System.Collectio
     }
   }
 
-  public void CopyTo(SensorRange[] array)
+  public void CopyTo(InertialTypes.GeographicSourceOption[] array)
   {
     CopyTo(0, array, 0, this.Count);
   }
 
-  public void CopyTo(SensorRange[] array, int arrayIndex)
+  public void CopyTo(InertialTypes.GeographicSourceOption[] array, int arrayIndex)
   {
     CopyTo(0, array, arrayIndex, this.Count);
   }
 
-  public void CopyTo(int index, SensorRange[] array, int arrayIndex, int count)
+  public void CopyTo(int index, InertialTypes.GeographicSourceOption[] array, int arrayIndex, int count)
   {
     if (array == null)
       throw new global::System.ArgumentNullException("array");
@@ -133,22 +133,22 @@ public class SensorRanges : global::System.IDisposable, global::System.Collectio
       array.SetValue(getitemcopy(index+i), arrayIndex+i);
   }
 
-  public SensorRange[] ToArray() {
-    SensorRange[] array = new SensorRange[this.Count];
+  public InertialTypes.GeographicSourceOption[] ToArray() {
+    InertialTypes.GeographicSourceOption[] array = new InertialTypes.GeographicSourceOption[this.Count];
     this.CopyTo(array);
     return array;
   }
 
-  global::System.Collections.Generic.IEnumerator<SensorRange> global::System.Collections.Generic.IEnumerable<SensorRange>.GetEnumerator() {
-    return new SensorRangesEnumerator(this);
+  global::System.Collections.Generic.IEnumerator<InertialTypes.GeographicSourceOption> global::System.Collections.Generic.IEnumerable<InertialTypes.GeographicSourceOption>.GetEnumerator() {
+    return new GeographicSourcesEnumerator(this);
   }
 
   global::System.Collections.IEnumerator global::System.Collections.IEnumerable.GetEnumerator() {
-    return new SensorRangesEnumerator(this);
+    return new GeographicSourcesEnumerator(this);
   }
 
-  public SensorRangesEnumerator GetEnumerator() {
-    return new SensorRangesEnumerator(this);
+  public GeographicSourcesEnumerator GetEnumerator() {
+    return new GeographicSourcesEnumerator(this);
   }
 
   // Type-safe enumerator
@@ -156,15 +156,15 @@ public class SensorRanges : global::System.IDisposable, global::System.Collectio
   /// whenever the collection is modified. This has been done for changes in the size of the
   /// collection but not when one of the elements of the collection is modified as it is a bit
   /// tricky to detect unmanaged code that modifies the collection under our feet.
-  public sealed class SensorRangesEnumerator : global::System.Collections.IEnumerator
-    , global::System.Collections.Generic.IEnumerator<SensorRange>
+  public sealed class GeographicSourcesEnumerator : global::System.Collections.IEnumerator
+    , global::System.Collections.Generic.IEnumerator<InertialTypes.GeographicSourceOption>
   {
-    private SensorRanges collectionRef;
+    private GeographicSources collectionRef;
     private int currentIndex;
     private object currentObject;
     private int currentSize;
 
-    public SensorRangesEnumerator(SensorRanges collection) {
+    public GeographicSourcesEnumerator(GeographicSources collection) {
       collectionRef = collection;
       currentIndex = -1;
       currentObject = null;
@@ -172,7 +172,7 @@ public class SensorRanges : global::System.IDisposable, global::System.Collectio
     }
 
     // Type-safe iterator Current
-    public SensorRange Current {
+    public InertialTypes.GeographicSourceOption Current {
       get {
         if (currentIndex == -1)
           throw new global::System.InvalidOperationException("Enumeration not started.");
@@ -180,7 +180,7 @@ public class SensorRanges : global::System.IDisposable, global::System.Collectio
           throw new global::System.InvalidOperationException("Enumeration finished.");
         if (currentObject == null)
           throw new global::System.InvalidOperationException("Collection modified.");
-        return (SensorRange)currentObject;
+        return (InertialTypes.GeographicSourceOption)currentObject;
       }
     }
 
@@ -218,112 +218,112 @@ public class SensorRanges : global::System.IDisposable, global::System.Collectio
   }
 
   public void Clear() {
-    msclPINVOKE.SensorRanges_Clear(swigCPtr);
+    msclPINVOKE.GeographicSources_Clear(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void Add(SensorRange x) {
-    msclPINVOKE.SensorRanges_Add(swigCPtr, SensorRange.getCPtr(x));
+  public void Add(InertialTypes.GeographicSourceOption x) {
+    msclPINVOKE.GeographicSources_Add(swigCPtr, (int)x);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   private uint size() {
-    uint ret = msclPINVOKE.SensorRanges_size(swigCPtr);
+    uint ret = msclPINVOKE.GeographicSources_size(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private uint capacity() {
-    uint ret = msclPINVOKE.SensorRanges_capacity(swigCPtr);
+    uint ret = msclPINVOKE.GeographicSources_capacity(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private void reserve(uint n) {
-    msclPINVOKE.SensorRanges_reserve(swigCPtr, n);
+    msclPINVOKE.GeographicSources_reserve(swigCPtr, n);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public SensorRanges() : this(msclPINVOKE.new_SensorRanges__SWIG_0(), true) {
+  public GeographicSources() : this(msclPINVOKE.new_GeographicSources__SWIG_0(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public SensorRanges(SensorRanges other) : this(msclPINVOKE.new_SensorRanges__SWIG_1(SensorRanges.getCPtr(other)), true) {
+  public GeographicSources(GeographicSources other) : this(msclPINVOKE.new_GeographicSources__SWIG_1(GeographicSources.getCPtr(other)), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public SensorRanges(int capacity) : this(msclPINVOKE.new_SensorRanges__SWIG_2(capacity), true) {
+  public GeographicSources(int capacity) : this(msclPINVOKE.new_GeographicSources__SWIG_2(capacity), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  private SensorRange getitemcopy(int index) {
-    SensorRange ret = new SensorRange(msclPINVOKE.SensorRanges_getitemcopy(swigCPtr, index), true);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  private SensorRange getitem(int index) {
-    SensorRange ret = new SensorRange(msclPINVOKE.SensorRanges_getitem(swigCPtr, index), false);
+  private InertialTypes.GeographicSourceOption getitemcopy(int index) {
+    InertialTypes.GeographicSourceOption ret = (InertialTypes.GeographicSourceOption)msclPINVOKE.GeographicSources_getitemcopy(swigCPtr, index);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  private void setitem(int index, SensorRange val) {
-    msclPINVOKE.SensorRanges_setitem(swigCPtr, index, SensorRange.getCPtr(val));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void AddRange(SensorRanges values) {
-    msclPINVOKE.SensorRanges_AddRange(swigCPtr, SensorRanges.getCPtr(values));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public SensorRanges GetRange(int index, int count) {
-    global::System.IntPtr cPtr = msclPINVOKE.SensorRanges_GetRange(swigCPtr, index, count);
-    SensorRanges ret = (cPtr == global::System.IntPtr.Zero) ? null : new SensorRanges(cPtr, true);
+  private InertialTypes.GeographicSourceOption getitem(int index) {
+    InertialTypes.GeographicSourceOption ret = (InertialTypes.GeographicSourceOption)msclPINVOKE.GeographicSources_getitem(swigCPtr, index);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void Insert(int index, SensorRange x) {
-    msclPINVOKE.SensorRanges_Insert(swigCPtr, index, SensorRange.getCPtr(x));
+  private void setitem(int index, InertialTypes.GeographicSourceOption val) {
+    msclPINVOKE.GeographicSources_setitem(swigCPtr, index, (int)val);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void InsertRange(int index, SensorRanges values) {
-    msclPINVOKE.SensorRanges_InsertRange(swigCPtr, index, SensorRanges.getCPtr(values));
+  public void AddRange(GeographicSources values) {
+    msclPINVOKE.GeographicSources_AddRange(swigCPtr, GeographicSources.getCPtr(values));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public GeographicSources GetRange(int index, int count) {
+    global::System.IntPtr cPtr = msclPINVOKE.GeographicSources_GetRange(swigCPtr, index, count);
+    GeographicSources ret = (cPtr == global::System.IntPtr.Zero) ? null : new GeographicSources(cPtr, true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void Insert(int index, InertialTypes.GeographicSourceOption x) {
+    msclPINVOKE.GeographicSources_Insert(swigCPtr, index, (int)x);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void InsertRange(int index, GeographicSources values) {
+    msclPINVOKE.GeographicSources_InsertRange(swigCPtr, index, GeographicSources.getCPtr(values));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void RemoveAt(int index) {
-    msclPINVOKE.SensorRanges_RemoveAt(swigCPtr, index);
+    msclPINVOKE.GeographicSources_RemoveAt(swigCPtr, index);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void RemoveRange(int index, int count) {
-    msclPINVOKE.SensorRanges_RemoveRange(swigCPtr, index, count);
+    msclPINVOKE.GeographicSources_RemoveRange(swigCPtr, index, count);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public static SensorRanges Repeat(SensorRange value, int count) {
-    global::System.IntPtr cPtr = msclPINVOKE.SensorRanges_Repeat(SensorRange.getCPtr(value), count);
-    SensorRanges ret = (cPtr == global::System.IntPtr.Zero) ? null : new SensorRanges(cPtr, true);
+  public static GeographicSources Repeat(InertialTypes.GeographicSourceOption value, int count) {
+    global::System.IntPtr cPtr = msclPINVOKE.GeographicSources_Repeat((int)value, count);
+    GeographicSources ret = (cPtr == global::System.IntPtr.Zero) ? null : new GeographicSources(cPtr, true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public void Reverse() {
-    msclPINVOKE.SensorRanges_Reverse__SWIG_0(swigCPtr);
+    msclPINVOKE.GeographicSources_Reverse__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void Reverse(int index, int count) {
-    msclPINVOKE.SensorRanges_Reverse__SWIG_1(swigCPtr, index, count);
+    msclPINVOKE.GeographicSources_Reverse__SWIG_1(swigCPtr, index, count);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void SetRange(int index, SensorRanges values) {
-    msclPINVOKE.SensorRanges_SetRange(swigCPtr, index, SensorRanges.getCPtr(values));
+  public void SetRange(int index, GeographicSources values) {
+    msclPINVOKE.GeographicSources_SetRange(swigCPtr, index, GeographicSources.getCPtr(values));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

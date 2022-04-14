@@ -182,6 +182,24 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public GeographicSources supportedDeclinationOptions() {
+    GeographicSources ret = new GeographicSources(msclPINVOKE.MipNodeFeatures_supportedDeclinationOptions(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static GeographicSources supportedInclinationOptions() {
+    GeographicSources ret = new GeographicSources(msclPINVOKE.MipNodeFeatures_supportedInclinationOptions(), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static GeographicSources supportedMagneticMagnitudeOptions() {
+    GeographicSources ret = new GeographicSources(msclPINVOKE.MipNodeFeatures_supportedMagneticMagnitudeOptions(), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }
 
 }
