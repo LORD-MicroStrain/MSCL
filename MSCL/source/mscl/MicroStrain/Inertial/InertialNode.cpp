@@ -854,6 +854,39 @@ namespace mscl
         });
     }
 
+    SensorRange InertialNode::getSensorRange(SensorRange::Type sensorRangeType) const
+    {
+        MipFieldValues ret = m_impl->get(MipTypes::Command::CMD_SENSOR_RANGE, {
+            Value::UINT8(static_cast<uint8>(sensorRangeType)) });
+        uint8 rangeIndex = ret[1].as_uint8();
+
+        SensorRanges rangeOptions = features().supportedSensorRanges(sensorRangeType);
+
+        for (SensorRange range : rangeOptions)
+        {
+            if (range.id() == rangeIndex)
+            {
+                return range;
+            }
+        }
+
+        return SensorRange(sensorRangeType, rangeIndex);
+    }
+
+    void InertialNode::setSensorRange(SensorRange range)
+    {
+        m_impl->set(MipTypes::Command::CMD_SENSOR_RANGE, {
+            Value::UINT8(static_cast<uint8>(range.type())), // sensor range type
+            Value::UINT8(range.id()) }); // range index
+    }
+
+    void InertialNode::setSensorRange(SensorRange::Type type, uint8 rangeId)
+    {
+        m_impl->set(MipTypes::Command::CMD_SENSOR_RANGE, {
+            Value::UINT8(static_cast<uint8>(type)), // sensor range type
+            Value::UINT8(rangeId) }); // range index
+    }
+
     GpioConfiguration InertialNode::getGpioConfig(uint8 pin) const
     {
         MipFieldValues data = m_impl->get(MipTypes::CMD_GPIO_CONFIGURATION, {
@@ -890,6 +923,87 @@ namespace mscl
             Value::UINT8(pin),
             Value::BOOL(state)
             });
+    }
+
+    EventTriggerConfiguration InertialNode::getEventTriggerConfig(const uint8 instance) const
+    {
+        const ByteStream response = m_impl->get_RawResponseData(MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION, {
+                                                              Value::UINT8(instance) });
+        DataBuffer data(response);
+
+        EventTriggerConfiguration config;
+
+        config.instance = data.read_uint8();
+        config.trigger  = static_cast<EventTriggerConfiguration::Trigger>(data.read_uint8());
+
+        switch (config.trigger)
+        {
+        case EventTriggerConfiguration::GPIO_TRIGGER:
+            config.parameters.gpio.pin  = data.read_uint8();
+            config.parameters.gpio.mode = static_cast<EventTriggerGpioParameter::Mode>(data.read_uint8());
+            break;
+
+        case EventTriggerConfiguration::THRESHOLD_TRIGGER:
+            config.parameters.threshold.channelField    = static_cast<MipTypes::ChannelField>(data.read_uint16());
+            config.parameters.threshold.parameterId     = data.read_uint8();
+            config.parameters.threshold.type            = static_cast<EventTriggerThresholdParameter::Type>(data.read_uint8());
+            config.parameters.threshold.lowThreshold    = data.read_double();
+            config.parameters.threshold.highThreshold   = data.read_double();
+            break;
+
+        case EventTriggerConfiguration::COMBINATION_TRIGGER:
+            config.parameters.combination.logicTable = data.read_uint16();
+
+            for (uint8& inputTrigger : config.parameters.combination.inputTriggers)
+            {
+                inputTrigger = data.read_uint8();
+            }
+            break;
+
+        case EventTriggerConfiguration::NONE:
+            break;
+        }
+
+        return config;
+    }
+
+    void InertialNode::setEventTriggerConfig(const EventTriggerConfiguration config) const
+    {
+        MipFieldValues values = {
+            Value::UINT8(config.instance),
+            Value::UINT8(static_cast<uint8>(config.trigger))
+        };
+
+        switch (config.trigger)
+        {
+        case EventTriggerConfiguration::GPIO_TRIGGER:
+            values.push_back(Value::UINT8(config.parameters.gpio.pin));
+            values.push_back(Value::UINT8(static_cast<uint8>(config.parameters.gpio.mode)));
+            break;
+
+        case EventTriggerConfiguration::THRESHOLD_TRIGGER:
+            values.push_back(Value::UINT16(static_cast<uint16>(config.parameters.threshold.channelField)));
+            values.push_back(Value::UINT8(config.parameters.threshold.parameterId));
+            values.push_back(Value::UINT8(static_cast<uint8>(config.parameters.threshold.type)));
+            values.push_back(Value::DOUBLE(config.parameters.threshold.lowThreshold));
+            values.push_back(Value::DOUBLE(config.parameters.threshold.highThreshold));
+            break;
+
+        case EventTriggerConfiguration::COMBINATION_TRIGGER:
+        {
+            values.push_back(Value::UINT16(config.parameters.combination.logicTable));
+
+            for (const uint8 inputTrigger : config.parameters.combination.inputTriggers)
+            {
+                values.push_back(Value::UINT8(inputTrigger));
+            }
+            break;
+        }
+        case EventTriggerConfiguration::NONE:
+            break;
+        }
+
+        m_impl->set(MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION, values);
     }
 
     AntennaLeverArmCalConfiguration InertialNode::getAntennaLeverArmCal() const

@@ -131,6 +131,33 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the Node.
         const GnssReceivers& gnssReceiverInfo() const;
 
+        //API Function: supportedSensorRanges
+        //    Gets the <SupportedSensorRanges> for each configurable sensor type.
+        //
+        //Returns:
+        //    A <SupportedSensorRanges> list containing all supported <SensorRange> options
+        //
+        //Exceptions:
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Communication>: Timed out waiting for a response.
+        //    - <Error_Connection>: A connection error has occurred with the Node.
+        const SupportedSensorRanges& supportedSensorRanges() const;
+
+        //API Function: supportedSensorRanges
+        //    Gets the <SupportedSensorRanges> for the specified configurable sensor type.
+        //
+        //Parameters:
+        //    type - The <SensorRange::Type> to lookup range options for
+        //
+        //Returns:
+        //    A <SupportedSensorRanges> list containing all supported <SensorRange> options
+        //
+        //Exceptions:
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Communication>: Timed out waiting for a response.
+        //    - <Error_Connection>: A connection error has occurred with the Node.
+        const SensorRanges supportedSensorRanges(SensorRange::Type type) const;
+
         //API Function: commPortInfo
         //    Gets a list of <DeviceCommPort> info objects for each comm port on the device.
         //

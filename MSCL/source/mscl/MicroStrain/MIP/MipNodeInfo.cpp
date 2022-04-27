@@ -31,7 +31,8 @@ namespace mscl
         }),
         m_receiverInfo(std::bind(&MipNode_Impl::getGnssReceiverInfo, m_node)),
         m_eventActionInfo(std::bind(&MipNode_Impl::getEventInfo, m_node, EventSupportInfo::ACTIONS)),
-        m_eventTriggerInfo(std::bind(&MipNode_Impl::getEventInfo, m_node, EventSupportInfo::TRIGGERS))
+        m_eventTriggerInfo(std::bind(&MipNode_Impl::getEventInfo, m_node, EventSupportInfo::TRIGGERS)),
+        m_sensorRanges(std::bind(&MipNode_Impl::getSupportedSensorRanges, m_node))
     {
     }
 
@@ -42,7 +43,8 @@ namespace mscl
         m_descriptors(supportedDescriptors),
         m_receiverInfo({}),
         m_eventActionInfo({}),
-        m_eventTriggerInfo({})
+        m_eventTriggerInfo({}),
+        m_sensorRanges(SupportedSensorRanges())
     {
         for (auto dataClass : sampleRates)
         {
@@ -83,5 +85,10 @@ namespace mscl
     const EventSupportInfo& MipNodeInfo::eventTriggerInfo() const
     {
         return *m_eventTriggerInfo;
+    }
+
+    const SupportedSensorRanges& MipNodeInfo::supportedSensorRanges() const
+    {
+        return *m_sensorRanges;
     }
 }

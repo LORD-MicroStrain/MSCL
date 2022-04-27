@@ -14,6 +14,12 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
+Forthcoming
+- Added support for MIP commands:
+    - Event Trigger Configuration (0x0C,0x2E)
+    - Get Calibrated Sensor Ranges (0x0C,0x53)
+    - Sensor Range (0x0C,0x52)
+
 64.2.2 - 2022-03-08
 - Reverted defaul MIP command timeout to 250 ms
 - Increased timeout for MipNode::saveSettingsAsStartup() to 2500 ms

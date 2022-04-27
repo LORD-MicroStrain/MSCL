@@ -141,7 +141,13 @@
     <Compile Include="mscl\EnableDisableMeasurements.cs" />
     <Compile Include="mscl\EstimationControlOptions.cs" />
     <Compile Include="mscl\EulerAngles.cs" />
+    <Compile Include="mscl\EventInputTriggers.cs" />
+    <Compile Include="mscl\EventTriggerCombinationParameter.cs" />
+    <Compile Include="mscl\EventTriggerConfiguration.cs" />
+    <Compile Include="mscl\EventTriggerGpioParameter.cs" />
     <Compile Include="mscl\EventTriggerOptions.cs" />
+    <Compile Include="mscl\EventTriggerParameters.cs" />
+    <Compile Include="mscl\EventTriggerThresholdParameter.cs" />
     <Compile Include="mscl\Exceptions.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -234,6 +240,9 @@
     <Compile Include="mscl\SatellitePRNs.cs" />
     <Compile Include="mscl\SBASSettingsData.cs" />
     <Compile Include="mscl\SensorOutputModes.cs" />
+    <Compile Include="mscl\SensorRange.cs" />
+    <Compile Include="mscl\SensorRangeOptions.cs" />
+    <Compile Include="mscl\SensorRanges.cs" />
     <Compile Include="mscl\SetToIdleStatus.cs" />
     <Compile Include="mscl\ShuntCalCmdInfo.cs" />
     <Compile Include="mscl\SignalConditioningValues.cs" />
@@ -243,6 +252,7 @@
     <Compile Include="mscl\StorageLimitModes.cs" />
     <Compile Include="mscl\StreamInfo.cs" />
     <Compile Include="mscl\StructuralHealth.cs" />
+    <Compile Include="mscl\SupportedSensorRanges.cs" />
     <Compile Include="mscl\SyncNetworkInfo.cs" />
     <Compile Include="mscl\SyncSamplingNetwork.cs" />
     <Compile Include="mscl\TareAxisValues.cs" />

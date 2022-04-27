@@ -1972,7 +1972,7 @@ namespace mscl
         //    Set the odometer configuration.
         //
         //Parameter:
-        //    config - the <OdometerConfiguration> to apply.
+        //    config - The <OdometerConfiguration> to apply.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
@@ -1980,6 +1980,49 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setOdometerConfig(OdometerConfiguration config);
+
+        //API Function: getSensorRange
+        //    Gets the currently configured sensor range for the specified sensor (accelerometer, gyroscope, etc.).
+        //
+        //Parameter:
+        //    sensorRangeType - The <SensorRange::Type> sensor to check
+        //
+        //Return:
+        //    <SensorRange> - The currently configured sensor range for the specified sensor
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        SensorRange getSensorRange(SensorRange::Type sensorRangeType) const;
+
+        //API Function: setSensorRange
+        //    Set the specified sensor range. This will only work with a <SensorRange> object from the device features <SupportedSensorRanges> object or read from the device with getSensorRange.
+        //
+        //Parameter:
+        //    range - The <SensorRange> to apply
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setSensorRange(SensorRange range);
+
+        //API Function: setSensorRange
+        //    Set the specified sensor range to the range ID - you can find these IDs in the device manual or look them up from the device features <SupportedSensorRanges> object.
+        //
+        //Parameter:
+        //    type - The <SensorRange::Type> to set
+        //    rangeId - The id representing a range value to apply
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setSensorRange(SensorRange::Type type, uint8 rangeId);
 
         //API Function: getGpioConfig
         //    Gets the currently configured GPIO settings.
@@ -2039,6 +2082,35 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setGpioState(uint8 pin, bool state);
+
+        //API Function: getEventTriggerConfig
+        //    Gets the currently configured event trigger settings for the specified trigger ID.
+        //
+        //Parameter:
+        //    instance - The trigger instance ID to get the information for.
+        //
+        //Return:
+        //    <EventTriggerConfiguration> - The currently configured event trigger settings
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        EventTriggerConfiguration getEventTriggerConfig(uint8 instance) const;
+
+        //API Function: setEventTriggerConfig
+        //    Set the event trigger configuration.
+        //
+        //Parameter:
+        //    config - The <EventTriggerConfiguration> to apply.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setEventTriggerConfig(EventTriggerConfiguration config) const;
 
         //API Function: getAntennaLeverArmCal
         //    Gets the currently configured GNSS antenna lever arm calibration configuration.

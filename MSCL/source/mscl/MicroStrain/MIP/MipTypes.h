@@ -125,6 +125,7 @@ namespace mscl
         //  CMD_GNSS_ASSIST_TIME_UPDATE                 - 0x0C24    - GNSS Assisted Time Update
         //  CMD_PPS_SOURCE                              - 0x0C28    - PPS Source
         //  CMD_EVENT_SUPPORT                           - 0x0C2A    - Event Support
+        //  CMD_EVENT_TRIGGER_CONFIGURATION             - 0x0C2E    - Event Trigger Configuration
         //  CMD_SAVE_STARTUP_SETTINGS                   - 0x0C30    - Device Startup Settings
         //  CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER     - 0x0C31    - Sensor to Vehicle Frame Transformation Euler Angles
         //  CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT      - 0x0C32    - Sensor to Vehicle Frame Transformation Quaternion
@@ -146,6 +147,8 @@ namespace mscl
         //  CMD_ODOMETER_SETTINGS                       - 0x0C43    - Configure Odometer Settings
         //  CMD_LOWPASS_FILTER_SETTINGS                 - 0x0C50    - Advanced Low-Pass Filter Settings
         //  CMD_COMPLEMENTARY_FILTER_SETTINGS           - 0x0C51    - Complementary Filter Settings
+        //  CMD_SENSOR_RANGE                            - 0x0C52    - Configure Sensor Range
+        //  CMD_SUPPORTED_SENSOR_RANGES                 - 0x0C53    - Read Device-Supported Sensor Ranges
         //  CMD_DATA_STREAM_FORMAT                      - 0x0C60    - Device Data Stream Format
         //  CMD_POWER_STATES                            - 0x0C61    - Device Power States
         //  CMD_GPS_STARTUP_SETTINGS                    - 0x0C62    - Save/Restore Advanced GPS Startup Settings
@@ -247,6 +250,7 @@ namespace mscl
             CMD_GNSS_ASSIST_TIME_UPDATE             = 0x0C24,
             CMD_PPS_SOURCE                          = 0x0C28,
             CMD_EVENT_SUPPORT                       = 0x0C2A,
+            CMD_EVENT_TRIGGER_CONFIGURATION         = 0x0C2E,
             CMD_SAVE_STARTUP_SETTINGS               = 0x0C30,
             CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER = 0x0C31,
             CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT  = 0x0C32,
@@ -268,6 +272,8 @@ namespace mscl
             CMD_ODOMETER_SETTINGS                   = 0x0C43,
             CMD_LOWPASS_FILTER_SETTINGS             = 0x0C50,
             CMD_COMPLEMENTARY_FILTER_SETTINGS       = 0x0C51,
+            CMD_SENSOR_RANGE                        = 0x0C52,
+            CMD_SUPPORTED_SENSOR_RANGES             = 0x0C53,
             CMD_DATA_STREAM_FORMAT                  = 0x0C60,
             CMD_POWER_STATES                        = 0x0C61,
             CMD_GPS_STARTUP_SETTINGS                = 0x0C62,
@@ -353,9 +359,9 @@ namespace mscl
         //  CH_FIELD_SENSOR_ORIENTATION_MATRIX                      - 0x8009    - Orientation Matrix
         //  CH_FIELD_SENSOR_ORIENTATION_QUATERNION                  - 0x800A    - Quaternion
         //  CH_FIELD_SENSOR_ORIENTATION_UPDATE_MATRIX               - 0x800B    - Orientation Update Matrix
-        //  CH_FIELD_SENSOR_EULER_ANGLES                            - 0x800C    - Euler Angles 
+        //  CH_FIELD_SENSOR_EULER_ANGLES                            - 0x800C    - Euler Angles
         //  CH_FIELD_SENSOR_INTERNAL_TIMESTAMP                      - 0x800E    - Internal Timestamp
-        //  CH_FIELD_SENSOR_BEACONED_TIMESTAMP                      - 0x800F    - Beaconed Timestamp    
+        //  CH_FIELD_SENSOR_BEACONED_TIMESTAMP                      - 0x800F    - Beaconed Timestamp
         //  CH_FIELD_SENSOR_STABILIZED_MAG_VEC                      - 0x8010    - Stabilized Mag Vector (North)
         //  CH_FIELD_SENSOR_STABILIZED_ACCEL_VEC                    - 0x8011    - Stabilized Accel Vector (Up)
         //  CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP               - 0x8012    - GPS Correlation Timestamp
@@ -435,7 +441,7 @@ namespace mscl
         //  CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION_UNCERT       - 0x8231    - GNSS Antenna Offset Correction Uncertainty
         //  CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION                - 0x8232    - GNSS Clock Correction
         //  CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION_UNCERT         - 0x8233    - GNSS Clock Correction Uncertainty
-        //  CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION        - 0x8234    - GNSS Multi-Antenna Offset Correction 
+        //  CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION        - 0x8234    - GNSS Multi-Antenna Offset Correction
         //  CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION_UNCERT - 0x8235    - GNSS Multi-Antenna Offset Correction Uncertainty
         //  CH_FIELD_ESTFILTER_ECEF_POS_UNCERT                      - 0x8236    - ECEF Position Uncertainty
         //  CH_FIELD_ESTFILTER_ECEF_VEL_UNCERT                      - 0x8237    - ECEF Velocity Uncertainty
@@ -1713,5 +1719,117 @@ namespace mscl
 
         // Event info
         EventTypes entries;
+    };
+
+    // API Class: SensorRange
+    // An object representing a configurable sensor range option
+    class SensorRange
+    {
+    public:
+        //API Enum: Type
+        //  Sensor and unit identifiers for configurable Sensor Range command (0x0C,0x52)
+        //      ALL          - 0x00 - All (save as startup, load startup, reset to default only)
+        //      ACCEL_MS2    - 0x01 - Accelerometer in m/s^2
+        //      GYRO_DPS     - 0x02 - Gyroscope in degrees per second
+        //      MAG_MG       - 0x03 - Magnetometer in mG
+        //      PRESSURE_HPA - 0x04 - Pressure in hPa
+        enum Type
+        {
+            ALL = 0x00,
+            ACCEL_G = 0x01,
+            GYRO_DPS = 0x02,
+            MAG_GAUSS = 0x03,
+            PRESSURE_HPA = 0x04
+        };
+
+    private:
+        //API Variable: type
+        // The SensorRange::Type of this range
+        Type m_type;
+
+        //API Variable: range
+        // This will only be set and valid if read from <SupportedSensorRanges> object
+        // Default: -1 (invalid)
+        float m_range = -1.0f;
+
+        //API Variable: id
+        // The index ID of this range according to device manual
+        uint8 m_id;
+
+    private:
+        friend class MipNode_Impl;
+        friend class InertialNode;
+
+        //Private Constructor: SensorRange
+        // Construct a SensorRange object with specified range
+        // This object should not be constructed directly by users
+        //
+        //Parameters:
+        //  type - SensorRange::Type of this range
+        //  range - Range value
+        SensorRange(Type rangeType, uint8 index, float rangeValue = -1.0f) :
+            m_type(rangeType),
+            m_range(rangeValue),
+            m_id(index)
+        {};
+
+    public:
+        // needed for SWIG - should not be used
+        SensorRange() {};
+
+        //API Function: type
+        // The SensorRange::Type of this range
+        Type type() const { return m_type; };
+
+        //API Function: range
+        // This will only be set and valid if read from <SupportedSensorRanges> object
+        float range() const { return m_range; };
+
+        //API Function: id
+        // The index ID of this range according to device manual
+        uint8 id() const { return m_id; };
+    };
+
+    //API Typedef: SensorRanges
+    //  A vector of <SensorRange> values
+    typedef std::vector<SensorRange> SensorRanges;
+
+    //API Typedef: SensorRangeOptions
+    //  A collection of <SensorRange::Type> values mapped to associated <SensorRange> objects
+    typedef std::map<SensorRange::Type, SensorRanges> SensorRangeOptions;
+
+    //API Class: SupportedSensorRanges
+    // Structure to hold all info for looking up supported sensor ranges for a device
+    class SupportedSensorRanges
+    {
+    private:
+        // only MipNode_Impl can populate supported options
+        friend class MipNode_Impl;
+        SensorRangeOptions m_options;
+
+    public:
+        SupportedSensorRanges() {};
+
+        //API Function: options
+        // Get the supported sensor range options
+        //
+        // Returns:
+        //  <SensorRangeOptions> - the supported options
+        const SensorRangeOptions options() const { return m_options; };
+
+        //API Function: lookupRecommended
+        // Lookup the supported option of the specified type that is closest to but also incorporates the specified range.
+        // Ex:
+        //  specified range: Accel_G, 5
+        //  supported accel ranges: 4G, 8G, 16G
+        //  returns: 8G because it is the closest supported option where 5G will not overrun the range
+        //
+        // Parameters:
+        //  type - <SensorRange::Type> type of range to lookup
+        //  range - Float range value to find
+        //
+        // Returns:
+        //  <SensorRange> - The closest supported range to the specified value
+        SensorRange lookupRecommended(SensorRange::Type type, float range) const;
     };
 }

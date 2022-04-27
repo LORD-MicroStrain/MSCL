@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32106.194
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6774763C-6C1F-42EF-89B8-47D897DA4B94}"
 	ProjectSection(SolutionItems) = preProject
@@ -178,7 +178,6 @@ Global
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (.NET)|Win32.ActiveCfg = Debug (C++)|Win32
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (.NET)|Win32.Build.0 = Debug (C++)|Win32
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (.NET)|x64.ActiveCfg = Debug (C++)|x64
-		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (.NET)|x64.Build.0 = Debug (C++)|x64
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (C++)|Any CPU.ActiveCfg = Debug (C++)|Win32
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (C++)|Mixed Platforms.ActiveCfg = Debug (C++)|Win32
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Debug (C++)|Mixed Platforms.Build.0 = Debug (C++)|Win32
@@ -193,7 +192,6 @@ Global
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (.NET)|Win32.ActiveCfg = Release (C++)|Win32
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (.NET)|Win32.Build.0 = Release (C++)|Win32
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (.NET)|x64.ActiveCfg = Release (C++)|x64
-		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (.NET)|x64.Build.0 = Release (C++)|x64
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (C++)|Any CPU.ActiveCfg = Release (C++)|Win32
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (C++)|Mixed Platforms.ActiveCfg = Release (C++)|Win32
 		{E56B7B0F-50A0-4C14-995C-2D67B770BD05}.Release (C++)|Mixed Platforms.Build.0 = Release (C++)|Win32
