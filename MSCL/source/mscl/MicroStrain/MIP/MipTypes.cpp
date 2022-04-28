@@ -1094,4 +1094,55 @@ namespace mscl
         //found the channel, return the name
         return sensorcloudFilteredName;
     }
+
+    SensorRange SupportedSensorRanges::lookupRecommended(SensorRange::Type type, float range) const
+    {
+        SensorRanges typeOptions;
+        try
+        {
+            typeOptions = m_options.at(type);
+            if (typeOptions.size() <= 0)
+            {
+                throw mscl::Error_NotSupported("The specified Sensor Range type is not supported");
+            }
+        }
+        catch (const std::out_of_range&)
+        {
+            throw mscl::Error_NotSupported("The specified Sensor Range type is not supported");
+        }
+
+        // remove 5% for threshold comparison to account for rounding error
+        // ex: supported range value is 2.6666, user specifies 2.67 - should still return 2.6666 range
+        float rangeWithWiggleRoom = range * 0.95f;
+
+        SensorRange closest = typeOptions[0];
+        for (SensorRange option : typeOptions)
+        {
+            // if current entry lower than indicated target range, ignore
+            // don't want to recommend a range that will likely be overrun
+            if (option.range() < rangeWithWiggleRoom)
+            {
+                if (option.range() > closest.range())
+                {
+                    closest = option;
+                }
+                continue;
+            }
+
+            // if the difference between current entry and the specified range is less
+            // than the difference of the previous closest
+            // or previous closest is lower than the specified range
+            // set new closest
+            float closestDiff = abs((range - closest.range()));
+            float diff = abs((range - option.range()));
+            if (closestDiff > diff
+                || closest.range() < rangeWithWiggleRoom)
+            {
+                closest = option;
+                closestDiff = diff;
+            }
+        }
+
+        return closest;
+    }
 }

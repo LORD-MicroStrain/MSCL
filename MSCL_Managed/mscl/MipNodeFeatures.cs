@@ -86,6 +86,18 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public SupportedSensorRanges supportedSensorRanges() {
+    SupportedSensorRanges ret = new SupportedSensorRanges(msclPINVOKE.MipNodeFeatures_supportedSensorRanges__SWIG_0(swigCPtr), false);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public SensorRanges supportedSensorRanges(SensorRange.Type type) {
+    SensorRanges ret = new SensorRanges(msclPINVOKE.MipNodeFeatures_supportedSensorRanges__SWIG_1(swigCPtr, (int)type), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public CommPortInfo getCommPortInfo() {
     CommPortInfo ret = new CommPortInfo(msclPINVOKE.MipNodeFeatures_getCommPortInfo(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

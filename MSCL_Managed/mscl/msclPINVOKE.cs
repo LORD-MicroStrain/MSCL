@@ -3780,6 +3780,33 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_DeviceCommPort")]
   public static extern void delete_DeviceCommPort(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_SensorRange")]
+  public static extern global::System.IntPtr new_SensorRange();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRange_type")]
+  public static extern int SensorRange_type(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRange_range")]
+  public static extern float SensorRange_range(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRange_id")]
+  public static extern byte SensorRange_id(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_SensorRange")]
+  public static extern void delete_SensorRange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_SupportedSensorRanges")]
+  public static extern global::System.IntPtr new_SupportedSensorRanges();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SupportedSensorRanges_options")]
+  public static extern global::System.IntPtr SupportedSensorRanges_options(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SupportedSensorRanges_lookupRecommended")]
+  public static extern global::System.IntPtr SupportedSensorRanges_lookupRecommended(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, float jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_SupportedSensorRanges")]
+  public static extern void delete_SupportedSensorRanges(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_InertialTypes")]
   public static extern global::System.IntPtr new_InertialTypes();
 
@@ -5580,6 +5607,12 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_gnssReceiverInfo")]
   public static extern global::System.IntPtr MipNodeFeatures_gnssReceiverInfo(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedSensorRanges__SWIG_0")]
+  public static extern global::System.IntPtr MipNodeFeatures_supportedSensorRanges__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedSensorRanges__SWIG_1")]
+  public static extern global::System.IntPtr MipNodeFeatures_supportedSensorRanges__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_getCommPortInfo")]
   public static extern global::System.IntPtr MipNodeFeatures_getCommPortInfo(global::System.Runtime.InteropServices.HandleRef jarg1);
 
@@ -6218,6 +6251,15 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_setOdometerConfig")]
   public static extern void InertialNode_setOdometerConfig(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_getSensorRange")]
+  public static extern global::System.IntPtr InertialNode_getSensorRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_setSensorRange__SWIG_0")]
+  public static extern void InertialNode_setSensorRange__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_setSensorRange__SWIG_1")]
+  public static extern void InertialNode_setSensorRange__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, byte jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_getGpioConfig")]
   public static extern global::System.IntPtr InertialNode_getGpioConfig(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
@@ -9071,6 +9113,114 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GnssReceivers")]
   public static extern void delete_GnssReceivers(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_Clear")]
+  public static extern void SensorRanges_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_Add")]
+  public static extern void SensorRanges_Add(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_size")]
+  public static extern uint SensorRanges_size(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_capacity")]
+  public static extern uint SensorRanges_capacity(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_reserve")]
+  public static extern void SensorRanges_reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_SensorRanges__SWIG_0")]
+  public static extern global::System.IntPtr new_SensorRanges__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_SensorRanges__SWIG_1")]
+  public static extern global::System.IntPtr new_SensorRanges__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_SensorRanges__SWIG_2")]
+  public static extern global::System.IntPtr new_SensorRanges__SWIG_2(int jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_getitemcopy")]
+  public static extern global::System.IntPtr SensorRanges_getitemcopy(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_getitem")]
+  public static extern global::System.IntPtr SensorRanges_getitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_setitem")]
+  public static extern void SensorRanges_setitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_AddRange")]
+  public static extern void SensorRanges_AddRange(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_GetRange")]
+  public static extern global::System.IntPtr SensorRanges_GetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_Insert")]
+  public static extern void SensorRanges_Insert(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_InsertRange")]
+  public static extern void SensorRanges_InsertRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_RemoveAt")]
+  public static extern void SensorRanges_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_RemoveRange")]
+  public static extern void SensorRanges_RemoveRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_Repeat")]
+  public static extern global::System.IntPtr SensorRanges_Repeat(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_Reverse__SWIG_0")]
+  public static extern void SensorRanges_Reverse__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_Reverse__SWIG_1")]
+  public static extern void SensorRanges_Reverse__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRanges_SetRange")]
+  public static extern void SensorRanges_SetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_SensorRanges")]
+  public static extern void delete_SensorRanges(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_SensorRangeOptions__SWIG_0")]
+  public static extern global::System.IntPtr new_SensorRangeOptions__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_SensorRangeOptions__SWIG_1")]
+  public static extern global::System.IntPtr new_SensorRangeOptions__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRangeOptions_size")]
+  public static extern uint SensorRangeOptions_size(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRangeOptions_empty")]
+  public static extern bool SensorRangeOptions_empty(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRangeOptions_Clear")]
+  public static extern void SensorRangeOptions_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRangeOptions_getitem")]
+  public static extern global::System.IntPtr SensorRangeOptions_getitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRangeOptions_setitem")]
+  public static extern void SensorRangeOptions_setitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRangeOptions_ContainsKey")]
+  public static extern bool SensorRangeOptions_ContainsKey(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRangeOptions_Add")]
+  public static extern void SensorRangeOptions_Add(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRangeOptions_Remove")]
+  public static extern bool SensorRangeOptions_Remove(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRangeOptions_create_iterator_begin")]
+  public static extern global::System.IntPtr SensorRangeOptions_create_iterator_begin(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRangeOptions_get_next_key")]
+  public static extern int SensorRangeOptions_get_next_key(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.IntPtr jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SensorRangeOptions_destroy_iterator")]
+  public static extern void SensorRangeOptions_destroy_iterator(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.IntPtr jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_SensorRangeOptions")]
+  public static extern void delete_SensorRangeOptions(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CommPortInfo_Clear")]
   public static extern void CommPortInfo_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
