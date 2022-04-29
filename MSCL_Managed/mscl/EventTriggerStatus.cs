@@ -10,21 +10,21 @@
 
 namespace mscl {
 
-public class SensorRanges : global::System.IDisposable, global::System.Collections.IEnumerable, global::System.Collections.Generic.IEnumerable<SensorRange>
+public class EventTriggerStatus : global::System.IDisposable, global::System.Collections.IEnumerable, global::System.Collections.Generic.IEnumerable<EventTriggerInfo>
  {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
 
-  internal SensorRanges(global::System.IntPtr cPtr, bool cMemoryOwn) {
+  internal EventTriggerStatus(global::System.IntPtr cPtr, bool cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(SensorRanges obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(EventTriggerStatus obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  ~SensorRanges() {
+  ~EventTriggerStatus() {
     Dispose(false);
   }
 
@@ -38,25 +38,25 @@ public class SensorRanges : global::System.IDisposable, global::System.Collectio
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_SensorRanges(swigCPtr);
+          msclPINVOKE.delete_EventTriggerStatus(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
     }
   }
 
-  public SensorRanges(global::System.Collections.IEnumerable c) : this() {
+  public EventTriggerStatus(global::System.Collections.IEnumerable c) : this() {
     if (c == null)
       throw new global::System.ArgumentNullException("c");
-    foreach (SensorRange element in c) {
+    foreach (EventTriggerInfo element in c) {
       this.Add(element);
     }
   }
 
-  public SensorRanges(global::System.Collections.Generic.IEnumerable<SensorRange> c) : this() {
+  public EventTriggerStatus(global::System.Collections.Generic.IEnumerable<EventTriggerInfo> c) : this() {
     if (c == null)
       throw new global::System.ArgumentNullException("c");
-    foreach (SensorRange element in c) {
+    foreach (EventTriggerInfo element in c) {
       this.Add(element);
     }
   }
@@ -73,7 +73,7 @@ public class SensorRanges : global::System.IDisposable, global::System.Collectio
     }
   }
 
-  public SensorRange this[int index]  {
+  public EventTriggerInfo this[int index]  {
     get {
       return getitem(index);
     }
@@ -105,17 +105,17 @@ public class SensorRanges : global::System.IDisposable, global::System.Collectio
     }
   }
 
-  public void CopyTo(SensorRange[] array)
+  public void CopyTo(EventTriggerInfo[] array)
   {
     CopyTo(0, array, 0, this.Count);
   }
 
-  public void CopyTo(SensorRange[] array, int arrayIndex)
+  public void CopyTo(EventTriggerInfo[] array, int arrayIndex)
   {
     CopyTo(0, array, arrayIndex, this.Count);
   }
 
-  public void CopyTo(int index, SensorRange[] array, int arrayIndex, int count)
+  public void CopyTo(int index, EventTriggerInfo[] array, int arrayIndex, int count)
   {
     if (array == null)
       throw new global::System.ArgumentNullException("array");
@@ -133,22 +133,22 @@ public class SensorRanges : global::System.IDisposable, global::System.Collectio
       array.SetValue(getitemcopy(index+i), arrayIndex+i);
   }
 
-  public SensorRange[] ToArray() {
-    SensorRange[] array = new SensorRange[this.Count];
+  public EventTriggerInfo[] ToArray() {
+    EventTriggerInfo[] array = new EventTriggerInfo[this.Count];
     this.CopyTo(array);
     return array;
   }
 
-  global::System.Collections.Generic.IEnumerator<SensorRange> global::System.Collections.Generic.IEnumerable<SensorRange>.GetEnumerator() {
-    return new SensorRangesEnumerator(this);
+  global::System.Collections.Generic.IEnumerator<EventTriggerInfo> global::System.Collections.Generic.IEnumerable<EventTriggerInfo>.GetEnumerator() {
+    return new EventTriggerStatusEnumerator(this);
   }
 
   global::System.Collections.IEnumerator global::System.Collections.IEnumerable.GetEnumerator() {
-    return new SensorRangesEnumerator(this);
+    return new EventTriggerStatusEnumerator(this);
   }
 
-  public SensorRangesEnumerator GetEnumerator() {
-    return new SensorRangesEnumerator(this);
+  public EventTriggerStatusEnumerator GetEnumerator() {
+    return new EventTriggerStatusEnumerator(this);
   }
 
   // Type-safe enumerator
@@ -156,15 +156,15 @@ public class SensorRanges : global::System.IDisposable, global::System.Collectio
   /// whenever the collection is modified. This has been done for changes in the size of the
   /// collection but not when one of the elements of the collection is modified as it is a bit
   /// tricky to detect unmanaged code that modifies the collection under our feet.
-  public sealed class SensorRangesEnumerator : global::System.Collections.IEnumerator
-    , global::System.Collections.Generic.IEnumerator<SensorRange>
+  public sealed class EventTriggerStatusEnumerator : global::System.Collections.IEnumerator
+    , global::System.Collections.Generic.IEnumerator<EventTriggerInfo>
   {
-    private SensorRanges collectionRef;
+    private EventTriggerStatus collectionRef;
     private int currentIndex;
     private object currentObject;
     private int currentSize;
 
-    public SensorRangesEnumerator(SensorRanges collection) {
+    public EventTriggerStatusEnumerator(EventTriggerStatus collection) {
       collectionRef = collection;
       currentIndex = -1;
       currentObject = null;
@@ -172,7 +172,7 @@ public class SensorRanges : global::System.IDisposable, global::System.Collectio
     }
 
     // Type-safe iterator Current
-    public SensorRange Current {
+    public EventTriggerInfo Current {
       get {
         if (currentIndex == -1)
           throw new global::System.InvalidOperationException("Enumeration not started.");
@@ -180,7 +180,7 @@ public class SensorRanges : global::System.IDisposable, global::System.Collectio
           throw new global::System.InvalidOperationException("Enumeration finished.");
         if (currentObject == null)
           throw new global::System.InvalidOperationException("Collection modified.");
-        return (SensorRange)currentObject;
+        return (EventTriggerInfo)currentObject;
       }
     }
 
@@ -218,112 +218,112 @@ public class SensorRanges : global::System.IDisposable, global::System.Collectio
   }
 
   public void Clear() {
-    msclPINVOKE.SensorRanges_Clear(swigCPtr);
+    msclPINVOKE.EventTriggerStatus_Clear(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void Add(SensorRange x) {
-    msclPINVOKE.SensorRanges_Add(swigCPtr, SensorRange.getCPtr(x));
+  public void Add(EventTriggerInfo x) {
+    msclPINVOKE.EventTriggerStatus_Add(swigCPtr, EventTriggerInfo.getCPtr(x));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   private uint size() {
-    uint ret = msclPINVOKE.SensorRanges_size(swigCPtr);
+    uint ret = msclPINVOKE.EventTriggerStatus_size(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private uint capacity() {
-    uint ret = msclPINVOKE.SensorRanges_capacity(swigCPtr);
+    uint ret = msclPINVOKE.EventTriggerStatus_capacity(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private void reserve(uint n) {
-    msclPINVOKE.SensorRanges_reserve(swigCPtr, n);
+    msclPINVOKE.EventTriggerStatus_reserve(swigCPtr, n);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public SensorRanges() : this(msclPINVOKE.new_SensorRanges__SWIG_0(), true) {
+  public EventTriggerStatus() : this(msclPINVOKE.new_EventTriggerStatus__SWIG_0(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public SensorRanges(SensorRanges other) : this(msclPINVOKE.new_SensorRanges__SWIG_1(SensorRanges.getCPtr(other)), true) {
+  public EventTriggerStatus(EventTriggerStatus other) : this(msclPINVOKE.new_EventTriggerStatus__SWIG_1(EventTriggerStatus.getCPtr(other)), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public SensorRanges(int capacity) : this(msclPINVOKE.new_SensorRanges__SWIG_2(capacity), true) {
+  public EventTriggerStatus(int capacity) : this(msclPINVOKE.new_EventTriggerStatus__SWIG_2(capacity), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  private SensorRange getitemcopy(int index) {
-    SensorRange ret = new SensorRange(msclPINVOKE.SensorRanges_getitemcopy(swigCPtr, index), true);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  private SensorRange getitem(int index) {
-    SensorRange ret = new SensorRange(msclPINVOKE.SensorRanges_getitem(swigCPtr, index), false);
+  private EventTriggerInfo getitemcopy(int index) {
+    EventTriggerInfo ret = new EventTriggerInfo(msclPINVOKE.EventTriggerStatus_getitemcopy(swigCPtr, index), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  private void setitem(int index, SensorRange val) {
-    msclPINVOKE.SensorRanges_setitem(swigCPtr, index, SensorRange.getCPtr(val));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void AddRange(SensorRanges values) {
-    msclPINVOKE.SensorRanges_AddRange(swigCPtr, SensorRanges.getCPtr(values));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public SensorRanges GetRange(int index, int count) {
-    global::System.IntPtr cPtr = msclPINVOKE.SensorRanges_GetRange(swigCPtr, index, count);
-    SensorRanges ret = (cPtr == global::System.IntPtr.Zero) ? null : new SensorRanges(cPtr, true);
+  private EventTriggerInfo getitem(int index) {
+    EventTriggerInfo ret = new EventTriggerInfo(msclPINVOKE.EventTriggerStatus_getitem(swigCPtr, index), false);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void Insert(int index, SensorRange x) {
-    msclPINVOKE.SensorRanges_Insert(swigCPtr, index, SensorRange.getCPtr(x));
+  private void setitem(int index, EventTriggerInfo val) {
+    msclPINVOKE.EventTriggerStatus_setitem(swigCPtr, index, EventTriggerInfo.getCPtr(val));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void InsertRange(int index, SensorRanges values) {
-    msclPINVOKE.SensorRanges_InsertRange(swigCPtr, index, SensorRanges.getCPtr(values));
+  public void AddRange(EventTriggerStatus values) {
+    msclPINVOKE.EventTriggerStatus_AddRange(swigCPtr, EventTriggerStatus.getCPtr(values));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public EventTriggerStatus GetRange(int index, int count) {
+    global::System.IntPtr cPtr = msclPINVOKE.EventTriggerStatus_GetRange(swigCPtr, index, count);
+    EventTriggerStatus ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventTriggerStatus(cPtr, true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void Insert(int index, EventTriggerInfo x) {
+    msclPINVOKE.EventTriggerStatus_Insert(swigCPtr, index, EventTriggerInfo.getCPtr(x));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void InsertRange(int index, EventTriggerStatus values) {
+    msclPINVOKE.EventTriggerStatus_InsertRange(swigCPtr, index, EventTriggerStatus.getCPtr(values));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void RemoveAt(int index) {
-    msclPINVOKE.SensorRanges_RemoveAt(swigCPtr, index);
+    msclPINVOKE.EventTriggerStatus_RemoveAt(swigCPtr, index);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void RemoveRange(int index, int count) {
-    msclPINVOKE.SensorRanges_RemoveRange(swigCPtr, index, count);
+    msclPINVOKE.EventTriggerStatus_RemoveRange(swigCPtr, index, count);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public static SensorRanges Repeat(SensorRange value, int count) {
-    global::System.IntPtr cPtr = msclPINVOKE.SensorRanges_Repeat(SensorRange.getCPtr(value), count);
-    SensorRanges ret = (cPtr == global::System.IntPtr.Zero) ? null : new SensorRanges(cPtr, true);
+  public static EventTriggerStatus Repeat(EventTriggerInfo value, int count) {
+    global::System.IntPtr cPtr = msclPINVOKE.EventTriggerStatus_Repeat(EventTriggerInfo.getCPtr(value), count);
+    EventTriggerStatus ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventTriggerStatus(cPtr, true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public void Reverse() {
-    msclPINVOKE.SensorRanges_Reverse__SWIG_0(swigCPtr);
+    msclPINVOKE.EventTriggerStatus_Reverse__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void Reverse(int index, int count) {
-    msclPINVOKE.SensorRanges_Reverse__SWIG_1(swigCPtr, index, count);
+    msclPINVOKE.EventTriggerStatus_Reverse__SWIG_1(swigCPtr, index, count);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void SetRange(int index, SensorRanges values) {
-    msclPINVOKE.SensorRanges_SetRange(swigCPtr, index, SensorRanges.getCPtr(values));
+  public void SetRange(int index, EventTriggerStatus values) {
+    msclPINVOKE.EventTriggerStatus_SetRange(swigCPtr, index, EventTriggerStatus.getCPtr(values));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
