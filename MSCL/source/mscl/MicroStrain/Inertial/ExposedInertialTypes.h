@@ -2845,7 +2845,6 @@ namespace mscl
         //  Determines the type of comparison
         Type type;
 
-
         //API Variable: lowThreshold
         // Low threshold
         double lowThreshold;
@@ -2854,11 +2853,6 @@ namespace mscl
         // High threshold
         double highThreshold;
 
-
-        //API Function: channel
-        //  Set the channel field and qualifier from a <ChannelId>
-        void channel(MipTypes::ChannelId channelId);
-
         //API Function: channel
         //  Set the channel field and qualifier
         void channel(MipTypes::ChannelField channelField, MipTypes::ChannelQualifier channelQualifier);
@@ -2866,11 +2860,6 @@ namespace mscl
         //API Function: channel
         //  Set the channel field and qualifier index
         void channel(MipTypes::ChannelField channelField, uint8 index);
-
-
-        //API Function: channelId
-        //  Get the channel field and qualifier as a <ChannelId>
-        MipTypes::ChannelId channelId() const;
 
         //API Function: channelField
         //  Get the channel field
@@ -2885,11 +2874,16 @@ namespace mscl
         uint8 channelIndex() const;
 
     private:
-        //API Variable: m_channelQualifier
-        // 1-based index of the target qualifier within the MIP field
+        //Variable: m_channelQualifier
+        // The target qualifier within the MIP field
         MipTypes::ChannelQualifier m_channelQualifier;
 
-        //API Variable: m_channelField
+        //Variable: m_channelIndex
+        // 1-based index of the target qualifier within the MIP field
+        // default value: 0 (unset)
+        uint8 m_channelIndex = 0;
+
+        //Variable: m_channelField
         // MIP channel field
         MipTypes::ChannelField m_channelField;
     };

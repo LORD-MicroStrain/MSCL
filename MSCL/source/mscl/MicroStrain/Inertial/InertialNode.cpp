@@ -945,7 +945,7 @@ namespace mscl
 
         case EventTriggerConfiguration::THRESHOLD_TRIGGER:
         {
-            const auto field = static_cast<MipTypes::ChannelField>(data.read_uint16());
+            const MipTypes::ChannelField field = static_cast<MipTypes::ChannelField>(data.read_uint16());
             config.parameters.threshold.channel(field, data.read_uint8());
             config.parameters.threshold.type          = static_cast<EventTriggerThresholdParameter::Type>(data.read_uint8());
             config.parameters.threshold.lowThreshold  = data.read_double();
