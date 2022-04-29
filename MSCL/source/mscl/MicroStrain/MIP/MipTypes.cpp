@@ -515,7 +515,7 @@ namespace mscl
             ChannelIndex(CH_WEEK_NUMBER,  2),
             ChannelIndex(CH_VALID_FLAGS,  3)
         } },
-        // (0x80, 0xD5)
+        /*// (0x80, 0xD5)
         { CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP,{
             ChannelIndex(CH_NANOSECONDS, 1)
         } },
@@ -523,7 +523,7 @@ namespace mscl
         { CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,{
             ChannelIndex(CH_NANOSECONDS, 1),
             ChannelIndex(CH_VALID_FLAGS, 2)
-        } },
+        } },*/
 
 
         // 0x82 Filter Data
@@ -631,7 +631,7 @@ namespace mscl
             ChannelIndex(CH_WEEK_NUMBER,  2),
             ChannelIndex(CH_VALID_FLAGS,  3)
         } },
-        // (0x82, 0xD5)
+        /*// (0x82, 0xD5)
         { CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP,{
             ChannelIndex(CH_NANOSECONDS, 1)
         } },
@@ -639,10 +639,10 @@ namespace mscl
         { CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP,{
             ChannelIndex(CH_NANOSECONDS, 1),
             ChannelIndex(CH_VALID_FLAGS, 2)
-        } }/*,
+        } }*/
 
 
-        // 0xA0 System Data
+        /*// 0xA0 System Data
 
         // (0xA0, 0x01)
         { CH_FIELD_SYSTEM_BUILT_IN_TEST,{
@@ -841,11 +841,11 @@ namespace mscl
             != fields.end();
     }
 
-    MipTypes::ChannelFieldQualifiers MipTypes::channelFieldQualifiers(const MipChannelFields fields)
+    MipTypes::ChannelFieldQualifiers MipTypes::channelFieldQualifiers(const MipTypes::MipChannelFields fields)
     {
         ChannelFieldQualifiers fieldQualifiers{};
 
-        for (auto& field : fields)
+        for (const ChannelField& field : fields)
         {
             auto found = CHANNEL_INDICES.find(field);
 
@@ -858,71 +858,59 @@ namespace mscl
         return fieldQualifiers;
     }
 
-    MipTypes::ChannelQualifier MipTypes::channelFieldQualifier(const ChannelField field, const int index)
+    MipTypes::ChannelQualifier MipTypes::channelFieldQualifier(const ChannelField field, const uint8 index)
+    {
+        return findChannelIndex(field, CH_UNKNOWN, index).first;
+    }
+
+    uint8 MipTypes::channelFieldQualifierIndex(const ChannelField channelField, const ChannelQualifier channelQualifier)
+    {
+        return findChannelIndex(channelField, channelQualifier, 0).second;
+    }
+
+    MipTypes::ChannelIndex MipTypes::findChannelIndex(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, uint8 index)
     {
         // Find the channel field if it exists
-        const auto channelField = CHANNEL_INDICES.find(field);
+        const auto channelFieldEntry = CHANNEL_INDICES.find(field);
 
         // Channel field doesn't exist so the channel is unknown
-        if (channelField == CHANNEL_INDICES.end())
+        if (channelFieldEntry == CHANNEL_INDICES.end())
         {
-            return CH_UNKNOWN;
+            return{ CH_UNKNOWN, 0 };
         }
 
-        const auto channelQualifiers = channelField->second;
+        const auto channelQualifiers = channelFieldEntry->second;
+        auto qualifierEntry = channelQualifiers.end();
 
-        // Find the channel qualifier with the specified index
-        const auto channelQualifier = std::find_if(channelQualifiers.begin(), channelQualifiers.end(),
-            [&](const ChannelIndex& qualifierNamePair)
+        if (index != 0)
+        {
+            // Find the channel qualifier with the specified index
+            qualifierEntry = std::find_if(channelQualifiers.begin(), channelQualifiers.end(),
+                [&](const ChannelIndex& qualifierIndexPair)
             {
-                return qualifierNamePair.second == index;
+                return qualifierIndexPair.second == index;
             }
-        );
+            );
+        }
+
+        if (qualifier != CH_UNKNOWN)
+        {
+            // Find the channel qualifier with the specified index
+            qualifierEntry = std::find_if(channelQualifiers.begin(), channelQualifiers.end(),
+                [&](const ChannelIndex& qualifierIndexPair)
+            {
+                return qualifierIndexPair.first == qualifier;
+            }
+            );
+        }
 
         // Found the qualifier
-        if (channelQualifier != channelQualifiers.end())
+        if (qualifierEntry != channelQualifiers.end())
         {
-            return channelQualifier->first;
+            return *qualifierEntry;
         }
 
-        // Qualifier not found
-        return CH_UNKNOWN;
-    }
-
-    int MipTypes::channelFieldQualifierIndex(const ChannelId channelId)
-    {
-        return channelFieldQualifierIndex(channelId.first, channelId.second);
-    }
-
-    int MipTypes::channelFieldQualifierIndex(const ChannelField channelField, const ChannelQualifier channelQualifier)
-    {
-        // Find the channel field if it exists
-        const auto field = CHANNEL_INDICES.find(channelField);
-
-        // Channel field doesn't exist
-        if (field == CHANNEL_INDICES.end())
-        {
-            return 0;
-        }
-
-        const auto channelQualifiers = field->second;
-
-        // Find the channel qualifier with the specified index
-        const auto qualifier = std::find_if(channelQualifiers.begin(), channelQualifiers.end(),
-            [&](const ChannelIndex& qualifierNamePair)
-        {
-            return qualifierNamePair.first == channelQualifier;
-        }
-        );
-
-        // Found the qualifier
-        if (qualifier != channelQualifiers.end())
-        {
-            return qualifier->second;
-        }
-
-        // Qualifier not found
-        return 0;
+        return{ CH_UNKNOWN, 0 };
     }
 
     size_t MipChannelIdentifier::TypeHash::operator()(const MipChannelIdentifier::Type& type) const

@@ -64,6 +64,39 @@ namespace mscl
         return false;
     }
 
+    bool MipNodeFeatures::supportsChannelField(MipTypes::ChannelField fieldId) const
+    {
+        return !filterSupportedChannelFields({ fieldId }).empty();
+    }
+
+    MipTypes::MipChannelFields MipNodeFeatures::filterSupportedChannelFields(const MipTypes::MipChannelFields& fields) const
+    {
+        MipTypes::MipChannelFields supportedFields;
+        std::map<MipTypes::DataClass, MipTypes::MipChannelFields> cacheSupported;
+        for (MipTypes::ChannelField fieldId : fields)
+        {
+            MipTypes::DataClass dataSet = MipTypes::channelFieldToDataClass(fieldId);
+            MipTypes::MipChannelFields setFields;
+            auto found = cacheSupported.find(dataSet);
+            if (found == cacheSupported.end())
+            {
+                setFields = supportedChannelFields(dataSet);
+                cacheSupported.emplace(dataSet, setFields);
+            }
+            else
+            {
+                setFields = found->second;
+            }
+
+            if (std::find(setFields.begin(), setFields.end(), fieldId) != setFields.end())
+            {
+                supportedFields.push_back(fieldId);
+            }
+        }
+
+        return supportedFields;
+    }
+
     MipTypes::MipChannelFields MipNodeFeatures::supportedChannelFields(MipTypes::DataClass dataClass) const
     {
         MipTypes::MipChannelFields result;
@@ -677,10 +710,8 @@ namespace mscl
         {
         case MipModels::node_3dm_cv7_ahrs:
         case MipModels::node_3dm_cv7_ar:
-            return MipTypes::channelFieldQualifiers(supportedEventThresholdChannelFields());
-
         default:
-            return{ MipTypes::ChannelFieldQualifiers() };
+            return MipTypes::channelFieldQualifiers(supportedEventThresholdChannelFields());
         }
     }
 
@@ -693,11 +724,14 @@ namespace mscl
 
         const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
 
+        MipTypes::MipChannelFields possibleFields;
+
         switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_cv7_ahrs:
         case MipModels::node_3dm_cv7_ar:
-            return{
+        default:
+            possibleFields = {
                 // 0x80: Sensor Data
 
                 // (0x80, 0x04)
@@ -717,9 +751,9 @@ namespace mscl
                 // (0x80, 0xD3)
                 MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP,
                 // (0x80, 0xD5)
-                MipTypes::CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP,
+                //MipTypes::CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP,
                 // (0x80, 0xD7)
-                MipTypes::CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,
+                //MipTypes::CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,
 
 
                 // 0x82 Filter Data
@@ -755,15 +789,15 @@ namespace mscl
                 // (0x82, 0xD3)
                 MipTypes::CH_FIELD_ESTFILTER_SHARED_GPS_TIMESTAMP,
                 // (0x82, 0xD5)
-                MipTypes::CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP,
+                //MipTypes::CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP,
                 // (0x82, 0xD7)
-                MipTypes::CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP/*,
+                //MipTypes::CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP,
 
 
                 // 0xA0 System Data
 
                 // (0xA0, 0x01)
-                MipTypes::CH_FIELD_SYSTEM_BUILT_IN_TEST,
+                /*MipTypes::CH_FIELD_SYSTEM_BUILT_IN_TEST,
                 // (0xA0, 0x02)
                 MipTypes::CH_FIELD_SYSTEM_TIME_SYNC_STATUS,
                 // (0xA0, 0x03)
@@ -775,9 +809,8 @@ namespace mscl
                 // (0xA0, 0xD7)
                 MipTypes::CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP*/
             };
-
-        default:
-            return{};
         }
+
+        return filterSupportedChannelFields(possibleFields);
     }
 }

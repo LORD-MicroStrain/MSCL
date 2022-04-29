@@ -371,8 +371,6 @@ namespace mscl
         //  CH_FIELD_SENSOR_SHARED_DELTA_TICKS                      - 0x80D2    - Delta Ticks
         //  CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP                    - 0x80D3    - GPS Timestamp
         //  CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP                  - 0x80D4    - Delta GPS Timestamp
-        //  CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP              - 0x80D5    - Internal Reference Timestamp
-        //  CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP               - 0x80D7    - External Timestamp
         //  CH_FIELD_GNSS_LLH_POSITION                              - 0x8103    - LLH Position
         //  CH_FIELD_GNSS_ECEF_POSITION                             - 0x8104    - ECEF Position
         //  CH_FIELD_GNSS_NED_VELOCITY                              - 0x8105    - NED Velocity
@@ -458,8 +456,6 @@ namespace mscl
         //  CH_FIELD_ESTFILTER_SHARED_DELTA_TICKS                   - 0x82D2    - Delta Ticks
         //  CH_FIELD_ESTFILTER_SHARED_GPS_TIMESTAMP                 - 0x82D3    - GPS Timestamp
         //  CH_FIELD_ESTFILTER_SHARED_DELTA_TIMESTAMP               - 0x82D4    - Delta GPS Timestamp
-        //  CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP           - 0x82D5    - Internal Reference Timestamp
-        //  CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP            - 0x82D7    - External Timestamp
         //  CH_FIELD_DISP_POSITION                                  - 0x9001    - Position
         //  CH_FIELD_DISP_RAW_POSITION                              - 0x9002    - Raw Position
         //  CH_FIELD_DISP_DISPLACEMENT_TS                           - 0x9004    - Displacement Device Timestamp
@@ -631,8 +627,6 @@ namespace mscl
             CH_FIELD_SENSOR_SHARED_DELTA_TICKS                      = 0x80D2,
             CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP                    = 0x80D3,
             CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP                  = 0x80D4,
-            CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP              = 0x80D5,
-            CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP               = 0x80D7,
             CH_FIELD_GNSS_LLH_POSITION                              = 0x8103,
             CH_FIELD_GNSS_ECEF_POSITION                             = 0x8104,
             CH_FIELD_GNSS_NED_VELOCITY                              = 0x8105,
@@ -718,8 +712,6 @@ namespace mscl
             CH_FIELD_ESTFILTER_SHARED_DELTA_TICKS                   = 0x82D2,
             CH_FIELD_ESTFILTER_SHARED_GPS_TIMESTAMP                 = 0x82D3,
             CH_FIELD_ESTFILTER_SHARED_DELTA_TIMESTAMP               = 0x82D4,
-            CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP           = 0x82D5,
-            CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP            = 0x82D7,
             CH_FIELD_DISP_DISPLACEMENT_RAW                          = 0x9001,
             CH_FIELD_DISP_DISPLACEMENT_MM                           = 0x9002,
             CH_FIELD_DISP_DISPLACEMENT_TS                           = 0x9004,
@@ -1103,18 +1095,22 @@ namespace mscl
         typedef std::vector<ChannelField> MipChannelFields;
         typedef std::vector<Command> MipCommands;
 
+        //API Typedef: ChannelIndex
+        //    A <ChannelQualifier>, int pair indicating value index of the qualifier in a channel field.
+        typedef std::pair<ChannelQualifier, uint8> ChannelIndex;
+
+        //API Typedef: ChannelIndices
+        //    A list of <ChannelIndex> values
+        //typedef std::vector<ChannelIndex> ChannelIndices;
+
+        //API Typedef: ChannelFieldQualifiers
+        //    A map of <ChannelField> values and their associated <ChannelIndices>
+        typedef std::map<ChannelField, std::vector<ChannelIndex>> ChannelFieldQualifiers;
+
 #ifndef SWIG
         //Typedef: ChannelId
         //    A typedef for a <ChannelField>, <ChannelQualifier> pair.
         typedef std::pair<ChannelField, ChannelQualifier> ChannelId;
-
-        //Typedef: ChannelIndex
-        //    A typedef for a <ChannelQualifier>, int pair.
-        typedef std::pair<ChannelQualifier, int> ChannelIndex;
-
-        //Typedef: ChannelFieldQualifiers
-        //    A typedef map for mapping a vector of <ChannelIndex> to <ChannelField>
-        typedef std::map<ChannelField, std::vector<ChannelIndex>> ChannelFieldQualifiers;
 
         //Function: channelFieldToDataClass
         //    Gets the <DataClass> for a <MipTypes::ChannelField>.
@@ -1219,48 +1215,43 @@ namespace mscl
         static bool isSharedChannelField(ChannelField chField);
 
         //API Function: channelFieldQualifiers
-        //    Gets a map containing all the channel qualifiers and their indices of the specified <ChannelField>s.
+        //    Gets a map of <ChannelField> values with all associated <ChannelQualifier> values and their index within the field.
         //
         //Parameters:
         //    fields - <MipChannelFields> of the channels.
         //
         //Returns:
-        //    A map of <ChannelField> and their respective <ChannelIndex>.
+        //    A map of <ChannelField> and their respective <ChannelIndex> values.
         static ChannelFieldQualifiers channelFieldQualifiers(MipChannelFields fields);
 
         //API Function: channelFieldQualifier
-        //    Gets the <ChannelQualifier> of the <ChannelField> based on the index.
+        //    Gets the <ChannelQualifier> of the <ChannelField> for the specified index.
         //
         //Parameters:
-        //    field - <ChannelField> of the channel.
-        //    index - 1-based index of the channel field qualifier
+        //    field - target <ChannelField>.
+        //    index - 1-based index within the field to lookup
         //
         //Returns:
         //    A <ChannelQualifier> that corresponds to the index or <CH_UNKNOWN> if not found.
-        static ChannelQualifier channelFieldQualifier(ChannelField field, int index);
+        static ChannelQualifier channelFieldQualifier(ChannelField field, uint8 index);
 
         //API Function: channelFieldQualifierIndex
         //    Gets the index of the <ChannelQualifier> in the <ChannelField>.
         //
         //Parameters:
-        //    channelId - <ChannelId> of the channel.
+        //    field - target <ChannelField>.
+        //    qualifier - <ChannelQualifier> within the field to lookup the index of
         //
         //Returns:
-        //    A <ChannelQualifier> 1-based index in the <ChannelField>, or 0 if the <ChannelQualifier>
-        //    isn't in the <ChannelField>.
-        static int channelFieldQualifierIndex(ChannelId channelId);
+        //    The 1-based index of the specified <ChannelQualifier> in the <ChannelField>, or 0 if the <ChannelQualifier> isn't in the <ChannelField>.
+        static uint8 channelFieldQualifierIndex(ChannelField field, ChannelQualifier qualifier);
 
-        //API Function: channelFieldQualifierIndex
-        //    Gets the index of the <ChannelQualifier> in the <ChannelField>.
-        //
-        //Parameters:
-        //    channelField - <ChannelField> of the channel.
-        //    channelQualifier - <ChannelQualifier> of the channel.
-        //
-        //Returns:
-        //    A <ChannelQualifier> 1-based index in the <ChannelField>, or 0 if the <ChannelQualifier>
-        //    isn't in the <ChannelField>.
-        static int channelFieldQualifierIndex(ChannelField channelField, ChannelQualifier channelQualifier);
+    private:
+        //Function: findChannelIndex
+        //  Lookup channel index for given ChannelField based on either qualifier or index
+        //  If qualifier known, pass in index 0
+        //  If index known, pass in qualifier UNKNOWN
+        static ChannelIndex findChannelIndex(ChannelField field, ChannelQualifier qualifier, uint8 index);
 
     private:
         //Const: CHANNEL_NAMES

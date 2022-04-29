@@ -2871,6 +2871,7 @@ namespace mscl
 
         //API Function: channelIndex
         //  Get the channel qualifier index
+        //  Default value: 0 (unset)
         uint8 channelIndex() const;
 
     private:
