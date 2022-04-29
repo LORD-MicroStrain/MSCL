@@ -863,6 +863,22 @@ public class InertialNode : MipNode {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public SensorRange getSensorRange(SensorRange.Type sensorRangeType) {
+    SensorRange ret = new SensorRange(msclPINVOKE.InertialNode_getSensorRange(swigCPtr, (int)sensorRangeType), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setSensorRange(SensorRange range) {
+    msclPINVOKE.InertialNode_setSensorRange__SWIG_0(swigCPtr, SensorRange.getCPtr(range));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void setSensorRange(SensorRange.Type type, byte rangeId) {
+    msclPINVOKE.InertialNode_setSensorRange__SWIG_1(swigCPtr, (int)type, rangeId);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public GpioConfiguration getGpioConfig(byte pin) {
     GpioConfiguration ret = new GpioConfiguration(msclPINVOKE.InertialNode_getGpioConfig(swigCPtr, pin), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -882,6 +898,17 @@ public class InertialNode : MipNode {
 
   public void setGpioState(byte pin, bool state) {
     msclPINVOKE.InertialNode_setGpioState(swigCPtr, pin, state);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public EventTriggerConfiguration getEventTriggerConfig(byte instance) {
+    EventTriggerConfiguration ret = new EventTriggerConfiguration(msclPINVOKE.InertialNode_getEventTriggerConfig(swigCPtr, instance), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setEventTriggerConfig(EventTriggerConfiguration config) {
+    msclPINVOKE.InertialNode_setEventTriggerConfig(swigCPtr, EventTriggerConfiguration.getCPtr(config));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

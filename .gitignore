@@ -1,7 +1,13 @@
-BuildScripts\updateLicense
-BuildScripts\_testPythonBuild.cmd
+BuildScripts/updateLicense
+BuildScripts/_testPythonBuild.cmd
 GettingStartedGuide
 sample_mscl_cpp/
+*MSCL_Wrap.cpp
+
+## Ignore JetBrains files
+*.idea
+# Rider
+*.sln.iml
 
 
 ## Ignore Visual Studio temporary files, build results, and
@@ -399,6 +405,3 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
-
-# JetBrains Rider
-*.sln.iml

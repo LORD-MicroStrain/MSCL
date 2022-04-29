@@ -123,6 +123,25 @@ namespace mscl
         return m_nodeInfo.gnssReceiverInfo();
     }
 
+    const SupportedSensorRanges& MipNodeFeatures::supportedSensorRanges() const
+    {
+        return m_nodeInfo.supportedSensorRanges();
+    }
+
+    const SensorRanges MipNodeFeatures::supportedSensorRanges(SensorRange::Type type) const
+    {
+        SensorRangeOptions rangeOptions = m_nodeInfo.supportedSensorRanges().options();
+        auto typeEntry = rangeOptions.find(type);
+        if (typeEntry == rangeOptions.end())
+        {
+            std::stringstream message;
+            message << "Sensor Range Type (" << type << ") not supported on this device.";
+            throw Error_NotSupported(message.str());
+        }
+
+        return typeEntry->second;
+    }
+
     const CommPortInfo MipNodeFeatures::getCommPortInfo() const
     {
         MipModel model(m_nodeInfo.deviceInfo().modelNumber);
