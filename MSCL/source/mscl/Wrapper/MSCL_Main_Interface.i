@@ -6,7 +6,7 @@
 %include "std_map.i"        // SWIG file needed for std::map
 %include "std_pair.i"       // SWIG file needed for std::pair
 %include "std_shared_ptr.i" // SWIG file needed for std::shared_ptr
-//%include "std_array.i"      // SWIG file needed for std::array
+%include "std_array.i"      // SWIG file needed for std::array
 
 #ifdef SWIGCSHARP
 //fix operator functions for C#
@@ -294,6 +294,8 @@ namespace std
     %template(MipCommandParamPair)              pair<mscl::MipTypes::Command, vector<mscl::Value>>;
     %template(MipCommandParameters)             vector<pair<mscl::MipTypes::Command, vector<mscl::Value>>>;
     %template(GnssReceivers)                    vector<mscl::GnssReceiverInfo>;
+    %template(SensorRanges)                     vector<mscl::SensorRange>;
+    %template(SensorRangeOptions)               map<enum mscl::SensorRange::Type, vector<mscl::SensorRange>>;
     %template(CommPortInfo)                     vector<mscl::DeviceCommPort>;
     %template(EventActionStatus)                vector<mscl::EventActionInfo>;
     %template(ChannelGroups)                    vector<mscl::ChannelGroup>;
@@ -321,6 +323,7 @@ namespace std
     %template(GpioBehaviorModes)                map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>;
     %template(GpioFeatureBehaviors)             map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>;
     %template(GpioPinOptions)                   map<uint8_t, map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>>;
+    %template(EventInputTriggers)               array<uint8_t, mscl::EventTriggerCombinationParameter::MAX_INPUT_TRIGGERS>;
 
 
 

@@ -664,7 +664,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="GeographicSource.h" />
     <ClInclude Include="source\mscl\Bin.h" />
     <ClInclude Include="source\mscl\BitMask.h" />
     <ClInclude Include="source\mscl\Communication\BoostCommunication.h" />
@@ -724,6 +723,7 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\ExternalHeadingUpdateWithTimestamp.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\FilterInitializationConfig.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\FloatCommand.h" />
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GeographicSource.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GeometricVectorCommand.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GNSS_AssistedFixControl.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\DeviceStartupSettings.h" />
