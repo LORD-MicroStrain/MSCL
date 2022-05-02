@@ -3,6 +3,11 @@ BuildScripts/_testPythonBuild.cmd
 GettingStartedGuide
 sample_mscl_cpp/
 *MSCL_Wrap.cpp
+/build_ubuntu_*
+/build_centos_*
+/mscl_ubuntu_*.tar.bz2
+/mscl_centos_*.tar.bz2
+/Output
 
 ## Ignore JetBrains files
 *.idea

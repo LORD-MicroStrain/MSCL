@@ -1,0 +1,122 @@
+ARG ARCH="amd64"
+ARG CENTOS_VERSION="7"
+FROM ${ARCH}/centos:${CENTOS_VERSION}
+
+# Add some CA certificates
+COPY .devcontainer/extra_cas /etc/pki/ca-trust/source/anchors
+RUN set -ex && update-ca-trust
+
+# Install some build tools
+RUN set -ex \
+    && yum -y groupinstall "Development Tools" \
+    && yum -y install \
+        git \
+        gdb \
+        vim \
+        curl \
+        make \
+        subversion \
+        bash-completion
+
+# Install OpenSSL
+RUN set -ex \
+    && yum -y install \
+        openssl-devel \
+        openssl-static
+
+# Add some python dependencies
+RUN set -ex && yum -y install python2-devel || yum -y install python-devel
+
+# We need CMake 3 for MSCL, so install that here
+RUN set -ex \
+    && yum -y install epel-release \
+    && yum -y install cmake3 \
+    && ln -s /usr/bin/cmake3 /usr/bin/cmake
+
+# Install additional python versions
+ARG PYTHON3_VERSIONS="3.5.10 3.6.15"
+RUN set -ex \
+    && for PYTHON3_VERSION in ${PYTHON3_VERSIONS}; do \
+        curl -fsSLo /tmp/Python-${PYTHON3_VERSION}.tgz https://www.python.org/ftp/python/${PYTHON3_VERSION}/Python-${PYTHON3_VERSION}.tgz; \
+        tar -C /tmp/ -xzf /tmp/Python-${PYTHON3_VERSION}.tgz; \
+        cd /tmp/Python-${PYTHON3_VERSION}; \
+        /tmp/Python-${PYTHON3_VERSION}/configure \
+            --prefix=/usr \
+            --without-static-libpython \
+            --enable-shared; \
+        make -j$(nproc); \
+        make altinstall; \
+        rm -rf /tmp/Python-${PYTHON3_VERSION}*; \
+    done
+
+# Install a specific version of boost
+ARG BOOST_VERSION=1.68.0
+RUN set -ex \
+    && export boost_version_underscore=$(echo ${BOOST_VERSION} | tr '.' '_') \
+    && curl -fsSLo /tmp/boost_${boost_version_underscore}.tar.gz https://boostorg.jfrog.io/artifactory/main/release/1.68.0/source/boost_${boost_version_underscore}.tar.gz \
+    && tar -C /tmp/ -xzf /tmp/boost_${boost_version_underscore}.tar.gz \
+    && cd /tmp/boost_${boost_version_underscore} \
+    && ./bootstrap.sh \
+    && ./b2 \
+        -j $(nproc) \
+        variant=release \
+        cxxflags="$(echo ${PYTHON3_VERSIONS} | cut -d' ' -f1 | cut -d'.' -f-2 | xargs -I{} echo '-I/usr/include/python{}m' | tr '\n' ' ') -fPIC" \
+    && ./b2 install \
+        --prefix=/usr \
+    && rm -rf /tmp/boost_${boost_version_underscore}*
+
+# Install turtle so we can run unit tests
+ENV TURTLE_VERSION 1.3.1
+RUN set -ex \
+    && curl -fsSLo /tmp/turtle-${TURTLE_VERSION}.tar.gz https://master.dl.sourceforge.net/project/turtle/turtle/${TURTLE_VERSION}/turtle-${TURTLE_VERSION}.tar.gz?viasf=1 \
+    && tar -C /usr/local -xzf /tmp/turtle-${TURTLE_VERSION}.tar.gz include \
+    && rm -rf /tmp/turtle-${TURTLE_VERSION}*
+
+# Really sucks that we have to do this, but right now CMake is broken on ARM, but we can fix it if we compile it ourselves
+ARG ARCH
+RUN set -ex \
+    && [ ${ARCH} = "arm32v7" ] \
+        && /bin/bash -c ' \
+            set -ex && \
+            cmake_version=$(cmake --version | head -1 | cut -d" " -f3) && \
+            cmake_major_version=$(echo ${cmake_version} | cut -d"." -f-2) && \
+            curl -fsSLo /tmp/cmake-${cmake_version}.tar.gz https://cmake.org/files/v${cmake_major_version}/cmake-${cmake_version}.tar.gz && \
+            tar -C /tmp/ -xzf /tmp/cmake-${cmake_version}.tar.gz && \
+            cd /tmp/cmake-${cmake_version} && \
+            export CFLAGS="-D_FILE_OFFSET_BITS=64" && \
+            export CXXFLAGS="-D_FILE_OFFSET_BITS=64" && \
+            ./bootstrap \
+                --prefix="/usr" \
+                --parallel=$(nproc) \
+                -- \
+                -DCMAKE_INSTALL_PREFIX="/usr" \
+                -DCMAKE_BUILD_TYPE="RELEASE" \
+                -DCMAKE_USE_OPENSSL=OFF && \
+            make -j$(nproc) && \
+            make install \
+        ' \
+        || echo "Not arm32, no need to rebuild CMAKE"
+
+# Install swig
+RUN set -ex \
+    && yum -y remove \
+        swig \
+    && yum -y install \
+        swig3
+
+# Add a user that will be used when shelling into this container and allow them to use devices
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+RUN set -ex \
+    && yum install -y \
+        sudo \
+    && groupadd -g ${USER_ID} microstrain \
+    && useradd \
+        -N \
+        -m \
+        -u ${USER_ID} \
+        -g ${GROUP_ID} \
+        -G "dialout" \
+        -s "/bin/bash" \
+        microstrain \
+    && echo 'microstrain ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
