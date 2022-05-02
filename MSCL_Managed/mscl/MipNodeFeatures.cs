@@ -68,6 +68,18 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public bool supportsChannelField(MipTypes.ChannelField fieldId) {
+    bool ret = msclPINVOKE.MipNodeFeatures_supportsChannelField(swigCPtr, (int)fieldId);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public MipChannelFields filterSupportedChannelFields(MipChannelFields fields) {
+    MipChannelFields ret = new MipChannelFields(msclPINVOKE.MipNodeFeatures_filterSupportedChannelFields(swigCPtr, MipChannelFields.getCPtr(fields)), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public MipChannelFields supportedChannelFields(MipTypes.DataClass dataClass) {
     MipChannelFields ret = new MipChannelFields(msclPINVOKE.MipNodeFeatures_supportedChannelFields(swigCPtr, (int)dataClass), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -178,6 +190,18 @@ public class MipNodeFeatures : global::System.IDisposable {
 
   public GpioPinOptions supportedGpioConfigurations() {
     GpioPinOptions ret = new GpioPinOptions(msclPINVOKE.MipNodeFeatures_supportedGpioConfigurations(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public ChannelFieldQualifiers supportedEventThresholdChannelQualifiers() {
+    ChannelFieldQualifiers ret = new ChannelFieldQualifiers(msclPINVOKE.MipNodeFeatures_supportedEventThresholdChannelQualifiers(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public MipChannelFields supportedEventThresholdChannelFields() {
+    MipChannelFields ret = new MipChannelFields(msclPINVOKE.MipNodeFeatures_supportedEventThresholdChannelFields(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

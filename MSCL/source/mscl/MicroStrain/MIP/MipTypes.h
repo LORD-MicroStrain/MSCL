@@ -1101,11 +1101,11 @@ namespace mscl
 
         //API Typedef: ChannelIndices
         //    A list of <ChannelIndex> values
-        //typedef std::vector<ChannelIndex> ChannelIndices;
+        typedef std::vector<ChannelIndex> ChannelIndices;
 
         //API Typedef: ChannelFieldQualifiers
         //    A map of <ChannelField> values and their associated <ChannelIndices>
-        typedef std::map<ChannelField, std::vector<ChannelIndex>> ChannelFieldQualifiers;
+        typedef std::map<ChannelField, ChannelIndices> ChannelFieldQualifiers;
 
 #ifndef SWIG
         //Typedef: ChannelId
