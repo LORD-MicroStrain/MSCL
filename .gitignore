@@ -3,6 +3,7 @@ BuildScripts/_testPythonBuild.cmd
 GettingStartedGuide
 sample_mscl_cpp/
 *MSCL_Wrap.cpp
+/build
 /build_ubuntu_*
 /build_centos_*
 /mscl_ubuntu_*.tar.bz2

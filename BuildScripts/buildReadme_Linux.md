@@ -3,40 +3,111 @@
 ## Hold up!
 Most users will not need to build MSCL themselves!
 
-Pre-built versions are available for download. To get it, head over to the [MSCL Releases Page](https://github.com/LORD-MicroStrain/MSCL/releases), for the latest release. Under the `Downloads` section of that release, you will find the C++, Python, and .NET versions of MSCL, as well as Example Code and Documentation.
+Pre-built versions are available for download. To get it, head over to the
+[MSCL Releases Page](https://github.com/LORD-MicroStrain/MSCL/releases), for the latest release.
+Under the `Downloads` section of that release, you will find the C++, and Python versions of MSCL,
+as well as Example Code and Documentation.
+
+## I really want to build it myself
+Ok, if you are making changes to MSCL's source code, or need to build MSCL from scratch for any other reason,
+here are the steps to build for linux:
 
 #### Dependencies
 
+For more information on how to configure the build to use, or not use the optional dependencies see [this section](#configuring-the-build)
+
+##### Required
 - \>= gcc 4.9.1-5
+- \>= cmake 3.12
 - \>= [Boost 1.68](http://www.boost.org/)
-- \>= libssl1.0.0 (OpenSSL is optional, see below)
-- \>= libssl-dev (OpenSSL is optional, see below)
-- \>= libcrypto (OpenSSL is optional, see below)
-- = [SWIG 4.0.0](http://swig.org/download.html) (for Python build)
-- \>= python2.7 (for Python build)
-- \>= python2.7-dev (for Python build)
+
+##### Optional
+- \>= libssl1.0.0
+- \>= libssl-dev
+- \>= libcrypto
+- = [SWIG 4.0.0](http://swig.org/download.html) (for Python2 or Python3 build)
+- \>= python2.7
+- \>= python2.7-dev
+- \>= python3
+- \>= python3-dev
+- \>= [turtle 1.3.1](http://turtle.sourceforge.net/)
 
 #### Note
-On some systems, you may get a virtual memory error when compiling MSCL (ex. `Virtual memory exhausted: Cannot allocate memory`). It may be necessary to temporarily increase your Swapfile size. For an example, see [this post](https://www.bitpi.co/2015/02/11/how-to-change-raspberry-pis-swapfile-size-on-rasbian/) explaining this for the Raspberry Pi. Keep in mind that you may want to change back to the original swapfile size when you are done compiling MSCL (especially if using an SD card), as it can cause a lot of unnecessary writes to your disk.
+On some systems, you may get a virtual memory error when compiling MSCL
+(ex. `Virtual memory exhausted: Cannot allocate memory`).
+It may be necessary to temporarily increase your Swapfile size.
+For an example, see [this post](https://www.bitpi.co/2015/02/11/how-to-change-raspberry-pis-swapfile-size-on-rasbian/)
+explaining this for the Raspberry Pi. Keep in mind that you may want to change back to the original swapfile size
+when you are done compiling MSCL (especially if using an SD card), as it can cause a lot of unnecessary writes to your disk.
 
-## Building MSCL for C++
+## Building MSCL
 
-1. Download the Debian or RedHat based MSCL [manual build scripts](https://github.com/LORD-MicroStrain/MSCL/tree/master/BuildScripts/linuxManualBuild).
-2. Inside the folder, open the `config.cfg` file.
-3. Under the "PACKAGE_INFO" section, there is a `package_name` variable. This can be changed to whatever you would like.
-4. In the same section, there is a `python_version` variable. Change this to `None` to build for C++.
-5. Open a terminal to the location of the `config.cfg` file and run the following command: `python MSCL_Install.py` (see note below for optional parameters).
-6. The latest MSCL will automatically be downloaded, as well as it's dependencies. The build process will take a while, but once it is complete, the package will be installed in `/usr/share/`.
+1. Clone or download the [MSCL repo](https://github.com/LORD-MicroStrain/MSCL).
+The location of MSCL will be referred to as `<Project Root>` for the rest of this guide.
+2. Create a build directory. We will refer to this directory as `build` for the rest of the documentation,
+and it will be located at `<Project Root>/build` but it can be named anything and put anywhere as long as
+you update the following steps accordingly.
+3. Open a new terminal in `<Project Root>/build` and run the following command to configure the project.
+If you want to add options to build language bindings, or change configuration, see [this section](#configuring-the-build)
+and add the desired options as `-D` flags to the end of this command:
+    ```bash
+    # Please note that you should change ".." to wherever the project is located if you did not put the "build" directory directly in <Project Root>
+    cmake ..
+    ```
+4. In the same terminal, run the following command to build all the requested targets:
+    ```bash
+    cmake --build . -j$(nproc)
+    ```
+5. All build artifacts will be located in the `<Project Root>/build` directory in a somewhat unorderly directory structure,
+but the important artifacts such as the libraries, header files, etc. will be copied to `<Project Root>/Output`
+in a more orderly directory structure
+6. If you want to build the packages (`.deb` for debian/Ubuntu, `.rpm` for RedHat/CentOS) run the following command after building:
+    ```bash
+    cmake --build . --target package
+    ```
 
-Note: OpenSSL and Beast are optional and are used for creating secure WebSocket connections to an ethernet connected WSDA from anywhere in the world. If this is a feature you do not want, you can avoid adding these extra dependencies by adding `--without-ssl` (for OpenSSL) and `--without-websockets` (for Beast) as parameters to the MSCL_Install.py command run above.
+## Configuring the build
 
-## Building MSCL for Python
+The [`CMakeLists.txt`](../CMakeLists.txt) file exposes several parameters to the user to allow you to enable or disable different parts of the build.
+These options can be set in the configuration step documented above by prepending them with `-D` and setting them to the desired value.
+For example, to build python3, I would run the command:
+```bash
+cmake .. -DBUILD_PYTHON3=ON
+```
 
-1. Download the Debian or RedHat based MSCL [manual build scripts](https://github.com/LORD-MicroStrain/MSCL/tree/master/BuildScripts/linuxManualBuild).
-2. Inside the folder, open the `config.cfg` file.
-3. Under the "PACKAGE_INFO" section, there is a `package_name` variable. This can be changed to whatever you would like.
-4. In the same section, there is a `python_version` variable. Change this to whichever version of Python you wish to build MSCL for.
-5. Open a terminal to the location of the `config.cfg` file and run the following command: `python MSCL_Install.py` (see note below for optional parameters).
-6. The latest MSCL will automatically be downloaded, as well as it's dependencies. The build process will take a while, but once it is complete, the package will be installed in `/usr/share/`.
+##### Boolean Parameters
+The following table lists some parameters that can be set to `ON` or `OFF` to enable, or disable certain pieces of the build
 
-Note: OpenSSL and Beast are optional and are used for creating secure WebSocket connections to an ethernet connected WSDA from anywhere in the world. If this is a feature you do not want, you can avoid adding these extra dependencies by adding `--without-ssl` (for OpenSSL) and `--without-websockets` (for Beast) as parameters to the MSCL_Install.py command run above.
+| Parameter         | Description                                                                                                                     | Default |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| BUILD_SHARED_LIBS | Build MSCL as a shared library as well as a static library                                                                      | OFF     |
+| BUILD_PYTHON2     | Build the Python2 bindings for MSCL. Note that this requires swig and python2 to be installed                                   | OFF     |
+| BUILD_PYTHON3     | Build the Python3 bindings for MSCL. Note that this requires swig and python3 to be installed                                   | OFF     |
+| BUILD_TESTS       | Build the unit tests for MSCL. This also enables the `test` CMake target. Note that this also requires that turtle be installed | OFF     |
+| BUILD_EXAMPLES    | Build the examples in [`MSCL_Examples`](../MSCL_Examples/)                                                                      | OFF     |
+| BUILD_PACKAGE     | Build the resulting artifacts into `.deb`, or `.rpm` files                                                                      | OFF     |
+| WITH_SSL          | Whether to build with SSL support. Note that this requires openssl to be installed                                              | ON      |
+| WITH_WEBSOCKETS   | Whether to build with Websocket support                                                                                         | ON      |
+| LINK_STATIC_DEPS  | Whether to link boost and OpenSSL statically. Note that this requires both libraries to have been compiled with `-fPIC`         | OFF     |
+
+##### String Parameters
+
+| Parameter          | Description                                                                                                                                    | Default                 |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| TURTLE_INCLUDE_DIR | Directory where the turtle include files are installed. Only required if include files are in a nonstandard place.                             | `C:/lib/turtle/include` |
+| DPKG_ROOT          | Directory to search for the `dpkg` executable. Only required if `BUILD_PACKAGE` is true, and `dpkg` is installed somewhere nonstandard         | `""`                    |
+| RPMBUILD_ROOT      | Directory to search for the `rpmbuild` executable. Only required if `BUILD_PACKAGE` is true, and `rpmbuild` is installed somewhere nonstandard | `""`                    |
+
+##### Other parameters
+
+MSCL uses existing `find_package` calls to find other packages such as boost, OpenSSL, etc.
+which all expose their own variables that can be overridden in the same way as the above parameters.
+See the following documentation for more information on how to configure the `find_package` call for those modules:
+
+* [FindGit](https://cmake.org/cmake/help/latest/module/FindGit.html)
+* [FindBoost](https://cmake.org/cmake/help/latest/module/FindBoost.html)
+* [FindThreads](https://cmake.org/cmake/help/latest/module/FindThreads.html)
+* [FindOpenSSL](https://cmake.org/cmake/help/latest/module/FindOpenSSL.html)
+* [FindSWIG](https://cmake.org/cmake/help/latest/module/FindSWIG.html)
+* [FindPython2](https://cmake.org/cmake/help/latest/module/FindPython2.html)
+* [FindPython3](https://cmake.org/cmake/help/latest/module/FindPython3.html)
