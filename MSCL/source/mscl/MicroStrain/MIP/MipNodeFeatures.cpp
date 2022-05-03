@@ -697,29 +697,11 @@ namespace mscl
         };
     }
 
-    MipTypes::ChannelFieldQualifiers MipNodeFeatures::supportedEventThresholdChannelQualifiers() const
+    MipTypes::ChannelFieldQualifiers MipNodeFeatures::supportedEventThresholdChannels() const
     {
         if (!supportsCommand(mscl::MipTypes::Command::CMD_EVENT_TRIGGER_CONFIGURATION))
         {
             return{ MipTypes::ChannelFieldQualifiers() };
-        }
-
-        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
-
-        switch (model.baseModel().nodeModel())
-        {
-        case MipModels::node_3dm_cv7_ahrs:
-        case MipModels::node_3dm_cv7_ar:
-        default:
-            return MipTypes::channelFieldQualifiers(supportedEventThresholdChannelFields());
-        }
-    }
-
-    MipTypes::MipChannelFields MipNodeFeatures::supportedEventThresholdChannelFields() const
-    {
-        if (!supportsCommand(mscl::MipTypes::Command::CMD_EVENT_TRIGGER_CONFIGURATION))
-        {
-            return{ MipTypes::MipChannelFields() };
         }
 
         const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
@@ -811,6 +793,7 @@ namespace mscl
             };
         }
 
-        return filterSupportedChannelFields(possibleFields);
+        MipTypes::MipChannelFields supportedThresholdFields = filterSupportedChannelFields(possibleFields);
+        return MipTypes::channelFieldQualifiers(supportedThresholdFields);
     }
 }

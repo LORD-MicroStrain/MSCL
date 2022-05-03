@@ -291,13 +291,6 @@ namespace mscl
         //
         //Return:
         //    <ChannelFieldQualifiers> - The supported channel fields/qualifiers.
-        MipTypes::ChannelFieldQualifiers supportedEventThresholdChannelQualifiers() const;
-
-        //API Function: supportedEventThresholdChannelFields
-        //    Gets the supported channel fields for event threshold configuration.
-        //
-        //Return:
-        //    <MipChannelFields> - The supported channel fields.
-        MipTypes::MipChannelFields supportedEventThresholdChannelFields() const;
+        MipTypes::ChannelFieldQualifiers supportedEventThresholdChannels() const;
     };
 }

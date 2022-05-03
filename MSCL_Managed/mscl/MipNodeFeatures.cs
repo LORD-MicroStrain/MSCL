@@ -194,14 +194,8 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
-  public ChannelFieldQualifiers supportedEventThresholdChannelQualifiers() {
-    ChannelFieldQualifiers ret = new ChannelFieldQualifiers(msclPINVOKE.MipNodeFeatures_supportedEventThresholdChannelQualifiers(swigCPtr), true);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public MipChannelFields supportedEventThresholdChannelFields() {
-    MipChannelFields ret = new MipChannelFields(msclPINVOKE.MipNodeFeatures_supportedEventThresholdChannelFields(swigCPtr), true);
+  public ChannelFieldQualifiers supportedEventThresholdChannels() {
+    ChannelFieldQualifiers ret = new ChannelFieldQualifiers(msclPINVOKE.MipNodeFeatures_supportedEventThresholdChannels(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
