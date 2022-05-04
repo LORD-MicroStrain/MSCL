@@ -286,7 +286,7 @@ namespace mscl
         //    A <GpioPinOptions> map of supported GPIO pin configurations
         const GpioPinOptions supportedGpioConfigurations() const;
 
-        //API Function: supportedEventThresholdChannelQualifiers
+        //API Function: supportedEventThresholdChannels
         //    Gets the supported channel fields/qualifiers for event threshold configuration.
         //
         //Return:

@@ -1096,7 +1096,7 @@ namespace mscl
         typedef std::vector<Command> MipCommands;
 
         //API Typedef: ChannelIndex
-        //    A <ChannelQualifier>, int pair indicating value index of the qualifier in a channel field.
+        //    A <ChannelQualifier>, int pair indicating the index value of the qualifier in a channel field.
         typedef std::pair<ChannelQualifier, uint8> ChannelIndex;
 
         //API Typedef: ChannelIndices
