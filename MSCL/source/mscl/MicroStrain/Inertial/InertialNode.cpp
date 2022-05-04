@@ -944,12 +944,14 @@ namespace mscl
             break;
 
         case EventTriggerConfiguration::THRESHOLD_TRIGGER:
-            config.parameters.threshold.channelField    = static_cast<MipTypes::ChannelField>(data.read_uint16());
-            config.parameters.threshold.parameterId     = data.read_uint8();
-            config.parameters.threshold.type            = static_cast<EventTriggerThresholdParameter::Type>(data.read_uint8());
-            config.parameters.threshold.lowThreshold    = data.read_double();
-            config.parameters.threshold.highThreshold   = data.read_double();
+        {
+            const MipTypes::ChannelField field = static_cast<MipTypes::ChannelField>(data.read_uint16());
+            config.parameters.threshold.channel(field, data.read_uint8());
+            config.parameters.threshold.type          = static_cast<EventTriggerThresholdParameter::Type>(data.read_uint8());
+            config.parameters.threshold.lowThreshold  = data.read_double();
+            config.parameters.threshold.highThreshold = data.read_double();
             break;
+        }
 
         case EventTriggerConfiguration::COMBINATION_TRIGGER:
             config.parameters.combination.logicTable = data.read_uint16();
@@ -982,13 +984,15 @@ namespace mscl
             break;
 
         case EventTriggerConfiguration::THRESHOLD_TRIGGER:
-            values.push_back(Value::UINT16(static_cast<uint16>(config.parameters.threshold.channelField)));
-            values.push_back(Value::UINT8(config.parameters.threshold.parameterId));
-            values.push_back(Value::UINT8(static_cast<uint8>(config.parameters.threshold.type)));
-            values.push_back(Value::DOUBLE(config.parameters.threshold.lowThreshold));
-            values.push_back(Value::DOUBLE(config.parameters.threshold.highThreshold));
+        {
+            const EventTriggerThresholdParameter threshold = config.parameters.threshold;
+            values.push_back(Value::UINT16(static_cast<uint16>(threshold.channelField())));
+            values.push_back(Value::UINT8(threshold.channelIndex()));
+            values.push_back(Value::UINT8(static_cast<uint8>(threshold.type)));
+            values.push_back(Value::DOUBLE(threshold.lowThreshold));
+            values.push_back(Value::DOUBLE(threshold.highThreshold));
             break;
-
+        }
         case EventTriggerConfiguration::COMBINATION_TRIGGER:
         {
             values.push_back(Value::UINT16(config.parameters.combination.logicTable));
