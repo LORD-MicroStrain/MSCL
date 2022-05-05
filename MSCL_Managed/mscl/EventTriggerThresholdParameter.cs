@@ -44,30 +44,6 @@ public class EventTriggerThresholdParameter : global::System.IDisposable {
     }
   }
 
-  public MipTypes.ChannelField channelField {
-    set {
-      msclPINVOKE.EventTriggerThresholdParameter_channelField_set(swigCPtr, (int)value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      MipTypes.ChannelField ret = (MipTypes.ChannelField)msclPINVOKE.EventTriggerThresholdParameter_channelField_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
-  }
-
-  public byte parameterId {
-    set {
-      msclPINVOKE.EventTriggerThresholdParameter_parameterId_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      byte ret = msclPINVOKE.EventTriggerThresholdParameter_parameterId_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
-  }
-
   public EventTriggerThresholdParameter.Type type {
     set {
       msclPINVOKE.EventTriggerThresholdParameter_type_set(swigCPtr, (int)value);
@@ -102,6 +78,34 @@ public class EventTriggerThresholdParameter : global::System.IDisposable {
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
+  }
+
+  public void channel(MipTypes.ChannelField channelField, MipTypes.ChannelQualifier channelQualifier) {
+    msclPINVOKE.EventTriggerThresholdParameter_channel__SWIG_0(swigCPtr, (int)channelField, (int)channelQualifier);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void channel(MipTypes.ChannelField channelField, byte index) {
+    msclPINVOKE.EventTriggerThresholdParameter_channel__SWIG_1(swigCPtr, (int)channelField, index);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public MipTypes.ChannelField channelField() {
+    MipTypes.ChannelField ret = (MipTypes.ChannelField)msclPINVOKE.EventTriggerThresholdParameter_channelField(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public MipTypes.ChannelQualifier channelQualifier() {
+    MipTypes.ChannelQualifier ret = (MipTypes.ChannelQualifier)msclPINVOKE.EventTriggerThresholdParameter_channelQualifier(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public byte channelIndex() {
+    byte ret = msclPINVOKE.EventTriggerThresholdParameter_channelIndex(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
   public EventTriggerThresholdParameter() : this(msclPINVOKE.new_EventTriggerThresholdParameter(), true) {

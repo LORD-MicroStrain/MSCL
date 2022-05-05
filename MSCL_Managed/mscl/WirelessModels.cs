@@ -147,7 +147,8 @@ public class WirelessModels : global::System.IDisposable {
     node_sgLink_herm_2700 = 65011210,
     node_sgLink_herm_2800 = 65011310,
     node_sgLink_herm_2900 = 65011410,
-    node_wirelessImpactSensor = 65080000
+    node_wirelessImpactSensor = 65080000,
+    node_gLink_200_40g_s = 65226001
   }
 
   public enum BaseModel {
