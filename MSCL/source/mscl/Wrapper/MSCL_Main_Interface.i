@@ -286,7 +286,7 @@ namespace std
     %template(DeviceStatusValueMap)             map<enum mscl::DeviceStatusValues, mscl::Value>;
     %template(SampleRates)                      vector<mscl::SampleRate>;
     %template(ConfigIssues)                     vector<mscl::ConfigIssue>;
-    %template(MipChannelFields)                 vector<mscl::MipTypes::ChannelField>;
+    %template(MipChannelFields)                 vector<enum mscl::MipTypes::ChannelField>;
     %template(MipCommands)                      vector<mscl::MipTypes::Command>;
     %template(MipChannelIdentifiers)            vector<mscl::MipChannelIdentifier>;
     %template(MipCommandSet)                    vector<mscl::MipCommandBytes>;
