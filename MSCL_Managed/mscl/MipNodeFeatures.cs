@@ -68,6 +68,18 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public bool supportsChannelField(MipTypes.ChannelField fieldId) {
+    bool ret = msclPINVOKE.MipNodeFeatures_supportsChannelField(swigCPtr, (int)fieldId);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public MipChannelFields filterSupportedChannelFields(MipChannelFields fields) {
+    MipChannelFields ret = new MipChannelFields(msclPINVOKE.MipNodeFeatures_filterSupportedChannelFields(swigCPtr, MipChannelFields.getCPtr(fields)), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public MipChannelFields supportedChannelFields(MipTypes.DataClass dataClass) {
     MipChannelFields ret = new MipChannelFields(msclPINVOKE.MipNodeFeatures_supportedChannelFields(swigCPtr, (int)dataClass), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -188,14 +200,20 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
-  public static GeographicSources supportedInclinationOptions() {
-    GeographicSources ret = new GeographicSources(msclPINVOKE.MipNodeFeatures_supportedInclinationOptions(), true);
+  public GeographicSources supportedInclinationOptions() {
+    GeographicSources ret = new GeographicSources(msclPINVOKE.MipNodeFeatures_supportedInclinationOptions(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public static GeographicSources supportedMagneticMagnitudeOptions() {
-    GeographicSources ret = new GeographicSources(msclPINVOKE.MipNodeFeatures_supportedMagneticMagnitudeOptions(), true);
+  public GeographicSources supportedMagneticMagnitudeOptions() {
+    GeographicSources ret = new GeographicSources(msclPINVOKE.MipNodeFeatures_supportedMagneticMagnitudeOptions(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public ChannelFieldQualifiers supportedEventThresholdChannels() {
+    ChannelFieldQualifiers ret = new ChannelFieldQualifiers(msclPINVOKE.MipNodeFeatures_supportedEventThresholdChannels(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
