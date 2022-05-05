@@ -718,7 +718,7 @@ namespace mscl
         }
     }
 
-    GeographicSources MipNodeFeatures::supportedInclinationOptions()
+    GeographicSources MipNodeFeatures::supportedInclinationOptions() const
     {
         return{
             InertialTypes::GeographicSourceOption::NONE,
@@ -727,7 +727,7 @@ namespace mscl
         };
     }
 
-    GeographicSources MipNodeFeatures::supportedMagneticMagnitudeOptions()
+    GeographicSources MipNodeFeatures::supportedMagneticMagnitudeOptions() const
     {
         return{
             InertialTypes::GeographicSourceOption::NONE,

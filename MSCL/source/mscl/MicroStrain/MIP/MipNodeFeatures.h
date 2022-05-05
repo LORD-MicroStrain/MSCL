@@ -298,14 +298,14 @@ namespace mscl
         //
         //Returns:
         //    A <GeographicSources> vector of supported inclination options
-        static GeographicSources supportedInclinationOptions() const;
+        GeographicSources supportedInclinationOptions() const;
 
         //API Function: supportedMagneticMagnitudeOptions
         //    Gets a vector of supported magnetic magnitude options
         //
         //Returns:
         //    A <GeographicSources> vector of supported magnetic magnitude options
-        static GeographicSources supportedMagneticMagnitudeOptions() const;
+        GeographicSources supportedMagneticMagnitudeOptions() const;
 
         //API Function: supportedEventThresholdChannels
         //    Gets the supported channel fields/qualifiers for event threshold configuration.
