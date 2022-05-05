@@ -697,7 +697,7 @@ namespace mscl
         };
     }
 
-    GeographicSources MipNodeFeatures::supportedDeclinationOptions() const
+    GeographicSources MipNodeFeatures::supportedDeclinationSources() const
     {
         const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
@@ -718,22 +718,46 @@ namespace mscl
         }
     }
 
-    GeographicSources MipNodeFeatures::supportedInclinationOptions() const
+    GeographicSources MipNodeFeatures::supportedInclinationSources() const
     {
-        return{
-            InertialTypes::GeographicSourceOption::NONE,
-            InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
-            InertialTypes::GeographicSourceOption::MANUAL
-        };
+        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ahrs:
+        case MipModels::node_3dm_cv7_ar:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
+        default:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+        }
     }
 
-    GeographicSources MipNodeFeatures::supportedMagneticMagnitudeOptions() const
+    GeographicSources MipNodeFeatures::supportedMagneticMagnitudeSources() const
     {
-        return{
-            InertialTypes::GeographicSourceOption::NONE,
-            InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
-            InertialTypes::GeographicSourceOption::MANUAL
-        };
+        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ahrs:
+        case MipModels::node_3dm_cv7_ar:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
+        default:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+        }
     }
 
     MipTypes::ChannelFieldQualifiers MipNodeFeatures::supportedEventThresholdChannels() const
