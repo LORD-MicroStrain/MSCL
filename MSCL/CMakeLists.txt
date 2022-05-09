@@ -7,6 +7,28 @@ file(GLOB_RECURSE SRC_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/source/**/*.h
 )
 
+# Create VS filters based on file directories
+foreach(FILE ${SRC_FILES})
+  # Get the directory of the source file
+  get_filename_component(PARENT_DIR "${FILE}" DIRECTORY)
+
+  # Remove common directory prefix to make the group and removed the trailing mscl source directory
+  string(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" "" GROUP "${PARENT_DIR}")
+
+  # Make sure we are using windows slashes
+  string(REPLACE "/" "\\" GROUP "${GROUP}")
+
+  # Group into "Source Files" and "Header Files"
+  if ("${FILE}" MATCHES ".*\\.cpp")
+    set(GROUP "Source Files${GROUP}")
+  elseif("${FILE}" MATCHES ".*\\.h")
+    set(GROUP "Header Files${GROUP}")
+  endif()
+
+  source_group("${GROUP}" FILES "${FILE}")
+endforeach()
+
+
 # Files that should only be compiled on windows
 set(WINDOWS_ONLY_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Communication/WsdaFinder.h
@@ -14,7 +36,7 @@ set(WINDOWS_ONLY_FILES
   ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Communication/UpnpService.h
   ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Communication/UpnpService.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Communication/UpnpDeviceFinderCallback.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Communication/UpnpDeviceFinderCallback.cpp 
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Communication/UpnpDeviceFinderCallback.cpp
 )
 
 # Files that should only be compiled on linux
@@ -124,7 +146,7 @@ if(WIN32)
 elseif(UNIX)
   # If running on linux, mark the target for installation
   install(
-    TARGETS ${LIB_NAME_STATIC} 
+    TARGETS ${LIB_NAME_STATIC}
     DESTINATION "lib"
     COMPONENT static
   )
@@ -174,7 +196,7 @@ if(BUILD_SHARED_LIBS)
   elseif(UNIX)
     # If running on linux, mark the target for installation
     install(
-      TARGETS ${LIB_NAME_SHARED} 
+      TARGETS ${LIB_NAME_SHARED}
       DESTINATION "lib"
       COMPONENT shared
     )
