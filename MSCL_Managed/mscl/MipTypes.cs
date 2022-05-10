@@ -92,6 +92,24 @@ public class MipTypes : global::System.IDisposable {
     return ret;
   }
 
+  public static ChannelFieldQualifiers channelFieldQualifiers(MipChannelFields fields) {
+    ChannelFieldQualifiers ret = new ChannelFieldQualifiers(msclPINVOKE.MipTypes_channelFieldQualifiers(MipChannelFields.getCPtr(fields)), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static MipTypes.ChannelQualifier channelFieldQualifier(MipTypes.ChannelField field, byte index) {
+    MipTypes.ChannelQualifier ret = (MipTypes.ChannelQualifier)msclPINVOKE.MipTypes_channelFieldQualifier((int)field, index);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static byte channelFieldQualifierIndex(MipTypes.ChannelField field, MipTypes.ChannelQualifier qualifier) {
+    byte ret = msclPINVOKE.MipTypes_channelFieldQualifierIndex((int)field, (int)qualifier);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public MipTypes() : this(msclPINVOKE.new_MipTypes(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
@@ -609,7 +627,19 @@ public class MipTypes : global::System.IDisposable {
     CH_DELTA_TIME = 97,
     CH_DELTA_TICK = 98,
     CH_ERROR = 99,
-    CH_ERROR_UNC = 100
+    CH_ERROR_UNC = 100,
+    CH_W = 101,
+    CH_M0 = 102,
+    CH_M1 = 103,
+    CH_M2 = 104,
+    CH_M3 = 105,
+    CH_M4 = 106,
+    CH_M5 = 107,
+    CH_M6 = 108,
+    CH_M7 = 109,
+    CH_M8 = 110,
+    CH_NANOSECONDS = 111,
+    CH_VALID_FLAGS = 112
   }
 
 }

@@ -284,7 +284,7 @@ namespace mscl
         case MipTypes::CMD_EVENT_CONTROL:
             return 0xB5;
         case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
-            return 0xB6;
+            return 0xB8;
         // 0x0D
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
             return 0xBE;

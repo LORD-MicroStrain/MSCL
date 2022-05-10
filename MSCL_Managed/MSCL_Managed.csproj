@@ -100,9 +100,12 @@
     <Compile Include="mscl\CfcFilters.cs" />
     <Compile Include="mscl\ChannelCalMap.cs" />
     <Compile Include="mscl\ChannelData.cs" />
+    <Compile Include="mscl\ChannelFieldQualifiers.cs" />
     <Compile Include="mscl\ChannelGroup.cs" />
     <Compile Include="mscl\ChannelGroups.cs" />
     <Compile Include="mscl\ChannelGroupSettings.cs" />
+    <Compile Include="mscl\ChannelIndex.cs" />
+    <Compile Include="mscl\ChannelIndices.cs" />
     <Compile Include="mscl\ChannelMask.cs" />
     <Compile Include="mscl\CommPortInfo.cs" />
     <Compile Include="mscl\CommProtocols.cs" />
