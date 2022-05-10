@@ -20,6 +20,7 @@ Forthcoming
     - Event Trigger Configuration (0x0C,0x2E)
     - Get Calibrated Sensor Ranges (0x0C,0x53)
     - Sensor Range (0x0C,0x52)
+    - Event Control (0x0C,0x2B)
 - Added check for supported event trigger threshold qualifiers
 
 64.2.2 - 2022-03-08
