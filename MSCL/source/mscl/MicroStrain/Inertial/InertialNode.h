@@ -2100,7 +2100,7 @@ namespace mscl
         EventControlMode getEventTriggerMode(uint8 instance) const;
 
         //API Function: setEventTriggerMode
-        //    Sends the Event Control command (0x0C, 0x2B) to temporarily set the mode of the specified trigger.
+        //    Sends the Event Control command (0x0C, 0x2B) to set the mode of the specified trigger.
         //
         //Parameter:
         //    instance - The trigger ID to control.
