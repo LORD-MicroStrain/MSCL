@@ -104,7 +104,7 @@ namespace mscl
         /****   Read, Write     ****/
         // 0x0C
         case MipTypes::CMD_GPIO_STATE:
-            return{
+            return {
                 MipTypes::FunctionSelector::USE_NEW_SETTINGS,
                 MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS
             };
@@ -116,6 +116,7 @@ namespace mscl
         case MipTypes::CMD_MESSAGE_FORMAT:
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
         case MipTypes::CMD_PPS_SOURCE:
+        case MipTypes::CMD_EVENT_CONTROL:
         case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
@@ -181,6 +182,7 @@ namespace mscl
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
         case MipTypes::CMD_GET_BASE_RATE:
         case MipTypes::CMD_MESSAGE_FORMAT:
+        case MipTypes::CMD_EVENT_CONTROL:
         case MipTypes::CMD_SENSOR_RANGE:
         case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
             // check that the identifier is echoed back in the response
@@ -222,6 +224,8 @@ namespace mscl
             return "SensorToVehicleFrameTransformationDCM";
         case MipTypes::CMD_PPS_SOURCE:
             return "PpsSource";
+        case MipTypes::CMD_EVENT_CONTROL:
+            return "EventControl";
         case MipTypes::CMD_GPIO_CONFIGURATION:
             return "GpioConfiguration";
         case MipTypes::CMD_GPIO_STATE:
@@ -277,6 +281,8 @@ namespace mscl
         // 0x0C
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
             return 0x85;
+        case MipTypes::CMD_EVENT_CONTROL:
+            return 0xB5;
         case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
             return 0xB8;
         // 0x0D
@@ -363,6 +369,12 @@ namespace mscl
 
         case MipTypes::CMD_PPS_SOURCE:
             return{ ValueType::valueType_uint8 };
+
+        case MipTypes::CMD_EVENT_CONTROL:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint8
+            };
 
         case MipTypes::CMD_ODOMETER_SETTINGS:
             return{

@@ -925,6 +925,22 @@ namespace mscl
             });
     }
 
+    EventControlMode InertialNode::getEventTriggerMode(const uint8 instance) const
+    {
+        const MipFieldValues data = m_impl->get(MipTypes::CMD_EVENT_CONTROL, {
+            Value::UINT8(instance) });
+
+        return static_cast<EventControlMode>(data[1].as_uint8());
+    }
+
+    void InertialNode::setEventTriggerMode(const uint8 instance, const EventControlMode mode) const
+    {
+        m_impl->set(MipTypes::CMD_EVENT_CONTROL, {
+            Value::UINT8(instance),
+            Value::UINT8(static_cast<uint8>(mode))
+        });
+    }
+
     EventTriggerConfiguration InertialNode::getEventTriggerConfig(const uint8 instance) const
     {
         const ByteStream response = m_impl->get_RawResponseData(MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION, {

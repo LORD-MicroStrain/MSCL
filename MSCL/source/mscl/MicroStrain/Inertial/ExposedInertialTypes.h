@@ -2804,6 +2804,20 @@ namespace mscl
     // A map of uint GPIO pin ID, <GpioFeatureBehaviors> pairs
     typedef std::map<uint8, GpioFeatureBehaviors> GpioPinOptions;
 
+    //API Enum: EventControlMode
+    //  Event control modes
+    //      DISABLED   - 0x00 - Trigger is disabled
+    //      ENABLED    - 0x01 - Trigger is enabled
+    //      TEST       - 0x02 - Force the trigger into the active state
+    //      TEST_PULSE - 0x03 - Force the trigger into the active state for one event cycle
+    enum EventControlMode
+    {
+        DISABLED   = 0x00,  // Trigger is disabled
+        ENABLED    = 0x01,  // Trigger is enabled
+        TEST       = 0x02,  // Force the trigger into the active state
+        TEST_PULSE = 0x03   // Force the trigger into the active state for one event cycle
+    };
+
     //API Struct: EventTriggerGpioParameter
     struct EventTriggerGpioParameter
     {

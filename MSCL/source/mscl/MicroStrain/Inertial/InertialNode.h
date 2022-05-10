@@ -2083,6 +2083,36 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setGpioState(uint8 pin, bool state);
 
+        //API Function: getEventTriggerMode
+        //    Sends the Event Control command (0x0C, 0x2B) to get the current mode of the specified trigger.
+        //
+        //Parameter:
+        //    instance - The trigger ID to get the mode of.
+        //
+        //Return:
+        //    EventControlMode - The current mode of the event trigger.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        EventControlMode getEventTriggerMode(uint8 instance) const;
+
+        //API Function: setEventTriggerMode
+        //    Sends the Event Control command (0x0C, 0x2B) to temporarily set the mode of the specified trigger.
+        //
+        //Parameter:
+        //    instance - The trigger ID to control.
+        //    mode - The mode to set the event trigger.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setEventTriggerMode(uint8 instance, EventControlMode mode) const;
+
         //API Function: getEventTriggerConfig
         //    Gets the currently configured event trigger settings for the specified trigger ID.
         //
