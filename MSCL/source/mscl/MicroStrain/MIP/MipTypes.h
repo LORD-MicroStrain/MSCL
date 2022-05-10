@@ -1678,35 +1678,6 @@ namespace mscl
     };
 
     typedef std::vector<DeviceCommPort> CommPortInfo;
-
-    //API Struct: EventTriggerInfo
-    //  Information about an event trigger
-    struct EventTriggerInfo
-    {
-        //API Enum: Status
-        //  Available trigger statuses
-        //      ACTIVE  - 0x00 - Trigger is active
-        //      ENABLED - 0x01 - Trigger is enabled
-        //      TEST    - 0x02 - Trigger is in test mode
-        enum Status
-        {
-            ACTIVE  = 0x00, // Trigger is active
-            ENABLED = 0x01, // Trigger is enabled
-            TEST    = 0x02  // Trigger is in test mode
-        };
-
-        //API Variable: type
-        //  Configured trigger type
-        uint8 type;
-
-        //API Variable: status
-        //  Trigger status
-        Status status;
-    };
-
-    //API Typedef: EventTriggerStatus
-    //  A vector of <EventTriggerInfo>
-    typedef std::vector<EventTriggerInfo> EventTriggerStatus;
     
     // API Class: SensorRange
     // An object representing a configurable sensor range option

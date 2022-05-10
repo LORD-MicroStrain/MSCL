@@ -2900,13 +2900,13 @@ namespace mscl
         //      NONE                - 0x00 - No trigger selected. The state will always be inactive
         //      GPIO_TRIGGER        - 0x01 - Trigger based on the state of a GPIO pin
         //      THRESHOLD_TRIGGER   - 0x02 - Compare a data quantity against a high and low threshold
-        //      COMBINATION_TRIGGER - 0x7F - Logical combination of two or more triggers
+        //      COMBINATION_TRIGGER - 0x03 - Logical combination of two or more triggers
         enum Trigger
         {
             NONE                = 0x00, // No trigger selected. The state will always be inactive
             GPIO_TRIGGER        = 0x01, // Trigger based on the state of a GPIO pin
             THRESHOLD_TRIGGER   = 0x02, // Compare a data quantity against a high and low threshold
-            COMBINATION_TRIGGER = 0x7F  // Logical combination of two or more triggers
+            COMBINATION_TRIGGER = 0x03  // Logical combination of two or more triggers
         };
 
         // Trigger number
@@ -2918,4 +2918,55 @@ namespace mscl
         // Trigger parameters
         EventTriggerParameters parameters;
     };
+
+    //API Struct: EventTriggerInfo
+    //  Information about an event trigger
+    struct EventTriggerInfo
+    {
+        //API Function: EventTriggerInfo
+        //  Constructor
+        EventTriggerInfo(const EventTriggerConfiguration::Trigger type, const uint8 status) :
+            type(type), status(status) {}
+
+        //API Enum: Status
+        //  Trigger status masks for the status bitfield
+        //      ACTIVE  - 0x00 - Trigger is active
+        //      ENABLED - 0x01 - Trigger is enabled
+        //      TEST    - 0x02 - Trigger is in test mode
+        enum Status
+        {
+            ACTIVE = 0x00, // Trigger is active
+            ENABLED = 0x01, // Trigger is enabled
+            TEST = 0x02  // Trigger is in test mode
+        };
+
+        //API Variable: type
+        //  Configured trigger type
+        EventTriggerConfiguration::Trigger type;
+
+        //API Function: getActiveStatus
+        //  Gets the status of the active bit from the status bitfield
+        uint8 getActiveStatus() const;
+
+        //API Function: getEnabledStatus
+        //  Gets the status of the enabled bit from the status bitfield
+        uint8 getEnabledStatus() const;
+
+        //API Function: getTestStatus
+        //  Gets the status of the test bit from the status bitfield
+        uint8 getTestStatus() const;
+
+        //API Function: setStatus
+        //  Sets the value of the status bitfield
+        void setStatus(uint8 value);
+
+    private:
+        //API Variable: status
+        //  Trigger status
+        Bitfield status;
+    };
+
+    //API Typedef: EventTriggerStatus
+    //  A vector of <EventTriggerInfo>
+    typedef std::vector<EventTriggerInfo> EventTriggerStatus;
 }

@@ -979,4 +979,24 @@ namespace mscl
 
         m_unc = unc;
     }
+
+    uint8 EventTriggerInfo::getActiveStatus() const
+    {
+        return static_cast<uint8>(status.get(ACTIVE));
+    }
+
+    uint8 EventTriggerInfo::getEnabledStatus() const
+    {
+        return static_cast<uint8>(status.get(ENABLED));
+    }
+
+    uint8 EventTriggerInfo::getTestStatus() const
+    {
+        return static_cast<uint8>(status.get(TEST));
+    }
+
+    void EventTriggerInfo::setStatus(const uint8 value)
+    {
+        status.value(value);
+    }
 }  // namespace mscl
