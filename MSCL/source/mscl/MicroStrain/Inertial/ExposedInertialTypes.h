@@ -2804,6 +2804,20 @@ namespace mscl
     // A map of uint GPIO pin ID, <GpioFeatureBehaviors> pairs
     typedef std::map<uint8, GpioFeatureBehaviors> GpioPinOptions;
 
+    //API Enum: EventControlMode
+    //  Event control modes
+    //      DISABLED   - 0x00 - Trigger is disabled
+    //      ENABLED    - 0x01 - Trigger is enabled
+    //      TEST       - 0x02 - Force the trigger into the active state
+    //      TEST_PULSE - 0x03 - Force the trigger into the active state for one event cycle
+    enum EventControlMode
+    {
+        DISABLED   = 0x00,  // Trigger is disabled
+        ENABLED    = 0x01,  // Trigger is enabled
+        TEST       = 0x02,  // Force the trigger into the active state
+        TEST_PULSE = 0x03   // Force the trigger into the active state for one event cycle
+    };
+
     //API Struct: EventTriggerGpioParameter
     struct EventTriggerGpioParameter
     {
@@ -2841,19 +2855,52 @@ namespace mscl
             INTERVAL_TYPE = 0x02  // Trigger at evenly-spaced intervals
         };
 
-        // MIP channel field
-        MipTypes::ChannelField channelField;
-
-        // 1-based index of the target parameter within the MIP field
-        uint8 parameterId;
-
-        // Determines the type of comparison
+        //API Variable: type
+        //  Determines the type of comparison
         Type type;
 
+        //API Variable: lowThreshold
         // Low threshold
         double lowThreshold;
+
+        //API Variable: highThreshold
         // High threshold
         double highThreshold;
+
+        //API Function: channel
+        //  Set the channel field and qualifier
+        void channel(MipTypes::ChannelField channelField, MipTypes::ChannelQualifier channelQualifier);
+
+        //API Function: channel
+        //  Set the channel field and qualifier index
+        void channel(MipTypes::ChannelField channelField, uint8 index);
+
+        //API Function: channelField
+        //  Get the channel field
+        MipTypes::ChannelField channelField() const;
+
+        //API Function: channelQualifier
+        //  Get the channel qualifier
+        MipTypes::ChannelQualifier channelQualifier() const;
+
+        //API Function: channelIndex
+        //  Get the channel qualifier index
+        //  Default value: 0 (unset)
+        uint8 channelIndex() const;
+
+    private:
+        //Variable: m_channelQualifier
+        // The target qualifier within the MIP field
+        MipTypes::ChannelQualifier m_channelQualifier;
+
+        //Variable: m_channelIndex
+        // 1-based index of the target qualifier within the MIP field
+        // default value: 0 (unset)
+        uint8 m_channelIndex = 0;
+
+        //Variable: m_channelField
+        // MIP channel field
+        MipTypes::ChannelField m_channelField;
     };
 
     //API Struct: EventTriggerCombinationParameter

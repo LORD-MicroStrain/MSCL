@@ -901,10 +901,21 @@ public class InertialNode : MipNode {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public EventControlMode getEventControl(byte instance) {
+    EventControlMode ret = (EventControlMode)msclPINVOKE.InertialNode_getEventControl(swigCPtr, instance);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public EventTriggerConfiguration getEventTriggerConfig(byte instance) {
     EventTriggerConfiguration ret = new EventTriggerConfiguration(msclPINVOKE.InertialNode_getEventTriggerConfig(swigCPtr, instance), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
+  }
+
+  public void setEventControl(byte instance, EventControlMode mode) {
+    msclPINVOKE.InertialNode_setEventControl(swigCPtr, instance, (int)mode);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void setEventTriggerConfig(EventTriggerConfiguration config) {
