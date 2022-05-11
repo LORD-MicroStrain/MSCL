@@ -2977,38 +2977,39 @@ namespace mscl
 
         //API Enum: Status
         //  Trigger status masks for the status bitfield
-        //      ACTIVE  - 0x00 - Trigger is active
-        //      ENABLED - 0x01 - Trigger is enabled
-        //      TEST    - 0x02 - Trigger is in test mode
+        //      ACTIVE  - 0x00 - Active bitmask
+        //      ENABLED - 0x01 - Enabled bitmask
+        //      TEST    - 0x02 - Test mode bitmask
         enum Status
         {
-            ACTIVE = 0x00, // Trigger is active
-            ENABLED = 0x01, // Trigger is enabled
-            TEST = 0x02  // Trigger is in test mode
+            ACTIVE  = 0x00, // Active bitmask
+            ENABLED = 0x01, // Enabled bitmask
+            TEST    = 0x02  // Test mode bitmask
         };
 
         //API Variable: type
         //  Configured trigger type
         EventTriggerConfiguration::Trigger type;
 
-        //API Function: getActiveStatus
-        //  Gets the status of the active bit from the status bitfield
-        uint8 getActiveStatus() const;
+        //API Function: isActive
+        //  True if the trigger is currently active (either due to its
+        //  logic or being in test mode)
+        bool isActive() const;
 
-        //API Function: getEnabledStatus
-        //  Gets the status of the enabled bit from the status bitfield
-        uint8 getEnabledStatus() const;
+        //API Function: isEnabled
+        //  True if the trigger is enabled
+        bool isEnabled() const;
 
-        //API Function: getTestStatus
-        //  Gets the status of the test bit from the status bitfield
-        uint8 getTestStatus() const;
+        //API Function: isTestMode
+        //  True if the trigger is in test mode
+        bool isTestMode() const;
 
         //API Function: setStatus
         //  Sets the value of the status bitfield
         void setStatus(uint8 value);
 
     private:
-        //API Variable: status
+        //Variable: status
         //  Trigger status
         Bitfield status;
     };

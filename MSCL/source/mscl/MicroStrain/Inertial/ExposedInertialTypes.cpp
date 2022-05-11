@@ -1010,19 +1010,19 @@ namespace mscl
         m_unc = unc;
     }
 
-    uint8 EventTriggerInfo::getActiveStatus() const
+    bool EventTriggerInfo::isActive() const
     {
-        return static_cast<uint8>(status.get(ACTIVE));
+        return static_cast<bool>(status.get(ACTIVE));
     }
 
-    uint8 EventTriggerInfo::getEnabledStatus() const
+    bool EventTriggerInfo::isEnabled() const
     {
-        return static_cast<uint8>(status.get(ENABLED));
+        return static_cast<bool>(status.get(ENABLED));
     }
 
-    uint8 EventTriggerInfo::getTestStatus() const
+    bool EventTriggerInfo::isTestMode() const
     {
-        return static_cast<uint8>(status.get(TEST));
+        return static_cast<bool>(status.get(TEST));
     }
 
     void EventTriggerInfo::setStatus(const uint8 value)
