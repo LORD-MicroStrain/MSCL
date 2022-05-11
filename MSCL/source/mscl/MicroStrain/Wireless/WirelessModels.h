@@ -119,6 +119,7 @@ namespace mscl
         //  node_sgLink_herm_2800               - 65011310 - SG-Link-Hermetic 2800 belt assembly
         //  node_sgLink_herm_2900               - 65011410 - SG-Link-Hermetic 2900 belt assembly
         //  node_wirelessImpactSensor           - 65080000 - Wireless Impact Sensor
+        //  node_gLink_200_40g_s                - 65226001 - G-Link-200 40g (custom default configuration)
         //=========================================================================
         enum NodeModel
         {
@@ -221,6 +222,7 @@ namespace mscl
             node_sgLink_herm_2800               = 65011310,     //SG-Link-Hermetic 2800 belt assembly
             node_sgLink_herm_2900               = 65011410,     //SG-Link-Hermetic 2900 belt assembly
             node_wirelessImpactSensor           = 65080000,     //Wireless Impact Sensor
+            node_gLink_200_40g_s                = 65226001,     //G-Link-200 40g (custom default configuration)
         };
 
         //=========================================================================

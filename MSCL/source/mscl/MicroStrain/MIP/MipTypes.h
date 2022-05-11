@@ -125,6 +125,7 @@ namespace mscl
         //  CMD_GNSS_ASSIST_TIME_UPDATE                 - 0x0C24    - GNSS Assisted Time Update
         //  CMD_PPS_SOURCE                              - 0x0C28    - PPS Source
         //  CMD_EVENT_SUPPORT                           - 0x0C2A    - Event Support
+        //  CMD_EVENT_CONTROL                           - 0x0C2B    - Event Control
         //  CMD_EVENT_TRIGGER_CONFIGURATION             - 0x0C2E    - Event Trigger Configuration
         //  CMD_SAVE_STARTUP_SETTINGS                   - 0x0C30    - Device Startup Settings
         //  CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER     - 0x0C31    - Sensor to Vehicle Frame Transformation Euler Angles
@@ -250,6 +251,7 @@ namespace mscl
             CMD_GNSS_ASSIST_TIME_UPDATE             = 0x0C24,
             CMD_PPS_SOURCE                          = 0x0C28,
             CMD_EVENT_SUPPORT                       = 0x0C2A,
+            CMD_EVENT_CONTROL                       = 0x0C2B,
             CMD_EVENT_TRIGGER_CONFIGURATION         = 0x0C2E,
             CMD_SAVE_STARTUP_SETTINGS               = 0x0C30,
             CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER = 0x0C31,
@@ -963,6 +965,18 @@ namespace mscl
         //    CH_DELTA_TICK                 - 98  - Delta Tick
         //    CH_ERROR                      - 99  - Measurement Error
         //    CH_ERROR_UNC                  - 100 - Measurement Error Uncertainty
+        //    CH_W                          - 101 - W
+        //    CH_M0                         - 102 - Matrix M0
+        //    CH_M1                         - 103 - Matrix M1
+        //    CH_M2                         - 104 - Matrix M2
+        //    CH_M3                         - 105 - Matrix M3
+        //    CH_M4                         - 106 - Matrix M4
+        //    CH_M5                         - 107 - Matrix M5
+        //    CH_M6                         - 108 - Matrix M6
+        //    CH_M7                         - 109 - Matrix M7
+        //    CH_M8                         - 110 - Matrix M8
+        //    CH_NANOSECONDS                - 111 - Nanoseconds
+        //    CH_VALID_FLAGS                - 112 - Valid Flags
         //====================================================================================================
         enum ChannelQualifier
         {
@@ -1064,7 +1078,19 @@ namespace mscl
             CH_DELTA_TIME                 = 97,
             CH_DELTA_TICK                 = 98,
             CH_ERROR                      = 99,
-            CH_ERROR_UNC                  = 100
+            CH_ERROR_UNC                  = 100,
+            CH_W                          = 101,
+            CH_M0                         = 102,
+            CH_M1                         = 103,
+            CH_M2                         = 104,
+            CH_M3                         = 105,
+            CH_M4                         = 106,
+            CH_M5                         = 107,
+            CH_M6                         = 108,
+            CH_M7                         = 109,
+            CH_M8                         = 110,
+            CH_NANOSECONDS                = 111,
+            CH_VALID_FLAGS                = 112
         };
 
         //API Typedefs:
@@ -1072,6 +1098,18 @@ namespace mscl
         //  MipCommands         - A vector of <Command> enums.
         typedef std::vector<ChannelField> MipChannelFields;
         typedef std::vector<Command> MipCommands;
+
+        //API Typedef: ChannelIndex
+        //    A <ChannelQualifier>, int pair indicating the index value of the qualifier in a channel field.
+        typedef std::pair<ChannelQualifier, uint8> ChannelIndex;
+
+        //API Typedef: ChannelIndices
+        //    A list of <ChannelIndex> values
+        typedef std::vector<ChannelIndex> ChannelIndices;
+
+        //API Typedef: ChannelFieldQualifiers
+        //    A map of <ChannelField> values and their associated <ChannelIndices>
+        typedef std::map<ChannelField, ChannelIndices> ChannelFieldQualifiers;
 
 #ifndef SWIG
         //Typedef: ChannelId
@@ -1180,10 +1218,53 @@ namespace mscl
         //  bool - true if chField is a shared data field, false if it is not
         static bool isSharedChannelField(ChannelField chField);
 
+        //API Function: channelFieldQualifiers
+        //    Gets a map of <ChannelField> values with all associated <ChannelQualifier> values and their index within the field.
+        //
+        //Parameters:
+        //    fields - <MipChannelFields> of the channels.
+        //
+        //Returns:
+        //    A map of <ChannelField> and their respective <ChannelIndex> values.
+        static ChannelFieldQualifiers channelFieldQualifiers(MipChannelFields fields);
+
+        //API Function: channelFieldQualifier
+        //    Gets the <ChannelQualifier> of the <ChannelField> for the specified index.
+        //
+        //Parameters:
+        //    field - target <ChannelField>.
+        //    index - 1-based index within the field to lookup
+        //
+        //Returns:
+        //    A <ChannelQualifier> that corresponds to the index or <CH_UNKNOWN> if not found.
+        static ChannelQualifier channelFieldQualifier(ChannelField field, uint8 index);
+
+        //API Function: channelFieldQualifierIndex
+        //    Gets the index of the <ChannelQualifier> in the <ChannelField>.
+        //
+        //Parameters:
+        //    field - target <ChannelField>.
+        //    qualifier - <ChannelQualifier> within the field to lookup the index of
+        //
+        //Returns:
+        //    The 1-based index of the specified <ChannelQualifier> in the <ChannelField>, or 0 if the <ChannelQualifier> isn't in the <ChannelField>.
+        static uint8 channelFieldQualifierIndex(ChannelField field, ChannelQualifier qualifier);
+
+    private:
+        //Function: findChannelIndex
+        //  Lookup channel index for given ChannelField based on either qualifier or index
+        //  If qualifier known, pass in index 0
+        //  If index known, pass in qualifier UNKNOWN
+        static ChannelIndex findChannelIndex(ChannelField field, ChannelQualifier qualifier, uint8 index);
+
     private:
         //Const: CHANNEL_NAMES
         //    An unordered_map mapping each <ChannelId> to its respective name (universal SensorCloud name).
         static const std::unordered_map<ChannelId, std::string, ChannelIdHash> CHANNEL_NAMES;
+
+        //Const: CHANNEL_INDICES
+        //    A map mapping each <ChannelField>'s <ChannelQualifier> to its respective index.
+        static const ChannelFieldQualifiers CHANNEL_INDICES;
 
         //Function: GNSS_DATA_CLASSES
         //  vector of <DataClass> values containing all GNSS data class descriptors that have the same field descriptors.
