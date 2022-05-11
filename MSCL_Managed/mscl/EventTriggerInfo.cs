@@ -44,31 +44,46 @@ public class EventTriggerInfo : global::System.IDisposable {
     }
   }
 
-  public byte type {
+  public EventTriggerInfo() : this(msclPINVOKE.new_EventTriggerInfo__SWIG_0(), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public EventTriggerInfo(EventTriggerConfiguration.Trigger type, byte status) : this(msclPINVOKE.new_EventTriggerInfo__SWIG_1((int)type, status), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public EventTriggerConfiguration.Trigger type {
     set {
-      msclPINVOKE.EventTriggerInfo_type_set(swigCPtr, value);
+      msclPINVOKE.EventTriggerInfo_type_set(swigCPtr, (int)value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      byte ret = msclPINVOKE.EventTriggerInfo_type_get(swigCPtr);
+      EventTriggerConfiguration.Trigger ret = (EventTriggerConfiguration.Trigger)msclPINVOKE.EventTriggerInfo_type_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
   }
 
-  public EventTriggerInfo.Status status {
-    set {
-      msclPINVOKE.EventTriggerInfo_status_set(swigCPtr, (int)value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      EventTriggerInfo.Status ret = (EventTriggerInfo.Status)msclPINVOKE.EventTriggerInfo_status_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
+  public bool isActive() {
+    bool ret = msclPINVOKE.EventTriggerInfo_isActive(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
-  public EventTriggerInfo() : this(msclPINVOKE.new_EventTriggerInfo(), true) {
+  public bool isEnabled() {
+    bool ret = msclPINVOKE.EventTriggerInfo_isEnabled(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool isTestMode() {
+    bool ret = msclPINVOKE.EventTriggerInfo_isTestMode(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setStatus(byte value) {
+    msclPINVOKE.EventTriggerInfo_setStatus(swigCPtr, value);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

@@ -1012,17 +1012,17 @@ namespace mscl
 
     bool EventTriggerInfo::isActive() const
     {
-        return static_cast<bool>(status.get(ACTIVE));
+        return status.get(ACTIVE) > 0;
     }
 
     bool EventTriggerInfo::isEnabled() const
     {
-        return static_cast<bool>(status.get(ENABLED));
+        return status.get(ENABLED) > 0;
     }
 
     bool EventTriggerInfo::isTestMode() const
     {
-        return static_cast<bool>(status.get(TEST));
+        return status.get(TEST) > 0;
     }
 
     void EventTriggerInfo::setStatus(const uint8 value)

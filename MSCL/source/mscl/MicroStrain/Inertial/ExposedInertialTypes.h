@@ -2972,6 +2972,12 @@ namespace mscl
     struct EventTriggerInfo
     {
         //API Constructor: EventTriggerInfo
+        //  Default constructor
+        EventTriggerInfo() :
+            type(EventTriggerConfiguration::NONE),
+            status(0) {}
+
+        //API Constructor: EventTriggerInfo
         EventTriggerInfo(const EventTriggerConfiguration::Trigger type, const uint8 status) :
             type(type), status(status) {}
 

@@ -89,7 +89,7 @@ public class EventTriggerConfiguration : global::System.IDisposable {
     NONE = 0x00,
     GPIO_TRIGGER = 0x01,
     THRESHOLD_TRIGGER = 0x02,
-    COMBINATION_TRIGGER = 0x7F
+    COMBINATION_TRIGGER = 0x03
   }
 
 }
