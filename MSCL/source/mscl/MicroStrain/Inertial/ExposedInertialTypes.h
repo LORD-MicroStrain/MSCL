@@ -2944,6 +2944,7 @@ namespace mscl
     {
         //API Enum: Trigger
         //  Type of trigger to configure
+        //
         //      NONE                - 0x00 - No trigger selected. The state will always be inactive
         //      GPIO_TRIGGER        - 0x01 - Trigger based on the state of a GPIO pin
         //      THRESHOLD_TRIGGER   - 0x02 - Compare a data quantity against a high and low threshold
@@ -2970,16 +2971,16 @@ namespace mscl
     //  Information about an event trigger
     struct EventTriggerInfo
     {
-        //API Function: EventTriggerInfo
-        //  Constructor
+        //API Constructor: EventTriggerInfo
         EventTriggerInfo(const EventTriggerConfiguration::Trigger type, const uint8 status) :
             type(type), status(status) {}
 
         //API Enum: Status
         //  Trigger status masks for the status bitfield
-        //      ACTIVE  - 0x00 - Active bitmask
-        //      ENABLED - 0x01 - Enabled bitmask
-        //      TEST    - 0x02 - Test mode bitmask
+        //
+        //  ACTIVE  - 0x00 - Active bitmask
+        //  ENABLED - 0x01 - Enabled bitmask
+        //  TEST    - 0x02 - Test mode bitmask
         enum Status
         {
             ACTIVE  = 0x00, // Active bitmask
