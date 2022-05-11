@@ -1683,41 +1683,52 @@ namespace mscl
     //  Information about event trigger or action types
     struct EventTypeInfo
     {
+        //API Constructor: EventTypeInfo
         EventTypeInfo(const uint8 type, const uint8 maxInstances) :
             type(type),
             maxInstances(maxInstances)
         { }
 
-        // Trigger or action type
+        //API Variable: type
+        //  The event type based on <EventSupportInfo::Query>
+        //
+        //  - <EventSupportInfo::Query::TRIGGERS> = <EventTriggerConfiguration::Type>
+        //  - <EventSupportInfo::Query::ACTIONS>  = <EventActionConfiguration::Type>
         uint8 type;
-        // Maximum supported instances for the type
+
+        //API Variable: maxInstances
+        //  Maximum supported instances for the type
         uint8 maxInstances;
     };
 
-    //API Typedef: EventSupportInfo
+    //API Typedef: EventTypes
     //  A vector of <EventTypeInfo>
     typedef std::vector<EventTypeInfo> EventTypes;
 
-    //API Struct EventSupportInfo
+    //API Struct: EventSupportInfo
     struct EventSupportInfo
     {
         //API Enum: Query
-        // What type of information to retrieve
-        //      TRIGGERS  - 0x01 - Query the supported trigger types and max count for each
-        //      ACTIONS   - 0x02 - Query the supported action types and max count for each
+        //  What type of information to retrieve
+        //
+        //  TRIGGERS  - 0x01 - Query the supported trigger types and max count for each
+        //  ACTIONS   - 0x02 - Query the supported action types and max count for each
         enum Query
         {
             TRIGGERS = 0x01, // Query the supported trigger types and max count for each
             ACTIONS  = 0x02  // Query the supported action types and max count for each
         };
 
-        // Type of information 
+        //API Variable: query
+        //  Type of information 
         Query query;
 
-        // Maximum number of supported triggers/actions
+        //API Variable: maxInstances
+        //  Maximum number of supported triggers/actions
         uint8 maxInstances;
 
-        // Event info
+        //API Variable: entries
+        //  Event info
         EventTypes entries;
     };
 

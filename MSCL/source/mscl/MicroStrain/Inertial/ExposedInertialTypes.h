@@ -2895,13 +2895,14 @@ namespace mscl
     //API Struct: EventTriggerConfiguration
     struct EventTriggerConfiguration
     {
-        //API Enum: Trigger
+        //API Enum: Type
         //  Type of trigger to configure
+        //
         //      NONE                - 0x00 - No trigger selected. The state will always be inactive
         //      GPIO_TRIGGER        - 0x01 - Trigger based on the state of a GPIO pin
         //      THRESHOLD_TRIGGER   - 0x02 - Compare a data quantity against a high and low threshold
         //      COMBINATION_TRIGGER - 0x7F - Logical combination of two or more triggers
-        enum Trigger
+        enum Type
         {
             NONE                = 0x00, // No trigger selected. The state will always be inactive
             GPIO_TRIGGER        = 0x01, // Trigger based on the state of a GPIO pin
@@ -2913,7 +2914,7 @@ namespace mscl
         uint8 instance;
 
         // Type of trigger
-        Trigger trigger;
+        Type trigger;
 
         // Trigger parameters
         EventTriggerParameters parameters;

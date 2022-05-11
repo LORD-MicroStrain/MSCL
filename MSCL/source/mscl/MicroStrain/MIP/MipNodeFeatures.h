@@ -266,18 +266,18 @@ namespace mscl
         //    A <GpioPinOptions> map of supported GPIO pin configurations
         const GpioPinOptions supportedGpioConfigurations() const;
 
-        //API Function: getEventActionInfo
+        //API Function: supportedEventActionInfo
         //    Gets <EventSupportInfo> for event triggers and their types supported by the device.
         //
         //Returns:
         //    <EventSupportInfo> of the event actions and their types
-        const EventSupportInfo getEventActionInfo() const;
+        const EventSupportInfo supportedEventActionInfo() const;
 
-        //API Function: getEventTriggerInfo
+        //API Function: supportedEventTriggerInfo
         //    Gets <EventSupportInfo> for event actions and their types supported by the device.
         //
         //Returns:
         //    <EventSupportInfo> of the event triggers and their types
-        const EventSupportInfo getEventTriggerInfo() const;
+        const EventSupportInfo supportedEventTriggerInfo() const;
     };
 }

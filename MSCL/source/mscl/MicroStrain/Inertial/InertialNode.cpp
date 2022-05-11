@@ -934,7 +934,7 @@ namespace mscl
         EventTriggerConfiguration config;
 
         config.instance = data.read_uint8();
-        config.trigger  = static_cast<EventTriggerConfiguration::Trigger>(data.read_uint8());
+        config.trigger  = static_cast<EventTriggerConfiguration::Type>(data.read_uint8());
 
         switch (config.trigger)
         {

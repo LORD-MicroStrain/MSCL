@@ -664,12 +664,12 @@ namespace mscl
         };
     }
 
-    const EventSupportInfo MipNodeFeatures::getEventActionInfo() const
+    const EventSupportInfo MipNodeFeatures::supportedEventActionInfo() const
     {
         return m_nodeInfo.eventActionInfo();
     }
 
-    const EventSupportInfo MipNodeFeatures::getEventTriggerInfo() const
+    const EventSupportInfo MipNodeFeatures::supportedEventTriggerInfo() const
     {
         return m_nodeInfo.eventTriggerInfo();
     }
