@@ -5718,11 +5718,11 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedEventThresholdChannels")]
   public static extern global::System.IntPtr MipNodeFeatures_supportedEventThresholdChannels(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_getEventActionInfo")]
-  public static extern global::System.IntPtr MipNodeFeatures_getEventActionInfo(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedEventActionInfo")]
+  public static extern global::System.IntPtr MipNodeFeatures_supportedEventActionInfo(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_getEventTriggerInfo")]
-  public static extern global::System.IntPtr MipNodeFeatures_getEventTriggerInfo(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedEventTriggerInfo")]
+  public static extern global::System.IntPtr MipNodeFeatures_supportedEventTriggerInfo(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNode_doCommand__SWIG_0")]
   public static extern global::System.IntPtr MipNode_doCommand__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2, byte jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, bool jarg5, bool jarg6, byte jarg7);
@@ -6342,14 +6342,14 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_setGpioState")]
   public static extern void InertialNode_setGpioState(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2, bool jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_getEventControl")]
-  public static extern int InertialNode_getEventControl(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_getEventTriggerMode")]
+  public static extern int InertialNode_getEventTriggerMode(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_setEventTriggerMode")]
+  public static extern void InertialNode_setEventTriggerMode(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2, int jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_getEventTriggerConfig")]
   public static extern global::System.IntPtr InertialNode_getEventTriggerConfig(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_setEventControl")]
-  public static extern void InertialNode_setEventControl(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2, int jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_setEventTriggerConfig")]
   public static extern void InertialNode_setEventTriggerConfig(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);

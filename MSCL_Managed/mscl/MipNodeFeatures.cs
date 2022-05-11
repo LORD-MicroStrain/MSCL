@@ -200,14 +200,14 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
-  public EventSupportInfo getEventActionInfo() {
-    EventSupportInfo ret = new EventSupportInfo(msclPINVOKE.MipNodeFeatures_getEventActionInfo(swigCPtr), true);
+  public EventSupportInfo supportedEventActionInfo() {
+    EventSupportInfo ret = new EventSupportInfo(msclPINVOKE.MipNodeFeatures_supportedEventActionInfo(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public EventSupportInfo getEventTriggerInfo() {
-    EventSupportInfo ret = new EventSupportInfo(msclPINVOKE.MipNodeFeatures_getEventTriggerInfo(swigCPtr), true);
+  public EventSupportInfo supportedEventTriggerInfo() {
+    EventSupportInfo ret = new EventSupportInfo(msclPINVOKE.MipNodeFeatures_supportedEventTriggerInfo(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

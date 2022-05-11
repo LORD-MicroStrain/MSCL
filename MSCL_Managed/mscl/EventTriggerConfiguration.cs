@@ -56,13 +56,13 @@ public class EventTriggerConfiguration : global::System.IDisposable {
     } 
   }
 
-  public EventTriggerConfiguration.Trigger trigger {
+  public EventTriggerConfiguration.Type trigger {
     set {
       msclPINVOKE.EventTriggerConfiguration_trigger_set(swigCPtr, (int)value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      EventTriggerConfiguration.Trigger ret = (EventTriggerConfiguration.Trigger)msclPINVOKE.EventTriggerConfiguration_trigger_get(swigCPtr);
+      EventTriggerConfiguration.Type ret = (EventTriggerConfiguration.Type)msclPINVOKE.EventTriggerConfiguration_trigger_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
@@ -85,7 +85,7 @@ public class EventTriggerConfiguration : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public enum Trigger {
+  public enum Type {
     NONE = 0x00,
     GPIO_TRIGGER = 0x01,
     THRESHOLD_TRIGGER = 0x02,
