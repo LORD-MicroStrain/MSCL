@@ -1147,13 +1147,14 @@ namespace mscl
         
         const uint8 count = data[0].as_uint8();
         
-        EventTriggerStatus status(count);
+        EventTriggerStatus status;
         
         // Data values start at index 1 and have 2 data entries
         for (int index = 1; index < count * 2 + 1; index += 2)
         {
             status.push_back({
                 static_cast<EventTriggerConfiguration::Trigger>(data[index].as_uint8()), // type
+                instances[(index - 1) / 2],                                              // instance ID
                 data[index + 1].as_uint8()                                               // status
             });
         }

@@ -2975,28 +2975,35 @@ namespace mscl
         //  Default constructor
         EventTriggerInfo() :
             type(EventTriggerConfiguration::NONE),
+            instanceId(0),
             status(0) {}
 
         //API Constructor: EventTriggerInfo
-        EventTriggerInfo(const EventTriggerConfiguration::Trigger type, const uint8 status) :
-            type(type), status(status) {}
+        EventTriggerInfo(const EventTriggerConfiguration::Trigger type, const uint8 instanceId, const uint8 status) :
+            type(type),
+            instanceId(instanceId),
+            status(status) {}
 
         //API Enum: Status
         //  Trigger status masks for the status bitfield
         //
-        //  ACTIVE  - 0x00 - Active bitmask
-        //  ENABLED - 0x01 - Enabled bitmask
-        //  TEST    - 0x02 - Test mode bitmask
+        //  ACTIVE  - 0x01 - Active bitmask
+        //  ENABLED - 0x02 - Enabled bitmask
+        //  TEST    - 0x04 - Test mode bitmask
         enum Status
         {
-            ACTIVE  = 0x00, // Active bitmask
-            ENABLED = 0x01, // Enabled bitmask
-            TEST    = 0x02  // Test mode bitmask
+            ACTIVE  = 0x01, // Active bitmask
+            ENABLED = 0x02, // Enabled bitmask
+            TEST    = 0x04  // Test mode bitmask
         };
 
         //API Variable: type
         //  Configured trigger type
         EventTriggerConfiguration::Trigger type;
+
+        //API Variable: instanceId
+        //  Instance ID of the trigger
+        uint8 instanceId;
 
         //API Function: isActive
         //  True if the trigger is currently active (either due to its
