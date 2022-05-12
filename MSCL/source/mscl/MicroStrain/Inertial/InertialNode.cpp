@@ -1152,9 +1152,14 @@ namespace mscl
         // Data values start at index 1 and have 2 data entries
         for (int index = 1; index < count * 2 + 1; index += 2)
         {
+            const int instanceIndex = (index - 1) / 2;
+
             status.push_back({
                 static_cast<EventTriggerConfiguration::Trigger>(data[index].as_uint8()), // type
-                instances[(index - 1) / 2],                                              // instance ID
+                // If instances count is 0, user requested all triggers
+                instances.empty() ?
+                    static_cast<uint8>(instanceIndex + 1):
+                    instances[instanceIndex],                                            // instanceId
                 data[index + 1].as_uint8()                                               // status
             });
         }
