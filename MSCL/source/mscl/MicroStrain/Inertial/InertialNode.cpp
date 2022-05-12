@@ -1127,14 +1127,20 @@ namespace mscl
 
         const uint8 count = data[0].as_uint8();
 
-        EventActionStatus status(count);
+        EventActionStatus status;
 
         // Data values start at index 1 and have 2 data entries
         for (int index = 1; index < count * 2 + 1; index += 2)
         {
+            const int instanceIndex = (index - 1) / 2;
+
             status.push_back({
-                data[index].as_uint8(),    // type
-                data[index + 1].as_uint8() // trigger instance
+                data[index].as_uint8(),                                      // type
+                data[index + 1].as_uint8(),                                  // triggerId
+                // If instances count is 0, user requested all actions
+                instances.empty() ?
+                    static_cast<uint8>(instanceIndex + 1) :
+                    instances[instanceIndex]                                 // instanceId
             });
         }
 

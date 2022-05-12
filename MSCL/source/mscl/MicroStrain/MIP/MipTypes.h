@@ -1679,25 +1679,6 @@ namespace mscl
 
     typedef std::vector<DeviceCommPort> CommPortInfo;
 
-    //API Struct: EventActionInfo
-    //  Information about an event action
-    struct EventActionInfo
-    {
-        //API Variable: type
-        //  Configured action type
-        uint8 type;
-
-        //API Variable: triggerId
-        //  Associated event trigger instance
-        uint8 triggerId;
-    };
-
-    //API Typedef: EventActionStatus
-    //  A vector of <EventActionInfo>
-    typedef std::vector<EventActionInfo> EventActionStatus;
-
-    typedef std::vector<DeviceCommPort> CommPortInfo;
-
     // API Class: SensorRange
     // An object representing a configurable sensor range option
     class SensorRange

@@ -2918,4 +2918,38 @@ namespace mscl
         // Trigger parameters
         EventTriggerParameters parameters;
     };
+
+    //API Struct: EventActionInfo
+    //  Information about an event action
+    struct EventActionInfo
+    {
+        //API Constructor: EventActionInfo
+        //  Default constructor
+        EventActionInfo() :
+            type(0),
+            triggerId(0),
+            instanceId(0) {}
+
+        //API Constructor: EventActionInfo
+        EventActionInfo(const uint8 type, const uint8 triggerId, const uint8 instanceId) :
+            type(type),
+            triggerId(triggerId),
+            instanceId(instanceId) {}
+
+        //API Variable: type
+        //  Configured action type
+        uint8 type;
+
+        //API Variable: triggerId
+        //  Associated event trigger instance
+        uint8 triggerId;
+
+        //API Variable: instanceId
+        //  Instance ID of the action
+        uint8 instanceId;
+    };
+
+    //API Typedef: EventActionStatus
+    //  A vector of <EventActionInfo>
+    typedef std::vector<EventActionInfo> EventActionStatus;
 }
