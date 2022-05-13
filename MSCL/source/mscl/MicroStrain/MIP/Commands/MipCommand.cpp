@@ -226,6 +226,8 @@ namespace mscl
             return "PpsSource";
         case MipTypes::CMD_EVENT_CONTROL:
             return "EventControl";
+        case MipTypes::CMD_EVENT_TRIGGER_STATUS:
+            return "EventTriggerStatus";
         case MipTypes::CMD_GPIO_CONFIGURATION:
             return "GpioConfiguration";
         case MipTypes::CMD_GPIO_STATE:
@@ -283,6 +285,8 @@ namespace mscl
             return 0x85;
         case MipTypes::CMD_EVENT_CONTROL:
             return 0xB5;
+        case MipTypes::CMD_EVENT_TRIGGER_STATUS:
+            return 0xB6;
         case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
             return 0xB8;
         // 0x0D
@@ -374,6 +378,12 @@ namespace mscl
             return{
                 ValueType::valueType_uint8,
                 ValueType::valueType_uint8
+            };
+
+        case MipTypes::CMD_EVENT_TRIGGER_STATUS:
+            return{
+                ValueType::valueType_uint8, // count
+                ValueType::valueType_Vector // status info
             };
 
         case MipTypes::CMD_ODOMETER_SETTINGS:
@@ -546,6 +556,12 @@ namespace mscl
                 ValueType::valueType_uint8, // receiver id
                 ValueType::valueType_uint8, // associated data set
                 ValueType::valueType_string // ascii description of receiver
+            };
+
+        case MipTypes::CMD_EVENT_TRIGGER_STATUS:
+            return{
+                ValueType::valueType_uint8, // type
+                ValueType::valueType_uint8  // status
             };
 
         case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
