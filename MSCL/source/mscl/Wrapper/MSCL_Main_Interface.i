@@ -293,13 +293,14 @@ namespace std
     %template(MipFieldValues)                   vector<mscl::Value>;
     %template(MipCommandParamPair)              pair<mscl::MipTypes::Command, vector<mscl::Value>>;
     %template(MipCommandParameters)             vector<pair<mscl::MipTypes::Command, vector<mscl::Value>>>;
-    %template(ChannelIndex)                     pair<mscl::MipTypes::ChannelQualifier, uint8_t>;
-    %template(ChannelIndices)                   vector<pair<mscl::MipTypes::ChannelQualifier, uint8_t>>;
-    %template(ChannelFieldQualifiers)           map<enum mscl::MipTypes::ChannelField, vector<pair<mscl::MipTypes::ChannelQualifier, uint8_t>>>;
+    %template(ChannelIndex)                     pair<enum mscl::MipTypes::ChannelQualifier, uint8_t>;
+    %template(ChannelIndices)                   vector<pair<enum mscl::MipTypes::ChannelQualifier, uint8_t>>;
+    %template(ChannelFieldQualifiers)           map<enum mscl::MipTypes::ChannelField, vector<pair<enum mscl::MipTypes::ChannelQualifier, uint8_t>>>;
     %template(GnssReceivers)                    vector<mscl::GnssReceiverInfo>;
     %template(SensorRanges)                     vector<mscl::SensorRange>;
     %template(SensorRangeOptions)               map<enum mscl::SensorRange::Type, vector<mscl::SensorRange>>;
     %template(CommPortInfo)                     vector<mscl::DeviceCommPort>;
+    %template(EventTriggerStatus)               vector<mscl::EventTriggerInfo>;
     %template(ChannelGroups)                    vector<mscl::ChannelGroup>;
     %template(WirelessChannels)                 vector<mscl::WirelessChannel>;
     %template(DamageAngles)                     map<uint8_t, float>;
@@ -327,6 +328,7 @@ namespace std
     %template(GpioFeatureBehaviors)             map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>;
     %template(GpioPinOptions)                   map<uint8_t, map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>>;
     %template(EventInputTriggers)               array<uint8_t, mscl::EventTriggerCombinationParameter::MAX_INPUT_TRIGGERS>;
+    %template(EventTypes)                       vector<mscl::EventTypeInfo>;
 
 
 

@@ -10,20 +10,20 @@
 
 namespace mscl {
 
-public class SensorRange : global::System.IDisposable {
+public class EventTypeInfo : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
 
-  internal SensorRange(global::System.IntPtr cPtr, bool cMemoryOwn) {
+  internal EventTypeInfo(global::System.IntPtr cPtr, bool cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(SensorRange obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(EventTypeInfo obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  ~SensorRange() {
+  ~EventTypeInfo() {
     Dispose(false);
   }
 
@@ -37,41 +37,43 @@ public class SensorRange : global::System.IDisposable {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_SensorRange(swigCPtr);
+          msclPINVOKE.delete_EventTypeInfo(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
     }
   }
 
-  public SensorRange() : this(msclPINVOKE.new_SensorRange(), true) {
+  public EventTypeInfo() : this(msclPINVOKE.new_EventTypeInfo__SWIG_0(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public SensorRange.Type type() {
-    SensorRange.Type ret = (SensorRange.Type)msclPINVOKE.SensorRange_type(swigCPtr);
+  public EventTypeInfo(byte type, byte maxInstances) : this(msclPINVOKE.new_EventTypeInfo__SWIG_1(type, maxInstances), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
   }
 
-  public float range() {
-    float ret = msclPINVOKE.SensorRange_range(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
+  public byte type {
+    set {
+      msclPINVOKE.EventTypeInfo_type_set(swigCPtr, value);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      byte ret = msclPINVOKE.EventTypeInfo_type_get(swigCPtr);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
   }
 
-  public byte id() {
-    byte ret = msclPINVOKE.SensorRange_id(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public enum Type {
-    ALL = 0x00,
-    ACCEL_G = 0x01,
-    GYRO_DPS = 0x02,
-    MAG_GAUSS = 0x03,
-    PRESSURE_HPA = 0x04
+  public byte maxInstances {
+    set {
+      msclPINVOKE.EventTypeInfo_maxInstances_set(swigCPtr, value);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      byte ret = msclPINVOKE.EventTypeInfo_maxInstances_get(swigCPtr);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
   }
 
 }

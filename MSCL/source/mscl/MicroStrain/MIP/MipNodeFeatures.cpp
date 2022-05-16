@@ -877,4 +877,14 @@ namespace mscl
         MipTypes::MipChannelFields supportedThresholdFields = filterSupportedChannelFields(possibleFields);
         return MipTypes::channelFieldQualifiers(supportedThresholdFields);
     }
+
+    const EventSupportInfo MipNodeFeatures::supportedEventActionInfo() const
+    {
+        return m_nodeInfo.eventActionInfo();
+    }
+
+    const EventSupportInfo MipNodeFeatures::supportedEventTriggerInfo() const
+    {
+        return m_nodeInfo.eventTriggerInfo();
+    }
 }

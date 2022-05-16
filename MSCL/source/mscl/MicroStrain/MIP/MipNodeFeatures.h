@@ -313,5 +313,19 @@ namespace mscl
         //Return:
         //    <ChannelFieldQualifiers> - The supported channel fields/qualifiers.
         MipTypes::ChannelFieldQualifiers supportedEventThresholdChannels() const;
+
+        //API Function: supportedEventActionInfo
+        //    Gets <EventSupportInfo> for event triggers and their types supported by the device.
+        //
+        //Returns:
+        //    <EventSupportInfo> of the event actions and their types
+        const EventSupportInfo supportedEventActionInfo() const;
+
+        //API Function: supportedEventTriggerInfo
+        //    Gets <EventSupportInfo> for event actions and their types supported by the device.
+        //
+        //Returns:
+        //    <EventSupportInfo> of the event triggers and their types
+        const EventSupportInfo supportedEventTriggerInfo() const;
     };
 }

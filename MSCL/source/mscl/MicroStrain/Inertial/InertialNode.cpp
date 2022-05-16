@@ -925,6 +925,22 @@ namespace mscl
             });
     }
 
+    EventControlMode InertialNode::getEventTriggerMode(const uint8 instance) const
+    {
+        const MipFieldValues data = m_impl->get(MipTypes::CMD_EVENT_CONTROL, {
+            Value::UINT8(instance) });
+
+        return static_cast<EventControlMode>(data[1].as_uint8());
+    }
+
+    void InertialNode::setEventTriggerMode(const uint8 instance, const EventControlMode mode) const
+    {
+        m_impl->set(MipTypes::CMD_EVENT_CONTROL, {
+            Value::UINT8(instance),
+            Value::UINT8(static_cast<uint8>(mode))
+        });
+    }
+
     EventTriggerConfiguration InertialNode::getEventTriggerConfig(const uint8 instance) const
     {
         const ByteStream response = m_impl->get_RawResponseData(MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION, {
@@ -934,7 +950,7 @@ namespace mscl
         EventTriggerConfiguration config;
 
         config.instance = data.read_uint8();
-        config.trigger  = static_cast<EventTriggerConfiguration::Trigger>(data.read_uint8());
+        config.trigger  = static_cast<EventTriggerConfiguration::Type>(data.read_uint8());
 
         switch (config.trigger)
         {
@@ -1116,5 +1132,38 @@ namespace mscl
             Value::UINT8(0),
             Value::UINT8(0)
         });
+    }
+
+    EventTriggerStatus InertialNode::getEventTriggerStatus(const std::vector<uint8> instances) const
+    {
+        std::vector<Value> specifier = { Value::UINT8(static_cast<uint8>(instances.size())) };
+        
+        for (const uint8& instance : instances)
+        {
+            specifier.push_back(Value::UINT8(instance));
+        }
+        
+        const MipFieldValues data = m_impl->get(MipTypes::CMD_EVENT_TRIGGER_STATUS, specifier);
+        
+        const uint8 count = data[0].as_uint8();
+        
+        EventTriggerStatus status;
+        
+        // Data values start at index 1 and have 2 data entries
+        for (int index = 1; index < count * 2 + 1; index += 2)
+        {
+            const int instanceIndex = (index - 1) / 2;
+
+            status.push_back({
+                static_cast<EventTriggerConfiguration::Type>(data[index].as_uint8()), // type
+                // If instances count is 0, user requested all triggers
+                instances.empty() ?
+                    static_cast<uint8>(instanceIndex + 1):
+                    instances[instanceIndex],                                            // instanceId
+                data[index + 1].as_uint8()                                               // status
+            });
+        }
+        
+        return status;
     }
 }

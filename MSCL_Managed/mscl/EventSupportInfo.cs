@@ -10,20 +10,20 @@
 
 namespace mscl {
 
-public class EventTriggerConfiguration : global::System.IDisposable {
+public class EventSupportInfo : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
 
-  internal EventTriggerConfiguration(global::System.IntPtr cPtr, bool cMemoryOwn) {
+  internal EventSupportInfo(global::System.IntPtr cPtr, bool cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(EventTriggerConfiguration obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(EventSupportInfo obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  ~EventTriggerConfiguration() {
+  ~EventSupportInfo() {
     Dispose(false);
   }
 
@@ -37,59 +37,57 @@ public class EventTriggerConfiguration : global::System.IDisposable {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_EventTriggerConfiguration(swigCPtr);
+          msclPINVOKE.delete_EventSupportInfo(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
     }
   }
 
-  public byte instance {
+  public EventSupportInfo.Query query {
     set {
-      msclPINVOKE.EventTriggerConfiguration_instance_set(swigCPtr, value);
+      msclPINVOKE.EventSupportInfo_query_set(swigCPtr, (int)value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      byte ret = msclPINVOKE.EventTriggerConfiguration_instance_get(swigCPtr);
+      EventSupportInfo.Query ret = (EventSupportInfo.Query)msclPINVOKE.EventSupportInfo_query_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
   }
 
-  public EventTriggerConfiguration.Type trigger {
+  public byte maxInstances {
     set {
-      msclPINVOKE.EventTriggerConfiguration_trigger_set(swigCPtr, (int)value);
+      msclPINVOKE.EventSupportInfo_maxInstances_set(swigCPtr, value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      EventTriggerConfiguration.Type ret = (EventTriggerConfiguration.Type)msclPINVOKE.EventTriggerConfiguration_trigger_get(swigCPtr);
+      byte ret = msclPINVOKE.EventSupportInfo_maxInstances_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
   }
 
-  public EventTriggerParameters parameters {
+  public EventTypes entries {
     set {
-      msclPINVOKE.EventTriggerConfiguration_parameters_set(swigCPtr, EventTriggerParameters.getCPtr(value));
+      msclPINVOKE.EventSupportInfo_entries_set(swigCPtr, EventTypes.getCPtr(value));
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      global::System.IntPtr cPtr = msclPINVOKE.EventTriggerConfiguration_parameters_get(swigCPtr);
-      EventTriggerParameters ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventTriggerParameters(cPtr, false);
+      global::System.IntPtr cPtr = msclPINVOKE.EventSupportInfo_entries_get(swigCPtr);
+      EventTypes ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventTypes(cPtr, false);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
   }
 
-  public EventTriggerConfiguration() : this(msclPINVOKE.new_EventTriggerConfiguration(), true) {
+  public EventSupportInfo() : this(msclPINVOKE.new_EventSupportInfo(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public enum Type {
-    NONE = 0x00,
-    GPIO_TRIGGER = 0x01,
-    THRESHOLD_TRIGGER = 0x02,
-    COMBINATION_TRIGGER = 0x03
+  public enum Query {
+    TRIGGERS = 0x01,
+    ACTIONS = 0x02
   }
 
 }

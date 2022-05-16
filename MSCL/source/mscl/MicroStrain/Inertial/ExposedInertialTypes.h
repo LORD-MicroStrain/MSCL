@@ -2808,6 +2808,20 @@ namespace mscl
     // A map of uint GPIO pin ID, <GpioFeatureBehaviors> pairs
     typedef std::map<uint8, GpioFeatureBehaviors> GpioPinOptions;
 
+    //API Enum: EventControlMode
+    //  Event control modes
+    //      DISABLED   - 0x00 - Trigger is disabled
+    //      ENABLED    - 0x01 - Trigger is enabled
+    //      TEST       - 0x02 - Force the trigger into the active state
+    //      TEST_PULSE - 0x03 - Force the trigger into the active state for one event cycle
+    enum EventControlMode
+    {
+        DISABLED   = 0x00,  // Trigger is disabled
+        ENABLED    = 0x01,  // Trigger is enabled
+        TEST       = 0x02,  // Force the trigger into the active state
+        TEST_PULSE = 0x03   // Force the trigger into the active state for one event cycle
+    };
+
     //API Struct: EventTriggerGpioParameter
     struct EventTriggerGpioParameter
     {
@@ -2932,27 +2946,93 @@ namespace mscl
     //API Struct: EventTriggerConfiguration
     struct EventTriggerConfiguration
     {
-        //API Enum: Trigger
+        //API Enum: Type
         //  Type of trigger to configure
+        //
         //      NONE                - 0x00 - No trigger selected. The state will always be inactive
         //      GPIO_TRIGGER        - 0x01 - Trigger based on the state of a GPIO pin
         //      THRESHOLD_TRIGGER   - 0x02 - Compare a data quantity against a high and low threshold
-        //      COMBINATION_TRIGGER - 0x7F - Logical combination of two or more triggers
-        enum Trigger
+        //      COMBINATION_TRIGGER - 0x03 - Logical combination of two or more triggers
+        enum Type
         {
             NONE                = 0x00, // No trigger selected. The state will always be inactive
             GPIO_TRIGGER        = 0x01, // Trigger based on the state of a GPIO pin
             THRESHOLD_TRIGGER   = 0x02, // Compare a data quantity against a high and low threshold
-            COMBINATION_TRIGGER = 0x7F  // Logical combination of two or more triggers
+            COMBINATION_TRIGGER = 0x03  // Logical combination of two or more triggers
         };
 
         // Trigger number
         uint8 instance;
 
         // Type of trigger
-        Trigger trigger;
+        Type trigger;
 
         // Trigger parameters
         EventTriggerParameters parameters;
     };
+
+    //API Struct: EventTriggerInfo
+    //  Information about an event trigger
+    struct EventTriggerInfo
+    {
+        //API Constructor: EventTriggerInfo
+        //  Default constructor
+        EventTriggerInfo() :
+            type(EventTriggerConfiguration::NONE),
+            instanceId(0),
+            status(0) {}
+
+        //API Constructor: EventTriggerInfo
+        EventTriggerInfo(const EventTriggerConfiguration::Type type, const uint8 instanceId, const uint8 status) :
+            type(type),
+            instanceId(instanceId),
+            status(status) {}
+
+        //API Enum: Status
+        //  Trigger status masks for the status bitfield
+        //
+        //  ACTIVE  - 0x01 - Active bitmask
+        //  ENABLED - 0x02 - Enabled bitmask
+        //  TEST    - 0x04 - Test mode bitmask
+        enum Status
+        {
+            ACTIVE  = 0x01, // Active bitmask
+            ENABLED = 0x02, // Enabled bitmask
+            TEST    = 0x04  // Test mode bitmask
+        };
+
+        //API Variable: type
+        //  Configured trigger type
+        EventTriggerConfiguration::Type type;
+
+        //API Variable: instanceId
+        //  Instance ID of the trigger
+        uint8 instanceId;
+
+        //API Function: isActive
+        //  True if the trigger is currently active (either due to its
+        //  logic or being in test mode)
+        bool isActive() const;
+
+        //API Function: isEnabled
+        //  True if the trigger is enabled
+        bool isEnabled() const;
+
+        //API Function: isTestMode
+        //  True if the trigger is in test mode
+        bool isTestMode() const;
+
+        //API Function: setStatus
+        //  Sets the value of the status bitfield
+        void setStatus(uint8 value);
+
+    private:
+        //Variable: status
+        //  Trigger status
+        Bitfield status;
+    };
+
+    //API Typedef: EventTriggerStatus
+    //  A vector of <EventTriggerInfo>
+    typedef std::vector<EventTriggerInfo> EventTriggerStatus;
 }

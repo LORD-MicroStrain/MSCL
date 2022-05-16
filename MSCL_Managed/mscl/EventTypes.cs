@@ -10,21 +10,21 @@
 
 namespace mscl {
 
-public class ChannelIndices : global::System.IDisposable, global::System.Collections.IEnumerable, global::System.Collections.Generic.IEnumerable<ChannelIndex>
+public class EventTypes : global::System.IDisposable, global::System.Collections.IEnumerable, global::System.Collections.Generic.IEnumerable<EventTypeInfo>
  {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
 
-  internal ChannelIndices(global::System.IntPtr cPtr, bool cMemoryOwn) {
+  internal EventTypes(global::System.IntPtr cPtr, bool cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(ChannelIndices obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(EventTypes obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  ~ChannelIndices() {
+  ~EventTypes() {
     Dispose(false);
   }
 
@@ -38,25 +38,25 @@ public class ChannelIndices : global::System.IDisposable, global::System.Collect
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_ChannelIndices(swigCPtr);
+          msclPINVOKE.delete_EventTypes(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
     }
   }
 
-  public ChannelIndices(global::System.Collections.IEnumerable c) : this() {
+  public EventTypes(global::System.Collections.IEnumerable c) : this() {
     if (c == null)
       throw new global::System.ArgumentNullException("c");
-    foreach (ChannelIndex element in c) {
+    foreach (EventTypeInfo element in c) {
       this.Add(element);
     }
   }
 
-  public ChannelIndices(global::System.Collections.Generic.IEnumerable<ChannelIndex> c) : this() {
+  public EventTypes(global::System.Collections.Generic.IEnumerable<EventTypeInfo> c) : this() {
     if (c == null)
       throw new global::System.ArgumentNullException("c");
-    foreach (ChannelIndex element in c) {
+    foreach (EventTypeInfo element in c) {
       this.Add(element);
     }
   }
@@ -73,7 +73,7 @@ public class ChannelIndices : global::System.IDisposable, global::System.Collect
     }
   }
 
-  public ChannelIndex this[int index]  {
+  public EventTypeInfo this[int index]  {
     get {
       return getitem(index);
     }
@@ -105,17 +105,17 @@ public class ChannelIndices : global::System.IDisposable, global::System.Collect
     }
   }
 
-  public void CopyTo(ChannelIndex[] array)
+  public void CopyTo(EventTypeInfo[] array)
   {
     CopyTo(0, array, 0, this.Count);
   }
 
-  public void CopyTo(ChannelIndex[] array, int arrayIndex)
+  public void CopyTo(EventTypeInfo[] array, int arrayIndex)
   {
     CopyTo(0, array, arrayIndex, this.Count);
   }
 
-  public void CopyTo(int index, ChannelIndex[] array, int arrayIndex, int count)
+  public void CopyTo(int index, EventTypeInfo[] array, int arrayIndex, int count)
   {
     if (array == null)
       throw new global::System.ArgumentNullException("array");
@@ -133,22 +133,22 @@ public class ChannelIndices : global::System.IDisposable, global::System.Collect
       array.SetValue(getitemcopy(index+i), arrayIndex+i);
   }
 
-  public ChannelIndex[] ToArray() {
-    ChannelIndex[] array = new ChannelIndex[this.Count];
+  public EventTypeInfo[] ToArray() {
+    EventTypeInfo[] array = new EventTypeInfo[this.Count];
     this.CopyTo(array);
     return array;
   }
 
-  global::System.Collections.Generic.IEnumerator<ChannelIndex> global::System.Collections.Generic.IEnumerable<ChannelIndex>.GetEnumerator() {
-    return new ChannelIndicesEnumerator(this);
+  global::System.Collections.Generic.IEnumerator<EventTypeInfo> global::System.Collections.Generic.IEnumerable<EventTypeInfo>.GetEnumerator() {
+    return new EventTypesEnumerator(this);
   }
 
   global::System.Collections.IEnumerator global::System.Collections.IEnumerable.GetEnumerator() {
-    return new ChannelIndicesEnumerator(this);
+    return new EventTypesEnumerator(this);
   }
 
-  public ChannelIndicesEnumerator GetEnumerator() {
-    return new ChannelIndicesEnumerator(this);
+  public EventTypesEnumerator GetEnumerator() {
+    return new EventTypesEnumerator(this);
   }
 
   // Type-safe enumerator
@@ -156,15 +156,15 @@ public class ChannelIndices : global::System.IDisposable, global::System.Collect
   /// whenever the collection is modified. This has been done for changes in the size of the
   /// collection but not when one of the elements of the collection is modified as it is a bit
   /// tricky to detect unmanaged code that modifies the collection under our feet.
-  public sealed class ChannelIndicesEnumerator : global::System.Collections.IEnumerator
-    , global::System.Collections.Generic.IEnumerator<ChannelIndex>
+  public sealed class EventTypesEnumerator : global::System.Collections.IEnumerator
+    , global::System.Collections.Generic.IEnumerator<EventTypeInfo>
   {
-    private ChannelIndices collectionRef;
+    private EventTypes collectionRef;
     private int currentIndex;
     private object currentObject;
     private int currentSize;
 
-    public ChannelIndicesEnumerator(ChannelIndices collection) {
+    public EventTypesEnumerator(EventTypes collection) {
       collectionRef = collection;
       currentIndex = -1;
       currentObject = null;
@@ -172,7 +172,7 @@ public class ChannelIndices : global::System.IDisposable, global::System.Collect
     }
 
     // Type-safe iterator Current
-    public ChannelIndex Current {
+    public EventTypeInfo Current {
       get {
         if (currentIndex == -1)
           throw new global::System.InvalidOperationException("Enumeration not started.");
@@ -180,7 +180,7 @@ public class ChannelIndices : global::System.IDisposable, global::System.Collect
           throw new global::System.InvalidOperationException("Enumeration finished.");
         if (currentObject == null)
           throw new global::System.InvalidOperationException("Collection modified.");
-        return (ChannelIndex)currentObject;
+        return (EventTypeInfo)currentObject;
       }
     }
 
@@ -218,112 +218,112 @@ public class ChannelIndices : global::System.IDisposable, global::System.Collect
   }
 
   public void Clear() {
-    msclPINVOKE.ChannelIndices_Clear(swigCPtr);
+    msclPINVOKE.EventTypes_Clear(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void Add(ChannelIndex x) {
-    msclPINVOKE.ChannelIndices_Add(swigCPtr, ChannelIndex.getCPtr(x));
+  public void Add(EventTypeInfo x) {
+    msclPINVOKE.EventTypes_Add(swigCPtr, EventTypeInfo.getCPtr(x));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   private uint size() {
-    uint ret = msclPINVOKE.ChannelIndices_size(swigCPtr);
+    uint ret = msclPINVOKE.EventTypes_size(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private uint capacity() {
-    uint ret = msclPINVOKE.ChannelIndices_capacity(swigCPtr);
+    uint ret = msclPINVOKE.EventTypes_capacity(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private void reserve(uint n) {
-    msclPINVOKE.ChannelIndices_reserve(swigCPtr, n);
+    msclPINVOKE.EventTypes_reserve(swigCPtr, n);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public ChannelIndices() : this(msclPINVOKE.new_ChannelIndices__SWIG_0(), true) {
+  public EventTypes() : this(msclPINVOKE.new_EventTypes__SWIG_0(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public ChannelIndices(ChannelIndices other) : this(msclPINVOKE.new_ChannelIndices__SWIG_1(ChannelIndices.getCPtr(other)), true) {
+  public EventTypes(EventTypes other) : this(msclPINVOKE.new_EventTypes__SWIG_1(EventTypes.getCPtr(other)), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public ChannelIndices(int capacity) : this(msclPINVOKE.new_ChannelIndices__SWIG_2(capacity), true) {
+  public EventTypes(int capacity) : this(msclPINVOKE.new_EventTypes__SWIG_2(capacity), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  private ChannelIndex getitemcopy(int index) {
-    ChannelIndex ret = new ChannelIndex(msclPINVOKE.ChannelIndices_getitemcopy(swigCPtr, index), true);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  private ChannelIndex getitem(int index) {
-    ChannelIndex ret = new ChannelIndex(msclPINVOKE.ChannelIndices_getitem(swigCPtr, index), false);
+  private EventTypeInfo getitemcopy(int index) {
+    EventTypeInfo ret = new EventTypeInfo(msclPINVOKE.EventTypes_getitemcopy(swigCPtr, index), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  private void setitem(int index, ChannelIndex val) {
-    msclPINVOKE.ChannelIndices_setitem(swigCPtr, index, ChannelIndex.getCPtr(val));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void AddRange(ChannelIndices values) {
-    msclPINVOKE.ChannelIndices_AddRange(swigCPtr, ChannelIndices.getCPtr(values));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public ChannelIndices GetRange(int index, int count) {
-    global::System.IntPtr cPtr = msclPINVOKE.ChannelIndices_GetRange(swigCPtr, index, count);
-    ChannelIndices ret = (cPtr == global::System.IntPtr.Zero) ? null : new ChannelIndices(cPtr, true);
+  private EventTypeInfo getitem(int index) {
+    EventTypeInfo ret = new EventTypeInfo(msclPINVOKE.EventTypes_getitem(swigCPtr, index), false);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void Insert(int index, ChannelIndex x) {
-    msclPINVOKE.ChannelIndices_Insert(swigCPtr, index, ChannelIndex.getCPtr(x));
+  private void setitem(int index, EventTypeInfo val) {
+    msclPINVOKE.EventTypes_setitem(swigCPtr, index, EventTypeInfo.getCPtr(val));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void InsertRange(int index, ChannelIndices values) {
-    msclPINVOKE.ChannelIndices_InsertRange(swigCPtr, index, ChannelIndices.getCPtr(values));
+  public void AddRange(EventTypes values) {
+    msclPINVOKE.EventTypes_AddRange(swigCPtr, EventTypes.getCPtr(values));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public EventTypes GetRange(int index, int count) {
+    global::System.IntPtr cPtr = msclPINVOKE.EventTypes_GetRange(swigCPtr, index, count);
+    EventTypes ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventTypes(cPtr, true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void Insert(int index, EventTypeInfo x) {
+    msclPINVOKE.EventTypes_Insert(swigCPtr, index, EventTypeInfo.getCPtr(x));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void InsertRange(int index, EventTypes values) {
+    msclPINVOKE.EventTypes_InsertRange(swigCPtr, index, EventTypes.getCPtr(values));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void RemoveAt(int index) {
-    msclPINVOKE.ChannelIndices_RemoveAt(swigCPtr, index);
+    msclPINVOKE.EventTypes_RemoveAt(swigCPtr, index);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void RemoveRange(int index, int count) {
-    msclPINVOKE.ChannelIndices_RemoveRange(swigCPtr, index, count);
+    msclPINVOKE.EventTypes_RemoveRange(swigCPtr, index, count);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public static ChannelIndices Repeat(ChannelIndex value, int count) {
-    global::System.IntPtr cPtr = msclPINVOKE.ChannelIndices_Repeat(ChannelIndex.getCPtr(value), count);
-    ChannelIndices ret = (cPtr == global::System.IntPtr.Zero) ? null : new ChannelIndices(cPtr, true);
+  public static EventTypes Repeat(EventTypeInfo value, int count) {
+    global::System.IntPtr cPtr = msclPINVOKE.EventTypes_Repeat(EventTypeInfo.getCPtr(value), count);
+    EventTypes ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventTypes(cPtr, true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public void Reverse() {
-    msclPINVOKE.ChannelIndices_Reverse__SWIG_0(swigCPtr);
+    msclPINVOKE.EventTypes_Reverse__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void Reverse(int index, int count) {
-    msclPINVOKE.ChannelIndices_Reverse__SWIG_1(swigCPtr, index, count);
+    msclPINVOKE.EventTypes_Reverse__SWIG_1(swigCPtr, index, count);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void SetRange(int index, ChannelIndices values) {
-    msclPINVOKE.ChannelIndices_SetRange(swigCPtr, index, ChannelIndices.getCPtr(values));
+  public void SetRange(int index, EventTypes values) {
+    msclPINVOKE.EventTypes_SetRange(swigCPtr, index, EventTypes.getCPtr(values));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

@@ -1009,4 +1009,24 @@ namespace mscl
 
         m_unc = unc;
     }
+
+    bool EventTriggerInfo::isActive() const
+    {
+        return status.get(ACTIVE) > 0;
+    }
+
+    bool EventTriggerInfo::isEnabled() const
+    {
+        return status.get(ENABLED) > 0;
+    }
+
+    bool EventTriggerInfo::isTestMode() const
+    {
+        return status.get(TEST) > 0;
+    }
+
+    void EventTriggerInfo::setStatus(const uint8 value)
+    {
+        status.value(value);
+    }
 }  // namespace mscl
