@@ -1155,7 +1155,7 @@ namespace mscl
             const int instanceIndex = (index - 1) / 2;
 
             status.push_back({
-                static_cast<EventTriggerConfiguration::Trigger>(data[index].as_uint8()), // type
+                static_cast<EventTriggerConfiguration::Type>(data[index].as_uint8()), // type
                 // If instances count is 0, user requested all triggers
                 instances.empty() ?
                     static_cast<uint8>(instanceIndex + 1):

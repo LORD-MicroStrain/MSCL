@@ -5527,13 +5527,19 @@ class msclPINVOKE {
   public static extern global::System.IntPtr new_EventTriggerInfo__SWIG_0();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_EventTriggerInfo__SWIG_1")]
-  public static extern global::System.IntPtr new_EventTriggerInfo__SWIG_1(int jarg1, byte jarg2);
+  public static extern global::System.IntPtr new_EventTriggerInfo__SWIG_1(int jarg1, byte jarg2, byte jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventTriggerInfo_type_set")]
   public static extern void EventTriggerInfo_type_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventTriggerInfo_type_get")]
   public static extern int EventTriggerInfo_type_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventTriggerInfo_instanceId_set")]
+  public static extern void EventTriggerInfo_instanceId_set(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventTriggerInfo_instanceId_get")]
+  public static extern byte EventTriggerInfo_instanceId_get(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventTriggerInfo_isActive")]
   public static extern bool EventTriggerInfo_isActive(global::System.Runtime.InteropServices.HandleRef jarg1);

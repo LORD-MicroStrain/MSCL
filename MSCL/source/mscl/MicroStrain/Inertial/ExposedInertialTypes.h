@@ -2979,7 +2979,7 @@ namespace mscl
             status(0) {}
 
         //API Constructor: EventTriggerInfo
-        EventTriggerInfo(const EventTriggerConfiguration::Trigger type, const uint8 instanceId, const uint8 status) :
+        EventTriggerInfo(const EventTriggerConfiguration::Type type, const uint8 instanceId, const uint8 status) :
             type(type),
             instanceId(instanceId),
             status(status) {}
@@ -2999,7 +2999,7 @@ namespace mscl
 
         //API Variable: type
         //  Configured trigger type
-        EventTriggerConfiguration::Trigger type;
+        EventTriggerConfiguration::Type type;
 
         //API Variable: instanceId
         //  Instance ID of the trigger
