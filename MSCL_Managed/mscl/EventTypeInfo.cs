@@ -44,7 +44,11 @@ public class EventTypeInfo : global::System.IDisposable {
     }
   }
 
-  public EventTypeInfo(byte type, byte maxInstances) : this(msclPINVOKE.new_EventTypeInfo(type, maxInstances), true) {
+  public EventTypeInfo() : this(msclPINVOKE.new_EventTypeInfo__SWIG_0(), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public EventTypeInfo(byte type, byte maxInstances) : this(msclPINVOKE.new_EventTypeInfo__SWIG_1(type, maxInstances), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

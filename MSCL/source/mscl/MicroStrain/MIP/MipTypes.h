@@ -1767,6 +1767,10 @@ namespace mscl
     struct EventTypeInfo
     {
         //API Constructor: EventTypeInfo
+        //  Default constructor
+        EventTypeInfo() : type(0), maxInstances(0) {}
+
+        //API Constructor: EventTypeInfo
         EventTypeInfo(const uint8 type, const uint8 maxInstances) :
             type(type),
             maxInstances(maxInstances)

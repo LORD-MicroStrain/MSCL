@@ -3789,8 +3789,11 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_DeviceCommPort")]
   public static extern void delete_DeviceCommPort(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_EventTypeInfo")]
-  public static extern global::System.IntPtr new_EventTypeInfo(byte jarg1, byte jarg2);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_EventTypeInfo__SWIG_0")]
+  public static extern global::System.IntPtr new_EventTypeInfo__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_EventTypeInfo__SWIG_1")]
+  public static extern global::System.IntPtr new_EventTypeInfo__SWIG_1(byte jarg1, byte jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventTypeInfo_type_set")]
   public static extern void EventTypeInfo_type_set(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
