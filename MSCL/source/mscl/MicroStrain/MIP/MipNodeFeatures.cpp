@@ -709,6 +709,12 @@ namespace mscl
                 InertialTypes::GeographicSourceOption::MANUAL
             };
 
+        case MipModels::node_3dm_gq7:
+            return{
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
         default:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
@@ -730,6 +736,12 @@ namespace mscl
                 InertialTypes::GeographicSourceOption::MANUAL
             };
 
+        case MipModels::node_3dm_gq7:
+            return{
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
         default:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
@@ -748,6 +760,12 @@ namespace mscl
         case MipModels::node_3dm_cv7_ar:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
+        case MipModels::node_3dm_gq7:
+            return{
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
                 InertialTypes::GeographicSourceOption::MANUAL
             };
 
