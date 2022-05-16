@@ -983,6 +983,18 @@ public class InertialNode : MipNode {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public EventTriggerStatus getEventTriggerStatus(Bytes instances) {
+    EventTriggerStatus ret = new EventTriggerStatus(msclPINVOKE.InertialNode_getEventTriggerStatus__SWIG_0(swigCPtr, Bytes.getCPtr(instances)), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public EventTriggerStatus getEventTriggerStatus() {
+    EventTriggerStatus ret = new EventTriggerStatus(msclPINVOKE.InertialNode_getEventTriggerStatus__SWIG_1(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }
 
 }

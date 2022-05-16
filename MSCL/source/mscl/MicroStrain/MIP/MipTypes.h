@@ -126,6 +126,7 @@ namespace mscl
         //  CMD_PPS_SOURCE                              - 0x0C28    - PPS Source
         //  CMD_EVENT_SUPPORT                           - 0x0C2A    - Event Support
         //  CMD_EVENT_CONTROL                           - 0x0C2B    - Event Control
+        //  CMD_EVENT_TRIGGER_STATUS                    - 0x0C2C    - Event Trigger Status
         //  CMD_EVENT_TRIGGER_CONFIGURATION             - 0x0C2E    - Event Trigger Configuration
         //  CMD_SAVE_STARTUP_SETTINGS                   - 0x0C30    - Device Startup Settings
         //  CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER     - 0x0C31    - Sensor to Vehicle Frame Transformation Euler Angles
@@ -252,6 +253,7 @@ namespace mscl
             CMD_PPS_SOURCE                          = 0x0C28,
             CMD_EVENT_SUPPORT                       = 0x0C2A,
             CMD_EVENT_CONTROL                       = 0x0C2B,
+            CMD_EVENT_TRIGGER_STATUS                = 0x0C2C,
             CMD_EVENT_TRIGGER_CONFIGURATION         = 0x0C2E,
             CMD_SAVE_STARTUP_SETTINGS               = 0x0C30,
             CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER = 0x0C31,
