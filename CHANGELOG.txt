@@ -24,6 +24,7 @@ Forthcoming
     - Sensor Range (0x0C,0x52)
     - Get Calibrated Sensor Ranges (0x0C,0x53)
 - Added check for supported event trigger threshold qualifiers
+- Added check for supported geographic sources
 
 64.2.2 - 2022-03-08
 - Reverted defaul MIP command timeout to 250 ms
