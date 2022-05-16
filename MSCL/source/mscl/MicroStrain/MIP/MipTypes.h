@@ -124,6 +124,7 @@ namespace mscl
         //  CMD_GNSS_ASSIST_FIX_CONTROL                 - 0x0C23    - GNSS Assisted Fix Control
         //  CMD_GNSS_ASSIST_TIME_UPDATE                 - 0x0C24    - GNSS Assisted Time Update
         //  CMD_PPS_SOURCE                              - 0x0C28    - PPS Source
+        //  CMD_EVENT_SUPPORT                           - 0x0C2A    - Event Support
         //  CMD_EVENT_CONTROL                           - 0x0C2B    - Event Control
         //  CMD_EVENT_TRIGGER_STATUS                    - 0x0C2C    - Event Trigger Status
         //  CMD_EVENT_TRIGGER_CONFIGURATION             - 0x0C2E    - Event Trigger Configuration
@@ -250,6 +251,7 @@ namespace mscl
             CMD_GNSS_ASSIST_FIX_CONTROL             = 0x0C23,
             CMD_GNSS_ASSIST_TIME_UPDATE             = 0x0C24,
             CMD_PPS_SOURCE                          = 0x0C28,
+            CMD_EVENT_SUPPORT                       = 0x0C2A,
             CMD_EVENT_CONTROL                       = 0x0C2B,
             CMD_EVENT_TRIGGER_STATUS                = 0x0C2C,
             CMD_EVENT_TRIGGER_CONFIGURATION         = 0x0C2E,
@@ -1759,7 +1761,60 @@ namespace mscl
     };
 
     typedef std::vector<DeviceCommPort> CommPortInfo;
-    
+
+    //API Struct: EventTypeInfo
+    //  Information about event trigger or action types
+    struct EventTypeInfo
+    {
+        //API Constructor: EventTypeInfo
+        EventTypeInfo(const uint8 type, const uint8 maxInstances) :
+            type(type),
+            maxInstances(maxInstances)
+        { }
+
+        //API Variable: type
+        //  The event type based on <EventSupportInfo::Query>
+        //
+        //  - <EventSupportInfo::Query::TRIGGERS> = <EventTriggerConfiguration::Type>
+        //  - <EventSupportInfo::Query::ACTIONS>  = <EventActionConfiguration::Type>
+        uint8 type;
+
+        //API Variable: maxInstances
+        //  Maximum supported instances for the type
+        uint8 maxInstances;
+    };
+
+    //API Typedef: EventTypes
+    //  A vector of <EventTypeInfo>
+    typedef std::vector<EventTypeInfo> EventTypes;
+
+    //API Struct: EventSupportInfo
+    struct EventSupportInfo
+    {
+        //API Enum: Query
+        //  What type of information to retrieve
+        //
+        //  TRIGGERS  - 0x01 - Query the supported trigger types and max count for each
+        //  ACTIONS   - 0x02 - Query the supported action types and max count for each
+        enum Query
+        {
+            TRIGGERS = 0x01, // Query the supported trigger types and max count for each
+            ACTIONS  = 0x02  // Query the supported action types and max count for each
+        };
+
+        //API Variable: query
+        //  Type of information 
+        Query query;
+
+        //API Variable: maxInstances
+        //  Maximum number of supported triggers/actions
+        uint8 maxInstances;
+
+        //API Variable: entries
+        //  Event info
+        EventTypes entries;
+    };
+
     // API Class: SensorRange
     // An object representing a configurable sensor range option
     class SensorRange

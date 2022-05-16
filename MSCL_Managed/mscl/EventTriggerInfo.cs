@@ -48,17 +48,29 @@ public class EventTriggerInfo : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public EventTriggerInfo(EventTriggerConfiguration.Trigger type, byte status) : this(msclPINVOKE.new_EventTriggerInfo__SWIG_1((int)type, status), true) {
+  public EventTriggerInfo(EventTriggerConfiguration.Type type, byte instanceId, byte status) : this(msclPINVOKE.new_EventTriggerInfo__SWIG_1((int)type, instanceId, status), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public EventTriggerConfiguration.Trigger type {
+  public EventTriggerConfiguration.Type type {
     set {
       msclPINVOKE.EventTriggerInfo_type_set(swigCPtr, (int)value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      EventTriggerConfiguration.Trigger ret = (EventTriggerConfiguration.Trigger)msclPINVOKE.EventTriggerInfo_type_get(swigCPtr);
+      EventTriggerConfiguration.Type ret = (EventTriggerConfiguration.Type)msclPINVOKE.EventTriggerInfo_type_get(swigCPtr);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
+  public byte instanceId {
+    set {
+      msclPINVOKE.EventTriggerInfo_instanceId_set(swigCPtr, value);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      byte ret = msclPINVOKE.EventTriggerInfo_instanceId_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
@@ -88,9 +100,9 @@ public class EventTriggerInfo : global::System.IDisposable {
   }
 
   public enum Status {
-    ACTIVE = 0x00,
-    ENABLED = 0x01,
-    TEST = 0x02
+    ACTIVE = 0x01,
+    ENABLED = 0x02,
+    TEST = 0x04
   }
 
 }

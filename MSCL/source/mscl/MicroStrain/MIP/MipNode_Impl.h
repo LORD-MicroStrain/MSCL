@@ -345,6 +345,23 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         virtual MipCommandSet getConfigCommandBytes() const;
 
+        //Function: getEventInfo
+        //    Gets the event type info for this node, which includes the maximum number of supported triggers/actions and a list
+        //      of trigger/action types and the maximum supported instances of each type.
+        //    Sends the "Event Support" command to the device.
+        //
+        //Parameters:
+        //    query - The query type to get information for.
+        //
+        //Returns:
+        //    The supported event type info retrieved from the "Event Support" command.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        virtual EventSupportInfo getEventInfo(EventSupportInfo::Query query) const;
+
         //Function: sendCommandBytes
         //    Sends the <MipCommandSet> byte strings. The <MipCommandBytes> sendCmdFailed is updated to indicate success/failure.
         //    Note: Unsupported commands, as indicated by the <MipCommandBytes> id, will not be sent.

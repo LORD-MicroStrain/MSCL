@@ -10,20 +10,20 @@
 
 namespace mscl {
 
-public class EventTriggerConfiguration : global::System.IDisposable {
+public class EventTypeInfo : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
 
-  internal EventTriggerConfiguration(global::System.IntPtr cPtr, bool cMemoryOwn) {
+  internal EventTypeInfo(global::System.IntPtr cPtr, bool cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(EventTriggerConfiguration obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(EventTypeInfo obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  ~EventTriggerConfiguration() {
+  ~EventTypeInfo() {
     Dispose(false);
   }
 
@@ -37,59 +37,39 @@ public class EventTriggerConfiguration : global::System.IDisposable {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_EventTriggerConfiguration(swigCPtr);
+          msclPINVOKE.delete_EventTypeInfo(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
     }
   }
 
-  public byte instance {
-    set {
-      msclPINVOKE.EventTriggerConfiguration_instance_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      byte ret = msclPINVOKE.EventTriggerConfiguration_instance_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
-  }
-
-  public EventTriggerConfiguration.Type trigger {
-    set {
-      msclPINVOKE.EventTriggerConfiguration_trigger_set(swigCPtr, (int)value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      EventTriggerConfiguration.Type ret = (EventTriggerConfiguration.Type)msclPINVOKE.EventTriggerConfiguration_trigger_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
-  }
-
-  public EventTriggerParameters parameters {
-    set {
-      msclPINVOKE.EventTriggerConfiguration_parameters_set(swigCPtr, EventTriggerParameters.getCPtr(value));
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      global::System.IntPtr cPtr = msclPINVOKE.EventTriggerConfiguration_parameters_get(swigCPtr);
-      EventTriggerParameters ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventTriggerParameters(cPtr, false);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
-  }
-
-  public EventTriggerConfiguration() : this(msclPINVOKE.new_EventTriggerConfiguration(), true) {
+  public EventTypeInfo(byte type, byte maxInstances) : this(msclPINVOKE.new_EventTypeInfo(type, maxInstances), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public enum Type {
-    NONE = 0x00,
-    GPIO_TRIGGER = 0x01,
-    THRESHOLD_TRIGGER = 0x02,
-    COMBINATION_TRIGGER = 0x03
+  public byte type {
+    set {
+      msclPINVOKE.EventTypeInfo_type_set(swigCPtr, value);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      byte ret = msclPINVOKE.EventTypeInfo_type_get(swigCPtr);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
+  public byte maxInstances {
+    set {
+      msclPINVOKE.EventTypeInfo_maxInstances_set(swigCPtr, value);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      byte ret = msclPINVOKE.EventTypeInfo_maxInstances_get(swigCPtr);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
   }
 
 }

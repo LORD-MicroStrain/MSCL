@@ -146,6 +146,7 @@
     <Compile Include="mscl\EulerAngles.cs" />
     <Compile Include="mscl\EventControlMode.cs" />
     <Compile Include="mscl\EventInputTriggers.cs" />
+    <Compile Include="mscl\EventSupportInfo.cs" />
     <Compile Include="mscl\EventTriggerCombinationParameter.cs" />
     <Compile Include="mscl\EventTriggerConfiguration.cs" />
     <Compile Include="mscl\EventTriggerGpioParameter.cs" />
@@ -154,6 +155,8 @@
     <Compile Include="mscl\EventTriggerParameters.cs" />
     <Compile Include="mscl\EventTriggerStatus.cs" />
     <Compile Include="mscl\EventTriggerThresholdParameter.cs" />
+    <Compile Include="mscl\EventTypeInfo.cs" />
+    <Compile Include="mscl\EventTypes.cs" />
     <Compile Include="mscl\Exceptions.cs">
       <SubType>Code</SubType>
     </Compile>

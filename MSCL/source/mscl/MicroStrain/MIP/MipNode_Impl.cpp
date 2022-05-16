@@ -2272,6 +2272,30 @@ namespace mscl
         return r.parseResponse(doCommand(r, ActivationCode::buildCommand_get()));
     }
 
+    EventSupportInfo MipNode_Impl::getEventInfo(const EventSupportInfo::Query query) const
+    {
+        const MipFieldValues response = get(MipTypes::Command::CMD_EVENT_SUPPORT,
+                    { Value::UINT8(static_cast<uint8>(query)) }
+        );
+
+        EventSupportInfo info{};
+
+        info.query = static_cast<EventSupportInfo::Query>(response[0].as_uint8());
+        info.maxInstances = response[1].as_uint8();
+
+        const uint8 numEntries = response[2].as_uint8();
+
+        // Response index starts at 3 and each entry has 2 data values
+        for (int index = 3; index < numEntries * 2 + 3; index += 2)
+        {
+            info.entries.push_back(
+                EventTypeInfo(response[index].as_uint8(), response[index + 1].as_uint8())
+            );
+        }
+
+        return info;
+    }
+
     MipFieldValues MipNode_Impl::get(MipTypes::Command cmdId) const
     {
         MipCommand command = MipCommand(cmdId,
