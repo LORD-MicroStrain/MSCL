@@ -531,9 +531,13 @@ namespace mscl
         switch(model.baseModel().nodeModel())
         {
             case MipModels::node_3dm_cv7_ahrs:
+                return{
+                    InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
+                };
+
             case MipModels::node_3dm_cv7_ar:
                 return {
-                    InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
                     InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
                 };
 
