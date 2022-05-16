@@ -701,6 +701,87 @@ namespace mscl
         };
     }
 
+    GeographicSources MipNodeFeatures::supportedDeclinationSources() const
+    {
+        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ahrs:
+        case MipModels::node_3dm_cv7_ar:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
+        case MipModels::node_3dm_gq7:
+            return{
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
+        default:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+        }
+    }
+
+    GeographicSources MipNodeFeatures::supportedInclinationSources() const
+    {
+        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ahrs:
+        case MipModels::node_3dm_cv7_ar:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
+        case MipModels::node_3dm_gq7:
+            return{
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
+        default:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+        }
+    }
+
+    GeographicSources MipNodeFeatures::supportedMagneticMagnitudeSources() const
+    {
+        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ahrs:
+        case MipModels::node_3dm_cv7_ar:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
+        case MipModels::node_3dm_gq7:
+            return{
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
+        default:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+        }
+    }
+
     MipTypes::ChannelFieldQualifiers MipNodeFeatures::supportedEventThresholdChannels() const
     {
         if (!supportsCommand(mscl::MipTypes::Command::CMD_EVENT_TRIGGER_CONFIGURATION))

@@ -194,6 +194,24 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public GeographicSources supportedDeclinationSources() {
+    GeographicSources ret = new GeographicSources(msclPINVOKE.MipNodeFeatures_supportedDeclinationSources(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public GeographicSources supportedInclinationSources() {
+    GeographicSources ret = new GeographicSources(msclPINVOKE.MipNodeFeatures_supportedInclinationSources(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public GeographicSources supportedMagneticMagnitudeSources() {
+    GeographicSources ret = new GeographicSources(msclPINVOKE.MipNodeFeatures_supportedMagneticMagnitudeSources(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public ChannelFieldQualifiers supportedEventThresholdChannels() {
     ChannelFieldQualifiers ret = new ChannelFieldQualifiers(msclPINVOKE.MipNodeFeatures_supportedEventThresholdChannels(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

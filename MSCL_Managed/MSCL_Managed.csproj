@@ -168,6 +168,7 @@
     <Compile Include="mscl\Filters.cs" />
     <Compile Include="mscl\FixedReferencePositionData.cs" />
     <Compile Include="mscl\GeographicSourceOptions.cs" />
+    <Compile Include="mscl\GeographicSources.cs" />
     <Compile Include="mscl\GeometricVector.cs" />
     <Compile Include="mscl\GeometricVectors.cs" />
     <Compile Include="mscl\GnssAidingStatus.cs" />

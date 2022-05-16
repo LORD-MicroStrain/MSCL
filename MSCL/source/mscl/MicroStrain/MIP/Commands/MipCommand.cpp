@@ -379,7 +379,7 @@ namespace mscl
             return{ ValueType::valueType_uint8 };
 
         case MipTypes::CMD_EVENT_SUPPORT:
-            return {
+            return{
                 ValueType::valueType_uint8,
                 ValueType::valueType_uint8,
                 ValueType::valueType_uint8,

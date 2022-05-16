@@ -322,6 +322,7 @@ namespace std
     %template(AdvancedLowPassFilterConfig)      vector<mscl::AdvancedLowPassFilterData>;
     %template(AidingMeasurementSourceOptions)   vector<mscl::InertialTypes::AidingMeasurementSource>;
     %template(PpsSourceOptions)                 vector<mscl::InertialTypes::PpsSource>;
+    %template(GeographicSources)                vector<mscl::InertialTypes::GeographicSourceOption>;
     %template(GpioPinModeOptions)               vector<mscl::GpioConfiguration::PinModes>;
     %template(GpioBehaviorModes)                map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>;
     %template(GpioFeatureBehaviors)             map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>;
