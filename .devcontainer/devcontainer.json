@@ -2,7 +2,7 @@
     "name": "mscl-dev",
     "build": {
         "context": "..",
-        "dockerfile": "Dockerfile.centos",
+        "dockerfile": "Dockerfile.ubuntu",
         "args": {
             "ARCH": "amd64",
             "UBUNTU_VERSION": "20.04",
@@ -23,7 +23,6 @@
     "runArgs": [
         "--net=host",
         "--privileged",
-        "--security-opt", "seccomp=unconfined"
     ],
     "remoteEnv": {
         "DISPLAY": "${localEnv:DISPLAY}"
