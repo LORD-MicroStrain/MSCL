@@ -6,18 +6,26 @@ pipeline {
       parallel {
         stage('Windows') {
           agent { label 'windows10' }
+          options { skipDefaultCheckout() }
           steps {
-            powershell "BuildScripts/jenkins_win.ps1 -buildDir \"${WORKSPACE}\\build\""
+            cleanWs()
+            checkout scm
+            powershell ".devcontainer/build-win.ps1 -windows_version 1809"
             archiveArtifacts artifacts: 'Output/*.zip'
           }
         }
         stage('DEB ARM64') {
           agent { label 'linux-arm64' }
+          options { skipDefaultCheckout() }
           steps {
+            cleanWs()
+            checkout scm
+            sh "cp /usr/local/share/ca-certificates/* .devcontainer/extra_cas/"
             sh ".devcontainer/build-debs.sh --arch arm64v8"
             archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
           }
         }
+        /*
         stage('DEB ARM32') {
           agent { label 'linux-arm' }
           steps {
@@ -32,6 +40,7 @@ pipeline {
             archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
           }
         }
+        */
       }
     }
   }

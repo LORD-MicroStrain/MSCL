@@ -1,7 +1,8 @@
 # escape=`
 
+ARG WINDOWS_IMAGE
 ARG WINDOWS_VERSION
-FROM mcr.microsoft.com/windows:${WINDOWS_VERSION}
+FROM ${WINDOWS_IMAGE}:${WINDOWS_VERSION}
 
 # Temporary directory
 ENV DOCKER_TEMP_DIR "C:\DockerTemp"
