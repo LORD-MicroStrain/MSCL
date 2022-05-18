@@ -12,8 +12,8 @@ if(CMAKE_PROJECT_NAME STREQUAL "MSCL")
   #       If not building in the MSCL repo, this can be safely ignored or removed
   set(MSCL_LIBRARY MSCL)
   set(MSCL_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../MSCL/source")
-  target_link_directories(${PROJECT_NAME} PRIVATE ${CMAKE_BINARY_DIR}/MSCL/MSCL_static/${CMAKE_CFG_INTDIR})
-  add_dependencies(${PROJECT_NAME} MSCL_static)
+  target_link_directories(${PROJECT_NAME} PRIVATE ${CMAKE_BINARY_DIR}/MSCL/MSCL_Static/${CMAKE_CFG_INTDIR})
+  add_dependencies(${PROJECT_NAME} MSCL_Static)
 endif()
 
 # Append to the module path so we can use the FindMSCL.cmake script

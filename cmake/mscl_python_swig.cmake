@@ -63,12 +63,12 @@ function(mscl_python_swig)
 
   if(WIN32)
     # If running on windows, zip up the artifacts
-    add_custom_target(${mscl_python_swig_MODULE_NAME}_zip
+    add_custom_target(${mscl_python_swig_MODULE_NAME}_Zip
       WORKING_DIRECTORY ${mscl_python_swig_OUTPUT_DIR}/Python/${mscl_python_swig_PYTHON_VERSION}/${mscl_python_swig_ARCH}/$<CONFIG>
       DEPENDS ${mscl_python_swig_MODULE_NAME}
       COMMAND ${CMAKE_COMMAND} -E tar "cf" "${mscl_python_swig_OUTPUT_DIR}/${mscl_python_swig_OUTPUT_NAME}_${mscl_python_swig_MODULE_VERSION}_Windows_Python${mscl_python_swig_PYTHON_VERSION}_${mscl_python_swig_ARCH}_$<CONFIG>.zip" --format=zip "."
     )
-    add_dependencies(${mscl_python_swig_ZIP_TARGET} ${mscl_python_swig_MODULE_NAME}_zip)
+    add_dependencies(${mscl_python_swig_ZIP_TARGET} ${mscl_python_swig_MODULE_NAME}_Zip)
   elseif(UNIX)
     # If running on linux, install the artifacts
     set(PYTHON_SITE_PACKAGES_DIR lib/python${mscl_python_swig_PYTHON_VERSION}/site-packages)

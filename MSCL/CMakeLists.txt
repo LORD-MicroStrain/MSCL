@@ -105,8 +105,8 @@ endif()
 
 # Build both the C++ shared and static libraries if configured to do so
 set(LIB_NAME ${PROJECT_NAME})
-set(LIB_NAME_STATIC ${LIB_NAME}_static)
-set(LIB_NAME_SHARED ${LIB_NAME}_shared)
+set(LIB_NAME_STATIC ${LIB_NAME}_Static)
+set(LIB_NAME_SHARED ${LIB_NAME}_Shared)
 
 add_library(${LIB_NAME_STATIC} STATIC ${SRC_FILES})
 set(LIB_NAME_STATIC_DIR ${CMAKE_CURRENT_BINARY_DIR}/${LIB_NAME_STATIC})
@@ -137,12 +137,12 @@ add_custom_command(TARGET ${LIB_NAME_STATIC} POST_BUILD
 
 if(WIN32)
   # If running on windows, zip up the artifacts
-  add_custom_target(${LIB_NAME_STATIC}_zip
+  add_custom_target(${LIB_NAME_STATIC}_Zip
     WORKING_DIRECTORY ${MSCL_STATIC_OUTPUT_DIR}/..
     DEPENDS ${LIB_NAME_STATIC}
     COMMAND ${CMAKE_COMMAND} -E tar "cf" "${MSCL_OUTPUT_DIR}/mscl_${MSCL_GIT_VERSION}_Windows_C++_Static_${MSCL_ARCH_NAME}_$<CONFIG>.zip" --format=zip "."
   )
-  add_dependencies(${MSCL_ZIP_TARGET} ${LIB_NAME_STATIC}_zip)
+  add_dependencies(${MSCL_ZIP_TARGET} ${LIB_NAME_STATIC}_Zip)
 elseif(UNIX)
   # If running on linux, mark the target for installation
   install(
@@ -187,12 +187,12 @@ if(BUILD_SHARED_LIBS)
 
   if(WIN32)
     # If running on windows, zip up the artifacts
-    add_custom_target(${LIB_NAME_SHARED}_zip
+    add_custom_target(${LIB_NAME_SHARED}_Zip
       WORKING_DIRECTORY ${MSCL_SHARED_OUTPUT_DIR}/..
       DEPENDS ${LIB_NAME_SHARED}
       COMMAND ${CMAKE_COMMAND} -E tar "cf" "${MSCL_OUTPUT_DIR}/mscl_${MSCL_GIT_VERSION}_Windows_C++_Shared_${MSCL_ARCH_NAME}_$<CONFIG>.zip" --format=zip "."
     )
-    add_dependencies(${MSCL_ZIP_TARGET} ${LIB_NAME_SHARED}_zip)
+    add_dependencies(${MSCL_ZIP_TARGET} ${LIB_NAME_SHARED}_Zip)
   elseif(UNIX)
     # If running on linux, mark the target for installation
     install(
@@ -270,10 +270,10 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
 
   # Build for python3
   if(BUILD_PYTHON3)
-    set(PYTHON3_MODULE_NAME mscl_python3)
+    set(PYTHON3_MODULE_NAME MSCL_Python3)
     set(MSCL_PYTHON3_VERSION ${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR})
     mscl_python_swig(
-      MODULE_NAME mscl_python3
+      MODULE_NAME ${PYTHON3_MODULE_NAME}
       MODULE_VERSION ${MSCL_GIT_VERSION}
       OUTPUT_NAME mscl
       OUTPUT_DIR ${MSCL_OUTPUT_DIR}
@@ -292,7 +292,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
 
   # Build for python2
   if(BUILD_PYTHON2)
-    set(PYTHON2_MODULE_NAME mscl_python2)
+    set(PYTHON2_MODULE_NAME MSCL_Python2)
     set(MSCL_PYTHON2_VERSION ${Python2_VERSION_MAJOR}.${Python2_VERSION_MINOR})
     mscl_python_swig(
       MODULE_NAME ${PYTHON2_MODULE_NAME}
@@ -315,7 +315,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
   # Build C# on Windows
   # Wish we could generate it the same as python, but we need to get the list of CSharp files
   if(BUILD_CSHARP)
-    set(CSHARP_MODULE_NAME mscl_csharp)
+    set(CSHARP_MODULE_NAME MSCL_CSharp)
 
     # Hack of all hacks, but we need to generate the source seperately so we can determine the source files at configure time
     set(CSHARP_MODULE_DIR ${CMAKE_CURRENT_BINARY_DIR}/${CSHARP_MODULE_NAME})
@@ -378,19 +378,19 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
     )
 
     # Zip up the targets
-    add_custom_target(${MSCL_MANAGED_NAME}_zip
+    add_custom_target(${MSCL_MANAGED_NAME}_Zip
       WORKING_DIRECTORY ${MSCL_MANAGED_OUTPUT_DIR}/..
       DEPENDS ${MSCL_MANAGED_NAME}
       COMMAND ${CMAKE_COMMAND} -E tar "cf" "${MSCL_OUTPUT_DIR}/mscl_${MSCL_GIT_VERSION}_Windows_DotNet_${MSCL_ARCH_NAME}_$<CONFIG>.zip" --format=zip "."
     )
-    add_dependencies(${MSCL_ZIP_TARGET} ${MSCL_MANAGED_NAME}_zip)
+    add_dependencies(${MSCL_ZIP_TARGET} ${MSCL_MANAGED_NAME}_Zip)
   endif()
 
   # Build the documentation
   if(BUILD_DOCS)
     set(MSCL_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_Docs)
     set(MSCL_API_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_API_Docs)
-    add_custom_target(MSCL_docs
+    add_custom_target(MSCL_Docs
       ALL
       DEPENDS ${SRC_FILES}
       COMMAND ${CMAKE_COMMAND} -E remove_directory "${MSCL_OUTPUT_DIR}/Documentation"
@@ -402,12 +402,12 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
     )
 
     # Zip up the documentation as part of the zip task
-    add_custom_target(MSCL_docs_zip
+    add_custom_target(MSCL_Docs_Zip
       WORKING_DIRECTORY ${MSCL_OUTPUT_DIR}
-      DEPENDS MSCL_docs
+      DEPENDS MSCL_Docs
       COMMAND ${CMAKE_COMMAND} -E tar "cf" "${MSCL_OUTPUT_DIR}/mscl_${MSCL_GIT_VERSION}_Documentation.zip" --format=zip "Documentation"
     )
-    add_dependencies(${MSCL_ZIP_TARGET} MSCL_docs_zip)
+    add_dependencies(${MSCL_ZIP_TARGET} MSCL_Docs_Zip)
   endif()
 endif()
 

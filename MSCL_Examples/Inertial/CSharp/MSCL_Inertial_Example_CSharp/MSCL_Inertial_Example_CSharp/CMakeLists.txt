@@ -6,7 +6,7 @@ if(CMAKE_PROJECT_NAME STREQUAL "MSCL")
   #       If not building in the MSCL repo, this can be safely ignored or removed
   set(MSCL_Managed_LIBRARIES MSCL_Managed)
   set(MSCL_MANAGED_LIBRARY_PATH $<TARGET_FILE:MSCL_Managed>)
-  set(MSCL_MANAGED_INTERFACE_LIBRARY_PATH $<TARGET_FILE:mscl_csharp>)
+  set(MSCL_MANAGED_INTERFACE_LIBRARY_PATH $<TARGET_FILE:MSCL_CSharp>)
 else()
   # Append to the module path so we can use the FindMSCL_Managed.cmake script
   list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../../../../cmake")
@@ -24,7 +24,7 @@ add_executable(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME} ${MSCL_Managed_LIBRARIES})
 
 # This seems like the only way to properly link the CSharp file to the project, wish we could do this in the Find script
-set_target_properties(${PROJECT_NAME} PROPERTIES 
+set_target_properties(${PROJECT_NAME} PROPERTIES
     VS_DOTNET_REFERENCE_MSCL_Managed "${MSCL_MANAGED_LIBRARY_PATH}")
 
 # Copy the MSCL.dll file to the build directory for this binary

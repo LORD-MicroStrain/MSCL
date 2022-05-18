@@ -94,7 +94,7 @@ set(MSCL_OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Output)
 make_directory(${MSCL_OUTPUT_DIR})
 
 # Setup a phony target that will zip up all the artifacts
-set(MSCL_ZIP_TARGET zip)
+set(MSCL_ZIP_TARGET Zip)
 add_custom_target(${MSCL_ZIP_TARGET})
 set_property(TARGET ${MSCL_ZIP_TARGET} PROPERTY EXCLUDE_FROM_ALL ON)
 
@@ -258,7 +258,7 @@ if(BUILD_EXAMPLES)
 
   # Also copy the test source and build files to the output directory so it can be compressed
   set(MSCL_EXAMPLES_OUTPUT_DIR "${MSCL_OUTPUT_DIR}/Examples")
-  add_custom_target(MSCL_examples_copy
+  add_custom_target(MSCL_Examples_Copy
     ALL
     COMMAND ${CMAKE_COMMAND} -E remove_directory "${MSCL_EXAMPLES_OUTPUT_DIR}"
     COMMAND ${CMAKE_COMMAND} -E make_directory ${MSCL_EXAMPLES_OUTPUT_DIR}
@@ -268,12 +268,12 @@ if(BUILD_EXAMPLES)
   )
 
   # Zip up the examples
-  add_custom_target(MSCL_docs_zip
+  add_custom_target(MSCL_Docs_Zip
     WORKING_DIRECTORY ${MSCL_OUTPUT_DIR}
-    DEPENDS MSCL_examples_copy
+    DEPENDS MSCL_Examples_Copy
     COMMAND ${CMAKE_COMMAND} -E tar "cf" "${MSCL_OUTPUT_DIR}/mscl_${MSCL_GIT_VERSION}_Examples.zip" --format=zip "Examples"
   )
-  add_dependencies(${MSCL_ZIP_TARGET} MSCL_docs_zip)
+  add_dependencies(${MSCL_ZIP_TARGET} MSCL_Docs_Zip)
 endif()
 if(BUILD_TESTS)
   enable_testing()
