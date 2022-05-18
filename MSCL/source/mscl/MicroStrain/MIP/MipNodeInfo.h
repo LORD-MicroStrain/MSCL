@@ -62,6 +62,18 @@ namespace mscl
         //  The <GnssReceiverInfo> of the Node (lazy loaded).
         Utils::Lazy<GnssReceivers> m_receiverInfo;
 
+        //Variable: m_eventActionInfo
+        //  The action <EventSupportInfo> supported by the Node (lazy loaded).
+        Utils::Lazy<EventSupportInfo> m_eventActionInfo;
+
+        //Variable: m_eventTriggerInfo
+        //  The trigger <EventSupportInfo> supported by the Node (lazy loaded).
+        Utils::Lazy<EventSupportInfo> m_eventTriggerInfo;
+
+        //Variable: m_sensorRanges
+        //  The <SupportedSensorRanges> of this device (lazy loaded).
+        Utils::Lazy<SupportedSensorRanges> m_sensorRanges;
+
     public:
         //Function: deviceInfo
         //  Gets the <MipDeviceInfo> of the Node.
@@ -78,6 +90,18 @@ namespace mscl
         //Function: gnssReceiverInfo
         // Gets the <GnssReceiverInfo> for all supported receivers
         const GnssReceivers& gnssReceiverInfo() const;
+
+        //Function: eventActionInfo
+        // Gets the <EventSupportInfo> of supported action types
+        const EventSupportInfo& eventActionInfo() const;
+
+        //Function: eventTriggerInfo
+        // Gets the <EventSupportInfo> of supported trigger types
+        const EventSupportInfo& eventTriggerInfo() const;
+
+        //Function: supportedSensorRanges
+        // Gets the <SupportedSensorRanges> for this device
+        const SupportedSensorRanges& supportedSensorRanges() const;
     };
 
 }

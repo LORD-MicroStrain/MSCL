@@ -124,6 +124,10 @@ namespace mscl
         //  CMD_GNSS_ASSIST_FIX_CONTROL                 - 0x0C23    - GNSS Assisted Fix Control
         //  CMD_GNSS_ASSIST_TIME_UPDATE                 - 0x0C24    - GNSS Assisted Time Update
         //  CMD_PPS_SOURCE                              - 0x0C28    - PPS Source
+        //  CMD_EVENT_SUPPORT                           - 0x0C2A    - Event Support
+        //  CMD_EVENT_CONTROL                           - 0x0C2B    - Event Control
+        //  CMD_EVENT_TRIGGER_STATUS                    - 0x0C2C    - Event Trigger Status
+        //  CMD_EVENT_TRIGGER_CONFIGURATION             - 0x0C2E    - Event Trigger Configuration
         //  CMD_EVENT_ACTION_CONFIGURATION              - 0x0C2F    - Event Action Configuration
         //  CMD_SAVE_STARTUP_SETTINGS                   - 0x0C30    - Device Startup Settings
         //  CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER     - 0x0C31    - Sensor to Vehicle Frame Transformation Euler Angles
@@ -146,6 +150,8 @@ namespace mscl
         //  CMD_ODOMETER_SETTINGS                       - 0x0C43    - Configure Odometer Settings
         //  CMD_LOWPASS_FILTER_SETTINGS                 - 0x0C50    - Advanced Low-Pass Filter Settings
         //  CMD_COMPLEMENTARY_FILTER_SETTINGS           - 0x0C51    - Complementary Filter Settings
+        //  CMD_SENSOR_RANGE                            - 0x0C52    - Configure Sensor Range
+        //  CMD_SUPPORTED_SENSOR_RANGES                 - 0x0C53    - Read Device-Supported Sensor Ranges
         //  CMD_DATA_STREAM_FORMAT                      - 0x0C60    - Device Data Stream Format
         //  CMD_POWER_STATES                            - 0x0C61    - Device Power States
         //  CMD_GPS_STARTUP_SETTINGS                    - 0x0C62    - Save/Restore Advanced GPS Startup Settings
@@ -246,6 +252,10 @@ namespace mscl
             CMD_GNSS_ASSIST_FIX_CONTROL             = 0x0C23,
             CMD_GNSS_ASSIST_TIME_UPDATE             = 0x0C24,
             CMD_PPS_SOURCE                          = 0x0C28,
+            CMD_EVENT_SUPPORT                       = 0x0C2A,
+            CMD_EVENT_CONTROL                       = 0x0C2B,
+            CMD_EVENT_TRIGGER_STATUS                = 0x0C2C,
+            CMD_EVENT_TRIGGER_CONFIGURATION         = 0x0C2E,
             CMD_EVENT_ACTION_CONFIGURATION          = 0x0C2F,
             CMD_SAVE_STARTUP_SETTINGS               = 0x0C30,
             CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER = 0x0C31,
@@ -268,6 +278,8 @@ namespace mscl
             CMD_ODOMETER_SETTINGS                   = 0x0C43,
             CMD_LOWPASS_FILTER_SETTINGS             = 0x0C50,
             CMD_COMPLEMENTARY_FILTER_SETTINGS       = 0x0C51,
+            CMD_SENSOR_RANGE                        = 0x0C52,
+            CMD_SUPPORTED_SENSOR_RANGES             = 0x0C53,
             CMD_DATA_STREAM_FORMAT                  = 0x0C60,
             CMD_POWER_STATES                        = 0x0C61,
             CMD_GPS_STARTUP_SETTINGS                = 0x0C62,
@@ -353,9 +365,9 @@ namespace mscl
         //  CH_FIELD_SENSOR_ORIENTATION_MATRIX                      - 0x8009    - Orientation Matrix
         //  CH_FIELD_SENSOR_ORIENTATION_QUATERNION                  - 0x800A    - Quaternion
         //  CH_FIELD_SENSOR_ORIENTATION_UPDATE_MATRIX               - 0x800B    - Orientation Update Matrix
-        //  CH_FIELD_SENSOR_EULER_ANGLES                            - 0x800C    - Euler Angles 
+        //  CH_FIELD_SENSOR_EULER_ANGLES                            - 0x800C    - Euler Angles
         //  CH_FIELD_SENSOR_INTERNAL_TIMESTAMP                      - 0x800E    - Internal Timestamp
-        //  CH_FIELD_SENSOR_BEACONED_TIMESTAMP                      - 0x800F    - Beaconed Timestamp    
+        //  CH_FIELD_SENSOR_BEACONED_TIMESTAMP                      - 0x800F    - Beaconed Timestamp
         //  CH_FIELD_SENSOR_STABILIZED_MAG_VEC                      - 0x8010    - Stabilized Mag Vector (North)
         //  CH_FIELD_SENSOR_STABILIZED_ACCEL_VEC                    - 0x8011    - Stabilized Accel Vector (Up)
         //  CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP               - 0x8012    - GPS Correlation Timestamp
@@ -435,7 +447,7 @@ namespace mscl
         //  CH_FIELD_ESTFILTER_GNSS_ANTENNA_CORRECTION_UNCERT       - 0x8231    - GNSS Antenna Offset Correction Uncertainty
         //  CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION                - 0x8232    - GNSS Clock Correction
         //  CH_FIELD_ESTFILTER_GNSS_CLOCK_CORRECTION_UNCERT         - 0x8233    - GNSS Clock Correction Uncertainty
-        //  CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION        - 0x8234    - GNSS Multi-Antenna Offset Correction 
+        //  CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION        - 0x8234    - GNSS Multi-Antenna Offset Correction
         //  CH_FIELD_ESTFILTER_GNSS_MULTI_ANTENNA_CORRECTION_UNCERT - 0x8235    - GNSS Multi-Antenna Offset Correction Uncertainty
         //  CH_FIELD_ESTFILTER_ECEF_POS_UNCERT                      - 0x8236    - ECEF Position Uncertainty
         //  CH_FIELD_ESTFILTER_ECEF_VEL_UNCERT                      - 0x8237    - ECEF Velocity Uncertainty
@@ -957,6 +969,18 @@ namespace mscl
         //    CH_DELTA_TICK                 - 98  - Delta Tick
         //    CH_ERROR                      - 99  - Measurement Error
         //    CH_ERROR_UNC                  - 100 - Measurement Error Uncertainty
+        //    CH_W                          - 101 - W
+        //    CH_M0                         - 102 - Matrix M0
+        //    CH_M1                         - 103 - Matrix M1
+        //    CH_M2                         - 104 - Matrix M2
+        //    CH_M3                         - 105 - Matrix M3
+        //    CH_M4                         - 106 - Matrix M4
+        //    CH_M5                         - 107 - Matrix M5
+        //    CH_M6                         - 108 - Matrix M6
+        //    CH_M7                         - 109 - Matrix M7
+        //    CH_M8                         - 110 - Matrix M8
+        //    CH_NANOSECONDS                - 111 - Nanoseconds
+        //    CH_VALID_FLAGS                - 112 - Valid Flags
         //====================================================================================================
         enum ChannelQualifier
         {
@@ -1058,7 +1082,19 @@ namespace mscl
             CH_DELTA_TIME                 = 97,
             CH_DELTA_TICK                 = 98,
             CH_ERROR                      = 99,
-            CH_ERROR_UNC                  = 100
+            CH_ERROR_UNC                  = 100,
+            CH_W                          = 101,
+            CH_M0                         = 102,
+            CH_M1                         = 103,
+            CH_M2                         = 104,
+            CH_M3                         = 105,
+            CH_M4                         = 106,
+            CH_M5                         = 107,
+            CH_M6                         = 108,
+            CH_M7                         = 109,
+            CH_M8                         = 110,
+            CH_NANOSECONDS                = 111,
+            CH_VALID_FLAGS                = 112
         };
 
         //API Typedefs:
@@ -1066,6 +1102,18 @@ namespace mscl
         //  MipCommands         - A vector of <Command> enums.
         typedef std::vector<ChannelField> MipChannelFields;
         typedef std::vector<Command> MipCommands;
+
+        //API Typedef: ChannelIndex
+        //    A <ChannelQualifier>, int pair indicating the index value of the qualifier in a channel field.
+        typedef std::pair<ChannelQualifier, uint8> ChannelIndex;
+
+        //API Typedef: ChannelIndices
+        //    A list of <ChannelIndex> values
+        typedef std::vector<ChannelIndex> ChannelIndices;
+
+        //API Typedef: ChannelFieldQualifiers
+        //    A map of <ChannelField> values and their associated <ChannelIndices>
+        typedef std::map<ChannelField, ChannelIndices> ChannelFieldQualifiers;
 
 #ifndef SWIG
         //Typedef: ChannelId
@@ -1174,10 +1222,53 @@ namespace mscl
         //  bool - true if chField is a shared data field, false if it is not
         static bool isSharedChannelField(ChannelField chField);
 
+        //API Function: channelFieldQualifiers
+        //    Gets a map of <ChannelField> values with all associated <ChannelQualifier> values and their index within the field.
+        //
+        //Parameters:
+        //    fields - <MipChannelFields> of the channels.
+        //
+        //Returns:
+        //    A map of <ChannelField> and their respective <ChannelIndex> values.
+        static ChannelFieldQualifiers channelFieldQualifiers(MipChannelFields fields);
+
+        //API Function: channelFieldQualifier
+        //    Gets the <ChannelQualifier> of the <ChannelField> for the specified index.
+        //
+        //Parameters:
+        //    field - target <ChannelField>.
+        //    index - 1-based index within the field to lookup
+        //
+        //Returns:
+        //    A <ChannelQualifier> that corresponds to the index or <CH_UNKNOWN> if not found.
+        static ChannelQualifier channelFieldQualifier(ChannelField field, uint8 index);
+
+        //API Function: channelFieldQualifierIndex
+        //    Gets the index of the <ChannelQualifier> in the <ChannelField>.
+        //
+        //Parameters:
+        //    field - target <ChannelField>.
+        //    qualifier - <ChannelQualifier> within the field to lookup the index of
+        //
+        //Returns:
+        //    The 1-based index of the specified <ChannelQualifier> in the <ChannelField>, or 0 if the <ChannelQualifier> isn't in the <ChannelField>.
+        static uint8 channelFieldQualifierIndex(ChannelField field, ChannelQualifier qualifier);
+
+    private:
+        //Function: findChannelIndex
+        //  Lookup channel index for given ChannelField based on either qualifier or index
+        //  If qualifier known, pass in index 0
+        //  If index known, pass in qualifier UNKNOWN
+        static ChannelIndex findChannelIndex(ChannelField field, ChannelQualifier qualifier, uint8 index);
+
     private:
         //Const: CHANNEL_NAMES
         //    An unordered_map mapping each <ChannelId> to its respective name (universal SensorCloud name).
         static const std::unordered_map<ChannelId, std::string, ChannelIdHash> CHANNEL_NAMES;
+
+        //Const: CHANNEL_INDICES
+        //    A map mapping each <ChannelField>'s <ChannelQualifier> to its respective index.
+        static const ChannelFieldQualifiers CHANNEL_INDICES;
 
         //Function: GNSS_DATA_CLASSES
         //  vector of <DataClass> values containing all GNSS data class descriptors that have the same field descriptors.
@@ -1672,4 +1763,173 @@ namespace mscl
     };
 
     typedef std::vector<DeviceCommPort> CommPortInfo;
+
+    //API Struct: EventTypeInfo
+    //  Information about event trigger or action types
+    struct EventTypeInfo
+    {
+        //API Constructor: EventTypeInfo
+        //  Default constructor
+        EventTypeInfo() : type(0), maxInstances(0) {}
+
+        //API Constructor: EventTypeInfo
+        EventTypeInfo(const uint8 type, const uint8 maxInstances) :
+            type(type),
+            maxInstances(maxInstances)
+        { }
+
+        //API Variable: type
+        //  The event type based on <EventSupportInfo::Query>
+        //
+        //  - <EventSupportInfo::Query::TRIGGERS> = <EventTriggerConfiguration::Type>
+        //  - <EventSupportInfo::Query::ACTIONS>  = <EventActionConfiguration::Type>
+        uint8 type;
+
+        //API Variable: maxInstances
+        //  Maximum supported instances for the type
+        uint8 maxInstances;
+    };
+
+    //API Typedef: EventTypes
+    //  A vector of <EventTypeInfo>
+    typedef std::vector<EventTypeInfo> EventTypes;
+
+    //API Struct: EventSupportInfo
+    struct EventSupportInfo
+    {
+        //API Enum: Query
+        //  What type of information to retrieve
+        //
+        //  TRIGGERS  - 0x01 - Query the supported trigger types and max count for each
+        //  ACTIONS   - 0x02 - Query the supported action types and max count for each
+        enum Query
+        {
+            TRIGGERS = 0x01, // Query the supported trigger types and max count for each
+            ACTIONS  = 0x02  // Query the supported action types and max count for each
+        };
+
+        //API Variable: query
+        //  Type of information 
+        Query query;
+
+        //API Variable: maxInstances
+        //  Maximum number of supported triggers/actions
+        uint8 maxInstances;
+
+        //API Variable: entries
+        //  Event info
+        EventTypes entries;
+    };
+
+    // API Class: SensorRange
+    // An object representing a configurable sensor range option
+    class SensorRange
+    {
+    public:
+        //API Enum: Type
+        //  Sensor and unit identifiers for configurable Sensor Range command (0x0C,0x52)
+        //      ALL          - 0x00 - All (save as startup, load startup, reset to default only)
+        //      ACCEL_MS2    - 0x01 - Accelerometer in m/s^2
+        //      GYRO_DPS     - 0x02 - Gyroscope in degrees per second
+        //      MAG_MG       - 0x03 - Magnetometer in mG
+        //      PRESSURE_HPA - 0x04 - Pressure in hPa
+        enum Type
+        {
+            ALL = 0x00,
+            ACCEL_G = 0x01,
+            GYRO_DPS = 0x02,
+            MAG_GAUSS = 0x03,
+            PRESSURE_HPA = 0x04
+        };
+
+    private:
+        //API Variable: type
+        // The SensorRange::Type of this range
+        Type m_type;
+
+        //API Variable: range
+        // This will only be set and valid if read from <SupportedSensorRanges> object
+        // Default: -1 (invalid)
+        float m_range = -1.0f;
+
+        //API Variable: id
+        // The index ID of this range according to device manual
+        uint8 m_id;
+
+    private:
+        friend class MipNode_Impl;
+        friend class InertialNode;
+
+        //Private Constructor: SensorRange
+        // Construct a SensorRange object with specified range
+        // This object should not be constructed directly by users
+        //
+        //Parameters:
+        //  type - SensorRange::Type of this range
+        //  range - Range value
+        SensorRange(Type rangeType, uint8 index, float rangeValue = -1.0f) :
+            m_type(rangeType),
+            m_range(rangeValue),
+            m_id(index)
+        {};
+
+    public:
+        // needed for SWIG - should not be used
+        SensorRange() {};
+
+        //API Function: type
+        // The SensorRange::Type of this range
+        Type type() const { return m_type; };
+
+        //API Function: range
+        // This will only be set and valid if read from <SupportedSensorRanges> object
+        float range() const { return m_range; };
+
+        //API Function: id
+        // The index ID of this range according to device manual
+        uint8 id() const { return m_id; };
+    };
+
+    //API Typedef: SensorRanges
+    //  A vector of <SensorRange> values
+    typedef std::vector<SensorRange> SensorRanges;
+
+    //API Typedef: SensorRangeOptions
+    //  A collection of <SensorRange::Type> values mapped to associated <SensorRange> objects
+    typedef std::map<SensorRange::Type, SensorRanges> SensorRangeOptions;
+
+    //API Class: SupportedSensorRanges
+    // Structure to hold all info for looking up supported sensor ranges for a device
+    class SupportedSensorRanges
+    {
+    private:
+        // only MipNode_Impl can populate supported options
+        friend class MipNode_Impl;
+        SensorRangeOptions m_options;
+
+    public:
+        SupportedSensorRanges() {};
+
+        //API Function: options
+        // Get the supported sensor range options
+        //
+        // Returns:
+        //  <SensorRangeOptions> - the supported options
+        const SensorRangeOptions options() const { return m_options; };
+
+        //API Function: lookupRecommended
+        // Lookup the supported option of the specified type that is closest to but also incorporates the specified range.
+        // Ex:
+        //  specified range: Accel_G, 5
+        //  supported accel ranges: 4G, 8G, 16G
+        //  returns: 8G because it is the closest supported option where 5G will not overrun the range
+        //
+        // Parameters:
+        //  type - <SensorRange::Type> type of range to lookup
+        //  range - Float range value to find
+        //
+        // Returns:
+        //  <SensorRange> - The closest supported range to the specified value
+        SensorRange lookupRecommended(SensorRange::Type type, float range) const;
+    };
 }

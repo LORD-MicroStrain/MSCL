@@ -107,10 +107,10 @@ namespace mscl
         //    FIXTYPE_TIMEONLY       - 0x02    - Time Only
         //    FIXTYPE_NONE           - 0x03    - None
         //    FIXTYPE_INVALID        - 0x04    - Invalid
-		//    FIXTYPE_RTK_FLOAT      - 0x05    - RTK Float
-		//    FIXTYPE_RTK_FIXED      - 0x06    - RTK Fixed
-		//
-		//============================================================================================================
+        //    FIXTYPE_RTK_FLOAT      - 0x05    - RTK Float
+        //    FIXTYPE_RTK_FIXED      - 0x06    - RTK Fixed
+        //
+        //============================================================================================================
         enum GnssFixType
         {
             FIXTYPE_3D = 0x00,
@@ -118,8 +118,8 @@ namespace mscl
             FIXTYPE_TIMEONLY = 0x02,
             FIXTYPE_NONE = 0x03,
             FIXTYPE_INVALID = 0x04,
-			FIXTYPE_RTK_FLOAT = 0x05,
-			FIXTYPE_RTK_FIXED = 0x06,
+            FIXTYPE_RTK_FLOAT = 0x05,
+            FIXTYPE_RTK_FIXED = 0x06,
         };
 
         //============================================================================================================
@@ -262,17 +262,17 @@ namespace mscl
         //============================================================================================================
         //API Enum: FilterState 
         //    The Filter States with the NAV Filter Status field
-		//    Refer to device documentation for supported filter states.
+        //    Refer to device documentation for supported filter states.
         //
         //    FILTERSTATE_STARTUP                - 0x00    - Startup
         //    FILTERSTATE_INIT                   - 0x01    - Initialization (see status flags)
         //    FILTERSTATE_RUNNING_SLN_VALID      - 0x02    - Running, Solution Valid
         //    FILTERSTATE_RUNNING_SLN_ERROR      - 0x03    - Running, Solution Error (see status flags)
         //
-		//    FILTERSTATE_VERT_GYRO              - 0x02    - Vertical gyro mode
-		//    FILTERSTATE_AHRS                   - 0x03    - AHRS mode
-		//    FILTERSTATE_FULL_NAV               - 0x04    - Full navigation mode
-		//============================================================================================================
+        //    FILTERSTATE_VERT_GYRO              - 0x02    - Vertical gyro mode
+        //    FILTERSTATE_AHRS                   - 0x03    - AHRS mode
+        //    FILTERSTATE_FULL_NAV               - 0x04    - Full navigation mode
+        //============================================================================================================
         enum FilterState
         {
             FILTERSTATE_STARTUP            = 0x00,
@@ -280,16 +280,16 @@ namespace mscl
             FILTERSTATE_RUNNING_SLN_VALID  = 0x02,
             FILTERSTATE_RUNNING_SLN_ERROR  = 0x03,
 
-			FILTERSTATE_VERT_GYRO          = 0x02,
-			FILTERSTATE_AHRS               = 0x03,
-			FILTERSTATE_FULL_NAV           = 0x04
-		};
+            FILTERSTATE_VERT_GYRO          = 0x02,
+            FILTERSTATE_AHRS               = 0x03,
+            FILTERSTATE_FULL_NAV           = 0x04
+        };
         
         //============================================================================================================
         //API Enum: FilterStatus_Running
         //    Binary flags that give information with the NAV Filter Status field when filter is initialized and running. Each bit must be checked accordingly.
-		//    Refer to device documentation for supported filter status flags.
-		//
+        //    Refer to device documentation for supported filter status flags.
+        //
         // FILTERSTATUS_IMU_UNAVAILABLE                         - 0x0001    - Filter Running, IMU Unavailable
         // FILTERSTATUS_GPS_UNAVAILABLE                         - 0x0002    - Filter Running, GPS Unavailable
         // FILTERSTATUS_MATRIX_SINGULARITY_IN_CALC              - 0x0008    - Filter Running, Matrix Singularity in Calculation
@@ -306,16 +306,16 @@ namespace mscl
         // FILTERSTATUS_HARD_IRON_OFFSET_EST_HIGH_WARN          - 0x4000    - Filter Running, Hard Iron Offset Estimate High Warning
         // FILTERSTATUS_SOFT_IRON_CORRECTION_EST_HIGH_WARN      - 0x8000    - Filter Running, Soft Iron Correction Estimate High Warning
         //
-		// FILTERSTATUS_CONDITION                               - 0x0003    - Filter Running, Filter Condition Indicator (mask for bits 1 and 2)
-		// FILTERSTATUS_ROLL_PITCH_WARNING                      - 0x0004    - Filter Running, Roll/Pitch angle warning
-		// FILTERSTATUS_HEADING_WARNING                         - 0x0008    - Filter Running, Heading angle warning
-		// FILTERSTATUS_POSITION_WARNING                        - 0x0010    - Filter Running, Position warning
-		// FILTERSTATUS_VELOCITY_WARNING                        - 0x0020    - Filter Running, Velocity warning
-		// FILTERSTATUS_IMU_BIAS_WARNING                        - 0x0040    - Filter Running, IMU bias warning
-		// FILTERSTATUS_GNSS_CLK_WARNING                        - 0x0080    - Filter Running, GNSS clock warning
-		// FILTERSTATUS_ANT_LEVER_ARM_WARNING                   - 0x0100    - Filter Running, Antenna lever arm warning
-		// FILTERSTATUS_MOUNTING_TRANSFORM_WARNING              - 0x0200    - Filter Running, Mounting transformation warning
-		//============================================================================================================
+        // FILTERSTATUS_CONDITION                               - 0x0003    - Filter Running, Filter Condition Indicator (mask for bits 1 and 2)
+        // FILTERSTATUS_ROLL_PITCH_WARNING                      - 0x0004    - Filter Running, Roll/Pitch angle warning
+        // FILTERSTATUS_HEADING_WARNING                         - 0x0008    - Filter Running, Heading angle warning
+        // FILTERSTATUS_POSITION_WARNING                        - 0x0010    - Filter Running, Position warning
+        // FILTERSTATUS_VELOCITY_WARNING                        - 0x0020    - Filter Running, Velocity warning
+        // FILTERSTATUS_IMU_BIAS_WARNING                        - 0x0040    - Filter Running, IMU bias warning
+        // FILTERSTATUS_GNSS_CLK_WARNING                        - 0x0080    - Filter Running, GNSS clock warning
+        // FILTERSTATUS_ANT_LEVER_ARM_WARNING                   - 0x0100    - Filter Running, Antenna lever arm warning
+        // FILTERSTATUS_MOUNTING_TRANSFORM_WARNING              - 0x0200    - Filter Running, Mounting transformation warning
+        //============================================================================================================
         enum FilterStatus_Running
         {
             FILTERSTATUS_IMU_UNAVAILABLE = 0x0001,
@@ -335,15 +335,15 @@ namespace mscl
             FILTERSTATUS_SOFT_IRON_CORRECTION_EST_HIGH_WARN = 0x8000,
 
             FILTERSTATUS_CONDITION = 0x0003,
-			FILTERSTATUS_ROLL_PITCH_WARNING = 0x0004,
-			FILTERSTATUS_HEADING_WARNING = 0x0008,
-			FILTERSTATUS_POSITION_WARNING = 0x0010,
-			FILTERSTATUS_VELOCITY_WARNING = 0x0020,
-			FILTERSTATUS_IMU_BIAS_WARNING = 0x0040,
-			FILTERSTATUS_GNSS_CLK_WARNING = 0x0080,
-			FILTERSTATUS_ANT_LEVER_ARM_WARNING = 0x0100,
-			FILTERSTATUS_MOUNTING_TRANSFORM_WARNING = 0x0200,
-		};
+            FILTERSTATUS_ROLL_PITCH_WARNING = 0x0004,
+            FILTERSTATUS_HEADING_WARNING = 0x0008,
+            FILTERSTATUS_POSITION_WARNING = 0x0010,
+            FILTERSTATUS_VELOCITY_WARNING = 0x0020,
+            FILTERSTATUS_IMU_BIAS_WARNING = 0x0040,
+            FILTERSTATUS_GNSS_CLK_WARNING = 0x0080,
+            FILTERSTATUS_ANT_LEVER_ARM_WARNING = 0x0100,
+            FILTERSTATUS_MOUNTING_TRANSFORM_WARNING = 0x0200,
+        };
 
 
         //============================================================================================================
@@ -462,7 +462,7 @@ namespace mscl
             ENABLE_SOFT_IRON_AUTO_CALIBRATION = 0x0040
         };
 
-        //API Enum: EstimationControlOption
+        //API Enum: GeographicSourceOption
         //    The enum to represent the source options for Declination (0x0D, 0x43), Inclination (0x0D, 0x4C), and Magnitude Source (0x0D, 0x4D)
         //
         //      NONE                        - 0x0001
@@ -473,7 +473,7 @@ namespace mscl
             NONE = 0x01,
             WORLD_MAGNETIC_MODEL = 0x02,
             MANUAL = 0x03
-		};
+        };
 
         //API Enum: AdaptiveMeasurementMode
         //    The enum to represent the different available options and combinations for the Adaptive Measurement commands (0x0D, 0x44-0x46)
@@ -677,6 +677,10 @@ namespace mscl
     //API Typedef: AidingMeasurementSourceOptions
     //  A vector of <InertialTypes::AidingMeasurementSource> values
     typedef std::vector<InertialTypes::AidingMeasurementSource> AidingMeasurementSourceOptions;
+
+    //API Typedef: GeographicSources
+    //  A vector of <InertialTypes::GeographicSourceOption> values
+    typedef std::vector<InertialTypes::GeographicSourceOption> GeographicSources;
 
     ///////////////  Matrix_3x3  ///////////////
 
@@ -1884,8 +1888,8 @@ namespace mscl
             autoHeadingAlignmentMethod(HeadingAlignmentOption::GNSS_Kinematic),
             referenceFrame(PositionVelocityReferenceFrame::ECEF) {}
 
-		//API Variable: autoInitialize
-		bool autoInitialize;
+        //API Variable: autoInitialize
+        bool autoInitialize;
 
         //API Variable: initialValuesSource
         FilterInitialValuesSource initialValuesSource;
@@ -2869,4 +2873,232 @@ namespace mscl
         Type type;
         EventActionParameters parameters;
     };
+
+    //API Enum: EventControlMode
+    //  Event control modes
+    //      DISABLED   - 0x00 - Trigger is disabled
+    //      ENABLED    - 0x01 - Trigger is enabled
+    //      TEST       - 0x02 - Force the trigger into the active state
+    //      TEST_PULSE - 0x03 - Force the trigger into the active state for one event cycle
+    enum EventControlMode
+    {
+        DISABLED   = 0x00,  // Trigger is disabled
+        ENABLED    = 0x01,  // Trigger is enabled
+        TEST       = 0x02,  // Force the trigger into the active state
+        TEST_PULSE = 0x03   // Force the trigger into the active state for one event cycle
+    };
+
+    //API Struct: EventTriggerGpioParameter
+    struct EventTriggerGpioParameter
+    {
+        //API Enum: Mode
+        //  How the pin state affects the trigger
+        //      DISABLED   - 0x00 - The pin will have no effect and the trigger will never activate
+        //      WHILE_HIGH - 0x01 - The trigger will be active while the pin is high
+        //      WHILE_LOW  - 0x02 - The trigger will be active while the pin is low
+        //      EDGE       - 0x04 - Use if the pin is configured for time-stamping via the 3DM GPIO Configuration command (0x0C41)
+        enum Mode
+        {
+            DISABLED   = 0X00,  // The pin will have no effect and the trigger will never activate
+            WHILE_HIGH = 0X01,  // The trigger will be active while the pin is high
+            WHILE_LOW  = 0X02,  // The trigger will be active while the pin is low
+            EDGE       = 0X04   // Use if the pin is configured for time-stamping via the 3DM GPIO Configuration command (0x0C41)
+        };
+
+        // GPIO pin number
+        uint8 pin;
+
+        // GPIO pin mode
+        Mode mode;
+    };
+
+    //API Struct: EventTriggerThresholdParameter
+    struct EventTriggerThresholdParameter
+    {
+        //API Enum: Type
+        //  How the pin state affects the trigger
+        //      WINDOW_TYPE   - 0x01 - Window comparison
+        //      INTERVAL_TYPE - 0x02 - Trigger at evenly-spaced intervals
+        enum Type
+        {
+            WINDOW_TYPE   = 0x01, // Window comparison
+            INTERVAL_TYPE = 0x02  // Trigger at evenly-spaced intervals
+        };
+
+        //API Variable: type
+        //  Determines the type of comparison
+        Type type;
+
+        //API Variable: lowThreshold
+        // Low threshold
+        double lowThreshold;
+
+        //API Variable: highThreshold
+        // High threshold
+        double highThreshold;
+
+        //API Function: channel
+        //  Set the channel field and qualifier
+        void channel(MipTypes::ChannelField channelField, MipTypes::ChannelQualifier channelQualifier);
+
+        //API Function: channel
+        //  Set the channel field and qualifier index
+        void channel(MipTypes::ChannelField channelField, uint8 index);
+
+        //API Function: channelField
+        //  Get the channel field
+        MipTypes::ChannelField channelField() const;
+
+        //API Function: channelQualifier
+        //  Get the channel qualifier
+        MipTypes::ChannelQualifier channelQualifier() const;
+
+        //API Function: channelIndex
+        //  Get the channel qualifier index
+        //  Default value: 0 (unset)
+        uint8 channelIndex() const;
+
+    private:
+        //Variable: m_channelQualifier
+        // The target qualifier within the MIP field
+        MipTypes::ChannelQualifier m_channelQualifier;
+
+        //Variable: m_channelIndex
+        // 1-based index of the target qualifier within the MIP field
+        // default value: 0 (unset)
+        uint8 m_channelIndex = 0;
+
+        //Variable: m_channelField
+        // MIP channel field
+        MipTypes::ChannelField m_channelField;
+    };
+
+    //API Struct: EventTriggerCombinationParameter
+    struct EventTriggerCombinationParameter
+    {
+        static constexpr uint8 MAX_INPUT_TRIGGERS = 4;
+
+        static constexpr uint16 LOGIC_NEVER   = 0x0000; // Never active
+        static constexpr uint16 LOGIC_ALWAYS  = 0xFFFF; // Always active
+        static constexpr uint16 LOGIC_NONE    = 0x0001; // Only if no inputs
+        static constexpr uint16 LOGIC_OR      = 0xFFFE; // Any input or multiple inputs
+        static constexpr uint16 LOGIC_NAND    = 0x7FFF; // Not all inputs
+        static constexpr uint16 LOGIC_XOR_ONE = 0x0116; // Any single input (XOR)
+        static constexpr uint16 LOGIC_ONLY_A  = 0x0002; // Only input A
+        static constexpr uint16 LOGIC_ONLY_B  = 0x0004; // Only input B
+        static constexpr uint16 LOGIC_ONLY_C  = 0x0010; // Only input C
+        static constexpr uint16 LOGIC_ONLY_D  = 0x0100; // Only input D
+        static constexpr uint16 LOGIC_AND_AB  = 0x8888; // Both A and B
+        static constexpr uint16 LOGIC_AB_OR_C = 0xF8F8; // Both A and B, or C
+        static constexpr uint16 LOGIC_AND     = 0x8000; // All inputs (unused inputs are ignored)
+
+        // The last column of a truth table describing the output given the state of each input
+        uint16 logicTable;
+
+        // List of trigger IDs for inputs
+        std::array<uint8, MAX_INPUT_TRIGGERS> inputTriggers;
+    };
+
+    // API Union: EventTriggerParameters
+    union EventTriggerParameters
+    {
+        EventTriggerGpioParameter        gpio;        // GPIO parameters
+        EventTriggerThresholdParameter   threshold;   // Threshold parameters
+        EventTriggerCombinationParameter combination; // Combination parameters
+
+        EventTriggerParameters() : combination() {}
+    };
+
+    //API Struct: EventTriggerConfiguration
+    struct EventTriggerConfiguration
+    {
+        //API Enum: Type
+        //  Type of trigger to configure
+        //
+        //      NONE                - 0x00 - No trigger selected. The state will always be inactive
+        //      GPIO_TRIGGER        - 0x01 - Trigger based on the state of a GPIO pin
+        //      THRESHOLD_TRIGGER   - 0x02 - Compare a data quantity against a high and low threshold
+        //      COMBINATION_TRIGGER - 0x03 - Logical combination of two or more triggers
+        enum Type
+        {
+            NONE                = 0x00, // No trigger selected. The state will always be inactive
+            GPIO_TRIGGER        = 0x01, // Trigger based on the state of a GPIO pin
+            THRESHOLD_TRIGGER   = 0x02, // Compare a data quantity against a high and low threshold
+            COMBINATION_TRIGGER = 0x03  // Logical combination of two or more triggers
+        };
+
+        // Trigger number
+        uint8 instance;
+
+        // Type of trigger
+        Type trigger;
+
+        // Trigger parameters
+        EventTriggerParameters parameters;
+    };
+
+    //API Struct: EventTriggerInfo
+    //  Information about an event trigger
+    struct EventTriggerInfo
+    {
+        //API Constructor: EventTriggerInfo
+        //  Default constructor
+        EventTriggerInfo() :
+            type(EventTriggerConfiguration::NONE),
+            instanceId(0),
+            status(0) {}
+
+        //API Constructor: EventTriggerInfo
+        EventTriggerInfo(const EventTriggerConfiguration::Type type, const uint8 instanceId, const uint8 status) :
+            type(type),
+            instanceId(instanceId),
+            status(status) {}
+
+        //API Enum: Status
+        //  Trigger status masks for the status bitfield
+        //
+        //  ACTIVE  - 0x01 - Active bitmask
+        //  ENABLED - 0x02 - Enabled bitmask
+        //  TEST    - 0x04 - Test mode bitmask
+        enum Status
+        {
+            ACTIVE  = 0x01, // Active bitmask
+            ENABLED = 0x02, // Enabled bitmask
+            TEST    = 0x04  // Test mode bitmask
+        };
+
+        //API Variable: type
+        //  Configured trigger type
+        EventTriggerConfiguration::Type type;
+
+        //API Variable: instanceId
+        //  Instance ID of the trigger
+        uint8 instanceId;
+
+        //API Function: isActive
+        //  True if the trigger is currently active (either due to its
+        //  logic or being in test mode)
+        bool isActive() const;
+
+        //API Function: isEnabled
+        //  True if the trigger is enabled
+        bool isEnabled() const;
+
+        //API Function: isTestMode
+        //  True if the trigger is in test mode
+        bool isTestMode() const;
+
+        //API Function: setStatus
+        //  Sets the value of the status bitfield
+        void setStatus(uint8 value);
+
+    private:
+        //Variable: status
+        //  Trigger status
+        Bitfield status;
+    };
+
+    //API Typedef: EventTriggerStatus
+    //  A vector of <EventTriggerInfo>
+    typedef std::vector<EventTriggerInfo> EventTriggerStatus;
 }

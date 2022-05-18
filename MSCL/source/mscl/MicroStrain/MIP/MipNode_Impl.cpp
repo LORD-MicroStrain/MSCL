@@ -513,6 +513,70 @@ namespace mscl
         return receivers;
     }
 
+    SupportedSensorRanges MipNode_Impl::getSupportedSensorRanges() const
+    {
+        if (!features().supportsCommand(MipTypes::Command::CMD_SUPPORTED_SENSOR_RANGES))
+        {
+            return SupportedSensorRanges();
+        }
+
+        const uint8 FIRST_RANGE_INDEX = 2;
+        const uint8 RANGE_ENTRY_SIZE = 2;
+        const SensorRange::Type sensorTypes[] = {
+            SensorRange::ACCEL_G,
+            SensorRange::GYRO_DPS,
+            SensorRange::MAG_GAUSS,
+            SensorRange::PRESSURE_HPA
+        };
+
+        SupportedSensorRanges supported;
+        for (SensorRange::Type type : sensorTypes)
+        {
+            try
+            {
+                MipFieldValues ret = get(MipTypes::Command::CMD_SUPPORTED_SENSOR_RANGES, { Value::UINT8(static_cast<uint8>(type)) });
+
+                if (ret.size() < FIRST_RANGE_INDEX)
+                {
+                    continue;
+                }
+
+                uint8 count = ret[1].as_uint8();
+                size_t minSize = (FIRST_RANGE_INDEX + (count * RANGE_ENTRY_SIZE));
+                if (ret.size() < minSize)
+                {
+                    continue;
+                }
+
+                SensorRanges typeRanges;
+                for (size_t i = 0; i < count; i++)
+                {
+                    size_t index = FIRST_RANGE_INDEX + (i * RANGE_ENTRY_SIZE);
+
+                    // 1-indexed option id
+                    uint8 optionId = ret[index].as_uint8();
+
+                    // range value
+                    float range = ret[index + 1].as_float();
+
+                    //add to list
+                    typeRanges.push_back(SensorRange(type, optionId, range));
+                }
+
+                if (typeRanges.size() <= 0)
+                {
+                    continue;
+                }
+
+                supported.m_options.emplace(type, typeRanges);
+            }
+            catch(const Error_MipCmdFailed&)
+            {/*ignore*/ }
+        }
+
+        return supported;
+    }
+
     std::vector<uint16> MipNode_Impl::getDescriptorSets() const
     {
         std::vector<uint16> descriptors;
@@ -1053,6 +1117,23 @@ namespace mscl
                     }
 
                     MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, pins);
+
+                    if (cmdBytes.valid())
+                    {
+                        setCmds.push_back(cmdBytes);
+                    }
+                    break;
+                }
+                case MipTypes::CMD_SENSOR_RANGE:
+                {
+                    SupportedSensorRanges supportedRanges = features().supportedSensorRanges();
+                    std::vector<MipFieldValues> types;
+                    for (auto& kv : supportedRanges.options())
+                    {
+                        types.push_back({ Value::UINT8(static_cast<uint8>(kv.first)) });
+                    }
+
+                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, types);
 
                     if (cmdBytes.valid())
                     {
@@ -2191,6 +2272,30 @@ namespace mscl
         return r.parseResponse(doCommand(r, ActivationCode::buildCommand_get()));
     }
 
+    EventSupportInfo MipNode_Impl::getEventInfo(const EventSupportInfo::Query query) const
+    {
+        const MipFieldValues response = get(MipTypes::Command::CMD_EVENT_SUPPORT,
+                    { Value::UINT8(static_cast<uint8>(query)) }
+        );
+
+        EventSupportInfo info{};
+
+        info.query = static_cast<EventSupportInfo::Query>(response[0].as_uint8());
+        info.maxInstances = response[1].as_uint8();
+
+        const uint8 numEntries = response[2].as_uint8();
+
+        // Response index starts at 3 and each entry has 2 data values
+        for (int index = 3; index < numEntries * 2 + 3; index += 2)
+        {
+            info.entries.push_back(
+                EventTypeInfo(response[index].as_uint8(), response[index + 1].as_uint8())
+            );
+        }
+
+        return info;
+    }
+
     MipFieldValues MipNode_Impl::get(MipTypes::Command cmdId) const
     {
         MipCommand command = MipCommand(cmdId,
@@ -2206,6 +2311,15 @@ namespace mscl
             specifier);
         GenericMipCmdResponse response = SendCommand(command);
         return command.getGenericResponseData(response);
+    }
+
+    ByteStream MipNode_Impl::get_RawResponseData(MipTypes::Command cmdId, MipFieldValues specifier) const
+    {
+        MipCommand command = MipCommand(cmdId,
+            MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS,
+            specifier);
+        const GenericMipCmdResponse response = SendCommand(command);
+        return response.data();
     }
 
     void MipNode_Impl::set(MipTypes::Command cmdId, MipFieldValues values)

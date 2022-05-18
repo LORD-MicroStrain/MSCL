@@ -38,7 +38,7 @@ namespace mscl
 #ifndef SWIG
         InertialNode(std::shared_ptr<MipNode_Impl> impl) : MipNode(impl) {}; //constructor with direct underlying implementation for this class.
 #endif
-        
+
         //API Function: getDataPackets
         //    Gets up to the requested amount of data packets that have been collected.
         //
@@ -47,7 +47,7 @@ namespace mscl
         //    maxPackets - The maximum number of packets to return. If this is 0 (default), all packets will be returned.
         //
         //Returns:
-        //    A vector of <MipDataPacket>s containing all the data packets that are available up to the requested number of packets. 
+        //    A vector of <MipDataPacket>s containing all the data packets that are available up to the requested number of packets.
         //
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
@@ -165,7 +165,7 @@ namespace mscl
         uint8 getCommunicationMode() override;
 
         //API Function: setCommunicationMode
-        //    Sets the communication mode for the node. 
+        //    Sets the communication mode for the node.
         //    Note: The node info will be reset when doing this and therefore will require being fetched again the next time it is requested.
         //
         //Parameters:
@@ -1040,7 +1040,7 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         AdvancedLowPassFilterConfig getAdvancedLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors);
-        
+
         //API Function: setComplementaryFilterSettings
         //    Sets the complementary filter settings.
         //
@@ -1092,7 +1092,7 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         DeviceStatusData getDiagnosticDeviceStatus();
-        
+
         //API Function: sendRawRTCM_2_3Message
         //    Sends a raw RTCM 2.3 message.
         //
@@ -1972,7 +1972,7 @@ namespace mscl
         //    Set the odometer configuration.
         //
         //Parameter:
-        //    config - the <OdometerConfiguration> to apply.
+        //    config - The <OdometerConfiguration> to apply.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
@@ -1980,6 +1980,49 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setOdometerConfig(OdometerConfiguration config);
+
+        //API Function: getSensorRange
+        //    Gets the currently configured sensor range for the specified sensor (accelerometer, gyroscope, etc.).
+        //
+        //Parameter:
+        //    sensorRangeType - The <SensorRange::Type> sensor to check
+        //
+        //Return:
+        //    <SensorRange> - The currently configured sensor range for the specified sensor
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        SensorRange getSensorRange(SensorRange::Type sensorRangeType) const;
+
+        //API Function: setSensorRange
+        //    Set the specified sensor range. This will only work with a <SensorRange> object from the device features <SupportedSensorRanges> object or read from the device with getSensorRange.
+        //
+        //Parameter:
+        //    range - The <SensorRange> to apply
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setSensorRange(SensorRange range);
+
+        //API Function: setSensorRange
+        //    Set the specified sensor range to the range ID - you can find these IDs in the device manual or look them up from the device features <SupportedSensorRanges> object.
+        //
+        //Parameter:
+        //    type - The <SensorRange::Type> to set
+        //    rangeId - The id representing a range value to apply
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setSensorRange(SensorRange::Type type, uint8 rangeId);
 
         //API Function: getGpioConfig
         //    Gets the currently configured GPIO settings.
@@ -1993,7 +2036,7 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         GpioConfiguration getGpioConfig(uint8 pin) const;
-        
+
         //API Function: setGpioConfig
         //    Set the GPIO configuration.
         //
@@ -2068,6 +2111,65 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setGpioState(uint8 pin, bool state);
+
+        //API Function: getEventTriggerMode
+        //    Sends the Event Control command (0x0C, 0x2B) to get the current mode of the specified trigger.
+        //
+        //Parameter:
+        //    instance - The trigger ID to get the mode of.
+        //
+        //Return:
+        //    EventControlMode - The current mode of the event trigger.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        EventControlMode getEventTriggerMode(uint8 instance) const;
+
+        //API Function: setEventTriggerMode
+        //    Sends the Event Control command (0x0C, 0x2B) to set the mode of the specified trigger.
+        //
+        //Parameter:
+        //    instance - The trigger ID to control.
+        //    mode - The mode to set the event trigger.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setEventTriggerMode(uint8 instance, EventControlMode mode) const;
+
+        //API Function: getEventTriggerConfig
+        //    Gets the currently configured event trigger settings for the specified trigger ID.
+        //
+        //Parameter:
+        //    instance - The trigger instance ID to get the information for.
+        //
+        //Return:
+        //    <EventTriggerConfiguration> - The currently configured event trigger settings
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        EventTriggerConfiguration getEventTriggerConfig(uint8 instance) const;
+
+        //API Function: setEventTriggerConfig
+        //    Set the event trigger configuration.
+        //
+        //Parameter:
+        //    config - The <EventTriggerConfiguration> to apply.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setEventTriggerConfig(EventTriggerConfiguration config) const;
 
         //API Function: getAntennaLeverArmCal
         //    Gets the currently configured GNSS antenna lever arm calibration configuration.
@@ -2213,5 +2315,22 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void enableRtk(bool enable);
+
+        //API Function: getEventTriggerStatus
+        //    Sends the Event Trigger Status command (0x0C, 0x2C) to get the current status of the specified triggers.
+        //    If number of instances is 0, this will return the status of all the triggers.
+        //
+        //Parameter:
+        //    instances - A <vector> of trigger instance IDs to check the status of.
+        //
+        //Return:
+        //    <EventTriggerStatus> - A <vector> of trigger statuses of the specified triggers, or all triggers.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        EventTriggerStatus getEventTriggerStatus(std::vector<uint8> instances = std::vector<uint8>()) const;
     };
 }

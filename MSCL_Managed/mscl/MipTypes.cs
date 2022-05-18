@@ -92,6 +92,24 @@ public class MipTypes : global::System.IDisposable {
     return ret;
   }
 
+  public static ChannelFieldQualifiers channelFieldQualifiers(MipChannelFields fields) {
+    ChannelFieldQualifiers ret = new ChannelFieldQualifiers(msclPINVOKE.MipTypes_channelFieldQualifiers(MipChannelFields.getCPtr(fields)), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static MipTypes.ChannelQualifier channelFieldQualifier(MipTypes.ChannelField field, byte index) {
+    MipTypes.ChannelQualifier ret = (MipTypes.ChannelQualifier)msclPINVOKE.MipTypes_channelFieldQualifier((int)field, index);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static byte channelFieldQualifierIndex(MipTypes.ChannelField field, MipTypes.ChannelQualifier qualifier) {
+    byte ret = msclPINVOKE.MipTypes_channelFieldQualifierIndex((int)field, (int)qualifier);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public MipTypes() : this(msclPINVOKE.new_MipTypes(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
@@ -159,6 +177,11 @@ public class MipTypes : global::System.IDisposable {
     CMD_GNSS_ASSIST_FIX_CONTROL = 0x0C23,
     CMD_GNSS_ASSIST_TIME_UPDATE = 0x0C24,
     CMD_PPS_SOURCE = 0x0C28,
+    CMD_EVENT_SUPPORT = 0x0C2A,
+    CMD_EVENT_CONTROL = 0x0C2B,
+    CMD_EVENT_TRIGGER_STATUS = 0x0C2C,
+    CMD_EVENT_TRIGGER_CONFIGURATION = 0x0C2E,
+    CMD_EVENT_ACTION_CONFIGURATION = 0x0C2F,
     CMD_SAVE_STARTUP_SETTINGS = 0x0C30,
     CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER = 0x0C31,
     CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT = 0x0C32,
@@ -180,6 +203,8 @@ public class MipTypes : global::System.IDisposable {
     CMD_ODOMETER_SETTINGS = 0x0C43,
     CMD_LOWPASS_FILTER_SETTINGS = 0x0C50,
     CMD_COMPLEMENTARY_FILTER_SETTINGS = 0x0C51,
+    CMD_SENSOR_RANGE = 0x0C52,
+    CMD_SUPPORTED_SENSOR_RANGES = 0x0C53,
     CMD_DATA_STREAM_FORMAT = 0x0C60,
     CMD_POWER_STATES = 0x0C61,
     CMD_GPS_STARTUP_SETTINGS = 0x0C62,
@@ -605,7 +630,19 @@ public class MipTypes : global::System.IDisposable {
     CH_DELTA_TIME = 97,
     CH_DELTA_TICK = 98,
     CH_ERROR = 99,
-    CH_ERROR_UNC = 100
+    CH_ERROR_UNC = 100,
+    CH_W = 101,
+    CH_M0 = 102,
+    CH_M1 = 103,
+    CH_M2 = 104,
+    CH_M3 = 105,
+    CH_M4 = 106,
+    CH_M5 = 107,
+    CH_M6 = 108,
+    CH_M7 = 109,
+    CH_M8 = 110,
+    CH_NANOSECONDS = 111,
+    CH_VALID_FLAGS = 112
   }
 
 }

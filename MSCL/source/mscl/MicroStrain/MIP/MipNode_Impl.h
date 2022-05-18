@@ -307,6 +307,19 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         virtual GnssReceivers getGnssReceiverInfo() const;
 
+        //Function: getSupportedSensorRanges
+        //    Gets the supported sensor ranges for this device.
+        //    Sends the Supported Ranges command (0x0C,0x53) to the device.
+        //
+        //Returns:
+        //    The supported sensor range information.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        virtual SupportedSensorRanges getSupportedSensorRanges() const;
+
         //Function: getDescriptorSets
         //    Gets the supported descriptor sets for this node, representing which commands and data sets are available.
         //    Sends the "Get Device Descriptor Sets" command to the device. 
@@ -331,6 +344,23 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         virtual MipCommandSet getConfigCommandBytes() const;
+
+        //Function: getEventInfo
+        //    Gets the event type info for this node, which includes the maximum number of supported triggers/actions and a list
+        //      of trigger/action types and the maximum supported instances of each type.
+        //    Sends the "Event Support" command to the device.
+        //
+        //Parameters:
+        //    query - The query type to get information for.
+        //
+        //Returns:
+        //    The supported event type info retrieved from the "Event Support" command.
+        //
+        //Exceptions:
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        virtual EventSupportInfo getEventInfo(EventSupportInfo::Query query) const;
 
         //Function: sendCommandBytes
         //    Sends the <MipCommandSet> byte strings. The <MipCommandBytes> sendCmdFailed is updated to indicate success/failure.
@@ -1874,6 +1904,23 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         MipFieldValues get(MipTypes::Command cmdId, MipFieldValues specifier) const;
+
+        //API Function: get_RawResponseData
+        //    sends the specified command with the Read Current Settings function selector.
+        //
+        //Parameter:
+        //    cmdId - the <MipTypes::Command> to send.
+        //    specifier - <MipFieldValues> containing any additional specifier values to send with the command.
+        //
+        //Return:
+        //    <ByteStream> - The raw response values.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        ByteStream get_RawResponseData(MipTypes::Command cmdId, MipFieldValues specifier) const;
 
         //API Function: set
         //    sends the specified command with the Apply New Settings function selector.
