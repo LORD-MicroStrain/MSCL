@@ -48,10 +48,15 @@ for python3_version in ${python3_versions}; do
   python3_dirs_flag="${python3_dirs_flag} --python3Dir /usr/lib/python${python3_version_no_patch}"
 done
 
+# Different flags for run depending on if we are running in jenkins or not
+if [ "${ISHUDSONBUILD}" != "True" ]; then
+  docker_it_flags="-it"
+fi
+
 # Run the build in the docker image
 docker run \
-  -it \
   --rm \
+  ${docker_it_flags} \
   --entrypoint="/bin/bash" \
   -v "${project_dir}:/home/microstrain/MSCL" \
   --user="microstrain" \
