@@ -2809,71 +2809,6 @@ namespace mscl
     // A map of uint GPIO pin ID, <GpioFeatureBehaviors> pairs
     typedef std::map<uint8, GpioFeatureBehaviors> GpioPinOptions;
 
-    //API Struct: GpioParameters
-    struct EventActionGpioParameters
-    {
-        //API Enum: Mode
-        //  Modes for behavior of the GPIO pin
-        //      DISABLED      - 0x00
-        //      ACTIVE_HIGH   - 0x01
-        //      ACTIVE_LOW    - 0x02
-        //      ONESHOT_HIGH  - 0x05
-        //      ONESHOW_LOW   - 0x06
-        //      TOGGLE        - 0x07
-        enum Mode
-        {
-            DISABLED = 0x00,
-            ACTIVE_HIGH = 0x01,
-            ACTIVE_LOW = 0x02,
-            ONESHOT_HIGH = 0x05,
-            ONESHOT_LOW = 0x06,
-            TOGGLE = 0x07
-        };
-
-        uint8 pin;
-        Mode mode;
-    };
-
-    //API Struct: MessageParameters
-    struct EventActionMessageParameters
-    {
-        static constexpr uint8 MAX_DESCRIPTORS = 12;
-
-        mscl::MipTypes::DataClass descriptorSet;
-        mscl::SampleRate decimation;
-        uint8 numFields;
-        std::array<mscl::MipTypes::ChannelField, MAX_DESCRIPTORS> descriptors;
-    };
-
-    //API Union: Parameters
-    union EventActionParameters {
-        EventActionGpioParameters gpio;
-        EventActionMessageParameters message;
-
-        EventActionParameters() : message() {}
-    };
-
-    //API Struct: EventActionConfiguration
-    struct EventActionConfiguration
-    {
-        //API Enum: Type
-        //  Types for the event action
-        //      NONE     - 0x00
-        //      GPIO     - 0x01
-        //      MESSAGE  - 0x02
-        enum Type
-        {
-            NONE = 0x00,
-            GPIO = 0x01,
-            MESSAGE = 0x02
-        };
-
-        uint8 instance;
-        uint8 trigger;
-        Type type;
-        EventActionParameters parameters;
-    };
-
     //API Enum: EventControlMode
     //  Event control modes
     //      DISABLED   - 0x00 - Trigger is disabled
@@ -3036,6 +2971,89 @@ namespace mscl
         // Trigger parameters
         EventTriggerParameters parameters;
     };
+
+    //API Struct: EventActionGpioParameters
+    struct EventActionGpioParameters
+    {
+        //API Enum: Mode
+        //  Modes for behavior of the GPIO pin
+        //      DISABLED      - 0x00
+        //      ACTIVE_HIGH   - 0x01
+        //      ACTIVE_LOW    - 0x02
+        //      ONESHOT_HIGH  - 0x05
+        //      ONESHOW_LOW   - 0x06
+        //      TOGGLE        - 0x07
+        enum Mode
+        {
+            DISABLED = 0x00,
+            ACTIVE_HIGH = 0x01,
+            ACTIVE_LOW = 0x02,
+            ONESHOT_HIGH = 0x05,
+            ONESHOT_LOW = 0x06,
+            TOGGLE = 0x07
+        };
+
+        // GPIO pin number
+        uint8 pin;
+
+        // GPIO pin mode
+        Mode mode;
+    };
+
+    //API Struct: EventActionMessageParameters
+    struct EventActionMessageParameters
+    {
+        static constexpr uint8 MAX_DESCRIPTORS = 12;
+
+        // Descriptor set for the fields that will be produced when the event occurs
+        mscl::MipTypes::DataClass descriptorSet;
+
+        // Decimation to use when sampling the fields. Set to 0 to only output a single packet
+        mscl::SampleRate decimation;
+
+        // Number of fields in the descriptors array
+        uint8 numFields;
+
+        // Field descriptors to output when the event occurs
+        std::array<mscl::MipTypes::ChannelField, MAX_DESCRIPTORS> descriptors;
+    };
+
+    //API Union: EventActionParameters
+    union EventActionParameters {
+        EventActionGpioParameters gpio;
+        EventActionMessageParameters message;
+
+        EventActionParameters() : message() {}
+    };
+
+    //API Struct: EventActionConfiguration
+    struct EventActionConfiguration
+    {
+        //API Enum: Type
+        //  Types for the event action
+        //      NONE     - 0x00
+        //      GPIO     - 0x01
+        //      MESSAGE  - 0x02
+        enum Type
+        {
+            NONE = 0x00,
+            GPIO = 0x01,
+            MESSAGE = 0x02
+        };
+
+        // Action number
+        uint8 instance;
+
+        // Trigger ID for this action
+        uint8 trigger;
+
+        // Type of action
+        Type type;
+
+        // Action parameters
+        EventActionParameters parameters;
+    };
+
 
     //API Struct: EventTriggerInfo
     //  Information about an event trigger

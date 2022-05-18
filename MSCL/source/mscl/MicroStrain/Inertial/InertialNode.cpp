@@ -911,29 +911,30 @@ namespace mscl
 
     EventActionConfiguration InertialNode::getEventActionConfig(uint8 instance)
     {
-        MipFieldValues data = m_impl->get(MipTypes::CMD_EVENT_ACTION_CONFIGURATION, {
+        const ByteStream response = m_impl->get_RawResponseData(MipTypes::CMD_EVENT_ACTION_CONFIGURATION, {
             Value::UINT8(instance)    
         });
+        DataBuffer data(response);
 
         EventActionConfiguration config;
-        config.instance = data[0].as_uint8();
-        config.trigger = data[1].as_uint8();
-        config.type = static_cast<EventActionConfiguration::Type>(data[2].as_uint8());
+        config.instance = data.read_uint8();
+        config.trigger = data.read_uint8();
+        config.type = static_cast<EventActionConfiguration::Type>(data.read_uint8());
 
         switch(config.type)
         {
         case EventActionConfiguration::Type::NONE:
             break;
         case EventActionConfiguration::Type::GPIO:
-            config.parameters.gpio.pin = data[3].as_uint8();
-            config.parameters.gpio.mode = static_cast<EventActionGpioParameters::Mode>(data[4].as_uint8());
+            config.parameters.gpio.pin = data.read_uint8();
+            config.parameters.gpio.mode = static_cast<EventActionGpioParameters::Mode>(data.read_uint8());
             break;
         case EventActionConfiguration::Type::MESSAGE:
-            config.parameters.message.descriptorSet = static_cast<MipTypes::DataClass>(data[3].as_uint8());
-            config.parameters.message.decimation = SampleRate::Decimation(data[4].as_uint16());
-            config.parameters.message.numFields = data[6].as_uint8();
+            config.parameters.message.descriptorSet = static_cast<MipTypes::DataClass>(data.read_uint8());
+            config.parameters.message.decimation = SampleRate::Decimation(data.read_uint16());
+            config.parameters.message.numFields = data.read_uint8();
             for (uint8 i = 0; i < std::min({static_cast<size_t>(config.parameters.message.numFields), config.parameters.message.descriptors.size()}); i++)
-                config.parameters.message.descriptors[i] = static_cast<MipTypes::ChannelField>(Utils::make_uint16(static_cast<uint8>(config.parameters.message.descriptorSet), data[7 + i].as_uint8(), Utils::Endianness::bigEndian));
+                config.parameters.message.descriptors[i] = static_cast<MipTypes::ChannelField>(Utils::make_uint16(static_cast<uint8>(config.parameters.message.descriptorSet), data.read_uint8(), Utils::Endianness::bigEndian));
             break;
         default:
             break;
