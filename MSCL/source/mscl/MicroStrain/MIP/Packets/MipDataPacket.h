@@ -25,14 +25,14 @@ namespace mscl
     public:
         enum EventSource
         {
-            NONE = 0x00,
-            UNKNOWN = 0xFF
+            EVENT_SOURCE_NONE    = 0x00,
+            EVENT_SOURCE_UNKNOWN = 0xFF
         };
 
     private:
         friend class MipDataPacket; // allow MipDataPacket to add data references
         
-        std::map<MipTypes::ChannelField, std::map<MipTypes::ChannelQualifier, MipDataPoint*>> m_dataReferences;
+        std::map<MipTypes::ChannelField, std::map<MipTypes::ChannelQualifier, MipDataPoint>> m_dataReferences;
         
         void addDataReference(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, MipDataPoint& dataRef);
 

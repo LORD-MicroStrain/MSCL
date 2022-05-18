@@ -254,9 +254,9 @@ namespace mscl
     void MipPacketSharedFields::addDataReference(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, MipDataPoint& dataRef)
     {
         MipTypes::ChannelField baseField = MipTypes::getChannelField_baseDataClass(field);
-        std::map<MipTypes::ChannelQualifier, MipDataPoint*> emptyMap = {};
+        std::map<MipTypes::ChannelQualifier, MipDataPoint> emptyMap = {};
         auto entryItr = m_dataReferences.emplace(baseField, emptyMap).first;
-        entryItr->second.emplace(qualifier, &dataRef);
+        entryItr->second.emplace(qualifier, dataRef);
     }
 
     const MipDataPoint& MipPacketSharedFields::get(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier) const
@@ -276,7 +276,7 @@ namespace mscl
 
         if (entryItr->second.size() == 1 && qualifier == MipTypes::CH_UNKNOWN)
         {
-            return *entryItr->second.begin()->second;
+            return entryItr->second.begin()->second;
         }
 
         auto qualEntryItr = entryItr->second.find(qualifier);
@@ -285,7 +285,7 @@ namespace mscl
             throw Error_NoData("Could not find the specified shared data qualifier");
         }
 
-        return *qualEntryItr->second;
+        return qualEntryItr->second;
     }
 
     bool MipPacketSharedFields::has(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier) const
@@ -303,7 +303,7 @@ namespace mscl
 
     bool MipPacketSharedFields::hasEventSource() const
     {
-        return eventSource() != EventSource::UNKNOWN;
+        return eventSource() != EVENT_SOURCE_UNKNOWN;
     }
 
     uint8 MipPacketSharedFields::eventSource() const
@@ -314,7 +314,7 @@ namespace mscl
         }
         catch (const std::exception&)
         {
-            return static_cast<uint8>(EventSource::UNKNOWN);
+            return static_cast<uint8>(EVENT_SOURCE_UNKNOWN);
         }
     }
 
@@ -364,7 +364,7 @@ namespace mscl
 
         try
         {
-            double tow = get(MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP).as_double();
+            double tow = get(MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP, MipTypes::CH_TIME_OF_WEEK).as_double();
             uint16 weekNumber = get(MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP, MipTypes::CH_WEEK_NUMBER).as_uint16();
             ts.setTime(Timestamp::gpsTimeToUtcTime(tow, weekNumber));
         }
