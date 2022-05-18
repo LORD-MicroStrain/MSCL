@@ -221,7 +221,7 @@ namespace mscl
         return m_points;
     }
 
-    const MipPacketSharedFields& MipDataPacket::shared() const
+    const MipSharedDataFields& MipDataPacket::shared() const
     {
         return m_sharedFields;
     }
@@ -251,7 +251,7 @@ namespace mscl
         return m_deviceTimeFlags;
     }
 
-    void MipPacketSharedFields::addDataReference(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, MipDataPoint& dataRef)
+    void MipSharedDataFields::addDataReference(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, MipDataPoint& dataRef)
     {
         MipTypes::ChannelField baseField = MipTypes::getChannelField_baseDataClass(field);
         std::map<MipTypes::ChannelQualifier, MipDataPoint> emptyMap = {};
@@ -259,7 +259,7 @@ namespace mscl
         entryItr->second.emplace(qualifier, dataRef);
     }
 
-    const MipDataPoint& MipPacketSharedFields::get(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier) const
+    const MipDataPoint& MipSharedDataFields::get(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier) const
     {
         if (!MipTypes::isSharedChannelField(field))
         {
@@ -288,7 +288,7 @@ namespace mscl
         return qualEntryItr->second;
     }
 
-    bool MipPacketSharedFields::has(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier) const
+    bool MipSharedDataFields::has(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier) const
     {
         try
         {
@@ -301,12 +301,12 @@ namespace mscl
         }
     }
 
-    bool MipPacketSharedFields::hasEventSource() const
+    bool MipSharedDataFields::hasEventSource() const
     {
         return eventSource() != EVENT_SOURCE_UNKNOWN;
     }
 
-    uint8 MipPacketSharedFields::eventSource() const
+    uint8 MipSharedDataFields::eventSource() const
     {
         try
         {
@@ -318,12 +318,12 @@ namespace mscl
         }
     }
 
-    bool MipPacketSharedFields::hasTicks() const
+    bool MipSharedDataFields::hasTicks() const
     {
         return has(MipTypes::CH_FIELD_SENSOR_SHARED_TICKS);
     }
 
-    uint32 MipPacketSharedFields::ticks() const
+    uint32 MipSharedDataFields::ticks() const
     {
         try
         {
@@ -335,12 +335,12 @@ namespace mscl
         }
     }
 
-    bool MipPacketSharedFields::hasDeltaTicks() const
+    bool MipSharedDataFields::hasDeltaTicks() const
     {
         return has(MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_TICKS);
     }
 
-    uint32 MipPacketSharedFields::deltaTicks() const
+    uint32 MipSharedDataFields::deltaTicks() const
     {
         try
         {
@@ -352,13 +352,13 @@ namespace mscl
         }
     }
 
-    bool MipPacketSharedFields::hasGpsTimestamp() const
+    bool MipSharedDataFields::hasGpsTimestamp() const
     {
         return has(MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP, MipTypes::CH_TIME_OF_WEEK)
             && has(MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP, MipTypes::CH_WEEK_NUMBER);
     }
 
-    Timestamp MipPacketSharedFields::gpsTimestamp() const
+    Timestamp MipSharedDataFields::gpsTimestamp() const
     {
         Timestamp ts(0);
 
@@ -373,12 +373,12 @@ namespace mscl
         return ts;
     }
 
-    bool MipPacketSharedFields::hasDeltaTime() const
+    bool MipSharedDataFields::hasDeltaTime() const
     {
         return has(MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP);
     }
 
-    double MipPacketSharedFields::deltaTime() const
+    double MipSharedDataFields::deltaTime() const
     {
         try
         {

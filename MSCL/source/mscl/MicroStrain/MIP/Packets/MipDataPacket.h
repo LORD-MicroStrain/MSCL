@@ -20,7 +20,7 @@ namespace mscl
 {
     class MipFieldParser;
 
-    class MipPacketSharedFields
+    class MipSharedDataFields
     {
     public:
         enum EventSource
@@ -39,7 +39,7 @@ namespace mscl
         bool has(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier = MipTypes::CH_UNKNOWN) const;
 
     public:
-        MipPacketSharedFields() {};
+        MipSharedDataFields() {};
 
         bool hasEventSource() const;
         uint8 eventSource() const;
@@ -86,7 +86,7 @@ namespace mscl
         //    The <MipDataPoints> within this packet
         MipDataPoints m_points;
 
-        MipPacketSharedFields m_sharedFields;
+        MipSharedDataFields m_sharedFields;
 
         //Variable: m_collectedTime
         //    The <Timestamp> of when this packet was received
@@ -146,7 +146,7 @@ namespace mscl
         //    The <MipDataPoints> that are contained within this packet.
         const MipDataPoints& data() const;
 
-        const MipPacketSharedFields& shared() const;
+        const MipSharedDataFields& shared() const;
 
         //API Function: collectedTimestamp
         //  Gets the <Timestamp> representing when the packet was collected by MSCL.
