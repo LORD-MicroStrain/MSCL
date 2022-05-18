@@ -447,6 +447,8 @@ namespace mscl
         {ChannelId(CH_FIELD_DISP_DISPLACEMENT_MM, CH_DISPLACEMENT), "displacementMillimeters"},
 
         // Shared Inertial Channels
+        { ChannelId(CH_FIELD_SENSOR_SHARED_EVENT_SOURCE, CH_ID), "eventInfo_triggerId" },
+
         { ChannelId(CH_FIELD_SENSOR_SHARED_TICKS, CH_TICK), "timeInfo_ticks" },
 
         { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_TICKS, CH_DELTA_TICK), "timeInfo_deltaTicks" },
@@ -719,6 +721,7 @@ namespace mscl
     std::vector<uint8> MipTypes::SHARED_DATA_FIELDS()
     {
         return{
+            Utils::lsb(MipTypes::ChannelField::CH_FIELD_SENSOR_SHARED_EVENT_SOURCE),
             Utils::lsb(MipTypes::ChannelField::CH_FIELD_SENSOR_SHARED_TICKS),
             Utils::lsb(MipTypes::ChannelField::CH_FIELD_SENSOR_SHARED_DELTA_TICKS),
             Utils::lsb(MipTypes::ChannelField::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP),

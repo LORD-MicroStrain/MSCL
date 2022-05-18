@@ -117,9 +117,19 @@ namespace mscl
             parseTimeStamp(field);
         }
 
+        size_t currentPointsCount = m_points.size();
         if(isData)
         {
             MipFieldParser::parseField(field, m_points);
+        }
+
+        if (MipTypes::isSharedChannelField(id))
+        {
+            for (size_t i = currentPointsCount; i < m_points.size(); i++)
+            {
+                MipDataPoint& point = m_points[i];
+                m_sharedFields.addDataReference(point.field(), point.qualifier(), point);
+            }
         }
     }
 
@@ -211,6 +221,11 @@ namespace mscl
         return m_points;
     }
 
+    const MipPacketSharedFields& MipDataPacket::shared() const
+    {
+        return m_sharedFields;
+    }
+
     const Timestamp& MipDataPacket::collectedTimestamp() const
     {
         return m_collectedTime;
@@ -234,5 +249,144 @@ namespace mscl
     uint16 MipDataPacket::deviceTimeFlags() const
     {
         return m_deviceTimeFlags;
+    }
+
+    void MipPacketSharedFields::addDataReference(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, MipDataPoint& dataRef)
+    {
+        MipTypes::ChannelField baseField = MipTypes::getChannelField_baseDataClass(field);
+        std::map<MipTypes::ChannelQualifier, MipDataPoint*> emptyMap = {};
+        auto entryItr = m_dataReferences.emplace(baseField, emptyMap).first;
+        entryItr->second.emplace(qualifier, &dataRef);
+    }
+
+    const MipDataPoint& MipPacketSharedFields::get(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier) const
+    {
+        if (!MipTypes::isSharedChannelField(field))
+        {
+            throw Error_NoData("Specified field is not a shared data field");
+        }
+
+        MipTypes::ChannelField baseField = MipTypes::getChannelField_baseDataClass(field);
+        auto entryItr = m_dataReferences.find(baseField);
+        if (entryItr == m_dataReferences.end()
+            || entryItr->second.size() <= 0)
+        {
+            throw Error_NoData("Could not find the specified shared data field");
+        }
+
+        if (entryItr->second.size() == 1 && qualifier == MipTypes::CH_UNKNOWN)
+        {
+            return *entryItr->second.begin()->second;
+        }
+
+        auto qualEntryItr = entryItr->second.find(qualifier);
+        if (qualEntryItr == entryItr->second.end())
+        {
+            throw Error_NoData("Could not find the specified shared data qualifier");
+        }
+
+        return *qualEntryItr->second;
+    }
+
+    bool MipPacketSharedFields::has(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier) const
+    {
+        try
+        {
+            get(field, qualifier);
+            return true;
+        }
+        catch (const std::exception&)
+        {
+            return false;
+        }
+    }
+
+    bool MipPacketSharedFields::hasEventSource() const
+    {
+        return eventSource() != EventSource::UNKNOWN;
+    }
+
+    uint8 MipPacketSharedFields::eventSource() const
+    {
+        try
+        {
+            return get(MipTypes::CH_FIELD_SENSOR_SHARED_EVENT_SOURCE).as_uint8();
+        }
+        catch (const std::exception&)
+        {
+            return static_cast<uint8>(EventSource::UNKNOWN);
+        }
+    }
+
+    bool MipPacketSharedFields::hasTicks() const
+    {
+        return has(MipTypes::CH_FIELD_SENSOR_SHARED_TICKS);
+    }
+
+    uint32 MipPacketSharedFields::ticks() const
+    {
+        try
+        {
+            return get(MipTypes::CH_FIELD_SENSOR_SHARED_TICKS).as_uint32();
+        }
+        catch (const std::exception&)
+        {
+            return 0;
+        }
+    }
+
+    bool MipPacketSharedFields::hasDeltaTicks() const
+    {
+        return has(MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_TICKS);
+    }
+
+    uint32 MipPacketSharedFields::deltaTicks() const
+    {
+        try
+        {
+            return get(MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_TICKS).as_uint32();
+        }
+        catch (const std::exception&)
+        {
+            return 0;
+        }
+    }
+
+    bool MipPacketSharedFields::hasGpsTimestamp() const
+    {
+        return has(MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP, MipTypes::CH_TIME_OF_WEEK)
+            && has(MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP, MipTypes::CH_WEEK_NUMBER);
+    }
+
+    Timestamp MipPacketSharedFields::gpsTimestamp() const
+    {
+        Timestamp ts(0);
+
+        try
+        {
+            double tow = get(MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP).as_double();
+            uint16 weekNumber = get(MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP, MipTypes::CH_WEEK_NUMBER).as_uint16();
+            ts.setTime(Timestamp::gpsTimeToUtcTime(tow, weekNumber));
+        }
+        catch (const std::exception&){/*ignore*/}
+
+        return ts;
+    }
+
+    bool MipPacketSharedFields::hasDeltaTime() const
+    {
+        return has(MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP);
+    }
+
+    double MipPacketSharedFields::deltaTime() const
+    {
+        try
+        {
+            return get(MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP).as_double();
+        }
+        catch (const std::exception&)
+        {
+            return 0;
+        }
     }
 }
