@@ -59,7 +59,7 @@ if (-not $?) {
   exit $?
 }
 
-if ("${ISHUDSONBUILD}" -eq "True") {
+if ("${env:ISHUDSONBUILD}" -eq "True") {
   $docker_it_flags = ""
 } else {
   $docker_it_flags = "-it"
