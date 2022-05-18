@@ -51,6 +51,7 @@ $python_build_script_flags = "${python3_x86_build_script_flags} ${python3_x64_bu
 docker build `
   -t "${image_name}" `
   -f "${dockerfile}" `
+  --build-arg WINDOWS_IMAGE="${windows_image}" `
   --build-arg WINDOWS_VERSION="${windows_version}" `
   --build-arg PYTHON3_VERSIONS="${python3_versions}" `
   "${project_dir}"
