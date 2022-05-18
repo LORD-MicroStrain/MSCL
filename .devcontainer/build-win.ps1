@@ -59,10 +59,16 @@ if (-not $?) {
   exit $?
 }
 
+if ("${ISHUDSONBUILD}" -eq "True") {
+  $docker_it_flags = ""
+} else {
+  $docker_it_flags = "-it"
+}
+
 # Run the build
 docker run `
-  -it `
   --rm `
+  ${docker_it_flags} `
   --cpus="${num_cpus}" `
   --memory="${memory}g" `
   -v "${project_dir}:C:\Projects\MSCL" `
