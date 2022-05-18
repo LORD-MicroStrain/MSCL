@@ -70,42 +70,6 @@ RUN set -ex \
     && curl -fsSLo /tmp/turtle-${TURTLE_VERSION}.tar.gz https://master.dl.sourceforge.net/project/turtle/turtle/${TURTLE_VERSION}/turtle-${TURTLE_VERSION}.tar.gz \
     && tar -C /usr/local -xzf /tmp/turtle-${TURTLE_VERSION}.tar.gz include
 
-# Really sucks that we have to do this, but right now CMake is broken on ARM, but we can fix it if we compile it ourselves
-ARG ARCH
-RUN set -ex \
-    && [ ${ARCH} = "arm32v7" ] \
-        && /bin/bash -c ' \
-            set -ex && \
-            cmake_version=$(cmake --version | head -1 | cut -d" " -f3) && \
-            cmake_major_version=$(echo ${cmake_version} | cut -d"." -f-2) && \
-            curl -fsSLo /tmp/cmake-${cmake_version}.tar.gz https://cmake.org/files/v${cmake_major_version}/cmake-${cmake_version}.tar.gz && \
-            tar -C /tmp/ -xzf /tmp/cmake-${cmake_version}.tar.gz && \
-            cd /tmp/cmake-${cmake_version} && \
-            export CFLAGS="-D_FILE_OFFSET_BITS=64" && \
-            export CXXFLAGS="-D_FILE_OFFSET_BITS=64" && \
-            ./bootstrap \
-                --prefix="/usr" \
-                --parallel=$(nproc) \
-                -- \
-                -DCMAKE_INSTALL_PREFIX="/usr" \
-                -DCMAKE_BUILD_TYPE="RELEASE" \
-                -DCMAKE_USE_OPENSSL=OFF && \
-            make -j$(nproc) && \
-            make install \
-        ' \
-        || echo "Not arm32, no need to rebuild CMAKE"
-
-# Install powershell which we use for the build scripts
-RUN set -ex \
-    && apt-get update && apt-get install -y \
-        curl \
-        gnupg \
-        apt-transport-https \
-    && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
-    && echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-bullseye-prod bullseye main" > /etc/apt/sources.list.d/microsoft.list \
-    && apt-get update && apt-get install -y \
-        powershell
-
 # Install swig
 RUN set -ex \
     && apt-get update && apt-get install -y \
