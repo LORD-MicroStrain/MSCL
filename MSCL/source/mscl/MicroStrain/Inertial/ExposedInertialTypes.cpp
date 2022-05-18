@@ -964,6 +964,36 @@ namespace mscl
         m_scaling = resolution / mPerRev;
     }
 
+    void EventTriggerThresholdParameter::channel(const MipTypes::ChannelField channelField,
+        const MipTypes::ChannelQualifier channelQualifier)
+    {
+        m_channelField = channelField;
+        m_channelQualifier = channelQualifier;
+        m_channelIndex = static_cast<uint8>(MipTypes::channelFieldQualifierIndex(m_channelField, m_channelQualifier));
+    }
+
+    void EventTriggerThresholdParameter::channel(const MipTypes::ChannelField channelField, const uint8 index)
+    {
+        m_channelField = channelField;
+        m_channelIndex = index;
+        m_channelQualifier = MipTypes::channelFieldQualifier(m_channelField, index);
+    }
+
+    MipTypes::ChannelField EventTriggerThresholdParameter::channelField() const
+    {
+        return m_channelField;
+    }
+
+    MipTypes::ChannelQualifier EventTriggerThresholdParameter::channelQualifier() const
+    {
+        return m_channelQualifier;
+    }
+
+    uint8 EventTriggerThresholdParameter::channelIndex() const
+    {
+        return m_channelIndex;
+    }
+
     float OdometerConfiguration::uncertainty() const
     {
         return m_unc;
@@ -978,5 +1008,25 @@ namespace mscl
         }
 
         m_unc = unc;
+    }
+
+    bool EventTriggerInfo::isActive() const
+    {
+        return status.get(ACTIVE) > 0;
+    }
+
+    bool EventTriggerInfo::isEnabled() const
+    {
+        return status.get(ENABLED) > 0;
+    }
+
+    bool EventTriggerInfo::isTestMode() const
+    {
+        return status.get(TEST) > 0;
+    }
+
+    void EventTriggerInfo::setStatus(const uint8 value)
+    {
+        status.value(value);
     }
 }  // namespace mscl
