@@ -7,7 +7,7 @@
 set -e
 
 # Update this variable to change the python versions to build against
-python3_versions="3.5.10 3.6.15 3.7.13"
+python3_versions="3.5.10 3.6.15 3.7.13 3.8.13 3.9.12 3.10.4"
 
 # Get some arguments from the user
 arch="amd64"
@@ -58,6 +58,7 @@ docker run \
   "${image_name}" -c " \
     /home/microstrain/MSCL/BuildScripts/jenkins_linux.sh \
       ${python3_dirs_flag} \
+      --python2Dir /usr/lib/python2.7 \
       --buildDir /home/microstrain/MSCL/${build_dir_name} \
   "
 
