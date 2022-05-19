@@ -35,17 +35,16 @@ $dockerfile = "${script_dir}/Dockerfile.windows"
 $image_name = "microstrain/mscl_windows_builder:${windows_version}"
 
 # Construct the flags that we will pass to the build script
-$python2_x86_build_script_flags = "-python2Dirs_x86 C:\Python2.7-Win32"
-$python2_x64_build_script_flags = "-python2dirs_x64 C:\Python2.7-x64"
-$python3_x86_build_script_flags = "-python3Dirs_x86 "
-$python3_x64_build_script_flags = "-python3Dirs_x64 "
+$python2_x86_build_script_flags = "-python2Dirs C:\Python2.7-Win32"
+$python2_x64_build_script_flags = "-python2dirs C:\Python2.7-x64"
+$python3_x86_build_script_flags = "-python3Dirs "
+$python3_x64_build_script_flags = "-python3Dirs "
 foreach ($python3_version in ${python3_versions}.split(" ")) {
   $python3_x86_build_script_flags += "C:\Python${python3_version}-Win32,"
   $python3_x64_build_script_flags += "C:\Python${python3_version}-x64,"
 }
 $python3_x86_build_script_flags = $python3_x86_build_script_flags.TrimEnd(',')
 $python3_x64_build_script_flags = $python3_x64_build_script_flags.TrimEnd(',')
-$python_build_script_flags = "${python3_x86_build_script_flags} ${python3_x64_build_script_flags} ${python2_x86_build_script_flags} ${python2_x64_build_script_flags}"
 
 # Build the image
 docker build `
@@ -71,11 +70,14 @@ docker run `
   ${docker_it_flags} `
   --cpus="${num_cpus}" `
   --memory="${memory}g" `
+  --isolation="process" `
   -v "${project_dir}:C:\Projects\MSCL" `
-  -w "C:\DockerTemp\build" `
+  -w "C:\projects\mscl" `
   "${image_name}" -Command " `
-    git config --global --add safe.directory C:/projects/mscl/; `
-    & 'C:\Projects\MSCL\BuildScripts\jenkins_win.ps1' -buildDir C:\DockerTemp\build ${python_build_script_flags}; `
+    git config --global --add safe.directory C:/projects/mscl; `
+    & 'C:\Projects\MSCL\BuildScripts\build_win.ps1' -arch Win32 -buildDir C:\projects\mscl\docker_build\Win32 ${python2_x86_build_script_flags} ${python3_x86_build_script_flags}; `
+    & 'C:\Projects\MSCL\BuildScripts\build_win.ps1' -arch x64 -buildDir C:\projects\mscl\docker_build\x64 ${python2_x64_build_script_flags} ${python3_x64_build_script_flags}; `
+    & 'C:\Projects\MSCL\BuildScripts\zip_win.ps1'; `
   "
 if (-not $?) {
   exit $?

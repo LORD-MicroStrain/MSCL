@@ -1,5 +1,6 @@
 BuildScripts/updateLicense
 BuildScripts/_testPythonBuild.cmd
+BuildScripts/NaturalDocsProjects/*/Working Data/
 GettingStartedGuide
 sample_mscl_cpp/
 *MSCL_Wrap.cpp

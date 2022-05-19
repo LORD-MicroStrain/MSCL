@@ -65,7 +65,3 @@ docker run \
       ${python3_dirs_flag} \
       --buildDir /home/microstrain/MSCL/${build_dir_name} \
   "
-
-# Zip up the resulting artifacts
-rpm_files=$(find "${project_dir}/${build_dir_name}" -maxdepth 1 -mindepth 1 -name "*.rpm" -printf '%f\n')
-tar -C "${project_dir}/${build_dir_name}" -cvjSf "${project_dir}/mscl_centos_${arch}.tar.bz2" ${rpm_files}

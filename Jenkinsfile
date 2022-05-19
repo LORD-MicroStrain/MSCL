@@ -10,7 +10,7 @@ pipeline {
           steps {
             cleanWs()
             checkout scm
-            powershell ".devcontainer/build-win.ps1 -windows_version 1809"
+            powershell ".devcontainer/docker_build_win.ps1 -windows_version 1809"
             archiveArtifacts artifacts: 'Output/*.zip'
           }
         }
@@ -21,7 +21,7 @@ pipeline {
             cleanWs()
             checkout scm
             sh "cp /usr/local/share/ca-certificates/* .devcontainer/extra_cas/"
-            sh ".devcontainer/build-debs.sh --arch arm64v8"
+            sh ".devcontainer/docker_build_debs.sh --arch arm64v8"
             archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
           }
         }

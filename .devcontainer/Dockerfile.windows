@@ -172,7 +172,7 @@ RUN echo Installing SWIG `
     && del /q %DOCKER_TEMP_DIR%\swigwin-%SWIG_VERSION%.zip
 
 # Install NaturalDocs
-ARG NATURAL_DOCS_VERSION="2.2"
+ARG NATURAL_DOCS_VERSION="2.0.2"
 RUN echo Installing NaturalDocs `
     `
     # Download the zip file

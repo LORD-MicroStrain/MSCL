@@ -1,7 +1,7 @@
 include(CMakeParseArguments)
 
 function(mscl_python_swig)
-  set(single_value_args MODULE_NAME MODULE_VERSION OUTPUT_NAME OUTPUT_DIR PYTHON_VERSION ZIP_TARGET ARCH)
+  set(single_value_args MODULE_NAME MODULE_VERSION OUTPUT_NAME OUTPUT_DIR PYTHON_VERSION ARCH)
   set(multi_value_args SOURCES SWIG_FLAGS COMPILE_OPTIONS COMPILE_DEFINITIONS INCLUDE_DIRECTORIES LINK_DIRECTORIES LINK_OPTIONS LINK_LIBRARIES)
   cmake_parse_arguments(
     mscl_python_swig
@@ -61,15 +61,7 @@ function(mscl_python_swig)
     COMMAND ${CMAKE_COMMAND} -E copy ${PYTHON_INTERFACE_FILE} ${mscl_python_swig_OUTPUT_DIR}/Python/${mscl_python_swig_PYTHON_VERSION}/${mscl_python_swig_ARCH}/$<CONFIG>/${mscl_python_swig_OUTPUT_NAME}.py
   )
 
-  if(WIN32)
-    # If running on windows, zip up the artifacts
-    add_custom_target(${mscl_python_swig_MODULE_NAME}_Zip
-      WORKING_DIRECTORY ${mscl_python_swig_OUTPUT_DIR}/Python/${mscl_python_swig_PYTHON_VERSION}/${mscl_python_swig_ARCH}/$<CONFIG>
-      DEPENDS ${mscl_python_swig_MODULE_NAME}
-      COMMAND ${CMAKE_COMMAND} -E tar "cf" "${mscl_python_swig_OUTPUT_DIR}/${mscl_python_swig_OUTPUT_NAME}_${mscl_python_swig_MODULE_VERSION}_Windows_Python${mscl_python_swig_PYTHON_VERSION}_${mscl_python_swig_ARCH}_$<CONFIG>.zip" --format=zip "."
-    )
-    add_dependencies(${mscl_python_swig_ZIP_TARGET} ${mscl_python_swig_MODULE_NAME}_Zip)
-  elseif(UNIX)
+  if(UNIX)
     # If running on linux, install the artifacts
     set(PYTHON_SITE_PACKAGES_DIR lib/python${mscl_python_swig_PYTHON_VERSION}/site-packages)
     install(

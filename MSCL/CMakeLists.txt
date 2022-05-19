@@ -141,15 +141,7 @@ add_custom_command(TARGET ${LIB_NAME_STATIC} POST_BUILD
   COMMAND ${CMAKE_COMMAND} -P ${MSCL_STATIC_HEADER_CP_SCRIPT}
 )
 
-if(WIN32)
-  # If running on windows, zip up the artifacts
-  add_custom_target(${LIB_NAME_STATIC}_Zip
-    WORKING_DIRECTORY ${MSCL_STATIC_OUTPUT_DIR}/..
-    DEPENDS ${LIB_NAME_STATIC}
-    COMMAND ${CMAKE_COMMAND} -E tar "cf" "${MSCL_OUTPUT_DIR}/mscl_${MSCL_GIT_VERSION}_Windows_C++_Static_${MSCL_ARCH_NAME}_$<CONFIG>.zip" --format=zip "."
-  )
-  add_dependencies(${MSCL_ZIP_TARGET} ${LIB_NAME_STATIC}_Zip)
-elseif(UNIX)
+if(UNIX)
   # If running on linux, mark the target for installation
   install(
     TARGETS ${LIB_NAME_STATIC}
@@ -197,15 +189,7 @@ if(BUILD_SHARED_LIBS)
     COMMAND ${CMAKE_COMMAND} -P ${MSCL_SHARED_HEADER_CP_SCRIPT}
   )
 
-  if(WIN32)
-    # If running on windows, zip up the artifacts
-    add_custom_target(${LIB_NAME_SHARED}_Zip
-      WORKING_DIRECTORY ${MSCL_SHARED_OUTPUT_DIR}/..
-      DEPENDS ${LIB_NAME_SHARED}
-      COMMAND ${CMAKE_COMMAND} -E tar "cf" "${MSCL_OUTPUT_DIR}/mscl_${MSCL_GIT_VERSION}_Windows_C++_Shared_${MSCL_ARCH_NAME}_$<CONFIG>.zip" --format=zip "."
-    )
-    add_dependencies(${MSCL_ZIP_TARGET} ${LIB_NAME_SHARED}_Zip)
-  elseif(UNIX)
+  if(UNIX)
     # If running on linux, mark the target for installation
     install(
       TARGETS ${LIB_NAME_SHARED}
@@ -291,7 +275,6 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
       OUTPUT_DIR ${MSCL_OUTPUT_DIR}
       PYTHON_VERSION ${MSCL_PYTHON3_VERSION}
       ARCH ${MSCL_ARCH_NAME}
-      ZIP_TARGET ${MSCL_ZIP_TARGET}
       SOURCES ${SWIG_SOURCE_FILES}
       COMPILE_OPTIONS ${PYTHON_COMPILE_OPTIONS}
       COMPILE_DEFINITIONS ${LIB_DEFINES} SWIG_PYTHON_INTERPRETER_NO_DEBUG
@@ -313,7 +296,6 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
       OUTPUT_DIR ${MSCL_OUTPUT_DIR}
       PYTHON_VERSION ${MSCL_PYTHON2_VERSION}
       ARCH ${MSCL_ARCH_NAME}
-      ZIP_TARGET ${MSCL_ZIP_TARGET}
       SOURCES ${SWIG_SOURCE_FILES}
       COMPILE_OPTIONS ${PYTHON_COMPILE_OPTIONS}
       COMPILE_DEFINITIONS ${LIB_DEFINES} SWIG_PYTHON_INTERPRETER_NO_DEBUG
@@ -388,18 +370,10 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
       COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:${MSCL_MANAGED_NAME}> ${MSCL_MANAGED_OUTPUT_DIR}
       COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${CSHARP_MODULE_NAME}> ${MSCL_MANAGED_OUTPUT_DIR}
     )
-
-    # Zip up the targets
-    add_custom_target(${MSCL_MANAGED_NAME}_Zip
-      WORKING_DIRECTORY ${MSCL_MANAGED_OUTPUT_DIR}/..
-      DEPENDS ${MSCL_MANAGED_NAME}
-      COMMAND ${CMAKE_COMMAND} -E tar "cf" "${MSCL_OUTPUT_DIR}/mscl_${MSCL_GIT_VERSION}_Windows_DotNet_${MSCL_ARCH_NAME}_$<CONFIG>.zip" --format=zip "."
-    )
-    add_dependencies(${MSCL_ZIP_TARGET} ${MSCL_MANAGED_NAME}_Zip)
   endif()
 
   # Build the documentation
-  if(BUILD_DOCS)
+  if(BUILD_DOCUMENTATION)
     set(MSCL_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_Docs)
     set(MSCL_API_DOCS_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/Documentation/MSCL_API_Docs)
     add_custom_target(MSCL_Docs
@@ -410,16 +384,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
       COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" -o FramedHTML ${MSCL_DOCS_OUTPUT_DIR} -p ${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_Docs_Project -s msclDocsStyle
       COMMAND ${CMAKE_COMMAND} -E make_directory ${MSCL_API_DOCS_OUTPUT_DIR}
       COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" -o FramedHTML ${MSCL_API_DOCS_OUTPUT_DIR} -p ${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_API_Docs_Project -s msclDocsStyle
-      COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/../GettingStartedGuide/build ${MSCL_OUTPUT_DIR}/Documentation/GettingStartedGuide
     )
-
-    # Zip up the documentation as part of the zip task
-    add_custom_target(MSCL_Docs_Zip
-      WORKING_DIRECTORY ${MSCL_OUTPUT_DIR}
-      DEPENDS MSCL_Docs
-      COMMAND ${CMAKE_COMMAND} -E tar "cf" "${MSCL_OUTPUT_DIR}/mscl_${MSCL_GIT_VERSION}_Documentation.zip" --format=zip "Documentation"
-    )
-    add_dependencies(${MSCL_ZIP_TARGET} MSCL_Docs_Zip)
   endif()
 endif()
 

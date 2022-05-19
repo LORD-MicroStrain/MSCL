@@ -214,7 +214,7 @@ if(${WITH_SSL})
 endif()
 
 # If we were asked to build the docs, try to find NaturalDocs
-if(BUILD_DOCS)
+if(BUILD_DOCUMENTATION)
   find_program(NaturalDocs_EXECUTABLE
     NAMES NaturalDocs
     PATHS ${NATURAL_DOCS_ROOT}
