@@ -120,6 +120,12 @@ set_target_properties(${LIB_NAME_STATIC}
   RUNTIME_OUTPUT_DIRECTORY ${LIB_NAME_STATIC_DIR}
 )
 
+# Configure some precompiled headers
+target_precompile_headers(${LIB_NAME_STATIC} PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/stdafx.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/source/stdafx.cpp
+)
+
 # In order to copy the headers, create a cmake script that will do the copying
 set(MSCL_STATIC_HEADER_CP_SCRIPT ${CMAKE_BINARY_DIR}/${LIB_NAME_STATIC}_$<CONFIG>_header_cp.cmake)
 set(MSCL_STATIC_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/C++/Static/${MSCL_ARCH_NAME}/$<CONFIG>/${LIB_NAME})
@@ -168,6 +174,12 @@ if(BUILD_SHARED_LIBS)
     ARCHIVE_OUTPUT_DIRECTORY ${LIB_NAME_SHARED_DIR}
     LIBRARY_OUTPUT_DIRECTORY ${LIB_NAME_SHARED_DIR}
     RUNTIME_OUTPUT_DIRECTORY ${LIB_NAME_SHARED_DIR}
+  )
+
+  # Configure some precompiled headers
+  target_precompile_headers(${LIB_NAME_SHARED} PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/stdafx.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/source/stdafx.cpp
   )
 
   # In order to copy the headers, create a cmake script that will do the copying
