@@ -879,6 +879,10 @@ namespace mscl
             CH_FIELD_GNSS_5_SHARED_DELTA_TIMESTAMP                  = 0x95D4,
         };
 
+        //API Constant: MIN_SHARED_FIELD_DESCRIPTOR
+        //  The minimum descriptor that marks the start of available shared data field descriptors. If a field descriptor is above 0x0D it is shared.
+        static const uint8 MIN_SHARED_FIELD_DESCRIPTOR = 0x0D;
+
         //====================================================================================================
         //API Enums: ChannelQualifier
         //    The enums for different MIP Channel Qualifiers.
@@ -1293,11 +1297,6 @@ namespace mscl
         //  vector of <DataClass> values containing all inertial data class descriptors that have the same field descriptors.
         //  was a const but ran into static initialization order issues with registering shared field parsers.
         static std::vector<DataClass> INERTIAL_DATA_CLASSES();
-
-        //Function: SHARED_DATA_FIELDS
-        //  vector of <uint8> values containing all shared inertial data field descriptors.
-        //  was a const but ran into static initialization order issues with registering shared field parsers.
-        static std::vector<uint8> SHARED_DATA_FIELDS();
     };
 
     //API Class: MipChannelIdentifier

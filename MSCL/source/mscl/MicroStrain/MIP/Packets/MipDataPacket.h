@@ -12,6 +12,7 @@
 #include "mscl/MicroStrain/MIP/MipDataPoint.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "MipPacket.h"
+#include "MipSharedDataFields.h"
 
 #include <memory>
 #include <vector>
@@ -19,45 +20,6 @@
 namespace mscl
 {
     class MipFieldParser;
-
-    class MipSharedDataFields
-    {
-    public:
-        enum EventSource
-        {
-            EVENT_SOURCE_NONE    = 0x00,
-            EVENT_SOURCE_UNKNOWN = 0xFF
-        };
-
-    private:
-        friend class MipDataPacket; // allow MipDataPacket to add data references
-        
-        std::map<MipTypes::ChannelField, std::map<MipTypes::ChannelQualifier, MipDataPoint>> m_dataReferences;
-        
-        void addDataReference(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, MipDataPoint& dataRef);
-
-        bool has(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier = MipTypes::CH_UNKNOWN) const;
-
-    public:
-        MipSharedDataFields() {};
-
-        bool hasEventSource() const;
-        uint8 eventSource() const;
-
-        bool hasTicks() const;
-        uint32 ticks() const;
-
-        bool hasDeltaTicks() const;
-        uint32 deltaTicks() const;
-
-        bool hasGpsTimestamp() const;
-        Timestamp gpsTimestamp() const;
-
-        bool hasDeltaTime() const;
-        double deltaTime() const;
-
-        const MipDataPoint& get(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier = MipTypes::CH_UNKNOWN) const;
-    };
 
     //API Class: MipDataPacket
     //    A Mip Data Packet that contains both valid and invalid data from a MIP Device.
