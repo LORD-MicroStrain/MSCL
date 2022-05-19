@@ -80,3 +80,27 @@ for python3Dir in "${python3Dirs[@]}"; do
   cmake --build "${build_dir}" -j$(nproc)
   cmake --build "${build_dir}" --target "package"
 done
+
+# Build for each requested python2 version
+for python2Dir in "${python2Dirs[@]}"; do
+  echo "!! Building MSCL with python ${python2Dir}"
+  cmake -S "${project_dir}" -B "${build_dir}" \
+    -DCMAKE_VERBOSE_MAKEFILE="ON" \
+    -DCMAKE_BUILD_TYPE="Release" \
+    -DBUILD_SHARED_LIBS="OFF" \
+    -DBUILD_PYTHON2="ON" \
+    -DBUILD_PYTHON3="OFF" \
+    -DBUILD_TESTS="OFF" \
+    -DBUILD_EXAMPLES="OFF" \
+    -DBUILD_DOCUMENTATION="OFF" \
+    -DBUILD_PACKAGE="ON" \
+    -DLINK_STATIC_DEPS="ON" \
+    \
+    -UPython2_ROOT -DPython2_ROOT="${python2Dir}" \
+    -UPython2_ROOT_DIR -DPython2_ROOT_DIR="${python2Dir}" \
+    -UPython2_INCLUDE_DIR \
+    -UPython2_EXECUTABLE -DPython2_EXECUTABLE=$(echo "${python2Dir}" | sed "s/lib/bin/g" | sed 's/\/$//')
+
+  cmake --build "${build_dir}" -j$(nproc)
+  cmake --build "${build_dir}" --target "package"
+done
