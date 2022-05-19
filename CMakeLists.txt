@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12.0)
+cmake_minimum_required(VERSION 3.16.0)
 project(MSCL LANGUAGES CXX)
 
 # Append the custom CMake directory so the files can be imported
@@ -39,23 +39,27 @@ elseif(UNIX)
   option(BUILD_PACKAGE "Whether to build a package from the resulting binaries" OFF)
 endif()
 
+# Allow the user to override the location where most dependencies are installed on Windows
+if(WIN32)
+  if(DEFINED ENV{LIB_PATH})
+    set(MICROSTRAIN_LIB_DIR "$ENV{LIB_PATH}" CACHE STRING "Directory where most dependencies are installed")
+  else()
+    set(MICROSTRAIN_LIB_DIR "C:/lib" CACHE STRING "Directory where most dependencies are installed")
+  endif()
+endif()
+
 # These flags can be passed string values. For example, -DOPENSSL_ROOT_DIR="/usr/lib"
 # Different default search paths for windows
 set(Boost_REQUESTED_VERSION 1.68.0)
-set(MICROSTRAIN_LIB_DIR "C:/lib" CACHE STRING "Directory where most dependencies are installed")
 if(WIN32)
   string(REPLACE "." "_" Boost_REQUESTED_VERSION_UNDERSCORE ${Boost_REQUESTED_VERSION})
-  set(DEFAULT_BOOST_ROOT "${MICROSTRAIN_LIB_DIR}/boost/boost_${Boost_REQUESTED_VERSION_UNDERSCORE}")
+  set(DEFAULT_BOOST_ROOT "${MICROSTRAIN_LIB_DIR}/boost")
   if(MSCL_X64)
     set(DEFAULT_OPENSSL_ROOT_DIR "${MICROSTRAIN_LIB_DIR}/openssl/lib64")
   elseif(MSCL_X86)
     set(DEFAULT_OPENSSL_ROOT_DIR "${MICROSTRAIN_LIB_DIR}/openssl/lib")
   endif()
 endif()
-set(OPENSSL_ROOT_DIR "${DEFAULT_OPENSSL_ROOT_DIR}" CACHE STRING "Directory to search for OpenSSL")
-set(BOOST_ROOT "${DEFAULT_BOOST_ROOT}" CACHE STRING "Directory to search for Boost")
-set(PYTHON3_ROOT "" CACHE STRING "Location to search for a python3 installation for bindings")
-set(PYTHON2_ROOT "" CACHE STRING "Location to search for a python2 installation for bindings")
 set(TURTLE_INCLUDE_DIR "${MICROSTRAIN_LIB_DIR}/turtle/include" CACHE STRING "Location to search for the turtle include files. Only used when building tests")
 set(NATURAL_DOCS_ROOT "${MICROSTRAIN_LIB_DIR}/NaturalDocs" CACHE STRING "Location of NaturalDocs used to generate the doucmentation")
 set(DPKG_ROOT "" CACHE STRING "Location of the dpkg executable")
@@ -90,7 +94,7 @@ set(MSCL_OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Output)
 make_directory(${MSCL_OUTPUT_DIR})
 
 # Setup a phony target that will zip up all the artifacts
-set(MSCL_ZIP_TARGET zip)
+set(MSCL_ZIP_TARGET Zip)
 add_custom_target(${MSCL_ZIP_TARGET})
 set_property(TARGET ${MSCL_ZIP_TARGET} PROPERTY EXCLUDE_FROM_ALL ON)
 
@@ -116,6 +120,11 @@ add_compile_definitions(BOOST_ALL_NO_LIB)
 
 # Custom variable used in this CMake file, not used by FindBoost.cmake
 set(Boost_REQUESTED_COMPONENTS system filesystem)
+
+# Setup the boost root variable
+if(NOT DEFINED Boost_ROOT)
+  set(Boost_ROOT "${DEFAULT_BOOST_ROOT}")
+endif()
 
 # Find the static version of boost
 set(Boost_USE_STATIC_LIBS ON)
@@ -145,7 +154,8 @@ find_package(Threads REQUIRED)
 # If we were requested to build with SSL, find OpenSSL
 if(${WITH_SSL})
   # Ultra mega hack since we are finding the lib path of OpenSSL, we need to manually set the include path...
-  if(OPENSSL_ROOT_DIR STREQUAL DEFAULT_OPENSSL_ROOT_DIR)
+  if(NOT DEFINED OPENSSL_ROOT_DIR)
+    set(OPENSSL_ROOT_DIR "${DEFAULT_OPENSSL_ROOT_DIR}")
     if(MSCL_X64)
       set(OPENSSL_INCLUDE_DIR ${DEFAULT_OPENSSL_ROOT_DIR}/../include64 CACHE INTERNAL "")
     elseif(MSCL_X86)
@@ -248,7 +258,7 @@ if(BUILD_EXAMPLES)
 
   # Also copy the test source and build files to the output directory so it can be compressed
   set(MSCL_EXAMPLES_OUTPUT_DIR "${MSCL_OUTPUT_DIR}/Examples")
-  add_custom_target(MSCL_examples_copy
+  add_custom_target(MSCL_Examples_Copy
     ALL
     COMMAND ${CMAKE_COMMAND} -E remove_directory "${MSCL_EXAMPLES_OUTPUT_DIR}"
     COMMAND ${CMAKE_COMMAND} -E make_directory ${MSCL_EXAMPLES_OUTPUT_DIR}
@@ -258,12 +268,12 @@ if(BUILD_EXAMPLES)
   )
 
   # Zip up the examples
-  add_custom_target(MSCL_docs_zip
+  add_custom_target(MSCL_Docs_Zip
     WORKING_DIRECTORY ${MSCL_OUTPUT_DIR}
-    DEPENDS MSCL_examples_copy
+    DEPENDS MSCL_Examples_Copy
     COMMAND ${CMAKE_COMMAND} -E tar "cf" "${MSCL_OUTPUT_DIR}/mscl_${MSCL_GIT_VERSION}_Examples.zip" --format=zip "Examples"
   )
-  add_dependencies(${MSCL_ZIP_TARGET} MSCL_docs_zip)
+  add_dependencies(${MSCL_ZIP_TARGET} MSCL_Docs_Zip)
 endif()
 if(BUILD_TESTS)
   enable_testing()

@@ -42,7 +42,7 @@ The following cache variables may also be set:
 #]=======================================================================]
 
 # This variable can be overridden to point to a different location where MSCL is installed
-if(NOT MSCL_ROOT_DIR)
+if(NOT DEFINED MSCL_ROOT_DIR)
   set(MSCL_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/MSCL" CACHE STRING "Directory to search for MSCL")
 endif()
 

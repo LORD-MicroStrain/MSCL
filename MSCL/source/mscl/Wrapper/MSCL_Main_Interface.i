@@ -286,17 +286,21 @@ namespace std
     %template(DeviceStatusValueMap)             map<enum mscl::DeviceStatusValues, mscl::Value>;
     %template(SampleRates)                      vector<mscl::SampleRate>;
     %template(ConfigIssues)                     vector<mscl::ConfigIssue>;
-    %template(MipChannelFields)                 vector<mscl::MipTypes::ChannelField>;
+    %template(MipChannelFields)                 vector<enum mscl::MipTypes::ChannelField>;
     %template(MipCommands)                      vector<mscl::MipTypes::Command>;
     %template(MipChannelIdentifiers)            vector<mscl::MipChannelIdentifier>;
     %template(MipCommandSet)                    vector<mscl::MipCommandBytes>;
     %template(MipFieldValues)                   vector<mscl::Value>;
     %template(MipCommandParamPair)              pair<mscl::MipTypes::Command, vector<mscl::Value>>;
     %template(MipCommandParameters)             vector<pair<mscl::MipTypes::Command, vector<mscl::Value>>>;
+    %template(ChannelIndex)                     pair<enum mscl::MipTypes::ChannelQualifier, uint8_t>;
+    %template(ChannelIndices)                   vector<pair<enum mscl::MipTypes::ChannelQualifier, uint8_t>>;
+    %template(ChannelFieldQualifiers)           map<enum mscl::MipTypes::ChannelField, vector<pair<enum mscl::MipTypes::ChannelQualifier, uint8_t>>>;
     %template(GnssReceivers)                    vector<mscl::GnssReceiverInfo>;
     %template(SensorRanges)                     vector<mscl::SensorRange>;
     %template(SensorRangeOptions)               map<enum mscl::SensorRange::Type, vector<mscl::SensorRange>>;
     %template(CommPortInfo)                     vector<mscl::DeviceCommPort>;
+    %template(EventTriggerStatus)               vector<mscl::EventTriggerInfo>;
     %template(ChannelGroups)                    vector<mscl::ChannelGroup>;
     %template(WirelessChannels)                 vector<mscl::WirelessChannel>;
     %template(DamageAngles)                     map<uint8_t, float>;
@@ -318,11 +322,13 @@ namespace std
     %template(AdvancedLowPassFilterConfig)      vector<mscl::AdvancedLowPassFilterData>;
     %template(AidingMeasurementSourceOptions)   vector<mscl::InertialTypes::AidingMeasurementSource>;
     %template(PpsSourceOptions)                 vector<mscl::InertialTypes::PpsSource>;
+    %template(GeographicSources)                vector<mscl::InertialTypes::GeographicSourceOption>;
     %template(GpioPinModeOptions)               vector<mscl::GpioConfiguration::PinModes>;
     %template(GpioBehaviorModes)                map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>;
     %template(GpioFeatureBehaviors)             map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>;
     %template(GpioPinOptions)                   map<uint8_t, map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>>;
     %template(EventInputTriggers)               array<uint8_t, mscl::EventTriggerCombinationParameter::MAX_INPUT_TRIGGERS>;
+    %template(EventTypes)                       vector<mscl::EventTypeInfo>;
 
 
 

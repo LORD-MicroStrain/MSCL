@@ -72,31 +72,6 @@ RUN set -ex \
     && tar -C /usr/local -xzf /tmp/turtle-${TURTLE_VERSION}.tar.gz include \
     && rm -rf /tmp/turtle-${TURTLE_VERSION}*
 
-# Really sucks that we have to do this, but right now CMake is broken on ARM, but we can fix it if we compile it ourselves
-ARG ARCH
-RUN set -ex \
-    && [ ${ARCH} = "arm32v7" ] \
-        && /bin/bash -c ' \
-            set -ex && \
-            cmake_version=$(cmake --version | head -1 | cut -d" " -f3) && \
-            cmake_major_version=$(echo ${cmake_version} | cut -d"." -f-2) && \
-            curl -fsSLo /tmp/cmake-${cmake_version}.tar.gz https://cmake.org/files/v${cmake_major_version}/cmake-${cmake_version}.tar.gz && \
-            tar -C /tmp/ -xzf /tmp/cmake-${cmake_version}.tar.gz && \
-            cd /tmp/cmake-${cmake_version} && \
-            export CFLAGS="-D_FILE_OFFSET_BITS=64" && \
-            export CXXFLAGS="-D_FILE_OFFSET_BITS=64" && \
-            ./bootstrap \
-                --prefix="/usr" \
-                --parallel=$(nproc) \
-                -- \
-                -DCMAKE_INSTALL_PREFIX="/usr" \
-                -DCMAKE_BUILD_TYPE="RELEASE" \
-                -DCMAKE_USE_OPENSSL=OFF && \
-            make -j$(nproc) && \
-            make install \
-        ' \
-        || echo "Not arm32, no need to rebuild CMAKE"
-
 # Install swig
 RUN set -ex \
     && yum -y remove \

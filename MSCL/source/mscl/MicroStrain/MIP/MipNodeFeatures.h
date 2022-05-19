@@ -87,6 +87,26 @@ namespace mscl
         //  The <MipTypes::MipCommands> supported by the Node.
         MipTypes::MipCommands supportedCommands() const;
 
+        //API Function: supportsChannelField
+        //    Checks whether or not the given <MipTypes::ChannelField> is supported by the Node.
+        //
+        //Parameters:
+        //    fieldId - The <MipTypes::ChannelField> to check if supported.
+        //
+        //Returns:
+        //    true if the <MipTypes::ChannelField> is supported by the Node, false otherwise.
+        bool supportsChannelField(MipTypes::ChannelField fieldId) const;
+
+        //API Function: filterSupportedChannelFields
+        //    Checks whether or not the <MipTypes::ChannelField> values in the specified list are supported by the Node and returns a list of those that are.
+        //
+        //Parameters:
+        //    fields - The <MipTypes::MipChannelFields> to check if supported.
+        //
+        //Returns:
+        //    <MipTypes::MipChannelFields> list of fields from the specified list that are supported by the device
+        MipTypes::MipChannelFields filterSupportedChannelFields(const MipTypes::MipChannelFields& fields) const;
+
         //API Function: supportedChannelFields
         //    Gets a list of the supported channel fields for a given <MipTypes::DataClass>.
         //
@@ -265,5 +285,47 @@ namespace mscl
         //Returns:
         //    A <GpioPinOptions> map of supported GPIO pin configurations
         const GpioPinOptions supportedGpioConfigurations() const;
+
+        //API Function: supportedDeclinationOptions
+        //    Gets a vector of supported declination source options
+        //
+        //Returns:
+        //    A <GeographicSources> vector of supported declination source options
+        GeographicSources supportedDeclinationSources() const;
+
+        //API Function: supportedInclinationOptions
+        //    Gets a vector of supported inclination source options
+        //
+        //Returns:
+        //    A <GeographicSources> vector of supported inclination source options
+        GeographicSources supportedInclinationSources() const;
+
+        //API Function: supportedMagneticMagnitudeOptions
+        //    Gets a vector of supported magnetic magnitude source options
+        //
+        //Returns:
+        //    A <GeographicSources> vector of supported magnetic magnitude source options
+        GeographicSources supportedMagneticMagnitudeSources() const;
+
+        //API Function: supportedEventThresholdChannels
+        //    Gets the supported channel fields/qualifiers for event threshold configuration.
+        //
+        //Return:
+        //    <ChannelFieldQualifiers> - The supported channel fields/qualifiers.
+        MipTypes::ChannelFieldQualifiers supportedEventThresholdChannels() const;
+
+        //API Function: supportedEventActionInfo
+        //    Gets <EventSupportInfo> for event triggers and their types supported by the device.
+        //
+        //Returns:
+        //    <EventSupportInfo> of the event actions and their types
+        const EventSupportInfo supportedEventActionInfo() const;
+
+        //API Function: supportedEventTriggerInfo
+        //    Gets <EventSupportInfo> for event actions and their types supported by the device.
+        //
+        //Returns:
+        //    <EventSupportInfo> of the event triggers and their types
+        const EventSupportInfo supportedEventTriggerInfo() const;
     };
 }
