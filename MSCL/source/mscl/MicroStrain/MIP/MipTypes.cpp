@@ -743,6 +743,10 @@ namespace mscl
                 fields.push_back(MipTypes::getChannelField_toDataClass(chField, descSet));
             }
         }
+        else if (MipTypes::isSystemChannelField(chField))
+        {
+            fields.push_back(MipTypes::getChannelField_toDataClass(chField, DataClass::CLASS_SYSTEM));
+        }
         else
         {
             fields.push_back(chField);
@@ -761,6 +765,11 @@ namespace mscl
         if (MipTypes::isGnssChannelField(chField))
         {
             return MipTypes::getChannelField_toDataClass(chField, DataClass::CLASS_GNSS);
+        }
+
+        if (MipTypes::isSystemChannelField(chField))
+        {
+            return MipTypes::getChannelField_toDataClass(chField, DataClass::CLASS_SYSTEM);
         }
 
         return chField;
@@ -821,6 +830,9 @@ namespace mscl
         case DataClass::CLASS_GNSS5:
             return "_gnss5";
 
+        case DataClass::CLASS_SYSTEM:
+            return "_system";
+
         default:
             return "";
         }
@@ -839,6 +851,12 @@ namespace mscl
         std::vector<uint8> fields = SHARED_DATA_FIELDS();
         return std::find(fields.begin(), fields.end(), fieldId)
             != fields.end();
+    }
+
+    bool MipTypes::isSystemChannelField(const ChannelField chField)
+    {
+        const uint8 fieldId = Utils::lsb(static_cast<uint16>(chField));
+        return fieldId == static_cast<uint8>(CLASS_SYSTEM);
     }
 
     MipTypes::ChannelFieldQualifiers MipTypes::channelFieldQualifiers(const MipTypes::MipChannelFields fields)
