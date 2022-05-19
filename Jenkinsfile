@@ -25,22 +25,28 @@ pipeline {
             archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
           }
         }
-        /*
         stage('DEB ARM32') {
           agent { label 'linux-arm' }
+          options { skipDefaultCheckout() }
           steps {
-            sh ".devcontainer/build-debs.sh --arch arm32v7"
+            cleanWs()
+            checkout scm
+            sh "cp /usr/local/share/ca-certificates/* .devcontainer/extra_cas/"
+            sh ".devcontainer/docker_build_debs.sh --arch arm32v7"
             archiveArtifacts artifacts: 'build_ubuntu_arm32v7/*.deb'
           }
         }
         stage('RPM ARM64') {
           agent { label 'linux-arm64' }
+          options { skipDefaultCheckout() }
           steps {
-            sh ".devcontainer/build-rpm.sh --arch arm64v8"
+            cleanWs()
+            checkout scm
+            sh "cp /usr/local/share/ca-certificates/* .devcontainer/extra_cas/"
+            sh ".devcontainer/docker_build_rpms.sh --arch arm64v8"
             archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
           }
         }
-        */
       }
     }
   }
