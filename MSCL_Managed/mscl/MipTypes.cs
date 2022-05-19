@@ -538,6 +538,7 @@ public class MipTypes : global::System.IDisposable {
     CH_FIELD_GNSS_5_SHARED_DELTA_TIMESTAMP = 0x95D4
   }
 
+  public static readonly byte MIN_SHARED_FIELD_DESCRIPTOR = msclPINVOKE.MipTypes_MIN_SHARED_FIELD_DESCRIPTOR_get();
   public enum ChannelQualifier {
     CH_UNKNOWN = 0,
     CH_X = 1,

@@ -3627,6 +3627,9 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_DisplacementModels")]
   public static extern void delete_DisplacementModels(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipTypes_MIN_SHARED_FIELD_DESCRIPTOR_get")]
+  public static extern byte MipTypes_MIN_SHARED_FIELD_DESCRIPTOR_get();
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipTypes_channelName")]
   public static extern string MipTypes_channelName(int jarg1, int jarg2);
 
