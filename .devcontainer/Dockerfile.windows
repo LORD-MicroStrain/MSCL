@@ -193,7 +193,7 @@ ARG TURTLE_VERSION="1.3.2"
 RUN echo Installing Turtle `
     `
     # Download the zip file
-    && curl -SL --output %DOCKER_TEMP_DIR%\turtle-%TURTLE_VERSION%.zip https://iweb.dl.sourceforge.net/project/turtle/turtle/%TURTLE_VERSION%/turtle-%TURTLE_VERSION%.zip `
+    && curl -SL --output %DOCKER_TEMP_DIR%\turtle-%TURTLE_VERSION%.zip https://sourceforge.net/projects/turtle/files/turtle/%TURTLE_VERSION%/turtle-%TURTLE_VERSION%.zip/download `
     `
     # Extract to the library path
     && mkdir "%LIB_PATH%\turtle" `

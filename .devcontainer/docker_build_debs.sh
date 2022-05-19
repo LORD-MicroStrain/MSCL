@@ -59,9 +59,11 @@ docker run \
   ${docker_it_flags} \
   --entrypoint="/bin/bash" \
   -v "${project_dir}:/home/microstrain/MSCL" \
+  -w "/home/microstrain/MSCL" \
   --user="microstrain" \
   "${image_name}" -c " \
-    /home/microstrain/MSCL/BuildScripts/jenkins_linux.sh \
+    git fetch origin --tags; \
+    ./BuildScripts/build_linux.sh \
       ${python3_dirs_flag} \
       --python2Dir /usr/lib/python2.7 \
       --buildDir /home/microstrain/MSCL/${build_dir_name} \
