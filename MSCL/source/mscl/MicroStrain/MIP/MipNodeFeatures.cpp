@@ -891,4 +891,33 @@ namespace mscl
     {
         return m_nodeInfo.eventTriggerInfo();
     }
+
+    const bool MipNodeFeatures::supportsNorthCompensation() const
+    {
+        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_gx3_15:
+
+        case MipModels::node_3dm_gx4_15:
+
+        case MipModels::node_3dm_gx5_15:
+        case MipModels::node_3dm_gx5_10:
+
+        case MipModels::node_3dm_cv5_15:
+        case MipModels::node_3dm_cv5_10:
+
+        case MipModels::node_3dm_cx5_15:
+        case MipModels::node_3dm_cx5_10:
+
+        case MipModels::node_3dm_cl5_15:
+
+        case MipModels::node_3dm_cv7_ar:
+            return false;
+
+        default:
+            return true;
+        }
+    }
 }

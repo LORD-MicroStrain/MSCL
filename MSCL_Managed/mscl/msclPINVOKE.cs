@@ -5769,6 +5769,9 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedEventTriggerInfo")]
   public static extern global::System.IntPtr MipNodeFeatures_supportedEventTriggerInfo(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportsNorthCompensation")]
+  public static extern bool MipNodeFeatures_supportsNorthCompensation(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNode_doCommand__SWIG_0")]
   public static extern global::System.IntPtr MipNode_doCommand__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2, byte jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, bool jarg5, bool jarg6, byte jarg7);
 
