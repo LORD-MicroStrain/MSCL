@@ -1223,16 +1223,6 @@ namespace mscl
         //  bool - true if chField is a shared data field, false if it is not
         static bool isSharedChannelField(ChannelField chField);
 
-        //API Function: isSystemChannelField
-        //  Checks whether the provided <ChannelField> is a system field.
-        //
-        //Parameters:
-        //  chField - The <ChannelField> value to check
-        //
-        //Returns:
-        //  bool - True if chField is a system data field, false otherwise
-        static bool isSystemChannelField(ChannelField chField);
-
         //API Function: channelFieldQualifiers
         //    Gets a map of <ChannelField> values with all associated <ChannelQualifier> values and their index within the field.
         //
