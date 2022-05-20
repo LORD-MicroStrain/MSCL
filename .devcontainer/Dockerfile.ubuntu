@@ -41,6 +41,7 @@ RUN set -ex \
         cd /tmp/Python-${PYTHON3_VERSION}; \
         /tmp/Python-${PYTHON3_VERSION}/configure \
             --prefix=/usr \
+            --with-ensurepip=no \
             --without-static-libpython \
             --enable-shared; \
         make -j$(nproc); \

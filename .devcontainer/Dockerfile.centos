@@ -28,10 +28,23 @@ RUN set -ex \
 RUN set -ex && yum -y install python2-devel || yum -y install python-devel
 
 # We need CMake 3 for MSCL, so install that here
+ARG CMAKE_VERSION="3.23.0"
 RUN set -ex \
     && yum -y install epel-release \
-    && yum -y install cmake3 \
-    && ln -s /usr/bin/cmake3 /usr/bin/cmake
+    && export CMAKE_MAJOR_VERSION=$(echo ${CMAKE_VERSION} | cut -d"." -f-2) \
+    && curl -fsSLo /tmp/cmake-${CMAKE_VERSION}.tar.gz https://cmake.org/files/v${CMAKE_MAJOR_VERSION}/cmake-${CMAKE_VERSION}.tar.gz \
+    && tar -C /tmp/ -xzf /tmp/cmake-${CMAKE_VERSION}.tar.gz \
+    && cd /tmp/cmake-${CMAKE_VERSION} \
+    && ./bootstrap \
+        --prefix="/usr" \
+        --parallel=$(nproc) \
+        -- \
+        -DCMAKE_INSTALL_PREFIX="/usr" \
+        -DCMAKE_BUILD_TYPE="RELEASE" \
+        -DCMAKE_USE_OPENSSL=OFF \
+    && make -j$(nproc) \
+    && make install \
+    && rm -rf /tmp/cmake-*
 
 # Install additional python versions
 ARG PYTHON3_VERSIONS="3.5.10 3.6.15"
@@ -95,3 +108,6 @@ RUN set -ex \
         -s "/bin/bash" \
         microstrain \
     && echo 'microstrain ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+# Append /usr/lib to LD_LIBRARY_PATH? Feels like we shouldn't need to do this
+ENV LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:/usr/lib"
