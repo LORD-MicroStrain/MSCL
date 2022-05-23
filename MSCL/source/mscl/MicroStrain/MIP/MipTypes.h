@@ -880,7 +880,7 @@ namespace mscl
         };
 
         //API Constant: MIN_SHARED_FIELD_DESCRIPTOR
-        //  The minimum descriptor that marks the start of available shared data field descriptors. If a field descriptor is above 0x0D it is shared.
+        //  The minimum descriptor that marks the start of available shared data field descriptors. If a field descriptor is above 0xD0 it is shared.
         static const uint8 MIN_SHARED_FIELD_DESCRIPTOR = 0xD0;
 
         //====================================================================================================

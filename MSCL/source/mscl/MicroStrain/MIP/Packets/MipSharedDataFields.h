@@ -18,6 +18,7 @@ namespace mscl
         //API Enum: EventSource
         //  The event source value is the event trigger ID (1-based index) that caused the data packet to be output.
         //  If the event source is not an event trigger ID it will be one of the following:
+        //
         //      EVENT_SOURCE_NONE       - 0x00 - This packet was output due to normal data streaming, was not triggered by an event
         //      EVENT_SOURCE_UNKNOWN    - 0xFF - The Event Source field was not found in this packet
         enum EventSource
@@ -98,7 +99,7 @@ namespace mscl
 
         //API Function: gpsTimestamp
         //  Gets the GPS Timestamp value for the packet.
-        //  Note: On Gen 7 products and later this will generally be the same value as MipDataPacket::deviceTimestamp()
+        //  Note: On Gen 7 products and later this will generally be the same value as <MipDataPacket::deviceTimestamp()>
         //
         //Returns:
         //  <Timestamp> - the GPS timestamp value
@@ -120,7 +121,7 @@ namespace mscl
 
         //API Function: get
         //  Get the shared field <MipDataPoint> with the specified field and qualifier.
-        //  If qualifier is CH_UNKNOWN and there is only one data point for the field, that field will be returned.
+        //  If qualifier is <MipTypes::CH_UNKNOWN> and there is only one data point for the field, that field will be returned.
         //  Note: most users will not need to use this function
         //
         //Parameters:

@@ -48,6 +48,8 @@ namespace mscl
         //    The <MipDataPoints> within this packet
         MipDataPoints m_points;
 
+        //Variable: m_sharedFields
+        //    Accessors for the shared field information found within this packet
         MipSharedDataFields m_sharedFields;
 
         //Variable: m_collectedTime
@@ -108,6 +110,12 @@ namespace mscl
         //    The <MipDataPoints> that are contained within this packet.
         const MipDataPoints& data() const;
 
+
+        //API Function: shared
+        //    Gets the <MipSharedDataFields> object that makes the shared field information within this packet more easily accessible.
+        //
+        //Returns:
+        //    The <MipSharedDataFields> that are contained within this packet.
         const MipSharedDataFields& shared() const;
 
         //API Function: collectedTimestamp
