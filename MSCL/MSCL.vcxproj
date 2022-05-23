@@ -756,7 +756,6 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GNSS.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Sensor.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Shared.h" />
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_System.h" />
     <ClInclude Include="source\mscl\MicroStrain\Inertial\PositionOffset.h" />
     <ClInclude Include="source\mscl\MicroStrain\LinearEquation.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\CyclePower.h" />
@@ -784,6 +783,7 @@
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipDataPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipFieldParser.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipFieldParser_Displacement.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipFieldParser_System.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacketBuilder.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacketCollector.h" />
@@ -1085,7 +1085,6 @@
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_GNSS.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Sensor.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_Shared.cpp" />
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_System.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\Inertial\PositionOffset.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\LinearEquation.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\CyclePower.cpp" />
@@ -1113,6 +1112,7 @@
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipDataPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipFieldParser.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipFieldParser_Displacement.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipFieldParser_System.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacketBuilder.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacketCollector.cpp" />
