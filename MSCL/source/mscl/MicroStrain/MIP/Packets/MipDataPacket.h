@@ -12,6 +12,7 @@
 #include "mscl/MicroStrain/MIP/MipDataPoint.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "MipPacket.h"
+#include "MipSharedDataFields.h"
 
 #include <memory>
 #include <vector>
@@ -19,7 +20,6 @@
 namespace mscl
 {
     class MipFieldParser;
-    
 
     //API Class: MipDataPacket
     //    A Mip Data Packet that contains both valid and invalid data from a MIP Device.
@@ -47,6 +47,10 @@ namespace mscl
         //Variable: m_points
         //    The <MipDataPoints> within this packet
         MipDataPoints m_points;
+
+        //Variable: m_sharedFields
+        //    Accessors for the shared field information found within this packet
+        MipSharedDataFields m_sharedFields;
 
         //Variable: m_collectedTime
         //    The <Timestamp> of when this packet was received
@@ -105,6 +109,14 @@ namespace mscl
         //Returns:
         //    The <MipDataPoints> that are contained within this packet.
         const MipDataPoints& data() const;
+
+
+        //API Function: shared
+        //    Gets the <MipSharedDataFields> object that makes the shared field information within this packet more easily accessible.
+        //
+        //Returns:
+        //    The <MipSharedDataFields> that are contained within this packet.
+        const MipSharedDataFields& shared() const;
 
         //API Function: collectedTimestamp
         //  Gets the <Timestamp> representing when the packet was collected by MSCL.

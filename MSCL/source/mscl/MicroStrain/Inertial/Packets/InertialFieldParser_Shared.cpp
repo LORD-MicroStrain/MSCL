@@ -35,6 +35,31 @@ namespace mscl
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
+    //                                                        FieldParser_EventSource
+    const MipTypes::ChannelField FieldParser_EventSource::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_SHARED_EVENT_SOURCE;
+    const bool FieldParser_EventSource::REGISTERED = FieldParser_EventSource::registerParser();    //register the parser immediately
+
+    void FieldParser_EventSource::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the data
+        uint8 sourceTrigger = bytes.read_uint8();
+
+        MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
+        //add all the data points we just collected
+        result.push_back(MipDataPoint(chField, MipTypes::CH_ID, valueType_uint8, anyType(sourceTrigger)));
+    }
+
+    bool FieldParser_EventSource::registerParser()
+    {
+        static FieldParser_EventSource p;
+        return MipSharedFieldParser::registerSharedParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
     //                                                        FieldParser_Ticks
     const MipTypes::ChannelField FieldParser_Ticks::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_SHARED_TICKS;
     const bool FieldParser_Ticks::REGISTERED = FieldParser_Ticks::registerParser();    //register the parser immediately

@@ -23,6 +23,9 @@ Forthcoming
     - Event Trigger Configuration (0x0C,0x2E)
     - Sensor Range (0x0C,0x52)
     - Get Calibrated Sensor Ranges (0x0C,0x53)
+- Added support for MIP data:
+    - Event Source (0xFF,0xD0)
+- Added MipSharedDataFields (MipDataPacket::shared()) to more easily access shared fields within a packet
 - Added check for supported event trigger threshold qualifiers
 - Updated supported CV7 aiding measurement filters
 - Added check for supported geographic sources

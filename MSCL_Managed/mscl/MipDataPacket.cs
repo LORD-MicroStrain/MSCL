@@ -48,6 +48,12 @@ public class MipDataPacket : MipPacket {
     return ret;
   }
 
+  public MipSharedDataFields shared() {
+    MipSharedDataFields ret = new MipSharedDataFields(msclPINVOKE.MipDataPacket_shared(swigCPtr), false);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public Timestamp collectedTimestamp() {
     Timestamp ret = new Timestamp(msclPINVOKE.MipDataPacket_collectedTimestamp(swigCPtr), false);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
