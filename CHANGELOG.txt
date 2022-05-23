@@ -26,6 +26,7 @@ Forthcoming
 - Added check for supported event trigger threshold qualifiers
 - Updated supported CV7 aiding measurement filters
 - Added check for supported geographic sources
+- Added check for complementary filter north compensation support
 
 64.2.2 - 2022-03-08
 - Reverted defaul MIP command timeout to 250 ms

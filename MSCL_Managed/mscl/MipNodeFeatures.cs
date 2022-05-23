@@ -230,6 +230,12 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public bool supportsNorthCompensation() {
+    bool ret = msclPINVOKE.MipNodeFeatures_supportsNorthCompensation(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }
 
 }

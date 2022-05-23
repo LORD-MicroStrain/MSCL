@@ -1,4 +1,4 @@
-﻿Format: 2.0.2
+Format: 2.0.2
 
 # This is the file you use to provide information about your project.  It can
 # also be used to specify input and output settings so you don't have to
@@ -11,7 +11,7 @@
 Title: MSCL Full Documentation
 Subtitle: MicroStrain Communication Library
 
-Copyright: © 2018 LORD Corporation. All Rights Reserved.
+Copyright: © 2022 Parker Hannifin Corporation. All Rights Reserved.
 
 Timestamp: Updated mm/dd/yyyy
 #    m     - Single digit month, when possible.  January is "1".
