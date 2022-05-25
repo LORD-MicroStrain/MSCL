@@ -10,20 +10,20 @@
 
 namespace mscl {
 
-public class EventActionGpioParameters : global::System.IDisposable {
+public class EventActionGpioParameter : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
 
-  internal EventActionGpioParameters(global::System.IntPtr cPtr, bool cMemoryOwn) {
+  internal EventActionGpioParameter(global::System.IntPtr cPtr, bool cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(EventActionGpioParameters obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(EventActionGpioParameter obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  ~EventActionGpioParameters() {
+  ~EventActionGpioParameter() {
     Dispose(false);
   }
 
@@ -37,7 +37,7 @@ public class EventActionGpioParameters : global::System.IDisposable {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_EventActionGpioParameters(swigCPtr);
+          msclPINVOKE.delete_EventActionGpioParameter(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
@@ -46,29 +46,29 @@ public class EventActionGpioParameters : global::System.IDisposable {
 
   public byte pin {
     set {
-      msclPINVOKE.EventActionGpioParameters_pin_set(swigCPtr, value);
+      msclPINVOKE.EventActionGpioParameter_pin_set(swigCPtr, value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      byte ret = msclPINVOKE.EventActionGpioParameters_pin_get(swigCPtr);
+      byte ret = msclPINVOKE.EventActionGpioParameter_pin_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
   }
 
-  public EventActionGpioParameters.Mode mode {
+  public EventActionGpioParameter.Mode mode {
     set {
-      msclPINVOKE.EventActionGpioParameters_mode_set(swigCPtr, (int)value);
+      msclPINVOKE.EventActionGpioParameter_mode_set(swigCPtr, (int)value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      EventActionGpioParameters.Mode ret = (EventActionGpioParameters.Mode)msclPINVOKE.EventActionGpioParameters_mode_get(swigCPtr);
+      EventActionGpioParameter.Mode ret = (EventActionGpioParameter.Mode)msclPINVOKE.EventActionGpioParameter_mode_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
   }
 
-  public EventActionGpioParameters() : this(msclPINVOKE.new_EventActionGpioParameters(), true) {
+  public EventActionGpioParameter() : this(msclPINVOKE.new_EventActionGpioParameter(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

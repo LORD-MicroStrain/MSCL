@@ -44,34 +44,34 @@ public class EventActionParameters : global::System.IDisposable {
     }
   }
 
-  public EventActionGpioParameters gpio {
+  public EventActionParameters() : this(msclPINVOKE.new_EventActionParameters(), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public EventActionGpioParameter gpio {
     set {
-      msclPINVOKE.EventActionParameters_gpio_set(swigCPtr, EventActionGpioParameters.getCPtr(value));
+      msclPINVOKE.EventActionParameters_gpio_set(swigCPtr, EventActionGpioParameter.getCPtr(value));
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
       global::System.IntPtr cPtr = msclPINVOKE.EventActionParameters_gpio_get(swigCPtr);
-      EventActionGpioParameters ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventActionGpioParameters(cPtr, false);
+      EventActionGpioParameter ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventActionGpioParameter(cPtr, false);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
   }
 
-  public EventActionMessageParameters message {
+  public EventActionMessageParameter message {
     set {
-      msclPINVOKE.EventActionParameters_message_set(swigCPtr, EventActionMessageParameters.getCPtr(value));
+      msclPINVOKE.EventActionParameters_message_set(swigCPtr, EventActionMessageParameter.getCPtr(value));
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
       global::System.IntPtr cPtr = msclPINVOKE.EventActionParameters_message_get(swigCPtr);
-      EventActionMessageParameters ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventActionMessageParameters(cPtr, false);
+      EventActionMessageParameter ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventActionMessageParameter(cPtr, false);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
-  }
-
-  public EventActionParameters() : this(msclPINVOKE.new_EventActionParameters(), true) {
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
 }

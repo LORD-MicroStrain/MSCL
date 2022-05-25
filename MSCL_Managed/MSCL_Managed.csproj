@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -144,6 +144,10 @@
     <Compile Include="mscl\EnableDisableMeasurements.cs" />
     <Compile Include="mscl\EstimationControlOptions.cs" />
     <Compile Include="mscl\EulerAngles.cs" />
+    <Compile Include="mscl\EventActionConfiguration.cs" />
+    <Compile Include="mscl\EventActionGpioParameter.cs" />
+    <Compile Include="mscl\EventActionMessageParameter.cs" />
+    <Compile Include="mscl\EventActionParameters.cs" />
     <Compile Include="mscl\EventControlMode.cs" />
     <Compile Include="mscl\EventInputTriggers.cs" />
     <Compile Include="mscl\EventSupportInfo.cs" />

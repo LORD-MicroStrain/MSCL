@@ -10,20 +10,20 @@
 
 namespace mscl {
 
-public class EventActionMessageParameters : global::System.IDisposable {
+public class EventActionMessageParameter : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
 
-  internal EventActionMessageParameters(global::System.IntPtr cPtr, bool cMemoryOwn) {
+  internal EventActionMessageParameter(global::System.IntPtr cPtr, bool cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(EventActionMessageParameters obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(EventActionMessageParameter obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  ~EventActionMessageParameters() {
+  ~EventActionMessageParameter() {
     Dispose(false);
   }
 
@@ -37,7 +37,7 @@ public class EventActionMessageParameters : global::System.IDisposable {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_EventActionMessageParameters(swigCPtr);
+          msclPINVOKE.delete_EventActionMessageParameter(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
@@ -46,11 +46,11 @@ public class EventActionMessageParameters : global::System.IDisposable {
 
   public MipTypes.DataClass descriptorSet {
     set {
-      msclPINVOKE.EventActionMessageParameters_descriptorSet_set(swigCPtr, (int)value);
+      msclPINVOKE.EventActionMessageParameter_descriptorSet_set(swigCPtr, (int)value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      MipTypes.DataClass ret = (MipTypes.DataClass)msclPINVOKE.EventActionMessageParameters_descriptorSet_get(swigCPtr);
+      MipTypes.DataClass ret = (MipTypes.DataClass)msclPINVOKE.EventActionMessageParameter_descriptorSet_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
@@ -58,47 +58,38 @@ public class EventActionMessageParameters : global::System.IDisposable {
 
   public SampleRate decimation {
     set {
-      msclPINVOKE.EventActionMessageParameters_decimation_set(swigCPtr, SampleRate.getCPtr(value));
+      msclPINVOKE.EventActionMessageParameter_decimation_set(swigCPtr, SampleRate.getCPtr(value));
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      global::System.IntPtr cPtr = msclPINVOKE.EventActionMessageParameters_decimation_get(swigCPtr);
+      global::System.IntPtr cPtr = msclPINVOKE.EventActionMessageParameter_decimation_get(swigCPtr);
       SampleRate ret = (cPtr == global::System.IntPtr.Zero) ? null : new SampleRate(cPtr, false);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
   }
 
-  public byte numFields {
-    set {
-      msclPINVOKE.EventActionMessageParameters_numFields_set(swigCPtr, value);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      byte ret = msclPINVOKE.EventActionMessageParameters_numFields_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
-  }
-
-  public EventDescriptors descriptors {
-    set {
-      msclPINVOKE.EventActionMessageParameters_descriptors_set(swigCPtr, EventDescriptors.getCPtr(value));
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      global::System.IntPtr cPtr = msclPINVOKE.EventActionMessageParameters_descriptors_get(swigCPtr);
-      EventDescriptors ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventDescriptors(cPtr, false);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
-  }
-
-  public EventActionMessageParameters() : this(msclPINVOKE.new_EventActionMessageParameters(), true) {
+  public void validateChannelFields(MipChannelFields supportedFields) {
+    msclPINVOKE.EventActionMessageParameter_validateChannelFields(swigCPtr, MipChannelFields.getCPtr(supportedFields));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public static readonly byte MAX_DESCRIPTORS = msclPINVOKE.EventActionMessageParameters_MAX_DESCRIPTORS_get();
+  public void setChannelFields(MipChannelFields fields) {
+    msclPINVOKE.EventActionMessageParameter_setChannelFields(swigCPtr, MipChannelFields.getCPtr(fields));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public MipChannelFields getChannelFields() {
+    MipChannelFields ret = new MipChannelFields(msclPINVOKE.EventActionMessageParameter_getChannelFields(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public EventActionMessageParameter() : this(msclPINVOKE.new_EventActionMessageParameter(), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public static readonly byte MAX_DESCRIPTORS = msclPINVOKE.EventActionMessageParameter_MAX_DESCRIPTORS_get();
 }
 
 }

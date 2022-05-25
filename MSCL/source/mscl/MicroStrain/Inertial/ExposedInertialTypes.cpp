@@ -1010,6 +1010,61 @@ namespace mscl
         m_unc = unc;
     }
 
+    void EventActionMessageParameter::validateChannelFields(MipTypes::MipChannelFields supportedFields)
+    {
+        // Filtered fields only in the data set
+        MipTypes::MipChannelFields fields;
+
+        // Filter out only supported fields in the descriptor set
+        for (const MipTypes::ChannelField field : m_channelFields)
+        {
+            if (std::find(supportedFields.begin(), supportedFields.end(), field) != supportedFields.end())
+            {
+                fields.push_back(field);
+            }
+        }
+
+        // Resize fields to MAX_DESCRIPTORS if needed
+        if (fields.size() > MAX_DESCRIPTORS)
+        {
+            fields.resize(MAX_DESCRIPTORS);
+        }
+
+        // Make sure the descriptors are defaulted
+        m_channelFields.fill(static_cast<MipTypes::ChannelField>(0));
+        
+        // Copy the values to descriptors
+        std::copy(fields.begin(), fields.end(), m_channelFields.begin());
+    }
+
+    void EventActionMessageParameter::setChannelFields(const MipTypes::MipChannelFields fields)
+    {
+        // Keep the size at or below MAX_DESCRIPTORS
+        const uint8 size = std::min(static_cast<uint8>(fields.size()), MAX_DESCRIPTORS);
+
+        // Make sure the fields are defaulted
+        m_channelFields.fill(static_cast<MipTypes::ChannelField>(0));
+
+        // Copy the fields into the descriptors
+        std::copy_n(fields.begin(), size, m_channelFields.begin());
+    }
+
+    MipTypes::MipChannelFields EventActionMessageParameter::getChannelFields() const
+    {
+        MipTypes::MipChannelFields fields;
+
+        for (const MipTypes::ChannelField& field : m_channelFields)
+        {
+            // Only add non-default values
+            if (field != 0)
+            {
+                fields.push_back(field);
+            }
+        }
+
+        return fields;
+    }
+
     bool EventTriggerInfo::isActive() const
     {
         return status.get(ACTIVE) > 0;
