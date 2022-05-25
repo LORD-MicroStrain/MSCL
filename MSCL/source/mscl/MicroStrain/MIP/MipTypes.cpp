@@ -447,6 +447,8 @@ namespace mscl
         {ChannelId(CH_FIELD_DISP_DISPLACEMENT_MM, CH_DISPLACEMENT), "displacementMillimeters"},
 
         // Shared Inertial Channels
+        { ChannelId(CH_FIELD_SENSOR_SHARED_EVENT_SOURCE, CH_ID), "eventInfo_triggerId" },
+
         { ChannelId(CH_FIELD_SENSOR_SHARED_TICKS, CH_TICK), "timeInfo_ticks" },
 
         { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_TICKS, CH_DELTA_TICK), "timeInfo_deltaTicks" },
@@ -717,16 +719,6 @@ namespace mscl
         };
     }
 
-    std::vector<uint8> MipTypes::SHARED_DATA_FIELDS()
-    {
-        return{
-            Utils::lsb(MipTypes::ChannelField::CH_FIELD_SENSOR_SHARED_TICKS),
-            Utils::lsb(MipTypes::ChannelField::CH_FIELD_SENSOR_SHARED_DELTA_TICKS),
-            Utils::lsb(MipTypes::ChannelField::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP),
-            Utils::lsb(MipTypes::ChannelField::CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP)
-        };
-    }
-
     MipTypes::MipChannelFields MipTypes::getChannelFields_allDataClasses(MipTypes::ChannelField chField)
     {
         MipChannelFields fields;
@@ -839,10 +831,8 @@ namespace mscl
 
     bool MipTypes::isSharedChannelField(MipTypes::ChannelField chField)
     {
-        uint8 fieldId = Utils::lsb(static_cast<uint16>(chField));
-        std::vector<uint8> fields = SHARED_DATA_FIELDS();
-        return std::find(fields.begin(), fields.end(), fieldId)
-            != fields.end();
+        uint8 fieldDescriptor = Utils::lsb(static_cast<uint16>(chField));
+        return fieldDescriptor >= MipTypes::MIN_SHARED_FIELD_DESCRIPTOR;
     }
 
     MipTypes::ChannelFieldQualifiers MipTypes::channelFieldQualifiers(const MipTypes::MipChannelFields fields)

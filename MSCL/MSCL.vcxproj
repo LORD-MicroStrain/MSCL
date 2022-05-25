@@ -787,6 +787,7 @@
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacketBuilder.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipPacketCollector.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipSharedDataFields.h" />
     <ClInclude Include="source\mscl\MicroStrain\RTK\Commands\ActivationCode.h" />
     <ClInclude Include="source\mscl\MicroStrain\RTK\Commands\DeviceStatusFlags.h" />
     <ClInclude Include="source\mscl\MicroStrain\RTK\RTKNode.h" />
@@ -1116,6 +1117,7 @@
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacketBuilder.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipPacketCollector.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipSharedDataFields.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\RTK\Commands\ActivationCode.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\RTK\Commands\DeviceStatusFlags.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\RTK\RTKNode.cpp" />
