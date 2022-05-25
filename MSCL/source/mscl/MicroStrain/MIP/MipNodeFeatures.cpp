@@ -38,6 +38,7 @@ namespace mscl
             case MipTypes::CLASS_GNSS3:
             case MipTypes::CLASS_GNSS4:
             case MipTypes::CLASS_GNSS5:
+            case MipTypes::CLASS_SYSTEM:
                 return true;
 
             default:

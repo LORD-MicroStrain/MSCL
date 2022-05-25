@@ -1019,6 +1019,9 @@
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipSharedDataFields.h">
       <Filter>MicroStrain\MIP\Packets</Filter>
     </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_System.h">
+      <Filter>MicroStrain\Inertial\Packets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp">
@@ -1928,6 +1931,9 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipSharedDataFields.cpp">
       <Filter>MicroStrain\MIP\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_System.cpp">
+      <Filter>MicroStrain\Inertial\Packets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

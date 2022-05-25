@@ -644,10 +644,10 @@ namespace mscl
         } }*/
 
 
-        /*// 0xA0 System Data
+        // 0xA0 System Data
 
         // (0xA0, 0x01)
-        { CH_FIELD_SYSTEM_BUILT_IN_TEST,{
+        /*{ CH_FIELD_SYSTEM_BUILT_IN_TEST,{
             // TODO: Figure out channel qualifiers
             ChannelIndex(CH_, 1),
             ChannelIndex(CH_, 2),
@@ -665,16 +665,16 @@ namespace mscl
             ChannelIndex(CH_, 14),
             ChannelIndex(CH_, 15),
             ChannelIndex(CH_, 16)
-        } },
+        } },*/
         // (0xA0, 0x02)
-        { CH_FIELD_SYSTEM_TIME_SYNC_STATUS,{
+        /*{ CH_FIELD_SYSTEM_TIME_SYNC_STATUS,{
             ChannelIndex(CH_TIME_SYNC,     1),
             ChannelIndex(CH_LAST_PPS_RCVD, 2)
-        } },
+        } },*/
         // (0xA0, 0x03)
-        { CH_FIELD_SYSTEM_GPIO_STATE,{
+        /*{ CH_FIELD_SYSTEM_GPIO_STATE,{
             ChannelIndex(CH_GPIO_STATES, 1)
-        } },
+        } },*/
         // (0xA0, 0xD3)
         { CH_FIELD_SYSTEM_SHARED_GPS_TIMESTAMP,{
             ChannelIndex(CH_TIME_OF_WEEK, 1),
@@ -682,11 +682,11 @@ namespace mscl
             ChannelIndex(CH_VALID_FLAGS,  3)
         } },
         // (0xA0, 0xD5)
-        { CH_FIELD_SYSTEM_SHARED_REFERENCE_TIMESTAMP,{
+        /*{ CH_FIELD_SYSTEM_SHARED_REFERENCE_TIMESTAMP,{
             ChannelIndex(CH_NANOSECONDS, 1)
-        } },
+        } },*/
         // (0xA0, 0xD7)
-        { CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP,{
+        /*{ CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP,{
             ChannelIndex(CH_NANOSECONDS, 1),
             ChannelIndex(CH_VALID_FLAGS, 2)
         } }*/
@@ -714,7 +714,8 @@ namespace mscl
             DataClass::CLASS_GNSS2,
             DataClass::CLASS_GNSS3,
             DataClass::CLASS_GNSS4,
-            DataClass::CLASS_GNSS5
+            DataClass::CLASS_GNSS5,
+            DataClass::CLASS_SYSTEM
         };
     }
 
@@ -812,6 +813,9 @@ namespace mscl
             return "_gnss4";
         case DataClass::CLASS_GNSS5:
             return "_gnss5";
+
+        case DataClass::CLASS_SYSTEM:
+            return "_system";
 
         default:
             return "";

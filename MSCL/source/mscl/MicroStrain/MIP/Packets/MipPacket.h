@@ -164,6 +164,7 @@ namespace mscl
         //    DESC_SET_DATA_RTK         - 0x93    - Data Packet, RTK (GNSS 3) Set
         //    DESC_SET_DATA_GNSS_4      - 0x94    - Data Packet, GNSS 4 Set
         //    DESC_SET_DATA_GNSS_5      - 0x95    - Data Packet, GNSS 5 Set
+        //    DESC_SET_DATA_SYSTEM      - 0xA0    - Data Packet, System Set
         //=====================================================================================================
         enum
         {
@@ -182,7 +183,8 @@ namespace mscl
             DESC_SET_DATA_GNSS_3         = MipTypes::CLASS_GNSS3,
             DESC_SET_DATA_RTK            = MipTypes::CLASS_RTK,
             DESC_SET_DATA_GNSS_4         = MipTypes::CLASS_GNSS4,
-            DESC_SET_DATA_GNSS_5         = MipTypes::CLASS_GNSS5
+            DESC_SET_DATA_GNSS_5         = MipTypes::CLASS_GNSS5,
+            DESC_SET_DATA_SYSTEM         = MipTypes::CLASS_SYSTEM
         };
     };
 #endif

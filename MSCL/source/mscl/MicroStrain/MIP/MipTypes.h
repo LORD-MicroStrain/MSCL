@@ -33,6 +33,7 @@ namespace mscl
         //  CLASS_RTK           - 0x93 - The RTK MIP data class
         //  CLASS_GNSS4         - 0x94 - The GNSS Receiver 4 MIP data class
         //  CLASS_GNSS5         - 0x95 - The GNSS Receiver 5 MIP data class
+        //  CLASS_SYSTEM        - 0xA0 - The System MIP data class
         enum DataClass
         {
             CLASS_AHRS_IMU     = 0x80,
@@ -47,7 +48,9 @@ namespace mscl
             CLASS_RTK   = 0x93,
 
             CLASS_GNSS4 = 0x94,
-            CLASS_GNSS5 = 0x95
+            CLASS_GNSS5 = 0x95,
+
+            CLASS_SYSTEM = 0xA0 
         };
 
         //API Enums: FunctionSelector
@@ -613,6 +616,10 @@ namespace mscl
         //  CH_FIELD_GNSS_5_SHARED_DELTA_TICKS                      - 0x95D2    - Delta Ticks
         //  CH_FIELD_GNSS_5_SHARED_GPS_TIMESTAMP                    - 0x95D3    - GPS Timestamp
         //  CH_FIELD_GNSS_5_SHARED_DELTA_TIMESTAMP                  - 0x95D4    - Delta GPS Timestamp
+        //  CH_FIELD_SYSTEM_SHARED_TICKS                            - 0xA0D1    - Ticks
+        //  CH_FIELD_SYSTEM_SHARED_DELTA_TICKS                      - 0xA0D2    - Delta Ticks
+        //  CH_FIELD_SYSTEM_SHARED_GPS_TIMESTAMP                    - 0xA0D3    - GPS Timestamp
+        //  CH_FIELD_SYSTEM_SHARED_DELTA_TIMESTAMP                  - 0xA0D4    - Delta GPS Timestamp
         //====================================================================================================
         enum ChannelField
         {
@@ -877,6 +884,10 @@ namespace mscl
             CH_FIELD_GNSS_5_SHARED_DELTA_TICKS                      = 0x95D2,
             CH_FIELD_GNSS_5_SHARED_GPS_TIMESTAMP                    = 0x95D3,
             CH_FIELD_GNSS_5_SHARED_DELTA_TIMESTAMP                  = 0x95D4,
+            CH_FIELD_SYSTEM_SHARED_TICKS                            = 0xA0D1,
+            CH_FIELD_SYSTEM_SHARED_DELTA_TICKS                      = 0xA0D2,
+            CH_FIELD_SYSTEM_SHARED_GPS_TIMESTAMP                    = 0xA0D3,
+            CH_FIELD_SYSTEM_SHARED_DELTA_TIMESTAMP                  = 0xA0D4,
         };
 
         //API Constant: MIN_SHARED_FIELD_DESCRIPTOR
