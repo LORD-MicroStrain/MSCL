@@ -15,4 +15,30 @@ namespace mscl
     //linking to an executable. Defining this variable, and then using it
     //elsewhere, will force this file to be included
     bool _forceLibraryToIncludeCompilationUnit_System;
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_TimeSyncStatus
+    const MipTypes::ChannelField FieldParser_TimeSyncStatus::FIELD_TYPE = MipTypes::CH_FIELD_SYSTEM_TIME_SYNC_STATUS;
+    const bool FieldParser_TimeSyncStatus::REGISTERED = registerParser();    //register the parser immediately
+
+    void FieldParser_TimeSyncStatus::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the values
+        const bool timeSync = bytes.read_uint8() > 0;
+        const uint8 lastPpsReceived = bytes.read_uint8();
+
+        //create the data points and add them to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_STATUS, valueType_bool, anyType(timeSync)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_LAST_PPS_RCVD, valueType_uint8, anyType(lastPpsReceived)));
+    }
+
+    bool FieldParser_TimeSyncStatus::registerParser()
+    {
+        static FieldParser_TimeSyncStatus p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
 }

@@ -617,6 +617,7 @@ namespace mscl
         //  CH_FIELD_GNSS_5_SHARED_GPS_TIMESTAMP                    - 0x95D3    - GPS Timestamp
         //  CH_FIELD_GNSS_5_SHARED_DELTA_TIMESTAMP                  - 0x95D4    - Delta GPS Timestamp
         //  CH_FIELD_SYSTEM_SHARED_TICKS                            - 0xA0D1    - Ticks
+        //  CH_FIELD_SYSTEM_TIME_SYNC_STATUS                        - 0xA002    - Time Sync Status
         //  CH_FIELD_SYSTEM_SHARED_DELTA_TICKS                      - 0xA0D2    - Delta Ticks
         //  CH_FIELD_SYSTEM_SHARED_GPS_TIMESTAMP                    - 0xA0D3    - GPS Timestamp
         //  CH_FIELD_SYSTEM_SHARED_DELTA_TIMESTAMP                  - 0xA0D4    - Delta GPS Timestamp
@@ -884,6 +885,7 @@ namespace mscl
             CH_FIELD_GNSS_5_SHARED_DELTA_TICKS                      = 0x95D2,
             CH_FIELD_GNSS_5_SHARED_GPS_TIMESTAMP                    = 0x95D3,
             CH_FIELD_GNSS_5_SHARED_DELTA_TIMESTAMP                  = 0x95D4,
+            CH_FIELD_SYSTEM_TIME_SYNC_STATUS                        = 0xA002,
             CH_FIELD_SYSTEM_SHARED_TICKS                            = 0xA0D1,
             CH_FIELD_SYSTEM_SHARED_DELTA_TICKS                      = 0xA0D2,
             CH_FIELD_SYSTEM_SHARED_GPS_TIMESTAMP                    = 0xA0D3,
@@ -1010,6 +1012,7 @@ namespace mscl
         //    CH_M8                         - 110 - Matrix M8
         //    CH_NANOSECONDS                - 111 - Nanoseconds
         //    CH_VALID_FLAGS                - 112 - Valid Flags
+        //    CH_LAST_PPS_RCVD              - 113 - Last PPS Received
         //====================================================================================================
         enum ChannelQualifier
         {
@@ -1123,7 +1126,8 @@ namespace mscl
             CH_M7                         = 109,
             CH_M8                         = 110,
             CH_NANOSECONDS                = 111,
-            CH_VALID_FLAGS                = 112
+            CH_VALID_FLAGS                = 112,
+            CH_LAST_PPS_RCVD              = 113
         };
 
         //API Typedefs:

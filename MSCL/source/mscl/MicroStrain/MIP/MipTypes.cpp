@@ -446,6 +446,9 @@ namespace mscl
         {ChannelId(CH_FIELD_DISP_DISPLACEMENT_RAW, CH_DISPLACEMENT), "rawDisplacement"},
         {ChannelId(CH_FIELD_DISP_DISPLACEMENT_MM, CH_DISPLACEMENT), "displacementMillimeters"},
 
+        // System Data
+        {ChannelId(CH_FIELD_SYSTEM_TIME_SYNC_STATUS, CH_STATUS), "systemTimeSyncStatus"},
+
         // Shared Inertial Channels
         { ChannelId(CH_FIELD_SENSOR_SHARED_EVENT_SOURCE, CH_ID), "eventInfo_triggerId" },
 
@@ -667,10 +670,10 @@ namespace mscl
             ChannelIndex(CH_, 16)
         } },*/
         // (0xA0, 0x02)
-        /*{ CH_FIELD_SYSTEM_TIME_SYNC_STATUS,{
-            ChannelIndex(CH_TIME_SYNC,     1),
+        { CH_FIELD_SYSTEM_TIME_SYNC_STATUS,{
+            ChannelIndex(CH_STATUS,        1),
             ChannelIndex(CH_LAST_PPS_RCVD, 2)
-        } },*/
+        } },
         // (0xA0, 0x03)
         /*{ CH_FIELD_SYSTEM_GPIO_STATE,{
             ChannelIndex(CH_GPIO_STATES, 1)
