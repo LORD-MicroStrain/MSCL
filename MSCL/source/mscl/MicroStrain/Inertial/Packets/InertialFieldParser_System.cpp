@@ -26,12 +26,12 @@ namespace mscl
         DataBuffer bytes(field.fieldData());
 
         //get the values
-        const bool timeSync = bytes.read_uint8() > 0;
-        const uint8 lastPpsReceived = bytes.read_uint8();
+        const bool ppsValid = bytes.read_uint8() > 0;
+        const uint8 lastPps = bytes.read_uint8();
 
         //create the data points and add them to the result container
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_STATUS, valueType_bool, anyType(timeSync)));
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_LAST_PPS_RCVD, valueType_uint8, anyType(lastPpsReceived)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_PPS_VALID, valueType_bool, anyType(ppsValid)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_LAST_PPS, valueType_uint8, anyType(lastPps)));
     }
 
     bool FieldParser_TimeSyncStatus::registerParser()
