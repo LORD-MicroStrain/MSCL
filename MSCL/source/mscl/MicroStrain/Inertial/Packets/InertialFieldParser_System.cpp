@@ -15,4 +15,27 @@ namespace mscl
     //linking to an executable. Defining this variable, and then using it
     //elsewhere, will force this file to be included
     bool _forceLibraryToIncludeCompilationUnit_System;
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_GpioState
+    const MipTypes::ChannelField FieldParser_GpioState::FIELD_TYPE = MipTypes::CH_FIELD_SYSTEM_GPIO_STATE;
+    const bool FieldParser_GpioState::REGISTERED = registerParser();    //register the parser immediately
+
+    void FieldParser_GpioState::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the value
+        const uint8 states = bytes.read_uint8();
+
+        //create the data point and add it to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_STATUS, valueType_uint8, anyType(states)));
+    }
+
+    bool FieldParser_GpioState::registerParser()
+    {
+        static FieldParser_GpioState p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
 }
