@@ -151,6 +151,11 @@ namespace mscl
         return m_nodeInfo.supportedSampleRates(dataClass);
     }
 
+    const uint16& MipNodeFeatures::baseDataRate(MipTypes::DataClass dataClass) const
+    {
+        return m_nodeInfo.baseDataRate(dataClass);
+    }
+
     const GnssReceivers& MipNodeFeatures::gnssReceiverInfo() const
     {
         return m_nodeInfo.gnssReceiverInfo();

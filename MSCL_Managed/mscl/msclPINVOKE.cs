@@ -5481,6 +5481,9 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_EventTriggerCombinationParameter")]
   public static extern void delete_EventTriggerCombinationParameter(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_EventTriggerParameters")]
+  public static extern global::System.IntPtr new_EventTriggerParameters();
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventTriggerParameters_gpio_set")]
   public static extern void EventTriggerParameters_gpio_set(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
@@ -5498,9 +5501,6 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventTriggerParameters_combination_get")]
   public static extern global::System.IntPtr EventTriggerParameters_combination_get(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_EventTriggerParameters")]
-  public static extern global::System.IntPtr new_EventTriggerParameters();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_EventTriggerParameters")]
   public static extern void delete_EventTriggerParameters(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -5550,23 +5550,17 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventActionMessageParameter_MAX_DESCRIPTORS_get")]
   public static extern byte EventActionMessageParameter_MAX_DESCRIPTORS_get();
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventActionMessageParameter_descriptorSet_set")]
-  public static extern void EventActionMessageParameter_descriptorSet_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventActionMessageParameter_sampleRate_set")]
+  public static extern void EventActionMessageParameter_sampleRate_set(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventActionMessageParameter_descriptorSet_get")]
-  public static extern int EventActionMessageParameter_descriptorSet_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventActionMessageParameter_sampleRate_get")]
+  public static extern global::System.IntPtr EventActionMessageParameter_sampleRate_get(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventActionMessageParameter_decimation_set")]
-  public static extern void EventActionMessageParameter_decimation_set(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventActionMessageParameter_decimation_get")]
-  public static extern global::System.IntPtr EventActionMessageParameter_decimation_get(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventActionMessageParameter_validateChannelFields")]
-  public static extern void EventActionMessageParameter_validateChannelFields(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventActionMessageParameter_dataClass")]
+  public static extern int EventActionMessageParameter_dataClass(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventActionMessageParameter_setChannelFields")]
-  public static extern void EventActionMessageParameter_setChannelFields(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern void EventActionMessageParameter_setChannelFields(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_EventActionMessageParameter_getChannelFields")]
   public static extern global::System.IntPtr EventActionMessageParameter_getChannelFields(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -5798,6 +5792,9 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedSampleRates")]
   public static extern global::System.IntPtr MipNodeFeatures_supportedSampleRates(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_baseDataRate")]
+  public static extern ushort MipNodeFeatures_baseDataRate(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_gnssReceiverInfo")]
   public static extern global::System.IntPtr MipNodeFeatures_gnssReceiverInfo(global::System.Runtime.InteropServices.HandleRef jarg1);

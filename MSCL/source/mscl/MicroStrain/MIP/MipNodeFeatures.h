@@ -139,6 +139,22 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the Node.
         const SampleRates& supportedSampleRates(MipTypes::DataClass dataClass) const;
 
+        //API Function: baseDataRate
+        //    Gets the base data rate for a given <MipTypes::DataClass>.
+        //
+        //Parameters:
+        //    dataClass - The <MipTypes::DataClass> to get base data rate for.
+        //
+        //Returns:
+        //    uint16 - the base data rate.
+        //
+        //Exceptions:
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Communication>: Timed out waiting for a response.
+        //    - <Error_NotSupported>: The <MipTypes::DataClass> is not supported by this node.
+        //    - <Error_Connection>: A connection error has occurred with the Node.
+        const uint16& baseDataRate(MipTypes::DataClass dataClass) const;
+
         //API Function: gnssReceiverInfo
         //    Gets a list of <GnssReceiverInfo> for supported GNSS receivers.
         //

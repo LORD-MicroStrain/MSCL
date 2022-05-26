@@ -89,7 +89,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        uint16 getDataRateBase(MipTypes::DataClass dataClass);
+        uint16 getDataRateBase(MipTypes::DataClass dataClass) const;
 
         //API Function: getActiveChannelFields
         //    Gets the current active channel fields for the specified <MipTypes::DataClass>.
@@ -2163,10 +2163,7 @@ namespace mscl
         //
         //Parameter:
         //    config - The <EventActionConfiguration> to apply.
-        //    validateSupported - Check if the descriptors are supported by the device. True by default
-        //
-        //Note:
-        //    Not validating descriptors could have undesired results or a failed command
+        //    validateSupported - True by default. For MESSAGE type actions this will filter unsupported ChannelFields prior to configuration.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.

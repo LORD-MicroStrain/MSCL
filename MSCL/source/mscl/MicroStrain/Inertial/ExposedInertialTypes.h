@@ -2934,14 +2934,25 @@ namespace mscl
         std::array<uint8, MAX_INPUT_TRIGGERS> inputTriggers;
     };
 
-    // API Union: EventTriggerParameters
+    //API Union: EventTriggerParameters
+    // Only one of the variables (gpio, threshold, combination) should be used to represent each instance
     union EventTriggerParameters
     {
-        EventTriggerGpioParameter        gpio;        // GPIO parameters
-        EventTriggerThresholdParameter   threshold;   // Threshold parameters
-        EventTriggerCombinationParameter combination; // Combination parameters
-
+        //API Constructor: EventTriggerParameters
+        // Default constructor
         EventTriggerParameters() : combination() {}
+
+        //API Variable: gpio
+        //  Event GPIO trigger parameters
+        EventTriggerGpioParameter gpio;
+
+        //API Variable: threshold
+        //  Event threshold trigger parameters
+        EventTriggerThresholdParameter threshold;
+
+        //API Variable: combination
+        // Event combination trigger parameters
+        EventTriggerCombinationParameter combination;
     };
 
     //API Struct: EventTriggerConfiguration
@@ -2962,12 +2973,15 @@ namespace mscl
             COMBINATION_TRIGGER = 0x03  // Logical combination of two or more triggers
         };
 
+        //API Variable: instance
         // Trigger number
         uint8 instance;
 
+        //API Variable: trigger
         // Type of trigger
         Type trigger;
 
+        //API Variable: parameters
         // Trigger parameters
         EventTriggerParameters parameters;
     };
@@ -3010,33 +3024,39 @@ namespace mscl
         //  Maximum supported descriptors
         static constexpr uint8 MAX_DESCRIPTORS = 12;
 
-        //API Variable: descriptorSet
-        //  Descriptor set for the fields that will be produced when the event occurs
-        MipTypes::DataClass descriptorSet;
+        //API Variable: sampleRate
+        //  Sample rate to output fields at when action is triggered. <SampleRate::Event()> (type Event,  indicates only a single packet will be output when triggered.
+        SampleRate sampleRate;
 
-        //API Variable: decimation
-        //  Decimation to use when sampling the fields. Set to 0 to only output a single packet
-        SampleRate decimation;
-
-        //API Function: validateChannelFields
-        //  Validate the <MipTypes::ChannelField>s are supported by the device
-        void validateChannelFields(MipTypes::MipChannelFields supportedFields);
+        //API Function: dataClass
+        //  Get the <MipTypes::DataClass>
+        MipTypes::DataClass dataClass() const { return m_descriptorSet; }
 
         //API Function: setChannelFields
-        //  Set the channel fields
-        void setChannelFields(MipTypes::MipChannelFields fields);
+        //  Set the <MipTypes::ChannelFields>
+        void setChannelFields(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields);
 
         //API Function: getChannelFields
         //  Get a list of <MipTypes::ChannelField>
         MipTypes::MipChannelFields getChannelFields() const;
 
     private:
+        //Variable: descriptorSet
+        //  Descriptor set for the fields that will be produced when the event occurs
+        MipTypes::DataClass m_descriptorSet;
+
         //Variable: m_channelFields
         //  <MipTypes::ChannelField>s to output when the event occurs
         std::array<MipTypes::ChannelField, MAX_DESCRIPTORS> m_channelFields;
+
+    private:
+        //Function: filterFields
+        //  Removes fields not in the specified <MipTypes::DataClass>
+        MipTypes::MipChannelFields filterFields(const MipTypes::MipChannelFields& fields);
     };
 
     //API Union: EventActionParameters
+    // Only one of the variables (gpio, message) should be used to represent each instance
     union EventActionParameters
     {
         //API Constructor: EventActionParameters
@@ -3073,11 +3093,11 @@ namespace mscl
         uint8 instance;
 
         //API Variable: trigger
-        //  Trigger ID number
+        //  ID of trigger that will cause this action to occur. If 0, this action is not linked to any event triggers.
         uint8 trigger;
 
         //API Variable: type
-        //  Type of action to configure
+        //  Type of action
         Type type;
 
         //API Variable: parameters

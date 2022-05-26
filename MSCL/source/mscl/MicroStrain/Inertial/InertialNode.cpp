@@ -36,9 +36,9 @@ namespace mscl
         m_impl->pollData(dataClass, fields);
     }
 
-    uint16 InertialNode::getDataRateBase(MipTypes::DataClass dataClass)
+    uint16 InertialNode::getDataRateBase(MipTypes::DataClass dataClass) const
     {
-        return m_impl->getDataRateBase(dataClass);
+        return features().baseDataRate(dataClass);
     }
 
     MipChannels InertialNode::getActiveChannelFields(MipTypes::DataClass dataClass)
@@ -1042,26 +1042,40 @@ namespace mscl
         {
         case EventActionConfiguration::Type::NONE:
             break;
+
         case EventActionConfiguration::Type::GPIO:
             config.parameters.gpio.pin = data.read_uint8();
             config.parameters.gpio.mode = static_cast<EventActionGpioParameter::Mode>(data.read_uint8());
             break;
+
         case EventActionConfiguration::Type::MESSAGE:
         {
-            config.parameters.message.descriptorSet = static_cast<MipTypes::DataClass>(data.read_uint8());
-            config.parameters.message.decimation = SampleRate::Decimation(data.read_uint16());
+            MipTypes::DataClass dataClass = static_cast<MipTypes::DataClass>(data.read_uint8());
+
+            // if decimation is 0, use Event SampleRate type - one packet output when event triggered
+            uint16 decimation = data.read_uint16();
+            if (decimation == 0)
+            {
+                config.parameters.message.sampleRate = SampleRate::Event();
+            }
+            else
+            {
+                uint16 baseRate = getDataRateBase(dataClass);
+                config.parameters.message.sampleRate = SampleRate::FromInertialRateDecimationInfo(baseRate, decimation);
+            }
 
             const uint8 numFields = data.read_uint8();
             MipTypes::MipChannelFields fields;
             for (uint8 i = 0; i < numFields; i++)
             {
                 fields.push_back(static_cast<MipTypes::ChannelField>(
-                    Utils::make_uint16(static_cast<uint8>(config.parameters.message.descriptorSet), data.read_uint8())));
+                    Utils::make_uint16(static_cast<uint8>(dataClass), data.read_uint8())));
             }
 
-            config.parameters.message.setChannelFields(fields);
+            config.parameters.message.setChannelFields(dataClass, fields);
             break;
         }
+
         default:
             break;
         }
@@ -1081,25 +1095,23 @@ namespace mscl
         {
         case EventActionConfiguration::Type::NONE:
             break;
+
         case EventActionConfiguration::Type::GPIO:
         {
             mipValues.push_back(Value::UINT8(config.parameters.gpio.pin));
             mipValues.push_back(Value::UINT8(static_cast<uint8>(config.parameters.gpio.mode)));
             break;
         }
+
         case EventActionConfiguration::Type::MESSAGE:
         {
-            mipValues.push_back(Value::UINT8(static_cast<uint8>(config.parameters.message.descriptorSet)));
+            mipValues.push_back(Value::UINT8(static_cast<uint8>(config.parameters.message.dataClass())));
             mipValues.push_back(Value::UINT16(
-                config.parameters.message.decimation.toDecimation(m_impl->getDataRateBase(config.parameters.message.descriptorSet)))
+                config.parameters.message.sampleRate.toDecimation(getDataRateBase(config.parameters.message.dataClass())))
             );
 
-            if (validateSupported)
-            {
-                config.parameters.message.validateChannelFields(features().supportedChannelFields(config.parameters.message.descriptorSet));
-            }
-
-            const MipTypes::MipChannelFields fields = config.parameters.message.getChannelFields();
+            MipTypes::MipChannelFields fields = config.parameters.message.getChannelFields();
+            fields = features().filterSupportedChannelFields(fields);
 
             mipValues.push_back(Value::UINT8(static_cast<uint8>(fields.size())));
 
@@ -1109,6 +1121,7 @@ namespace mscl
             }
             break;
         }
+
         default:
             break;
         }

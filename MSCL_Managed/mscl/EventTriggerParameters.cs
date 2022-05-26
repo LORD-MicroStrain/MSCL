@@ -44,6 +44,10 @@ public class EventTriggerParameters : global::System.IDisposable {
     }
   }
 
+  public EventTriggerParameters() : this(msclPINVOKE.new_EventTriggerParameters(), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public EventTriggerGpioParameter gpio {
     set {
       msclPINVOKE.EventTriggerParameters_gpio_set(swigCPtr, EventTriggerGpioParameter.getCPtr(value));
@@ -81,10 +85,6 @@ public class EventTriggerParameters : global::System.IDisposable {
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
-  }
-
-  public EventTriggerParameters() : this(msclPINVOKE.new_EventTriggerParameters(), true) {
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
 }

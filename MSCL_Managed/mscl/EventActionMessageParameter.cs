@@ -44,38 +44,27 @@ public class EventActionMessageParameter : global::System.IDisposable {
     }
   }
 
-  public MipTypes.DataClass descriptorSet {
+  public SampleRate sampleRate {
     set {
-      msclPINVOKE.EventActionMessageParameter_descriptorSet_set(swigCPtr, (int)value);
+      msclPINVOKE.EventActionMessageParameter_sampleRate_set(swigCPtr, SampleRate.getCPtr(value));
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      MipTypes.DataClass ret = (MipTypes.DataClass)msclPINVOKE.EventActionMessageParameter_descriptorSet_get(swigCPtr);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
-  }
-
-  public SampleRate decimation {
-    set {
-      msclPINVOKE.EventActionMessageParameter_decimation_set(swigCPtr, SampleRate.getCPtr(value));
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      global::System.IntPtr cPtr = msclPINVOKE.EventActionMessageParameter_decimation_get(swigCPtr);
+      global::System.IntPtr cPtr = msclPINVOKE.EventActionMessageParameter_sampleRate_get(swigCPtr);
       SampleRate ret = (cPtr == global::System.IntPtr.Zero) ? null : new SampleRate(cPtr, false);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
   }
 
-  public void validateChannelFields(MipChannelFields supportedFields) {
-    msclPINVOKE.EventActionMessageParameter_validateChannelFields(swigCPtr, MipChannelFields.getCPtr(supportedFields));
+  public MipTypes.DataClass dataClass() {
+    MipTypes.DataClass ret = (MipTypes.DataClass)msclPINVOKE.EventActionMessageParameter_dataClass(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
-  public void setChannelFields(MipChannelFields fields) {
-    msclPINVOKE.EventActionMessageParameter_setChannelFields(swigCPtr, MipChannelFields.getCPtr(fields));
+  public void setChannelFields(MipTypes.DataClass dataClass, MipChannelFields fields) {
+    msclPINVOKE.EventActionMessageParameter_setChannelFields(swigCPtr, (int)dataClass, MipChannelFields.getCPtr(fields));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

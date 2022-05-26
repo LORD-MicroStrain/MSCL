@@ -184,6 +184,8 @@ namespace mscl
         case MipTypes::CMD_GET_BASE_RATE:
         case MipTypes::CMD_MESSAGE_FORMAT:
         case MipTypes::CMD_EVENT_CONTROL:
+        case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
+        case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
         case MipTypes::CMD_SENSOR_RANGE:
         case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
             // check that the identifier is echoed back in the response

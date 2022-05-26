@@ -1010,43 +1010,39 @@ namespace mscl
         m_unc = unc;
     }
 
-    void EventActionMessageParameter::validateChannelFields(MipTypes::MipChannelFields supportedFields)
+    MipTypes::MipChannelFields EventActionMessageParameter::filterFields(const MipTypes::MipChannelFields& fields)
     {
-        // Filtered fields only in the data set
-        MipTypes::MipChannelFields fields;
-
-        // Filter out only supported fields in the descriptor set
-        for (const MipTypes::ChannelField field : m_channelFields)
+        MipTypes::MipChannelFields filtered;
+        for (MipTypes::ChannelField field : fields)
         {
-            if (std::find(supportedFields.begin(), supportedFields.end(), field) != supportedFields.end())
+            MipTypes::DataClass fieldClass = static_cast<MipTypes::DataClass>(Utils::msb(static_cast<uint16>(field)));
+            if (fieldClass != m_descriptorSet)
             {
-                fields.push_back(field);
+                continue;
             }
+
+            filtered.push_back(field);
         }
 
-        // Resize fields to MAX_DESCRIPTORS if needed
-        if (fields.size() > MAX_DESCRIPTORS)
-        {
-            fields.resize(MAX_DESCRIPTORS);
-        }
-
-        // Make sure the descriptors are defaulted
-        m_channelFields.fill(static_cast<MipTypes::ChannelField>(0));
-        
-        // Copy the values to descriptors
-        std::copy(fields.begin(), fields.end(), m_channelFields.begin());
+        return filtered;
     }
 
-    void EventActionMessageParameter::setChannelFields(const MipTypes::MipChannelFields fields)
+    void EventActionMessageParameter::setChannelFields(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields)
     {
-        // Keep the size at or below MAX_DESCRIPTORS
-        const uint8 size = std::min(static_cast<uint8>(fields.size()), MAX_DESCRIPTORS);
+        // Set data class
+        m_descriptorSet = dataClass;
 
         // Make sure the fields are defaulted
         m_channelFields.fill(static_cast<MipTypes::ChannelField>(0));
 
+        // Filter out fields that aren't in the specified data class
+        const MipTypes::MipChannelFields filtered = filterFields(fields);
+
+        // Keep the size at or below MAX_DESCRIPTORS
+        const uint8 size = std::min(static_cast<uint8>(filtered.size()), MAX_DESCRIPTORS);
+
         // Copy the fields into the descriptors
-        std::copy_n(fields.begin(), size, m_channelFields.begin());
+        std::copy_n(filtered.begin(), size, m_channelFields.begin());
     }
 
     MipTypes::MipChannelFields EventActionMessageParameter::getChannelFields() const

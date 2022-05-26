@@ -199,12 +199,15 @@ namespace mscl
 
     uint16 SampleRate::toDecimation(uint16 sampleRateBase) const
     {
-        if (m_rateType == SampleRate::rateType_decimation)
+        switch(m_rateType)
         {
+        case SampleRate::rateType_decimation:
+        case SampleRate::rateType_event:
             return static_cast<uint16>(m_samples);
-        }
 
-        return static_cast<uint16>(sampleRateBase / samplesPerSecond());
+        default:
+            return static_cast<uint16>(sampleRateBase / samplesPerSecond());
+        }
     }
 
     SampleRate SampleRate::Hertz(uint32 samplesPerSecond)
