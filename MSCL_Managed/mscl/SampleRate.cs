@@ -94,6 +94,12 @@ public class SampleRate : global::System.IDisposable {
     return ret;
   }
 
+  public ushort toDecimation(ushort sampleRateBase) {
+    ushort ret = msclPINVOKE.SampleRate_toDecimation(swigCPtr, sampleRateBase);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public static SampleRate Hertz(uint samplesPerSecond) {
     SampleRate ret = new SampleRate(msclPINVOKE.SampleRate_Hertz(samplesPerSecond), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

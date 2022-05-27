@@ -10,20 +10,20 @@
 
 namespace mscl {
 
-public class EventTriggerParameters : global::System.IDisposable {
+public class EventActionParameters : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
 
-  internal EventTriggerParameters(global::System.IntPtr cPtr, bool cMemoryOwn) {
+  internal EventActionParameters(global::System.IntPtr cPtr, bool cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(EventTriggerParameters obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(EventActionParameters obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  ~EventTriggerParameters() {
+  ~EventActionParameters() {
     Dispose(false);
   }
 
@@ -37,51 +37,38 @@ public class EventTriggerParameters : global::System.IDisposable {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_EventTriggerParameters(swigCPtr);
+          msclPINVOKE.delete_EventActionParameters(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
     }
   }
 
-  public EventTriggerParameters() : this(msclPINVOKE.new_EventTriggerParameters(), true) {
+  public EventActionParameters() : this(msclPINVOKE.new_EventActionParameters(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public EventTriggerGpioParameter gpio {
+  public EventActionGpioParameter gpio {
     set {
-      msclPINVOKE.EventTriggerParameters_gpio_set(swigCPtr, EventTriggerGpioParameter.getCPtr(value));
+      msclPINVOKE.EventActionParameters_gpio_set(swigCPtr, EventActionGpioParameter.getCPtr(value));
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      global::System.IntPtr cPtr = msclPINVOKE.EventTriggerParameters_gpio_get(swigCPtr);
-      EventTriggerGpioParameter ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventTriggerGpioParameter(cPtr, false);
+      global::System.IntPtr cPtr = msclPINVOKE.EventActionParameters_gpio_get(swigCPtr);
+      EventActionGpioParameter ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventActionGpioParameter(cPtr, false);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
   }
 
-  public EventTriggerThresholdParameter threshold {
+  public EventActionMessageParameter message {
     set {
-      msclPINVOKE.EventTriggerParameters_threshold_set(swigCPtr, EventTriggerThresholdParameter.getCPtr(value));
+      msclPINVOKE.EventActionParameters_message_set(swigCPtr, EventActionMessageParameter.getCPtr(value));
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      global::System.IntPtr cPtr = msclPINVOKE.EventTriggerParameters_threshold_get(swigCPtr);
-      EventTriggerThresholdParameter ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventTriggerThresholdParameter(cPtr, false);
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-      return ret;
-    } 
-  }
-
-  public EventTriggerCombinationParameter combination {
-    set {
-      msclPINVOKE.EventTriggerParameters_combination_set(swigCPtr, EventTriggerCombinationParameter.getCPtr(value));
-      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    } 
-    get {
-      global::System.IntPtr cPtr = msclPINVOKE.EventTriggerParameters_combination_get(swigCPtr);
-      EventTriggerCombinationParameter ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventTriggerCombinationParameter(cPtr, false);
+      global::System.IntPtr cPtr = msclPINVOKE.EventActionParameters_message_get(swigCPtr);
+      EventActionMessageParameter ret = (cPtr == global::System.IntPtr.Zero) ? null : new EventActionMessageParameter(cPtr, false);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 

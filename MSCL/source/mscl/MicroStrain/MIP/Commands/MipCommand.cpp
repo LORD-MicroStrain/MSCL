@@ -118,6 +118,7 @@ namespace mscl
         case MipTypes::CMD_PPS_SOURCE:
         case MipTypes::CMD_EVENT_CONTROL:
         case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
+        case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM:
@@ -183,6 +184,8 @@ namespace mscl
         case MipTypes::CMD_GET_BASE_RATE:
         case MipTypes::CMD_MESSAGE_FORMAT:
         case MipTypes::CMD_EVENT_CONTROL:
+        case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
+        case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
         case MipTypes::CMD_SENSOR_RANGE:
         case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
             // check that the identifier is echoed back in the response
@@ -216,6 +219,8 @@ namespace mscl
             return "ContinuousDataStream";
         case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
             return "EventTriggerConfiguration";
+        case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
+            return "EventActionConfiguration";
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
             return "SensorToVehicleFrameTransformationEulerAngles";
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
@@ -293,6 +298,8 @@ namespace mscl
             return 0xB6;
         case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
             return 0xB8;
+        case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
+            return 0xB9;
         // 0x0D
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
             return 0xBE;
