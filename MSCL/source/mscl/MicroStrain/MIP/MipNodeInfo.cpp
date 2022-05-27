@@ -28,6 +28,7 @@ namespace mscl
             { MipTypes::CLASS_GNSS3, Utils::Lazy<SampleRates>(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_GNSS3)) },
             { MipTypes::CLASS_GNSS4, Utils::Lazy<SampleRates>(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_GNSS4)) },
             { MipTypes::CLASS_GNSS5, Utils::Lazy<SampleRates>(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_GNSS5)) },
+            { MipTypes::CLASS_SYSTEM, Utils::Lazy<SampleRates>(std::bind(&MipNode_Impl::supportedSampleRates, m_node, MipTypes::CLASS_SYSTEM)) },
         }),
         m_baseRates({
             { MipTypes::CLASS_AHRS_IMU, Utils::Lazy<uint16>(std::bind(&MipNode_Impl::getDataRateBase, m_node, MipTypes::CLASS_AHRS_IMU)) },
@@ -39,6 +40,7 @@ namespace mscl
             { MipTypes::CLASS_GNSS3, Utils::Lazy<uint16>(std::bind(&MipNode_Impl::getDataRateBase, m_node, MipTypes::CLASS_GNSS3)) },
             { MipTypes::CLASS_GNSS4, Utils::Lazy<uint16>(std::bind(&MipNode_Impl::getDataRateBase, m_node, MipTypes::CLASS_GNSS4)) },
             { MipTypes::CLASS_GNSS5, Utils::Lazy<uint16>(std::bind(&MipNode_Impl::getDataRateBase, m_node, MipTypes::CLASS_GNSS5)) },
+            { MipTypes::CLASS_SYSTEM, Utils::Lazy<uint16>(std::bind(&MipNode_Impl::getDataRateBase, m_node, MipTypes::CLASS_SYSTEM)) },
         }),
         m_receiverInfo(std::bind(&MipNode_Impl::getGnssReceiverInfo, m_node)),
         m_eventActionInfo(std::bind(&MipNode_Impl::getEventInfo, m_node, EventSupportInfo::ACTIONS)),

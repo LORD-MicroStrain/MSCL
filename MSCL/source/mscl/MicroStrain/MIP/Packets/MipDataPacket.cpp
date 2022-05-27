@@ -117,9 +117,23 @@ namespace mscl
             parseTimeStamp(field);
         }
 
+        // get number of points prior to parsing new points
+        // if field is shared, new points are then added to m_sharedFields
+        size_t currentPointsCount = m_points.size();
         if(isData)
         {
             MipFieldParser::parseField(field, m_points);
+        }
+
+        // add data points from shared fields to m_sharedFields
+        if (MipTypes::isSharedChannelField(id))
+        {
+            // add only the points newly added for this field at the end of m_points
+            for (size_t i = currentPointsCount; i < m_points.size(); i++)
+            {
+                MipDataPoint& point = m_points[i];
+                m_sharedFields.addPoint(point.field(), point.qualifier(), point);
+            }
         }
     }
 
@@ -209,6 +223,11 @@ namespace mscl
     const MipDataPoints& MipDataPacket::data() const
     {
         return m_points;
+    }
+
+    const MipSharedDataFields& MipDataPacket::shared() const
+    {
+        return m_sharedFields;
     }
 
     const Timestamp& MipDataPacket::collectedTimestamp() const

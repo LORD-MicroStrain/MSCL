@@ -222,6 +222,7 @@
     <Compile Include="mscl\MipNode.cs" />
     <Compile Include="mscl\MipNodeFeatures.cs" />
     <Compile Include="mscl\MipPacket.cs" />
+    <Compile Include="mscl\MipSharedDataFields.cs" />
     <Compile Include="mscl\MipTypes.cs" />
     <Compile Include="mscl\mscl.cs" />
     <Compile Include="mscl\msclPINVOKE.cs">
