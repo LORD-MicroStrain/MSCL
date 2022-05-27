@@ -29,6 +29,7 @@ namespace mscl
         case DescriptorSet::DESC_SET_DATA_GNSS_3:
         case DescriptorSet::DESC_SET_DATA_GNSS_4:
         case DescriptorSet::DESC_SET_DATA_GNSS_5:
+        case DescriptorSet::DESC_SET_DATA_SYSTEM:
             return true;
 
         //any other packet type is not a data packet

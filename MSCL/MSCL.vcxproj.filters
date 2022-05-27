@@ -1016,6 +1016,12 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Commands\GeographicSource.h">
       <Filter>MicroStrain\Inertial\Commands\Estimation_Filter_Commands</Filter>
     </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipSharedDataFields.h">
+      <Filter>MicroStrain\MIP\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_System.h">
+      <Filter>MicroStrain\Inertial\Packets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp">
@@ -1922,6 +1928,12 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Features\NodeFeatures_torqueLink200_3ch_s.cpp">
       <Filter>MicroStrain\Wireless\Features\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipSharedDataFields.cpp">
+      <Filter>MicroStrain\MIP\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_System.cpp">
+      <Filter>MicroStrain\Inertial\Packets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

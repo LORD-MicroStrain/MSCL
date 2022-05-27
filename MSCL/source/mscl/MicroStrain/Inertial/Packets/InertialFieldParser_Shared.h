@@ -32,6 +32,39 @@ namespace mscl
         static bool registerSharedParser(MipTypes::ChannelField chField, const MipFieldParser* parser);
     };
 
+    //Class: FieldParser_EventSource
+    //    The field parser for Event Source
+    class FieldParser_EventSource : public MipSharedFieldParser
+    {
+    private:
+        FieldParser_EventSource() {};        //default constructor disabled
+
+    public:
+        //Function: parse
+        //    Parses an <MipDataField> for <MipDataPoints> and stores them in the valid or invalid result vectors
+        //
+        //Parameters:
+        //    field - The <MipDataField> to parse for data points
+        //    result - The <MipDataPoints> vector to store the data points in
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+
+        //Function: registerParser
+        //    The static function that registers this parser with the list of parsers (called immediately)
+        //
+        //Returns:
+        //    true, just for assigning the REGISTERED constant to true
+        static bool registerParser();
+
+    public:
+        //Constant: FIELD_TYPE
+        //    The 2-byte field type (Descriptor ID + Field ID) for this parser
+        static const MipTypes::ChannelField FIELD_TYPE;
+
+        //Constant: REGISTERED
+        //    Whether this parser is registered. This will always be true. This is used to call registerParser() immediately
+        static const bool REGISTERED;
+    };
+
     //Class: FieldParser_Ticks
     //    The field parser for Ticks
     class FieldParser_Ticks : public MipSharedFieldParser

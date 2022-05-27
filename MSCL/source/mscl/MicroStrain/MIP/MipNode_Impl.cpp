@@ -616,7 +616,8 @@ namespace mscl
             MipTypes::DataClass::CLASS_GNSS2,
             MipTypes::DataClass::CLASS_GNSS3, // RTK
             MipTypes::DataClass::CLASS_GNSS4,
-            MipTypes::DataClass::CLASS_GNSS5
+            MipTypes::DataClass::CLASS_GNSS5,
+            MipTypes::DataClass::CLASS_SYSTEM
         };
 
         // build command set in numeric order by command id

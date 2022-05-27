@@ -23,9 +23,15 @@ Forthcoming
     - Event Trigger Configuration (0x0C,0x2E)
     - Sensor Range (0x0C,0x52)
     - Get Calibrated Sensor Ranges (0x0C,0x53)
+- Added support for MIP data:
+    - Event Source (0xFF,0xD0)
+- Added support for data field:
+	- System Data (0xA0)
+- Added MipSharedDataFields (MipDataPacket::shared()) to more easily access shared fields within a packet
 - Added check for supported event trigger threshold qualifiers
 - Updated supported CV7 aiding measurement filters
 - Added check for supported geographic sources
+- Added check for complementary filter north compensation support
 
 64.2.2 - 2022-03-08
 - Reverted defaul MIP command timeout to 250 ms

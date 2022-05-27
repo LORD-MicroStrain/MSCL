@@ -327,5 +327,13 @@ namespace mscl
         //Returns:
         //    <EventSupportInfo> of the event triggers and their types
         const EventSupportInfo supportedEventTriggerInfo() const;
+
+        //API Function: supportsNorthCompensation
+        //    Checks whether or not north compensation is supported by the Node.
+        //    Only supported on devices with a magnetometer.
+        //
+        //Returns:
+        //    True if north compensation is supported by the Node, false otherwise.
+        const bool supportsNorthCompensation() const;
     };
 }
