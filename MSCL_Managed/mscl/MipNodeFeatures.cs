@@ -92,12 +92,6 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
-  public ushort baseDataRate(MipTypes.DataClass dataClass) {
-    ushort ret = msclPINVOKE.MipNodeFeatures_baseDataRate(swigCPtr, (int)dataClass);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
   public GnssReceivers gnssReceiverInfo() {
     GnssReceivers ret = new GnssReceivers(msclPINVOKE.MipNodeFeatures_gnssReceiverInfo(swigCPtr), false);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
