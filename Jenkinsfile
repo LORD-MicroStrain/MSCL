@@ -44,7 +44,7 @@ pipeline {
             checkout scm
             sh "cp /usr/local/share/ca-certificates/* .devcontainer/extra_cas/"
             sh ".devcontainer/docker_build_rpms.sh --arch arm64v8"
-            archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
+            archiveArtifacts artifacts: 'build_centos_arm64v8/*.rpm'
           }
         }
       }
