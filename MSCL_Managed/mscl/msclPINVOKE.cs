@@ -3630,6 +3630,9 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_DisplacementModels")]
   public static extern void delete_DisplacementModels(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipTypes_MIN_SHARED_FIELD_DESCRIPTOR_get")]
+  public static extern byte MipTypes_MIN_SHARED_FIELD_DESCRIPTOR_get();
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipTypes_channelName")]
   public static extern string MipTypes_channelName(int jarg1, int jarg2);
 
@@ -5715,6 +5718,48 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_MipDataPoint")]
   public static extern void delete_MipDataPoint(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_MipSharedDataFields")]
+  public static extern global::System.IntPtr new_MipSharedDataFields();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_hasEventSource")]
+  public static extern bool MipSharedDataFields_hasEventSource(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_eventSource")]
+  public static extern byte MipSharedDataFields_eventSource(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_hasTicks")]
+  public static extern bool MipSharedDataFields_hasTicks(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_ticks")]
+  public static extern uint MipSharedDataFields_ticks(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_hasDeltaTicks")]
+  public static extern bool MipSharedDataFields_hasDeltaTicks(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_deltaTicks")]
+  public static extern uint MipSharedDataFields_deltaTicks(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_hasGpsTimestamp")]
+  public static extern bool MipSharedDataFields_hasGpsTimestamp(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_gpsTimestamp")]
+  public static extern global::System.IntPtr MipSharedDataFields_gpsTimestamp(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_hasDeltaTime")]
+  public static extern bool MipSharedDataFields_hasDeltaTime(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_deltaTime")]
+  public static extern double MipSharedDataFields_deltaTime(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_get__SWIG_0")]
+  public static extern global::System.IntPtr MipSharedDataFields_get__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_get__SWIG_1")]
+  public static extern global::System.IntPtr MipSharedDataFields_get__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_MipSharedDataFields")]
+  public static extern void delete_MipSharedDataFields(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_MipDataPacket__SWIG_0")]
   public static extern global::System.IntPtr new_MipDataPacket__SWIG_0();
 
@@ -5723,6 +5768,9 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPacket_data")]
   public static extern global::System.IntPtr MipDataPacket_data(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPacket_shared")]
+  public static extern global::System.IntPtr MipDataPacket_shared(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPacket_collectedTimestamp")]
   public static extern global::System.IntPtr MipDataPacket_collectedTimestamp(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -5864,6 +5912,9 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedEventTriggerInfo")]
   public static extern global::System.IntPtr MipNodeFeatures_supportedEventTriggerInfo(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportsNorthCompensation")]
+  public static extern bool MipNodeFeatures_supportsNorthCompensation(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNode_doCommand__SWIG_0")]
   public static extern global::System.IntPtr MipNode_doCommand__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2, byte jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, bool jarg5, bool jarg6, byte jarg7);
