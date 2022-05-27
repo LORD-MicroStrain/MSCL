@@ -533,6 +533,32 @@ namespace mscl
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
+    //                                                        FieldParser_OverRangeStatus
+    const MipTypes::ChannelField FieldParser_OverRangeStatus::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_OVER_RANGE_STATUS;
+    const bool FieldParser_OverRangeStatus::REGISTERED = registerParser();    //register the parser immediately
+
+    void FieldParser_OverRangeStatus::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the data
+        const uint16 status = bytes.read_uint16();
+
+        //add data points
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_STATUS, valueType_uint16, anyType(status)));
+    }
+
+    bool FieldParser_OverRangeStatus::registerParser()
+    {
+        //create a static parser object
+        static FieldParser_OverRangeStatus p;
+
+        //register the parser
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
     //                                                        FieldParser_RawAmbientPressure
     const MipTypes::ChannelField FieldParser_RawAmbientPressure::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_RAW_AMBIENT_PRESSURE;
     const bool FieldParser_RawAmbientPressure::REGISTERED = FieldParser_RawAmbientPressure::registerParser();    //register the parser immediately
