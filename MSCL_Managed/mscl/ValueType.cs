@@ -16,7 +16,6 @@ public enum ValueType {
   valueType_uint8 = 2,
   valueType_uint16 = 3,
   valueType_uint32 = 4,
-  valueType_int8 = 16,
   valueType_int16 = 5,
   valueType_int32 = 6,
   valueType_bool = 7,
@@ -27,7 +26,9 @@ public enum ValueType {
   valueType_Bytes = 12,
   valueType_StructuralHealth = 13,
   valueType_RfSweep = 14,
-  valueType_ChannelMask = 15
+  valueType_ChannelMask = 15,
+  valueType_int8 = 16,
+  valueType_uint64 = 17
 }
 
 }

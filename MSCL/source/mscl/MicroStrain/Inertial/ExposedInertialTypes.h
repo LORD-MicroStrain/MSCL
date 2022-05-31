@@ -660,28 +660,28 @@ namespace mscl
         //API Enum: OverrangeStatusBitmask
         //  Bitmasks for interpreting the Overrange Status (0x80,0x18) bitfield
         //
-        //      OVERRANGE_ACCEL_X     - 0b0000 0000 0000 0001 - Accel X
-        //      OVERRANGE_ACCEL_Y     - 0b0000 0000 0000 0010 - Accel Y
-        //      OVERRANGE_ACCEL_Z     - 0b0000 0000 0000 0100 - Accel Z
-        //      OVERRANGE_GYRO_X      - 0b0000 0000 0001 0000 - Gyro X
-        //      OVERRANGE_GYRO_Y      - 0b0000 0000 0010 0000 - Gyro Y
-        //      OVERRANGE_GYRO_Z      - 0b0000 0000 0100 0000 - Gyro Z
-        //      OVERRANGE_MAG_X       - 0b0000 0001 0000 0000 - Mag X
-        //      OVERRANGE_MAG_Y       - 0b0000 0010 0000 0000 - Mag Y
-        //      OVERRANGE_MAG_Z       - 0b0000 0100 0000 0000 - Mag Z
-        //      OVERRANGE_PRESSURE    - 0b0001 0000 0000 0000 - Pressure
+        //      OVERRANGE_ACCEL_X     - 0000 0000 0000 0001 - Accel X
+        //      OVERRANGE_ACCEL_Y     - 0000 0000 0000 0010 - Accel Y
+        //      OVERRANGE_ACCEL_Z     - 0000 0000 0000 0100 - Accel Z
+        //      OVERRANGE_GYRO_X      - 0000 0000 0001 0000 - Gyro X
+        //      OVERRANGE_GYRO_Y      - 0000 0000 0010 0000 - Gyro Y
+        //      OVERRANGE_GYRO_Z      - 0000 0000 0100 0000 - Gyro Z
+        //      OVERRANGE_MAG_X       - 0000 0001 0000 0000 - Mag X
+        //      OVERRANGE_MAG_Y       - 0000 0010 0000 0000 - Mag Y
+        //      OVERRANGE_MAG_Z       - 0000 0100 0000 0000 - Mag Z
+        //      OVERRANGE_PRESSURE    - 0001 0000 0000 0000 - Pressure
         enum OverrangeStatusBitmask
         {
-            OVERRANGE_ACCEL_X     = 0b0000000000000001, // Accel X
-            OVERRANGE_ACCEL_Y     = 0b0000000000000010, // Accel Y
-            OVERRANGE_ACCEL_Z     = 0b0000000000000100, // Accel Z
-            OVERRANGE_GYRO_X      = 0b0000000000010000, // Gyro X
-            OVERRANGE_GYRO_Y      = 0b0000000000100000, // Gyro Y
-            OVERRANGE_GYRO_Z      = 0b0000000001000000, // Gyro Z
-            OVERRANGE_MAG_X       = 0b0000000100000000, // Mag X
-            OVERRANGE_MAG_Y       = 0b0000001000000000, // Mag Y
-            OVERRANGE_MAG_Z       = 0b0000010000000000, // Mag Z
-            OVERRANGE_PRESSURE    = 0b0001000000000000, // Pressure
+            OVERRANGE_ACCEL_X     = 0x0001, // Accel X
+            OVERRANGE_ACCEL_Y     = 0x0002, // Accel Y
+            OVERRANGE_ACCEL_Z     = 0x0004, // Accel Z
+            OVERRANGE_GYRO_X      = 0x0010, // Gyro X
+            OVERRANGE_GYRO_Y      = 0x0020, // Gyro Y
+            OVERRANGE_GYRO_Z      = 0x0040, // Gyro Z
+            OVERRANGE_MAG_X       = 0x0100, // Mag X
+            OVERRANGE_MAG_Y       = 0x0200, // Mag Y
+            OVERRANGE_MAG_Z       = 0x0400, // Mag Z
+            OVERRANGE_PRESSURE    = 0x1000, // Pressure
         };
     };
 

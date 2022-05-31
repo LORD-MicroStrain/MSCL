@@ -669,6 +669,9 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Value_as_uint32")]
   public static extern uint Value_as_uint32(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Value_as_uint64")]
+  public static extern ulong Value_as_uint64(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Value_as_int8")]
   public static extern sbyte Value_as_int8(global::System.Runtime.InteropServices.HandleRef jarg1);
 
@@ -5762,6 +5765,12 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_deltaTime")]
   public static extern double MipSharedDataFields_deltaTime(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_hasReferenceTime")]
+  public static extern bool MipSharedDataFields_hasReferenceTime(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_referenceTime")]
+  public static extern ulong MipSharedDataFields_referenceTime(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_get__SWIG_0")]
   public static extern global::System.IntPtr MipSharedDataFields_get__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
