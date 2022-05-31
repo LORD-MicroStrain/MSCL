@@ -76,6 +76,16 @@ namespace mscl
         //  A <Value> object holding the uint32.
         static Value UINT32(uint32 value);
 
+        //Function: UINT64
+        //  Static helper function for making a Value object from a uint64.
+        //
+        //Parameters:
+        //  value - The uint64 value.
+        //
+        //Returns:
+        //  A <Value> object holding the uint64.
+        static Value UINT64(uint64 value);
+
         //Function: INT8
         //  Static helper function for making a Value object from an int8.
         //
@@ -177,6 +187,16 @@ namespace mscl
         //Exceptions:
         //    - <Error_BadDataType>: The type in which the value was stored could not be converted to a 4-byte unsigned integer
         virtual uint32 as_uint32() const;
+
+        //API Function: as_uint64
+        //    Gets the data value as a 8-byte unsigned integer
+        //
+        //Returns:
+        //    The data value as a 8-byte unsigned integer
+        //
+        //Exceptions:
+        //    - <Error_BadDataType>: The type in which the value was stored could not be converted to a 8-byte unsigned integer
+        virtual uint64 as_uint64() const;
 
         //API Function: as_int8
         //    Gets the data value as a 1-byte signed integer

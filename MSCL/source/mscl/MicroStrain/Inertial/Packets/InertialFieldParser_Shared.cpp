@@ -166,4 +166,29 @@ namespace mscl
         return MipSharedFieldParser::registerSharedParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_ReferenceTime
+    const MipTypes::ChannelField FieldParser_ReferenceTime::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP;
+    const bool FieldParser_ReferenceTime::REGISTERED = registerParser();    //register the parser immediately
+
+    void FieldParser_ReferenceTime::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the data
+        const uint64 referenceTime = bytes.read_uint64();
+
+        const MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
+        //add all the data points we just collected
+        result.push_back(MipDataPoint(chField, MipTypes::CH_NANOSECONDS, valueType_uint64, anyType(referenceTime)));
+    }
+
+    bool FieldParser_ReferenceTime::registerParser()
+    {
+        static FieldParser_ReferenceTime p;
+        return registerSharedParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
 }

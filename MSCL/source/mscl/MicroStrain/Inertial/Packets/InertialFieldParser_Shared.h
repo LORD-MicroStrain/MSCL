@@ -203,4 +203,38 @@ namespace mscl
         //    Whether this parser is registered. This will always be true. This is used to call registerParser() immediately
         static const bool REGISTERED;
     };
+
+    //Class: FieldParser_ReferenceTime
+    //    The field parser for internal Reference Time
+    class FieldParser_ReferenceTime : public MipSharedFieldParser
+    {
+        FieldParser_ReferenceTime() {}    //default constructor disabled
+
+    public:
+        //Function: parse
+        //    Parses an <MipDataField> for <MipDataPoints> and stores them in the valid or invalid result vectors
+        //
+        //Parameters:
+        //    field - The <MipDataField> to parse for data points
+        //    result - The <MipDataPoints> vector to store the data points in
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+
+        //Function: registerParser
+        //    The static function that registers this parser with the list of parsers (called immediately)
+        //
+        //Returns:
+        //    True, just for assigning <REGISTERED> to true
+        static bool registerParser();
+
+        //Constant: FIELD_TYPE
+        //    The <MipTypes::ChannelField> for this parser
+        static const MipTypes::ChannelField FIELD_TYPE;
+
+        //Constant: REGISTERED
+        //    Whether this parser is registered. This will always be true.
+        //
+        //Note:
+        //    This is used to call <registerParser> immediately
+        static const bool REGISTERED;
+    };
 }

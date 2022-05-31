@@ -119,6 +119,20 @@ namespace mscl
         //  double - the delta time value
         double deltaTime() const;
 
+        //API Function: referenceTime
+        //  Checks whether the packet contains the Reference Timestamp (nanoseconds since startup) field
+        //
+        //Returns:
+        //  bool - true if Reference Time is present
+        bool hasReferenceTime() const;
+
+        //API Function: referenceTime
+        //  Gets the Reference Timestamp (nanoseconds since startup) for the packet
+        //
+        //Returns:
+        //  uint64 - the reference time value
+        uint64 referenceTime() const;
+
         //API Function: get
         //  Get the shared field <MipDataPoint> with the specified field and qualifier.
         //  If qualifier is <MipTypes::CH_UNKNOWN> and there is only one data point for the field, that field will be returned.

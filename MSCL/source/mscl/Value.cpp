@@ -64,6 +64,11 @@ namespace mscl
         return Value(valueType_uint32, value);
     }
 
+    Value Value::UINT64(uint64 value)
+    {
+        return Value(valueType_uint64, value);
+    }
+
     Value Value::INT8(int8 value)
     {
         return Value(valueType_int8, value);
@@ -87,6 +92,7 @@ namespace mscl
             case valueType_double:      return as_double() == other.as_double();
             case valueType_uint16:      return as_uint16() == other.as_uint16();
             case valueType_uint32:      return as_uint32() == other.as_uint32();
+            case valueType_uint64:      return as_uint64() == other.as_uint64();
             case valueType_int16:       return as_int16() == other.as_int16();
             case valueType_int32:       return as_int32() == other.as_int32();
             case valueType_uint8:       return as_uint8() == other.as_uint8();
@@ -115,6 +121,7 @@ namespace mscl
                 case valueType_double:      return static_cast<float>(any_cast<double>(m_value));
                 case valueType_uint16:      return static_cast<float>(any_cast<uint16>(m_value));
                 case valueType_uint32:      return static_cast<float>(any_cast<uint32>(m_value));
+                case valueType_uint64:      return static_cast<float>(any_cast<uint64>(m_value));
                 case valueType_int16:       return static_cast<float>(any_cast<short>(m_value));
                 case valueType_int32:       return static_cast<float>(any_cast<int>(m_value));
                 case valueType_uint8:       return static_cast<float>(any_cast<uint8>(m_value));
@@ -143,6 +150,7 @@ namespace mscl
                 case valueType_float:       return static_cast<double>(any_cast<float>(m_value));
                 case valueType_uint16:      return static_cast<double>(any_cast<uint16>(m_value));
                 case valueType_uint32:      return static_cast<double>(any_cast<uint32>(m_value));
+                case valueType_uint64:      return static_cast<double>(any_cast<uint64>(m_value));
                 case valueType_int16:       return static_cast<double>(any_cast<short>(m_value));
                 case valueType_int32:       return static_cast<double>(any_cast<int>(m_value));
                 case valueType_uint8:       return static_cast<double>(any_cast<uint8>(m_value));
@@ -170,6 +178,7 @@ namespace mscl
                 case valueType_uint8:       return any_cast<uint8>(m_value);
                 case valueType_int8:        return static_cast<uint8>(any_cast<int8>(m_value));
                 case valueType_uint32:      return static_cast<uint8>(any_cast<uint32>(m_value));
+                case valueType_uint64:      return static_cast<uint8>(any_cast<uint64>(m_value));
                 case valueType_int16:       return static_cast<uint8>(any_cast<short>(m_value));
                 case valueType_int32:       return static_cast<uint8>(any_cast<int>(m_value));
                 case valueType_float:       return static_cast<uint8>(any_cast<float>(m_value));
@@ -197,6 +206,7 @@ namespace mscl
             {
                 case valueType_uint16:      return any_cast<uint16>(m_value);
                 case valueType_uint32:      return static_cast<uint16>(any_cast<uint32>(m_value));
+                case valueType_uint64:      return static_cast<uint16>(any_cast<uint64>(m_value));
                 case valueType_int16:       return static_cast<uint16>(any_cast<short>(m_value));
                 case valueType_int32:       return static_cast<uint16>(any_cast<int>(m_value));
                 case valueType_float:       return static_cast<uint16>(any_cast<float>(m_value));
@@ -223,22 +233,52 @@ namespace mscl
         {
             switch(m_storedAs)
             {
-                case valueType_uint32:      return any_cast<uint32>(m_value);
-                case valueType_uint16:      return static_cast<uint32>(any_cast<uint16>(m_value));
-                case valueType_int16:       return static_cast<uint32>(any_cast<short>(m_value));
-                case valueType_int32:       return static_cast<uint32>(any_cast<int>(m_value));
-                case valueType_float:       return static_cast<uint32>(any_cast<float>(m_value));
-                case valueType_double:      return static_cast<uint32>(any_cast<double>(m_value));
-                case valueType_uint8:       return static_cast<uint32>(any_cast<uint8>(m_value));
-                case valueType_int8:        return static_cast<uint32>(any_cast<int8>(m_value));
-                case valueType_bool:        return static_cast<uint32>(any_cast<bool>(m_value));
-                case valueType_string:      return static_cast<uint32>(std::stoul(any_cast<std::string>(m_value)));
+            case valueType_uint32:      return any_cast<uint32>(m_value);
+            case valueType_uint16:      return static_cast<uint32>(any_cast<uint16>(m_value));
+            case valueType_uint64:      return static_cast<uint32>(any_cast<uint64>(m_value));
+            case valueType_int16:       return static_cast<uint32>(any_cast<short>(m_value));
+            case valueType_int32:       return static_cast<uint32>(any_cast<int>(m_value));
+            case valueType_float:       return static_cast<uint32>(any_cast<float>(m_value));
+            case valueType_double:      return static_cast<uint32>(any_cast<double>(m_value));
+            case valueType_uint8:       return static_cast<uint32>(any_cast<uint8>(m_value));
+            case valueType_int8:        return static_cast<uint32>(any_cast<int8>(m_value));
+            case valueType_bool:        return static_cast<uint32>(any_cast<bool>(m_value));
+            case valueType_string:      return static_cast<uint32>(std::stoul(any_cast<std::string>(m_value)));
 
                 default:
                     throw Error_BadDataType();
             }
         }
         catch(...)
+        {
+            throw Error_BadDataType();
+        }
+    }
+
+    //    Gets the data point value as an uint64
+    uint64 Value::as_uint64() const
+    {
+        try
+        {
+            switch (m_storedAs)
+            {
+            case valueType_uint64:      return any_cast<uint64>(m_value);
+            case valueType_uint32:      return static_cast<uint64>(any_cast<uint32>(m_value));
+            case valueType_uint16:      return static_cast<uint64>(any_cast<uint16>(m_value));
+            case valueType_int16:       return static_cast<uint64>(any_cast<short>(m_value));
+            case valueType_int32:       return static_cast<uint64>(any_cast<int>(m_value));
+            case valueType_float:       return static_cast<uint64>(any_cast<float>(m_value));
+            case valueType_double:      return static_cast<uint64>(any_cast<double>(m_value));
+            case valueType_uint8:       return static_cast<uint64>(any_cast<uint8>(m_value));
+            case valueType_int8:        return static_cast<uint64>(any_cast<int8>(m_value));
+            case valueType_bool:        return static_cast<uint64>(any_cast<bool>(m_value));
+            case valueType_string:      return static_cast<uint64>(std::stoul(any_cast<std::string>(m_value)));
+
+            default:
+                throw Error_BadDataType();
+            }
+        }
+        catch (...)
         {
             throw Error_BadDataType();
         }
@@ -254,6 +294,7 @@ namespace mscl
             case valueType_int8:        return any_cast<int8>(m_value);
             case valueType_uint8:       return static_cast<int8>(any_cast<uint8>(m_value));
             case valueType_uint32:      return static_cast<int8>(any_cast<uint32>(m_value));
+            case valueType_uint64:      return static_cast<int8>(any_cast<uint64>(m_value));
             case valueType_int16:       return static_cast<int8>(any_cast<short>(m_value));
             case valueType_int32:       return static_cast<int8>(any_cast<int>(m_value));
             case valueType_float:       return static_cast<int8>(any_cast<float>(m_value));
@@ -282,6 +323,7 @@ namespace mscl
                 case valueType_int16:       return(any_cast<short>(m_value));
                 case valueType_int32:       return static_cast<short>(any_cast<int>(m_value));
                 case valueType_uint32:      return static_cast<short>(any_cast<uint32>(m_value));
+                case valueType_uint64:      return static_cast<short>(any_cast<uint64>(m_value));
                 case valueType_uint16:      return static_cast<short>(any_cast<uint16>(m_value));
                 case valueType_float:       return static_cast<short>(any_cast<float>(m_value));
                 case valueType_double:      return static_cast<short>(any_cast<double>(m_value));
@@ -310,6 +352,7 @@ namespace mscl
                 case valueType_int32:       return any_cast<int>(m_value);
                 case valueType_int16:       return static_cast<int>(any_cast<short>(m_value));
                 case valueType_uint32:      return static_cast<int>(any_cast<uint32>(m_value));
+                case valueType_uint64:      return static_cast<int>(any_cast<uint64>(m_value));
                 case valueType_uint16:      return static_cast<int>(any_cast<uint16>(m_value));
                 case valueType_float:       return static_cast<int>(any_cast<float>(m_value));
                 case valueType_double:      return static_cast<int>(any_cast<double>(m_value));
@@ -336,6 +379,9 @@ namespace mscl
             {
                 case valueType_bool:
                     return any_cast<bool>(m_value);
+
+                case valueType_uint64:
+                    return as_uint64() != 0;
 
                 case valueType_int16:
                 case valueType_uint32:
@@ -393,6 +439,7 @@ namespace mscl
         case valueType_int8:        return Utils::toStr(static_cast<int16>(as_int8()));
         case valueType_uint16:      return Utils::toStr(as_uint16());
         case valueType_uint32:      return Utils::toStr(as_uint32());
+        case valueType_uint64:      return Utils::toStr(as_uint64());
         case valueType_int16:       return Utils::toStr(as_int16());
         case valueType_int32:       return Utils::toStr(as_int32());
         case valueType_float:       return Utils::toStr(as_float());
