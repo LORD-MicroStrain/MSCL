@@ -573,6 +573,7 @@ namespace mscl
         //API Enum: GnssAidingStatus
         //  Bitmask for the GNSS Position and Attitude Aiding Status field values
         //  Note: GNSS constellation entries are defined by the corresponding constellation enum in <GnssSignalConfiguration>
+        //
         //    GNSS_AIDING_TIGHT_COUPLING  - 0x0001  - 0000 0000 0000 0001
         //    GNSS_AIDING_DIFFERENTIAL    - 0x0002  - 0000 0000 0000 0010
         //    GNSS_AIDING_INTEGER_FIX     - 0x0004  - 0000 0000 0000 0100
@@ -597,6 +598,7 @@ namespace mscl
 
         //API Enum: AidingMeasurementStatus
         //  Bit definitions for the Aiding Measurement Summary Status field values
+        //
         //    AIDING_MEASUREMENT_ENABLED                - 0x0001  - 0000 0000 0000 0001
         //    AIDING_MEASUREMENT_USED                   - 0x0002  - 0000 0000 0000 0010
         //    AIDING_MEASUREMENT_WARNING_RESIDUAL_HIGH  - 0x0004  - 0000 0000 0000 0100
@@ -615,6 +617,7 @@ namespace mscl
 
         //API Enum: RtkCorrectionsStatus
         //  Bit definitions for the RTK Corrections Epoch Status field value
+        //
         //      RTK_CORRECTION_ANTENNA_POS_RECEIVED     - 0x0001  - 0000 0000 0000 0001
         //      RTK_CORRECTION_ANTENNA_DESC_RECEIVED    - 0x0002  - 0000 0000 0000 0010
         //      RTK_CORRECTION_GPS_RECEIVED             - 0x0004  - 0000 0000 0000 0100
@@ -637,6 +640,7 @@ namespace mscl
 
         //API Enum: GnssSignalQuality
         //  Value definitions for the GNSS Raw Observation Signal Quality field value
+        //
         //      SIGNAL_QUALITY_NONE         - 0x00 - None
         //      SIGNAL_QUALITY_SEARCHING    - 0x01 - Searching
         //      SIGNAL_QUALITY_ACQUIRED     - 0x02 - Acquired
@@ -651,6 +655,33 @@ namespace mscl
             SIGNAL_QUALITY_UNUSABLE     = 0x03,
             SIGNAL_QUALITY_TIME_LOCKED  = 0x04,
             SIGNAL_QUALITY_FULLY_LOCKED = 0x05,
+        };
+
+        //API Enum: OverrangeStatusBitmask
+        //  Bitmasks for interpreting the Overrange Status (0x80,0x18) bitfield
+        //
+        //      OVERRANGE_ACCEL_X     - 0b0000 0000 0000 0001 - Accel X
+        //      OVERRANGE_ACCEL_Y     - 0b0000 0000 0000 0010 - Accel Y
+        //      OVERRANGE_ACCEL_Z     - 0b0000 0000 0000 0100 - Accel Z
+        //      OVERRANGE_GYRO_X      - 0b0000 0000 0001 0000 - Gyro X
+        //      OVERRANGE_GYRO_Y      - 0b0000 0000 0010 0000 - Gyro Y
+        //      OVERRANGE_GYRO_Z      - 0b0000 0000 0100 0000 - Gyro Z
+        //      OVERRANGE_MAG_X       - 0b0000 0001 0000 0000 - Mag X
+        //      OVERRANGE_MAG_Y       - 0b0000 0010 0000 0000 - Mag Y
+        //      OVERRANGE_MAG_Z       - 0b0000 0100 0000 0000 - Mag Z
+        //      OVERRANGE_PRESSURE    - 0b0001 0000 0000 0000 - Pressure
+        enum OverrangeStatusBitmask
+        {
+            OVERRANGE_ACCEL_X     = 0b0000000000000001, // Accel X
+            OVERRANGE_ACCEL_Y     = 0b0000000000000010, // Accel Y
+            OVERRANGE_ACCEL_Z     = 0b0000000000000100, // Accel Z
+            OVERRANGE_GYRO_X      = 0b0000000000010000, // Gyro X
+            OVERRANGE_GYRO_Y      = 0b0000000000100000, // Gyro Y
+            OVERRANGE_GYRO_Z      = 0b0000000001000000, // Gyro Z
+            OVERRANGE_MAG_X       = 0b0000000100000000, // Mag X
+            OVERRANGE_MAG_Y       = 0b0000001000000000, // Mag Y
+            OVERRANGE_MAG_Z       = 0b0000010000000000, // Mag Z
+            OVERRANGE_PRESSURE    = 0b0001000000000000, // Pressure
         };
     };
 

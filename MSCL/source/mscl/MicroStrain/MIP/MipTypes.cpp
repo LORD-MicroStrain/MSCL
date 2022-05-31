@@ -119,7 +119,9 @@ namespace mscl
         {ChannelId(CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP, CH_FLAGS), "gpsCorrelTimestampFlags"},
 
         {ChannelId(CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE, CH_PRESSURE), "scaledAmbientPressure"},
-                
+
+        { ChannelId(CH_FIELD_SENSOR_OVERRANGE_STATUS, CH_STATUS), "overrangeStatus" },
+
         {ChannelId(CH_FIELD_SENSOR_ODOMETER_DATA, CH_SPEED), "odometer_speed"},
         {ChannelId(CH_FIELD_SENSOR_ODOMETER_DATA, CH_SPEED_ACCURACY), "odometer_uncert"},
 
