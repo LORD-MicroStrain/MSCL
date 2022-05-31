@@ -619,7 +619,7 @@ namespace mscl
         //  CH_FIELD_GNSS_5_SHARED_GPS_TIMESTAMP                    - 0x95D3    - GPS Timestamp
         //  CH_FIELD_GNSS_5_SHARED_DELTA_TIMESTAMP                  - 0x95D4    - Delta GPS Timestamp
         //  CH_FIELD_SYSTEM_TIME_SYNC_STATUS                        - 0xA002    - Time Sync Status
-        //  CH_FIELD_SYSTEM_GPIO_STATE                              - 0xA003    - System GPIO State
+        //  CH_FIELD_SYSTEM_GPIO_STATE                              - 0xA003    - GPIO State
         //  CH_FIELD_SYSTEM_SHARED_EVENT_SOURCE                     - 0xA0D0    - Event Source
         //  CH_FIELD_SYSTEM_SHARED_TICKS                            - 0xA0D1    - Ticks
         //  CH_FIELD_SYSTEM_SHARED_DELTA_TICKS                      - 0xA0D2    - Delta Ticks
