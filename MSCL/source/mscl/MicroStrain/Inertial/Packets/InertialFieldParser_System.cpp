@@ -17,6 +17,29 @@ namespace mscl
     bool _forceLibraryToIncludeCompilationUnit_System;
 
     //=====================================================================================================================================================
+    //                                                        FieldParser_GpioState
+    const MipTypes::ChannelField FieldParser_GpioState::FIELD_TYPE = MipTypes::CH_FIELD_SYSTEM_GPIO_STATE;
+    const bool FieldParser_GpioState::REGISTERED = registerParser();    //register the parser immediately
+
+    void FieldParser_GpioState::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the value
+        const uint8 states = bytes.read_uint8();
+
+        //create the data point and add it to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_STATUS, valueType_uint8, anyType(states)));
+    }
+
+    bool FieldParser_GpioState::registerParser()
+    {
+        static FieldParser_GpioState p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
     //                                                        FieldParser_TimeSyncStatus
     const MipTypes::ChannelField FieldParser_TimeSyncStatus::FIELD_TYPE = MipTypes::CH_FIELD_SYSTEM_TIME_SYNC_STATUS;
     const bool FieldParser_TimeSyncStatus::REGISTERED = registerParser();    //register the parser immediately
@@ -40,5 +63,4 @@ namespace mscl
         return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
-
 }

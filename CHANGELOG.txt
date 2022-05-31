@@ -28,6 +28,7 @@ Forthcoming
     - Event Source (0xFF,0xD0)
     - System data set (0xA0)
     - Time Sync Status (0xA0,0x02)
+    - GPIO State (0xA0,0x03)
 - Added MipSharedDataFields (MipDataPacket::shared()) to more easily access shared fields within a packet
 - Added check for supported event trigger threshold qualifiers
 - Updated supported CV7 aiding measurement filters
