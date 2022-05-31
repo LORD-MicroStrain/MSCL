@@ -9,6 +9,7 @@
 #include "mscl/Types.h"
 #include "mscl/MicroStrain/Matrix.h"
 #include "mscl/MicroStrain/Bitfield.h"
+#include "mscl/MicroStrain/SampleRate.h"
 #include "mscl/MicroStrain/MIP/MipTypes.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
 #include <array>
@@ -2933,14 +2934,25 @@ namespace mscl
         std::array<uint8, MAX_INPUT_TRIGGERS> inputTriggers;
     };
 
-    // API Union: EventTriggerParameters
+    //API Union: EventTriggerParameters
+    // Only one of the variables (gpio, threshold, combination) should be used to represent each instance
     union EventTriggerParameters
     {
-        EventTriggerGpioParameter        gpio;        // GPIO parameters
-        EventTriggerThresholdParameter   threshold;   // Threshold parameters
-        EventTriggerCombinationParameter combination; // Combination parameters
-
+        //API Constructor: EventTriggerParameters
+        // Default constructor
         EventTriggerParameters() : combination() {}
+
+        //API Variable: gpio
+        //  Event GPIO trigger parameters
+        EventTriggerGpioParameter gpio;
+
+        //API Variable: threshold
+        //  Event threshold trigger parameters
+        EventTriggerThresholdParameter threshold;
+
+        //API Variable: combination
+        // Event combination trigger parameters
+        EventTriggerCombinationParameter combination;
     };
 
     //API Struct: EventTriggerConfiguration
@@ -2961,15 +2973,138 @@ namespace mscl
             COMBINATION_TRIGGER = 0x03  // Logical combination of two or more triggers
         };
 
+        //API Variable: instance
         // Trigger number
         uint8 instance;
 
+        //API Variable: trigger
         // Type of trigger
         Type trigger;
 
+        //API Variable: parameters
         // Trigger parameters
         EventTriggerParameters parameters;
     };
+
+    //API Struct: EventActionGpioParameter
+    struct EventActionGpioParameter
+    {
+        //API Enum: Mode
+        //  Modes for behavior of the GPIO pin
+        //
+        //  DISABLED     - 0x00 - Pin state will not be changed
+        //  ACTIVE_HIGH  - 0x01 - Pin will be set high when the trigger is active and low otherwise
+        //  ACTIVE_LOW   - 0x02 - Pin will be set low when the trigger is active and high otherwise
+        //  ONESHOT_HIGH - 0x05 - Pin will be set high each time the trigger activates. It will not be set low
+        //  ONESHOW_LOW  - 0x06 - Pin will be set low each time the trigger activates. It will not be set high
+        //  TOGGLE       - 0x07 - Pin will change to the opposite state each time the trigger activates
+        enum Mode
+        {
+            DISABLED     = 0x00, // Pin state will not be changed
+            ACTIVE_HIGH  = 0x01, // Pin will be set high when the trigger is active and low otherwise
+            ACTIVE_LOW   = 0x02, // Pin will be set low when the trigger is active and high otherwise
+            ONESHOT_HIGH = 0x05, // Pin will be set high each time the trigger activates. It will not be set low
+            ONESHOT_LOW  = 0x06, // Pin will be set low each time the trigger activates. It will not be set high
+            TOGGLE       = 0x07  // Pin will change to the opposite state each time the trigger activates
+        };
+
+        //API Variable: pin
+        //  GPIO pin number
+        uint8 pin;
+
+        //API Variable: mode
+        //  Behavior of the GPIO pin
+        Mode mode;
+    };
+
+    //API Struct: EventActionMessageParameter
+    struct EventActionMessageParameter
+    {
+        //API Constant: MAX_DESCRIPTORS
+        //  Maximum supported descriptors
+        static constexpr uint8 MAX_DESCRIPTORS = 12;
+
+        //API Variable: sampleRate
+        //  Sample rate to output fields at when action is triggered. <SampleRate::Event()> (type Event,  indicates only a single packet will be output when triggered.
+        SampleRate sampleRate;
+
+        //API Function: dataClass
+        //  Get the <MipTypes::DataClass>
+        MipTypes::DataClass dataClass() const { return m_descriptorSet; }
+
+        //API Function: setChannelFields
+        //  Set the <MipTypes::ChannelFields>
+        void setChannelFields(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields);
+
+        //API Function: getChannelFields
+        //  Get a list of <MipTypes::ChannelField>
+        MipTypes::MipChannelFields getChannelFields() const;
+
+    private:
+        //Variable: descriptorSet
+        //  Descriptor set for the fields that will be produced when the event occurs
+        MipTypes::DataClass m_descriptorSet;
+
+        //Variable: m_channelFields
+        //  <MipTypes::ChannelField>s to output when the event occurs
+        std::array<MipTypes::ChannelField, MAX_DESCRIPTORS> m_channelFields;
+
+    private:
+        //Function: filterFields
+        //  Removes fields not in the specified <MipTypes::DataClass>
+        MipTypes::MipChannelFields filterFields(const MipTypes::MipChannelFields& fields);
+    };
+
+    //API Union: EventActionParameters
+    // Only one of the variables (gpio, message) should be used to represent each instance
+    union EventActionParameters
+    {
+        //API Constructor: EventActionParameters
+        //  Default constructor
+        EventActionParameters() : message() {}
+
+        //API Variable: gpio
+        //  Event action GPIO parameters
+        EventActionGpioParameter gpio;
+
+        //API Variable: message
+        //  Event action message parameters
+        EventActionMessageParameter message;
+    };
+
+    //API Struct: EventActionConfiguration
+    struct EventActionConfiguration
+    {
+        //API Enum: Type
+        //  Types for the event action
+        //
+        //  NONE    - 0x00 - No action. Parameters should be empty
+        //  GPIO    - 0x01 - Control the state of a GPIO pin. See <EventActionGpioParameter>
+        //  MESSAGE - 0x02 - Output a data packet. See <EventActionMessageParameter>
+        enum Type
+        {
+            NONE    = 0x00, // No action. Parameters should be empty
+            GPIO    = 0x01, // Control the state of a GPIO pin
+            MESSAGE = 0x02  // Output a data packet
+        };
+
+        //API Variable: instance
+        //  Action number
+        uint8 instance;
+
+        //API Variable: trigger
+        //  ID of trigger that will cause this action to occur. If 0, this action is not linked to any event triggers.
+        uint8 trigger;
+
+        //API Variable: type
+        //  Type of action
+        Type type;
+
+        //API Variable: parameters
+        //  Action parameters
+        EventActionParameters parameters;
+    };
+
 
     //API Struct: EventTriggerInfo
     //  Information about an event trigger

@@ -124,6 +124,16 @@ namespace mscl
         //    - <Error_UnknownSampleRate>: The current <SampleRate> does not match a <WirelessTypes::WirelessSampleRate>.
         WirelessTypes::WirelessSampleRate toWirelessSampleRate() const;
 
+        //API Function: toDecimation
+        //    Gets the decimation for the current SampleRate.
+        //
+        //Parameters:
+        //    sampleRateBase - The base sample rate used to compute the decimation
+        //
+        //Returns:
+        //    The decimation of the current SampleRate 
+        uint16 toDecimation(uint16 sampleRateBase) const;
+
     public:
         //API Function: Hertz
         //    Creates a SampleRate object from the given samples per second
