@@ -131,6 +131,7 @@ namespace mscl
         //  CMD_EVENT_CONTROL                           - 0x0C2B    - Event Control
         //  CMD_EVENT_TRIGGER_STATUS                    - 0x0C2C    - Event Trigger Status
         //  CMD_EVENT_TRIGGER_CONFIGURATION             - 0x0C2E    - Event Trigger Configuration
+        //  CMD_EVENT_ACTION_CONFIGURATION              - 0x0C2F    - Event Action Configuration
         //  CMD_SAVE_STARTUP_SETTINGS                   - 0x0C30    - Device Startup Settings
         //  CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER     - 0x0C31    - Sensor to Vehicle Frame Transformation Euler Angles
         //  CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT      - 0x0C32    - Sensor to Vehicle Frame Transformation Quaternion
@@ -258,6 +259,7 @@ namespace mscl
             CMD_EVENT_CONTROL                       = 0x0C2B,
             CMD_EVENT_TRIGGER_STATUS                = 0x0C2C,
             CMD_EVENT_TRIGGER_CONFIGURATION         = 0x0C2E,
+            CMD_EVENT_ACTION_CONFIGURATION          = 0x0C2F,
             CMD_SAVE_STARTUP_SETTINGS               = 0x0C30,
             CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER = 0x0C31,
             CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT  = 0x0C32,
@@ -617,6 +619,7 @@ namespace mscl
         //  CH_FIELD_GNSS_5_SHARED_GPS_TIMESTAMP                    - 0x95D3    - GPS Timestamp
         //  CH_FIELD_GNSS_5_SHARED_DELTA_TIMESTAMP                  - 0x95D4    - Delta GPS Timestamp
         //  CH_FIELD_SYSTEM_TIME_SYNC_STATUS                        - 0xA002    - Time Sync Status
+        //  CH_FIELD_SYSTEM_SHARED_EVENT_SOURCE                     - 0xA0D0    - Event Source
         //  CH_FIELD_SYSTEM_SHARED_TICKS                            - 0xA0D1    - Ticks
         //  CH_FIELD_SYSTEM_SHARED_DELTA_TICKS                      - 0xA0D2    - Delta Ticks
         //  CH_FIELD_SYSTEM_SHARED_GPS_TIMESTAMP                    - 0xA0D3    - GPS Timestamp
@@ -886,6 +889,7 @@ namespace mscl
             CH_FIELD_GNSS_5_SHARED_GPS_TIMESTAMP                    = 0x95D3,
             CH_FIELD_GNSS_5_SHARED_DELTA_TIMESTAMP                  = 0x95D4,
             CH_FIELD_SYSTEM_TIME_SYNC_STATUS                        = 0xA002,
+            CH_FIELD_SYSTEM_SHARED_EVENT_SOURCE                     = 0xA0D0,
             CH_FIELD_SYSTEM_SHARED_TICKS                            = 0xA0D1,
             CH_FIELD_SYSTEM_SHARED_DELTA_TICKS                      = 0xA0D2,
             CH_FIELD_SYSTEM_SHARED_GPS_TIMESTAMP                    = 0xA0D3,
