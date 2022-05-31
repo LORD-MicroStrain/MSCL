@@ -377,7 +377,7 @@ namespace mscl
         //  CH_FIELD_SENSOR_TEMPERATURE_STATISTICS                  - 0x8014    - Temperature Statistics
         //  CH_FIELD_SENSOR_RAW_AMBIENT_PRESSURE                    - 0x8016    - Raw Ambient Pressure
         //  CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE                 - 0x8017    - Scaled Ambient Pressure
-        //  CH_FIELD_SENSOR_OVER_RANGE_STATUS                       - 0x8018    - Over-Range Status
+        //  CH_FIELD_SENSOR_OVERRANGE_STATUS                        - 0x8018    - Overrange Status
         //  CH_FIELD_SENSOR_ODOMETER_DATA                           - 0x8040    - Odometer Data
         //  CH_FIELD_SENSOR_SHARED_EVENT_SOURCE                     - 0x80D0    - Event Source
         //  CH_FIELD_SENSOR_SHARED_TICKS                            - 0x80D1    - Ticks
@@ -649,7 +649,7 @@ namespace mscl
             CH_FIELD_SENSOR_TEMPERATURE_STATISTICS                  = 0x8014,
             CH_FIELD_SENSOR_RAW_AMBIENT_PRESSURE                    = 0x8016,
             CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE                 = 0x8017,
-            CH_FIELD_SENSOR_OVER_RANGE_STATUS                       = 0x8018,
+            CH_FIELD_SENSOR_OVERRANGE_STATUS                       = 0x8018,
             CH_FIELD_SENSOR_ODOMETER_DATA                           = 0x8040,
             CH_FIELD_SENSOR_SHARED_EVENT_SOURCE                     = 0x80D0,
             CH_FIELD_SENSOR_SHARED_TICKS                            = 0x80D1,

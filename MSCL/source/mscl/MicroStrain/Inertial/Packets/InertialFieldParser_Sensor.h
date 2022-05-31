@@ -349,11 +349,11 @@ namespace mscl
         static const bool REGISTERED;
     };
 
-    //Class: FieldParser_OverRangeStatus
-    //    The field parser for Over-Range Status.
-    class FieldParser_OverRangeStatus : public MipFieldParser
+    //Class: FieldParser_OverrangeStatus
+    //    The field parser for Overrange Status.
+    class FieldParser_OverrangeStatus : public MipFieldParser
     {
-        FieldParser_OverRangeStatus() {}    //default constructor disabled
+        FieldParser_OverrangeStatus() {}    //default constructor disabled
 
     public:
         //Function: parse

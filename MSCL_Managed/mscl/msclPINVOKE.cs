@@ -1182,6 +1182,18 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Bitfield_set__SWIG_1")]
   public static extern void Bitfield_set__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, ulong jarg3);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Bitfield_checkBit__SWIG_0")]
+  public static extern bool Bitfield_checkBit__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2, byte jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Bitfield_checkBit__SWIG_1")]
+  public static extern bool Bitfield_checkBit__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Bitfield_setBit__SWIG_0")]
+  public static extern void Bitfield_setBit__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2, bool jarg3, byte jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Bitfield_setBit__SWIG_1")]
+  public static extern void Bitfield_setBit__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2, bool jarg3);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_StructuralHealth")]
   public static extern global::System.IntPtr new_StructuralHealth(float jarg1, uint jarg2, float jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, global::System.Runtime.InteropServices.HandleRef jarg5);
 
