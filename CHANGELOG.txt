@@ -21,12 +21,15 @@ Forthcoming
     - Event Control (0x0C,0x2B)
     - Event Trigger Status (0x0C,0x2C)
     - Event Trigger Configuration (0x0C,0x2E)
+    - Event Action Configuration (0x0C,0x2F)
     - Sensor Range (0x0C,0x52)
     - Get Calibrated Sensor Ranges (0x0C,0x53)
 - Added support for MIP data:
     - Event Source (0xFF,0xD0)
-- Added support for data field:
-	- System Data (0xA0)
+    - Overrange Status (0x80,0x18)
+    - System data set (0xA0)
+    - Time Sync Status (0xA0,0x02)
+    - GPIO State (0xA0,0x03)
 - Added MipSharedDataFields (MipDataPacket::shared()) to more easily access shared fields within a packet
 - Added check for supported event trigger threshold qualifiers
 - Updated supported CV7 aiding measurement filters

@@ -36,7 +36,9 @@ namespace mscl
         //Parameters:
         //    info - The <MipDeviceInfo> containing information about the device.
         //    supportedDescriptors - The descriptor set ids that are supported by this device.
-        MipNodeInfo(const MipDeviceInfo& info, const std::vector<uint16>& supportedDescriptors, const std::map<MipTypes::DataClass, SampleRates>& sampleRates);
+        //    sampleRates - The sample rates for each data set that are supported by this device.
+        //    baseRates - The base rates for each data set that are supported by this device.
+        MipNodeInfo(const MipDeviceInfo& info, const std::vector<uint16>& supportedDescriptors, const std::map<MipTypes::DataClass, SampleRates>& sampleRates, const std::map<MipTypes::DataClass, uint16>& baseRates);
 
     private:
         MipNodeInfo();    //disabled default constructor
@@ -57,6 +59,10 @@ namespace mscl
         //Variable: m_sampleRates
         //  Contains the sample rates for each MIP data set (lazy loaded).
         std::map<MipTypes::DataClass, Utils::Lazy<SampleRates>> m_sampleRates;
+
+        //Variable: m_baseRates
+        //  Contains the base rates for each MIP data set (lazy loaded).
+        std::map<MipTypes::DataClass, Utils::Lazy<uint16>> m_baseRates;
 
         //Variable: m_receiverInfo
         //  The <GnssReceiverInfo> of the Node (lazy loaded).
@@ -86,6 +92,10 @@ namespace mscl
         //Function: supportedSampleRates
         //  Gets the <SampleRates> supported by the Node for the given <MipTypes::DataClass>.
         const SampleRates& supportedSampleRates(MipTypes::DataClass dataClass) const;
+
+        //Function: baseDataRate
+        //  Gets the base data rate of the Node for the given <MipTypes::DataClass>.
+        const uint16& baseDataRate(MipTypes::DataClass dataClass) const;
 
         //Function: gnssReceiverInfo
         // Gets the <GnssReceiverInfo> for all supported receivers

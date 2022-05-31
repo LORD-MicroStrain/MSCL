@@ -333,7 +333,6 @@ namespace std
     %template(EventTypes)                       vector<mscl::EventTypeInfo>;
 
 
-
 #ifndef UNIX_BUILD
     %template(WsdaMap)                  map<string, mscl::WsdaInfo>;
 #endif

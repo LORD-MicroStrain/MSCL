@@ -1010,6 +1010,57 @@ namespace mscl
         m_unc = unc;
     }
 
+    MipTypes::MipChannelFields EventActionMessageParameter::filterFields(const MipTypes::MipChannelFields& fields)
+    {
+        MipTypes::MipChannelFields filtered;
+        for (MipTypes::ChannelField field : fields)
+        {
+            MipTypes::DataClass fieldClass = static_cast<MipTypes::DataClass>(Utils::msb(static_cast<uint16>(field)));
+            if (fieldClass != m_descriptorSet)
+            {
+                continue;
+            }
+
+            filtered.push_back(field);
+        }
+
+        return filtered;
+    }
+
+    void EventActionMessageParameter::setChannelFields(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields)
+    {
+        // Set data class
+        m_descriptorSet = dataClass;
+
+        // Make sure the fields are defaulted
+        m_channelFields.fill(static_cast<MipTypes::ChannelField>(0));
+
+        // Filter out fields that aren't in the specified data class
+        const MipTypes::MipChannelFields filtered = filterFields(fields);
+
+        // Keep the size at or below MAX_DESCRIPTORS
+        const uint8 size = std::min(static_cast<uint8>(filtered.size()), MAX_DESCRIPTORS);
+
+        // Copy the fields into the descriptors
+        std::copy_n(filtered.begin(), size, m_channelFields.begin());
+    }
+
+    MipTypes::MipChannelFields EventActionMessageParameter::getChannelFields() const
+    {
+        MipTypes::MipChannelFields fields;
+
+        for (const MipTypes::ChannelField& field : m_channelFields)
+        {
+            // Only add non-default values
+            if (field != 0)
+            {
+                fields.push_back(field);
+            }
+        }
+
+        return fields;
+    }
+
     bool EventTriggerInfo::isActive() const
     {
         return status.get(ACTIVE) > 0;

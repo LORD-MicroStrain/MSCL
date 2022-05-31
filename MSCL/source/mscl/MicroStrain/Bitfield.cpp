@@ -44,6 +44,21 @@ namespace mscl
         m_value = m_value | setVal;
     }
 
+    bool Bitfield::checkBit(uint8 bitIndex, uint8 indexBase /* = 0 */) const
+    {
+        uint8 shift = bitIndex < indexBase ? 0 : bitIndex - indexBase;
+        uint8 mask = 1 << shift;
+        return get(mask) > 0;
+    }
+
+    void Bitfield::setBit(uint8 bitIndex, bool value, uint8 indexBase /* = 0 */)
+    {
+        uint8 shift = bitIndex < indexBase ? 0 : bitIndex - indexBase;
+        uint8 mask = 1 << shift;
+        uint8 val = value ? 1 : 0;
+        set(mask, val);
+    }
+
     void Bitfield::clear(uint64 mask)
     {
         uint64 clearMap = 0xFFFFFFFFFFFFFFFF ^ mask;

@@ -9,6 +9,7 @@
 #include "mscl/Types.h"
 #include "mscl/MicroStrain/Matrix.h"
 #include "mscl/MicroStrain/Bitfield.h"
+#include "mscl/MicroStrain/SampleRate.h"
 #include "mscl/MicroStrain/MIP/MipTypes.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
 #include <array>
@@ -572,6 +573,7 @@ namespace mscl
         //API Enum: GnssAidingStatus
         //  Bitmask for the GNSS Position and Attitude Aiding Status field values
         //  Note: GNSS constellation entries are defined by the corresponding constellation enum in <GnssSignalConfiguration>
+        //
         //    GNSS_AIDING_TIGHT_COUPLING  - 0x0001  - 0000 0000 0000 0001
         //    GNSS_AIDING_DIFFERENTIAL    - 0x0002  - 0000 0000 0000 0010
         //    GNSS_AIDING_INTEGER_FIX     - 0x0004  - 0000 0000 0000 0100
@@ -596,6 +598,7 @@ namespace mscl
 
         //API Enum: AidingMeasurementStatus
         //  Bit definitions for the Aiding Measurement Summary Status field values
+        //
         //    AIDING_MEASUREMENT_ENABLED                - 0x0001  - 0000 0000 0000 0001
         //    AIDING_MEASUREMENT_USED                   - 0x0002  - 0000 0000 0000 0010
         //    AIDING_MEASUREMENT_WARNING_RESIDUAL_HIGH  - 0x0004  - 0000 0000 0000 0100
@@ -614,6 +617,7 @@ namespace mscl
 
         //API Enum: RtkCorrectionsStatus
         //  Bit definitions for the RTK Corrections Epoch Status field value
+        //
         //      RTK_CORRECTION_ANTENNA_POS_RECEIVED     - 0x0001  - 0000 0000 0000 0001
         //      RTK_CORRECTION_ANTENNA_DESC_RECEIVED    - 0x0002  - 0000 0000 0000 0010
         //      RTK_CORRECTION_GPS_RECEIVED             - 0x0004  - 0000 0000 0000 0100
@@ -636,6 +640,7 @@ namespace mscl
 
         //API Enum: GnssSignalQuality
         //  Value definitions for the GNSS Raw Observation Signal Quality field value
+        //
         //      SIGNAL_QUALITY_NONE         - 0x00 - None
         //      SIGNAL_QUALITY_SEARCHING    - 0x01 - Searching
         //      SIGNAL_QUALITY_ACQUIRED     - 0x02 - Acquired
@@ -650,6 +655,33 @@ namespace mscl
             SIGNAL_QUALITY_UNUSABLE     = 0x03,
             SIGNAL_QUALITY_TIME_LOCKED  = 0x04,
             SIGNAL_QUALITY_FULLY_LOCKED = 0x05,
+        };
+
+        //API Enum: OverrangeStatusBitmask
+        //  Bitmasks for interpreting the Overrange Status (0x80,0x18) bitfield
+        //
+        //      OVERRANGE_ACCEL_X     - 0b0000 0000 0000 0001 - Accel X
+        //      OVERRANGE_ACCEL_Y     - 0b0000 0000 0000 0010 - Accel Y
+        //      OVERRANGE_ACCEL_Z     - 0b0000 0000 0000 0100 - Accel Z
+        //      OVERRANGE_GYRO_X      - 0b0000 0000 0001 0000 - Gyro X
+        //      OVERRANGE_GYRO_Y      - 0b0000 0000 0010 0000 - Gyro Y
+        //      OVERRANGE_GYRO_Z      - 0b0000 0000 0100 0000 - Gyro Z
+        //      OVERRANGE_MAG_X       - 0b0000 0001 0000 0000 - Mag X
+        //      OVERRANGE_MAG_Y       - 0b0000 0010 0000 0000 - Mag Y
+        //      OVERRANGE_MAG_Z       - 0b0000 0100 0000 0000 - Mag Z
+        //      OVERRANGE_PRESSURE    - 0b0001 0000 0000 0000 - Pressure
+        enum OverrangeStatusBitmask
+        {
+            OVERRANGE_ACCEL_X     = 0b0000000000000001, // Accel X
+            OVERRANGE_ACCEL_Y     = 0b0000000000000010, // Accel Y
+            OVERRANGE_ACCEL_Z     = 0b0000000000000100, // Accel Z
+            OVERRANGE_GYRO_X      = 0b0000000000010000, // Gyro X
+            OVERRANGE_GYRO_Y      = 0b0000000000100000, // Gyro Y
+            OVERRANGE_GYRO_Z      = 0b0000000001000000, // Gyro Z
+            OVERRANGE_MAG_X       = 0b0000000100000000, // Mag X
+            OVERRANGE_MAG_Y       = 0b0000001000000000, // Mag Y
+            OVERRANGE_MAG_Z       = 0b0000010000000000, // Mag Z
+            OVERRANGE_PRESSURE    = 0b0001000000000000, // Pressure
         };
     };
 
@@ -2933,14 +2965,25 @@ namespace mscl
         std::array<uint8, MAX_INPUT_TRIGGERS> inputTriggers;
     };
 
-    // API Union: EventTriggerParameters
+    //API Union: EventTriggerParameters
+    // Only one of the variables (gpio, threshold, combination) should be used to represent each instance
     union EventTriggerParameters
     {
-        EventTriggerGpioParameter        gpio;        // GPIO parameters
-        EventTriggerThresholdParameter   threshold;   // Threshold parameters
-        EventTriggerCombinationParameter combination; // Combination parameters
-
+        //API Constructor: EventTriggerParameters
+        // Default constructor
         EventTriggerParameters() : combination() {}
+
+        //API Variable: gpio
+        //  Event GPIO trigger parameters
+        EventTriggerGpioParameter gpio;
+
+        //API Variable: threshold
+        //  Event threshold trigger parameters
+        EventTriggerThresholdParameter threshold;
+
+        //API Variable: combination
+        // Event combination trigger parameters
+        EventTriggerCombinationParameter combination;
     };
 
     //API Struct: EventTriggerConfiguration
@@ -2961,15 +3004,138 @@ namespace mscl
             COMBINATION_TRIGGER = 0x03  // Logical combination of two or more triggers
         };
 
+        //API Variable: instance
         // Trigger number
         uint8 instance;
 
+        //API Variable: trigger
         // Type of trigger
         Type trigger;
 
+        //API Variable: parameters
         // Trigger parameters
         EventTriggerParameters parameters;
     };
+
+    //API Struct: EventActionGpioParameter
+    struct EventActionGpioParameter
+    {
+        //API Enum: Mode
+        //  Modes for behavior of the GPIO pin
+        //
+        //  DISABLED     - 0x00 - Pin state will not be changed
+        //  ACTIVE_HIGH  - 0x01 - Pin will be set high when the trigger is active and low otherwise
+        //  ACTIVE_LOW   - 0x02 - Pin will be set low when the trigger is active and high otherwise
+        //  ONESHOT_HIGH - 0x05 - Pin will be set high each time the trigger activates. It will not be set low
+        //  ONESHOW_LOW  - 0x06 - Pin will be set low each time the trigger activates. It will not be set high
+        //  TOGGLE       - 0x07 - Pin will change to the opposite state each time the trigger activates
+        enum Mode
+        {
+            DISABLED     = 0x00, // Pin state will not be changed
+            ACTIVE_HIGH  = 0x01, // Pin will be set high when the trigger is active and low otherwise
+            ACTIVE_LOW   = 0x02, // Pin will be set low when the trigger is active and high otherwise
+            ONESHOT_HIGH = 0x05, // Pin will be set high each time the trigger activates. It will not be set low
+            ONESHOT_LOW  = 0x06, // Pin will be set low each time the trigger activates. It will not be set high
+            TOGGLE       = 0x07  // Pin will change to the opposite state each time the trigger activates
+        };
+
+        //API Variable: pin
+        //  GPIO pin number
+        uint8 pin;
+
+        //API Variable: mode
+        //  Behavior of the GPIO pin
+        Mode mode;
+    };
+
+    //API Struct: EventActionMessageParameter
+    struct EventActionMessageParameter
+    {
+        //API Constant: MAX_DESCRIPTORS
+        //  Maximum supported descriptors
+        static constexpr uint8 MAX_DESCRIPTORS = 12;
+
+        //API Variable: sampleRate
+        //  Sample rate to output fields at when action is triggered. <SampleRate::Event()> (type Event,  indicates only a single packet will be output when triggered.
+        SampleRate sampleRate;
+
+        //API Function: dataClass
+        //  Get the <MipTypes::DataClass>
+        MipTypes::DataClass dataClass() const { return m_descriptorSet; }
+
+        //API Function: setChannelFields
+        //  Set the <MipTypes::ChannelFields>
+        void setChannelFields(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields);
+
+        //API Function: getChannelFields
+        //  Get a list of <MipTypes::ChannelField>
+        MipTypes::MipChannelFields getChannelFields() const;
+
+    private:
+        //Variable: descriptorSet
+        //  Descriptor set for the fields that will be produced when the event occurs
+        MipTypes::DataClass m_descriptorSet;
+
+        //Variable: m_channelFields
+        //  <MipTypes::ChannelField>s to output when the event occurs
+        std::array<MipTypes::ChannelField, MAX_DESCRIPTORS> m_channelFields;
+
+    private:
+        //Function: filterFields
+        //  Removes fields not in the specified <MipTypes::DataClass>
+        MipTypes::MipChannelFields filterFields(const MipTypes::MipChannelFields& fields);
+    };
+
+    //API Union: EventActionParameters
+    // Only one of the variables (gpio, message) should be used to represent each instance
+    union EventActionParameters
+    {
+        //API Constructor: EventActionParameters
+        //  Default constructor
+        EventActionParameters() : message() {}
+
+        //API Variable: gpio
+        //  Event action GPIO parameters
+        EventActionGpioParameter gpio;
+
+        //API Variable: message
+        //  Event action message parameters
+        EventActionMessageParameter message;
+    };
+
+    //API Struct: EventActionConfiguration
+    struct EventActionConfiguration
+    {
+        //API Enum: Type
+        //  Types for the event action
+        //
+        //  NONE    - 0x00 - No action. Parameters should be empty
+        //  GPIO    - 0x01 - Control the state of a GPIO pin. See <EventActionGpioParameter>
+        //  MESSAGE - 0x02 - Output a data packet. See <EventActionMessageParameter>
+        enum Type
+        {
+            NONE    = 0x00, // No action. Parameters should be empty
+            GPIO    = 0x01, // Control the state of a GPIO pin
+            MESSAGE = 0x02  // Output a data packet
+        };
+
+        //API Variable: instance
+        //  Action number
+        uint8 instance;
+
+        //API Variable: trigger
+        //  ID of trigger that will cause this action to occur. If 0, this action is not linked to any event triggers.
+        uint8 trigger;
+
+        //API Variable: type
+        //  Type of action
+        Type type;
+
+        //API Variable: parameters
+        //  Action parameters
+        EventActionParameters parameters;
+    };
+
 
     //API Struct: EventTriggerInfo
     //  Information about an event trigger
