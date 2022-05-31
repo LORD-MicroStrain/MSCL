@@ -26,6 +26,7 @@ Forthcoming
     - Get Calibrated Sensor Ranges (0x0C,0x53)
 - Added support for MIP data:
     - Event Source (0xFF,0xD0)
+    - Overrange Status (0x80,0x18)
     - System data set (0xA0)
     - Time Sync Status (0xA0,0x02)
     - GPIO State (0xA0,0x03)
