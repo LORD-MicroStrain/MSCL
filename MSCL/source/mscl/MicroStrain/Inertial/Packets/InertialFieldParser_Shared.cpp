@@ -182,7 +182,7 @@ namespace mscl
         const MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
 
         //add all the data points we just collected
-        result.push_back(MipDataPoint(chField, MipTypes::CH_TIMESTAMP, valueType_Timestamp, anyType(referenceTime)));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_NANOSECONDS, valueType_uint64, anyType(referenceTime)));
     }
 
     bool FieldParser_ReferenceTime::registerParser()

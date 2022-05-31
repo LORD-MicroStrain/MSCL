@@ -399,7 +399,7 @@ BOOST_AUTO_TEST_CASE(Utils_valueTypeSize)
     BOOST_CHECK_EQUAL(Utils::valueTypeSize(valueType_int32), 4);
     BOOST_CHECK_EQUAL(Utils::valueTypeSize(valueType_int16), 2);
     BOOST_CHECK_EQUAL(Utils::valueTypeSize(valueType_uint16), 2);
-    BOOST_CHECK_EQUAL(Utils::valueTypeSize(valueType_uint32), 2);
+    BOOST_CHECK_EQUAL(Utils::valueTypeSize(valueType_uint32), 4);
     BOOST_CHECK_EQUAL(Utils::valueTypeSize(valueType_uint8), 1);
     BOOST_CHECK_EQUAL(Utils::valueTypeSize(valueType_bool), 1);
     BOOST_CHECK_THROW(Utils::valueTypeSize(valueType_Vector), Error);

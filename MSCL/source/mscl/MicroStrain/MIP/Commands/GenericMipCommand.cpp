@@ -324,6 +324,13 @@ namespace mscl
                     return false;
                 }
                 break;
+            case valueType_uint64:
+                if (data.size() <= index + 8
+                    || data.read_uint64(index) != entry.second.as_uint64())
+                {
+                    return false;
+                }
+                break;
             case valueType_int8:
                 if (data.size() <= index + 1
                     || data.read_int8(index) != entry.second.as_int8())

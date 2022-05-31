@@ -158,4 +158,21 @@ namespace mscl
             return 0;
         }
     }
+
+    bool MipSharedDataFields::hasReferenceTime() const
+    {
+        return has(MipTypes::CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP);
+    }
+
+    uint64 MipSharedDataFields::referenceTime() const
+    {
+        try
+        {
+            return get(MipTypes::CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP).as_uint64();
+        }
+        catch (const std::exception&)
+        {
+            return 0;
+        }
+    }
 } // namespace mscl

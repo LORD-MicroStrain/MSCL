@@ -47,6 +47,9 @@ namespace mscl
             case valueType_uint32:
                 command.append_uint32(val.as_uint32());
                 break;
+            case valueType_uint64:
+                command.append_uint64(val.as_uint64());
+                break;
             case valueType_int8:
                 command.append_int8(val.as_int8());
                 break;
@@ -628,6 +631,9 @@ namespace mscl
                 break;
             case valueType_uint32:
                 outData.push_back(Value::UINT32(buffer.read_uint32()));
+                break;
+            case valueType_uint64:
+                outData.push_back(Value::UINT64(buffer.read_uint64()));
                 break;
             case valueType_int8:
                 outData.push_back(Value::INT8(buffer.read_int8()));
