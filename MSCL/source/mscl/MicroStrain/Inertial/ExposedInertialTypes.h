@@ -2748,20 +2748,24 @@ namespace mscl
     {
         //API Enum: Feature
         //  GPIO Feature options
-        //      UNUSED_FEATURE    - 0x00 - Pin is unused
-        //      GPIO_FEATURE      - 0x01 - Encoder is disabled
-        //      PPS_FEATURE       - 0x02 - Single pulse input; one direction only
-        //      ENCODER_FEATURE   - 0x03 - Quadrature encoder mode
+        //
+        //      UNUSED_FEATURE          - 0x00 - Pin is unused
+        //      GPIO_FEATURE            - 0x01 - Encoder is disabled
+        //      PPS_FEATURE             - 0x02 - Single pulse input; one direction only
+        //      ENCODER_FEATURE         - 0x03 - Quadrature encoder mode
+        //      EVENT_TIMESTAMP_FEATURE - 0x04 - Precision event timestamping
         enum Feature
         {
             UNUSED_FEATURE = 0x00,
             GPIO_FEATURE = 0x01,
             PPS_FEATURE = 0x02,
-            ENCODER_FEATURE = 0x03
+            ENCODER_FEATURE = 0x03,
+            EVENT_TIMESTAMP_FEATURE = 0x04
         };
 
         //API Enum: GpioBehavior
         //  GPIO Pin behavior
+        //
         //      UNUSED_BEHAVIOR              - 0x00 - Unused
         //      GPIO_INPUT_BEHAVIOR          - 0x01 - Input
         //      GPIO_OUTPUT_LOW_BEHAVIOR     - 0x02 - Output on low
@@ -2776,6 +2780,7 @@ namespace mscl
 
         //API Enum: PpsBehavior
         //  PPS Pin behavior
+        //
         //      UNUSED      - 0x00 - Pin is unused
         //      PPS_INPUT   - 0x01 - Input
         //      PPS_OUTPUT  - 0x02 - Single pulse input; one direction only
@@ -2788,9 +2793,10 @@ namespace mscl
 
         //API Enum: EncoderBehavior
         //  Encoder Pin behavior
+        //
         //      UNUSED      - 0x00 - Pin is unused
-        //      ENCODER_A   - 0x01 - Encoder is disabled
-        //      ENCODER_B   - 0x02 - Single pulse input; one direction only
+        //      ENCODER_A   - 0x01 - Encoder A
+        //      ENCODER_B   - 0x02 - Encoder B
         enum EncoderBehavior
         {
             ENCODER_UNUSED = 0x00,
@@ -2798,7 +2804,23 @@ namespace mscl
             ENCODER_B = 0x02
         };
 
+        //API Enum: EventTimestampBehavior
+        //  Event Timestamp Pin behavior
+        //
+        //      TIMESTAMP_UNUSED    - 0x00 - Pin is unused
+        //      TIMESTAMP_RISING    - 0x01 - Rising edge will be timestamped
+        //      TIMESTAMP_FALLING   - 0x02 - Falling edge will be timestamped
+        //      TIMESTAMP_EDGE      - 0x03 - Both rising and falling edges will be timestamped
+        enum EventTimestampBehavior
+        {
+            EVENT_TIMESTAMP_UNUSED    = 0x00,
+            EVENT_TIMESTAMP_RISING    = 0x01,
+            EVENT_TIMESTAMP_FALLING   = 0x02,
+            EVENT_TIMESTAMP_EDGE      = 0x03,
+        };
+
         //API Enum: PinModes
+        //
         //  PinModes for the pinMode Bitfield
         //      OPEN_DRAIN  - 0x01
         //      PULLDOWN    - 0x02
