@@ -23,12 +23,14 @@ namespace mscl
     uint8 Timestamp::s_gpsLeapSeconds = 18;
 
     //constructor
-    Timestamp::Timestamp(uint64 nanoseconds/*=0*/) :
-        m_nanoseconds(nanoseconds)
+    Timestamp::Timestamp(uint64 nanoseconds/*=0*/, Timestamp::Epoch epoch /*=UNIX*/) :
+        m_nanoseconds(nanoseconds),
+        m_epoch(epoch)
     {
     }
 
-    Timestamp::Timestamp(uint16 year, uint16 month, uint16 day, uint16 hour, uint16 minute, uint16 second, uint32 milli)
+    Timestamp::Timestamp(uint16 year, uint16 month, uint16 day, uint16 hour, uint16 minute, uint16 second, uint32 milli) :
+        m_epoch(Timestamp::Epoch::UNIX)
     {
         boost::posix_time::ptime dateTime(boost::gregorian::date(year, month, day),
                                           boost::posix_time::hours(hour) + boost::posix_time::minutes(minute) + boost::posix_time::seconds(second) + boost::posix_time::milliseconds(milli));
@@ -87,21 +89,52 @@ namespace mscl
     }
 
     //get the number of nanoseconds since epoch
-    uint64 Timestamp::nanoseconds() const
+    uint64 Timestamp::nanoseconds(Timestamp::Epoch epoch /*=UNIX*/) const
     {
-        return m_nanoseconds;
+        if (m_epoch == epoch)
+        {
+            return m_nanoseconds;
+        }
+
+        switch (epoch)
+        {
+        case UNIX:
+            return Timestamp::gpsTimeToUtcTime(m_nanoseconds);
+        case GPS:
+            return Timestamp::utcTimeToGpsTime(m_nanoseconds);
+        default:
+            return m_nanoseconds;
+        }
     }
 
     //get the number of seconds since epoch
-    uint64 Timestamp::seconds() const
+    uint64 Timestamp::seconds(Timestamp::Epoch epoch /*=UNIX*/) const
     {
-        return m_nanoseconds / TimeSpan::NANOSECONDS_PER_SECOND;
+        uint64 ns = m_nanoseconds;
+
+        if (m_epoch != epoch)
+        {
+            switch (epoch)
+            {
+            case UNIX:
+                ns = Timestamp::gpsTimeToUtcTime(m_nanoseconds);
+                break;
+            case GPS:
+                ns = Timestamp::utcTimeToGpsTime(m_nanoseconds);
+                break;
+            default:
+                break;
+            }
+        }
+
+        return ns / TimeSpan::NANOSECONDS_PER_SECOND;
     }
 
     //set the number of nanoseconds since epoch
-    void Timestamp::setTime(uint64 nanosSinceEpoch)
+    void Timestamp::setTime(uint64 nanosSinceEpoch, Timestamp::Epoch epoch /*=UNIX*/)
     {
         m_nanoseconds = nanosSinceEpoch;
+        m_epoch = epoch;
     }
 
     //Sets the nanoseconds value to the current system time in UTC
@@ -166,5 +199,17 @@ namespace mscl
 
         // seconds since start of Unix time = seconds between 1970 and 1980 + number of weeks since 1980 * number of seconds in a week + number of complete seconds past in current week - leap seconds since start of GPS time
         return static_cast<uint64>((315964800 + weekNumber * 604800 + static_cast<uint64>(seconds) - Timestamp::getLeapSeconds()) * TimeSpan::NANOSECONDS_PER_SECOND) + static_cast<uint64>(std::round(subseconds * static_cast<double>(TimeSpan::NANOSECONDS_PER_SECOND)));
+    }
+
+    uint64 Timestamp::gpsTimeToUtcTime(uint64 gpsNanoseconds)
+    {
+        // nanoseconds since start of Unix time = (seconds between 1970 and 1980 - leap seconds since start of GPS time
+        return static_cast<uint64>(gpsNanoseconds + ((315964800 - Timestamp::getLeapSeconds()) * TimeSpan::NANOSECONDS_PER_SECOND));
+    }
+
+    uint64 Timestamp::utcTimeToGpsTime(uint64 utcNanoseconds)
+    {
+        // nanoseconds since start of Unix time = (seconds between 1970 and 1980 - leap seconds since start of GPS time
+        return static_cast<uint64>(utcNanoseconds - ((315964800 - Timestamp::getLeapSeconds()) * TimeSpan::NANOSECONDS_PER_SECOND));
     }
 }

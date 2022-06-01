@@ -727,28 +727,40 @@ class msclPINVOKE {
   public static extern void delete_Histogram(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_Timestamp__SWIG_0")]
-  public static extern global::System.IntPtr new_Timestamp__SWIG_0(ulong jarg1);
+  public static extern global::System.IntPtr new_Timestamp__SWIG_0(ulong jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_Timestamp__SWIG_1")]
-  public static extern global::System.IntPtr new_Timestamp__SWIG_1();
+  public static extern global::System.IntPtr new_Timestamp__SWIG_1(ulong jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_Timestamp__SWIG_2")]
-  public static extern global::System.IntPtr new_Timestamp__SWIG_2(ushort jarg1, ushort jarg2, ushort jarg3, ushort jarg4, ushort jarg5, ushort jarg6, uint jarg7);
+  public static extern global::System.IntPtr new_Timestamp__SWIG_2();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_Timestamp__SWIG_3")]
+  public static extern global::System.IntPtr new_Timestamp__SWIG_3(ushort jarg1, ushort jarg2, ushort jarg3, ushort jarg4, ushort jarg5, ushort jarg6, uint jarg7);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_Timestamp")]
   public static extern void delete_Timestamp(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_nanoseconds")]
-  public static extern ulong Timestamp_nanoseconds(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_nanoseconds__SWIG_0")]
+  public static extern ulong Timestamp_nanoseconds__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_seconds")]
-  public static extern ulong Timestamp_seconds(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_nanoseconds__SWIG_1")]
+  public static extern ulong Timestamp_nanoseconds__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_seconds__SWIG_0")]
+  public static extern ulong Timestamp_seconds__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_seconds__SWIG_1")]
+  public static extern ulong Timestamp_seconds__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_ToString")]
   public static extern string Timestamp_ToString(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_setTime")]
-  public static extern void Timestamp_setTime(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_setTime__SWIG_0")]
+  public static extern void Timestamp_setTime__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_setTime__SWIG_1")]
+  public static extern void Timestamp_setTime__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, ulong jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_setTimeNow")]
   public static extern void Timestamp_setTimeNow(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -762,8 +774,14 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_getLeapSeconds")]
   public static extern byte Timestamp_getLeapSeconds();
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_gpsTimeToUtcTime")]
-  public static extern ulong Timestamp_gpsTimeToUtcTime(double jarg1, ushort jarg2);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_gpsTimeToUtcTime__SWIG_0")]
+  public static extern ulong Timestamp_gpsTimeToUtcTime__SWIG_0(double jarg1, ushort jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_gpsTimeToUtcTime__SWIG_1")]
+  public static extern ulong Timestamp_gpsTimeToUtcTime__SWIG_1(ulong jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_utcTimeToGpsTime")]
+  public static extern ulong Timestamp_utcTimeToGpsTime(ulong jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_TimeSpan_NANOSECONDS_PER_MICROSECOND_get")]
   public static extern ulong TimeSpan_NANOSECONDS_PER_MICROSECOND_get();
@@ -5760,6 +5778,9 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_gpsTimestamp")]
   public static extern global::System.IntPtr MipSharedDataFields_gpsTimestamp(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_gpsTimestampValid")]
+  public static extern bool MipSharedDataFields_gpsTimestampValid(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_hasDeltaTime")]
   public static extern bool MipSharedDataFields_hasDeltaTime(global::System.Runtime.InteropServices.HandleRef jarg1);
 
@@ -5771,6 +5792,15 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_referenceTime")]
   public static extern ulong MipSharedDataFields_referenceTime(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_hasExternalTimestamp")]
+  public static extern bool MipSharedDataFields_hasExternalTimestamp(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_externalTimestamp")]
+  public static extern global::System.IntPtr MipSharedDataFields_externalTimestamp(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_externalTimestampValid")]
+  public static extern bool MipSharedDataFields_externalTimestampValid(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_get__SWIG_0")]
   public static extern global::System.IntPtr MipSharedDataFields_get__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);

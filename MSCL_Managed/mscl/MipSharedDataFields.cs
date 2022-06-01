@@ -96,6 +96,12 @@ public class MipSharedDataFields : global::System.IDisposable {
     return ret;
   }
 
+  public bool gpsTimestampValid() {
+    bool ret = msclPINVOKE.MipSharedDataFields_gpsTimestampValid(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public bool hasDeltaTime() {
     bool ret = msclPINVOKE.MipSharedDataFields_hasDeltaTime(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -116,6 +122,24 @@ public class MipSharedDataFields : global::System.IDisposable {
 
   public ulong referenceTime() {
     ulong ret = msclPINVOKE.MipSharedDataFields_referenceTime(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool hasExternalTimestamp() {
+    bool ret = msclPINVOKE.MipSharedDataFields_hasExternalTimestamp(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public Timestamp externalTimestamp() {
+    Timestamp ret = new Timestamp(msclPINVOKE.MipSharedDataFields_externalTimestamp(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool externalTimestampValid() {
+    bool ret = msclPINVOKE.MipSharedDataFields_externalTimestampValid(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
