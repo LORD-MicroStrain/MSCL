@@ -112,7 +112,8 @@ public class GpioConfiguration : global::System.IDisposable {
     UNUSED_FEATURE = 0x00,
     GPIO_FEATURE = 0x01,
     PPS_FEATURE = 0x02,
-    ENCODER_FEATURE = 0x03
+    ENCODER_FEATURE = 0x03,
+    EVENT_TIMESTAMP_FEATURE = 0x04
   }
 
   public enum GpioBehavior {
@@ -132,6 +133,13 @@ public class GpioConfiguration : global::System.IDisposable {
     ENCODER_UNUSED = 0x00,
     ENCODER_A = 0x01,
     ENCODER_B = 0x02
+  }
+
+  public enum EventTimestampBehavior {
+    EVENT_TIMESTAMP_UNUSED = 0x00,
+    EVENT_TIMESTAMP_RISING = 0x01,
+    EVENT_TIMESTAMP_FALLING = 0x02,
+    EVENT_TIMESTAMP_EDGE = 0x03
   }
 
   public enum PinModes {

@@ -33,6 +33,7 @@ Forthcoming
 - Added MipSharedDataFields (MipDataPacket::shared()) to more easily access shared fields within a packet
 - Added check for supported event trigger threshold qualifiers
 - Updated supported CV7 aiding measurement filters
+- Update supported CV7 GPIO pin options
 - Added check for supported geographic sources
 - Added check for complementary filter north compensation support
 
