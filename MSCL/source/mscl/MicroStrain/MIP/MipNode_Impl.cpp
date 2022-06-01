@@ -1168,6 +1168,39 @@ namespace mscl
                     }
                     break;
                 }
+                case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
+                case MipTypes::CMD_EVENT_CONTROL:
+                {
+                    EventSupportInfo info = features().supportedEventTriggerInfo();
+                    std::vector<MipFieldValues> specifiers;
+                    for (uint8_t id = 1; id <= info.maxInstances; id++)
+                    {
+                        specifiers.push_back({ Value::UINT8(id) });
+                    }
+
+                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, specifiers);
+                    if (cmdBytes.valid())
+                    {
+                        setCmds.push_back(cmdBytes);
+                    }
+                    break;
+                }
+                case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
+                {
+                    EventSupportInfo info = features().supportedEventActionInfo();
+                    std::vector<MipFieldValues> specifiers;
+                    for (uint8_t id = 1; id <= info.maxInstances; id++)
+                    {
+                        specifiers.push_back({ Value::UINT8(id) });
+                    }
+
+                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, specifiers);
+                    if (cmdBytes.valid())
+                    {
+                        setCmds.push_back(cmdBytes);
+                    }
+                    break;
+                }
                 // Do nothing for commands not to be included in settings
                 case MipTypes::CMD_GPIO_STATE:
                 {
