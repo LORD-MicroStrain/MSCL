@@ -120,6 +120,18 @@ public class MipSharedDataFields : global::System.IDisposable {
     return ret;
   }
 
+  public bool hasDeltaReferenceTime() {
+    bool ret = msclPINVOKE.MipSharedDataFields_hasDeltaReferenceTime(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public ulong deltaReferenceTime() {
+    ulong ret = msclPINVOKE.MipSharedDataFields_deltaReferenceTime(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public MipDataPoint get(MipTypes.ChannelField field, MipTypes.ChannelQualifier qualifier) {
     MipDataPoint ret = new MipDataPoint(msclPINVOKE.MipSharedDataFields_get__SWIG_0(swigCPtr, (int)field, (int)qualifier), false);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

@@ -467,6 +467,7 @@ namespace mscl
         { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP, CH_DELTA_TIME), "timeInfo_deltaTime" },
 
         { ChannelId(CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP, CH_NANOSECONDS), "timeInfo_referenceTime" },
+        { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_REFERENCE_TIMESTAMP, CH_NANOSECONDS), "timeInfo_deltaReferenceTime" },
     });
 
 
@@ -527,12 +528,12 @@ namespace mscl
             ChannelIndex(CH_WEEK_NUMBER,  2),
             ChannelIndex(CH_VALID_FLAGS,  3)
         } },
-        /*// (0x80, 0xD5)
+        // (0x80, 0xD5)
         { CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP,{
             ChannelIndex(CH_NANOSECONDS, 1)
         } },
         // (0x80, 0xD7)
-        { CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,{
+        /*{ CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,{
             ChannelIndex(CH_NANOSECONDS, 1),
             ChannelIndex(CH_VALID_FLAGS, 2)
         } },*/
@@ -643,12 +644,12 @@ namespace mscl
             ChannelIndex(CH_WEEK_NUMBER,  2),
             ChannelIndex(CH_VALID_FLAGS,  3)
         } },
-        /*// (0x82, 0xD5)
+        // (0x82, 0xD5)
         { CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP,{
             ChannelIndex(CH_NANOSECONDS, 1)
         } },
         // (0x82, 0xD7)
-        { CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP,{
+        /*{ CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP,{
             ChannelIndex(CH_NANOSECONDS, 1),
             ChannelIndex(CH_VALID_FLAGS, 2)
         } }*/
@@ -692,9 +693,9 @@ namespace mscl
             ChannelIndex(CH_VALID_FLAGS,  3)
         } },
         // (0xA0, 0xD5)
-        /*{ CH_FIELD_SYSTEM_SHARED_REFERENCE_TIMESTAMP,{
+        { CH_FIELD_SYSTEM_SHARED_REFERENCE_TIMESTAMP,{
             ChannelIndex(CH_NANOSECONDS, 1)
-        } },*/
+        } },
         // (0xA0, 0xD7)
         /*{ CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP,{
             ChannelIndex(CH_NANOSECONDS, 1),
@@ -845,7 +846,7 @@ namespace mscl
         return fieldDescriptor >= MipTypes::MIN_SHARED_FIELD_DESCRIPTOR;
     }
 
-    MipTypes::ChannelFieldQualifiers MipTypes::channelFieldQualifiers(const MipTypes::MipChannelFields fields)
+    MipTypes::ChannelFieldQualifiers MipTypes::channelFieldQualifiers(const MipChannelFields& fields)
     {
         ChannelFieldQualifiers fieldQualifiers{};
 
