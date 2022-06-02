@@ -58,14 +58,17 @@ namespace mscl
 
         //Variable: m_deviceTime
         //  The timestamp that was provided by the Node in the data packet
+        //  Note: this is being deprecated for Gen 7 devices and later, use shared().gpsTimestamp(), externalTimestamp() instead.
         Timestamp m_deviceTime;
 
         //Variable: m_hasDeviceTime
         //  Whether the device timestamp was included in the data packet.
+        //  Note: this is being deprecated for Gen 7 devices and later, use shared().hasGpsTimestamp(), externalTimestamp() instead.
         bool m_hasDeviceTime;
 
         //Variable: m_deviceTimeValid
         //  Whether the device timestamp is valid or not (based on flags and/or it being a reasonable timestamp)
+        //  Note: this is being deprecated for Gen 7 devices and later, use shared().gpsTimestampValid(), externalTimestampValid() instead.
         bool m_deviceTimeValid;
 
         //Variable: m_deviceTimeFlags

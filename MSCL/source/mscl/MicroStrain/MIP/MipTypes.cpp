@@ -467,7 +467,10 @@ namespace mscl
         { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP, CH_DELTA_TIME), "timeInfo_deltaTime" },
 
         { ChannelId(CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP, CH_NANOSECONDS), "timeInfo_referenceTime" },
+
         { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_REFERENCE_TIMESTAMP, CH_NANOSECONDS), "timeInfo_deltaReferenceTime" },
+
+        { ChannelId(CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP, CH_TIMESTAMP), "timeInfo_externalTimestamp" },
     });
 
 
@@ -533,10 +536,10 @@ namespace mscl
             ChannelIndex(CH_NANOSECONDS, 1)
         } },
         // (0x80, 0xD7)
-        /*{ CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,{
-            ChannelIndex(CH_NANOSECONDS, 1),
+        { CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,{
+            ChannelIndex(CH_TIMESTAMP, 1),
             ChannelIndex(CH_VALID_FLAGS, 2)
-        } },*/
+        } },
 
 
         // 0x82 Filter Data
@@ -649,10 +652,10 @@ namespace mscl
             ChannelIndex(CH_NANOSECONDS, 1)
         } },
         // (0x82, 0xD7)
-        /*{ CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP,{
-            ChannelIndex(CH_NANOSECONDS, 1),
+        { CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP,{
+            ChannelIndex(CH_TIMESTAMP, 1),
             ChannelIndex(CH_VALID_FLAGS, 2)
-        } }*/
+        } },
 
 
         // 0xA0 System Data
@@ -697,10 +700,10 @@ namespace mscl
             ChannelIndex(CH_NANOSECONDS, 1)
         } },
         // (0xA0, 0xD7)
-        /*{ CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP,{
-            ChannelIndex(CH_NANOSECONDS, 1),
+        { CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP,{
+            ChannelIndex(CH_TIMESTAMP, 1),
             ChannelIndex(CH_VALID_FLAGS, 2)
-        } }*/
+        } }
     });
 
     std::vector<MipTypes::DataClass> MipTypes::GNSS_DATA_CLASSES()

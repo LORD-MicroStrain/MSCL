@@ -28,6 +28,7 @@ Forthcoming
     - Event Source (0xFF,0xD0)
     - Reference Time (0xFF,0xD5)
     - Delta Reference Time (0xFF,0xD6)
+    - External Timestamp (0xFF,0xD7)
     - Overrange Status (0x80,0x18)
     - System data set (0xA0)
     - Time Sync Status (0xA0,0x02)
@@ -38,6 +39,7 @@ Forthcoming
 - Update supported CV7 GPIO pin options
 - Added check for supported geographic sources
 - Added check for complementary filter north compensation support
+- Added support for storing and getting Timestamp class values in both GPS and Unix epochs - default behavior unchanged
 
 64.2.2 - 2022-03-08
 - Reverted defaul MIP command timeout to 250 ms
