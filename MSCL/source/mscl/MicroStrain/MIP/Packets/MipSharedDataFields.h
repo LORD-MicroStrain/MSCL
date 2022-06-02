@@ -166,7 +166,7 @@ namespace mscl
         //  Gets the External Timestamp value for the packet.
         //
         //Returns:
-        //  <Timestamp> - the External timestamp value
+        //  <Timestamp> - the External Timestamp value
         Timestamp externalTimestamp() const;
 
         //API Function: externalTimestampValid
@@ -175,6 +175,27 @@ namespace mscl
         //Returns:
         //  bool - true if valid
         bool externalTimestampValid() const;
+
+        //API Function: hasDeltaExternalTime
+        //  Checks whether the packet contains the Delta External Time field
+        //
+        //Returns:
+        //  bool - true if Delta External Time is present
+        bool hasDeltaExternalTime() const;
+
+        //API Function: deltaExternalTimestamp
+        //  Gets the Delta External Time value for the packet.
+        //
+        //Returns:
+        //  <uint64> - the Delta External Time value
+        uint64 deltaExternalTime() const;
+
+        //API Function: deltaExternalTimeValid
+        //  Checks whether the Delta External Time value for the packet is valid.
+        //
+        //Returns:
+        //  bool - true if valid
+        bool deltaExternalTimeValid() const;
 
         //API Function: get
         //  Get the shared field <MipDataPoint> with the specified field and qualifier.

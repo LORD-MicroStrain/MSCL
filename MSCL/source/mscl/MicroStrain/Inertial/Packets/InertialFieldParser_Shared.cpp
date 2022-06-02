@@ -194,7 +194,7 @@ namespace mscl
 
     //=====================================================================================================================================================
     //                                                        FieldParser_DeltaReferenceTime
-    const MipTypes::ChannelField FieldParser_DeltaReferenceTime::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_REFERENCE_TIMESTAMP;
+    const MipTypes::ChannelField FieldParser_DeltaReferenceTime::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_REFERENCE_TIME;
     const bool FieldParser_DeltaReferenceTime::REGISTERED = registerParser();    //register the parser immediately
 
     void FieldParser_DeltaReferenceTime::parse(const MipDataField& field, MipDataPoints& result) const
@@ -242,4 +242,31 @@ namespace mscl
         return registerSharedParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
+
+    //===================================================================================================================================================== //=====================================================================================================================================================
+    //                                                        FieldParser_DeltaExternalTime
+    const MipTypes::ChannelField FieldParser_DeltaExternalTime::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_EXTERNAL_TIME;
+    const bool FieldParser_DeltaExternalTime::REGISTERED = registerParser();    //register the parser immediately
+
+    void FieldParser_DeltaExternalTime::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the data
+        const uint64 delta = bytes.read_uint64();
+        const bool valid = pointIsValid(bytes.read_uint16(), static_cast<uint16>(BOOST_BINARY(00000001)));
+
+        const MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
+        //add all the data points we just collected
+        result.push_back(MipDataPoint(chField, MipTypes::CH_NANOSECONDS, valueType_uint64, anyType(delta), valid));
+    }
+
+    bool FieldParser_DeltaExternalTime::registerParser()
+    {
+        static FieldParser_DeltaExternalTime p;
+        return registerSharedParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
 }

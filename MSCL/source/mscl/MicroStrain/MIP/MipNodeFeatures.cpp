@@ -867,7 +867,7 @@ namespace mscl
                 // (0x80, 0xD5)
                 MipTypes::CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP,
                 // (0x80, 0xD7)
-                //MipTypes::CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,
+                MipTypes::CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,
 
 
                 // 0x82 Filter Data
@@ -905,7 +905,7 @@ namespace mscl
                 // (0x82, 0xD5)
                 MipTypes::CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP,
                 // (0x82, 0xD7)
-                //MipTypes::CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP,
+                MipTypes::CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP,
 
 
                 // 0xA0 System Data
@@ -921,7 +921,7 @@ namespace mscl
                 // (0xA0, 0xD5)
                 MipTypes::CH_FIELD_SYSTEM_SHARED_REFERENCE_TIMESTAMP,
                 // (0xA0, 0xD7)
-                //MipTypes::CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP
+                MipTypes::CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP
             };
         }
 

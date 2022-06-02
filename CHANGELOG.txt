@@ -29,6 +29,7 @@ Forthcoming
     - Reference Time (0xFF,0xD5)
     - Delta Reference Time (0xFF,0xD6)
     - External Timestamp (0xFF,0xD7)
+    - Delta External Time (0xFF,0xD7)
     - Overrange Status (0x80,0x18)
     - System data set (0xA0)
     - Time Sync Status (0xA0,0x02)
