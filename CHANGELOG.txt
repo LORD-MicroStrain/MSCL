@@ -26,6 +26,8 @@ Forthcoming
     - Get Calibrated Sensor Ranges (0x0C,0x53)
 - Added support for MIP data:
     - Event Source (0xFF,0xD0)
+    - Reference Time (0xFF,0xD5)
+    - Delta Reference Time (0xFF,0xD6)
     - External Timestamp (0xFF,0xD7)
     - Overrange Status (0x80,0x18)
     - System data set (0xA0)

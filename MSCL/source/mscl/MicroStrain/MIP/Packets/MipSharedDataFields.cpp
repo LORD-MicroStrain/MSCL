@@ -191,6 +191,23 @@ namespace mscl
         }
     }
 
+    bool MipSharedDataFields::hasDeltaReferenceTime() const
+    {
+        return has(MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_REFERENCE_TIMESTAMP);
+    }
+
+    uint64 MipSharedDataFields::deltaReferenceTime() const
+    {
+        try
+        {
+            return get(MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_REFERENCE_TIMESTAMP).as_uint64();
+        }
+        catch (const std::exception&)
+        {
+            return 0;
+        }
+    }
+    
     bool MipSharedDataFields::hasExternalTimestamp() const
     {
         return has(MipTypes::CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP);

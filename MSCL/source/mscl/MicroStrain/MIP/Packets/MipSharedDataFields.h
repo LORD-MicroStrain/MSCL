@@ -127,7 +127,7 @@ namespace mscl
         //  double - the delta time value
         double deltaTime() const;
 
-        //API Function: referenceTime
+        //API Function: hasReferenceTime
         //  Checks whether the packet contains the Reference Timestamp (nanoseconds since startup) field
         //
         //Returns:
@@ -141,6 +141,20 @@ namespace mscl
         //  uint64 - the reference time value
         uint64 referenceTime() const;
 
+        //API Function: hasDeltaReferenceTime
+        //  Checks whether the packet contains the Delta Reference Timestamp (nanoseconds since last output) field
+        //
+        //Returns:
+        //  bool - true if Delta Reference Time is present
+        bool hasDeltaReferenceTime() const;
+
+        //API Function: deltaReferenceTime
+        //  Gets the Delta Reference Timestamp (nanoseconds since last output) for the packet
+        //
+        //Returns:
+        //  uint64 - the delta reference time value
+        uint64 deltaReferenceTime() const;
+        
         //API Function: hasExternalTimestamp
         //  Checks whether the packet contains the External Timestamp field
         //

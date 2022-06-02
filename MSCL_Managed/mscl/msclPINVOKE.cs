@@ -5793,6 +5793,12 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_referenceTime")]
   public static extern ulong MipSharedDataFields_referenceTime(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_hasDeltaReferenceTime")]
+  public static extern bool MipSharedDataFields_hasDeltaReferenceTime(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_deltaReferenceTime")]
+  public static extern ulong MipSharedDataFields_deltaReferenceTime(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_hasExternalTimestamp")]
   public static extern bool MipSharedDataFields_hasExternalTimestamp(global::System.Runtime.InteropServices.HandleRef jarg1);
 
@@ -5886,8 +5892,11 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_filterSupportedChannelFields")]
   public static extern global::System.IntPtr MipNodeFeatures_filterSupportedChannelFields(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedChannelFields")]
-  public static extern global::System.IntPtr MipNodeFeatures_supportedChannelFields(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedChannelFields__SWIG_0")]
+  public static extern global::System.IntPtr MipNodeFeatures_supportedChannelFields__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedChannelFields__SWIG_1")]
+  public static extern global::System.IntPtr MipNodeFeatures_supportedChannelFields__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedSampleRates")]
   public static extern global::System.IntPtr MipNodeFeatures_supportedSampleRates(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
