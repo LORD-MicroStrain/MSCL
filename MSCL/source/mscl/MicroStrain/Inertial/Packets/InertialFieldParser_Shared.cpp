@@ -110,7 +110,7 @@ namespace mscl
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
-    //                                                        FieldParser_DeltaTicks
+    //                                                        FieldParser_GpsTimestamp
     const MipTypes::ChannelField FieldParser_GpsTimestamp::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP;
     const bool FieldParser_GpsTimestamp::REGISTERED = FieldParser_GpsTimestamp::registerParser();    //register the parser immediately
 
@@ -188,6 +188,32 @@ namespace mscl
     bool FieldParser_ReferenceTime::registerParser()
     {
         static FieldParser_ReferenceTime p;
+        return registerSharedParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_ExternalTimestamp
+    const MipTypes::ChannelField FieldParser_ExternalTimestamp::FIELD_TYPE = MipTypes::CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP;
+    const bool FieldParser_ExternalTimestamp::REGISTERED = registerParser();    //register the parser immediately
+
+    void FieldParser_ExternalTimestamp::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the data
+        const Timestamp time(bytes.read_uint64(), Timestamp::Epoch::GPS);
+        const bool valid = pointIsValid(bytes.read_uint16(), static_cast<uint16>(BOOST_BINARY(00000001)));
+
+        const MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
+        //add all the data points we just collected
+        result.push_back(MipDataPoint(chField, MipTypes::CH_TIMESTAMP, valueType_Timestamp, anyType(time), valid));
+    }
+
+    bool FieldParser_ExternalTimestamp::registerParser()
+    {
+        static FieldParser_ExternalTimestamp p;
         return registerSharedParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================

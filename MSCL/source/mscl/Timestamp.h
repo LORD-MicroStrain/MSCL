@@ -17,12 +17,25 @@ namespace mscl
     class Timestamp
     {
     public:
+        //API Enum: Epoch
+        //  Epoch indicator: Unix, GPS.
+        //  Timestamp class uses Unix epoch by default.
+        //
+        //      UNIX    - 0x01
+        //      GPS     - 0x02
+        enum Epoch
+        {
+            UNIX = 0x01,
+            GPS = 0x02
+        };
+
+    public:
         //API Constructor: Timestamp
         //    Creates a Timestamp object based on the nanoseconds parameter
         //
         //Parameters:
         //    nanoseconds - The number of nanoseconds since unix epoch (default of 0)
-        explicit Timestamp(uint64 nanoseconds=0);
+        explicit Timestamp(uint64 nanoseconds=0, Epoch epoch = Epoch::UNIX);
 
         //API Constructor: Timestamp
         //    Creates a Timestamp object from the given year, month, day, hour, minute, second, millisecond parameters
@@ -41,8 +54,13 @@ namespace mscl
 
     private:
         //Variable: m_nanoseconds
-        //    The number of nanoseconds since the unix epoch
+        //    The number of nanoseconds since the m_epoch epoch
         uint64 m_nanoseconds;
+
+        //Variable: m_epoch
+        //    The epoch the nanosecond count is stored in.
+        //    This is to avoid loss of precision during conversion when the source value is GPS time, converting to and from Unix
+        Epoch m_epoch;
 
         //Variable: s_gpsLeapSeconds
         //  The (hardcoded) number of leap seconds since Jan 1 1980, used in converting GPS timestamps to UTC timestamps.
@@ -84,18 +102,24 @@ namespace mscl
 
     public:
         //API Function: nanoseconds
-        //    Gets the number of nanoseconds since the unix epoch
+        //    Gets the number of nanoseconds since the specified epoch
+        //
+        //Parameters:
+        //    epoch - the epoch for this value (default Unix)
         //
         //Returns:
-        //    The number of nanoseconds since the unix epoch
-        uint64 nanoseconds() const;
+        //    The number of nanoseconds since the specified epoch
+        uint64 nanoseconds(Epoch epoch = Epoch::UNIX) const;
 
         //API Function: seconds
-        //    Gets the number of seconds since the unix epoch
+        //    Gets the number of seconds since the specified epoch
+        //
+        //Parameters:
+        //    epoch - the epoch for this value (default Unix)
         //
         //Returns:
-        //    The number of nanoseconds since the unix epoch
-        uint64 seconds() const;
+        //    The number of nanoseconds since the specified epoch
+        uint64 seconds(Epoch epoch = Epoch::UNIX) const;
 
         //API Function: str
         //    Gets a string representation of the Timestamp object in ISO 8601 Date/Time format.
@@ -109,7 +133,8 @@ namespace mscl
         //
         //Parameters:
         //    nanosSinceEpoch - The number of nanoseconds since the unix epoch.
-        void setTime(uint64 nanosSinceEpoch);
+        //    epoch - the epoch for this value (default Unix)
+        void setTime(uint64 nanosSinceEpoch, Epoch epoch = Epoch::UNIX);
 
         //API Function: setTimeNow
         //    Sets the Timestamp object to the current system time in UTC
@@ -136,9 +161,19 @@ namespace mscl
         //  Gets the current number of leap seconds since Jan 1 1980, used in converting GPS timestamps to UTC timestamps.
         static uint8 getLeapSeconds();
 
-        //Function: gpsTimeToUtcTime
+        //API Function: gpsTimeToUtcTime
         //  Converts the gps time into the UTC time in nanoseconds since the unix epoch.
         //  Note: this uses the value stored in <Utils::gpsLeapSeconds> in its conversion.
         static uint64 gpsTimeToUtcTime(double timeOfWeek, uint16 weekNumber);
+
+        //API Function: gpsTimeToUtcTime
+        //  Converts the gps time into the UTC time in nanoseconds since the unix epoch.
+        //  Note: this uses the value stored in <Utils::gpsLeapSeconds> in its conversion.
+        static uint64 gpsTimeToUtcTime(uint64 gpsNanoseconds);
+
+        //API Function: utcTimeToGpsTime
+        //  Converts the UTC time into the GPS time in nanoseconds since the unix epoch.
+        //  Note: this uses the value stored in <Utils::gpsLeapSeconds> in its conversion.
+        static uint64 utcTimeToGpsTime(uint64 utcNanoseconds);
     };
 }
