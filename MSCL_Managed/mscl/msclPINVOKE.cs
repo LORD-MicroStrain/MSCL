@@ -753,6 +753,9 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_seconds__SWIG_1")]
   public static extern ulong Timestamp_seconds__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_storedEpoch")]
+  public static extern int Timestamp_storedEpoch(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_ToString")]
   public static extern string Timestamp_ToString(global::System.Runtime.InteropServices.HandleRef jarg1);
 

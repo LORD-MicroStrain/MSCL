@@ -84,6 +84,12 @@ public class Timestamp : global::System.IDisposable {
     return ret;
   }
 
+  public Timestamp.Epoch storedEpoch() {
+    Timestamp.Epoch ret = (Timestamp.Epoch)msclPINVOKE.Timestamp_storedEpoch(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public override string ToString() {
     string ret = msclPINVOKE.Timestamp_ToString(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
