@@ -156,6 +156,24 @@ public class MipSharedDataFields : global::System.IDisposable {
     return ret;
   }
 
+  public bool hasDeltaExternalTime() {
+    bool ret = msclPINVOKE.MipSharedDataFields_hasDeltaExternalTime(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public ulong deltaExternalTime() {
+    ulong ret = msclPINVOKE.MipSharedDataFields_deltaExternalTime(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool deltaExternalTimeValid() {
+    bool ret = msclPINVOKE.MipSharedDataFields_deltaExternalTimeValid(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public MipDataPoint get(MipTypes.ChannelField field, MipTypes.ChannelQualifier qualifier) {
     MipDataPoint ret = new MipDataPoint(msclPINVOKE.MipSharedDataFields_get__SWIG_0(swigCPtr, (int)field, (int)qualifier), false);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

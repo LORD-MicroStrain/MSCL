@@ -468,9 +468,11 @@ namespace mscl
 
         { ChannelId(CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP, CH_NANOSECONDS), "timeInfo_referenceTime" },
 
-        { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_REFERENCE_TIMESTAMP, CH_NANOSECONDS), "timeInfo_deltaReferenceTime" },
+        { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_REFERENCE_TIME, CH_NANOSECONDS), "timeInfo_deltaReferenceTime" },
 
         { ChannelId(CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP, CH_TIMESTAMP), "timeInfo_externalTimestamp" },
+
+        { ChannelId(CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP, CH_TIMESTAMP), "timeInfo_deltaExternalTime" },
     });
 
 

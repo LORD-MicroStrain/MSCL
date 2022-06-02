@@ -5808,6 +5808,15 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_externalTimestampValid")]
   public static extern bool MipSharedDataFields_externalTimestampValid(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_hasDeltaExternalTime")]
+  public static extern bool MipSharedDataFields_hasDeltaExternalTime(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_deltaExternalTime")]
+  public static extern ulong MipSharedDataFields_deltaExternalTime(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_deltaExternalTimeValid")]
+  public static extern bool MipSharedDataFields_deltaExternalTimeValid(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipSharedDataFields_get__SWIG_0")]
   public static extern global::System.IntPtr MipSharedDataFields_get__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
 
