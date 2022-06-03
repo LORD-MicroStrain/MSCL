@@ -220,10 +220,6 @@ namespace mscl
             return "FactoryStreaming";
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
             return "ContinuousDataStream";
-        case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
-            return "EventTriggerConfiguration";
-        case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
-            return "EventActionConfiguration";
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
             return "SensorToVehicleFrameTransformationEulerAngles";
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
@@ -240,6 +236,10 @@ namespace mscl
             return "EventTriggerStatus";
         case MipTypes::CMD_EVENT_ACTION_STATUS:
             return "EventActionStatus";
+        case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
+            return "EventTriggerConfiguration";
+        case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
+            return "EventActionConfiguration";
         case MipTypes::CMD_GPIO_CONFIGURATION:
             return "GpioConfiguration";
         case MipTypes::CMD_GPIO_STATE:

@@ -2319,13 +2319,15 @@ namespace mscl
 
         //API Function: getEventTriggerStatus
         //    Sends the Event Trigger Status command (0x0C, 0x2C) to get the current status of the specified triggers.
+        //
+        //Note:
         //    If number of instances is 0, this will return the status of all the triggers.
         //
         //Parameter:
-        //    instances - A <vector> of trigger instance IDs to check the status of.
+        //    instances - A vector of trigger instance IDs to check the status of.
         //
         //Return:
-        //    <EventTriggerStatus> - A <vector> of trigger statuses of the specified triggers, or all triggers.
+        //    <EventTriggerInfo::EventTriggerStatus> - A vector of trigger statuses of the specified triggers, or all triggers.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
@@ -2336,13 +2338,15 @@ namespace mscl
 
         //API Function: getEventActionStatus
         //    Sends the Event Action Status command (0x0C, 0x2D) to get the current status of the specified actions.
+        //
+        //Note:
         //    If number of instances is 0, this will return the status of all the actions.
         //
         //Parameter:
-        //    instances - A <vector> of action instance IDs to check the status of.
+        //    instances - A vector of action instance IDs to check the status of.
         //
         //Return:
-        //    <EventActionStatus> - A <vector> of action statuses of the specified actions, or all actions.
+        //    <EventActionInfo::EventActionStatus> - A vector of action statuses of the specified actions, or all actions.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.

@@ -3231,19 +3231,19 @@ namespace mscl
         //API Constructor: EventActionInfo
         //  Default constructor
         EventActionInfo() :
-            type(0),
+            type(EventActionConfiguration::NONE),
             triggerId(0),
             instanceId(0) {}
 
         //API Constructor: EventActionInfo
-        EventActionInfo(const uint8 type, const uint8 triggerId, const uint8 instanceId) :
+        EventActionInfo(const EventActionConfiguration::Type type, const uint8 triggerId, const uint8 instanceId) :
             type(type),
             triggerId(triggerId),
             instanceId(instanceId) {}
 
         //API Variable: type
-        //  Configured action type
-        uint8 type;
+        //  Configured <EventActionConfiguration::Type>
+        EventActionConfiguration::Type type;
 
         //API Variable: triggerId
         //  Associated event trigger instance

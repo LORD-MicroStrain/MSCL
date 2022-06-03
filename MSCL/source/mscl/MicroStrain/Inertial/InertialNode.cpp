@@ -1236,7 +1236,7 @@ namespace mscl
         });
     }
 
-    EventTriggerStatus InertialNode::getEventTriggerStatus(const std::vector<uint8> instances) const
+    EventTriggerStatus InertialNode::getEventTriggerStatus(const std::vector<uint8> instances/*= std::vector<uint8>()*/) const
     {
         std::vector<Value> specifier = { Value::UINT8(static_cast<uint8>(instances.size())) };
         
@@ -1260,16 +1260,16 @@ namespace mscl
                 static_cast<EventTriggerConfiguration::Type>(data[index].as_uint8()), // type
                 // If instances count is 0, user requested all triggers
                 instances.empty() ?
-                    static_cast<uint8>(instanceIndex + 1):
-                    instances[instanceIndex],                                            // instanceId
-                data[index + 1].as_uint8()                                               // status
+                    static_cast<uint8>(instanceIndex + 1) :
+                    instances[instanceIndex],                                         // instanceId
+                data[index + 1].as_uint8()                                            // status
             });
         }
         
         return status;
     }
 
-    EventActionStatus InertialNode::getEventActionStatus(const std::vector<uint8> instances) const
+    EventActionStatus InertialNode::getEventActionStatus(const std::vector<uint8> instances/*= std::vector<uint8>()*/) const
     {
         std::vector<Value> specifier = { Value::UINT8(static_cast<uint8>(instances.size())) };
 
@@ -1290,12 +1290,12 @@ namespace mscl
             const int instanceIndex = (index - 1) / 2;
 
             status.push_back({
-                data[index].as_uint8(),                                      // type
-                data[index + 1].as_uint8(),                                  // triggerId
+                static_cast<EventActionConfiguration::Type>(data[index].as_uint8()), // type
+                data[index + 1].as_uint8(),                                          // triggerId
                 // If instances count is 0, user requested all actions
                 instances.empty() ?
                     static_cast<uint8>(instanceIndex + 1) :
-                    instances[instanceIndex]                                 // instanceId
+                    instances[instanceIndex]                                         // instanceId
             });
         }
 

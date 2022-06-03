@@ -44,13 +44,21 @@ public class EventActionInfo : global::System.IDisposable {
     }
   }
 
-  public byte type {
+  public EventActionInfo() : this(msclPINVOKE.new_EventActionInfo__SWIG_0(), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public EventActionInfo(EventActionConfiguration.Type type, byte triggerId, byte instanceId) : this(msclPINVOKE.new_EventActionInfo__SWIG_1((int)type, triggerId, instanceId), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public EventActionConfiguration.Type type {
     set {
-      msclPINVOKE.EventActionInfo_type_set(swigCPtr, value);
+      msclPINVOKE.EventActionInfo_type_set(swigCPtr, (int)value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      byte ret = msclPINVOKE.EventActionInfo_type_get(swigCPtr);
+      EventActionConfiguration.Type ret = (EventActionConfiguration.Type)msclPINVOKE.EventActionInfo_type_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
@@ -68,8 +76,16 @@ public class EventActionInfo : global::System.IDisposable {
     } 
   }
 
-  public EventActionInfo() : this(msclPINVOKE.new_EventActionInfo(), true) {
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  public byte instanceId {
+    set {
+      msclPINVOKE.EventActionInfo_instanceId_set(swigCPtr, value);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      byte ret = msclPINVOKE.EventActionInfo_instanceId_get(swigCPtr);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
   }
 
 }
