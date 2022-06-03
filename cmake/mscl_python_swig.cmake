@@ -11,32 +11,44 @@ function(mscl_python_swig)
     ${ARGN}
   )
 
+  # Generate the python and interface file
+  set(OUTFILE_DIR ${CMAKE_CURRENT_BINARY_DIR}/Python)
+  set(OUTFILE_TARGET ${mscl_python_swig_OUTPUT_NAME}_PYTHON_SWIG)
+  set(PYTHON_INTERFACE_FILE ${OUTFILE_DIR}/${mscl_python_swig_OUTPUT_NAME}.py)
+  set(CPP_INTERFACE_FILE ${OUTFILE_DIR}/${mscl_python_swig_OUTPUT_NAME}_Main_InterfacePYTHON_wrap.cxx)
+  if(NOT TARGET ${OUTFILE_TARGET})
+    set(mscl_python_swig_COMPILE_DEFINITIONS_SWIG ${mscl_python_swig_COMPILE_DEFINITIONS})
+    list(TRANSFORM mscl_python_swig_COMPILE_DEFINITIONS_SWIG PREPEND -D)
+    add_custom_command(
+      COMMAND ${CMAKE_COMMAND} -E env SWIG_LIB=${SWIG_DIR} "${SWIG_EXECUTABLE}" -python -outdir "${OUTFILE_DIR}" -c++ -o "${CPP_INTERFACE_FILE}" ${mscl_python_swig_COMPILE_DEFINITIONS_SWIG} "${mscl_python_swig_SOURCES}"
+      OUTPUT ${PYTHON_INTERFACE_FILE} ${CPP_INTERFACE_FILE}
+      DEPENDS ${mscl_python_swig_SOURCES}
+      MAIN_DEPENDENCY ${mscl_python_swig_SOURCES}
+    )
+    add_custom_target(${OUTFILE_TARGET})
+  endif()
+
   # Set up the swig target
-  set(OUTFILE_DIR ${CMAKE_CURRENT_BINARY_DIR}/${mscl_python_swig_MODULE_NAME})
-  set(OUTPUT_DIR ${OUTFILE_DIR}/${OUTPUT_NAME})
-  swig_add_library(${mscl_python_swig_MODULE_NAME}
-    LANGUAGE python
-    TYPE SHARED
-    SOURCES ${mscl_python_swig_SOURCES}
-    OUTPUT_DIR ${OUTPUT_DIR}
-    OUTFILE_DIR ${OUTFILE_DIR}
-  )
+  set(OUTPUT_DIR ${OUTFILE_DIR}/${mscl_python_swig_MODULE_NAME})
+  add_library(${mscl_python_swig_MODULE_NAME} SHARED ${CPP_INTERFACE_FILE})
+
+  # Fix the name of the library
+  set_property(TARGET ${mscl_python_swig_MODULE_NAME} PROPERTY PREFIX "_")
+  if(WIN32)
+    set_property(TARGET ${mscl_python_swig_MODULE_NAME} PROPERTY SUFFIX ".pyd")
+  endif()
 
   # Some extra flags to pass directly to swig
   set_property(TARGET ${mscl_python_swig_MODULE_NAME} PROPERTY SWIG_COMPILE_OPTIONS ${mscl_python_swig_SWIG_FLAGS})
 
   # Compiler flags for the target that will be passed directly to the compiler
   set_property(TARGET ${mscl_python_swig_MODULE_NAME} PROPERTY COMPILE_OPTIONS ${mscl_python_swig_COMPILE_OPTIONS})
-  set_property(TARGET ${mscl_python_swig_MODULE_NAME} PROPERTY GENERATED_COMPILE_OPTIONS ${mscl_python_swig_COMPILE_OPTIONS})
 
   # Compiler definitons for both the compiler and swig
   set_property(TARGET ${mscl_python_swig_MODULE_NAME} PROPERTY COMPILE_DEFINITIONS ${mscl_python_swig_COMPILE_DEFINITIONS})
-  set_property(TARGET ${mscl_python_swig_MODULE_NAME} PROPERTY SWIG_COMPILE_DEFINITIONS ${mscl_python_swig_COMPILE_DEFINITIONS})
-  set_property(TARGET ${mscl_python_swig_MODULE_NAME} PROPERTY GENERATED_COMPILE_DEFINITIONS ${mscl_python_swig_COMPILE_DEFINITIONS})
 
   # Include directories
   set_property(TARGET ${mscl_python_swig_MODULE_NAME} PROPERTY INCLUDE_DIRECTORIES ${mscl_python_swig_INCLUDE_DIRECTORIES})
-  set_property(TARGET ${mscl_python_swig_MODULE_NAME} PROPERTY GENERATED_INCLUDE_DIRECTORIES ${mscl_python_swig_INCLUDE_DIRECTORIES})
 
   # Link directories
   target_link_directories(${mscl_python_swig_MODULE_NAME} PRIVATE ${mscl_python_swig_LINK_DIRECTORIES})
@@ -55,7 +67,6 @@ function(mscl_python_swig)
   set_property(TARGET ${mscl_python_swig_MODULE_NAME} PROPERTY OUTPUT_NAME ${mscl_python_swig_OUTPUT_NAME})
 
   # Copy the python file to the same directory as the library
-  set(PYTHON_INTERFACE_FILE ${OUTFILE_DIR}/${mscl_python_swig_OUTPUT_NAME}.py)
   add_custom_command(TARGET ${mscl_python_swig_MODULE_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${OUTPUT_DIR}$<$<BOOL:${WIN32}>:/$<CONFIG>> ${mscl_python_swig_OUTPUT_DIR}/Python/${mscl_python_swig_PYTHON_VERSION}/${mscl_python_swig_ARCH}/$<CONFIG>
     COMMAND ${CMAKE_COMMAND} -E copy ${PYTHON_INTERFACE_FILE} ${mscl_python_swig_OUTPUT_DIR}/Python/${mscl_python_swig_PYTHON_VERSION}/${mscl_python_swig_ARCH}/$<CONFIG>/${mscl_python_swig_OUTPUT_NAME}.py
