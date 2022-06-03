@@ -14,7 +14,7 @@ RENAMED - A function/class has been renamed.
 REMOVED - A function/class has been removed.
 ======================================================================================================
 
-Forthcoming
+64.3.0 - 2022-06-03
 - Added support for G-Link-200 6522-6001 (custom default configuration)
 - Added support for MIP commands:
     - Event Support (0x0C,0x2A)
