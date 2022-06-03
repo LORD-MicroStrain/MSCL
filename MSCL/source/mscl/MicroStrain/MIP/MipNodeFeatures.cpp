@@ -107,8 +107,9 @@ namespace mscl
         //loop over all the descriptors we have
         for(auto desc : descriptors)
         {
-            //if ths MSB of the descriptor matches the DataClass being requested
-            if(Utils::msb(static_cast<uint16>(desc)) == static_cast<uint16>(dataClass))
+            //if the MSB of the descriptor matches the DataClass being requested
+            if((dataClass == MipTypes::DataClass(-1) && isChannelField(desc))
+                || Utils::msb(static_cast<uint16>(desc)) == static_cast<uint16>(dataClass))
             {
                 //cast the descriptor to a ChannelField, and add it to the result container
                 result.push_back(static_cast<MipTypes::ChannelField>(desc));
@@ -150,6 +151,11 @@ namespace mscl
     const SampleRates& MipNodeFeatures::supportedSampleRates(MipTypes::DataClass dataClass) const
     {
         return m_nodeInfo.supportedSampleRates(dataClass);
+    }
+
+    const uint16& MipNodeFeatures::baseDataRate(MipTypes::DataClass dataClass) const
+    {
+        return m_nodeInfo.baseDataRate(dataClass);
     }
 
     const GnssReceivers& MipNodeFeatures::gnssReceiverInfo() const
@@ -610,6 +616,15 @@ namespace mscl
             };
         }
 
+        if (feature == GpioConfiguration::EVENT_TIMESTAMP_FEATURE) // same modes available for all Event Timestamp behaviors
+        {
+            return{
+                GpioConfiguration::PinModes(0),
+                GpioConfiguration::PinModes::PULLUP,
+                GpioConfiguration::PinModes::PULLDOWN
+            };
+        }
+
         return{ GpioPinModeOptions(0) };
     }
 
@@ -639,6 +654,13 @@ namespace mscl
             return{
                 { GpioConfiguration::EncoderBehavior::ENCODER_A, supportedGpioPinModes(GpioConfiguration::ENCODER_FEATURE, GpioConfiguration::EncoderBehavior::ENCODER_A) },
                 { GpioConfiguration::EncoderBehavior::ENCODER_B, supportedGpioPinModes(GpioConfiguration::ENCODER_FEATURE, GpioConfiguration::EncoderBehavior::ENCODER_A) }
+            };
+
+        case GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE:
+            return{
+                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_RISING, supportedGpioPinModes(GpioConfiguration::EVENT_TIMESTAMP_FEATURE, 0) },
+                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_FALLING, supportedGpioPinModes(GpioConfiguration::EVENT_TIMESTAMP_FEATURE, 0) },
+                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_EDGE, supportedGpioPinModes(GpioConfiguration::EVENT_TIMESTAMP_FEATURE, 0) }
             };
 
         default:
@@ -673,26 +695,50 @@ namespace mscl
         GpioFeatureBehaviors pin1Features = {
             { GpioConfiguration::Feature::UNUSED_FEATURE, {} },
             { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
-            { GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE) },
-            { GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE) }
         };
 
         GpioFeatureBehaviors pin2Features = {
             { GpioConfiguration::Feature::UNUSED_FEATURE, {} },
             { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
-            { GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE) }
         };
 
         GpioFeatureBehaviors pin3Features = {
             { GpioConfiguration::Feature::UNUSED_FEATURE, {} },
             { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
-            { GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE) },
         };
 
         GpioFeatureBehaviors pin4Features = {
             { GpioConfiguration::Feature::UNUSED_FEATURE, {} },
             { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
         };
+
+        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ahrs:
+        case MipModels::node_3dm_cv7_ar:
+            pin1Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
+            pin2Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
+            pin3Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
+            pin4Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
+
+            pin1Features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
+            pin2Features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
+            pin3Features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
+            pin4Features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
+            break;
+
+        case MipModels::node_3dm_gq7:
+            pin1Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
+            pin3Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
+
+            pin1Features.emplace(GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE));
+            pin2Features.emplace(GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE));
+            break;
+
+        default:
+            break;
+        }
 
         return{
             { 1, pin1Features },
@@ -819,9 +865,9 @@ namespace mscl
                 // (0x80, 0xD3)
                 MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP,
                 // (0x80, 0xD5)
-                //MipTypes::CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP,
+                MipTypes::CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP,
                 // (0x80, 0xD7)
-                //MipTypes::CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,
+                MipTypes::CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,
 
 
                 // 0x82 Filter Data
@@ -857,15 +903,15 @@ namespace mscl
                 // (0x82, 0xD3)
                 MipTypes::CH_FIELD_ESTFILTER_SHARED_GPS_TIMESTAMP,
                 // (0x82, 0xD5)
-                //MipTypes::CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP,
+                MipTypes::CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP,
                 // (0x82, 0xD7)
-                //MipTypes::CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP,
+                MipTypes::CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP,
 
 
                 // 0xA0 System Data
 
                 // (0xA0, 0x01)
-                /*MipTypes::CH_FIELD_SYSTEM_BUILT_IN_TEST,
+                //MipTypes::CH_FIELD_SYSTEM_BUILT_IN_TEST,
                 // (0xA0, 0x02)
                 MipTypes::CH_FIELD_SYSTEM_TIME_SYNC_STATUS,
                 // (0xA0, 0x03)
@@ -875,7 +921,7 @@ namespace mscl
                 // (0xA0, 0xD5)
                 MipTypes::CH_FIELD_SYSTEM_SHARED_REFERENCE_TIMESTAMP,
                 // (0xA0, 0xD7)
-                MipTypes::CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP*/
+                MipTypes::CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP
             };
         }
 

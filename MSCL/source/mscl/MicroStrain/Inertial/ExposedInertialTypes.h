@@ -9,6 +9,7 @@
 #include "mscl/Types.h"
 #include "mscl/MicroStrain/Matrix.h"
 #include "mscl/MicroStrain/Bitfield.h"
+#include "mscl/MicroStrain/SampleRate.h"
 #include "mscl/MicroStrain/MIP/MipTypes.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
 #include <array>
@@ -572,6 +573,7 @@ namespace mscl
         //API Enum: GnssAidingStatus
         //  Bitmask for the GNSS Position and Attitude Aiding Status field values
         //  Note: GNSS constellation entries are defined by the corresponding constellation enum in <GnssSignalConfiguration>
+        //
         //    GNSS_AIDING_TIGHT_COUPLING  - 0x0001  - 0000 0000 0000 0001
         //    GNSS_AIDING_DIFFERENTIAL    - 0x0002  - 0000 0000 0000 0010
         //    GNSS_AIDING_INTEGER_FIX     - 0x0004  - 0000 0000 0000 0100
@@ -596,6 +598,7 @@ namespace mscl
 
         //API Enum: AidingMeasurementStatus
         //  Bit definitions for the Aiding Measurement Summary Status field values
+        //
         //    AIDING_MEASUREMENT_ENABLED                - 0x0001  - 0000 0000 0000 0001
         //    AIDING_MEASUREMENT_USED                   - 0x0002  - 0000 0000 0000 0010
         //    AIDING_MEASUREMENT_WARNING_RESIDUAL_HIGH  - 0x0004  - 0000 0000 0000 0100
@@ -614,6 +617,7 @@ namespace mscl
 
         //API Enum: RtkCorrectionsStatus
         //  Bit definitions for the RTK Corrections Epoch Status field value
+        //
         //      RTK_CORRECTION_ANTENNA_POS_RECEIVED     - 0x0001  - 0000 0000 0000 0001
         //      RTK_CORRECTION_ANTENNA_DESC_RECEIVED    - 0x0002  - 0000 0000 0000 0010
         //      RTK_CORRECTION_GPS_RECEIVED             - 0x0004  - 0000 0000 0000 0100
@@ -636,6 +640,7 @@ namespace mscl
 
         //API Enum: GnssSignalQuality
         //  Value definitions for the GNSS Raw Observation Signal Quality field value
+        //
         //      SIGNAL_QUALITY_NONE         - 0x00 - None
         //      SIGNAL_QUALITY_SEARCHING    - 0x01 - Searching
         //      SIGNAL_QUALITY_ACQUIRED     - 0x02 - Acquired
@@ -650,6 +655,33 @@ namespace mscl
             SIGNAL_QUALITY_UNUSABLE     = 0x03,
             SIGNAL_QUALITY_TIME_LOCKED  = 0x04,
             SIGNAL_QUALITY_FULLY_LOCKED = 0x05,
+        };
+
+        //API Enum: OverrangeStatusBitmask
+        //  Bitmasks for interpreting the Overrange Status (0x80,0x18) bitfield
+        //
+        //      OVERRANGE_ACCEL_X     - 0000 0000 0000 0001 - Accel X
+        //      OVERRANGE_ACCEL_Y     - 0000 0000 0000 0010 - Accel Y
+        //      OVERRANGE_ACCEL_Z     - 0000 0000 0000 0100 - Accel Z
+        //      OVERRANGE_GYRO_X      - 0000 0000 0001 0000 - Gyro X
+        //      OVERRANGE_GYRO_Y      - 0000 0000 0010 0000 - Gyro Y
+        //      OVERRANGE_GYRO_Z      - 0000 0000 0100 0000 - Gyro Z
+        //      OVERRANGE_MAG_X       - 0000 0001 0000 0000 - Mag X
+        //      OVERRANGE_MAG_Y       - 0000 0010 0000 0000 - Mag Y
+        //      OVERRANGE_MAG_Z       - 0000 0100 0000 0000 - Mag Z
+        //      OVERRANGE_PRESSURE    - 0001 0000 0000 0000 - Pressure
+        enum OverrangeStatusBitmask
+        {
+            OVERRANGE_ACCEL_X     = 0x0001, // Accel X
+            OVERRANGE_ACCEL_Y     = 0x0002, // Accel Y
+            OVERRANGE_ACCEL_Z     = 0x0004, // Accel Z
+            OVERRANGE_GYRO_X      = 0x0010, // Gyro X
+            OVERRANGE_GYRO_Y      = 0x0020, // Gyro Y
+            OVERRANGE_GYRO_Z      = 0x0040, // Gyro Z
+            OVERRANGE_MAG_X       = 0x0100, // Mag X
+            OVERRANGE_MAG_Y       = 0x0200, // Mag Y
+            OVERRANGE_MAG_Z       = 0x0400, // Mag Z
+            OVERRANGE_PRESSURE    = 0x1000, // Pressure
         };
     };
 
@@ -2716,20 +2748,24 @@ namespace mscl
     {
         //API Enum: Feature
         //  GPIO Feature options
-        //      UNUSED_FEATURE    - 0x00 - Pin is unused
-        //      GPIO_FEATURE      - 0x01 - Encoder is disabled
-        //      PPS_FEATURE       - 0x02 - Single pulse input; one direction only
-        //      ENCODER_FEATURE   - 0x03 - Quadrature encoder mode
+        //
+        //      UNUSED_FEATURE          - 0x00 - Pin is unused
+        //      GPIO_FEATURE            - 0x01 - Encoder is disabled
+        //      PPS_FEATURE             - 0x02 - Single pulse input; one direction only
+        //      ENCODER_FEATURE         - 0x03 - Quadrature encoder mode
+        //      EVENT_TIMESTAMP_FEATURE - 0x04 - Precision event timestamping
         enum Feature
         {
             UNUSED_FEATURE = 0x00,
             GPIO_FEATURE = 0x01,
             PPS_FEATURE = 0x02,
-            ENCODER_FEATURE = 0x03
+            ENCODER_FEATURE = 0x03,
+            EVENT_TIMESTAMP_FEATURE = 0x04
         };
 
         //API Enum: GpioBehavior
         //  GPIO Pin behavior
+        //
         //      UNUSED_BEHAVIOR              - 0x00 - Unused
         //      GPIO_INPUT_BEHAVIOR          - 0x01 - Input
         //      GPIO_OUTPUT_LOW_BEHAVIOR     - 0x02 - Output on low
@@ -2744,6 +2780,7 @@ namespace mscl
 
         //API Enum: PpsBehavior
         //  PPS Pin behavior
+        //
         //      UNUSED      - 0x00 - Pin is unused
         //      PPS_INPUT   - 0x01 - Input
         //      PPS_OUTPUT  - 0x02 - Single pulse input; one direction only
@@ -2756,9 +2793,10 @@ namespace mscl
 
         //API Enum: EncoderBehavior
         //  Encoder Pin behavior
+        //
         //      UNUSED      - 0x00 - Pin is unused
-        //      ENCODER_A   - 0x01 - Encoder is disabled
-        //      ENCODER_B   - 0x02 - Single pulse input; one direction only
+        //      ENCODER_A   - 0x01 - Encoder A
+        //      ENCODER_B   - 0x02 - Encoder B
         enum EncoderBehavior
         {
             ENCODER_UNUSED = 0x00,
@@ -2766,7 +2804,23 @@ namespace mscl
             ENCODER_B = 0x02
         };
 
+        //API Enum: EventTimestampBehavior
+        //  Event Timestamp Pin behavior
+        //
+        //      TIMESTAMP_UNUSED    - 0x00 - Pin is unused
+        //      TIMESTAMP_RISING    - 0x01 - Rising edge will be timestamped
+        //      TIMESTAMP_FALLING   - 0x02 - Falling edge will be timestamped
+        //      TIMESTAMP_EDGE      - 0x03 - Both rising and falling edges will be timestamped
+        enum EventTimestampBehavior
+        {
+            EVENT_TIMESTAMP_UNUSED    = 0x00,
+            EVENT_TIMESTAMP_RISING    = 0x01,
+            EVENT_TIMESTAMP_FALLING   = 0x02,
+            EVENT_TIMESTAMP_EDGE      = 0x03,
+        };
+
         //API Enum: PinModes
+        //
         //  PinModes for the pinMode Bitfield
         //      OPEN_DRAIN  - 0x01
         //      PULLDOWN    - 0x02
@@ -2933,14 +2987,25 @@ namespace mscl
         std::array<uint8, MAX_INPUT_TRIGGERS> inputTriggers;
     };
 
-    // API Union: EventTriggerParameters
+    //API Union: EventTriggerParameters
+    // Only one of the variables (gpio, threshold, combination) should be used to represent each instance
     union EventTriggerParameters
     {
-        EventTriggerGpioParameter        gpio;        // GPIO parameters
-        EventTriggerThresholdParameter   threshold;   // Threshold parameters
-        EventTriggerCombinationParameter combination; // Combination parameters
-
+        //API Constructor: EventTriggerParameters
+        // Default constructor
         EventTriggerParameters() : combination() {}
+
+        //API Variable: gpio
+        //  Event GPIO trigger parameters
+        EventTriggerGpioParameter gpio;
+
+        //API Variable: threshold
+        //  Event threshold trigger parameters
+        EventTriggerThresholdParameter threshold;
+
+        //API Variable: combination
+        // Event combination trigger parameters
+        EventTriggerCombinationParameter combination;
     };
 
     //API Struct: EventTriggerConfiguration
@@ -2961,15 +3026,138 @@ namespace mscl
             COMBINATION_TRIGGER = 0x03  // Logical combination of two or more triggers
         };
 
+        //API Variable: instance
         // Trigger number
         uint8 instance;
 
+        //API Variable: trigger
         // Type of trigger
         Type trigger;
 
+        //API Variable: parameters
         // Trigger parameters
         EventTriggerParameters parameters;
     };
+
+    //API Struct: EventActionGpioParameter
+    struct EventActionGpioParameter
+    {
+        //API Enum: Mode
+        //  Modes for behavior of the GPIO pin
+        //
+        //  DISABLED     - 0x00 - Pin state will not be changed
+        //  ACTIVE_HIGH  - 0x01 - Pin will be set high when the trigger is active and low otherwise
+        //  ACTIVE_LOW   - 0x02 - Pin will be set low when the trigger is active and high otherwise
+        //  ONESHOT_HIGH - 0x05 - Pin will be set high each time the trigger activates. It will not be set low
+        //  ONESHOW_LOW  - 0x06 - Pin will be set low each time the trigger activates. It will not be set high
+        //  TOGGLE       - 0x07 - Pin will change to the opposite state each time the trigger activates
+        enum Mode
+        {
+            DISABLED     = 0x00, // Pin state will not be changed
+            ACTIVE_HIGH  = 0x01, // Pin will be set high when the trigger is active and low otherwise
+            ACTIVE_LOW   = 0x02, // Pin will be set low when the trigger is active and high otherwise
+            ONESHOT_HIGH = 0x05, // Pin will be set high each time the trigger activates. It will not be set low
+            ONESHOT_LOW  = 0x06, // Pin will be set low each time the trigger activates. It will not be set high
+            TOGGLE       = 0x07  // Pin will change to the opposite state each time the trigger activates
+        };
+
+        //API Variable: pin
+        //  GPIO pin number
+        uint8 pin;
+
+        //API Variable: mode
+        //  Behavior of the GPIO pin
+        Mode mode;
+    };
+
+    //API Struct: EventActionMessageParameter
+    struct EventActionMessageParameter
+    {
+        //API Constant: MAX_DESCRIPTORS
+        //  Maximum supported descriptors
+        static constexpr uint8 MAX_DESCRIPTORS = 12;
+
+        //API Variable: sampleRate
+        //  Sample rate to output fields at when action is triggered. <SampleRate::Event()> (type Event,  indicates only a single packet will be output when triggered.
+        SampleRate sampleRate;
+
+        //API Function: dataClass
+        //  Get the <MipTypes::DataClass>
+        MipTypes::DataClass dataClass() const { return m_descriptorSet; }
+
+        //API Function: setChannelFields
+        //  Set the <MipTypes::ChannelFields>
+        void setChannelFields(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields);
+
+        //API Function: getChannelFields
+        //  Get a list of <MipTypes::ChannelField>
+        MipTypes::MipChannelFields getChannelFields() const;
+
+    private:
+        //Variable: descriptorSet
+        //  Descriptor set for the fields that will be produced when the event occurs
+        MipTypes::DataClass m_descriptorSet;
+
+        //Variable: m_channelFields
+        //  <MipTypes::ChannelField>s to output when the event occurs
+        std::array<MipTypes::ChannelField, MAX_DESCRIPTORS> m_channelFields;
+
+    private:
+        //Function: filterFields
+        //  Removes fields not in the specified <MipTypes::DataClass>
+        MipTypes::MipChannelFields filterFields(const MipTypes::MipChannelFields& fields);
+    };
+
+    //API Union: EventActionParameters
+    // Only one of the variables (gpio, message) should be used to represent each instance
+    union EventActionParameters
+    {
+        //API Constructor: EventActionParameters
+        //  Default constructor
+        EventActionParameters() : message() {}
+
+        //API Variable: gpio
+        //  Event action GPIO parameters
+        EventActionGpioParameter gpio;
+
+        //API Variable: message
+        //  Event action message parameters
+        EventActionMessageParameter message;
+    };
+
+    //API Struct: EventActionConfiguration
+    struct EventActionConfiguration
+    {
+        //API Enum: Type
+        //  Types for the event action
+        //
+        //  NONE    - 0x00 - No action. Parameters should be empty
+        //  GPIO    - 0x01 - Control the state of a GPIO pin. See <EventActionGpioParameter>
+        //  MESSAGE - 0x02 - Output a data packet. See <EventActionMessageParameter>
+        enum Type
+        {
+            NONE    = 0x00, // No action. Parameters should be empty
+            GPIO    = 0x01, // Control the state of a GPIO pin
+            MESSAGE = 0x02  // Output a data packet
+        };
+
+        //API Variable: instance
+        //  Action number
+        uint8 instance;
+
+        //API Variable: trigger
+        //  ID of trigger that will cause this action to occur. If 0, this action is not linked to any event triggers.
+        uint8 trigger;
+
+        //API Variable: type
+        //  Type of action
+        Type type;
+
+        //API Variable: parameters
+        //  Action parameters
+        EventActionParameters parameters;
+    };
+
 
     //API Struct: EventTriggerInfo
     //  Information about an event trigger
@@ -3035,4 +3223,38 @@ namespace mscl
     //API Typedef: EventTriggerStatus
     //  A vector of <EventTriggerInfo>
     typedef std::vector<EventTriggerInfo> EventTriggerStatus;
+
+    //API Struct: EventActionInfo
+    //  Information about an event action
+    struct EventActionInfo
+    {
+        //API Constructor: EventActionInfo
+        //  Default constructor
+        EventActionInfo() :
+            type(EventActionConfiguration::NONE),
+            triggerId(0),
+            instanceId(0) {}
+
+        //API Constructor: EventActionInfo
+        EventActionInfo(const EventActionConfiguration::Type type, const uint8 triggerId, const uint8 instanceId) :
+            type(type),
+            triggerId(triggerId),
+            instanceId(instanceId) {}
+
+        //API Variable: type
+        //  Configured <EventActionConfiguration::Type>
+        EventActionConfiguration::Type type;
+
+        //API Variable: triggerId
+        //  Associated event trigger instance
+        uint8 triggerId;
+
+        //API Variable: instanceId
+        //  Instance ID of the action
+        uint8 instanceId;
+    };
+
+    //API Typedef: EventActionStatus
+    //  A vector of <EventActionInfo>
+    typedef std::vector<EventActionInfo> EventActionStatus;
 }

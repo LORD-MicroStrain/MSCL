@@ -105,6 +105,14 @@ namespace mscl
         //  <Timestamp> - the GPS timestamp value
         Timestamp gpsTimestamp() const;
 
+        //API Function: gpsTimestampValid
+        //  Checks whether the GPS Timestamp value for the packet is valid.
+        //  Note: On Gen 7 products and later this will generally be the same value as <MipDataPacket::deviceTimestamp()>
+        //
+        //Returns:
+        //  bool - true if valid
+        bool gpsTimestampValid() const;
+
         //API Function: hasDeltaTime
         //  Checks whether the packet contains the Delta Time field
         //
@@ -118,6 +126,76 @@ namespace mscl
         //Returns:
         //  double - the delta time value
         double deltaTime() const;
+
+        //API Function: hasReferenceTime
+        //  Checks whether the packet contains the Reference Timestamp (nanoseconds since startup) field
+        //
+        //Returns:
+        //  bool - true if Reference Time is present
+        bool hasReferenceTime() const;
+
+        //API Function: referenceTime
+        //  Gets the Reference Timestamp (nanoseconds since startup) for the packet
+        //
+        //Returns:
+        //  uint64 - the reference time value
+        uint64 referenceTime() const;
+
+        //API Function: hasDeltaReferenceTime
+        //  Checks whether the packet contains the Delta Reference Timestamp (nanoseconds since last output) field
+        //
+        //Returns:
+        //  bool - true if Delta Reference Time is present
+        bool hasDeltaReferenceTime() const;
+
+        //API Function: deltaReferenceTime
+        //  Gets the Delta Reference Timestamp (nanoseconds since last output) for the packet
+        //
+        //Returns:
+        //  uint64 - the delta reference time value
+        uint64 deltaReferenceTime() const;
+        
+        //API Function: hasExternalTimestamp
+        //  Checks whether the packet contains the External Timestamp field
+        //
+        //Returns:
+        //  bool - true if External Timestamp is present
+        bool hasExternalTimestamp() const;
+
+        //API Function: externalTimestamp
+        //  Gets the External Timestamp value for the packet.
+        //
+        //Returns:
+        //  <Timestamp> - the External Timestamp value
+        Timestamp externalTimestamp() const;
+
+        //API Function: externalTimestampValid
+        //  Checks whether the External Timestamp value for the packet is valid.
+        //
+        //Returns:
+        //  bool - true if valid
+        bool externalTimestampValid() const;
+
+        //API Function: hasDeltaExternalTime
+        //  Checks whether the packet contains the Delta External Time field
+        //
+        //Returns:
+        //  bool - true if Delta External Time is present
+        bool hasDeltaExternalTime() const;
+
+        //API Function: deltaExternalTimestamp
+        //  Gets the Delta External Time value for the packet.
+        //
+        //Returns:
+        //  <uint64> - the Delta External Time value
+        uint64 deltaExternalTime() const;
+
+        //API Function: deltaExternalTimeValid
+        //  Checks whether the Delta External Time value for the packet is valid.
+        //
+        //Returns:
+        //  bool - true if valid
+        bool deltaExternalTimeValid() const;
 
         //API Function: get
         //  Get the shared field <MipDataPoint> with the specified field and qualifier.

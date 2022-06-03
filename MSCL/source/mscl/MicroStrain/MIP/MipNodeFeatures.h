@@ -111,7 +111,7 @@ namespace mscl
         //    Gets a list of the supported channel fields for a given <MipTypes::DataClass>.
         //
         //Parameters:
-        //    dataClass - The <MipTypes::DataClass> to get the list of supported channels for.
+        //    dataClass - default -1 - The <MipTypes::DataClass> to get the list of supported channels for. If -1, all supported ChannelFields will be returned regardless of DataClass
         //
         //Returns:
         //    A <MipTypes::ChannelFields> object containing the list of supported channel fields.
@@ -121,7 +121,7 @@ namespace mscl
         //    - <Error_Communication>: Timed out waiting for a response.
         //    - <Error_NotSupported>: The <MipTypes::DataClass> is not supported by this node.
         //    - <Error_Connection>: A connection error has occurred with the Node.
-        MipTypes::MipChannelFields supportedChannelFields(MipTypes::DataClass dataClass) const;
+        MipTypes::MipChannelFields supportedChannelFields(MipTypes::DataClass dataClass = MipTypes::DataClass(-1)) const;
 
         //API Function: supportedSampleRates
         //    Gets a list of the supported sample rates for a given <MipTypes::DataClass>.
@@ -138,6 +138,22 @@ namespace mscl
         //    - <Error_NotSupported>: The <MipTypes::DataClass> is not supported by this node.
         //    - <Error_Connection>: A connection error has occurred with the Node.
         const SampleRates& supportedSampleRates(MipTypes::DataClass dataClass) const;
+
+        //API Function: baseDataRate
+        //    Gets the base data rate for a given <MipTypes::DataClass>.
+        //
+        //Parameters:
+        //    dataClass - The <MipTypes::DataClass> to get base data rate for.
+        //
+        //Returns:
+        //    uint16 - the base data rate.
+        //
+        //Exceptions:
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Communication>: Timed out waiting for a response.
+        //    - <Error_NotSupported>: The <MipTypes::DataClass> is not supported by this node.
+        //    - <Error_Connection>: A connection error has occurred with the Node.
+        const uint16& baseDataRate(MipTypes::DataClass dataClass) const;
 
         //API Function: gnssReceiverInfo
         //    Gets a list of <GnssReceiverInfo> for supported GNSS receivers.

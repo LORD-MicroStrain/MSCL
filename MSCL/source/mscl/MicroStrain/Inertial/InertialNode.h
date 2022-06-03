@@ -89,7 +89,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        uint16 getDataRateBase(MipTypes::DataClass dataClass);
+        uint16 getDataRateBase(MipTypes::DataClass dataClass) const;
 
         //API Function: getActiveChannelFields
         //    Gets the current active channel fields for the specified <MipTypes::DataClass>.
@@ -2142,6 +2142,36 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setEventTriggerConfig(EventTriggerConfiguration config) const;
 
+        //API Function: getEventActionConfig
+        //    Gets an event action configuration.
+        //
+        //Parameter:
+        //    instance - The instance number of the event action config to fetch
+        //
+        //Return:
+        //    <EventActionConfiguration> - The event action configuration with the specified instance ID
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        EventActionConfiguration getEventActionConfig(uint8 instance) const;
+
+        //API Function: setEventActionConfig
+        //    Set the event action configuration.
+        //
+        //Parameter:
+        //    config - The <EventActionConfiguration> to apply.
+        //    validateSupported - True by default. For MESSAGE type actions this will filter unsupported ChannelFields prior to configuration.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setEventActionConfig(EventActionConfiguration config, bool validateSupported = true) const;
+
         //API Function: getAntennaLeverArmCal
         //    Gets the currently configured GNSS antenna lever arm calibration configuration.
         //
@@ -2289,13 +2319,15 @@ namespace mscl
 
         //API Function: getEventTriggerStatus
         //    Sends the Event Trigger Status command (0x0C, 0x2C) to get the current status of the specified triggers.
+        //
+        //Note:
         //    If number of instances is 0, this will return the status of all the triggers.
         //
         //Parameter:
-        //    instances - A <vector> of trigger instance IDs to check the status of.
+        //    instances - A vector of trigger instance IDs to check the status of.
         //
         //Return:
-        //    <EventTriggerStatus> - A <vector> of trigger statuses of the specified triggers, or all triggers.
+        //    <EventTriggerInfo::EventTriggerStatus> - A vector of trigger statuses of the specified triggers, or all triggers.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
@@ -2303,5 +2335,24 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         EventTriggerStatus getEventTriggerStatus(std::vector<uint8> instances = std::vector<uint8>()) const;
+
+        //API Function: getEventActionStatus
+        //    Sends the Event Action Status command (0x0C, 0x2D) to get the current status of the specified actions.
+        //
+        //Note:
+        //    If number of instances is 0, this will return the status of all the actions.
+        //
+        //Parameter:
+        //    instances - A vector of action instance IDs to check the status of.
+        //
+        //Return:
+        //    <EventActionInfo::EventActionStatus> - A vector of action statuses of the specified actions, or all actions.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        EventActionStatus getEventActionStatus(std::vector<uint8> instances = std::vector<uint8>()) const;
     };
 }

@@ -119,7 +119,9 @@ namespace mscl
         {ChannelId(CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP, CH_FLAGS), "gpsCorrelTimestampFlags"},
 
         {ChannelId(CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE, CH_PRESSURE), "scaledAmbientPressure"},
-                
+
+        { ChannelId(CH_FIELD_SENSOR_OVERRANGE_STATUS, CH_STATUS), "overrangeStatus" },
+
         {ChannelId(CH_FIELD_SENSOR_ODOMETER_DATA, CH_SPEED), "odometer_speed"},
         {ChannelId(CH_FIELD_SENSOR_ODOMETER_DATA, CH_SPEED_ACCURACY), "odometer_uncert"},
 
@@ -443,8 +445,14 @@ namespace mscl
         { ChannelId(CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS, CH_FIX_TYPE), "estDualAntennaStatus_fixType" },
         { ChannelId(CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS, CH_STATUS), "estDualAntennaStatus_status" },
 
-        {ChannelId(CH_FIELD_DISP_DISPLACEMENT_RAW, CH_DISPLACEMENT), "rawDisplacement"},
-        {ChannelId(CH_FIELD_DISP_DISPLACEMENT_MM, CH_DISPLACEMENT), "displacementMillimeters"},
+        { ChannelId(CH_FIELD_DISP_DISPLACEMENT_RAW, CH_DISPLACEMENT), "rawDisplacement" },
+        { ChannelId(CH_FIELD_DISP_DISPLACEMENT_MM, CH_DISPLACEMENT), "displacementMillimeters" },
+
+        // System Data
+        { ChannelId(CH_FIELD_SYSTEM_GPIO_STATE, CH_STATUS), "gpioState" },
+
+        { ChannelId(CH_FIELD_SYSTEM_TIME_SYNC_STATUS, CH_PPS_VALID), "timeSync_ppsValid" },
+        { ChannelId(CH_FIELD_SYSTEM_TIME_SYNC_STATUS, CH_LAST_PPS), "timeSync_lastPps" },
 
         // Shared Inertial Channels
         { ChannelId(CH_FIELD_SENSOR_SHARED_EVENT_SOURCE, CH_ID), "eventInfo_triggerId" },
@@ -457,6 +465,14 @@ namespace mscl
         { ChannelId(CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP, CH_WEEK_NUMBER), "timeInfo_weekNumber" },
 
         { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP, CH_DELTA_TIME), "timeInfo_deltaTime" },
+
+        { ChannelId(CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP, CH_NANOSECONDS), "timeInfo_referenceTime" },
+
+        { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_REFERENCE_TIME, CH_NANOSECONDS), "timeInfo_deltaReferenceTime" },
+
+        { ChannelId(CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP, CH_TIMESTAMP), "timeInfo_externalTimestamp" },
+
+        { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_EXTERNAL_TIME, CH_NANOSECONDS), "timeInfo_deltaExternalTime" },
     });
 
 
@@ -517,15 +533,15 @@ namespace mscl
             ChannelIndex(CH_WEEK_NUMBER,  2),
             ChannelIndex(CH_VALID_FLAGS,  3)
         } },
-        /*// (0x80, 0xD5)
+        // (0x80, 0xD5)
         { CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP,{
             ChannelIndex(CH_NANOSECONDS, 1)
         } },
         // (0x80, 0xD7)
         { CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,{
-            ChannelIndex(CH_NANOSECONDS, 1),
+            ChannelIndex(CH_TIMESTAMP, 1),
             ChannelIndex(CH_VALID_FLAGS, 2)
-        } },*/
+        } },
 
 
         // 0x82 Filter Data
@@ -633,15 +649,15 @@ namespace mscl
             ChannelIndex(CH_WEEK_NUMBER,  2),
             ChannelIndex(CH_VALID_FLAGS,  3)
         } },
-        /*// (0x82, 0xD5)
+        // (0x82, 0xD5)
         { CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP,{
             ChannelIndex(CH_NANOSECONDS, 1)
         } },
         // (0x82, 0xD7)
         { CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP,{
-            ChannelIndex(CH_NANOSECONDS, 1),
+            ChannelIndex(CH_TIMESTAMP, 1),
             ChannelIndex(CH_VALID_FLAGS, 2)
-        } }*/
+        } },
 
 
         // 0xA0 System Data
@@ -667,14 +683,14 @@ namespace mscl
             ChannelIndex(CH_, 16)
         } },*/
         // (0xA0, 0x02)
-        /*{ CH_FIELD_SYSTEM_TIME_SYNC_STATUS,{
-            ChannelIndex(CH_TIME_SYNC,     1),
-            ChannelIndex(CH_LAST_PPS_RCVD, 2)
-        } },*/
+        { CH_FIELD_SYSTEM_TIME_SYNC_STATUS,{
+            ChannelIndex(CH_PPS_VALID, 1),
+            ChannelIndex(CH_LAST_PPS,  2)
+        } },
         // (0xA0, 0x03)
-        /*{ CH_FIELD_SYSTEM_GPIO_STATE,{
-            ChannelIndex(CH_GPIO_STATES, 1)
-        } },*/
+        { CH_FIELD_SYSTEM_GPIO_STATE,{
+            ChannelIndex(CH_STATUS, 1)
+        } },
         // (0xA0, 0xD3)
         { CH_FIELD_SYSTEM_SHARED_GPS_TIMESTAMP,{
             ChannelIndex(CH_TIME_OF_WEEK, 1),
@@ -682,14 +698,14 @@ namespace mscl
             ChannelIndex(CH_VALID_FLAGS,  3)
         } },
         // (0xA0, 0xD5)
-        /*{ CH_FIELD_SYSTEM_SHARED_REFERENCE_TIMESTAMP,{
+        { CH_FIELD_SYSTEM_SHARED_REFERENCE_TIMESTAMP,{
             ChannelIndex(CH_NANOSECONDS, 1)
-        } },*/
+        } },
         // (0xA0, 0xD7)
-        /*{ CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP,{
-            ChannelIndex(CH_NANOSECONDS, 1),
+        { CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP,{
+            ChannelIndex(CH_TIMESTAMP, 1),
             ChannelIndex(CH_VALID_FLAGS, 2)
-        } }*/
+        } }
     });
 
     std::vector<MipTypes::DataClass> MipTypes::GNSS_DATA_CLASSES()
@@ -835,7 +851,7 @@ namespace mscl
         return fieldDescriptor >= MipTypes::MIN_SHARED_FIELD_DESCRIPTOR;
     }
 
-    MipTypes::ChannelFieldQualifiers MipTypes::channelFieldQualifiers(const MipTypes::MipChannelFields fields)
+    MipTypes::ChannelFieldQualifiers MipTypes::channelFieldQualifiers(const MipChannelFields& fields)
     {
         ChannelFieldQualifiers fieldQualifiers{};
 

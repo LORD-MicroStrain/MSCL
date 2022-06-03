@@ -128,6 +128,7 @@ namespace mscl
     //  valueType_uint8                     - 2     - The value is stored as a 1-byte unsigned integer.
     //  valueType_uint16                    - 3     - The value is stored as a 2-byte unsigned integer.
     //  valueType_uint32                    - 4     - The value is stored as a 4-byte unsigned integer.
+    //  valueType_uint64                    - 17    - The value is stored as a 8-byte unsigned integer
     //  valueType_int8                      - 16    - The value is stored as a 1-byte signed integer.
     //  valueType_int16                     - 5     - The value is stored as a 2-byte signed integer.
     //  valueType_int32                     - 6     - The value is stored as a 4-byte signed integer.
@@ -148,7 +149,6 @@ namespace mscl
         valueType_uint8                     = 2,
         valueType_uint16                    = 3,
         valueType_uint32                    = 4,
-        valueType_int8                      = 16,
         valueType_int16                     = 5,
         valueType_int32                     = 6,
         valueType_bool                      = 7,
@@ -159,7 +159,9 @@ namespace mscl
         valueType_Bytes                     = 12,
         valueType_StructuralHealth          = 13,
         valueType_RfSweep                   = 14,
-        valueType_ChannelMask               = 15
+        valueType_ChannelMask               = 15,
+        valueType_int8                      = 16,
+        valueType_uint64                    = 17,
     };
 
     //API Enum: DeviceState

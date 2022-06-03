@@ -142,6 +142,21 @@ namespace mscl
         return ts;
     }
 
+    bool MipSharedDataFields::gpsTimestampValid() const
+    {
+        bool valid = false;
+
+        try
+        {
+            bool tow = get(MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP, MipTypes::CH_TIME_OF_WEEK).valid();
+            bool weekNumber = get(MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP, MipTypes::CH_WEEK_NUMBER).valid();
+            valid = tow && weekNumber;
+        }
+        catch (const std::exception&) {/*ignore*/ }
+
+        return valid;
+    }
+
     bool MipSharedDataFields::hasDeltaTime() const
     {
         return has(MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP);
@@ -156,6 +171,98 @@ namespace mscl
         catch (const std::exception&)
         {
             return 0;
+        }
+    }
+
+    bool MipSharedDataFields::hasReferenceTime() const
+    {
+        return has(MipTypes::CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP);
+    }
+
+    uint64 MipSharedDataFields::referenceTime() const
+    {
+        try
+        {
+            return get(MipTypes::CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP).as_uint64();
+        }
+        catch (const std::exception&)
+        {
+            return 0;
+        }
+    }
+
+    bool MipSharedDataFields::hasDeltaReferenceTime() const
+    {
+        return has(MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_REFERENCE_TIME);
+    }
+
+    uint64 MipSharedDataFields::deltaReferenceTime() const
+    {
+        try
+        {
+            return get(MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_REFERENCE_TIME).as_uint64();
+        }
+        catch (const std::exception&)
+        {
+            return 0;
+        }
+    }
+    
+    bool MipSharedDataFields::hasExternalTimestamp() const
+    {
+        return has(MipTypes::CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP);
+    }
+
+    Timestamp MipSharedDataFields::externalTimestamp() const
+    {
+        try
+        {
+            return get(MipTypes::CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP).as_Timestamp();
+        }
+        catch (const std::exception&)
+        {
+            return Timestamp(0);
+        }
+    }
+
+    bool MipSharedDataFields::externalTimestampValid() const
+    {
+        try
+        {
+            return get(MipTypes::CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP).valid();
+        }
+        catch (const std::exception&)
+        {
+            return false;
+        }
+    }
+
+    bool MipSharedDataFields::hasDeltaExternalTime() const
+    {
+        return has(MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_EXTERNAL_TIME);
+    }
+
+    uint64 MipSharedDataFields::deltaExternalTime() const
+    {
+        try
+        {
+            return get(MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_EXTERNAL_TIME).as_uint64();
+        }
+        catch (const std::exception&)
+        {
+            return 0;
+        }
+    }
+
+    bool MipSharedDataFields::deltaExternalTimeValid() const
+    {
+        try
+        {
+            return get(MipTypes::CH_FIELD_SENSOR_SHARED_DELTA_EXTERNAL_TIME).valid();
+        }
+        catch (const std::exception&)
+        {
+            return false;
         }
     }
 } // namespace mscl
