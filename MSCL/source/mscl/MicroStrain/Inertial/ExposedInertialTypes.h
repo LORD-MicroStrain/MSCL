@@ -3223,4 +3223,38 @@ namespace mscl
     //API Typedef: EventTriggerStatus
     //  A vector of <EventTriggerInfo>
     typedef std::vector<EventTriggerInfo> EventTriggerStatus;
+
+    //API Struct: EventActionInfo
+    //  Information about an event action
+    struct EventActionInfo
+    {
+        //API Constructor: EventActionInfo
+        //  Default constructor
+        EventActionInfo() :
+            type(EventActionConfiguration::NONE),
+            triggerId(0),
+            instanceId(0) {}
+
+        //API Constructor: EventActionInfo
+        EventActionInfo(const EventActionConfiguration::Type type, const uint8 triggerId, const uint8 instanceId) :
+            type(type),
+            triggerId(triggerId),
+            instanceId(instanceId) {}
+
+        //API Variable: type
+        //  Configured <EventActionConfiguration::Type>
+        EventActionConfiguration::Type type;
+
+        //API Variable: triggerId
+        //  Associated event trigger instance
+        uint8 triggerId;
+
+        //API Variable: instanceId
+        //  Instance ID of the action
+        uint8 instanceId;
+    };
+
+    //API Typedef: EventActionStatus
+    //  A vector of <EventActionInfo>
+    typedef std::vector<EventActionInfo> EventActionStatus;
 }

@@ -303,6 +303,7 @@ namespace std
     %template(SensorRangeOptions)               map<enum mscl::SensorRange::Type, vector<mscl::SensorRange>>;
     %template(CommPortInfo)                     vector<mscl::DeviceCommPort>;
     %template(EventTriggerStatus)               vector<mscl::EventTriggerInfo>;
+    %template(EventActionStatus)                vector<mscl::EventActionInfo>;
     %template(ChannelGroups)                    vector<mscl::ChannelGroup>;
     %template(WirelessChannels)                 vector<mscl::WirelessChannel>;
     %template(DamageAngles)                     map<uint8_t, float>;

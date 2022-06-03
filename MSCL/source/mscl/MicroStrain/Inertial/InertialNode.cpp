@@ -1236,7 +1236,7 @@ namespace mscl
         });
     }
 
-    EventTriggerStatus InertialNode::getEventTriggerStatus(const std::vector<uint8> instances) const
+    EventTriggerStatus InertialNode::getEventTriggerStatus(const std::vector<uint8> instances/*= std::vector<uint8>()*/) const
     {
         std::vector<Value> specifier = { Value::UINT8(static_cast<uint8>(instances.size())) };
         
@@ -1260,12 +1260,45 @@ namespace mscl
                 static_cast<EventTriggerConfiguration::Type>(data[index].as_uint8()), // type
                 // If instances count is 0, user requested all triggers
                 instances.empty() ?
-                    static_cast<uint8>(instanceIndex + 1):
-                    instances[instanceIndex],                                            // instanceId
-                data[index + 1].as_uint8()                                               // status
+                    static_cast<uint8>(instanceIndex + 1) :
+                    instances[instanceIndex],                                         // instanceId
+                data[index + 1].as_uint8()                                            // status
             });
         }
         
+        return status;
+    }
+
+    EventActionStatus InertialNode::getEventActionStatus(const std::vector<uint8> instances/*= std::vector<uint8>()*/) const
+    {
+        std::vector<Value> specifier = { Value::UINT8(static_cast<uint8>(instances.size())) };
+
+        for (const uint8& instance : instances)
+        {
+            specifier.push_back(Value::UINT8(instance));
+        }
+
+        const MipFieldValues data = m_impl->get(MipTypes::CMD_EVENT_ACTION_STATUS, specifier);
+
+        const uint8 count = data[0].as_uint8();
+
+        EventActionStatus status;
+
+        // Data values start at index 1 and have 2 data entries
+        for (int index = 1; index < count * 2 + 1; index += 2)
+        {
+            const int instanceIndex = (index - 1) / 2;
+
+            status.push_back({
+                static_cast<EventActionConfiguration::Type>(data[index].as_uint8()), // type
+                data[index + 1].as_uint8(),                                          // triggerId
+                // If instances count is 0, user requested all actions
+                instances.empty() ?
+                    static_cast<uint8>(instanceIndex + 1) :
+                    instances[instanceIndex]                                         // instanceId
+            });
+        }
+
         return status;
     }
 }

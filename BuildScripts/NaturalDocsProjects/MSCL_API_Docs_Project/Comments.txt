@@ -16,6 +16,7 @@ Ignore Keywords:
    interface, interfaces
    struct, structs
    structure, structures
+   union, unions
    section
    title
    group
@@ -193,6 +194,7 @@ Alter Comment Type: Struct
    Keywords:
       api struct, api structs
       api structure, api structures
+      api union, api unions
 
 
 Alter Comment Type: Section
