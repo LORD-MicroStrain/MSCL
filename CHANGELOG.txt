@@ -20,6 +20,7 @@ Forthcoming
     - Event Support (0x0C,0x2A)
     - Event Control (0x0C,0x2B)
     - Event Trigger Status (0x0C,0x2C)
+    - Event Action Status (0x0C,0x2D)
     - Event Trigger Configuration (0x0C,0x2E)
     - Event Action Configuration (0x0C,0x2F)
     - Sensor Range (0x0C,0x52)
