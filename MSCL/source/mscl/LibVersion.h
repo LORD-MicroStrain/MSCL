@@ -11,8 +11,8 @@
 #ifndef SWIG
 //update with each release
 #define MSCL_MAJOR 64
-#define MSCL_MINOR 2
-#define MSCL_PATCH 2
+#define MSCL_MINOR 3
+#define MSCL_PATCH 0
 #endif
 
 namespace mscl
