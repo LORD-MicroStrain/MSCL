@@ -12,6 +12,7 @@
 #include "mscl/MicroStrain/MIP/MipDataPoint.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "MipPacket.h"
+#include "MipSharedDataFields.h"
 
 #include <memory>
 #include <vector>
@@ -19,7 +20,6 @@
 namespace mscl
 {
     class MipFieldParser;
-    
 
     //API Class: MipDataPacket
     //    A Mip Data Packet that contains both valid and invalid data from a MIP Device.
@@ -48,20 +48,27 @@ namespace mscl
         //    The <MipDataPoints> within this packet
         MipDataPoints m_points;
 
+        //Variable: m_sharedFields
+        //    Accessors for the shared field information found within this packet
+        MipSharedDataFields m_sharedFields;
+
         //Variable: m_collectedTime
         //    The <Timestamp> of when this packet was received
         Timestamp m_collectedTime;
 
         //Variable: m_deviceTime
         //  The timestamp that was provided by the Node in the data packet
+        //  Note: this is being deprecated for Gen 7 devices and later, use shared().gpsTimestamp(), externalTimestamp() instead.
         Timestamp m_deviceTime;
 
         //Variable: m_hasDeviceTime
         //  Whether the device timestamp was included in the data packet.
+        //  Note: this is being deprecated for Gen 7 devices and later, use shared().hasGpsTimestamp(), externalTimestamp() instead.
         bool m_hasDeviceTime;
 
         //Variable: m_deviceTimeValid
         //  Whether the device timestamp is valid or not (based on flags and/or it being a reasonable timestamp)
+        //  Note: this is being deprecated for Gen 7 devices and later, use shared().gpsTimestampValid(), externalTimestampValid() instead.
         bool m_deviceTimeValid;
 
         //Variable: m_deviceTimeFlags
@@ -105,6 +112,14 @@ namespace mscl
         //Returns:
         //    The <MipDataPoints> that are contained within this packet.
         const MipDataPoints& data() const;
+
+
+        //API Function: shared
+        //    Gets the <MipSharedDataFields> object that makes the shared field information within this packet more easily accessible.
+        //
+        //Returns:
+        //    The <MipSharedDataFields> that are contained within this packet.
+        const MipSharedDataFields& shared() const;
 
         //API Function: collectedTimestamp
         //  Gets the <Timestamp> representing when the packet was collected by MSCL.

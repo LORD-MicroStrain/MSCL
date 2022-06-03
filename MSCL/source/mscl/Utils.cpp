@@ -27,15 +27,16 @@ namespace mscl
             switch(type)
             {
             case valueType_double:
+            case valueType_uint64:
                 return 8;
 
             case valueType_float:
             case valueType_int32:
+            case valueType_uint32:
                 return 4;
 
             case valueType_int16:
             case valueType_uint16:
-            case valueType_uint32:
                 return 2;
 
             case valueType_uint8:

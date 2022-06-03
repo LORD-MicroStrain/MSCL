@@ -32,6 +32,9 @@ namespace mscl
 
         extern bool _forceLibraryToIncludeCompilationUnit_Displacement;
         _forceLibraryToIncludeCompilationUnit_Displacement = true;
+
+        extern bool _forceLibraryToIncludeCompilationUnit_System;
+        _forceLibraryToIncludeCompilationUnit_System = true;
     
         return true;
     }

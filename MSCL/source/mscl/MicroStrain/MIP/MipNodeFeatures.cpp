@@ -38,6 +38,7 @@ namespace mscl
             case MipTypes::CLASS_GNSS3:
             case MipTypes::CLASS_GNSS4:
             case MipTypes::CLASS_GNSS5:
+            case MipTypes::CLASS_SYSTEM:
                 return true;
 
             default:
@@ -64,6 +65,39 @@ namespace mscl
         return false;
     }
 
+    bool MipNodeFeatures::supportsChannelField(MipTypes::ChannelField fieldId) const
+    {
+        return !filterSupportedChannelFields({ fieldId }).empty();
+    }
+
+    MipTypes::MipChannelFields MipNodeFeatures::filterSupportedChannelFields(const MipTypes::MipChannelFields& fields) const
+    {
+        MipTypes::MipChannelFields supportedFields;
+        std::map<MipTypes::DataClass, MipTypes::MipChannelFields> cacheSupported;
+        for (MipTypes::ChannelField fieldId : fields)
+        {
+            MipTypes::DataClass dataSet = MipTypes::channelFieldToDataClass(fieldId);
+            MipTypes::MipChannelFields setFields;
+            auto found = cacheSupported.find(dataSet);
+            if (found == cacheSupported.end())
+            {
+                setFields = supportedChannelFields(dataSet);
+                cacheSupported.emplace(dataSet, setFields);
+            }
+            else
+            {
+                setFields = found->second;
+            }
+
+            if (std::find(setFields.begin(), setFields.end(), fieldId) != setFields.end())
+            {
+                supportedFields.push_back(fieldId);
+            }
+        }
+
+        return supportedFields;
+    }
+
     MipTypes::MipChannelFields MipNodeFeatures::supportedChannelFields(MipTypes::DataClass dataClass) const
     {
         MipTypes::MipChannelFields result;
@@ -73,8 +107,9 @@ namespace mscl
         //loop over all the descriptors we have
         for(auto desc : descriptors)
         {
-            //if ths MSB of the descriptor matches the DataClass being requested
-            if(Utils::msb(static_cast<uint16>(desc)) == static_cast<uint16>(dataClass))
+            //if the MSB of the descriptor matches the DataClass being requested
+            if((dataClass == MipTypes::DataClass(-1) && isChannelField(desc))
+                || Utils::msb(static_cast<uint16>(desc)) == static_cast<uint16>(dataClass))
             {
                 //cast the descriptor to a ChannelField, and add it to the result container
                 result.push_back(static_cast<MipTypes::ChannelField>(desc));
@@ -116,6 +151,11 @@ namespace mscl
     const SampleRates& MipNodeFeatures::supportedSampleRates(MipTypes::DataClass dataClass) const
     {
         return m_nodeInfo.supportedSampleRates(dataClass);
+    }
+
+    const uint16& MipNodeFeatures::baseDataRate(MipTypes::DataClass dataClass) const
+    {
+        return m_nodeInfo.baseDataRate(dataClass);
     }
 
     const GnssReceivers& MipNodeFeatures::gnssReceiverInfo() const
@@ -498,9 +538,13 @@ namespace mscl
         switch(model.baseModel().nodeModel())
         {
             case MipModels::node_3dm_cv7_ahrs:
+                return{
+                    InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
+                };
+
             case MipModels::node_3dm_cv7_ar:
                 return {
-                    InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
                     InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
                 };
 
@@ -572,6 +616,15 @@ namespace mscl
             };
         }
 
+        if (feature == GpioConfiguration::EVENT_TIMESTAMP_FEATURE) // same modes available for all Event Timestamp behaviors
+        {
+            return{
+                GpioConfiguration::PinModes(0),
+                GpioConfiguration::PinModes::PULLUP,
+                GpioConfiguration::PinModes::PULLDOWN
+            };
+        }
+
         return{ GpioPinModeOptions(0) };
     }
 
@@ -601,6 +654,13 @@ namespace mscl
             return{
                 { GpioConfiguration::EncoderBehavior::ENCODER_A, supportedGpioPinModes(GpioConfiguration::ENCODER_FEATURE, GpioConfiguration::EncoderBehavior::ENCODER_A) },
                 { GpioConfiguration::EncoderBehavior::ENCODER_B, supportedGpioPinModes(GpioConfiguration::ENCODER_FEATURE, GpioConfiguration::EncoderBehavior::ENCODER_A) }
+            };
+
+        case GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE:
+            return{
+                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_RISING, supportedGpioPinModes(GpioConfiguration::EVENT_TIMESTAMP_FEATURE, 0) },
+                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_FALLING, supportedGpioPinModes(GpioConfiguration::EVENT_TIMESTAMP_FEATURE, 0) },
+                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_EDGE, supportedGpioPinModes(GpioConfiguration::EVENT_TIMESTAMP_FEATURE, 0) }
             };
 
         default:
@@ -635,20 +695,16 @@ namespace mscl
         GpioFeatureBehaviors pin1Features = {
             { GpioConfiguration::Feature::UNUSED_FEATURE, {} },
             { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
-            { GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE) },
-            { GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE) }
         };
 
         GpioFeatureBehaviors pin2Features = {
             { GpioConfiguration::Feature::UNUSED_FEATURE, {} },
             { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
-            { GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE) }
         };
 
         GpioFeatureBehaviors pin3Features = {
             { GpioConfiguration::Feature::UNUSED_FEATURE, {} },
             { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
-            { GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE) },
         };
 
         GpioFeatureBehaviors pin4Features = {
@@ -656,11 +712,259 @@ namespace mscl
             { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
         };
 
+        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ahrs:
+        case MipModels::node_3dm_cv7_ar:
+            pin1Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
+            pin2Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
+            pin3Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
+            pin4Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
+
+            pin1Features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
+            pin2Features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
+            pin3Features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
+            pin4Features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
+            break;
+
+        case MipModels::node_3dm_gq7:
+            pin1Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
+            pin3Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
+
+            pin1Features.emplace(GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE));
+            pin2Features.emplace(GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE));
+            break;
+
+        default:
+            break;
+        }
+
         return{
             { 1, pin1Features },
             { 2, pin2Features },
             { 3, pin3Features },
             { 4, pin4Features }
         };
+    }
+
+    GeographicSources MipNodeFeatures::supportedDeclinationSources() const
+    {
+        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ahrs:
+        case MipModels::node_3dm_cv7_ar:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
+        case MipModels::node_3dm_gq7:
+            return{
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
+        default:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+        }
+    }
+
+    GeographicSources MipNodeFeatures::supportedInclinationSources() const
+    {
+        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ahrs:
+        case MipModels::node_3dm_cv7_ar:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
+        case MipModels::node_3dm_gq7:
+            return{
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
+        default:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+        }
+    }
+
+    GeographicSources MipNodeFeatures::supportedMagneticMagnitudeSources() const
+    {
+        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ahrs:
+        case MipModels::node_3dm_cv7_ar:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
+        case MipModels::node_3dm_gq7:
+            return{
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+
+        default:
+            return{
+                InertialTypes::GeographicSourceOption::NONE,
+                InertialTypes::GeographicSourceOption::WORLD_MAGNETIC_MODEL,
+                InertialTypes::GeographicSourceOption::MANUAL
+            };
+        }
+    }
+
+    MipTypes::ChannelFieldQualifiers MipNodeFeatures::supportedEventThresholdChannels() const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_EVENT_TRIGGER_CONFIGURATION))
+        {
+            return{ MipTypes::ChannelFieldQualifiers() };
+        }
+
+        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+
+        MipTypes::MipChannelFields possibleFields;
+
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ahrs:
+        case MipModels::node_3dm_cv7_ar:
+        default:
+            possibleFields = {
+                // 0x80: Sensor Data
+
+                // (0x80, 0x04)
+                MipTypes::CH_FIELD_SENSOR_SCALED_ACCEL_VEC,
+                // (0x80, 0x05)
+                MipTypes::CH_FIELD_SENSOR_SCALED_GYRO_VEC,
+                // (0x80, 0x06)
+                MipTypes::CH_FIELD_SENSOR_SCALED_MAG_VEC,
+                // (0x80, 0x09)
+                MipTypes::CH_FIELD_SENSOR_ORIENTATION_MATRIX,
+                // (0x80, 0x0A)
+                MipTypes::CH_FIELD_SENSOR_ORIENTATION_QUATERNION,
+                // (0x80, 0x0C)
+                MipTypes::CH_FIELD_SENSOR_EULER_ANGLES,
+                // (0x80, 0x17)
+                MipTypes::CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE,
+                // (0x80, 0xD3)
+                MipTypes::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP,
+                // (0x80, 0xD5)
+                MipTypes::CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP,
+                // (0x80, 0xD7)
+                MipTypes::CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,
+
+
+                // 0x82 Filter Data
+
+                // (0x82, 0x03)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_QUATERNION,
+                // (0x82, 0x05)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_EULER,
+                // (0x82, 0x06)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_GYRO_BIAS,
+                // (0x82, 0x07)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ACCEL_BIAS,
+                // (0x82, 0x0A)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ATT_UNCERT_EULER,
+                // (0x82, 0x0B)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_GYRO_BIAS_UNCERT,
+                // (0x82, 0x0C)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ACCEL_BIAS_UNCERT,
+                // (0x82, 0x0D)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_LINEAR_ACCEL,
+                // (0x82, 0x0E)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ANGULAR_RATE,
+                // (0x82, 0x10)
+                MipTypes::CH_FIELD_ESTFILTER_FILTER_STATUS,
+                // (0x82, 0x12)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_ATT_UNCERT_QUAT,
+                // (0x82, 0x13)
+                MipTypes::CH_FIELD_ESTFILTER_ESTIMATED_GRAVITY_VECTOR,
+                // (0x82, 0x1C)
+                MipTypes::CH_FIELD_ESTFILTER_COMPENSATED_ACCEL,
+                // (0x82, 0x21)
+                MipTypes::CH_FIELD_ESTFILTER_PRESSURE_ALTITUDE,
+                // (0x82, 0xD3)
+                MipTypes::CH_FIELD_ESTFILTER_SHARED_GPS_TIMESTAMP,
+                // (0x82, 0xD5)
+                MipTypes::CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP,
+                // (0x82, 0xD7)
+                MipTypes::CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP,
+
+
+                // 0xA0 System Data
+
+                // (0xA0, 0x01)
+                //MipTypes::CH_FIELD_SYSTEM_BUILT_IN_TEST,
+                // (0xA0, 0x02)
+                MipTypes::CH_FIELD_SYSTEM_TIME_SYNC_STATUS,
+                // (0xA0, 0x03)
+                MipTypes::CH_FIELD_SYSTEM_GPIO_STATE,
+                // (0xA0, 0xD3)
+                MipTypes::CH_FIELD_SYSTEM_SHARED_GPS_TIMESTAMP,
+                // (0xA0, 0xD5)
+                MipTypes::CH_FIELD_SYSTEM_SHARED_REFERENCE_TIMESTAMP,
+                // (0xA0, 0xD7)
+                MipTypes::CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP
+            };
+        }
+
+        MipTypes::MipChannelFields supportedThresholdFields = filterSupportedChannelFields(possibleFields);
+        return MipTypes::channelFieldQualifiers(supportedThresholdFields);
+    }
+
+    const EventSupportInfo MipNodeFeatures::supportedEventActionInfo() const
+    {
+        return m_nodeInfo.eventActionInfo();
+    }
+
+    const EventSupportInfo MipNodeFeatures::supportedEventTriggerInfo() const
+    {
+        return m_nodeInfo.eventTriggerInfo();
+    }
+
+    const bool MipNodeFeatures::supportsNorthCompensation() const
+    {
+        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_gx3_15:
+
+        case MipModels::node_3dm_gx4_15:
+
+        case MipModels::node_3dm_gx5_15:
+        case MipModels::node_3dm_gx5_10:
+
+        case MipModels::node_3dm_cv5_15:
+        case MipModels::node_3dm_cv5_10:
+
+        case MipModels::node_3dm_cx5_15:
+        case MipModels::node_3dm_cx5_10:
+
+        case MipModels::node_3dm_cl5_15:
+
+        case MipModels::node_3dm_cv7_ar:
+            return false;
+
+        default:
+            return true;
+        }
     }
 }

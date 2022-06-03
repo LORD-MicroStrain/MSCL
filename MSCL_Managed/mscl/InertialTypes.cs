@@ -327,6 +327,19 @@ public class InertialTypes : global::System.IDisposable {
     SIGNAL_QUALITY_FULLY_LOCKED = 0x05
   }
 
+  public enum OverrangeStatusBitmask {
+    OVERRANGE_ACCEL_X = 0x0001,
+    OVERRANGE_ACCEL_Y = 0x0002,
+    OVERRANGE_ACCEL_Z = 0x0004,
+    OVERRANGE_GYRO_X = 0x0010,
+    OVERRANGE_GYRO_Y = 0x0020,
+    OVERRANGE_GYRO_Z = 0x0040,
+    OVERRANGE_MAG_X = 0x0100,
+    OVERRANGE_MAG_Y = 0x0200,
+    OVERRANGE_MAG_Z = 0x0400,
+    OVERRANGE_PRESSURE = 0x1000
+  }
+
 }
 
 }

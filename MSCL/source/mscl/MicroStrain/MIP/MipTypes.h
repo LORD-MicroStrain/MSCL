@@ -33,6 +33,7 @@ namespace mscl
         //  CLASS_RTK           - 0x93 - The RTK MIP data class
         //  CLASS_GNSS4         - 0x94 - The GNSS Receiver 4 MIP data class
         //  CLASS_GNSS5         - 0x95 - The GNSS Receiver 5 MIP data class
+        //  CLASS_SYSTEM        - 0xA0 - The System MIP data class
         enum DataClass
         {
             CLASS_AHRS_IMU     = 0x80,
@@ -47,7 +48,9 @@ namespace mscl
             CLASS_RTK   = 0x93,
 
             CLASS_GNSS4 = 0x94,
-            CLASS_GNSS5 = 0x95
+            CLASS_GNSS5 = 0x95,
+
+            CLASS_SYSTEM = 0xA0 
         };
 
         //API Enums: FunctionSelector
@@ -124,8 +127,12 @@ namespace mscl
         //  CMD_GNSS_ASSIST_FIX_CONTROL                 - 0x0C23    - GNSS Assisted Fix Control
         //  CMD_GNSS_ASSIST_TIME_UPDATE                 - 0x0C24    - GNSS Assisted Time Update
         //  CMD_PPS_SOURCE                              - 0x0C28    - PPS Source
+        //  CMD_EVENT_SUPPORT                           - 0x0C2A    - Event Support
+        //  CMD_EVENT_CONTROL                           - 0x0C2B    - Event Control
+        //  CMD_EVENT_TRIGGER_STATUS                    - 0x0C2C    - Event Trigger Status
         //  CMD_EVENT_ACTION_STATUS                     - 0x0C2D    - Event Action Status
         //  CMD_EVENT_TRIGGER_CONFIGURATION             - 0x0C2E    - Event Trigger Configuration
+        //  CMD_EVENT_ACTION_CONFIGURATION              - 0x0C2F    - Event Action Configuration
         //  CMD_SAVE_STARTUP_SETTINGS                   - 0x0C30    - Device Startup Settings
         //  CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER     - 0x0C31    - Sensor to Vehicle Frame Transformation Euler Angles
         //  CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT      - 0x0C32    - Sensor to Vehicle Frame Transformation Quaternion
@@ -249,8 +256,12 @@ namespace mscl
             CMD_GNSS_ASSIST_FIX_CONTROL             = 0x0C23,
             CMD_GNSS_ASSIST_TIME_UPDATE             = 0x0C24,
             CMD_PPS_SOURCE                          = 0x0C28,
+            CMD_EVENT_SUPPORT                       = 0x0C2A,
+            CMD_EVENT_CONTROL                       = 0x0C2B,
+            CMD_EVENT_TRIGGER_STATUS                = 0x0C2C,
             CMD_EVENT_ACTION_STATUS                 = 0x0C2D,
             CMD_EVENT_TRIGGER_CONFIGURATION         = 0x0C2E,
+            CMD_EVENT_ACTION_CONFIGURATION          = 0x0C2F,
             CMD_SAVE_STARTUP_SETTINGS               = 0x0C30,
             CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER = 0x0C31,
             CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT  = 0x0C32,
@@ -368,11 +379,17 @@ namespace mscl
         //  CH_FIELD_SENSOR_TEMPERATURE_STATISTICS                  - 0x8014    - Temperature Statistics
         //  CH_FIELD_SENSOR_RAW_AMBIENT_PRESSURE                    - 0x8016    - Raw Ambient Pressure
         //  CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE                 - 0x8017    - Scaled Ambient Pressure
+        //  CH_FIELD_SENSOR_OVERRANGE_STATUS                        - 0x8018    - Overrange Status
         //  CH_FIELD_SENSOR_ODOMETER_DATA                           - 0x8040    - Odometer Data
+        //  CH_FIELD_SENSOR_SHARED_EVENT_SOURCE                     - 0x80D0    - Event Source
         //  CH_FIELD_SENSOR_SHARED_TICKS                            - 0x80D1    - Ticks
         //  CH_FIELD_SENSOR_SHARED_DELTA_TICKS                      - 0x80D2    - Delta Ticks
         //  CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP                    - 0x80D3    - GPS Timestamp
         //  CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP                  - 0x80D4    - Delta GPS Timestamp
+        //  CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP              - 0x80D5    - Internal Reference Timestamp
+        //  CH_FIELD_SENSOR_SHARED_DELTA_REFERENCE_TIME             - 0x80D6    - Delta Internal Reference Time
+        //  CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP               - 0x80D7    - External Timestamp
+        //  CH_FIELD_SENSOR_SHARED_DELTA_EXTERNAL_TIME              - 0x80D8    - Delta External Time
         //  CH_FIELD_GNSS_LLH_POSITION                              - 0x8103    - LLH Position
         //  CH_FIELD_GNSS_ECEF_POSITION                             - 0x8104    - ECEF Position
         //  CH_FIELD_GNSS_NED_VELOCITY                              - 0x8105    - NED Velocity
@@ -397,10 +414,15 @@ namespace mscl
         //  CH_FIELD_GNSS_GALILEO_EPHEMERIS                         - 0x8163    - GNSS Galileo Ephemeris
         //  CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION                - 0x8171    - GPS Ionospheric Correction
         //  CH_FIELD_GNSS_GALILEO_IONOSPHERIC_CORRECTION            - 0x8173    - Galileo Ionospheric Correction
+        //  CH_FIELD_GNSS_SHARED_EVENT_SOURCE                       - 0x81D0    - Event Source
         //  CH_FIELD_GNSS_SHARED_TICKS                              - 0x81D1    - Ticks
         //  CH_FIELD_GNSS_SHARED_DELTA_TICKS                        - 0x81D2    - Delta Ticks
         //  CH_FIELD_GNSS_SHARED_GPS_TIMESTAMP                      - 0x81D3    - GPS Timestamp
         //  CH_FIELD_GNSS_SHARED_DELTA_TIMESTAMP                    - 0x81D4    - Delta GPS Timestamp
+        //  CH_FIELD_GNSS_SHARED_REFERENCE_TIMESTAMP                - 0x81D5    - Internal Reference Timestamp
+        //  CH_FIELD_GNSS_SHARED_DELTA_REFERENCE_TIME               - 0x81D6    - Delta Internal Reference Time
+        //  CH_FIELD_GNSS_SHARED_EXTERNAL_TIMESTAMP                 - 0x81D7    - External Timestamp
+        //  CH_FIELD_GNSS_SHARED_DELTA_EXTERNAL_TIME                - 0x81D8    - Delta External Time
         //  CH_FIELD_ESTFILTER_ESTIMATED_LLH_POS                    - 0x8201    - Estimated LLH Position
         //  CH_FIELD_ESTFILTER_ESTIMATED_NED_VELOCITY               - 0x8202    - Estimated NED Velocity
         //  CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_QUATERNION          - 0x8203    - Estimated Orientation Quaternion
@@ -454,10 +476,15 @@ namespace mscl
         //  CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR          - 0x8247    - Odometer Scale Factor Error
         //  CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR_UNCERT   - 0X8248    - Odometer Scale Factor Error Uncertainty
         //  CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS             - 0x8249    - GNSS Dual Antenna Status
+        //  CH_FIELD_ESTFILTER_SHARED_EVENT_SOURCE                  - 0x82D0    - Event Source
         //  CH_FIELD_ESTFILTER_SHARED_TICKS                         - 0x82D1    - Ticks
         //  CH_FIELD_ESTFILTER_SHARED_DELTA_TICKS                   - 0x82D2    - Delta Ticks
         //  CH_FIELD_ESTFILTER_SHARED_GPS_TIMESTAMP                 - 0x82D3    - GPS Timestamp
         //  CH_FIELD_ESTFILTER_SHARED_DELTA_TIMESTAMP               - 0x82D4    - Delta GPS Timestamp
+        //  CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP           - 0x82D5    - Internal Reference Timestamp
+        //  CH_FIELD_ESTFILTER_SHARED_DELTA_REFERENCE_TIME          - 0x82D6    - Delta Internal Reference Time
+        //  CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP            - 0x82D7    - External Timestamp
+        //  CH_FIELD_ESTFILTER_SHARED_DELTA_EXTERNAL_TIME           - 0x82D8    - Delta External Time
         //  CH_FIELD_DISP_POSITION                                  - 0x9001    - Position
         //  CH_FIELD_DISP_RAW_POSITION                              - 0x9002    - Raw Position
         //  CH_FIELD_DISP_DISPLACEMENT_TS                           - 0x9004    - Displacement Device Timestamp
@@ -485,10 +512,15 @@ namespace mscl
         //  CH_FIELD_GNSS_1_GALILEO_EPHEMERIS                       - 0x9163    - GNSS 1 Galileo Ephemeris
         //  CH_FIELD_GNSS_1_GPS_IONOSPHERIC_CORRECTION              - 0x9171    - GNSS 1 GPS Ionospheric Correction
         //  CH_FIELD_GNSS_1_GALILEO_IONOSPHERIC_CORRECTION          - 0x9173    - GNSS 1 Galileo Ionospheric Correction
+        //  CH_FIELD_GNSS_1_SHARED_EVENT_SOURCE                     - 0x91D0    - Event Source
         //  CH_FIELD_GNSS_1_SHARED_TICKS                            - 0x91D1    - Ticks
         //  CH_FIELD_GNSS_1_SHARED_DELTA_TICKS                      - 0x91D2    - Delta Ticks
         //  CH_FIELD_GNSS_1_SHARED_GPS_TIMESTAMP                    - 0x91D3    - GPS Timestamp
         //  CH_FIELD_GNSS_1_SHARED_DELTA_TIMESTAMP                  - 0x91D4    - Delta GPS Timestamp
+        //  CH_FIELD_GNSS_1_SHARED_REFERENCE_TIMESTAMP              - 0x91D5    - Internal Reference Timestamp
+        //  CH_FIELD_GNSS_1_SHARED_DELTA_REFERENCE_TIME             - 0x91D6    - Delta Internal Reference Time
+        //  CH_FIELD_GNSS_1_SHARED_EXTERNAL_TIMESTAMP               - 0x91D7    - External Timestamp
+        //  CH_FIELD_GNSS_1_SHARED_DELTA_EXTERNAL_TIME              - 0x91D8    - Delta External Time
         //  CH_FIELD_GNSS_2_LLH_POSITION                            - 0x9203    - GNSS 2 LLH Position
         //  CH_FIELD_GNSS_2_ECEF_POSITION                           - 0x9204    - GNSS 2 ECEF Position
         //  CH_FIELD_GNSS_2_NED_VELOCITY                            - 0x9205    - GNSS 2 NED Velocity
@@ -513,10 +545,15 @@ namespace mscl
         //  CH_FIELD_GNSS_2_GALILEO_EPHEMERIS                       - 0x9263    - GNSS 2 Galileo Ephemeris
         //  CH_FIELD_GNSS_2_GPS_IONOSPHERIC_CORRECTION              - 0x9271    - GNSS 2 GPS Ionospheric Correction
         //  CH_FIELD_GNSS_2_GALILEO_IONOSPHERIC_CORRECTION          - 0x9273    - GNSS 2 Galileo Ionospheric Correction
+        //  CH_FIELD_GNSS_2_SHARED_EVENT_SOURCE                     - 0x92D0    - Event Source
         //  CH_FIELD_GNSS_2_SHARED_TICKS                            - 0x92D1    - Ticks
         //  CH_FIELD_GNSS_2_SHARED_DELTA_TICKS                      - 0x92D2    - Delta Ticks
         //  CH_FIELD_GNSS_2_SHARED_GPS_TIMESTAMP                    - 0x92D3    - GPS Timestamp
         //  CH_FIELD_GNSS_2_SHARED_DELTA_TIMESTAMP                  - 0x92D4    - Delta GPS Timestamp
+        //  CH_FIELD_GNSS_2_SHARED_REFERENCE_TIMESTAMP              - 0x92D5    - Internal Reference Timestamp
+        //  CH_FIELD_GNSS_2_SHARED_DELTA_REFERENCE_TIME             - 0x92D6    - Delta Internal Reference Time
+        //  CH_FIELD_GNSS_2_SHARED_EXTERNAL_TIMESTAMP               - 0x92D7    - External Timestamp
+        //  CH_FIELD_GNSS_2_SHARED_DELTA_EXTERNAL_TIME              - 0x92D8    - Delta External Time
         //  CH_FIELD_GNSS_3_LLH_POSITION                            - 0x9303    - GNSS 3 LLH Position
         //  CH_FIELD_GNSS_3_ECEF_POSITION                           - 0x9304    - GNSS 3 ECEF Position
         //  CH_FIELD_GNSS_3_NED_VELOCITY                            - 0x9305    - GNSS 3 NED Velocity
@@ -541,10 +578,15 @@ namespace mscl
         //  CH_FIELD_GNSS_3_GALILEO_EPHEMERIS                       - 0x9363    - GNSS 3 Galileo Ephemeris
         //  CH_FIELD_GNSS_3_GPS_IONOSPHERIC_CORRECTION              - 0x9371    - GNSS 3 GPS Ionospheric Correction
         //  CH_FIELD_GNSS_3_GALILEO_IONOSPHERIC_CORRECTION          - 0x9373    - GNSS 3 Galileo Ionospheric Correction
+        //  CH_FIELD_GNSS_3_SHARED_EVENT_SOURCE                     - 0x93D0    - Event Source
         //  CH_FIELD_GNSS_3_SHARED_TICKS                            - 0x93D1    - Ticks
         //  CH_FIELD_GNSS_3_SHARED_DELTA_TICKS                      - 0x93D2    - Delta Ticks
         //  CH_FIELD_GNSS_3_SHARED_GPS_TIMESTAMP                    - 0x93D3    - GPS Timestamp
         //  CH_FIELD_GNSS_3_SHARED_DELTA_TIMESTAMP                  - 0x93D4    - Delta GPS Timestamp
+        //  CH_FIELD_GNSS_3_SHARED_REFERENCE_TIMESTAMP              - 0x93D5    - Internal Reference Timestamp
+        //  CH_FIELD_GNSS_3_SHARED_DELTA_REFERENCE_TIME             - 0x93D6    - Delta Internal Reference Time
+        //  CH_FIELD_GNSS_3_SHARED_EXTERNAL_TIMESTAMP               - 0x93D7    - External Timestamp
+        //  CH_FIELD_GNSS_3_SHARED_DELTA_EXTERNAL_TIME              - 0x93D8    - Delta External Time
         //  CH_FIELD_GNSS_4_LLH_POSITION                            - 0x9403    - GNSS 4 LLH Position
         //  CH_FIELD_GNSS_4_ECEF_POSITION                           - 0x9404    - GNSS 4 ECEF Position
         //  CH_FIELD_GNSS_4_NED_VELOCITY                            - 0x9405    - GNSS 4 NED Velocity
@@ -569,10 +611,15 @@ namespace mscl
         //  CH_FIELD_GNSS_4_GALILEO_EPHEMERIS                       - 0x9463    - GNSS 4 Galileo Ephemeris
         //  CH_FIELD_GNSS_4_GPS_IONOSPHERIC_CORRECTION              - 0x9471    - GNSS 4 GPS Ionospheric Correction
         //  CH_FIELD_GNSS_4_GALILEO_IONOSPHERIC_CORRECTION          - 0x9473    - GNSS 4 Galileo Ionospheric Correction
+        //  CH_FIELD_GNSS_4_SHARED_EVENT_SOURCE                     - 0x94D0    - Event Source
         //  CH_FIELD_GNSS_4_SHARED_TICKS                            - 0x94D1    - Ticks
         //  CH_FIELD_GNSS_4_SHARED_DELTA_TICKS                      - 0x94D2    - Delta Ticks
         //  CH_FIELD_GNSS_4_SHARED_GPS_TIMESTAMP                    - 0x94D3    - GPS Timestamp
         //  CH_FIELD_GNSS_4_SHARED_DELTA_TIMESTAMP                  - 0x94D4    - Delta GPS Timestamp
+        //  CH_FIELD_GNSS_4_SHARED_REFERENCE_TIMESTAMP              - 0x94D5    - Internal Reference Timestamp
+        //  CH_FIELD_GNSS_4_SHARED_DELTA_REFERENCE_TIME             - 0x94D6    - Delta Internal Reference Time
+        //  CH_FIELD_GNSS_4_SHARED_EXTERNAL_TIMESTAMP               - 0x94D7    - External Timestamp
+        //  CH_FIELD_GNSS_4_SHARED_DELTA_EXTERNAL_TIME              - 0x94D8    - Delta External Time
         //  CH_FIELD_GNSS_5_LLH_POSITION                            - 0x9503    - GNSS 5 LLH Position
         //  CH_FIELD_GNSS_5_ECEF_POSITION                           - 0x9504    - GNSS 5 ECEF Position
         //  CH_FIELD_GNSS_5_NED_VELOCITY                            - 0x9505    - GNSS 5 NED Velocity
@@ -597,10 +644,26 @@ namespace mscl
         //  CH_FIELD_GNSS_5_GALILEO_EPHEMERIS                       - 0x9563    - GNSS 5 Galileo Ephemeris
         //  CH_FIELD_GNSS_5_GPS_IONOSPHERIC_CORRECTION              - 0x9571    - GNSS 5 GPS Ionospheric Correction
         //  CH_FIELD_GNSS_5_GALILEO_IONOSPHERIC_CORRECTION          - 0x9573    - GNSS 5 Galileo Ionospheric Correction
+        //  CH_FIELD_GNSS_5_SHARED_EVENT_SOURCE                     - 0x95D0    - Event Source
         //  CH_FIELD_GNSS_5_SHARED_TICKS                            - 0x95D1    - Ticks
         //  CH_FIELD_GNSS_5_SHARED_DELTA_TICKS                      - 0x95D2    - Delta Ticks
         //  CH_FIELD_GNSS_5_SHARED_GPS_TIMESTAMP                    - 0x95D3    - GPS Timestamp
         //  CH_FIELD_GNSS_5_SHARED_DELTA_TIMESTAMP                  - 0x95D4    - Delta GPS Timestamp
+        //  CH_FIELD_GNSS_5_SHARED_REFERENCE_TIMESTAMP              - 0x95D5    - Internal Reference Timestamp
+        //  CH_FIELD_GNSS_5_SHARED_DELTA_REFERENCE_TIME             - 0x95D6    - Delta Internal Reference Time
+        //  CH_FIELD_GNSS_5_SHARED_EXTERNAL_TIMESTAMP               - 0x95D7    - External Timestamp
+        //  CH_FIELD_GNSS_5_SHARED_DELTA_EXTERNAL_TIME              - 0x95D8    - Delta External Time
+        //  CH_FIELD_SYSTEM_TIME_SYNC_STATUS                        - 0xA002    - Time Sync Status
+        //  CH_FIELD_SYSTEM_GPIO_STATE                              - 0xA003    - GPIO State
+        //  CH_FIELD_SYSTEM_SHARED_EVENT_SOURCE                     - 0xA0D0    - Event Source
+        //  CH_FIELD_SYSTEM_SHARED_TICKS                            - 0xA0D1    - Ticks
+        //  CH_FIELD_SYSTEM_SHARED_DELTA_TICKS                      - 0xA0D2    - Delta Ticks
+        //  CH_FIELD_SYSTEM_SHARED_GPS_TIMESTAMP                    - 0xA0D3    - GPS Timestamp
+        //  CH_FIELD_SYSTEM_SHARED_DELTA_TIMESTAMP                  - 0xA0D4    - Delta GPS Timestamp
+        //  CH_FIELD_SYSTEM_SHARED_REFERENCE_TIMESTAMP              - 0xA0D5    - Internal Reference Timestamp
+        //  CH_FIELD_SYSTEM_SHARED_DELTA_REFERENCE_TIME             - 0xA0D6    - Delta Internal Reference Time
+        //  CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP               - 0xA0D7    - External Timestamp
+        //  CH_FIELD_SYSTEM_SHARED_DELTA_EXTERNAL_TIME              - 0xA0D8    - Delta External Time
         //====================================================================================================
         enum ChannelField
         {
@@ -624,11 +687,17 @@ namespace mscl
             CH_FIELD_SENSOR_TEMPERATURE_STATISTICS                  = 0x8014,
             CH_FIELD_SENSOR_RAW_AMBIENT_PRESSURE                    = 0x8016,
             CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE                 = 0x8017,
+            CH_FIELD_SENSOR_OVERRANGE_STATUS                       = 0x8018,
             CH_FIELD_SENSOR_ODOMETER_DATA                           = 0x8040,
+            CH_FIELD_SENSOR_SHARED_EVENT_SOURCE                     = 0x80D0,
             CH_FIELD_SENSOR_SHARED_TICKS                            = 0x80D1,
             CH_FIELD_SENSOR_SHARED_DELTA_TICKS                      = 0x80D2,
             CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP                    = 0x80D3,
             CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP                  = 0x80D4,
+            CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP              = 0x80D5,
+            CH_FIELD_SENSOR_SHARED_DELTA_REFERENCE_TIME             = 0x80D6,
+            CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP               = 0x80D7,
+            CH_FIELD_SENSOR_SHARED_DELTA_EXTERNAL_TIME              = 0x80D8,
             CH_FIELD_GNSS_LLH_POSITION                              = 0x8103,
             CH_FIELD_GNSS_ECEF_POSITION                             = 0x8104,
             CH_FIELD_GNSS_NED_VELOCITY                              = 0x8105,
@@ -653,10 +722,15 @@ namespace mscl
             CH_FIELD_GNSS_GALILEO_EPHEMERIS                         = 0x8163,
             CH_FIELD_GNSS_GPS_IONOSPHERIC_CORRECTION                = 0x8171,
             CH_FIELD_GNSS_GALILEO_IONOSPHERIC_CORRECTION            = 0x8173,
+            CH_FIELD_GNSS_SHARED_EVENT_SOURCE                       = 0x81D0,
             CH_FIELD_GNSS_SHARED_TICKS                              = 0x81D1,
             CH_FIELD_GNSS_SHARED_DELTA_TICKS                        = 0x81D2,
             CH_FIELD_GNSS_SHARED_GPS_TIMESTAMP                      = 0x81D3,
             CH_FIELD_GNSS_SHARED_DELTA_TIMESTAMP                    = 0x81D4,
+            CH_FIELD_GNSS_SHARED_REFERENCE_TIMESTAMP                = 0x81D5,
+            CH_FIELD_GNSS_SHARED_DELTA_REFERENCE_TIME               = 0x81D6,
+            CH_FIELD_GNSS_SHARED_EXTERNAL_TIMESTAMP                 = 0x81D7,
+            CH_FIELD_GNSS_SHARED_DELTA_EXTERNAL_TIME                = 0x81D8,
             CH_FIELD_ESTFILTER_ESTIMATED_LLH_POS                    = 0x8201,    //TODO: rename? (no estimated?, look at gx4?)
             CH_FIELD_ESTFILTER_ESTIMATED_NED_VELOCITY               = 0x8202,
             CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_QUATERNION          = 0x8203,
@@ -710,10 +784,15 @@ namespace mscl
             CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR          = 0x8247,
             CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR_UNCERT   = 0X8248,
             CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS             = 0x8249,
+            CH_FIELD_ESTFILTER_SHARED_EVENT_SOURCE                  = 0x82D0,
             CH_FIELD_ESTFILTER_SHARED_TICKS                         = 0x82D1,
             CH_FIELD_ESTFILTER_SHARED_DELTA_TICKS                   = 0x82D2,
             CH_FIELD_ESTFILTER_SHARED_GPS_TIMESTAMP                 = 0x82D3,
             CH_FIELD_ESTFILTER_SHARED_DELTA_TIMESTAMP               = 0x82D4,
+            CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP           = 0x82D5,
+            CH_FIELD_ESTFILTER_SHARED_DELTA_REFERENCE_TIME          = 0x82D6,
+            CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP            = 0x82D7,
+            CH_FIELD_ESTFILTER_SHARED_DELTA_EXTERNAL_TIME           = 0x82D8,
             CH_FIELD_DISP_DISPLACEMENT_RAW                          = 0x9001,
             CH_FIELD_DISP_DISPLACEMENT_MM                           = 0x9002,
             CH_FIELD_DISP_DISPLACEMENT_TS                           = 0x9004,
@@ -741,10 +820,15 @@ namespace mscl
             CH_FIELD_GNSS_1_GALILEO_EPHEMERIS                       = 0x9163,
             CH_FIELD_GNSS_1_GPS_IONOSPHERIC_CORRECTION              = 0x9171,
             CH_FIELD_GNSS_1_GALILEO_IONOSPHERIC_CORRECTION          = 0x9173,
+            CH_FIELD_GNSS_1_SHARED_EVENT_SOURCE                     = 0x91D0,
             CH_FIELD_GNSS_1_SHARED_TICKS                            = 0x91D1,
             CH_FIELD_GNSS_1_SHARED_DELTA_TICKS                      = 0x91D2,
             CH_FIELD_GNSS_1_SHARED_GPS_TIMESTAMP                    = 0x91D3,
             CH_FIELD_GNSS_1_SHARED_DELTA_TIMESTAMP                  = 0x91D4,
+            CH_FIELD_GNSS_1_SHARED_REFERENCE_TIMESTAMP              = 0x91D5,
+            CH_FIELD_GNSS_1_SHARED_DELTA_REFERENCE_TIME             = 0x91D6,
+            CH_FIELD_GNSS_1_SHARED_EXTERNAL_TIMESTAMP               = 0x91D7,
+            CH_FIELD_GNSS_1_SHARED_DELTA_EXTERNAL_TIME              = 0x91D8,
             CH_FIELD_GNSS_2_LLH_POSITION                            = 0x9203,
             CH_FIELD_GNSS_2_ECEF_POSITION                           = 0x9204,
             CH_FIELD_GNSS_2_NED_VELOCITY                            = 0x9205,
@@ -769,10 +853,15 @@ namespace mscl
             CH_FIELD_GNSS_2_GALILEO_EPHEMERIS                       = 0x9263,
             CH_FIELD_GNSS_2_GPS_IONOSPHERIC_CORRECTION              = 0x9271,
             CH_FIELD_GNSS_2_GALILEO_IONOSPHERIC_CORRECTION          = 0x9273,
+            CH_FIELD_GNSS_2_SHARED_EVENT_SOURCE                     = 0x92D0,
             CH_FIELD_GNSS_2_SHARED_TICKS                            = 0x92D1,
             CH_FIELD_GNSS_2_SHARED_DELTA_TICKS                      = 0x92D2,
             CH_FIELD_GNSS_2_SHARED_GPS_TIMESTAMP                    = 0x92D3,
             CH_FIELD_GNSS_2_SHARED_DELTA_TIMESTAMP                  = 0x92D4,
+            CH_FIELD_GNSS_2_SHARED_REFERENCE_TIMESTAMP              = 0x92D5,
+            CH_FIELD_GNSS_2_SHARED_DELTA_REFERENCE_TIME             = 0x92D6,
+            CH_FIELD_GNSS_2_SHARED_EXTERNAL_TIMESTAMP               = 0x92D7,
+            CH_FIELD_GNSS_2_SHARED_DELTA_EXTERNAL_TIME              = 0x92D8,
             CH_FIELD_GNSS_3_LLH_POSITION                            = 0x9303,
             CH_FIELD_GNSS_3_ECEF_POSITION                           = 0x9304,
             CH_FIELD_GNSS_3_NED_VELOCITY                            = 0x9305,
@@ -797,10 +886,15 @@ namespace mscl
             CH_FIELD_GNSS_3_GALILEO_EPHEMERIS                       = 0x9363,
             CH_FIELD_GNSS_3_GPS_IONOSPHERIC_CORRECTION              = 0x9371,
             CH_FIELD_GNSS_3_GALILEO_IONOSPHERIC_CORRECTION          = 0x9373,
+            CH_FIELD_GNSS_3_SHARED_EVENT_SOURCE                     = 0x93D0,
             CH_FIELD_GNSS_3_SHARED_TICKS                            = 0x93D1,
             CH_FIELD_GNSS_3_SHARED_DELTA_TICKS                      = 0x93D2,
             CH_FIELD_GNSS_3_SHARED_GPS_TIMESTAMP                    = 0x93D3,
             CH_FIELD_GNSS_3_SHARED_DELTA_TIMESTAMP                  = 0x93D4,
+            CH_FIELD_GNSS_3_SHARED_REFERENCE_TIMESTAMP              = 0x93D5,
+            CH_FIELD_GNSS_3_SHARED_DELTA_REFERENCE_TIME             = 0x93D6,
+            CH_FIELD_GNSS_3_SHARED_EXTERNAL_TIMESTAMP               = 0x93D7,
+            CH_FIELD_GNSS_3_SHARED_DELTA_EXTERNAL_TIME              = 0x93D8,
             CH_FIELD_GNSS_4_LLH_POSITION                            = 0x9403,
             CH_FIELD_GNSS_4_ECEF_POSITION                           = 0x9404,
             CH_FIELD_GNSS_4_NED_VELOCITY                            = 0x9405,
@@ -825,10 +919,15 @@ namespace mscl
             CH_FIELD_GNSS_4_GALILEO_EPHEMERIS                       = 0x9463,
             CH_FIELD_GNSS_4_GPS_IONOSPHERIC_CORRECTION              = 0x9471,
             CH_FIELD_GNSS_4_GALILEO_IONOSPHERIC_CORRECTION          = 0x9473,
+            CH_FIELD_GNSS_4_SHARED_EVENT_SOURCE                     = 0x94D0,
             CH_FIELD_GNSS_4_SHARED_TICKS                            = 0x94D1,
             CH_FIELD_GNSS_4_SHARED_DELTA_TICKS                      = 0x94D2,
             CH_FIELD_GNSS_4_SHARED_GPS_TIMESTAMP                    = 0x94D3,
             CH_FIELD_GNSS_4_SHARED_DELTA_TIMESTAMP                  = 0x94D4,
+            CH_FIELD_GNSS_4_SHARED_REFERENCE_TIMESTAMP              = 0x94D5,
+            CH_FIELD_GNSS_4_SHARED_DELTA_REFERENCE_TIME             = 0x94D6,
+            CH_FIELD_GNSS_4_SHARED_EXTERNAL_TIMESTAMP               = 0x94D7,
+            CH_FIELD_GNSS_4_SHARED_DELTA_EXTERNAL_TIME              = 0x94D8,
             CH_FIELD_GNSS_5_LLH_POSITION                            = 0x9503,
             CH_FIELD_GNSS_5_ECEF_POSITION                           = 0x9504,
             CH_FIELD_GNSS_5_NED_VELOCITY                            = 0x9505,
@@ -853,11 +952,31 @@ namespace mscl
             CH_FIELD_GNSS_5_GALILEO_EPHEMERIS                       = 0x9563,
             CH_FIELD_GNSS_5_GPS_IONOSPHERIC_CORRECTION              = 0x9571,
             CH_FIELD_GNSS_5_GALILEO_IONOSPHERIC_CORRECTION          = 0x9573,
+            CH_FIELD_GNSS_5_SHARED_EVENT_SOURCE                     = 0x95D0,
             CH_FIELD_GNSS_5_SHARED_TICKS                            = 0x95D1,
             CH_FIELD_GNSS_5_SHARED_DELTA_TICKS                      = 0x95D2,
             CH_FIELD_GNSS_5_SHARED_GPS_TIMESTAMP                    = 0x95D3,
             CH_FIELD_GNSS_5_SHARED_DELTA_TIMESTAMP                  = 0x95D4,
+            CH_FIELD_GNSS_5_SHARED_REFERENCE_TIMESTAMP              = 0x95D5,
+            CH_FIELD_GNSS_5_SHARED_DELTA_REFERENCE_TIME             = 0x95D6,
+            CH_FIELD_GNSS_5_SHARED_EXTERNAL_TIMESTAMP               = 0x95D7,
+            CH_FIELD_GNSS_5_SHARED_DELTA_EXTERNAL_TIME              = 0x95D8,
+            CH_FIELD_SYSTEM_TIME_SYNC_STATUS                        = 0xA002,
+            CH_FIELD_SYSTEM_GPIO_STATE                              = 0xA003,
+            CH_FIELD_SYSTEM_SHARED_EVENT_SOURCE                     = 0xA0D0,
+            CH_FIELD_SYSTEM_SHARED_TICKS                            = 0xA0D1,
+            CH_FIELD_SYSTEM_SHARED_DELTA_TICKS                      = 0xA0D2,
+            CH_FIELD_SYSTEM_SHARED_GPS_TIMESTAMP                    = 0xA0D3,
+            CH_FIELD_SYSTEM_SHARED_DELTA_TIMESTAMP                  = 0xA0D4,
+            CH_FIELD_SYSTEM_SHARED_REFERENCE_TIMESTAMP              = 0xA0D5,
+            CH_FIELD_SYSTEM_SHARED_DELTA_REFERENCE_TIME             = 0xA0D6,
+            CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP               = 0xA0D7,
+            CH_FIELD_SYSTEM_SHARED_DELTA_EXTERNAL_TIME              = 0xA0D8,
         };
+
+        //API Constant: MIN_SHARED_FIELD_DESCRIPTOR
+        //  The minimum descriptor that marks the start of available shared data field descriptors. If a field descriptor is above 0xD0 it is shared.
+        static const uint8 MIN_SHARED_FIELD_DESCRIPTOR = 0xD0;
 
         //====================================================================================================
         //API Enums: ChannelQualifier
@@ -963,6 +1082,20 @@ namespace mscl
         //    CH_DELTA_TICK                 - 98  - Delta Tick
         //    CH_ERROR                      - 99  - Measurement Error
         //    CH_ERROR_UNC                  - 100 - Measurement Error Uncertainty
+        //    CH_W                          - 101 - W
+        //    CH_M0                         - 102 - Matrix M0
+        //    CH_M1                         - 103 - Matrix M1
+        //    CH_M2                         - 104 - Matrix M2
+        //    CH_M3                         - 105 - Matrix M3
+        //    CH_M4                         - 106 - Matrix M4
+        //    CH_M5                         - 107 - Matrix M5
+        //    CH_M6                         - 108 - Matrix M6
+        //    CH_M7                         - 109 - Matrix M7
+        //    CH_M8                         - 110 - Matrix M8
+        //    CH_NANOSECONDS                - 111 - Nanoseconds
+        //    CH_VALID_FLAGS                - 112 - Valid Flags
+        //    CH_PPS_VALID                  - 113 - PPS Valid
+        //    CH_LAST_PPS                   - 114 - Last PPS Received
         //====================================================================================================
         enum ChannelQualifier
         {
@@ -1064,7 +1197,21 @@ namespace mscl
             CH_DELTA_TIME                 = 97,
             CH_DELTA_TICK                 = 98,
             CH_ERROR                      = 99,
-            CH_ERROR_UNC                  = 100
+            CH_ERROR_UNC                  = 100,
+            CH_W                          = 101,
+            CH_M0                         = 102,
+            CH_M1                         = 103,
+            CH_M2                         = 104,
+            CH_M3                         = 105,
+            CH_M4                         = 106,
+            CH_M5                         = 107,
+            CH_M6                         = 108,
+            CH_M7                         = 109,
+            CH_M8                         = 110,
+            CH_NANOSECONDS                = 111,
+            CH_VALID_FLAGS                = 112,
+            CH_PPS_VALID                  = 113,
+            CH_LAST_PPS                   = 114
         };
 
         //API Typedefs:
@@ -1072,6 +1219,18 @@ namespace mscl
         //  MipCommands         - A vector of <Command> enums.
         typedef std::vector<ChannelField> MipChannelFields;
         typedef std::vector<Command> MipCommands;
+
+        //API Typedef: ChannelIndex
+        //    A <ChannelQualifier>, int pair indicating the index value of the qualifier in a channel field.
+        typedef std::pair<ChannelQualifier, uint8> ChannelIndex;
+
+        //API Typedef: ChannelIndices
+        //    A list of <ChannelIndex> values
+        typedef std::vector<ChannelIndex> ChannelIndices;
+
+        //API Typedef: ChannelFieldQualifiers
+        //    A map of <ChannelField> values and their associated <ChannelIndices>
+        typedef std::map<ChannelField, ChannelIndices> ChannelFieldQualifiers;
 
 #ifndef SWIG
         //Typedef: ChannelId
@@ -1180,10 +1339,53 @@ namespace mscl
         //  bool - true if chField is a shared data field, false if it is not
         static bool isSharedChannelField(ChannelField chField);
 
+        //API Function: channelFieldQualifiers
+        //    Gets a map of <ChannelField> values with all associated <ChannelQualifier> values and their index within the field.
+        //
+        //Parameters:
+        //    fields - <MipChannelFields> to include if found.
+        //
+        //Returns:
+        //    A map of <ChannelField> and their respective <ChannelIndex> values.
+        static ChannelFieldQualifiers channelFieldQualifiers(const MipChannelFields& fields);
+
+        //API Function: channelFieldQualifier
+        //    Gets the <ChannelQualifier> of the <ChannelField> for the specified index.
+        //
+        //Parameters:
+        //    field - target <ChannelField>.
+        //    index - 1-based index within the field to lookup
+        //
+        //Returns:
+        //    A <ChannelQualifier> that corresponds to the index or <CH_UNKNOWN> if not found.
+        static ChannelQualifier channelFieldQualifier(ChannelField field, uint8 index);
+
+        //API Function: channelFieldQualifierIndex
+        //    Gets the index of the <ChannelQualifier> in the <ChannelField>.
+        //
+        //Parameters:
+        //    field - target <ChannelField>.
+        //    qualifier - <ChannelQualifier> within the field to lookup the index of
+        //
+        //Returns:
+        //    The 1-based index of the specified <ChannelQualifier> in the <ChannelField>, or 0 if the <ChannelQualifier> isn't in the <ChannelField>.
+        static uint8 channelFieldQualifierIndex(ChannelField field, ChannelQualifier qualifier);
+
+    private:
+        //Function: findChannelIndex
+        //  Lookup channel index for given ChannelField based on either qualifier or index
+        //  If qualifier known, pass in index 0
+        //  If index known, pass in qualifier UNKNOWN
+        static ChannelIndex findChannelIndex(ChannelField field, ChannelQualifier qualifier, uint8 index);
+
     private:
         //Const: CHANNEL_NAMES
         //    An unordered_map mapping each <ChannelId> to its respective name (universal SensorCloud name).
         static const std::unordered_map<ChannelId, std::string, ChannelIdHash> CHANNEL_NAMES;
+
+        //Const: CHANNEL_INDICES
+        //    A map mapping each <ChannelField>'s <ChannelQualifier> to its respective index.
+        static const ChannelFieldQualifiers CHANNEL_INDICES;
 
         //Function: GNSS_DATA_CLASSES
         //  vector of <DataClass> values containing all GNSS data class descriptors that have the same field descriptors.
@@ -1194,11 +1396,6 @@ namespace mscl
         //  vector of <DataClass> values containing all inertial data class descriptors that have the same field descriptors.
         //  was a const but ran into static initialization order issues with registering shared field parsers.
         static std::vector<DataClass> INERTIAL_DATA_CLASSES();
-
-        //Function: SHARED_DATA_FIELDS
-        //  vector of <uint8> values containing all shared inertial data field descriptors.
-        //  was a const but ran into static initialization order issues with registering shared field parsers.
-        static std::vector<uint8> SHARED_DATA_FIELDS();
     };
 
     //API Class: MipChannelIdentifier
@@ -1678,6 +1875,63 @@ namespace mscl
     };
 
     typedef std::vector<DeviceCommPort> CommPortInfo;
+
+    //API Struct: EventTypeInfo
+    //  Information about event trigger or action types
+    struct EventTypeInfo
+    {
+        //API Constructor: EventTypeInfo
+        //  Default constructor
+        EventTypeInfo() : type(0), maxInstances(0) {}
+
+        //API Constructor: EventTypeInfo
+        EventTypeInfo(const uint8 type, const uint8 maxInstances) :
+            type(type),
+            maxInstances(maxInstances)
+        { }
+
+        //API Variable: type
+        //  The event type based on <EventSupportInfo::Query>
+        //
+        //  - <EventSupportInfo::Query::TRIGGERS> = <EventTriggerConfiguration::Type>
+        //  - <EventSupportInfo::Query::ACTIONS>  = <EventActionConfiguration::Type>
+        uint8 type;
+
+        //API Variable: maxInstances
+        //  Maximum supported instances for the type
+        uint8 maxInstances;
+    };
+
+    //API Typedef: EventTypes
+    //  A vector of <EventTypeInfo>
+    typedef std::vector<EventTypeInfo> EventTypes;
+
+    //API Struct: EventSupportInfo
+    struct EventSupportInfo
+    {
+        //API Enum: Query
+        //  What type of information to retrieve
+        //
+        //  TRIGGERS  - 0x01 - Query the supported trigger types and max count for each
+        //  ACTIONS   - 0x02 - Query the supported action types and max count for each
+        enum Query
+        {
+            TRIGGERS = 0x01, // Query the supported trigger types and max count for each
+            ACTIONS  = 0x02  // Query the supported action types and max count for each
+        };
+
+        //API Variable: query
+        //  Type of information 
+        Query query;
+
+        //API Variable: maxInstances
+        //  Maximum number of supported triggers/actions
+        uint8 maxInstances;
+
+        //API Variable: entries
+        //  Event info
+        EventTypes entries;
+    };
 
     // API Class: SensorRange
     // An object representing a configurable sensor range option

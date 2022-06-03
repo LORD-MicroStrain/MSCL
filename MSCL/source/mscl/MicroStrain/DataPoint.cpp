@@ -164,6 +164,7 @@ namespace mscl
         case valueType_uint8:
         case valueType_uint16:
         case valueType_uint32:
+        case valueType_uint64:
         case valueType_int8:
         case valueType_int16:
         case valueType_int32:

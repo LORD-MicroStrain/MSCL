@@ -17,9 +17,30 @@ REMOVED - A function/class has been removed.
 Forthcoming
 - Added support for G-Link-200 6522-6001 (custom default configuration)
 - Added support for MIP commands:
+    - Event Support (0x0C,0x2A)
+    - Event Control (0x0C,0x2B)
+    - Event Trigger Status (0x0C,0x2C)
     - Event Trigger Configuration (0x0C,0x2E)
-    - Get Calibrated Sensor Ranges (0x0C,0x53)
+    - Event Action Configuration (0x0C,0x2F)
     - Sensor Range (0x0C,0x52)
+    - Get Calibrated Sensor Ranges (0x0C,0x53)
+- Added support for MIP data:
+    - Event Source (0xFF,0xD0)
+    - Reference Time (0xFF,0xD5)
+    - Delta Reference Time (0xFF,0xD6)
+    - External Timestamp (0xFF,0xD7)
+    - Delta External Time (0xFF,0xD7)
+    - Overrange Status (0x80,0x18)
+    - System data set (0xA0)
+    - Time Sync Status (0xA0,0x02)
+    - GPIO State (0xA0,0x03)
+- Added MipSharedDataFields (MipDataPacket::shared()) to more easily access shared fields within a packet
+- Added check for supported event trigger threshold qualifiers
+- Updated supported CV7 aiding measurement filters
+- Update supported CV7 GPIO pin options
+- Added check for supported geographic sources
+- Added check for complementary filter north compensation support
+- Added support for storing and getting Timestamp class values in both GPS and Unix epochs - default behavior unchanged
 
 64.2.2 - 2022-03-08
 - Reverted defaul MIP command timeout to 250 ms

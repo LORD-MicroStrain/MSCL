@@ -85,6 +85,28 @@ public class Bitfield : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public bool checkBit(byte bitIndex, byte indexBase) {
+    bool ret = msclPINVOKE.Bitfield_checkBit__SWIG_0(swigCPtr, bitIndex, indexBase);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool checkBit(byte bitIndex) {
+    bool ret = msclPINVOKE.Bitfield_checkBit__SWIG_1(swigCPtr, bitIndex);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setBit(byte bitIndex, bool value, byte indexBase) {
+    msclPINVOKE.Bitfield_setBit__SWIG_0(swigCPtr, bitIndex, value, indexBase);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void setBit(byte bitIndex, bool value) {
+    msclPINVOKE.Bitfield_setBit__SWIG_1(swigCPtr, bitIndex, value);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
 }
 
 }

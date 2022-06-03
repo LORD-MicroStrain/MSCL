@@ -616,7 +616,8 @@ namespace mscl
             MipTypes::DataClass::CLASS_GNSS2,
             MipTypes::DataClass::CLASS_GNSS3, // RTK
             MipTypes::DataClass::CLASS_GNSS4,
-            MipTypes::DataClass::CLASS_GNSS5
+            MipTypes::DataClass::CLASS_GNSS5,
+            MipTypes::DataClass::CLASS_SYSTEM
         };
 
         // build command set in numeric order by command id
@@ -1161,6 +1162,39 @@ namespace mscl
                         Value::UINT8(0)
                     });
 
+                    if (cmdBytes.valid())
+                    {
+                        setCmds.push_back(cmdBytes);
+                    }
+                    break;
+                }
+                case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
+                case MipTypes::CMD_EVENT_CONTROL:
+                {
+                    EventSupportInfo info = features().supportedEventTriggerInfo();
+                    std::vector<MipFieldValues> specifiers;
+                    for (uint8_t id = 1; id <= info.maxInstances; id++)
+                    {
+                        specifiers.push_back({ Value::UINT8(id) });
+                    }
+
+                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, specifiers);
+                    if (cmdBytes.valid())
+                    {
+                        setCmds.push_back(cmdBytes);
+                    }
+                    break;
+                }
+                case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
+                {
+                    EventSupportInfo info = features().supportedEventActionInfo();
+                    std::vector<MipFieldValues> specifiers;
+                    for (uint8_t id = 1; id <= info.maxInstances; id++)
+                    {
+                        specifiers.push_back({ Value::UINT8(id) });
+                    }
+
+                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, specifiers);
                     if (cmdBytes.valid())
                     {
                         setCmds.push_back(cmdBytes);
@@ -2270,6 +2304,30 @@ namespace mscl
         ActivationCode::Response r(m_responseCollector);
 
         return r.parseResponse(doCommand(r, ActivationCode::buildCommand_get()));
+    }
+
+    EventSupportInfo MipNode_Impl::getEventInfo(const EventSupportInfo::Query query) const
+    {
+        const MipFieldValues response = get(MipTypes::Command::CMD_EVENT_SUPPORT,
+                    { Value::UINT8(static_cast<uint8>(query)) }
+        );
+
+        EventSupportInfo info{};
+
+        info.query = static_cast<EventSupportInfo::Query>(response[0].as_uint8());
+        info.maxInstances = response[1].as_uint8();
+
+        const uint8 numEntries = response[2].as_uint8();
+
+        // Response index starts at 3 and each entry has 2 data values
+        for (int index = 3; index < numEntries * 2 + 3; index += 2)
+        {
+            info.entries.push_back(
+                EventTypeInfo(response[index].as_uint8(), response[index + 1].as_uint8())
+            );
+        }
+
+        return info;
     }
 
     MipFieldValues MipNode_Impl::get(MipTypes::Command cmdId) const

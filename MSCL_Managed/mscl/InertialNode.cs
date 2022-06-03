@@ -901,6 +901,17 @@ public class InertialNode : MipNode {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public EventControlMode getEventTriggerMode(byte instance) {
+    EventControlMode ret = (EventControlMode)msclPINVOKE.InertialNode_getEventTriggerMode(swigCPtr, instance);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setEventTriggerMode(byte instance, EventControlMode mode) {
+    msclPINVOKE.InertialNode_setEventTriggerMode(swigCPtr, instance, (int)mode);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public EventTriggerConfiguration getEventTriggerConfig(byte instance) {
     EventTriggerConfiguration ret = new EventTriggerConfiguration(msclPINVOKE.InertialNode_getEventTriggerConfig(swigCPtr, instance), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -909,6 +920,22 @@ public class InertialNode : MipNode {
 
   public void setEventTriggerConfig(EventTriggerConfiguration config) {
     msclPINVOKE.InertialNode_setEventTriggerConfig(swigCPtr, EventTriggerConfiguration.getCPtr(config));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public EventActionConfiguration getEventActionConfig(byte instance) {
+    EventActionConfiguration ret = new EventActionConfiguration(msclPINVOKE.InertialNode_getEventActionConfig(swigCPtr, instance), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setEventActionConfig(EventActionConfiguration config, bool validateSupported) {
+    msclPINVOKE.InertialNode_setEventActionConfig__SWIG_0(swigCPtr, EventActionConfiguration.getCPtr(config), validateSupported);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void setEventActionConfig(EventActionConfiguration config) {
+    msclPINVOKE.InertialNode_setEventActionConfig__SWIG_1(swigCPtr, EventActionConfiguration.getCPtr(config));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -970,6 +997,18 @@ public class InertialNode : MipNode {
   public void enableRtk(bool enable) {
     msclPINVOKE.InertialNode_enableRtk(swigCPtr, enable);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public EventTriggerStatus getEventTriggerStatus(Bytes instances) {
+    EventTriggerStatus ret = new EventTriggerStatus(msclPINVOKE.InertialNode_getEventTriggerStatus__SWIG_0(swigCPtr, Bytes.getCPtr(instances)), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public EventTriggerStatus getEventTriggerStatus() {
+    EventTriggerStatus ret = new EventTriggerStatus(msclPINVOKE.InertialNode_getEventTriggerStatus__SWIG_1(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
   public EventActionStatus getEventActionStatus(Bytes instances) {

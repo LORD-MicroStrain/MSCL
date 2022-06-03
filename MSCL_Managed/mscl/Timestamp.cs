@@ -44,26 +44,48 @@ public class Timestamp : global::System.IDisposable {
     }
   }
 
-  public Timestamp(ulong nanoseconds) : this(msclPINVOKE.new_Timestamp__SWIG_0(nanoseconds), true) {
+  public Timestamp(ulong nanoseconds, Timestamp.Epoch epoch) : this(msclPINVOKE.new_Timestamp__SWIG_0(nanoseconds, (int)epoch), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public Timestamp() : this(msclPINVOKE.new_Timestamp__SWIG_1(), true) {
+  public Timestamp(ulong nanoseconds) : this(msclPINVOKE.new_Timestamp__SWIG_1(nanoseconds), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public Timestamp(ushort year, ushort month, ushort day, ushort hour, ushort minute, ushort second, uint milli) : this(msclPINVOKE.new_Timestamp__SWIG_2(year, month, day, hour, minute, second, milli), true) {
+  public Timestamp() : this(msclPINVOKE.new_Timestamp__SWIG_2(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public Timestamp(ushort year, ushort month, ushort day, ushort hour, ushort minute, ushort second, uint milli) : this(msclPINVOKE.new_Timestamp__SWIG_3(year, month, day, hour, minute, second, milli), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public ulong nanoseconds(Timestamp.Epoch epoch) {
+    ulong ret = msclPINVOKE.Timestamp_nanoseconds__SWIG_0(swigCPtr, (int)epoch);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
   public ulong nanoseconds() {
-    ulong ret = msclPINVOKE.Timestamp_nanoseconds(swigCPtr);
+    ulong ret = msclPINVOKE.Timestamp_nanoseconds__SWIG_1(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public ulong seconds(Timestamp.Epoch epoch) {
+    ulong ret = msclPINVOKE.Timestamp_seconds__SWIG_0(swigCPtr, (int)epoch);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public ulong seconds() {
-    ulong ret = msclPINVOKE.Timestamp_seconds(swigCPtr);
+    ulong ret = msclPINVOKE.Timestamp_seconds__SWIG_1(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public Timestamp.Epoch storedEpoch() {
+    Timestamp.Epoch ret = (Timestamp.Epoch)msclPINVOKE.Timestamp_storedEpoch(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -74,8 +96,13 @@ public class Timestamp : global::System.IDisposable {
     return ret;
   }
 
+  public void setTime(ulong nanosSinceEpoch, Timestamp.Epoch epoch) {
+    msclPINVOKE.Timestamp_setTime__SWIG_0(swigCPtr, nanosSinceEpoch, (int)epoch);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public void setTime(ulong nanosSinceEpoch) {
-    msclPINVOKE.Timestamp_setTime(swigCPtr, nanosSinceEpoch);
+    msclPINVOKE.Timestamp_setTime__SWIG_1(swigCPtr, nanosSinceEpoch);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -102,9 +129,26 @@ public class Timestamp : global::System.IDisposable {
   }
 
   public static ulong gpsTimeToUtcTime(double timeOfWeek, ushort weekNumber) {
-    ulong ret = msclPINVOKE.Timestamp_gpsTimeToUtcTime(timeOfWeek, weekNumber);
+    ulong ret = msclPINVOKE.Timestamp_gpsTimeToUtcTime__SWIG_0(timeOfWeek, weekNumber);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
+  }
+
+  public static ulong gpsTimeToUtcTime(ulong gpsNanoseconds) {
+    ulong ret = msclPINVOKE.Timestamp_gpsTimeToUtcTime__SWIG_1(gpsNanoseconds);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static ulong utcTimeToGpsTime(ulong utcNanoseconds) {
+    ulong ret = msclPINVOKE.Timestamp_utcTimeToGpsTime(utcNanoseconds);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public enum Epoch {
+    UNIX = 0x01,
+    GPS = 0x02
   }
 
 }

@@ -61,6 +61,28 @@ namespace mscl
         //  shiftRequired - true: provided value needs to be shifted to the masked position before being set, false: provided value already in the correct position within the bitfield
         void set(uint64 mask, uint64 value, bool shiftRequired = true);
 
+        //Function: checkBit
+        //  Gets the value of the bit at the specified index.
+        //
+        //Parameters:
+        //  bitIndex - index of the bit to check
+        //  indexBase - default 0 - index of the first bit, this will be subtracted from bitIndex to get the 0-based index to use.
+        //              This is useful if each bit is associated with sequential IDs that are not 0-based (i.e. inertial GPIO pin IDs).
+        //
+        //Returns:
+        //  bool - true if bit is 1, false if 0
+        bool checkBit(uint8 bitIndex, uint8 indexBase = 0) const;
+
+        //Function: setBit
+        //  Sets the value of the bit at the specified index.
+        //
+        //Parameters:
+        //  bitIndex - index of the bit to set
+        //  value - bool value to set
+        //  indexBase - default 0 - index of the first bit, this will be subtracted from bitIndex to get the 0-based index to use.
+        //              This is useful if each bit is associated with sequential IDs that are not 0-based (i.e. inertial GPIO pin IDs).
+        void setBit(uint8 bitIndex, bool value, uint8 indexBase = 0);
+
     protected:
         //Function: clear
         //  Sets all bits under the indicated mask to 0.

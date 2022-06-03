@@ -87,11 +87,31 @@ namespace mscl
         //  The <MipTypes::MipCommands> supported by the Node.
         MipTypes::MipCommands supportedCommands() const;
 
+        //API Function: supportsChannelField
+        //    Checks whether or not the given <MipTypes::ChannelField> is supported by the Node.
+        //
+        //Parameters:
+        //    fieldId - The <MipTypes::ChannelField> to check if supported.
+        //
+        //Returns:
+        //    true if the <MipTypes::ChannelField> is supported by the Node, false otherwise.
+        bool supportsChannelField(MipTypes::ChannelField fieldId) const;
+
+        //API Function: filterSupportedChannelFields
+        //    Checks whether or not the <MipTypes::ChannelField> values in the specified list are supported by the Node and returns a list of those that are.
+        //
+        //Parameters:
+        //    fields - The <MipTypes::MipChannelFields> to check if supported.
+        //
+        //Returns:
+        //    <MipTypes::MipChannelFields> list of fields from the specified list that are supported by the device
+        MipTypes::MipChannelFields filterSupportedChannelFields(const MipTypes::MipChannelFields& fields) const;
+
         //API Function: supportedChannelFields
         //    Gets a list of the supported channel fields for a given <MipTypes::DataClass>.
         //
         //Parameters:
-        //    dataClass - The <MipTypes::DataClass> to get the list of supported channels for.
+        //    dataClass - default -1 - The <MipTypes::DataClass> to get the list of supported channels for. If -1, all supported ChannelFields will be returned regardless of DataClass
         //
         //Returns:
         //    A <MipTypes::ChannelFields> object containing the list of supported channel fields.
@@ -101,7 +121,7 @@ namespace mscl
         //    - <Error_Communication>: Timed out waiting for a response.
         //    - <Error_NotSupported>: The <MipTypes::DataClass> is not supported by this node.
         //    - <Error_Connection>: A connection error has occurred with the Node.
-        MipTypes::MipChannelFields supportedChannelFields(MipTypes::DataClass dataClass) const;
+        MipTypes::MipChannelFields supportedChannelFields(MipTypes::DataClass dataClass = MipTypes::DataClass(-1)) const;
 
         //API Function: supportedSampleRates
         //    Gets a list of the supported sample rates for a given <MipTypes::DataClass>.
@@ -118,6 +138,22 @@ namespace mscl
         //    - <Error_NotSupported>: The <MipTypes::DataClass> is not supported by this node.
         //    - <Error_Connection>: A connection error has occurred with the Node.
         const SampleRates& supportedSampleRates(MipTypes::DataClass dataClass) const;
+
+        //API Function: baseDataRate
+        //    Gets the base data rate for a given <MipTypes::DataClass>.
+        //
+        //Parameters:
+        //    dataClass - The <MipTypes::DataClass> to get base data rate for.
+        //
+        //Returns:
+        //    uint16 - the base data rate.
+        //
+        //Exceptions:
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Communication>: Timed out waiting for a response.
+        //    - <Error_NotSupported>: The <MipTypes::DataClass> is not supported by this node.
+        //    - <Error_Connection>: A connection error has occurred with the Node.
+        const uint16& baseDataRate(MipTypes::DataClass dataClass) const;
 
         //API Function: gnssReceiverInfo
         //    Gets a list of <GnssReceiverInfo> for supported GNSS receivers.
@@ -265,5 +301,55 @@ namespace mscl
         //Returns:
         //    A <GpioPinOptions> map of supported GPIO pin configurations
         const GpioPinOptions supportedGpioConfigurations() const;
+
+        //API Function: supportedDeclinationOptions
+        //    Gets a vector of supported declination source options
+        //
+        //Returns:
+        //    A <GeographicSources> vector of supported declination source options
+        GeographicSources supportedDeclinationSources() const;
+
+        //API Function: supportedInclinationOptions
+        //    Gets a vector of supported inclination source options
+        //
+        //Returns:
+        //    A <GeographicSources> vector of supported inclination source options
+        GeographicSources supportedInclinationSources() const;
+
+        //API Function: supportedMagneticMagnitudeOptions
+        //    Gets a vector of supported magnetic magnitude source options
+        //
+        //Returns:
+        //    A <GeographicSources> vector of supported magnetic magnitude source options
+        GeographicSources supportedMagneticMagnitudeSources() const;
+
+        //API Function: supportedEventThresholdChannels
+        //    Gets the supported channel fields/qualifiers for event threshold configuration.
+        //
+        //Return:
+        //    <ChannelFieldQualifiers> - The supported channel fields/qualifiers.
+        MipTypes::ChannelFieldQualifiers supportedEventThresholdChannels() const;
+
+        //API Function: supportedEventActionInfo
+        //    Gets <EventSupportInfo> for event triggers and their types supported by the device.
+        //
+        //Returns:
+        //    <EventSupportInfo> of the event actions and their types
+        const EventSupportInfo supportedEventActionInfo() const;
+
+        //API Function: supportedEventTriggerInfo
+        //    Gets <EventSupportInfo> for event actions and their types supported by the device.
+        //
+        //Returns:
+        //    <EventSupportInfo> of the event triggers and their types
+        const EventSupportInfo supportedEventTriggerInfo() const;
+
+        //API Function: supportsNorthCompensation
+        //    Checks whether or not north compensation is supported by the Node.
+        //    Only supported on devices with a magnetometer.
+        //
+        //Returns:
+        //    True if north compensation is supported by the Node, false otherwise.
+        const bool supportsNorthCompensation() const;
     };
 }

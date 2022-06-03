@@ -119,7 +119,9 @@ namespace mscl
         {ChannelId(CH_FIELD_SENSOR_GPS_CORRELATION_TIMESTAMP, CH_FLAGS), "gpsCorrelTimestampFlags"},
 
         {ChannelId(CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE, CH_PRESSURE), "scaledAmbientPressure"},
-                
+
+        { ChannelId(CH_FIELD_SENSOR_OVERRANGE_STATUS, CH_STATUS), "overrangeStatus" },
+
         {ChannelId(CH_FIELD_SENSOR_ODOMETER_DATA, CH_SPEED), "odometer_speed"},
         {ChannelId(CH_FIELD_SENSOR_ODOMETER_DATA, CH_SPEED_ACCURACY), "odometer_uncert"},
 
@@ -443,10 +445,18 @@ namespace mscl
         { ChannelId(CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS, CH_FIX_TYPE), "estDualAntennaStatus_fixType" },
         { ChannelId(CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS, CH_STATUS), "estDualAntennaStatus_status" },
 
-        {ChannelId(CH_FIELD_DISP_DISPLACEMENT_RAW, CH_DISPLACEMENT), "rawDisplacement"},
-        {ChannelId(CH_FIELD_DISP_DISPLACEMENT_MM, CH_DISPLACEMENT), "displacementMillimeters"},
+        { ChannelId(CH_FIELD_DISP_DISPLACEMENT_RAW, CH_DISPLACEMENT), "rawDisplacement" },
+        { ChannelId(CH_FIELD_DISP_DISPLACEMENT_MM, CH_DISPLACEMENT), "displacementMillimeters" },
+
+        // System Data
+        { ChannelId(CH_FIELD_SYSTEM_GPIO_STATE, CH_STATUS), "gpioState" },
+
+        { ChannelId(CH_FIELD_SYSTEM_TIME_SYNC_STATUS, CH_PPS_VALID), "timeSync_ppsValid" },
+        { ChannelId(CH_FIELD_SYSTEM_TIME_SYNC_STATUS, CH_LAST_PPS), "timeSync_lastPps" },
 
         // Shared Inertial Channels
+        { ChannelId(CH_FIELD_SENSOR_SHARED_EVENT_SOURCE, CH_ID), "eventInfo_triggerId" },
+
         { ChannelId(CH_FIELD_SENSOR_SHARED_TICKS, CH_TICK), "timeInfo_ticks" },
 
         { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_TICKS, CH_DELTA_TICK), "timeInfo_deltaTicks" },
@@ -455,6 +465,247 @@ namespace mscl
         { ChannelId(CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP, CH_WEEK_NUMBER), "timeInfo_weekNumber" },
 
         { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP, CH_DELTA_TIME), "timeInfo_deltaTime" },
+
+        { ChannelId(CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP, CH_NANOSECONDS), "timeInfo_referenceTime" },
+
+        { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_REFERENCE_TIME, CH_NANOSECONDS), "timeInfo_deltaReferenceTime" },
+
+        { ChannelId(CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP, CH_TIMESTAMP), "timeInfo_externalTimestamp" },
+
+        { ChannelId(CH_FIELD_SENSOR_SHARED_DELTA_EXTERNAL_TIME, CH_NANOSECONDS), "timeInfo_deltaExternalTime" },
+    });
+
+
+    const MipTypes::ChannelFieldQualifiers MipTypes::CHANNEL_INDICES(
+    {
+        // 0x80: Sensor Data
+
+        // (0x80, 0x04)
+        { CH_FIELD_SENSOR_SCALED_ACCEL_VEC, {
+            ChannelIndex(CH_X, 1),
+            ChannelIndex(CH_Y, 2),
+            ChannelIndex(CH_Z, 3)
+        } },
+        // (0x80, 0x05)
+        { CH_FIELD_SENSOR_SCALED_GYRO_VEC, {
+            ChannelIndex(CH_X, 1),
+            ChannelIndex(CH_Y, 2),
+            ChannelIndex(CH_Z, 3)
+        } },
+        // (0x80, 0x06)
+        { CH_FIELD_SENSOR_SCALED_MAG_VEC, {
+            ChannelIndex(CH_X, 1),
+            ChannelIndex(CH_Y, 2),
+            ChannelIndex(CH_Z, 3)
+        } },
+        // (0x80, 0x09)
+        { CH_FIELD_SENSOR_ORIENTATION_MATRIX, {
+            ChannelIndex(CH_M0, 1),
+            ChannelIndex(CH_M1, 2),
+            ChannelIndex(CH_M2, 3),
+            ChannelIndex(CH_M3, 4),
+            ChannelIndex(CH_M4, 5),
+            ChannelIndex(CH_M5, 6),
+            ChannelIndex(CH_M6, 7),
+            ChannelIndex(CH_M7, 8),
+            ChannelIndex(CH_M8, 9),
+        } },
+        // (0x80, 0x0A)
+        { CH_FIELD_SENSOR_ORIENTATION_QUATERNION,{
+            ChannelIndex(CH_W, 1),
+            ChannelIndex(CH_X, 2),
+            ChannelIndex(CH_Y, 3),
+            ChannelIndex(CH_Z, 4)
+        } },
+        // (0x80, 0x0C)
+        { CH_FIELD_SENSOR_EULER_ANGLES,{
+            ChannelIndex(CH_ROLL,  1),
+            ChannelIndex(CH_PITCH, 2),
+            ChannelIndex(CH_YAW,   3)
+        } },
+        // (0x80, 0x17)
+        { CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE,{
+            ChannelIndex(CH_PRESSURE, 1)
+        } },
+        // (0x80, 0xD3)
+        { CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP,{
+            ChannelIndex(CH_TIME_OF_WEEK, 1),
+            ChannelIndex(CH_WEEK_NUMBER,  2),
+            ChannelIndex(CH_VALID_FLAGS,  3)
+        } },
+        // (0x80, 0xD5)
+        { CH_FIELD_SENSOR_SHARED_REFERENCE_TIMESTAMP,{
+            ChannelIndex(CH_NANOSECONDS, 1)
+        } },
+        // (0x80, 0xD7)
+        { CH_FIELD_SENSOR_SHARED_EXTERNAL_TIMESTAMP,{
+            ChannelIndex(CH_TIMESTAMP, 1),
+            ChannelIndex(CH_VALID_FLAGS, 2)
+        } },
+
+
+        // 0x82 Filter Data
+
+        // (0x82, 0x03)
+        { CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_QUATERNION,{
+            ChannelIndex(CH_W,           1),
+            ChannelIndex(CH_X,           2),
+            ChannelIndex(CH_Y,           3),
+            ChannelIndex(CH_Z,           4),
+            ChannelIndex(CH_VALID_FLAGS, 5)
+        } },
+        // (0x82, 0x05)
+        { CH_FIELD_ESTFILTER_ESTIMATED_ORIENT_EULER,{
+            ChannelIndex(CH_ROLL,        1),
+            ChannelIndex(CH_PITCH,       2),
+            ChannelIndex(CH_YAW,         3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x06)
+        { CH_FIELD_ESTFILTER_ESTIMATED_GYRO_BIAS,{
+            ChannelIndex(CH_X,           1),
+            ChannelIndex(CH_Y,           2),
+            ChannelIndex(CH_Z,           3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x07)
+        { CH_FIELD_ESTFILTER_ESTIMATED_ACCEL_BIAS,{
+            ChannelIndex(CH_X,           1),
+            ChannelIndex(CH_Y,           2),
+            ChannelIndex(CH_Z,           3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x0A)
+        { CH_FIELD_ESTFILTER_ESTIMATED_ATT_UNCERT_EULER,{
+            ChannelIndex(CH_ROLL,        1),
+            ChannelIndex(CH_PITCH,       2),
+            ChannelIndex(CH_YAW,         3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x0B)
+        { CH_FIELD_ESTFILTER_ESTIMATED_GYRO_BIAS_UNCERT,{
+            ChannelIndex(CH_X,           1),
+            ChannelIndex(CH_Y,           2),
+            ChannelIndex(CH_Z,           3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x0C)
+        { CH_FIELD_ESTFILTER_ESTIMATED_ACCEL_BIAS_UNCERT,{
+            ChannelIndex(CH_X,           1),
+            ChannelIndex(CH_Y,           2),
+            ChannelIndex(CH_Z,           3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x0D)
+        { CH_FIELD_ESTFILTER_ESTIMATED_LINEAR_ACCEL,{
+            ChannelIndex(CH_X,           1),
+            ChannelIndex(CH_Y,           2),
+            ChannelIndex(CH_Z,           3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x0E)
+        { CH_FIELD_ESTFILTER_ESTIMATED_ANGULAR_RATE,{
+            ChannelIndex(CH_X,           1),
+            ChannelIndex(CH_Y,           2),
+            ChannelIndex(CH_Z,           3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x10)
+        { CH_FIELD_ESTFILTER_FILTER_STATUS,{
+            ChannelIndex(CH_FILTER_STATE,  1),
+            ChannelIndex(CH_DYNAMICS_MODE, 2),
+            ChannelIndex(CH_FLAGS,         3)
+        } },
+        // (0x82, 0x12)
+        { CH_FIELD_ESTFILTER_ESTIMATED_ATT_UNCERT_QUAT,{
+            ChannelIndex(CH_W,           1),
+            ChannelIndex(CH_X,           2),
+            ChannelIndex(CH_Y,           3),
+            ChannelIndex(CH_Z,           4),
+            ChannelIndex(CH_VALID_FLAGS, 5)
+        } },
+        // (0x82, 0x13)
+        { CH_FIELD_ESTFILTER_ESTIMATED_GRAVITY_VECTOR,{
+            ChannelIndex(CH_X,           1),
+            ChannelIndex(CH_Y,           2),
+            ChannelIndex(CH_Z,           3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x1C)
+        { CH_FIELD_ESTFILTER_COMPENSATED_ACCEL,{
+            ChannelIndex(CH_X,           1),
+            ChannelIndex(CH_Y,           2),
+            ChannelIndex(CH_Z,           3),
+            ChannelIndex(CH_VALID_FLAGS, 4)
+        } },
+        // (0x82, 0x21)
+        { CH_FIELD_ESTFILTER_PRESSURE_ALTITUDE,{
+            ChannelIndex(CH_ALTITUDE,    1),
+            ChannelIndex(CH_VALID_FLAGS, 2)
+        } },
+        // (0x82, 0xD3)
+        { CH_FIELD_ESTFILTER_SHARED_GPS_TIMESTAMP,{
+            ChannelIndex(CH_TIME_OF_WEEK, 1),
+            ChannelIndex(CH_WEEK_NUMBER,  2),
+            ChannelIndex(CH_VALID_FLAGS,  3)
+        } },
+        // (0x82, 0xD5)
+        { CH_FIELD_ESTFILTER_SHARED_REFERENCE_TIMESTAMP,{
+            ChannelIndex(CH_NANOSECONDS, 1)
+        } },
+        // (0x82, 0xD7)
+        { CH_FIELD_ESTFILTER_SHARED_EXTERNAL_TIMESTAMP,{
+            ChannelIndex(CH_TIMESTAMP, 1),
+            ChannelIndex(CH_VALID_FLAGS, 2)
+        } },
+
+
+        // 0xA0 System Data
+
+        // (0xA0, 0x01)
+        /*{ CH_FIELD_SYSTEM_BUILT_IN_TEST,{
+            // TODO: Figure out channel qualifiers
+            ChannelIndex(CH_, 1),
+            ChannelIndex(CH_, 2),
+            ChannelIndex(CH_, 3),
+            ChannelIndex(CH_, 4),
+            ChannelIndex(CH_, 5),
+            ChannelIndex(CH_, 6),
+            ChannelIndex(CH_, 7),
+            ChannelIndex(CH_, 8),
+            ChannelIndex(CH_, 9),
+            ChannelIndex(CH_, 10),
+            ChannelIndex(CH_, 11),
+            ChannelIndex(CH_, 12),
+            ChannelIndex(CH_, 13),
+            ChannelIndex(CH_, 14),
+            ChannelIndex(CH_, 15),
+            ChannelIndex(CH_, 16)
+        } },*/
+        // (0xA0, 0x02)
+        { CH_FIELD_SYSTEM_TIME_SYNC_STATUS,{
+            ChannelIndex(CH_PPS_VALID, 1),
+            ChannelIndex(CH_LAST_PPS,  2)
+        } },
+        // (0xA0, 0x03)
+        { CH_FIELD_SYSTEM_GPIO_STATE,{
+            ChannelIndex(CH_STATUS, 1)
+        } },
+        // (0xA0, 0xD3)
+        { CH_FIELD_SYSTEM_SHARED_GPS_TIMESTAMP,{
+            ChannelIndex(CH_TIME_OF_WEEK, 1),
+            ChannelIndex(CH_WEEK_NUMBER,  2),
+            ChannelIndex(CH_VALID_FLAGS,  3)
+        } },
+        // (0xA0, 0xD5)
+        { CH_FIELD_SYSTEM_SHARED_REFERENCE_TIMESTAMP,{
+            ChannelIndex(CH_NANOSECONDS, 1)
+        } },
+        // (0xA0, 0xD7)
+        { CH_FIELD_SYSTEM_SHARED_EXTERNAL_TIMESTAMP,{
+            ChannelIndex(CH_TIMESTAMP, 1),
+            ChannelIndex(CH_VALID_FLAGS, 2)
+        } }
     });
 
     std::vector<MipTypes::DataClass> MipTypes::GNSS_DATA_CLASSES()
@@ -479,17 +730,8 @@ namespace mscl
             DataClass::CLASS_GNSS2,
             DataClass::CLASS_GNSS3,
             DataClass::CLASS_GNSS4,
-            DataClass::CLASS_GNSS5
-        };
-    }
-
-    std::vector<uint8> MipTypes::SHARED_DATA_FIELDS()
-    {
-        return{
-            Utils::lsb(MipTypes::ChannelField::CH_FIELD_SENSOR_SHARED_TICKS),
-            Utils::lsb(MipTypes::ChannelField::CH_FIELD_SENSOR_SHARED_DELTA_TICKS),
-            Utils::lsb(MipTypes::ChannelField::CH_FIELD_SENSOR_SHARED_GPS_TIMESTAMP),
-            Utils::lsb(MipTypes::ChannelField::CH_FIELD_SENSOR_SHARED_DELTA_TIMESTAMP)
+            DataClass::CLASS_GNSS5,
+            DataClass::CLASS_SYSTEM
         };
     }
 
@@ -588,6 +830,9 @@ namespace mscl
         case DataClass::CLASS_GNSS5:
             return "_gnss5";
 
+        case DataClass::CLASS_SYSTEM:
+            return "_system";
+
         default:
             return "";
         }
@@ -602,10 +847,80 @@ namespace mscl
 
     bool MipTypes::isSharedChannelField(MipTypes::ChannelField chField)
     {
-        uint8 fieldId = Utils::lsb(static_cast<uint16>(chField));
-        std::vector<uint8> fields = SHARED_DATA_FIELDS();
-        return std::find(fields.begin(), fields.end(), fieldId)
-            != fields.end();
+        uint8 fieldDescriptor = Utils::lsb(static_cast<uint16>(chField));
+        return fieldDescriptor >= MipTypes::MIN_SHARED_FIELD_DESCRIPTOR;
+    }
+
+    MipTypes::ChannelFieldQualifiers MipTypes::channelFieldQualifiers(const MipChannelFields& fields)
+    {
+        ChannelFieldQualifiers fieldQualifiers{};
+
+        for (const ChannelField& field : fields)
+        {
+            auto found = CHANNEL_INDICES.find(field);
+
+            if (found != CHANNEL_INDICES.end())
+            {
+                fieldQualifiers.emplace(found->first, found->second);
+            }
+        }
+
+        return fieldQualifiers;
+    }
+
+    MipTypes::ChannelQualifier MipTypes::channelFieldQualifier(const ChannelField field, const uint8 index)
+    {
+        return findChannelIndex(field, CH_UNKNOWN, index).first;
+    }
+
+    uint8 MipTypes::channelFieldQualifierIndex(const ChannelField channelField, const ChannelQualifier channelQualifier)
+    {
+        return findChannelIndex(channelField, channelQualifier, 0).second;
+    }
+
+    MipTypes::ChannelIndex MipTypes::findChannelIndex(MipTypes::ChannelField field, MipTypes::ChannelQualifier qualifier, uint8 index)
+    {
+        // Find the channel field if it exists
+        const auto channelFieldEntry = CHANNEL_INDICES.find(field);
+
+        // Channel field doesn't exist so the channel is unknown
+        if (channelFieldEntry == CHANNEL_INDICES.end())
+        {
+            return{ CH_UNKNOWN, 0 };
+        }
+
+        const auto channelQualifiers = channelFieldEntry->second;
+        auto qualifierEntry = channelQualifiers.end();
+
+        if (index != 0)
+        {
+            // Find the channel qualifier with the specified index
+            qualifierEntry = std::find_if(channelQualifiers.begin(), channelQualifiers.end(),
+                [&](const ChannelIndex& qualifierIndexPair)
+            {
+                return qualifierIndexPair.second == index;
+            }
+            );
+        }
+
+        if (qualifier != CH_UNKNOWN)
+        {
+            // Find the channel qualifier with the specified index
+            qualifierEntry = std::find_if(channelQualifiers.begin(), channelQualifiers.end(),
+                [&](const ChannelIndex& qualifierIndexPair)
+            {
+                return qualifierIndexPair.first == qualifier;
+            }
+            );
+        }
+
+        // Found the qualifier
+        if (qualifierEntry != channelQualifiers.end())
+        {
+            return *qualifierEntry;
+        }
+
+        return{ CH_UNKNOWN, 0 };
     }
 
     size_t MipChannelIdentifier::TypeHash::operator()(const MipChannelIdentifier::Type& type) const

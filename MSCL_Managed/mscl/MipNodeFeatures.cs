@@ -68,14 +68,38 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public bool supportsChannelField(MipTypes.ChannelField fieldId) {
+    bool ret = msclPINVOKE.MipNodeFeatures_supportsChannelField(swigCPtr, (int)fieldId);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public MipChannelFields filterSupportedChannelFields(MipChannelFields fields) {
+    MipChannelFields ret = new MipChannelFields(msclPINVOKE.MipNodeFeatures_filterSupportedChannelFields(swigCPtr, MipChannelFields.getCPtr(fields)), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public MipChannelFields supportedChannelFields(MipTypes.DataClass dataClass) {
-    MipChannelFields ret = new MipChannelFields(msclPINVOKE.MipNodeFeatures_supportedChannelFields(swigCPtr, (int)dataClass), true);
+    MipChannelFields ret = new MipChannelFields(msclPINVOKE.MipNodeFeatures_supportedChannelFields__SWIG_0(swigCPtr, (int)dataClass), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public MipChannelFields supportedChannelFields() {
+    MipChannelFields ret = new MipChannelFields(msclPINVOKE.MipNodeFeatures_supportedChannelFields__SWIG_1(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public SampleRates supportedSampleRates(MipTypes.DataClass dataClass) {
     SampleRates ret = new SampleRates(msclPINVOKE.MipNodeFeatures_supportedSampleRates(swigCPtr, (int)dataClass), false);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public ushort baseDataRate(MipTypes.DataClass dataClass) {
+    ushort ret = msclPINVOKE.MipNodeFeatures_baseDataRate(swigCPtr, (int)dataClass);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -178,6 +202,48 @@ public class MipNodeFeatures : global::System.IDisposable {
 
   public GpioPinOptions supportedGpioConfigurations() {
     GpioPinOptions ret = new GpioPinOptions(msclPINVOKE.MipNodeFeatures_supportedGpioConfigurations(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public GeographicSources supportedDeclinationSources() {
+    GeographicSources ret = new GeographicSources(msclPINVOKE.MipNodeFeatures_supportedDeclinationSources(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public GeographicSources supportedInclinationSources() {
+    GeographicSources ret = new GeographicSources(msclPINVOKE.MipNodeFeatures_supportedInclinationSources(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public GeographicSources supportedMagneticMagnitudeSources() {
+    GeographicSources ret = new GeographicSources(msclPINVOKE.MipNodeFeatures_supportedMagneticMagnitudeSources(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public ChannelFieldQualifiers supportedEventThresholdChannels() {
+    ChannelFieldQualifiers ret = new ChannelFieldQualifiers(msclPINVOKE.MipNodeFeatures_supportedEventThresholdChannels(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public EventSupportInfo supportedEventActionInfo() {
+    EventSupportInfo ret = new EventSupportInfo(msclPINVOKE.MipNodeFeatures_supportedEventActionInfo(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public EventSupportInfo supportedEventTriggerInfo() {
+    EventSupportInfo ret = new EventSupportInfo(msclPINVOKE.MipNodeFeatures_supportedEventTriggerInfo(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool supportsNorthCompensation() {
+    bool ret = msclPINVOKE.MipNodeFeatures_supportsNorthCompensation(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

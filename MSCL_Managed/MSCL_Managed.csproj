@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -100,9 +100,12 @@
     <Compile Include="mscl\CfcFilters.cs" />
     <Compile Include="mscl\ChannelCalMap.cs" />
     <Compile Include="mscl\ChannelData.cs" />
+    <Compile Include="mscl\ChannelFieldQualifiers.cs" />
     <Compile Include="mscl\ChannelGroup.cs" />
     <Compile Include="mscl\ChannelGroups.cs" />
     <Compile Include="mscl\ChannelGroupSettings.cs" />
+    <Compile Include="mscl\ChannelIndex.cs" />
+    <Compile Include="mscl\ChannelIndices.cs" />
     <Compile Include="mscl\ChannelMask.cs" />
     <Compile Include="mscl\CommPortInfo.cs" />
     <Compile Include="mscl\CommProtocols.cs" />
@@ -141,15 +144,25 @@
     <Compile Include="mscl\EnableDisableMeasurements.cs" />
     <Compile Include="mscl\EstimationControlOptions.cs" />
     <Compile Include="mscl\EulerAngles.cs" />
+    <Compile Include="mscl\EventActionConfiguration.cs" />
+    <Compile Include="mscl\EventActionGpioParameter.cs" />
     <Compile Include="mscl\EventActionInfo.cs" />
+    <Compile Include="mscl\EventActionMessageParameter.cs" />
+    <Compile Include="mscl\EventActionParameters.cs" />
     <Compile Include="mscl\EventActionStatus.cs" />
+    <Compile Include="mscl\EventControlMode.cs" />
     <Compile Include="mscl\EventInputTriggers.cs" />
+    <Compile Include="mscl\EventSupportInfo.cs" />
     <Compile Include="mscl\EventTriggerCombinationParameter.cs" />
     <Compile Include="mscl\EventTriggerConfiguration.cs" />
     <Compile Include="mscl\EventTriggerGpioParameter.cs" />
+    <Compile Include="mscl\EventTriggerInfo.cs" />
     <Compile Include="mscl\EventTriggerOptions.cs" />
     <Compile Include="mscl\EventTriggerParameters.cs" />
+    <Compile Include="mscl\EventTriggerStatus.cs" />
     <Compile Include="mscl\EventTriggerThresholdParameter.cs" />
+    <Compile Include="mscl\EventTypeInfo.cs" />
+    <Compile Include="mscl\EventTypes.cs" />
     <Compile Include="mscl\Exceptions.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -161,6 +174,7 @@
     <Compile Include="mscl\Filters.cs" />
     <Compile Include="mscl\FixedReferencePositionData.cs" />
     <Compile Include="mscl\GeographicSourceOptions.cs" />
+    <Compile Include="mscl\GeographicSources.cs" />
     <Compile Include="mscl\GeometricVector.cs" />
     <Compile Include="mscl\GeometricVectors.cs" />
     <Compile Include="mscl\GnssAidingStatus.cs" />
@@ -210,6 +224,7 @@
     <Compile Include="mscl\MipNode.cs" />
     <Compile Include="mscl\MipNodeFeatures.cs" />
     <Compile Include="mscl\MipPacket.cs" />
+    <Compile Include="mscl\MipSharedDataFields.cs" />
     <Compile Include="mscl\MipTypes.cs" />
     <Compile Include="mscl\mscl.cs" />
     <Compile Include="mscl\msclPINVOKE.cs">

@@ -349,6 +349,40 @@ namespace mscl
         static const bool REGISTERED;
     };
 
+    //Class: FieldParser_OverrangeStatus
+    //    The field parser for Overrange Status.
+    class FieldParser_OverrangeStatus : public MipFieldParser
+    {
+        FieldParser_OverrangeStatus() {}    //default constructor disabled
+
+    public:
+        //Function: parse
+        //    Parses an <MipDataField> for <MipDataPoints> and stores them in the valid or invalid result vectors
+        //
+        //Parameters:
+        //    field - The <MipDataField> to parse for data points
+        //    result - The <MipDataPoints> vector to store the data points in
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+
+        //Function: registerParser
+        //    The static function that registers this parser with the list of parsers (called immediately)
+        //
+        //Returns:
+        //    True, just for assigning <REGISTERED> to true
+        static bool registerParser();
+
+        //Constant: FIELD_TYPE
+        //    The <MipTypes::ChannelField> for this parser
+        static const MipTypes::ChannelField FIELD_TYPE;
+
+        //Constant: REGISTERED
+        //    Whether this parser is registered. This will always be true.
+        //
+        //Note:
+        //    This is used to call <registerParser> immediately
+        static const bool REGISTERED;
+    };
+
     //Class: FieldParser_RawAmbientPressure
     //    The field parser for Raw Ambient Pressure.
     class FieldParser_RawAmbientPressure : public MipFieldParser

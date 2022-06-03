@@ -32,6 +32,39 @@ namespace mscl
         static bool registerSharedParser(MipTypes::ChannelField chField, const MipFieldParser* parser);
     };
 
+    //Class: FieldParser_EventSource
+    //    The field parser for Event Source
+    class FieldParser_EventSource : public MipSharedFieldParser
+    {
+    private:
+        FieldParser_EventSource() {};        //default constructor disabled
+
+    public:
+        //Function: parse
+        //    Parses an <MipDataField> for <MipDataPoints> and stores them in the valid or invalid result vectors
+        //
+        //Parameters:
+        //    field - The <MipDataField> to parse for data points
+        //    result - The <MipDataPoints> vector to store the data points in
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+
+        //Function: registerParser
+        //    The static function that registers this parser with the list of parsers (called immediately)
+        //
+        //Returns:
+        //    true, just for assigning the REGISTERED constant to true
+        static bool registerParser();
+
+    public:
+        //Constant: FIELD_TYPE
+        //    The 2-byte field type (Descriptor ID + Field ID) for this parser
+        static const MipTypes::ChannelField FIELD_TYPE;
+
+        //Constant: REGISTERED
+        //    Whether this parser is registered. This will always be true. This is used to call registerParser() immediately
+        static const bool REGISTERED;
+    };
+
     //Class: FieldParser_Ticks
     //    The field parser for Ticks
     class FieldParser_Ticks : public MipSharedFieldParser
@@ -168,6 +201,142 @@ namespace mscl
 
         //Constant: REGISTERED
         //    Whether this parser is registered. This will always be true. This is used to call registerParser() immediately
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_ReferenceTime
+    //    The field parser for internal Reference Time (0xFF,0xD5)
+    class FieldParser_ReferenceTime : public MipSharedFieldParser
+    {
+        FieldParser_ReferenceTime() {}    //default constructor disabled
+
+    public:
+        //Function: parse
+        //    Parses an <MipDataField> for <MipDataPoints> and stores them in the valid or invalid result vectors
+        //
+        //Parameters:
+        //    field - The <MipDataField> to parse for data points
+        //    result - The <MipDataPoints> vector to store the data points in
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+
+        //Function: registerParser
+        //    The static function that registers this parser with the list of parsers (called immediately)
+        //
+        //Returns:
+        //    True, just for assigning <REGISTERED> to true
+        static bool registerParser();
+
+        //Constant: FIELD_TYPE
+        //    The <MipTypes::ChannelField> for this parser
+        static const MipTypes::ChannelField FIELD_TYPE;
+
+        //Constant: REGISTERED
+        //    Whether this parser is registered. This will always be true.
+        //
+        //Note:
+        //    This is used to call <registerParser> immediately
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_DeltaReferenceTime
+    //    The field parser for internal Delta Reference Time (0xFF,0xD6)
+    class FieldParser_DeltaReferenceTime : public MipSharedFieldParser
+    {
+        FieldParser_DeltaReferenceTime() {}    //default constructor disabled
+
+    public:
+        //Function: parse
+        //    Parses an <MipDataField> for <MipDataPoints> and stores them in the valid or invalid result vectors
+        //
+        //Parameters:
+        //    field - The <MipDataField> to parse for data points
+        //    result - The <MipDataPoints> vector to store the data points in
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+
+        //Function: registerParser
+        //    The static function that registers this parser with the list of parsers (called immediately)
+        //
+        //Returns:
+        //    True, just for assigning <REGISTERED> to true
+        static bool registerParser();
+
+        //Constant: FIELD_TYPE
+        //    The <MipTypes::ChannelField> for this parser
+        static const MipTypes::ChannelField FIELD_TYPE;
+
+        //Constant: REGISTERED
+        //    Whether this parser is registered. This will always be true.
+        //
+        //Note:
+        //    This is used to call <registerParser> immediately
+        static const bool REGISTERED;
+    };
+    
+    //Class: FieldParser_ExternalTimestamp
+    //    The field parser for External Timestamp (0xFF,0xD7)
+    class FieldParser_ExternalTimestamp : public MipSharedFieldParser
+    {
+        FieldParser_ExternalTimestamp() {}    //default constructor disabled
+
+    public:
+        //Function: parse
+        //    Parses an <MipDataField> for <MipDataPoints> and stores them in the valid or invalid result vectors
+        //
+        //Parameters:
+        //    field - The <MipDataField> to parse for data points
+        //    result - The <MipDataPoints> vector to store the data points in
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+
+        //Function: registerParser
+        //    The static function that registers this parser with the list of parsers (called immediately)
+        //
+        //Returns:
+        //    True, just for assigning <REGISTERED> to true
+        static bool registerParser();
+
+        //Constant: FIELD_TYPE
+        //    The <MipTypes::ChannelField> for this parser
+        static const MipTypes::ChannelField FIELD_TYPE;
+
+        //Constant: REGISTERED
+        //    Whether this parser is registered. This will always be true.
+        //
+        //Note:
+        //    This is used to call <registerParser> immediately
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_DeltaExternalTime
+    //    The field parser for Delta External Time (0xFF,0xD8)
+    class FieldParser_DeltaExternalTime : public MipSharedFieldParser
+    {
+        FieldParser_DeltaExternalTime() {}    //default constructor disabled
+
+    public:
+        //Function: parse
+        //    Parses an <MipDataField> for <MipDataPoints> and stores them in the valid or invalid result vectors
+        //
+        //Parameters:
+        //    field - The <MipDataField> to parse for data points
+        //    result - The <MipDataPoints> vector to store the data points in
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+
+        //Function: registerParser
+        //    The static function that registers this parser with the list of parsers (called immediately)
+        //
+        //Returns:
+        //    True, just for assigning <REGISTERED> to true
+        static bool registerParser();
+
+        //Constant: FIELD_TYPE
+        //    The <MipTypes::ChannelField> for this parser
+        static const MipTypes::ChannelField FIELD_TYPE;
+
+        //Constant: REGISTERED
+        //    Whether this parser is registered. This will always be true.
+        //
+        //Note:
+        //    This is used to call <registerParser> immediately
         static const bool REGISTERED;
     };
 }

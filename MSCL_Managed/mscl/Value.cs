@@ -80,6 +80,12 @@ public class Value : global::System.IDisposable {
     return ret;
   }
 
+  public virtual ulong as_uint64() {
+    ulong ret = msclPINVOKE.Value_as_uint64(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public virtual sbyte as_int8() {
     sbyte ret = msclPINVOKE.Value_as_int8(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
