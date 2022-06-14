@@ -857,6 +857,7 @@ namespace mscl
         //  region_canada               - 8
         //  region_southAfrica          - 9
         //  region_indonesia            - 10
+        //  region_taiwan               - 11
         enum RegionCode
         {
             region_usa                  = 0,
@@ -869,7 +870,8 @@ namespace mscl
             region_singapore            = 7,
             region_canada               = 8,
             region_southAfrica          = 9,
-            region_indonesia            = 10
+            region_indonesia            = 10,
+            region_taiwan               = 11
         };
 
         //API Enum: ChannelGroupSetting
