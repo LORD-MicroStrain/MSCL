@@ -129,14 +129,15 @@ endif()
 # Find the static version of boost
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
-find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
+find_package(Boost ${Boost_REQUESTED_VERSION} EXACT REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
 set(Boost_STATIC_LIBRARIES ${Boost_LIBRARIES})
+message(STATUS "Boost_STATIC_LIBRARIES: " ${Boost_LIBRARIES})
 
 # Optionally find some boost testing libraries
 if(BUILD_TESTS)
   set(Boost_USE_STATIC_LIBS ON)
   set(Boost_USE_STATIC_RUNTIME ON)
-  find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS unit_test_framework test_exec_monitor)
+  find_package(Boost ${Boost_REQUESTED_VERSION} EXACT REQUIRED COMPONENTS unit_test_framework test_exec_monitor)
   set(Boost_TEST_LIBRARIES ${Boost_LIBRARIES})
 endif()
 
@@ -144,7 +145,7 @@ endif()
 if(BUILD_SHARED_LIBS OR (UNIX AND BUILD_PYTHON3) OR (UNIX AND BUILD_PYTHON2))
   set(Boost_USE_STATIC_LIBS OFF)
   set(Boost_USE_STATIC_RUNTIME OFF)
-  find_package(Boost ${Boost_REQUESTED_VERSION} REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
+  find_package(Boost ${Boost_REQUESTED_VERSION} EXACT REQUIRED COMPONENTS ${Boost_REQUESTED_COMPONENTS})
   set(Boost_SHARED_LIBRARIES ${Boost_LIBRARIES})  # Save the shared libraries, so they will not be overridden when we find the static libraries
 endif()
 
