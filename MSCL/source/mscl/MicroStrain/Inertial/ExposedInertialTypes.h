@@ -75,14 +75,18 @@ namespace mscl
         };
 
         //API Enum: GNSS_Source
-        //    Dictates whether GNSS source is internal or external.
+        //    Dictates whether GNSS source is all internal, external, or single internal.
         //
-        //  INTERNAL_GNSS = 0x01
-        //  EXTERNAL_GNSS = 0x02
+        //  INTERNAL_ALL   = 0x01 - All internal receivers
+        //  EXTERNAL_GNSS  = 0x02 - External GNSS messages provided by user
+        //  INTERNAL_GNSS1 = 0x03 - Internal GNSS Receiver 1 only
+        //  INTERNAL_GNSS2 = 0x04 - Internal GNSS Receiver 2 only
         enum GNSS_Source
         {
-            INTERNAL_GNSS = 0x01,
-            EXTERNAL_GNSS = 0x02
+            INTERNAL_ALL   = 0x01, // All internal receivers
+            EXTERNAL_GNSS  = 0x02, // External GNSS messages provided by user
+            INTERNAL_GNSS1 = 0x03, // Internal GNSS Receiver 1 only
+            INTERNAL_GNSS2 = 0x04  // Internal GNSS Receiver 2 only
         };
 
         //============================================================================================================
@@ -712,6 +716,10 @@ namespace mscl
     //API Typedef: GeographicSources
     //  A vector of <InertialTypes::GeographicSourceOption> values
     typedef std::vector<InertialTypes::GeographicSourceOption> GeographicSources;
+
+    //API Typedef: GnssSources
+    //  A vector of <InertialTypes::GNSS_Source> values
+    typedef std::vector<InertialTypes::GNSS_Source> GnssSources;
 
     ///////////////  Matrix_3x3  ///////////////
 

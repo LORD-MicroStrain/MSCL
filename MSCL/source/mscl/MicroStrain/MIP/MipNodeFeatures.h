@@ -167,6 +167,18 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the Node.
         const GnssReceivers& gnssReceiverInfo() const;
 
+        //API Function: supportedGnssSources
+        //    Gets a list of <InertialTypes::GNSS_Source> for supported GNSS sources.
+        //
+        //Returns:
+        //    A <GnssSources> list containing <InertialTypes::GNSS_Source> for supported sources
+        //
+        //Exceptions:
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Communication>: Timed out waiting for a response.
+        //    - <Error_Connection>: A connection error has occurred with the Node.
+        const GnssSources supportedGnssSources() const;
+
         //API Function: supportedSensorRanges
         //    Gets the <SupportedSensorRanges> for each configurable sensor type.
         //
