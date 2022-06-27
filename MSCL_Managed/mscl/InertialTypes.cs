@@ -74,8 +74,10 @@ public class InertialTypes : global::System.IDisposable {
   }
 
   public enum GNSS_Source {
-    INTERNAL_GNSS = 0x01,
-    EXTERNAL_GNSS = 0x02
+    INTERNAL_ALL = 0x01,
+    EXTERNAL_GNSS = 0x02,
+    INTERNAL_GNSS1 = 0x03,
+    INTERNAL_GNSS2 = 0x04
   }
 
   public enum GnssFixFlags {
