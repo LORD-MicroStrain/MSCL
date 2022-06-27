@@ -180,21 +180,21 @@ namespace mscl
             {
             case MipModels::node_3dm_gq7:
                 return{
-                    InertialTypes::GNSS_Source::INTERNAL_ALL,
+                    InertialTypes::GNSS_Source::INTERNAL_GNSS_ALL,
                     InertialTypes::GNSS_Source::EXTERNAL_GNSS,
                     InertialTypes::GNSS_Source::INTERNAL_GNSS1,
                     InertialTypes::GNSS_Source::INTERNAL_GNSS2
                 };
             default:
                 return{
-                    InertialTypes::GNSS_Source::INTERNAL_ALL,
+                    InertialTypes::GNSS_Source::INTERNAL_GNSS_ALL,
                     InertialTypes::GNSS_Source::EXTERNAL_GNSS
                 };
             }
         }
 
         return{
-            InertialTypes::GNSS_Source::INTERNAL_ALL,
+            InertialTypes::GNSS_Source::INTERNAL_GNSS_ALL,
             InertialTypes::GNSS_Source::EXTERNAL_GNSS
         };
     }

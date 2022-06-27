@@ -77,16 +77,16 @@ namespace mscl
         //API Enum: GNSS_Source
         //    Dictates whether GNSS source is all internal, external, or single internal.
         //
-        //  INTERNAL_ALL   = 0x01 - All internal receivers
-        //  EXTERNAL_GNSS  = 0x02 - External GNSS messages provided by user
-        //  INTERNAL_GNSS1 = 0x03 - Internal GNSS Receiver 1 only
-        //  INTERNAL_GNSS2 = 0x04 - Internal GNSS Receiver 2 only
+        //  INTERNAL_GNSS_ALL = 0x01 - All internal receivers
+        //  EXTERNAL_GNSS     = 0x02 - External GNSS messages provided by user
+        //  INTERNAL_GNSS1    = 0x03 - Internal GNSS Receiver 1 only
+        //  INTERNAL_GNSS2    = 0x04 - Internal GNSS Receiver 2 only
         enum GNSS_Source
         {
-            INTERNAL_ALL   = 0x01, // All internal receivers
-            EXTERNAL_GNSS  = 0x02, // External GNSS messages provided by user
-            INTERNAL_GNSS1 = 0x03, // Internal GNSS Receiver 1 only
-            INTERNAL_GNSS2 = 0x04  // Internal GNSS Receiver 2 only
+            INTERNAL_GNSS_ALL = 0x01, // All internal receivers
+            EXTERNAL_GNSS     = 0x02, // External GNSS messages provided by user
+            INTERNAL_GNSS1    = 0x03, // Internal GNSS Receiver 1 only
+            INTERNAL_GNSS2    = 0x04  // Internal GNSS Receiver 2 only
         };
 
         //============================================================================================================
