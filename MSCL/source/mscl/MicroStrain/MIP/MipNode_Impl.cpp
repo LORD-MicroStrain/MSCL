@@ -1094,6 +1094,20 @@ namespace mscl
                     }
                 }
                 break;
+                case MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF:
+                {
+                    std::vector<MipFieldValues> reserved = {
+                        {Value::UINT8(1)}
+                    };
+
+                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, reserved);
+
+                    if (cmdBytes.valid())
+                    {
+                        setCmds.push_back(cmdBytes);
+                    }
+                    break;
+                }
                 case MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET:
                 {
                     std::vector<MipFieldValues> reserved = {
