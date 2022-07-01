@@ -196,7 +196,10 @@ namespace mscl
         void setLastDeviceState(DeviceState state);
 
         //Function: resetNodeInfo
-        //  Clears cached info read from device (ie fw version, receiver info, etc.)
+        //  Clears cached info read from device (ie fw version, receiver info, etc.).
+        //
+        //Note:
+        //  Features is also reset to load new info data next time it's used.
         void resetNodeInfo();
 
         //Function: firmwareVersion
