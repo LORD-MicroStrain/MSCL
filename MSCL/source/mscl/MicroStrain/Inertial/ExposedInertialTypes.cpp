@@ -1080,4 +1080,227 @@ namespace mscl
     {
         status.value(value);
     }
+
+    uint8 CV7ContinuousBIT_System::generalFlags() const
+    {
+        return static_cast<uint8>(get(GENERAL_FLAGS));
+    }
+
+    uint8 CV7ContinuousBIT_System::processFlags() const
+    {
+        return static_cast<uint8>(get(PROCESS_FLAGS));
+    }
+
+    bool CV7ContinuousBIT_System::systemClockFailure() const
+    {
+        return get(SYSTEM_CLOCK_FAILURE) > 0;
+    }
+
+    bool CV7ContinuousBIT_System::powerFault() const
+    {
+        return get(POWER_FAULT) > 0;
+    }
+
+    bool CV7ContinuousBIT_System::firmwareFault() const
+    {
+        return get(FIRMWARE_FAULT) > 0;
+    }
+
+    bool CV7ContinuousBIT_System::timingOverload() const
+    {
+        return get(TIMING_OVERLOAD) > 0;
+    }
+
+    bool CV7ContinuousBIT_System::bufferOverrun() const
+    {
+        return get(BUFFER_OVERRUN) > 0;
+    }
+
+    bool CV7ContinuousBIT_System::imuProcessFault() const
+    {
+        return get(IMU_PROCESS_FAULT) > 0;
+    }
+
+    bool CV7ContinuousBIT_System::imuDataRateMismatch() const
+    {
+        return get(IMU_DATA_RATE_MISMATCH) > 0;
+    }
+
+    bool CV7ContinuousBIT_System::imuOverrunDroppedData() const
+    {
+        return get(IMU_OVERRUN_DROPPED_DATA) > 0;
+    }
+
+    bool CV7ContinuousBIT_System::imuStuck() const
+    {
+        return get(IMU_STUCK) > 0;
+    }
+
+    bool CV7ContinuousBIT_System::filterProcessFault() const
+    {
+        return get(FILTER_PROCESS_FAULT) > 0;
+    }
+
+    bool CV7ContinuousBIT_System::filterDroppedData() const
+    {
+        return get(FILTER_DROPPED_DATA) > 0;
+    }
+
+    bool CV7ContinuousBIT_System::filterRateMismatch() const
+    {
+        return get(FILTER_RATE_MISMATCH) > 0;
+    }
+
+    bool CV7ContinuousBIT_System::filterStuck() const
+    {
+        return get(FILTER_STUCK) > 0;
+    }
+
+    uint8 CV7ContinuousBIT_IMU::generalFlags() const
+    {
+        return static_cast<uint8>(get(GENERAL_FLAGS));
+    }
+
+    uint16 CV7ContinuousBIT_IMU::sensorsFlags() const
+    {
+        return static_cast<uint16>(get(SENSORS_FLAGS));
+    }
+
+    bool CV7ContinuousBIT_IMU::clockFault() const
+    {
+        return get(CLOCK_FAULT) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::communicationFault() const
+    {
+        return get(COMMUNICATION_FAULT) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::timingOverrun() const
+    {
+        return get(TIMING_OVERRUN) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::calibrationErrorAccel() const
+    {
+        return get(CALIBRATION_ERROR_ACCEL) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::calibrationErrorGyro() const
+    {
+        return get(CALIBRATION_ERROR_GYRO) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::calibrationErrorMag() const
+    {
+        return get(CALIBRATION_ERROR_MAG) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::accelGeneralFault() const
+    {
+        return get(ACCEL_GENERAL_FAULT) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::accelOverrange() const
+    {
+        return get(ACCEL_OVERRANGE) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::accelSelfTestFail() const
+    {
+        return get(ACCEL_SELF_TEST_FAIL) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::gyroGeneralFault() const
+    {
+        return get(GYRO_GENERAL_FAULT) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::gyroOverrange() const
+    {
+        return get(GYRO_OVERRANGE) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::gyroSelfTestFail() const
+    {
+        return get(GYRO_SELF_TEST_FAIL) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::magGeneralFault() const
+    {
+        return get(MAG_GENERAL_FAULT) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::magOverrange() const
+    {
+        return get(MAG_OVERRANGE) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::magSelfTestFail() const
+    {
+        return get(MAG_SELF_TEST_FAIL) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::pressureGeneralFault() const
+    {
+        return get(PRESSURE_GENERAL_FAULT) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::pressureOverrange() const
+    {
+        return get(PRESSURE_OVERRANGE) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::pressureSelfTestFail() const
+    {
+        return get(PRESSURE_SELF_TEST_FAIL) > 0;
+    }
+
+    bool CV7ContinuousBIT_IMU::factoryBitsInvalid() const
+    {
+        return get(FACTORY_BITS_INVALID) > 0;
+    }
+
+    uint8 CV7ContinuousBIT_Filter::generalFlags() const
+    {
+        return static_cast<uint8>(get(GENERAL_FLAGS));
+    }
+
+    bool CV7ContinuousBIT_Filter::fault() const
+    {
+        return get(FAULT) > 0;
+    }
+
+    bool CV7ContinuousBIT_Filter::timingOverrun() const
+    {
+        return get(TIMING_OVERRUN) > 0;
+    }
+
+    bool CV7ContinuousBIT_Filter::timingUnderrun() const
+    {
+        return get(TIMING_UNDERRUN) > 0;
+    }
+
+    CV7ContinuousBIT::CV7ContinuousBIT(const Bytes bytes)
+    {
+        DataBuffer buffer(bytes);
+        m_systemFlags = CV7ContinuousBIT_System(buffer.read_uint32());
+        m_imuFlags    = CV7ContinuousBIT_IMU(buffer.read_uint32());
+        m_filterFlags = CV7ContinuousBIT_Filter(buffer.read_uint32());
+    }
+
+    uint32 CV7ContinuousBIT::systemFlags() const
+    {
+        return static_cast<uint32>(m_systemFlags.value());
+    }
+
+    uint32 CV7ContinuousBIT::imuFlags() const
+    {
+        return static_cast<uint32>(m_imuFlags.value());
+    }
+
+    uint32 CV7ContinuousBIT::filterFlags() const
+    {
+        return static_cast<uint32>(m_filterFlags.value());
+    }
 }  // namespace mscl

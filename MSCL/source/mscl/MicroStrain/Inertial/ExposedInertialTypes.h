@@ -3257,4 +3257,513 @@ namespace mscl
     //API Typedef: EventActionStatus
     //  A vector of <EventActionInfo>
     typedef std::vector<EventActionInfo> EventActionStatus;
+
+    //API Struct: CV7ContinuousBIT_System
+    //  Continuous Built-In Test flags related to system information
+    //
+    //  Bits 0-31 of the original 128 bit Continuous Built-In Test flags
+    struct CV7ContinuousBIT_System : Bitfield
+    {
+        //API Constructor: CV7ContinuousBIT_System
+        CV7ContinuousBIT_System() {}
+
+        //API Constructor: CV7ContinuousBIT_System
+        //
+        //Parameters:
+        //  bits - Bits 0-31 of the original 128 bit Continuous Built-In Test flags
+        CV7ContinuousBIT_System(const uint32 bits) : Bitfield(static_cast<uint64>(bits)) {}
+
+        //API Constants: Bitmasks
+        //  The bitmasks that corresponds to the system bit flags
+        //
+        //  SYSTEM_CLOCK_FAILURE     - 0x00000001 - The system clock is not operating properly
+        //  POWER_FAULT              - 0x00000002 - Power supply voltage is outside of the recommended range, or an internal power fault exists
+        //  FIRMWARE_FAULT           - 0x00000010 - System firmware has detected an unexpected or abnormal condition
+        //  TIMING_OVERLOAD          - 0x00000020 - The system is unable to keep up with the processing demand
+        //  BUFFER_OVERRUN           - 0x00000040 - A data buffer in the system has reached its capacity
+        //  IMU_PROCESS_FAULT        - 0x00010000 - The IMU subsystem is unresponsive or not operating normally
+        //  IMU_DATA_RATE_MISMATCH   - 0x00020000 - Faster/slower than expected base rate
+        //  IMU_OVERRUN_DROPPED_DATA - 0x00040000 - At least 1 dropped frame / overrun
+        //  IMU_STUCK                - 0x00080000 - No IMU data received in 1 second
+        //  FILTER_PROCESS_FAULT     - 0x00100000 - The Filter subsystem is unresponsive or not operating normally
+        //  FILTER_DROPPED_DATA      - 0x00200000 - Filter samples not equal to IMU samples
+        //  FILTER_RATE_MISMATCH     - 0x00400000 - Filter major cycle rate mismatch
+        //  FILTER_STUCK             - 0x00800000 - No filter data received in 1 second
+        static constexpr uint32 SYSTEM_CLOCK_FAILURE     = 0x00000001; // The system clock is not operating properly
+        static constexpr uint32 POWER_FAULT              = 0x00000002; // Power supply voltage is outside of the recommended range, or an internal power fault exists
+        static constexpr uint32 FIRMWARE_FAULT           = 0x00000010; // System firmware has detected an unexpected or abnormal condition
+        static constexpr uint32 TIMING_OVERLOAD          = 0x00000020; // The system is unable to keep up with the processing demand
+        static constexpr uint32 BUFFER_OVERRUN           = 0x00000040; // A data buffer in the system has reached its capacity
+        
+        static constexpr uint32 IMU_PROCESS_FAULT        = 0x00010000; // The IMU subsystem is unresponsive or not operating normally
+        static constexpr uint32 IMU_DATA_RATE_MISMATCH   = 0x00020000; // Faster/slower than expected base rate
+        static constexpr uint32 IMU_OVERRUN_DROPPED_DATA = 0x00040000; // At least 1 dropped frame / overrun
+        static constexpr uint32 IMU_STUCK                = 0x00080000; // No IMU data received in 1 second
+
+        static constexpr uint32 FILTER_PROCESS_FAULT     = 0x00100000; // The Filter subsystem is unresponsive or not operating normally
+        static constexpr uint32 FILTER_DROPPED_DATA      = 0x00200000; // Filter samples not equal to IMU samples
+        static constexpr uint32 FILTER_RATE_MISMATCH     = 0x00400000; // Filter major cycle rate mismatch
+        static constexpr uint32 FILTER_STUCK             = 0x00800000; // No filter data received in 1 second
+
+        //API Function: generalFlags
+        //  Gets the value of all the general system flags (bits 0-7)
+        //
+        //Returns:
+        //  uint8 - Value of all the general system flags
+        uint8 generalFlags() const;
+
+        //API Function: processFlags
+        //  Gets the value of all the process system flags (bits 64-71)
+        //
+        //Returns:
+        //  uint8 - Value of all the process system flags
+        uint8 processFlags() const;
+
+        //API Function: systemClockFailure
+        //  Gets the value of the System Clock Failure bit
+        //  
+        //Returns:
+        //  bool - true: The system clock is not operating properly
+        bool systemClockFailure() const;
+
+        //API Function: powerFault
+        //  Gets the value of the Power Fault bit
+        //  
+        //Returns:
+        //  bool - true: Power supply voltage is outside of the recommended range, or an internal power fault exists
+        bool powerFault() const;
+
+        //API Function: firmwareFault
+        //  Gets the value of the Firmware Fault bit
+        //  
+        //Returns:
+        //  bool - true: System firmware has detected an unexpected or abnormal condition
+        bool firmwareFault() const;
+
+        //API Function: timingOverload
+        //  Gets the value of the Timing Overload bit
+        //  
+        //Returns:
+        //  bool - true: The system is unable to keep up with the processing demand
+        bool timingOverload() const;
+
+        //API Function: bufferOverrun
+        //  Gets the value of the Buffer Overrun bit
+        //  
+        //Returns:
+        //  bool - true: A data buffer in the system has reached its capacity
+        bool bufferOverrun() const;
+
+        //API Function: imuProcessFault
+        //  Gets the value of the Imu Process Fault bit
+        //  
+        //Returns:
+        //  bool - true: The IMU subsystem is unresponsive or not operating normally
+        bool imuProcessFault() const;
+
+        //API Function: imuDataRateMismatch
+        //  Gets the value of the Imu Data Rate Mismatch bit
+        //  
+        //Returns:
+        //  bool - true: Faster/slower than expected base rate
+        bool imuDataRateMismatch() const;
+
+        //API Function: imuOverrunDroppedData
+        //  Gets the value of the Imu Overrun Dropped Data bit
+        //  
+        //Returns:
+        //  bool - true: At least 1 dropped frame / overrun
+        bool imuOverrunDroppedData() const;
+
+        //API Function: imuStuck
+        //  Gets the value of the Imu Stuck bit
+        //  
+        //Returns:
+        //  bool - true: No IMU data received in 1 second
+        bool imuStuck() const;
+
+        //API Function: filterProcessFault
+        //  Gets the value of the Filter Process Fault bit
+        //  
+        //Returns:
+        //  bool - true: The Filter subsystem is unresponsive or not operating normally
+        bool filterProcessFault() const;
+
+        //API Function: filterDroppedData
+        //  Gets the value of the Filter Dropped Data bit
+        //  
+        //Returns:
+        //  bool - true: Filter samples not equal to IMU samples
+        bool filterDroppedData() const;
+
+        //API Function: filterRateMismatch
+        //  Gets the value of the Filter Rate Mismatch bit
+        //  
+        //Returns:
+        //  bool - true: Filter major cycle rate mismatch
+        bool filterRateMismatch() const;
+
+        //API Function: filterStuck
+        //  Gets the value of the Filter Stuck bit
+        //  
+        //Returns:
+        //  bool - true: No filter data received in 1 second
+        bool filterStuck() const;
+
+    private:
+        //Constant: GENERAL_FLAGS
+        //  Bitmask for the general system bit flags (bits 0-7)
+        static constexpr uint32 GENERAL_FLAGS = 0x000000FF;
+
+        //Constant: PROCESS_FLAGS
+        //  Bitmask for the process system bit flags (bits 16-23)
+        static constexpr uint32 PROCESS_FLAGS = 0x00FF0000;
+    };
+
+    //API Struct: CV7ContinuousBIT_IMU
+    //  Continuous Built-In Test values related to IMU information
+    //
+    //  Bits 32-63 of the original 128 bit Continuous Built-In Test flags
+    struct CV7ContinuousBIT_IMU : Bitfield
+    {
+        //API Constructor: CV7ContinuousBIT_IMU
+        CV7ContinuousBIT_IMU() {}
+
+        //API Constructor: CV7ContinuousBIT_IMU
+        //
+        //Parameters:
+        //  bits - Bits 32-63 of the original 128 bit Continuous Built-In Test flags
+        CV7ContinuousBIT_IMU(const uint32 bits) : Bitfield(static_cast<uint64>(bits)) {}
+
+        //API Constants: Bitmasks
+        //  The bitmasks that corresponds to the IMU bit flags
+        //
+        //Note:
+        //  These masks are shifted 32 bits to the right from the original 128 bitmask to have a 0 index at bit 32
+        //
+        //  CLOCK_FAULT             - 0x00000001 - IMU is not running off the system clock
+        //  COMMUNICATION_FAULT     - 0x00000002 - No communication with IMU
+        //  TIMING_OVERRUN          - 0x00000004 - IMU processes are taking longer than their allotted time
+        //  CALIBRATION_ERROR_ACCEL - 0x00000010 - A problem is detected with the accelerometer calibration
+        //  CALIBRATION_ERROR_GYRO  - 0x00000020 - A problem is detected with the gyroscope calibration
+        //  CALIBRATION_ERROR_MAG   - 0x00000040 - A problem is detected with the magnetometer calibration
+        //  ACCEL_GENERAL_FAULT     - 0x00000100 - Accelerometer will not initialize
+        //  ACCEL_OVERRANGE         - 0x00000200 - One or more axes subjected to accelerations near or outside the selected range
+        //  ACCEL_SELF_TEST_FAIL    - 0x00000400 - The internal self-test of the accelerometer failed
+        //  GYRO_GENERAL_FAULT      - 0x00001000 - Gyroscope will not initialize
+        //  GYRO_OVERRANGE          - 0x00002000 - One or more axes subjected to rotational rates near or outside the selected range
+        //  GYRO_SELF_TEST_FAIL     - 0x00004000 - The internal self-test of the gyroscope failed
+        //  MAG_GENERAL_FAULT       - 0x00010000 - Magnetometer will not initialize
+        //  MAG_OVERRANGE           - 0x00020000 - One or more axes subjected to magnetic fields strengths near or outside the supported range
+        //  MAG_SELF_TEST_FAIL      - 0x00040000 - The internal self-test of the magnetometer failed
+        //  PRESSURE_GENERAL_FAULT  - 0x00100000 - Pressure sensor won't initialize
+        //  PRESSURE_OVERRANGE      - 0x00200000 - Pressure sensor subjected to pressures above or below the supported range
+        //  PRESSURE_SELF_TEST_FAIL - 0x00400000 - The internal self-test of the pressure sensor failed
+        //  FACTORY_BITS_INVALID    - 0x01000000 - Factory settings invalid. Device unusable
+        static constexpr uint32 CLOCK_FAULT             = 0x00000001; // IMU is not running off the system clock
+        static constexpr uint32 COMMUNICATION_FAULT     = 0x00000002; // No communication with IMU
+        static constexpr uint32 TIMING_OVERRUN          = 0x00000004; // IMU processes are taking longer than their allotted time
+
+        static constexpr uint32 CALIBRATION_ERROR_ACCEL = 0x00000010; // A problem is detected with the accelerometer calibration
+        static constexpr uint32 CALIBRATION_ERROR_GYRO  = 0x00000020; // A problem is detected with the gyroscope calibration
+        static constexpr uint32 CALIBRATION_ERROR_MAG   = 0x00000040; // A problem is detected with the magnetometer calibration
+
+
+        static constexpr uint32 ACCEL_GENERAL_FAULT     = 0x00000100; // Accelerometer will not initialize
+        static constexpr uint32 ACCEL_OVERRANGE         = 0x00000200; // One or more axes subjected to accelerations near or outside the selected range
+        static constexpr uint32 ACCEL_SELF_TEST_FAIL    = 0x00000400; // The internal self-test of the accelerometer failed
+
+        static constexpr uint32 GYRO_GENERAL_FAULT      = 0x00001000; // Gyroscope will not initialize
+        static constexpr uint32 GYRO_OVERRANGE          = 0x00002000; // One or more axes subjected to rotational rates near or outside the selected range
+        static constexpr uint32 GYRO_SELF_TEST_FAIL     = 0x00004000; // The internal self-test of the gyroscope failed
+
+        static constexpr uint32 MAG_GENERAL_FAULT       = 0x00010000; // Magnetometer will not initialize
+        static constexpr uint32 MAG_OVERRANGE           = 0x00020000; // One or more axes subjected to magnetic fields strengths near or outside the supported range
+        static constexpr uint32 MAG_SELF_TEST_FAIL      = 0x00040000; // The internal self-test of the magnetometer failed
+
+        static constexpr uint32 PRESSURE_GENERAL_FAULT  = 0x00100000; // Pressure sensor won't initialize
+        static constexpr uint32 PRESSURE_OVERRANGE      = 0x00200000; // Pressure sensor subjected to pressures above or below the supported range
+        static constexpr uint32 PRESSURE_SELF_TEST_FAIL = 0x00400000; // The internal self-test of the pressure sensor failed
+
+        static constexpr uint32 FACTORY_BITS_INVALID    = 0x01000000; // Factory settings invalid. Device unusable
+
+        //API Function: generalFlags
+        //  Gets the value of all the general IMU flags (bits 32-39)
+        //
+        //Returns:
+        //  uint8 - Value of all the general IMU flags
+        uint8 generalFlags() const;
+
+        //API Function: sensorsFlags
+        //  Gets the value of all the the IMU sensors flags (bits 40-55)
+        //
+        //Returns:
+        //  uint16 - Value of all the IMU sensors flags
+        uint16 sensorsFlags() const;
+
+        //API Function: clockFault
+        //  Gets the value of the Clock Fault bit
+        //  
+        //Returns:
+        //  bool - true: IMU is not running off the system clock
+        bool clockFault() const;
+
+        //API Function: communicationFault
+        //  Gets the value of the Communication Fault bit
+        //  
+        //Returns:
+        //  bool - true: No communication with IMU
+        bool communicationFault() const;
+
+        //API Function: timingOverrun
+        //  Gets the value of the Timing Overrun bit
+        //  
+        //Returns:
+        //  bool - true: IMU processes are taking longer than their allotted time
+        bool timingOverrun() const;
+
+        //API Function: calibrationErrorAccel
+        //  Gets the value of the Calibration Error Accelerometer bit
+        //  
+        //Returns:
+        //  bool - true: A problem is detected with the accelerometer calibration
+        bool calibrationErrorAccel() const;
+
+        //API Function: calibrationErrorGyro
+        //  Gets the value of the Calibration Error Gyroscope bit
+        //  
+        //Returns:
+        //  bool - true: A problem is detected with the gyroscope calibration
+        bool calibrationErrorGyro() const;
+
+        //API Function: calibrationErrorMag
+        //  Gets the value of the Calibration Error Magnetometer bit
+        //  
+        //Returns:
+        //  bool - true: A problem is detected with the magnetometer calibration
+        bool calibrationErrorMag() const;
+
+        //API Function: accelGeneralFault
+        //  Gets the value of the Accelerometer General Fault bit
+        //  
+        //Returns:
+        //  bool - true: Accelerometer will not initialize
+        bool accelGeneralFault() const;
+
+        //API Function: accelOverrange
+        //  Gets the value of the Accelerometer Overrange bit
+        //  
+        //Returns:
+        //  bool - true: One or more axes subjected to accelerations near or outside the selected range
+        bool accelOverrange() const;
+
+        //API Function: accelSelfTest
+        //  Gets the value of the Accelerometer Self Test bit
+        //  
+        //Returns:
+        //  bool - true: The internal self-test of the accelerometer failed
+        bool accelSelfTestFail() const;
+
+        //API Function: gyroGeneralFault
+        //  Gets the value of the Gyroscope General Fault bit
+        //  
+        //Returns:
+        //  bool - true: Gyroscope will not initialize
+        bool gyroGeneralFault() const;
+
+        //API Function: gyroOverrange
+        //  Gets the value of the Gyroscope Overrange bit
+        //  
+        //Returns:
+        //  bool - true: One or more axes subjected to rotational rates near or outside the selected range
+        bool gyroOverrange() const;
+
+        //API Function: gyroSelfTest
+        //  Gets the value of the Gyroscope Self Test bit
+        //  
+        //Returns:
+        //  bool - true: The internal self-test of the gyroscope failed
+        bool gyroSelfTestFail() const;
+
+        //API Function: magGeneralFault
+        //  Gets the value of the Magnetometer General Fault bit
+        //  
+        //Returns:
+        //  bool - true: Magnetometer will not initialize
+        bool magGeneralFault() const;
+
+        //API Function: magOverrange
+        //  Gets the value of the Magnetometer Overrange bit
+        //  
+        //Returns:
+        //  bool - true: One or more axes subjected to magnetic fields strengths near or outside the supported range
+        bool magOverrange() const;
+
+        //API Function: magSelfTest
+        //  Gets the value of the Magnetometer Self Test bit
+        //  
+        //Returns:
+        //  bool - true: The internal self-test of the magnetometer failed
+        bool magSelfTestFail() const;
+
+        //API Function: pressureGeneralFault
+        //  Gets the value of the Pressure General Fault bit
+        //  
+        //Returns:
+        //  bool - true: Pressure sensor won't initialize
+        bool pressureGeneralFault() const;
+
+        //API Function: pressureOverrange
+        //  Gets the value of the Pressure Overrange bit
+        //  
+        //Returns:
+        //  bool - true: Pressure sensor subjected to pressures above or below the supported range
+        bool pressureOverrange() const;
+
+        //API Function: pressureSelfTest
+        //  Gets the value of the Pressure Self Test bit
+        //  
+        //Returns:
+        //  bool - true: The internal self-test of the pressure sensor failed
+        bool pressureSelfTestFail() const;
+
+        //API Function: factoryBitsInvalid
+        //  Gets the value of the Factory Bits Invalid bit
+        //  
+        //Returns:
+        //  bool - true: Factory settings invalid. Device unusable
+        bool factoryBitsInvalid() const;
+
+    private:
+        //Constant: GENERAL_FLAGS
+        //  Bitmask for the general IMU bit flags (bits 32-39)
+        //
+        //Note:
+        //  This mask is shifted 32 bits to the right from the original 128 bit Continuous BIT value to be able to properly lookup flags
+        static constexpr uint32 GENERAL_FLAGS = 0x000000FF;
+
+        //Constant: SENSORS_FLAGS
+        //  Bitmask for the IMU sensors bit flags (40-55)
+        //
+        //Note:
+        //  This mask is shifted 32 bits to the right from the original 128 bit Continuous BIT value to be able to properly lookup flags
+        static constexpr uint32 SENSORS_FLAGS = 0x00FFFF00;
+    };
+
+    //API Struct: CV7ContinuousBIT_Filter
+    //  Continuous Built-In Test flags related to filter information
+    //
+    //  Bits 64-95 of the original 128 bit Continuous Built-In Test flags
+    struct CV7ContinuousBIT_Filter : Bitfield
+    {
+        //API Constructor: CV7ContinuousBIT_Filter
+        CV7ContinuousBIT_Filter() {}
+
+        //API Constructor: CV7ContinuousBIT_Filter
+        //
+        //Parameters:
+        //  bits - Bits 64-95 of the original 128 bit Continuous Built-In Test flags
+        CV7ContinuousBIT_Filter(const uint32 bits) : Bitfield(static_cast<uint64>(bits)) {}
+
+        //API Constants: Bitmasks
+        //  The bitmasks that corresponds to the filter bit flags
+        //
+        //Note:
+        //  These masks are shifted 64 bits to the right from the original 128 bitmask to have a 0 index at bit 64
+        //
+        //  FAULT             - 0x00000001 - Filter processes will not initialize
+        //  TIMING_OVERRUN    - 0x00000004 - Filter processes are taking longer than their allotted time
+        //  TIMING_UNDERRUN   - 0x00000008 - Filter processes are being skipped
+        static constexpr uint32 FAULT           = 0x00000001; // Filter processes will not initialize
+        static constexpr uint32 TIMING_OVERRUN  = 0x00000004; // Filter processes are taking longer than their allotted time
+        static constexpr uint32 TIMING_UNDERRUN = 0x00000008; // Filter processes are being skipped
+
+        //API Function: generalFlags
+        //  Gets the value of all the general filter bit flags (bits 64-71)
+        //
+        //Returns:
+        //  uint8 - Value of all the general filter flags
+        uint8 generalFlags() const;
+
+        //API Function: fault
+        //  Gets the value of the Filter Fault bit
+        //  
+        //Returns:
+        //  bool - true: Filter processes will not initialize
+        bool fault() const;
+
+        //API Function: timingOverrun
+        //  Gets the value of the Filter Timing Overrun bit
+        //  
+        //Returns:
+        //  bool - true: Filter processes are taking longer than their allotted time
+        bool timingOverrun() const;
+
+        //API Function: timingUnderrun
+        //  Gets the value of the Filter Timing Underrun bit
+        //  
+        //Returns:
+        //  bool - true: Filter processes are being skipped
+        bool timingUnderrun() const;
+
+    private:
+        //Constant: GENERAL_FLAGS
+        //  Bitmask for the general filter bit flags (bits 64-71)
+        //
+        //Note:
+        //  This mask is shifted 64 bits to the right from the original 128 bit Continuous BIT value to be able to properly lookup flags
+        static constexpr uint32 GENERAL_FLAGS = 0x000000FF;
+    };
+
+    //API Class: CV7ContinuousBIT
+    //  Continuous Built-In Test bit flags
+    //
+    //  See the <Built-in Test: https://s3.amazonaws.com/files.microstrain.com/CV7+Online/user_manual_content/additional_features/Built-in%20Test.htm>
+    //  documentation for more information
+    class CV7ContinuousBIT
+    {
+    public:
+        //API Constructor: CV7ContinuousBIT
+        CV7ContinuousBIT() {}
+
+        //API Constructor: CV7ContinuousBIT
+        //
+        //Parameters:
+        //  bytes - All of the flag values from Continuous Built-In Test
+        CV7ContinuousBIT(Bytes bytes);
+
+        //API Function: systemFlags
+        //  Gets the value of the bit flags for the system sub-set of bits
+        //
+        //Returns:
+        //  uint32 - Value of the bit flags for the system sub-set of bits
+        uint32 systemFlags() const;
+
+        //API Function: imuFlags
+        //  Gets the bit flags for the IMU sub-set of bits
+        //
+        //Returns:
+        //  uint32 - Value of the bit flags for the IMU sub-set of bits
+        uint32 imuFlags() const;
+
+        //API Function: filterFlags
+        //  Gets the bit flags for the filter sub-set of bits
+        //
+        //Returns:
+        //  uint32 - Value of the bit flags for the filter sub-set of bits
+        uint32 filterFlags() const;
+
+    private:
+        //Variable: m_systemFlags
+        //  <CV7ContinuousBIT_System> flag information for bits 0-31
+        CV7ContinuousBIT_System m_systemFlags;
+
+        //Variable: m_imuFlags
+        //  <CV7ContinuousBIT_IMU> flag information for bits 32-63
+        CV7ContinuousBIT_IMU m_imuFlags;
+
+        //Variable: m_filterFlags
+        //  <CV7ContinuousBIT_Filter> flag information for bits 64-95
+        CV7ContinuousBIT_Filter m_filterFlags;
+    };
 }

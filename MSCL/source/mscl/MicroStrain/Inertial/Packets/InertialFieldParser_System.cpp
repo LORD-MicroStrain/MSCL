@@ -17,24 +17,19 @@ namespace mscl
     bool _forceLibraryToIncludeCompilationUnit_System;
 
     //=====================================================================================================================================================
-    //                                                        FieldParser_GpioState
-    const MipTypes::ChannelField FieldParser_GpioState::FIELD_TYPE = MipTypes::CH_FIELD_SYSTEM_GPIO_STATE;
-    const bool FieldParser_GpioState::REGISTERED = registerParser();    //register the parser immediately
+    //                                                        FieldParser_BuiltInTest
+    const MipTypes::ChannelField FieldParser_BuiltInTest::FIELD_TYPE = MipTypes::CH_FIELD_SYSTEM_BUILT_IN_TEST;
+    const bool FieldParser_BuiltInTest::REGISTERED = registerParser();    //register the parser immediately
 
-    void FieldParser_GpioState::parse(const MipDataField& field, MipDataPoints& result) const
+    void FieldParser_BuiltInTest::parse(const MipDataField& field, MipDataPoints& result) const
     {
-        DataBuffer bytes(field.fieldData());
-
-        //get the value
-        const uint8 states = bytes.read_uint8();
-
         //create the data point and add it to the result container
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_STATUS, valueType_uint8, anyType(states)));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_BUILT_IN_TEST, valueType_Bytes, anyType(field.fieldData().data())));
     }
 
-    bool FieldParser_GpioState::registerParser()
+    bool FieldParser_BuiltInTest::registerParser()
     {
-        static FieldParser_GpioState p;
+        static FieldParser_BuiltInTest p;
         return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
@@ -60,6 +55,29 @@ namespace mscl
     bool FieldParser_TimeSyncStatus::registerParser()
     {
         static FieldParser_TimeSyncStatus p;
+        return MipFieldParser::registerParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_GpioState
+    const MipTypes::ChannelField FieldParser_GpioState::FIELD_TYPE = MipTypes::CH_FIELD_SYSTEM_GPIO_STATE;
+    const bool FieldParser_GpioState::REGISTERED = registerParser();    //register the parser immediately
+
+    void FieldParser_GpioState::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        //get the value
+        const uint8 states = bytes.read_uint8();
+
+        //create the data point and add it to the result container
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_STATUS, valueType_uint8, anyType(states)));
+    }
+
+    bool FieldParser_GpioState::registerParser()
+    {
+        static FieldParser_GpioState p;
         return MipFieldParser::registerParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
