@@ -3313,7 +3313,7 @@ namespace mscl
         uint8 generalFlags() const;
 
         //API Function: processFlags
-        //  Gets the value of all the process system flags (bits 64-71)
+        //  Gets the value of all the process system flags (bits 16-23)
         //
         //Returns:
         //  uint8 - Value of all the process system flags
