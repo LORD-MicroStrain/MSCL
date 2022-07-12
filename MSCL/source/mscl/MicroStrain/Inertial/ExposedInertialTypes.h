@@ -3258,66 +3258,41 @@ namespace mscl
     //  A vector of <EventActionInfo>
     typedef std::vector<EventActionInfo> EventActionStatus;
 
-    //API Struct: CV7ContinuousBIT_System
-    //  Continuous Built-In Test flags related to system information
+    //API Struct: CV7ContinuousBIT_System_General
+    //  Continuous Built-In Test flags for general system information
     //
-    //  Bits 0-31 of the original 128 bit Continuous Built-In Test flags
-    struct CV7ContinuousBIT_System : Bitfield
+    //  Bits 0-7 of the original 128 bit Continuous Built-In Test flags
+    struct CV7ContinuousBIT_System_General : Bitfield
     {
-        //API Constructor: CV7ContinuousBIT_System
-        CV7ContinuousBIT_System() {}
+        //API Constructor: CV7ContinuousBIT_System_General
+        CV7ContinuousBIT_System_General() {}
 
-        //API Constructor: CV7ContinuousBIT_System
+        //API Constructor: CV7ContinuousBIT_System_General
         //
         //Parameters:
-        //  bits - Bits 0-31 of the original 128 bit Continuous Built-In Test flags
-        CV7ContinuousBIT_System(const uint32 bits) : Bitfield(static_cast<uint64>(bits)) {}
+        //  bits - Bits 0-7 of the original 128 bit Continuous Built-In Test flags
+        CV7ContinuousBIT_System_General(const uint8 bits) : Bitfield(static_cast<uint64>(bits)) {}
 
         //API Constants: Bitmasks
-        //  The bitmasks that corresponds to the system bit flags
+        //  Bitmasks for general system flags
         //
-        //  SYSTEM_CLOCK_FAILURE     - 0x00000001 - The system clock is not operating properly
-        //  POWER_FAULT              - 0x00000002 - Power supply voltage is outside of the recommended range, or an internal power fault exists
-        //  FIRMWARE_FAULT           - 0x00000010 - System firmware has detected an unexpected or abnormal condition
-        //  TIMING_OVERLOAD          - 0x00000020 - The system is unable to keep up with the processing demand
-        //  BUFFER_OVERRUN           - 0x00000040 - A data buffer in the system has reached its capacity
-        //  IMU_PROCESS_FAULT        - 0x00010000 - The IMU subsystem is unresponsive or not operating normally
-        //  IMU_DATA_RATE_MISMATCH   - 0x00020000 - Faster/slower than expected base rate
-        //  IMU_OVERRUN_DROPPED_DATA - 0x00040000 - At least 1 dropped frame / overrun
-        //  IMU_STUCK                - 0x00080000 - No IMU data received in 1 second
-        //  FILTER_PROCESS_FAULT     - 0x00100000 - The Filter subsystem is unresponsive or not operating normally
-        //  FILTER_DROPPED_DATA      - 0x00200000 - Filter samples not equal to IMU samples
-        //  FILTER_RATE_MISMATCH     - 0x00400000 - Filter major cycle rate mismatch
-        //  FILTER_STUCK             - 0x00800000 - No filter data received in 1 second
-        static constexpr uint32 SYSTEM_CLOCK_FAILURE     = 0x00000001; // The system clock is not operating properly
-        static constexpr uint32 POWER_FAULT              = 0x00000002; // Power supply voltage is outside of the recommended range, or an internal power fault exists
-        static constexpr uint32 FIRMWARE_FAULT           = 0x00000010; // System firmware has detected an unexpected or abnormal condition
-        static constexpr uint32 TIMING_OVERLOAD          = 0x00000020; // The system is unable to keep up with the processing demand
-        static constexpr uint32 BUFFER_OVERRUN           = 0x00000040; // A data buffer in the system has reached its capacity
-        
-        static constexpr uint32 IMU_PROCESS_FAULT        = 0x00010000; // The IMU subsystem is unresponsive or not operating normally
-        static constexpr uint32 IMU_DATA_RATE_MISMATCH   = 0x00020000; // Faster/slower than expected base rate
-        static constexpr uint32 IMU_OVERRUN_DROPPED_DATA = 0x00040000; // At least 1 dropped frame / overrun
-        static constexpr uint32 IMU_STUCK                = 0x00080000; // No IMU data received in 1 second
+        //  SYSTEM_CLOCK_FAILURE - 0x01 - The system clock is not operating properly
+        //  POWER_FAULT          - 0x02 - Power supply voltage is outside of the recommended range, or an internal power fault exists
+        //  FIRMWARE_FAULT       - 0x10 - System firmware has detected an unexpected or abnormal condition
+        //  TIMING_OVERLOAD      - 0x20 - The system is unable to keep up with the processing demand
+        //  BUFFER_OVERRUN       - 0x40 - A data buffer in the system has reached its capacity
+        static constexpr uint8 SYSTEM_CLOCK_FAILURE = 0x01; // The system clock is not operating properly
+        static constexpr uint8 POWER_FAULT          = 0x02; // Power supply voltage is outside of the recommended range, or an internal power fault exists
+        static constexpr uint8 FIRMWARE_FAULT       = 0x10; // System firmware has detected an unexpected or abnormal condition
+        static constexpr uint8 TIMING_OVERLOAD      = 0x20; // The system is unable to keep up with the processing demand
+        static constexpr uint8 BUFFER_OVERRUN       = 0x40; // A data buffer in the system has reached its capacity
 
-        static constexpr uint32 FILTER_PROCESS_FAULT     = 0x00100000; // The Filter subsystem is unresponsive or not operating normally
-        static constexpr uint32 FILTER_DROPPED_DATA      = 0x00200000; // Filter samples not equal to IMU samples
-        static constexpr uint32 FILTER_RATE_MISMATCH     = 0x00400000; // Filter major cycle rate mismatch
-        static constexpr uint32 FILTER_STUCK             = 0x00800000; // No filter data received in 1 second
-
-        //API Function: generalFlags
-        //  Gets the value of all the general system flags (bits 0-7)
+        //API Function: flags
+        //  Gets the value of the general system flags (bits 0-7)
         //
         //Returns:
-        //  uint8 - Value of all the general system flags
-        uint8 generalFlags() const;
-
-        //API Function: processFlags
-        //  Gets the value of all the process system flags (bits 16-23)
-        //
-        //Returns:
-        //  uint8 - Value of all the process system flags
-        uint8 processFlags() const;
+        //  uint8 - Value of the general system flags
+        uint8 flags() const;
 
         //API Function: systemClockFailure
         //  Gets the value of the System Clock Failure bit
@@ -3353,6 +3328,53 @@ namespace mscl
         //Returns:
         //  bool - true: A data buffer in the system has reached its capacity
         bool bufferOverrun() const;
+    };
+
+    //API Struct: CV7ContinuousBIT_System_Process
+    //  Continuous Built-In Test flags for system process information
+    //
+    //  Bits 16-23 of the original 128 bit Continuous Built-In Test flags
+    struct CV7ContinuousBIT_System_Process : Bitfield
+    {
+        //API Constructor: CV7ContinuousBIT_System_Process
+        CV7ContinuousBIT_System_Process() {}
+
+        //API Constructor: CV7ContinuousBIT_System_Process
+        //
+        //Parameters:
+        //  bits - Bits 16-23 of the original 128 bit Continuous Built-In Test flags
+        CV7ContinuousBIT_System_Process(const uint8 bits) : Bitfield(static_cast<uint64>(bits)) {}
+
+        //API Constants: Bitmasks
+        //  Bitmasks for system process information flags
+        //
+        //Note:
+        //  These masks are shifted 16 bits to the right from the original 128 bitmask to have a 0 index at bit 16
+        //
+        //  IMU_PROCESS_FAULT        - 0x01 - The IMU subsystem is unresponsive or not operating normally
+        //  IMU_DATA_RATE_MISMATCH   - 0x02 - Faster/slower than expected base rate
+        //  IMU_OVERRUN_DROPPED_DATA - 0x04 - At least 1 dropped frame / overrun
+        //  IMU_STUCK                - 0x08 - No IMU data received in 1 second
+        //  FILTER_PROCESS_FAULT     - 0x10 - The Filter subsystem is unresponsive or not operating normally
+        //  FILTER_DROPPED_DATA      - 0x20 - Filter samples not equal to IMU samples
+        //  FILTER_RATE_MISMATCH     - 0x40 - Filter major cycle rate mismatch
+        //  FILTER_STUCK             - 0x80 - No filter data received in 1 second
+        static constexpr uint8 IMU_PROCESS_FAULT        = 0x01; // The IMU subsystem is unresponsive or not operating normally
+        static constexpr uint8 IMU_DATA_RATE_MISMATCH   = 0x02; // Faster/slower than expected base rate
+        static constexpr uint8 IMU_OVERRUN_DROPPED_DATA = 0x04; // At least 1 dropped frame / overrun
+        static constexpr uint8 IMU_STUCK                = 0x08; // No IMU data received in 1 second
+
+        static constexpr uint8 FILTER_PROCESS_FAULT     = 0x10; // The Filter subsystem is unresponsive or not operating normally
+        static constexpr uint8 FILTER_DROPPED_DATA      = 0x20; // Filter samples not equal to IMU samples
+        static constexpr uint8 FILTER_RATE_MISMATCH     = 0x40; // Filter major cycle rate mismatch
+        static constexpr uint8 FILTER_STUCK             = 0x80; // No filter data received in 1 second
+
+        //API Function: flags
+        //  Gets the value of the process system flags (bits 16-23)
+        //
+        //Returns:
+        //  uint8 - Value of the process system flags
+        uint8 flags() const;
 
         //API Function: imuProcessFault
         //  Gets the value of the Imu Process Fault bit
@@ -3409,97 +3431,104 @@ namespace mscl
         //Returns:
         //  bool - true: No filter data received in 1 second
         bool filterStuck() const;
-
-    private:
-        //Constant: GENERAL_FLAGS
-        //  Bitmask for the general system bit flags (bits 0-7)
-        static constexpr uint32 GENERAL_FLAGS = 0x000000FF;
-
-        //Constant: PROCESS_FLAGS
-        //  Bitmask for the process system bit flags (bits 16-23)
-        static constexpr uint32 PROCESS_FLAGS = 0x00FF0000;
     };
 
-    //API Struct: CV7ContinuousBIT_IMU
-    //  Continuous Built-In Test values related to IMU information
+    //API Struct: CV7ContinuousBIT_System
+    //  Continuous Built-In Test flags for system information
     //
-    //  Bits 32-63 of the original 128 bit Continuous Built-In Test flags
-    struct CV7ContinuousBIT_IMU : Bitfield
+    //  Bits 0-31 of the original 128 bit Continuous Built-In Test flags
+    struct CV7ContinuousBIT_System : Bitfield
     {
-        //API Constructor: CV7ContinuousBIT_IMU
-        CV7ContinuousBIT_IMU() {}
+        //API Constructor: CV7ContinuousBIT_System
+        CV7ContinuousBIT_System() {}
 
-        //API Constructor: CV7ContinuousBIT_IMU
+        //API Constructor: CV7ContinuousBIT_System
         //
         //Parameters:
-        //  bits - Bits 32-63 of the original 128 bit Continuous Built-In Test flags
-        CV7ContinuousBIT_IMU(const uint32 bits) : Bitfield(static_cast<uint64>(bits)) {}
+        //  bits - Value of bits 0-31 of the original 128 bit Continuous Built-In Test flags
+        CV7ContinuousBIT_System(uint32 bits);
+
+        //API Function: flags
+        //  Gets the value of the system flags (bits 0-31)
+        //
+        //Returns:
+        //  uint32 - Value of the system flags
+        uint32 flags() const;
+
+        //API Function: general
+        //  Gets information for general system flags (bits 0-7)
+        //
+        //Returns:
+        //  <CV7ContinuousBIT_System_General> - Information for general system flags
+        CV7ContinuousBIT_System_General general() const;
+
+        //API Function: process
+        //  Gets information for system process flags (bits 16-23)
+        //
+        //Returns:
+        //  <CV7ContinuousBIT_System_Process> - Information for system process flags
+        CV7ContinuousBIT_System_Process process() const;
+
+    private:
+        //Constants: Bitmasks
+        //  GENERAL_FLAGS - 0x000000FF - Bitmask for general system flags (bits 0-7)
+        //  PROCESS_FLAGS - 0x00FF0000 - Bitmask for system process flags (bits 16-23)
+        //
+        //Note:
+        //  These masks are shifted 32 bits to the right from the original 128 bitmask to have a 0 index at bit 32
+        static constexpr uint32 GENERAL_FLAGS = 0x000000FF; // Bitmask for general system flags (bits 0-7)
+        static constexpr uint32 PROCESS_FLAGS = 0x00FF0000; // Bitmask for system process flags (bits 16-23)
+
+        //Variable: m_general
+        //  <CV7ContinuousBIT_System_General> information for general system flags (bits 0-7)
+        CV7ContinuousBIT_System_General m_general;
+
+        //Variable: m_process
+        //  <CV7ContinuousBIT_System_Process> information for system process flags (bits 16-23)
+        CV7ContinuousBIT_System_Process m_process;
+    };
+
+    //API Struct: CV7ContinuousBIT_IMU_General
+    //  Continuous Built-In Test flags for general IMU information
+    //
+    //  Bits 32-39 of the original 128 bit Continuous Built-In Test flags
+    struct CV7ContinuousBIT_IMU_General : Bitfield
+    {
+        //API Constructor: CV7ContinuousBIT_IMU_General
+        CV7ContinuousBIT_IMU_General() {}
+
+        //API Constructor: CV7ContinuousBIT_IMU_General
+        //
+        //Parameters:
+        //  bits - Bits 32-39 of the original 128 bit Continuous Built-In Test flags
+        CV7ContinuousBIT_IMU_General(const uint8 bits) : Bitfield(static_cast<uint64>(bits)) {}
 
         //API Constants: Bitmasks
-        //  The bitmasks that corresponds to the IMU bit flags
+        //  Bitmasks for general IMU flags
         //
         //Note:
         //  These masks are shifted 32 bits to the right from the original 128 bitmask to have a 0 index at bit 32
         //
-        //  CLOCK_FAULT             - 0x00000001 - IMU is not running off the system clock
-        //  COMMUNICATION_FAULT     - 0x00000002 - No communication with IMU
-        //  TIMING_OVERRUN          - 0x00000004 - IMU processes are taking longer than their allotted time
-        //  CALIBRATION_ERROR_ACCEL - 0x00000010 - A problem is detected with the accelerometer calibration
-        //  CALIBRATION_ERROR_GYRO  - 0x00000020 - A problem is detected with the gyroscope calibration
-        //  CALIBRATION_ERROR_MAG   - 0x00000040 - A problem is detected with the magnetometer calibration
-        //  ACCEL_GENERAL_FAULT     - 0x00000100 - Accelerometer will not initialize
-        //  ACCEL_OVERRANGE         - 0x00000200 - One or more axes subjected to accelerations near or outside the selected range
-        //  ACCEL_SELF_TEST_FAIL    - 0x00000400 - The internal self-test of the accelerometer failed
-        //  GYRO_GENERAL_FAULT      - 0x00001000 - Gyroscope will not initialize
-        //  GYRO_OVERRANGE          - 0x00002000 - One or more axes subjected to rotational rates near or outside the selected range
-        //  GYRO_SELF_TEST_FAIL     - 0x00004000 - The internal self-test of the gyroscope failed
-        //  MAG_GENERAL_FAULT       - 0x00010000 - Magnetometer will not initialize
-        //  MAG_OVERRANGE           - 0x00020000 - One or more axes subjected to magnetic fields strengths near or outside the supported range
-        //  MAG_SELF_TEST_FAIL      - 0x00040000 - The internal self-test of the magnetometer failed
-        //  PRESSURE_GENERAL_FAULT  - 0x00100000 - Pressure sensor won't initialize
-        //  PRESSURE_OVERRANGE      - 0x00200000 - Pressure sensor subjected to pressures above or below the supported range
-        //  PRESSURE_SELF_TEST_FAIL - 0x00400000 - The internal self-test of the pressure sensor failed
-        //  FACTORY_BITS_INVALID    - 0x01000000 - Factory settings invalid. Device unusable
-        static constexpr uint32 CLOCK_FAULT             = 0x00000001; // IMU is not running off the system clock
-        static constexpr uint32 COMMUNICATION_FAULT     = 0x00000002; // No communication with IMU
-        static constexpr uint32 TIMING_OVERRUN          = 0x00000004; // IMU processes are taking longer than their allotted time
+        //  CLOCK_FAULT             - 0x01 - IMU is not running off the system clock
+        //  COMMUNICATION_FAULT     - 0x02 - No communication with IMU
+        //  TIMING_OVERRUN          - 0x04 - IMU processes are taking longer than their allotted time
+        //  CALIBRATION_ERROR_ACCEL - 0x10 - A problem is detected with the accelerometer calibration
+        //  CALIBRATION_ERROR_GYRO  - 0x20 - A problem is detected with the gyroscope calibration
+        //  CALIBRATION_ERROR_MAG   - 0x40 - A problem is detected with the magnetometer calibration
+        static constexpr uint8 CLOCK_FAULT             = 0x01; // IMU is not running off the system clock
+        static constexpr uint8 COMMUNICATION_FAULT     = 0x02; // No communication with IMU
+        static constexpr uint8 TIMING_OVERRUN          = 0x04; // IMU processes are taking longer than their allotted time
 
-        static constexpr uint32 CALIBRATION_ERROR_ACCEL = 0x00000010; // A problem is detected with the accelerometer calibration
-        static constexpr uint32 CALIBRATION_ERROR_GYRO  = 0x00000020; // A problem is detected with the gyroscope calibration
-        static constexpr uint32 CALIBRATION_ERROR_MAG   = 0x00000040; // A problem is detected with the magnetometer calibration
+        static constexpr uint8 CALIBRATION_ERROR_ACCEL = 0x10; // A problem is detected with the accelerometer calibration
+        static constexpr uint8 CALIBRATION_ERROR_GYRO  = 0x20; // A problem is detected with the gyroscope calibration
+        static constexpr uint8 CALIBRATION_ERROR_MAG   = 0x40; // A problem is detected with the magnetometer calibration
 
-
-        static constexpr uint32 ACCEL_GENERAL_FAULT     = 0x00000100; // Accelerometer will not initialize
-        static constexpr uint32 ACCEL_OVERRANGE         = 0x00000200; // One or more axes subjected to accelerations near or outside the selected range
-        static constexpr uint32 ACCEL_SELF_TEST_FAIL    = 0x00000400; // The internal self-test of the accelerometer failed
-
-        static constexpr uint32 GYRO_GENERAL_FAULT      = 0x00001000; // Gyroscope will not initialize
-        static constexpr uint32 GYRO_OVERRANGE          = 0x00002000; // One or more axes subjected to rotational rates near or outside the selected range
-        static constexpr uint32 GYRO_SELF_TEST_FAIL     = 0x00004000; // The internal self-test of the gyroscope failed
-
-        static constexpr uint32 MAG_GENERAL_FAULT       = 0x00010000; // Magnetometer will not initialize
-        static constexpr uint32 MAG_OVERRANGE           = 0x00020000; // One or more axes subjected to magnetic fields strengths near or outside the supported range
-        static constexpr uint32 MAG_SELF_TEST_FAIL      = 0x00040000; // The internal self-test of the magnetometer failed
-
-        static constexpr uint32 PRESSURE_GENERAL_FAULT  = 0x00100000; // Pressure sensor won't initialize
-        static constexpr uint32 PRESSURE_OVERRANGE      = 0x00200000; // Pressure sensor subjected to pressures above or below the supported range
-        static constexpr uint32 PRESSURE_SELF_TEST_FAIL = 0x00400000; // The internal self-test of the pressure sensor failed
-
-        static constexpr uint32 FACTORY_BITS_INVALID    = 0x01000000; // Factory settings invalid. Device unusable
-
-        //API Function: generalFlags
-        //  Gets the value of all the general IMU flags (bits 32-39)
+        //API Function: flags
+        //  Gets the value of the general IMU flags (bits 32-39)
         //
         //Returns:
-        //  uint8 - Value of all the general IMU flags
-        uint8 generalFlags() const;
-
-        //API Function: sensorsFlags
-        //  Gets the value of all the the IMU sensors flags (bits 40-55)
-        //
-        //Returns:
-        //  uint16 - Value of all the IMU sensors flags
-        uint16 sensorsFlags() const;
+        //  uint8 - Value of the general IMU flags
+        uint8 flags() const;
 
         //API Function: clockFault
         //  Gets the value of the Clock Fault bit
@@ -3542,6 +3571,63 @@ namespace mscl
         //Returns:
         //  bool - true: A problem is detected with the magnetometer calibration
         bool calibrationErrorMag() const;
+    };
+
+    //API Struct: CV7ContinuousBIT_IMU_Sensors
+    //  Continuous Built-In Test flags for IMU sensors information
+    //
+    //  Bits 40-55 of the original 128 bit Continuous Built-In Test flags
+    struct CV7ContinuousBIT_IMU_Sensors : Bitfield
+    {
+        //API Constructor: CV7ContinuousBIT_IMU_Sensors
+        CV7ContinuousBIT_IMU_Sensors() {}
+
+        //API Constructor: CV7ContinuousBIT_IMU_Sensors
+        //
+        //Parameters:
+        //  bits - Bits 40-55 of the original 128 bit Continuous Built-In Test flags
+        CV7ContinuousBIT_IMU_Sensors(const uint16 bits) : Bitfield(static_cast<uint64>(bits)) {}
+
+        //API Constants: Bitmasks
+        //  Bitmasks for IMU sensors flags
+        //
+        //Note:
+        //  These masks are shifted 40 bits to the right from the original 128 bitmask to have a 0 index at bit 40
+        //
+        //  ACCEL_GENERAL_FAULT     - 0x0001 - Accelerometer will not initialize
+        //  ACCEL_OVERRANGE         - 0x0002 - One or more axes subjected to accelerations near or outside the selected range
+        //  ACCEL_SELF_TEST_FAIL    - 0x0004 - The internal self-test of the accelerometer failed
+        //  GYRO_GENERAL_FAULT      - 0x0010 - Gyroscope will not initialize
+        //  GYRO_OVERRANGE          - 0x0020 - One or more axes subjected to rotational rates near or outside the selected range
+        //  GYRO_SELF_TEST_FAIL     - 0x0040 - The internal self-test of the gyroscope failed
+        //  MAG_GENERAL_FAULT       - 0x0100 - Magnetometer will not initialize
+        //  MAG_OVERRANGE           - 0x0200 - One or more axes subjected to magnetic fields strengths near or outside the supported range
+        //  MAG_SELF_TEST_FAIL      - 0x0400 - The internal self-test of the magnetometer failed
+        //  PRESSURE_GENERAL_FAULT  - 0x1000 - Pressure sensor won't initialize
+        //  PRESSURE_OVERRANGE      - 0x2000 - Pressure sensor subjected to pressures above or below the supported range
+        //  PRESSURE_SELF_TEST_FAIL - 0x4000 - The internal self-test of the pressure sensor failed
+        static constexpr uint16 ACCEL_GENERAL_FAULT     = 0x0001; // Accelerometer will not initialize
+        static constexpr uint16 ACCEL_OVERRANGE         = 0x0002; // One or more axes subjected to accelerations near or outside the selected range
+        static constexpr uint16 ACCEL_SELF_TEST_FAIL    = 0x0004; // The internal self-test of the accelerometer failed
+
+        static constexpr uint16 GYRO_GENERAL_FAULT      = 0x0010; // Gyroscope will not initialize
+        static constexpr uint16 GYRO_OVERRANGE          = 0x0020; // One or more axes subjected to rotational rates near or outside the selected range
+        static constexpr uint16 GYRO_SELF_TEST_FAIL     = 0x0040; // The internal self-test of the gyroscope failed
+
+        static constexpr uint16 MAG_GENERAL_FAULT       = 0x0100; // Magnetometer will not initialize
+        static constexpr uint16 MAG_OVERRANGE           = 0x0200; // One or more axes subjected to magnetic fields strengths near or outside the supported range
+        static constexpr uint16 MAG_SELF_TEST_FAIL      = 0x0400; // The internal self-test of the magnetometer failed
+
+        static constexpr uint16 PRESSURE_GENERAL_FAULT  = 0x1000; // Pressure sensor won't initialize
+        static constexpr uint16 PRESSURE_OVERRANGE      = 0x2000; // Pressure sensor subjected to pressures above or below the supported range
+        static constexpr uint16 PRESSURE_SELF_TEST_FAIL = 0x4000; // The internal self-test of the pressure sensor failed
+
+        //API Function: flags
+        //  Gets the value of the the IMU sensors flags (bits 40-55)
+        //
+        //Returns:
+        //  uint16 - Value of the IMU sensors flags
+        uint16 flags() const;
 
         //API Function: accelGeneralFault
         //  Gets the value of the Accelerometer General Fault bit
@@ -3626,6 +3712,50 @@ namespace mscl
         //Returns:
         //  bool - true: The internal self-test of the pressure sensor failed
         bool pressureSelfTestFail() const;
+    };
+
+    //API Struct: CV7ContinuousBIT_IMU
+    //  Continuous Built-In Test flags for IMU information
+    //
+    //  Bits 32-63 of the original 128 bit Continuous Built-In Test flags
+    struct CV7ContinuousBIT_IMU : Bitfield
+    {
+        //API Constructor: CV7ContinuousBIT_IMU
+        CV7ContinuousBIT_IMU() {}
+
+        //API Constructor: CV7ContinuousBIT_IMU
+        //
+        //Parameters:
+        //  bits - Value of bits 32-63 of the original 128 bit Continuous Built-In Test flags
+        CV7ContinuousBIT_IMU(uint32 bits);
+
+        //API Constant: FACTORY_BITS_INVALID
+        //  FACTORY_BITS_INVALID - 0x01000000 - Factory settings invalid. Device unusable
+        //
+        //Note:
+        //  This mask is shifted 32 bits to the right from the original 128 bitmask to have a 0 index at bit 32
+        static constexpr uint32 FACTORY_BITS_INVALID = 0x01000000; // Factory settings invalid. Device unusable
+
+        //API Function: flags
+        //  Gets the value of the IMU flags (bits 32-63)
+        //
+        //Returns:
+        //  uint32 - Value of the IMU flags
+        uint32 flags() const;
+
+        //API Function: general
+        //  Gets information for general IMU flags (bits 32-39)
+        //
+        //Returns:
+        //  <CV7ContinuousBIT_IMU_General> - Information for general IMU flags
+        CV7ContinuousBIT_IMU_General general() const;
+
+        //API Function: sensors
+        //  Gets information for IMU sensors flags (bits 40-55)
+        //
+        //Returns:
+        //  <CV7ContinuousBIT_IMU_Sensors> - Information for IMU sensors flags
+        CV7ContinuousBIT_IMU_Sensors sensors() const;
 
         //API Function: factoryBitsInvalid
         //  Gets the value of the Factory Bits Invalid bit
@@ -3635,55 +3765,58 @@ namespace mscl
         bool factoryBitsInvalid() const;
 
     private:
-        //Constant: GENERAL_FLAGS
-        //  Bitmask for the general IMU bit flags (bits 32-39)
+        //Constants: Bitmasks
+        //  GENERAL_FLAGS - 0x000000FF - Bitmask for the general IMU bit flags (bits 32-39)
+        //  SENSORS_FLAGS - 0x00FFFF00 - Bitmask for the IMU sensors bit flags (40-55)
         //
         //Note:
-        //  This mask is shifted 32 bits to the right from the original 128 bit Continuous BIT value to be able to properly lookup flags
-        static constexpr uint32 GENERAL_FLAGS = 0x000000FF;
+        //  These masks are shifted 32 bits to the right from the original 128 bitmask to have a 0 index at bit 32
+        static constexpr uint32 GENERAL_FLAGS = 0x000000FF; // Bitmask for the general IMU bit flags (bits 32-39)
+        static constexpr uint32 SENSORS_FLAGS = 0x00FFFF00; // Bitmask for the IMU sensors bit flags (40-55)
 
-        //Constant: SENSORS_FLAGS
-        //  Bitmask for the IMU sensors bit flags (40-55)
-        //
-        //Note:
-        //  This mask is shifted 32 bits to the right from the original 128 bit Continuous BIT value to be able to properly lookup flags
-        static constexpr uint32 SENSORS_FLAGS = 0x00FFFF00;
+        //Variable: m_general
+        //  <CV7ContinuousBIT_IMU_General> information for general IMU flags (bits 32-39)
+        CV7ContinuousBIT_IMU_General m_general;
+
+        //Variable: m_sensors;
+        //  <CV7ContinuousBIT_IMU_Sensors> information for IMU sensors flags (bits 40-55)
+        CV7ContinuousBIT_IMU_Sensors m_sensors;
     };
 
-    //API Struct: CV7ContinuousBIT_Filter
-    //  Continuous Built-In Test flags related to filter information
+    //API Struct: CV7ContinuousBIT_Filter_General
+    //  Continuous Built-In Test flags for general filter information
     //
-    //  Bits 64-95 of the original 128 bit Continuous Built-In Test flags
-    struct CV7ContinuousBIT_Filter : Bitfield
+    //  Bits 64-71 of the original 128 bit Continuous Built-In Test flags
+    struct CV7ContinuousBIT_Filter_General : Bitfield
     {
-        //API Constructor: CV7ContinuousBIT_Filter
-        CV7ContinuousBIT_Filter() {}
+        //API Constructor: CV7ContinuousBIT_Filter_General
+        CV7ContinuousBIT_Filter_General() {}
 
-        //API Constructor: CV7ContinuousBIT_Filter
+        //API Constructor: CV7ContinuousBIT_Filter_General
         //
         //Parameters:
-        //  bits - Bits 64-95 of the original 128 bit Continuous Built-In Test flags
-        CV7ContinuousBIT_Filter(const uint32 bits) : Bitfield(static_cast<uint64>(bits)) {}
+        //  bits - Bits 64-71 of the original 128 bit Continuous Built-In Test flags
+        CV7ContinuousBIT_Filter_General(const uint8 bits) : Bitfield(static_cast<uint64>(bits)) {}
 
         //API Constants: Bitmasks
-        //  The bitmasks that corresponds to the filter bit flags
+        //  Bitmasks for general filter flags
         //
         //Note:
         //  These masks are shifted 64 bits to the right from the original 128 bitmask to have a 0 index at bit 64
         //
-        //  FAULT             - 0x00000001 - Filter processes will not initialize
-        //  TIMING_OVERRUN    - 0x00000004 - Filter processes are taking longer than their allotted time
-        //  TIMING_UNDERRUN   - 0x00000008 - Filter processes are being skipped
-        static constexpr uint32 FAULT           = 0x00000001; // Filter processes will not initialize
-        static constexpr uint32 TIMING_OVERRUN  = 0x00000004; // Filter processes are taking longer than their allotted time
-        static constexpr uint32 TIMING_UNDERRUN = 0x00000008; // Filter processes are being skipped
+        //  FAULT           - 0x01 - Filter processes will not initialize
+        //  TIMING_OVERRUN  - 0x04 - Filter processes are taking longer than their allotted time
+        //  TIMING_UNDERRUN - 0x08 - Filter processes are being skipped
+        static constexpr uint8 FAULT           = 0x01; // Filter processes will not initialize
+        static constexpr uint8 TIMING_OVERRUN  = 0x04; // Filter processes are taking longer than their allotted time
+        static constexpr uint8 TIMING_UNDERRUN = 0x08; // Filter processes are being skipped
 
-        //API Function: generalFlags
-        //  Gets the value of all the general filter bit flags (bits 64-71)
+        //API Function: flags
+        //  Gets the value of the general filter flags (bits 64-71)
         //
         //Returns:
-        //  uint8 - Value of all the general filter flags
-        uint8 generalFlags() const;
+        //  uint8 - Value of the general filter flags
+        uint8 flags() const;
 
         //API Function: fault
         //  Gets the value of the Filter Fault bit
@@ -3705,20 +3838,54 @@ namespace mscl
         //Returns:
         //  bool - true: Filter processes are being skipped
         bool timingUnderrun() const;
+    };
+
+    //API Struct: CV7ContinuousBIT_Filter
+    //  Continuous Built-In Test flags for filter information
+    //
+    //  Bits 64-95 of the original 128 bit Continuous Built-In Test flags
+    struct CV7ContinuousBIT_Filter : Bitfield
+    {
+        //API Constructor: CV7ContinuousBIT_Filter
+        CV7ContinuousBIT_Filter() {}
+
+        //API Constructor: CV7ContinuousBIT_Filter
+        //
+        //Parameters:
+        //  bits - Value of bits 64-95 of the original 128 bit Continuous Built-In Test flags
+        CV7ContinuousBIT_Filter(uint32 bits);
+
+        //API Function: flags
+        //  Gets the value of the filter flags (bits 64-95)
+        //
+        //Returns:
+        //  uint32 - Value of the filter flags
+        uint32 flags() const;
+
+        //API Function: general
+        //  Gets information for general filter flags (bits 64-71)
+        //
+        //Returns:
+        //  <CV7ContinuousBIT_Filter_General> - Information for general filter flags
+        CV7ContinuousBIT_Filter_General general() const;
 
     private:
         //Constant: GENERAL_FLAGS
-        //  Bitmask for the general filter bit flags (bits 64-71)
+        //  Bitmask for general filter flags (bits 64-71)
         //
         //Note:
-        //  This mask is shifted 64 bits to the right from the original 128 bit Continuous BIT value to be able to properly lookup flags
-        static constexpr uint32 GENERAL_FLAGS = 0x000000FF;
+        //  This mask is shifted 64 bits to the right from the original 128 bitmask to have a 0 index at bit 64
+        static constexpr uint32 GENERAL_FLAGS = 0x000000FF; // Bitmask for general filter flags (bits 64-71)
+
+        //Variable: m_general
+        //  <CV7ContinuousBIT_Filter_General> information for general filter flags (bits 64-71)
+        CV7ContinuousBIT_Filter_General m_general;
     };
 
     //API Class: CV7ContinuousBIT
-    //  Continuous Built-In Test bit flags
+    //  Continuous Built-In Test flag data
     //
-    //  See the <Built-in Test: https://s3.amazonaws.com/files.microstrain.com/CV7+Online/user_manual_content/additional_features/Built-in%20Test.htm>
+    //  See the CV7 <Built-in Test: https://s3.amazonaws.com/files.microstrain.com/CV7+Online/user_manual_content/additional_features/Built-in%20Test.htm>
     //  documentation for more information
     class CV7ContinuousBIT
     {
@@ -3729,41 +3896,41 @@ namespace mscl
         //API Constructor: CV7ContinuousBIT
         //
         //Parameters:
-        //  bytes - All of the flag values from Continuous Built-In Test
+        //  bytes - Flag values from Continuous Built-In Test
         CV7ContinuousBIT(Bytes bytes);
 
-        //API Function: systemFlags
-        //  Gets the value of the bit flags for the system sub-set of bits
+        //API Function: system
+        //  Gets information for system flags (bits 0-31)
         //
         //Returns:
-        //  uint32 - Value of the bit flags for the system sub-set of bits
-        uint32 systemFlags() const;
+        //  <CV7ContinuousBIT_System> - Information for system flags
+        CV7ContinuousBIT_System system() const;
 
-        //API Function: imuFlags
-        //  Gets the bit flags for the IMU sub-set of bits
+        //API Function: imu
+        //  Gets information for IMU flags (bits 32-63)
         //
         //Returns:
-        //  uint32 - Value of the bit flags for the IMU sub-set of bits
-        uint32 imuFlags() const;
+        //  <CV7ContinuousBIT_IMU> - Information for IMU flags
+        CV7ContinuousBIT_IMU imu() const;
 
-        //API Function: filterFlags
-        //  Gets the bit flags for the filter sub-set of bits
+        //API Function: filter
+        //  Gets information for filter flags (bits 64-95)
         //
         //Returns:
-        //  uint32 - Value of the bit flags for the filter sub-set of bits
-        uint32 filterFlags() const;
+        //  <CV7ContinuousBIT_Filter> - Information for filter flags
+        CV7ContinuousBIT_Filter filter() const;
 
     private:
-        //Variable: m_systemFlags
-        //  <CV7ContinuousBIT_System> flag information for bits 0-31
-        CV7ContinuousBIT_System m_systemFlags;
+        //Variable: m_system
+        //  <CV7ContinuousBIT_System> information for system flags (bits 0-31)
+        CV7ContinuousBIT_System m_system;
 
-        //Variable: m_imuFlags
-        //  <CV7ContinuousBIT_IMU> flag information for bits 32-63
-        CV7ContinuousBIT_IMU m_imuFlags;
+        //Variable: m_imu
+        //  <CV7ContinuousBIT_IMU> information for IMU flags (bits 32-63)
+        CV7ContinuousBIT_IMU m_imu;
 
-        //Variable: m_filterFlags
-        //  <CV7ContinuousBIT_Filter> flag information for bits 64-95
-        CV7ContinuousBIT_Filter m_filterFlags;
+        //Variable: m_filter
+        //  <CV7ContinuousBIT_Filter> information for filter flags (bits 64-95)
+        CV7ContinuousBIT_Filter m_filter;
     };
 }

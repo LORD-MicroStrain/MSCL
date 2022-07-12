@@ -42,33 +42,18 @@ public class CV7ContinuousBIT_Filter : Bitfield {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public byte generalFlags() {
-    byte ret = msclPINVOKE.CV7ContinuousBIT_Filter_generalFlags(swigCPtr);
+  public uint flags() {
+    uint ret = msclPINVOKE.CV7ContinuousBIT_Filter_flags(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public bool fault() {
-    bool ret = msclPINVOKE.CV7ContinuousBIT_Filter_fault(swigCPtr);
+  public CV7ContinuousBIT_Filter_General general() {
+    CV7ContinuousBIT_Filter_General ret = new CV7ContinuousBIT_Filter_General(msclPINVOKE.CV7ContinuousBIT_Filter_general(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public bool timingOverrun() {
-    bool ret = msclPINVOKE.CV7ContinuousBIT_Filter_timingOverrun(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public bool timingUnderrun() {
-    bool ret = msclPINVOKE.CV7ContinuousBIT_Filter_timingUnderrun(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public static readonly uint FAULT = msclPINVOKE.CV7ContinuousBIT_Filter_FAULT_get();
-  public static readonly uint TIMING_OVERRUN = msclPINVOKE.CV7ContinuousBIT_Filter_TIMING_OVERRUN_get();
-  public static readonly uint TIMING_UNDERRUN = msclPINVOKE.CV7ContinuousBIT_Filter_TIMING_UNDERRUN_get();
 }
 
 }

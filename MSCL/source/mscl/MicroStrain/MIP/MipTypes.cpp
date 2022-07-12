@@ -449,6 +449,8 @@ namespace mscl
         { ChannelId(CH_FIELD_DISP_DISPLACEMENT_MM, CH_DISPLACEMENT), "displacementMillimeters" },
 
         // System Data
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BUILT_IN_TEST), "builtInTest" },
+
         { ChannelId(CH_FIELD_SYSTEM_GPIO_STATE, CH_STATUS), "gpioState" },
 
         { ChannelId(CH_FIELD_SYSTEM_TIME_SYNC_STATUS, CH_PPS_VALID), "timeSync_ppsValid" },

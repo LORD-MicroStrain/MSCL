@@ -120,8 +120,13 @@
     <Compile Include="mscl\ConstellationSettingsData.cs" />
     <Compile Include="mscl\CV7ContinuousBIT.cs" />
     <Compile Include="mscl\CV7ContinuousBIT_Filter.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_Filter_General.cs" />
     <Compile Include="mscl\CV7ContinuousBIT_IMU.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_IMU_General.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_IMU_Sensors.cs" />
     <Compile Include="mscl\CV7ContinuousBIT_System.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_System_General.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_System_Process.cs" />
     <Compile Include="mscl\DamageAngles.cs" />
     <Compile Include="mscl\DataCollectionMethods.cs" />
     <Compile Include="mscl\DataFormats.cs" />

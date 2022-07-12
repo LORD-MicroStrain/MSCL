@@ -52,20 +52,20 @@ public class CV7ContinuousBIT : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public uint systemFlags() {
-    uint ret = msclPINVOKE.CV7ContinuousBIT_systemFlags(swigCPtr);
+  public CV7ContinuousBIT_System system() {
+    CV7ContinuousBIT_System ret = new CV7ContinuousBIT_System(msclPINVOKE.CV7ContinuousBIT_system(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public uint imuFlags() {
-    uint ret = msclPINVOKE.CV7ContinuousBIT_imuFlags(swigCPtr);
+  public CV7ContinuousBIT_IMU imu() {
+    CV7ContinuousBIT_IMU ret = new CV7ContinuousBIT_IMU(msclPINVOKE.CV7ContinuousBIT_imu(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public uint filterFlags() {
-    uint ret = msclPINVOKE.CV7ContinuousBIT_filterFlags(swigCPtr);
+  public CV7ContinuousBIT_Filter filter() {
+    CV7ContinuousBIT_Filter ret = new CV7ContinuousBIT_Filter(msclPINVOKE.CV7ContinuousBIT_filter(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

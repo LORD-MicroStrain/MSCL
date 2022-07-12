@@ -1081,179 +1081,221 @@ namespace mscl
         status.value(value);
     }
 
-    uint8 CV7ContinuousBIT_System::generalFlags() const
+    uint8 CV7ContinuousBIT_System_General::flags() const
     {
-        return static_cast<uint8>(get(GENERAL_FLAGS));
+        return static_cast<uint8>(value());
     }
 
-    uint8 CV7ContinuousBIT_System::processFlags() const
-    {
-        return static_cast<uint8>(get(PROCESS_FLAGS));
-    }
-
-    bool CV7ContinuousBIT_System::systemClockFailure() const
+    bool CV7ContinuousBIT_System_General::systemClockFailure() const
     {
         return get(SYSTEM_CLOCK_FAILURE) > 0;
     }
 
-    bool CV7ContinuousBIT_System::powerFault() const
+    bool CV7ContinuousBIT_System_General::powerFault() const
     {
         return get(POWER_FAULT) > 0;
     }
 
-    bool CV7ContinuousBIT_System::firmwareFault() const
+    bool CV7ContinuousBIT_System_General::firmwareFault() const
     {
         return get(FIRMWARE_FAULT) > 0;
     }
 
-    bool CV7ContinuousBIT_System::timingOverload() const
+    bool CV7ContinuousBIT_System_General::timingOverload() const
     {
         return get(TIMING_OVERLOAD) > 0;
     }
 
-    bool CV7ContinuousBIT_System::bufferOverrun() const
+    bool CV7ContinuousBIT_System_General::bufferOverrun() const
     {
         return get(BUFFER_OVERRUN) > 0;
     }
 
-    bool CV7ContinuousBIT_System::imuProcessFault() const
+    uint8 CV7ContinuousBIT_System_Process::flags() const
+    {
+        return static_cast<uint8>(value());
+    }
+
+    bool CV7ContinuousBIT_System_Process::imuProcessFault() const
     {
         return get(IMU_PROCESS_FAULT) > 0;
     }
 
-    bool CV7ContinuousBIT_System::imuDataRateMismatch() const
+    bool CV7ContinuousBIT_System_Process::imuDataRateMismatch() const
     {
         return get(IMU_DATA_RATE_MISMATCH) > 0;
     }
 
-    bool CV7ContinuousBIT_System::imuOverrunDroppedData() const
+    bool CV7ContinuousBIT_System_Process::imuOverrunDroppedData() const
     {
         return get(IMU_OVERRUN_DROPPED_DATA) > 0;
     }
 
-    bool CV7ContinuousBIT_System::imuStuck() const
+    bool CV7ContinuousBIT_System_Process::imuStuck() const
     {
         return get(IMU_STUCK) > 0;
     }
 
-    bool CV7ContinuousBIT_System::filterProcessFault() const
+    bool CV7ContinuousBIT_System_Process::filterProcessFault() const
     {
         return get(FILTER_PROCESS_FAULT) > 0;
     }
 
-    bool CV7ContinuousBIT_System::filterDroppedData() const
+    bool CV7ContinuousBIT_System_Process::filterDroppedData() const
     {
         return get(FILTER_DROPPED_DATA) > 0;
     }
 
-    bool CV7ContinuousBIT_System::filterRateMismatch() const
+    bool CV7ContinuousBIT_System_Process::filterRateMismatch() const
     {
         return get(FILTER_RATE_MISMATCH) > 0;
     }
 
-    bool CV7ContinuousBIT_System::filterStuck() const
+    bool CV7ContinuousBIT_System_Process::filterStuck() const
     {
         return get(FILTER_STUCK) > 0;
     }
 
-    uint8 CV7ContinuousBIT_IMU::generalFlags() const
+    CV7ContinuousBIT_System::CV7ContinuousBIT_System(const uint32 bits) : Bitfield(static_cast<uint64>(bits))
     {
-        return static_cast<uint8>(get(GENERAL_FLAGS));
+        m_general = CV7ContinuousBIT_System_General(static_cast<uint8>(get(GENERAL_FLAGS)));
+        m_process = CV7ContinuousBIT_System_Process(static_cast<uint8>(get(PROCESS_FLAGS)));
     }
 
-    uint16 CV7ContinuousBIT_IMU::sensorsFlags() const
+    uint32 CV7ContinuousBIT_System::flags() const
     {
-        return static_cast<uint16>(get(SENSORS_FLAGS));
+        return static_cast<uint32>(value());
     }
 
-    bool CV7ContinuousBIT_IMU::clockFault() const
+    CV7ContinuousBIT_System_General CV7ContinuousBIT_System::general() const
+    {
+        return m_general;
+    }
+
+    CV7ContinuousBIT_System_Process CV7ContinuousBIT_System::process() const
+    {
+        return m_process;
+    }
+
+    uint8 CV7ContinuousBIT_IMU_General::flags() const
+    {
+        return static_cast<uint8>(value());
+    }
+
+    bool CV7ContinuousBIT_IMU_General::clockFault() const
     {
         return get(CLOCK_FAULT) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::communicationFault() const
+    bool CV7ContinuousBIT_IMU_General::communicationFault() const
     {
         return get(COMMUNICATION_FAULT) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::timingOverrun() const
+    bool CV7ContinuousBIT_IMU_General::timingOverrun() const
     {
         return get(TIMING_OVERRUN) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::calibrationErrorAccel() const
+    bool CV7ContinuousBIT_IMU_General::calibrationErrorAccel() const
     {
         return get(CALIBRATION_ERROR_ACCEL) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::calibrationErrorGyro() const
+    bool CV7ContinuousBIT_IMU_General::calibrationErrorGyro() const
     {
         return get(CALIBRATION_ERROR_GYRO) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::calibrationErrorMag() const
+    bool CV7ContinuousBIT_IMU_General::calibrationErrorMag() const
     {
         return get(CALIBRATION_ERROR_MAG) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::accelGeneralFault() const
+    uint16 CV7ContinuousBIT_IMU_Sensors::flags() const
+    {
+        return static_cast<uint16>(value());
+    }
+
+    bool CV7ContinuousBIT_IMU_Sensors::accelGeneralFault() const
     {
         return get(ACCEL_GENERAL_FAULT) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::accelOverrange() const
+    bool CV7ContinuousBIT_IMU_Sensors::accelOverrange() const
     {
         return get(ACCEL_OVERRANGE) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::accelSelfTestFail() const
+    bool CV7ContinuousBIT_IMU_Sensors::accelSelfTestFail() const
     {
         return get(ACCEL_SELF_TEST_FAIL) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::gyroGeneralFault() const
+    bool CV7ContinuousBIT_IMU_Sensors::gyroGeneralFault() const
     {
         return get(GYRO_GENERAL_FAULT) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::gyroOverrange() const
+    bool CV7ContinuousBIT_IMU_Sensors::gyroOverrange() const
     {
         return get(GYRO_OVERRANGE) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::gyroSelfTestFail() const
+    bool CV7ContinuousBIT_IMU_Sensors::gyroSelfTestFail() const
     {
         return get(GYRO_SELF_TEST_FAIL) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::magGeneralFault() const
+    bool CV7ContinuousBIT_IMU_Sensors::magGeneralFault() const
     {
         return get(MAG_GENERAL_FAULT) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::magOverrange() const
+    bool CV7ContinuousBIT_IMU_Sensors::magOverrange() const
     {
         return get(MAG_OVERRANGE) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::magSelfTestFail() const
+    bool CV7ContinuousBIT_IMU_Sensors::magSelfTestFail() const
     {
         return get(MAG_SELF_TEST_FAIL) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::pressureGeneralFault() const
+    bool CV7ContinuousBIT_IMU_Sensors::pressureGeneralFault() const
     {
         return get(PRESSURE_GENERAL_FAULT) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::pressureOverrange() const
+    bool CV7ContinuousBIT_IMU_Sensors::pressureOverrange() const
     {
         return get(PRESSURE_OVERRANGE) > 0;
     }
 
-    bool CV7ContinuousBIT_IMU::pressureSelfTestFail() const
+    bool CV7ContinuousBIT_IMU_Sensors::pressureSelfTestFail() const
     {
         return get(PRESSURE_SELF_TEST_FAIL) > 0;
+    }
+
+    CV7ContinuousBIT_IMU::CV7ContinuousBIT_IMU(const uint32 bits) : Bitfield(static_cast<uint64>(bits))
+    {
+        m_general = CV7ContinuousBIT_IMU_General(static_cast<uint8>(get(GENERAL_FLAGS)));
+        m_sensors = CV7ContinuousBIT_IMU_Sensors(static_cast<uint16>(get(SENSORS_FLAGS)));
+    }
+
+    uint32 CV7ContinuousBIT_IMU::flags() const
+    {
+        return static_cast<uint32>(value());
+    }
+
+    CV7ContinuousBIT_IMU_General CV7ContinuousBIT_IMU::general() const
+    {
+        return m_general;
+    }
+
+    CV7ContinuousBIT_IMU_Sensors CV7ContinuousBIT_IMU::sensors() const
+    {
+        return m_sensors;
     }
 
     bool CV7ContinuousBIT_IMU::factoryBitsInvalid() const
@@ -1261,46 +1303,61 @@ namespace mscl
         return get(FACTORY_BITS_INVALID) > 0;
     }
 
-    uint8 CV7ContinuousBIT_Filter::generalFlags() const
+    uint8 CV7ContinuousBIT_Filter_General::flags() const
     {
-        return static_cast<uint8>(get(GENERAL_FLAGS));
+        return static_cast<uint8>(value());
     }
 
-    bool CV7ContinuousBIT_Filter::fault() const
+    bool CV7ContinuousBIT_Filter_General::fault() const
     {
         return get(FAULT) > 0;
     }
 
-    bool CV7ContinuousBIT_Filter::timingOverrun() const
+    bool CV7ContinuousBIT_Filter_General::timingOverrun() const
     {
         return get(TIMING_OVERRUN) > 0;
     }
 
-    bool CV7ContinuousBIT_Filter::timingUnderrun() const
+    bool CV7ContinuousBIT_Filter_General::timingUnderrun() const
     {
         return get(TIMING_UNDERRUN) > 0;
+    }
+
+    CV7ContinuousBIT_Filter::CV7ContinuousBIT_Filter(const uint32 bits) : Bitfield(static_cast<uint64>(bits))
+    {
+        m_general = CV7ContinuousBIT_Filter_General(static_cast<uint8>(get(GENERAL_FLAGS)));
+    }
+
+    uint32 CV7ContinuousBIT_Filter::flags() const
+    {
+        return static_cast<uint32>(value());
+    }
+
+    CV7ContinuousBIT_Filter_General CV7ContinuousBIT_Filter::general() const
+    {
+        return m_general;
     }
 
     CV7ContinuousBIT::CV7ContinuousBIT(const Bytes bytes)
     {
         DataBuffer buffer(bytes);
-        m_systemFlags = CV7ContinuousBIT_System(buffer.read_uint32());
-        m_imuFlags    = CV7ContinuousBIT_IMU(buffer.read_uint32());
-        m_filterFlags = CV7ContinuousBIT_Filter(buffer.read_uint32());
+        m_system = CV7ContinuousBIT_System(buffer.read_uint32());
+        m_imu    = CV7ContinuousBIT_IMU(buffer.read_uint32());
+        m_filter = CV7ContinuousBIT_Filter(buffer.read_uint32());
     }
 
-    uint32 CV7ContinuousBIT::systemFlags() const
+    CV7ContinuousBIT_System CV7ContinuousBIT::system() const
     {
-        return static_cast<uint32>(m_systemFlags.value());
+        return m_system;
     }
 
-    uint32 CV7ContinuousBIT::imuFlags() const
+    CV7ContinuousBIT_IMU CV7ContinuousBIT::imu() const
     {
-        return static_cast<uint32>(m_imuFlags.value());
+        return m_imu;
     }
 
-    uint32 CV7ContinuousBIT::filterFlags() const
+    CV7ContinuousBIT_Filter CV7ContinuousBIT::filter() const
     {
-        return static_cast<uint32>(m_filterFlags.value());
+        return m_filter;
     }
 }  // namespace mscl

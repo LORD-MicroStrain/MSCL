@@ -10,14 +10,14 @@
 
 namespace mscl {
 
-public class CV7ContinuousBIT_System : Bitfield {
+public class CV7ContinuousBIT_Filter_General : Bitfield {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
 
-  internal CV7ContinuousBIT_System(global::System.IntPtr cPtr, bool cMemoryOwn) : base(msclPINVOKE.CV7ContinuousBIT_System_SWIGUpcast(cPtr), cMemoryOwn) {
+  internal CV7ContinuousBIT_Filter_General(global::System.IntPtr cPtr, bool cMemoryOwn) : base(msclPINVOKE.CV7ContinuousBIT_Filter_General_SWIGUpcast(cPtr), cMemoryOwn) {
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(CV7ContinuousBIT_System obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(CV7ContinuousBIT_Filter_General obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
@@ -26,7 +26,7 @@ public class CV7ContinuousBIT_System : Bitfield {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_CV7ContinuousBIT_System(swigCPtr);
+          msclPINVOKE.delete_CV7ContinuousBIT_Filter_General(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
@@ -34,32 +34,41 @@ public class CV7ContinuousBIT_System : Bitfield {
     }
   }
 
-  public CV7ContinuousBIT_System() : this(msclPINVOKE.new_CV7ContinuousBIT_System__SWIG_0(), true) {
+  public CV7ContinuousBIT_Filter_General() : this(msclPINVOKE.new_CV7ContinuousBIT_Filter_General__SWIG_0(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public CV7ContinuousBIT_System(uint bits) : this(msclPINVOKE.new_CV7ContinuousBIT_System__SWIG_1(bits), true) {
+  public CV7ContinuousBIT_Filter_General(byte bits) : this(msclPINVOKE.new_CV7ContinuousBIT_Filter_General__SWIG_1(bits), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public uint flags() {
-    uint ret = msclPINVOKE.CV7ContinuousBIT_System_flags(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public CV7ContinuousBIT_System_General general() {
-    CV7ContinuousBIT_System_General ret = new CV7ContinuousBIT_System_General(msclPINVOKE.CV7ContinuousBIT_System_general(swigCPtr), true);
+  public byte flags() {
+    byte ret = msclPINVOKE.CV7ContinuousBIT_Filter_General_flags(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public CV7ContinuousBIT_System_Process process() {
-    CV7ContinuousBIT_System_Process ret = new CV7ContinuousBIT_System_Process(msclPINVOKE.CV7ContinuousBIT_System_process(swigCPtr), true);
+  public bool fault() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_Filter_General_fault(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  public bool timingOverrun() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_Filter_General_timingOverrun(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool timingUnderrun() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_Filter_General_timingUnderrun(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static readonly byte FAULT = msclPINVOKE.CV7ContinuousBIT_Filter_General_FAULT_get();
+  public static readonly byte TIMING_OVERRUN = msclPINVOKE.CV7ContinuousBIT_Filter_General_TIMING_OVERRUN_get();
+  public static readonly byte TIMING_UNDERRUN = msclPINVOKE.CV7ContinuousBIT_Filter_General_TIMING_UNDERRUN_get();
 }
 
 }
