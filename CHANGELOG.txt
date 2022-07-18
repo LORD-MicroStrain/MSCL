@@ -16,6 +16,7 @@ REMOVED - A function/class has been removed.
 
 Forthcoming
 - Added Taiwan region code for wireless devices
+- Updated GPS Ionospheric Corrections alpha and beta value types to Vector
 
 64.3.0 - 2022-06-03
 - Added support for G-Link-200 6522-6001 (custom default configuration)
