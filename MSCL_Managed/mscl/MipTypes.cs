@@ -700,8 +700,7 @@ public class MipTypes : global::System.IDisposable {
     CH_NANOSECONDS = 111,
     CH_VALID_FLAGS = 112,
     CH_PPS_VALID = 113,
-    CH_LAST_PPS = 114,
-    CH_BUILT_IN_TEST = 115
+    CH_LAST_PPS = 114
   }
 
 }

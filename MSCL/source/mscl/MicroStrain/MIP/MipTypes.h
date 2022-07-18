@@ -1098,7 +1098,6 @@ namespace mscl
         //    CH_VALID_FLAGS                - 112 - Valid Flags
         //    CH_PPS_VALID                  - 113 - PPS Valid
         //    CH_LAST_PPS                   - 114 - Last PPS Received
-        //    CH_BUILT_IN_TEST              - 115 - Built-In Test (BIT)
         //====================================================================================================
         enum ChannelQualifier
         {
@@ -1214,8 +1213,7 @@ namespace mscl
             CH_NANOSECONDS                = 111,
             CH_VALID_FLAGS                = 112,
             CH_PPS_VALID                  = 113,
-            CH_LAST_PPS                   = 114,
-            CH_BUILT_IN_TEST              = 115
+            CH_LAST_PPS                   = 114
         };
 
         //API Typedefs:

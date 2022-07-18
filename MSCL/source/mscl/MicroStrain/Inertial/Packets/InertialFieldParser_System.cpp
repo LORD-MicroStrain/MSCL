@@ -24,7 +24,7 @@ namespace mscl
     void FieldParser_BuiltInTest::parse(const MipDataField& field, MipDataPoints& result) const
     {
         //create the data point and add it to the result container
-        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_BUILT_IN_TEST, valueType_Bytes, anyType(field.fieldData().data())));
+        result.push_back(MipDataPoint(FIELD_TYPE, MipTypes::CH_STATUS, valueType_Bytes, anyType(field.fieldData().data())));
     }
 
     bool FieldParser_BuiltInTest::registerParser()
