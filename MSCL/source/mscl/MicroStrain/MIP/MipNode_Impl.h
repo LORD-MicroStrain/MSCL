@@ -333,6 +333,48 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         virtual std::vector<uint16> getDescriptorSets() const;
 
+        //Function: getRequiredParameterDefaults
+        //  Get list of command ID, parameters vector pairs for all the available defaults for the required parameters of the specified commands
+        //  Useful for get config command bytes, save as startup, etc.
+        //
+        //Parameter:
+        //  cmds - <MipTypes::MipCommands> to get the required parameter default values for
+        //
+        //Returns:
+        //  <MipCommandParameters> - list of cmd, parameters pairs for the specified commands
+        MipCommandParameters getRequiredParameterDefaults(const MipTypes::MipCommands& cmds) const;
+
+        //Function: getRequiredParameterDefaults
+        //  Same function, just for single command ID
+        //
+        //Parameter:
+        //  cmd - <MipTypes::Command> to get the required parameter default values for
+        //
+        //Returns:
+        //  <MipCommandParameters> - list of cmd, parameters pairs for the specified command
+        MipCommandParameters getRequiredParameterDefaults(MipTypes::Command cmd) const;
+
+        //Function: getReservedWriteValues
+        //  Get list of command ID, parameters vector pairs for all the trailing reserved values for writing the specified commands
+        //  Useful for get config command bytes
+        //
+        //Parameter:
+        //  cmds - <MipTypes::MipCommands> to get the trailing reserved values for
+        //
+        //Returns:
+        //  <MipCommandParameters> - list of cmd, parameters pairs for the specified commands
+        MipCommandParameters getReservedWriteValues(const MipTypes::MipCommands& cmds) const;
+
+        //Function: getReservedWriteValues
+        //  Same function, just for single command ID
+        //
+        //Parameter:
+        //  cmd - <MipTypes::Command> to get the trailing reserved values for
+        //
+        //Returns:
+        //  <MipCommandParameters> - list of cmd, parameters pairs for the specified command
+        MipCommandParameters getReservedWriteValues(MipTypes::Command cmd) const;
+
         //Function: getConfigCommandBytes
         //    Gets the byte string for the commands to set the node's current settings.
         //

@@ -116,8 +116,14 @@ namespace mscl
         // 0x01
         case MipTypes::CMD_COMM_PORT_SPEED:
         // 0x0C
+        case MipTypes::CMD_SENSOR_MESSAGE_FORMAT:
+        case MipTypes::CMD_GNSS_MESSAGE_FORMAT:
+        case MipTypes::CMD_EF_MESSAGE_FORMAT:
         case MipTypes::CMD_MESSAGE_FORMAT:
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
+        case MipTypes::CMD_GNSS_CONSTELLATION_SETTINGS:
+        case MipTypes::CMD_GNSS_SBAS_SETTINGS:
+        case MipTypes::CMD_GNSS_ASSIST_FIX_CONTROL:
         case MipTypes::CMD_PPS_SOURCE:
         case MipTypes::CMD_EVENT_CONTROL:
         case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
@@ -125,13 +131,57 @@ namespace mscl
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_DCM:
+        case MipTypes::CMD_GPS_DYNAMICS_MODE:
+        case MipTypes::CMD_SENSOR_SIG_COND_SETTINGS:
+        case MipTypes::CMD_ACCEL_BIAS:
+        case MipTypes::CMD_GYRO_BIAS:
+        case MipTypes::CMD_MAG_HARD_IRON_OFFSET:
+        case MipTypes::CMD_MAG_SOFT_IRON_MATRIX:
+        case MipTypes::CMD_CONING_SCULLING:
+        case MipTypes::CMD_UART_BAUD_RATE:
         case MipTypes::CMD_GPIO_CONFIGURATION:
         case MipTypes::CMD_ODOMETER_SETTINGS:
+        case MipTypes::CMD_COMPLEMENTARY_FILTER_SETTINGS:
         case MipTypes::CMD_SENSOR_RANGE:
+        case MipTypes::CMD_DATA_STREAM_FORMAT:
+        case MipTypes::CMD_POWER_STATES:
+        // 0x7F
+        case MipTypes::CMD_COMMUNICATION_MODE:
         // 0x0D
+        case MipTypes::CMD_EF_VEHIC_DYNAMICS_MODE:
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_EULER:
+        case MipTypes::CMD_EF_SENS_VEHIC_FRAME_OFFSET:
+        case MipTypes::CMD_EF_ANTENNA_OFFSET:
+        case MipTypes::CMD_EF_BIAS_EST_CTRL:
+        case MipTypes::CMD_EF_GNSS_SRC_CTRL:
+        case MipTypes::CMD_EF_HEADING_UPDATE_CTRL:
+        case MipTypes::CMD_EF_AUTO_INIT_CTRL:
+        case MipTypes::CMD_EF_ACCEL_WHT_NSE_STD_DEV:
+        case MipTypes::CMD_EF_GYRO_WHT_NSE_STD_DEV:
+        case MipTypes::CMD_EF_ACCEL_BIAS_MODEL_PARAMS:
+        case MipTypes::CMD_EF_GYRO_BIAS_MODEL_PARAMS:
+        case MipTypes::CMD_EF_ZERO_VEL_UPDATE_CTRL:
+        case MipTypes::CMD_EF_ZERO_ANG_RATE_UPDATE_CTRL:
+        case MipTypes::CMD_EF_SET_REF_POSITION:
+        case MipTypes::CMD_EF_GRAVITY_NOISE_STD_DEV:
+        case MipTypes::CMD_EF_PRESS_ALT_NOISE_STD_DEV:
+        case MipTypes::CMD_EF_GRAVITY_NOISE_MINIMUM:
+        case MipTypes::CMD_EF_HARD_IRON_OFFSET_PROCESS_NOISE:
+        case MipTypes::CMD_EF_SOFT_IRON_OFFSET_PROCESS_NOISE:
+        case MipTypes::CMD_EF_ENABLE_DISABLE_MEASUREMENTS:
+        case MipTypes::CMD_EF_MAG_NOISE_STD_DEV:
+        case MipTypes::CMD_EF_DECLINATION_SRC:
+        case MipTypes::CMD_EF_GRAV_MAGNITUDE_ERR_ADAPT_MEASURE:
+        case MipTypes::CMD_EF_MAG_MAGNITUDE_ERR_ADAPT_MEASURE:
+        case MipTypes::CMD_EF_MAG_DIP_ANGLE_ERR_ADAPT_MEASURE:
+        case MipTypes::CMD_EF_ALTITUDE_AID_CTRL:
+        case MipTypes::CMD_EF_PITCH_ROLL_AID_CTRL:
+        case MipTypes::CMD_EF_INCLINATION_SRC:
+        case MipTypes::CMD_EF_FIELD_MAGNITUDE_SRC:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
         case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE:
+        case MipTypes::CMD_EF_INITIALIZATION_CONFIG:
         case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS:
         case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
         case MipTypes::CMD_EF_RELATIVE_POSITION_REF:
