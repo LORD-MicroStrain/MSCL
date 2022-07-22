@@ -1443,20 +1443,20 @@ namespace mscl
         //API Enum: AidingMeasurementTypes
         //  ID definitions when Type is <MipChannelIdentifier::AIDING_MEASUREMENT_TYPE>
         //
-        //      GNSS            - 0x01 - GNSS
-        //      DUAL_ANTENNA    - 0x02 - Dual Antenna
-        //      HEADING         - 0x03 - Heading
-        //      PRESSURE        - 0x04 - Pressure
-        //      MAGNETOMETER    - 0x05 - Magnetometer
-        //      SPEED           - 0x06 - Speed
+        //      GNSS         - 0x01 - GNSS
+        //      DUAL_ANTENNA - 0x02 - Dual Antenna
+        //      HEADING      - 0x03 - Heading
+        //      PRESSURE     - 0x04 - Pressure
+        //      MAGNETOMETER - 0x05 - Magnetometer
+        //      SPEED        - 0x06 - Speed
         enum AidingMeasurementTypes
         {
-            GNSS            = 0x01,
-            DUAL_ANTENNA    = 0x02,
-            HEADING         = 0x03,
-            PRESSURE        = 0x04,
-            MAGNETOMETER    = 0x05,
-            SPEED           = 0x06
+            GNSS         = 0x01,
+            DUAL_ANTENNA = 0x02,
+            HEADING      = 0x03,
+            PRESSURE     = 0x04,
+            MAGNETOMETER = 0x05,
+            SPEED        = 0x06
         };
 
         //API Enum: GnssConstellationIds
@@ -1479,138 +1479,138 @@ namespace mscl
         //API Enum: GnssSignalIds
         //  ID definitions when Type is <MipChannelIdentifier::GNSS_SIGNAL_ID>
         //
-        //      UNKNOWN         - 0
-        //      GPS_L1CA        - 1
-        //      GPS_L1P         - 2
-        //      GPS_L1Z         - 3
-        //      GPS_L2CA        - 4
-        //      GPS_L2P         - 5
-        //      GPS_L2Z         - 6
-        //      GPS_L2CL        - 7
-        //      GPS_L2CM        - 8
-        //      GPS_L2CML       - 9
-        //      GPS_L5I         - 10
-        //      GPS_L5Q         - 11
-        //      GPS_L5IQ        - 12
-        //      GPS_L1CD        - 13
-        //      GPS_L1CP        - 14
-        //      GPS_L1CDP       - 15
-        //      GLONASS_G1CA    - 32
-        //      GLONASS_G1P     - 33
-        //      GLONASS_G2C     - 34
-        //      GLONASS_G2P     - 35
-        //      GALILEO_E1C     - 64
-        //      GALILEO_E1A     - 65
-        //      GALILEO_E1B     - 66
-        //      GALILEO_E1BC    - 67
-        //      GALILEO_E1ABC   - 68
-        //      GALILEO_E6C     - 69
-        //      GALILEO_E6A     - 70
-        //      GALILEO_E6B     - 71
-        //      GALILEO_E6BC    - 72
-        //      GALILEO_E6ABC   - 73
-        //      GALILEO_E5BI    - 74
-        //      GALILEO_E5BQ    - 75
-        //      GALILEO_E5BIQ   - 76
-        //      GALILEO_E5ABI   - 77
-        //      GALILEO_E5ABQ   - 78
-        //      GALILEO_E5ABIQ  - 79
-        //      GALILEO_E5AI    - 80
-        //      GALILEO_E5AQ    - 81
-        //      GALILEO_E5AIQ   - 82
-        //      SBAS_L1CA       - 96
-        //      SBAS_L5I        - 97
-        //      SBAS_L5Q        - 98
-        //      SBAS_L5IQ       - 99
-        //      QZSS_L1CA       - 128
-        //      QZSS_LEXS       - 129
-        //      QZSS_LEXL       - 130
-        //      QZSS_LEXSL      - 131
-        //      QZSS_L2CM       - 132
-        //      QZSS_L2CL       - 133
-        //      QZSS_L2CML      - 134
-        //      QZSS_L5I        - 135
-        //      QZSS_L5Q        - 136
-        //      QZSS_L5IQ       - 137
-        //      QZSS_L1CD       - 138
-        //      QZSS_L1CP       - 139
-        //      QZSS_L1CDP      - 140
-        //      BEIDOU_B1I      - 160
-        //      BEIDOU_B1Q      - 161
-        //      BEIDOU_B1IQ     - 162
-        //      BEIDOU_B3I      - 163
-        //      BEIDOU_B3Q      - 164
-        //      BEIDOU_B3IQ     - 165
-        //      BEIDOU_B2I      - 166
-        //      BEIDOU_B2Q      - 167
-        //      BEIDOU_B2IQ     - 168
+        //      UNKNOWN        - 0
+        //      GPS_L1CA       - 1
+        //      GPS_L1P        - 2
+        //      GPS_L1Z        - 3
+        //      GPS_L2CA       - 4
+        //      GPS_L2P        - 5
+        //      GPS_L2Z        - 6
+        //      GPS_L2CL       - 7
+        //      GPS_L2CM       - 8
+        //      GPS_L2CML      - 9
+        //      GPS_L5I        - 10
+        //      GPS_L5Q        - 11
+        //      GPS_L5IQ       - 12
+        //      GPS_L1CD       - 13
+        //      GPS_L1CP       - 14
+        //      GPS_L1CDP      - 15
+        //      GLONASS_G1CA   - 32
+        //      GLONASS_G1P    - 33
+        //      GLONASS_G2C    - 34
+        //      GLONASS_G2P    - 35
+        //      GALILEO_E1C    - 64
+        //      GALILEO_E1A    - 65
+        //      GALILEO_E1B    - 66
+        //      GALILEO_E1BC   - 67
+        //      GALILEO_E1ABC  - 68
+        //      GALILEO_E6C    - 69
+        //      GALILEO_E6A    - 70
+        //      GALILEO_E6B    - 71
+        //      GALILEO_E6BC   - 72
+        //      GALILEO_E6ABC  - 73
+        //      GALILEO_E5BI   - 74
+        //      GALILEO_E5BQ   - 75
+        //      GALILEO_E5BIQ  - 76
+        //      GALILEO_E5ABI  - 77
+        //      GALILEO_E5ABQ  - 78
+        //      GALILEO_E5ABIQ - 79
+        //      GALILEO_E5AI   - 80
+        //      GALILEO_E5AQ   - 81
+        //      GALILEO_E5AIQ  - 82
+        //      SBAS_L1CA      - 96
+        //      SBAS_L5I       - 97
+        //      SBAS_L5Q       - 98
+        //      SBAS_L5IQ      - 99
+        //      QZSS_L1CA      - 128
+        //      QZSS_LEXS      - 129
+        //      QZSS_LEXL      - 130
+        //      QZSS_LEXSL     - 131
+        //      QZSS_L2CM      - 132
+        //      QZSS_L2CL      - 133
+        //      QZSS_L2CML     - 134
+        //      QZSS_L5I       - 135
+        //      QZSS_L5Q       - 136
+        //      QZSS_L5IQ      - 137
+        //      QZSS_L1CD      - 138
+        //      QZSS_L1CP      - 139
+        //      QZSS_L1CDP     - 140
+        //      BEIDOU_B1I     - 160
+        //      BEIDOU_B1Q     - 161
+        //      BEIDOU_B1IQ    - 162
+        //      BEIDOU_B3I     - 163
+        //      BEIDOU_B3Q     - 164
+        //      BEIDOU_B3IQ    - 165
+        //      BEIDOU_B2I     - 166
+        //      BEIDOU_B2Q     - 167
+        //      BEIDOU_B2IQ    - 168
         enum GnssSignalIds
         {
-            UNKNOWN_SIGNAL  = 0,
-            GPS_L1CA        = 1,
-            GPS_L1P         = 2,
-            GPS_L1Z         = 3,
-            GPS_L2CA        = 4,
-            GPS_L2P         = 5,
-            GPS_L2Z         = 6,
-            GPS_L2CL        = 7,
-            GPS_L2CM        = 8,
-            GPS_L2CML       = 9,
-            GPS_L5I         = 10,
-            GPS_L5Q         = 11,
-            GPS_L5IQ        = 12,
-            GPS_L1CD        = 13,
-            GPS_L1CP        = 14,
-            GPS_L1CDP       = 15,
-            GLONASS_G1CA    = 32,
-            GLONASS_G1P     = 33,
-            GLONASS_G2C     = 34,
-            GLONASS_G2P     = 35,
-            GALILEO_E1C     = 64,
-            GALILEO_E1A     = 65,
-            GALILEO_E1B     = 66,
-            GALILEO_E1BC    = 67,
-            GALILEO_E1ABC   = 68,
-            GALILEO_E6C     = 69,
-            GALILEO_E6A     = 70,
-            GALILEO_E6B     = 71,
-            GALILEO_E6BC    = 72,
-            GALILEO_E6ABC   = 73,
-            GALILEO_E5BI    = 74,
-            GALILEO_E5BQ    = 75,
-            GALILEO_E5BIQ   = 76,
-            GALILEO_E5ABI   = 77,
-            GALILEO_E5ABQ   = 78,
-            GALILEO_E5ABIQ  = 79,
-            GALILEO_E5AI    = 80,
-            GALILEO_E5AQ    = 81,
-            GALILEO_E5AIQ   = 82,
-            SBAS_L1CA       = 96,
-            SBAS_L5I        = 97,
-            SBAS_L5Q        = 98,
-            SBAS_L5IQ       = 99,
-            QZSS_L1CA       = 128,
-            QZSS_LEXS       = 129,
-            QZSS_LEXL       = 130,
-            QZSS_LEXSL      = 131,
-            QZSS_L2CM       = 132,
-            QZSS_L2CL       = 133,
-            QZSS_L2CML      = 134,
-            QZSS_L5I        = 135,
-            QZSS_L5Q        = 136,
-            QZSS_L5IQ       = 137,
-            QZSS_L1CD       = 138,
-            QZSS_L1CP       = 139,
-            QZSS_L1CDP      = 140,
-            BEIDOU_B1I      = 160,
-            BEIDOU_B1Q      = 161,
-            BEIDOU_B1IQ     = 162,
-            BEIDOU_B3I      = 163,
-            BEIDOU_B3Q      = 164,
-            BEIDOU_B3IQ     = 165,
-            BEIDOU_B2I      = 166,
-            BEIDOU_B2Q      = 167,
-            BEIDOU_B2IQ     = 168,
+            UNKNOWN_SIGNAL = 0,
+            GPS_L1CA       = 1,
+            GPS_L1P        = 2,
+            GPS_L1Z        = 3,
+            GPS_L2CA       = 4,
+            GPS_L2P        = 5,
+            GPS_L2Z        = 6,
+            GPS_L2CL       = 7,
+            GPS_L2CM       = 8,
+            GPS_L2CML      = 9,
+            GPS_L5I        = 10,
+            GPS_L5Q        = 11,
+            GPS_L5IQ       = 12,
+            GPS_L1CD       = 13,
+            GPS_L1CP       = 14,
+            GPS_L1CDP      = 15,
+            GLONASS_G1CA   = 32,
+            GLONASS_G1P    = 33,
+            GLONASS_G2C    = 34,
+            GLONASS_G2P    = 35,
+            GALILEO_E1C    = 64,
+            GALILEO_E1A    = 65,
+            GALILEO_E1B    = 66,
+            GALILEO_E1BC   = 67,
+            GALILEO_E1ABC  = 68,
+            GALILEO_E6C    = 69,
+            GALILEO_E6A    = 70,
+            GALILEO_E6B    = 71,
+            GALILEO_E6BC   = 72,
+            GALILEO_E6ABC  = 73,
+            GALILEO_E5BI   = 74,
+            GALILEO_E5BQ   = 75,
+            GALILEO_E5BIQ  = 76,
+            GALILEO_E5ABI  = 77,
+            GALILEO_E5ABQ  = 78,
+            GALILEO_E5ABIQ = 79,
+            GALILEO_E5AI   = 80,
+            GALILEO_E5AQ   = 81,
+            GALILEO_E5AIQ  = 82,
+            SBAS_L1CA      = 96,
+            SBAS_L5I       = 97,
+            SBAS_L5Q       = 98,
+            SBAS_L5IQ      = 99,
+            QZSS_L1CA      = 128,
+            QZSS_LEXS      = 129,
+            QZSS_LEXL      = 130,
+            QZSS_LEXSL     = 131,
+            QZSS_L2CM      = 132,
+            QZSS_L2CL      = 133,
+            QZSS_L2CML     = 134,
+            QZSS_L5I       = 135,
+            QZSS_L5Q       = 136,
+            QZSS_L5IQ      = 137,
+            QZSS_L1CD      = 138,
+            QZSS_L1CP      = 139,
+            QZSS_L1CDP     = 140,
+            BEIDOU_B1I     = 160,
+            BEIDOU_B1Q     = 161,
+            BEIDOU_B1IQ    = 162,
+            BEIDOU_B3I     = 163,
+            BEIDOU_B3Q     = 164,
+            BEIDOU_B3IQ    = 165,
+            BEIDOU_B2I     = 166,
+            BEIDOU_B2Q     = 167,
+            BEIDOU_B2IQ    = 168,
         };
 
         //API Enum: SbasSystemIds
@@ -1696,7 +1696,9 @@ namespace mscl
 
         //API Function: specifier
         //  Returns the optional additional specifier value.
-        //  Note: this is only valid and applicable if hasSpecifier returns true - value may be non-zero regardless.
+        //
+        //Note:
+        //  This is only valid and applicable if hasSpecifier returns true. Value may be non-zero regardless.
         uint32 specifier() const { return m_specifier; }
 
         //API Function: name
@@ -1704,7 +1706,9 @@ namespace mscl
         //
         //Parameters:
         //  standardizedFormat - specify whether the format should be left consistent for all identifier types or consolidated where relevant
-        //      Ex: <GNSS_CONSTELLATION, 2> - if true: "gnssConstellation_2", if false: "glonass"
+        //
+        //Example:
+        //  <GNSS_CONSTELLATION, 2>: true = "gnssConstellation_2", false = "glonass"
         std::string name(bool standardizedFormat = true) const;
 
     private:
