@@ -212,6 +212,10 @@ namespace mscl
         { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_AZIMUTH), "satStatus_azimuth" },
         { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_HEALTH), "satStatus_satelliteHealth" },
 
+        { ChannelId(CH_FIELD_GNSS_RF_ERROR_DETECTION, CH_RF_BAND), "rfError_rfBand" },
+        { ChannelId(CH_FIELD_GNSS_RF_ERROR_DETECTION, CH_JAMMING_STATE), "rfError_jammingState" },
+        { ChannelId(CH_FIELD_GNSS_RF_ERROR_DETECTION, CH_SPOOFING_STATE), "rfError_spoofingState" },
+
         { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_INDEX), "rawObs_index" },
         { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_COUNT), "rawObs_count" },
         { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_TIME_OF_WEEK), "rawObs_tow" },

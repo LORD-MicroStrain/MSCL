@@ -683,6 +683,57 @@ namespace mscl
             OVERRANGE_MAG_Z       = 0x0400, // Mag Z
             OVERRANGE_PRESSURE    = 0x1000, // Pressure
         };
+
+        //============================================================================================================
+        //API Enums: RFBand
+        //    The RF Band of the reported information
+        //
+        //    RF_BAND_UNKNOWN - 0x00 - RF Band Unknown
+        //    RF_BAND_L1      - 0x01 - L1 RF Band
+        //    RF_BAND_L2      - 0x02 - L2 RF Band
+        //    RF_BAND_L5      - 0x05 - L5 RF Band
+        //============================================================================================================
+        enum RFBand
+        {
+            RF_BAND_UNKNOWN = 0x00, // RF Band Unknown
+            RF_BAND_L1      = 0x01, // L1 RF Band
+            RF_BAND_L2      = 0x02, // L2 RF Band
+            RF_BAND_L5      = 0x05  // L5 RF Band
+        };
+
+        //============================================================================================================
+        //API Enums: JammingState
+        //    GNSS Jamming State (as reported by the GNSS module)
+        //
+        //    JAMMING_STATE_UNKNOWN     - 0x00 - Jamming State Unknown
+        //    JAMMING_STATE_NONE        - 0x01 - No Jamming State
+        //    JAMMING_STATE_PARTIAL     - 0x02 - Partial Jamming State
+        //    JAMMING_STATE_SIGNIFICANT - 0x03 - Significant Jamming State
+        //============================================================================================================
+        enum JammingState
+        {
+            JAMMING_STATE_UNKNOWN     = 0x00, // Jamming State Unknown
+            JAMMING_STATE_NONE        = 0x01, // No Jamming State
+            JAMMING_STATE_PARTIAL     = 0x02, // Partial Jamming State
+            JAMMING_STATE_SIGNIFICANT = 0x03  // Significant Jamming State
+        };
+
+        //============================================================================================================
+        //API Enums: SpoofingState
+        //    GNSS Spoofing State (as reported by the GNSS module)
+        //
+        //    SPOOFING_STATE_UNKNOWN     - 0x00 - Spoofing State Unknown
+        //    SPOOFING_STATE_NONE        - 0x01 - No Spoofing State
+        //    SPOOFING_STATE_PARTIAL     - 0x02 - Partial Spoofing State
+        //    SPOOFING_STATE_SIGNIFICANT - 0x03 - Significant Spoofing State
+        //============================================================================================================
+        enum SpoofingState
+        {
+            SPOOFING_STATE_UNKNOWN     = 0x00, // Spoofing State Unknown
+            SPOOFING_STATE_NONE        = 0x01, // No Spoofing State
+            SPOOFING_STATE_PARTIAL     = 0x02, // Partial Spoofing State
+            SPOOFING_STATE_SIGNIFICANT = 0x03  // Significant Spoofing State
+        };
     };
 
     //API Typedef: SatellitePRNs

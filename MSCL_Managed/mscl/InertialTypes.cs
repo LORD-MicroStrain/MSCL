@@ -340,6 +340,27 @@ public class InertialTypes : global::System.IDisposable {
     OVERRANGE_PRESSURE = 0x1000
   }
 
+  public enum RFBand {
+    RF_BAND_UNKNOWN = 0x00,
+    RF_BAND_L1 = 0x01,
+    RF_BAND_L2 = 0x02,
+    RF_BAND_L5 = 0x05
+  }
+
+  public enum JammingState {
+    JAMMING_STATE_UNKNOWN = 0x00,
+    JAMMING_STATE_NONE = 0x01,
+    JAMMING_STATE_PARTIAL = 0x02,
+    JAMMING_STATE_SIGNIFICANT = 0x03
+  }
+
+  public enum SpoofingState {
+    SPOOFING_STATE_UNKNOWN = 0x00,
+    SPOOFING_STATE_NONE = 0x01,
+    SPOOFING_STATE_PARTIAL = 0x02,
+    SPOOFING_STATE_SIGNIFICANT = 0x03
+  }
+
 }
 
 }

@@ -405,6 +405,7 @@ namespace mscl
         //  CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS                      - 0x810F    - Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_CLOCK_INFO_2                              - 0x8110    - GNSS Clock Info 2
         //  CH_FIELD_GNSS_GPS_LEAP_SECONDS                          - 0x8111    - GNSS GPS Leap Seconds
+        //  CH_FIELD_GNSS_RF_ERROR_DETECTION                        - 0x8114    - GNSS RF Error Detection
         //  CH_FIELD_GNSS_SATELLITE_STATUS                          - 0x8120    - GNSS Satellite Status
         //  CH_FIELD_GNSS_RAW_OBSERVATION                           - 0x8122    - GNSS Raw Observation data
         //  CH_FIELD_GNSS_STATION_INFO                              - 0x8130    - GNSS Base Station Info
@@ -503,6 +504,7 @@ namespace mscl
         //  CH_FIELD_GNSS_1_DGNSS_CHANNEL_STATUS                    - 0x910F    - GNSS 1 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_1_CLOCK_INFO_2                            - 0x9110    - GNSS 1 Clock Info 2
         //  CH_FIELD_GNSS_1_GPS_LEAP_SECONDS                        - 0x9111    - GNSS 1 GPS Leap Seconds
+        //  CH_FIELD_GNSS_1_RF_ERROR_DETECTION                      - 0x9114    - GNSS 1 RF Error Detection
         //  CH_FIELD_GNSS_1_SATELLITE_STATUS                        - 0x9120    - GNSS 1 Satellite Status
         //  CH_FIELD_GNSS_1_RAW_OBSERVATION                         - 0x9122    - GNSS 1 Raw Observation data
         //  CH_FIELD_GNSS_1_STATION_INFO                            - 0x9130    - GNSS 1 Base Station Info
@@ -536,6 +538,7 @@ namespace mscl
         //  CH_FIELD_GNSS_2_DGNSS_CHANNEL_STATUS                    - 0x920F    - GNSS 2 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_2_CLOCK_INFO_2                            - 0x9210    - GNSS 2 Clock Info 2
         //  CH_FIELD_GNSS_2_GPS_LEAP_SECONDS                        - 0x9211    - GNSS 2 GPS Leap Seconds
+        //  CH_FIELD_GNSS_2_RF_ERROR_DETECTION                      - 0x9214    - GNSS 2 RF Error Detection
         //  CH_FIELD_GNSS_2_SATELLITE_STATUS                        - 0x9220    - GNSS 2 Satellite Status
         //  CH_FIELD_GNSS_2_RAW_OBSERVATION                         - 0x9222    - GNSS 2 Raw Observation data
         //  CH_FIELD_GNSS_2_STATION_INFO                            - 0x9230    - GNSS 2 Base Station Info
@@ -569,6 +572,7 @@ namespace mscl
         //  CH_FIELD_GNSS_3_DGNSS_CHANNEL_STATUS                    - 0x930F    - GNSS 3 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_3_CLOCK_INFO_2                            - 0x9310    - GNSS 3 Clock Info 2
         //  CH_FIELD_GNSS_3_GPS_LEAP_SECONDS                        - 0x9311    - GNSS 3 GPS Leap Seconds
+        //  CH_FIELD_GNSS_3_RF_ERROR_DETECTION                      - 0x9314    - GNSS 3 RF Error Detection
         //  CH_FIELD_GNSS_3_SATELLITE_STATUS                        - 0x9320    - GNSS 3 Satellite Status
         //  CH_FIELD_GNSS_3_RAW_OBSERVATION                         - 0x9322    - GNSS 3 Raw Observation data
         //  CH_FIELD_GNSS_3_STATION_INFO                            - 0x9330    - GNSS 3 Base Station Info
@@ -602,6 +606,7 @@ namespace mscl
         //  CH_FIELD_GNSS_4_DGNSS_CHANNEL_STATUS                    - 0x940F    - GNSS 4 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_4_CLOCK_INFO_2                            - 0x9410    - GNSS 4 Clock Info 2
         //  CH_FIELD_GNSS_4_GPS_LEAP_SECONDS                        - 0x9411    - GNSS 4 GPS Leap Seconds
+        //  CH_FIELD_GNSS_4_RF_ERROR_DETECTION                      - 0x9414    - GNSS 4 RF Error Detection
         //  CH_FIELD_GNSS_4_SATELLITE_STATUS                        - 0x9420    - GNSS 4 Satellite Status
         //  CH_FIELD_GNSS_4_RAW_OBSERVATION                         - 0x9422    - GNSS 4 Raw Observation data
         //  CH_FIELD_GNSS_4_STATION_INFO                            - 0x9430    - GNSS 4 Base Station Info
@@ -635,6 +640,7 @@ namespace mscl
         //  CH_FIELD_GNSS_5_DGNSS_CHANNEL_STATUS                    - 0x950F    - GNSS 5 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_5_CLOCK_INFO_2                            - 0x9510    - GNSS 5 Clock Info 2
         //  CH_FIELD_GNSS_5_GPS_LEAP_SECONDS                        - 0x9511    - GNSS 5 GPS Leap Seconds
+        //  CH_FIELD_GNSS_5_RF_ERROR_DETECTION                      - 0x9514    - GNSS 5 RF Error Detection
         //  CH_FIELD_GNSS_5_SATELLITE_STATUS                        - 0x9520    - GNSS 5 Satellite Status
         //  CH_FIELD_GNSS_5_RAW_OBSERVATION                         - 0x9522    - GNSS 5 Raw Observation data
         //  CH_FIELD_GNSS_5_STATION_INFO                            - 0x9530    - GNSS 5 Base Station Info
@@ -713,6 +719,7 @@ namespace mscl
             CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS                      = 0x810F,
             CH_FIELD_GNSS_CLOCK_INFO_2                              = 0x8110,
             CH_FIELD_GNSS_GPS_LEAP_SECONDS                          = 0x8111,
+            CH_FIELD_GNSS_RF_ERROR_DETECTION                        = 0x8114,
             CH_FIELD_GNSS_SATELLITE_STATUS                          = 0x8120,
             CH_FIELD_GNSS_RAW_OBSERVATION                           = 0x8122,
             CH_FIELD_GNSS_STATION_INFO                              = 0x8130,
@@ -811,6 +818,7 @@ namespace mscl
             CH_FIELD_GNSS_1_DGNSS_CHANNEL_STATUS                    = 0x910F,
             CH_FIELD_GNSS_1_CLOCK_INFO_2                            = 0x9110,
             CH_FIELD_GNSS_1_GPS_LEAP_SECONDS                        = 0x9111,
+            CH_FIELD_GNSS_1_RF_ERROR_DETECTION                      = 0x9114,
             CH_FIELD_GNSS_1_SATELLITE_STATUS                        = 0x9120,
             CH_FIELD_GNSS_1_RAW_OBSERVATION                         = 0x9122,
             CH_FIELD_GNSS_1_STATION_INFO                            = 0x9130,
@@ -844,6 +852,7 @@ namespace mscl
             CH_FIELD_GNSS_2_DGNSS_CHANNEL_STATUS                    = 0x920F,
             CH_FIELD_GNSS_2_CLOCK_INFO_2                            = 0x9210,
             CH_FIELD_GNSS_2_GPS_LEAP_SECONDS                        = 0x9211,
+            CH_FIELD_GNSS_2_RF_ERROR_DETECTION                      = 0x9214,
             CH_FIELD_GNSS_2_SATELLITE_STATUS                        = 0x9220,
             CH_FIELD_GNSS_2_RAW_OBSERVATION                         = 0x9222,
             CH_FIELD_GNSS_2_STATION_INFO                            = 0x9230,
@@ -877,6 +886,7 @@ namespace mscl
             CH_FIELD_GNSS_3_DGNSS_CHANNEL_STATUS                    = 0x930F,
             CH_FIELD_GNSS_3_CLOCK_INFO_2                            = 0x9310,
             CH_FIELD_GNSS_3_GPS_LEAP_SECONDS                        = 0x9311,
+            CH_FIELD_GNSS_3_RF_ERROR_DETECTION                      = 0x9314,
             CH_FIELD_GNSS_3_SATELLITE_STATUS                        = 0x9320,
             CH_FIELD_GNSS_3_RAW_OBSERVATION                         = 0x9322,
             CH_FIELD_GNSS_3_STATION_INFO                            = 0x9330,
@@ -910,6 +920,7 @@ namespace mscl
             CH_FIELD_GNSS_4_DGNSS_CHANNEL_STATUS                    = 0x940F,
             CH_FIELD_GNSS_4_CLOCK_INFO_2                            = 0x9410,
             CH_FIELD_GNSS_4_GPS_LEAP_SECONDS                        = 0x9411,
+            CH_FIELD_GNSS_4_RF_ERROR_DETECTION                      = 0x9414,
             CH_FIELD_GNSS_4_SATELLITE_STATUS                        = 0x9420,
             CH_FIELD_GNSS_4_RAW_OBSERVATION                         = 0x9422,
             CH_FIELD_GNSS_4_STATION_INFO                            = 0x9430,
@@ -943,6 +954,7 @@ namespace mscl
             CH_FIELD_GNSS_5_DGNSS_CHANNEL_STATUS                    = 0x950F,
             CH_FIELD_GNSS_5_CLOCK_INFO_2                            = 0x9510,
             CH_FIELD_GNSS_5_GPS_LEAP_SECONDS                        = 0x9511,
+            CH_FIELD_GNSS_5_RF_ERROR_DETECTION                      = 0x9514,
             CH_FIELD_GNSS_5_SATELLITE_STATUS                        = 0x9520,
             CH_FIELD_GNSS_5_RAW_OBSERVATION                         = 0x9522,
             CH_FIELD_GNSS_5_STATION_INFO                            = 0x9530,
@@ -1096,6 +1108,9 @@ namespace mscl
         //    CH_VALID_FLAGS                - 112 - Valid Flags
         //    CH_PPS_VALID                  - 113 - PPS Valid
         //    CH_LAST_PPS                   - 114 - Last PPS Received
+        //    CH_RF_BAND                    - 118 - RF Band
+        //    CH_JAMMING_STATE              - 119 - Jamming State
+        //    CH_SPOOFING_STATE             - 120 - Spoofing State
         //====================================================================================================
         enum ChannelQualifier
         {
@@ -1211,7 +1226,10 @@ namespace mscl
             CH_NANOSECONDS                = 111,
             CH_VALID_FLAGS                = 112,
             CH_PPS_VALID                  = 113,
-            CH_LAST_PPS                   = 114
+            CH_LAST_PPS                   = 114,
+            CH_RF_BAND                    = 118,
+            CH_JAMMING_STATE              = 119,
+            CH_SPOOFING_STATE             = 120
         };
 
         //API Typedefs:
