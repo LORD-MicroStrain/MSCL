@@ -405,6 +405,7 @@ namespace mscl
         //  CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS                      - 0x810F    - Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_CLOCK_INFO_2                              - 0x8110    - GNSS Clock Info 2
         //  CH_FIELD_GNSS_GPS_LEAP_SECONDS                          - 0x8111    - GNSS GPS Leap Seconds
+        //  CH_FIELD_GNSS_SBAS_INFO                                 - 0x8112    - GNSS SBAS Info
         //  CH_FIELD_GNSS_SATELLITE_STATUS                          - 0x8120    - GNSS Satellite Status
         //  CH_FIELD_GNSS_RAW_OBSERVATION                           - 0x8122    - GNSS Raw Observation data
         //  CH_FIELD_GNSS_STATION_INFO                              - 0x8130    - GNSS Base Station Info
@@ -503,6 +504,7 @@ namespace mscl
         //  CH_FIELD_GNSS_1_DGNSS_CHANNEL_STATUS                    - 0x910F    - GNSS 1 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_1_CLOCK_INFO_2                            - 0x9110    - GNSS 1 Clock Info 2
         //  CH_FIELD_GNSS_1_GPS_LEAP_SECONDS                        - 0x9111    - GNSS 1 GPS Leap Seconds
+        //  CH_FIELD_GNSS_1_SBAS_INFO                               - 0x9112    - GNSS 1 SBAS Info
         //  CH_FIELD_GNSS_1_SATELLITE_STATUS                        - 0x9120    - GNSS 1 Satellite Status
         //  CH_FIELD_GNSS_1_RAW_OBSERVATION                         - 0x9122    - GNSS 1 Raw Observation data
         //  CH_FIELD_GNSS_1_STATION_INFO                            - 0x9130    - GNSS 1 Base Station Info
@@ -536,6 +538,7 @@ namespace mscl
         //  CH_FIELD_GNSS_2_DGNSS_CHANNEL_STATUS                    - 0x920F    - GNSS 2 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_2_CLOCK_INFO_2                            - 0x9210    - GNSS 2 Clock Info 2
         //  CH_FIELD_GNSS_2_GPS_LEAP_SECONDS                        - 0x9211    - GNSS 2 GPS Leap Seconds
+        //  CH_FIELD_GNSS_2_SBAS_INFO                               - 0x9212    - GNSS 2 SBAS Info
         //  CH_FIELD_GNSS_2_SATELLITE_STATUS                        - 0x9220    - GNSS 2 Satellite Status
         //  CH_FIELD_GNSS_2_RAW_OBSERVATION                         - 0x9222    - GNSS 2 Raw Observation data
         //  CH_FIELD_GNSS_2_STATION_INFO                            - 0x9230    - GNSS 2 Base Station Info
@@ -569,6 +572,7 @@ namespace mscl
         //  CH_FIELD_GNSS_3_DGNSS_CHANNEL_STATUS                    - 0x930F    - GNSS 3 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_3_CLOCK_INFO_2                            - 0x9310    - GNSS 3 Clock Info 2
         //  CH_FIELD_GNSS_3_GPS_LEAP_SECONDS                        - 0x9311    - GNSS 3 GPS Leap Seconds
+        //  CH_FIELD_GNSS_3_SBAS_INFO                               - 0x9312    - GNSS 3 SBAS Info
         //  CH_FIELD_GNSS_3_SATELLITE_STATUS                        - 0x9320    - GNSS 3 Satellite Status
         //  CH_FIELD_GNSS_3_RAW_OBSERVATION                         - 0x9322    - GNSS 3 Raw Observation data
         //  CH_FIELD_GNSS_3_STATION_INFO                            - 0x9330    - GNSS 3 Base Station Info
@@ -602,6 +606,7 @@ namespace mscl
         //  CH_FIELD_GNSS_4_DGNSS_CHANNEL_STATUS                    - 0x940F    - GNSS 4 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_4_CLOCK_INFO_2                            - 0x9410    - GNSS 4 Clock Info 2
         //  CH_FIELD_GNSS_4_GPS_LEAP_SECONDS                        - 0x9411    - GNSS 4 GPS Leap Seconds
+        //  CH_FIELD_GNSS_4_SBAS_INFO                               - 0x9412    - GNSS 4 SBAS Info
         //  CH_FIELD_GNSS_4_SATELLITE_STATUS                        - 0x9420    - GNSS 4 Satellite Status
         //  CH_FIELD_GNSS_4_RAW_OBSERVATION                         - 0x9422    - GNSS 4 Raw Observation data
         //  CH_FIELD_GNSS_4_STATION_INFO                            - 0x9430    - GNSS 4 Base Station Info
@@ -635,6 +640,7 @@ namespace mscl
         //  CH_FIELD_GNSS_5_DGNSS_CHANNEL_STATUS                    - 0x950F    - GNSS 5 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_5_CLOCK_INFO_2                            - 0x9510    - GNSS 5 Clock Info 2
         //  CH_FIELD_GNSS_5_GPS_LEAP_SECONDS                        - 0x9511    - GNSS 5 GPS Leap Seconds
+        //  CH_FIELD_GNSS_5_SBAS_INFO                               - 0x9512    - GNSS 5 SBAS Info
         //  CH_FIELD_GNSS_5_SATELLITE_STATUS                        - 0x9520    - GNSS 5 Satellite Status
         //  CH_FIELD_GNSS_5_RAW_OBSERVATION                         - 0x9522    - GNSS 5 Raw Observation data
         //  CH_FIELD_GNSS_5_STATION_INFO                            - 0x9530    - GNSS 5 Base Station Info
@@ -687,7 +693,7 @@ namespace mscl
             CH_FIELD_SENSOR_TEMPERATURE_STATISTICS                  = 0x8014,
             CH_FIELD_SENSOR_RAW_AMBIENT_PRESSURE                    = 0x8016,
             CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE                 = 0x8017,
-            CH_FIELD_SENSOR_OVERRANGE_STATUS                       = 0x8018,
+            CH_FIELD_SENSOR_OVERRANGE_STATUS                        = 0x8018,
             CH_FIELD_SENSOR_ODOMETER_DATA                           = 0x8040,
             CH_FIELD_SENSOR_SHARED_EVENT_SOURCE                     = 0x80D0,
             CH_FIELD_SENSOR_SHARED_TICKS                            = 0x80D1,
@@ -713,6 +719,7 @@ namespace mscl
             CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS                      = 0x810F,
             CH_FIELD_GNSS_CLOCK_INFO_2                              = 0x8110,
             CH_FIELD_GNSS_GPS_LEAP_SECONDS                          = 0x8111,
+            CH_FIELD_GNSS_SBAS_INFO                                 = 0x8112,
             CH_FIELD_GNSS_SATELLITE_STATUS                          = 0x8120,
             CH_FIELD_GNSS_RAW_OBSERVATION                           = 0x8122,
             CH_FIELD_GNSS_STATION_INFO                              = 0x8130,
@@ -811,6 +818,7 @@ namespace mscl
             CH_FIELD_GNSS_1_DGNSS_CHANNEL_STATUS                    = 0x910F,
             CH_FIELD_GNSS_1_CLOCK_INFO_2                            = 0x9110,
             CH_FIELD_GNSS_1_GPS_LEAP_SECONDS                        = 0x9111,
+            CH_FIELD_GNSS_1_SBAS_INFO                               = 0x9112,
             CH_FIELD_GNSS_1_SATELLITE_STATUS                        = 0x9120,
             CH_FIELD_GNSS_1_RAW_OBSERVATION                         = 0x9122,
             CH_FIELD_GNSS_1_STATION_INFO                            = 0x9130,
@@ -844,6 +852,7 @@ namespace mscl
             CH_FIELD_GNSS_2_DGNSS_CHANNEL_STATUS                    = 0x920F,
             CH_FIELD_GNSS_2_CLOCK_INFO_2                            = 0x9210,
             CH_FIELD_GNSS_2_GPS_LEAP_SECONDS                        = 0x9211,
+            CH_FIELD_GNSS_2_SBAS_INFO                               = 0x9212,
             CH_FIELD_GNSS_2_SATELLITE_STATUS                        = 0x9220,
             CH_FIELD_GNSS_2_RAW_OBSERVATION                         = 0x9222,
             CH_FIELD_GNSS_2_STATION_INFO                            = 0x9230,
@@ -877,6 +886,7 @@ namespace mscl
             CH_FIELD_GNSS_3_DGNSS_CHANNEL_STATUS                    = 0x930F,
             CH_FIELD_GNSS_3_CLOCK_INFO_2                            = 0x9310,
             CH_FIELD_GNSS_3_GPS_LEAP_SECONDS                        = 0x9311,
+            CH_FIELD_GNSS_3_SBAS_INFO                               = 0x9312,
             CH_FIELD_GNSS_3_SATELLITE_STATUS                        = 0x9320,
             CH_FIELD_GNSS_3_RAW_OBSERVATION                         = 0x9322,
             CH_FIELD_GNSS_3_STATION_INFO                            = 0x9330,
@@ -910,6 +920,7 @@ namespace mscl
             CH_FIELD_GNSS_4_DGNSS_CHANNEL_STATUS                    = 0x940F,
             CH_FIELD_GNSS_4_CLOCK_INFO_2                            = 0x9410,
             CH_FIELD_GNSS_4_GPS_LEAP_SECONDS                        = 0x9411,
+            CH_FIELD_GNSS_4_SBAS_INFO                               = 0x9412,
             CH_FIELD_GNSS_4_SATELLITE_STATUS                        = 0x9420,
             CH_FIELD_GNSS_4_RAW_OBSERVATION                         = 0x9422,
             CH_FIELD_GNSS_4_STATION_INFO                            = 0x9430,
@@ -943,6 +954,7 @@ namespace mscl
             CH_FIELD_GNSS_5_DGNSS_CHANNEL_STATUS                    = 0x950F,
             CH_FIELD_GNSS_5_CLOCK_INFO_2                            = 0x9510,
             CH_FIELD_GNSS_5_GPS_LEAP_SECONDS                        = 0x9511,
+            CH_FIELD_GNSS_5_SBAS_INFO                               = 0x9512,
             CH_FIELD_GNSS_5_SATELLITE_STATUS                        = 0x9520,
             CH_FIELD_GNSS_5_RAW_OBSERVATION                         = 0x9522,
             CH_FIELD_GNSS_5_STATION_INFO                            = 0x9530,
@@ -1404,13 +1416,16 @@ namespace mscl
     {
     public:
         //API Enum: Type
-        //  Identifier type options - indicates what the <MipChannelIdentifier::id> value represents.
+        //  Identifier type options, indicates what the <MipChannelIdentifier::id> value represents.
+        //
         //      GNSS_RECEIVER_ID        - GNSS Receiver ID
-        //      GNSS_BASE_STATION_ID   - Differential GNSS Base Station ID
+        //      GNSS_BASE_STATION_ID    - Differential GNSS Base Station ID
         //      GNSS_CONSTELLATION      - GNSS Constellation ID
         //      GNSS_SATELLITE_ID       - GNSS Satellite ID
         //      GNSS_SIGNAL_ID          - GNSS Signal ID
         //      AIDING_MEASUREMENT_TYPE - Filter Aiding Measurement Type
+        //      SBAS_SYSTEM             - SBAS System ID
+        //      SBAS_SATELLITE_ID       - SBAS Satellite ID
         enum Type
         {
             // when adding to this list, be sure to add name string to TYPE_NAMES map
@@ -1420,11 +1435,14 @@ namespace mscl
             GNSS_CONSTELLATION,
             GNSS_SATELLITE_ID,
             GNSS_SIGNAL_ID,
-            AIDING_MEASUREMENT_TYPE
+            AIDING_MEASUREMENT_TYPE,
+            SBAS_SYSTEM,
+            SBAS_SATELLITE_ID
         };
 
         //API Enum: AidingMeasurementTypes
-        //  ID definitions when Type is <MipChannelIdentifier::Type::AIDING_MEASUREMENT_TYPE>
+        //  ID definitions when Type is <MipChannelIdentifier::AIDING_MEASUREMENT_TYPE>
+        //
         //      GNSS            - 0x01 - GNSS
         //      DUAL_ANTENNA    - 0x02 - Dual Antenna
         //      HEADING         - 0x03 - Heading
@@ -1442,7 +1460,8 @@ namespace mscl
         };
 
         //API Enum: GnssConstellationIds
-        //  ID definitions when Type is <MipChannelIdentifier::Type::GNSS_CONSTELLATION>
+        //  ID definitions when Type is <MipChannelIdentifier::GNSS_CONSTELLATION>
+        //
         //      UNKNOWN_CONSTELLATION - 0 - Unknown
         //      GPS                   - 1 - GPS
         //      GLONASS               - 2 - GLONASS
@@ -1458,7 +1477,8 @@ namespace mscl
         };
 
         //API Enum: GnssSignalIds
-        //  ID definitions when Type is <MipChannelIdentifier::Type::GNSS_SIGNAL_ID>
+        //  ID definitions when Type is <MipChannelIdentifier::GNSS_SIGNAL_ID>
+        //
         //      UNKNOWN         - 0
         //      GPS_L1CA        - 1
         //      GPS_L1P         - 2
@@ -1593,6 +1613,23 @@ namespace mscl
             BEIDOU_B2IQ     = 168,
         };
 
+        //API Enum: SbasSystemIds
+        //  ID definitions when Type is <MipChannelIdentifier::SBAS_SYSTEM>
+        //
+        //      UNKNOWN_SBAS_SYSTEM - 0 - Unknown
+        //      WAAS                - 1 - WAAS
+        //      EGNOS               - 2 - EGNOS
+        //      MSAS                - 3 - MSAS
+        //      GAGAN               - 4 - GAGAN
+        enum SbasSystemIds
+        {
+            UNKNOWN_SBAS_SYSTEM = 0,
+            WAAS                = 1,
+            EGNOS               = 2,
+            MSAS                = 3,
+            GAGAN               = 4
+        };
+
 #ifndef SWIG
         // Linux environments fail to automatically hash Type
         struct TypeHash
@@ -1624,21 +1661,21 @@ namespace mscl
         //  Construct MipChannelIdentifier object with specified <MipChannelIdentifier::Type> and ID values.
         //
         //Parameters:
-        //  identifierType - <MipChannelIdentifer::Type> specifies the type of identifier this represents
+        //  identifierType - specifies the type of identifier this represents
         //  id - the identifier value
-        MipChannelIdentifier(Type identiferType, uint32 id) :
-            m_type(identiferType),
+        MipChannelIdentifier(Type identifierType, uint32 id) :
+            m_type(identifierType),
             m_id(id) {}
 
         //API Constructor: MipChannelIdentifier
         //  Construct MipChannelIdentifier object with specified <MipChannelIdentifier::Type> and ID values.
         //
         //Parameters:
-        //  identifierType - <MipChannelIdentifer::Type> specifies the type of identifier this represents
+        //  identifierType - specifies the type of identifier this represents
         //  id - the identifier value
         //  specifier - the optional additional specifier
-        MipChannelIdentifier(Type identiferType, uint32 id, uint32 specifier) :
-            m_type(identiferType),
+        MipChannelIdentifier(Type identifierType, uint32 id, uint32 specifier) :
+            m_type(identifierType),
             m_id(id),
             m_specifier(specifier) {}
 

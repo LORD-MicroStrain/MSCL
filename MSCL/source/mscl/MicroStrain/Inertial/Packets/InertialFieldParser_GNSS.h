@@ -441,6 +441,50 @@ namespace mscl
         static const bool REGISTERED;
     };
 
+    //Class: FieldParser_GnssSBASInfo
+    //    The field parser for SBAS Status data
+    class FieldParser_GnssSBASInfo : public MipGnssFieldParser
+    {
+        //Constants: Valid Flag Bitmasks
+        //
+        //    TOW_VALID         - 0x01 - Time of Week flag mask
+        //    WEEK_NUMBER_VALID - 0x02 - Week Number flag mask
+        //    COUNT_VALID       - 0x10 - Count flag mask
+        //    SBAS_STATUS_VALID - 0x20 - SBAS Status flag mask
+        static constexpr uint16 TOW_VALID         = 0x01; // Time of Week flag mask
+        static constexpr uint16 WEEK_NUMBER_VALID = 0x02; // Week Number flag mask
+        static constexpr uint16 COUNT_VALID       = 0x10; // Count flag mask
+        static constexpr uint16 SBAS_STATUS_VALID = 0x20; // SBAS Status flag mask
+
+        //Constructor: FieldParser_GnssSBASInfo
+        //    Default constructor disabled
+        FieldParser_GnssSBASInfo() {}
+
+    public:
+        //Function: parse
+        //    Parses a <MipDataField> for <MipDataPoints> and stores them in the valid or invalid result vectors
+        //
+        //Parameters:
+        //    field - The <MipDataField> to parse for data points
+        //    result - The <MipDataPoints> vector to store the data points in
+        void parse(const MipDataField& field, MipDataPoints& result) const override;
+
+        //Function: registerParser
+        //    The static function that registers this parser with the list of parsers (called immediately)
+        //
+        //Returns:
+        //    True, just for assigning the REGISTERED constant to true
+        static bool registerParser();
+
+        //Constant: FIELD_TYPE
+        //    The 2-byte field type (Descriptor ID + Field ID) for this parser
+        static const MipTypes::ChannelField FIELD_TYPE;
+
+        //Constant: REGISTERED
+        //    Whether this parser is registered. This will always be true. This is used to call registerParser() immediately
+        static const bool REGISTERED;
+    };
+
     //Class: FieldParser_GnssSatelliteStatus
     //    The field parser for GNSS Satellite Status data
     class FieldParser_GnssSatelliteStatus : public MipGnssFieldParser
