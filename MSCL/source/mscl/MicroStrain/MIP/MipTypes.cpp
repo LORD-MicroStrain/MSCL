@@ -204,6 +204,14 @@ namespace mscl
 
         { ChannelId(CH_FIELD_GNSS_GPS_LEAP_SECONDS, CH_SECONDS), "gpsLeapSeconds" },
 
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_INDEX), "sbasCorr_index" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_COUNT), "sbasCorr_count" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_TIME_OF_WEEK), "sbasCorr_tow" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_WEEK_NUMBER), "sbasCorr_weekNumber" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_UDREI), "sbasCorr_udrei" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_PSEUDORANGE_CORRECTION), "sbasCorr_pseudorange" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_IONOSPHERIC_CORRECTION), "sbasCorr_ionospheric" },
+
         { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_INDEX), "satStatus_index" },
         { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_COUNT), "satStatus_count" },
         { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_TIME_OF_WEEK), "satStatus_tow" },
