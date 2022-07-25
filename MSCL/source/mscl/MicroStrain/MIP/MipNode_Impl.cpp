@@ -804,8 +804,7 @@ namespace mscl
     {
         MipCommandSet setCmds;
 
-        NEED RESPONSE DESCRIPTORS FML
-        std::vector<uint16> descriptors = { 0x0C37 }; //info().descriptors();
+        std::vector<uint16> descriptors = info().descriptors();
 
         // build command set in numeric order by command id
         std::sort(descriptors.begin(), descriptors.end());
@@ -821,6 +820,407 @@ namespace mscl
             {
                 switch (cmd)
                 {
+                case MipTypes::CMD_SENSOR_MESSAGE_FORMAT:
+                {
+                    MipTypes::DataClass dc = MipTypes::DataClass::CLASS_AHRS_IMU;
+                    uint16 sampleRateBase = getDataRateBase(dc);
+                    MipChannels chs = getMessageFormat(dc);
+                    ByteStream s = SensorMessageFormat::buildCommand_set(chs, sampleRateBase);
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_GNSS_MESSAGE_FORMAT:
+                {
+                    MipTypes::DataClass dc = MipTypes::DataClass::CLASS_GNSS;
+                    uint16 sampleRateBase = getDataRateBase(dc);
+                    MipChannels chs = getMessageFormat(dc);
+                    ByteStream s = GnssMessageFormat::buildCommand_set(chs, sampleRateBase);
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_MESSAGE_FORMAT:
+                {
+                    MipTypes::DataClass dc = MipTypes::DataClass::CLASS_ESTFILTER;
+                    uint16 sampleRateBase = getDataRateBase(dc);
+                    MipChannels chs = getMessageFormat(dc);
+                    ByteStream s = EstFilterMessageFormat::buildCommand_set(chs, sampleRateBase);
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
+                {
+                    MipCommandBytes cmdBytes(cmd);
+                    std::vector<MipFieldValues> sources;
+
+                    if (features().useLegacyIdsForEnableDataStream())
+                    {
+                        std::vector<MipTypes::DataClass> dataClasses = {
+                            MipTypes::DataClass::CLASS_AHRS_IMU,
+                            MipTypes::DataClass::CLASS_GNSS,
+                            MipTypes::DataClass::CLASS_ESTFILTER,
+                            MipTypes::DataClass::CLASS_DISPLACEMENT,
+                            MipTypes::DataClass::CLASS_GNSS1,
+                            MipTypes::DataClass::CLASS_GNSS2,
+                            MipTypes::DataClass::CLASS_GNSS3, // RTK
+                            MipTypes::DataClass::CLASS_GNSS4,
+                            MipTypes::DataClass::CLASS_GNSS5,
+                            MipTypes::DataClass::CLASS_SYSTEM
+                        };
+
+                        for (MipTypes::DataClass option : dataClasses)
+                        {
+                            if (features().supportsCategory(option))
+                            {
+                                bool enabled = isDataStreamEnabled(option);
+                                ByteStream s = ContinuousDataStream::buildCommand_set(option, enabled);
+                                cmdBytes.add(s.data());
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MipCommandParameters requiredParams = getRequiredParameterDefaults(cmd);
+                        std::vector<MipFieldValues> specifiers;
+                        for (std::pair<MipTypes::Command, MipFieldValues> paramEntry : requiredParams)
+                        {
+                            specifiers.push_back(paramEntry.second);
+                        }
+
+                        cmdBytes = buildMipCommandBytes(cmd, specifiers);
+                    }
+
+                    if (cmdBytes.valid())
+                    {
+                        setCmds.push_back(cmdBytes);
+                    }
+                }
+                break;
+                case MipTypes::CMD_GNSS_CONSTELLATION_SETTINGS:
+                {
+                    ConstellationSettingsData data = getConstellationSettings();
+                    GNSS_ConstellationSettings set = GNSS_ConstellationSettings::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_GNSS_SBAS_SETTINGS:
+                {
+                    SBASSettingsData data = getSBASSettings();
+                    SBASSettings set = SBASSettings::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_GNSS_ASSIST_FIX_CONTROL:
+                {
+                    bool enable = getGNSSAssistedFixControl();
+                    ByteStream s = GNSS_AssistedFixControl::buildCommand_set(enable);
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_GPS_DYNAMICS_MODE:
+                {
+                    std::vector<uint8> data = getUint8s(cmd);
+                    Uint8Command set = Uint8Command::MakeSetCommand(cmd, data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_DATA_STREAM_FORMAT:
+                case MipTypes::CMD_POWER_STATES:
+                {
+                    std::vector<uint8> params;
+
+                    params.push_back(static_cast<uint8>(InertialTypes::DeviceSelector::DEVICE_AHRS));
+                    std::vector<uint8> data = getUint8s(cmd, params);
+                    Uint8Command set = Uint8Command::MakeSetCommand(cmd, data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+
+                    params.clear();
+
+                    params.push_back(static_cast<uint8>(InertialTypes::DeviceSelector::DEVICE_GPS));
+                    data = getUint8s(cmd, params);
+                    set = Uint8Command::MakeSetCommand(cmd, data);
+                    s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_ENABLE_DISABLE_MEASUREMENTS:
+                {
+                    std::vector<uint16> data = getUint16s(cmd);
+                    Uint16Command set = Uint16Command::MakeSetCommand(cmd, data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_SENSOR_SIG_COND_SETTINGS:
+                {
+                    SignalConditioningValues data = getSignalConditioningSettings();
+                    SignalConditioningSettings set = SignalConditioningSettings::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_ACCEL_BIAS:
+                {
+                    GeometricVector data = getAccelerometerBias();
+                    AccelBias set = AccelBias::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_GYRO_BIAS:
+                {
+                    GeometricVector data = getGyroBias();
+                    GyroBias set = GyroBias::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_MAG_HARD_IRON_OFFSET:
+                {
+                    GeometricVector data = getMagnetometerHardIronOffset();
+                    MagnetometerHardIronOffset set = MagnetometerHardIronOffset::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_MAG_SOFT_IRON_MATRIX:
+                {
+                    Matrix_3x3 data = getMagnetometerSoftIronMatrix();
+                    MagnetometerSoftIronMatrix set = MagnetometerSoftIronMatrix::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_CONING_SCULLING:
+                {
+                    bool data = getConingAndScullingEnable();
+                    ConingAndScullingEnable set = ConingAndScullingEnable::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_UART_BAUD_RATE:
+                {
+                    uint32 data = getUARTBaudRate();
+                    UARTBaudRate set = UARTBaudRate::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_LOWPASS_FILTER_SETTINGS:
+                {
+                    MipCommandBytes cmdBytes(cmd);
+                    MipTypes::MipChannelFields supportedDescriptors = features().supportedChannelFields(MipTypes::DataClass::CLASS_AHRS_IMU);
+                    MipTypes::MipChannelFields lowpassFilterChannels = {
+                        MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_ACCEL_VEC,
+                        MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_GYRO_VEC,
+                        MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_MAG_VEC,
+                        MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE };
+
+                    for (size_t j = 0; j < lowpassFilterChannels.size(); j++)
+                    {
+                        MipTypes::ChannelField f = lowpassFilterChannels[j];
+                        if (std::find(supportedDescriptors.begin(), supportedDescriptors.end(), f) == supportedDescriptors.end())
+                        {
+                            continue;
+                        }
+
+                        AdvancedLowPassFilterData data = getAdvancedLowPassFilterSettings(f);
+                        AdvancedLowPassFilterSettings set = AdvancedLowPassFilterSettings::MakeSetCommand(data);
+                        ByteStream s = (ByteStream)set;
+                        cmdBytes.add(s.data());
+                    }
+
+                    setCmds.push_back(cmdBytes);
+                }
+                break;
+                case MipTypes::CMD_COMPLEMENTARY_FILTER_SETTINGS:
+                {
+                    ComplementaryFilterData data = getComplementaryFilterSettings();
+                    ComplementaryFilterSettings set = ComplementaryFilterSettings::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_VEHIC_DYNAMICS_MODE:
+                {
+                    InertialTypes::VehicleModeType data = getVehicleDynamicsMode();
+                    VehicleDynamicsMode set = VehicleDynamicsMode::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_EULER:
+                {
+                    EulerAngles data = getSensorToVehicleRotation();
+                    ByteStream s = SensorToVehicFrameTrans::buildCommand_set(data);
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_SENS_VEHIC_FRAME_OFFSET:
+                {
+                    PositionOffset data = getSensorToVehicleOffset();
+                    ByteStream s = SensorToVehicFrameOffset::buildCommand_set(data);
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_ANTENNA_OFFSET:
+                {
+                    PositionOffset data = getAntennaOffset();
+                    ByteStream s = AntennaOffset::buildCommand_set(data);
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_BIAS_EST_CTRL:
+                {
+                    EstimationControlOptions data = getEstimationControlFlags();
+                    EstimationControlFlags set = EstimationControlFlags::MakeSetCommand(data.AsUint16());
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_GNSS_SRC_CTRL:
+                {
+                    InertialTypes::GNSS_Source data = getGNSS_SourceControl();
+                    GNSS_SourceControl set = GNSS_SourceControl::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_HEADING_UPDATE_CTRL:
+                {
+                    HeadingUpdateOptions data = getHeadingUpdateControl();
+                    HeadingUpdateControl set = HeadingUpdateControl::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_AUTO_INIT_CTRL:
+                {
+                    bool data = getAutoInitialization();
+                    ByteStream s = AutoInitializeControl::buildCommand_set(data);
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_ACCEL_WHT_NSE_STD_DEV:
+                case MipTypes::CMD_EF_GYRO_WHT_NSE_STD_DEV:
+                case MipTypes::CMD_EF_ACCEL_BIAS_MODEL_PARAMS:
+                case MipTypes::CMD_EF_GYRO_BIAS_MODEL_PARAMS:
+                case MipTypes::CMD_EF_GRAVITY_NOISE_STD_DEV:
+                case MipTypes::CMD_EF_HARD_IRON_OFFSET_PROCESS_NOISE:
+                case MipTypes::CMD_EF_MAG_NOISE_STD_DEV:
+                case MipTypes::CMD_EF_GRAVITY_NOISE_MINIMUM:
+                {
+                    GeometricVectors data = getGeometricVectors(cmd);
+                    GeometricVectorCommand set = GeometricVectorCommand::MakeSetCommand(cmd, data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_ZERO_VEL_UPDATE_CTRL:
+                {
+                    ZUPTSettingsData data = getVelocityZUPT();
+                    ByteStream s = VelocityZUPTControl::buildCommand_set(data);
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_ZERO_ANG_RATE_UPDATE_CTRL:
+                {
+                    ZUPTSettingsData data = getAngularRateZUPT();
+                    ByteStream s = AngularRateZUPTControl::buildCommand_set(data);
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_SET_REF_POSITION:
+                {
+                    FixedReferencePositionData data = getFixedReferencePosition();
+                    SetReferencePosition set = SetReferencePosition::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_PRESS_ALT_NOISE_STD_DEV:
+                {
+                    std::vector<float> data = getFloats(cmd);
+                    FloatCommand set = FloatCommand::MakeSetCommand(cmd, data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_SOFT_IRON_OFFSET_PROCESS_NOISE:
+                {
+                    Matrix_3x3s data = getMatrix3x3s(cmd);
+                    Matrix3x3Command set = Matrix3x3Command::MakeSetCommand(cmd, data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_DECLINATION_SRC:
+                {
+                    GeographicSourceOptions data = getDeclinationSource();
+                    GeographicSource set = DeclinationSource::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_GRAV_MAGNITUDE_ERR_ADAPT_MEASURE:
+                case MipTypes::CMD_EF_MAG_MAGNITUDE_ERR_ADAPT_MEASURE:
+                case MipTypes::CMD_EF_MAG_DIP_ANGLE_ERR_ADAPT_MEASURE:
+                {
+                    AdaptiveMeasurementData data = getAdaptiveMeasurement(cmd);
+                    AdaptiveMeasurement set = AdaptiveMeasurement::MakeSetCommand(cmd, data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_ALTITUDE_AID_CTRL:
+                {
+                    bool data = getAltitudeAid();
+                    ByteStream s = AltitudeAidControl::buildCommand_set(data);
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_PITCH_ROLL_AID_CTRL:
+                {
+                    bool data = getPitchRollAid();
+                    ByteStream s = PitchRollAidControl::buildCommand_set(data);
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_INCLINATION_SRC:
+                {
+                    GeographicSourceOptions data = getInclinationSource();
+                    GeographicSource set = InclinationSource::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_FIELD_MAGNITUDE_SRC:
+                {
+                    GeographicSourceOptions data = getMagneticFieldMagnitudeSource();
+                    GeographicSource set = MagneticFieldMagnitudeSource::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_COMMUNICATION_MODE:
+                {
+                    uint8 data = getCommunicationMode();
+                    ByteStream s = CommunicationMode::buildCommand_set(data);
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
+                case MipTypes::CMD_EF_INITIALIZATION_CONFIG:
+                {
+                    FilterInitializationValues data = getInitialFilterConfiguration();
+                    FilterInitializationConfig set = FilterInitializationConfig::MakeSetCommand(data);
+                    ByteStream s = (ByteStream)set;
+                    setCmds.push_back(MipCommandBytes(cmd, s.data()));
+                }
+                break;
                 // Do nothing for commands not to be included in settings
                 case MipTypes::CMD_GPIO_STATE:
                 {
@@ -834,7 +1234,7 @@ namespace mscl
                     {
                         specifiers.push_back(paramEntry.second);
                     }
-                    
+
                     if (specifiers.size() <= 0)
                     {
                         specifiers.push_back({});
@@ -852,8 +1252,9 @@ namespace mscl
                     {
                         setCmds.push_back(cmdBytes);
                     }
+
+                    break;
                 }
-                break;
                 }
             }
             catch (const Error_MipCmdFailed&)
