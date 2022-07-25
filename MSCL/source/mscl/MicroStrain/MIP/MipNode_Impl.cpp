@@ -756,6 +756,7 @@ namespace mscl
                 break;
             }
             default:
+                params.push_back({ cmd, {} });
                 break;
             }
         }
@@ -1233,11 +1234,6 @@ namespace mscl
                     for (std::pair<MipTypes::Command, MipFieldValues> paramEntry : requiredParams)
                     {
                         specifiers.push_back(paramEntry.second);
-                    }
-
-                    if (specifiers.size() <= 0)
-                    {
-                        specifiers.push_back({});
                     }
 
                     MipCommandParameters reservedParams = getReservedWriteValues(cmd);
