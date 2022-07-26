@@ -339,20 +339,22 @@ namespace mscl
         //
         //Parameter:
         //  cmds - <MipTypes::MipCommands> to get the required parameter default values for
+        //  useAllParam - bool, default true - if command accepts an All parameter (usually 0) for Save/Load/Default use that instead separate entries for individual parameters
         //
         //Returns:
         //  <MipCommandParameters> - list of cmd, parameters pairs for the specified commands
-        MipCommandParameters getRequiredParameterDefaults(const MipTypes::MipCommands& cmds) const;
+        MipCommandParameters getRequiredParameterDefaults(const MipTypes::MipCommands& cmds, bool useAllParam = true) const;
 
         //Function: getRequiredParameterDefaults
         //  Same function, just for single command ID
         //
         //Parameter:
         //  cmd - <MipTypes::Command> to get the required parameter default values for
+        //  useAllParam - bool, default true - if command accepts an All parameter (usually 0) for Save/Load/Default use that instead separate entries for individual parameters
         //
         //Returns:
         //  <MipCommandParameters> - list of cmd, parameters pairs for the specified command
-        MipCommandParameters getRequiredParameterDefaults(MipTypes::Command cmd) const;
+        MipCommandParameters getRequiredParameterDefaults(MipTypes::Command cmd, bool useAllParam = true) const;
 
         //Function: getReservedWriteValues
         //  Get list of command ID, parameters vector pairs for all the trailing reserved values for writing the specified commands

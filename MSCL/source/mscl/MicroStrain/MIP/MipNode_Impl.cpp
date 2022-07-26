@@ -601,13 +601,13 @@ namespace mscl
         return descriptors;
     }
 
-    MipCommandParameters MipNode_Impl::getRequiredParameterDefaults(MipTypes::Command cmd) const
+    MipCommandParameters MipNode_Impl::getRequiredParameterDefaults(MipTypes::Command cmd, bool useAllParam) const
     {
         MipTypes::MipCommands cmds = { cmd };
-        return getRequiredParameterDefaults(cmds);
+        return getRequiredParameterDefaults(cmds, useAllParam);
     }
 
-    MipCommandParameters MipNode_Impl::getRequiredParameterDefaults(const MipTypes::MipCommands& cmds) const
+    MipCommandParameters MipNode_Impl::getRequiredParameterDefaults(const MipTypes::MipCommands& cmds, bool useAllParam) const
     {
         MipCommandParameters params;
         for (MipTypes::Command cmd : cmds)
@@ -629,6 +629,12 @@ namespace mscl
             {
             case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
             {
+                if (useAllParam)
+                {
+                    params.push_back({ cmd, {Value::UINT8(0)} });
+                    break;
+                }
+
                 for (MipTypes::DataClass option : dataClasses)
                 {
                     if (features().supportsCategory(option))
@@ -649,6 +655,13 @@ namespace mscl
             }
             case MipTypes::CMD_COMM_PORT_SPEED:
             {
+                /* this is not supported in the currently released GQ7 fw - can probably be added in eventually
+                if (useAllParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT8(0) } });
+                    break;
+                }*/
+
                 CommPortInfo ports = features().getCommPortInfo();
                 for (auto& port : ports)
                 {
@@ -658,6 +671,12 @@ namespace mscl
             }
             case MipTypes::CMD_LOWPASS_FILTER_SETTINGS:
             {
+                if (useAllParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT8(0) } });
+                    break;
+                }
+
                 MipTypes::MipChannelFields supportedDescriptors = features().supportedChannelFields(MipTypes::DataClass::CLASS_AHRS_IMU);
                 MipTypes::MipChannelFields lowpassFilterChannels = {
                     MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_ACCEL_VEC,
@@ -679,6 +698,13 @@ namespace mscl
             }
             case MipTypes::CMD_MESSAGE_FORMAT:
             {
+                /* this is not supported in the currently released GQ7 fw - can probably be added in eventually
+                if (useAllParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT8(0) } });
+                    break;
+                }*/
+
                 for (MipTypes::DataClass option : dataClasses)
                 {
                     if (features().supportsCategory(option))
@@ -690,6 +716,12 @@ namespace mscl
             }
             case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE:
             {
+                if (useAllParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT16(InertialTypes::ALL_AIDING_MEASUREMENTS) } });
+                    break;
+                }
+
                 AidingMeasurementSourceOptions options = features().supportedAidingMeasurementOptions();
                 for (InertialTypes::AidingMeasurementSource option : options)
                 {
@@ -716,6 +748,12 @@ namespace mscl
             }
             case MipTypes::CMD_GPIO_CONFIGURATION:
             {
+                if (useAllParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT8(0) } });
+                    break;
+                }
+
                 GpioPinOptions gpioOptions = features().supportedGpioConfigurations();
                 for (auto& kv : gpioOptions)
                 {
@@ -726,6 +764,12 @@ namespace mscl
             }
             case MipTypes::CMD_SENSOR_RANGE:
             {
+                if (useAllParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT8(SensorRange::ALL) } });
+                    break;
+                }
+
                 SupportedSensorRanges supportedRanges = features().supportedSensorRanges();
                 for (auto& kv : supportedRanges.options())
                 {
@@ -737,6 +781,12 @@ namespace mscl
             case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
             case MipTypes::CMD_EVENT_CONTROL:
             {
+                if (useAllParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT8(0) } });
+                    break;
+                }
+
                 EventSupportInfo info = features().supportedEventTriggerInfo();
                 std::vector<MipFieldValues> specifiers;
                 for (uint8_t id = 1; id <= info.maxInstances; id++)
@@ -747,6 +797,12 @@ namespace mscl
             }
             case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
             {
+                if (useAllParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT8(0) } });
+                    break;
+                }
+
                 EventSupportInfo info = features().supportedEventActionInfo();
                 std::vector<MipFieldValues> specifiers;
                 for (uint8_t id = 1; id <= info.maxInstances; id++)
@@ -880,7 +936,7 @@ namespace mscl
                     }
                     else
                     {
-                        MipCommandParameters requiredParams = getRequiredParameterDefaults(cmd);
+                        MipCommandParameters requiredParams = getRequiredParameterDefaults(cmd, false);
                         std::vector<MipFieldValues> specifiers;
                         for (std::pair<MipTypes::Command, MipFieldValues> paramEntry : requiredParams)
                         {
@@ -1229,7 +1285,7 @@ namespace mscl
                 }
                 default:
                 {
-                    MipCommandParameters requiredParams = getRequiredParameterDefaults(cmd);
+                    MipCommandParameters requiredParams = getRequiredParameterDefaults(cmd, false);
                     std::vector<MipFieldValues> specifiers;
                     for (std::pair<MipTypes::Command, MipFieldValues> paramEntry : requiredParams)
                     {

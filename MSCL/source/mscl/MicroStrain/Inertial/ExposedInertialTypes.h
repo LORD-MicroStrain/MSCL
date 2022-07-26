@@ -491,6 +491,7 @@ namespace mscl
         //API Enum: AidingMeasurementSource
         //    The enum to represent the different available aiding measurement sources
         //
+        //      ALL_AIDING_MEASUREMENTS - 0xFFFF
         //      GNSS_POS_VEL_AIDING     - 0x0000
         //      GNSS_HEADING_AIDING     - 0x0001
         //      ALTIMETER_AIDING        - 0x0002
@@ -499,6 +500,7 @@ namespace mscl
         //      EXTERNAL_HEADING_AIDING - 0x0005
         enum AidingMeasurementSource
         {
+            ALL_AIDING_MEASUREMENTS = 0xFFFF,
             GNSS_POS_VEL_AIDING = 0x0000,
             GNSS_HEADING_AIDING = 0x0001,
             ALTIMETER_AIDING = 0x0002,
