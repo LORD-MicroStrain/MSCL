@@ -610,6 +610,10 @@ namespace mscl
     MipCommandParameters MipNode_Impl::getRequiredParameterDefaults(const MipTypes::MipCommands& cmds, bool useAllParam) const
     {
         MipCommandParameters params;
+        
+        //all param will not work for any device that uses legacy data set identifiers for datastream control
+        bool legacyDevice = features().useLegacyIdsForEnableDataStream();
+        bool allParam = useAllParam && !legacyDevice;
         for (MipTypes::Command cmd : cmds)
         {
             std::vector<MipTypes::DataClass> dataClasses = {
@@ -629,7 +633,7 @@ namespace mscl
             {
             case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
             {
-                if (useAllParam)
+                if (allParam)
                 {
                     params.push_back({ cmd, {Value::UINT8(0)} });
                     break;
@@ -639,7 +643,7 @@ namespace mscl
                 {
                     if (features().supportsCategory(option))
                     {
-                        uint8 desc = features().useLegacyIdsForEnableDataStream() ? ContinuousDataStream::getDeviceSelector(option) : static_cast<uint8>(option);
+                        uint8 desc = legacyDevice ? ContinuousDataStream::getDeviceSelector(option) : static_cast<uint8>(option);
                         params.push_back({ cmd, { Value::UINT8(static_cast<uint8>(desc)) } });
                     }
                 }
@@ -656,7 +660,7 @@ namespace mscl
             case MipTypes::CMD_COMM_PORT_SPEED:
             {
                 /* this is not supported in the currently released GQ7 fw - can probably be added in eventually
-                if (useAllParam)
+                if (allParam)
                 {
                     params.push_back({ cmd,{ Value::UINT8(0) } });
                     break;
@@ -671,7 +675,7 @@ namespace mscl
             }
             case MipTypes::CMD_LOWPASS_FILTER_SETTINGS:
             {
-                if (useAllParam)
+                if (allParam)
                 {
                     params.push_back({ cmd,{ Value::UINT8(0) } });
                     break;
@@ -699,7 +703,7 @@ namespace mscl
             case MipTypes::CMD_MESSAGE_FORMAT:
             {
                 /* this is not supported in the currently released GQ7 fw - can probably be added in eventually
-                if (useAllParam)
+                if (allParam)
                 {
                     params.push_back({ cmd,{ Value::UINT8(0) } });
                     break;
@@ -716,7 +720,7 @@ namespace mscl
             }
             case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE:
             {
-                if (useAllParam)
+                if (allParam)
                 {
                     params.push_back({ cmd,{ Value::UINT16(InertialTypes::ALL_AIDING_MEASUREMENTS) } });
                     break;
@@ -748,7 +752,7 @@ namespace mscl
             }
             case MipTypes::CMD_GPIO_CONFIGURATION:
             {
-                if (useAllParam)
+                if (allParam)
                 {
                     params.push_back({ cmd,{ Value::UINT8(0) } });
                     break;
@@ -764,7 +768,7 @@ namespace mscl
             }
             case MipTypes::CMD_SENSOR_RANGE:
             {
-                if (useAllParam)
+                if (allParam)
                 {
                     params.push_back({ cmd,{ Value::UINT8(SensorRange::ALL) } });
                     break;
@@ -781,7 +785,7 @@ namespace mscl
             case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
             case MipTypes::CMD_EVENT_CONTROL:
             {
-                if (useAllParam)
+                if (allParam)
                 {
                     params.push_back({ cmd,{ Value::UINT8(0) } });
                     break;
@@ -797,7 +801,7 @@ namespace mscl
             }
             case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
             {
-                if (useAllParam)
+                if (allParam)
                 {
                     params.push_back({ cmd,{ Value::UINT8(0) } });
                     break;
