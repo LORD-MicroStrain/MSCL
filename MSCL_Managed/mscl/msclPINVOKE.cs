@@ -3807,6 +3807,24 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssReceiverInfo_description_get")]
   public static extern string GnssReceiverInfo_description_get(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssReceiverInfo_module_set")]
+  public static extern void GnssReceiverInfo_module_set(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssReceiverInfo_module_get")]
+  public static extern string GnssReceiverInfo_module_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssReceiverInfo_fwId_set")]
+  public static extern void GnssReceiverInfo_fwId_set(global::System.Runtime.InteropServices.HandleRef jarg1, string jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssReceiverInfo_fwId_get")]
+  public static extern string GnssReceiverInfo_fwId_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssReceiverInfo_fwVersion_set")]
+  public static extern void GnssReceiverInfo_fwVersion_set(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssReceiverInfo_fwVersion_get")]
+  public static extern global::System.IntPtr GnssReceiverInfo_fwVersion_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GnssReceiverInfo")]
   public static extern void delete_GnssReceiverInfo(global::System.Runtime.InteropServices.HandleRef jarg1);
 
