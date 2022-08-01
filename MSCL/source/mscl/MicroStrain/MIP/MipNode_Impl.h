@@ -339,18 +339,19 @@ namespace mscl
         //
         //Parameter:
         //  cmds - <MipTypes::MipCommands> to get the required parameter default values for
-        //  useAllParam - bool, default true - if command accepts an All parameter (usually 0) for Save/Load/Default use that instead separate entries for individual parameters
+        //  useAllParam - bool, default true - if command accepts an All parameter (usually 0) for Save/Load/Default use that instead of separate entries for individual parameters
         //
         //Returns:
         //  <MipCommandParameters> - list of cmd, parameters pairs for the specified commands
         MipCommandParameters getRequiredParameterDefaults(const MipTypes::MipCommands& cmds, bool useAllParam = true) const;
 
         //Function: getRequiredParameterDefaults
-        //  Same function, just for single command ID
+        //  Get list of command ID, parameters vector pairs for all the available defaults for the required parameters of the specified command
+        //  Useful for get config command bytes, save as startup, etc.
         //
         //Parameter:
         //  cmd - <MipTypes::Command> to get the required parameter default values for
-        //  useAllParam - bool, default true - if command accepts an All parameter (usually 0) for Save/Load/Default use that instead separate entries for individual parameters
+        //  useAllParam - bool, default true - if command accepts an All parameter (usually 0) for Save/Load/Default use that instead of separate entries for individual parameters
         //
         //Returns:
         //  <MipCommandParameters> - list of cmd, parameters pairs for the specified command
@@ -368,7 +369,8 @@ namespace mscl
         MipCommandParameters getReservedWriteValues(const MipTypes::MipCommands& cmds) const;
 
         //Function: getReservedWriteValues
-        //  Same function, just for single command ID
+        //  Get list of command ID, parameters vector pairs for all the trailing reserved values for writing the specified command
+        //  Useful for get config command bytes
         //
         //Parameter:
         //  cmd - <MipTypes::Command> to get the trailing reserved values for

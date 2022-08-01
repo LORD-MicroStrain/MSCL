@@ -163,7 +163,7 @@ namespace mscl
 
     void MipNode::saveSettingsAsStartup(MipTypes::MipCommands cmdIds)
     {
-        MipCommandParameters cmdParams = m_impl->getRequiredParameterDefaults(cmdIds);
+        const MipCommandParameters cmdParams = m_impl->getRequiredParameterDefaults(cmdIds);
         saveSettingsAsStartup(cmdParams);
     }
 
@@ -183,7 +183,7 @@ namespace mscl
 
     void MipNode::loadStartupSettings(MipTypes::MipCommands cmdIds)
     {
-        MipCommandParameters cmdParams = m_impl->getRequiredParameterDefaults(cmdIds);
+        const MipCommandParameters cmdParams = m_impl->getRequiredParameterDefaults(cmdIds);
         loadStartupSettings(cmdParams);
     }
 
@@ -204,7 +204,7 @@ namespace mscl
     void MipNode::loadFactoryDefaultSettings(MipTypes::MipCommands cmdIds)
     {
 
-        MipCommandParameters cmdParams = m_impl->getRequiredParameterDefaults(cmdIds);
+        const MipCommandParameters cmdParams = m_impl->getRequiredParameterDefaults(cmdIds);
         loadFactoryDefaultSettings(cmdParams);
     }
 

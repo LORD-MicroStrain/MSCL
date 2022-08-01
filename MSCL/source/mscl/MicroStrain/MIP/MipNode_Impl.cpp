@@ -609,6 +609,19 @@ namespace mscl
 
     MipCommandParameters MipNode_Impl::getRequiredParameterDefaults(const MipTypes::MipCommands& cmds, bool useAllParam) const
     {
+        const std::vector<MipTypes::DataClass> dataClasses = {
+            MipTypes::DataClass::CLASS_AHRS_IMU,
+            MipTypes::DataClass::CLASS_GNSS,
+            MipTypes::DataClass::CLASS_ESTFILTER,
+            MipTypes::DataClass::CLASS_DISPLACEMENT,
+            MipTypes::DataClass::CLASS_GNSS1,
+            MipTypes::DataClass::CLASS_GNSS2,
+            MipTypes::DataClass::CLASS_GNSS3, // RTK
+            MipTypes::DataClass::CLASS_GNSS4,
+            MipTypes::DataClass::CLASS_GNSS5,
+            MipTypes::DataClass::CLASS_SYSTEM
+        };
+
         MipCommandParameters params;
         
         //all param will not work for any device that uses legacy data set identifiers for datastream control
@@ -616,19 +629,6 @@ namespace mscl
         bool allParam = useAllParam && !legacyDevice;
         for (MipTypes::Command cmd : cmds)
         {
-            std::vector<MipTypes::DataClass> dataClasses = {
-                MipTypes::DataClass::CLASS_AHRS_IMU,
-                MipTypes::DataClass::CLASS_GNSS,
-                MipTypes::DataClass::CLASS_ESTFILTER,
-                MipTypes::DataClass::CLASS_DISPLACEMENT,
-                MipTypes::DataClass::CLASS_GNSS1,
-                MipTypes::DataClass::CLASS_GNSS2,
-                MipTypes::DataClass::CLASS_GNSS3, // RTK
-                MipTypes::DataClass::CLASS_GNSS4,
-                MipTypes::DataClass::CLASS_GNSS5,
-                MipTypes::DataClass::CLASS_SYSTEM
-            };
-
             switch (cmd)
             {
             case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
@@ -667,7 +667,7 @@ namespace mscl
                 }*/
 
                 CommPortInfo ports = features().getCommPortInfo();
-                for (auto& port : ports)
+                for (DeviceCommPort& port : ports)
                 {
                     params.push_back({ cmd, { Value::UINT8(port.id) } });
                 }
@@ -792,7 +792,6 @@ namespace mscl
                 }
 
                 EventSupportInfo info = features().supportedEventTriggerInfo();
-                std::vector<MipFieldValues> specifiers;
                 for (uint8_t id = 1; id <= info.maxInstances; id++)
                 {
                     params.push_back({ cmd, { Value::UINT8(id) } });
@@ -808,7 +807,6 @@ namespace mscl
                 }
 
                 EventSupportInfo info = features().supportedEventActionInfo();
-                std::vector<MipFieldValues> specifiers;
                 for (uint8_t id = 1; id <= info.maxInstances; id++)
                 {
                     params.push_back({ cmd, { Value::UINT8(id) } });
@@ -911,11 +909,10 @@ namespace mscl
                 case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
                 {
                     MipCommandBytes cmdBytes(cmd);
-                    std::vector<MipFieldValues> sources;
 
                     if (features().useLegacyIdsForEnableDataStream())
                     {
-                        std::vector<MipTypes::DataClass> dataClasses = {
+                        const std::vector<MipTypes::DataClass> dataClasses = {
                             MipTypes::DataClass::CLASS_AHRS_IMU,
                             MipTypes::DataClass::CLASS_GNSS,
                             MipTypes::DataClass::CLASS_ESTFILTER,
