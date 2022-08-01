@@ -252,6 +252,7 @@ namespace mscl
             case WirelessTypes::region_china:
             case WirelessTypes::region_southAfrica:
             case WirelessTypes::region_indonesia:
+            case WirelessTypes::region_taiwan:
             default:
             {
                 //if firmware supports 20dBm
@@ -340,6 +341,7 @@ namespace mscl
             case WirelessTypes::region_china:
             case WirelessTypes::region_southAfrica:
             case WirelessTypes::region_indonesia:
+            case WirelessTypes::region_taiwan:
             default:
             {
                 //if firmware supports 20dBm

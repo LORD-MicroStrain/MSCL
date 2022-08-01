@@ -220,10 +220,6 @@ namespace mscl
             return "FactoryStreaming";
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
             return "ContinuousDataStream";
-        case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
-            return "EventTriggerConfiguration";
-        case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
-            return "EventActionConfiguration";
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_EULER:
             return "SensorToVehicleFrameTransformationEulerAngles";
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_TRANSFORM_QUAT:
@@ -238,6 +234,12 @@ namespace mscl
             return "EventControl";
         case MipTypes::CMD_EVENT_TRIGGER_STATUS:
             return "EventTriggerStatus";
+        case MipTypes::CMD_EVENT_ACTION_STATUS:
+            return "EventActionStatus";
+        case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
+            return "EventTriggerConfiguration";
+        case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
+            return "EventActionConfiguration";
         case MipTypes::CMD_GPIO_CONFIGURATION:
             return "GpioConfiguration";
         case MipTypes::CMD_GPIO_STATE:
@@ -299,6 +301,8 @@ namespace mscl
             return 0xB5;
         case MipTypes::CMD_EVENT_TRIGGER_STATUS:
             return 0xB6;
+        case MipTypes::CMD_EVENT_ACTION_STATUS:
+            return 0xB7;
         case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
             return 0xB8;
         case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
@@ -403,6 +407,12 @@ namespace mscl
             };
 
         case MipTypes::CMD_EVENT_TRIGGER_STATUS:
+            return{
+                ValueType::valueType_uint8, // count
+                ValueType::valueType_Vector // status info
+            };
+
+        case MipTypes::CMD_EVENT_ACTION_STATUS:
             return{
                 ValueType::valueType_uint8, // count
                 ValueType::valueType_Vector // status info
@@ -587,6 +597,12 @@ namespace mscl
             };
 
         case MipTypes::CMD_EVENT_TRIGGER_STATUS:
+            return{
+                ValueType::valueType_uint8, // type
+                ValueType::valueType_uint8  // status
+            };
+
+        case MipTypes::CMD_EVENT_ACTION_STATUS:
             return{
                 ValueType::valueType_uint8, // type
                 ValueType::valueType_uint8  // status

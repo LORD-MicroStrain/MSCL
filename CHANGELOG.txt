@@ -15,11 +15,16 @@ REMOVED - A function/class has been removed.
 ======================================================================================================
 
 Forthcoming
+- Added Taiwan region code for wireless devices
+- Updated GPS Ionospheric Corrections alpha and beta value types to Vector
+
+64.3.0 - 2022-06-03
 - Added support for G-Link-200 6522-6001 (custom default configuration)
 - Added support for MIP commands:
     - Event Support (0x0C,0x2A)
     - Event Control (0x0C,0x2B)
     - Event Trigger Status (0x0C,0x2C)
+    - Event Action Status (0x0C,0x2D)
     - Event Trigger Configuration (0x0C,0x2E)
     - Event Action Configuration (0x0C,0x2F)
     - Sensor Range (0x0C,0x52)

@@ -130,6 +130,7 @@ namespace mscl
         //  CMD_EVENT_SUPPORT                           - 0x0C2A    - Event Support
         //  CMD_EVENT_CONTROL                           - 0x0C2B    - Event Control
         //  CMD_EVENT_TRIGGER_STATUS                    - 0x0C2C    - Event Trigger Status
+        //  CMD_EVENT_ACTION_STATUS                     - 0x0C2D    - Event Action Status
         //  CMD_EVENT_TRIGGER_CONFIGURATION             - 0x0C2E    - Event Trigger Configuration
         //  CMD_EVENT_ACTION_CONFIGURATION              - 0x0C2F    - Event Action Configuration
         //  CMD_SAVE_STARTUP_SETTINGS                   - 0x0C30    - Device Startup Settings
@@ -258,6 +259,7 @@ namespace mscl
             CMD_EVENT_SUPPORT                       = 0x0C2A,
             CMD_EVENT_CONTROL                       = 0x0C2B,
             CMD_EVENT_TRIGGER_STATUS                = 0x0C2C,
+            CMD_EVENT_ACTION_STATUS                 = 0x0C2D,
             CMD_EVENT_TRIGGER_CONFIGURATION         = 0x0C2E,
             CMD_EVENT_ACTION_CONFIGURATION          = 0x0C2F,
             CMD_SAVE_STARTUP_SETTINGS               = 0x0C30,

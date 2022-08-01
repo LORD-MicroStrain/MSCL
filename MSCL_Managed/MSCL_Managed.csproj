@@ -146,8 +146,10 @@
     <Compile Include="mscl\EulerAngles.cs" />
     <Compile Include="mscl\EventActionConfiguration.cs" />
     <Compile Include="mscl\EventActionGpioParameter.cs" />
+    <Compile Include="mscl\EventActionInfo.cs" />
     <Compile Include="mscl\EventActionMessageParameter.cs" />
     <Compile Include="mscl\EventActionParameters.cs" />
+    <Compile Include="mscl\EventActionStatus.cs" />
     <Compile Include="mscl\EventControlMode.cs" />
     <Compile Include="mscl\EventInputTriggers.cs" />
     <Compile Include="mscl\EventSupportInfo.cs" />

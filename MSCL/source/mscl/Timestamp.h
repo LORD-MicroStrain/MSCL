@@ -121,6 +121,13 @@ namespace mscl
         //    The number of nanoseconds since the specified epoch
         uint64 seconds(Epoch epoch = Epoch::UNIX) const;
 
+        //API Function: storedEpoch
+        //    Gets the epoch the source value is stored in. Regardless of stored epoch, the value can be read out in both Unix and GPS.
+        //
+        //Returns:
+        //    The stored <Epoch>
+        Epoch storedEpoch() const { return m_epoch; };
+
         //API Function: str
         //    Gets a string representation of the Timestamp object in ISO 8601 Date/Time format.
         //
