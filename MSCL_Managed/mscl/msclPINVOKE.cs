@@ -957,6 +957,9 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Connection_description")]
   public static extern string Connection_description(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Connection_port")]
+  public static extern string Connection_port(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Connection_type")]
   public static extern int Connection_type(global::System.Runtime.InteropServices.HandleRef jarg1);
 
