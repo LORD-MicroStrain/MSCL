@@ -23,6 +23,8 @@ namespace mscl
         static const uint8 FIELD_DATA_BYTE            = 0x85;
 
     private:
+        friend class MipNode_Impl;
+
         ContinuousDataStream();    //disabled default constructor
 
         //Function: getDeviceSelector
