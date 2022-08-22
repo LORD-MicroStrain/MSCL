@@ -501,15 +501,18 @@ namespace mscl
             std::size_t previousPosition = 0;
 
             // Find the first delimiter
-            std::size_t found = basicString.find(delimiter);
+            std::size_t found;
 
             // Extract segments until the end of the string
-            while (found != std::string::npos)
+            do
             {
+                // Find the next delimiter
+                found = basicString.find(delimiter, previousPosition);
+
                 // Get the substring between the previous and current delimiter
                 const std::string substring = basicString.substr(previousPosition, found - previousPosition);
 
-                // Delimiter at the beginning of the string will get an empty substring
+                // Delimiter at the beginning/end of the string will get an empty substring
                 if (!substring.empty())
                 {
                     // Add the substring to the list
@@ -518,20 +521,8 @@ namespace mscl
 
                 // Set the next read position after the delimiter
                 previousPosition = found + delimiter.length();
-
-                // Find the next delimiter
-                found = basicString.find(delimiter, previousPosition);
             }
-
-            // Get the substring after the last delimiter
-            const std::string substring = basicString.substr(previousPosition);
-
-            // Delimiter at the end of the string will get an empty substring
-            if (!substring.empty())
-            {
-                // Add the substring to the list
-                segments.push_back(basicString.substr(previousPosition));
-            }
+            while(found != std::string::npos);
 
             // Return all the segments
             return segments;
