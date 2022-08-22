@@ -1098,34 +1098,41 @@ namespace mscl
         targetDataClass(target),
         description(std::move(desc))
     {
-        std::vector<std::string> segments = Utils::tokenize(description);
+        // Tokenize by comma
+        const std::vector<std::string> segments = Utils::tokenize(description);
 
-        // Get module info if it exists
-        module = !segments.empty() ? segments[0] : "Module info not found";
+        // Module info exists
+        if (!segments.empty())
+        {
+            module = segments[0];
+        }
 
-        // Get firmware info if it exists
+        // Firmware info exists
         if (segments.size() > 1)
         {
-            // Firmware has an additional identifier
-            if (!fwVersion.fromString(segments[1]))
+            // Firmware info could be whitespace delimited
+            if (fwVersion.fromString(segments[1]))
             {
-                // Set firmware identifier
-                fwId = segments[1];
+                // Tokenize by whitespace
+                const std::vector<std::string> firmwareInfo = Utils::tokenize(segments[1], " ");
 
-                // Attempt to get version number from next segment
-                fwVersion.fromString(segments.size() > 2 ? segments[2] : "0");
+                // Firmware ID found
+                if (firmwareInfo.size() > 1)
+                {
+                    fwId = firmwareInfo[0];
+                }
             }
-            // Firmware doesn't have an additional identifier
+            // Firmware info is comma delimited
+            else if (segments.size() > 2)
+            {
+                fwId = segments[1];
+                fwVersion.fromString(segments[2]);
+            }
+            // No version
             else
             {
-                fwId = "Firmware identifier not found";
+                fwId = segments[1];
             }
-        }
-        // No firmware info
-        else
-        {
-            fwId = "Firmware identifier not found";
-            fwVersion.fromString("0");
         }
     }
 

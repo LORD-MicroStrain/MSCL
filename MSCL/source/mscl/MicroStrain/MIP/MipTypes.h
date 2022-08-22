@@ -1834,15 +1834,15 @@ namespace mscl
 
         //API Variable: module
         //  ASCII name of the receiver module
-        std::string module;
+        std::string module = "Module info not found";
 
         //API Variable: fwId
         //  ASCII name of the receiver firmware identifier
-        std::string fwId;
+        std::string fwId = "Firmware identifier not found";
 
         //API Variable: fwVersion
         //  Firmware version of the receiver module
-        Version fwVersion;
+        Version fwVersion = Version(0, 0);
     };
 
     //API Typedef: GnssReceivers

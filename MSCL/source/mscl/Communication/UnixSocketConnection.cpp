@@ -23,10 +23,6 @@ namespace mscl
         return "UnixSocket, " + m_path;
     }
 
-    std::string UnixSocketConnection::port()
-    {
-    }
-
     void UnixSocketConnection::establishConnection()
     {
         //if the connection has not been established
