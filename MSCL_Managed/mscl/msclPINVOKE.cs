@@ -7035,6 +7035,12 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_setRelativePositionReference")]
   public static extern void InertialNode_setRelativePositionReference(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_getLeverArmReferenceOffset")]
+  public static extern global::System.IntPtr InertialNode_getLeverArmReferenceOffset(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_setLeverArmReferenceOffset")]
+  public static extern void InertialNode_setLeverArmReferenceOffset(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_sendExternalSpeedMeasurementUpdate")]
   public static extern void InertialNode_sendExternalSpeedMeasurementUpdate(global::System.Runtime.InteropServices.HandleRef jarg1, float jarg2, float jarg3, float jarg4);
 

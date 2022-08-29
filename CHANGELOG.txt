@@ -24,6 +24,8 @@ Forthcoming
     - Automatically detect and add required parameters for save as startup, load startup, and default settings command functions
     - Added support for MIP data:
         - Continuous Built-In Test (0xA0, 0x01)
+    - Added support for MIP commands:
+        - Reference Point Lever Arm (0x0D,0x56)
 
 64.3.0 - 2022-06-03
 - Added support for G-Link-200 6522-6001 (custom default configuration)

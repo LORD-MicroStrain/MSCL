@@ -209,6 +209,7 @@ namespace mscl
         //  CMD_EF_ADAPTIVE_FILTER_OPTIONS              - 0x0D53    - Estimation Filter - Adaptive Filter Options
         //  CMD_EF_MULTI_ANTENNA_OFFSET                 - 0x0D54    - Estimation Filter - Multi Antenna Offset
         //  CMD_EF_RELATIVE_POSITION_REF                - 0x0D55    - Estimation Filter - Reference Location for Relative Position Outputs
+        //  CMD_EF_LEVER_ARM_OFFSET_REF                 - 0x0D56    - Estimation Filter - Lever Arm Reference Offset
         //  CMD_EF_EXTERN_SPEED_UPDATE                  - 0x0D60    - Estimation Filter - External Speed Measurement Update (Input Speed Measurement)
         //  CMD_EF_SPEED_MEASUREMENT_OFFSET             - 0x0D61    - Estimation Filter - Speed Measurement Lever Arm Offset
         //  CMD_EF_VERTICAL_GYRO_CONSTRAINT             - 0x0D62    - Estimation Filter - Vertical Gyro Constraint Enable/Disable
@@ -338,6 +339,7 @@ namespace mscl
             CMD_EF_ADAPTIVE_FILTER_OPTIONS          = 0x0D53,
             CMD_EF_MULTI_ANTENNA_OFFSET             = 0x0D54,
             CMD_EF_RELATIVE_POSITION_REF            = 0x0D55,
+            CMD_EF_LEVER_ARM_OFFSET_REF             = 0x0D56,
             CMD_EF_EXTERN_SPEED_UPDATE              = 0x0D60,
             CMD_EF_SPEED_MEASUREMENT_OFFSET         = 0x0D61,
             CMD_EF_VERTICAL_GYRO_CONSTRAINT         = 0x0D62,

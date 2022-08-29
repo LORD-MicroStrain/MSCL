@@ -2224,6 +2224,32 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setRelativePositionReference(PositionReferenceConfiguration ref);
 
+        //API Function: getLeverArmReferenceOffset
+        //    Gets the currently configured lever arm reference point offset.
+        //
+        //Return:
+        //    <PositionOffset> - The current reference offset configuration.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        PositionOffset getLeverArmReferenceOffset() const;
+
+        //API Function: setLeverArmReferenceOffset
+        //    Set the lever arm offset for the reference point.
+        //
+        //Parameter:
+        //    offset - the <PositionOffset> to apply.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setLeverArmReferenceOffset(PositionOffset offset) const;
+
         //API Function: sendExternalSpeedMeasurementUpdate
         //    Sends an external speed measurement update to be used as a filter input.
         //
