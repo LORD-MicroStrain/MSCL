@@ -190,6 +190,7 @@
     <Compile Include="mscl\GnssReceiverInfo.cs" />
     <Compile Include="mscl\GnssReceivers.cs" />
     <Compile Include="mscl\GnssSignalConfiguration.cs" />
+    <Compile Include="mscl\GnssSources.cs" />
     <Compile Include="mscl\GpioBehaviorModes.cs" />
     <Compile Include="mscl\GpioConfiguration.cs" />
     <Compile Include="mscl\GpioFeatureBehaviors.cs" />

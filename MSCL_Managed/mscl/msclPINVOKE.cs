@@ -6312,6 +6312,9 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_gnssReceiverInfo")]
   public static extern global::System.IntPtr MipNodeFeatures_gnssReceiverInfo(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedGnssSources")]
+  public static extern global::System.IntPtr MipNodeFeatures_supportedGnssSources(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedSensorRanges__SWIG_0")]
   public static extern global::System.IntPtr MipNodeFeatures_supportedSensorRanges__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
 
@@ -11624,6 +11627,72 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GeographicSources")]
   public static extern void delete_GeographicSources(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_Clear")]
+  public static extern void GnssSources_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_Add")]
+  public static extern void GnssSources_Add(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_size")]
+  public static extern uint GnssSources_size(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_capacity")]
+  public static extern uint GnssSources_capacity(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_reserve")]
+  public static extern void GnssSources_reserve(global::System.Runtime.InteropServices.HandleRef jarg1, uint jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GnssSources__SWIG_0")]
+  public static extern global::System.IntPtr new_GnssSources__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GnssSources__SWIG_1")]
+  public static extern global::System.IntPtr new_GnssSources__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GnssSources__SWIG_2")]
+  public static extern global::System.IntPtr new_GnssSources__SWIG_2(int jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_getitemcopy")]
+  public static extern int GnssSources_getitemcopy(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_getitem")]
+  public static extern int GnssSources_getitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_setitem")]
+  public static extern void GnssSources_setitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_AddRange")]
+  public static extern void GnssSources_AddRange(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_GetRange")]
+  public static extern global::System.IntPtr GnssSources_GetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_Insert")]
+  public static extern void GnssSources_Insert(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_InsertRange")]
+  public static extern void GnssSources_InsertRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_RemoveAt")]
+  public static extern void GnssSources_RemoveAt(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_RemoveRange")]
+  public static extern void GnssSources_RemoveRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_Repeat")]
+  public static extern global::System.IntPtr GnssSources_Repeat(int jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_Reverse__SWIG_0")]
+  public static extern void GnssSources_Reverse__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_Reverse__SWIG_1")]
+  public static extern void GnssSources_Reverse__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSources_SetRange")]
+  public static extern void GnssSources_SetRange(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GnssSources")]
+  public static extern void delete_GnssSources(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GpioPinModeOptions_Clear")]
   public static extern void GpioPinModeOptions_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
