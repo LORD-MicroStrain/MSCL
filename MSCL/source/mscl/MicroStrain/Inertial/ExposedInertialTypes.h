@@ -497,6 +497,7 @@ namespace mscl
         //      ODOMETER_AIDING         - 0x0003
         //      MAGNETOMETER_AIDING     - 0x0004
         //      EXTERNAL_HEADING_AIDING - 0x0005
+        //      ALL_AIDING_MEASUREMENTS - 0xFFFF
         enum AidingMeasurementSource
         {
             GNSS_POS_VEL_AIDING = 0x0000,
@@ -504,7 +505,8 @@ namespace mscl
             ALTIMETER_AIDING = 0x0002,
             ODOMETER_AIDING = 0x0003,
             MAGNETOMETER_AIDING = 0x0004,
-            EXTERNAL_HEADING_AIDING = 0x0005
+            EXTERNAL_HEADING_AIDING = 0x0005,
+            ALL_AIDING_MEASUREMENTS = 0xFFFF
         };
 
         //API Enum: ConstellationId

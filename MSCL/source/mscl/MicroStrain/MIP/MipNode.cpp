@@ -163,34 +163,8 @@ namespace mscl
 
     void MipNode::saveSettingsAsStartup(MipTypes::MipCommands cmdIds)
     {
-        for (MipTypes::Command cmd : cmdIds)
-        {
-            switch (cmd)
-            {
-            case MipTypes::Command::CMD_COMM_PORT_SPEED:
-            {
-                CommPortInfo ports = features().getCommPortInfo();
-                MipCommandParameters params;
-                for (DeviceCommPort port : ports)
-                {
-                    MipFieldValues val = { Value::UINT8(port.id) };
-                    params.emplace_back(cmd, val);
-                }
-                saveSettingsAsStartup(params);
-                break;
-            }
-            case MipTypes::Command::CMD_SENSOR_RANGE:
-            {
-                // requires all param (or specify types individually)
-                m_impl->saveAsStartup(cmd, { Value::UINT8(SensorRange::Type::ALL) });
-                break;
-            }
-
-            default:
-                m_impl->saveAsStartup(cmd);
-                break;
-            }
-        }
+        const MipCommandParameters cmdParams = m_impl->getRequiredParameterDefaults(cmdIds);
+        saveSettingsAsStartup(cmdParams);
     }
 
     void MipNode::saveSettingsAsStartup(MipCommandParameters cmdParams)
@@ -209,34 +183,8 @@ namespace mscl
 
     void MipNode::loadStartupSettings(MipTypes::MipCommands cmdIds)
     {
-        for (MipTypes::Command cmd : cmdIds)
-        {
-            switch (cmd)
-            {
-            case MipTypes::Command::CMD_COMM_PORT_SPEED:
-            {
-                CommPortInfo ports = features().getCommPortInfo();
-                MipCommandParameters params;
-                for (DeviceCommPort port : ports)
-                {
-                    MipFieldValues val = { Value::UINT8(port.id) };
-                    params.emplace_back(cmd, val);
-                }
-                loadStartupSettings(params);
-                break;
-            }
-            case MipTypes::Command::CMD_SENSOR_RANGE:
-            {
-                // requires all param (or specify types individually)
-                m_impl->loadStartup(cmd, { Value::UINT8(SensorRange::Type::ALL) });
-                break;
-            }
-
-            default:
-                m_impl->loadStartup(cmd);
-                break;
-            }
-        }
+        const MipCommandParameters cmdParams = m_impl->getRequiredParameterDefaults(cmdIds);
+        loadStartupSettings(cmdParams);
     }
 
     void MipNode::loadStartupSettings(MipCommandParameters cmdParams)
@@ -255,34 +203,9 @@ namespace mscl
 
     void MipNode::loadFactoryDefaultSettings(MipTypes::MipCommands cmdIds)
     {
-        for (MipTypes::Command cmd : cmdIds)
-        {
-            switch (cmd)
-            {
-            case MipTypes::Command::CMD_COMM_PORT_SPEED:
-            {
-                CommPortInfo ports = features().getCommPortInfo();
-                MipCommandParameters params;
-                for (DeviceCommPort port : ports)
-                {
-                    MipFieldValues val = { Value::UINT8(port.id) };
-                    params.emplace_back(cmd, val);
-                }
-                loadFactoryDefaultSettings(params);
-                break;
-            }
-            case MipTypes::Command::CMD_SENSOR_RANGE:
-            {
-                // requires all param (or specify types individually)
-                m_impl->loadDefault(cmd, { Value::UINT8(SensorRange::Type::ALL) });
-                break;
-            }
 
-            default:
-                m_impl->loadDefault(cmd);
-                break;
-            }
-        }
+        const MipCommandParameters cmdParams = m_impl->getRequiredParameterDefaults(cmdIds);
+        loadFactoryDefaultSettings(cmdParams);
     }
 
     void MipNode::loadFactoryDefaultSettings(MipCommandParameters cmdParams)
