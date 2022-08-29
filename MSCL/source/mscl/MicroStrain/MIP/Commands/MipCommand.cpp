@@ -184,6 +184,7 @@ namespace mscl
 
         switch (m_commandId)
         {
+            // 0x0C
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
         case MipTypes::CMD_GET_BASE_RATE:
         case MipTypes::CMD_MESSAGE_FORMAT:
@@ -192,6 +193,8 @@ namespace mscl
         case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
         case MipTypes::CMD_SENSOR_RANGE:
         case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
+            // 0x0D
+        case MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF:
             // check that the identifier is echoed back in the response
             matchData.emplace(0, m_data[0]);
             break;
