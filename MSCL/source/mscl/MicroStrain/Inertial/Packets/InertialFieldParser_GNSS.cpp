@@ -941,14 +941,14 @@ namespace mscl
         {
             alphaData.append_double(bytes.read_double());
         }
-        Matrix alpha(2, 2, valueType_double, alphaData);
+        Vector alpha(valueType_double, alphaData);
 
         ByteStream betaData;
         for (int i = 0; i < 4; i++)
         {
             betaData.append_double(bytes.read_double());
         }
-        Matrix beta(2, 2, valueType_double, betaData);
+        Vector beta(valueType_double, betaData);
 
         //get the valid flags
         uint16 flags = bytes.read_uint16();
@@ -964,8 +964,8 @@ namespace mscl
         //add data points for the values we just collected
         result.push_back(MipDataPoint(chField, MipTypes::CH_TIME_OF_WEEK, valueType_double, anyType(timeOfWeek), timeOfWeekValid));
         result.push_back(MipDataPoint(chField, MipTypes::CH_WEEK_NUMBER, valueType_uint16, anyType(weekNumber), weekNumberValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_ALPHA, valueType_Matrix, anyType(alpha), alphaValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_BETA, valueType_Matrix, anyType(beta), betaValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_ALPHA, valueType_Vector, anyType(alpha), alphaValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_BETA, valueType_Vector, anyType(beta), betaValid));
     }
 
     bool FieldParser_GPSIonosphericCorrection::registerParser()
