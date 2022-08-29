@@ -653,7 +653,7 @@ namespace mscl
         //  CH_FIELD_GNSS_5_SHARED_DELTA_REFERENCE_TIME             - 0x95D6    - Delta Internal Reference Time
         //  CH_FIELD_GNSS_5_SHARED_EXTERNAL_TIMESTAMP               - 0x95D7    - External Timestamp
         //  CH_FIELD_GNSS_5_SHARED_DELTA_EXTERNAL_TIME              - 0x95D8    - Delta External Time
-        //  CH_FIELD_SYSTEM_BUILT_IN_TEST                           - 0xA001    - Built-In Test (BITS)
+        //  CH_FIELD_SYSTEM_BUILT_IN_TEST                           - 0xA001    - Built-In Test (BIT)
         //  CH_FIELD_SYSTEM_TIME_SYNC_STATUS                        - 0xA002    - Time Sync Status
         //  CH_FIELD_SYSTEM_GPIO_STATE                              - 0xA003    - GPIO State
         //  CH_FIELD_SYSTEM_SHARED_EVENT_SOURCE                     - 0xA0D0    - Event Source

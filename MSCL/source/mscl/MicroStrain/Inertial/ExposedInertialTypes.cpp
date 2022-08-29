@@ -1121,14 +1121,14 @@ namespace mscl
         return get(IMU_PROCESS_FAULT) > 0;
     }
 
-    bool CV7ContinuousBIT_System_Process::imuDataRateMismatch() const
+    bool CV7ContinuousBIT_System_Process::imuRateMismatch() const
     {
-        return get(IMU_DATA_RATE_MISMATCH) > 0;
+        return get(IMU_RATE_MISMATCH) > 0;
     }
 
-    bool CV7ContinuousBIT_System_Process::imuOverrunDroppedData() const
+    bool CV7ContinuousBIT_System_Process::imuDroppedData() const
     {
-        return get(IMU_OVERRUN_DROPPED_DATA) > 0;
+        return get(IMU_DROPPED_DATA) > 0;
     }
 
     bool CV7ContinuousBIT_System_Process::imuStuck() const
@@ -1338,9 +1338,10 @@ namespace mscl
         return m_general;
     }
 
-    CV7ContinuousBIT::CV7ContinuousBIT(const Bytes bytes)
+    CV7ContinuousBIT::CV7ContinuousBIT(const Bytes bytes) :
+        m_data(bytes)
     {
-        DataBuffer buffer(bytes);
+        DataBuffer buffer(m_data);
         m_system = CV7ContinuousBIT_System(buffer.read_uint32());
         m_imu    = CV7ContinuousBIT_IMU(buffer.read_uint32());
         m_filter = CV7ContinuousBIT_Filter(buffer.read_uint32());
@@ -1359,5 +1360,10 @@ namespace mscl
     CV7ContinuousBIT_Filter CV7ContinuousBIT::filter() const
     {
         return m_filter;
+    }
+
+    const Bytes& CV7ContinuousBIT::data() const
+    {
+        return m_data;
     }
 }  // namespace mscl

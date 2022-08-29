@@ -3352,16 +3352,16 @@ namespace mscl
         //  These masks are shifted 16 bits to the right from the original 128 bitmask to have a 0 index at bit 16
         //
         //  IMU_PROCESS_FAULT        - 0x01 - The IMU subsystem is unresponsive or not operating normally
-        //  IMU_DATA_RATE_MISMATCH   - 0x02 - Faster/slower than expected base rate
-        //  IMU_OVERRUN_DROPPED_DATA - 0x04 - At least 1 dropped frame / overrun
+        //  IMU_RATE_MISMATCH        - 0x02 - Faster/slower than expected base rate
+        //  IMU_DROPPED_DATA         - 0x04 - At least 1 dropped frame / overrun
         //  IMU_STUCK                - 0x08 - No IMU data received in 1 second
         //  FILTER_PROCESS_FAULT     - 0x10 - The Filter subsystem is unresponsive or not operating normally
         //  FILTER_DROPPED_DATA      - 0x20 - Filter samples not equal to IMU samples
         //  FILTER_RATE_MISMATCH     - 0x40 - Filter major cycle rate mismatch
         //  FILTER_STUCK             - 0x80 - No filter data received in 1 second
         static constexpr uint8 IMU_PROCESS_FAULT        = 0x01; // The IMU subsystem is unresponsive or not operating normally
-        static constexpr uint8 IMU_DATA_RATE_MISMATCH   = 0x02; // Faster/slower than expected base rate
-        static constexpr uint8 IMU_OVERRUN_DROPPED_DATA = 0x04; // At least 1 dropped frame / overrun
+        static constexpr uint8 IMU_RATE_MISMATCH        = 0x02; // Faster/slower than expected base rate
+        static constexpr uint8 IMU_DROPPED_DATA         = 0x04; // At least 1 dropped frame / overrun
         static constexpr uint8 IMU_STUCK                = 0x08; // No IMU data received in 1 second
 
         static constexpr uint8 FILTER_PROCESS_FAULT     = 0x10; // The Filter subsystem is unresponsive or not operating normally
@@ -3388,14 +3388,14 @@ namespace mscl
         //  
         //Returns:
         //  bool - true: Faster/slower than expected base rate
-        bool imuDataRateMismatch() const;
+        bool imuRateMismatch() const;
 
-        //API Function: imuOverrunDroppedData
+        //API Function: imuDroppedData
         //  Gets the value of the Imu Overrun Dropped Data bit
         //  
         //Returns:
         //  bool - true: At least 1 dropped frame / overrun
-        bool imuOverrunDroppedData() const;
+        bool imuDroppedData() const;
 
         //API Function: imuStuck
         //  Gets the value of the Imu Stuck bit
@@ -3448,6 +3448,17 @@ namespace mscl
         //  bits - Value of bits 0-31 of the original 128 bit Continuous Built-In Test flags
         CV7ContinuousBIT_System(uint32 bits);
 
+        //API Constant: RESPONSE_OFFSET
+        //  The offset of the 0 position of the value represented by this object in the overall BIT response
+        //  Value: 0 bits
+        static constexpr uint8_t RESPONSE_OFFSET = 0;
+
+        //API Constants: Bitmasks
+        //  GENERAL_FLAGS - 0x000000FF - Bitmask for general system flags (bits 0-7)
+        //  PROCESS_FLAGS - 0x00FF0000 - Bitmask for system process flags (bits 16-23)
+        static constexpr uint32 GENERAL_FLAGS = 0x000000FF; // Bitmask for general system flags (bits 0-7)
+        static constexpr uint32 PROCESS_FLAGS = 0x00FF0000; // Bitmask for system process flags (bits 16-23)
+
         //API Function: flags
         //  Gets the value of the system flags (bits 0-31)
         //
@@ -3470,15 +3481,6 @@ namespace mscl
         CV7ContinuousBIT_System_Process process() const;
 
     private:
-        //Constants: Bitmasks
-        //  GENERAL_FLAGS - 0x000000FF - Bitmask for general system flags (bits 0-7)
-        //  PROCESS_FLAGS - 0x00FF0000 - Bitmask for system process flags (bits 16-23)
-        //
-        //Note:
-        //  These masks are shifted 32 bits to the right from the original 128 bitmask to have a 0 index at bit 32
-        static constexpr uint32 GENERAL_FLAGS = 0x000000FF; // Bitmask for general system flags (bits 0-7)
-        static constexpr uint32 PROCESS_FLAGS = 0x00FF0000; // Bitmask for system process flags (bits 16-23)
-
         //Variable: m_general
         //  <CV7ContinuousBIT_System_General> information for general system flags (bits 0-7)
         CV7ContinuousBIT_System_General m_general;
@@ -3729,12 +3731,21 @@ namespace mscl
         //  bits - Value of bits 32-63 of the original 128 bit Continuous Built-In Test flags
         CV7ContinuousBIT_IMU(uint32 bits);
 
-        //API Constant: FACTORY_BITS_INVALID
-        //  FACTORY_BITS_INVALID - 0x01000000 - Factory settings invalid. Device unusable
+        //API Constant: RESPONSE_OFFSET
+        //  The offset of the 0 position of the value represented by this object in the overall BIT response
+        //  Value: 32 bits
+        static constexpr uint8_t RESPONSE_OFFSET = 32;
+
+        //Constants: Bitmasks
+        //  GENERAL_FLAGS           - 0x000000FF - Bitmask for the general IMU bit flags (bits 32-39)
+        //  SENSORS_FLAGS           - 0x00FFFF00 - Bitmask for the IMU sensors bit flags (40-55)
+        //  FACTORY_BITS_INVALID    - 0x01000000 - Factory settings invalid. Device unusable (56)
         //
         //Note:
-        //  This mask is shifted 32 bits to the right from the original 128 bitmask to have a 0 index at bit 32
-        static constexpr uint32 FACTORY_BITS_INVALID = 0x01000000; // Factory settings invalid. Device unusable
+        //  These masks are shifted 32 bits to the right from the original 128 bitmask to have a 0 index at bit 32
+        static constexpr uint32 GENERAL_FLAGS           = 0x000000FF; // Bitmask for the general IMU bit flags (bits 32-39)
+        static constexpr uint32 SENSORS_FLAGS           = 0x00FFFF00; // Bitmask for the IMU sensors bit flags (40-55)
+        static constexpr uint32 FACTORY_BITS_INVALID    = 0x01000000; // Factory settings invalid. Device unusable
 
         //API Function: flags
         //  Gets the value of the IMU flags (bits 32-63)
@@ -3765,15 +3776,6 @@ namespace mscl
         bool factoryBitsInvalid() const;
 
     private:
-        //Constants: Bitmasks
-        //  GENERAL_FLAGS - 0x000000FF - Bitmask for the general IMU bit flags (bits 32-39)
-        //  SENSORS_FLAGS - 0x00FFFF00 - Bitmask for the IMU sensors bit flags (40-55)
-        //
-        //Note:
-        //  These masks are shifted 32 bits to the right from the original 128 bitmask to have a 0 index at bit 32
-        static constexpr uint32 GENERAL_FLAGS = 0x000000FF; // Bitmask for the general IMU bit flags (bits 32-39)
-        static constexpr uint32 SENSORS_FLAGS = 0x00FFFF00; // Bitmask for the IMU sensors bit flags (40-55)
-
         //Variable: m_general
         //  <CV7ContinuousBIT_IMU_General> information for general IMU flags (bits 32-39)
         CV7ContinuousBIT_IMU_General m_general;
@@ -3855,6 +3857,20 @@ namespace mscl
         //  bits - Value of bits 64-95 of the original 128 bit Continuous Built-In Test flags
         CV7ContinuousBIT_Filter(uint32 bits);
 
+        //API Constant: RESPONSE_OFFSET
+        //  The offset of the 0 position of the value represented by this object in the overall BIT response
+        //  Value: 64 bits
+        static constexpr uint8_t RESPONSE_OFFSET = 64;
+
+        //API Constant: GENERAL_FLAGS
+        //  Bitmask for general filter flags (bits 64-71)
+        //
+        //  GENERAL_FLAGS - 0x000000FF - Bitmask for general filter flags (bits 64-71)
+        //
+        //Note:
+        //  This mask is shifted 64 bits to the right from the original 128 bitmask to have a 0 index at bit 64
+        static constexpr uint32 GENERAL_FLAGS = 0x000000FF; // Bitmask for general filter flags (bits 64-71)
+
         //API Function: flags
         //  Gets the value of the filter flags (bits 64-95)
         //
@@ -3870,13 +3886,6 @@ namespace mscl
         CV7ContinuousBIT_Filter_General general() const;
 
     private:
-        //Constant: GENERAL_FLAGS
-        //  Bitmask for general filter flags (bits 64-71)
-        //
-        //Note:
-        //  This mask is shifted 64 bits to the right from the original 128 bitmask to have a 0 index at bit 64
-        static constexpr uint32 GENERAL_FLAGS = 0x000000FF; // Bitmask for general filter flags (bits 64-71)
-
         //Variable: m_general
         //  <CV7ContinuousBIT_Filter_General> information for general filter flags (bits 64-71)
         CV7ContinuousBIT_Filter_General m_general;
@@ -3920,7 +3929,18 @@ namespace mscl
         //  <CV7ContinuousBIT_Filter> - Information for filter flags
         CV7ContinuousBIT_Filter filter() const;
 
+        //API Function: data
+        //  Gets the original <Bytes> source data (not parsed)
+        //
+        //Returns:
+        //  <Bytes> - raw source data
+        const Bytes& data() const;
+
     private:
+        //Variable: m_data
+        //  The original <Bytes> source data
+        Bytes m_data;
+
         //Variable: m_system
         //  <CV7ContinuousBIT_System> information for system flags (bits 0-31)
         CV7ContinuousBIT_System m_system;
