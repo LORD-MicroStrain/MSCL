@@ -70,6 +70,12 @@ public class CV7ContinuousBIT : global::System.IDisposable {
     return ret;
   }
 
+  public Bytes data() {
+    Bytes ret = new Bytes(msclPINVOKE.CV7ContinuousBIT_data(swigCPtr), false);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }
 
 }

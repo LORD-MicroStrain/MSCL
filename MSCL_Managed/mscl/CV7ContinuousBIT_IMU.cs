@@ -66,6 +66,9 @@ public class CV7ContinuousBIT_IMU : Bitfield {
     return ret;
   }
 
+  public static readonly byte RESPONSE_OFFSET = msclPINVOKE.CV7ContinuousBIT_IMU_RESPONSE_OFFSET_get();
+  public static readonly uint GENERAL_FLAGS = msclPINVOKE.CV7ContinuousBIT_IMU_GENERAL_FLAGS_get();
+  public static readonly uint SENSORS_FLAGS = msclPINVOKE.CV7ContinuousBIT_IMU_SENSORS_FLAGS_get();
   public static readonly uint FACTORY_BITS_INVALID = msclPINVOKE.CV7ContinuousBIT_IMU_FACTORY_BITS_INVALID_get();
 }
 

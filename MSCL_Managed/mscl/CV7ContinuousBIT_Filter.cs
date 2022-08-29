@@ -54,6 +54,8 @@ public class CV7ContinuousBIT_Filter : Bitfield {
     return ret;
   }
 
+  public static readonly byte RESPONSE_OFFSET = msclPINVOKE.CV7ContinuousBIT_Filter_RESPONSE_OFFSET_get();
+  public static readonly uint GENERAL_FLAGS = msclPINVOKE.CV7ContinuousBIT_Filter_GENERAL_FLAGS_get();
 }
 
 }

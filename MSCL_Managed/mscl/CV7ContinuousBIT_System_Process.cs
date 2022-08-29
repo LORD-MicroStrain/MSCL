@@ -54,14 +54,14 @@ public class CV7ContinuousBIT_System_Process : Bitfield {
     return ret;
   }
 
-  public bool imuDataRateMismatch() {
-    bool ret = msclPINVOKE.CV7ContinuousBIT_System_Process_imuDataRateMismatch(swigCPtr);
+  public bool imuRateMismatch() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_System_Process_imuRateMismatch(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public bool imuOverrunDroppedData() {
-    bool ret = msclPINVOKE.CV7ContinuousBIT_System_Process_imuOverrunDroppedData(swigCPtr);
+  public bool imuDroppedData() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_System_Process_imuDroppedData(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -97,8 +97,8 @@ public class CV7ContinuousBIT_System_Process : Bitfield {
   }
 
   public static readonly byte IMU_PROCESS_FAULT = msclPINVOKE.CV7ContinuousBIT_System_Process_IMU_PROCESS_FAULT_get();
-  public static readonly byte IMU_DATA_RATE_MISMATCH = msclPINVOKE.CV7ContinuousBIT_System_Process_IMU_DATA_RATE_MISMATCH_get();
-  public static readonly byte IMU_OVERRUN_DROPPED_DATA = msclPINVOKE.CV7ContinuousBIT_System_Process_IMU_OVERRUN_DROPPED_DATA_get();
+  public static readonly byte IMU_RATE_MISMATCH = msclPINVOKE.CV7ContinuousBIT_System_Process_IMU_RATE_MISMATCH_get();
+  public static readonly byte IMU_DROPPED_DATA = msclPINVOKE.CV7ContinuousBIT_System_Process_IMU_DROPPED_DATA_get();
   public static readonly byte IMU_STUCK = msclPINVOKE.CV7ContinuousBIT_System_Process_IMU_STUCK_get();
   public static readonly byte FILTER_PROCESS_FAULT = msclPINVOKE.CV7ContinuousBIT_System_Process_FILTER_PROCESS_FAULT_get();
   public static readonly byte FILTER_DROPPED_DATA = msclPINVOKE.CV7ContinuousBIT_System_Process_FILTER_DROPPED_DATA_get();

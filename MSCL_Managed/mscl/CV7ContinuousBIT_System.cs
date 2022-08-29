@@ -60,6 +60,9 @@ public class CV7ContinuousBIT_System : Bitfield {
     return ret;
   }
 
+  public static readonly byte RESPONSE_OFFSET = msclPINVOKE.CV7ContinuousBIT_System_RESPONSE_OFFSET_get();
+  public static readonly uint GENERAL_FLAGS = msclPINVOKE.CV7ContinuousBIT_System_GENERAL_FLAGS_get();
+  public static readonly uint PROCESS_FLAGS = msclPINVOKE.CV7ContinuousBIT_System_PROCESS_FLAGS_get();
 }
 
 }
