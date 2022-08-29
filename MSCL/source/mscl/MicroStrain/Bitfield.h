@@ -10,6 +10,7 @@
 
 namespace mscl
 {
+    //Class: Bitfield
     class Bitfield
     {
     public:
