@@ -2225,10 +2225,10 @@ namespace mscl
         void setRelativePositionReference(PositionReferenceConfiguration ref);
 
         //API Function: getLeverArmReferenceOffset
-        //    Gets the currently configured lever arm offset reference point.
+        //    Gets the currently configured lever arm reference point offset.
         //
         //Return:
-        //    <PositionOffset> - The current reference point configuration.
+        //    <PositionOffset> - The current reference offset configuration.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
