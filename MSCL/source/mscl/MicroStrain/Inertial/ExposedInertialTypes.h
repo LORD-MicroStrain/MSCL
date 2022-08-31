@@ -3621,15 +3621,15 @@ namespace mscl
         static constexpr uint16 ACCEL_GENERAL_FAULT     = 0x0100; // Accelerometer will not initialize
         static constexpr uint16 ACCEL_OVERRANGE         = 0x0200; // One or more axes subjected to accelerations near or outside the selected range
         static constexpr uint16 ACCEL_SELF_TEST_FAIL    = 0x0400; // The internal self-test of the accelerometer failed
-        
+
         static constexpr uint16 GYRO_GENERAL_FAULT      = 0x1000; // Gyroscope will not initialize
         static constexpr uint16 GYRO_OVERRANGE          = 0x2000; // One or more axes subjected to rotational rates near or outside the selected range
         static constexpr uint16 GYRO_SELF_TEST_FAIL     = 0x4000; // The internal self-test of the gyroscope failed
-        
+
         static constexpr uint16 MAG_GENERAL_FAULT       = 0x0001; // Magnetometer will not initialize
         static constexpr uint16 MAG_OVERRANGE           = 0x0002; // One or more axes subjected to magnetic fields strengths near or outside the supported range
         static constexpr uint16 MAG_SELF_TEST_FAIL      = 0x0004; // The internal self-test of the magnetometer failed
-        
+
         static constexpr uint16 PRESSURE_GENERAL_FAULT  = 0x0010; // Pressure sensor won't initialize
         static constexpr uint16 PRESSURE_OVERRANGE      = 0x0020; // Pressure sensor subjected to pressures above or below the supported range
         static constexpr uint16 PRESSURE_SELF_TEST_FAIL = 0x0040; // The internal self-test of the pressure sensor failed
