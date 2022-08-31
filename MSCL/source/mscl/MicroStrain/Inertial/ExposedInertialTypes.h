@@ -3875,11 +3875,11 @@ namespace mscl
         //API Constant: GENERAL_FLAGS
         //  Bitmask for general filter flags (bits 64-71)
         //
-        //  GENERAL_FLAGS - 0x000000FF - Bitmask for general filter flags (bits 64-71)
+        //  GENERAL_FLAGS - 0xFF000000 - Bitmask for general filter flags (bits 64-71)
         //
         //Note:
         //  This mask is shifted 64 bits to the right from the original 128 bitmask to have a 0 index at bit 64
-        static constexpr uint32 GENERAL_FLAGS = 0x000000FF; // Bitmask for general filter flags (bits 64-71)
+        static constexpr uint32 GENERAL_FLAGS = 0xFF000000; // Bitmask for general filter flags (bits 64-71)
 
         //API Function: flags
         //  Gets the value of the filter flags (bits 64-95)
