@@ -3464,10 +3464,10 @@ namespace mscl
         static constexpr uint8_t RESPONSE_OFFSET = 0;
 
         //API Constants: Bitmasks
-        //  GENERAL_FLAGS - 0x000000FF - Bitmask for general system flags (bits 0-7)
-        //  PROCESS_FLAGS - 0x00FF0000 - Bitmask for system process flags (bits 16-23)
-        static constexpr uint32 GENERAL_FLAGS = 0x000000FF; // Bitmask for general system flags (bits 0-7)
-        static constexpr uint32 PROCESS_FLAGS = 0x00FF0000; // Bitmask for system process flags (bits 16-23)
+        //  GENERAL_FLAGS - 0xFF000000 - Bitmask for general system flags (bits 0-7)
+        //  PROCESS_FLAGS - 0x0000FF00 - Bitmask for system process flags (bits 16-23)
+        static constexpr uint32 GENERAL_FLAGS = 0xFF000000; // Bitmask for general system flags (bits 0-7)
+        static constexpr uint32 PROCESS_FLAGS = 0x0000FF00; // Bitmask for system process flags (bits 16-23)
 
         //API Function: flags
         //  Gets the value of the system flags (bits 0-31)
@@ -3606,33 +3606,33 @@ namespace mscl
         //Note:
         //  These masks are shifted 40 bits to the right from the original 128 bitmask to have a 0 index at bit 40
         //
-        //  ACCEL_GENERAL_FAULT     - 0x0001 - Accelerometer will not initialize
-        //  ACCEL_OVERRANGE         - 0x0002 - One or more axes subjected to accelerations near or outside the selected range
-        //  ACCEL_SELF_TEST_FAIL    - 0x0004 - The internal self-test of the accelerometer failed
-        //  GYRO_GENERAL_FAULT      - 0x0010 - Gyroscope will not initialize
-        //  GYRO_OVERRANGE          - 0x0020 - One or more axes subjected to rotational rates near or outside the selected range
-        //  GYRO_SELF_TEST_FAIL     - 0x0040 - The internal self-test of the gyroscope failed
-        //  MAG_GENERAL_FAULT       - 0x0100 - Magnetometer will not initialize
-        //  MAG_OVERRANGE           - 0x0200 - One or more axes subjected to magnetic fields strengths near or outside the supported range
-        //  MAG_SELF_TEST_FAIL      - 0x0400 - The internal self-test of the magnetometer failed
-        //  PRESSURE_GENERAL_FAULT  - 0x1000 - Pressure sensor won't initialize
-        //  PRESSURE_OVERRANGE      - 0x2000 - Pressure sensor subjected to pressures above or below the supported range
-        //  PRESSURE_SELF_TEST_FAIL - 0x4000 - The internal self-test of the pressure sensor failed
-        static constexpr uint16 ACCEL_GENERAL_FAULT     = 0x0001; // Accelerometer will not initialize
-        static constexpr uint16 ACCEL_OVERRANGE         = 0x0002; // One or more axes subjected to accelerations near or outside the selected range
-        static constexpr uint16 ACCEL_SELF_TEST_FAIL    = 0x0004; // The internal self-test of the accelerometer failed
+        //  ACCEL_GENERAL_FAULT     - 0x0100 - Accelerometer will not initialize
+        //  ACCEL_OVERRANGE         - 0x0200 - One or more axes subjected to accelerations near or outside the selected range
+        //  ACCEL_SELF_TEST_FAIL    - 0x0400 - The internal self-test of the accelerometer failed
+        //  GYRO_GENERAL_FAULT      - 0x1000 - Gyroscope will not initialize
+        //  GYRO_OVERRANGE          - 0x2000 - One or more axes subjected to rotational rates near or outside the selected range
+        //  GYRO_SELF_TEST_FAIL     - 0x4000 - The internal self-test of the gyroscope failed
+        //  MAG_GENERAL_FAULT       - 0x0001 - Magnetometer will not initialize
+        //  MAG_OVERRANGE           - 0x0002 - One or more axes subjected to magnetic fields strengths near or outside the supported range
+        //  MAG_SELF_TEST_FAIL      - 0x0004 - The internal self-test of the magnetometer failed
+        //  PRESSURE_GENERAL_FAULT  - 0x0010 - Pressure sensor won't initialize
+        //  PRESSURE_OVERRANGE      - 0x0020 - Pressure sensor subjected to pressures above or below the supported range
+        //  PRESSURE_SELF_TEST_FAIL - 0x0040 - The internal self-test of the pressure sensor failed
+        static constexpr uint16 ACCEL_GENERAL_FAULT     = 0x0100; // Accelerometer will not initialize
+        static constexpr uint16 ACCEL_OVERRANGE         = 0x0200; // One or more axes subjected to accelerations near or outside the selected range
+        static constexpr uint16 ACCEL_SELF_TEST_FAIL    = 0x0400; // The internal self-test of the accelerometer failed
 
-        static constexpr uint16 GYRO_GENERAL_FAULT      = 0x0010; // Gyroscope will not initialize
-        static constexpr uint16 GYRO_OVERRANGE          = 0x0020; // One or more axes subjected to rotational rates near or outside the selected range
-        static constexpr uint16 GYRO_SELF_TEST_FAIL     = 0x0040; // The internal self-test of the gyroscope failed
+        static constexpr uint16 GYRO_GENERAL_FAULT      = 0x1000; // Gyroscope will not initialize
+        static constexpr uint16 GYRO_OVERRANGE          = 0x2000; // One or more axes subjected to rotational rates near or outside the selected range
+        static constexpr uint16 GYRO_SELF_TEST_FAIL     = 0x4000; // The internal self-test of the gyroscope failed
 
-        static constexpr uint16 MAG_GENERAL_FAULT       = 0x0100; // Magnetometer will not initialize
-        static constexpr uint16 MAG_OVERRANGE           = 0x0200; // One or more axes subjected to magnetic fields strengths near or outside the supported range
-        static constexpr uint16 MAG_SELF_TEST_FAIL      = 0x0400; // The internal self-test of the magnetometer failed
+        static constexpr uint16 MAG_GENERAL_FAULT       = 0x0001; // Magnetometer will not initialize
+        static constexpr uint16 MAG_OVERRANGE           = 0x0002; // One or more axes subjected to magnetic fields strengths near or outside the supported range
+        static constexpr uint16 MAG_SELF_TEST_FAIL      = 0x0004; // The internal self-test of the magnetometer failed
 
-        static constexpr uint16 PRESSURE_GENERAL_FAULT  = 0x1000; // Pressure sensor won't initialize
-        static constexpr uint16 PRESSURE_OVERRANGE      = 0x2000; // Pressure sensor subjected to pressures above or below the supported range
-        static constexpr uint16 PRESSURE_SELF_TEST_FAIL = 0x4000; // The internal self-test of the pressure sensor failed
+        static constexpr uint16 PRESSURE_GENERAL_FAULT  = 0x0010; // Pressure sensor won't initialize
+        static constexpr uint16 PRESSURE_OVERRANGE      = 0x0020; // Pressure sensor subjected to pressures above or below the supported range
+        static constexpr uint16 PRESSURE_SELF_TEST_FAIL = 0x0040; // The internal self-test of the pressure sensor failed
 
         //API Function: flags
         //  Gets the value of the the IMU sensors flags (bits 40-55)
@@ -3747,15 +3747,15 @@ namespace mscl
         static constexpr uint8_t RESPONSE_OFFSET = 32;
 
         //Constants: Bitmasks
-        //  GENERAL_FLAGS           - 0x000000FF - Bitmask for the general IMU bit flags (bits 32-39)
+        //  GENERAL_FLAGS           - 0xFF000000 - Bitmask for the general IMU bit flags (bits 32-39)
         //  SENSORS_FLAGS           - 0x00FFFF00 - Bitmask for the IMU sensors bit flags (40-55)
-        //  FACTORY_BITS_INVALID    - 0x01000000 - Factory settings invalid. Device unusable (56)
+        //  FACTORY_BITS_INVALID    - 0x00000001 - Factory settings invalid. Device unusable (56)
         //
         //Note:
         //  These masks are shifted 32 bits to the right from the original 128 bitmask to have a 0 index at bit 32
-        static constexpr uint32 GENERAL_FLAGS           = 0x000000FF; // Bitmask for the general IMU bit flags (bits 32-39)
+        static constexpr uint32 GENERAL_FLAGS           = 0xFF000000; // Bitmask for the general IMU bit flags (bits 32-39)
         static constexpr uint32 SENSORS_FLAGS           = 0x00FFFF00; // Bitmask for the IMU sensors bit flags (40-55)
-        static constexpr uint32 FACTORY_BITS_INVALID    = 0x01000000; // Factory settings invalid. Device unusable
+        static constexpr uint32 FACTORY_BITS_INVALID    = 0x00000001; // Factory settings invalid. Device unusable
 
         //API Function: flags
         //  Gets the value of the IMU flags (bits 32-63)
@@ -3875,11 +3875,11 @@ namespace mscl
         //API Constant: GENERAL_FLAGS
         //  Bitmask for general filter flags (bits 64-71)
         //
-        //  GENERAL_FLAGS - 0x000000FF - Bitmask for general filter flags (bits 64-71)
+        //  GENERAL_FLAGS - 0xFF000000 - Bitmask for general filter flags (bits 64-71)
         //
         //Note:
         //  This mask is shifted 64 bits to the right from the original 128 bitmask to have a 0 index at bit 64
-        static constexpr uint32 GENERAL_FLAGS = 0x000000FF; // Bitmask for general filter flags (bits 64-71)
+        static constexpr uint32 GENERAL_FLAGS = 0xFF000000; // Bitmask for general filter flags (bits 64-71)
 
         //API Function: flags
         //  Gets the value of the filter flags (bits 64-95)
