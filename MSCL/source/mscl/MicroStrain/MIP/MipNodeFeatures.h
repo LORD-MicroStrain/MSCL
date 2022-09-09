@@ -24,39 +24,60 @@ namespace mscl
         MipNodeFeatures(const MipNodeFeatures&);                //disabled copy constructor
         MipNodeFeatures& operator=(const MipNodeFeatures&);    //disable assignment operator
 
+        //Variable: m_nodeInfo
+        //    The <MipNodeInfo> object that gives access to information of the Node
+        mutable std::unique_ptr<MipNodeInfo> m_nodeInfo;
+
     public:
         virtual ~MipNodeFeatures() {};
 
     protected:
+        friend class MipNode_Impl;
+
         //Constructor: MipNodeFeatures
         //    Creates a MipNodeFeatures object.
         //
         //Parameters:
-        //    info - An <MipNodeInfo> object representing standard information of a Mip Node.
-        MipNodeFeatures(const MipNodeInfo& info);
+        //    node - An <MipNode_Impl> object that this is a member of (used for lazy loading).
+        MipNodeFeatures(const MipNode_Impl* node);
 
-        //Variable: m_nodeInfo
-        //    The <MipNodeInfo>.
-        MipNodeInfo m_nodeInfo;
+        //Variable: m_node
+        //  The <MipNode_Impl> to use for lazy loading of values.
+        const MipNode_Impl* m_node;
 
-    public:
+        //Function: nodeInfo
+        //    Gets the basic device info (serial, model, fw version, etc.).
+        //
+        //Returns:
+        //    A <MipNodeInfo> object containing the basic device info.
+        //
+        //Exceptions:
+        //    - <Error_MipCmdFailed>: The command has failed.
+        //    - <Error_Communication>: Timed out waiting for a response.
+        //    - <Error_Connection>: A connection error has occurred with the Node.
+        const MipNodeInfo& nodeInfo() const;
+
+        //Function: resetNodeInfo
+        //  Clears cached info read from device (ie fw version, receiver info, etc.).
+        void resetNodeInfo();
+
 #ifndef SWIG
         //Function: create
-        //    Builds and returns a MipNodeFeatures pointer based on the given parameters.
+        //    Builds and returns a MipNodeFeatures pointer.
         //
         //Parameters:
-        //    info - An <MipNodeInfo> object representing standard information of the device.
+        //    node - An <MipNode_Impl> object that this is a member of (used for lazy loading).
         //
         //Returns:
         //    A MipNodeFeatures unique_ptr.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The Node model is not supported by MSCL.
-        static std::unique_ptr<MipNodeFeatures> create(const MipNodeInfo& info);
+        static std::unique_ptr<MipNodeFeatures> create(const MipNode_Impl* node);
 #endif
 
     public:
-        //Function: isChannelField
+        //API Function: isChannelField
         //  Checks if the uint16 descriptor value is a Channel field or not.
         //
         //Returns:

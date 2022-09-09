@@ -117,7 +117,13 @@ namespace mscl
 
     void MipNode_Impl::resetNodeInfo()
     {
-        m_nodeInfo.reset();
+        //if the features variable hasn't been set yet, no need to reset
+        if (m_features == nullptr)
+        {
+            return;
+        }
+
+        m_features->resetNodeInfo();
     }
 
     Version MipNode_Impl::firmwareVersion() const
@@ -152,13 +158,7 @@ namespace mscl
 
     const MipNodeInfo& MipNode_Impl::info() const
     {
-        //if we haven't initialized the MipNodeInfo
-        if(!m_nodeInfo)
-        {
-            m_nodeInfo.reset(new MipNodeInfo(this));
-        }
-
-        return (*m_nodeInfo);
+        return features().nodeInfo();
     }
 
     void MipNode_Impl::onDataPacketAdded()
@@ -169,10 +169,10 @@ namespace mscl
     const MipNodeFeatures& MipNode_Impl::features() const
     {
         //if the features variable hasn't been set yet
-        if(m_features == NULL)
+        if(m_features == nullptr)
         {
             //set the features variable by creating a new NodeFeatures pointer
-            m_features = MipNodeFeatures::create(info());
+            m_features = MipNodeFeatures::create(this);
         }
 
         return *(m_features.get());
@@ -1652,7 +1652,7 @@ namespace mscl
         doCommand(r, CommunicationMode::buildCommand_set(communicationMode), false);
 
         //reset the node info because we are switching contexts
-        m_nodeInfo.reset();
+        resetNodeInfo();
     }
 
     bool MipNode_Impl::isDataStreamEnabled(MipTypes::DataClass dataClass) const
