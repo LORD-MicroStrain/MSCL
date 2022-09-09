@@ -15,7 +15,17 @@ REMOVED - A function/class has been removed.
 ======================================================================================================
 
 Forthcoming
-- Added Taiwan region code for wireless devices
+- Wireless
+    - Added Taiwan region code for wireless devices
+- Inertial
+    - RENAMED InertialTypes::GNSS_Source::INTERNAL_GNSS -> INTERNAL_GNSS_ALL
+    - Added MipNodeFeatures::supportedGnssSources() to lookup supported GNSS Aiding Source options
+    - Updated GPS Ionospheric Corrections alpha and beta value types to Vector
+    - Automatically detect and add required parameters for save as startup, load startup, and default settings command functions
+    - Added support for MIP data:
+        - Continuous Built-In Test (0xA0, 0x01)
+    - Added support for MIP commands:
+        - Reference Point Lever Arm (0x0D,0x56)
 
 64.3.0 - 2022-06-03
 - Added support for G-Link-200 6522-6001 (custom default configuration)

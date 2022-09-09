@@ -74,8 +74,10 @@ public class InertialTypes : global::System.IDisposable {
   }
 
   public enum GNSS_Source {
-    INTERNAL_GNSS = 0x01,
-    EXTERNAL_GNSS = 0x02
+    INTERNAL_GNSS_ALL = 0x01,
+    EXTERNAL_GNSS = 0x02,
+    INTERNAL_GNSS1 = 0x03,
+    INTERNAL_GNSS2 = 0x04
   }
 
   public enum GnssFixFlags {
@@ -253,7 +255,8 @@ public class InertialTypes : global::System.IDisposable {
     ALTIMETER_AIDING = 0x0002,
     ODOMETER_AIDING = 0x0003,
     MAGNETOMETER_AIDING = 0x0004,
-    EXTERNAL_HEADING_AIDING = 0x0005
+    EXTERNAL_HEADING_AIDING = 0x0005,
+    ALL_AIDING_MEASUREMENTS = 0xFFFF
   }
 
   public enum ConstellationId {

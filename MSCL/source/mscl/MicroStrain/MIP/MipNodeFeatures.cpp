@@ -163,6 +163,42 @@ namespace mscl
         return m_nodeInfo.gnssReceiverInfo();
     }
 
+    const GnssSources MipNodeFeatures::supportedGnssSources() const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_GNSS_SRC_CTRL))
+        {
+            return {};
+        }
+
+        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        const Version fwVersion(m_nodeInfo.deviceInfo().fwVersion);
+
+        //TODO: Update version check when GQ7 R3 fw has been released
+        if (fwVersion >= Version(1, 1) || fwVersion < Version(1, 0))
+        {
+            switch (model.baseModel().nodeModel())
+            {
+            case MipModels::node_3dm_gq7:
+                return{
+                    InertialTypes::GNSS_Source::INTERNAL_GNSS_ALL,
+                    InertialTypes::GNSS_Source::EXTERNAL_GNSS,
+                    InertialTypes::GNSS_Source::INTERNAL_GNSS1,
+                    InertialTypes::GNSS_Source::INTERNAL_GNSS2
+                };
+            default:
+                return{
+                    InertialTypes::GNSS_Source::INTERNAL_GNSS_ALL,
+                    InertialTypes::GNSS_Source::EXTERNAL_GNSS
+                };
+            }
+        }
+
+        return{
+            InertialTypes::GNSS_Source::INTERNAL_GNSS_ALL,
+            InertialTypes::GNSS_Source::EXTERNAL_GNSS
+        };
+    }
+
     const SupportedSensorRanges& MipNodeFeatures::supportedSensorRanges() const
     {
         return m_nodeInfo.supportedSensorRanges();
