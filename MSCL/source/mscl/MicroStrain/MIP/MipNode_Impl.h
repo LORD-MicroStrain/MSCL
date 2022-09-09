@@ -81,10 +81,6 @@ namespace mscl
         //    The timeout to use for MIP commands
         uint64 m_commandsTimeout;
 
-        //Variable: m_nodeInfo
-        //    The <MipNodeInfo> object that gives access to information of the Node
-        mutable std::unique_ptr<MipNodeInfo> m_nodeInfo;
-
         //Variable: m_features
         //    The <MipNodeFeatures> containing the features for this device.
         mutable std::unique_ptr<MipNodeFeatures> m_features;

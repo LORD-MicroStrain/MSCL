@@ -117,10 +117,13 @@ namespace mscl
 
     void MipNode_Impl::resetNodeInfo()
     {
-        m_nodeInfo.reset();
+        //if the features variable hasn't been set yet, no need to reset
+        if (m_features == nullptr)
+        {
+            return;
+        }
 
-        // Reset features as well to load new info data next time it's read
-        m_features.reset();
+        m_features->resetNodeInfo();
     }
 
     Version MipNode_Impl::firmwareVersion() const
@@ -155,13 +158,7 @@ namespace mscl
 
     const MipNodeInfo& MipNode_Impl::info() const
     {
-        //if we haven't initialized the MipNodeInfo
-        if(!m_nodeInfo)
-        {
-            m_nodeInfo.reset(new MipNodeInfo(this));
-        }
-
-        return (*m_nodeInfo);
+        return features().nodeInfo();
     }
 
     void MipNode_Impl::onDataPacketAdded()
@@ -175,7 +172,7 @@ namespace mscl
         if(m_features == nullptr)
         {
             //set the features variable by creating a new NodeFeatures pointer
-            m_features = MipNodeFeatures::create(info());
+            m_features = MipNodeFeatures::create(this);
         }
 
         return *(m_features.get());
