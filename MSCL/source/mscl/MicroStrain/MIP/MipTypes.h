@@ -11,6 +11,7 @@
 #include <vector>
 #include <map>
 #include "mscl/Value.h"
+#include "mscl/Version.h"
 
 namespace mscl
 {
@@ -1815,17 +1816,19 @@ namespace mscl
     //  Maps GNSS Receiver ID to the <MipTypes::DataClass> it outputs to
     struct GnssReceiverInfo
     {
+        //API Constant: INFO_NOT_FOUND
+        //  String value assigned when the target value was unable to be found in the full description field.
+        //
+        //  INFO_NOT_FOUND - "Not Found"
+        const std::string INFO_NOT_FOUND = "Not Found";
+
         //API Constructor: GnssReceiverInfo
         //  Constructs GnssReceiverInfo object with default values
-        GnssReceiverInfo() {};
+        GnssReceiverInfo() {}
 
         //API Constructor: GnssReceiverInfo
         //  Constructs GnssReceiverInfo object with specified values
-        GnssReceiverInfo(uint8 recId, MipTypes::DataClass target, std::string desc) :
-            id(recId),
-            targetDataClass(target),
-            description(desc)
-        {}
+        GnssReceiverInfo(uint8 recId, MipTypes::DataClass target, std::string desc);
 
         //API Variable: id
         //  Receiver ID
@@ -1838,6 +1841,18 @@ namespace mscl
         //API Variable: description
         //  ASCII description of receiver
         std::string description;
+
+        //API Variable: module
+        //  ASCII name of the receiver module
+        std::string module = INFO_NOT_FOUND;
+
+        //API Variable: fwId
+        //  ASCII name of the receiver firmware identifier
+        std::string fwId = INFO_NOT_FOUND;
+
+        //API Variable: fwVersion
+        //  Firmware version of the receiver module
+        Version fwVersion = Version(0, 0);
     };
 
     //API Typedef: GnssReceivers

@@ -1095,6 +1095,50 @@ namespace mscl
         return sensorcloudFilteredName;
     }
 
+    GnssReceiverInfo::GnssReceiverInfo(const uint8 recId, const MipTypes::DataClass target, std::string desc) :
+        id(recId),
+        targetDataClass(target),
+        description(std::move(desc))
+    {
+        // Tokenize by comma
+        const std::vector<std::string> segments = Utils::tokenize(description);
+
+        // Module info exists
+        if (!segments.empty())
+        {
+            module = segments[0];
+            Utils::strTrim(module);
+            module = module.empty() ? INFO_NOT_FOUND : module;
+        }
+
+        // Firmware info exists
+        if (segments.size() > 1)
+        {
+            std::string fwTrim = segments[1];
+            Utils::strTrim(fwTrim);
+
+            // Pull fw version number from second element
+            if (fwVersion.fromString(fwTrim))
+            {
+                // If version number found, parse out just identifier section by whitespace
+                const std::vector<std::string> firmwareInfo = Utils::tokenize(fwTrim, " ", false);
+
+                // Firmware ID found
+                if (firmwareInfo.size() > 1)
+                {
+                    fwId = firmwareInfo[0];
+                }
+            }
+            // No version number found, set whole element to fw identifier
+            else
+            {
+                fwId = fwTrim;
+            }
+
+            fwId = fwId.empty() ? INFO_NOT_FOUND : fwId;
+        }
+    }
+
     SensorRange SupportedSensorRanges::lookupRecommended(SensorRange::Type type, float range) const
     {
         SensorRanges typeOptions;
