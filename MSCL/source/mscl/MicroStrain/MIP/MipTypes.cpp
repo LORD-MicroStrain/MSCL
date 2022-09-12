@@ -1110,10 +1110,10 @@ namespace mscl
         // Firmware info exists
         if (segments.size() > 1)
         {
-            // Firmware info could be whitespace delimited
+            // Pull fw version number from second element
             if (fwVersion.fromString(segments[1]))
             {
-                // Tokenize by whitespace
+                // If version number found, parse out just identifier section by whitespace
                 const std::vector<std::string> firmwareInfo = Utils::tokenize(segments[1], " ");
 
                 // Firmware ID found
@@ -1122,13 +1122,7 @@ namespace mscl
                     fwId = firmwareInfo[0];
                 }
             }
-            // Firmware info is comma delimited
-            else if (segments.size() > 2)
-            {
-                fwId = segments[1];
-                fwVersion.fromString(segments[2]);
-            }
-            // No version
+            // No version number found, set whole element to fw identifier
             else
             {
                 fwId = segments[1];

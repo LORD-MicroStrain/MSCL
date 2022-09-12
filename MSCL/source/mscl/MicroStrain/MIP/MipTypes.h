@@ -1812,6 +1812,12 @@ namespace mscl
     //  Maps GNSS Receiver ID to the <MipTypes::DataClass> it outputs to
     struct GnssReceiverInfo
     {
+        //API Constant: INFO_NOT_FOUND
+        //  String value assigned when the target value was unable to be found in the full description field.
+        //
+        //  INFO_NOT_FOUND - "Not Found"
+        const std::string INFO_NOT_FOUND = "Not Found";
+
         //API Constructor: GnssReceiverInfo
         //  Constructs GnssReceiverInfo object with default values
         GnssReceiverInfo() {}
@@ -1834,11 +1840,11 @@ namespace mscl
 
         //API Variable: module
         //  ASCII name of the receiver module
-        std::string module = "Module info not found";
+        std::string module = INFO_NOT_FOUND;
 
         //API Variable: fwId
         //  ASCII name of the receiver firmware identifier
-        std::string fwId = "Firmware identifier not found";
+        std::string fwId = INFO_NOT_FOUND;
 
         //API Variable: fwVersion
         //  Firmware version of the receiver module
