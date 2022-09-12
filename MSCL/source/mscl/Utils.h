@@ -402,12 +402,13 @@ namespace mscl
         //    Use <regexFindAll> to delimit by list of single characters
         //
         //Parameters:
-        //    basicString - The string to tokenize.
-        //    delimiter   - The delimiter to split by.
+        //    basicString   - The string to tokenize.
+        //    delimiter     - default "," - The delimiter to split by.
+        //    includeEmpty  - default true - Whether to include empty strings in result list.
         //
         //Returns:
         //    Vector of strings.
-        std::vector<std::string> tokenize(const std::string& basicString, const std::string& delimiter = ",");
+        std::vector<std::string> tokenize(const std::string& basicString, const std::string& delimiter = ",", bool includeEmpty = true);
 
         //Function: filterSensorcloudName
         //    Replaces characters that are not supported by SensorCloud with a '-' character.

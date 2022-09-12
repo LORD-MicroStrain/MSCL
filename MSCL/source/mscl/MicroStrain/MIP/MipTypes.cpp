@@ -1107,16 +1107,21 @@ namespace mscl
         if (!segments.empty())
         {
             module = segments[0];
+            Utils::strTrim(module);
+            module = module.empty() ? INFO_NOT_FOUND : module;
         }
 
         // Firmware info exists
         if (segments.size() > 1)
         {
+            std::string fwTrim = segments[1];
+            Utils::strTrim(fwTrim);
+
             // Pull fw version number from second element
-            if (fwVersion.fromString(segments[1]))
+            if (fwVersion.fromString(fwTrim))
             {
                 // If version number found, parse out just identifier section by whitespace
-                const std::vector<std::string> firmwareInfo = Utils::tokenize(segments[1], " ");
+                const std::vector<std::string> firmwareInfo = Utils::tokenize(fwTrim, " ", false);
 
                 // Firmware ID found
                 if (firmwareInfo.size() > 1)
@@ -1127,8 +1132,10 @@ namespace mscl
             // No version number found, set whole element to fw identifier
             else
             {
-                fwId = segments[1];
+                fwId = fwTrim;
             }
+
+            fwId = fwId.empty() ? INFO_NOT_FOUND : fwId;
         }
     }
 

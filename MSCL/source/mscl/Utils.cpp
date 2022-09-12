@@ -492,7 +492,7 @@ namespace mscl
             return matchList;
         }
 
-        std::vector<std::string> tokenize(const std::string& basicString, const std::string& delimiter)
+        std::vector<std::string> tokenize(const std::string& basicString, const std::string& delimiter, bool includeEmpty)
         {
             // List to store all the delimited segments
             std::vector<std::string> segments;
@@ -511,9 +511,13 @@ namespace mscl
 
                 // Get the substring between the previous and current delimiter
                 const std::string substring = basicString.substr(previousPosition, found - previousPosition);
-
-                // Add the substring to the list
-                segments.push_back(substring);
+                
+                // Delimiter at the beginning/end of the string will get an empty substring
+                if (includeEmpty || !substring.empty())
+                {
+                    // Add the substring to the list
+                    segments.push_back(substring);
+                }
 
                 // Set the next read position after the delimiter
                 previousPosition = found + delimiter.length();
