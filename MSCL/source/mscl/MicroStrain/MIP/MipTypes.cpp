@@ -454,10 +454,12 @@ namespace mscl
         { ChannelId(CH_FIELD_DISP_DISPLACEMENT_MM, CH_DISPLACEMENT), "displacementMillimeters" },
 
         // System Data
-        { ChannelId(CH_FIELD_SYSTEM_GPIO_STATE, CH_STATUS), "gpioState" },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_STATUS), "builtInTest" },
 
         { ChannelId(CH_FIELD_SYSTEM_TIME_SYNC_STATUS, CH_PPS_VALID), "timeSync_ppsValid" },
         { ChannelId(CH_FIELD_SYSTEM_TIME_SYNC_STATUS, CH_LAST_PPS), "timeSync_lastPps" },
+
+        { ChannelId(CH_FIELD_SYSTEM_GPIO_STATE, CH_STATUS), "gpioState" },
 
         // Shared Inertial Channels
         { ChannelId(CH_FIELD_SENSOR_SHARED_EVENT_SOURCE, CH_ID), "eventInfo_triggerId" },
@@ -1108,6 +1110,64 @@ namespace mscl
 
         //found the channel, return the name
         return sensorcloudFilteredName;
+    }
+
+    const std::string GnssReceiverInfo::INFO_NOT_FOUND = "Not Found";
+
+    GnssReceiverInfo::GnssReceiverInfo() :
+        id(0),
+        targetDataClass(MipTypes::DataClass(0)),
+        description(INFO_NOT_FOUND),
+        module(INFO_NOT_FOUND),
+        fwId(INFO_NOT_FOUND),
+        fwVersion(Version(0, 0))
+    {}
+
+    GnssReceiverInfo::GnssReceiverInfo(const uint8 recId, const MipTypes::DataClass target, std::string desc) :
+        id(recId),
+        targetDataClass(target),
+        description(std::move(desc)),
+        module(INFO_NOT_FOUND),
+        fwId(INFO_NOT_FOUND),
+        fwVersion(Version(0, 0))
+    {
+        // Tokenize by comma
+        const std::vector<std::string> segments = Utils::tokenize(description);
+
+        // Module info exists
+        if (!segments.empty())
+        {
+            module = segments[0];
+            Utils::strTrim(module);
+            module = module.empty() ? INFO_NOT_FOUND : module;
+        }
+
+        // Firmware info exists
+        if (segments.size() > 1)
+        {
+            std::string fwTrim = segments[1];
+            Utils::strTrim(fwTrim);
+
+            // Pull fw version number from second element
+            if (fwVersion.fromString(fwTrim))
+            {
+                // If version number found, parse out just identifier section by whitespace
+                const std::vector<std::string> firmwareInfo = Utils::tokenize(fwTrim, " ", false);
+
+                // Firmware ID found
+                if (firmwareInfo.size() > 1)
+                {
+                    fwId = firmwareInfo[0];
+                }
+            }
+            // No version number found, set whole element to fw identifier
+            else
+            {
+                fwId = fwTrim;
+            }
+
+            fwId = fwId.empty() ? INFO_NOT_FOUND : fwId;
+        }
     }
 
     SensorRange SupportedSensorRanges::lookupRecommended(SensorRange::Type type, float range) const

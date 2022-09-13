@@ -44,6 +44,14 @@ public class GnssReceiverInfo : global::System.IDisposable {
     }
   }
 
+  public static string INFO_NOT_FOUND {
+    get {
+      string ret = msclPINVOKE.GnssReceiverInfo_INFO_NOT_FOUND_get();
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
   public GnssReceiverInfo() : this(msclPINVOKE.new_GnssReceiverInfo__SWIG_0(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
@@ -83,6 +91,43 @@ public class GnssReceiverInfo : global::System.IDisposable {
     } 
     get {
       string ret = msclPINVOKE.GnssReceiverInfo_description_get(swigCPtr);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
+  public string module {
+    set {
+      msclPINVOKE.GnssReceiverInfo_module_set(swigCPtr, value);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      string ret = msclPINVOKE.GnssReceiverInfo_module_get(swigCPtr);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
+  public string fwId {
+    set {
+      msclPINVOKE.GnssReceiverInfo_fwId_set(swigCPtr, value);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      string ret = msclPINVOKE.GnssReceiverInfo_fwId_get(swigCPtr);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
+  public Version fwVersion {
+    set {
+      msclPINVOKE.GnssReceiverInfo_fwVersion_set(swigCPtr, Version.getCPtr(value));
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    } 
+    get {
+      global::System.IntPtr cPtr = msclPINVOKE.GnssReceiverInfo_fwVersion_get(swigCPtr);
+      Version ret = (cPtr == global::System.IntPtr.Zero) ? null : new Version(cPtr, false);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 

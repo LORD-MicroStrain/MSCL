@@ -31,6 +31,13 @@ namespace mscl
         //    A description of the connection, in the form "TCP/IP, serverAddress:serverPort".
         virtual std::string description();
 
+        //Function: port
+        //    Gets a name of the connection port.
+        //
+        //Returns:
+        //    The port name of the connection.
+        std::string port() const override;
+
         TcpIpConnection() = delete;                                  //default constructor disabled
         TcpIpConnection(const TcpIpConnection&) = delete;            //copy constructor disabled
         TcpIpConnection& operator=(const TcpIpConnection&) = delete; //assignment operator disabled

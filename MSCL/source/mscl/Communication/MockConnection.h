@@ -68,6 +68,8 @@ namespace mscl
         virtual bool debugMode() override { return false; }
 
         virtual void getDebugData(ConnectionDebugDataVec& data, uint32 timeout) override { return; }
+
+        std::string port() const override { return ""; }
     };
 
 }

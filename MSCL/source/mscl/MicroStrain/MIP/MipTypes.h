@@ -11,6 +11,7 @@
 #include <vector>
 #include <map>
 #include "mscl/Value.h"
+#include "mscl/Version.h"
 
 namespace mscl
 {
@@ -209,6 +210,7 @@ namespace mscl
         //  CMD_EF_ADAPTIVE_FILTER_OPTIONS              - 0x0D53    - Estimation Filter - Adaptive Filter Options
         //  CMD_EF_MULTI_ANTENNA_OFFSET                 - 0x0D54    - Estimation Filter - Multi Antenna Offset
         //  CMD_EF_RELATIVE_POSITION_REF                - 0x0D55    - Estimation Filter - Reference Location for Relative Position Outputs
+        //  CMD_EF_LEVER_ARM_OFFSET_REF                 - 0x0D56    - Estimation Filter - Lever Arm Reference Offset
         //  CMD_EF_EXTERN_SPEED_UPDATE                  - 0x0D60    - Estimation Filter - External Speed Measurement Update (Input Speed Measurement)
         //  CMD_EF_SPEED_MEASUREMENT_OFFSET             - 0x0D61    - Estimation Filter - Speed Measurement Lever Arm Offset
         //  CMD_EF_VERTICAL_GYRO_CONSTRAINT             - 0x0D62    - Estimation Filter - Vertical Gyro Constraint Enable/Disable
@@ -338,6 +340,7 @@ namespace mscl
             CMD_EF_ADAPTIVE_FILTER_OPTIONS          = 0x0D53,
             CMD_EF_MULTI_ANTENNA_OFFSET             = 0x0D54,
             CMD_EF_RELATIVE_POSITION_REF            = 0x0D55,
+            CMD_EF_LEVER_ARM_OFFSET_REF             = 0x0D56,
             CMD_EF_EXTERN_SPEED_UPDATE              = 0x0D60,
             CMD_EF_SPEED_MEASUREMENT_OFFSET         = 0x0D61,
             CMD_EF_VERTICAL_GYRO_CONSTRAINT         = 0x0D62,
@@ -659,6 +662,7 @@ namespace mscl
         //  CH_FIELD_GNSS_5_SHARED_DELTA_REFERENCE_TIME             - 0x95D6    - Delta Internal Reference Time
         //  CH_FIELD_GNSS_5_SHARED_EXTERNAL_TIMESTAMP               - 0x95D7    - External Timestamp
         //  CH_FIELD_GNSS_5_SHARED_DELTA_EXTERNAL_TIME              - 0x95D8    - Delta External Time
+        //  CH_FIELD_SYSTEM_BUILT_IN_TEST                           - 0xA001    - Built-In Test (BIT)
         //  CH_FIELD_SYSTEM_TIME_SYNC_STATUS                        - 0xA002    - Time Sync Status
         //  CH_FIELD_SYSTEM_GPIO_STATE                              - 0xA003    - GPIO State
         //  CH_FIELD_SYSTEM_SHARED_EVENT_SOURCE                     - 0xA0D0    - Event Source
@@ -973,6 +977,7 @@ namespace mscl
             CH_FIELD_GNSS_5_SHARED_DELTA_REFERENCE_TIME             = 0x95D6,
             CH_FIELD_GNSS_5_SHARED_EXTERNAL_TIMESTAMP               = 0x95D7,
             CH_FIELD_GNSS_5_SHARED_DELTA_EXTERNAL_TIME              = 0x95D8,
+            CH_FIELD_SYSTEM_BUILT_IN_TEST                           = 0xA001,
             CH_FIELD_SYSTEM_TIME_SYNC_STATUS                        = 0xA002,
             CH_FIELD_SYSTEM_GPIO_STATE                              = 0xA003,
             CH_FIELD_SYSTEM_SHARED_EVENT_SOURCE                     = 0xA0D0,
@@ -1852,17 +1857,19 @@ namespace mscl
     //  Maps GNSS Receiver ID to the <MipTypes::DataClass> it outputs to
     struct GnssReceiverInfo
     {
+        //API Constant: INFO_NOT_FOUND
+        //  String value assigned when the target value was unable to be found in the full description field.
+        //
+        //  INFO_NOT_FOUND - "Not Found"
+        static const std::string INFO_NOT_FOUND;
+
         //API Constructor: GnssReceiverInfo
         //  Constructs GnssReceiverInfo object with default values
-        GnssReceiverInfo() {};
+        GnssReceiverInfo();
 
         //API Constructor: GnssReceiverInfo
         //  Constructs GnssReceiverInfo object with specified values
-        GnssReceiverInfo(uint8 recId, MipTypes::DataClass target, std::string desc) :
-            id(recId),
-            targetDataClass(target),
-            description(desc)
-        {}
+        GnssReceiverInfo(uint8 recId, MipTypes::DataClass target, std::string desc);
 
         //API Variable: id
         //  Receiver ID
@@ -1875,6 +1882,18 @@ namespace mscl
         //API Variable: description
         //  ASCII description of receiver
         std::string description;
+
+        //API Variable: module
+        //  ASCII name of the receiver module
+        std::string module;
+
+        //API Variable: fwId
+        //  ASCII name of the receiver firmware identifier
+        std::string fwId;
+
+        //API Variable: fwVersion
+        //  Firmware version of the receiver module
+        Version fwVersion;
     };
 
     //API Typedef: GnssReceivers
