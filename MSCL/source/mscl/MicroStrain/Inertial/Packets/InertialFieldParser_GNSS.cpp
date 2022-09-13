@@ -677,7 +677,7 @@ namespace mscl
         const bool sbasStatusValid = pointIsValid(flags, SBAS_STATUS_VALID);
 
         // identifiers
-        const auto chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+        const MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
 
         const MipChannelIdentifiers addlIds = {
             MipChannelIdentifier(MipChannelIdentifier::Type::SBAS_SYSTEM,       sbasId),
