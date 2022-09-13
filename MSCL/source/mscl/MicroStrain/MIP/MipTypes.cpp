@@ -1095,10 +1095,24 @@ namespace mscl
         return sensorcloudFilteredName;
     }
 
+    const std::string GnssReceiverInfo::INFO_NOT_FOUND = "Not Found";
+
+    GnssReceiverInfo::GnssReceiverInfo() :
+        id(0),
+        targetDataClass(MipTypes::DataClass(0)),
+        description(INFO_NOT_FOUND),
+        module(INFO_NOT_FOUND),
+        fwId(INFO_NOT_FOUND),
+        fwVersion(Version(0, 0))
+    {}
+
     GnssReceiverInfo::GnssReceiverInfo(const uint8 recId, const MipTypes::DataClass target, std::string desc) :
         id(recId),
         targetDataClass(target),
-        description(std::move(desc))
+        description(std::move(desc)),
+        module(INFO_NOT_FOUND),
+        fwId(INFO_NOT_FOUND),
+        fwVersion(Version(0, 0))
     {
         // Tokenize by comma
         const std::vector<std::string> segments = Utils::tokenize(description);

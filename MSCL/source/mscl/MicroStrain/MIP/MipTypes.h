@@ -1820,11 +1820,11 @@ namespace mscl
         //  String value assigned when the target value was unable to be found in the full description field.
         //
         //  INFO_NOT_FOUND - "Not Found"
-        const std::string INFO_NOT_FOUND = "Not Found";
+        static const std::string INFO_NOT_FOUND;
 
         //API Constructor: GnssReceiverInfo
         //  Constructs GnssReceiverInfo object with default values
-        GnssReceiverInfo() {}
+        GnssReceiverInfo();
 
         //API Constructor: GnssReceiverInfo
         //  Constructs GnssReceiverInfo object with specified values
@@ -1844,15 +1844,15 @@ namespace mscl
 
         //API Variable: module
         //  ASCII name of the receiver module
-        std::string module = INFO_NOT_FOUND;
+        std::string module;
 
         //API Variable: fwId
         //  ASCII name of the receiver firmware identifier
-        std::string fwId = INFO_NOT_FOUND;
+        std::string fwId;
 
         //API Variable: fwVersion
         //  Firmware version of the receiver module
-        Version fwVersion = Version(0, 0);
+        Version fwVersion;
     };
 
     //API Typedef: GnssReceivers

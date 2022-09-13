@@ -44,6 +44,14 @@ public class GnssReceiverInfo : global::System.IDisposable {
     }
   }
 
+  public static string INFO_NOT_FOUND {
+    get {
+      string ret = msclPINVOKE.GnssReceiverInfo_INFO_NOT_FOUND_get();
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
   public GnssReceiverInfo() : this(msclPINVOKE.new_GnssReceiverInfo__SWIG_0(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }

@@ -3786,6 +3786,9 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_MipCommandBytes")]
   public static extern void delete_MipCommandBytes(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssReceiverInfo_INFO_NOT_FOUND_get")]
+  public static extern string GnssReceiverInfo_INFO_NOT_FOUND_get();
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GnssReceiverInfo__SWIG_0")]
   public static extern global::System.IntPtr new_GnssReceiverInfo__SWIG_0();
 
