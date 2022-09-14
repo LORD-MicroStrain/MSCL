@@ -689,6 +689,21 @@ namespace mscl
             OVERRANGE_MAG_Z       = 0x0400, // Mag Z
             OVERRANGE_PRESSURE    = 0x1000, // Pressure
         };
+
+        //API Enum: SBASInfoStatus
+        //  Bitmasks for interpreting the SBAS Info (0x81,0x12) status bitfield
+        //
+        //      SBAS_INFO_RANGE_AVAILABLE       - 0x01 - Range Available
+        //      SBAS_INFO_CORRECTIONS_AVAILABLE - 0x02 - Corrections Available
+        //      SBAS_INFO_INTEGRITY_AVAILABLE   - 0x04 - Integrity Available
+        //      SBAS_INFO_TEST                  - 0x08 - Test Mode
+        enum SbasInfoStatus
+        {
+            SBAS_INFO_RANGE_AVAILABLE       = 0x01, // Range Available
+            SBAS_INFO_CORRECTIONS_AVAILABLE = 0x02, // Corrections Available
+            SBAS_INFO_INTEGRITY_AVAILABLE   = 0x04, // Integrity Available
+            SBAS_INFO_TEST                  = 0x08  // Test Mode
+        };
     };
 
     //API Typedef: SatellitePRNs
