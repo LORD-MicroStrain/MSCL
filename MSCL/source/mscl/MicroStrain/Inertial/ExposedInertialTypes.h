@@ -706,6 +706,49 @@ namespace mscl
         };
     };
 
+    struct NmeaFormat
+    {
+        //API Enum: Sentence
+        //  NMEA sentence type options
+        //
+        //  GGA     - 0x01 - GPS System Fix Data
+        //  GLL     - 0x02 - Geographic Position Lat/Lon
+        //  GSV     - 0x03 - GNSS Satellites in View
+        //  RMC     - 0x04 - Recommended Minimum Specific GNSS Data
+        //  VTG     - 0x05 - Course over Ground
+        //  HDT     - 0x06 - Heading, True
+        //  ZDA     - 0x07 - Time & Date
+        //  PRKA    - 0x81 - Parker proprietary Euler angles
+        //  PRKR    - 0x82 - Parker proprietary Angular Rate/Acceleration
+        enum Sentence
+        {
+            GGA     = 0x01,
+            GLL     = 0x02,
+            GSV     = 0x03,
+            RMC     = 0x04,
+            VTG     = 0x05,
+            HDT     = 0x06,
+            ZDA     = 0x07,
+            PRKA    = 0x81,
+            PRKR    = 0x82
+        };
+
+        //API Enum: Talker
+        //  NMEA talker ID options
+        //
+        //  GNSS    - 1 - NMEA message will be produced with talker id "GN"
+        //  GPS     - 2 - NMEA message will be produced with talker id "GP"
+        //  GALILEO - 3 - NMEA message will be produced with talker id "GA"
+        //  GLONASS - 4 - NMEA message will be produced with talker id "GL"
+        enum Talker
+        {
+            GNSS    = 1,
+            GPS     = 2,
+            GALILEO = 3,
+            GLONASS = 4
+        };
+    };
+
     //API Typedef: SatellitePRNs
     //  A vector of <uint16> PRN#s for satellites.
     typedef std::vector<uint16> SatellitePRNs;
