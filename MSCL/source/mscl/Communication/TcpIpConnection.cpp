@@ -32,7 +32,12 @@ namespace mscl
     {
         return "TCP/IP, " + m_serverAddress + ":" + Utils::toStr(m_serverPort);
     }
-    
+
+    std::string TcpIpConnection::port() const
+    {
+        return Utils::toStr(m_serverPort);
+    }
+
     void TcpIpConnection::establishConnection()
     {
         //if the connection has not been established

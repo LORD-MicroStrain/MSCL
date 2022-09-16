@@ -1168,6 +1168,26 @@ namespace mscl
         });
     }
 
+    PositionOffset InertialNode::getLeverArmReferenceOffset() const
+    {
+        const MipFieldValues data = m_impl->get(MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF, {
+            Value::UINT8(1) // reserved, placeholder source value
+        });
+
+        // skip first element - reserved, placeholder source value
+        return PositionOffset(data[1].as_float(), data[2].as_float(), data[3].as_float());
+    }
+
+    void InertialNode::setLeverArmReferenceOffset(const PositionOffset offset) const
+    {
+        m_impl->set(MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF, {
+            Value::UINT8(1), // reserved, placeholder source value
+            Value::FLOAT(offset.x()),
+            Value::FLOAT(offset.y()),
+            Value::FLOAT(offset.z()),
+        });
+    }
+
     void InertialNode::sendExternalSpeedMeasurementUpdate(float tow, float speed, float unc)
     {
         m_impl->run(MipTypes::Command::CMD_EF_EXTERN_SPEED_UPDATE, {

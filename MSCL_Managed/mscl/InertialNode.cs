@@ -961,6 +961,17 @@ public class InertialNode : MipNode {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public PositionOffset getLeverArmReferenceOffset() {
+    PositionOffset ret = new PositionOffset(msclPINVOKE.InertialNode_getLeverArmReferenceOffset(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setLeverArmReferenceOffset(PositionOffset offset) {
+    msclPINVOKE.InertialNode_setLeverArmReferenceOffset(swigCPtr, PositionOffset.getCPtr(offset));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public void sendExternalSpeedMeasurementUpdate(float tow, float speed, float unc) {
     msclPINVOKE.InertialNode_sendExternalSpeedMeasurementUpdate(swigCPtr, tow, speed, unc);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

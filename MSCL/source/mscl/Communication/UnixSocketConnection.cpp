@@ -22,7 +22,7 @@ namespace mscl
     {
         return "UnixSocket, " + m_path;
     }
-    
+
     void UnixSocketConnection::establishConnection()
     {
         //if the connection has not been established

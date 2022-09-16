@@ -142,6 +142,11 @@ namespace mscl
         return m_impl->description(); 
     }
 
+    std::string Connection::port()
+    {
+        return m_impl->port();
+    }
+
     Connection::ConnectionType Connection::type()
     {
         return m_impl->type();

@@ -110,6 +110,12 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public GnssSources supportedGnssSources() {
+    GnssSources ret = new GnssSources(msclPINVOKE.MipNodeFeatures_supportedGnssSources(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public SupportedSensorRanges supportedSensorRanges() {
     SupportedSensorRanges ret = new SupportedSensorRanges(msclPINVOKE.MipNodeFeatures_supportedSensorRanges__SWIG_0(swigCPtr), false);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

@@ -90,6 +90,12 @@ public class Connection : global::System.IDisposable {
     return ret;
   }
 
+  public string port() {
+    string ret = msclPINVOKE.Connection_port(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public Connection.ConnectionType type() {
     Connection.ConnectionType ret = (Connection.ConnectionType)msclPINVOKE.Connection_type(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

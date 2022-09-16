@@ -12,8 +12,8 @@
 
 namespace mscl
 {
-    //the classes in this file do not get referenced anywhere, therefore the 
-    //linker will not include this compilation unit when statically 
+    //the classes in this file do not get referenced anywhere, therefore the
+    //linker will not include this compilation unit when statically
     //linking to an executable. Defining this variable, and then using it
     //elsewhere, will force this file to be included
     bool _forceLibraryToIncludeCompilationUnit_GNSS;
@@ -426,7 +426,7 @@ namespace mscl
 
         //get the valid flags
         uint16 flags = bytes.read_uint16();
-        
+
         //get whether points are valid or invalid from the flags
         bool channelValid    = pointIsValid(flags, CHANNEL_VALID);
         bool ratioValid        = pointIsValid(flags, RATIO_VALID);
@@ -651,54 +651,50 @@ namespace mscl
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
-    //                                                        FieldParser_GnssSBASCorrection
-    const MipTypes::ChannelField FieldParser_GnssSBASCorrection::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_SBAS_CORRECTION;
-    const bool FieldParser_GnssSBASCorrection::REGISTERED = registerParser();    //register the parser immediately
+    //                                                        FieldParser_GnssSBASInfo
+    const MipTypes::ChannelField FieldParser_GnssSBASInfo::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_SBAS_INFO;
+    const bool FieldParser_GnssSBASInfo::REGISTERED = registerParser();    //register the parser immediately
 
-    void FieldParser_GnssSBASCorrection::parse(const MipDataField& field, MipDataPoints& result) const
+    void FieldParser_GnssSBASInfo::parse(const MipDataField& field, MipDataPoints& result) const
     {
         DataBuffer bytes(field.fieldData());
 
         // get the data
-        const uint8  index       = bytes.read_uint8();
-        const uint8  count       = bytes.read_uint8();
         const double tow         = bytes.read_double();
         const uint16 weekNum     = bytes.read_uint16();
-        const uint8  gnssId      = bytes.read_uint8();
+        const uint8  sbasId      = bytes.read_uint8();
         const uint8  satelliteId = bytes.read_uint8();
-        const uint8  udrei       = bytes.read_uint8();
-        const float  pseudorange = bytes.read_float();
-        const float  ionospheric = bytes.read_float();
+        const uint8  count       = bytes.read_uint8();
+        const uint8  status      = bytes.read_uint8();
 
         // get the valid flags
         const uint16 flags = bytes.read_uint16();
 
         // get whether points are valid or invalid from the flags
-        const bool udreiValid       = pointIsValid(flags, UDREI_VALID);
-        const bool pseudorangeValid = pointIsValid(flags, PSEUDORANGE_CORRECTION_VALID);
-        const bool ionosphericValid = pointIsValid(flags, IONOSPHERIC_CORRECTION_VALID);
+        const bool towValid        = pointIsValid(flags, TOW_VALID);
+        const bool weekNumValid    = pointIsValid(flags, WEEK_NUMBER_VALID);
+        const bool countValid      = pointIsValid(flags, COUNT_VALID);
+        const bool sbasStatusValid = pointIsValid(flags, SBAS_STATUS_VALID);
 
         // identifiers
-        const auto chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+        const MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
 
         const MipChannelIdentifiers addlIds = {
-            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_CONSTELLATION, gnssId),
-            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_SATELLITE_ID,  satelliteId)
+            MipChannelIdentifier(MipChannelIdentifier::Type::SBAS_SYSTEM,       sbasId),
+            MipChannelIdentifier(MipChannelIdentifier::Type::SBAS_SATELLITE_ID, satelliteId)
         };
 
         // add data points for the values collected
-        result.push_back(MipDataPoint(chField, MipTypes::CH_INDEX,                  addlIds, valueType_uint8,  anyType(index)));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_COUNT,                  addlIds, valueType_uint8,  anyType(count)));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_TIME_OF_WEEK,           addlIds, valueType_double, anyType(tow)));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_WEEK_NUMBER,            addlIds, valueType_uint16, anyType(weekNum)));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_UDREI,                  addlIds, valueType_uint8,  anyType(udrei),       udreiValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_PSEUDORANGE_CORRECTION, addlIds, valueType_float,  anyType(pseudorange), pseudorangeValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_IONOSPHERIC_CORRECTION, addlIds, valueType_float,  anyType(ionospheric), ionosphericValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_TIME_OF_WEEK, addlIds, valueType_double, anyType(tow),     towValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_WEEK_NUMBER,  addlIds, valueType_uint16, anyType(weekNum), weekNumValid));
+
+        result.push_back(MipDataPoint(chField, MipTypes::CH_COUNT,  addlIds, valueType_uint8, anyType(count),  countValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_STATUS, addlIds, valueType_uint8, anyType(status), sbasStatusValid));
     }
 
-    bool FieldParser_GnssSBASCorrection::registerParser()
+    bool FieldParser_GnssSBASInfo::registerParser()
     {
-        static FieldParser_GnssSBASCorrection p;
+        static FieldParser_GnssSBASInfo p;
         return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
@@ -715,7 +711,7 @@ namespace mscl
         //get the data
         uint8 index = bytes.read_uint8();
         uint8 count = bytes.read_uint8();
-        
+
         double tow = bytes.read_double();
         uint16 weekNum = bytes.read_uint16();
 
@@ -780,7 +776,7 @@ namespace mscl
         uint16 weekNum = bytes.read_uint16();
 
         uint16 recId = bytes.read_uint16();
-        
+
         // tracking channel will currently always be 0 - read over the bytes, but don't bother storing it
         bytes.read_uint8();
 
@@ -879,7 +875,7 @@ namespace mscl
         double posZ = bytes.read_double();
 
         float height = bytes.read_float();
-        
+
         uint16 stationId = bytes.read_uint16();
         uint16 indicators = bytes.read_uint16();
 

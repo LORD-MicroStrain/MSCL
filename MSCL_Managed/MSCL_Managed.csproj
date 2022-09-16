@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -118,6 +118,15 @@
     <Compile Include="mscl\Constellation.cs" />
     <Compile Include="mscl\Constellations.cs" />
     <Compile Include="mscl\ConstellationSettingsData.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_Filter.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_Filter_General.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_IMU.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_IMU_General.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_IMU_Sensors.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_System.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_System_General.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_System_Process.cs" />
     <Compile Include="mscl\DamageAngles.cs" />
     <Compile Include="mscl\DataCollectionMethods.cs" />
     <Compile Include="mscl\DataFormats.cs" />
@@ -181,6 +190,7 @@
     <Compile Include="mscl\GnssReceiverInfo.cs" />
     <Compile Include="mscl\GnssReceivers.cs" />
     <Compile Include="mscl\GnssSignalConfiguration.cs" />
+    <Compile Include="mscl\GnssSources.cs" />
     <Compile Include="mscl\GpioBehaviorModes.cs" />
     <Compile Include="mscl\GpioConfiguration.cs" />
     <Compile Include="mscl\GpioFeatureBehaviors.cs" />

@@ -9,6 +9,7 @@
 
 #include <iomanip>
 #include <sstream>
+#include <regex>
 
 namespace mscl
 {
@@ -53,46 +54,21 @@ std::string Version::str() const
 
 bool Version::fromString(const std::string& strVersion)
 {
-    size_t majorMinorDec = strVersion.find_first_of('.');
-    size_t minorPatchDec = strVersion.find_last_of('.');
-    size_t end = (strVersion.size() - 1);
+    // Pattern to extract only numbers Major.Minor.Patch. Anything else before or after is ignored
+    const std::regex pattern(R"((\d+)\.?(\d+)?\.?(\d+)?)");
 
-    size_t minorCharsToRead = 0;
+    std::smatch match;
 
-    //if there is no "patch" part in the string
-    if(minorPatchDec == majorMinorDec)
+    // Pattern will always find a Major number if it exists
+    if (std::regex_search(strVersion, match, pattern))
     {
-        //read from the major/minor decimal to the end
-        minorCharsToRead = end - majorMinorDec;
-    }
-    else
-    {
-        //read from the major/minor period to the minor/patch decimal
-        minorCharsToRead = minorPatchDec - majorMinorDec;
-    }
+        m_major = std::stoi(match[1]);
 
-    
+        // Minor is optionally found
+        m_minor = match[2].matched ? std::stoi(match[2]) : 0;
 
-    if(majorMinorDec > 0 && majorMinorDec < end)
-    {
-        //major version
-        {
-            std::stringstream s(strVersion.substr(0, majorMinorDec));
-            s >> m_major;
-        }
-
-        //minor
-        {
-            std::stringstream s(strVersion.substr(majorMinorDec + 1, minorCharsToRead));
-            s >> m_minor;
-        }
-
-        //patch
-        if((minorPatchDec > 0) && (minorPatchDec < end) && (minorPatchDec > majorMinorDec))
-        {
-            std::stringstream s(strVersion.substr(minorPatchDec + 1));
-            s >> m_patch;
-        }
+        // Patch is optionally found
+        m_patch = match[3].matched ? std::stoi(match[3]) : 0;
 
         return true;
     }
