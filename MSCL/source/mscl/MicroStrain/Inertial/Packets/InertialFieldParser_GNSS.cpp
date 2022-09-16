@@ -698,6 +698,57 @@ namespace mscl
         return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
+    
+    //=====================================================================================================================================================
+    //                                                        FieldParser_GnssSBASCorrection
+    const MipTypes::ChannelField FieldParser_GnssSBASCorrection::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_SBAS_CORRECTION;
+    const bool FieldParser_GnssSBASCorrection::REGISTERED = registerParser();    //register the parser immediately
+    void FieldParser_GnssSBASCorrection::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        // get the data
+        const uint8  index       = bytes.read_uint8();
+        const uint8  count       = bytes.read_uint8();
+        const double tow         = bytes.read_double();
+        const uint16 weekNum     = bytes.read_uint16();
+        const uint8  gnssId      = bytes.read_uint8();
+        const uint8  satelliteId = bytes.read_uint8();
+        const uint8  udrei       = bytes.read_uint8();
+        const float  pseudorange = bytes.read_float();
+        const float  ionospheric = bytes.read_float();
+
+        // get the valid flags
+        const uint16 flags = bytes.read_uint16();
+
+        // get whether points are valid or invalid from the flags
+        const bool udreiValid = pointIsValid(flags, UDREI_VALID);
+        const bool pseudorangeValid = pointIsValid(flags, PSEUDORANGE_CORRECTION_VALID);
+        const bool ionosphericValid = pointIsValid(flags, IONOSPHERIC_CORRECTION_VALID);
+
+        // identifiers
+        const auto chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+        const MipChannelIdentifiers addlIds = {
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_CONSTELLATION, gnssId),
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_SATELLITE_ID,  satelliteId)
+        };
+
+        // add data points for the values collected
+        result.push_back(MipDataPoint(chField, MipTypes::CH_INDEX, addlIds, valueType_uint8, anyType(index)));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_COUNT, addlIds, valueType_uint8, anyType(count)));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_TIME_OF_WEEK, addlIds, valueType_double, anyType(tow)));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_WEEK_NUMBER, addlIds, valueType_uint16, anyType(weekNum)));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_UDREI, addlIds, valueType_uint8, anyType(udrei), udreiValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_PSEUDORANGE_CORRECTION, addlIds, valueType_float, anyType(pseudorange), pseudorangeValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_IONOSPHERIC_CORRECTION, addlIds, valueType_float, anyType(ionospheric), ionosphericValid));
+    }
+
+    bool FieldParser_GnssSBASCorrection::registerParser()
+    {
+        static FieldParser_GnssSBASCorrection p;
+        return registerGnssParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
 
     //=====================================================================================================================================================
     //                                                        FieldParser_GnssSatelliteStatus
