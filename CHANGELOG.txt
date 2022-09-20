@@ -26,6 +26,8 @@ Forthcoming
     - Fix device info not fully cleared on InertialNode::clearDeviceInfo()
     - Added support for MIP data:
         - Continuous Built-In Test (0xA0, 0x01)
+        - SBAS Status (0x81,0x12) (0x91-95,0x12)
+        - Calculated SBAS Correction (0x81,0x13) (0x91-95,0x13)
     - Added support for MIP commands:
         - Reference Point Lever Arm (0x0D,0x56)
 

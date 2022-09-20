@@ -203,11 +203,19 @@ namespace mscl
         { ChannelId(CH_FIELD_GNSS_CLOCK_INFO_2, CH_DRIFT_ACCURACY_ESTIMATE), "gpsClockDriftAccuracy" },
 
         { ChannelId(CH_FIELD_GNSS_GPS_LEAP_SECONDS, CH_SECONDS), "gpsLeapSeconds" },
-
+        
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_TIME_OF_WEEK), "sbasInfo_tow" },
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_WEEK_NUMBER), "sbasInfo_weekNumber" },
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_COUNT), "sbasInfo_count" },
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_STATUS), "sbasInfo_status" },
+
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_INDEX), "sbasCorr_index" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_COUNT), "sbasCorr_count" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_TIME_OF_WEEK), "sbasCorr_tow" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_WEEK_NUMBER), "sbasCorr_weekNumber" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_UDREI), "sbasCorr_udrei" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_PSEUDORANGE_CORRECTION), "sbasCorr_pseudorange" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_IONOSPHERIC_CORRECTION), "sbasCorr_ionospheric" },
 
         { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_INDEX), "satStatus_index" },
         { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_COUNT), "satStatus_count" },
