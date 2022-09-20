@@ -736,17 +736,21 @@ namespace mscl
         //API Enum: Talker
         //  NMEA talker ID options
         //
-        //  GNSS    - 1 - NMEA message will be produced with talker id "GN"
-        //  GPS     - 2 - NMEA message will be produced with talker id "GP"
-        //  GALILEO - 3 - NMEA message will be produced with talker id "GA"
-        //  GLONASS - 4 - NMEA message will be produced with talker id "GL"
+        //  NOT_APPLICABLE  - 0 - Talker ID not applicable
+        //  GNSS            - 1 - NMEA message will be produced with talker id "GN"
+        //  GPS             - 2 - NMEA message will be produced with talker id "GP"
+        //  GALILEO         - 3 - NMEA message will be produced with talker id "GA"
+        //  GLONASS         - 4 - NMEA message will be produced with talker id "GL"
         enum Talker
         {
-            GNSS    = 1,
-            GPS     = 2,
-            GALILEO = 3,
-            GLONASS = 4
+            NOT_APPLICABLE  = 0,
+            GNSS            = 1,
+            GPS             = 2,
+            GALILEO         = 3,
+            GLONASS         = 4
         };
+
+
     };
 
     //API Typedef: SatellitePRNs
