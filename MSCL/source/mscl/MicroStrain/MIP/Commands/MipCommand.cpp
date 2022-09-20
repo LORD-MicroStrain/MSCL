@@ -135,6 +135,7 @@ namespace mscl
         case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS:
         case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
         case MipTypes::CMD_EF_RELATIVE_POSITION_REF:
+        case MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF:
         case MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET:
         case MipTypes::CMD_EF_VERTICAL_GYRO_CONSTRAINT:
         case MipTypes::CMD_EF_WHEELED_VEHICLE_CONSTRAINT:
@@ -183,6 +184,7 @@ namespace mscl
 
         switch (m_commandId)
         {
+            // 0x0C
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
         case MipTypes::CMD_GET_BASE_RATE:
         case MipTypes::CMD_MESSAGE_FORMAT:
@@ -191,6 +193,8 @@ namespace mscl
         case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
         case MipTypes::CMD_SENSOR_RANGE:
         case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
+            // 0x0D
+        case MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF:
             // check that the identifier is echoed back in the response
             matchData.emplace(0, m_data[0]);
             break;
@@ -265,6 +269,8 @@ namespace mscl
             return "MultiAntennaOffset";
         case MipTypes::CMD_EF_RELATIVE_POSITION_REF:
             return "RelativePositionReference";
+        case MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF:
+            return "LeverArmOffsetReference";
         case MipTypes::CMD_EF_EXTERN_SPEED_UPDATE:
             return "ExternalSpeedMeasurementUpdate";
         case MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET:
@@ -332,6 +338,7 @@ namespace mscl
         case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS: //0xD3
         case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET: //0xD4
         case MipTypes::CMD_EF_RELATIVE_POSITION_REF: //0xD5
+        case MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF: //0xD6
         case MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET: //0xE1
         case MipTypes::CMD_EF_VERTICAL_GYRO_CONSTRAINT: //0xE2
         case MipTypes::CMD_EF_WHEELED_VEHICLE_CONSTRAINT: //0xE3
@@ -481,6 +488,14 @@ namespace mscl
                 ValueType::valueType_double,
                 ValueType::valueType_double,
                 ValueType::valueType_double
+            };
+
+        case MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+                ValueType::valueType_float,
             };
 
         case MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET:

@@ -81,10 +81,6 @@ namespace mscl
         //    The timeout to use for MIP commands
         uint64 m_commandsTimeout;
 
-        //Variable: m_nodeInfo
-        //    The <MipNodeInfo> object that gives access to information of the Node
-        mutable std::unique_ptr<MipNodeInfo> m_nodeInfo;
-
         //Variable: m_features
         //    The <MipNodeFeatures> containing the features for this device.
         mutable std::unique_ptr<MipNodeFeatures> m_features;
@@ -196,7 +192,10 @@ namespace mscl
         void setLastDeviceState(DeviceState state);
 
         //Function: resetNodeInfo
-        //  Clears cached info read from device (ie fw version, receiver info, etc.)
+        //  Clears cached info read from device (ie fw version, receiver info, etc.).
+        //
+        //Note:
+        //  Features is also reset to load new info data next time it's used.
         void resetNodeInfo();
 
         //Function: firmwareVersion
@@ -332,6 +331,52 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         virtual std::vector<uint16> getDescriptorSets() const;
+
+        //Function: getRequiredParameterDefaults
+        //  Get list of command ID, parameters vector pairs for all the available defaults for the required parameters of the specified commands
+        //  Useful for get config command bytes, save as startup, etc.
+        //
+        //Parameter:
+        //  cmds - <MipTypes::MipCommands> to get the required parameter default values for
+        //  useAllParam - bool, default true - if command accepts an All parameter (usually 0) for Save/Load/Default use that instead of separate entries for individual parameters
+        //
+        //Returns:
+        //  <MipCommandParameters> - list of cmd, parameters pairs for the specified commands
+        MipCommandParameters getRequiredParameterDefaults(const MipTypes::MipCommands& cmds, bool useAllParam = true) const;
+
+        //Function: getRequiredParameterDefaults
+        //  Get list of command ID, parameters vector pairs for all the available defaults for the required parameters of the specified command
+        //  Useful for get config command bytes, save as startup, etc.
+        //
+        //Parameter:
+        //  cmd - <MipTypes::Command> to get the required parameter default values for
+        //  useAllParam - bool, default true - if command accepts an All parameter (usually 0) for Save/Load/Default use that instead of separate entries for individual parameters
+        //
+        //Returns:
+        //  <MipCommandParameters> - list of cmd, parameters pairs for the specified command
+        MipCommandParameters getRequiredParameterDefaults(MipTypes::Command cmd, bool useAllParam = true) const;
+
+        //Function: getReservedWriteValues
+        //  Get list of command ID, parameters vector pairs for all the trailing reserved values for writing the specified commands
+        //  Useful for get config command bytes
+        //
+        //Parameter:
+        //  cmds - <MipTypes::MipCommands> to get the trailing reserved values for
+        //
+        //Returns:
+        //  <MipCommandParameters> - list of cmd, parameters pairs for the specified commands
+        MipCommandParameters getReservedWriteValues(const MipTypes::MipCommands& cmds) const;
+
+        //Function: getReservedWriteValues
+        //  Get list of command ID, parameters vector pairs for all the trailing reserved values for writing the specified command
+        //  Useful for get config command bytes
+        //
+        //Parameter:
+        //  cmd - <MipTypes::Command> to get the trailing reserved values for
+        //
+        //Returns:
+        //  <MipCommandParameters> - list of cmd, parameters pairs for the specified command
+        MipCommandParameters getReservedWriteValues(MipTypes::Command cmd) const;
 
         //Function: getConfigCommandBytes
         //    Gets the byte string for the commands to set the node's current settings.

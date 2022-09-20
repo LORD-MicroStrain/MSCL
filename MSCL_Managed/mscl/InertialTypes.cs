@@ -74,8 +74,10 @@ public class InertialTypes : global::System.IDisposable {
   }
 
   public enum GNSS_Source {
-    INTERNAL_GNSS = 0x01,
-    EXTERNAL_GNSS = 0x02
+    INTERNAL_GNSS_ALL = 0x01,
+    EXTERNAL_GNSS = 0x02,
+    INTERNAL_GNSS1 = 0x03,
+    INTERNAL_GNSS2 = 0x04
   }
 
   public enum GnssFixFlags {
@@ -253,7 +255,8 @@ public class InertialTypes : global::System.IDisposable {
     ALTIMETER_AIDING = 0x0002,
     ODOMETER_AIDING = 0x0003,
     MAGNETOMETER_AIDING = 0x0004,
-    EXTERNAL_HEADING_AIDING = 0x0005
+    EXTERNAL_HEADING_AIDING = 0x0005,
+    ALL_AIDING_MEASUREMENTS = 0xFFFF
   }
 
   public enum ConstellationId {
@@ -340,25 +343,11 @@ public class InertialTypes : global::System.IDisposable {
     OVERRANGE_PRESSURE = 0x1000
   }
 
-  public enum RFBand {
-    RF_BAND_UNKNOWN = 0x00,
-    RF_BAND_L1 = 0x01,
-    RF_BAND_L2 = 0x02,
-    RF_BAND_L5 = 0x05
-  }
-
-  public enum JammingState {
-    JAMMING_STATE_UNKNOWN = 0x00,
-    JAMMING_STATE_NONE = 0x01,
-    JAMMING_STATE_PARTIAL = 0x02,
-    JAMMING_STATE_SIGNIFICANT = 0x03
-  }
-
-  public enum SpoofingState {
-    SPOOFING_STATE_UNKNOWN = 0x00,
-    SPOOFING_STATE_NONE = 0x01,
-    SPOOFING_STATE_PARTIAL = 0x02,
-    SPOOFING_STATE_SIGNIFICANT = 0x03
+  public enum SbasInfoStatus {
+    SBAS_INFO_RANGE_AVAILABLE = 0x01,
+    SBAS_INFO_CORRECTIONS_AVAILABLE = 0x02,
+    SBAS_INFO_INTEGRITY_AVAILABLE = 0x04,
+    SBAS_INFO_TEST = 0x08
   }
 
 }

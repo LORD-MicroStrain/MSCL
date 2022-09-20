@@ -26,7 +26,12 @@ namespace mscl
     {
         return "Serial, " + m_port + ", " + Utils::toStr(m_baudRate);
     }
-    
+
+    std::string SerialConnection::port() const
+    {
+        return m_port;
+    }
+
     //initializes and opens the serial connection
     void SerialConnection::establishConnection()
     {

@@ -13,14 +13,13 @@
 
 namespace mscl
 {
-    MipNodeFeatures::MipNodeFeatures(const MipNodeInfo& info):
-        m_nodeInfo(info)
-    {
-    }
+    MipNodeFeatures::MipNodeFeatures(const MipNode_Impl* node):
+        m_node(node)
+    {}
 
-    std::unique_ptr<MipNodeFeatures> MipNodeFeatures::create(const MipNodeInfo& info)
+    std::unique_ptr<MipNodeFeatures> MipNodeFeatures::create(const MipNode_Impl* node)
     {
-        return std::unique_ptr<MipNodeFeatures>(new MipNodeFeatures(info));
+        return std::unique_ptr<MipNodeFeatures>(new MipNodeFeatures(node));
     }
 
     bool MipNodeFeatures::isChannelField(uint16 descriptor)
@@ -48,12 +47,12 @@ namespace mscl
 
     bool MipNodeFeatures::supportsCategory(MipTypes::DataClass dataClass) const
     {
-        const auto& descriptors = m_nodeInfo.descriptors();
+        const auto& descriptors = nodeInfo().descriptors();
 
         //loop over all the descriptors we have
         for(auto desc : descriptors)
         {
-            //if ths MSB of the descriptor matches the DataClass being requested
+            //if the MSB of the descriptor matches the DataClass being requested
             if(Utils::msb(static_cast<uint16>(desc)) == static_cast<uint16>(dataClass))
             {
                 //the device supports this category
@@ -102,7 +101,7 @@ namespace mscl
     {
         MipTypes::MipChannelFields result;
 
-        const auto& descriptors = m_nodeInfo.descriptors();
+        const auto& descriptors = nodeInfo().descriptors();
 
         //loop over all the descriptors we have
         for(auto desc : descriptors)
@@ -126,7 +125,7 @@ namespace mscl
 
     bool MipNodeFeatures::supportsCommand(MipTypes::Command commandId) const
     {
-        const auto& descriptors = m_nodeInfo.descriptors();
+        const auto& descriptors = nodeInfo().descriptors();
         return (std::find(descriptors.begin(), descriptors.end(), static_cast<uint16>(commandId)) != descriptors.end());
     }
 
@@ -134,7 +133,7 @@ namespace mscl
     {
         MipTypes::MipCommands result;
 
-        auto& descriptors = m_nodeInfo.descriptors();
+        auto& descriptors = nodeInfo().descriptors();
 
         for(const auto& desc : descriptors)
         {
@@ -150,27 +149,85 @@ namespace mscl
 
     const SampleRates& MipNodeFeatures::supportedSampleRates(MipTypes::DataClass dataClass) const
     {
-        return m_nodeInfo.supportedSampleRates(dataClass);
+        return nodeInfo().supportedSampleRates(dataClass);
     }
 
     const uint16& MipNodeFeatures::baseDataRate(MipTypes::DataClass dataClass) const
     {
-        return m_nodeInfo.baseDataRate(dataClass);
+        return nodeInfo().baseDataRate(dataClass);
+    }
+
+    const MipNodeInfo& MipNodeFeatures::nodeInfo() const
+    {
+        //if we haven't initialized the MipNodeInfo
+        if (!m_nodeInfo)
+        {
+            m_nodeInfo.reset(new MipNodeInfo(m_node));
+        }
+
+        return (*m_nodeInfo);
+    }
+
+    void MipNodeFeatures::resetNodeInfo()
+    {
+        //if we haven't initialized the MipNodeInfo, no need to reset it
+        if (!m_nodeInfo)
+        {
+            return;
+        }
+
+        m_nodeInfo.reset();
     }
 
     const GnssReceivers& MipNodeFeatures::gnssReceiverInfo() const
     {
-        return m_nodeInfo.gnssReceiverInfo();
+        return nodeInfo().gnssReceiverInfo();
+    }
+
+    const GnssSources MipNodeFeatures::supportedGnssSources() const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_GNSS_SRC_CTRL))
+        {
+            return {};
+        }
+
+        const MipModel model(nodeInfo().deviceInfo().modelNumber);
+        const Version fwVersion(nodeInfo().deviceInfo().fwVersion);
+
+        //TODO: Update version check when GQ7 R3 fw has been released
+        if (fwVersion >= Version(1, 1) || fwVersion < Version(1, 0))
+        {
+            switch (model.baseModel().nodeModel())
+            {
+            case MipModels::node_3dm_gq7:
+                return{
+                    InertialTypes::GNSS_Source::INTERNAL_GNSS_ALL,
+                    InertialTypes::GNSS_Source::EXTERNAL_GNSS,
+                    InertialTypes::GNSS_Source::INTERNAL_GNSS1,
+                    InertialTypes::GNSS_Source::INTERNAL_GNSS2
+                };
+            default:
+                return{
+                    InertialTypes::GNSS_Source::INTERNAL_GNSS_ALL,
+                    InertialTypes::GNSS_Source::EXTERNAL_GNSS
+                };
+            }
+        }
+
+        return{
+            InertialTypes::GNSS_Source::INTERNAL_GNSS_ALL,
+            InertialTypes::GNSS_Source::EXTERNAL_GNSS
+        };
     }
 
     const SupportedSensorRanges& MipNodeFeatures::supportedSensorRanges() const
     {
-        return m_nodeInfo.supportedSensorRanges();
+        return nodeInfo().supportedSensorRanges();
     }
 
     const SensorRanges MipNodeFeatures::supportedSensorRanges(SensorRange::Type type) const
     {
-        SensorRangeOptions rangeOptions = m_nodeInfo.supportedSensorRanges().options();
+        SensorRangeOptions rangeOptions = nodeInfo().supportedSensorRanges().options();
         auto typeEntry = rangeOptions.find(type);
         if (typeEntry == rangeOptions.end())
         {
@@ -184,7 +241,7 @@ namespace mscl
 
     const CommPortInfo MipNodeFeatures::getCommPortInfo() const
     {
-        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        MipModel model(nodeInfo().deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_gq7:
@@ -207,7 +264,7 @@ namespace mscl
             return VehicleModeTypes(0);
         }
 
-        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        MipModel model(nodeInfo().deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
         {
         
@@ -239,7 +296,7 @@ namespace mscl
             return{};
         }
 
-        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        MipModel model(nodeInfo().deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_gq4_45:
@@ -276,7 +333,7 @@ namespace mscl
 
     bool MipNodeFeatures::useLegacyIdsForEnableDataStream() const
     {
-        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        MipModel model(nodeInfo().deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_dh3:
@@ -321,7 +378,7 @@ namespace mscl
             return{ HeadingUpdateOptions(InertialTypes::HeadingUpdateEnableOption::ENABLE_NONE) };
         }
 
-        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        MipModel model(nodeInfo().deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_gx4_45:
@@ -392,7 +449,7 @@ namespace mscl
             return{ EstimationControlOptions(0) };
         }
 
-        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        MipModel model(nodeInfo().deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_gx5_15:
@@ -457,7 +514,7 @@ namespace mscl
             return{ AdaptiveMeasurementModes(0) };
         }
 
-        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        MipModel model(nodeInfo().deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
         {
             case MipModels::node_3dm_gx4_45:
@@ -503,7 +560,7 @@ namespace mscl
             return{ AdaptiveFilterLevels(0) };
         }
 
-        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        MipModel model(nodeInfo().deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_gx5_45:
@@ -533,7 +590,7 @@ namespace mscl
             return{ AidingMeasurementSourceOptions(0) };
         }
 
-        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        MipModel model(nodeInfo().deviceInfo().modelNumber);
 
         switch(model.baseModel().nodeModel())
         {
@@ -567,7 +624,7 @@ namespace mscl
             return{ PpsSourceOptions(0) };
         }
 
-        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        MipModel model(nodeInfo().deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_cv7_ahrs:
@@ -712,7 +769,7 @@ namespace mscl
             { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
         };
 
-        MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        MipModel model(nodeInfo().deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_cv7_ahrs:
@@ -750,7 +807,7 @@ namespace mscl
 
     GeographicSources MipNodeFeatures::supportedDeclinationSources() const
     {
-        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        const MipModel model(nodeInfo().deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_cv7_ahrs:
@@ -777,7 +834,7 @@ namespace mscl
 
     GeographicSources MipNodeFeatures::supportedInclinationSources() const
     {
-        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        const MipModel model(nodeInfo().deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_cv7_ahrs:
@@ -804,7 +861,7 @@ namespace mscl
 
     GeographicSources MipNodeFeatures::supportedMagneticMagnitudeSources() const
     {
-        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        const MipModel model(nodeInfo().deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
         {
         case MipModels::node_3dm_cv7_ahrs:
@@ -836,7 +893,7 @@ namespace mscl
             return{ MipTypes::ChannelFieldQualifiers() };
         }
 
-        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        const MipModel model(nodeInfo().deviceInfo().modelNumber);
 
         MipTypes::MipChannelFields possibleFields;
 
@@ -931,17 +988,17 @@ namespace mscl
 
     const EventSupportInfo MipNodeFeatures::supportedEventActionInfo() const
     {
-        return m_nodeInfo.eventActionInfo();
+        return nodeInfo().eventActionInfo();
     }
 
     const EventSupportInfo MipNodeFeatures::supportedEventTriggerInfo() const
     {
-        return m_nodeInfo.eventTriggerInfo();
+        return nodeInfo().eventTriggerInfo();
     }
 
     const bool MipNodeFeatures::supportsNorthCompensation() const
     {
-        const MipModel model(m_nodeInfo.deviceInfo().modelNumber);
+        const MipModel model(nodeInfo().deviceInfo().modelNumber);
 
         switch (model.baseModel().nodeModel())
         {
