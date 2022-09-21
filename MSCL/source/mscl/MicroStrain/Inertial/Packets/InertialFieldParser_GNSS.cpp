@@ -778,10 +778,13 @@ namespace mscl
         // identifiers
         const auto chField = static_cast<MipTypes::ChannelField>(field.fieldId());
 
+        MipChannelIdentifiers addlIds = {
+            MipChannelIdentifier(MipChannelIdentifier::Type::GNSS_RF_BAND, rfBand)
+        };
+
         // add data points for the values collected
-        result.push_back(MipDataPoint(chField, MipTypes::CH_RF_BAND,        valueType_uint8, anyType(rfBand),        rfBandValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_JAMMING_STATE,  valueType_uint8, anyType(jammingState),  jammingValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_SPOOFING_STATE, valueType_uint8, anyType(spoofingState), spoofingValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_JAMMING_STATE,  addlIds, valueType_uint8, anyType(jammingState),  jammingValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_SPOOFING_STATE, addlIds, valueType_uint8, anyType(spoofingState), spoofingValid));
     }
 
     bool FieldParser_GnssRFErrorDetection::registerParser()

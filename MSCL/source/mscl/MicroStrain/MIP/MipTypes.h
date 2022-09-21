@@ -1140,9 +1140,8 @@ namespace mscl
         //    CH_UDREI                      - 115 - User Differential Range Error Index
         //    CH_PSEUDORANGE_CORRECTION     - 116 - Pseudorange Correction
         //    CH_IONOSPHERIC_CORRECTION     - 117 - Ionospheric Correction
-        //    CH_RF_BAND                    - 118 - RF Band
-        //    CH_JAMMING_STATE              - 119 - Jamming State
-        //    CH_SPOOFING_STATE             - 120 - Spoofing State
+        //    CH_JAMMING_STATE              - 118 - Jamming State
+        //    CH_SPOOFING_STATE             - 119 - Spoofing State
         //====================================================================================================
         enum ChannelQualifier
         {
@@ -1262,9 +1261,8 @@ namespace mscl
             CH_UDREI                      = 115,
             CH_PSEUDORANGE_CORRECTION     = 116,
             CH_IONOSPHERIC_CORRECTION     = 117,
-            CH_RF_BAND                    = 118,
-            CH_JAMMING_STATE              = 119,
-            CH_SPOOFING_STATE             = 120
+            CH_JAMMING_STATE              = 118,
+            CH_SPOOFING_STATE             = 119
         };
 
         //API Typedefs:
@@ -1467,6 +1465,7 @@ namespace mscl
         //      AIDING_MEASUREMENT_TYPE - Filter Aiding Measurement Type
         //      SBAS_SYSTEM             - SBAS System ID
         //      SBAS_SATELLITE_ID       - SBAS Satellite ID
+        //      GNSS_RF_BAND            - GNSS RF Band
         enum Type
         {
             // when adding to this list, be sure to add name string to TYPE_NAMES map
@@ -1478,7 +1477,8 @@ namespace mscl
             GNSS_SIGNAL_ID,
             AIDING_MEASUREMENT_TYPE,
             SBAS_SYSTEM,
-            SBAS_SATELLITE_ID
+            SBAS_SATELLITE_ID,
+            GNSS_RF_BAND
         };
 
         //API Enum: AidingMeasurementTypes
@@ -1669,6 +1669,21 @@ namespace mscl
             EGNOS               = 2,
             MSAS                = 3,
             GAGAN               = 4
+        };
+
+        //API Enum: GnssRfBands
+        //  ID definitions when Type is <MipChannelIdentifier::GNSS_RF_BAND>
+        //
+        //      UNKNOWN_RF_BAND - 0 - Unknown
+        //      RF_BAND_L1      - 1 - L1
+        //      RF_BAND_L2      - 2 - L2
+        //      RF_BAND_L5      - 5 - L5
+        enum GnssRfBands
+        {
+            UNKNOWN_RF_BAND = 0,
+            RF_BAND_L1      = 1,
+            RF_BAND_L2      = 2,
+            RF_BAND_L5      = 5
         };
 
 #ifndef SWIG

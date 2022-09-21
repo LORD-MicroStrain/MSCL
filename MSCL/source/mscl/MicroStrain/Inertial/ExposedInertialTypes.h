@@ -706,23 +706,6 @@ namespace mscl
         };
 
         //============================================================================================================
-        //API Enums: RFBand
-        //    The RF Band of the reported information
-        //
-        //    RF_BAND_UNKNOWN - 0x00 - RF Band Unknown
-        //    RF_BAND_L1      - 0x01 - L1 RF Band
-        //    RF_BAND_L2      - 0x02 - L2 RF Band
-        //    RF_BAND_L5      - 0x05 - L5 RF Band
-        //============================================================================================================
-        enum RFBand
-        {
-            RF_BAND_UNKNOWN = 0x00, // RF Band Unknown
-            RF_BAND_L1      = 0x01, // L1 RF Band
-            RF_BAND_L2      = 0x02, // L2 RF Band
-            RF_BAND_L5      = 0x05  // L5 RF Band
-        };
-
-        //============================================================================================================
         //API Enums: JammingState
         //    GNSS Jamming State (as reported by the GNSS module)
         //

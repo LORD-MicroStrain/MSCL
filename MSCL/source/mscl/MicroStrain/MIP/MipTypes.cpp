@@ -225,7 +225,6 @@ namespace mscl
         { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_AZIMUTH), "satStatus_azimuth" },
         { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_HEALTH), "satStatus_satelliteHealth" },
 
-        { ChannelId(CH_FIELD_GNSS_RF_ERROR_DETECTION, CH_RF_BAND), "rfError_rfBand" },
         { ChannelId(CH_FIELD_GNSS_RF_ERROR_DETECTION, CH_JAMMING_STATE), "rfError_jammingState" },
         { ChannelId(CH_FIELD_GNSS_RF_ERROR_DETECTION, CH_SPOOFING_STATE), "rfError_spoofingState" },
 
@@ -966,7 +965,8 @@ namespace mscl
         { GNSS_SIGNAL_ID,          "sig" },
         { AIDING_MEASUREMENT_TYPE, "aidType" },
         { SBAS_SYSTEM,             "sbasId" },
-        { SBAS_SATELLITE_ID,       "sbasSat" }
+        { SBAS_SATELLITE_ID,       "sbasSat" },
+        { GNSS_RF_BAND,            "rfBand" }
     });
 
     const std::unordered_map<MipChannelIdentifier::TypeId, std::string, MipChannelIdentifier::TypeIdHash> MipChannelIdentifier::TRANSLATED_TYPE_NAMES(
@@ -1057,6 +1057,10 @@ namespace mscl
         { TypeId(SBAS_SYSTEM, EGNOS), "egnos" },
         { TypeId(SBAS_SYSTEM, MSAS),  "msas" },
         { TypeId(SBAS_SYSTEM, GAGAN), "gagan" },
+
+        { TypeId(GNSS_RF_BAND, RF_BAND_L1), "rf-l1" },
+        { TypeId(GNSS_RF_BAND, RF_BAND_L2), "rf-l2" },
+        { TypeId(GNSS_RF_BAND, RF_BAND_L5), "rf-l5" },
     });
 
     const std::unordered_map<MipChannelIdentifier::SpecifierId, std::string, MipChannelIdentifier::SpecifierIdHash> MipChannelIdentifier::SPECIFIER_NAMES(
