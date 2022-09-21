@@ -723,9 +723,8 @@ public class MipTypes : global::System.IDisposable {
     CH_UDREI = 115,
     CH_PSEUDORANGE_CORRECTION = 116,
     CH_IONOSPHERIC_CORRECTION = 117,
-    CH_RF_BAND = 118,
-    CH_JAMMING_STATE = 119,
-    CH_SPOOFING_STATE = 120
+    CH_JAMMING_STATE = 118,
+    CH_SPOOFING_STATE = 119
   }
 
 }

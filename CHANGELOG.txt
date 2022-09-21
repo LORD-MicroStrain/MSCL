@@ -28,6 +28,7 @@ Forthcoming
         - Continuous Built-In Test (0xA0, 0x01)
         - SBAS Status (0x81,0x12) (0x91-95,0x12)
         - Calculated SBAS Correction (0x81,0x13) (0x91-95,0x13)
+        - GNSS RF Error Detection (0x81,0x14) (0x91-95,0x14)
     - Added support for MIP commands:
         - Reference Point Lever Arm (0x0D,0x56)
 
