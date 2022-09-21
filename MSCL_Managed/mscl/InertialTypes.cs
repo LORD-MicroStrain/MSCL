@@ -350,6 +350,20 @@ public class InertialTypes : global::System.IDisposable {
     SBAS_INFO_TEST = 0x08
   }
 
+  public enum JammingState {
+    JAMMING_STATE_UNKNOWN = 0x00,
+    JAMMING_STATE_NONE = 0x01,
+    JAMMING_STATE_PARTIAL = 0x02,
+    JAMMING_STATE_SIGNIFICANT = 0x03
+  }
+
+  public enum SpoofingState {
+    SPOOFING_STATE_UNKNOWN = 0x00,
+    SPOOFING_STATE_NONE = 0x01,
+    SPOOFING_STATE_PARTIAL = 0x02,
+    SPOOFING_STATE_SIGNIFICANT = 0x03
+  }
+
 }
 
 }

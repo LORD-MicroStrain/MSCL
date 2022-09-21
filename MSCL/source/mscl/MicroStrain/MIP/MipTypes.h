@@ -410,6 +410,7 @@ namespace mscl
         //  CH_FIELD_GNSS_GPS_LEAP_SECONDS                          - 0x8111    - GNSS GPS Leap Seconds
         //  CH_FIELD_GNSS_SBAS_INFO                                 - 0x8112    - GNSS SBAS Info
         //  CH_FIELD_GNSS_SBAS_CORRECTION                           - 0x8113    - GNSS SBAS Correction
+        //  CH_FIELD_GNSS_RF_ERROR_DETECTION                        - 0x8114    - GNSS RF Error Detection
         //  CH_FIELD_GNSS_SATELLITE_STATUS                          - 0x8120    - GNSS Satellite Status
         //  CH_FIELD_GNSS_RAW_OBSERVATION                           - 0x8122    - GNSS Raw Observation data
         //  CH_FIELD_GNSS_STATION_INFO                              - 0x8130    - GNSS Base Station Info
@@ -510,6 +511,7 @@ namespace mscl
         //  CH_FIELD_GNSS_1_GPS_LEAP_SECONDS                        - 0x9111    - GNSS 1 GPS Leap Seconds
         //  CH_FIELD_GNSS_1_SBAS_INFO                               - 0x9112    - GNSS 1 SBAS Info
         //  CH_FIELD_GNSS_1_SBAS_CORRECTION                         - 0x9113    - GNSS 1 SBAS Correction
+        //  CH_FIELD_GNSS_1_RF_ERROR_DETECTION                      - 0x9114    - GNSS 1 RF Error Detection
         //  CH_FIELD_GNSS_1_SATELLITE_STATUS                        - 0x9120    - GNSS 1 Satellite Status
         //  CH_FIELD_GNSS_1_RAW_OBSERVATION                         - 0x9122    - GNSS 1 Raw Observation data
         //  CH_FIELD_GNSS_1_STATION_INFO                            - 0x9130    - GNSS 1 Base Station Info
@@ -545,6 +547,7 @@ namespace mscl
         //  CH_FIELD_GNSS_2_GPS_LEAP_SECONDS                        - 0x9211    - GNSS 2 GPS Leap Seconds
         //  CH_FIELD_GNSS_2_SBAS_INFO                               - 0x9212    - GNSS 2 SBAS Info
         //  CH_FIELD_GNSS_2_SBAS_CORRECTION                         - 0x9213    - GNSS 2 SBAS Correction
+        //  CH_FIELD_GNSS_2_RF_ERROR_DETECTION                      - 0x9214    - GNSS 2 RF Error Detection
         //  CH_FIELD_GNSS_2_SATELLITE_STATUS                        - 0x9220    - GNSS 2 Satellite Status
         //  CH_FIELD_GNSS_2_RAW_OBSERVATION                         - 0x9222    - GNSS 2 Raw Observation data
         //  CH_FIELD_GNSS_2_STATION_INFO                            - 0x9230    - GNSS 2 Base Station Info
@@ -580,6 +583,7 @@ namespace mscl
         //  CH_FIELD_GNSS_3_GPS_LEAP_SECONDS                        - 0x9311    - GNSS 3 GPS Leap Seconds
         //  CH_FIELD_GNSS_3_SBAS_INFO                               - 0x9312    - GNSS 3 SBAS Info
         //  CH_FIELD_GNSS_3_SBAS_CORRECTION                         - 0x9313    - GNSS 3 SBAS Correction
+        //  CH_FIELD_GNSS_3_RF_ERROR_DETECTION                      - 0x9314    - GNSS 3 RF Error Detection
         //  CH_FIELD_GNSS_3_SATELLITE_STATUS                        - 0x9320    - GNSS 3 Satellite Status
         //  CH_FIELD_GNSS_3_RAW_OBSERVATION                         - 0x9322    - GNSS 3 Raw Observation data
         //  CH_FIELD_GNSS_3_STATION_INFO                            - 0x9330    - GNSS 3 Base Station Info
@@ -615,6 +619,7 @@ namespace mscl
         //  CH_FIELD_GNSS_4_GPS_LEAP_SECONDS                        - 0x9411    - GNSS 4 GPS Leap Seconds
         //  CH_FIELD_GNSS_4_SBAS_INFO                               - 0x9412    - GNSS 4 SBAS Info
         //  CH_FIELD_GNSS_4_SBAS_CORRECTION                         - 0x9413    - GNSS 4 SBAS Correction
+        //  CH_FIELD_GNSS_4_RF_ERROR_DETECTION                      - 0x9414    - GNSS 4 RF Error Detection
         //  CH_FIELD_GNSS_4_SATELLITE_STATUS                        - 0x9420    - GNSS 4 Satellite Status
         //  CH_FIELD_GNSS_4_RAW_OBSERVATION                         - 0x9422    - GNSS 4 Raw Observation data
         //  CH_FIELD_GNSS_4_STATION_INFO                            - 0x9430    - GNSS 4 Base Station Info
@@ -650,6 +655,7 @@ namespace mscl
         //  CH_FIELD_GNSS_5_GPS_LEAP_SECONDS                        - 0x9511    - GNSS 5 GPS Leap Seconds
         //  CH_FIELD_GNSS_5_SBAS_INFO                               - 0x9512    - GNSS 5 SBAS Info
         //  CH_FIELD_GNSS_5_SBAS_CORRECTION                         - 0x9513    - GNSS 5 SBAS Correction
+        //  CH_FIELD_GNSS_5_RF_ERROR_DETECTION                      - 0x9514    - GNSS 5 RF Error Detection
         //  CH_FIELD_GNSS_5_SATELLITE_STATUS                        - 0x9520    - GNSS 5 Satellite Status
         //  CH_FIELD_GNSS_5_RAW_OBSERVATION                         - 0x9522    - GNSS 5 Raw Observation data
         //  CH_FIELD_GNSS_5_STATION_INFO                            - 0x9530    - GNSS 5 Base Station Info
@@ -731,6 +737,7 @@ namespace mscl
             CH_FIELD_GNSS_GPS_LEAP_SECONDS                          = 0x8111,
             CH_FIELD_GNSS_SBAS_INFO                                 = 0x8112,
             CH_FIELD_GNSS_SBAS_CORRECTION                           = 0x8113,
+            CH_FIELD_GNSS_RF_ERROR_DETECTION                        = 0x8114,
             CH_FIELD_GNSS_SATELLITE_STATUS                          = 0x8120,
             CH_FIELD_GNSS_RAW_OBSERVATION                           = 0x8122,
             CH_FIELD_GNSS_STATION_INFO                              = 0x8130,
@@ -831,6 +838,7 @@ namespace mscl
             CH_FIELD_GNSS_1_GPS_LEAP_SECONDS                        = 0x9111,
             CH_FIELD_GNSS_1_SBAS_INFO                               = 0x9112,
             CH_FIELD_GNSS_1_SBAS_CORRECTION                         = 0x9113,
+            CH_FIELD_GNSS_1_RF_ERROR_DETECTION                      = 0x9114,
             CH_FIELD_GNSS_1_SATELLITE_STATUS                        = 0x9120,
             CH_FIELD_GNSS_1_RAW_OBSERVATION                         = 0x9122,
             CH_FIELD_GNSS_1_STATION_INFO                            = 0x9130,
@@ -866,6 +874,7 @@ namespace mscl
             CH_FIELD_GNSS_2_GPS_LEAP_SECONDS                        = 0x9211,
             CH_FIELD_GNSS_2_SBAS_INFO                               = 0x9212,
             CH_FIELD_GNSS_2_SBAS_CORRECTION                         = 0x9213,
+            CH_FIELD_GNSS_2_RF_ERROR_DETECTION                      = 0x9214,
             CH_FIELD_GNSS_2_SATELLITE_STATUS                        = 0x9220,
             CH_FIELD_GNSS_2_RAW_OBSERVATION                         = 0x9222,
             CH_FIELD_GNSS_2_STATION_INFO                            = 0x9230,
@@ -901,6 +910,7 @@ namespace mscl
             CH_FIELD_GNSS_3_GPS_LEAP_SECONDS                        = 0x9311,
             CH_FIELD_GNSS_3_SBAS_INFO                               = 0x9312,
             CH_FIELD_GNSS_3_SBAS_CORRECTION                         = 0x9313,
+            CH_FIELD_GNSS_3_RF_ERROR_DETECTION                      = 0x9314,
             CH_FIELD_GNSS_3_SATELLITE_STATUS                        = 0x9320,
             CH_FIELD_GNSS_3_RAW_OBSERVATION                         = 0x9322,
             CH_FIELD_GNSS_3_STATION_INFO                            = 0x9330,
@@ -936,6 +946,7 @@ namespace mscl
             CH_FIELD_GNSS_4_GPS_LEAP_SECONDS                        = 0x9411,
             CH_FIELD_GNSS_4_SBAS_INFO                               = 0x9412,
             CH_FIELD_GNSS_4_SBAS_CORRECTION                         = 0x9413,
+            CH_FIELD_GNSS_4_RF_ERROR_DETECTION                      = 0x9414,
             CH_FIELD_GNSS_4_SATELLITE_STATUS                        = 0x9420,
             CH_FIELD_GNSS_4_RAW_OBSERVATION                         = 0x9422,
             CH_FIELD_GNSS_4_STATION_INFO                            = 0x9430,
@@ -971,6 +982,7 @@ namespace mscl
             CH_FIELD_GNSS_5_GPS_LEAP_SECONDS                        = 0x9511,
             CH_FIELD_GNSS_5_SBAS_INFO                               = 0x9512,
             CH_FIELD_GNSS_5_SBAS_CORRECTION                         = 0x9513,
+            CH_FIELD_GNSS_5_RF_ERROR_DETECTION                      = 0x9514,
             CH_FIELD_GNSS_5_SATELLITE_STATUS                        = 0x9520,
             CH_FIELD_GNSS_5_RAW_OBSERVATION                         = 0x9522,
             CH_FIELD_GNSS_5_STATION_INFO                            = 0x9530,
@@ -1128,6 +1140,8 @@ namespace mscl
         //    CH_UDREI                      - 115 - User Differential Range Error Index
         //    CH_PSEUDORANGE_CORRECTION     - 116 - Pseudorange Correction
         //    CH_IONOSPHERIC_CORRECTION     - 117 - Ionospheric Correction
+        //    CH_JAMMING_STATE              - 118 - Jamming State
+        //    CH_SPOOFING_STATE             - 119 - Spoofing State
         //====================================================================================================
         enum ChannelQualifier
         {
@@ -1246,7 +1260,9 @@ namespace mscl
             CH_LAST_PPS                   = 114,
             CH_UDREI                      = 115,
             CH_PSEUDORANGE_CORRECTION     = 116,
-            CH_IONOSPHERIC_CORRECTION     = 117
+            CH_IONOSPHERIC_CORRECTION     = 117,
+            CH_JAMMING_STATE              = 118,
+            CH_SPOOFING_STATE             = 119
         };
 
         //API Typedefs:
@@ -1449,6 +1465,7 @@ namespace mscl
         //      AIDING_MEASUREMENT_TYPE - Filter Aiding Measurement Type
         //      SBAS_SYSTEM             - SBAS System ID
         //      SBAS_SATELLITE_ID       - SBAS Satellite ID
+        //      GNSS_RF_BAND            - GNSS RF Band
         enum Type
         {
             // when adding to this list, be sure to add name string to TYPE_NAMES map
@@ -1460,7 +1477,8 @@ namespace mscl
             GNSS_SIGNAL_ID,
             AIDING_MEASUREMENT_TYPE,
             SBAS_SYSTEM,
-            SBAS_SATELLITE_ID
+            SBAS_SATELLITE_ID,
+            GNSS_RF_BAND
         };
 
         //API Enum: AidingMeasurementTypes
@@ -1651,6 +1669,21 @@ namespace mscl
             EGNOS               = 2,
             MSAS                = 3,
             GAGAN               = 4
+        };
+
+        //API Enum: GnssRfBands
+        //  ID definitions when Type is <MipChannelIdentifier::GNSS_RF_BAND>
+        //
+        //      UNKNOWN_RF_BAND - 0 - Unknown
+        //      RF_BAND_L1      - 1 - L1
+        //      RF_BAND_L2      - 2 - L2
+        //      RF_BAND_L5      - 5 - L5
+        enum GnssRfBands
+        {
+            UNKNOWN_RF_BAND = 0,
+            RF_BAND_L1      = 1,
+            RF_BAND_L2      = 2,
+            RF_BAND_L5      = 5
         };
 
 #ifndef SWIG
