@@ -651,48 +651,6 @@ namespace mscl
     //=====================================================================================================================================================
 
     //=====================================================================================================================================================
-    //                                                        FieldParser_GnssRFErrorDetection
-    const MipTypes::ChannelField FieldParser_GnssRFErrorDetection::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_RF_ERROR_DETECTION;
-    const bool FieldParser_GnssRFErrorDetection::REGISTERED = registerParser();    //register the parser immediately
-
-    void FieldParser_GnssRFErrorDetection::parse(const MipDataField& field, MipDataPoints& result) const
-    {
-        DataBuffer bytes(field.fieldData());
-
-        // get the data
-        const uint8  rfBand        = bytes.read_uint8();
-        const uint8  jammingState  = bytes.read_uint8();
-        const uint8  spoofingState = bytes.read_uint8();
-
-        // skip 4 reserved bytes
-        bytes.read_uint32();
-
-        // get the valid flags
-        const uint16 flags = bytes.read_uint16();
-
-        // get whether points are valid or invalid from the flags
-        const bool rfBandValid   = pointIsValid(flags, RF_BAND_VALID);
-        const bool jammingValid  = pointIsValid(flags, JAMMING_VALID);
-        const bool spoofingValid = pointIsValid(flags, SPOOFING_VALID);
-
-        // identifiers
-        const auto chField = static_cast<MipTypes::ChannelField>(field.fieldId());
-
-        // add data points for the values collected
-        result.push_back(MipDataPoint(chField, MipTypes::CH_RF_BAND,        valueType_uint8, anyType(rfBand),        rfBandValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_JAMMING_STATE,  valueType_uint8, anyType(jammingState),  jammingValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_SPOOFING_STATE, valueType_uint8, anyType(spoofingState), spoofingValid));
-    }
-
-    bool FieldParser_GnssRFErrorDetection::registerParser()
-    {
-        static FieldParser_GnssRFErrorDetection p;
-        return registerGnssParser(FIELD_TYPE, &p);
-    }
-    //=====================================================================================================================================================
-
-
-    //=====================================================================================================================================================
     //                                                        FieldParser_GnssSBASInfo
     const MipTypes::ChannelField FieldParser_GnssSBASInfo::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_SBAS_INFO;
     const bool FieldParser_GnssSBASInfo::REGISTERED = registerParser();    //register the parser immediately
@@ -788,6 +746,47 @@ namespace mscl
     bool FieldParser_GnssSBASCorrection::registerParser()
     {
         static FieldParser_GnssSBASCorrection p;
+        return registerGnssParser(FIELD_TYPE, &p);
+    }
+    //=====================================================================================================================================================
+
+    //=====================================================================================================================================================
+    //                                                        FieldParser_GnssRFErrorDetection
+    const MipTypes::ChannelField FieldParser_GnssRFErrorDetection::FIELD_TYPE = MipTypes::CH_FIELD_GNSS_RF_ERROR_DETECTION;
+    const bool FieldParser_GnssRFErrorDetection::REGISTERED = registerParser();    //register the parser immediately
+
+    void FieldParser_GnssRFErrorDetection::parse(const MipDataField& field, MipDataPoints& result) const
+    {
+        DataBuffer bytes(field.fieldData());
+
+        // get the data
+        const uint8  rfBand        = bytes.read_uint8();
+        const uint8  jammingState  = bytes.read_uint8();
+        const uint8  spoofingState = bytes.read_uint8();
+
+        // skip 4 reserved bytes
+        bytes.read_uint32();
+
+        // get the valid flags
+        const uint16 flags = bytes.read_uint16();
+
+        // get whether points are valid or invalid from the flags
+        const bool rfBandValid   = pointIsValid(flags, RF_BAND_VALID);
+        const bool jammingValid  = pointIsValid(flags, JAMMING_VALID);
+        const bool spoofingValid = pointIsValid(flags, SPOOFING_VALID);
+
+        // identifiers
+        const auto chField = static_cast<MipTypes::ChannelField>(field.fieldId());
+
+        // add data points for the values collected
+        result.push_back(MipDataPoint(chField, MipTypes::CH_RF_BAND,        valueType_uint8, anyType(rfBand),        rfBandValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_JAMMING_STATE,  valueType_uint8, anyType(jammingState),  jammingValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_SPOOFING_STATE, valueType_uint8, anyType(spoofingState), spoofingValid));
+    }
+
+    bool FieldParser_GnssRFErrorDetection::registerParser()
+    {
+        static FieldParser_GnssRFErrorDetection p;
         return registerGnssParser(FIELD_TYPE, &p);
     }
     //=====================================================================================================================================================
