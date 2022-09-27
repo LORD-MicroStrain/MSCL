@@ -689,7 +689,7 @@ namespace mscl
             OVERRANGE_MAG_Z       = 0x0400, // Mag Z
             OVERRANGE_PRESSURE    = 0x1000, // Pressure
         };
-
+        
         //API Enum: SBASInfoStatus
         //  Bitmasks for interpreting the SBAS Info (0x81,0x12) status bitfield
         //
@@ -703,6 +703,40 @@ namespace mscl
             SBAS_INFO_CORRECTIONS_AVAILABLE = 0x02, // Corrections Available
             SBAS_INFO_INTEGRITY_AVAILABLE   = 0x04, // Integrity Available
             SBAS_INFO_TEST                  = 0x08  // Test Mode
+        };
+
+        //============================================================================================================
+        //API Enums: JammingState
+        //    GNSS Jamming State (as reported by the GNSS module)
+        //
+        //    JAMMING_STATE_UNKNOWN     - 0x00 - Jamming State Unknown
+        //    JAMMING_STATE_NONE        - 0x01 - No Jamming State
+        //    JAMMING_STATE_PARTIAL     - 0x02 - Partial Jamming State
+        //    JAMMING_STATE_SIGNIFICANT - 0x03 - Significant Jamming State
+        //============================================================================================================
+        enum JammingState
+        {
+            JAMMING_STATE_UNKNOWN     = 0x00, // Jamming State Unknown
+            JAMMING_STATE_NONE        = 0x01, // No Jamming State
+            JAMMING_STATE_PARTIAL     = 0x02, // Partial Jamming State
+            JAMMING_STATE_SIGNIFICANT = 0x03  // Significant Jamming State
+        };
+
+        //============================================================================================================
+        //API Enums: SpoofingState
+        //    GNSS Spoofing State (as reported by the GNSS module)
+        //
+        //    SPOOFING_STATE_UNKNOWN     - 0x00 - Spoofing State Unknown
+        //    SPOOFING_STATE_NONE        - 0x01 - No Spoofing State
+        //    SPOOFING_STATE_PARTIAL     - 0x02 - Partial Spoofing State
+        //    SPOOFING_STATE_SIGNIFICANT - 0x03 - Significant Spoofing State
+        //============================================================================================================
+        enum SpoofingState
+        {
+            SPOOFING_STATE_UNKNOWN     = 0x00, // Spoofing State Unknown
+            SPOOFING_STATE_NONE        = 0x01, // No Spoofing State
+            SPOOFING_STATE_PARTIAL     = 0x02, // Partial Spoofing State
+            SPOOFING_STATE_SIGNIFICANT = 0x03  // Significant Spoofing State
         };
     };
 
