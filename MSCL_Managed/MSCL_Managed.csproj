@@ -118,6 +118,7 @@
     <Compile Include="mscl\Constellation.cs" />
     <Compile Include="mscl\Constellations.cs" />
     <Compile Include="mscl\ConstellationSettingsData.cs" />
+    <Compile Include="mscl\ContinuousBIT.cs" />
     <Compile Include="mscl\CV7ContinuousBIT.cs" />
     <Compile Include="mscl\CV7ContinuousBIT_Filter.cs" />
     <Compile Include="mscl\CV7ContinuousBIT_Filter_General.cs" />

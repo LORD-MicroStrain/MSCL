@@ -467,6 +467,13 @@ namespace mscl
         // System Data
         { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_STATUS), "builtInTest" },
 
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_SYSTEM_GENERAL), "builtInTest_system_bitGeneral" },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_SYSTEM_PROCESS), "builtInTest_system_bitProcess" },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_IMU_GENERAL   ), "builtInTest_imu_bitGeneral" },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_IMU_SENSORS   ), "builtInTest_imu_bitSensors" },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_IMU_FACTORY_BITS), "builtInTest_imu_bitFactoryBits" },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_FILTER_GENERAL), "builtInTest_filter_bitGeneral" },
+
         { ChannelId(CH_FIELD_SYSTEM_TIME_SYNC_STATUS, CH_PPS_VALID), "timeSync_ppsValid" },
         { ChannelId(CH_FIELD_SYSTEM_TIME_SYNC_STATUS, CH_LAST_PPS), "timeSync_lastPps" },
 

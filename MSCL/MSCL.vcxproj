@@ -771,6 +771,7 @@
     <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\Mip_SetToIdle.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\Ping.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\Resume.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\MipBuiltInTest.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\MipChannel.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\MipDataField.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\MipDataPoint.h" />
@@ -1101,6 +1102,7 @@
     <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\Mip_SetToIdle.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\Ping.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\Resume.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\MipBuiltInTest.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\MipChannel.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\MipDataField.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\MipDataPoint.cpp" />
