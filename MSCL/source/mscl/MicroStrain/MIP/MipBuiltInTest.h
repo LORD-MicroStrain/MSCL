@@ -64,16 +64,16 @@ namespace mscl
         //  TIMING_OVERLOAD      - 0x20 - The system is unable to keep up with the processing demand
         //  BUFFER_OVERRUN       - 0x40 - A data buffer in the system has reached its capacity
         static constexpr uint8 SYSTEM_CLOCK_FAILURE = 0x01; // The system clock is not operating properly
-        static constexpr uint8 POWER_FAULT = 0x02; // Power supply voltage is outside of the recommended range, or an internal power fault exists
-        static constexpr uint8 FIRMWARE_FAULT = 0x10; // System firmware has detected an unexpected or abnormal condition
-        static constexpr uint8 TIMING_OVERLOAD = 0x20; // The system is unable to keep up with the processing demand
-        static constexpr uint8 BUFFER_OVERRUN = 0x40; // A data buffer in the system has reached its capacity
+        static constexpr uint8 POWER_FAULT          = 0x02; // Power supply voltage is outside of the recommended range, or an internal power fault exists
+        static constexpr uint8 FIRMWARE_FAULT       = 0x10; // System firmware has detected an unexpected or abnormal condition
+        static constexpr uint8 TIMING_OVERLOAD      = 0x20; // The system is unable to keep up with the processing demand
+        static constexpr uint8 BUFFER_OVERRUN       = 0x40; // A data buffer in the system has reached its capacity
 
-                                                      //API Function: flags
-                                                      //  Gets the value of the general system flags (bits 0-7)
-                                                      //
-                                                      //Returns:
-                                                      //  uint8 - Value of the general system flags
+        //API Function: flags
+        //  Gets the value of the general system flags (bits 0-7)
+        //
+        //Returns:
+        //  uint8 - Value of the general system flags
         uint8 flags() const;
 
         //API Function: systemClockFailure
@@ -141,21 +141,21 @@ namespace mscl
         //  FILTER_DROPPED_DATA      - 0x20 - Filter samples not equal to IMU samples
         //  FILTER_RATE_MISMATCH     - 0x40 - Filter major cycle rate mismatch
         //  FILTER_STUCK             - 0x80 - No filter data received in 1 second
-        static constexpr uint8 IMU_PROCESS_FAULT = 0x01; // The IMU subsystem is unresponsive or not operating normally
-        static constexpr uint8 IMU_RATE_MISMATCH = 0x02; // Faster/slower than expected base rate
-        static constexpr uint8 IMU_DROPPED_DATA = 0x04; // At least 1 dropped frame / overrun
-        static constexpr uint8 IMU_STUCK = 0x08; // No IMU data received in 1 second
+        static constexpr uint8 IMU_PROCESS_FAULT    = 0x01; // The IMU subsystem is unresponsive or not operating normally
+        static constexpr uint8 IMU_RATE_MISMATCH    = 0x02; // Faster/slower than expected base rate
+        static constexpr uint8 IMU_DROPPED_DATA     = 0x04; // At least 1 dropped frame / overrun
+        static constexpr uint8 IMU_STUCK            = 0x08; // No IMU data received in 1 second
 
         static constexpr uint8 FILTER_PROCESS_FAULT = 0x10; // The Filter subsystem is unresponsive or not operating normally
-        static constexpr uint8 FILTER_DROPPED_DATA = 0x20; // Filter samples not equal to IMU samples
+        static constexpr uint8 FILTER_DROPPED_DATA  = 0x20; // Filter samples not equal to IMU samples
         static constexpr uint8 FILTER_RATE_MISMATCH = 0x40; // Filter major cycle rate mismatch
-        static constexpr uint8 FILTER_STUCK = 0x80; // No filter data received in 1 second
+        static constexpr uint8 FILTER_STUCK         = 0x80; // No filter data received in 1 second
 
-                                                    //API Function: flags
-                                                    //  Gets the value of the process system flags (bits 16-23)
-                                                    //
-                                                    //Returns:
-                                                    //  uint8 - Value of the process system flags
+        //API Function: flags
+        //  Gets the value of the process system flags (bits 16-23)
+        //
+        //Returns:
+        //  uint8 - Value of the process system flags
         uint8 flags() const;
 
         //API Function: imuProcessFault
@@ -238,14 +238,14 @@ namespace mscl
         //API Constants: Bitmasks
         //  GENERAL_FLAGS - 0xFF000000 - Bitmask for general system flags (bits 0-7)
         //  PROCESS_FLAGS - 0x0000FF00 - Bitmask for system process flags (bits 16-23)
-        static constexpr uint32 GENERAL_FLAGS = 0xFF000000; // Bitmask for general system flags (bits 0-7)
-        static constexpr uint32 PROCESS_FLAGS = 0x0000FF00; // Bitmask for system process flags (bits 16-23)
+        static constexpr uint32 GENERAL_FLAGS   = 0xFF000000; // Bitmask for general system flags (bits 0-7)
+        static constexpr uint32 PROCESS_FLAGS   = 0x0000FF00; // Bitmask for system process flags (bits 16-23)
 
-                                                            //API Function: flags
-                                                            //  Gets the value of the system flags (bits 0-31)
-                                                            //
-                                                            //Returns:
-                                                            //  uint32 - Value of the system flags
+        //API Function: flags
+        //  Gets the value of the system flags (bits 0-31)
+        //
+        //Returns:
+        //  uint32 - Value of the system flags
         uint32 flags() const;
 
         //API Function: general
@@ -299,19 +299,19 @@ namespace mscl
         //  CALIBRATION_ERROR_ACCEL - 0x10 - A problem is detected with the accelerometer calibration
         //  CALIBRATION_ERROR_GYRO  - 0x20 - A problem is detected with the gyroscope calibration
         //  CALIBRATION_ERROR_MAG   - 0x40 - A problem is detected with the magnetometer calibration
-        static constexpr uint8 CLOCK_FAULT = 0x01; // IMU is not running off the system clock
-        static constexpr uint8 COMMUNICATION_FAULT = 0x02; // No communication with IMU
-        static constexpr uint8 TIMING_OVERRUN = 0x04; // IMU processes are taking longer than their allotted time
+        static constexpr uint8 CLOCK_FAULT              = 0x01; // IMU is not running off the system clock
+        static constexpr uint8 COMMUNICATION_FAULT      = 0x02; // No communication with IMU
+        static constexpr uint8 TIMING_OVERRUN           = 0x04; // IMU processes are taking longer than their allotted time
 
-        static constexpr uint8 CALIBRATION_ERROR_ACCEL = 0x10; // A problem is detected with the accelerometer calibration
-        static constexpr uint8 CALIBRATION_ERROR_GYRO = 0x20; // A problem is detected with the gyroscope calibration
-        static constexpr uint8 CALIBRATION_ERROR_MAG = 0x40; // A problem is detected with the magnetometer calibration
+        static constexpr uint8 CALIBRATION_ERROR_ACCEL  = 0x10; // A problem is detected with the accelerometer calibration
+        static constexpr uint8 CALIBRATION_ERROR_GYRO   = 0x20; // A problem is detected with the gyroscope calibration
+        static constexpr uint8 CALIBRATION_ERROR_MAG    = 0x40; // A problem is detected with the magnetometer calibration
 
-                                                             //API Function: flags
-                                                             //  Gets the value of the general IMU flags (bits 32-39)
-                                                             //
-                                                             //Returns:
-                                                             //  uint8 - Value of the general IMU flags
+        //API Function: flags
+        //  Gets the value of the general IMU flags (bits 32-39)
+        //
+        //Returns:
+        //  uint8 - Value of the general IMU flags
         uint8 flags() const;
 
         //API Function: clockFault
@@ -390,27 +390,27 @@ namespace mscl
         //  PRESSURE_GENERAL_FAULT  - 0x0010 - Pressure sensor won't initialize
         //  PRESSURE_OVERRANGE      - 0x0020 - Pressure sensor subjected to pressures above or below the supported range
         //  PRESSURE_SELF_TEST_FAIL - 0x0040 - The internal self-test of the pressure sensor failed
-        static constexpr uint16 ACCEL_GENERAL_FAULT = 0x0100; // Accelerometer will not initialize
-        static constexpr uint16 ACCEL_OVERRANGE = 0x0200; // One or more axes subjected to accelerations near or outside the selected range
-        static constexpr uint16 ACCEL_SELF_TEST_FAIL = 0x0400; // The internal self-test of the accelerometer failed
+        static constexpr uint16 ACCEL_GENERAL_FAULT     = 0x0100; // Accelerometer will not initialize
+        static constexpr uint16 ACCEL_OVERRANGE         = 0x0200; // One or more axes subjected to accelerations near or outside the selected range
+        static constexpr uint16 ACCEL_SELF_TEST_FAIL    = 0x0400; // The internal self-test of the accelerometer failed
 
-        static constexpr uint16 GYRO_GENERAL_FAULT = 0x1000; // Gyroscope will not initialize
-        static constexpr uint16 GYRO_OVERRANGE = 0x2000; // One or more axes subjected to rotational rates near or outside the selected range
-        static constexpr uint16 GYRO_SELF_TEST_FAIL = 0x4000; // The internal self-test of the gyroscope failed
+        static constexpr uint16 GYRO_GENERAL_FAULT      = 0x1000; // Gyroscope will not initialize
+        static constexpr uint16 GYRO_OVERRANGE          = 0x2000; // One or more axes subjected to rotational rates near or outside the selected range
+        static constexpr uint16 GYRO_SELF_TEST_FAIL     = 0x4000; // The internal self-test of the gyroscope failed
 
-        static constexpr uint16 MAG_GENERAL_FAULT = 0x0001; // Magnetometer will not initialize
-        static constexpr uint16 MAG_OVERRANGE = 0x0002; // One or more axes subjected to magnetic fields strengths near or outside the supported range
-        static constexpr uint16 MAG_SELF_TEST_FAIL = 0x0004; // The internal self-test of the magnetometer failed
+        static constexpr uint16 MAG_GENERAL_FAULT       = 0x0001; // Magnetometer will not initialize
+        static constexpr uint16 MAG_OVERRANGE           = 0x0002; // One or more axes subjected to magnetic fields strengths near or outside the supported range
+        static constexpr uint16 MAG_SELF_TEST_FAIL      = 0x0004; // The internal self-test of the magnetometer failed
 
-        static constexpr uint16 PRESSURE_GENERAL_FAULT = 0x0010; // Pressure sensor won't initialize
-        static constexpr uint16 PRESSURE_OVERRANGE = 0x0020; // Pressure sensor subjected to pressures above or below the supported range
+        static constexpr uint16 PRESSURE_GENERAL_FAULT  = 0x0010; // Pressure sensor won't initialize
+        static constexpr uint16 PRESSURE_OVERRANGE      = 0x0020; // Pressure sensor subjected to pressures above or below the supported range
         static constexpr uint16 PRESSURE_SELF_TEST_FAIL = 0x0040; // The internal self-test of the pressure sensor failed
 
-                                                                  //API Function: flags
-                                                                  //  Gets the value of the the IMU sensors flags (bits 40-55)
-                                                                  //
-                                                                  //Returns:
-                                                                  //  uint16 - Value of the IMU sensors flags
+        //API Function: flags
+        //  Gets the value of the the IMU sensors flags (bits 40-55)
+        //
+        //Returns:
+        //  uint16 - Value of the IMU sensors flags
         uint16 flags() const;
 
         //API Function: accelGeneralFault
@@ -525,15 +525,15 @@ namespace mscl
         //
         //Note:
         //  These masks are shifted 32 bits to the right from the original 128 bitmask to have a 0 index at bit 32
-        static constexpr uint32 GENERAL_FLAGS = 0xFF000000; // Bitmask for the general IMU bit flags (bits 32-39)
-        static constexpr uint32 SENSORS_FLAGS = 0x00FFFF00; // Bitmask for the IMU sensors bit flags (40-55)
-        static constexpr uint32 FACTORY_BITS_INVALID = 0x00000001; // Factory settings invalid. Device unusable
+        static constexpr uint32 GENERAL_FLAGS           = 0xFF000000; // Bitmask for the general IMU bit flags (bits 32-39)
+        static constexpr uint32 SENSORS_FLAGS           = 0x00FFFF00; // Bitmask for the IMU sensors bit flags (40-55)
+        static constexpr uint32 FACTORY_BITS_INVALID    = 0x00000001; // Factory settings invalid. Device unusable
 
-                                                                   //API Function: flags
-                                                                   //  Gets the value of the IMU flags (bits 32-63)
-                                                                   //
-                                                                   //Returns:
-                                                                   //  uint32 - Value of the IMU flags
+        //API Function: flags
+        //  Gets the value of the IMU flags (bits 32-63)
+        //
+        //Returns:
+        //  uint32 - Value of the IMU flags
         uint32 flags() const;
 
         //API Function: general
@@ -591,15 +591,15 @@ namespace mscl
         //  FAULT           - 0x01 - Filter processes will not initialize
         //  TIMING_OVERRUN  - 0x04 - Filter processes are taking longer than their allotted time
         //  TIMING_UNDERRUN - 0x08 - Filter processes are being skipped
-        static constexpr uint8 FAULT = 0x01; // Filter processes will not initialize
-        static constexpr uint8 TIMING_OVERRUN = 0x04; // Filter processes are taking longer than their allotted time
-        static constexpr uint8 TIMING_UNDERRUN = 0x08; // Filter processes are being skipped
+        static constexpr uint8 FAULT            = 0x01; // Filter processes will not initialize
+        static constexpr uint8 TIMING_OVERRUN   = 0x04; // Filter processes are taking longer than their allotted time
+        static constexpr uint8 TIMING_UNDERRUN  = 0x08; // Filter processes are being skipped
 
-                                                       //API Function: flags
-                                                       //  Gets the value of the general filter flags (bits 64-71)
-                                                       //
-                                                       //Returns:
-                                                       //  uint8 - Value of the general filter flags
+        //API Function: flags
+        //  Gets the value of the general filter flags (bits 64-71)
+        //
+        //Returns:
+        //  uint8 - Value of the general filter flags
         uint8 flags() const;
 
         //API Function: fault
@@ -653,11 +653,11 @@ namespace mscl
         //  This mask is shifted 64 bits to the right from the original 128 bitmask to have a 0 index at bit 64
         static constexpr uint32 GENERAL_FLAGS = 0xFF000000; // Bitmask for general filter flags (bits 64-71)
 
-                                                            //API Function: flags
-                                                            //  Gets the value of the filter flags (bits 64-95)
-                                                            //
-                                                            //Returns:
-                                                            //  uint32 - Value of the filter flags
+        //API Function: flags
+        //  Gets the value of the filter flags (bits 64-95)
+        //
+        //Returns:
+        //  uint32 - Value of the filter flags
         uint32 flags() const;
 
         //API Function: general
