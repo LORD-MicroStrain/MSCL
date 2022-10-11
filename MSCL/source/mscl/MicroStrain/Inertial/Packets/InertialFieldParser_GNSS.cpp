@@ -673,23 +673,23 @@ namespace mscl
         // get whether points are valid or invalid from the flags
         const bool towValid        = pointIsValid(flags, TOW_VALID);
         const bool weekNumValid    = pointIsValid(flags, WEEK_NUMBER_VALID);
+        const bool systemValid     = pointIsValid(flags, SYSTEM_VALID);
+        const bool satelliteValid  = pointIsValid(flags, SATELLITE_VALID);
         const bool countValid      = pointIsValid(flags, COUNT_VALID);
         const bool sbasStatusValid = pointIsValid(flags, SBAS_STATUS_VALID);
 
         // identifiers
         const MipTypes::ChannelField chField = static_cast<MipTypes::ChannelField>(field.fieldId());
 
-        const MipChannelIdentifiers addlIds = {
-            MipChannelIdentifier(MipChannelIdentifier::Type::SBAS_SYSTEM,       sbasId),
-            MipChannelIdentifier(MipChannelIdentifier::Type::SBAS_SATELLITE_ID, satelliteId)
-        };
-
         // add data points for the values collected
-        result.push_back(MipDataPoint(chField, MipTypes::CH_TIME_OF_WEEK, addlIds, valueType_double, anyType(tow),     towValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_WEEK_NUMBER,  addlIds, valueType_uint16, anyType(weekNum), weekNumValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_TIME_OF_WEEK, valueType_double, anyType(tow),     towValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_WEEK_NUMBER,  valueType_uint16, anyType(weekNum), weekNumValid));
 
-        result.push_back(MipDataPoint(chField, MipTypes::CH_COUNT,  addlIds, valueType_uint8, anyType(count),  countValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_STATUS, addlIds, valueType_uint8, anyType(status), sbasStatusValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_COUNT, valueType_uint8, anyType(sbasId), systemValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_STATUS, valueType_uint8, anyType(satelliteId), satelliteValid));
+
+        result.push_back(MipDataPoint(chField, MipTypes::CH_COUNT,  valueType_uint8, anyType(count),  countValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_STATUS, valueType_uint8, anyType(status), sbasStatusValid));
     }
 
     bool FieldParser_GnssSBASInfo::registerParser()
