@@ -99,8 +99,6 @@ public class MipChannelIdentifier : global::System.IDisposable {
     GNSS_SATELLITE_ID,
     GNSS_SIGNAL_ID,
     AIDING_MEASUREMENT_TYPE,
-    SBAS_SYSTEM,
-    SBAS_SATELLITE_ID,
     GNSS_RF_BAND
   }
 
@@ -187,14 +185,6 @@ public class MipChannelIdentifier : global::System.IDisposable {
     BEIDOU_B2I = 166,
     BEIDOU_B2Q = 167,
     BEIDOU_B2IQ = 168
-  }
-
-  public enum SbasSystemIds {
-    UNKNOWN_SBAS_SYSTEM = 0,
-    WAAS = 1,
-    EGNOS = 2,
-    MSAS = 3,
-    GAGAN = 4
   }
 
   public enum GnssRfBands {

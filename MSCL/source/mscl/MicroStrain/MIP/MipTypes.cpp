@@ -206,6 +206,8 @@ namespace mscl
         
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_TIME_OF_WEEK), "sbasInfo_tow" },
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_WEEK_NUMBER), "sbasInfo_weekNumber" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_SYSTEM_ID), "sbasInfo_system" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_SATELLITE_ID), "sbasInfo_satellite" },
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_COUNT), "sbasInfo_count" },
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_STATUS), "sbasInfo_status" },
 

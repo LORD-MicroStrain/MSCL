@@ -685,8 +685,8 @@ namespace mscl
         result.push_back(MipDataPoint(chField, MipTypes::CH_TIME_OF_WEEK, valueType_double, anyType(tow),     towValid));
         result.push_back(MipDataPoint(chField, MipTypes::CH_WEEK_NUMBER,  valueType_uint16, anyType(weekNum), weekNumValid));
 
-        result.push_back(MipDataPoint(chField, MipTypes::CH_COUNT, valueType_uint8, anyType(sbasId), systemValid));
-        result.push_back(MipDataPoint(chField, MipTypes::CH_STATUS, valueType_uint8, anyType(satelliteId), satelliteValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_SYSTEM_ID, valueType_uint8, anyType(sbasId), systemValid));
+        result.push_back(MipDataPoint(chField, MipTypes::CH_SATELLITE_ID, valueType_uint8, anyType(satelliteId), satelliteValid));
 
         result.push_back(MipDataPoint(chField, MipTypes::CH_COUNT,  valueType_uint8, anyType(count),  countValid));
         result.push_back(MipDataPoint(chField, MipTypes::CH_STATUS, valueType_uint8, anyType(status), sbasStatusValid));
