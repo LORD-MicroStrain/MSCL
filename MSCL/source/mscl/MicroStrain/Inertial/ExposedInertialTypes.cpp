@@ -41,7 +41,7 @@ namespace mscl
 
         if (m_baseRate == 0)
         {
-            m_decimation = rate.samples();
+            m_decimation = static_cast<uint16>(rate.samples());
             return;
         }
 
@@ -90,13 +90,41 @@ namespace mscl
     {
         switch (sentenceType)
         {
+        case Sentence::GGA:
+        case Sentence::GLL:
+        case Sentence::RMC:
+        case Sentence::VTG:
+        case Sentence::HDT:
+            return{
+                MipTypes::DataClass::CLASS_ESTFILTER,
+                MipTypes::DataClass::CLASS_GNSS1,
+                MipTypes::DataClass::CLASS_GNSS2
+            };
+
+        case Sentence::GSV:
+        case Sentence::ZDA:
+            return{
+                MipTypes::DataClass::CLASS_GNSS1,
+                MipTypes::DataClass::CLASS_GNSS2
+            };
+
+        case Sentence::PRKA:
+            return{
+                MipTypes::DataClass::CLASS_ESTFILTER
+            };
+
+        case Sentence::PRKR:
+            return{
+                MipTypes::DataClass::CLASS_AHRS_IMU
+            };
+
         default:
             return{
                 MipTypes::DataClass::CLASS_ESTFILTER,
                 MipTypes::DataClass::CLASS_GNSS1,
                 MipTypes::DataClass::CLASS_GNSS2,
-                MipTypes::DataClass::CLASS_AHRS_IMU,
-            }
+                MipTypes::DataClass::CLASS_AHRS_IMU
+            };
         }
     }
 

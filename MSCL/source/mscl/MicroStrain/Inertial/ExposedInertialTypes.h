@@ -788,7 +788,7 @@ namespace mscl
         };
 
         //API Constant: MAX_FREQUENCY
-        // NMEA message output is limited to either the MAX_FREQUENCY or the source descriptor set base rate, whichever is lower.
+        //  NMEA message output is limited to either the MAX_FREQUENCY or the source descriptor set base rate, whichever is lower.
         static const SampleRate MAX_FREQUENCY;
 
     private:
@@ -814,7 +814,6 @@ namespace mscl
 
     public:
         NmeaFormat() {};
-
         ~NmeaFormat() {};
 
     public:
@@ -871,6 +870,10 @@ namespace mscl
         // Note: this is private because there's currently no DataClass vector type in the public interface.
         static std::vector<MipTypes::DataClass> supportedDataClasses(Sentence sentenceType);
     };
+
+    //API Typedef: NmeaMessageFormats
+    //  A vector of <NmeaFormat> objects.
+    typedef std::vector<NmeaFormat> NmeaMessageFormat;
 
     ///////////////  Matrix_3x3  ///////////////
 
