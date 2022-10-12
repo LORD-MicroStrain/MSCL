@@ -706,53 +706,6 @@ namespace mscl
         };
     };
 
-    struct NmeaFormat
-    {
-        //API Enum: Sentence
-        //  NMEA sentence type options
-        //
-        //  GGA     - 0x01 - GPS System Fix Data
-        //  GLL     - 0x02 - Geographic Position Lat/Lon
-        //  GSV     - 0x03 - GNSS Satellites in View
-        //  RMC     - 0x04 - Recommended Minimum Specific GNSS Data
-        //  VTG     - 0x05 - Course over Ground
-        //  HDT     - 0x06 - Heading, True
-        //  ZDA     - 0x07 - Time & Date
-        //  PRKA    - 0x81 - Parker proprietary Euler angles
-        //  PRKR    - 0x82 - Parker proprietary Angular Rate/Acceleration
-        enum Sentence
-        {
-            GGA     = 0x01,
-            GLL     = 0x02,
-            GSV     = 0x03,
-            RMC     = 0x04,
-            VTG     = 0x05,
-            HDT     = 0x06,
-            ZDA     = 0x07,
-            PRKA    = 0x81,
-            PRKR    = 0x82
-        };
-
-        //API Enum: Talker
-        //  NMEA talker ID options
-        //
-        //  NOT_APPLICABLE  - 0 - Talker ID not applicable
-        //  GNSS            - 1 - NMEA message will be produced with talker id "GN"
-        //  GPS             - 2 - NMEA message will be produced with talker id "GP"
-        //  GALILEO         - 3 - NMEA message will be produced with talker id "GA"
-        //  GLONASS         - 4 - NMEA message will be produced with talker id "GL"
-        enum Talker
-        {
-            NOT_APPLICABLE  = 0,
-            GNSS            = 1,
-            GPS             = 2,
-            GALILEO         = 3,
-            GLONASS         = 4
-        };
-
-
-    };
-
     //API Typedef: SatellitePRNs
     //  A vector of <uint16> PRN#s for satellites.
     typedef std::vector<uint16> SatellitePRNs;
@@ -784,6 +737,140 @@ namespace mscl
     //API Typedef: GnssSources
     //  A vector of <InertialTypes::GNSS_Source> values
     typedef std::vector<InertialTypes::GNSS_Source> GnssSources;
+
+    //////////  NmeaFormat  //////////
+
+    //API Class: NmeaFormat
+    //  Defines a NMEA message format.
+    class NmeaFormat
+    {
+    public:
+        //API Enum: Sentence
+        //  NMEA sentence type options
+        //
+        //  GGA     - 0x01 - GPS System Fix Data
+        //  GLL     - 0x02 - Geographic Position Lat/Lon
+        //  GSV     - 0x03 - GNSS Satellites in View
+        //  RMC     - 0x04 - Recommended Minimum Specific GNSS Data
+        //  VTG     - 0x05 - Course over Ground
+        //  HDT     - 0x06 - Heading, True
+        //  ZDA     - 0x07 - Time & Date
+        //  PRKA    - 0x81 - Parker proprietary Euler angles
+        //  PRKR    - 0x82 - Parker proprietary Angular Rate/Acceleration
+        enum Sentence
+        {
+            GGA = 0x01,
+            GLL = 0x02,
+            GSV = 0x03,
+            RMC = 0x04,
+            VTG = 0x05,
+            HDT = 0x06,
+            ZDA = 0x07,
+            PRKA = 0x81,
+            PRKR = 0x82
+        };
+
+        //API Enum: Talker
+        //  NMEA talker ID options
+        //
+        //  NOT_APPLICABLE  - 0 - Talker ID not applicable
+        //  GNSS            - 1 - NMEA message will be produced with talker id "GN"
+        //  GPS             - 2 - NMEA message will be produced with talker id "GP"
+        //  GALILEO         - 3 - NMEA message will be produced with talker id "GA"
+        //  GLONASS         - 4 - NMEA message will be produced with talker id "GL"
+        enum Talker
+        {
+            NOT_APPLICABLE = 0,
+            GNSS = 1,
+            GPS = 2,
+            GALILEO = 3,
+            GLONASS = 4
+        };
+
+        //API Constant: MAX_FREQUENCY
+        // NMEA message output is limited to either the MAX_FREQUENCY or the source descriptor set base rate, whichever is lower.
+        static const SampleRate MAX_FREQUENCY;
+
+    private:
+        //Variable: m_sentenceType
+        //  The NMEA <Sentence> type.
+        Sentence m_sentenceType;
+
+        //Variable: m_talkerId
+        //  The NMEA <Talker> ID.
+        Talker m_talkerId;
+
+        //Variable: m_sourceDescSet
+        //  The source descriptor set.
+        MipTypes::DataClass m_descSet;
+
+        //Variable: m_baseRate
+        //  Descriptor set base rate, updated with m_descSet
+        uint16 m_baseRate = 0;
+
+        //Variable: m_decimation
+        //  The decimation from the base rate of m_descSet.
+        uint16 m_decimation = 1;
+
+    public:
+        NmeaFormat() {};
+
+        ~NmeaFormat() {};
+
+    public:
+        //API Function: sentenceType
+        //  Gets/sets the NMEA <Sentence> type.
+        Sentence sentenceType() { return m_sentenceType; };
+        void sentenceType(Sentence type);
+
+        //API Function: talkerId
+        //  Gets/sets the NMEA <Talker> ID.
+        Talker talkerId() { return m_talkerId; };
+        void talkerId(Talker id);
+
+        //API Function: sourceDataClass
+        //  Gets/sets the source <MipTypes::DataClass>
+        //
+        //  Note: if the previously set sampleRate is no longer valid, it will be updated to the closest valid sample rate.
+        //
+        //Parameters:
+        //  dataClass (set only) - the <MipTypes::DataClass> source
+        //  baseRate (set only) - the base rate of the specified data class. This can be read from InertialNode::getDataRateBase()
+        MipTypes::DataClass sourceDataClass() { return m_descSet; };
+        void sourceDataClass(MipTypes::DataClass dataClass, uint16 baseRate = 0);
+
+        //API Function: sampleRate
+        //  Gets/sets the output sample rate
+        //
+        //  Note: the sample rate is limited to either the data class base rate or MAX_FREQUENCY (10 Hz), whichever is lower. If input is too high, it will be automatically reduced to the max value.
+        //  Sample rate can only be validated if base rate is specified.
+        //
+        //Parameters:
+        //  rate (set only) - the <SampleRate> at which to output
+        //  baseRate (set only) - the base rate of the specified data class. This can be read from InertialNode::getDataRateBase()
+        SampleRate sampleRate();
+        void sampleRate(SampleRate rate, uint16 baseRate = 0);
+
+    private:
+        //Function: updateSampleRate
+        // Update the decimation based on current data class and previous, new base rates.
+        void updateDecimation(uint16 newBaseRate);
+
+    public:
+        //API Function: talkerIdRequired
+        //  [static] Checks whether a <Talker> ID is required for the specified <Sentence> type.
+        static bool talkerIdRequired(Sentence sentenceType);
+
+        //API Function: dataClassSupported
+        //  [static] Checks whether the specified <MipTypes::DataClass> is supported for the specified <Sentence> type.
+        static bool dataClassSupported(MipTypes::DataClass dataClass, Sentence sentenceType);
+
+    private:
+        //Function: supportedDataClasses
+        // [static] Returns a list of supported <MipTypes::DataClass> values for the specified <Sentence> type.
+        // Note: this is private because there's currently no DataClass vector type in the public interface.
+        static std::vector<MipTypes::DataClass> supportedDataClasses(Sentence sentenceType);
+    };
 
     ///////////////  Matrix_3x3  ///////////////
 

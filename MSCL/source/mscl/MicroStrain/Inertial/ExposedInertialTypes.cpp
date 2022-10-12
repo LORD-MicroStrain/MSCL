@@ -11,6 +11,95 @@
 
 namespace mscl
 {
+    //////////  NmeaFormat  //////////
+    const SampleRate NmeaFormat::MAX_FREQUENCY = SampleRate::Hertz(10);
+
+    void NmeaFormat::sentenceType(NmeaFormat::Sentence type)
+    {
+        m_sentenceType = type;
+    }
+
+    void NmeaFormat::talkerId(NmeaFormat::Talker id)
+    {
+        m_talkerId = id;
+    }
+
+    void NmeaFormat::sourceDataClass(MipTypes::DataClass dataClass, uint16 baseRate)
+    {
+        m_descSet = dataClass;
+        updateDecimation(baseRate);
+    }
+
+    SampleRate NmeaFormat::sampleRate()
+    {
+        return SampleRate::FromInertialRateDecimationInfo(m_baseRate, m_decimation);
+    }
+
+    void NmeaFormat::sampleRate(SampleRate rate, uint16 baseRate)
+    {
+        m_baseRate = baseRate;
+
+        if (m_baseRate == 0)
+        {
+            m_decimation = rate.samples();
+            return;
+        }
+
+        const SampleRate baseSampleRate = SampleRate::Hertz(m_baseRate);
+        const SampleRate& maxRate = baseSampleRate < MAX_FREQUENCY
+            ? baseSampleRate
+            : MAX_FREQUENCY;
+
+        const SampleRate& actualRate = rate <= maxRate
+            ? rate
+            : maxRate;
+
+        m_decimation = actualRate.toDecimation(m_baseRate);
+    }
+
+    void NmeaFormat::updateDecimation(uint16 newBaseRate)
+    {
+        // calculate sample rate based on current values
+        SampleRate currentRate = SampleRate::FromInertialRateDecimationInfo(m_decimation, m_baseRate);
+        
+        // update decimation based on current sample rate and new base rate
+        sampleRate(currentRate, newBaseRate);
+    }
+
+    bool NmeaFormat::talkerIdRequired(Sentence sentenceType)
+    {
+        switch (sentenceType)
+        {
+        case Sentence::GSV:
+        case Sentence::PRKA:
+        case Sentence::PRKR:
+            return false;
+
+        default:
+            return true;
+        }
+    }
+
+    bool NmeaFormat::dataClassSupported(MipTypes::DataClass dataClass, NmeaFormat::Sentence sentenceType)
+    {
+        std::vector<MipTypes::DataClass> supported = NmeaFormat::supportedDataClasses(sentenceType);
+        return std::find(supported.begin(), supported.end(), dataClass) != supported.end();
+    }
+
+    std::vector<MipTypes::DataClass> NmeaFormat::supportedDataClasses(NmeaFormat::Sentence sentenceType)
+    {
+        switch (sentenceType)
+        {
+        default:
+            return{
+                MipTypes::DataClass::CLASS_ESTFILTER,
+                MipTypes::DataClass::CLASS_GNSS1,
+                MipTypes::DataClass::CLASS_GNSS2,
+                MipTypes::DataClass::CLASS_AHRS_IMU,
+            }
+        }
+    }
+
     //////////  Matrix  //////////
 
     Matrix_3x3::Matrix_3x3(float i00, float i01, float i02, float i10, float i11, float i12, float i20, float i21, float i22)
