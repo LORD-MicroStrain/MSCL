@@ -10,8 +10,7 @@
 
 namespace mscl {
 
-public class NmeaMessageFormat : global::System.IDisposable, global::System.Collections.IEnumerable, global::System.Collections.Generic.IEnumerable<NmeaFormat>
- {
+public class NmeaMessageFormat : global::System.IDisposable {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
 
@@ -45,286 +44,109 @@ public class NmeaMessageFormat : global::System.IDisposable, global::System.Coll
     }
   }
 
-  public NmeaMessageFormat(global::System.Collections.IEnumerable c) : this() {
-    if (c == null)
-      throw new global::System.ArgumentNullException("c");
-    foreach (NmeaFormat element in c) {
-      this.Add(element);
-    }
-  }
-
-  public NmeaMessageFormat(global::System.Collections.Generic.IEnumerable<NmeaFormat> c) : this() {
-    if (c == null)
-      throw new global::System.ArgumentNullException("c");
-    foreach (NmeaFormat element in c) {
-      this.Add(element);
-    }
-  }
-
-  public bool IsFixedSize {
+  public static SampleRate MAX_FREQUENCY {
     get {
-      return false;
-    }
+      global::System.IntPtr cPtr = msclPINVOKE.NmeaMessageFormat_MAX_FREQUENCY_get();
+      SampleRate ret = (cPtr == global::System.IntPtr.Zero) ? null : new SampleRate(cPtr, false);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
   }
 
-  public bool IsReadOnly {
-    get {
-      return false;
-    }
-  }
-
-  public NmeaFormat this[int index]  {
-    get {
-      return getitem(index);
-    }
-    set {
-      setitem(index, value);
-    }
-  }
-
-  public int Capacity {
-    get {
-      return (int)capacity();
-    }
-    set {
-      if (value < size())
-        throw new global::System.ArgumentOutOfRangeException("Capacity");
-      reserve((uint)value);
-    }
-  }
-
-  public int Count {
-    get {
-      return (int)size();
-    }
-  }
-
-  public bool IsSynchronized {
-    get {
-      return false;
-    }
-  }
-
-  public void CopyTo(NmeaFormat[] array)
-  {
-    CopyTo(0, array, 0, this.Count);
-  }
-
-  public void CopyTo(NmeaFormat[] array, int arrayIndex)
-  {
-    CopyTo(0, array, arrayIndex, this.Count);
-  }
-
-  public void CopyTo(int index, NmeaFormat[] array, int arrayIndex, int count)
-  {
-    if (array == null)
-      throw new global::System.ArgumentNullException("array");
-    if (index < 0)
-      throw new global::System.ArgumentOutOfRangeException("index", "Value is less than zero");
-    if (arrayIndex < 0)
-      throw new global::System.ArgumentOutOfRangeException("arrayIndex", "Value is less than zero");
-    if (count < 0)
-      throw new global::System.ArgumentOutOfRangeException("count", "Value is less than zero");
-    if (array.Rank > 1)
-      throw new global::System.ArgumentException("Multi dimensional array.", "array");
-    if (index+count > this.Count || arrayIndex+count > array.Length)
-      throw new global::System.ArgumentException("Number of elements to copy is too large.");
-    for (int i=0; i<count; i++)
-      array.SetValue(getitemcopy(index+i), arrayIndex+i);
-  }
-
-  public NmeaFormat[] ToArray() {
-    NmeaFormat[] array = new NmeaFormat[this.Count];
-    this.CopyTo(array);
-    return array;
-  }
-
-  global::System.Collections.Generic.IEnumerator<NmeaFormat> global::System.Collections.Generic.IEnumerable<NmeaFormat>.GetEnumerator() {
-    return new NmeaMessageFormatEnumerator(this);
-  }
-
-  global::System.Collections.IEnumerator global::System.Collections.IEnumerable.GetEnumerator() {
-    return new NmeaMessageFormatEnumerator(this);
-  }
-
-  public NmeaMessageFormatEnumerator GetEnumerator() {
-    return new NmeaMessageFormatEnumerator(this);
-  }
-
-  // Type-safe enumerator
-  /// Note that the IEnumerator documentation requires an InvalidOperationException to be thrown
-  /// whenever the collection is modified. This has been done for changes in the size of the
-  /// collection but not when one of the elements of the collection is modified as it is a bit
-  /// tricky to detect unmanaged code that modifies the collection under our feet.
-  public sealed class NmeaMessageFormatEnumerator : global::System.Collections.IEnumerator
-    , global::System.Collections.Generic.IEnumerator<NmeaFormat>
-  {
-    private NmeaMessageFormat collectionRef;
-    private int currentIndex;
-    private object currentObject;
-    private int currentSize;
-
-    public NmeaMessageFormatEnumerator(NmeaMessageFormat collection) {
-      collectionRef = collection;
-      currentIndex = -1;
-      currentObject = null;
-      currentSize = collectionRef.Count;
-    }
-
-    // Type-safe iterator Current
-    public NmeaFormat Current {
-      get {
-        if (currentIndex == -1)
-          throw new global::System.InvalidOperationException("Enumeration not started.");
-        if (currentIndex > currentSize - 1)
-          throw new global::System.InvalidOperationException("Enumeration finished.");
-        if (currentObject == null)
-          throw new global::System.InvalidOperationException("Collection modified.");
-        return (NmeaFormat)currentObject;
-      }
-    }
-
-    // Type-unsafe IEnumerator.Current
-    object global::System.Collections.IEnumerator.Current {
-      get {
-        return Current;
-      }
-    }
-
-    public bool MoveNext() {
-      int size = collectionRef.Count;
-      bool moveOkay = (currentIndex+1 < size) && (size == currentSize);
-      if (moveOkay) {
-        currentIndex++;
-        currentObject = collectionRef[currentIndex];
-      } else {
-        currentObject = null;
-      }
-      return moveOkay;
-    }
-
-    public void Reset() {
-      currentIndex = -1;
-      currentObject = null;
-      if (collectionRef.Count != currentSize) {
-        throw new global::System.InvalidOperationException("Collection modified.");
-      }
-    }
-
-    public void Dispose() {
-        currentIndex = -1;
-        currentObject = null;
-    }
-  }
-
-  public void Clear() {
-    msclPINVOKE.NmeaMessageFormat_Clear(swigCPtr);
+  public NmeaMessageFormat() : this(msclPINVOKE.new_NmeaMessageFormat(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void Add(NmeaFormat x) {
-    msclPINVOKE.NmeaMessageFormat_Add(swigCPtr, NmeaFormat.getCPtr(x));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  private uint size() {
-    uint ret = msclPINVOKE.NmeaMessageFormat_size(swigCPtr);
+  public NmeaMessageFormat.Sentence sentenceType() {
+    NmeaMessageFormat.Sentence ret = (NmeaMessageFormat.Sentence)msclPINVOKE.NmeaMessageFormat_sentenceType__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  private uint capacity() {
-    uint ret = msclPINVOKE.NmeaMessageFormat_capacity(swigCPtr);
+  public void sentenceType(NmeaMessageFormat.Sentence type) {
+    msclPINVOKE.NmeaMessageFormat_sentenceType__SWIG_1(swigCPtr, (int)type);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public NmeaMessageFormat.Talker talkerId() {
+    NmeaMessageFormat.Talker ret = (NmeaMessageFormat.Talker)msclPINVOKE.NmeaMessageFormat_talkerId__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  private void reserve(uint n) {
-    msclPINVOKE.NmeaMessageFormat_reserve(swigCPtr, n);
+  public void talkerId(NmeaMessageFormat.Talker id) {
+    msclPINVOKE.NmeaMessageFormat_talkerId__SWIG_1(swigCPtr, (int)id);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public NmeaMessageFormat() : this(msclPINVOKE.new_NmeaMessageFormat__SWIG_0(), true) {
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public NmeaMessageFormat(NmeaMessageFormat other) : this(msclPINVOKE.new_NmeaMessageFormat__SWIG_1(NmeaMessageFormat.getCPtr(other)), true) {
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public NmeaMessageFormat(int capacity) : this(msclPINVOKE.new_NmeaMessageFormat__SWIG_2(capacity), true) {
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  private NmeaFormat getitemcopy(int index) {
-    NmeaFormat ret = new NmeaFormat(msclPINVOKE.NmeaMessageFormat_getitemcopy(swigCPtr, index), true);
+  public MipTypes.DataClass sourceDataClass() {
+    MipTypes.DataClass ret = (MipTypes.DataClass)msclPINVOKE.NmeaMessageFormat_sourceDataClass__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  private NmeaFormat getitem(int index) {
-    NmeaFormat ret = new NmeaFormat(msclPINVOKE.NmeaMessageFormat_getitem(swigCPtr, index), false);
+  public void sourceDataClass(MipTypes.DataClass dataClass, ushort baseRate) {
+    msclPINVOKE.NmeaMessageFormat_sourceDataClass__SWIG_1(swigCPtr, (int)dataClass, baseRate);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void sourceDataClass(MipTypes.DataClass dataClass) {
+    msclPINVOKE.NmeaMessageFormat_sourceDataClass__SWIG_2(swigCPtr, (int)dataClass);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public SampleRate sampleRate() {
+    SampleRate ret = new SampleRate(msclPINVOKE.NmeaMessageFormat_sampleRate__SWIG_0(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  private void setitem(int index, NmeaFormat val) {
-    msclPINVOKE.NmeaMessageFormat_setitem(swigCPtr, index, NmeaFormat.getCPtr(val));
+  public void sampleRate(SampleRate rate, ushort baseRate) {
+    msclPINVOKE.NmeaMessageFormat_sampleRate__SWIG_1(swigCPtr, SampleRate.getCPtr(rate), baseRate);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void AddRange(NmeaMessageFormat values) {
-    msclPINVOKE.NmeaMessageFormat_AddRange(swigCPtr, NmeaMessageFormat.getCPtr(values));
+  public void sampleRate(SampleRate rate) {
+    msclPINVOKE.NmeaMessageFormat_sampleRate__SWIG_2(swigCPtr, SampleRate.getCPtr(rate));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public NmeaMessageFormat GetRange(int index, int count) {
-    global::System.IntPtr cPtr = msclPINVOKE.NmeaMessageFormat_GetRange(swigCPtr, index, count);
-    NmeaMessageFormat ret = (cPtr == global::System.IntPtr.Zero) ? null : new NmeaMessageFormat(cPtr, true);
+  public static bool talkerIdRequired(NmeaMessageFormat.Sentence sentenceType) {
+    bool ret = msclPINVOKE.NmeaMessageFormat_talkerIdRequired((int)sentenceType);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void Insert(int index, NmeaFormat x) {
-    msclPINVOKE.NmeaMessageFormat_Insert(swigCPtr, index, NmeaFormat.getCPtr(x));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void InsertRange(int index, NmeaMessageFormat values) {
-    msclPINVOKE.NmeaMessageFormat_InsertRange(swigCPtr, index, NmeaMessageFormat.getCPtr(values));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void RemoveAt(int index) {
-    msclPINVOKE.NmeaMessageFormat_RemoveAt(swigCPtr, index);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void RemoveRange(int index, int count) {
-    msclPINVOKE.NmeaMessageFormat_RemoveRange(swigCPtr, index, count);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public static NmeaMessageFormat Repeat(NmeaFormat value, int count) {
-    global::System.IntPtr cPtr = msclPINVOKE.NmeaMessageFormat_Repeat(NmeaFormat.getCPtr(value), count);
-    NmeaMessageFormat ret = (cPtr == global::System.IntPtr.Zero) ? null : new NmeaMessageFormat(cPtr, true);
+  public static bool dataClassSupported(MipTypes.DataClass dataClass, NmeaMessageFormat.Sentence sentenceType) {
+    bool ret = msclPINVOKE.NmeaMessageFormat_dataClassSupported((int)dataClass, (int)sentenceType);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void Reverse() {
-    msclPINVOKE.NmeaMessageFormat_Reverse__SWIG_0(swigCPtr);
+  public static MipFieldValues toCommandParameters(NmeaMessageFormats nmeaFormats) {
+    MipFieldValues ret = new MipFieldValues(msclPINVOKE.NmeaMessageFormat_toCommandParameters(NmeaMessageFormats.getCPtr(nmeaFormats)), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
-  public void Reverse(int index, int count) {
-    msclPINVOKE.NmeaMessageFormat_Reverse__SWIG_1(swigCPtr, index, count);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  public enum Sentence {
+    GGA = 0x01,
+    GLL = 0x02,
+    GSV = 0x03,
+    RMC = 0x04,
+    VTG = 0x05,
+    HDT = 0x06,
+    ZDA = 0x07,
+    PRKA = 0x81,
+    PRKR = 0x82
   }
 
-  public void SetRange(int index, NmeaMessageFormat values) {
-    msclPINVOKE.NmeaMessageFormat_SetRange(swigCPtr, index, NmeaMessageFormat.getCPtr(values));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  public enum Talker {
+    NOT_APPLICABLE = 0,
+    GNSS = 1,
+    GPS = 2,
+    GALILEO = 3,
+    GLONASS = 4
   }
 
 }

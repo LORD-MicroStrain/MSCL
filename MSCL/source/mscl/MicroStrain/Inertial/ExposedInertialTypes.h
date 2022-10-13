@@ -738,11 +738,16 @@ namespace mscl
     //  A vector of <InertialTypes::GNSS_Source> values
     typedef std::vector<InertialTypes::GNSS_Source> GnssSources;
 
-    //////////  NmeaFormat  //////////
+    //////////  NmeaMessageFormat  //////////
 
-    //API Class: NmeaFormat
+    //API Typedef: NmeaMessageFormats
+    //  A vector of <NmeaMessageFormat> objects.
+    class NmeaMessageFormat; // need forward declaration so NmeaMessageFormat can reference NmeaMessageFormats
+    typedef std::vector<NmeaMessageFormat> NmeaMessageFormats;
+
+    //API Class: NmeaMessageFormat
     //  Defines a NMEA message format.
-    class NmeaFormat
+    class NmeaMessageFormat
     {
     public:
         //API Enum: Sentence
@@ -813,18 +818,18 @@ namespace mscl
         uint16 m_decimation = 1;
 
     public:
-        NmeaFormat() {};
-        ~NmeaFormat() {};
+        NmeaMessageFormat() {};
+        ~NmeaMessageFormat() {};
 
     public:
         //API Function: sentenceType
         //  Gets/sets the NMEA <Sentence> type.
-        Sentence sentenceType() { return m_sentenceType; };
+        Sentence sentenceType() const { return m_sentenceType; };
         void sentenceType(Sentence type);
 
         //API Function: talkerId
         //  Gets/sets the NMEA <Talker> ID.
-        Talker talkerId() { return m_talkerId; };
+        Talker talkerId() const { return m_talkerId; };
         void talkerId(Talker id);
 
         //API Function: sourceDataClass
@@ -835,11 +840,11 @@ namespace mscl
         //Parameters:
         //  dataClass (set only) - the <MipTypes::DataClass> source
         //  baseRate (set only) - the base rate of the specified data class. This can be read from InertialNode::getDataRateBase()
-        MipTypes::DataClass sourceDataClass() { return m_descSet; };
+        MipTypes::DataClass sourceDataClass() const { return m_descSet; };
         void sourceDataClass(MipTypes::DataClass dataClass, uint16 baseRate = 0);
 
         //API Function: sampleRate
-        //  Gets/sets the output sample rate
+        //  Gets/sets the output sample rate. If baseRate is not specified, please use a <SampleRate> with RateType of decimation (SampleRate::Decimation(rateDecimation)) otherwise it will cannot be properly interpretted.
         //
         //  Note: the sample rate is limited to either the data class base rate or MAX_FREQUENCY (10 Hz), whichever is lower. If input is too high, it will be automatically reduced to the max value.
         //  Sample rate can only be validated if base rate is specified.
@@ -847,7 +852,7 @@ namespace mscl
         //Parameters:
         //  rate (set only) - the <SampleRate> at which to output
         //  baseRate (set only) - the base rate of the specified data class. This can be read from InertialNode::getDataRateBase()
-        SampleRate sampleRate();
+        SampleRate sampleRate() const;
         void sampleRate(SampleRate rate, uint16 baseRate = 0);
 
     private:
@@ -869,11 +874,31 @@ namespace mscl
         // [static] Returns a list of supported <MipTypes::DataClass> values for the specified <Sentence> type.
         // Note: this is private because there's currently no DataClass vector type in the public interface.
         static std::vector<MipTypes::DataClass> supportedDataClasses(Sentence sentenceType);
-    };
 
-    //API Typedef: NmeaMessageFormats
-    //  A vector of <NmeaFormat> objects.
-    typedef std::vector<NmeaFormat> NmeaMessageFormat;
+    private:
+        friend InertialNode;
+
+        //Function: fromCommandResponse
+        //  [static] Build <NmeaMessageFormat> objects from the read command response <MipFieldValues>.
+        //
+        //Parameters:
+        //  responseValues - <MipFieldValues> to populate the <NmeaMessageFormat> objects (first element should be count)
+        //  startIndex - default 0 - indicates the index at which to start reading from the responseValues (format count element). This should not need to be changed from the default value (0).
+        static NmeaMessageFormats fromCommandResponse(const MipFieldValues& responseValues, uint8 startIndex = 0);
+
+        //Function: baseRate
+        //  Set base rate directly (usually done through sourceDataClass or sampleRate).
+        void baseRate(uint16 base) { m_baseRate = base; };
+
+        //Function: toCommandParameters
+        //  Generates command parameter MipFieldValues for single NmeaMessageFormat object.
+        MipFieldValues toCommandParameters() const;
+
+    public:
+        //API Function: toCommandParameters
+        //  [static] Build <MipFieldValues> parameters (including count) from a vector of <NmeaMessageFormat> objects.
+        static MipFieldValues toCommandParameters(const NmeaMessageFormats& nmeaFormats);
+    };
 
     ///////////////  Matrix_3x3  ///////////////
 

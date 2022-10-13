@@ -240,6 +240,8 @@
     <Compile Include="mscl\msclPINVOKE.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="mscl\NmeaMessageFormat.cs" />
+    <Compile Include="mscl\NmeaMessageFormats.cs" />
     <Compile Include="mscl\NodeDiscoveries.cs" />
     <Compile Include="mscl\NodeDiscovery.cs" />
     <Compile Include="mscl\NodeFeatures.cs" />

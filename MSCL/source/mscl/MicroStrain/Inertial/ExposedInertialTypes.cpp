@@ -11,31 +11,31 @@
 
 namespace mscl
 {
-    //////////  NmeaFormat  //////////
-    const SampleRate NmeaFormat::MAX_FREQUENCY = SampleRate::Hertz(10);
+    //////////  NmeaMessageFormat  //////////
+    const SampleRate NmeaMessageFormat::MAX_FREQUENCY = SampleRate::Hertz(10);
 
-    void NmeaFormat::sentenceType(NmeaFormat::Sentence type)
+    void NmeaMessageFormat::sentenceType(NmeaMessageFormat::Sentence type)
     {
         m_sentenceType = type;
     }
 
-    void NmeaFormat::talkerId(NmeaFormat::Talker id)
+    void NmeaMessageFormat::talkerId(NmeaMessageFormat::Talker id)
     {
         m_talkerId = id;
     }
 
-    void NmeaFormat::sourceDataClass(MipTypes::DataClass dataClass, uint16 baseRate)
+    void NmeaMessageFormat::sourceDataClass(MipTypes::DataClass dataClass, uint16 baseRate)
     {
         m_descSet = dataClass;
         updateDecimation(baseRate);
     }
 
-    SampleRate NmeaFormat::sampleRate()
+    SampleRate NmeaMessageFormat::sampleRate() const
     {
         return SampleRate::FromInertialRateDecimationInfo(m_baseRate, m_decimation);
     }
 
-    void NmeaFormat::sampleRate(SampleRate rate, uint16 baseRate)
+    void NmeaMessageFormat::sampleRate(SampleRate rate, uint16 baseRate)
     {
         m_baseRate = baseRate;
 
@@ -57,7 +57,7 @@ namespace mscl
         m_decimation = actualRate.toDecimation(m_baseRate);
     }
 
-    void NmeaFormat::updateDecimation(uint16 newBaseRate)
+    void NmeaMessageFormat::updateDecimation(uint16 newBaseRate)
     {
         // calculate sample rate based on current values
         SampleRate currentRate = SampleRate::FromInertialRateDecimationInfo(m_decimation, m_baseRate);
@@ -66,7 +66,7 @@ namespace mscl
         sampleRate(currentRate, newBaseRate);
     }
 
-    bool NmeaFormat::talkerIdRequired(Sentence sentenceType)
+    bool NmeaMessageFormat::talkerIdRequired(Sentence sentenceType)
     {
         switch (sentenceType)
         {
@@ -80,13 +80,13 @@ namespace mscl
         }
     }
 
-    bool NmeaFormat::dataClassSupported(MipTypes::DataClass dataClass, NmeaFormat::Sentence sentenceType)
+    bool NmeaMessageFormat::dataClassSupported(MipTypes::DataClass dataClass, NmeaMessageFormat::Sentence sentenceType)
     {
-        std::vector<MipTypes::DataClass> supported = NmeaFormat::supportedDataClasses(sentenceType);
+        std::vector<MipTypes::DataClass> supported = NmeaMessageFormat::supportedDataClasses(sentenceType);
         return std::find(supported.begin(), supported.end(), dataClass) != supported.end();
     }
 
-    std::vector<MipTypes::DataClass> NmeaFormat::supportedDataClasses(NmeaFormat::Sentence sentenceType)
+    std::vector<MipTypes::DataClass> NmeaMessageFormat::supportedDataClasses(NmeaMessageFormat::Sentence sentenceType)
     {
         switch (sentenceType)
         {
@@ -126,6 +126,53 @@ namespace mscl
                 MipTypes::DataClass::CLASS_AHRS_IMU
             };
         }
+    }
+
+    NmeaMessageFormats NmeaMessageFormat::fromCommandResponse(const MipFieldValues& responseValues, uint8 startIndex)
+    {
+        const uint8 count = responseValues[startIndex].as_uint8();
+        const uint8 ELEMENTS_PER_FORMAT = 4;
+
+        NmeaMessageFormats messageFormat;
+        for (uint8 i = 0; i < count; i++)
+        {
+            // skip count element and find beginning of target format element
+            uint8 index = 1 + (i * ELEMENTS_PER_FORMAT);
+
+            NmeaMessageFormat format;
+            format.sentenceType((Sentence)responseValues[index].as_uint8());
+            format.talkerId((Talker)responseValues[index + 1].as_uint8());
+            format.sourceDataClass((MipTypes::DataClass)responseValues[index + 2].as_uint8());
+            format.sampleRate(SampleRate::Decimation(responseValues[index + 3].as_uint16()));
+
+            messageFormat.push_back(format);
+        }
+
+        return messageFormat;
+    }
+
+    MipFieldValues NmeaMessageFormat::toCommandParameters() const
+    {
+        return{
+            Value::UINT8(static_cast<uint8>(m_sentenceType)),
+            Value::UINT8(static_cast<uint8>(m_talkerId)),
+            Value::UINT8(static_cast<uint8>(m_descSet)),
+            Value::UINT16(m_decimation)
+        };
+    }
+
+    MipFieldValues NmeaMessageFormat::toCommandParameters(const NmeaMessageFormats& nmeaFormats)
+    {
+        // initialize params with count value
+        MipFieldValues params = { Value::UINT8(static_cast<uint8>(nmeaFormats.size())) };
+
+        for (NmeaMessageFormat format : nmeaFormats)
+        {
+            MipFieldValues entries = format.toCommandParameters();
+            params.insert(params.end(), entries.begin(), entries.end());
+        }
+
+        return params;
     }
 
     //////////  Matrix  //////////
