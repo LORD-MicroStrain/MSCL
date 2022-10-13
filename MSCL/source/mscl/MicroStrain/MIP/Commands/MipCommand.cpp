@@ -93,6 +93,7 @@ namespace mscl
         switch (cmd)
         {
         // 0x0C
+        case MipTypes::CMD_POLL_NMEA_MESSAGE:
         case MipTypes::CMD_POLL:
         case MipTypes::CMD_GET_BASE_RATE:
         case MipTypes::CMD_FACTORY_STREAMING:
@@ -215,6 +216,8 @@ namespace mscl
         case MipTypes::CMD_COMM_PORT_SPEED:
             return "CommPortSpeed";
         // 0x0C
+        case MipTypes::CMD_POLL_NMEA_MESSAGE:
+            return "PollNmeaMessage";
         case MipTypes::CMD_NMEA_MESSAGE_FORMAT:
             return "NmeaMessageFormat";
         case MipTypes::CMD_POLL:
