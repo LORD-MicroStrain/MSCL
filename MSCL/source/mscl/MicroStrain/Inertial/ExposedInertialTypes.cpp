@@ -14,7 +14,7 @@ namespace mscl
     //////////  NmeaMessageFormat  //////////
     const SampleRate NmeaMessageFormat::MAX_FREQUENCY = SampleRate::Hertz(10);
 
-    void NmeaMessageFormat::sentenceType(NmeaMessageFormat::Sentence type)
+    void NmeaMessageFormat::sentenceType(NmeaMessageFormat::SentenceType type)
     {
         m_sentenceType = type;
     }
@@ -37,7 +37,7 @@ namespace mscl
 
     void NmeaMessageFormat::sampleRate(SampleRate rate, uint16 baseRate)
     {
-        m_baseRate = baseRate;
+        m_baseRate = baseRate == 0 ? m_baseRate : baseRate;
 
         if (m_baseRate == 0)
         {
@@ -45,13 +45,18 @@ namespace mscl
             return;
         }
 
+        // if rate type is decimation, use base rate to determine absolute sample rate for comparison
+        const SampleRate absRate = rate.rateType() == SampleRate::rateType_decimation
+            ? SampleRate::FromInertialRateDecimationInfo(m_baseRate, static_cast<uint16>(rate.samples()))
+            : rate;
+
         const SampleRate baseSampleRate = SampleRate::Hertz(m_baseRate);
         const SampleRate& maxRate = baseSampleRate < MAX_FREQUENCY
             ? baseSampleRate
             : MAX_FREQUENCY;
 
-        const SampleRate& actualRate = rate <= maxRate
-            ? rate
+        const SampleRate& actualRate = absRate <= maxRate
+            ? absRate
             : maxRate;
 
         m_decimation = actualRate.toDecimation(m_baseRate);
@@ -60,19 +65,20 @@ namespace mscl
     void NmeaMessageFormat::updateDecimation(uint16 newBaseRate)
     {
         // calculate sample rate based on current values
-        SampleRate currentRate = SampleRate::FromInertialRateDecimationInfo(m_decimation, m_baseRate);
+        SampleRate currentRate = SampleRate::FromInertialRateDecimationInfo(m_baseRate, m_decimation);
         
         // update decimation based on current sample rate and new base rate
-        sampleRate(currentRate, newBaseRate);
+        m_baseRate = newBaseRate;
+        sampleRate(currentRate);
     }
 
-    bool NmeaMessageFormat::talkerIdRequired(Sentence sentenceType)
+    bool NmeaMessageFormat::talkerIdRequired(SentenceType sentenceType)
     {
         switch (sentenceType)
         {
-        case Sentence::GSV:
-        case Sentence::PRKA:
-        case Sentence::PRKR:
+        case SentenceType::GSV:
+        case SentenceType::PRKA:
+        case SentenceType::PRKR:
             return false;
 
         default:
@@ -80,40 +86,40 @@ namespace mscl
         }
     }
 
-    bool NmeaMessageFormat::dataClassSupported(MipTypes::DataClass dataClass, NmeaMessageFormat::Sentence sentenceType)
+    bool NmeaMessageFormat::dataClassSupported(MipTypes::DataClass dataClass, NmeaMessageFormat::SentenceType sentenceType)
     {
         std::vector<MipTypes::DataClass> supported = NmeaMessageFormat::supportedDataClasses(sentenceType);
         return std::find(supported.begin(), supported.end(), dataClass) != supported.end();
     }
 
-    std::vector<MipTypes::DataClass> NmeaMessageFormat::supportedDataClasses(NmeaMessageFormat::Sentence sentenceType)
+    std::vector<MipTypes::DataClass> NmeaMessageFormat::supportedDataClasses(NmeaMessageFormat::SentenceType sentenceType)
     {
         switch (sentenceType)
         {
-        case Sentence::GGA:
-        case Sentence::GLL:
-        case Sentence::RMC:
-        case Sentence::VTG:
-        case Sentence::HDT:
+        case SentenceType::GGA:
+        case SentenceType::GLL:
+        case SentenceType::RMC:
+        case SentenceType::VTG:
+        case SentenceType::HDT:
             return{
                 MipTypes::DataClass::CLASS_ESTFILTER,
                 MipTypes::DataClass::CLASS_GNSS1,
                 MipTypes::DataClass::CLASS_GNSS2
             };
 
-        case Sentence::GSV:
-        case Sentence::ZDA:
+        case SentenceType::GSV:
+        case SentenceType::ZDA:
             return{
                 MipTypes::DataClass::CLASS_GNSS1,
                 MipTypes::DataClass::CLASS_GNSS2
             };
 
-        case Sentence::PRKA:
+        case SentenceType::PRKA:
             return{
                 MipTypes::DataClass::CLASS_ESTFILTER
             };
 
-        case Sentence::PRKR:
+        case SentenceType::PRKR:
             return{
                 MipTypes::DataClass::CLASS_AHRS_IMU
             };
@@ -140,7 +146,7 @@ namespace mscl
             uint8 index = 1 + (i * ELEMENTS_PER_FORMAT);
 
             NmeaMessageFormat format;
-            format.sentenceType((Sentence)responseValues[index].as_uint8());
+            format.sentenceType((SentenceType)responseValues[index].as_uint8());
             format.talkerId((Talker)responseValues[index + 1].as_uint8());
             format.sourceDataClass((MipTypes::DataClass)responseValues[index + 2].as_uint8());
             format.sampleRate(SampleRate::Decimation(responseValues[index + 3].as_uint16()));

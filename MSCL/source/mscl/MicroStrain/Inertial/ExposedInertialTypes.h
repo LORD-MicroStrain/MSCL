@@ -750,7 +750,7 @@ namespace mscl
     class NmeaMessageFormat
     {
     public:
-        //API Enum: Sentence
+        //API Enum: SentenceType
         //  NMEA sentence type options
         //
         //  GGA     - 0x01 - GPS System Fix Data
@@ -762,7 +762,7 @@ namespace mscl
         //  ZDA     - 0x07 - Time & Date
         //  PRKA    - 0x81 - Parker proprietary Euler angles
         //  PRKR    - 0x82 - Parker proprietary Angular Rate/Acceleration
-        enum Sentence
+        enum SentenceType
         {
             GGA = 0x01,
             GLL = 0x02,
@@ -798,8 +798,8 @@ namespace mscl
 
     private:
         //Variable: m_sentenceType
-        //  The NMEA <Sentence> type.
-        Sentence m_sentenceType;
+        //  The NMEA <SentenceType> type.
+        SentenceType m_sentenceType;
 
         //Variable: m_talkerId
         //  The NMEA <Talker> ID.
@@ -823,9 +823,9 @@ namespace mscl
 
     public:
         //API Function: sentenceType
-        //  Gets/sets the NMEA <Sentence> type.
-        Sentence sentenceType() const { return m_sentenceType; };
-        void sentenceType(Sentence type);
+        //  Gets/sets the NMEA <SentenceType> type.
+        SentenceType sentenceType() const { return m_sentenceType; };
+        void sentenceType(SentenceType type);
 
         //API Function: talkerId
         //  Gets/sets the NMEA <Talker> ID.
@@ -862,18 +862,18 @@ namespace mscl
 
     public:
         //API Function: talkerIdRequired
-        //  [static] Checks whether a <Talker> ID is required for the specified <Sentence> type.
-        static bool talkerIdRequired(Sentence sentenceType);
+        //  [static] Checks whether a <Talker> ID is required for the specified <SentenceType> type.
+        static bool talkerIdRequired(SentenceType sentenceType);
 
         //API Function: dataClassSupported
-        //  [static] Checks whether the specified <MipTypes::DataClass> is supported for the specified <Sentence> type.
-        static bool dataClassSupported(MipTypes::DataClass dataClass, Sentence sentenceType);
+        //  [static] Checks whether the specified <MipTypes::DataClass> is supported for the specified <SentenceType> type.
+        static bool dataClassSupported(MipTypes::DataClass dataClass, SentenceType sentenceType);
 
     private:
         //Function: supportedDataClasses
-        // [static] Returns a list of supported <MipTypes::DataClass> values for the specified <Sentence> type.
+        // [static] Returns a list of supported <MipTypes::DataClass> values for the specified <SentenceType> type.
         // Note: this is private because there's currently no DataClass vector type in the public interface.
-        static std::vector<MipTypes::DataClass> supportedDataClasses(Sentence sentenceType);
+        static std::vector<MipTypes::DataClass> supportedDataClasses(SentenceType sentenceType);
 
     private:
         friend InertialNode;

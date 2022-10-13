@@ -57,13 +57,13 @@ public class NmeaMessageFormat : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public NmeaMessageFormat.Sentence sentenceType() {
-    NmeaMessageFormat.Sentence ret = (NmeaMessageFormat.Sentence)msclPINVOKE.NmeaMessageFormat_sentenceType__SWIG_0(swigCPtr);
+  public NmeaMessageFormat.SentenceType sentenceType() {
+    NmeaMessageFormat.SentenceType ret = (NmeaMessageFormat.SentenceType)msclPINVOKE.NmeaMessageFormat_sentenceType__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void sentenceType(NmeaMessageFormat.Sentence type) {
+  public void sentenceType(NmeaMessageFormat.SentenceType type) {
     msclPINVOKE.NmeaMessageFormat_sentenceType__SWIG_1(swigCPtr, (int)type);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
@@ -111,13 +111,13 @@ public class NmeaMessageFormat : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public static bool talkerIdRequired(NmeaMessageFormat.Sentence sentenceType) {
+  public static bool talkerIdRequired(NmeaMessageFormat.SentenceType sentenceType) {
     bool ret = msclPINVOKE.NmeaMessageFormat_talkerIdRequired((int)sentenceType);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public static bool dataClassSupported(MipTypes.DataClass dataClass, NmeaMessageFormat.Sentence sentenceType) {
+  public static bool dataClassSupported(MipTypes.DataClass dataClass, NmeaMessageFormat.SentenceType sentenceType) {
     bool ret = msclPINVOKE.NmeaMessageFormat_dataClassSupported((int)dataClass, (int)sentenceType);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
@@ -129,7 +129,7 @@ public class NmeaMessageFormat : global::System.IDisposable {
     return ret;
   }
 
-  public enum Sentence {
+  public enum SentenceType {
     GGA = 0x01,
     GLL = 0x02,
     GSV = 0x03,
