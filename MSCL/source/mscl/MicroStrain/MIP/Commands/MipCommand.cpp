@@ -194,16 +194,11 @@ namespace mscl
         case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
         case MipTypes::CMD_SENSOR_RANGE:
         case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
+        case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER:
             // 0x0D
         case MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF:
             // check that the identifier is echoed back in the response
             matchData.emplace(0, m_data[0]);
-            break;
-
-        case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER:
-            // both data set and descriptor echoed back in the response
-            matchData.emplace(0, m_data[0]);
-            matchData.emplace(1, m_data[1]);
             break;
 
         default:
@@ -457,8 +452,7 @@ namespace mscl
 
         case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER:
             return{
-                ValueType::valueType_uint8,
-                ValueType::valueType_uint8,
+                ValueType::valueType_uint16,
                 ValueType::valueType_bool,
                 ValueType::valueType_bool,
                 ValueType::valueType_float,

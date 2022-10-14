@@ -2109,8 +2109,7 @@ namespace mscl
         }
 
         MipFieldValues params = {
-            Value::UINT8(Utils::msb(static_cast<uint16>(data.dataDescriptor))),
-            Value::UINT8(Utils::lsb(static_cast<uint16>(data.dataDescriptor))),
+            Value::UINT16(static_cast<uint16>(data.dataDescriptor)),
             Value::BOOL(data.applyLowPassFilter),
             Value::BOOL(data.manualFilterBandwidthConfig == LowPassFilterData::USER_SPECIFIED_CUTOFF_FREQ),
             Value::FLOAT(data.cutoffFrequency)
@@ -2130,14 +2129,14 @@ namespace mscl
             return lowPassFilterCmd.getResponseData(response);
         }
 
-        MipFieldValues params = { Value::UINT16(Utils::msb(static_cast<uint16>(dataDescriptor))) };
+        MipFieldValues params = { Value::UINT16(static_cast<uint16>(dataDescriptor)) };
         MipFieldValues resData = get(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER, params);
 
         LowPassFilterData config;
-        config.dataDescriptor = dataDescriptor; // parser confirms match to elements 0, 1
-        config.applyLowPassFilter = resData[2].as_bool();
-        config.manualFilterBandwidthConfig = resData[3].as_bool() ? LowPassFilterData::USER_SPECIFIED_CUTOFF_FREQ : LowPassFilterData::SET_TO_HALF_REPORTING_RATE;
-        config.cutoffFrequency = resData[4].as_float();
+        config.dataDescriptor = dataDescriptor; // parser confirms match to element 0
+        config.applyLowPassFilter = resData[1].as_bool();
+        config.manualFilterBandwidthConfig = resData[2].as_bool() ? LowPassFilterData::USER_SPECIFIED_CUTOFF_FREQ : LowPassFilterData::SET_TO_HALF_REPORTING_RATE;
+        config.cutoffFrequency = resData[3].as_float();
 
         return config;
     }
