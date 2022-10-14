@@ -24,6 +24,7 @@ Forthcoming
         - AdvancedLowPassFilterConfig -> LowPassFilterConfig
         - CHANGED data type AdvancedLowPassFilterData::cutoffFrequency uint16 -> float (truncates decimal when cast to uint16 for legacy command)
     - Added MipNodeFeatures::supportedGnssSources() to lookup supported GNSS Aiding Source options
+    - Added MipNodeFeatures::supportedLowPassFilterChannelFields() to lookup supported channels to which low-pass filter settings can be applied
     - Updated GnssReceiverInfo to read new receiver fw information from description field
     - Updated GPS Ionospheric Corrections alpha and beta value types to Vector
     - Automatically detect and add required parameters for save as startup, load startup, and default settings command functions

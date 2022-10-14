@@ -681,23 +681,38 @@ namespace mscl
                     break;
                 }
 
-                MipTypes::MipChannelFields supportedDescriptors = features().supportedChannelFields(MipTypes::DataClass::CLASS_AHRS_IMU);
-                MipTypes::MipChannelFields lowpassFilterChannels = {
-                    MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_ACCEL_VEC,
-                    MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_GYRO_VEC,
-                    MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_MAG_VEC,
-                    MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE };
+                MipTypes::MipChannelFields lowpassFilterChannels = features().supportedLowPassFilterChannelFields();
 
                 for (size_t j = 0; j < lowpassFilterChannels.size(); j++)
                 {
                     MipTypes::ChannelField f = lowpassFilterChannels[j];
-                    if (std::find(supportedDescriptors.begin(), supportedDescriptors.end(), f) == supportedDescriptors.end())
+
+                    // legacy command only supports 0x80 fields
+                    if ((MipTypes::DataClass)Utils::msb(static_cast<uint16>(f)) != MipTypes::CLASS_AHRS_IMU)
                     {
                         continue;
                     }
 
                     params.push_back({ cmd, {Value::UINT8(static_cast<uint8>(f))} });
                 }
+
+                break;
+            }
+            case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER:
+            {
+                if (allParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT16(0) } });
+                    break;
+                }
+
+                MipTypes::MipChannelFields lowpassFilterChannels = features().supportedLowPassFilterChannelFields();
+
+                for (size_t j = 0; j < lowpassFilterChannels.size(); j++)
+                {
+                    params.push_back({ cmd,{ Value::UINT16(static_cast<uint16>(lowpassFilterChannels[j])) } });
+                }
+
                 break;
             }
             case MipTypes::CMD_MESSAGE_FORMAT:
@@ -1071,23 +1086,18 @@ namespace mscl
                 break;
                 case MipTypes::CMD_LOWPASS_FILTER_SETTINGS:
                 {
+                    // if new command is supported, don't export legacy to avoid potential float -> u16 truncation issues
+                    if (features().supportsCommand(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER))
+                    {
+                        break;
+                    }
+
                     MipCommandBytes cmdBytes(cmd);
-                    MipTypes::MipChannelFields supportedDescriptors = features().supportedChannelFields(MipTypes::DataClass::CLASS_AHRS_IMU);
-                    MipTypes::MipChannelFields lowpassFilterChannels = {
-                        MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_ACCEL_VEC,
-                        MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_GYRO_VEC,
-                        MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_MAG_VEC,
-                        MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE };
+                    MipTypes::MipChannelFields lowpassFilterChannels = features().supportedLowPassFilterChannelFields();
 
                     for (size_t j = 0; j < lowpassFilterChannels.size(); j++)
                     {
-                        MipTypes::ChannelField f = lowpassFilterChannels[j];
-                        if (std::find(supportedDescriptors.begin(), supportedDescriptors.end(), f) == supportedDescriptors.end())
-                        {
-                            continue;
-                        }
-
-                        LowPassFilterData data = getLowPassFilterSettings(f);
+                        LowPassFilterData data = getLowPassFilterSettings(lowpassFilterChannels[j]);
                         AdvancedLowPassFilterSettings set = AdvancedLowPassFilterSettings::MakeSetCommand(data);
                         ByteStream s = (ByteStream)set;
                         cmdBytes.add(s.data());
