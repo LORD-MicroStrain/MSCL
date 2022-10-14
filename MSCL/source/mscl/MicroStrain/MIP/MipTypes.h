@@ -413,6 +413,8 @@ namespace mscl
         //  CH_FIELD_GNSS_CLOCK_INFO_2                              - 0x8110    - GNSS Clock Info 2
         //  CH_FIELD_GNSS_GPS_LEAP_SECONDS                          - 0x8111    - GNSS GPS Leap Seconds
         //  CH_FIELD_GNSS_SBAS_INFO                                 - 0x8112    - GNSS SBAS Info
+        //  CH_FIELD_GNSS_SBAS_CORRECTION                           - 0x8113    - GNSS SBAS Correction
+        //  CH_FIELD_GNSS_RF_ERROR_DETECTION                        - 0x8114    - GNSS RF Error Detection
         //  CH_FIELD_GNSS_SATELLITE_STATUS                          - 0x8120    - GNSS Satellite Status
         //  CH_FIELD_GNSS_RAW_OBSERVATION                           - 0x8122    - GNSS Raw Observation data
         //  CH_FIELD_GNSS_STATION_INFO                              - 0x8130    - GNSS Base Station Info
@@ -512,6 +514,8 @@ namespace mscl
         //  CH_FIELD_GNSS_1_CLOCK_INFO_2                            - 0x9110    - GNSS 1 Clock Info 2
         //  CH_FIELD_GNSS_1_GPS_LEAP_SECONDS                        - 0x9111    - GNSS 1 GPS Leap Seconds
         //  CH_FIELD_GNSS_1_SBAS_INFO                               - 0x9112    - GNSS 1 SBAS Info
+        //  CH_FIELD_GNSS_1_SBAS_CORRECTION                         - 0x9113    - GNSS 1 SBAS Correction
+        //  CH_FIELD_GNSS_1_RF_ERROR_DETECTION                      - 0x9114    - GNSS 1 RF Error Detection
         //  CH_FIELD_GNSS_1_SATELLITE_STATUS                        - 0x9120    - GNSS 1 Satellite Status
         //  CH_FIELD_GNSS_1_RAW_OBSERVATION                         - 0x9122    - GNSS 1 Raw Observation data
         //  CH_FIELD_GNSS_1_STATION_INFO                            - 0x9130    - GNSS 1 Base Station Info
@@ -546,6 +550,8 @@ namespace mscl
         //  CH_FIELD_GNSS_2_CLOCK_INFO_2                            - 0x9210    - GNSS 2 Clock Info 2
         //  CH_FIELD_GNSS_2_GPS_LEAP_SECONDS                        - 0x9211    - GNSS 2 GPS Leap Seconds
         //  CH_FIELD_GNSS_2_SBAS_INFO                               - 0x9212    - GNSS 2 SBAS Info
+        //  CH_FIELD_GNSS_2_SBAS_CORRECTION                         - 0x9213    - GNSS 2 SBAS Correction
+        //  CH_FIELD_GNSS_2_RF_ERROR_DETECTION                      - 0x9214    - GNSS 2 RF Error Detection
         //  CH_FIELD_GNSS_2_SATELLITE_STATUS                        - 0x9220    - GNSS 2 Satellite Status
         //  CH_FIELD_GNSS_2_RAW_OBSERVATION                         - 0x9222    - GNSS 2 Raw Observation data
         //  CH_FIELD_GNSS_2_STATION_INFO                            - 0x9230    - GNSS 2 Base Station Info
@@ -580,6 +586,8 @@ namespace mscl
         //  CH_FIELD_GNSS_3_CLOCK_INFO_2                            - 0x9310    - GNSS 3 Clock Info 2
         //  CH_FIELD_GNSS_3_GPS_LEAP_SECONDS                        - 0x9311    - GNSS 3 GPS Leap Seconds
         //  CH_FIELD_GNSS_3_SBAS_INFO                               - 0x9312    - GNSS 3 SBAS Info
+        //  CH_FIELD_GNSS_3_SBAS_CORRECTION                         - 0x9313    - GNSS 3 SBAS Correction
+        //  CH_FIELD_GNSS_3_RF_ERROR_DETECTION                      - 0x9314    - GNSS 3 RF Error Detection
         //  CH_FIELD_GNSS_3_SATELLITE_STATUS                        - 0x9320    - GNSS 3 Satellite Status
         //  CH_FIELD_GNSS_3_RAW_OBSERVATION                         - 0x9322    - GNSS 3 Raw Observation data
         //  CH_FIELD_GNSS_3_STATION_INFO                            - 0x9330    - GNSS 3 Base Station Info
@@ -614,6 +622,8 @@ namespace mscl
         //  CH_FIELD_GNSS_4_CLOCK_INFO_2                            - 0x9410    - GNSS 4 Clock Info 2
         //  CH_FIELD_GNSS_4_GPS_LEAP_SECONDS                        - 0x9411    - GNSS 4 GPS Leap Seconds
         //  CH_FIELD_GNSS_4_SBAS_INFO                               - 0x9412    - GNSS 4 SBAS Info
+        //  CH_FIELD_GNSS_4_SBAS_CORRECTION                         - 0x9413    - GNSS 4 SBAS Correction
+        //  CH_FIELD_GNSS_4_RF_ERROR_DETECTION                      - 0x9414    - GNSS 4 RF Error Detection
         //  CH_FIELD_GNSS_4_SATELLITE_STATUS                        - 0x9420    - GNSS 4 Satellite Status
         //  CH_FIELD_GNSS_4_RAW_OBSERVATION                         - 0x9422    - GNSS 4 Raw Observation data
         //  CH_FIELD_GNSS_4_STATION_INFO                            - 0x9430    - GNSS 4 Base Station Info
@@ -648,6 +658,8 @@ namespace mscl
         //  CH_FIELD_GNSS_5_CLOCK_INFO_2                            - 0x9510    - GNSS 5 Clock Info 2
         //  CH_FIELD_GNSS_5_GPS_LEAP_SECONDS                        - 0x9511    - GNSS 5 GPS Leap Seconds
         //  CH_FIELD_GNSS_5_SBAS_INFO                               - 0x9512    - GNSS 5 SBAS Info
+        //  CH_FIELD_GNSS_5_SBAS_CORRECTION                         - 0x9513    - GNSS 5 SBAS Correction
+        //  CH_FIELD_GNSS_5_RF_ERROR_DETECTION                      - 0x9514    - GNSS 5 RF Error Detection
         //  CH_FIELD_GNSS_5_SATELLITE_STATUS                        - 0x9520    - GNSS 5 Satellite Status
         //  CH_FIELD_GNSS_5_RAW_OBSERVATION                         - 0x9522    - GNSS 5 Raw Observation data
         //  CH_FIELD_GNSS_5_STATION_INFO                            - 0x9530    - GNSS 5 Base Station Info
@@ -728,6 +740,8 @@ namespace mscl
             CH_FIELD_GNSS_CLOCK_INFO_2                              = 0x8110,
             CH_FIELD_GNSS_GPS_LEAP_SECONDS                          = 0x8111,
             CH_FIELD_GNSS_SBAS_INFO                                 = 0x8112,
+            CH_FIELD_GNSS_SBAS_CORRECTION                           = 0x8113,
+            CH_FIELD_GNSS_RF_ERROR_DETECTION                        = 0x8114,
             CH_FIELD_GNSS_SATELLITE_STATUS                          = 0x8120,
             CH_FIELD_GNSS_RAW_OBSERVATION                           = 0x8122,
             CH_FIELD_GNSS_STATION_INFO                              = 0x8130,
@@ -827,6 +841,8 @@ namespace mscl
             CH_FIELD_GNSS_1_CLOCK_INFO_2                            = 0x9110,
             CH_FIELD_GNSS_1_GPS_LEAP_SECONDS                        = 0x9111,
             CH_FIELD_GNSS_1_SBAS_INFO                               = 0x9112,
+            CH_FIELD_GNSS_1_SBAS_CORRECTION                         = 0x9113,
+            CH_FIELD_GNSS_1_RF_ERROR_DETECTION                      = 0x9114,
             CH_FIELD_GNSS_1_SATELLITE_STATUS                        = 0x9120,
             CH_FIELD_GNSS_1_RAW_OBSERVATION                         = 0x9122,
             CH_FIELD_GNSS_1_STATION_INFO                            = 0x9130,
@@ -861,6 +877,8 @@ namespace mscl
             CH_FIELD_GNSS_2_CLOCK_INFO_2                            = 0x9210,
             CH_FIELD_GNSS_2_GPS_LEAP_SECONDS                        = 0x9211,
             CH_FIELD_GNSS_2_SBAS_INFO                               = 0x9212,
+            CH_FIELD_GNSS_2_SBAS_CORRECTION                         = 0x9213,
+            CH_FIELD_GNSS_2_RF_ERROR_DETECTION                      = 0x9214,
             CH_FIELD_GNSS_2_SATELLITE_STATUS                        = 0x9220,
             CH_FIELD_GNSS_2_RAW_OBSERVATION                         = 0x9222,
             CH_FIELD_GNSS_2_STATION_INFO                            = 0x9230,
@@ -895,6 +913,8 @@ namespace mscl
             CH_FIELD_GNSS_3_CLOCK_INFO_2                            = 0x9310,
             CH_FIELD_GNSS_3_GPS_LEAP_SECONDS                        = 0x9311,
             CH_FIELD_GNSS_3_SBAS_INFO                               = 0x9312,
+            CH_FIELD_GNSS_3_SBAS_CORRECTION                         = 0x9313,
+            CH_FIELD_GNSS_3_RF_ERROR_DETECTION                      = 0x9314,
             CH_FIELD_GNSS_3_SATELLITE_STATUS                        = 0x9320,
             CH_FIELD_GNSS_3_RAW_OBSERVATION                         = 0x9322,
             CH_FIELD_GNSS_3_STATION_INFO                            = 0x9330,
@@ -929,6 +949,8 @@ namespace mscl
             CH_FIELD_GNSS_4_CLOCK_INFO_2                            = 0x9410,
             CH_FIELD_GNSS_4_GPS_LEAP_SECONDS                        = 0x9411,
             CH_FIELD_GNSS_4_SBAS_INFO                               = 0x9412,
+            CH_FIELD_GNSS_4_SBAS_CORRECTION                         = 0x9413,
+            CH_FIELD_GNSS_4_RF_ERROR_DETECTION                      = 0x9414,
             CH_FIELD_GNSS_4_SATELLITE_STATUS                        = 0x9420,
             CH_FIELD_GNSS_4_RAW_OBSERVATION                         = 0x9422,
             CH_FIELD_GNSS_4_STATION_INFO                            = 0x9430,
@@ -963,6 +985,8 @@ namespace mscl
             CH_FIELD_GNSS_5_CLOCK_INFO_2                            = 0x9510,
             CH_FIELD_GNSS_5_GPS_LEAP_SECONDS                        = 0x9511,
             CH_FIELD_GNSS_5_SBAS_INFO                               = 0x9512,
+            CH_FIELD_GNSS_5_SBAS_CORRECTION                         = 0x9513,
+            CH_FIELD_GNSS_5_RF_ERROR_DETECTION                      = 0x9514,
             CH_FIELD_GNSS_5_SATELLITE_STATUS                        = 0x9520,
             CH_FIELD_GNSS_5_RAW_OBSERVATION                         = 0x9522,
             CH_FIELD_GNSS_5_STATION_INFO                            = 0x9530,
@@ -1117,122 +1141,144 @@ namespace mscl
         //    CH_VALID_FLAGS                - 112 - Valid Flags
         //    CH_PPS_VALID                  - 113 - PPS Valid
         //    CH_LAST_PPS                   - 114 - Last PPS Received
+        //    CH_UDREI                      - 115 - User Differential Range Error Index
+        //    CH_PSEUDORANGE_CORRECTION     - 116 - Pseudorange Correction
+        //    CH_IONOSPHERIC_CORRECTION     - 117 - Ionospheric Correction
+        //    CH_JAMMING_STATE              - 118 - Jamming State
+        //    CH_SPOOFING_STATE             - 119 - Spoofing State
+        //    CH_BIT_SYSTEM_GENERAL         - 120 - Built In Test System General
+        //    CH_BIT_SYSTEM_PROCESS         - 121 - Built In Test System Process
+        //    CH_BIT_IMU_GENERAL            - 122 - Built In Test IMU General
+        //    CH_BIT_IMU_SENSORS            - 123 - Built In Test IMU Sensors
+        //    CH_BIT_IMU_FACTORY_BITS       - 124 - Built in Test IMU Factory Bits Valid
+        //    CH_BIT_FILTER_GENERAL         - 125 - Built In Test Est Filter General
         //====================================================================================================
         enum ChannelQualifier
         {
-            CH_UNKNOWN                    = 0,
-            CH_X                          = 1,
-            CH_Y                          = 2,
-            CH_Z                          = 3,
-            CH_MATRIX                     = 4,
-            CH_QUATERNION                 = 5,
-            CH_ROLL                       = 6,
-            CH_PITCH                      = 7,
-            CH_YAW                        = 8,
-            CH_TICK                       = 9,
-            CH_TIMESTAMP                  = 10,
-            CH_STATUS                     = 11,
-            CH_TIME_OF_WEEK               = 12,
-            CH_WEEK_NUMBER                = 13,
-            CH_LATITUDE                   = 14,
-            CH_LONGITUDE                  = 15,
-            CH_HEIGHT_ABOVE_ELLIPSOID     = 16,
-            CH_HEIGHT_ABOVE_MSL           = 17,
-            CH_HORIZONTAL_ACCURACY        = 18,
-            CH_VERTICAL_ACCURACY          = 19,
-            CH_POSITION_ACCURACY          = 20,
-            CH_NORTH                      = 21,
-            CH_EAST                       = 22,
-            CH_DOWN                       = 23,
-            CH_SPEED                      = 24,
-            CH_GROUND_SPEED               = 25,
-            CH_HEADING                    = 26,
-            CH_SPEED_ACCURACY             = 27,
-            CH_HEADING_ACCURACY           = 28,
-            CH_VELOCITY_ACCURACY          = 29,
-            CH_GEOMETRIC_DOP              = 30,
-            CH_POSITION_DOP               = 31,
-            CH_HORIZONTAL_DOP             = 32,
-            CH_VERTICAL_DOP               = 33,
-            CH_TIME_DOP                   = 34,
-            CH_NORTHING_DOP               = 35,
-            CH_EASTING_DOP                = 36,
-            CH_FLAGS                      = 37,
-            CH_BIAS                       = 38,
-            CH_DRIFT                      = 39,
-            CH_ACCURACY_ESTIMATE          = 40,
-            CH_FIX_TYPE                   = 41,
-            CH_SV_COUNT                   = 42,
-            CH_CHANNEL                    = 43,
-            CH_ID                         = 44,
-            CH_CARRIER_TO_NOISE_RATIO     = 45,
-            CH_AZIMUTH                    = 46,
-            CH_ELEVATION                  = 47,
-            CH_SENSOR_STATE               = 48,
-            CH_ANTENNA_STATE              = 49,
-            CH_ANTENNA_POWER              = 50,
-            CH_FILTER_STATE               = 51,
-            CH_DYNAMICS_MODE              = 52,
-            CH_MAGNITUDE                  = 53,
-            CH_HEADING_UNCERTAINTY        = 54,
-            CH_SOURCE                     = 55,
-            CH_INCLINATION                = 56,
-            CH_DECLINATION                = 57,
-            CH_PRESSURE                   = 58,
-            CH_AGE                        = 59,
-            CH_NUM_CHANNELS               = 60,
-            CH_CORRECTION                 = 61,
-            CH_RATE_CORRECTION            = 62,
-            CH_GEOMETRIC_ALTITUDE         = 63,
-            CH_GEOPOTENTIAL_ALTITUDE      = 64,
-            CH_TEMPERATURE                = 65,
-            CH_DENSITY                    = 66,
-            CH_ALTITUDE                   = 67,
-            CH_DISPLACEMENT               = 68,
-            CH_MAX_TEMP                   = 69,
-            CH_MIN_TEMP                   = 70,
-            CH_MEAN_TEMP                  = 71,
-            CH_BIAS_ACCURACY_ESTIMATE     = 72,
-            CH_DRIFT_ACCURACY_ESTIMATE    = 73,
-            CH_SECONDS                    = 74,
-            CH_NUM_PACKETS                = 76,
-            CH_GPS_CORRECTION_LATENCY     = 77,
-            CH_GLONASS_CORRECTION_LATENCY = 78,
-            CH_GALILEO_CORRECTION_LATENCY = 79,
-            CH_BEIDOU_CORRECTION_LATENCY  = 80,
-            CH_HEIGHT                     = 81,
-            CH_HEALTH                     = 82,
-            CH_INDEX                      = 83,
-            CH_COUNT                      = 84,
-            CH_SIGNAL_STRENGTH            = 85,
-            CH_SIGNAL_QUALITY             = 86,
-            CH_RANGE                      = 87,
-            CH_RANGE_UNC                  = 88,
-            CH_ALPHA                      = 90,
-            CH_BETA                       = 91,
-            CH_DISTURBANCE_FLAGS          = 92,
-            CH_CARRIER_PHASE              = 93,
-            CH_CARRIER_PHASE_UNC          = 94,
-            CH_DOPPLER                    = 95,
-            CH_DOPPLER_UNC                = 96,
-            CH_DELTA_TIME                 = 97,
-            CH_DELTA_TICK                 = 98,
-            CH_ERROR                      = 99,
-            CH_ERROR_UNC                  = 100,
-            CH_W                          = 101,
-            CH_M0                         = 102,
-            CH_M1                         = 103,
-            CH_M2                         = 104,
-            CH_M3                         = 105,
-            CH_M4                         = 106,
-            CH_M5                         = 107,
-            CH_M6                         = 108,
-            CH_M7                         = 109,
-            CH_M8                         = 110,
-            CH_NANOSECONDS                = 111,
-            CH_VALID_FLAGS                = 112,
-            CH_PPS_VALID                  = 113,
-            CH_LAST_PPS                   = 114
+            CH_UNKNOWN                      = 0,
+            CH_X                            = 1,
+            CH_Y                            = 2,
+            CH_Z                            = 3,
+            CH_MATRIX                       = 4,
+            CH_QUATERNION                   = 5,
+            CH_ROLL                         = 6,
+            CH_PITCH                        = 7,
+            CH_YAW                          = 8,
+            CH_TICK                         = 9,
+            CH_TIMESTAMP                    = 10,
+            CH_STATUS                       = 11,
+            CH_TIME_OF_WEEK                 = 12,
+            CH_WEEK_NUMBER                  = 13,
+            CH_LATITUDE                     = 14,
+            CH_LONGITUDE                    = 15,
+            CH_HEIGHT_ABOVE_ELLIPSOID       = 16,
+            CH_HEIGHT_ABOVE_MSL             = 17,
+            CH_HORIZONTAL_ACCURACY          = 18,
+            CH_VERTICAL_ACCURACY            = 19,
+            CH_POSITION_ACCURACY            = 20,
+            CH_NORTH                        = 21,
+            CH_EAST                         = 22,
+            CH_DOWN                         = 23,
+            CH_SPEED                        = 24,
+            CH_GROUND_SPEED                 = 25,
+            CH_HEADING                      = 26,
+            CH_SPEED_ACCURACY               = 27,
+            CH_HEADING_ACCURACY             = 28,
+            CH_VELOCITY_ACCURACY            = 29,
+            CH_GEOMETRIC_DOP                = 30,
+            CH_POSITION_DOP                 = 31,
+            CH_HORIZONTAL_DOP               = 32,
+            CH_VERTICAL_DOP                 = 33,
+            CH_TIME_DOP                     = 34,
+            CH_NORTHING_DOP                 = 35,
+            CH_EASTING_DOP                  = 36,
+            CH_FLAGS                        = 37,
+            CH_BIAS                         = 38,
+            CH_DRIFT                        = 39,
+            CH_ACCURACY_ESTIMATE            = 40,
+            CH_FIX_TYPE                     = 41,
+            CH_SV_COUNT                     = 42,
+            CH_CHANNEL                      = 43,
+            CH_ID                           = 44,
+            CH_CARRIER_TO_NOISE_RATIO       = 45,
+            CH_AZIMUTH                      = 46,
+            CH_ELEVATION                    = 47,
+            CH_SENSOR_STATE                 = 48,
+            CH_ANTENNA_STATE                = 49,
+            CH_ANTENNA_POWER                = 50,
+            CH_FILTER_STATE                 = 51,
+            CH_DYNAMICS_MODE                = 52,
+            CH_MAGNITUDE                    = 53,
+            CH_HEADING_UNCERTAINTY          = 54,
+            CH_SOURCE                       = 55,
+            CH_INCLINATION                  = 56,
+            CH_DECLINATION                  = 57,
+            CH_PRESSURE                     = 58,
+            CH_AGE                          = 59,
+            CH_NUM_CHANNELS                 = 60,
+            CH_CORRECTION                   = 61,
+            CH_RATE_CORRECTION              = 62,
+            CH_GEOMETRIC_ALTITUDE           = 63,
+            CH_GEOPOTENTIAL_ALTITUDE        = 64,
+            CH_TEMPERATURE                  = 65,
+            CH_DENSITY                      = 66,
+            CH_ALTITUDE                     = 67,
+            CH_DISPLACEMENT                 = 68,
+            CH_MAX_TEMP                     = 69,
+            CH_MIN_TEMP                     = 70,
+            CH_MEAN_TEMP                    = 71,
+            CH_BIAS_ACCURACY_ESTIMATE       = 72,
+            CH_DRIFT_ACCURACY_ESTIMATE      = 73,
+            CH_SECONDS                      = 74,
+            CH_NUM_PACKETS                  = 76,
+            CH_GPS_CORRECTION_LATENCY       = 77,
+            CH_GLONASS_CORRECTION_LATENCY   = 78,
+            CH_GALILEO_CORRECTION_LATENCY   = 79,
+            CH_BEIDOU_CORRECTION_LATENCY    = 80,
+            CH_HEIGHT                       = 81,
+            CH_HEALTH                       = 82,
+            CH_INDEX                        = 83,
+            CH_COUNT                        = 84,
+            CH_SIGNAL_STRENGTH              = 85,
+            CH_SIGNAL_QUALITY               = 86,
+            CH_RANGE                        = 87,
+            CH_RANGE_UNC                    = 88,
+            CH_ALPHA                        = 90,
+            CH_BETA                         = 91,
+            CH_DISTURBANCE_FLAGS            = 92,
+            CH_CARRIER_PHASE                = 93,
+            CH_CARRIER_PHASE_UNC            = 94,
+            CH_DOPPLER                      = 95,
+            CH_DOPPLER_UNC                  = 96,
+            CH_DELTA_TIME                   = 97,
+            CH_DELTA_TICK                   = 98,
+            CH_ERROR                        = 99,
+            CH_ERROR_UNC                    = 100,
+            CH_W                            = 101,
+            CH_M0                           = 102,
+            CH_M1                           = 103,
+            CH_M2                           = 104,
+            CH_M3                           = 105,
+            CH_M4                           = 106,
+            CH_M5                           = 107,
+            CH_M6                           = 108,
+            CH_M7                           = 109,
+            CH_M8                           = 110,
+            CH_NANOSECONDS                  = 111,
+            CH_VALID_FLAGS                  = 112,
+            CH_PPS_VALID                    = 113,
+            CH_LAST_PPS                     = 114,
+            CH_UDREI                        = 115,
+            CH_PSEUDORANGE_CORRECTION       = 116,
+            CH_IONOSPHERIC_CORRECTION       = 117,
+            CH_JAMMING_STATE                = 118,
+            CH_SPOOFING_STATE               = 119,
+            CH_BIT_SYSTEM_GENERAL           = 120,
+            CH_BIT_SYSTEM_PROCESS           = 121,
+            CH_BIT_IMU_GENERAL              = 122,
+            CH_BIT_IMU_SENSORS              = 123,
+            CH_BIT_IMU_FACTORY_BITS         = 124,
+            CH_BIT_FILTER_GENERAL           = 125
         };
 
         //API Typedefs:
@@ -1435,6 +1481,7 @@ namespace mscl
         //      AIDING_MEASUREMENT_TYPE - Filter Aiding Measurement Type
         //      SBAS_SYSTEM             - SBAS System ID
         //      SBAS_SATELLITE_ID       - SBAS Satellite ID
+        //      GNSS_RF_BAND            - GNSS RF Band
         enum Type
         {
             // when adding to this list, be sure to add name string to TYPE_NAMES map
@@ -1446,7 +1493,8 @@ namespace mscl
             GNSS_SIGNAL_ID,
             AIDING_MEASUREMENT_TYPE,
             SBAS_SYSTEM,
-            SBAS_SATELLITE_ID
+            SBAS_SATELLITE_ID,
+            GNSS_RF_BAND
         };
 
         //API Enum: AidingMeasurementTypes
@@ -1637,6 +1685,21 @@ namespace mscl
             EGNOS               = 2,
             MSAS                = 3,
             GAGAN               = 4
+        };
+
+        //API Enum: GnssRfBands
+        //  ID definitions when Type is <MipChannelIdentifier::GNSS_RF_BAND>
+        //
+        //      UNKNOWN_RF_BAND - 0 - Unknown
+        //      RF_BAND_L1      - 1 - L1
+        //      RF_BAND_L2      - 2 - L2
+        //      RF_BAND_L5      - 5 - L5
+        enum GnssRfBands
+        {
+            UNKNOWN_RF_BAND = 0,
+            RF_BAND_L1      = 1,
+            RF_BAND_L2      = 2,
+            RF_BAND_L5      = 5
         };
 
 #ifndef SWIG

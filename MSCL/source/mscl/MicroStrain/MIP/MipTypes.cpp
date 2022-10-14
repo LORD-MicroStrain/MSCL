@@ -203,11 +203,19 @@ namespace mscl
         { ChannelId(CH_FIELD_GNSS_CLOCK_INFO_2, CH_DRIFT_ACCURACY_ESTIMATE), "gpsClockDriftAccuracy" },
 
         { ChannelId(CH_FIELD_GNSS_GPS_LEAP_SECONDS, CH_SECONDS), "gpsLeapSeconds" },
-
+        
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_TIME_OF_WEEK), "sbasInfo_tow" },
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_WEEK_NUMBER), "sbasInfo_weekNumber" },
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_COUNT), "sbasInfo_count" },
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_STATUS), "sbasInfo_status" },
+
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_INDEX), "sbasCorr_index" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_COUNT), "sbasCorr_count" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_TIME_OF_WEEK), "sbasCorr_tow" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_WEEK_NUMBER), "sbasCorr_weekNumber" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_UDREI), "sbasCorr_udrei" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_PSEUDORANGE_CORRECTION), "sbasCorr_pseudorange" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_CORRECTION, CH_IONOSPHERIC_CORRECTION), "sbasCorr_ionospheric" },
 
         { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_INDEX), "satStatus_index" },
         { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_COUNT), "satStatus_count" },
@@ -216,6 +224,9 @@ namespace mscl
         { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_ELEVATION), "satStatus_elevation" },
         { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_AZIMUTH), "satStatus_azimuth" },
         { ChannelId(CH_FIELD_GNSS_SATELLITE_STATUS, CH_HEALTH), "satStatus_satelliteHealth" },
+
+        { ChannelId(CH_FIELD_GNSS_RF_ERROR_DETECTION, CH_JAMMING_STATE), "rfError_jammingState" },
+        { ChannelId(CH_FIELD_GNSS_RF_ERROR_DETECTION, CH_SPOOFING_STATE), "rfError_spoofingState" },
 
         { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_INDEX), "rawObs_index" },
         { ChannelId(CH_FIELD_GNSS_RAW_OBSERVATION, CH_COUNT), "rawObs_count" },
@@ -455,6 +466,13 @@ namespace mscl
 
         // System Data
         { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_STATUS), "builtInTest" },
+
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_SYSTEM_GENERAL), "builtInTest_system_bitGeneral" },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_SYSTEM_PROCESS), "builtInTest_system_bitProcess" },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_IMU_GENERAL   ), "builtInTest_imu_bitGeneral" },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_IMU_SENSORS   ), "builtInTest_imu_bitSensors" },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_IMU_FACTORY_BITS), "builtInTest_imu_bitFactoryBits" },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_FILTER_GENERAL), "builtInTest_filter_bitGeneral" },
 
         { ChannelId(CH_FIELD_SYSTEM_TIME_SYNC_STATUS, CH_PPS_VALID), "timeSync_ppsValid" },
         { ChannelId(CH_FIELD_SYSTEM_TIME_SYNC_STATUS, CH_LAST_PPS), "timeSync_lastPps" },
@@ -954,7 +972,8 @@ namespace mscl
         { GNSS_SIGNAL_ID,          "sig" },
         { AIDING_MEASUREMENT_TYPE, "aidType" },
         { SBAS_SYSTEM,             "sbasId" },
-        { SBAS_SATELLITE_ID,       "sbasSat" }
+        { SBAS_SATELLITE_ID,       "sbasSat" },
+        { GNSS_RF_BAND,            "rfBand" }
     });
 
     const std::unordered_map<MipChannelIdentifier::TypeId, std::string, MipChannelIdentifier::TypeIdHash> MipChannelIdentifier::TRANSLATED_TYPE_NAMES(
@@ -1045,6 +1064,10 @@ namespace mscl
         { TypeId(SBAS_SYSTEM, EGNOS), "egnos" },
         { TypeId(SBAS_SYSTEM, MSAS),  "msas" },
         { TypeId(SBAS_SYSTEM, GAGAN), "gagan" },
+
+        { TypeId(GNSS_RF_BAND, RF_BAND_L1), "rf-l1" },
+        { TypeId(GNSS_RF_BAND, RF_BAND_L2), "rf-l2" },
+        { TypeId(GNSS_RF_BAND, RF_BAND_L5), "rf-l5" },
     });
 
     const std::unordered_map<MipChannelIdentifier::SpecifierId, std::string, MipChannelIdentifier::SpecifierIdHash> MipChannelIdentifier::SPECIFIER_NAMES(

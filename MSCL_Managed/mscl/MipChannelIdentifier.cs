@@ -100,7 +100,8 @@ public class MipChannelIdentifier : global::System.IDisposable {
     GNSS_SIGNAL_ID,
     AIDING_MEASUREMENT_TYPE,
     SBAS_SYSTEM,
-    SBAS_SATELLITE_ID
+    SBAS_SATELLITE_ID,
+    GNSS_RF_BAND
   }
 
   public enum AidingMeasurementTypes {
@@ -194,6 +195,13 @@ public class MipChannelIdentifier : global::System.IDisposable {
     EGNOS = 2,
     MSAS = 3,
     GAGAN = 4
+  }
+
+  public enum GnssRfBands {
+    UNKNOWN_RF_BAND = 0,
+    RF_BAND_L1 = 1,
+    RF_BAND_L2 = 2,
+    RF_BAND_L5 = 5
   }
 
 }

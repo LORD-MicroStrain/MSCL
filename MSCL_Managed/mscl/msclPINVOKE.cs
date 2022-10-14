@@ -5790,6 +5790,78 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_EventActionInfo")]
   public static extern void delete_EventActionInfo(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_MipChannel__SWIG_0")]
+  public static extern global::System.IntPtr new_MipChannel__SWIG_0(int jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_MipChannel__SWIG_1")]
+  public static extern global::System.IntPtr new_MipChannel__SWIG_1();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipChannel_channelField")]
+  public static extern int MipChannel_channelField(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipChannel_sampleRate")]
+  public static extern global::System.IntPtr MipChannel_sampleRate(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipChannel_rateDecimation")]
+  public static extern ushort MipChannel_rateDecimation(global::System.Runtime.InteropServices.HandleRef jarg1, ushort jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_MipChannel")]
+  public static extern void delete_MipChannel(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_MipPacket")]
+  public static extern global::System.IntPtr new_MipPacket();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipPacket_isDataPacket")]
+  public static extern bool MipPacket_isDataPacket(byte jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipPacket_descriptorSet")]
+  public static extern byte MipPacket_descriptorSet(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipPacket_payload")]
+  public static extern global::System.IntPtr MipPacket_payload(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_MipPacket")]
+  public static extern void delete_MipPacket(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_field")]
+  public static extern int MipDataPoint_field(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_qualifier")]
+  public static extern int MipDataPoint_qualifier(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_hasAddlIdentifiers")]
+  public static extern bool MipDataPoint_hasAddlIdentifiers(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_addlIdentifiers")]
+  public static extern global::System.IntPtr MipDataPoint_addlIdentifiers(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_hasValidFlag")]
+  public static extern bool MipDataPoint_hasValidFlag(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_valid")]
+  public static extern bool MipDataPoint_valid(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_channelName__SWIG_0")]
+  public static extern string MipDataPoint_channelName__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, bool jarg2, bool jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_channelName__SWIG_1")]
+  public static extern string MipDataPoint_channelName__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, bool jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_channelName__SWIG_2")]
+  public static extern string MipDataPoint_channelName__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_MipDataPoint")]
+  public static extern void delete_MipDataPoint(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_as_MipDataPoints")]
+  public static extern global::System.IntPtr ContinuousBIT_as_MipDataPoints(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_getMipDataPoints")]
+  public static extern global::System.IntPtr ContinuousBIT_getMipDataPoints(int jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_ContinuousBIT")]
+  public static extern void delete_ContinuousBIT(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_CV7ContinuousBIT_System_General__SWIG_0")]
   public static extern global::System.IntPtr new_CV7ContinuousBIT_System_General__SWIG_0();
 
@@ -6153,71 +6225,11 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_data")]
   public static extern global::System.IntPtr CV7ContinuousBIT_data(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_as_MipDataPoints")]
+  public static extern global::System.IntPtr CV7ContinuousBIT_as_MipDataPoints(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_CV7ContinuousBIT")]
   public static extern void delete_CV7ContinuousBIT(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_MipChannel__SWIG_0")]
-  public static extern global::System.IntPtr new_MipChannel__SWIG_0(int jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_MipChannel__SWIG_1")]
-  public static extern global::System.IntPtr new_MipChannel__SWIG_1();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipChannel_channelField")]
-  public static extern int MipChannel_channelField(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipChannel_sampleRate")]
-  public static extern global::System.IntPtr MipChannel_sampleRate(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipChannel_rateDecimation")]
-  public static extern ushort MipChannel_rateDecimation(global::System.Runtime.InteropServices.HandleRef jarg1, ushort jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_MipChannel")]
-  public static extern void delete_MipChannel(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_MipPacket")]
-  public static extern global::System.IntPtr new_MipPacket();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipPacket_isDataPacket")]
-  public static extern bool MipPacket_isDataPacket(byte jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipPacket_descriptorSet")]
-  public static extern byte MipPacket_descriptorSet(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipPacket_payload")]
-  public static extern global::System.IntPtr MipPacket_payload(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_MipPacket")]
-  public static extern void delete_MipPacket(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_field")]
-  public static extern int MipDataPoint_field(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_qualifier")]
-  public static extern int MipDataPoint_qualifier(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_hasAddlIdentifiers")]
-  public static extern bool MipDataPoint_hasAddlIdentifiers(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_addlIdentifiers")]
-  public static extern global::System.IntPtr MipDataPoint_addlIdentifiers(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_hasValidFlag")]
-  public static extern bool MipDataPoint_hasValidFlag(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_valid")]
-  public static extern bool MipDataPoint_valid(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_channelName__SWIG_0")]
-  public static extern string MipDataPoint_channelName__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, bool jarg2, bool jarg3);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_channelName__SWIG_1")]
-  public static extern string MipDataPoint_channelName__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, bool jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_channelName__SWIG_2")]
-  public static extern string MipDataPoint_channelName__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_MipDataPoint")]
-  public static extern void delete_MipDataPoint(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_MipSharedDataFields")]
   public static extern global::System.IntPtr new_MipSharedDataFields();
@@ -12279,6 +12291,9 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_RTKDeviceStatusFlags_v1_SWIGUpcast")]
   public static extern global::System.IntPtr RTKDeviceStatusFlags_v1_SWIGUpcast(global::System.IntPtr jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_SWIGUpcast")]
+  public static extern global::System.IntPtr MipDataPoint_SWIGUpcast(global::System.IntPtr jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_General_SWIGUpcast")]
   public static extern global::System.IntPtr CV7ContinuousBIT_System_General_SWIGUpcast(global::System.IntPtr jarg1);
 
@@ -12303,8 +12318,8 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_Filter_SWIGUpcast")]
   public static extern global::System.IntPtr CV7ContinuousBIT_Filter_SWIGUpcast(global::System.IntPtr jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_SWIGUpcast")]
-  public static extern global::System.IntPtr MipDataPoint_SWIGUpcast(global::System.IntPtr jarg1);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_SWIGUpcast")]
+  public static extern global::System.IntPtr CV7ContinuousBIT_SWIGUpcast(global::System.IntPtr jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPacket_SWIGUpcast")]
   public static extern global::System.IntPtr MipDataPacket_SWIGUpcast(global::System.IntPtr jarg1);
