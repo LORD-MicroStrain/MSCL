@@ -63,7 +63,7 @@ namespace mscl
         if (m_functionSelector == MipTypes::USE_NEW_SETTINGS)
         {
             MipTypes::EnableSetting applyLowPassFilter = m_data.applyLowPassFilter ? MipTypes::ENABLED : MipTypes::DISABLED;
-            uint16 freq = m_data.manualFilterBandwidthConfig == LowPassFilterData::USER_SPECIFIED_CUTOFF_FREQ ? m_data.cutoffFrequency : 0x0000;
+            uint16 freq = m_data.manualFilterBandwidthConfig == LowPassFilterData::USER_SPECIFIED_CUTOFF_FREQ ? static_cast<uint16>(m_data.cutoffFrequency) : 0x0000;
 
             byteCommand.append_uint8(static_cast<uint8>(applyLowPassFilter));
             byteCommand.append_uint8(static_cast<uint8>(m_data.manualFilterBandwidthConfig));
