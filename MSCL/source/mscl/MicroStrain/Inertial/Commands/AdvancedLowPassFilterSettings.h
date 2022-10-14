@@ -30,11 +30,11 @@ namespace mscl
         //Function: MakeSetCommand
         //
         //Parameter: dataToUse
-        //    The <AdvancedLowPassFilterData> object to set.
+        //    The <LowPassFilterData> object to set.
         //
         //Returns:
         //    AdvancedLowPassFilterSettings - object set up for sending a set command.
-        static AdvancedLowPassFilterSettings MakeSetCommand(const AdvancedLowPassFilterData& dataToUse);
+        static AdvancedLowPassFilterSettings MakeSetCommand(const LowPassFilterData& dataToUse);
 
         //Function: MakeGetCommand
         //
@@ -49,7 +49,7 @@ namespace mscl
         //
         //Returns:
         //    ConstellationSettingsData - An object with the data returned from the device.
-        static AdvancedLowPassFilterData getResponseData(const GenericMipCmdResponse& response);
+        static LowPassFilterData getResponseData(const GenericMipCmdResponse& response);
 
         //Function: operator ByteStream
         //  Converts this class to a ByteStream.
@@ -58,7 +58,7 @@ namespace mscl
     private:
         // Function: Constructor AdvancedLowPassFilterSettings
         //    Private constructor creates a AdvancedLowPassFilterSettings object.  Use Make___Command methods to create an object.
-        AdvancedLowPassFilterSettings(const MipTypes::FunctionSelector& function_selector, const AdvancedLowPassFilterData& dataToUse);
+        AdvancedLowPassFilterSettings(const MipTypes::FunctionSelector& function_selector, const LowPassFilterData& dataToUse);
         AdvancedLowPassFilterSettings(const MipTypes::FunctionSelector& function_selector, const MipTypes::ChannelField& descriptor);
 
         //Function: commandType
@@ -84,8 +84,8 @@ namespace mscl
         MipTypes::FunctionSelector m_functionSelector;
 
         //Variable: m_data
-        //    The AdvancedLowPassFilterData to send to the device.
-        AdvancedLowPassFilterData m_data;
+        //    The LowPassFilterData to send to the device.
+        LowPassFilterData m_data;
 
     public:
         // Destructor

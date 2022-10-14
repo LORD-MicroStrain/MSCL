@@ -1087,7 +1087,7 @@ namespace mscl
                             continue;
                         }
 
-                        AdvancedLowPassFilterData data = getAdvancedLowPassFilterSettings(f);
+                        LowPassFilterData data = getLowPassFilterSettings(f);
                         AdvancedLowPassFilterSettings set = AdvancedLowPassFilterSettings::MakeSetCommand(data);
                         ByteStream s = (ByteStream)set;
                         cmdBytes.add(s.data());
@@ -2087,13 +2087,13 @@ namespace mscl
         }
     }
 
-    void MipNode_Impl::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data)
+    void MipNode_Impl::setLowPassFilterSettings(const LowPassFilterData& data)
     {
         AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeSetCommand(data);
         SendCommand(lowPassFilterCmd);
     }
 
-    AdvancedLowPassFilterData MipNode_Impl::getAdvancedLowPassFilterSettings(const MipTypes::ChannelField& dataDescriptor) const
+    LowPassFilterData MipNode_Impl::getLowPassFilterSettings(const MipTypes::ChannelField& dataDescriptor) const
     {
         AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeGetCommand(dataDescriptor);
         GenericMipCmdResponse response = SendCommand(lowPassFilterCmd);

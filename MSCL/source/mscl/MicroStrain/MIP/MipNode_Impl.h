@@ -1269,7 +1269,7 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         uint32 getUARTBaudRate(uint8 portId = 1) const;
 
-        //Function: setAdvancedLowPassFilterSettings
+        //Function: setLowPassFilterSettings
         //    Sets the advanced low-pass filter settings.
         //
         //Parameters:
@@ -1280,24 +1280,24 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data);
+        void setLowPassFilterSettings(const LowPassFilterData& data);
 
-        //Function: getAdvancedLowPassFilterSettings
-        //    AdvancedLowPassFilterData new settings.  The <AdvancedLowPassFilterData::DataDescriptor> field
+        //Function: getLowPassFilterSettings
+        //    LowPassFilterData new settings.  The <LowPassFilterData::DataDescriptor> field
         //    from the passed in data is used to set the type of data to be returned.
         //
         //Parameters:
         //    dataDescriptor - the <MipType::ChannelField> data descriptor for which to return the current advanced low-pass filter settings.
         //
         //Return:
-        //    AdvancedLowPassFilterData new settings.
+        //    LowPassFilterData new settings.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        AdvancedLowPassFilterData getAdvancedLowPassFilterSettings(const MipTypes::ChannelField& dataDescriptor) const;
+        LowPassFilterData getLowPassFilterSettings(const MipTypes::ChannelField& dataDescriptor) const;
 
         //Function: setComplementaryFilterSettings
         //    Sets the complementary filter settings.

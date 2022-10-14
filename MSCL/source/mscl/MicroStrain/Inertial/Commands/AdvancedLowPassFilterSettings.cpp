@@ -13,7 +13,7 @@
 namespace mscl
 {
     AdvancedLowPassFilterSettings::AdvancedLowPassFilterSettings(const MipTypes::FunctionSelector&  function_selector,
-                                                                 const AdvancedLowPassFilterData&        dataToUse) :
+                                                                 const LowPassFilterData&        dataToUse) :
         m_functionSelector(function_selector),
         m_data(dataToUse)
     { }
@@ -21,13 +21,13 @@ namespace mscl
     AdvancedLowPassFilterSettings::AdvancedLowPassFilterSettings(const MipTypes::FunctionSelector& function_selector,
                                                                  const MipTypes::ChannelField& descriptor) :
         m_functionSelector(function_selector),
-        m_data(AdvancedLowPassFilterData(descriptor))
+        m_data(LowPassFilterData(descriptor))
     {
         if (function_selector == MipTypes::USE_NEW_SETTINGS)
             throw Error_NoData("Data must be passed in for a set command.");
     }
 
-    AdvancedLowPassFilterSettings AdvancedLowPassFilterSettings::MakeSetCommand(const AdvancedLowPassFilterData& dataToUse)
+    AdvancedLowPassFilterSettings AdvancedLowPassFilterSettings::MakeSetCommand(const LowPassFilterData& dataToUse)
     {
         return AdvancedLowPassFilterSettings(MipTypes::USE_NEW_SETTINGS, dataToUse);
     }
@@ -42,13 +42,13 @@ namespace mscl
         return (m_functionSelector == MipTypes::READ_BACK_CURRENT_SETTINGS) ? true : false;
     }
 
-    AdvancedLowPassFilterData AdvancedLowPassFilterSettings::getResponseData(const GenericMipCmdResponse& response)
+    LowPassFilterData AdvancedLowPassFilterSettings::getResponseData(const GenericMipCmdResponse& response)
     {
         DataBuffer dataBuffer(response.data());
-        AdvancedLowPassFilterData returnData;
-        returnData.dataDescriptor = AdvancedLowPassFilterData::getDataDescriptorFromUint8(dataBuffer.read_uint8());
+        LowPassFilterData returnData;
+        returnData.dataDescriptor = LowPassFilterData::getDataDescriptorFromUint8(dataBuffer.read_uint8());
         returnData.applyLowPassFilter = (dataBuffer.read_uint8() == 0x01)? true : false;
-        returnData.manualFilterBandwidthConfig = static_cast<AdvancedLowPassFilterData::ManualFilterBandwidthConfig>(dataBuffer.read_uint8());
+        returnData.manualFilterBandwidthConfig = static_cast<LowPassFilterData::ManualFilterBandwidthConfig>(dataBuffer.read_uint8());
         returnData.cutoffFrequency = dataBuffer.read_uint16();
         return returnData;
     }
@@ -57,13 +57,13 @@ namespace mscl
     {
         ByteStream byteCommand;
         byteCommand.append_uint8(static_cast<uint8>(m_functionSelector));
-        byteCommand.append_uint8(AdvancedLowPassFilterData::getDataDescriptorForCommand(m_data.dataDescriptor));
+        byteCommand.append_uint8(LowPassFilterData::getDataDescriptorForCommand(m_data.dataDescriptor));
 
         // Only fill in data if set command is being sent.
         if (m_functionSelector == MipTypes::USE_NEW_SETTINGS)
         {
             MipTypes::EnableSetting applyLowPassFilter = m_data.applyLowPassFilter ? MipTypes::ENABLED : MipTypes::DISABLED;
-            uint16 freq = m_data.manualFilterBandwidthConfig == AdvancedLowPassFilterData::USER_SPECIFIED_CUTOFF_FREQ ? m_data.cutoffFrequency : 0x0000;
+            uint16 freq = m_data.manualFilterBandwidthConfig == LowPassFilterData::USER_SPECIFIED_CUTOFF_FREQ ? m_data.cutoffFrequency : 0x0000;
 
             byteCommand.append_uint8(static_cast<uint8>(applyLowPassFilter));
             byteCommand.append_uint8(static_cast<uint8>(m_data.manualFilterBandwidthConfig));

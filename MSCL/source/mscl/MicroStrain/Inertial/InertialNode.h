@@ -1012,7 +1012,7 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         bool getConingAndScullingEnable();
 
-        //API Function: setAdvancedLowPassFilterSettings
+        //API Function: setLowPassFilterSettings
         //    Sets the advanced low-pass filter settings.
         //
         //Parameters:
@@ -1023,23 +1023,23 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
-        void setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterConfig& data);
+        void setLowPassFilterSettings(const LowPassFilterConfig& data);
 
-        //API Function: getAdvancedLowPassFilterSettings
+        //API Function: getLowPassFilterSettings
         //    Gets the current advanced low-pass filter settings for the given data descriptors
         //
         //Parameter:
         //    dataDescriptors - the <MipType::ChannelField> data descriptors for which to return the current advanced low-pass filter settings.
         //
         //Return:
-        //    <AdvancedLowPassFilterData> settings.
+        //    <LowPassFilterData> settings.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        AdvancedLowPassFilterConfig getAdvancedLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors);
+        LowPassFilterConfig getLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors);
 
         //API Function: setComplementaryFilterSettings
         //    Sets the complementary filter settings.
