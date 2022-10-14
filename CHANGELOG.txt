@@ -22,6 +22,7 @@ Forthcoming
     - RENAMED InertialNode::get/setAdvancedLowPassFilterSettings() -> get/setLowPassFilterSettings()
         - AdvancedLowPassFilterData -> LowPassFilterData
         - AdvancedLowPassFilterConfig -> LowPassFilterConfig
+        - CHANGED data type AdvancedLowPassFilterData::cutoffFrequency uint16 -> float (truncates decimal when cast to uint16 for legacy command)
     - Added MipNodeFeatures::supportedGnssSources() to lookup supported GNSS Aiding Source options
     - Updated GnssReceiverInfo to read new receiver fw information from description field
     - Updated GPS Ionospheric Corrections alpha and beta value types to Vector

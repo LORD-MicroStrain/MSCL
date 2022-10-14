@@ -2089,15 +2089,47 @@ namespace mscl
 
     void MipNode_Impl::setLowPassFilterSettings(const LowPassFilterData& data)
     {
-        AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeSetCommand(data);
-        SendCommand(lowPassFilterCmd);
+        // only use legacy command if updated not supported
+        if (features().supportsCommand(MipTypes::CMD_LOWPASS_FILTER_SETTINGS)
+            && !features().supportsCommand(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER))
+        {
+            AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeSetCommand(data);
+            SendCommand(lowPassFilterCmd);
+            return;
+        }
+
+        MipFieldValues params = {
+            Value::UINT8(Utils::msb(static_cast<uint16>(data.dataDescriptor))),
+            Value::UINT8(Utils::lsb(static_cast<uint16>(data.dataDescriptor))),
+            Value::BOOL(data.applyLowPassFilter),
+            Value::BOOL(data.manualFilterBandwidthConfig == LowPassFilterData::USER_SPECIFIED_CUTOFF_FREQ),
+            Value::FLOAT(data.cutoffFrequency)
+        };
+
+        set(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER, params);
     }
 
     LowPassFilterData MipNode_Impl::getLowPassFilterSettings(const MipTypes::ChannelField& dataDescriptor) const
     {
-        AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeGetCommand(dataDescriptor);
-        GenericMipCmdResponse response = SendCommand(lowPassFilterCmd);
-        return lowPassFilterCmd.getResponseData(response);
+        // only use legacy command if updated not supported
+        if (features().supportsCommand(MipTypes::CMD_LOWPASS_FILTER_SETTINGS)
+            && !features().supportsCommand(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER))
+        {
+            AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeGetCommand(dataDescriptor);
+            GenericMipCmdResponse response = SendCommand(lowPassFilterCmd);
+            return lowPassFilterCmd.getResponseData(response);
+        }
+
+        MipFieldValues params = { Value::UINT16(Utils::msb(static_cast<uint16>(dataDescriptor))) };
+        MipFieldValues resData = get(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER, params);
+
+        LowPassFilterData config;
+        config.dataDescriptor = dataDescriptor; // parser confirms match to elements 0, 1
+        config.applyLowPassFilter = resData[2].as_bool();
+        config.manualFilterBandwidthConfig = resData[3].as_bool() ? LowPassFilterData::USER_SPECIFIED_CUTOFF_FREQ : LowPassFilterData::SET_TO_HALF_REPORTING_RATE;
+        config.cutoffFrequency = resData[4].as_float();
+
+        return config;
     }
 
     void MipNode_Impl::setComplementaryFilterSettings(const ComplementaryFilterData& data)

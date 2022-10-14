@@ -1292,11 +1292,16 @@ namespace mscl
         //API Variable: dataDescriptor
         //    the data descriptor these settings apply to
         //
-        //  Valid values:
-        //  CH_FIELD_SENSOR_SCALED_ACCEL_VEC = 0x8004
-        //  CH_FIELD_SENSOR_SCALED_GYRO_VEC = 0x8005
-        //  CH_FIELD_SENSOR_SCALED_MAG_VEC = 0x8006
-        //  CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE = 0x8017
+        //  Valid values (depending on device support):
+        //
+        //  CH_FIELD_SENSOR_SCALED_ACCEL_VEC            = 0x8004
+        //  CH_FIELD_SENSOR_SCALED_GYRO_VEC             = 0x8005
+        //  CH_FIELD_SENSOR_SCALED_MAG_VEC              = 0x8006
+        //  CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE     = 0x8017
+        //
+        //  CH_FIELD_ESTFILTER_ESTIMATED_LINEAR_ACCEL   = 0x820D
+        //  CH_FIELD_ESTFILTER_ESTIMATED_ANGULAR_RATE   = 0x820E
+        //  CH_FIELD_ESTFILTER_COMPENSATED_ACCEL        = 0x821C
         mscl::MipTypes::ChannelField dataDescriptor;
 
         //API Variable: manualFilterBandwidthConfig
@@ -1309,7 +1314,7 @@ namespace mscl
 
         //API Variable: cutoffFrequency
         //    Sets the cutoff frequency, only if manualFilterBandwidthConfig == USER_SPECIFIED_CUTOFF_FREQ
-        uint16 cutoffFrequency;
+        float cutoffFrequency;
 
     public:
         //API Function: getDataDescriptorForCommand

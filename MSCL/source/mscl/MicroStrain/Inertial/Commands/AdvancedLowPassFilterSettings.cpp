@@ -67,7 +67,7 @@ namespace mscl
 
             byteCommand.append_uint8(static_cast<uint8>(applyLowPassFilter));
             byteCommand.append_uint8(static_cast<uint8>(m_data.manualFilterBandwidthConfig));
-            byteCommand.append_uint16(freq);
+            byteCommand.append_uint16(static_cast<uint16>(freq));
             byteCommand.append_uint8(0x00);
         }
         return GenericMipCommand::buildCommand(commandType(), byteCommand.data()); ;
