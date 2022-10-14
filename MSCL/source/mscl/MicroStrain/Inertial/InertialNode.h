@@ -2406,20 +2406,5 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setNmeaMessageFormat(NmeaMessageFormats nmeaFormats);
-
-        //API Function: pollNmea
-        //    Poll single NMEA message output for each specified format.
-        //
-        //Parameters:
-        //    nmeaFormats- vector of <NmeaMessageFormat> to output.
-        //    suppressAckNack - default false - bool indicating whether or not the device should respond with a success/failure.
-        //      Users might want to set this to true if the device is already streaming a lot of data.
-        //
-        //Exceptions:
-        //    - <Error_NotSupported>: The command is not supported by this Node.
-        //    - <Error_Communication>: There was no response to the command. The command timed out.
-        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
-        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void pollNmea(NmeaMessageFormats nmeaFormats, bool suppressAckNack = false);
     };
 }

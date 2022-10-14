@@ -31,6 +31,7 @@ Forthcoming
         - GNSS RF Error Detection (0x81,0x14) (0x91-95,0x14)
     - Added support for MIP commands:
         - Reference Point Lever Arm (0x0D,0x56)
+        - NMEA Message Format (0x0C,0x0C)
 
 64.3.0 - 2022-06-03
 - Added support for G-Link-200 6522-6001 (custom default configuration)

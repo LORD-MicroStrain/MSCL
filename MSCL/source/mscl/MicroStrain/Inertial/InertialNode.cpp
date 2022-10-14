@@ -1346,15 +1346,4 @@ namespace mscl
         MipFieldValues params = NmeaMessageFormat::toCommandParameters(nmeaFormats);
         m_impl->set(MipTypes::CMD_NMEA_MESSAGE_FORMAT, params);
     }
-
-    void InertialNode::pollNmea(NmeaMessageFormats nmeaFormats, bool suppressAckNack)
-    {
-        MipFieldValues params = NmeaMessageFormat::toCommandParameters(nmeaFormats);
-
-        // insert suppress response flag as first param
-        params.insert(params.begin(), Value::BOOL(suppressAckNack));
-
-        // send command
-        m_impl->run(MipTypes::CMD_NMEA_MESSAGE_FORMAT, params, !suppressAckNack);
-    }
 }

@@ -111,7 +111,6 @@ namespace mscl
         //  CMD_POLL_SENSOR_DATA                        - 0x0C01    - Poll Sensor Data
         //  CMD_POLL_GNSS_DATA                          - 0x0C02    - Poll GNSS Data
         //  CMD_POLL_EF_DATA                            - 0x0C03    - Poll Estimation Filter Data
-        //  CMD_POLL_NMEA_MESSAGE                       - 0x0C04    - Poll NMEA Message
         //  CMD_GET_SENSOR_RATE_BASE                    - 0x0C06    - Get Sensor Data Rate Base
         //  CMD_GET_GNSS_RATE_BASE                      - 0x0C07    - Get GNSS Data Rate Base
         //  CMD_GET_EF_RATE_BASE                        - 0x0C0B    - Get Estimation Filter Data Rate Base
@@ -243,7 +242,6 @@ namespace mscl
             CMD_POLL_SENSOR_DATA                    = 0x0C01,
             CMD_POLL_GNSS_DATA                      = 0x0C02,
             CMD_POLL_EF_DATA                        = 0x0C03,
-            CMD_POLL_NMEA_MESSAGE                   = 0x0C04,
             CMD_GET_SENSOR_RATE_BASE                = 0x0C06,
             CMD_GET_GNSS_RATE_BASE                  = 0x0C07,
             CMD_GET_EF_RATE_BASE                    = 0x0C0B,
