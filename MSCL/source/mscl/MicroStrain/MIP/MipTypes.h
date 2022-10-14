@@ -1152,6 +1152,8 @@ namespace mscl
         //    CH_BIT_IMU_SENSORS            - 123 - Built In Test IMU Sensors
         //    CH_BIT_IMU_FACTORY_BITS       - 124 - Built in Test IMU Factory Bits Valid
         //    CH_BIT_FILTER_GENERAL         - 125 - Built In Test Est Filter General
+        //    CH_SYSTEM_ID                  - 126 - System ID (GNSS, SBAS, etc.)
+        //    CH_SATELLITE_ID               - 127 - Satellite ID (GNSS, SBAS, etc.)
         //====================================================================================================
         enum ChannelQualifier
         {
@@ -1278,7 +1280,9 @@ namespace mscl
             CH_BIT_IMU_GENERAL              = 122,
             CH_BIT_IMU_SENSORS              = 123,
             CH_BIT_IMU_FACTORY_BITS         = 124,
-            CH_BIT_FILTER_GENERAL           = 125
+            CH_BIT_FILTER_GENERAL           = 125,
+            CH_SYSTEM_ID                    = 126,
+            CH_SATELLITE_ID                 = 127
         };
 
         //API Typedefs:
@@ -1479,8 +1483,6 @@ namespace mscl
         //      GNSS_SATELLITE_ID       - GNSS Satellite ID
         //      GNSS_SIGNAL_ID          - GNSS Signal ID
         //      AIDING_MEASUREMENT_TYPE - Filter Aiding Measurement Type
-        //      SBAS_SYSTEM             - SBAS System ID
-        //      SBAS_SATELLITE_ID       - SBAS Satellite ID
         //      GNSS_RF_BAND            - GNSS RF Band
         enum Type
         {
@@ -1492,8 +1494,6 @@ namespace mscl
             GNSS_SATELLITE_ID,
             GNSS_SIGNAL_ID,
             AIDING_MEASUREMENT_TYPE,
-            SBAS_SYSTEM,
-            SBAS_SATELLITE_ID,
             GNSS_RF_BAND
         };
 
@@ -1668,23 +1668,6 @@ namespace mscl
             BEIDOU_B2I     = 166,
             BEIDOU_B2Q     = 167,
             BEIDOU_B2IQ    = 168,
-        };
-
-        //API Enum: SbasSystemIds
-        //  ID definitions when Type is <MipChannelIdentifier::SBAS_SYSTEM>
-        //
-        //      UNKNOWN_SBAS_SYSTEM - 0 - Unknown
-        //      WAAS                - 1 - WAAS
-        //      EGNOS               - 2 - EGNOS
-        //      MSAS                - 3 - MSAS
-        //      GAGAN               - 4 - GAGAN
-        enum SbasSystemIds
-        {
-            UNKNOWN_SBAS_SYSTEM = 0,
-            WAAS                = 1,
-            EGNOS               = 2,
-            MSAS                = 3,
-            GAGAN               = 4
         };
 
         //API Enum: GnssRfBands

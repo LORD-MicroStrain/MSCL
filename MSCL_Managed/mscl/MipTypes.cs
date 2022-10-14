@@ -732,7 +732,9 @@ public class MipTypes : global::System.IDisposable {
     CH_BIT_IMU_GENERAL = 122,
     CH_BIT_IMU_SENSORS = 123,
     CH_BIT_IMU_FACTORY_BITS = 124,
-    CH_BIT_FILTER_GENERAL = 125
+    CH_BIT_FILTER_GENERAL = 125,
+    CH_SYSTEM_ID = 126,
+    CH_SATELLITE_ID = 127
   }
 
 }
