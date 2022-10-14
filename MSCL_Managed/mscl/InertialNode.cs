@@ -1045,16 +1045,6 @@ public class InertialNode : MipNode {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void pollNmea(NmeaMessageFormats nmeaFormats, bool suppressAckNack) {
-    msclPINVOKE.InertialNode_pollNmea__SWIG_0(swigCPtr, NmeaMessageFormats.getCPtr(nmeaFormats), suppressAckNack);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void pollNmea(NmeaMessageFormats nmeaFormats) {
-    msclPINVOKE.InertialNode_pollNmea__SWIG_1(swigCPtr, NmeaMessageFormats.getCPtr(nmeaFormats));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
 }
 
 }
