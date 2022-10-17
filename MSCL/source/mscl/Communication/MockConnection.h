@@ -41,7 +41,7 @@ namespace mscl
 
         virtual void registerParser(std::function<void(DataBuffer&)> parseFunction) override { return; }
 
-        virtual void unregisterParser() override { return; }
+        virtual void clearParsers() override { return; }
 
         virtual void throwIfError() override { return; }
 

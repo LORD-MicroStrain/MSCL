@@ -127,9 +127,9 @@ namespace mscl
         m_impl->registerParser(parseFunction); 
     }
 
-    void Connection::unregisterParser()
+    void Connection::clearParsers()
     { 
-        m_impl->unregisterParser(); 
+        m_impl->clearParsers();
     }
 
     void Connection::write(const ByteStream& data) const

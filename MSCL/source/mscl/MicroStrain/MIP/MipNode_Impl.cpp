@@ -92,7 +92,7 @@ namespace mscl
     MipNode_Impl::~MipNode_Impl()
     {
         //unregister the parse functions with the connection, which stops the IO Thread
-        m_connection.unregisterParser();
+        m_connection.clearParsers();
     }
 
     const Timestamp& MipNode_Impl::lastCommunicationTime() const

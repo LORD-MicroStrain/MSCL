@@ -47,7 +47,7 @@ private:
         parseFunc = parseFunction;
     }
 
-    virtual void unregisterParser(){}
+    virtual void clearParsers(){}
     virtual void throwIfError(){}
     virtual std::string description(){return "";}
     virtual Connection::ConnectionType type() { return Connection::connectionType_serial; }
