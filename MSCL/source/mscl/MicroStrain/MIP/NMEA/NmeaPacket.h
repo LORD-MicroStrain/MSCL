@@ -36,6 +36,8 @@ namespace mscl
         std::string m_talkerID;
 
         //Variable: m_sentenceType
+        //    The sentence type from the message
+        std::string m_sentenceType;
 
     public:
         //Function: message
@@ -44,6 +46,14 @@ namespace mscl
         //Parameters:
         //    bytes - The message as a vector of bytes
         void message(const Bytes& bytes);
+
+        //Function: talkerId
+        //    Sets the talker ID string
+        void talkerId(std::string id) { m_talkerID = id; }
+
+        //Function: sentenceType
+        //    Sets the sentence type string
+        void sentenceType(std::string type) { m_sentenceType = type; }
 #endif
 
         //API Function: message
@@ -59,6 +69,27 @@ namespace mscl
         //Returns:
         //    The message as a vector of bytes
         const Bytes message_asBytes() const;
+
+        //API Function: talkerId
+        //    Gets the talker ID string
+        //
+        //Returns:
+        //    The talker ID string from the message
+        const std::string talkerId() const { return m_talkerID; }
+
+        //API Function: sentenceTypes
+        //    Gets the sentence type string
+        //
+        //Returns:
+        //    The sentence type string from the message
+        const std::string sentenceType() const { return m_sentenceType; }
+
+        //API Function: size
+        //    Gets the length of the message
+        //
+        //Returns:
+        //    The length of the message
+        const size_t size() const { return m_message.size(); }
     };
 
 #ifndef SWIG
@@ -87,15 +118,49 @@ namespace mscl
         //=====================================================================================================
         //Enum: NMEA Packet Information
         //  NMEA_MIN_PACKET_SIZE             - 8        - The minimum number of bytes to make a valid NMEA packet
+        //  NMEA_TALKER_ID_LEN               - 2        - Talker ID length ONLY IF NOT PROPRIETY (first char 'P')
         //=====================================================================================================
         enum
         {
             NMEA_MIN_PACKET_SIZE    = 8,
             NMEA_TALKER_ID_LEN      = 2, // ONLY IF NOT PROPRIETY (first char 'P')
-            NMEA_PROPRIETY_ID_LEN   = 1, // If proprietary (first char 'P'), no talker id
         };
 
+        //=====================================================================================================
+        //Constants: Talker ID strings
+        //  TALKER_ID_PROPRIETARY   - "P"
+        //  TALKER_ID_GNSS          - "GN"
+        //  TALKER_ID_GPS           - "GP"
+        //  TALKER_ID_GALILEO       - "GA"
+        //  TALKER_ID_GLONASS       - "GL"
+        //=====================================================================================================
+        static const std::string TALKER_ID_PROPRIETARY;
+        static const std::string TALKER_ID_GNSS;
+        static const std::string TALKER_ID_GPS;
+        static const std::string TALKER_ID_GALILEO;
+        static const std::string TALKER_ID_GLONASS;
 
+        //=====================================================================================================
+        //Enum: NMEA Packet Information
+        //  SENTENCE_GGA    - "GGA"
+        //  SENTENCE_GLL    - "GLL"
+        //  SENTENCE_GSV    - "GSV"
+        //  SENTENCE_RMC    - "RMC"
+        //  SENTENCE_VTG    - "VTG"
+        //  SENTENCE_HDT    - "HDT"
+        //  SENTENCE_ZDA    - "ZDA"
+        //  SENTENCE_PKRA   - "PKRA"
+        //  SENTENCE_PKRR   - "PKRR"
+        //=====================================================================================================
+        static const std::string SENTENCE_GGA;
+        static const std::string SENTENCE_GLL;
+        static const std::string SENTENCE_GSV;
+        static const std::string SENTENCE_RMC;
+        static const std::string SENTENCE_VTG;
+        static const std::string SENTENCE_HDT;
+        static const std::string SENTENCE_ZDA;
+        static const std::string SENTENCE_PKRA;
+        static const std::string SENTENCE_PKRR;
     };
 #endif
 }

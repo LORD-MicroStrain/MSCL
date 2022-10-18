@@ -256,6 +256,28 @@ namespace mscl
         //Returns:
         //    true if m_moreToRead is true, false otherwise
         bool moreToRead() const;
+
+        //Function: find_uint8
+        //    Finds position of first occurrence of specified value after the current read position.
+        //
+        //Parameters:
+        //    find - value to match
+        //    endIndex - default 0 - index to stop searching, if 0 will search the remainder of the buffer.
+        //
+        //Returns:
+        //    index position of first occurrence of the find value
+        size_t find_uint8(uint8 find, size_t endIndex = 0) const;
+
+        //Function: find_uint16
+        //    Finds position of first occurrence of specified value after the current read position.
+        //
+        //Parameters:
+        //    find - value to match
+        //    endIndex - default 0 - index to stop searching, if 0 will search the remainder of the buffer.
+        //
+        //Returns:
+        //    index position of first occurrence of the find value
+        size_t find_uint16(uint16 find, size_t endIndex = 0) const;
         
         //Function: shiftExtraToStart
         //    Copies any unparsed data in the DataBuffer to the front of the buffer. 

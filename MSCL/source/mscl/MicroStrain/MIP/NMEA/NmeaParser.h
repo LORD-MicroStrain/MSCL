@@ -61,6 +61,10 @@ namespace mscl
         //    packet - A verified, valid <NmeaPacket> 
         void processPacket(NmeaPacket& packet);
 
+        //Function: isNmeaStartByte
+        //    Checks specified u8 to determine if it's one of the possible valid NMEA start characters
+        bool isNmeaStartByte(uint8 byte);
+
     public:
         //Function: parseAsPacket
         //    Takes a DataBuffer that has had its read position moved to the start of a packet 
@@ -73,18 +77,6 @@ namespace mscl
         //Returns:
         //    An <NmeaParseresult> describing if the packet was verified, or why it failed verification
         NmeaParserResult parseAsPacket(DataBuffer& data, NmeaPacket& packet);
-
-        //Function: findPacketInBytes
-        //    Checks for packets after the current bytes buffer's read position (starting at the next byte, not the current one).
-        //    If a packet is found, the packet is processed and the byte buffer's read position is moved.
-        //    If a packet is not found, nothing changes in the byte buffer
-        //
-        //Parameters:
-        //    data - The bytes to look through for a packet
-        //
-        //Returns:
-        //    true if a MIP packet is found, false otherwise
-        bool findPacketInBytes(DataBuffer& data);
 
         //Function: parse
         //    Takes a <DataBuffer> and finds the next MIP Packet, 

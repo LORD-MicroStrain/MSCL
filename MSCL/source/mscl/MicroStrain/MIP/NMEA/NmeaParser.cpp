@@ -25,19 +25,23 @@ namespace mscl
         m_packetCollector->addPacket(packet);
     }
 
+    bool NmeaParser::isNmeaStartByte(uint8 byte)
+    {
+        switch (byte)
+        {
+        case NmeaPacketInfo::NMEA_START_OF_PACKET:
+        case NmeaPacketInfo::NMEA_START_OF_PACKET_ALT:
+            return true;
+
+        default:
+            return false;
+        }
+    }
+
     void NmeaParser::parse(DataBuffer& data)
     {
-        mscl::Bytes rawBytes;
-
         NmeaParserResult parseResult;    //holds the result of verifying whether it was a valid packet or not
-
         NmeaPacket packet;
-
-        //moveToNextByte is set to false when we don't want to skip to the next byte after we are done looking at the current byte
-        bool moveToNextByte = true;
-
-        //notEnoughData is true when the bytes could be a valid packet, but there isn't enough bytes to be sure
-        bool notEnoughData = false;
 
         //while there is more data to be read in the DataBuffer
         while(data.moreToRead())
@@ -46,201 +50,166 @@ namespace mscl
             uint8 currentByte = data.peekByte();
 
             //if this is a NMEA Start of Packet byte 
-            if(currentByte == NmeaPacketInfo::NMEA_START_OF_PACKET)
+            if(isNmeaStartByte(currentByte))
             {
                 mscl::ReadBufferSavePoint savePoint(&data);
                 
                 //check if the packet is a valid NMEA packet, starting at this byte
                 parseResult = parseAsPacket(data, packet);
 
-                size_t position = data.readPosition();
-                uint8 nextByte;
+                // revert read cursor to start of packet
+                savePoint.revert();
+
                 //check the result of the parseAsPacket command
                 switch(parseResult)
                 {
                     //good packet, process it and then look for the next
                     case NmeaParserResult_completePacket:
-                        position = data.readPosition();
-                        savePoint.revert();
 
-                        //Read out the "in packet" bytes into the rawBytes buffer...
-                        nextByte = data.peekByte();
-                        while (data.readPosition() < position) 
-                        {
-                            rawBytes.push_back(data.read_uint8());
-                        }
-                        savePoint.commit();
+                        // advance cursor to end of packet
+                        data.skipBytes(packet.size());
 
                         processPacket(packet);
-                        continue;    //packet has been processed, move to the next byte after the packet
+                        continue;
 
-                    //somethings incorrect in the packet, move passed this start byte and start looking for the next packet
+                    //somethings incorrect in the packet, move past this start byte and start looking for the next packet
                     case NmeaParserResult_invalidPacket:
                     case NmeaParserResult_badChecksum:
+                        // advance cursor to next byte
+                        data.read_uint8();
                         break;
 
                     //ran out of data, return and wait for more
                     case NmeaParserResult_notEnoughData:
-                        moveToNextByte = false;
-                        notEnoughData = true;
+                        return;
                         break;
 
                     default:
                         assert(false);    //unhandled verifyResult, need to add a case for it
                 }
             }
-
-            //data is not a packet at this point
-
-            //if we didn't have enough data for a full packet
-            if(notEnoughData)
-            {
-                mscl::ReadBufferSavePoint savePoint(&data);
-                //look for packets after the current byte.
-                //    Even though this looks like it could be the start of a NMEA packet,
-                //    if we find any full NMEA packets inside of the these bytes, we need 
-                //    to pick them up and move on.
-                if(!findPacketInBytes(data))
-                {
-                    //we didn't find a packet within this, so return from this function as we need to wait for more data
-                    return;
-                }
-            }
         }
-    }
-
-    bool NmeaParser::findPacketInBytes(DataBuffer& data)
-    {
-        //create a read save point for the DataBuffer
-        ReadBufferSavePoint savePoint(&data);
-
-        //while there are enough bytes remaining to make a NMEA packet
-        while(data.bytesRemaining() > NmeaPacketInfo::NMEA_MIN_PACKET_SIZE)
-        {
-            //move to the next byte
-            data.read_uint8();
-
-            NmeaPacket packet;
-
-            //if we found a packet within the bytes
-            if(parseAsPacket(data, packet) == NmeaParserResult_completePacket)
-            {
-                //commit the data that was read
-                savePoint.commit();
-
-                //process the packet
-                processPacket(packet);
-                return true;
-            }
-        }
-
-        //we didn't find any packet in the bytes buffer
-        return false;
     }
 
     NmeaParserResult NmeaParser::parseAsPacket(DataBuffer& data, NmeaPacket& packet)
     {
-        //Assume that we are at the start of a packet
-        //byte 1        - Start of Packet 1 (0x75)
-        //byte 2        - Start of Packet 2 (0x65)
-        //byte 3        - Descriptor Set
-        //byte 4        - Payload Length
-        //byte 5 to N-2 - Payload
-        //byte N-1        - Checksum (MSB)
-        //byte N        - Checksum (LSB)
+        // store packet start index
+        const size_t startPacketIndex = data.readPosition();
 
-        //create a save point for the DataBuffer
-        ReadBufferSavePoint savePoint(&data);
+        //read the first byte
+        uint8 startOfPacket = data.read_uint8();
 
-        std::size_t totalBytesAvailable = data.bytesRemaining();
+        // save point for start of payload (w/ out start byte)
+        ReadBufferSavePoint savePayloadStart(&data);
 
-        //make sure we have enough bytes to even be a NMEA packet
-        if(totalBytesAvailable < NmeaPacketInfo::NMEA_MIN_PACKET_SIZE)
-        {
-            //Not Enough Data to tell if valid packet
-            return NmeaParserResult_notEnoughData;
-        }
-
-        //read the first 2 bytes
-        uint8 startOfPacket = data.read_uint8();                //Start of Packet
+        /////////// Validate Packet features ///////////
 
         //verify that the Start of Packet value is correct
-        if(startOfPacket != NmeaPacketInfo::NMEA_START_OF_PACKET)
+        if(!isNmeaStartByte(startOfPacket))
         {
             //Invalid Packet
             return NmeaParserResult_invalidPacket;
         }
-
-        //read byte 3
-        uint8 descriptorSet = data.read_uint8();                //Descriptor Set
-
-        //read byte 4
-        uint8 payloadLen = data.read_uint8();                    //Payload Length
-
-        //determine the full packet length
-        uint32 packetLength = payloadLen + NmeaPacketInfo::NMEA_NUM_BYTES_BEFORE_PAYLOAD + NmeaPacketInfo::NMEA_NUM_BYTES_AFTER_PAYLOAD;
-
-        //the DataBuffer must be large enough to hold the rest of the packet
-        if(totalBytesAvailable < packetLength)
+        
+        //make sure we have enough bytes to even be a NMEA packet
+        if(data.bytesRemaining() < NmeaPacketInfo::NMEA_MIN_PACKET_SIZE)
         {
             //Not Enough Data to tell if valid packet
             return NmeaParserResult_notEnoughData;
         }
 
-        //create the Bytes vector to hold the payload bytes
-        Bytes payload;
-        payload.reserve(payloadLen);
-
-        uint16 fieldLengthTotal = 0;
-        uint16 nextFieldLenPos = 0;
-
-        //loop through the payload
-        for(uint8 payloadItr = 0; payloadItr < payloadLen; payloadItr++)
+        // check if end of packet indicator (\r\n) occurs before end of read buffer
+        const size_t endPacketIndex = data.find_uint16(NmeaPacketInfo::NMEA_END_OF_PACKET);
+        if (endPacketIndex >= data.appendPosition())
         {
-            uint8 currentByte = data.read_uint8();
-
-            //if this byte is supposed to be the field length byte
-            if(payloadItr == nextFieldLenPos)
-            {
-                //add up the total field length bytes to verify they look correct
-                fieldLengthTotal += currentByte;
-                nextFieldLenPos += currentByte;
-            }
-
-            //store the payload bytes
-            payload.push_back(currentByte);                //Payload Bytes
+            //Not Enough Data to tell if valid packet
+            return NmeaParserResult_notEnoughData;
         }
 
-        //verify that the total field lengths add up to the payload length
-        if(fieldLengthTotal != payloadLen)
+        // check for checksum indicator, invalid if not present
+        const size_t startChecksumIndex = data.find_uint8(NmeaPacketInfo::NMEA_CHECKSUM_DELIM, endPacketIndex);
+
+        // add 2 to index, need to read out indices i + 1 and i + 2 for actual checksum value
+        if (startChecksumIndex + 2 >= endPacketIndex)
         {
-            //Invalid Packet
             return NmeaParserResult_invalidPacket;
         }
 
-        //get the checksum sent in the packet
-        uint16 checksum = data.read_uint16();                    //Checksum
+        /////////// Calculate Checksum ///////////
 
+        // revert back to payload start for checksum calculation
+        savePayloadStart.revert();
 
-        //build the checksum to calculate from all the bytes
-        ChecksumBuilder calcChecksum;
-        calcChecksum.append_uint16(startOfPacket);
-        calcChecksum.append_uint8(descriptorSet);
-        calcChecksum.append_uint8(payloadLen);
-        calcChecksum.appendBytes(payload);
+        // looping through each byte anyway, attempt to identify talker ID and sentence type
+        bool talkerIdFound = false;
+        bool sentenceTypeFound = false;
+        std::string talkerId;
+        std::string sentenceType;
 
-        if(checksum != calcChecksum.fletcherChecksum())
+        uint8 calculatedChecksum = 0;
+
+        while (data.readPosition() < startChecksumIndex)
         {
-            //Bad Checksum
+            // read byte, XOR w/ calculated checksum
+            uint8 readByte = data.read_uint8();
+            calculatedChecksum ^= readByte;
+
+            // other info parsing complete, continue
+            if (talkerIdFound && sentenceTypeFound)
+            {
+                continue;
+            }
+
+            // if we find data start, talker ID and sentence type can no longer be found
+            if (readByte == NmeaPacketInfo::NMEA_DATA_START_DELIM)
+            {
+                talkerIdFound = true;
+                sentenceTypeFound = true;
+                continue;
+            }
+
+            if (!talkerIdFound)
+            {
+                // append char to talkerId str
+                talkerId += static_cast<char>(readByte);
+
+                // talker ID complete if single char proprietary indicator or two chars
+                if (readByte == NmeaPacketInfo::NMEA_PROPRIETARY_INDICATOR
+                    || talkerId.size() >= NmeaPacketInfo::NMEA_TALKER_ID_LEN)
+                {
+                    talkerIdFound = true;
+                }
+            }
+            else if (!sentenceTypeFound) // talker id has been found, start appending to sentence type
+            {
+                // append char to sentenceType str
+                sentenceType += static_cast<char>(readByte);
+            }
+        }
+
+        /////////// Validate Checksum ///////////
+
+        // confirm start checksum indicator
+        uint8 startChecksum = data.read_uint8();
+        if (startChecksum != NmeaPacketInfo::NMEA_CHECKSUM_DELIM)
+        {
+            return NmeaParserResult_invalidPacket;
+        }
+
+        const std::string packetChecksumStr = data.read_string(2);
+        const uint8 packetChecksum = static_cast<uint8>(std::stoi(packetChecksumStr, nullptr, 16));
+
+        if (packetChecksum != calculatedChecksum)
+        {
             return NmeaParserResult_badChecksum;
         }
 
+        /////////// Finalize ///////////
 
-        //add all the info about the packet to the NmeaPacket reference passed in
-        packet.payload(payload);
-
-        //we have a complete packet, commit the bytes that we just read (move the read pointer)
-        savePoint.commit();
+        // add two to total length to include end bytes (\r\n)
+        packet.message(data.bytesToRead(startPacketIndex, (endPacketIndex - startPacketIndex) + 2));
+        packet.talkerId(talkerId);
+        packet.sentenceType(sentenceType);
 
         return NmeaParserResult_completePacket;
     }

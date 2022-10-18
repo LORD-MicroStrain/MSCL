@@ -280,6 +280,42 @@ namespace mscl
         return (bytesRemaining() > 0);
     }
 
+    size_t DataBuffer::find_uint8(uint8 find, size_t endIndex) const
+    {
+        const size_t stopIndex = endIndex == 0 || endIndex > appendPosition()
+            ? appendPosition()
+            : endIndex;
+
+        size_t index;
+        for (index = readPosition(); index < stopIndex; index++)
+        {
+            if (find == m_data.read_uint16(index))
+            {
+                break;
+            }
+        }
+
+        return index;
+    }
+
+    size_t DataBuffer::find_uint16(uint16 find, size_t endIndex) const
+    {
+        const size_t stopIndex = endIndex == 0 || endIndex > appendPosition()
+            ? appendPosition()
+            : endIndex;
+
+        size_t index;
+        for(index = readPosition() + 1; index < stopIndex; index++)
+        {
+            if (find == m_data.read_uint16(index - 1))
+            {
+                break;
+            }
+        }
+
+        return index;
+    }
+
     std::size_t DataBuffer::shiftExtraToStart()
     {
         std::size_t startReadPos = m_readPosition;
