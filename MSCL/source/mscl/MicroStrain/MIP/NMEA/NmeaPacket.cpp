@@ -14,15 +14,20 @@ namespace mscl
     NmeaPacket::NmeaPacket()
     {}
 
-    const std::vector<uint8> NmeaPacket::payload() const
+    const std::string NmeaPacket::message() const
     {
-        return m_payload.data();
+        return m_message.read_string(0, m_message.size());
     }
 
-    void NmeaPacket::payload(const Bytes& bytes)
+    const Bytes NmeaPacket::message_asBytes() const
     {
-        m_payload.clear();
+        return m_message.data();
+    }
 
-        m_payload.appendBytes(bytes);
+    void NmeaPacket::message(const Bytes& bytes)
+    {
+        m_message.clear();
+
+        m_message.appendBytes(bytes);
     }
 }

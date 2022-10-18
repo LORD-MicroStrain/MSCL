@@ -24,28 +24,41 @@ namespace mscl
     public:
         //Typedef: Payload
         //    typedef for the bytes that make up a payload in a packet
-        typedef ByteStream Payload;
+        typedef ByteStream Message;
 
     protected:
-        //Variable: m_payload
-        //    The payload bytes in the packet
-        Payload m_payload;
+        //Variable: m_message
+        //    The message in bytes
+        Message m_message;
+
+        //Variable: m_talkerId
+        //    The talker ID string from the message
+        std::string m_talkerID;
+
+        //Variable: m_sentenceType
 
     public:
-        //Function: payload
-        //    Sets the payload bytes of the packet
+        //Function: message
+        //    Sets the message bytes
         //
         //Parameters:
-        //    bytes - The payload of the packet, as a vector of bytes
-        void payload(const Bytes& bytes);
+        //    bytes - The message as a vector of bytes
+        void message(const Bytes& bytes);
 #endif
 
-        //API Function: payload
-        //    Gets the payload bytes of the packet
+        //API Function: message
+        //    Gets the message string
         //
         //Returns:
-        //    The payload of the packet, as a vector of bytes
-        const std::vector<uint8> payload() const;
+        //    The message as a string
+        const std::string message() const;
+
+        //API Function: message
+        //    Gets the message in bytes
+        //
+        //Returns:
+        //    The message as a vector of bytes
+        const Bytes message_asBytes() const;
     };
 
 #ifndef SWIG
@@ -54,25 +67,35 @@ namespace mscl
     struct NmeaPacketInfo
     {
         //=====================================================================================================
-        //Constants: NMEA identifiers
-        //    NMEA_START_OF_PACKET      - "$"    - The start of a NMEA packet/sentence
-        //    NMEA_END_OF_PACKET        - "\r\n" - The end of a NMEA packet/sentence
-        //=====================================================================================================
-        const std::string NMEA_START_OF_PACKET  = "$";
-        const std::string NMEA_END_OF_PACKET    = "\r\n";
-
-        //=====================================================================================================
-        //Enums: NMEA Packet Information
-        //  NMEA_MIN_PACKET_SIZE             - 8        - The minimum number of bytes to make a valid MIP packet (0x75, 0x65, Descriptor Set, Payload Len, Payload, Checksum)
-        //  NMEA_NUM_BYTES_BEFORE_PAYLOAD    - 4        - The number of bytes in the MIP packets before the payload
-        //  NMEA_NUM_BYTES_AFTER_PAYLOAD     - 2        - The number of bytes in the MIP packets after the payload
+        //Enum: NMEA identifiers
+        //    NMEA_START_OF_PACKET      - "$"       - The start of a NMEA packet/sentence
+        //    NMEA_START_OF_PACKET_ALT  - "!"       - The start of a NMEA encapsulation sentence
+        //    NMEA_END_OF_PACKET        - "\r\n"    - The end of a NMEA packet/sentence
+        //    NMEA_DATA_START_DELIM     - ","       - Characters before first instance is header info, ',' delimiter used throughout message
+        //    NMEA_CHECKSUM_DELIM       - "*"       - NMEA checksum delimiter
         //=====================================================================================================
         enum
         {
-            NMEA_MIN_PACKET_SIZE             = 8,
-            NMEA_NUM_BYTES_BEFORE_PAYLOAD    = 4,
-            NMEA_NUM_BYTES_AFTER_PAYLOAD     = 2
+            NMEA_START_OF_PACKET        = '$',
+            NMEA_START_OF_PACKET_ALT    = '!',
+            NMEA_END_OF_PACKET          = ('\r' << 8) + '\n',
+            NMEA_DATA_START_DELIM       = ',', // before first instance is header info, ',' delimiter used throughout message
+            NMEA_CHECKSUM_DELIM         = '*',
+            NMEA_PROPRIETARY_INDICATOR  = 'P'
         };
+
+        //=====================================================================================================
+        //Enum: NMEA Packet Information
+        //  NMEA_MIN_PACKET_SIZE             - 8        - The minimum number of bytes to make a valid NMEA packet
+        //=====================================================================================================
+        enum
+        {
+            NMEA_MIN_PACKET_SIZE    = 8,
+            NMEA_TALKER_ID_LEN      = 2, // ONLY IF NOT PROPRIETY (first char 'P')
+            NMEA_PROPRIETY_ID_LEN   = 1, // If proprietary (first char 'P'), no talker id
+        };
+
+
     };
 #endif
 }

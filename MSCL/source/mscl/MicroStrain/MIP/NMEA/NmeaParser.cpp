@@ -45,10 +45,8 @@ namespace mscl
             //read the next byte (doesn't move data's read position)
             uint8 currentByte = data.peekByte();
 
-            std::string byteStr(1, static_cast<char>(currentByte));
-
             //if this is a NMEA Start of Packet byte 
-            if(byteStr == NmeaPacketInfo::NMEA_START_OF_PACKET)
+            if(currentByte == NmeaPacketInfo::NMEA_START_OF_PACKET)
             {
                 mscl::ReadBufferSavePoint savePoint(&data);
                 
@@ -165,10 +163,9 @@ namespace mscl
 
         //read the first 2 bytes
         uint8 startOfPacket = data.read_uint8();                //Start of Packet
-        std::string startOfPacketStr(1, static_cast<char>(startOfPacket));
 
         //verify that the Start of Packet value is correct
-        if(startOfPacketStr != NmeaPacketInfo::NMEA_START_OF_PACKET)
+        if(startOfPacket != NmeaPacketInfo::NMEA_START_OF_PACKET)
         {
             //Invalid Packet
             return NmeaParserResult_invalidPacket;
