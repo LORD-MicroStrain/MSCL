@@ -811,8 +811,8 @@ namespace mscl
         //  VTG     - 0x05 - Course over Ground
         //  HDT     - 0x06 - Heading, True
         //  ZDA     - 0x07 - Time & Date
-        //  PRKA    - 0x81 - Parker proprietary Euler angles
-        //  PRKR    - 0x82 - Parker proprietary Angular Rate/Acceleration
+        //  PKRA    - 0x81 - Parker proprietary Euler angles
+        //  PKRR    - 0x82 - Parker proprietary Angular Rate/Acceleration
         enum SentenceType
         {
             GGA = 0x01,
@@ -822,8 +822,8 @@ namespace mscl
             VTG = 0x05,
             HDT = 0x06,
             ZDA = 0x07,
-            PRKA = 0x81,
-            PRKR = 0x82
+            PKRA = 0x81,
+            PKRR = 0x82
         };
 
         //API Enum: Talker
