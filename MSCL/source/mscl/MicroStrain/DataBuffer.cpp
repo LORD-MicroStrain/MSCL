@@ -399,8 +399,10 @@ namespace mscl
         size_t actualSize = size > bytesRemaining() ? bytesRemaining() : size;
         size_t endPos = startPos + actualSize;
 
+        copyTo.resize(copyTo.size() + actualSize);
+
         // TODO TOMORROW copyTo param, parser member var, should be a Bytes or ByteStream, need to write to end itr
-        std::copy(m_data.begin() + startPos, m_data.begin() + endPos, copyTo.end());
+        std::copy(m_data.begin() + startPos, m_data.begin() + endPos, copyTo.end() - actualSize);
     }
 
     //============================================================
