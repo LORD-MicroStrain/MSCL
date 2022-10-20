@@ -5328,6 +5328,27 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GnssSignalConfiguration")]
   public static extern void delete_GnssSignalConfiguration(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_SupportedGnssSignalConfigurations__SWIG_0")]
+  public static extern global::System.IntPtr new_SupportedGnssSignalConfigurations__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_SupportedGnssSignalConfigurations__SWIG_1")]
+  public static extern global::System.IntPtr new_SupportedGnssSignalConfigurations__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, global::System.Runtime.InteropServices.HandleRef jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SupportedGnssSignalConfigurations_gps")]
+  public static extern global::System.IntPtr SupportedGnssSignalConfigurations_gps(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SupportedGnssSignalConfigurations_glonass")]
+  public static extern global::System.IntPtr SupportedGnssSignalConfigurations_glonass(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SupportedGnssSignalConfigurations_galileo")]
+  public static extern global::System.IntPtr SupportedGnssSignalConfigurations_galileo(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SupportedGnssSignalConfigurations_beidou")]
+  public static extern global::System.IntPtr SupportedGnssSignalConfigurations_beidou(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_SupportedGnssSignalConfigurations")]
+  public static extern void delete_SupportedGnssSignalConfigurations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_PositionReferenceConfiguration_autoConfig_set")]
   public static extern void PositionReferenceConfiguration_autoConfig_set(global::System.Runtime.InteropServices.HandleRef jarg1, bool jarg2);
 
@@ -6398,6 +6419,9 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedGpioConfigurations")]
   public static extern global::System.IntPtr MipNodeFeatures_supportedGpioConfigurations(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedGnssSignalConfigurations")]
+  public static extern global::System.IntPtr MipNodeFeatures_supportedGnssSignalConfigurations(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedDeclinationSources")]
   public static extern global::System.IntPtr MipNodeFeatures_supportedDeclinationSources(global::System.Runtime.InteropServices.HandleRef jarg1);

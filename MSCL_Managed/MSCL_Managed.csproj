@@ -280,6 +280,7 @@
     <Compile Include="mscl\StorageLimitModes.cs" />
     <Compile Include="mscl\StreamInfo.cs" />
     <Compile Include="mscl\StructuralHealth.cs" />
+    <Compile Include="mscl\SupportedGnssSignalConfigurations.cs" />
     <Compile Include="mscl\SupportedSensorRanges.cs" />
     <Compile Include="mscl\SyncNetworkInfo.cs" />
     <Compile Include="mscl\SyncSamplingNetwork.cs" />

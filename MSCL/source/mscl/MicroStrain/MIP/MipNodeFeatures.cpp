@@ -805,6 +805,61 @@ namespace mscl
         };
     }
 
+    SupportedGnssSignalConfigurations MipNodeFeatures::supportedGnssSignalConfigurations() const
+    {
+        const MipModel model(nodeInfo().deviceInfo().modelNumber);
+
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_gq7:
+        {
+            const Version version(nodeInfo().deviceInfo().fwVersion);
+
+            // Version 1.1.01 and above only supports both or no signal configurations for each constellation
+            if (version > Version(1, 0, 10) ||
+                version < Version(1, 0) && version >= Version(0, 8, 71))
+                return {
+                    { 0, GnssSignalConfiguration::GpsSignal::L1CA     | GnssSignalConfiguration::GpsSignal::L2C },      // GPS
+                    { 0, GnssSignalConfiguration::GlonassSignal::L1OF | GnssSignalConfiguration::GlonassSignal::L2OF }, // GLONASS
+                    { 0, GnssSignalConfiguration::GalileoSignal::E1   | GnssSignalConfiguration::GalileoSignal::E5B },  // Galileo
+                    { 0, GnssSignalConfiguration::BeiDouSignal::B1    | GnssSignalConfiguration::BeiDouSignal::B2 }     // BeiDou
+                };
+        }
+        default:
+            // Any configuration supported
+            return {
+                // GPS
+                {
+                    0,
+                    GnssSignalConfiguration::GpsSignal::L1CA,
+                    GnssSignalConfiguration::GpsSignal::L2C,
+                    GnssSignalConfiguration::GpsSignal::L1CA | GnssSignalConfiguration::GpsSignal::L2C
+                },
+                // GLONASS
+                {
+                    0,
+                    GnssSignalConfiguration::GlonassSignal::L1OF,
+                    GnssSignalConfiguration::GlonassSignal::L2OF,
+                    GnssSignalConfiguration::GlonassSignal::L1OF | GnssSignalConfiguration::GlonassSignal::L2OF
+                },
+                // Galileo
+                {
+                    0,
+                    GnssSignalConfiguration::GalileoSignal::E1,
+                    GnssSignalConfiguration::GalileoSignal::E5B,
+                    GnssSignalConfiguration::GalileoSignal::E1 | GnssSignalConfiguration::GalileoSignal::E5B,
+                },
+                // BeiDou
+                {
+                    0,
+                    GnssSignalConfiguration::BeiDouSignal::B1,
+                    GnssSignalConfiguration::BeiDouSignal::B2,
+                    GnssSignalConfiguration::BeiDouSignal::B1 | GnssSignalConfiguration::BeiDouSignal::B2,
+                }
+            };
+        }
+    }
+
     GeographicSources MipNodeFeatures::supportedDeclinationSources() const
     {
         const MipModel model(nodeInfo().deviceInfo().modelNumber);
