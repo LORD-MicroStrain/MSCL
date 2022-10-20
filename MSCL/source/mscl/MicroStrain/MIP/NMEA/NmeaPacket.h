@@ -92,6 +92,10 @@ namespace mscl
         const size_t size() const { return m_message.size(); }
     };
 
+    //API Typedef: NmeaPackets
+    //    Typedef for a vector of <NmeaPacket> objects.
+    typedef std::vector<NmeaPacket> NmeaPackets;
+
 #ifndef SWIG
     //Struct: NmeaPacketInfo
     //    Contains constants representing information on NMEA Packets

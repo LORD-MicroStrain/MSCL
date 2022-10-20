@@ -31,6 +31,13 @@ namespace mscl
         return m_impl->totalPackets();
     }
 
+    NmeaPackets InertialNode::getNmeaPackets(uint32 timeout, uint32 maxPackets)
+    {
+        NmeaPackets packets;
+        m_impl->getNmeaPackets(packets, timeout, maxPackets);
+        return packets;
+    }
+
     void InertialNode::pollData(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields /*= MipTypes::MipChannelFields()*/)
     {
         m_impl->pollData(dataClass, fields);

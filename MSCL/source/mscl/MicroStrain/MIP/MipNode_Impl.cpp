@@ -10,6 +10,7 @@
 #include "mscl/Utils.h"
 #include "mscl/ScopeHelper.h"
 #include "MipParser.h"
+#include "mscl/MicroStrain/MIP/NMEA/NmeaParser.h"
 #include "MipNodeInfo.h"
 #include "MipNodeFeatures.h"
 #include "Commands/CyclePower.h"
@@ -84,6 +85,9 @@ namespace mscl
 
         //build the parser with the MipNode_Impl's packet collector and response collector
         m_parser.reset(new MipParser(&m_packetCollector, m_responseCollector, &m_rawBytePacketCollector));
+
+        //build the NMEA parser with the MipNode_Impl's packet collector and response collector
+        m_nmeaParser.reset(new NmeaParser(&m_nmeaPacketCollector));
 
         //register the parse function with the connection
         m_connection.registerParser(std::bind(&MipNode_Impl::parseData, this, std::placeholders::_1));
@@ -205,8 +209,16 @@ namespace mscl
 
     void MipNode_Impl::parseData(DataBuffer& data)
     {
+        ReadBufferSavePoint beginData(&data);
+
         //send the readBuffer to the parser to parse all the bytes
         m_parser->parse(data);
+
+        beginData.revert();
+
+        m_nmeaParser->parse(data);
+
+        beginData.commit();
 
         //update InertialNode last comm time
         m_lastCommTime.setTimeNow();
@@ -228,6 +240,14 @@ namespace mscl
         m_connection.throwIfError();
 
         return m_packetCollector.getDataPackets(packets, timeout, maxPackets);
+    }
+
+    void MipNode_Impl::getNmeaPackets(NmeaPackets& packets, uint32 timeout, uint32 maxPackets)//maxPackets=0
+    {
+        //check if a connection error has occurred
+        m_connection.throwIfError();
+
+        return m_nmeaPacketCollector.getPackets(packets, timeout, maxPackets);
     }
 
     void MipNode_Impl::getRawBytePackets(RawBytePackets& packets, uint32 timeout, uint32 maxPackets)//maxPackets=0
