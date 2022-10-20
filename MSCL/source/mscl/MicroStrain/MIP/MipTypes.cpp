@@ -206,6 +206,8 @@ namespace mscl
         
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_TIME_OF_WEEK), "sbasInfo_tow" },
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_WEEK_NUMBER), "sbasInfo_weekNumber" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_SYSTEM_ID), "sbasInfo_system" },
+        { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_SATELLITE_ID), "sbasInfo_satellite" },
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_COUNT), "sbasInfo_count" },
         { ChannelId(CH_FIELD_GNSS_SBAS_INFO, CH_STATUS), "sbasInfo_status" },
 
@@ -971,8 +973,6 @@ namespace mscl
         { GNSS_SATELLITE_ID,       "sat" },
         { GNSS_SIGNAL_ID,          "sig" },
         { AIDING_MEASUREMENT_TYPE, "aidType" },
-        { SBAS_SYSTEM,             "sbasId" },
-        { SBAS_SATELLITE_ID,       "sbasSat" },
         { GNSS_RF_BAND,            "rfBand" }
     });
 
@@ -1060,14 +1060,9 @@ namespace mscl
         { TypeId(GNSS_SIGNAL_ID, BEIDOU_B2Q),  "sig-B2Q" },
         { TypeId(GNSS_SIGNAL_ID, BEIDOU_B2IQ), "sig-B2IQ" },
 
-        { TypeId(SBAS_SYSTEM, WAAS),  "waas" },
-        { TypeId(SBAS_SYSTEM, EGNOS), "egnos" },
-        { TypeId(SBAS_SYSTEM, MSAS),  "msas" },
-        { TypeId(SBAS_SYSTEM, GAGAN), "gagan" },
-
-        { TypeId(GNSS_RF_BAND, RF_BAND_L1), "rf-l1" },
-        { TypeId(GNSS_RF_BAND, RF_BAND_L2), "rf-l2" },
-        { TypeId(GNSS_RF_BAND, RF_BAND_L5), "rf-l5" },
+        { TypeId(GNSS_RF_BAND, RF_BAND_L1), "rf-L1" },
+        { TypeId(GNSS_RF_BAND, RF_BAND_L2), "rf-L2" },
+        { TypeId(GNSS_RF_BAND, RF_BAND_L5), "rf-L5" },
     });
 
     const std::unordered_map<MipChannelIdentifier::SpecifierId, std::string, MipChannelIdentifier::SpecifierIdHash> MipChannelIdentifier::SPECIFIER_NAMES(

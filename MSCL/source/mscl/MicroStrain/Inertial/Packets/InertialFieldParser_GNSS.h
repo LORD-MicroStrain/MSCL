@@ -449,10 +449,14 @@ namespace mscl
         //
         //    TOW_VALID         - 0x01 - Time of Week flag mask
         //    WEEK_NUMBER_VALID - 0x02 - Week Number flag mask
+        //    SYSTEM_VALID      - 0x04 - SBAS System flag mask
+        //    SATELLITE_VALID   - 0x08 - SBAS Satellite flag mask
         //    COUNT_VALID       - 0x10 - Count flag mask
         //    SBAS_STATUS_VALID - 0x20 - SBAS Status flag mask
         static constexpr uint16 TOW_VALID         = 0x01; // Time of Week flag mask
         static constexpr uint16 WEEK_NUMBER_VALID = 0x02; // Week Number flag mask
+        static constexpr uint16 SYSTEM_VALID      = 0x04; // SBAS System flag mask
+        static constexpr uint16 SATELLITE_VALID   = 0x08; // SBAS Satellite flag mask
         static constexpr uint16 COUNT_VALID       = 0x10; // Count flag mask
         static constexpr uint16 SBAS_STATUS_VALID = 0x20; // SBAS Status flag mask
 

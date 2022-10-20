@@ -690,7 +690,24 @@ namespace mscl
             OVERRANGE_PRESSURE    = 0x1000, // Pressure
         };
 
-        //API Enum: SBASInfoStatus
+        //API Enum: SbasSystemIds
+        //  SBAS System identifiers
+        //
+        //      UNKNOWN_SBAS_SYSTEM - 0 - Unknown
+        //      WAAS                - 1 - WAAS
+        //      EGNOS               - 2 - EGNOS
+        //      MSAS                - 3 - MSAS
+        //      GAGAN               - 4 - GAGAN
+        enum SbasSystemIds
+        {
+            UNKNOWN_SBAS_SYSTEM = 0,
+            WAAS = 1,
+            EGNOS = 2,
+            MSAS = 3,
+            GAGAN = 4
+        };
+        
+        //API Enum: SbasInfoStatus
         //  Bitmasks for interpreting the SBAS Info (0x81,0x12) status bitfield
         //
         //      SBAS_INFO_RANGE_AVAILABLE       - 0x01 - Range Available

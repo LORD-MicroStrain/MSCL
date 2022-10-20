@@ -343,6 +343,14 @@ public class InertialTypes : global::System.IDisposable {
     OVERRANGE_PRESSURE = 0x1000
   }
 
+  public enum SbasSystemIds {
+    UNKNOWN_SBAS_SYSTEM = 0,
+    WAAS = 1,
+    EGNOS = 2,
+    MSAS = 3,
+    GAGAN = 4
+  }
+
   public enum SbasInfoStatus {
     SBAS_INFO_RANGE_AVAILABLE = 0x01,
     SBAS_INFO_CORRECTIONS_AVAILABLE = 0x02,
