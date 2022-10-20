@@ -203,8 +203,8 @@ namespace mscl
                 //    to pick them up and move on.
                 if(!findPacketInBytes(pendingData))
                 {
-                    //we didn't find a packet within this, so return from this function as we need to wait for more data
-                    return;
+                    //we didn't find a packet within this, so break out of this loop as we need to wait for more data
+                    break;
                 }
 
                 size_t position = pendingData.readPosition();
@@ -234,7 +234,6 @@ namespace mscl
             }
         }
 
-
         // ensure we're not holding on to more data than the max packet size
         int trimBytes = static_cast<int>(pendingData.bytesRemaining()) - MipPacketInfo::MIP_MAX_PACKET_SIZE;
         trimBytes = trimBytes < 0 ? 0 : trimBytes;
@@ -242,6 +241,9 @@ namespace mscl
 
         // throw out data that's no longer needed
         pendingData.shiftExtraToStart();
+
+        // resize pending ByteStream to only hold onto data that's still relevant
+        m_pendingData.resize(pendingData.bytesRemaining());
     }
 
     void MipParser::addRawBytePacket(Bytes& rawBytePacket, bool valid = true, bool packetFound = true) 

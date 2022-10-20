@@ -64,6 +64,68 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_noData)
     BOOST_CHECK_EQUAL(node.getDataPackets().size(), 0);
 }
 
+BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_incompletePacket)
+{
+    std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
+    Connection conn(connImpl);
+
+    //create the InertialNode object
+    InertialNode node(conn);
+
+    ByteStream bytes;
+    ByteStream partialPkt;
+
+    //add bytes to the ByteStream
+    bytes.append_uint16(0x7565);        //start of packet bytes
+    bytes.append_uint16(0x800E);        //descriptor set / payload len
+    bytes.append_uint16(0x0E01);        //field length / field descriptor
+    bytes.append_uint32(0x3F9DF3B6);    //Accel 1 float
+    bytes.append_uint32(0x00000000);    //Accel 2 float
+    bytes.append_uint32(0x00000000);    //Accel 3 float
+    bytes.append_uint16(bytes.calculateFletcherChecksum(0, 17));
+
+    //add bytes to the ByteStream
+    bytes.append_uint16(0x7565);        //start of packet bytes
+    bytes.append_uint16(0x800E);        //descriptor set / payload len
+
+    //add copy to partialPkt for checksum calculation
+    partialPkt.append_uint16(0x7565);        //start of packet bytes
+    partialPkt.append_uint16(0x800E);        //descriptor set / payload len
+
+    connImpl->setResponseBytes(bytes);
+
+    //force parsing of the bytes we just set
+    connImpl->parseNextResponse();
+
+    BOOST_CHECK_EQUAL(node.totalPackets(), 1);
+
+    bytes.empty();
+    bytes.clear();
+    bytes.append_uint16(0x0E01);        //field length / field descriptor
+    bytes.append_uint32(0x00000000);    //Accel 1 float
+    bytes.append_uint32(0x00000000);    //Accel 2 float
+    bytes.append_uint32(0x3F9DF3B6);    //Accel 3 float
+    
+    //add copy to partialPkt for checksum calculation
+    partialPkt.append_uint16(0x0E01);        //field length / field descriptor
+    partialPkt.append_uint32(0x00000000);    //Accel 1 float
+    partialPkt.append_uint32(0x00000000);    //Accel 2 float
+    partialPkt.append_uint32(0x3F9DF3B6);    //Accel 3 float
+
+    bytes.append_uint16(partialPkt.calculateFletcherChecksum(0, 17));
+
+    connImpl->setResponseBytes(bytes);
+
+    //force parsing of the bytes we just set
+    connImpl->parseNextResponse();
+
+    BOOST_CHECK_EQUAL(node.totalPackets(), 2);
+
+    MipDataPackets pkts = node.getDataPackets();
+    BOOST_CHECK_EQUAL(pkts.at(0).descriptorSet(), 0x80);
+    BOOST_CHECK_EQUAL(pkts.at(1).descriptorSet(), 0x80);
+}
+
 BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_success)
 {
     std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);

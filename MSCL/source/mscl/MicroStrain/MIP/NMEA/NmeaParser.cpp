@@ -104,6 +104,9 @@ namespace mscl
 
         // throw out data that's no longer needed
         pendingData.shiftExtraToStart();
+
+        // resize pending ByteStream to only hold onto data that's still relevant
+        m_pendingData.resize(pendingData.bytesRemaining());
     }
 
     NmeaParserResult NmeaParser::parseAsPacket(DataBuffer& data, NmeaPacket& packet)
