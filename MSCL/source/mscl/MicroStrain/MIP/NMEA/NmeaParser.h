@@ -8,6 +8,7 @@
 
 #include "mscl/Types.h"
 #include "NmeaPacket.h"
+#include "mscl/MicroStrain/DataBuffer.h"
 #include <memory>
 
 namespace mscl
@@ -51,6 +52,10 @@ namespace mscl
         //Variable: m_packetCollector
         //    The <NmeaPacketCollector> associated with this parser and its parent device
         NmeaPacketCollector* m_packetCollector;
+
+        //Variable: m_pendingData
+        //    Holds any data that needs to be carried over between calls (partial packets)
+        ByteStream m_pendingData;
 
     private:
         //Function: processPacket

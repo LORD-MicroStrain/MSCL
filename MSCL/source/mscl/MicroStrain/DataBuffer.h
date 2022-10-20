@@ -311,6 +311,14 @@ namespace mscl
         //Returns:
         //  A <Bytes> container.
         Bytes bytesToRead(std::size_t startPos, std::size_t size) const;
+
+        //Function: copyBytesTo
+        //  Copies the underlying bytes in this DataBuffer from the read position to the appendPosition to the specified DataBuffer.
+        void copyBytesTo(ByteStream& copyTo);
+
+        //Function: copyBytesTo
+        //  Copies the underlying bytes in this DataBuffer from the given start position, for the given size to the specified DataBuffer.
+        void copyBytesTo(ByteStream& copyTo, std::size_t startPos, std::size_t size);
     };
 
     //Class: ReadBufferSavePoint

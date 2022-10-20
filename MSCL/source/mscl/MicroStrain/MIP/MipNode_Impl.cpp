@@ -211,7 +211,8 @@ namespace mscl
         //update InertialNode last comm time
         m_lastCommTime.setTimeNow();
 
-        //shift any extra bytes that weren't parsed, back to the front of the buffer
+        //shift out all bytes, parsers hold onto copies of whatever they need
+        data.skipBytes(data.bytesRemaining());
         std::size_t bytesShifted = data.shiftExtraToStart();
 
         if(bytesShifted > 0)

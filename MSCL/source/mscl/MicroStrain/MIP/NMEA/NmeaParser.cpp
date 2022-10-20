@@ -9,8 +9,6 @@
 
 #include "mscl/Utils.h"
 #include "NmeaPacketCollector.h"
-#include "mscl/MicroStrain/DataBuffer.h"
-#include "mscl/MicroStrain/ChecksumBuilder.h"
 
 namespace mscl
 {
@@ -40,61 +38,79 @@ namespace mscl
 
     void NmeaParser::parse(DataBuffer& data)
     {
-        NmeaParserResult parseResult;    //holds the result of verifying whether it was a valid packet or not
-        NmeaPacket packet;
+        data.copyBytesTo(m_pendingData);
+
+        DataBuffer pendingData(m_pendingData);
 
         //while there is more data to be read in the DataBuffer
-        while(data.moreToRead())
+        while(pendingData.moreToRead())
         {
             //read the next byte (doesn't move data's read position)
-            uint8 currentByte = data.peekByte();
+            uint8 currentByte = pendingData.peekByte();
+
+            size_t advanceBytes = 1;
 
             //if this is a NMEA Start of Packet byte 
             if(isNmeaStartByte(currentByte))
             {
-                mscl::ReadBufferSavePoint savePoint(&data);
+                mscl::ReadBufferSavePoint savePoint(&pendingData);
                 
                 //check if the packet is a valid NMEA packet, starting at this byte
-                parseResult = parseAsPacket(data, packet);
+                NmeaPacket packet;
+                NmeaParserResult parseResult = parseAsPacket(pendingData, packet);
 
                 // revert read cursor to start of packet
                 savePoint.revert();
 
                 //check the result of the parseAsPacket command
+                bool continueParsing = true;
                 switch(parseResult)
                 {
                     //good packet, process it and then look for the next
                     case NmeaParserResult_completePacket:
+                        processPacket(packet);
 
                         // advance cursor to end of packet
-                        data.skipBytes(packet.size());
-
-                        processPacket(packet);
-                        continue;
-
-                    //somethings incorrect in the packet, move past this start byte and start looking for the next packet
-                    case NmeaParserResult_invalidPacket:
-                    case NmeaParserResult_badChecksum:
-                        // advance cursor to next byte
-                        data.read_uint8();
+                        advanceBytes = packet.size();
                         break;
 
                     //ran out of data, return and wait for more
                     case NmeaParserResult_notEnoughData:
-                        return;
+                        continueParsing = false;
+                        break;
+
+                    //somethings incorrect in the packet, move past this start byte and start looking for the next packet
+                    case NmeaParserResult_invalidPacket:
+                    case NmeaParserResult_badChecksum:
                         break;
 
                     default:
                         assert(false);    //unhandled verifyResult, need to add a case for it
                 }
+
+                if (!continueParsing)
+                {
+                    break;
+                }
             }
+
+            pendingData.skipBytes(advanceBytes);
         }
+
+        // ensure we're not holding on to more data than the max packet size
+        int trimBytes = static_cast<int>(pendingData.bytesRemaining()) - NmeaPacketInfo::NMEA_MAX_PACKET_SIZE;
+        trimBytes = trimBytes < 0 ? 0 : trimBytes;
+        pendingData.skipBytes(static_cast<size_t>(trimBytes));
+
+        // throw out data that's no longer needed
+        pendingData.shiftExtraToStart();
     }
 
     NmeaParserResult NmeaParser::parseAsPacket(DataBuffer& data, NmeaPacket& packet)
     {
         // store packet start index
         const size_t startPacketIndex = data.readPosition();
+        const size_t endBufferIndex = data.appendPosition();
 
         //read the first byte
         uint8 startOfPacket = data.read_uint8();
@@ -118,11 +134,19 @@ namespace mscl
             return NmeaParserResult_notEnoughData;
         }
 
-        // check if end of packet indicator (\r\n) occurs before end of read buffer
-        const size_t endPacketIndex = data.find_uint16(NmeaPacketInfo::NMEA_END_OF_PACKET);
-        if (endPacketIndex >= data.appendPosition())
+        // check if end of packet indicator (\r\n) occurs within packet size limit
+        size_t maxIndex = data.readPosition() + NmeaPacketInfo::NMEA_MAX_PACKET_SIZE;
+        maxIndex = maxIndex <= endBufferIndex ? maxIndex : endBufferIndex;
+        const size_t endPacketIndex = data.find_uint16(NmeaPacketInfo::NMEA_END_OF_PACKET, maxIndex);
+        if (endPacketIndex >= maxIndex)
         {
-            //Not Enough Data to tell if valid packet
+            // if maxIndex is within bytes remaining in buffer but indicator not found, invalid packet
+            if (maxIndex < endBufferIndex)
+            {
+                return NmeaParserResult_invalidPacket;
+            }
+
+            // Not Enough Data to tell if valid packet
             return NmeaParserResult_notEnoughData;
         }
 

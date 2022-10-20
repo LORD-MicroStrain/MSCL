@@ -109,7 +109,7 @@ namespace mscl
         {
             NMEA_START_OF_PACKET        = '$',
             NMEA_START_OF_PACKET_ALT    = '!',
-            NMEA_END_OF_PACKET          = ('\r' << 8) + '\n',
+            NMEA_END_OF_PACKET          = 0x0D0A, // "\r\n"
             NMEA_DATA_START_DELIM       = ',', // before first instance is header info, ',' delimiter used throughout message
             NMEA_CHECKSUM_DELIM         = '*',
             NMEA_PROPRIETARY_INDICATOR  = 'P'
@@ -117,11 +117,13 @@ namespace mscl
 
         //=====================================================================================================
         //Enum: NMEA Packet Information
+        //  NMEA_MAX_PACKET_SIZE             - 82      - The maximum number of bytes a NMEA message can have (including start, checksum, end bytes)
         //  NMEA_MIN_PACKET_SIZE             - 8        - The minimum number of bytes to make a valid NMEA packet
         //  NMEA_TALKER_ID_LEN               - 2        - Talker ID length ONLY IF NOT PROPRIETY (first char 'P')
         //=====================================================================================================
         enum
         {
+            NMEA_MAX_PACKET_SIZE    = 82,
             NMEA_MIN_PACKET_SIZE    = 8,
             NMEA_TALKER_ID_LEN      = 2, // ONLY IF NOT PROPRIETY (first char 'P')
         };
