@@ -131,7 +131,7 @@ namespace mscl
     BaseStation_Impl::~BaseStation_Impl()
     {
         //unregister the parse functions with the connection, which stops the IO Thread
-        m_connection.clearParsers();
+        m_connection.unregisterParser();
     }
 
     void BaseStation_Impl::determineProtocols() const

@@ -103,9 +103,9 @@ namespace mscl
         //    The <BufferWriter> used to write bytes to the <DataBuffer>
         BufferWriter m_bufferWriter;
 
-        //Variable: m_parseDataFunctions
-        //    The vector of functions to send all the read in data to. If empty, the data will be thrown out.
-        std::vector<std::function<void(DataBuffer&)>> m_parseDataFunctions;
+        //Variable: m_parseDataFunction
+        //    The function to send all the read in data to. If null, the data will be thrown out.
+        std::function<void(DataBuffer&)> m_parseDataFunction;
 
         //Variable: m_debugDataFunction
         //  The function to send a copy of the data to for debug logging. If null, the data will not be sent to it.
@@ -165,16 +165,12 @@ namespace mscl
         //    Stops the current boost::asio::io_context due to an error
         void stopIoServiceError(int errorCode);
 
-        //Function: registerParseFunction
-        //    Registers a function to be called when data is read in.
+        //Function: setParseFunction
+        //    Sets the function to be called when data is read in.
         //
         //Parameters:
-        //    fn - The function to set as the parser function. Does nothing if nullptr.
-        void registerParseFunction(std::function<void(DataBuffer&)> fn);
-
-        //Function: clearParseFunctions
-        //    Unregisters and removes all parse functions.
-        void clearParseFunctions();
+        //    fn - The function to set as the parser function.
+        void setParseFunction(std::function<void(DataBuffer&)> fn);
 
         //Function: enableDebugMode
         //  Enables debug mode by setting the debug parsing function.
@@ -196,6 +192,7 @@ namespace mscl
         m_ioContext(std::move(ioContext)),
         m_readBuffer(1024 * 1000),
         m_bufferWriter(m_readBuffer.getBufferWriter()),
+        m_parseDataFunction(nullptr),
         m_debugDataFunction(nullptr)
     {
     }
@@ -254,26 +251,12 @@ namespace mscl
     }
 
     template <typename IO_Object>
-    void BoostCommunication<IO_Object>::registerParseFunction(std::function<void(DataBuffer&)> fn)
+    void BoostCommunication<IO_Object>::setParseFunction(std::function<void(DataBuffer&)> fn)
     {
         //for thread safety
         rec_mutex_lock_guard lock(m_parseFunctionMutex);
 
-        if (fn == nullptr)
-        {
-            return;
-        }
-
-        m_parseDataFunctions.push_back(fn);
-    }
-
-    template <typename IO_Object>
-    void BoostCommunication<IO_Object>::clearParseFunctions()
-    {
-        //for thread safety
-        rec_mutex_lock_guard lock(m_parseFunctionMutex);
-
-        m_parseDataFunctions.clear();
+        m_parseDataFunction = fn;
     }
 
     template <typename IO_Object>
@@ -358,7 +341,7 @@ namespace mscl
 
             std::size_t appendPos = m_readBuffer.appendPosition();
 
-            if(m_debugDataFunction || !m_parseDataFunctions.empty())
+            if(m_debugDataFunction || m_parseDataFunction)
             {
                 //commit any bytes that were read
                 m_bufferWriter.commit(bytes_transferred);
@@ -370,10 +353,10 @@ namespace mscl
                 m_debugDataFunction(m_readBuffer.bytesToRead(appendPos, bytes_transferred), true);
             }
 
-            for(auto parser : m_parseDataFunctions)
+            if(m_parseDataFunction)
             {
                 //call the parseFunction to parse any data
-                parser(m_readBuffer);
+                m_parseDataFunction(m_readBuffer);
             }
 
             //get a new BufferWriter from the current read buffer

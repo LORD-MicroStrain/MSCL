@@ -80,9 +80,9 @@ namespace mscl
         //    - <Error_Connection>: The connection is already in use.
         virtual void registerParser(std::function<void(DataBuffer&)> parseFunction) = 0;
 
-        //Function: clearParsers
-        //    Clears all parse functions that handle the parsing of data when it is read in
-        virtual void clearParsers() = 0;
+        //Function: unregisterParser
+        //    Unregisters the function to handle the parsing of data when it is read in
+        virtual void unregisterParser() = 0;
 
         //Function: throwIfError
         //    Throws an exception if a connection error has occurred.
@@ -237,9 +237,9 @@ namespace mscl
         //    true if the connection has been established, false otherwise.
         bool m_established;
 
-        //Variable: m_parseFunctions
-        //    The functions to call to parse data that is read in.
-        std::vector<std::function<void(DataBuffer&)>> m_parseFunctions;
+        //Variable: m_parseFunction
+        //    The function to call to parse data that is read in.
+        std::function<void(DataBuffer&)> m_parseFunction;
 
         //Variable: m_type
         //  The <Connection::ConnectionType> of this connection.
@@ -295,10 +295,6 @@ namespace mscl
         //    Initializes and opens the current connection.
         virtual void establishConnection() = 0;
 
-        //Function: reenableParsers
-        //    Re-enable registered parsers
-        void reenableParsers();
-
     public:
         //Function: description
         //    Gets a description of the connection as a string.
@@ -329,18 +325,16 @@ namespace mscl
         //Function: registerParser
         //    Registers a function to handle the parsing of data when it is read in.
         //
-        //    Note: Be careful not to register duplicates, this function does not check for that.
-        //
         //Parameters:
         //    parseFunction - The function to call to parse data that is read in.
         //
         //Exceptions:
-        //    - <Error>: provided parser is null or has already been registered.
+        //    - <Error>: a data parsing function has already been registered.
         virtual void registerParser(std::function<void(DataBuffer&)> parseFunction) final;
 
-        //Function: clearParsers
-        //    Unregisters and clears all parsers.
-        virtual void clearParsers() final;
+        //Function: unregisterParser
+        //    Unregisters the function to handle the parsing of data when it is read in.
+        virtual void unregisterParser() final;
 
         //Function: throwIfError
         //    Throws an exception if a connection error has occurred.
@@ -470,6 +464,7 @@ namespace mscl
     template <typename Comm_Object>
     Connection_Impl<Comm_Object>::Connection_Impl():
         m_established(false),
+        m_parseFunction(nullptr),
         m_rawByteBuffer(1024 * 1000),
         m_debugDataBuffer(5000),
         m_connectionError(false),
@@ -590,20 +585,15 @@ namespace mscl
     }
 
     template <typename Comm_Object>
-    void Connection_Impl<Comm_Object>::reenableParsers()
-    {
-        //if parse functions already exist, re-register them
-        for (auto parser : m_parseFunctions)
-        {
-            m_comm->registerParseFunction(parser);
-        }
-    }
-
-    template <typename Comm_Object>
     void Connection_Impl<Comm_Object>::reconnect()
     {
         establishConnection();
-        reenableParsers();
+
+        //if a parse function already exists
+        if(m_parseFunction)
+        {
+            m_comm->setParseFunction(m_parseFunction);
+        }
 
         m_connectionError = false;
     }
@@ -611,10 +601,11 @@ namespace mscl
     template <typename Comm_Object>
     void Connection_Impl<Comm_Object>::registerParser(std::function<void(DataBuffer&)> parseFunction)
     {
-        // if parse function is null, throw exception
-        if (parseFunction == nullptr)
+        //if the parse function isn't empty (already has been registered)
+        if(m_parseFunction)
         {
-            throw Error_Connection("Cannot register null parser.");
+            //throw an exception
+            throw Error_Connection("The Connection is already in use.");
         }
 
         //if the comm object is invalid
@@ -623,20 +614,25 @@ namespace mscl
             throw Error_Connection();
         }
 
-        //add the parser function
-        m_parseFunctions.push_back(parseFunction);
+        //set the parser function to the passed in function
+        m_parseFunction = parseFunction;
 
         if(!m_rawByteMode)
         {
-            m_comm->registerParseFunction(parseFunction);
+            m_comm->setParseFunction(m_parseFunction);
         }
     }
 
     template <typename Comm_Object>
-    void Connection_Impl<Comm_Object>::clearParsers()
+    void Connection_Impl<Comm_Object>::unregisterParser()
     {
-        m_parseFunctions.clear();
-        m_comm->clearParseFunctions();
+        //set the parser function to empty
+        m_parseFunction = nullptr;
+
+        if(!m_rawByteMode && m_comm)
+        {
+            m_comm->setParseFunction(nullptr);
+        }
     }
 
     template <typename Comm_Object>
@@ -699,21 +695,15 @@ namespace mscl
         //if we are enabling raw byte mode
         if(enable)
         {
-            //clear currently registered parsers
-            m_comm->clearParseFunctions();
-
             //set the comm parse function to the collectRawData function
-            m_comm->registerParseFunction(std::bind(&Connection_Impl::collectRawData, this, std::placeholders::_1));
+            m_comm->setParseFunction(std::bind(&Connection_Impl::collectRawData, this, std::placeholders::_1));
 
             m_rawByteMode = true;
         }
         else
         {
-            //clear currently registered parsers
-            m_comm->clearParseFunctions();
-
-            //re-registers normal operation parsers
-            reenableParsers();
+            //set the comm parse function back to the previous parse function (sets to null if none)
+            m_comm->setParseFunction(m_parseFunction);
 
             m_rawByteMode = false;
         }

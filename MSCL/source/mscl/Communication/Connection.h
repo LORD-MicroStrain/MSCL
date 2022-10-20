@@ -156,9 +156,9 @@ namespace mscl
         //    - <Error_Connection>: The connection is already in use.
         void registerParser(std::function<void(DataBuffer&)> parseFunction);
 
-        //Function: clearParsers
-        //    Unregisters the functions to handle the parsing of data when it is read in.
-        void clearParsers();
+        //Function: unregisterParser
+        //    Unregisters the function to handle the parsing of data when it is read in.
+        void unregisterParser();
 
         //Function: write
         //    Writes the specified bytes.
