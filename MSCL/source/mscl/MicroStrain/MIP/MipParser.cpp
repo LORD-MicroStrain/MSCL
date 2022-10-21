@@ -243,6 +243,7 @@ namespace mscl
         pendingData.shiftExtraToStart();
 
         // resize pending ByteStream to only hold onto data that's still relevant
+        m_pendingData = ByteStream(pendingData.bytesToRead());
         m_pendingData.resize(pendingData.bytesRemaining());
     }
 

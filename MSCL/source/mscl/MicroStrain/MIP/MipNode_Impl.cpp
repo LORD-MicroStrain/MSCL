@@ -73,7 +73,8 @@ namespace mscl
         m_sensorRateBase(0),
         m_gnssRateBase(0),
         m_estfilterRateBase(0),
-        m_lastDeviceState(deviceState_unknown)
+        m_lastDeviceState(deviceState_unknown),
+        m_parseNmea(false)
     {
         //create the response collector
         m_responseCollector.reset(new ResponseCollector);
@@ -214,11 +215,13 @@ namespace mscl
         //send the readBuffer to the parser to parse all the bytes
         m_parser->parse(data);
 
-        beginData.revert();
-
-        m_nmeaParser->parse(data);
-
-        beginData.commit();
+        if (m_parseNmea)
+        {
+            // set back to beginning of data and run through NMEA parser
+            beginData.revert();
+            m_nmeaParser->parse(data);
+            beginData.commit();
+        }
 
         //update InertialNode last comm time
         m_lastCommTime.setTimeNow();
@@ -261,6 +264,11 @@ namespace mscl
     uint32 MipNode_Impl::totalPackets()
     {
         return m_packetCollector.totalPackets();
+    }
+
+    void MipNode_Impl::enableNmeaParsing(bool enable)
+    {
+        m_parseNmea = enable;
     }
 
     void MipNode_Impl::timeout(uint64 timeout)

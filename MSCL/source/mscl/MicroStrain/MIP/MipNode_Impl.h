@@ -87,6 +87,10 @@ namespace mscl
         //    The <NmeaParser> in charge of parsing all incoming data to this device
         std::unique_ptr<NmeaParser> m_nmeaParser;
 
+        //Variable: m_parseNmea
+        //    Indicates whether connection output should be run through the NMEA parser
+        bool m_parseNmea;
+
         //Variable: m_commandsTimeout
         //    The timeout to use for MIP commands
         uint64 m_commandsTimeout;
@@ -287,6 +291,13 @@ namespace mscl
         //Returns:
         //    The total number of data packets that are currently in the buffer.
         uint32 totalPackets();
+
+        //Function: enableNmeaParsing
+        //    Enables/disables NMEA parsing on device output.
+        //
+        //Parameters:
+        //    enable - default true - enables NMEA parsing if true, disables if false
+        void enableNmeaParsing(bool enable = true);
 
         //Function: timeout
         //    Sets the timeout to use when waiting for responses from commands.

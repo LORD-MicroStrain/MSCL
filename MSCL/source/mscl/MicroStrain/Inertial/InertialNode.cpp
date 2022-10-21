@@ -38,6 +38,11 @@ namespace mscl
         return packets;
     }
 
+    void InertialNode::enableNmeaParsing(bool enable)
+    {
+        m_impl->enableNmeaParsing(enable);
+    }
+
     void InertialNode::pollData(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields /*= MipTypes::MipChannelFields()*/)
     {
         m_impl->pollData(dataClass, fields);

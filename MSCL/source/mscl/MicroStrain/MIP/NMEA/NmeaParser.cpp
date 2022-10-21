@@ -106,6 +106,7 @@ namespace mscl
         pendingData.shiftExtraToStart();
 
         // resize pending ByteStream to only hold onto data that's still relevant
+        m_pendingData = ByteStream(pendingData.bytesToRead());
         m_pendingData.resize(pendingData.bytesRemaining());
     }
 
@@ -129,7 +130,7 @@ namespace mscl
             //Invalid Packet
             return NmeaParserResult_invalidPacket;
         }
-        
+
         //make sure we have enough bytes to even be a NMEA packet
         if(data.bytesRemaining() < NmeaPacketInfo::NMEA_MIN_PACKET_SIZE)
         {
@@ -151,6 +152,12 @@ namespace mscl
 
             // Not Enough Data to tell if valid packet
             return NmeaParserResult_notEnoughData;
+        }
+
+        // if another '$' is found before end of packet, it's invalid
+        if (data.find_uint8(NmeaPacketInfo::NMEA_START_OF_PACKET, endPacketIndex) < endPacketIndex)
+        {
+            return NmeaParserResult_invalidPacket;
         }
 
         // check for checksum indicator, invalid if not present
@@ -233,8 +240,8 @@ namespace mscl
 
         /////////// Finalize ///////////
 
-        // add two to total length to include end bytes (\r\n)
-        packet.message(data.bytesToRead(startPacketIndex, (endPacketIndex - startPacketIndex) + 2));
+        // add one to length to include second end byte (\r\n)
+        packet.message(data.bytesToRead(startPacketIndex, (endPacketIndex - startPacketIndex) + 1));
         packet.talkerId(talkerId);
         packet.sentenceType(sentenceType);
 

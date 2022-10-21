@@ -289,7 +289,7 @@ namespace mscl
         size_t index;
         for (index = readPosition(); index < stopIndex; index++)
         {
-            if (find == m_data.read_uint16(index))
+            if (find == m_data.read_uint8(index))
             {
                 break;
             }

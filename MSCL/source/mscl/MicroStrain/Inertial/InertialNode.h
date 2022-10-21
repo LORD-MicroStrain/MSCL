@@ -61,7 +61,7 @@ namespace mscl
         //    The total number of data packets that are currently in the buffer.
         uint32 totalPackets();
 
-        //Function: getNmeaPackets
+        //API Function: getNmeaPackets
         //    Gets up to the requested amount of NMEA packets that have been collected.
         //
         //Parameters:
@@ -72,6 +72,13 @@ namespace mscl
         //Exceptions:
         //    - <Error_Connection>: A connection error has occurred with the Node.
         NmeaPackets getNmeaPackets(uint32 timeout = 0, uint32 maxPackets = 0);
+
+        //API Function: enableNmeaParsing
+        //    Enables/disables NMEA parsing on device output.
+        //
+        //Parameters:
+        //    enable - default true - enables NMEA parsing if true, disables if false
+        void enableNmeaParsing(bool enable = true);
 
         //API Function: pollData
         //  Polls the device for a message with the specified fields, for the specified data class.

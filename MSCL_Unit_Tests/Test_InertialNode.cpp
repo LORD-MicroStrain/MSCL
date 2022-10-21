@@ -64,68 +64,6 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_noData)
     BOOST_CHECK_EQUAL(node.getDataPackets().size(), 0);
 }
 
-BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_incompletePacket)
-{
-    std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
-    Connection conn(connImpl);
-
-    //create the InertialNode object
-    InertialNode node(conn);
-
-    ByteStream bytes;
-    ByteStream partialPkt;
-
-    //add bytes to the ByteStream
-    bytes.append_uint16(0x7565);        //start of packet bytes
-    bytes.append_uint16(0x800E);        //descriptor set / payload len
-    bytes.append_uint16(0x0E01);        //field length / field descriptor
-    bytes.append_uint32(0x3F9DF3B6);    //Accel 1 float
-    bytes.append_uint32(0x00000000);    //Accel 2 float
-    bytes.append_uint32(0x00000000);    //Accel 3 float
-    bytes.append_uint16(bytes.calculateFletcherChecksum(0, 17));
-
-    //add bytes to the ByteStream
-    bytes.append_uint16(0x7565);        //start of packet bytes
-    bytes.append_uint16(0x800E);        //descriptor set / payload len
-
-    //add copy to partialPkt for checksum calculation
-    partialPkt.append_uint16(0x7565);        //start of packet bytes
-    partialPkt.append_uint16(0x800E);        //descriptor set / payload len
-
-    connImpl->setResponseBytes(bytes);
-
-    //force parsing of the bytes we just set
-    connImpl->parseNextResponse();
-
-    BOOST_CHECK_EQUAL(node.totalPackets(), 1);
-
-    bytes.empty();
-    bytes.clear();
-    bytes.append_uint16(0x0E01);        //field length / field descriptor
-    bytes.append_uint32(0x00000000);    //Accel 1 float
-    bytes.append_uint32(0x00000000);    //Accel 2 float
-    bytes.append_uint32(0x3F9DF3B6);    //Accel 3 float
-    
-    //add copy to partialPkt for checksum calculation
-    partialPkt.append_uint16(0x0E01);        //field length / field descriptor
-    partialPkt.append_uint32(0x00000000);    //Accel 1 float
-    partialPkt.append_uint32(0x00000000);    //Accel 2 float
-    partialPkt.append_uint32(0x3F9DF3B6);    //Accel 3 float
-
-    bytes.append_uint16(partialPkt.calculateFletcherChecksum(0, 17));
-
-    connImpl->setResponseBytes(bytes);
-
-    //force parsing of the bytes we just set
-    connImpl->parseNextResponse();
-
-    BOOST_CHECK_EQUAL(node.totalPackets(), 2);
-
-    MipDataPackets pkts = node.getDataPackets();
-    BOOST_CHECK_EQUAL(pkts.at(0).descriptorSet(), 0x80);
-    BOOST_CHECK_EQUAL(pkts.at(1).descriptorSet(), 0x80);
-}
-
 BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_success)
 {
     std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
@@ -161,6 +99,551 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_success)
 
     BOOST_CHECK_EQUAL(node.totalPackets(), 2);
     BOOST_CHECK_EQUAL(node.getDataPackets().at(0).descriptorSet(), 0x80);
+}
+
+BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_incompletePacket)
+{
+    std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
+    Connection conn(connImpl);
+
+    //create the InertialNode object
+    InertialNode node(conn);
+
+    ByteStream bytes;
+    ByteStream partialPkt;
+
+    //add bytes to the ByteStream
+    bytes.append_uint16(0x7565);        //start of packet bytes
+    bytes.append_uint16(0x800E);        //descriptor set / payload len
+    bytes.append_uint16(0x0E01);        //field length / field descriptor
+    bytes.append_uint32(0x3F9DF3B6);    //Accel 1 float
+    bytes.append_uint32(0x00000000);    //Accel 2 float
+    bytes.append_uint32(0x00000000);    //Accel 3 float
+    bytes.append_uint16(bytes.calculateFletcherChecksum(0, 17));
+
+    //add bytes to the ByteStream
+    bytes.append_uint16(0x7565);        //start of packet bytes
+    bytes.append_uint16(0x820E);        //descriptor set / payload len
+
+    //add copy to partialPkt for checksum calculation
+    partialPkt.append_uint16(0x7565);        //start of packet bytes
+    partialPkt.append_uint16(0x820E);        //descriptor set / payload len
+
+    connImpl->setResponseBytes(bytes);
+
+    //force parsing of the bytes we just set
+    connImpl->parseNextResponse();
+
+    BOOST_CHECK_EQUAL(node.totalPackets(), 1);
+
+    bytes.empty();
+    bytes.clear();
+    bytes.append_uint16(0x0E01);        //field length / field descriptor
+    bytes.append_uint32(0x00000000);    //Accel 1 float
+    bytes.append_uint32(0x00000000);    //Accel 2 float
+    bytes.append_uint32(0x3F9DF3B6);    //Accel 3 float
+    
+    //add copy to partialPkt for checksum calculation
+    partialPkt.append_uint16(0x0E01);        //field length / field descriptor
+    partialPkt.append_uint32(0x00000000);    //Accel 1 float
+    partialPkt.append_uint32(0x00000000);    //Accel 2 float
+    partialPkt.append_uint32(0x3F9DF3B6);    //Accel 3 float
+
+    bytes.append_uint16(partialPkt.calculateFletcherChecksum(0, 17));
+
+    connImpl->setResponseBytes(bytes);
+
+    //force parsing of the bytes we just set
+    connImpl->parseNextResponse();
+
+    BOOST_CHECK_EQUAL(node.totalPackets(), 2);
+
+    MipDataPackets pkts = node.getDataPackets();
+    BOOST_CHECK_EQUAL(pkts.at(0).descriptorSet(), 0x80);
+    BOOST_CHECK_EQUAL(pkts.at(1).descriptorSet(), 0x82);
+}
+
+BOOST_AUTO_TEST_CASE(InertialNode_getNmeaPackets_noData)
+{
+    std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
+    Connection conn(connImpl);
+
+    //create the InertialNode object
+    InertialNode node(conn);
+
+    // enable NMEA parsing
+    node.enableNmeaParsing();
+
+    //check that there is no data to get
+    BOOST_CHECK_EQUAL(node.getNmeaPackets().size(), 0);
+}
+
+BOOST_AUTO_TEST_CASE(InertialNode_getNmeaPackets_success)
+{
+    std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
+    Connection conn(connImpl);
+
+    //create the InertialNode object
+    InertialNode node(conn);
+
+    // enable NMEA parsing
+    node.enableNmeaParsing();
+
+    ByteStream bytes;
+
+    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38";
+    for (char c : pkt)
+    {
+        bytes.append_uint8(c);
+    }
+
+    bytes.append_uint16(0x0D0A);        //end of packet
+
+    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46";
+    for (char c : pkt)
+    {
+        bytes.append_uint8(c);
+    }
+
+    bytes.append_uint16(0x0D0A);        //end of packet
+
+    connImpl->setResponseBytes(bytes);
+
+    //force parsing of the bytes we just set
+    connImpl->parseNextResponse();
+
+    // no MIP data found
+    BOOST_CHECK_EQUAL(node.totalPackets(), 0);
+
+    NmeaPackets pkts = node.getNmeaPackets();
+    BOOST_CHECK_EQUAL(pkts.size(), 2);
+    BOOST_CHECK_EQUAL(pkts.at(0).talkerId(), "P");
+    BOOST_CHECK_EQUAL(pkts.at(0).sentenceType(), "PKRR");
+    BOOST_CHECK_EQUAL(pkts.at(1).talkerId(), "GP");
+    BOOST_CHECK_EQUAL(pkts.at(1).sentenceType(), "GSV");
+}
+
+BOOST_AUTO_TEST_CASE(InertialNode_getNmeaPackets_valid_parserDisabled)
+{
+    std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
+    Connection conn(connImpl);
+
+    //create the InertialNode object
+    InertialNode node(conn);
+
+    ByteStream bytes;
+
+    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38";
+    for (char c : pkt)
+    {
+        bytes.append_uint8(c);
+    }
+
+    bytes.append_uint16(0x0D0A);        //end of packet
+
+    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46";
+    for (char c : pkt)
+    {
+        bytes.append_uint8(c);
+    }
+
+    bytes.append_uint16(0x0D0A);        //end of packet
+
+    connImpl->setResponseBytes(bytes);
+
+    //force parsing of the bytes we just set
+    connImpl->parseNextResponse();
+
+    // no MIP data found
+    BOOST_CHECK_EQUAL(node.totalPackets(), 0);
+
+    NmeaPackets pkts = node.getNmeaPackets();
+    BOOST_CHECK_EQUAL(pkts.size(), 0);
+}
+
+BOOST_AUTO_TEST_CASE(InertialNode_getNmeaPackets_success_wInvalidPackets)
+{
+    std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
+    Connection conn(connImpl);
+
+    //create the InertialNode object
+    InertialNode node(conn);
+
+    // enable NMEA parsing
+    node.enableNmeaParsing();
+
+    ByteStream bytes;
+
+    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38";
+    for (char c : pkt)
+    {
+        bytes.append_uint8(c);
+    }
+
+    bytes.append_uint16(0x0D0A);        //end of packet
+
+    // incomplete sentence
+    pkt = "$PPKRR,15414";
+    for (char c : pkt)
+    {
+        bytes.append_uint8(c);
+    }
+
+    // invalid checksum
+    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*72";
+    for (char c : pkt)
+    {
+        bytes.append_uint8(c);
+    }
+
+    bytes.append_uint16(0x0D0A);        //end of packet
+
+    // too long
+    pkt = "$GPGSV,3,1,9,2,23,165,44,5,7,43465,964,94,493,3,13,9,0,18,103,44,8,3,335,0,13,26,52,37*72";
+    for (char c : pkt)
+    {
+        bytes.append_uint8(c);
+    }
+
+    bytes.append_uint16(0x0D0A);        //end of packet
+
+    // false starts
+    pkt = "$$$$$$$$$$";
+    for (char c : pkt)
+    {
+        bytes.append_uint8(c);
+    }
+
+    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46";
+    for (char c : pkt)
+    {
+        bytes.append_uint8(c);
+    }
+
+    bytes.append_uint16(0x0D0A);        //end of packet
+
+    connImpl->setResponseBytes(bytes);
+
+    //force parsing of the bytes we just set
+    connImpl->parseNextResponse();
+
+    // no MIP data found
+    BOOST_CHECK_EQUAL(node.totalPackets(), 0);
+
+    NmeaPackets pkts = node.getNmeaPackets();
+    BOOST_CHECK_EQUAL(pkts.size(), 2);
+    BOOST_CHECK_EQUAL(pkts.at(0).talkerId(), "P");
+    BOOST_CHECK_EQUAL(pkts.at(0).sentenceType(), "PKRR");
+    BOOST_CHECK_EQUAL(pkts.at(1).talkerId(), "GP");
+    BOOST_CHECK_EQUAL(pkts.at(1).sentenceType(), "GSV");
+}
+
+BOOST_AUTO_TEST_CASE(InertialNode_getNmeaPackets_incompletePacket)
+{
+    std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
+    Connection conn(connImpl);
+
+    //create the InertialNode object
+    InertialNode node(conn);
+
+    // enable NMEA parsing
+    node.enableNmeaParsing();
+
+    ByteStream bytes;
+
+    //add bytes to the ByteStream
+    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38";
+
+    for (char c : pkt)
+    {
+        bytes.append_uint8(c);
+    }
+
+    bytes.append_uint16(0x0D0A);        //end of packet
+
+    //add bytes to the ByteStream
+    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46";
+
+    size_t i = 0;
+    for (; i < 7; i++)
+    {
+        bytes.append_uint8(pkt[i]);
+    }
+
+    connImpl->setResponseBytes(bytes);
+
+    //force parsing of the bytes we just set
+    connImpl->parseNextResponse();
+
+    // no MIP data found
+    BOOST_CHECK_EQUAL(node.totalPackets(), 0);
+
+    NmeaPackets pkts = node.getNmeaPackets();
+    BOOST_CHECK_EQUAL(pkts.size(), 1);
+    BOOST_CHECK_EQUAL(pkts.at(0).talkerId(), "P");
+    BOOST_CHECK_EQUAL(pkts.at(0).sentenceType(), "PKRR");
+
+    bytes.empty();
+    bytes.clear();
+    
+    for (; i < pkt.size(); i++)
+    {
+        bytes.append_uint8(pkt[i]);
+    }
+
+    bytes.append_uint16(0x0D0A);        //end of packet
+
+    connImpl->setResponseBytes(bytes);
+
+    //force parsing of the bytes we just set
+    connImpl->parseNextResponse();
+
+    // no MIP data found
+    BOOST_CHECK_EQUAL(node.totalPackets(), 0);
+
+    pkts = node.getNmeaPackets();
+    BOOST_CHECK_EQUAL(pkts.size(), 1);
+    BOOST_CHECK_EQUAL(pkts.at(0).talkerId(), "GP");
+    BOOST_CHECK_EQUAL(pkts.at(0).sentenceType(), "GSV");
+}
+
+BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_getNmeaPackets_incompletePackets)
+{
+    std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
+    Connection conn(connImpl);
+
+    //create the InertialNode object
+    InertialNode node(conn);
+
+    // enable NMEA parsing
+    node.enableNmeaParsing();
+
+    ByteStream bytes;
+
+    // add NMEA packet
+    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38";
+
+    for (char c : pkt)
+    {
+        bytes.append_uint8(c);
+    }
+
+    bytes.append_uint16(0x0D0A);        //end of packet
+
+    // add MIP packet
+    bytes.append_uint16(0x7565);        //start of packet bytes
+    bytes.append_uint16(0x800E);        //descriptor set / payload len
+    bytes.append_uint16(0x0E01);        //field length / field descriptor
+    bytes.append_uint32(0x3F9DF3B6);    //Accel 1 float
+    bytes.append_uint32(0x00000000);    //Accel 2 float
+    bytes.append_uint32(0x00000000);    //Accel 3 float
+    bytes.append_uint16(bytes.calculateFletcherChecksum(pkt.size() + 2, pkt.size() + 2 + 17));
+
+    // add partial NMEA packet
+    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46";
+
+    size_t i = 0;
+    for (; i < 20; i++)
+    {
+        bytes.append_uint8(pkt[i]);
+    }
+
+    connImpl->setResponseBytes(bytes);
+
+    //force parsing of the bytes we just set
+    connImpl->parseNextResponse();
+
+    // MIP data found
+    BOOST_CHECK_EQUAL(node.totalPackets(), 1);
+    MipDataPackets mip = node.getDataPackets();
+    BOOST_CHECK_EQUAL(mip.at(0).descriptorSet(), 0x80);
+
+    // NMEA data found
+    NmeaPackets nmea = node.getNmeaPackets();
+    BOOST_CHECK_EQUAL(nmea.size(), 1);
+    BOOST_CHECK_EQUAL(nmea.at(0).talkerId(), "P");
+    BOOST_CHECK_EQUAL(nmea.at(0).sentenceType(), "PKRR");
+
+    bytes.empty();
+    bytes.clear();
+
+    // add rest of NMEA packet
+    for (; i < pkt.size(); i++)
+    {
+        bytes.append_uint8(pkt[i]);
+    }
+
+    bytes.append_uint16(0x0D0A);        //end of packet
+
+    // add beginning of MIP packet
+    bytes.append_uint16(0x7565);        //start of packet bytes
+    bytes.append_uint16(0x820E);        //descriptor set / payload len
+
+    //add copy to partialPkt for checksum calculation
+    ByteStream partialPkt;
+    partialPkt.append_uint16(0x7565);        //start of packet bytes
+    partialPkt.append_uint16(0x820E);        //descriptor set / payload len
+
+    connImpl->setResponseBytes(bytes);
+
+    //force parsing of the bytes we just set
+    connImpl->parseNextResponse();
+
+    // no MIP data found
+    BOOST_CHECK_EQUAL(node.totalPackets(), 0);
+
+    // NMEA data found
+    nmea = node.getNmeaPackets();
+    BOOST_CHECK_EQUAL(nmea.size(), 1);
+    BOOST_CHECK_EQUAL(nmea.at(0).talkerId(), "GP");
+    BOOST_CHECK_EQUAL(nmea.at(0).sentenceType(), "GSV");
+
+    bytes.empty();
+    bytes.clear();
+
+    // append rest of MIP packet
+    bytes.append_uint16(0x0E01);        //field length / field descriptor
+    bytes.append_uint32(0x00000000);    //Accel 1 float
+    bytes.append_uint32(0x00000000);    //Accel 2 float
+    bytes.append_uint32(0x3F9DF3B6);    //Accel 3 float
+
+                                        //add copy to partialPkt for checksum calculation
+    partialPkt.append_uint16(0x0E01);        //field length / field descriptor
+    partialPkt.append_uint32(0x00000000);    //Accel 1 float
+    partialPkt.append_uint32(0x00000000);    //Accel 2 float
+    partialPkt.append_uint32(0x3F9DF3B6);    //Accel 3 float
+
+    bytes.append_uint16(partialPkt.calculateFletcherChecksum(0, 17));
+
+    connImpl->setResponseBytes(bytes);
+
+    //force parsing of the bytes we just set
+    connImpl->parseNextResponse();
+
+    // MIP data found
+    BOOST_CHECK_EQUAL(node.totalPackets(), 1);
+    mip = node.getDataPackets();
+    BOOST_CHECK_EQUAL(mip.at(0).descriptorSet(), 0x82);
+
+    // no NMEA data found
+    nmea = node.getNmeaPackets();
+    BOOST_CHECK_EQUAL(nmea.size(), 0);
+}
+
+BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_getNmeaPackets_valid_nmeaDisabled)
+{
+    std::shared_ptr<mockConnectionImpl> connImpl(new mockConnectionImpl);
+    Connection conn(connImpl);
+
+    //create the InertialNode object
+    InertialNode node(conn);
+
+    ByteStream bytes;
+
+    // add NMEA packet
+    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38";
+
+    for (char c : pkt)
+    {
+        bytes.append_uint8(c);
+    }
+
+    bytes.append_uint16(0x0D0A);        //end of packet
+
+                                        // add MIP packet
+    bytes.append_uint16(0x7565);        //start of packet bytes
+    bytes.append_uint16(0x800E);        //descriptor set / payload len
+    bytes.append_uint16(0x0E01);        //field length / field descriptor
+    bytes.append_uint32(0x3F9DF3B6);    //Accel 1 float
+    bytes.append_uint32(0x00000000);    //Accel 2 float
+    bytes.append_uint32(0x00000000);    //Accel 3 float
+    bytes.append_uint16(bytes.calculateFletcherChecksum(pkt.size() + 2, pkt.size() + 2 + 17));
+
+    // add partial NMEA packet
+    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46";
+
+    size_t i = 0;
+    for (; i < 20; i++)
+    {
+        bytes.append_uint8(pkt[i]);
+    }
+
+    connImpl->setResponseBytes(bytes);
+
+    //force parsing of the bytes we just set
+    connImpl->parseNextResponse();
+
+    // MIP data found
+    BOOST_CHECK_EQUAL(node.totalPackets(), 1);
+    MipDataPackets mip = node.getDataPackets();
+    BOOST_CHECK_EQUAL(mip.at(0).descriptorSet(), 0x80);
+
+    // NMEA data found
+    NmeaPackets nmea = node.getNmeaPackets();
+    BOOST_CHECK_EQUAL(nmea.size(), 0);
+
+    bytes.empty();
+    bytes.clear();
+
+    // add rest of NMEA packet
+    for (; i < pkt.size(); i++)
+    {
+        bytes.append_uint8(pkt[i]);
+    }
+
+    bytes.append_uint16(0x0D0A);        //end of packet
+
+                                        // add beginning of MIP packet
+    bytes.append_uint16(0x7565);        //start of packet bytes
+    bytes.append_uint16(0x820E);        //descriptor set / payload len
+
+                                        //add copy to partialPkt for checksum calculation
+    ByteStream partialPkt;
+    partialPkt.append_uint16(0x7565);        //start of packet bytes
+    partialPkt.append_uint16(0x820E);        //descriptor set / payload len
+
+    connImpl->setResponseBytes(bytes);
+
+    //force parsing of the bytes we just set
+    connImpl->parseNextResponse();
+
+    // no MIP data found
+    BOOST_CHECK_EQUAL(node.totalPackets(), 0);
+
+    // NMEA data found
+    nmea = node.getNmeaPackets();
+    BOOST_CHECK_EQUAL(nmea.size(), 0);
+
+    bytes.empty();
+    bytes.clear();
+
+    // append rest of MIP packet
+    bytes.append_uint16(0x0E01);        //field length / field descriptor
+    bytes.append_uint32(0x00000000);    //Accel 1 float
+    bytes.append_uint32(0x00000000);    //Accel 2 float
+    bytes.append_uint32(0x3F9DF3B6);    //Accel 3 float
+
+                                        //add copy to partialPkt for checksum calculation
+    partialPkt.append_uint16(0x0E01);        //field length / field descriptor
+    partialPkt.append_uint32(0x00000000);    //Accel 1 float
+    partialPkt.append_uint32(0x00000000);    //Accel 2 float
+    partialPkt.append_uint32(0x3F9DF3B6);    //Accel 3 float
+
+    bytes.append_uint16(partialPkt.calculateFletcherChecksum(0, 17));
+
+    connImpl->setResponseBytes(bytes);
+
+    //force parsing of the bytes we just set
+    connImpl->parseNextResponse();
+
+    // MIP data found
+    BOOST_CHECK_EQUAL(node.totalPackets(), 1);
+    mip = node.getDataPackets();
+    BOOST_CHECK_EQUAL(mip.at(0).descriptorSet(), 0x82);
+
+    // no NMEA data found
+    nmea = node.getNmeaPackets();
+    BOOST_CHECK_EQUAL(nmea.size(), 0);
 }
 
 BOOST_AUTO_TEST_CASE(InertialNode_Ping_Success)
