@@ -389,19 +389,26 @@ namespace mscl
         return Bytes(m_data.begin() + startPos, m_data.begin() + startPos + size);
     }
 
-    void DataBuffer::copyBytesTo(ByteStream& copyTo)
+    void DataBuffer::copyBytesTo(DataBuffer& copyTo)
     {
         copyBytesTo(copyTo, m_readPosition, bytesRemaining());
     }
 
-    void DataBuffer::copyBytesTo(ByteStream& copyTo, std::size_t startPos, std::size_t size)
+    void DataBuffer::copyBytesTo(DataBuffer& copyTo, std::size_t startPos, std::size_t size)
     {
+
         size_t actualSize = size > bytesRemaining() ? bytesRemaining() : size;
-        size_t endPos = startPos + actualSize;
 
-        copyTo.resize(copyTo.size() + actualSize);
+        assert(actualSize <= (copyTo.size() - copyTo.appendPosition()));
 
-        std::copy(m_data.begin() + startPos, m_data.begin() + endPos, copyTo.end() - actualSize);
+        BufferWriter writer = copyTo.getBufferWriter();
+
+        for (size_t i = 0; i < actualSize; i++)
+        {
+            writer.buffer()[i] = m_data[i + startPos];
+        }
+
+        writer.commit(actualSize);
     }
 
     //============================================================

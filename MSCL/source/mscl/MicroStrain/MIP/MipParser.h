@@ -66,7 +66,7 @@ namespace mscl
 
         //Variable: m_pendingData
         //    Holds any data that needs to be carried over between calls (partial packets)
-        ByteStream m_pendingData;
+        DataBuffer m_pendingData;
 
     private:
         //Function: processPacket

@@ -13,7 +13,8 @@
 namespace mscl
 {
     NmeaParser::NmeaParser(NmeaPacketCollector* packetCollector):
-        m_packetCollector(packetCollector)
+        m_packetCollector(packetCollector),
+        m_pendingData(CONNECTION_BUFFER_SIZE + NmeaPacketInfo::NMEA_MAX_PACKET_SIZE)
     {
     }
 
@@ -40,24 +41,22 @@ namespace mscl
     {
         data.copyBytesTo(m_pendingData);
 
-        DataBuffer pendingData(m_pendingData);
-
         //while there is more data to be read in the DataBuffer
-        while(pendingData.moreToRead())
+        while(m_pendingData.moreToRead())
         {
             //read the next byte (doesn't move data's read position)
-            uint8 currentByte = pendingData.peekByte();
+            uint8 currentByte = m_pendingData.peekByte();
 
             size_t advanceBytes = 1;
 
             //if this is a NMEA Start of Packet byte 
             if(isNmeaStartByte(currentByte))
             {
-                mscl::ReadBufferSavePoint savePoint(&pendingData);
+                mscl::ReadBufferSavePoint savePoint(&m_pendingData);
                 
                 //check if the packet is a valid NMEA packet, starting at this byte
                 NmeaPacket packet;
-                NmeaParserResult parseResult = parseAsPacket(pendingData, packet);
+                NmeaParserResult parseResult = parseAsPacket(m_pendingData, packet);
 
                 // revert read cursor to start of packet
                 savePoint.revert();
@@ -94,20 +93,16 @@ namespace mscl
                 }
             }
 
-            pendingData.skipBytes(advanceBytes);
+            m_pendingData.skipBytes(advanceBytes);
         }
 
         // ensure we're not holding on to more data than the max packet size
-        int trimBytes = static_cast<int>(pendingData.bytesRemaining()) - NmeaPacketInfo::NMEA_MAX_PACKET_SIZE;
+        int trimBytes = static_cast<int>(m_pendingData.bytesRemaining()) - NmeaPacketInfo::NMEA_MAX_PACKET_SIZE;
         trimBytes = trimBytes < 0 ? 0 : trimBytes;
-        pendingData.skipBytes(static_cast<size_t>(trimBytes));
+        m_pendingData.skipBytes(static_cast<size_t>(trimBytes));
 
         // throw out data that's no longer needed
-        pendingData.shiftExtraToStart();
-
-        // resize pending ByteStream to only hold onto data that's still relevant
-        m_pendingData = ByteStream(pendingData.bytesToRead());
-        m_pendingData.resize(pendingData.bytesRemaining());
+        m_pendingData.shiftExtraToStart();
     }
 
     NmeaParserResult NmeaParser::parseAsPacket(DataBuffer& data, NmeaPacket& packet)

@@ -465,7 +465,7 @@ namespace mscl
     Connection_Impl<Comm_Object>::Connection_Impl():
         m_established(false),
         m_parseFunction(nullptr),
-        m_rawByteBuffer(1024 * 1000),
+        m_rawByteBuffer(CONNECTION_BUFFER_SIZE),
         m_debugDataBuffer(5000),
         m_connectionError(false),
         m_errorCode(0),

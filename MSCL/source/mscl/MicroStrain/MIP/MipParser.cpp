@@ -17,7 +17,8 @@ namespace mscl
     MipParser::MipParser(MipPacketCollector* packetCollector, std::weak_ptr<ResponseCollector> responseCollector, RawBytePacketCollector* rawBytePacketCollector):
         m_packetCollector(packetCollector),
         m_responseCollector(responseCollector),
-        m_rawBytePacketCollector(rawBytePacketCollector)
+        m_rawBytePacketCollector(rawBytePacketCollector),
+        m_pendingData(CONNECTION_BUFFER_SIZE + MipPacketInfo::MIP_MAX_PACKET_SIZE)
     {
     }
 
@@ -113,8 +114,6 @@ namespace mscl
     {
         data.copyBytesTo(m_pendingData);
 
-        DataBuffer pendingData(m_pendingData);
-
         mscl::Bytes rawBytes;
 
         RawBytePacket rawBytePacket;
@@ -130,20 +129,20 @@ namespace mscl
         bool notEnoughData = false;
 
         //while there is more data to be read in the DataBuffer
-        while(pendingData.moreToRead())
+        while(m_pendingData.moreToRead())
         {
             //read the next byte (doesn't move data's read position)
-            uint8 currentByte = pendingData.peekByte();
+            uint8 currentByte = m_pendingData.peekByte();
 
             //if this is a MIP Start of Packet byte 
             if(currentByte == MipPacketInfo::MIP_PACKET_SOP1)
             {
-                mscl::ReadBufferSavePoint savePoint(&pendingData);
+                mscl::ReadBufferSavePoint savePoint(&m_pendingData);
                 
                 //check if the packet is a valid MIP packet, starting at this byte
-                parseResult = parseAsPacket(pendingData, packet);
+                parseResult = parseAsPacket(m_pendingData, packet);
 
-                size_t position = pendingData.readPosition();
+                size_t position = m_pendingData.readPosition();
                 uint8 nextByte;
                 //check the result of the parseAsPacket command
                 switch(parseResult)
@@ -154,14 +153,14 @@ namespace mscl
                         {
                             addRawBytePacket(rawBytes, false, false);
                         }
-                        position = pendingData.readPosition();
+                        position = m_pendingData.readPosition();
                         savePoint.revert();
 
                         //Read out the "in packet" bytes into the rawBytes buffer...
-                        nextByte = pendingData.peekByte();
-                        while (pendingData.readPosition() < position) 
+                        nextByte = m_pendingData.peekByte();
+                        while (m_pendingData.readPosition() < position)
                         {
-                            rawBytes.push_back(pendingData.read_uint8());
+                            rawBytes.push_back(m_pendingData.read_uint8());
                         }
                         savePoint.commit();
 
@@ -196,30 +195,30 @@ namespace mscl
             //if we didn't have enough data for a full packet
             if(notEnoughData)
             {
-                mscl::ReadBufferSavePoint savePoint(&pendingData);
+                mscl::ReadBufferSavePoint savePoint(&m_pendingData);
                 //look for packets after the current byte.
                 //    Even though this looks like it could be the start of a MIP packet,
                 //    if we find any full MIP packets inside of the these bytes, we need 
                 //    to pick them up and move on.
-                if(!findPacketInBytes(pendingData))
+                if(!findPacketInBytes(m_pendingData))
                 {
                     //we didn't find a packet within this, so break out of this loop as we need to wait for more data
                     break;
                 }
 
-                size_t position = pendingData.readPosition();
+                size_t position = m_pendingData.readPosition();
 
                 if (rawBytes.size() > 0) 
                 {
                     addRawBytePacket(rawBytes, false, false);
                 }
-                position = pendingData.readPosition();
+                position = m_pendingData.readPosition();
                 savePoint.revert();
 
                 //Read out the "in packet" bytes into the debugPacket buffer...
-                while (pendingData.readPosition() < position)
+                while (m_pendingData.readPosition() < position)
                 {
-                    rawBytes.push_back(pendingData.read_uint8());
+                    rawBytes.push_back(m_pendingData.read_uint8());
                 }
                 savePoint.commit();
 
@@ -230,21 +229,17 @@ namespace mscl
             if (moveToNextByte)
             {
                 //move to the next byte
-                rawBytes.push_back(pendingData.read_uint8());
+                rawBytes.push_back(m_pendingData.read_uint8());
             }
         }
 
         // ensure we're not holding on to more data than the max packet size
-        int trimBytes = static_cast<int>(pendingData.bytesRemaining()) - MipPacketInfo::MIP_MAX_PACKET_SIZE;
+        int trimBytes = static_cast<int>(m_pendingData.bytesRemaining()) - MipPacketInfo::MIP_MAX_PACKET_SIZE;
         trimBytes = trimBytes < 0 ? 0 : trimBytes;
-        pendingData.skipBytes(static_cast<size_t>(trimBytes));
+        m_pendingData.skipBytes(static_cast<size_t>(trimBytes));
 
         // throw out data that's no longer needed
-        pendingData.shiftExtraToStart();
-
-        // resize pending ByteStream to only hold onto data that's still relevant
-        m_pendingData = ByteStream(pendingData.bytesToRead());
-        m_pendingData.resize(pendingData.bytesRemaining());
+        m_pendingData.shiftExtraToStart();
     }
 
     void MipParser::addRawBytePacket(Bytes& rawBytePacket, bool valid = true, bool packetFound = true) 
