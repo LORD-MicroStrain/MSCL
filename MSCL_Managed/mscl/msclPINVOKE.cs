@@ -561,6 +561,9 @@ class msclPINVOKE {
     //===================================================================================================
 
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CONNECTION_BUFFER_SIZE_get")]
+  public static extern uint CONNECTION_BUFFER_SIZE_get();
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_BitMask__SWIG_0")]
   public static extern global::System.IntPtr new_BitMask__SWIG_0(ushort jarg1);
 
