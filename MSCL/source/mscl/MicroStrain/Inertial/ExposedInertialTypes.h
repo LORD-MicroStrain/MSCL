@@ -1258,9 +1258,9 @@ namespace mscl
         Constellations constellations;
     };
 
-    //API Struct: AdvancedLowPassFilterData
-    //    Contains the data for the <InertialNode::setAdvancedLowPassFilterSettings> API call.
-    struct AdvancedLowPassFilterData
+    //API Struct: LowPassFilterData
+    //    Contains the data for the <InertialNode::setLowPassFilterSettings> API call.
+    struct LowPassFilterData
     {
         //API Enum: ManualFilterBandwidthConfig
         //    The enum for the different data descriptors.
@@ -1273,16 +1273,16 @@ namespace mscl
             USER_SPECIFIED_CUTOFF_FREQ = 0x01
         };
 
-        // API Constructor: AdvancedLowPassFilterData
-        AdvancedLowPassFilterData() :
+        // API Constructor: LowPassFilterData
+        LowPassFilterData() :
             dataDescriptor(mscl::MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_ACCEL_VEC),
             manualFilterBandwidthConfig(SET_TO_HALF_REPORTING_RATE),
             applyLowPassFilter(true),
             cutoffFrequency(0)
         { }
 
-        // API Constructor: AdvancedLowPassFilterData
-        AdvancedLowPassFilterData(mscl::MipTypes::ChannelField descriptor) :
+        // API Constructor: LowPassFilterData
+        LowPassFilterData(mscl::MipTypes::ChannelField descriptor) :
             dataDescriptor(descriptor),
             manualFilterBandwidthConfig(SET_TO_HALF_REPORTING_RATE),
             applyLowPassFilter(true),
@@ -1292,11 +1292,16 @@ namespace mscl
         //API Variable: dataDescriptor
         //    the data descriptor these settings apply to
         //
-        //  Valid values:
-        //  CH_FIELD_SENSOR_SCALED_ACCEL_VEC = 0x8004
-        //  CH_FIELD_SENSOR_SCALED_GYRO_VEC = 0x8005
-        //  CH_FIELD_SENSOR_SCALED_MAG_VEC = 0x8006
-        //  CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE = 0x8017
+        //  Valid values (depending on device support):
+        //
+        //  CH_FIELD_SENSOR_SCALED_ACCEL_VEC            = 0x8004
+        //  CH_FIELD_SENSOR_SCALED_GYRO_VEC             = 0x8005
+        //  CH_FIELD_SENSOR_SCALED_MAG_VEC              = 0x8006
+        //  CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE     = 0x8017
+        //
+        //  CH_FIELD_ESTFILTER_ESTIMATED_LINEAR_ACCEL   = 0x820D
+        //  CH_FIELD_ESTFILTER_ESTIMATED_ANGULAR_RATE   = 0x820E
+        //  CH_FIELD_ESTFILTER_COMPENSATED_ACCEL        = 0x821C
         mscl::MipTypes::ChannelField dataDescriptor;
 
         //API Variable: manualFilterBandwidthConfig
@@ -1309,7 +1314,7 @@ namespace mscl
 
         //API Variable: cutoffFrequency
         //    Sets the cutoff frequency, only if manualFilterBandwidthConfig == USER_SPECIFIED_CUTOFF_FREQ
-        uint16 cutoffFrequency;
+        float cutoffFrequency;
 
     public:
         //API Function: getDataDescriptorForCommand
@@ -1333,9 +1338,9 @@ namespace mscl
         static mscl::MipTypes::ChannelField getDataDescriptorFromUint8(uint8 descriptor) { return static_cast<mscl::MipTypes::ChannelField>(descriptor | 0x8000); }
     };
 
-    //API Typedef: AdvancedLowPassFilterConfig
-    //  A vector of <AdvancedLowPassFilterData> objects
-    typedef std::vector<AdvancedLowPassFilterData> AdvancedLowPassFilterConfig;
+    //API Typedef: LowPassFilterConfig
+    //  A vector of <LowPassFilterData> objects
+    typedef std::vector<LowPassFilterData> LowPassFilterConfig;
 
     //API Struct: ComplementaryFilterData
     //    Contains the data needed by the <InertialNode::setComplementaryFilterSettings> class.
