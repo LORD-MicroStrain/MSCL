@@ -1013,7 +1013,7 @@ namespace mscl
         bool getConingAndScullingEnable();
 
         //API Function: setLowPassFilterSettings
-        //    Sets the advanced low-pass filter settings.
+        //    Sets the low-pass filter settings.
         //
         //Parameters:
         //    data - the new settings to set.
@@ -1023,13 +1023,13 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
-        void setLowPassFilterSettings(const LowPassFilterConfig& data);
+        void setLowPassFilterSettings(const LowPassFilterConfig& data) const;
 
         //API Function: getLowPassFilterSettings
-        //    Gets the current advanced low-pass filter settings for the given data descriptors
+        //    Gets the current low-pass filter settings for the given data descriptors
         //
         //Parameter:
-        //    dataDescriptors - the <MipType::ChannelField> data descriptors for which to return the current advanced low-pass filter settings.
+        //    dataDescriptors - the <MipType::ChannelField> data descriptors for which to return the current low-pass filter settings.
         //
         //Return:
         //    <LowPassFilterData> settings.
@@ -1039,7 +1039,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        LowPassFilterConfig getLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors);
+        LowPassFilterConfig getLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors) const;
 
         //API Function: setComplementaryFilterSettings
         //    Sets the complementary filter settings.

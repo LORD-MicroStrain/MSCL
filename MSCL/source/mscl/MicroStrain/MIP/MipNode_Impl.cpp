@@ -2097,7 +2097,7 @@ namespace mscl
         }
     }
 
-    void MipNode_Impl::setLowPassFilterSettings(const LowPassFilterData& data)
+    void MipNode_Impl::setLowPassFilterSettings(const LowPassFilterData& data) const
     {
         // only use legacy command if updated not supported
         if (features().supportsCommand(MipTypes::CMD_LOWPASS_FILTER_SETTINGS)
@@ -2491,7 +2491,7 @@ namespace mscl
         return response.data();
     }
 
-    void MipNode_Impl::set(MipTypes::Command cmdId, MipFieldValues values)
+    void MipNode_Impl::set(MipTypes::Command cmdId, MipFieldValues values) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::USE_NEW_SETTINGS,
@@ -2499,14 +2499,14 @@ namespace mscl
         SendCommand(command);
     }
 
-    void MipNode_Impl::saveAsStartup(MipTypes::Command cmdId)
+    void MipNode_Impl::saveAsStartup(MipTypes::Command cmdId) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::SAVE_CURRENT_SETTINGS);
         SendCommand(command);
     }
 
-    void MipNode_Impl::saveAsStartup(MipTypes::Command cmdId, MipFieldValues specifier)
+    void MipNode_Impl::saveAsStartup(MipTypes::Command cmdId, MipFieldValues specifier) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::SAVE_CURRENT_SETTINGS,
@@ -2514,14 +2514,14 @@ namespace mscl
         SendCommand(command);
     }
 
-    void MipNode_Impl::loadStartup(MipTypes::Command cmdId)
+    void MipNode_Impl::loadStartup(MipTypes::Command cmdId) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::LOAD_STARTUP_SETTINGS);
         SendCommand(command);
     }
 
-    void MipNode_Impl::loadStartup(MipTypes::Command cmdId, MipFieldValues specifier)
+    void MipNode_Impl::loadStartup(MipTypes::Command cmdId, MipFieldValues specifier) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::LOAD_STARTUP_SETTINGS,
@@ -2529,14 +2529,14 @@ namespace mscl
         SendCommand(command);
     }
 
-    void MipNode_Impl::loadDefault(MipTypes::Command cmdId)
+    void MipNode_Impl::loadDefault(MipTypes::Command cmdId) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::RESET_TO_DEFAULT);
         SendCommand(command);
     }
 
-    void MipNode_Impl::loadDefault(MipTypes::Command cmdId, MipFieldValues specifier)
+    void MipNode_Impl::loadDefault(MipTypes::Command cmdId, MipFieldValues specifier) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::RESET_TO_DEFAULT,
@@ -2544,13 +2544,13 @@ namespace mscl
         SendCommand(command);
     }
 
-    void MipNode_Impl::run(MipTypes::Command cmdId)
+    void MipNode_Impl::run(MipTypes::Command cmdId) const
     {
         MipCommand command = MipCommand(cmdId);
         SendCommand(command);
     }
 
-    void MipNode_Impl::run(MipTypes::Command cmdId, MipFieldValues specifier)
+    void MipNode_Impl::run(MipTypes::Command cmdId, MipFieldValues specifier) const
     {
         MipCommand command = MipCommand(cmdId, specifier);
         SendCommand(command);

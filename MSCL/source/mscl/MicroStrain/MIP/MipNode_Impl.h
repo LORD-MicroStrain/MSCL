@@ -1270,7 +1270,7 @@ namespace mscl
         uint32 getUARTBaudRate(uint8 portId = 1) const;
 
         //Function: setLowPassFilterSettings
-        //    Sets the advanced low-pass filter settings.
+        //    Sets the low-pass filter settings.
         //
         //Parameters:
         //    data - the new settings to set.
@@ -1280,14 +1280,14 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void setLowPassFilterSettings(const LowPassFilterData& data);
+        void setLowPassFilterSettings(const LowPassFilterData& data) const;
 
         //Function: getLowPassFilterSettings
         //    LowPassFilterData new settings.  The <LowPassFilterData::DataDescriptor> field
         //    from the passed in data is used to set the type of data to be returned.
         //
         //Parameters:
-        //    dataDescriptor - the <MipType::ChannelField> data descriptor for which to return the current advanced low-pass filter settings.
+        //    dataDescriptor - the <MipType::ChannelField> data descriptor for which to return the current low-pass filter settings.
         //
         //Return:
         //    LowPassFilterData new settings.
@@ -1979,7 +1979,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void set(MipTypes::Command cmdId, MipFieldValues values);
+        void set(MipTypes::Command cmdId, MipFieldValues values) const;
 
         //API Function: saveAsStartup
         //    sends the specified command with the Save as Startup Settings function selector.
@@ -1992,7 +1992,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void saveAsStartup(MipTypes::Command cmdId);
+        void saveAsStartup(MipTypes::Command cmdId) const;
 
         //API Function: saveAsStartup
         //    sends the specified command with the Save as Startup Settings function selector.
@@ -2006,7 +2006,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void saveAsStartup(MipTypes::Command cmdId, MipFieldValues specifier);
+        void saveAsStartup(MipTypes::Command cmdId, MipFieldValues specifier) const;
 
         //API Function: loadStartup
         //    sends the specified command with the Load Startup Settings function selector.
@@ -2019,7 +2019,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void loadStartup(MipTypes::Command cmdId);
+        void loadStartup(MipTypes::Command cmdId) const;
 
         //API Function: loadStartup
         //    sends the specified command with the Load Startup Settings function selector.
@@ -2033,7 +2033,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void loadStartup(MipTypes::Command cmdId, MipFieldValues specifier);
+        void loadStartup(MipTypes::Command cmdId, MipFieldValues specifier) const;
 
         //API Function: loadDefault
         //    sends the specified command with the Load Default Settings function selector.
@@ -2046,7 +2046,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void loadDefault(MipTypes::Command cmdId);
+        void loadDefault(MipTypes::Command cmdId) const;
 
         //API Function: loadDefault
         //    sends the specified command with the Load Default Settings function selector.
@@ -2060,7 +2060,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void loadDefault(MipTypes::Command cmdId, MipFieldValues specifier);
+        void loadDefault(MipTypes::Command cmdId, MipFieldValues specifier) const;
 
         //API Function: run
         //    Runs the specified command without a function selector. No data response expected.
@@ -2073,7 +2073,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void run(MipTypes::Command cmdId);
+        void run(MipTypes::Command cmdId) const;
 
         //API Function: run
         //    Runs the specified command with the provided specifier values and no function selector. No data response expected.
@@ -2087,7 +2087,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void run(MipTypes::Command cmdId, MipFieldValues specifier);
+        void run(MipTypes::Command cmdId, MipFieldValues specifier) const;
 
 private:
        //Function: SendCommand

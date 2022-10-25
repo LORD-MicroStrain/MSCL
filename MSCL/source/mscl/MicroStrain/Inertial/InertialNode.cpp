@@ -418,7 +418,7 @@ namespace mscl
         return m_impl->getConingAndScullingEnable();
     }
 
-    void InertialNode::setLowPassFilterSettings(const LowPassFilterConfig& data)
+    void InertialNode::setLowPassFilterSettings(const LowPassFilterConfig& data) const
     {
         for (size_t i = 0; i < data.size(); i++)
         {
@@ -426,7 +426,7 @@ namespace mscl
         }
     }
 
-    LowPassFilterConfig InertialNode::getLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors)
+    LowPassFilterConfig InertialNode::getLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors) const
     {
         LowPassFilterConfig data;
         for (size_t i = 0; i < dataDescriptors.size(); i++)
