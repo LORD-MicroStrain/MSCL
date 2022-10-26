@@ -463,13 +463,13 @@ public class InertialNode : MipNode {
     return ret;
   }
 
-  public void setAdvancedLowPassFilterSettings(AdvancedLowPassFilterConfig data) {
-    msclPINVOKE.InertialNode_setAdvancedLowPassFilterSettings(swigCPtr, AdvancedLowPassFilterConfig.getCPtr(data));
+  public void setLowPassFilterSettings(LowPassFilterConfig data) {
+    msclPINVOKE.InertialNode_setLowPassFilterSettings(swigCPtr, LowPassFilterConfig.getCPtr(data));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public AdvancedLowPassFilterConfig getAdvancedLowPassFilterSettings(MipChannelFields dataDescriptors) {
-    AdvancedLowPassFilterConfig ret = new AdvancedLowPassFilterConfig(msclPINVOKE.InertialNode_getAdvancedLowPassFilterSettings(swigCPtr, MipChannelFields.getCPtr(dataDescriptors)), true);
+  public LowPassFilterConfig getLowPassFilterSettings(MipChannelFields dataDescriptors) {
+    LowPassFilterConfig ret = new LowPassFilterConfig(msclPINVOKE.InertialNode_getLowPassFilterSettings(swigCPtr, MipChannelFields.getCPtr(dataDescriptors)), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -1032,6 +1032,17 @@ public class InertialNode : MipNode {
     EventActionStatus ret = new EventActionStatus(msclPINVOKE.InertialNode_getEventActionStatus__SWIG_1(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
+  }
+
+  public NmeaMessageFormats getNmeaMessageFormat() {
+    NmeaMessageFormats ret = new NmeaMessageFormats(msclPINVOKE.InertialNode_getNmeaMessageFormat(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setNmeaMessageFormat(NmeaMessageFormats nmeaFormats) {
+    msclPINVOKE.InertialNode_setNmeaMessageFormat(swigCPtr, NmeaMessageFormats.getCPtr(nmeaFormats));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
 }

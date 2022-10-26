@@ -260,6 +260,12 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public MipChannelFields supportedLowPassFilterChannelFields() {
+    MipChannelFields ret = new MipChannelFields(msclPINVOKE.MipNodeFeatures_supportedLowPassFilterChannelFields(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }
 
 }

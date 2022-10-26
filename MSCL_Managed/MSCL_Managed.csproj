@@ -72,8 +72,6 @@
     <Compile Include="mscl\AdaptiveFilterLevels.cs" />
     <Compile Include="mscl\AdaptiveMeasurementData.cs" />
     <Compile Include="mscl\AdaptiveMeasurementModes.cs" />
-    <Compile Include="mscl\AdvancedLowPassFilterConfig.cs" />
-    <Compile Include="mscl\AdvancedLowPassFilterData.cs" />
     <Compile Include="mscl\AidingMeasurementSourceOptions.cs" />
     <Compile Include="mscl\AntennaLeverArmCalConfiguration.cs" />
     <Compile Include="mscl\ArmedDataloggingNetwork.cs" />
@@ -212,6 +210,8 @@
     <Compile Include="mscl\LinearEquation.cs" />
     <Compile Include="mscl\LoggedDataSweep.cs" />
     <Compile Include="mscl\LoggedDataSweeps.cs" />
+    <Compile Include="mscl\LowPassFilterConfig.cs" />
+    <Compile Include="mscl\LowPassFilterData.cs" />
     <Compile Include="mscl\Matrix.cs" />
     <Compile Include="mscl\Matrix_3x3.cs" />
     <Compile Include="mscl\Matrix_3x3s.cs" />
@@ -241,6 +241,8 @@
     <Compile Include="mscl\msclPINVOKE.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="mscl\NmeaMessageFormat.cs" />
+    <Compile Include="mscl\NmeaMessageFormats.cs" />
     <Compile Include="mscl\NodeDiscoveries.cs" />
     <Compile Include="mscl\NodeDiscovery.cs" />
     <Compile Include="mscl\NodeFeatures.cs" />

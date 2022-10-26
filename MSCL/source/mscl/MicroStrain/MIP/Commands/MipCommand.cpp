@@ -16,7 +16,7 @@ namespace mscl
     std::shared_ptr<GenericMipCommand::Response> MipCommand::createResponse(std::weak_ptr<ResponseCollector> collector)
     {
         std::shared_ptr<GenericMipCommand::Response> responseToSend(new GenericMipCommand::Response(commandType(),
-            collector, true, responseExpected(), commandName(), buildMatchData(), fieldDataByte()));
+            collector, m_ackNackExpected, responseExpected(), commandName(), buildMatchData(), fieldDataByte()));
         return responseToSend;
     }
 
@@ -116,6 +116,7 @@ namespace mscl
         // 0x01
         case MipTypes::CMD_COMM_PORT_SPEED:
         // 0x0C
+        case MipTypes::CMD_NMEA_MESSAGE_FORMAT:
         case MipTypes::CMD_MESSAGE_FORMAT:
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
         case MipTypes::CMD_PPS_SOURCE:
@@ -128,6 +129,7 @@ namespace mscl
         case MipTypes::CMD_GPIO_CONFIGURATION:
         case MipTypes::CMD_ODOMETER_SETTINGS:
         case MipTypes::CMD_SENSOR_RANGE:
+        case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER:
         // 0x0D
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
@@ -193,6 +195,7 @@ namespace mscl
         case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
         case MipTypes::CMD_SENSOR_RANGE:
         case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
+        case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER:
             // 0x0D
         case MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF:
             // check that the identifier is echoed back in the response
@@ -214,12 +217,14 @@ namespace mscl
         case MipTypes::CMD_COMM_PORT_SPEED:
             return "CommPortSpeed";
         // 0x0C
+        case MipTypes::CMD_NMEA_MESSAGE_FORMAT:
+            return "NmeaMessageFormat";
+        case MipTypes::CMD_POLL:
+            return "PollData";
         case MipTypes::CMD_GET_BASE_RATE:
             return "GetDataBaseRate";
         case MipTypes::CMD_MESSAGE_FORMAT:
             return "MessageFormat";
-        case MipTypes::CMD_POLL:
-            return "PollData";
         case MipTypes::CMD_FACTORY_STREAMING:
             return "FactoryStreaming";
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
@@ -254,6 +259,8 @@ namespace mscl
             return "SensorRange";
         case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
             return "SupportedSensorRanges";
+        case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER:
+            return "LowPassAntiAliasingFilter";
         // 0x0D
         case MipTypes::CMD_EF_RUN_FILTER:
             return "RunEstimationFilter";
@@ -322,6 +329,7 @@ namespace mscl
         // 0x01
         case MipTypes::CMD_COMM_PORT_SPEED: //0x89
         // 0x0C
+        case MipTypes::CMD_NMEA_MESSAGE_FORMAT: //0x8C
         case MipTypes::CMD_GET_BASE_RATE: //0x8E
         case MipTypes::CMD_MESSAGE_FORMAT: //0x8F
         case MipTypes::CMD_PPS_SOURCE: //0xA8
@@ -333,6 +341,7 @@ namespace mscl
         case MipTypes::CMD_ODOMETER_SETTINGS: //0xC3
         case MipTypes::CMD_SENSOR_RANGE: //0xD2
         case MipTypes::CMD_SUPPORTED_SENSOR_RANGES: //0xD3
+        case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER: //0xD4
         // 0x0D
         case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE: //0xD0
         case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS: //0xD3
@@ -377,6 +386,12 @@ namespace mscl
 
 
         // 0x0C
+        case MipTypes::CMD_NMEA_MESSAGE_FORMAT:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_Vector
+            };
+
         case MipTypes::CMD_GET_BASE_RATE:
             return{
                 ValueType::valueType_uint8,
@@ -443,6 +458,14 @@ namespace mscl
                 ValueType::valueType_uint8,
                 ValueType::valueType_uint8,
                 ValueType::valueType_Vector
+            };
+
+        case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER:
+            return{
+                ValueType::valueType_uint16,
+                ValueType::valueType_bool,
+                ValueType::valueType_bool,
+                ValueType::valueType_float,
             };
 
         case MipTypes::CMD_GPIO_CONFIGURATION:
@@ -592,6 +615,14 @@ namespace mscl
     {
         switch (id)
         {
+        case MipTypes::CMD_NMEA_MESSAGE_FORMAT:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint16
+            };
+
         case MipTypes::CMD_MESSAGE_FORMAT:
             return{
                 ValueType::valueType_uint8,

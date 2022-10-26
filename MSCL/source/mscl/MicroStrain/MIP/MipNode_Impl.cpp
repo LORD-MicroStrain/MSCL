@@ -681,23 +681,38 @@ namespace mscl
                     break;
                 }
 
-                MipTypes::MipChannelFields supportedDescriptors = features().supportedChannelFields(MipTypes::DataClass::CLASS_AHRS_IMU);
-                MipTypes::MipChannelFields lowpassFilterChannels = {
-                    MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_ACCEL_VEC,
-                    MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_GYRO_VEC,
-                    MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_MAG_VEC,
-                    MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE };
+                MipTypes::MipChannelFields lowpassFilterChannels = features().supportedLowPassFilterChannelFields();
 
                 for (size_t j = 0; j < lowpassFilterChannels.size(); j++)
                 {
                     MipTypes::ChannelField f = lowpassFilterChannels[j];
-                    if (std::find(supportedDescriptors.begin(), supportedDescriptors.end(), f) == supportedDescriptors.end())
+
+                    // legacy command only supports 0x80 fields
+                    if ((MipTypes::DataClass)Utils::msb(static_cast<uint16>(f)) != MipTypes::CLASS_AHRS_IMU)
                     {
                         continue;
                     }
 
                     params.push_back({ cmd, {Value::UINT8(static_cast<uint8>(f))} });
                 }
+
+                break;
+            }
+            case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER:
+            {
+                if (allParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT16(0) } });
+                    break;
+                }
+
+                MipTypes::MipChannelFields lowpassFilterChannels = features().supportedLowPassFilterChannelFields();
+
+                for (size_t j = 0; j < lowpassFilterChannels.size(); j++)
+                {
+                    params.push_back({ cmd,{ Value::UINT16(static_cast<uint16>(lowpassFilterChannels[j])) } });
+                }
+
                 break;
             }
             case MipTypes::CMD_MESSAGE_FORMAT:
@@ -1071,23 +1086,18 @@ namespace mscl
                 break;
                 case MipTypes::CMD_LOWPASS_FILTER_SETTINGS:
                 {
+                    // if new command is supported, don't export legacy to avoid potential float -> u16 truncation issues
+                    if (features().supportsCommand(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER))
+                    {
+                        break;
+                    }
+
                     MipCommandBytes cmdBytes(cmd);
-                    MipTypes::MipChannelFields supportedDescriptors = features().supportedChannelFields(MipTypes::DataClass::CLASS_AHRS_IMU);
-                    MipTypes::MipChannelFields lowpassFilterChannels = {
-                        MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_ACCEL_VEC,
-                        MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_GYRO_VEC,
-                        MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_MAG_VEC,
-                        MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE };
+                    MipTypes::MipChannelFields lowpassFilterChannels = features().supportedLowPassFilterChannelFields();
 
                     for (size_t j = 0; j < lowpassFilterChannels.size(); j++)
                     {
-                        MipTypes::ChannelField f = lowpassFilterChannels[j];
-                        if (std::find(supportedDescriptors.begin(), supportedDescriptors.end(), f) == supportedDescriptors.end())
-                        {
-                            continue;
-                        }
-
-                        AdvancedLowPassFilterData data = getAdvancedLowPassFilterSettings(f);
+                        LowPassFilterData data = getLowPassFilterSettings(lowpassFilterChannels[j]);
                         AdvancedLowPassFilterSettings set = AdvancedLowPassFilterSettings::MakeSetCommand(data);
                         ByteStream s = (ByteStream)set;
                         cmdBytes.add(s.data());
@@ -2087,17 +2097,48 @@ namespace mscl
         }
     }
 
-    void MipNode_Impl::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data)
+    void MipNode_Impl::setLowPassFilterSettings(const LowPassFilterData& data) const
     {
-        AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeSetCommand(data);
-        SendCommand(lowPassFilterCmd);
+        // only use legacy command if updated not supported
+        if (features().supportsCommand(MipTypes::CMD_LOWPASS_FILTER_SETTINGS)
+            && !features().supportsCommand(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER))
+        {
+            AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeSetCommand(data);
+            SendCommand(lowPassFilterCmd);
+            return;
+        }
+
+        MipFieldValues params = {
+            Value::UINT16(static_cast<uint16>(data.dataDescriptor)),
+            Value::BOOL(data.applyLowPassFilter),
+            Value::BOOL(data.manualFilterBandwidthConfig == LowPassFilterData::USER_SPECIFIED_CUTOFF_FREQ),
+            Value::FLOAT(data.cutoffFrequency)
+        };
+
+        set(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER, params);
     }
 
-    AdvancedLowPassFilterData MipNode_Impl::getAdvancedLowPassFilterSettings(const MipTypes::ChannelField& dataDescriptor) const
+    LowPassFilterData MipNode_Impl::getLowPassFilterSettings(const MipTypes::ChannelField& dataDescriptor) const
     {
-        AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeGetCommand(dataDescriptor);
-        GenericMipCmdResponse response = SendCommand(lowPassFilterCmd);
-        return lowPassFilterCmd.getResponseData(response);
+        // only use legacy command if updated not supported
+        if (features().supportsCommand(MipTypes::CMD_LOWPASS_FILTER_SETTINGS)
+            && !features().supportsCommand(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER))
+        {
+            AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeGetCommand(dataDescriptor);
+            GenericMipCmdResponse response = SendCommand(lowPassFilterCmd);
+            return lowPassFilterCmd.getResponseData(response);
+        }
+
+        MipFieldValues params = { Value::UINT16(static_cast<uint16>(dataDescriptor)) };
+        MipFieldValues resData = get(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER, params);
+
+        LowPassFilterData config;
+        config.dataDescriptor = dataDescriptor; // parser confirms match to element 0
+        config.applyLowPassFilter = resData[1].as_bool();
+        config.manualFilterBandwidthConfig = resData[2].as_bool() ? LowPassFilterData::USER_SPECIFIED_CUTOFF_FREQ : LowPassFilterData::SET_TO_HALF_REPORTING_RATE;
+        config.cutoffFrequency = resData[3].as_float();
+
+        return config;
     }
 
     void MipNode_Impl::setComplementaryFilterSettings(const ComplementaryFilterData& data)
@@ -2450,7 +2491,7 @@ namespace mscl
         return response.data();
     }
 
-    void MipNode_Impl::set(MipTypes::Command cmdId, MipFieldValues values)
+    void MipNode_Impl::set(MipTypes::Command cmdId, MipFieldValues values) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::USE_NEW_SETTINGS,
@@ -2458,14 +2499,14 @@ namespace mscl
         SendCommand(command);
     }
 
-    void MipNode_Impl::saveAsStartup(MipTypes::Command cmdId)
+    void MipNode_Impl::saveAsStartup(MipTypes::Command cmdId) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::SAVE_CURRENT_SETTINGS);
         SendCommand(command);
     }
 
-    void MipNode_Impl::saveAsStartup(MipTypes::Command cmdId, MipFieldValues specifier)
+    void MipNode_Impl::saveAsStartup(MipTypes::Command cmdId, MipFieldValues specifier) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::SAVE_CURRENT_SETTINGS,
@@ -2473,14 +2514,14 @@ namespace mscl
         SendCommand(command);
     }
 
-    void MipNode_Impl::loadStartup(MipTypes::Command cmdId)
+    void MipNode_Impl::loadStartup(MipTypes::Command cmdId) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::LOAD_STARTUP_SETTINGS);
         SendCommand(command);
     }
 
-    void MipNode_Impl::loadStartup(MipTypes::Command cmdId, MipFieldValues specifier)
+    void MipNode_Impl::loadStartup(MipTypes::Command cmdId, MipFieldValues specifier) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::LOAD_STARTUP_SETTINGS,
@@ -2488,14 +2529,14 @@ namespace mscl
         SendCommand(command);
     }
 
-    void MipNode_Impl::loadDefault(MipTypes::Command cmdId)
+    void MipNode_Impl::loadDefault(MipTypes::Command cmdId) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::RESET_TO_DEFAULT);
         SendCommand(command);
     }
 
-    void MipNode_Impl::loadDefault(MipTypes::Command cmdId, MipFieldValues specifier)
+    void MipNode_Impl::loadDefault(MipTypes::Command cmdId, MipFieldValues specifier) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::RESET_TO_DEFAULT,
@@ -2503,15 +2544,15 @@ namespace mscl
         SendCommand(command);
     }
 
-    void MipNode_Impl::run(MipTypes::Command cmdId)
+    void MipNode_Impl::run(MipTypes::Command cmdId, bool ackNackExpected) const
     {
-        MipCommand command = MipCommand(cmdId);
+        MipCommand command = MipCommand(cmdId, false, ackNackExpected);
         SendCommand(command);
     }
 
-    void MipNode_Impl::run(MipTypes::Command cmdId, MipFieldValues specifier)
+    void MipNode_Impl::run(MipTypes::Command cmdId, MipFieldValues specifier, bool ackNackExpected) const
     {
-        MipCommand command = MipCommand(cmdId, specifier);
+        MipCommand command = MipCommand(cmdId, specifier, false, ackNackExpected);
         SendCommand(command);
     }
 

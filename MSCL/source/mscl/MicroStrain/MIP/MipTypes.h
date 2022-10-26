@@ -117,6 +117,7 @@ namespace mscl
         //  CMD_SENSOR_MESSAGE_FORMAT                   - 0x0C08    - Sensor Data Message Format
         //  CMD_GNSS_MESSAGE_FORMAT                     - 0x0C09    - GNSS Message Format
         //  CMD_EF_MESSAGE_FORMAT                       - 0x0C0A    - Estimation Filter Message Format
+        //  CMD_NMEA_MESSAGE_FORMAT                     - 0x0C0C    - NMEA Message Format
         //  CMD_POLL                                    - 0x0C0D    - Generic Poll Data
         //  CMD_GET_BASE_RATE                           - 0x0C0E    - Generic Get Data Base Rate
         //  CMD_MESSAGE_FORMAT                          - 0x0C0F    - Generic Message Format
@@ -153,10 +154,11 @@ namespace mscl
         //  CMD_GPIO_CONFIGURATION                      - 0x0C41    - Configure GPIO Pins
         //  CMD_GPIO_STATE                              - 0x0C42    - Check GPIO Pin State
         //  CMD_ODOMETER_SETTINGS                       - 0x0C43    - Configure Odometer Settings
-        //  CMD_LOWPASS_FILTER_SETTINGS                 - 0x0C50    - Advanced Low-Pass Filter Settings
+        //  CMD_LOWPASS_FILTER_SETTINGS                 - 0x0C50    - Legacy Low-Pass Filter Settings
         //  CMD_COMPLEMENTARY_FILTER_SETTINGS           - 0x0C51    - Complementary Filter Settings
         //  CMD_SENSOR_RANGE                            - 0x0C52    - Configure Sensor Range
         //  CMD_SUPPORTED_SENSOR_RANGES                 - 0x0C53    - Read Device-Supported Sensor Ranges
+        //  CMD_LOWPASS_ANTIALIASING_FILTER             - 0x0C54    - Low-Pass Anti-Aliasing Filter Settings
         //  CMD_DATA_STREAM_FORMAT                      - 0x0C60    - Device Data Stream Format
         //  CMD_POWER_STATES                            - 0x0C61    - Device Power States
         //  CMD_GPS_STARTUP_SETTINGS                    - 0x0C62    - Save/Restore Advanced GPS Startup Settings
@@ -247,6 +249,7 @@ namespace mscl
             CMD_SENSOR_MESSAGE_FORMAT               = 0x0C08,
             CMD_GNSS_MESSAGE_FORMAT                 = 0x0C09,
             CMD_EF_MESSAGE_FORMAT                   = 0x0C0A,
+            CMD_NMEA_MESSAGE_FORMAT                 = 0x0C0C,
             CMD_POLL                                = 0x0C0D,
             CMD_GET_BASE_RATE                       = 0x0C0E,
             CMD_MESSAGE_FORMAT                      = 0x0C0F,
@@ -287,6 +290,7 @@ namespace mscl
             CMD_COMPLEMENTARY_FILTER_SETTINGS       = 0x0C51,
             CMD_SENSOR_RANGE                        = 0x0C52,
             CMD_SUPPORTED_SENSOR_RANGES             = 0x0C53,
+            CMD_LOWPASS_ANTIALIASING_FILTER         = 0x0C54,
             CMD_DATA_STREAM_FORMAT                  = 0x0C60,
             CMD_POWER_STATES                        = 0x0C61,
             CMD_GPS_STARTUP_SETTINGS                = 0x0C62,
