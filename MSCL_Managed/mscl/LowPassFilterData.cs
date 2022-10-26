@@ -88,13 +88,13 @@ public class LowPassFilterData : global::System.IDisposable {
     } 
   }
 
-  public ushort cutoffFrequency {
+  public float cutoffFrequency {
     set {
       msclPINVOKE.LowPassFilterData_cutoffFrequency_set(swigCPtr, value);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     } 
     get {
-      ushort ret = msclPINVOKE.LowPassFilterData_cutoffFrequency_get(swigCPtr);
+      float ret = msclPINVOKE.LowPassFilterData_cutoffFrequency_get(swigCPtr);
       if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
       return ret;
     } 
