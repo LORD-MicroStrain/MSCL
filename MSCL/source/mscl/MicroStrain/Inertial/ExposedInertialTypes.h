@@ -815,13 +815,13 @@ namespace mscl
         //  PKRR    - 0x82 - Parker proprietary Angular Rate/Acceleration
         enum SentenceType
         {
-            GGA = 0x01,
-            GLL = 0x02,
-            GSV = 0x03,
-            RMC = 0x04,
-            VTG = 0x05,
-            HDT = 0x06,
-            ZDA = 0x07,
+            GGA  = 0x01,
+            GLL  = 0x02,
+            GSV  = 0x03,
+            RMC  = 0x04,
+            VTG  = 0x05,
+            HDT  = 0x06,
+            ZDA  = 0x07,
             PKRA = 0x81,
             PKRR = 0x82
         };
@@ -829,16 +829,16 @@ namespace mscl
         //API Enum: Talker
         //  NMEA talker ID options
         //
-        //  NOT_APPLICABLE  - 0 - Talker ID not applicable
+        //  IGNORED         - 0 - Talker ID cannot be configured for the given sentence type
         //  GNSS            - 1 - NMEA message will be produced with talker id "GN"
         //  GPS             - 2 - NMEA message will be produced with talker id "GP"
         //  GALILEO         - 3 - NMEA message will be produced with talker id "GA"
         //  GLONASS         - 4 - NMEA message will be produced with talker id "GL"
         enum Talker
         {
-            NOT_APPLICABLE = 0,
-            GNSS = 1,
-            GPS = 2,
+            IGNORED = 0,
+            GNSS    = 1,
+            GPS     = 2,
             GALILEO = 3,
             GLONASS = 4
         };
@@ -858,7 +858,7 @@ namespace mscl
 
         //Variable: m_sourceDescSet
         //  The source descriptor set.
-        MipTypes::DataClass m_descSet;
+        MipTypes::DataClass m_sourceDescSet;
 
         //Variable: m_baseRate
         //  Descriptor set base rate, updated with m_descSet
@@ -869,46 +869,81 @@ namespace mscl
         uint16 m_decimation = 1;
 
     public:
-        NmeaMessageFormat() {};
-        ~NmeaMessageFormat() {};
+        //API Constructor: NmeaMessageFormat
+        //  Creates a NmeaMessageFormat object.
+        NmeaMessageFormat() {}
+
+        //API Destructor: NmeaMessageFormat
+        //  Destructor for NmeaMessageFormat object.
+        ~NmeaMessageFormat() {}
 
     public:
         //API Function: sentenceType
-        //  Gets/sets the NMEA <SentenceType> type.
-        SentenceType sentenceType() const { return m_sentenceType; };
+        //  Sets the NMEA <SentenceType>.
+        //
+        //Parameters:
+        //  type - <SentenceType> for this NMEA message configuration
         void sentenceType(SentenceType type);
 
+        //API Function: sentenceType
+        //  Gets the NMEA <SentenceType>.
+        //
+        //Returns:
+        //  <SentenceType> - the sentence type of this NMEA message configuration
+        SentenceType sentenceType() const { return m_sentenceType; }
+
         //API Function: talkerId
-        //  Gets/sets the NMEA <Talker> ID.
-        Talker talkerId() const { return m_talkerId; };
+        //  Sets the NMEA <Talker> ID.
+        //
+        //Parameters:
+        //  id - Talker ID for this NMEA message configuration
         void talkerId(Talker id);
 
+        //API Function: talkerId
+        //  Gets the NMEA <Talker> ID.
+        //
+        //Returns:
+        //  <Talker> - the talker ID for this NMEA message configuration
+        Talker talkerId() const { return m_talkerId; }
+
         //API Function: sourceDataClass
-        //  Gets/sets the source <MipTypes::DataClass>
+        //  Sets the source <MipTypes::DataClass>
         //
         //  Note: if the previously set sampleRate is no longer valid, it will be updated to the closest valid sample rate.
         //
         //Parameters:
-        //  dataClass (set only) - the <MipTypes::DataClass> source
-        //  baseRate (set only) - the base rate of the specified data class. This can be read from InertialNode::getDataRateBase()
-        MipTypes::DataClass sourceDataClass() const { return m_descSet; };
+        //  dataClass - the <MipTypes::DataClass> source
+        //  baseRate - the base rate of the specified data class. This can be read from <InertialNode::getDataRateBase>.
         void sourceDataClass(MipTypes::DataClass dataClass, uint16 baseRate = 0);
 
+        //API Function: sourceDataClass
+        //  Gets the source <MipTypes::DataClass>
+        //
+        //Returns:
+        //  <MipTypes::DataClass> - the source data class for this NMEA message configuration
+        MipTypes::DataClass sourceDataClass() const { return m_sourceDescSet; }
+
         //API Function: sampleRate
-        //  Gets/sets the output sample rate. If baseRate is not specified, please use a <SampleRate> with RateType of decimation (SampleRate::Decimation(rateDecimation)) otherwise it will cannot be properly interpretted.
+        //  Sets the output sample rate. If baseRate is not specified, please use a <SampleRate> with RateType of decimation (SampleRate::Decimation(rateDecimation)) otherwise it will cannot be properly interpretted.
         //
         //  Note: the sample rate is limited to either the data class base rate or MAX_FREQUENCY (10 Hz), whichever is lower. If input is too high, it will be automatically reduced to the max value.
         //  Sample rate can only be validated if base rate is specified.
         //
         //Parameters:
-        //  rate (set only) - the <SampleRate> at which to output
-        //  baseRate (set only) - the base rate of the specified data class. This can be read from InertialNode::getDataRateBase()
-        SampleRate sampleRate() const;
+        //  rate - the <SampleRate> at which to output
+        //  baseRate - the base rate of the specified data class. This can be read from <InertialNode::getDataRateBase>.
         void sampleRate(SampleRate rate, uint16 baseRate = 0);
 
+        //API Function: sampleRate
+        //  Gets the configured output <SampleRate>
+        //
+        //Returns:
+        //  <SampleRate> - the output sample rate for this NMEA message configuration
+        SampleRate sampleRate() const;
+
     private:
-        //Function: updateSampleRate
-        // Update the decimation based on current data class and previous, new base rates.
+        //Function: updateDecimation
+        //  Update the decimation based on current data class and previous, new base rates.
         void updateDecimation(uint16 newBaseRate);
 
     public:
@@ -939,7 +974,7 @@ namespace mscl
 
         //Function: baseRate
         //  Set base rate directly (usually done through sourceDataClass or sampleRate).
-        void baseRate(uint16 base) { m_baseRate = base; };
+        void baseRate(uint16 base) { m_baseRate = base; }
 
         //Function: toCommandParameters
         //  Generates command parameter MipFieldValues for single NmeaMessageFormat object.

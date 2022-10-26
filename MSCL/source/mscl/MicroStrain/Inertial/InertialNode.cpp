@@ -1324,7 +1324,7 @@ namespace mscl
 
     NmeaMessageFormats InertialNode::getNmeaMessageFormat() const
     {
-        MipFieldValues resData = m_impl->get(MipTypes::CMD_NMEA_MESSAGE_FORMAT);
+        const MipFieldValues resData = m_impl->get(MipTypes::CMD_NMEA_MESSAGE_FORMAT);
         NmeaMessageFormats nmeaFormats = NmeaMessageFormat::fromCommandResponse(resData);
 
         // try to assign base rates for sample rates reported in Hz or seconds instead of just Decimation
@@ -1332,7 +1332,7 @@ namespace mscl
         {
             try
             {
-                uint16 baseRate = getDataRateBase(format.sourceDataClass());
+                const uint16 baseRate = getDataRateBase(format.sourceDataClass());
                 format.baseRate(baseRate);
             }
             catch (const Error&) {/*ignore*/ }
@@ -1341,9 +1341,9 @@ namespace mscl
         return nmeaFormats;
     }
 
-    void InertialNode::setNmeaMessageFormat(NmeaMessageFormats nmeaFormats)
+    void InertialNode::setNmeaMessageFormat(NmeaMessageFormats nmeaFormats) const
     {
-        MipFieldValues params = NmeaMessageFormat::toCommandParameters(nmeaFormats);
+        const MipFieldValues params = NmeaMessageFormat::toCommandParameters(nmeaFormats);
         m_impl->set(MipTypes::CMD_NMEA_MESSAGE_FORMAT, params);
     }
 }

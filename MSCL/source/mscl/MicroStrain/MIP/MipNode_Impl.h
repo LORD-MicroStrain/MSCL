@@ -2082,6 +2082,7 @@ namespace mscl
         //Parameter:
         //    cmdId - the <MipTypes::Command> to send.
         //    specifier - <MipFieldValues> containing any additional specifier values to send with the command.
+        //    ackNackExpected - default true - bool indicating whether to expect the device to send back an ACK/NACK response
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.

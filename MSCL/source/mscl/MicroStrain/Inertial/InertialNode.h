@@ -2405,6 +2405,6 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void setNmeaMessageFormat(NmeaMessageFormats nmeaFormats);
+        void setNmeaMessageFormat(NmeaMessageFormats nmeaFormats) const;
     };
 }
