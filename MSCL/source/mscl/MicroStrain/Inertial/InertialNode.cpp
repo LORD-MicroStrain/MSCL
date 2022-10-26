@@ -430,20 +430,20 @@ namespace mscl
         return m_impl->getConingAndScullingEnable();
     }
 
-    void InertialNode::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterConfig& data)
+    void InertialNode::setLowPassFilterSettings(const LowPassFilterConfig& data) const
     {
         for (size_t i = 0; i < data.size(); i++)
         {
-            m_impl->setAdvancedLowPassFilterSettings(data[i]);
+            m_impl->setLowPassFilterSettings(data[i]);
         }
     }
 
-    AdvancedLowPassFilterConfig InertialNode::getAdvancedLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors)
+    LowPassFilterConfig InertialNode::getLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors) const
     {
-        AdvancedLowPassFilterConfig data;
+        LowPassFilterConfig data;
         for (size_t i = 0; i < dataDescriptors.size(); i++)
         {
-            data.push_back(m_impl->getAdvancedLowPassFilterSettings(dataDescriptors[i]));
+            data.push_back(m_impl->getLowPassFilterSettings(dataDescriptors[i]));
         }
 
         return data;
@@ -1336,7 +1336,7 @@ namespace mscl
 
     NmeaMessageFormats InertialNode::getNmeaMessageFormat() const
     {
-        MipFieldValues resData = m_impl->get(MipTypes::CMD_NMEA_MESSAGE_FORMAT);
+        const MipFieldValues resData = m_impl->get(MipTypes::CMD_NMEA_MESSAGE_FORMAT);
         NmeaMessageFormats nmeaFormats = NmeaMessageFormat::fromCommandResponse(resData);
 
         // try to assign base rates for sample rates reported in Hz or seconds instead of just Decimation
@@ -1344,7 +1344,7 @@ namespace mscl
         {
             try
             {
-                uint16 baseRate = getDataRateBase(format.sourceDataClass());
+                const uint16 baseRate = getDataRateBase(format.sourceDataClass());
                 format.baseRate(baseRate);
             }
             catch (const Error&) {/*ignore*/ }
@@ -1353,9 +1353,9 @@ namespace mscl
         return nmeaFormats;
     }
 
-    void InertialNode::setNmeaMessageFormat(NmeaMessageFormats nmeaFormats)
+    void InertialNode::setNmeaMessageFormat(NmeaMessageFormats nmeaFormats) const
     {
-        MipFieldValues params = NmeaMessageFormat::toCommandParameters(nmeaFormats);
+        const MipFieldValues params = NmeaMessageFormat::toCommandParameters(nmeaFormats);
         m_impl->set(MipTypes::CMD_NMEA_MESSAGE_FORMAT, params);
     }
 }

@@ -1024,4 +1024,34 @@ namespace mscl
             return true;
         }
     }
+
+    MipTypes::MipChannelFields MipNodeFeatures::supportedLowPassFilterChannelFields() const
+    {
+        const bool supportsLegacy = supportsCommand(MipTypes::CMD_LOWPASS_FILTER_SETTINGS);
+        const bool supportsNew = supportsCommand(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER);
+
+        MipTypes::MipChannelFields chs;
+        if (supportsLegacy || supportsNew)
+        {
+            chs.insert(chs.end(), {
+                MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_ACCEL_VEC,
+                MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_GYRO_VEC,
+                MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_MAG_VEC,
+                MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE
+            });
+
+            if (supportsNew)
+            {
+                chs.insert(chs.end(), {
+                    MipTypes::ChannelField::CH_FIELD_ESTFILTER_ESTIMATED_LINEAR_ACCEL,
+                    MipTypes::ChannelField::CH_FIELD_ESTFILTER_ESTIMATED_ANGULAR_RATE,
+                    MipTypes::ChannelField::CH_FIELD_ESTFILTER_COMPENSATED_ACCEL
+                });
+            }
+
+            chs = filterSupportedChannelFields(chs);
+        }
+
+        return chs;
+    }
 }

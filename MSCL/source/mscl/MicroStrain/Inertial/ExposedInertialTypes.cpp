@@ -26,7 +26,7 @@ namespace mscl
 
     void NmeaMessageFormat::sourceDataClass(MipTypes::DataClass dataClass, uint16 baseRate)
     {
-        m_descSet = dataClass;
+        m_sourceDescSet = dataClass;
         updateDecimation(baseRate);
     }
 
@@ -65,7 +65,7 @@ namespace mscl
     void NmeaMessageFormat::updateDecimation(uint16 newBaseRate)
     {
         // calculate sample rate based on current values
-        SampleRate currentRate = SampleRate::FromInertialRateDecimationInfo(m_baseRate, m_decimation);
+        const SampleRate currentRate = SampleRate::FromInertialRateDecimationInfo(m_baseRate, m_decimation);
         
         // update decimation based on current sample rate and new base rate
         m_baseRate = newBaseRate;
@@ -77,8 +77,8 @@ namespace mscl
         switch (sentenceType)
         {
         case SentenceType::GSV:
-        case SentenceType::PRKA:
-        case SentenceType::PRKR:
+        case SentenceType::PKRA:
+        case SentenceType::PKRR:
             return false;
 
         default:
@@ -114,12 +114,12 @@ namespace mscl
                 MipTypes::DataClass::CLASS_GNSS2
             };
 
-        case SentenceType::PRKA:
+        case SentenceType::PKRA:
             return{
                 MipTypes::DataClass::CLASS_ESTFILTER
             };
 
-        case SentenceType::PRKR:
+        case SentenceType::PKRR:
             return{
                 MipTypes::DataClass::CLASS_AHRS_IMU
             };
@@ -143,12 +143,12 @@ namespace mscl
         for (uint8 i = 0; i < count; i++)
         {
             // skip count element and find beginning of target format element
-            uint8 index = 1 + (i * ELEMENTS_PER_FORMAT);
+            const uint8 index = 1 + (i * ELEMENTS_PER_FORMAT);
 
             NmeaMessageFormat format;
-            format.sentenceType((SentenceType)responseValues[index].as_uint8());
-            format.talkerId((Talker)responseValues[index + 1].as_uint8());
-            format.sourceDataClass((MipTypes::DataClass)responseValues[index + 2].as_uint8());
+            format.sentenceType(static_cast<SentenceType>(responseValues[index].as_uint8()));
+            format.talkerId(static_cast<Talker>(responseValues[index + 1].as_uint8()));
+            format.sourceDataClass(static_cast<MipTypes::DataClass>(responseValues[index + 2].as_uint8()));
             format.sampleRate(SampleRate::Decimation(responseValues[index + 3].as_uint16()));
 
             messageFormat.push_back(format);
@@ -162,7 +162,7 @@ namespace mscl
         return{
             Value::UINT8(static_cast<uint8>(m_sentenceType)),
             Value::UINT8(static_cast<uint8>(m_talkerId)),
-            Value::UINT8(static_cast<uint8>(m_descSet)),
+            Value::UINT8(static_cast<uint8>(m_sourceDescSet)),
             Value::UINT16(m_decimation)
         };
     }

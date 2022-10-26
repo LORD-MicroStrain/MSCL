@@ -129,6 +129,7 @@ namespace mscl
         case MipTypes::CMD_GPIO_CONFIGURATION:
         case MipTypes::CMD_ODOMETER_SETTINGS:
         case MipTypes::CMD_SENSOR_RANGE:
+        case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER:
         // 0x0D
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_DCM:
         case MipTypes::CMD_EF_SENS_VEHIC_FRAME_ROTATION_QUAT:
@@ -194,6 +195,7 @@ namespace mscl
         case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
         case MipTypes::CMD_SENSOR_RANGE:
         case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
+        case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER:
             // 0x0D
         case MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF:
             // check that the identifier is echoed back in the response
@@ -257,6 +259,8 @@ namespace mscl
             return "SensorRange";
         case MipTypes::CMD_SUPPORTED_SENSOR_RANGES:
             return "SupportedSensorRanges";
+        case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER:
+            return "LowPassAntiAliasingFilter";
         // 0x0D
         case MipTypes::CMD_EF_RUN_FILTER:
             return "RunEstimationFilter";
@@ -337,6 +341,7 @@ namespace mscl
         case MipTypes::CMD_ODOMETER_SETTINGS: //0xC3
         case MipTypes::CMD_SENSOR_RANGE: //0xD2
         case MipTypes::CMD_SUPPORTED_SENSOR_RANGES: //0xD3
+        case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER: //0xD4
         // 0x0D
         case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE: //0xD0
         case MipTypes::CMD_EF_ADAPTIVE_FILTER_OPTIONS: //0xD3
@@ -453,6 +458,14 @@ namespace mscl
                 ValueType::valueType_uint8,
                 ValueType::valueType_uint8,
                 ValueType::valueType_Vector
+            };
+
+        case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER:
+            return{
+                ValueType::valueType_uint16,
+                ValueType::valueType_bool,
+                ValueType::valueType_bool,
+                ValueType::valueType_float,
             };
 
         case MipTypes::CMD_GPIO_CONFIGURATION:
