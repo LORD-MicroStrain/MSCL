@@ -789,6 +789,203 @@ namespace mscl
     //  A vector of <InertialTypes::GNSS_Source> values
     typedef std::vector<InertialTypes::GNSS_Source> GnssSources;
 
+    //////////  NmeaMessageFormat  //////////
+
+    //API Typedef: NmeaMessageFormats
+    //  A vector of <NmeaMessageFormat> objects.
+    class NmeaMessageFormat; // need forward declaration so NmeaMessageFormat can reference NmeaMessageFormats
+    typedef std::vector<NmeaMessageFormat> NmeaMessageFormats;
+
+    //API Class: NmeaMessageFormat
+    //  Defines a NMEA message format.
+    class NmeaMessageFormat
+    {
+    public:
+        //API Enum: SentenceType
+        //  NMEA sentence type options
+        //
+        //  GGA     - 0x01 - GPS System Fix Data
+        //  GLL     - 0x02 - Geographic Position Lat/Lon
+        //  GSV     - 0x03 - GNSS Satellites in View
+        //  RMC     - 0x04 - Recommended Minimum Specific GNSS Data
+        //  VTG     - 0x05 - Course over Ground
+        //  HDT     - 0x06 - Heading, True
+        //  ZDA     - 0x07 - Time & Date
+        //  PKRA    - 0x81 - Parker proprietary Euler angles
+        //  PKRR    - 0x82 - Parker proprietary Angular Rate/Acceleration
+        enum SentenceType
+        {
+            GGA  = 0x01,
+            GLL  = 0x02,
+            GSV  = 0x03,
+            RMC  = 0x04,
+            VTG  = 0x05,
+            HDT  = 0x06,
+            ZDA  = 0x07,
+            PKRA = 0x81,
+            PKRR = 0x82
+        };
+
+        //API Enum: Talker
+        //  NMEA talker ID options
+        //
+        //  IGNORED         - 0 - Talker ID cannot be configured for the given sentence type
+        //  GNSS            - 1 - NMEA message will be produced with talker id "GN"
+        //  GPS             - 2 - NMEA message will be produced with talker id "GP"
+        //  GALILEO         - 3 - NMEA message will be produced with talker id "GA"
+        //  GLONASS         - 4 - NMEA message will be produced with talker id "GL"
+        enum Talker
+        {
+            IGNORED = 0,
+            GNSS    = 1,
+            GPS     = 2,
+            GALILEO = 3,
+            GLONASS = 4
+        };
+
+        //API Constant: MAX_FREQUENCY
+        //  NMEA message output is limited to either the MAX_FREQUENCY or the source descriptor set base rate, whichever is lower.
+        static const SampleRate MAX_FREQUENCY;
+
+    private:
+        //Variable: m_sentenceType
+        //  The NMEA <SentenceType> type.
+        SentenceType m_sentenceType;
+
+        //Variable: m_talkerId
+        //  The NMEA <Talker> ID.
+        Talker m_talkerId;
+
+        //Variable: m_sourceDescSet
+        //  The source descriptor set.
+        MipTypes::DataClass m_sourceDescSet;
+
+        //Variable: m_baseRate
+        //  Descriptor set base rate, updated with m_descSet
+        uint16 m_baseRate = 0;
+
+        //Variable: m_decimation
+        //  The decimation from the base rate of m_descSet.
+        uint16 m_decimation = 1;
+
+    public:
+        //API Constructor: NmeaMessageFormat
+        //  Creates a NmeaMessageFormat object.
+        NmeaMessageFormat() {}
+
+        //API Destructor: NmeaMessageFormat
+        //  Destructor for NmeaMessageFormat object.
+        ~NmeaMessageFormat() {}
+
+    public:
+        //API Function: sentenceType
+        //  Sets the NMEA <SentenceType>.
+        //
+        //Parameters:
+        //  type - <SentenceType> for this NMEA message configuration
+        void sentenceType(SentenceType type);
+
+        //API Function: sentenceType
+        //  Gets the NMEA <SentenceType>.
+        //
+        //Returns:
+        //  <SentenceType> - the sentence type of this NMEA message configuration
+        SentenceType sentenceType() const { return m_sentenceType; }
+
+        //API Function: talkerId
+        //  Sets the NMEA <Talker> ID.
+        //
+        //Parameters:
+        //  id - Talker ID for this NMEA message configuration
+        void talkerId(Talker id);
+
+        //API Function: talkerId
+        //  Gets the NMEA <Talker> ID.
+        //
+        //Returns:
+        //  <Talker> - the talker ID for this NMEA message configuration
+        Talker talkerId() const { return m_talkerId; }
+
+        //API Function: sourceDataClass
+        //  Sets the source <MipTypes::DataClass>
+        //
+        //  Note: if the previously set sampleRate is no longer valid, it will be updated to the closest valid sample rate.
+        //
+        //Parameters:
+        //  dataClass - the <MipTypes::DataClass> source
+        //  baseRate - the base rate of the specified data class. This can be read from <InertialNode::getDataRateBase>.
+        void sourceDataClass(MipTypes::DataClass dataClass, uint16 baseRate = 0);
+
+        //API Function: sourceDataClass
+        //  Gets the source <MipTypes::DataClass>
+        //
+        //Returns:
+        //  <MipTypes::DataClass> - the source data class for this NMEA message configuration
+        MipTypes::DataClass sourceDataClass() const { return m_sourceDescSet; }
+
+        //API Function: sampleRate
+        //  Sets the output sample rate. If baseRate is not specified, please use a <SampleRate> with RateType of decimation (SampleRate::Decimation(rateDecimation)) otherwise it will cannot be properly interpretted.
+        //
+        //  Note: the sample rate is limited to either the data class base rate or MAX_FREQUENCY (10 Hz), whichever is lower. If input is too high, it will be automatically reduced to the max value.
+        //  Sample rate can only be validated if base rate is specified.
+        //
+        //Parameters:
+        //  rate - the <SampleRate> at which to output
+        //  baseRate - the base rate of the specified data class. This can be read from <InertialNode::getDataRateBase>.
+        void sampleRate(SampleRate rate, uint16 baseRate = 0);
+
+        //API Function: sampleRate
+        //  Gets the configured output <SampleRate>
+        //
+        //Returns:
+        //  <SampleRate> - the output sample rate for this NMEA message configuration
+        SampleRate sampleRate() const;
+
+    private:
+        //Function: updateDecimation
+        //  Update the decimation based on current data class and previous, new base rates.
+        void updateDecimation(uint16 newBaseRate);
+
+    public:
+        //API Function: talkerIdRequired
+        //  [static] Checks whether a <Talker> ID is required for the specified <SentenceType> type.
+        static bool talkerIdRequired(SentenceType sentenceType);
+
+        //API Function: dataClassSupported
+        //  [static] Checks whether the specified <MipTypes::DataClass> is supported for the specified <SentenceType> type.
+        static bool dataClassSupported(MipTypes::DataClass dataClass, SentenceType sentenceType);
+
+    private:
+        //Function: supportedDataClasses
+        // [static] Returns a list of supported <MipTypes::DataClass> values for the specified <SentenceType> type.
+        // Note: this is private because there's currently no DataClass vector type in the public interface.
+        static std::vector<MipTypes::DataClass> supportedDataClasses(SentenceType sentenceType);
+
+    private:
+        friend InertialNode;
+
+        //Function: fromCommandResponse
+        //  [static] Build <NmeaMessageFormat> objects from the read command response <MipFieldValues>.
+        //
+        //Parameters:
+        //  responseValues - <MipFieldValues> to populate the <NmeaMessageFormat> objects (first element should be count)
+        //  startIndex - default 0 - indicates the index at which to start reading from the responseValues (format count element). This should not need to be changed from the default value (0).
+        static NmeaMessageFormats fromCommandResponse(const MipFieldValues& responseValues, uint8 startIndex = 0);
+
+        //Function: baseRate
+        //  Set base rate directly (usually done through sourceDataClass or sampleRate).
+        void baseRate(uint16 base) { m_baseRate = base; }
+
+        //Function: toCommandParameters
+        //  Generates command parameter MipFieldValues for single NmeaMessageFormat object.
+        MipFieldValues toCommandParameters() const;
+
+    public:
+        //API Function: toCommandParameters
+        //  [static] Build <MipFieldValues> parameters (including count) from a vector of <NmeaMessageFormat> objects.
+        static MipFieldValues toCommandParameters(const NmeaMessageFormats& nmeaFormats);
+    };
+
     ///////////////  Matrix_3x3  ///////////////
 
     //API Class: Matrix_3x3

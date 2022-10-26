@@ -1034,6 +1034,17 @@ public class InertialNode : MipNode {
     return ret;
   }
 
+  public NmeaMessageFormats getNmeaMessageFormat() {
+    NmeaMessageFormats ret = new NmeaMessageFormats(msclPINVOKE.InertialNode_getNmeaMessageFormat(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setNmeaMessageFormat(NmeaMessageFormats nmeaFormats) {
+    msclPINVOKE.InertialNode_setNmeaMessageFormat(swigCPtr, NmeaMessageFormats.getCPtr(nmeaFormats));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
 }
 
 }

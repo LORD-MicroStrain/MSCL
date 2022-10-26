@@ -2380,5 +2380,31 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         EventActionStatus getEventActionStatus(std::vector<uint8> instances = std::vector<uint8>()) const;
+
+        //API Function: getNmeaMessageFormat
+        //    Gets the NMEA message formats currently configured to output on the device.
+        //
+        //Return:
+        //    <NmeaMessageFormats> - vector of <NmeaMessageFormat> objects.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        NmeaMessageFormats getNmeaMessageFormat() const;
+
+        //API Function: setNmeaMessageFormat
+        //    Sets the NMEA message formats to output on the device.
+        //
+        //Parameters:
+        //    nmeaFormats- vector of <NmeaMessageFormat> objects to configure.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setNmeaMessageFormat(NmeaMessageFormats nmeaFormats) const;
     };
 }

@@ -2544,15 +2544,15 @@ namespace mscl
         SendCommand(command);
     }
 
-    void MipNode_Impl::run(MipTypes::Command cmdId) const
+    void MipNode_Impl::run(MipTypes::Command cmdId, bool ackNackExpected) const
     {
-        MipCommand command = MipCommand(cmdId);
+        MipCommand command = MipCommand(cmdId, false, ackNackExpected);
         SendCommand(command);
     }
 
-    void MipNode_Impl::run(MipTypes::Command cmdId, MipFieldValues specifier) const
+    void MipNode_Impl::run(MipTypes::Command cmdId, MipFieldValues specifier, bool ackNackExpected) const
     {
-        MipCommand command = MipCommand(cmdId, specifier);
+        MipCommand command = MipCommand(cmdId, specifier, false, ackNackExpected);
         SendCommand(command);
     }
 

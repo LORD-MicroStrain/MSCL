@@ -16,7 +16,7 @@ namespace mscl
     std::shared_ptr<GenericMipCommand::Response> MipCommand::createResponse(std::weak_ptr<ResponseCollector> collector)
     {
         std::shared_ptr<GenericMipCommand::Response> responseToSend(new GenericMipCommand::Response(commandType(),
-            collector, true, responseExpected(), commandName(), buildMatchData(), fieldDataByte()));
+            collector, m_ackNackExpected, responseExpected(), commandName(), buildMatchData(), fieldDataByte()));
         return responseToSend;
     }
 
@@ -116,6 +116,7 @@ namespace mscl
         // 0x01
         case MipTypes::CMD_COMM_PORT_SPEED:
         // 0x0C
+        case MipTypes::CMD_NMEA_MESSAGE_FORMAT:
         case MipTypes::CMD_MESSAGE_FORMAT:
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
         case MipTypes::CMD_PPS_SOURCE:
@@ -216,12 +217,14 @@ namespace mscl
         case MipTypes::CMD_COMM_PORT_SPEED:
             return "CommPortSpeed";
         // 0x0C
+        case MipTypes::CMD_NMEA_MESSAGE_FORMAT:
+            return "NmeaMessageFormat";
+        case MipTypes::CMD_POLL:
+            return "PollData";
         case MipTypes::CMD_GET_BASE_RATE:
             return "GetDataBaseRate";
         case MipTypes::CMD_MESSAGE_FORMAT:
             return "MessageFormat";
-        case MipTypes::CMD_POLL:
-            return "PollData";
         case MipTypes::CMD_FACTORY_STREAMING:
             return "FactoryStreaming";
         case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
@@ -326,6 +329,7 @@ namespace mscl
         // 0x01
         case MipTypes::CMD_COMM_PORT_SPEED: //0x89
         // 0x0C
+        case MipTypes::CMD_NMEA_MESSAGE_FORMAT: //0x8C
         case MipTypes::CMD_GET_BASE_RATE: //0x8E
         case MipTypes::CMD_MESSAGE_FORMAT: //0x8F
         case MipTypes::CMD_PPS_SOURCE: //0xA8
@@ -382,6 +386,12 @@ namespace mscl
 
 
         // 0x0C
+        case MipTypes::CMD_NMEA_MESSAGE_FORMAT:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_Vector
+            };
+
         case MipTypes::CMD_GET_BASE_RATE:
             return{
                 ValueType::valueType_uint8,
@@ -605,6 +615,14 @@ namespace mscl
     {
         switch (id)
         {
+        case MipTypes::CMD_NMEA_MESSAGE_FORMAT:
+            return{
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint8,
+                ValueType::valueType_uint16
+            };
+
         case MipTypes::CMD_MESSAGE_FORMAT:
             return{
                 ValueType::valueType_uint8,

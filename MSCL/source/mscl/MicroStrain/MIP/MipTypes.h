@@ -117,6 +117,7 @@ namespace mscl
         //  CMD_SENSOR_MESSAGE_FORMAT                   - 0x0C08    - Sensor Data Message Format
         //  CMD_GNSS_MESSAGE_FORMAT                     - 0x0C09    - GNSS Message Format
         //  CMD_EF_MESSAGE_FORMAT                       - 0x0C0A    - Estimation Filter Message Format
+        //  CMD_NMEA_MESSAGE_FORMAT                     - 0x0C0C    - NMEA Message Format
         //  CMD_POLL                                    - 0x0C0D    - Generic Poll Data
         //  CMD_GET_BASE_RATE                           - 0x0C0E    - Generic Get Data Base Rate
         //  CMD_MESSAGE_FORMAT                          - 0x0C0F    - Generic Message Format
@@ -248,6 +249,7 @@ namespace mscl
             CMD_SENSOR_MESSAGE_FORMAT               = 0x0C08,
             CMD_GNSS_MESSAGE_FORMAT                 = 0x0C09,
             CMD_EF_MESSAGE_FORMAT                   = 0x0C0A,
+            CMD_NMEA_MESSAGE_FORMAT                 = 0x0C0C,
             CMD_POLL                                = 0x0C0D,
             CMD_GET_BASE_RATE                       = 0x0C0E,
             CMD_MESSAGE_FORMAT                      = 0x0C0F,
