@@ -418,20 +418,20 @@ namespace mscl
         return m_impl->getConingAndScullingEnable();
     }
 
-    void InertialNode::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterConfig& data)
+    void InertialNode::setLowPassFilterSettings(const LowPassFilterConfig& data) const
     {
         for (size_t i = 0; i < data.size(); i++)
         {
-            m_impl->setAdvancedLowPassFilterSettings(data[i]);
+            m_impl->setLowPassFilterSettings(data[i]);
         }
     }
 
-    AdvancedLowPassFilterConfig InertialNode::getAdvancedLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors)
+    LowPassFilterConfig InertialNode::getLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors) const
     {
-        AdvancedLowPassFilterConfig data;
+        LowPassFilterConfig data;
         for (size_t i = 0; i < dataDescriptors.size(); i++)
         {
-            data.push_back(m_impl->getAdvancedLowPassFilterSettings(dataDescriptors[i]));
+            data.push_back(m_impl->getLowPassFilterSettings(dataDescriptors[i]));
         }
 
         return data;
