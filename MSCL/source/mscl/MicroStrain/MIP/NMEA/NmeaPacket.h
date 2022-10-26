@@ -102,22 +102,19 @@ namespace mscl
     struct NmeaPacketInfo
     {
         //=====================================================================================================
-        //Enum: NMEA identifiers
+        //Constants: NMEA identifiers
         //    NMEA_START_OF_PACKET      - "$"       - The start of a NMEA packet/sentence
         //    NMEA_START_OF_PACKET_ALT  - "!"       - The start of a NMEA encapsulation sentence
         //    NMEA_END_OF_PACKET        - "\r\n"    - The end of a NMEA packet/sentence
         //    NMEA_DATA_START_DELIM     - ","       - Characters before first instance is header info, ',' delimiter used throughout message
         //    NMEA_CHECKSUM_DELIM       - "*"       - NMEA checksum delimiter
         //=====================================================================================================
-        enum
-        {
-            NMEA_START_OF_PACKET        = '$',
-            NMEA_START_OF_PACKET_ALT    = '!',
-            NMEA_END_OF_PACKET          = 0x0D0A, // "\r\n"
-            NMEA_DATA_START_DELIM       = ',', // before first instance is header info, ',' delimiter used throughout message
-            NMEA_CHECKSUM_DELIM         = '*',
-            NMEA_PROPRIETARY_INDICATOR  = 'P'
-        };
+        static constexpr uint8     NMEA_START_OF_PACKET        = '$';
+        static constexpr uint8     NMEA_START_OF_PACKET_ALT    = '!';
+        static constexpr uint16    NMEA_END_OF_PACKET          = 0x0D0A; // "\r\n"
+        static constexpr uint8     NMEA_DATA_START_DELIM       = ','; // before first instance is header info, ',' delimiter used throughout message
+        static constexpr uint8     NMEA_CHECKSUM_DELIM         = '*';
+        static constexpr uint8     NMEA_PROPRIETARY_INDICATOR  = 'P';
 
         //=====================================================================================================
         //Enum: NMEA Packet Information

@@ -191,21 +191,19 @@ BOOST_AUTO_TEST_CASE(InertialNode_getNmeaPackets_success)
 
     ByteStream bytes;
 
-    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38";
+    // valid NMEA packet
+    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38\r\n";
     for (char c : pkt)
     {
         bytes.append_uint8(c);
     }
 
-    bytes.append_uint16(0x0D0A);        //end of packet
-
-    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46";
+    // valid NMEA packet
+    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46\r\n";
     for (char c : pkt)
     {
         bytes.append_uint8(c);
     }
-
-    bytes.append_uint16(0x0D0A);        //end of packet
 
     connImpl->setResponseBytes(bytes);
 
@@ -233,21 +231,19 @@ BOOST_AUTO_TEST_CASE(InertialNode_getNmeaPackets_valid_parserDisabled)
 
     ByteStream bytes;
 
-    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38";
+    // valid NMEA packet
+    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38\r\n";
     for (char c : pkt)
     {
         bytes.append_uint8(c);
     }
 
-    bytes.append_uint16(0x0D0A);        //end of packet
-
-    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46";
+    // valid NMEA packet
+    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46\r\n";
     for (char c : pkt)
     {
         bytes.append_uint8(c);
     }
-
-    bytes.append_uint16(0x0D0A);        //end of packet
 
     connImpl->setResponseBytes(bytes);
 
@@ -274,13 +270,12 @@ BOOST_AUTO_TEST_CASE(InertialNode_getNmeaPackets_success_wInvalidPackets)
 
     ByteStream bytes;
 
-    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38";
+    // valid NMEA packet
+    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38\r\n";
     for (char c : pkt)
     {
         bytes.append_uint8(c);
     }
-
-    bytes.append_uint16(0x0D0A);        //end of packet
 
     // incomplete sentence
     pkt = "$PPKRR,15414";
@@ -290,22 +285,18 @@ BOOST_AUTO_TEST_CASE(InertialNode_getNmeaPackets_success_wInvalidPackets)
     }
 
     // invalid checksum
-    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*72";
+    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*72\r\n";
     for (char c : pkt)
     {
         bytes.append_uint8(c);
     }
-
-    bytes.append_uint16(0x0D0A);        //end of packet
 
     // too long
-    pkt = "$GPGSV,3,1,9,2,23,165,44,5,7,43465,964,94,493,3,13,9,0,18,103,44,8,3,335,0,13,26,52,37*72";
+    pkt = "$GPGSV,3,1,9,2,23,165,44,5,7,43465,964,94,493,3,13,9,0,18,103,44,8,3,335,0,13,26,52,37*72\r\n";
     for (char c : pkt)
     {
         bytes.append_uint8(c);
     }
-
-    bytes.append_uint16(0x0D0A);        //end of packet
 
     // false starts
     pkt = "$$$$$$$$$$";
@@ -314,13 +305,12 @@ BOOST_AUTO_TEST_CASE(InertialNode_getNmeaPackets_success_wInvalidPackets)
         bytes.append_uint8(c);
     }
 
-    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46";
+    // valid NMEA packet
+    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46\r\n";
     for (char c : pkt)
     {
         bytes.append_uint8(c);
     }
-
-    bytes.append_uint16(0x0D0A);        //end of packet
 
     connImpl->setResponseBytes(bytes);
 
@@ -351,18 +341,16 @@ BOOST_AUTO_TEST_CASE(InertialNode_getNmeaPackets_incompletePacket)
 
     ByteStream bytes;
 
-    //add bytes to the ByteStream
-    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38";
+    // valid NMEA packet
+    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38\r\n";
 
     for (char c : pkt)
     {
         bytes.append_uint8(c);
     }
 
-    bytes.append_uint16(0x0D0A);        //end of packet
-
-    //add bytes to the ByteStream
-    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46";
+    // valid NMEA packet
+    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46\r\n";
 
     size_t i = 0;
     for (; i < 7; i++)
@@ -391,8 +379,6 @@ BOOST_AUTO_TEST_CASE(InertialNode_getNmeaPackets_incompletePacket)
         bytes.append_uint8(pkt[i]);
     }
 
-    bytes.append_uint16(0x0D0A);        //end of packet
-
     connImpl->setResponseBytes(bytes);
 
     //force parsing of the bytes we just set
@@ -420,15 +406,13 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_getNmeaPackets_incompletePacket
 
     ByteStream bytes;
 
-    // add NMEA packet
-    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38";
+    // valid NMEA packet
+    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38\r\n";
 
     for (char c : pkt)
     {
         bytes.append_uint8(c);
     }
-
-    bytes.append_uint16(0x0D0A);        //end of packet
 
     // add MIP packet
     bytes.append_uint16(0x7565);        //start of packet bytes
@@ -437,11 +421,12 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_getNmeaPackets_incompletePacket
     bytes.append_uint32(0x3F9DF3B6);    //Accel 1 float
     bytes.append_uint32(0x00000000);    //Accel 2 float
     bytes.append_uint32(0x00000000);    //Accel 3 float
-    bytes.append_uint16(bytes.calculateFletcherChecksum(pkt.size() + 2, pkt.size() + 2 + 17));
+    bytes.append_uint16(bytes.calculateFletcherChecksum(pkt.size(), pkt.size() + 17));
+
+    // valid NMEA packet
+    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46\r\n";
 
     // add partial NMEA packet
-    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46";
-
     size_t i = 0;
     for (; i < 20; i++)
     {
@@ -472,8 +457,6 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_getNmeaPackets_incompletePacket
     {
         bytes.append_uint8(pkt[i]);
     }
-
-    bytes.append_uint16(0x0D0A);        //end of packet
 
     // add beginning of MIP packet
     bytes.append_uint16(0x7565);        //start of packet bytes
@@ -540,15 +523,13 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_getNmeaPackets_valid_nmeaDisabl
 
     ByteStream bytes;
 
-    // add NMEA packet
-    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38";
+    // valid NMEA packet
+    std::string pkt = "$PPKRR,154143.08,  nan,  nan,  nan,0.000000,0.000000,0.000000*38\r\n";
 
     for (char c : pkt)
     {
         bytes.append_uint8(c);
     }
-
-    bytes.append_uint16(0x0D0A);        //end of packet
 
                                         // add MIP packet
     bytes.append_uint16(0x7565);        //start of packet bytes
@@ -557,11 +538,12 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_getNmeaPackets_valid_nmeaDisabl
     bytes.append_uint32(0x3F9DF3B6);    //Accel 1 float
     bytes.append_uint32(0x00000000);    //Accel 2 float
     bytes.append_uint32(0x00000000);    //Accel 3 float
-    bytes.append_uint16(bytes.calculateFletcherChecksum(pkt.size() + 2, pkt.size() + 2 + 17));
+    bytes.append_uint16(bytes.calculateFletcherChecksum(pkt.size(), pkt.size() + 17));
+
+    // valid NMEA packet
+    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46\r\n";
 
     // add partial NMEA packet
-    pkt = "$GPGSV,3,1,9,2,23,165,44,5,18,103,44,8,3,335,0,13,26,52,37*46";
-
     size_t i = 0;
     for (; i < 20; i++)
     {
@@ -590,8 +572,6 @@ BOOST_AUTO_TEST_CASE(InertialNode_getDataPackets_getNmeaPackets_valid_nmeaDisabl
     {
         bytes.append_uint8(pkt[i]);
     }
-
-    bytes.append_uint16(0x0D0A);        //end of packet
 
                                         // add beginning of MIP packet
     bytes.append_uint16(0x7565);        //start of packet bytes

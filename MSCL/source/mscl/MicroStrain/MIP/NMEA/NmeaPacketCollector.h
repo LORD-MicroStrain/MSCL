@@ -36,7 +36,7 @@ namespace mscl
 
         //Constant: MAX_DATA_BUFFER_SIZE = 1024 * 100
         //    The maximum number of data packets that can be stored in the circular buffer
-        static const int MAX_DATA_BUFFER_SIZE = 1024 * 100;
+        static constexpr int MAX_DATA_BUFFER_SIZE = 1024 * 100;
 
     private:
         //Variable: m_dataPackets

@@ -402,10 +402,11 @@ namespace mscl
         assert(actualSize <= (copyTo.size() - copyTo.appendPosition()));
 
         BufferWriter writer = copyTo.getBufferWriter();
+        uint8* writeBuffer = writer.buffer();
 
         for (size_t i = 0; i < actualSize; i++)
         {
-            writer.buffer()[i] = m_data[i + startPos];
+            writeBuffer[i] = m_data[i + startPos];
         }
 
         writer.commit(actualSize);
