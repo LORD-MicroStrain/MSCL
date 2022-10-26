@@ -2550,7 +2550,7 @@ namespace mscl
         SendCommand(command);
     }
 
-    void MipNode_Impl::run(MipTypes::Command cmdId, MipFieldValues specifier, bool ackNackExpected) _CONSTEXPR_IF
+    void MipNode_Impl::run(MipTypes::Command cmdId, MipFieldValues specifier, bool ackNackExpected) const
     {
         MipCommand command = MipCommand(cmdId, specifier, false, ackNackExpected);
         SendCommand(command);
