@@ -57,58 +57,58 @@ public class NmeaMessageFormat : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public NmeaMessageFormat.SentenceType sentenceType() {
-    NmeaMessageFormat.SentenceType ret = (NmeaMessageFormat.SentenceType)msclPINVOKE.NmeaMessageFormat_sentenceType__SWIG_0(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
   public void sentenceType(NmeaMessageFormat.SentenceType type) {
-    msclPINVOKE.NmeaMessageFormat_sentenceType__SWIG_1(swigCPtr, (int)type);
+    msclPINVOKE.NmeaMessageFormat_sentenceType__SWIG_0(swigCPtr, (int)type);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public NmeaMessageFormat.Talker talkerId() {
-    NmeaMessageFormat.Talker ret = (NmeaMessageFormat.Talker)msclPINVOKE.NmeaMessageFormat_talkerId__SWIG_0(swigCPtr);
+  public NmeaMessageFormat.SentenceType sentenceType() {
+    NmeaMessageFormat.SentenceType ret = (NmeaMessageFormat.SentenceType)msclPINVOKE.NmeaMessageFormat_sentenceType__SWIG_1(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public void talkerId(NmeaMessageFormat.Talker id) {
-    msclPINVOKE.NmeaMessageFormat_talkerId__SWIG_1(swigCPtr, (int)id);
+    msclPINVOKE.NmeaMessageFormat_talkerId__SWIG_0(swigCPtr, (int)id);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public MipTypes.DataClass sourceDataClass() {
-    MipTypes.DataClass ret = (MipTypes.DataClass)msclPINVOKE.NmeaMessageFormat_sourceDataClass__SWIG_0(swigCPtr);
+  public NmeaMessageFormat.Talker talkerId() {
+    NmeaMessageFormat.Talker ret = (NmeaMessageFormat.Talker)msclPINVOKE.NmeaMessageFormat_talkerId__SWIG_1(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public void sourceDataClass(MipTypes.DataClass dataClass, ushort baseRate) {
-    msclPINVOKE.NmeaMessageFormat_sourceDataClass__SWIG_1(swigCPtr, (int)dataClass, baseRate);
+    msclPINVOKE.NmeaMessageFormat_sourceDataClass__SWIG_0(swigCPtr, (int)dataClass, baseRate);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void sourceDataClass(MipTypes.DataClass dataClass) {
-    msclPINVOKE.NmeaMessageFormat_sourceDataClass__SWIG_2(swigCPtr, (int)dataClass);
+    msclPINVOKE.NmeaMessageFormat_sourceDataClass__SWIG_1(swigCPtr, (int)dataClass);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public SampleRate sampleRate() {
-    SampleRate ret = new SampleRate(msclPINVOKE.NmeaMessageFormat_sampleRate__SWIG_0(swigCPtr), true);
+  public MipTypes.DataClass sourceDataClass() {
+    MipTypes.DataClass ret = (MipTypes.DataClass)msclPINVOKE.NmeaMessageFormat_sourceDataClass__SWIG_2(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public void sampleRate(SampleRate rate, ushort baseRate) {
-    msclPINVOKE.NmeaMessageFormat_sampleRate__SWIG_1(swigCPtr, SampleRate.getCPtr(rate), baseRate);
+    msclPINVOKE.NmeaMessageFormat_sampleRate__SWIG_0(swigCPtr, SampleRate.getCPtr(rate), baseRate);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void sampleRate(SampleRate rate) {
-    msclPINVOKE.NmeaMessageFormat_sampleRate__SWIG_2(swigCPtr, SampleRate.getCPtr(rate));
+    msclPINVOKE.NmeaMessageFormat_sampleRate__SWIG_1(swigCPtr, SampleRate.getCPtr(rate));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public SampleRate sampleRate() {
+    SampleRate ret = new SampleRate(msclPINVOKE.NmeaMessageFormat_sampleRate__SWIG_2(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
   public static bool talkerIdRequired(NmeaMessageFormat.SentenceType sentenceType) {
@@ -137,12 +137,12 @@ public class NmeaMessageFormat : global::System.IDisposable {
     VTG = 0x05,
     HDT = 0x06,
     ZDA = 0x07,
-    PRKA = 0x81,
-    PRKR = 0x82
+    PKRA = 0x81,
+    PKRR = 0x82
   }
 
   public enum Talker {
-    NOT_APPLICABLE = 0,
+    IGNORED = 0,
     GNSS = 1,
     GPS = 2,
     GALILEO = 3,

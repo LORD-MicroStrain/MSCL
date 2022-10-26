@@ -3943,34 +3943,34 @@ class msclPINVOKE {
   public static extern void delete_NmeaMessageFormat(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NmeaMessageFormat_sentenceType__SWIG_0")]
-  public static extern int NmeaMessageFormat_sentenceType__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern void NmeaMessageFormat_sentenceType__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NmeaMessageFormat_sentenceType__SWIG_1")]
-  public static extern void NmeaMessageFormat_sentenceType__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern int NmeaMessageFormat_sentenceType__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NmeaMessageFormat_talkerId__SWIG_0")]
-  public static extern int NmeaMessageFormat_talkerId__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern void NmeaMessageFormat_talkerId__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NmeaMessageFormat_talkerId__SWIG_1")]
-  public static extern void NmeaMessageFormat_talkerId__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern int NmeaMessageFormat_talkerId__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NmeaMessageFormat_sourceDataClass__SWIG_0")]
-  public static extern int NmeaMessageFormat_sourceDataClass__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern void NmeaMessageFormat_sourceDataClass__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, ushort jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NmeaMessageFormat_sourceDataClass__SWIG_1")]
-  public static extern void NmeaMessageFormat_sourceDataClass__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, ushort jarg3);
+  public static extern void NmeaMessageFormat_sourceDataClass__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NmeaMessageFormat_sourceDataClass__SWIG_2")]
-  public static extern void NmeaMessageFormat_sourceDataClass__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern int NmeaMessageFormat_sourceDataClass__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NmeaMessageFormat_sampleRate__SWIG_0")]
-  public static extern global::System.IntPtr NmeaMessageFormat_sampleRate__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern void NmeaMessageFormat_sampleRate__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, ushort jarg3);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NmeaMessageFormat_sampleRate__SWIG_1")]
-  public static extern void NmeaMessageFormat_sampleRate__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, ushort jarg3);
+  public static extern void NmeaMessageFormat_sampleRate__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NmeaMessageFormat_sampleRate__SWIG_2")]
-  public static extern void NmeaMessageFormat_sampleRate__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+  public static extern global::System.IntPtr NmeaMessageFormat_sampleRate__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NmeaMessageFormat_talkerIdRequired")]
   public static extern bool NmeaMessageFormat_talkerIdRequired(int jarg1);
@@ -4327,10 +4327,10 @@ class msclPINVOKE {
   public static extern bool LowPassFilterData_applyLowPassFilter_get(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_LowPassFilterData_cutoffFrequency_set")]
-  public static extern void LowPassFilterData_cutoffFrequency_set(global::System.Runtime.InteropServices.HandleRef jarg1, ushort jarg2);
+  public static extern void LowPassFilterData_cutoffFrequency_set(global::System.Runtime.InteropServices.HandleRef jarg1, float jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_LowPassFilterData_cutoffFrequency_get")]
-  public static extern ushort LowPassFilterData_cutoffFrequency_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern float LowPassFilterData_cutoffFrequency_get(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_LowPassFilterData_getDataDescriptorForCommand")]
   public static extern byte LowPassFilterData_getDataDescriptorForCommand(int jarg1);
@@ -6467,6 +6467,9 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportsNorthCompensation")]
   public static extern bool MipNodeFeatures_supportsNorthCompensation(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedLowPassFilterChannelFields")]
+  public static extern global::System.IntPtr MipNodeFeatures_supportedLowPassFilterChannelFields(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNode_doCommand__SWIG_0")]
   public static extern global::System.IntPtr MipNode_doCommand__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2, byte jarg3, global::System.Runtime.InteropServices.HandleRef jarg4, bool jarg5, bool jarg6, byte jarg7);

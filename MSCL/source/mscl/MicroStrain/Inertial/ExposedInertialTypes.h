@@ -962,7 +962,7 @@ namespace mscl
         static std::vector<MipTypes::DataClass> supportedDataClasses(SentenceType sentenceType);
 
     private:
-        friend InertialNode;
+        friend class InertialNode;
 
         //Function: fromCommandResponse
         //  [static] Build <NmeaMessageFormat> objects from the read command response <MipFieldValues>.
