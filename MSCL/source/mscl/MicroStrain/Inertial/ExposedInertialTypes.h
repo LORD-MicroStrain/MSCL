@@ -264,7 +264,7 @@ namespace mscl
         };
 
         //============================================================================================================
-        //API Enum: FilterState 
+        //API Enum: FilterState
         //    The Filter States with the NAV Filter Status field
         //    Refer to device documentation for supported filter states.
         //
@@ -288,7 +288,7 @@ namespace mscl
             FILTERSTATE_AHRS               = 0x03,
             FILTERSTATE_FULL_NAV           = 0x04
         };
-        
+
         //============================================================================================================
         //API Enum: FilterStatus_Running
         //    Binary flags that give information with the NAV Filter Status field when filter is initialized and running. Each bit must be checked accordingly.
@@ -1155,7 +1155,7 @@ namespace mscl
         //    The <PositionVelocityReferenceFrame> of this vector.
         //    Default: ECEF
         PositionVelocityReferenceFrame referenceFrame;
-        
+
         //API Function: x
         // Only valid if referenceFrame is ECEF
         float x() const { return vec_0; }
@@ -1211,7 +1211,7 @@ namespace mscl
         //    long_init - initial longitude
         //    alt_init - initial altitude
         static Position PositionLLH(double lat_init, double long_init, double alt_init) { return Position(lat_init, long_init, alt_init, PositionVelocityReferenceFrame::LLH_NED); }
-        
+
         //API Constructor: Position
         //    Creates a Position object with the reference frame set to ECEF
         //
@@ -1400,7 +1400,7 @@ namespace mscl
         //API Variable: applyIntegrityInfo
         bool applyIntegrityInfo;
 
-        //API Variable: SatellitePRNs 
+        //API Variable: SatellitePRNs
         //  The <SatellitePRNs> for all included satellites.
         SatellitePRNs satellitePRNs;
 
@@ -2003,7 +2003,7 @@ namespace mscl
         boost::optional<uint16> m_accelRange;
     };
 
-    
+
 
     //API Typedef: StatusSelectors
     //  A vector of <StatusSelector> objects
@@ -2141,7 +2141,7 @@ namespace mscl
         HeadingAlignmentMethod(uint8 val) :
             value(val)
         {}
-        
+
         //API Variable: value
         //  The HeadingAlignmentMethod bitfield value
         uint8 value;
@@ -2218,7 +2218,7 @@ namespace mscl
 
         //API Variable: referenceFrame
         PositionVelocityReferenceFrame referenceFrame;
-        
+
         //API Function: manualHeading
         //    Checks the value of initialValuesSource to determine if the initial heading needs to be set manually.
         bool manualHeading()
@@ -2351,7 +2351,7 @@ namespace mscl
     struct HeadingData
     {
     public:
-        HeadingData () : 
+        HeadingData () :
             heading (TRUE_HEADING),
             headingAngle(0),
             headingAngleUncertainty(0)
@@ -2390,7 +2390,7 @@ namespace mscl
 
         //API Variable: mode
         InertialTypes::AdaptiveMeasurementMode mode;
-        
+
         //API Variable: lowPassFilterCutoff
         float lowPassFilterCutoff;
 
@@ -2535,7 +2535,7 @@ namespace mscl
         //    Checks whether the specified option is enabled.
         bool optionEnabled(MeasurementOptions option) { return (measurementOptions & static_cast<uint16>(option)) > 0; };
         bool optionEnabled(uint16 options) { return (measurementOptions & options) > 0; };
-        
+
         //API Function: enableOption
         //    Enables the specified option.
         void enableOption(MeasurementOptions option) { measurementOptions = measurementOptions | static_cast<uint16>(option); }
@@ -2617,7 +2617,7 @@ namespace mscl
             CONNECTION_4G = 0x04,
             CONNECTION_5G = 0x05,
         };
-        
+
         //Constructor: RTKDeviceStatusFlags
         RTKDeviceStatusFlags() {}
 
@@ -2635,7 +2635,7 @@ namespace mscl
 #endif
         //API Function: version
         uint8 version() const;
-        
+
         //API Function: modemState
         ModemState modemState() const;
         void modemState(ModemState state);
@@ -2676,7 +2676,7 @@ namespace mscl
         uint8 correctionsUnavailable() const;
         void correctionsUnavailable(uint8 unavailable);
     };
-    
+
     //API Struct: RTKDeviceStatusFlags_v1
     class RTKDeviceStatusFlags_v1 : public Bitfield
     {
@@ -2839,8 +2839,9 @@ namespace mscl
     public:
         //API Enum: GpsSignal
         //  Available GPS signals.
-        //      L1CA    - 0x01 - L1CA:  00000001
-        //      L2C     - 0x02 - L2C:   00000010
+        //
+        //      L1CA - 0x01 - L1CA: 00000001
+        //      L2C  - 0x02 - L2C:  00000010
         enum GpsSignal
         {
             L1CA = 0x01,
@@ -2849,8 +2850,9 @@ namespace mscl
 
         //API Enum: GlonassSignal
         //  Available GLONASS signals.
-        //      L1OF    - 0x01 - L1OF:  00000001
-        //      L2OF    - 0x02 - L2OF:  00000010
+        //
+        //      L1OF - 0x01 - L1OF: 00000001
+        //      L2OF - 0x02 - L2OF: 00000010
         enum GlonassSignal
         {
             L1OF = 0x01,
@@ -2859,8 +2861,9 @@ namespace mscl
 
         //API Enum: GalileoSignal
         //  Available Galileo signals.
-        //      E1  - 0x01 - E1:   00000001
-        //      E5B - 0x02 - E5B:  00000010
+        //
+        //      E1  - 0x01 - E1:  00000001
+        //      E5B - 0x02 - E5B: 00000010
         enum GalileoSignal
         {
             E1  = 0x01,
@@ -2869,8 +2872,9 @@ namespace mscl
 
         //API Enum: BeiDouSignal
         //  Available BeiDou signals.
-        //      B1  - 0x01 - B1:    00000001
-        //      B2  - 0x02 - B2:    00000010
+        //
+        //      B1 - 0x01 - B1: 00000001
+        //      B2 - 0x02 - B2: 00000010
         enum BeiDouSignal
         {
             B1 = 0x01,
@@ -2940,6 +2944,8 @@ namespace mscl
         void beidouSignalValue(uint8 val) { m_beidouSignals.value(val); };
         uint8 beidouSignalValue() { return static_cast<uint8>(m_beidouSignals.value()); };
     };
+
+    typedef std::map<MipChannelIdentifier::GnssConstellationIds, std::vector<uint8>> GnssSignalConfigOptions;
 
     //API Struct: PositionReferenceConfiguration
     struct PositionReferenceConfiguration

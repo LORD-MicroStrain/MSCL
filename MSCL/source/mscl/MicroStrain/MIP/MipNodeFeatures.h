@@ -335,6 +335,13 @@ namespace mscl
         //    A <GpioPinOptions> map of supported GPIO pin configurations
         const GpioPinOptions supportedGpioConfigurations() const;
 
+        //API Function: supportedGnssSignalConfigurations
+        //    Gets bitmask vectors of supported <GnssSignalConfiguration> for each constellation
+        //
+        //Returns:
+        //    Bitmask vectors of supported <GnssSignalConfiguration> for each constellation
+        GnssSignalConfigOptions supportedGnssSignalConfigurations() const;
+
         //API Function: supportedDeclinationOptions
         //    Gets a vector of supported declination source options
         //
