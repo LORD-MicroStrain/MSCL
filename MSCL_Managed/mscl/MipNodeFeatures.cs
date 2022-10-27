@@ -212,6 +212,12 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public GnssSignalConfigOptions supportedGnssSignalConfigurations() {
+    GnssSignalConfigOptions ret = new GnssSignalConfigOptions(msclPINVOKE.MipNodeFeatures_supportedGnssSignalConfigurations(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public GeographicSources supportedDeclinationSources() {
     GeographicSources ret = new GeographicSources(msclPINVOKE.MipNodeFeatures_supportedDeclinationSources(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

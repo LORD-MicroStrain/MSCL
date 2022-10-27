@@ -327,11 +327,12 @@ namespace std
     %template(StatusSelectors)                  vector<mscl::DeviceStatusData::StatusSelector>;
     %template(VehicleModeTypes)                 vector<mscl::InertialTypes::VehicleModeType>;
     %template(AdaptiveFilterLevels)             vector<mscl::InertialTypes::AutoAdaptiveFilteringLevel>;
-    %template(LowPassFilterConfig)      vector<mscl::LowPassFilterData>;
+    %template(LowPassFilterConfig)              vector<mscl::LowPassFilterData>;
     %template(AidingMeasurementSourceOptions)   vector<mscl::InertialTypes::AidingMeasurementSource>;
     %template(PpsSourceOptions)                 vector<mscl::InertialTypes::PpsSource>;
     %template(GeographicSources)                vector<mscl::InertialTypes::GeographicSourceOption>;
     %template(GnssSources)                      vector<mscl::InertialTypes::GNSS_Source>;
+    %template(GnssSignalConfigOptions)          map<mscl::MipChannelIdentifier::GnssConstellationIds, std::vector<uint8_t>>;
     %template(NmeaMessageFormats)               vector<mscl::NmeaMessageFormat>;
     %template(GpioPinModeOptions)               vector<mscl::GpioConfiguration::PinModes>;
     %template(GpioBehaviorModes)                map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>;
