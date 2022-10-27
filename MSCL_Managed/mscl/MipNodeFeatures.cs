@@ -212,8 +212,8 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
-  public SupportedGnssSignalConfigurations supportedGnssSignalConfigurations() {
-    SupportedGnssSignalConfigurations ret = new SupportedGnssSignalConfigurations(msclPINVOKE.MipNodeFeatures_supportedGnssSignalConfigurations(swigCPtr), true);
+  public GnssSignalConfigOptions supportedGnssSignalConfigurations() {
+    GnssSignalConfigOptions ret = new GnssSignalConfigOptions(msclPINVOKE.MipNodeFeatures_supportedGnssSignalConfigurations(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

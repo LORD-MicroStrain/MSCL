@@ -340,7 +340,7 @@ namespace mscl
         //
         //Returns:
         //    Bitmask vectors of supported <GnssSignalConfiguration> for each constellation
-        SupportedGnssSignalConfigurations supportedGnssSignalConfigurations() const;
+        GnssSignalConfigOptions supportedGnssSignalConfigurations() const;
 
         //API Function: supportedDeclinationOptions
         //    Gets a vector of supported declination source options

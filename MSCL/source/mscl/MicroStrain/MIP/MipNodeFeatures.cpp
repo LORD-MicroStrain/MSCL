@@ -805,7 +805,7 @@ namespace mscl
         };
     }
 
-    SupportedGnssSignalConfigurations MipNodeFeatures::supportedGnssSignalConfigurations() const
+    GnssSignalConfigOptions MipNodeFeatures::supportedGnssSignalConfigurations() const
     {
         const MipModel model(nodeInfo().deviceInfo().modelNumber);
 
@@ -818,44 +818,42 @@ namespace mscl
             // Version 1.1.01 and above only supports both or no signal configurations for each constellation
             if (version > Version(1, 0, 10) ||
                 version < Version(1, 0) && version >= Version(0, 8, 71))
-                return {
-                    { 0, GnssSignalConfiguration::GpsSignal::L1CA     | GnssSignalConfiguration::GpsSignal::L2C },      // GPS
-                    { 0, GnssSignalConfiguration::GlonassSignal::L1OF | GnssSignalConfiguration::GlonassSignal::L2OF }, // GLONASS
-                    { 0, GnssSignalConfiguration::GalileoSignal::E1   | GnssSignalConfiguration::GalileoSignal::E5B },  // Galileo
-                    { 0, GnssSignalConfiguration::BeiDouSignal::B1    | GnssSignalConfiguration::BeiDouSignal::B2 }     // BeiDou
+            {
+                return{
+                    { MipChannelIdentifier::GPS, { 0, GnssSignalConfiguration::GpsSignal::L1CA | GnssSignalConfiguration::GpsSignal::L2C } },
+                    { MipChannelIdentifier::GLONASS, { 0, GnssSignalConfiguration::GlonassSignal::L1OF | GnssSignalConfiguration::GlonassSignal::L2OF } },
+                    { MipChannelIdentifier::GALILEO, { 0, GnssSignalConfiguration::GalileoSignal::E1 | GnssSignalConfiguration::GalileoSignal::E5B } },
+                    { MipChannelIdentifier::BEIDOU, { 0, GnssSignalConfiguration::BeiDouSignal::B1 | GnssSignalConfiguration::BeiDouSignal::B2 } }
                 };
+            }
         }
         default:
             // Any configuration supported
             return {
-                // GPS
-                {
+                { MipChannelIdentifier::GPS, {
                     0,
                     GnssSignalConfiguration::GpsSignal::L1CA,
                     GnssSignalConfiguration::GpsSignal::L2C,
                     GnssSignalConfiguration::GpsSignal::L1CA | GnssSignalConfiguration::GpsSignal::L2C
-                },
-                // GLONASS
-                {
+                } },
+                { MipChannelIdentifier::GLONASS, {
                     0,
                     GnssSignalConfiguration::GlonassSignal::L1OF,
                     GnssSignalConfiguration::GlonassSignal::L2OF,
                     GnssSignalConfiguration::GlonassSignal::L1OF | GnssSignalConfiguration::GlonassSignal::L2OF
-                },
-                // Galileo
-                {
+                } },
+                { MipChannelIdentifier::GALILEO, {
                     0,
                     GnssSignalConfiguration::GalileoSignal::E1,
                     GnssSignalConfiguration::GalileoSignal::E5B,
                     GnssSignalConfiguration::GalileoSignal::E1 | GnssSignalConfiguration::GalileoSignal::E5B,
-                },
-                // BeiDou
-                {
+                } },
+                { MipChannelIdentifier::BEIDOU, {
                     0,
                     GnssSignalConfiguration::BeiDouSignal::B1,
                     GnssSignalConfiguration::BeiDouSignal::B2,
                     GnssSignalConfiguration::BeiDouSignal::B1 | GnssSignalConfiguration::BeiDouSignal::B2,
-                }
+                } }
             };
         }
     }

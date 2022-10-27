@@ -1097,26 +1097,6 @@ namespace mscl
         return m_beidouSignals.get(signal) > 0;
     }
 
-    Bytes SupportedGnssSignalConfigurations::gps() const
-    {
-        return m_gps;
-    }
-
-    Bytes SupportedGnssSignalConfigurations::glonass() const
-    {
-        return m_glonass;
-    }
-
-    Bytes SupportedGnssSignalConfigurations::galileo() const
-    {
-        return m_galileo;
-    }
-
-    Bytes SupportedGnssSignalConfigurations::beidou() const
-    {
-        return m_beidou;
-    }
-
     OdometerConfiguration::Mode OdometerConfiguration::mode() const
     {
         return m_mode;

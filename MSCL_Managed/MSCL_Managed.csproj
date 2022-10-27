@@ -188,6 +188,7 @@
     <Compile Include="mscl\GnssAidingStatus.cs" />
     <Compile Include="mscl\GnssReceiverInfo.cs" />
     <Compile Include="mscl\GnssReceivers.cs" />
+    <Compile Include="mscl\GnssSignalConfigOptions.cs" />
     <Compile Include="mscl\GnssSignalConfiguration.cs" />
     <Compile Include="mscl\GnssSources.cs" />
     <Compile Include="mscl\GpioBehaviorModes.cs" />
@@ -282,7 +283,6 @@
     <Compile Include="mscl\StorageLimitModes.cs" />
     <Compile Include="mscl\StreamInfo.cs" />
     <Compile Include="mscl\StructuralHealth.cs" />
-    <Compile Include="mscl\SupportedGnssSignalConfigurations.cs" />
     <Compile Include="mscl\SupportedSensorRanges.cs" />
     <Compile Include="mscl\SyncNetworkInfo.cs" />
     <Compile Include="mscl\SyncSamplingNetwork.cs" />

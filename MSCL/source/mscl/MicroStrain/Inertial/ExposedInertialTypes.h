@@ -2945,69 +2945,7 @@ namespace mscl
         uint8 beidouSignalValue() { return static_cast<uint8>(m_beidouSignals.value()); };
     };
 
-    //API Struct: SupportedGnssSignalConfigurations
-    //  Bitmask vectors of supported <GnssSignalConfiguration> combinations per constellation type
-    struct SupportedGnssSignalConfigurations
-    {
-        //API Constructor: SupportedGnssSignalConfigurations
-        SupportedGnssSignalConfigurations() :
-            m_gps({ 0 }), m_glonass({ 0 }), m_galileo({ 0 }), m_beidou({ 0 }) {}
-
-        //API Constructor: SupportedGnssSignalConfigurations
-        //
-        //Parameters:
-        //  gps     - A bitmask vector of supported <GnssSignalConfiguration::GpsSignal>
-        //  glonass - A bitmask vector of supported <GnssSignalConfiguration::GlonassSignal>
-        //  galileo - A bitmask vector of supported <GnssSignalConfiguration::GalileoSignal>
-        //  beidou  - A bitmask vector of supported <GnssSignalConfiguration::BeiDouSignal>
-        SupportedGnssSignalConfigurations(const Bytes gps, const Bytes glonass, const Bytes galileo, const Bytes beidou) :
-            m_gps(gps), m_glonass(glonass), m_galileo(galileo), m_beidou(beidou) {}
-
-        //API Function: gps
-        //  Get the supported GPS signal configurations
-        //
-        //Returns:
-        //    <Bytes> - A bitmask vector of supported <GnssSignalConfiguration::GpsSignal>
-        Bytes gps() const;
-
-        //API Function: glonass
-        //  Get the supported GLONASS signal configurations
-        //
-        //Returns:
-        //    <Bytes> - A bitmask vector of supported <GnssSignalConfiguration::GlonassSignal>
-        Bytes glonass() const;
-
-        //API Function: galileo
-        //  Get the supported Galileo signal configurations
-        //
-        //Returns:
-        //    <Bytes> - A bitmask vector of supported <GnssSignalConfiguration::GalileoSignal>
-        Bytes galileo() const;
-
-        //API Function: beidou
-        //  Get the supported BeiDou signal configurations
-        //
-        //Returns:
-        //    <Bytes> - A bitmask vector of supported <GnssSignalConfiguration::BeiDouSignal>
-        Bytes beidou() const;
-
-    private:
-        //Variable: m_gps
-        //  A bitmask vector of supported <GnssSignalConfiguration::GpsSignal>
-        Bytes m_gps;
-
-        //Variable: m_glonass
-        //  A bitmask vector of supported <GnssSignalConfiguration::GlonassSignal>
-        Bytes m_glonass;
-
-        //Variable: m_galileo
-        //  A bitmask vector of supported <GnssSignalConfiguration::GalileoSignal>
-        Bytes m_galileo;
-
-        //Variable: m_beidou
-        //  A bitmask vector of supported <GnssSignalConfiguration::BeiDouSignal>
-        Bytes m_beidou;
-    };
+    typedef std::map<MipChannelIdentifier::GnssConstellationIds, std::vector<uint8>> GnssSignalConfigOptions;
 
     //API Struct: PositionReferenceConfiguration
     struct PositionReferenceConfiguration

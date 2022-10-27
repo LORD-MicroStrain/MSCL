@@ -5376,27 +5376,6 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GnssSignalConfiguration")]
   public static extern void delete_GnssSignalConfiguration(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_SupportedGnssSignalConfigurations__SWIG_0")]
-  public static extern global::System.IntPtr new_SupportedGnssSignalConfigurations__SWIG_0();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_SupportedGnssSignalConfigurations__SWIG_1")]
-  public static extern global::System.IntPtr new_SupportedGnssSignalConfigurations__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, global::System.Runtime.InteropServices.HandleRef jarg3, global::System.Runtime.InteropServices.HandleRef jarg4);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SupportedGnssSignalConfigurations_gps")]
-  public static extern global::System.IntPtr SupportedGnssSignalConfigurations_gps(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SupportedGnssSignalConfigurations_glonass")]
-  public static extern global::System.IntPtr SupportedGnssSignalConfigurations_glonass(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SupportedGnssSignalConfigurations_galileo")]
-  public static extern global::System.IntPtr SupportedGnssSignalConfigurations_galileo(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_SupportedGnssSignalConfigurations_beidou")]
-  public static extern global::System.IntPtr SupportedGnssSignalConfigurations_beidou(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_SupportedGnssSignalConfigurations")]
-  public static extern void delete_SupportedGnssSignalConfigurations(global::System.Runtime.InteropServices.HandleRef jarg1);
-
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_PositionReferenceConfiguration_autoConfig_set")]
   public static extern void PositionReferenceConfiguration_autoConfig_set(global::System.Runtime.InteropServices.HandleRef jarg1, bool jarg2);
 
@@ -11816,6 +11795,48 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GnssSources")]
   public static extern void delete_GnssSources(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GnssSignalConfigOptions__SWIG_0")]
+  public static extern global::System.IntPtr new_GnssSignalConfigOptions__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GnssSignalConfigOptions__SWIG_1")]
+  public static extern global::System.IntPtr new_GnssSignalConfigOptions__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSignalConfigOptions_size")]
+  public static extern uint GnssSignalConfigOptions_size(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSignalConfigOptions_empty")]
+  public static extern bool GnssSignalConfigOptions_empty(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSignalConfigOptions_Clear")]
+  public static extern void GnssSignalConfigOptions_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSignalConfigOptions_getitem")]
+  public static extern global::System.IntPtr GnssSignalConfigOptions_getitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSignalConfigOptions_setitem")]
+  public static extern void GnssSignalConfigOptions_setitem(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSignalConfigOptions_ContainsKey")]
+  public static extern bool GnssSignalConfigOptions_ContainsKey(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSignalConfigOptions_Add")]
+  public static extern void GnssSignalConfigOptions_Add(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSignalConfigOptions_Remove")]
+  public static extern bool GnssSignalConfigOptions_Remove(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSignalConfigOptions_create_iterator_begin")]
+  public static extern global::System.IntPtr GnssSignalConfigOptions_create_iterator_begin(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSignalConfigOptions_get_next_key")]
+  public static extern int GnssSignalConfigOptions_get_next_key(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.IntPtr jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssSignalConfigOptions_destroy_iterator")]
+  public static extern void GnssSignalConfigOptions_destroy_iterator(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.IntPtr jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GnssSignalConfigOptions")]
+  public static extern void delete_GnssSignalConfigOptions(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NmeaMessageFormats_Clear")]
   public static extern void NmeaMessageFormats_Clear(global::System.Runtime.InteropServices.HandleRef jarg1);
