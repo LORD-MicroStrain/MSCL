@@ -816,8 +816,8 @@ namespace mscl
             const Version version(nodeInfo().deviceInfo().fwVersion);
 
             // Version 1.1.01 and above only supports both or no signal configurations for each constellation
-            if (version > Version(1, 0, 10) ||
-                version < Version(1, 0) && version >= Version(0, 8, 71))
+            // Report all supported on dev versions for flexibility on dev devices
+            if (version > Version(1, 0, 10))
             {
                 return{
                     { MipChannelIdentifier::GPS, { 0, GnssSignalConfiguration::GpsSignal::L1CA | GnssSignalConfiguration::GpsSignal::L2C } },
