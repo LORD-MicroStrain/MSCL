@@ -164,6 +164,7 @@
 #include "../MicroStrain/Displacement/DisplacementNode.h"
 #include "../MicroStrain/RTK/RTKNode.h"
 #include "../MicroStrain/MIP/Packets/MipPacket.h"
+#include "../MicroStrain/MIP/NMEA/NmeaPacket.h"
 %}
 
 // Need to tell SWIG that the following classes are not abstract (thinks they are by default and doesn't generate constructors)
@@ -246,6 +247,7 @@
 %include "../MicroStrain/MIP/MipBuiltInTest.h"
 %include "../MicroStrain/MIP/Packets/MipSharedDataFields.h"
 %include "../MicroStrain/MIP/Packets/MipDataPacket.h"
+%include "../MicroStrain/MIP/NMEA/NmeaPacket.h"
 %include "../Communication/RawBytePacket.h"
 %include "../MicroStrain/MIP/MipNodeFeatures.h"
 %include "../MicroStrain/MIP/MipNode.h"
@@ -264,6 +266,7 @@ namespace std
     %template(DataSweeps)                       vector<mscl::DataSweep>;
     %template(LoggedDataSweeps)                 vector<mscl::LoggedDataSweep>;
     %template(MipDataPackets)                   vector<mscl::MipDataPacket>;
+    %template(NmeaPackets)                      vector<mscl::NmeaPacket>;
     %template(RawBytePackets)                   vector<mscl::RawBytePacket>;
     %template(MipChannels)                      vector<mscl::MipChannel>;
     %template(DataCollectionMethods)            vector<mscl::WirelessTypes::DataCollectionMethod>;

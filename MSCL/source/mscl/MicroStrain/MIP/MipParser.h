@@ -10,6 +10,7 @@
 #include "Packets/MipPacket.h"
 #include "../../Communication/RawBytePacketCollector.h"
 #include "mscl/MicroStrain/MIP/MipDataField.h"
+#include "mscl/MicroStrain/DataBuffer.h"
 #include <memory>
 
 namespace mscl
@@ -62,6 +63,10 @@ namespace mscl
         //Variable: m_rawBytePacketCollector
         //    The <RawBytePacketCollector> associated with this parser and its parent device
         RawBytePacketCollector* m_rawBytePacketCollector;
+
+        //Variable: m_pendingData
+        //    Holds any data that needs to be carried over between calls (partial packets)
+        DataBuffer m_pendingData;
 
     private:
         //Function: processPacket

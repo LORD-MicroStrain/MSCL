@@ -182,4 +182,7 @@ namespace mscl
         deviceState_sampling_inactive   = 4,
         deviceState_unknown             = 255
     };
+
+    //Constant: CONNECTION_BUFFER_SIZE
+    const size_t CONNECTION_BUFFER_SIZE = 1024 * 1000;
 }

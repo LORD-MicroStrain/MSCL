@@ -14,6 +14,7 @@
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/MIP/Commands/GetDeviceInfo.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
+#include "mscl/MicroStrain/MIP/NMEA/NmeaPacketCollector.h"
 #include "mscl/Communication/Connection.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
@@ -26,6 +27,7 @@ namespace mscl
 {
     //forward declarations
     class MipParser;
+    class NmeaParser;
     class MipNodeInfo;
     class MipNodeFeatures;
     class MipCommand;
@@ -69,6 +71,10 @@ namespace mscl
         //    The response collector used to find and store wireless command responses
         std::shared_ptr<ResponseCollector> m_responseCollector;
 
+        //Variable: m_nmeaPacketCollector
+        //    The <NmeaPacketCollector> used to store NMEA data packets
+        NmeaPacketCollector m_nmeaPacketCollector;
+
         //Variable: m_rawBytePacketCollector
         //    The <RawBytePacketCollector> associated with this parser and its parent device
         mutable RawBytePacketCollector m_rawBytePacketCollector;
@@ -76,6 +82,14 @@ namespace mscl
         //Variable: m_parser
         //    The <MipParser> in charge of parsing all incoming data to this device
         std::unique_ptr<MipParser> m_parser;
+
+        //Variable: m_nmeaParser
+        //    The <NmeaParser> in charge of parsing all incoming data to this device
+        std::unique_ptr<NmeaParser> m_nmeaParser;
+
+        //Variable: m_parseNmea
+        //    Indicates whether connection output should be run through the NMEA parser
+        bool m_parseNmea;
 
         //Variable: m_commandsTimeout
         //    The timeout to use for MIP commands
@@ -247,6 +261,18 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the Node.
         void getDataPackets(std::vector<MipDataPacket>& packets, uint32 timeout = 0, uint32 maxPackets = 0);
 
+        //Function: getNmeaPackets
+        //    Gets up to the requested amount of NMEA packets that have been collected.
+        //
+        //Parameters:
+        //    packets - A vector of <NmeaPacket> to hold the result.
+        //    timeout - the timeout, in milliseconds, to wait for the data if necessary (default of 0)
+        //    maxPackets - The maximum number of packets to return. If this is 0 (default), all packets will be returned.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: A connection error has occurred with the Node.
+        void getNmeaPackets(NmeaPackets& packets, uint32 timeout = 0, uint32 maxPackets = 0);
+
         //Function: getRawBytePackets
         //    Gets up to the requested amount of raw byte packets that have been collected.
         //
@@ -265,6 +291,13 @@ namespace mscl
         //Returns:
         //    The total number of data packets that are currently in the buffer.
         uint32 totalPackets();
+
+        //Function: enableNmeaParsing
+        //    Enables/disables NMEA parsing on device output.
+        //
+        //Parameters:
+        //    enable - default true - enables NMEA parsing if true, disables if false
+        void enableNmeaParsing(bool enable = true);
 
         //Function: timeout
         //    Sets the timeout to use when waiting for responses from commands.
