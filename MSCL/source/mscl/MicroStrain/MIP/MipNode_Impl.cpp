@@ -10,7 +10,7 @@
 #include "mscl/Utils.h"
 #include "mscl/ScopeHelper.h"
 #include "MipParser.h"
-#include "mscl/MicroStrain/MIP/NMEA/NmeaParser.h"
+#include "NMEA/NmeaParser.h"
 #include "MipNodeInfo.h"
 #include "MipNodeFeatures.h"
 #include "Commands/CyclePower.h"

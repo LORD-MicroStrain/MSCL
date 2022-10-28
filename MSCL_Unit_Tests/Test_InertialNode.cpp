@@ -9,6 +9,7 @@
 #include "mscl/MicroStrain/Displacement/DisplacementModels.h"
 #include "mscl/MicroStrain/MIP/MipNodeFeatures.h"
 #include "mscl/MicroStrain/MIP/Packets/MipDataPacket.h"
+#include "mscl/MicroStrain/MIP/NMEA/NmeaPacket.h"
 #include "mscl/MicroStrain/ByteStream.h"
 #include "mscl/MicroStrain/ChecksumBuilder.h"
 #include "mscl/Utils.h"
