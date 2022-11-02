@@ -53,7 +53,6 @@
 
 #include "MicroStrain/MIP/Packets/MipDataPacket.h"
 #include "MicroStrain/MIP/Packets/MipPacket.h"
-#include "MicroStrain/MIP/NMEA/NmeaPacket.h"
 
 #include "MicroStrain/Wireless/ArmedDataloggingNetwork.h"
 #include "MicroStrain/Wireless/BaseStation.h"
