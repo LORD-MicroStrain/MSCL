@@ -1096,8 +1096,8 @@
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getMagnetometerHardIronOffset();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setConingAndScullingEnable(bool enable);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getConingAndScullingEnable();
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterConfig& data);
-%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getAdvancedLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setLowPassFilterSettings(const LowPassFilterConfig& data);
+%catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::setComplementaryFilterSettings(const ComplementaryFilterData& data);
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getComplementaryFilterSettings();
 %catches(mscl::Error_MipCmdFailed, mscl::Error_Communication, mscl::Error_NotSupported, mscl::Error_Connection)                     mscl::InertialNode::getBasicDeviceStatus();

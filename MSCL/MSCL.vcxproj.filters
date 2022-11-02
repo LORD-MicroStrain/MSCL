@@ -70,6 +70,9 @@
     <Filter Include="MicroStrain\RTK\Commands">
       <UniqueIdentifier>{a49d32a6-b691-45ec-b639-26ffa719c426}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MicroStrain\MIP\NMEA">
+      <UniqueIdentifier>{c5de4a31-1124-49ec-a5c3-e9f771f2f4e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\mscl\Exceptions.h" />
@@ -1022,6 +1025,18 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_System.h">
       <Filter>MicroStrain\Inertial\Packets</Filter>
     </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\MIP\MipBuiltInTest.h">
+      <Filter>MicroStrain\MIP</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\MIP\NMEA\NmeaPacket.h">
+      <Filter>MicroStrain\MIP\NMEA</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\MIP\NMEA\NmeaPacketCollector.h">
+      <Filter>MicroStrain\MIP\NMEA</Filter>
+    </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\MIP\NMEA\NmeaParser.h">
+      <Filter>MicroStrain\MIP\NMEA</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp">
@@ -1934,6 +1949,18 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\Packets\InertialFieldParser_System.cpp">
       <Filter>MicroStrain\Inertial\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\MIP\MipBuiltInTest.cpp">
+      <Filter>MicroStrain\MIP</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\MIP\NMEA\NmeaPacket.cpp">
+      <Filter>MicroStrain\MIP\NMEA</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\MIP\NMEA\NmeaPacketCollector.cpp">
+      <Filter>MicroStrain\MIP\NMEA</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\MIP\NMEA\NmeaParser.cpp">
+      <Filter>MicroStrain\MIP\NMEA</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

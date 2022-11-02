@@ -14,6 +14,7 @@
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"
 #include "mscl/MicroStrain/MIP/Commands/GetDeviceInfo.h"
 #include "mscl/MicroStrain/MIP/Packets/MipPacketCollector.h"
+#include "mscl/MicroStrain/MIP/NMEA/NmeaPacketCollector.h"
 #include "mscl/Communication/Connection.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
@@ -26,6 +27,7 @@ namespace mscl
 {
     //forward declarations
     class MipParser;
+    class NmeaParser;
     class MipNodeInfo;
     class MipNodeFeatures;
     class MipCommand;
@@ -69,6 +71,10 @@ namespace mscl
         //    The response collector used to find and store wireless command responses
         std::shared_ptr<ResponseCollector> m_responseCollector;
 
+        //Variable: m_nmeaPacketCollector
+        //    The <NmeaPacketCollector> used to store NMEA data packets
+        NmeaPacketCollector m_nmeaPacketCollector;
+
         //Variable: m_rawBytePacketCollector
         //    The <RawBytePacketCollector> associated with this parser and its parent device
         mutable RawBytePacketCollector m_rawBytePacketCollector;
@@ -77,13 +83,17 @@ namespace mscl
         //    The <MipParser> in charge of parsing all incoming data to this device
         std::unique_ptr<MipParser> m_parser;
 
+        //Variable: m_nmeaParser
+        //    The <NmeaParser> in charge of parsing all incoming data to this device
+        std::unique_ptr<NmeaParser> m_nmeaParser;
+
+        //Variable: m_parseNmea
+        //    Indicates whether connection output should be run through the NMEA parser
+        bool m_parseNmea;
+
         //Variable: m_commandsTimeout
         //    The timeout to use for MIP commands
         uint64 m_commandsTimeout;
-
-        //Variable: m_nodeInfo
-        //    The <MipNodeInfo> object that gives access to information of the Node
-        mutable std::unique_ptr<MipNodeInfo> m_nodeInfo;
 
         //Variable: m_features
         //    The <MipNodeFeatures> containing the features for this device.
@@ -196,7 +206,10 @@ namespace mscl
         void setLastDeviceState(DeviceState state);
 
         //Function: resetNodeInfo
-        //  Clears cached info read from device (ie fw version, receiver info, etc.)
+        //  Clears cached info read from device (ie fw version, receiver info, etc.).
+        //
+        //Note:
+        //  Features is also reset to load new info data next time it's used.
         void resetNodeInfo();
 
         //Function: firmwareVersion
@@ -248,6 +261,18 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the Node.
         void getDataPackets(std::vector<MipDataPacket>& packets, uint32 timeout = 0, uint32 maxPackets = 0);
 
+        //Function: getNmeaPackets
+        //    Gets up to the requested amount of NMEA packets that have been collected.
+        //
+        //Parameters:
+        //    packets - A vector of <NmeaPacket> to hold the result.
+        //    timeout - the timeout, in milliseconds, to wait for the data if necessary (default of 0)
+        //    maxPackets - The maximum number of packets to return. If this is 0 (default), all packets will be returned.
+        //
+        //Exceptions:
+        //    - <Error_Connection>: A connection error has occurred with the Node.
+        void getNmeaPackets(NmeaPackets& packets, uint32 timeout = 0, uint32 maxPackets = 0);
+
         //Function: getRawBytePackets
         //    Gets up to the requested amount of raw byte packets that have been collected.
         //
@@ -266,6 +291,13 @@ namespace mscl
         //Returns:
         //    The total number of data packets that are currently in the buffer.
         uint32 totalPackets();
+
+        //Function: enableNmeaParsing
+        //    Enables/disables NMEA parsing on device output.
+        //
+        //Parameters:
+        //    enable - default true - enables NMEA parsing if true, disables if false
+        void enableNmeaParsing(bool enable = true);
 
         //Function: timeout
         //    Sets the timeout to use when waiting for responses from commands.
@@ -332,6 +364,52 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         virtual std::vector<uint16> getDescriptorSets() const;
+
+        //Function: getRequiredParameterDefaults
+        //  Get list of command ID, parameters vector pairs for all the available defaults for the required parameters of the specified commands
+        //  Useful for get config command bytes, save as startup, etc.
+        //
+        //Parameter:
+        //  cmds - <MipTypes::MipCommands> to get the required parameter default values for
+        //  useAllParam - bool, default true - if command accepts an All parameter (usually 0) for Save/Load/Default use that instead of separate entries for individual parameters
+        //
+        //Returns:
+        //  <MipCommandParameters> - list of cmd, parameters pairs for the specified commands
+        MipCommandParameters getRequiredParameterDefaults(const MipTypes::MipCommands& cmds, bool useAllParam = true) const;
+
+        //Function: getRequiredParameterDefaults
+        //  Get list of command ID, parameters vector pairs for all the available defaults for the required parameters of the specified command
+        //  Useful for get config command bytes, save as startup, etc.
+        //
+        //Parameter:
+        //  cmd - <MipTypes::Command> to get the required parameter default values for
+        //  useAllParam - bool, default true - if command accepts an All parameter (usually 0) for Save/Load/Default use that instead of separate entries for individual parameters
+        //
+        //Returns:
+        //  <MipCommandParameters> - list of cmd, parameters pairs for the specified command
+        MipCommandParameters getRequiredParameterDefaults(MipTypes::Command cmd, bool useAllParam = true) const;
+
+        //Function: getReservedWriteValues
+        //  Get list of command ID, parameters vector pairs for all the trailing reserved values for writing the specified commands
+        //  Useful for get config command bytes
+        //
+        //Parameter:
+        //  cmds - <MipTypes::MipCommands> to get the trailing reserved values for
+        //
+        //Returns:
+        //  <MipCommandParameters> - list of cmd, parameters pairs for the specified commands
+        MipCommandParameters getReservedWriteValues(const MipTypes::MipCommands& cmds) const;
+
+        //Function: getReservedWriteValues
+        //  Get list of command ID, parameters vector pairs for all the trailing reserved values for writing the specified command
+        //  Useful for get config command bytes
+        //
+        //Parameter:
+        //  cmd - <MipTypes::Command> to get the trailing reserved values for
+        //
+        //Returns:
+        //  <MipCommandParameters> - list of cmd, parameters pairs for the specified command
+        MipCommandParameters getReservedWriteValues(MipTypes::Command cmd) const;
 
         //Function: getConfigCommandBytes
         //    Gets the byte string for the commands to set the node's current settings.
@@ -1224,8 +1302,8 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         uint32 getUARTBaudRate(uint8 portId = 1) const;
 
-        //Function: setAdvancedLowPassFilterSettings
-        //    Sets the advanced low-pass filter settings.
+        //Function: setLowPassFilterSettings
+        //    Sets the low-pass filter settings.
         //
         //Parameters:
         //    data - the new settings to set.
@@ -1235,24 +1313,24 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data);
+        void setLowPassFilterSettings(const LowPassFilterData& data) const;
 
-        //Function: getAdvancedLowPassFilterSettings
-        //    AdvancedLowPassFilterData new settings.  The <AdvancedLowPassFilterData::DataDescriptor> field
+        //Function: getLowPassFilterSettings
+        //    LowPassFilterData new settings.  The <LowPassFilterData::DataDescriptor> field
         //    from the passed in data is used to set the type of data to be returned.
         //
         //Parameters:
-        //    dataDescriptor - the <MipType::ChannelField> data descriptor for which to return the current advanced low-pass filter settings.
+        //    dataDescriptor - the <MipType::ChannelField> data descriptor for which to return the current low-pass filter settings.
         //
         //Return:
-        //    AdvancedLowPassFilterData new settings.
+        //    LowPassFilterData new settings.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        AdvancedLowPassFilterData getAdvancedLowPassFilterSettings(const MipTypes::ChannelField& dataDescriptor) const;
+        LowPassFilterData getLowPassFilterSettings(const MipTypes::ChannelField& dataDescriptor) const;
 
         //Function: setComplementaryFilterSettings
         //    Sets the complementary filter settings.
@@ -1934,7 +2012,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void set(MipTypes::Command cmdId, MipFieldValues values);
+        void set(MipTypes::Command cmdId, MipFieldValues values) const;
 
         //API Function: saveAsStartup
         //    sends the specified command with the Save as Startup Settings function selector.
@@ -1947,7 +2025,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void saveAsStartup(MipTypes::Command cmdId);
+        void saveAsStartup(MipTypes::Command cmdId) const;
 
         //API Function: saveAsStartup
         //    sends the specified command with the Save as Startup Settings function selector.
@@ -1961,7 +2039,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void saveAsStartup(MipTypes::Command cmdId, MipFieldValues specifier);
+        void saveAsStartup(MipTypes::Command cmdId, MipFieldValues specifier) const;
 
         //API Function: loadStartup
         //    sends the specified command with the Load Startup Settings function selector.
@@ -1974,7 +2052,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void loadStartup(MipTypes::Command cmdId);
+        void loadStartup(MipTypes::Command cmdId) const;
 
         //API Function: loadStartup
         //    sends the specified command with the Load Startup Settings function selector.
@@ -1988,7 +2066,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void loadStartup(MipTypes::Command cmdId, MipFieldValues specifier);
+        void loadStartup(MipTypes::Command cmdId, MipFieldValues specifier) const;
 
         //API Function: loadDefault
         //    sends the specified command with the Load Default Settings function selector.
@@ -2001,7 +2079,7 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void loadDefault(MipTypes::Command cmdId);
+        void loadDefault(MipTypes::Command cmdId) const;
 
         //API Function: loadDefault
         //    sends the specified command with the Load Default Settings function selector.
@@ -2015,20 +2093,21 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void loadDefault(MipTypes::Command cmdId, MipFieldValues specifier);
+        void loadDefault(MipTypes::Command cmdId, MipFieldValues specifier) const;
 
         //API Function: run
         //    Runs the specified command without a function selector. No data response expected.
         //
         //Parameter:
         //    cmdId - the <MipTypes::Command> to send.
+        //    ackNackExpected - default true - bool indicating whether to expect the device to send back an ACK/NACK response
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void run(MipTypes::Command cmdId);
+        void run(MipTypes::Command cmdId, bool ackNackExpected = true) const;
 
         //API Function: run
         //    Runs the specified command with the provided specifier values and no function selector. No data response expected.
@@ -2036,13 +2115,14 @@ namespace mscl
         //Parameter:
         //    cmdId - the <MipTypes::Command> to send.
         //    specifier - <MipFieldValues> containing any additional specifier values to send with the command.
+        //    ackNackExpected - default true - bool indicating whether to expect the device to send back an ACK/NACK response
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void run(MipTypes::Command cmdId, MipFieldValues specifier);
+        void run(MipTypes::Command cmdId, MipFieldValues specifier, bool ackNackExpected = true) const;
 
 private:
        //Function: SendCommand

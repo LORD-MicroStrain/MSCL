@@ -48,11 +48,11 @@ public class MipChannelIdentifier : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public MipChannelIdentifier(MipChannelIdentifier.Type identiferType, uint id) : this(msclPINVOKE.new_MipChannelIdentifier__SWIG_1((int)identiferType, id), true) {
+  public MipChannelIdentifier(MipChannelIdentifier.Type identifierType, uint id) : this(msclPINVOKE.new_MipChannelIdentifier__SWIG_1((int)identifierType, id), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public MipChannelIdentifier(MipChannelIdentifier.Type identiferType, uint id, uint specifier) : this(msclPINVOKE.new_MipChannelIdentifier__SWIG_2((int)identiferType, id, specifier), true) {
+  public MipChannelIdentifier(MipChannelIdentifier.Type identifierType, uint id, uint specifier) : this(msclPINVOKE.new_MipChannelIdentifier__SWIG_2((int)identifierType, id, specifier), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -98,7 +98,8 @@ public class MipChannelIdentifier : global::System.IDisposable {
     GNSS_CONSTELLATION,
     GNSS_SATELLITE_ID,
     GNSS_SIGNAL_ID,
-    AIDING_MEASUREMENT_TYPE
+    AIDING_MEASUREMENT_TYPE,
+    GNSS_RF_BAND
   }
 
   public enum AidingMeasurementTypes {
@@ -184,6 +185,13 @@ public class MipChannelIdentifier : global::System.IDisposable {
     BEIDOU_B2I = 166,
     BEIDOU_B2Q = 167,
     BEIDOU_B2IQ = 168
+  }
+
+  public enum GnssRfBands {
+    UNKNOWN_RF_BAND = 0,
+    RF_BAND_L1 = 1,
+    RF_BAND_L2 = 2,
+    RF_BAND_L5 = 5
   }
 
 }

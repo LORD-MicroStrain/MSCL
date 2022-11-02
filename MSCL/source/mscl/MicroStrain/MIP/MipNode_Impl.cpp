@@ -10,6 +10,7 @@
 #include "mscl/Utils.h"
 #include "mscl/ScopeHelper.h"
 #include "MipParser.h"
+#include "NMEA/NmeaParser.h"
 #include "MipNodeInfo.h"
 #include "MipNodeFeatures.h"
 #include "Commands/CyclePower.h"
@@ -72,7 +73,8 @@ namespace mscl
         m_sensorRateBase(0),
         m_gnssRateBase(0),
         m_estfilterRateBase(0),
-        m_lastDeviceState(deviceState_unknown)
+        m_lastDeviceState(deviceState_unknown),
+        m_parseNmea(false)
     {
         //create the response collector
         m_responseCollector.reset(new ResponseCollector);
@@ -84,6 +86,9 @@ namespace mscl
 
         //build the parser with the MipNode_Impl's packet collector and response collector
         m_parser.reset(new MipParser(&m_packetCollector, m_responseCollector, &m_rawBytePacketCollector));
+
+        //build the NMEA parser with the MipNode_Impl's packet collector and response collector
+        m_nmeaParser.reset(new NmeaParser(&m_nmeaPacketCollector));
 
         //register the parse function with the connection
         m_connection.registerParser(std::bind(&MipNode_Impl::parseData, this, std::placeholders::_1));
@@ -117,7 +122,13 @@ namespace mscl
 
     void MipNode_Impl::resetNodeInfo()
     {
-        m_nodeInfo.reset();
+        //if the features variable hasn't been set yet, no need to reset
+        if (m_features == nullptr)
+        {
+            return;
+        }
+
+        m_features->resetNodeInfo();
     }
 
     Version MipNode_Impl::firmwareVersion() const
@@ -152,13 +163,7 @@ namespace mscl
 
     const MipNodeInfo& MipNode_Impl::info() const
     {
-        //if we haven't initialized the MipNodeInfo
-        if(!m_nodeInfo)
-        {
-            m_nodeInfo.reset(new MipNodeInfo(this));
-        }
-
-        return (*m_nodeInfo);
+        return features().nodeInfo();
     }
 
     void MipNode_Impl::onDataPacketAdded()
@@ -169,10 +174,10 @@ namespace mscl
     const MipNodeFeatures& MipNode_Impl::features() const
     {
         //if the features variable hasn't been set yet
-        if(m_features == NULL)
+        if(m_features == nullptr)
         {
             //set the features variable by creating a new NodeFeatures pointer
-            m_features = MipNodeFeatures::create(info());
+            m_features = MipNodeFeatures::create(this);
         }
 
         return *(m_features.get());
@@ -205,13 +210,24 @@ namespace mscl
 
     void MipNode_Impl::parseData(DataBuffer& data)
     {
+        ReadBufferSavePoint beginData(&data);
+
         //send the readBuffer to the parser to parse all the bytes
         m_parser->parse(data);
+
+        if (m_parseNmea)
+        {
+            // set back to beginning of data and run through NMEA parser
+            beginData.revert();
+            m_nmeaParser->parse(data);
+            beginData.commit();
+        }
 
         //update InertialNode last comm time
         m_lastCommTime.setTimeNow();
 
-        //shift any extra bytes that weren't parsed, back to the front of the buffer
+        //shift out all bytes, parsers hold onto copies of whatever they need
+        data.skipBytes(data.bytesRemaining());
         std::size_t bytesShifted = data.shiftExtraToStart();
 
         if(bytesShifted > 0)
@@ -229,6 +245,14 @@ namespace mscl
         return m_packetCollector.getDataPackets(packets, timeout, maxPackets);
     }
 
+    void MipNode_Impl::getNmeaPackets(NmeaPackets& packets, uint32 timeout, uint32 maxPackets)//maxPackets=0
+    {
+        //check if a connection error has occurred
+        m_connection.throwIfError();
+
+        return m_nmeaPacketCollector.getPackets(packets, timeout, maxPackets);
+    }
+
     void MipNode_Impl::getRawBytePackets(RawBytePackets& packets, uint32 timeout, uint32 maxPackets)//maxPackets=0
     {
         //check if a connection error has occurred
@@ -240,6 +264,11 @@ namespace mscl
     uint32 MipNode_Impl::totalPackets()
     {
         return m_packetCollector.totalPackets();
+    }
+
+    void MipNode_Impl::enableNmeaParsing(bool enable)
+    {
+        m_parseNmea = enable;
     }
 
     void MipNode_Impl::timeout(uint64 timeout)
@@ -601,13 +630,15 @@ namespace mscl
         return descriptors;
     }
 
-    MipCommandSet MipNode_Impl::getConfigCommandBytes() const
+    MipCommandParameters MipNode_Impl::getRequiredParameterDefaults(MipTypes::Command cmd, bool useAllParam) const
     {
-        MipCommandSet setCmds;
+        MipTypes::MipCommands cmds = { cmd };
+        return getRequiredParameterDefaults(cmds, useAllParam);
+    }
 
-        std::vector<uint16> descriptors = info().descriptors();
-        const MipNodeFeatures& feat = features();
-        std::vector<MipTypes::DataClass> dataClasses = {
+    MipCommandParameters MipNode_Impl::getRequiredParameterDefaults(const MipTypes::MipCommands& cmds, bool useAllParam) const
+    {
+        const std::vector<MipTypes::DataClass> dataClasses = {
             MipTypes::DataClass::CLASS_AHRS_IMU,
             MipTypes::DataClass::CLASS_GNSS,
             MipTypes::DataClass::CLASS_ESTFILTER,
@@ -619,6 +650,265 @@ namespace mscl
             MipTypes::DataClass::CLASS_GNSS5,
             MipTypes::DataClass::CLASS_SYSTEM
         };
+
+        MipCommandParameters params;
+        
+        //all param will not work for any device that uses legacy data set identifiers for datastream control
+        bool legacyDevice = features().useLegacyIdsForEnableDataStream();
+        bool allParam = useAllParam && !legacyDevice;
+        for (MipTypes::Command cmd : cmds)
+        {
+            switch (cmd)
+            {
+            case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
+            {
+                if (allParam)
+                {
+                    params.push_back({ cmd, {Value::UINT8(0)} });
+                    break;
+                }
+
+                for (MipTypes::DataClass option : dataClasses)
+                {
+                    if (features().supportsCategory(option))
+                    {
+                        uint8 desc = legacyDevice ? ContinuousDataStream::getDeviceSelector(option) : static_cast<uint8>(option);
+                        params.push_back({ cmd, { Value::UINT8(static_cast<uint8>(desc)) } });
+                    }
+                }
+
+                break;
+            }
+            case MipTypes::CMD_DATA_STREAM_FORMAT:
+            case MipTypes::CMD_POWER_STATES:
+            {
+                params.push_back({ cmd, {Value::UINT8(InertialTypes::DeviceSelector::DEVICE_AHRS)} });
+                params.push_back({ cmd, {Value::UINT8(InertialTypes::DeviceSelector::DEVICE_GPS)} });
+                break;
+            }
+            case MipTypes::CMD_COMM_PORT_SPEED:
+            {
+                /* this is not supported in the currently released GQ7 fw - can probably be added in eventually
+                if (allParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT8(0) } });
+                    break;
+                }*/
+
+                CommPortInfo ports = features().getCommPortInfo();
+                for (DeviceCommPort& port : ports)
+                {
+                    params.push_back({ cmd, { Value::UINT8(port.id) } });
+                }
+                break;
+            }
+            case MipTypes::CMD_LOWPASS_FILTER_SETTINGS:
+            {
+                if (allParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT8(0) } });
+                    break;
+                }
+
+                MipTypes::MipChannelFields lowpassFilterChannels = features().supportedLowPassFilterChannelFields();
+
+                for (size_t j = 0; j < lowpassFilterChannels.size(); j++)
+                {
+                    MipTypes::ChannelField f = lowpassFilterChannels[j];
+
+                    // legacy command only supports 0x80 fields
+                    if ((MipTypes::DataClass)Utils::msb(static_cast<uint16>(f)) != MipTypes::CLASS_AHRS_IMU)
+                    {
+                        continue;
+                    }
+
+                    params.push_back({ cmd, {Value::UINT8(static_cast<uint8>(f))} });
+                }
+
+                break;
+            }
+            case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER:
+            {
+                if (allParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT16(0) } });
+                    break;
+                }
+
+                MipTypes::MipChannelFields lowpassFilterChannels = features().supportedLowPassFilterChannelFields();
+
+                for (size_t j = 0; j < lowpassFilterChannels.size(); j++)
+                {
+                    params.push_back({ cmd,{ Value::UINT16(static_cast<uint16>(lowpassFilterChannels[j])) } });
+                }
+
+                break;
+            }
+            case MipTypes::CMD_MESSAGE_FORMAT:
+            {
+                /* this is not supported in the currently released GQ7 fw - can probably be added in eventually
+                if (allParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT8(0) } });
+                    break;
+                }*/
+
+                for (MipTypes::DataClass option : dataClasses)
+                {
+                    if (features().supportsCategory(option))
+                    {
+                        params.push_back({ cmd, { Value::UINT8(static_cast<uint8>(option)) } });
+                    }
+                }
+                break;
+            }
+            case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE:
+            {
+                if (allParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT16(InertialTypes::ALL_AIDING_MEASUREMENTS) } });
+                    break;
+                }
+
+                AidingMeasurementSourceOptions options = features().supportedAidingMeasurementOptions();
+                for (InertialTypes::AidingMeasurementSource option : options)
+                {
+                    params.push_back({ cmd, { Value::UINT16(static_cast<uint16>(option)) } });
+                }
+
+                break;
+            }
+            case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
+            {
+                GnssReceivers supportedReceivers = features().gnssReceiverInfo();
+                for (GnssReceiverInfo info : supportedReceivers)
+                {
+                    params.push_back({ cmd, { Value::UINT8(info.id) } });
+                }
+
+                break;
+            }
+            case MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF:
+            case MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET:
+            {
+                MipFieldValues reserved = { Value::UINT8(1) };
+                params.push_back({ cmd, reserved });
+                break;
+            }
+            case MipTypes::CMD_GPIO_CONFIGURATION:
+            {
+                if (allParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT8(0) } });
+                    break;
+                }
+
+                GpioPinOptions gpioOptions = features().supportedGpioConfigurations();
+                for (auto& kv : gpioOptions)
+                {
+                    params.push_back({ cmd, { Value::UINT8(static_cast<uint8>(kv.first)) } });
+                }
+
+                break;
+            }
+            case MipTypes::CMD_SENSOR_RANGE:
+            {
+                if (allParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT8(SensorRange::ALL) } });
+                    break;
+                }
+
+                SupportedSensorRanges supportedRanges = features().supportedSensorRanges();
+                for (auto& kv : supportedRanges.options())
+                {
+                    params.push_back({ cmd, { Value::UINT8(static_cast<uint8>(kv.first)) } });
+                }
+
+                break;
+            }
+            case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
+            case MipTypes::CMD_EVENT_CONTROL:
+            {
+                if (allParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT8(0) } });
+                    break;
+                }
+
+                EventSupportInfo info = features().supportedEventTriggerInfo();
+                for (uint8_t id = 1; id <= info.maxInstances; id++)
+                {
+                    params.push_back({ cmd, { Value::UINT8(id) } });
+                }
+                break;
+            }
+            case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
+            {
+                if (allParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT8(0) } });
+                    break;
+                }
+
+                EventSupportInfo info = features().supportedEventActionInfo();
+                for (uint8_t id = 1; id <= info.maxInstances; id++)
+                {
+                    params.push_back({ cmd, { Value::UINT8(id) } });
+                }
+                break;
+            }
+            default:
+                params.push_back({ cmd, {} });
+                break;
+            }
+        }
+
+        return params;
+    }
+
+    MipCommandParameters MipNode_Impl::getReservedWriteValues(MipTypes::Command cmd) const
+    {
+        MipTypes::MipCommands cmds = { cmd };
+        return getReservedWriteValues(cmds);
+    }
+
+    MipCommandParameters MipNode_Impl::getReservedWriteValues(const MipTypes::MipCommands& cmds) const
+    {
+        MipCommandParameters params;
+        for (MipTypes::Command cmd : cmds)
+        {
+            switch (cmd)
+            {
+            case MipTypes::CMD_SENSOR_SIG_COND_SETTINGS:
+                params.push_back({ cmd, { Value::UINT16(0) } });
+                break;
+            case MipTypes::CMD_LOWPASS_FILTER_SETTINGS:
+                params.push_back({ cmd, { Value::UINT8(0) } });
+                break;
+            case MipTypes::CMD_GNSS_SIGNAL_CONFIG:
+                params.push_back({ cmd, { Value::UINT32(0) } });
+                break;
+            case MipTypes::CMD_GNSS_RTK_CONFIG:
+                params.push_back({ cmd, {
+                    Value::UINT8(0),
+                    Value::UINT8(0),
+                    Value::UINT8(0)
+                } });
+                break;
+            default:
+                break;
+            }
+        }
+
+        return params;
+    }
+
+    MipCommandSet MipNode_Impl::getConfigCommandBytes() const
+    {
+        MipCommandSet setCmds;
+
+        std::vector<uint16> descriptors = info().descriptors();
 
         // build command set in numeric order by command id
         std::sort(descriptors.begin(), descriptors.end());
@@ -664,13 +954,25 @@ namespace mscl
                 case MipTypes::CMD_CONTINUOUS_DATA_STREAM:
                 {
                     MipCommandBytes cmdBytes(cmd);
-                    std::vector<MipFieldValues> sources;
 
-                    if (feat.useLegacyIdsForEnableDataStream())
+                    if (features().useLegacyIdsForEnableDataStream())
                     {
+                        const std::vector<MipTypes::DataClass> dataClasses = {
+                            MipTypes::DataClass::CLASS_AHRS_IMU,
+                            MipTypes::DataClass::CLASS_GNSS,
+                            MipTypes::DataClass::CLASS_ESTFILTER,
+                            MipTypes::DataClass::CLASS_DISPLACEMENT,
+                            MipTypes::DataClass::CLASS_GNSS1,
+                            MipTypes::DataClass::CLASS_GNSS2,
+                            MipTypes::DataClass::CLASS_GNSS3, // RTK
+                            MipTypes::DataClass::CLASS_GNSS4,
+                            MipTypes::DataClass::CLASS_GNSS5,
+                            MipTypes::DataClass::CLASS_SYSTEM
+                        };
+
                         for (MipTypes::DataClass option : dataClasses)
                         {
-                            if (feat.supportsCategory(option))
+                            if (features().supportsCategory(option))
                             {
                                 bool enabled = isDataStreamEnabled(option);
                                 ByteStream s = ContinuousDataStream::buildCommand_set(option, enabled);
@@ -680,15 +982,14 @@ namespace mscl
                     }
                     else
                     {
-                        for (MipTypes::DataClass option : dataClasses)
+                        MipCommandParameters requiredParams = getRequiredParameterDefaults(cmd, false);
+                        std::vector<MipFieldValues> specifiers;
+                        for (std::pair<MipTypes::Command, MipFieldValues> paramEntry : requiredParams)
                         {
-                            if (feat.supportsCategory(option))
-                            {
-                                sources.push_back({ Value::UINT8(static_cast<uint8>(option)) });
-                            }
+                            specifiers.push_back(paramEntry.second);
                         }
 
-                        cmdBytes = buildMipCommandBytes(cmd, sources);
+                        cmdBytes = buildMipCommandBytes(cmd, specifiers);
                     }
 
                     if (cmdBytes.valid())
@@ -812,42 +1113,20 @@ namespace mscl
                     setCmds.push_back(MipCommandBytes(cmd, s.data()));
                 }
                 break;
-                case MipTypes::CMD_COMM_PORT_SPEED:
-                {
-                    CommPortInfo ports = features().getCommPortInfo();
-                    std::vector<MipFieldValues> ids;
-                    for (auto& port : ports)
-                    {
-                        ids.push_back({ Value::UINT8(port.id) });
-                    }
-
-                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, ids);
-
-                    if (cmdBytes.valid())
-                    {
-                        setCmds.push_back(cmdBytes);
-                    }
-                    break;
-                }
                 case MipTypes::CMD_LOWPASS_FILTER_SETTINGS:
                 {
+                    // if new command is supported, don't export legacy to avoid potential float -> u16 truncation issues
+                    if (features().supportsCommand(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER))
+                    {
+                        break;
+                    }
+
                     MipCommandBytes cmdBytes(cmd);
-                    MipTypes::MipChannelFields supportedDescriptors = features().supportedChannelFields(MipTypes::DataClass::CLASS_AHRS_IMU);
-                    MipTypes::MipChannelFields lowpassFilterChannels = {
-                        MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_ACCEL_VEC,
-                        MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_GYRO_VEC,
-                        MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_MAG_VEC,
-                        MipTypes::ChannelField::CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE };
+                    MipTypes::MipChannelFields lowpassFilterChannels = features().supportedLowPassFilterChannelFields();
 
                     for (size_t j = 0; j < lowpassFilterChannels.size(); j++)
                     {
-                        MipTypes::ChannelField f = lowpassFilterChannels[j];
-                        if (std::find(supportedDescriptors.begin(), supportedDescriptors.end(), f) == supportedDescriptors.end())
-                        {
-                            continue;
-                        }
-
-                        AdvancedLowPassFilterData data = getAdvancedLowPassFilterSettings(f);
+                        LowPassFilterData data = getLowPassFilterSettings(lowpassFilterChannels[j]);
                         AdvancedLowPassFilterSettings set = AdvancedLowPassFilterSettings::MakeSetCommand(data);
                         ByteStream s = (ByteStream)set;
                         cmdBytes.add(s.data());
@@ -1040,167 +1319,6 @@ namespace mscl
                     setCmds.push_back(MipCommandBytes(cmd, s.data()));
                 }
                 break;
-                case MipTypes::CMD_MESSAGE_FORMAT:
-                {
-                    std::vector<MipFieldValues> sources;
-
-                    for (MipTypes::DataClass option : dataClasses)
-                    {
-                        if (features().supportsCategory(option))
-                        {
-                            sources.push_back({ Value::UINT8(static_cast<uint8>(option)) });
-                        }
-                    }
-
-                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, sources);
-
-                    if (cmdBytes.valid())
-                    {
-                        setCmds.push_back(cmdBytes);
-                    }
-                }
-                break;
-                case MipTypes::CMD_EF_AIDING_MEASUREMENT_ENABLE:
-                {
-                    AidingMeasurementSourceOptions options = features().supportedAidingMeasurementOptions();
-                    std::vector<MipFieldValues> sources;
-                    for (InertialTypes::AidingMeasurementSource option : options)
-                    {
-                        sources.push_back({ Value::UINT16(static_cast<uint16>(option)) });
-                    }
-
-                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, sources);
-
-                    if (cmdBytes.valid())
-                    {
-                        setCmds.push_back(cmdBytes);
-                    }
-                }
-                break;
-                case MipTypes::CMD_EF_MULTI_ANTENNA_OFFSET:
-                {
-                    GnssReceivers supportedReceivers = features().gnssReceiverInfo();
-                    std::vector<MipFieldValues> receivers;
-                    for (GnssReceiverInfo info : supportedReceivers)
-                    {
-                        receivers.push_back({ Value::UINT8(info.id) });
-                    }
-
-                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, receivers);
-
-                    if (cmdBytes.valid())
-                    {
-                        setCmds.push_back(cmdBytes);
-                    }
-                }
-                break;
-                case MipTypes::CMD_EF_SPEED_MEASUREMENT_OFFSET:
-                {
-                    std::vector<MipFieldValues> reserved = {
-                        {Value::UINT8(1)}
-                    };
-
-                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, reserved);
-
-                    if (cmdBytes.valid())
-                    {
-                        setCmds.push_back(cmdBytes);
-                    }
-                    break;
-                }
-                case MipTypes::CMD_GPIO_CONFIGURATION:
-                {
-                    GpioPinOptions gpioOptions = features().supportedGpioConfigurations();
-                    std::vector<MipFieldValues> pins;
-                    for (auto& kv : gpioOptions)
-                    {
-                        pins.push_back({ Value::UINT8(static_cast<uint8>(kv.first)) });
-                    }
-
-                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, pins);
-
-                    if (cmdBytes.valid())
-                    {
-                        setCmds.push_back(cmdBytes);
-                    }
-                    break;
-                }
-                case MipTypes::CMD_SENSOR_RANGE:
-                {
-                    SupportedSensorRanges supportedRanges = features().supportedSensorRanges();
-                    std::vector<MipFieldValues> types;
-                    for (auto& kv : supportedRanges.options())
-                    {
-                        types.push_back({ Value::UINT8(static_cast<uint8>(kv.first)) });
-                    }
-
-                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, types);
-
-                    if (cmdBytes.valid())
-                    {
-                        setCmds.push_back(cmdBytes);
-                    }
-                    break;
-                }
-                case MipTypes::CMD_GNSS_SIGNAL_CONFIG:
-                {
-                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, { {} }, {
-                        Value::UINT32(0)
-                    });
-
-                    if (cmdBytes.valid())
-                    {
-                        setCmds.push_back(cmdBytes);
-                    }
-                    break;
-                }
-                case MipTypes::CMD_GNSS_RTK_CONFIG:
-                {
-                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, { {} }, {
-                        Value::UINT8(0),
-                        Value::UINT8(0),
-                        Value::UINT8(0)
-                    });
-
-                    if (cmdBytes.valid())
-                    {
-                        setCmds.push_back(cmdBytes);
-                    }
-                    break;
-                }
-                case MipTypes::CMD_EVENT_TRIGGER_CONFIGURATION:
-                case MipTypes::CMD_EVENT_CONTROL:
-                {
-                    EventSupportInfo info = features().supportedEventTriggerInfo();
-                    std::vector<MipFieldValues> specifiers;
-                    for (uint8_t id = 1; id <= info.maxInstances; id++)
-                    {
-                        specifiers.push_back({ Value::UINT8(id) });
-                    }
-
-                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, specifiers);
-                    if (cmdBytes.valid())
-                    {
-                        setCmds.push_back(cmdBytes);
-                    }
-                    break;
-                }
-                case MipTypes::CMD_EVENT_ACTION_CONFIGURATION:
-                {
-                    EventSupportInfo info = features().supportedEventActionInfo();
-                    std::vector<MipFieldValues> specifiers;
-                    for (uint8_t id = 1; id <= info.maxInstances; id++)
-                    {
-                        specifiers.push_back({ Value::UINT8(id) });
-                    }
-
-                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, specifiers);
-                    if (cmdBytes.valid())
-                    {
-                        setCmds.push_back(cmdBytes);
-                    }
-                    break;
-                }
                 // Do nothing for commands not to be included in settings
                 case MipTypes::CMD_GPIO_STATE:
                 {
@@ -1208,13 +1326,28 @@ namespace mscl
                 }
                 default:
                 {
-                    MipCommandBytes add = buildMipCommandBytes(cmd);
-                    if (add.valid())
+                    MipCommandParameters requiredParams = getRequiredParameterDefaults(cmd, false);
+                    std::vector<MipFieldValues> specifiers;
+                    for (std::pair<MipTypes::Command, MipFieldValues> paramEntry : requiredParams)
                     {
-                        setCmds.push_back(add);
+                        specifiers.push_back(paramEntry.second);
                     }
+
+                    MipCommandParameters reservedParams = getReservedWriteValues(cmd);
+                    MipFieldValues reserved;
+                    if (reservedParams.size() > 0)
+                    {
+                        reserved = reservedParams[0].second;
+                    }
+
+                    MipCommandBytes cmdBytes = buildMipCommandBytes(cmd, specifiers, reserved);
+                    if (cmdBytes.valid())
+                    {
+                        setCmds.push_back(cmdBytes);
+                    }
+
+                    break;
                 }
-                break;
                 }
             }
             catch (const Error_MipCmdFailed&)
@@ -1558,7 +1691,7 @@ namespace mscl
         doCommand(r, CommunicationMode::buildCommand_set(communicationMode), false);
 
         //reset the node info because we are switching contexts
-        m_nodeInfo.reset();
+        resetNodeInfo();
     }
 
     bool MipNode_Impl::isDataStreamEnabled(MipTypes::DataClass dataClass) const
@@ -1993,17 +2126,48 @@ namespace mscl
         }
     }
 
-    void MipNode_Impl::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterData& data)
+    void MipNode_Impl::setLowPassFilterSettings(const LowPassFilterData& data) const
     {
-        AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeSetCommand(data);
-        SendCommand(lowPassFilterCmd);
+        // only use legacy command if updated not supported
+        if (features().supportsCommand(MipTypes::CMD_LOWPASS_FILTER_SETTINGS)
+            && !features().supportsCommand(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER))
+        {
+            AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeSetCommand(data);
+            SendCommand(lowPassFilterCmd);
+            return;
+        }
+
+        MipFieldValues params = {
+            Value::UINT16(static_cast<uint16>(data.dataDescriptor)),
+            Value::BOOL(data.applyLowPassFilter),
+            Value::BOOL(data.manualFilterBandwidthConfig == LowPassFilterData::USER_SPECIFIED_CUTOFF_FREQ),
+            Value::FLOAT(data.cutoffFrequency)
+        };
+
+        set(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER, params);
     }
 
-    AdvancedLowPassFilterData MipNode_Impl::getAdvancedLowPassFilterSettings(const MipTypes::ChannelField& dataDescriptor) const
+    LowPassFilterData MipNode_Impl::getLowPassFilterSettings(const MipTypes::ChannelField& dataDescriptor) const
     {
-        AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeGetCommand(dataDescriptor);
-        GenericMipCmdResponse response = SendCommand(lowPassFilterCmd);
-        return lowPassFilterCmd.getResponseData(response);
+        // only use legacy command if updated not supported
+        if (features().supportsCommand(MipTypes::CMD_LOWPASS_FILTER_SETTINGS)
+            && !features().supportsCommand(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER))
+        {
+            AdvancedLowPassFilterSettings lowPassFilterCmd = AdvancedLowPassFilterSettings::MakeGetCommand(dataDescriptor);
+            GenericMipCmdResponse response = SendCommand(lowPassFilterCmd);
+            return lowPassFilterCmd.getResponseData(response);
+        }
+
+        MipFieldValues params = { Value::UINT16(static_cast<uint16>(dataDescriptor)) };
+        MipFieldValues resData = get(MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER, params);
+
+        LowPassFilterData config;
+        config.dataDescriptor = dataDescriptor; // parser confirms match to element 0
+        config.applyLowPassFilter = resData[1].as_bool();
+        config.manualFilterBandwidthConfig = resData[2].as_bool() ? LowPassFilterData::USER_SPECIFIED_CUTOFF_FREQ : LowPassFilterData::SET_TO_HALF_REPORTING_RATE;
+        config.cutoffFrequency = resData[3].as_float();
+
+        return config;
     }
 
     void MipNode_Impl::setComplementaryFilterSettings(const ComplementaryFilterData& data)
@@ -2356,7 +2520,7 @@ namespace mscl
         return response.data();
     }
 
-    void MipNode_Impl::set(MipTypes::Command cmdId, MipFieldValues values)
+    void MipNode_Impl::set(MipTypes::Command cmdId, MipFieldValues values) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::USE_NEW_SETTINGS,
@@ -2364,14 +2528,14 @@ namespace mscl
         SendCommand(command);
     }
 
-    void MipNode_Impl::saveAsStartup(MipTypes::Command cmdId)
+    void MipNode_Impl::saveAsStartup(MipTypes::Command cmdId) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::SAVE_CURRENT_SETTINGS);
         SendCommand(command);
     }
 
-    void MipNode_Impl::saveAsStartup(MipTypes::Command cmdId, MipFieldValues specifier)
+    void MipNode_Impl::saveAsStartup(MipTypes::Command cmdId, MipFieldValues specifier) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::SAVE_CURRENT_SETTINGS,
@@ -2379,14 +2543,14 @@ namespace mscl
         SendCommand(command);
     }
 
-    void MipNode_Impl::loadStartup(MipTypes::Command cmdId)
+    void MipNode_Impl::loadStartup(MipTypes::Command cmdId) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::LOAD_STARTUP_SETTINGS);
         SendCommand(command);
     }
 
-    void MipNode_Impl::loadStartup(MipTypes::Command cmdId, MipFieldValues specifier)
+    void MipNode_Impl::loadStartup(MipTypes::Command cmdId, MipFieldValues specifier) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::LOAD_STARTUP_SETTINGS,
@@ -2394,14 +2558,14 @@ namespace mscl
         SendCommand(command);
     }
 
-    void MipNode_Impl::loadDefault(MipTypes::Command cmdId)
+    void MipNode_Impl::loadDefault(MipTypes::Command cmdId) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::RESET_TO_DEFAULT);
         SendCommand(command);
     }
 
-    void MipNode_Impl::loadDefault(MipTypes::Command cmdId, MipFieldValues specifier)
+    void MipNode_Impl::loadDefault(MipTypes::Command cmdId, MipFieldValues specifier) const
     {
         MipCommand command = MipCommand(cmdId,
             MipTypes::FunctionSelector::RESET_TO_DEFAULT,
@@ -2409,15 +2573,15 @@ namespace mscl
         SendCommand(command);
     }
 
-    void MipNode_Impl::run(MipTypes::Command cmdId)
+    void MipNode_Impl::run(MipTypes::Command cmdId, bool ackNackExpected) const
     {
-        MipCommand command = MipCommand(cmdId);
+        MipCommand command = MipCommand(cmdId, false, ackNackExpected);
         SendCommand(command);
     }
 
-    void MipNode_Impl::run(MipTypes::Command cmdId, MipFieldValues specifier)
+    void MipNode_Impl::run(MipTypes::Command cmdId, MipFieldValues specifier, bool ackNackExpected) const
     {
-        MipCommand command = MipCommand(cmdId, specifier);
+        MipCommand command = MipCommand(cmdId, specifier, false, ackNackExpected);
         SendCommand(command);
     }
 

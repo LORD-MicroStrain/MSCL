@@ -280,6 +280,42 @@ namespace mscl
         return (bytesRemaining() > 0);
     }
 
+    size_t DataBuffer::find_uint8(uint8 find, size_t endIndex) const
+    {
+        const size_t stopIndex = endIndex == 0 || endIndex > appendPosition()
+            ? appendPosition()
+            : endIndex;
+
+        size_t index;
+        for (index = readPosition(); index < stopIndex; index++)
+        {
+            if (find == m_data.read_uint8(index))
+            {
+                break;
+            }
+        }
+
+        return index;
+    }
+
+    size_t DataBuffer::find_uint16(uint16 find, size_t endIndex) const
+    {
+        const size_t stopIndex = endIndex == 0 || endIndex > appendPosition()
+            ? appendPosition()
+            : endIndex;
+
+        size_t index;
+        for(index = readPosition() + 1; index < stopIndex; index++)
+        {
+            if (find == m_data.read_uint16(index - 1))
+            {
+                break;
+            }
+        }
+
+        return index;
+    }
+
     std::size_t DataBuffer::shiftExtraToStart()
     {
         std::size_t startReadPos = m_readPosition;
@@ -351,6 +387,29 @@ namespace mscl
     Bytes DataBuffer::bytesToRead(std::size_t startPos, std::size_t size) const
     {
         return Bytes(m_data.begin() + startPos, m_data.begin() + startPos + size);
+    }
+
+    void DataBuffer::copyBytesTo(DataBuffer& copyTo)
+    {
+        copyBytesTo(copyTo, m_readPosition, bytesRemaining());
+    }
+
+    void DataBuffer::copyBytesTo(DataBuffer& copyTo, std::size_t startPos, std::size_t size)
+    {
+
+        size_t actualSize = size > bytesRemaining() ? bytesRemaining() : size;
+
+        assert(actualSize <= (copyTo.size() - copyTo.appendPosition()));
+
+        BufferWriter writer = copyTo.getBufferWriter();
+        uint8* writeBuffer = writer.buffer();
+
+        for (size_t i = 0; i < actualSize; i++)
+        {
+            writeBuffer[i] = m_data[i + startPos];
+        }
+
+        writer.commit(actualSize);
     }
 
     //============================================================

@@ -771,6 +771,7 @@
     <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\Mip_SetToIdle.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\Ping.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Commands\Resume.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\MipBuiltInTest.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\MipChannel.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\MipDataField.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\MipDataPoint.h" />
@@ -781,6 +782,9 @@
     <ClInclude Include="source\mscl\MicroStrain\MIP\MipNode_Impl.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\MipParser.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\MipTypes.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\NMEA\NmeaPacket.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\NMEA\NmeaPacketCollector.h" />
+    <ClInclude Include="source\mscl\MicroStrain\MIP\NMEA\NmeaParser.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipDataPacket.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipFieldParser.h" />
     <ClInclude Include="source\mscl\MicroStrain\MIP\Packets\MipFieldParser_Displacement.h" />
@@ -1101,6 +1105,7 @@
     <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\Mip_SetToIdle.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\Ping.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Commands\Resume.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\MipBuiltInTest.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\MipChannel.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\MipDataField.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\MipDataPoint.cpp" />
@@ -1111,6 +1116,9 @@
     <ClCompile Include="source\mscl\MicroStrain\MIP\MipNode_Impl.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\MipParser.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\MipTypes.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\NMEA\NmeaPacket.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\NMEA\NmeaPacketCollector.cpp" />
+    <ClCompile Include="source\mscl\MicroStrain\MIP\NMEA\NmeaParser.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipDataPacket.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipFieldParser.cpp" />
     <ClCompile Include="source\mscl\MicroStrain\MIP\Packets\MipFieldParser_Displacement.cpp" />

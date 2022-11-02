@@ -11,6 +11,14 @@
 namespace mscl {
 
 public class mscl {
+  public static uint CONNECTION_BUFFER_SIZE {
+    get {
+      uint ret = msclPINVOKE.CONNECTION_BUFFER_SIZE_get();
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
   public static Version MSCL_VERSION {
     get {
       global::System.IntPtr cPtr = msclPINVOKE.MSCL_VERSION_get();

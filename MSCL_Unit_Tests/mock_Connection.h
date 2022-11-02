@@ -50,7 +50,7 @@ private:
     virtual void unregisterParser(){}
     virtual void throwIfError(){}
     virtual std::string description(){return "";}
-    virtual Connection::ConnectionType type() { return Connection::connectionType_serial; };
+    virtual Connection::ConnectionType type() { return Connection::connectionType_serial; }
 
     virtual void write(const ByteStream& data) const
     {
@@ -138,6 +138,8 @@ public:
             }
         }
     }
+
+    std::string port() const override { return ""; }
 };
 
 static Connection makeConnectionWithMockImpl()

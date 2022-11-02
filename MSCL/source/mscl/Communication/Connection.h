@@ -184,6 +184,13 @@ namespace mscl
         //    A description of the connection.
         std::string description();
 
+        //API Function: port
+        //    Gets the port name of the connection if it exists.
+        //
+        //Returns:
+        //    The port name of the connection if it exists.
+        std::string port();
+
         //API Function: type
         //  Gets the <ConnectionType> of the connection.
         //

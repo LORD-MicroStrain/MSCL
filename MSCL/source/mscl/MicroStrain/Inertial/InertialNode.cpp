@@ -31,6 +31,18 @@ namespace mscl
         return m_impl->totalPackets();
     }
 
+    NmeaPackets InertialNode::getNmeaPackets(uint32 timeout, uint32 maxPackets)
+    {
+        NmeaPackets packets;
+        m_impl->getNmeaPackets(packets, timeout, maxPackets);
+        return packets;
+    }
+
+    void InertialNode::enableNmeaParsing(bool enable)
+    {
+        m_impl->enableNmeaParsing(enable);
+    }
+
     void InertialNode::pollData(MipTypes::DataClass dataClass, const MipTypes::MipChannelFields& fields /*= MipTypes::MipChannelFields()*/)
     {
         m_impl->pollData(dataClass, fields);
@@ -418,20 +430,20 @@ namespace mscl
         return m_impl->getConingAndScullingEnable();
     }
 
-    void InertialNode::setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterConfig& data)
+    void InertialNode::setLowPassFilterSettings(const LowPassFilterConfig& data) const
     {
         for (size_t i = 0; i < data.size(); i++)
         {
-            m_impl->setAdvancedLowPassFilterSettings(data[i]);
+            m_impl->setLowPassFilterSettings(data[i]);
         }
     }
 
-    AdvancedLowPassFilterConfig InertialNode::getAdvancedLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors)
+    LowPassFilterConfig InertialNode::getLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors) const
     {
-        AdvancedLowPassFilterConfig data;
+        LowPassFilterConfig data;
         for (size_t i = 0; i < dataDescriptors.size(); i++)
         {
-            data.push_back(m_impl->getAdvancedLowPassFilterSettings(dataDescriptors[i]));
+            data.push_back(m_impl->getLowPassFilterSettings(dataDescriptors[i]));
         }
 
         return data;
@@ -1168,6 +1180,26 @@ namespace mscl
         });
     }
 
+    PositionOffset InertialNode::getLeverArmReferenceOffset() const
+    {
+        const MipFieldValues data = m_impl->get(MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF, {
+            Value::UINT8(1) // reserved, placeholder source value
+        });
+
+        // skip first element - reserved, placeholder source value
+        return PositionOffset(data[1].as_float(), data[2].as_float(), data[3].as_float());
+    }
+
+    void InertialNode::setLeverArmReferenceOffset(const PositionOffset offset) const
+    {
+        m_impl->set(MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF, {
+            Value::UINT8(1), // reserved, placeholder source value
+            Value::FLOAT(offset.x()),
+            Value::FLOAT(offset.y()),
+            Value::FLOAT(offset.z()),
+        });
+    }
+
     void InertialNode::sendExternalSpeedMeasurementUpdate(float tow, float speed, float unc)
     {
         m_impl->run(MipTypes::Command::CMD_EF_EXTERN_SPEED_UPDATE, {
@@ -1300,5 +1332,30 @@ namespace mscl
         }
 
         return status;
+    }
+
+    NmeaMessageFormats InertialNode::getNmeaMessageFormat() const
+    {
+        const MipFieldValues resData = m_impl->get(MipTypes::CMD_NMEA_MESSAGE_FORMAT);
+        NmeaMessageFormats nmeaFormats = NmeaMessageFormat::fromCommandResponse(resData);
+
+        // try to assign base rates for sample rates reported in Hz or seconds instead of just Decimation
+        for (NmeaMessageFormat& format : nmeaFormats)
+        {
+            try
+            {
+                const uint16 baseRate = getDataRateBase(format.sourceDataClass());
+                format.baseRate(baseRate);
+            }
+            catch (const Error&) {/*ignore*/ }
+        }
+
+        return nmeaFormats;
+    }
+
+    void InertialNode::setNmeaMessageFormat(NmeaMessageFormats nmeaFormats) const
+    {
+        const MipFieldValues params = NmeaMessageFormat::toCommandParameters(nmeaFormats);
+        m_impl->set(MipTypes::CMD_NMEA_MESSAGE_FORMAT, params);
     }
 }

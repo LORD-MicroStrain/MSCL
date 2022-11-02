@@ -10,21 +10,21 @@
 
 namespace mscl {
 
-public class AdvancedLowPassFilterConfig : global::System.IDisposable, global::System.Collections.IEnumerable, global::System.Collections.Generic.IEnumerable<AdvancedLowPassFilterData>
+public class GnssSources : global::System.IDisposable, global::System.Collections.IEnumerable, global::System.Collections.Generic.IEnumerable<InertialTypes.GNSS_Source>
  {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
   protected bool swigCMemOwn;
 
-  internal AdvancedLowPassFilterConfig(global::System.IntPtr cPtr, bool cMemoryOwn) {
+  internal GnssSources(global::System.IntPtr cPtr, bool cMemoryOwn) {
     swigCMemOwn = cMemoryOwn;
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(AdvancedLowPassFilterConfig obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(GnssSources obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  ~AdvancedLowPassFilterConfig() {
+  ~GnssSources() {
     Dispose(false);
   }
 
@@ -38,25 +38,25 @@ public class AdvancedLowPassFilterConfig : global::System.IDisposable, global::S
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_AdvancedLowPassFilterConfig(swigCPtr);
+          msclPINVOKE.delete_GnssSources(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
     }
   }
 
-  public AdvancedLowPassFilterConfig(global::System.Collections.IEnumerable c) : this() {
+  public GnssSources(global::System.Collections.IEnumerable c) : this() {
     if (c == null)
       throw new global::System.ArgumentNullException("c");
-    foreach (AdvancedLowPassFilterData element in c) {
+    foreach (InertialTypes.GNSS_Source element in c) {
       this.Add(element);
     }
   }
 
-  public AdvancedLowPassFilterConfig(global::System.Collections.Generic.IEnumerable<AdvancedLowPassFilterData> c) : this() {
+  public GnssSources(global::System.Collections.Generic.IEnumerable<InertialTypes.GNSS_Source> c) : this() {
     if (c == null)
       throw new global::System.ArgumentNullException("c");
-    foreach (AdvancedLowPassFilterData element in c) {
+    foreach (InertialTypes.GNSS_Source element in c) {
       this.Add(element);
     }
   }
@@ -73,7 +73,7 @@ public class AdvancedLowPassFilterConfig : global::System.IDisposable, global::S
     }
   }
 
-  public AdvancedLowPassFilterData this[int index]  {
+  public InertialTypes.GNSS_Source this[int index]  {
     get {
       return getitem(index);
     }
@@ -105,17 +105,17 @@ public class AdvancedLowPassFilterConfig : global::System.IDisposable, global::S
     }
   }
 
-  public void CopyTo(AdvancedLowPassFilterData[] array)
+  public void CopyTo(InertialTypes.GNSS_Source[] array)
   {
     CopyTo(0, array, 0, this.Count);
   }
 
-  public void CopyTo(AdvancedLowPassFilterData[] array, int arrayIndex)
+  public void CopyTo(InertialTypes.GNSS_Source[] array, int arrayIndex)
   {
     CopyTo(0, array, arrayIndex, this.Count);
   }
 
-  public void CopyTo(int index, AdvancedLowPassFilterData[] array, int arrayIndex, int count)
+  public void CopyTo(int index, InertialTypes.GNSS_Source[] array, int arrayIndex, int count)
   {
     if (array == null)
       throw new global::System.ArgumentNullException("array");
@@ -133,22 +133,22 @@ public class AdvancedLowPassFilterConfig : global::System.IDisposable, global::S
       array.SetValue(getitemcopy(index+i), arrayIndex+i);
   }
 
-  public AdvancedLowPassFilterData[] ToArray() {
-    AdvancedLowPassFilterData[] array = new AdvancedLowPassFilterData[this.Count];
+  public InertialTypes.GNSS_Source[] ToArray() {
+    InertialTypes.GNSS_Source[] array = new InertialTypes.GNSS_Source[this.Count];
     this.CopyTo(array);
     return array;
   }
 
-  global::System.Collections.Generic.IEnumerator<AdvancedLowPassFilterData> global::System.Collections.Generic.IEnumerable<AdvancedLowPassFilterData>.GetEnumerator() {
-    return new AdvancedLowPassFilterConfigEnumerator(this);
+  global::System.Collections.Generic.IEnumerator<InertialTypes.GNSS_Source> global::System.Collections.Generic.IEnumerable<InertialTypes.GNSS_Source>.GetEnumerator() {
+    return new GnssSourcesEnumerator(this);
   }
 
   global::System.Collections.IEnumerator global::System.Collections.IEnumerable.GetEnumerator() {
-    return new AdvancedLowPassFilterConfigEnumerator(this);
+    return new GnssSourcesEnumerator(this);
   }
 
-  public AdvancedLowPassFilterConfigEnumerator GetEnumerator() {
-    return new AdvancedLowPassFilterConfigEnumerator(this);
+  public GnssSourcesEnumerator GetEnumerator() {
+    return new GnssSourcesEnumerator(this);
   }
 
   // Type-safe enumerator
@@ -156,15 +156,15 @@ public class AdvancedLowPassFilterConfig : global::System.IDisposable, global::S
   /// whenever the collection is modified. This has been done for changes in the size of the
   /// collection but not when one of the elements of the collection is modified as it is a bit
   /// tricky to detect unmanaged code that modifies the collection under our feet.
-  public sealed class AdvancedLowPassFilterConfigEnumerator : global::System.Collections.IEnumerator
-    , global::System.Collections.Generic.IEnumerator<AdvancedLowPassFilterData>
+  public sealed class GnssSourcesEnumerator : global::System.Collections.IEnumerator
+    , global::System.Collections.Generic.IEnumerator<InertialTypes.GNSS_Source>
   {
-    private AdvancedLowPassFilterConfig collectionRef;
+    private GnssSources collectionRef;
     private int currentIndex;
     private object currentObject;
     private int currentSize;
 
-    public AdvancedLowPassFilterConfigEnumerator(AdvancedLowPassFilterConfig collection) {
+    public GnssSourcesEnumerator(GnssSources collection) {
       collectionRef = collection;
       currentIndex = -1;
       currentObject = null;
@@ -172,7 +172,7 @@ public class AdvancedLowPassFilterConfig : global::System.IDisposable, global::S
     }
 
     // Type-safe iterator Current
-    public AdvancedLowPassFilterData Current {
+    public InertialTypes.GNSS_Source Current {
       get {
         if (currentIndex == -1)
           throw new global::System.InvalidOperationException("Enumeration not started.");
@@ -180,7 +180,7 @@ public class AdvancedLowPassFilterConfig : global::System.IDisposable, global::S
           throw new global::System.InvalidOperationException("Enumeration finished.");
         if (currentObject == null)
           throw new global::System.InvalidOperationException("Collection modified.");
-        return (AdvancedLowPassFilterData)currentObject;
+        return (InertialTypes.GNSS_Source)currentObject;
       }
     }
 
@@ -218,112 +218,112 @@ public class AdvancedLowPassFilterConfig : global::System.IDisposable, global::S
   }
 
   public void Clear() {
-    msclPINVOKE.AdvancedLowPassFilterConfig_Clear(swigCPtr);
+    msclPINVOKE.GnssSources_Clear(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void Add(AdvancedLowPassFilterData x) {
-    msclPINVOKE.AdvancedLowPassFilterConfig_Add(swigCPtr, AdvancedLowPassFilterData.getCPtr(x));
+  public void Add(InertialTypes.GNSS_Source x) {
+    msclPINVOKE.GnssSources_Add(swigCPtr, (int)x);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   private uint size() {
-    uint ret = msclPINVOKE.AdvancedLowPassFilterConfig_size(swigCPtr);
+    uint ret = msclPINVOKE.GnssSources_size(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private uint capacity() {
-    uint ret = msclPINVOKE.AdvancedLowPassFilterConfig_capacity(swigCPtr);
+    uint ret = msclPINVOKE.GnssSources_capacity(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   private void reserve(uint n) {
-    msclPINVOKE.AdvancedLowPassFilterConfig_reserve(swigCPtr, n);
+    msclPINVOKE.GnssSources_reserve(swigCPtr, n);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public AdvancedLowPassFilterConfig() : this(msclPINVOKE.new_AdvancedLowPassFilterConfig__SWIG_0(), true) {
+  public GnssSources() : this(msclPINVOKE.new_GnssSources__SWIG_0(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public AdvancedLowPassFilterConfig(AdvancedLowPassFilterConfig other) : this(msclPINVOKE.new_AdvancedLowPassFilterConfig__SWIG_1(AdvancedLowPassFilterConfig.getCPtr(other)), true) {
+  public GnssSources(GnssSources other) : this(msclPINVOKE.new_GnssSources__SWIG_1(GnssSources.getCPtr(other)), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public AdvancedLowPassFilterConfig(int capacity) : this(msclPINVOKE.new_AdvancedLowPassFilterConfig__SWIG_2(capacity), true) {
+  public GnssSources(int capacity) : this(msclPINVOKE.new_GnssSources__SWIG_2(capacity), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  private AdvancedLowPassFilterData getitemcopy(int index) {
-    AdvancedLowPassFilterData ret = new AdvancedLowPassFilterData(msclPINVOKE.AdvancedLowPassFilterConfig_getitemcopy(swigCPtr, index), true);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  private AdvancedLowPassFilterData getitem(int index) {
-    AdvancedLowPassFilterData ret = new AdvancedLowPassFilterData(msclPINVOKE.AdvancedLowPassFilterConfig_getitem(swigCPtr, index), false);
+  private InertialTypes.GNSS_Source getitemcopy(int index) {
+    InertialTypes.GNSS_Source ret = (InertialTypes.GNSS_Source)msclPINVOKE.GnssSources_getitemcopy(swigCPtr, index);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  private void setitem(int index, AdvancedLowPassFilterData val) {
-    msclPINVOKE.AdvancedLowPassFilterConfig_setitem(swigCPtr, index, AdvancedLowPassFilterData.getCPtr(val));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void AddRange(AdvancedLowPassFilterConfig values) {
-    msclPINVOKE.AdvancedLowPassFilterConfig_AddRange(swigCPtr, AdvancedLowPassFilterConfig.getCPtr(values));
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public AdvancedLowPassFilterConfig GetRange(int index, int count) {
-    global::System.IntPtr cPtr = msclPINVOKE.AdvancedLowPassFilterConfig_GetRange(swigCPtr, index, count);
-    AdvancedLowPassFilterConfig ret = (cPtr == global::System.IntPtr.Zero) ? null : new AdvancedLowPassFilterConfig(cPtr, true);
+  private InertialTypes.GNSS_Source getitem(int index) {
+    InertialTypes.GNSS_Source ret = (InertialTypes.GNSS_Source)msclPINVOKE.GnssSources_getitem(swigCPtr, index);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void Insert(int index, AdvancedLowPassFilterData x) {
-    msclPINVOKE.AdvancedLowPassFilterConfig_Insert(swigCPtr, index, AdvancedLowPassFilterData.getCPtr(x));
+  private void setitem(int index, InertialTypes.GNSS_Source val) {
+    msclPINVOKE.GnssSources_setitem(swigCPtr, index, (int)val);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void InsertRange(int index, AdvancedLowPassFilterConfig values) {
-    msclPINVOKE.AdvancedLowPassFilterConfig_InsertRange(swigCPtr, index, AdvancedLowPassFilterConfig.getCPtr(values));
+  public void AddRange(GnssSources values) {
+    msclPINVOKE.GnssSources_AddRange(swigCPtr, GnssSources.getCPtr(values));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public GnssSources GetRange(int index, int count) {
+    global::System.IntPtr cPtr = msclPINVOKE.GnssSources_GetRange(swigCPtr, index, count);
+    GnssSources ret = (cPtr == global::System.IntPtr.Zero) ? null : new GnssSources(cPtr, true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void Insert(int index, InertialTypes.GNSS_Source x) {
+    msclPINVOKE.GnssSources_Insert(swigCPtr, index, (int)x);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void InsertRange(int index, GnssSources values) {
+    msclPINVOKE.GnssSources_InsertRange(swigCPtr, index, GnssSources.getCPtr(values));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void RemoveAt(int index) {
-    msclPINVOKE.AdvancedLowPassFilterConfig_RemoveAt(swigCPtr, index);
+    msclPINVOKE.GnssSources_RemoveAt(swigCPtr, index);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void RemoveRange(int index, int count) {
-    msclPINVOKE.AdvancedLowPassFilterConfig_RemoveRange(swigCPtr, index, count);
+    msclPINVOKE.GnssSources_RemoveRange(swigCPtr, index, count);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public static AdvancedLowPassFilterConfig Repeat(AdvancedLowPassFilterData value, int count) {
-    global::System.IntPtr cPtr = msclPINVOKE.AdvancedLowPassFilterConfig_Repeat(AdvancedLowPassFilterData.getCPtr(value), count);
-    AdvancedLowPassFilterConfig ret = (cPtr == global::System.IntPtr.Zero) ? null : new AdvancedLowPassFilterConfig(cPtr, true);
+  public static GnssSources Repeat(InertialTypes.GNSS_Source value, int count) {
+    global::System.IntPtr cPtr = msclPINVOKE.GnssSources_Repeat((int)value, count);
+    GnssSources ret = (cPtr == global::System.IntPtr.Zero) ? null : new GnssSources(cPtr, true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public void Reverse() {
-    msclPINVOKE.AdvancedLowPassFilterConfig_Reverse__SWIG_0(swigCPtr);
+    msclPINVOKE.GnssSources_Reverse__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
   public void Reverse(int index, int count) {
-    msclPINVOKE.AdvancedLowPassFilterConfig_Reverse__SWIG_1(swigCPtr, index, count);
+    msclPINVOKE.GnssSources_Reverse__SWIG_1(swigCPtr, index, count);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public void SetRange(int index, AdvancedLowPassFilterConfig values) {
-    msclPINVOKE.AdvancedLowPassFilterConfig_SetRange(swigCPtr, index, AdvancedLowPassFilterConfig.getCPtr(values));
+  public void SetRange(int index, GnssSources values) {
+    msclPINVOKE.GnssSources_SetRange(swigCPtr, index, GnssSources.getCPtr(values));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

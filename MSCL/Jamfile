@@ -125,6 +125,7 @@ alias msclSrcs
 	[ glob source/mscl/MicroStrain/MIP/*.cpp ]
 	[ glob source/mscl/MicroStrain/MIP/Commands/*.cpp ]
 	[ glob source/mscl/MicroStrain/MIP/Packets/*.cpp ]
+	[ glob source/mscl/MicroStrain/MIP/NMEA/*.cpp ]
 	[ glob source/mscl/MicroStrain/Wireless/*.cpp ]
 	[ glob source/mscl/MicroStrain/Wireless/Commands/*.cpp ]
 	[ glob source/mscl/MicroStrain/Wireless/Configuration/*.cpp ]

@@ -15,7 +15,30 @@ REMOVED - A function/class has been removed.
 ======================================================================================================
 
 Forthcoming
-- Added Taiwan region code for wireless devices
+- Wireless
+    - Added Taiwan region code for wireless devices
+- Inertial
+    - RENAMED InertialTypes::GNSS_Source::INTERNAL_GNSS -> INTERNAL_GNSS_ALL
+    - RENAMED InertialNode::get/setAdvancedLowPassFilterSettings() -> get/setLowPassFilterSettings()
+        - AdvancedLowPassFilterData -> LowPassFilterData
+        - AdvancedLowPassFilterConfig -> LowPassFilterConfig
+        - CHANGED data type AdvancedLowPassFilterData::cutoffFrequency uint16 -> float (truncates decimal when cast to uint16 for legacy command)
+    - Added MipNodeFeatures::supportedGnssSources() to lookup supported GNSS Aiding Source options
+    - Added MipNodeFeatures::supportedLowPassFilterChannelFields() to lookup supported channels to which low-pass filter settings can be applied
+    - Added MipNodeFeatures::supportedGnssSignalConfigurations() to lookup supported GNSS Signal configuration combinations
+    - Updated GnssReceiverInfo to read new receiver fw information from description field
+    - Updated GPS Ionospheric Corrections alpha and beta value types to Vector
+    - Automatically detect and add required parameters for save as startup, load startup, and default settings command functions
+    - Fix device info not fully cleared on InertialNode::clearDeviceInfo()
+    - Added support for MIP data:
+        - Continuous Built-In Test (0xA0, 0x01)
+        - SBAS Status (0x81,0x12) (0x91-95,0x12)
+        - Calculated SBAS Correction (0x81,0x13) (0x91-95,0x13)
+        - GNSS RF Error Detection (0x81,0x14) (0x91-95,0x14)
+    - Added support for MIP commands:
+        - Low-Pass Anti-Aliasing Filter (0x0C,0x54)
+        - Reference Point Lever Arm (0x0D,0x56)
+        - NMEA Message Format (0x0C,0x0C)
 
 64.3.0 - 2022-06-03
 - Added support for G-Link-200 6522-6001 (custom default configuration)

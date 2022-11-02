@@ -62,6 +62,34 @@ public class InertialNode : MipNode {
     return ret;
   }
 
+  public NmeaPackets getNmeaPackets(uint timeout, uint maxPackets) {
+    NmeaPackets ret = new NmeaPackets(msclPINVOKE.InertialNode_getNmeaPackets__SWIG_0(swigCPtr, timeout, maxPackets), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public NmeaPackets getNmeaPackets(uint timeout) {
+    NmeaPackets ret = new NmeaPackets(msclPINVOKE.InertialNode_getNmeaPackets__SWIG_1(swigCPtr, timeout), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public NmeaPackets getNmeaPackets() {
+    NmeaPackets ret = new NmeaPackets(msclPINVOKE.InertialNode_getNmeaPackets__SWIG_2(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void enableNmeaParsing(bool enable) {
+    msclPINVOKE.InertialNode_enableNmeaParsing__SWIG_0(swigCPtr, enable);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void enableNmeaParsing() {
+    msclPINVOKE.InertialNode_enableNmeaParsing__SWIG_1(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public void pollData(MipTypes.DataClass dataClass, MipChannelFields fields) {
     msclPINVOKE.InertialNode_pollData__SWIG_0(swigCPtr, (int)dataClass, MipChannelFields.getCPtr(fields));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -463,13 +491,13 @@ public class InertialNode : MipNode {
     return ret;
   }
 
-  public void setAdvancedLowPassFilterSettings(AdvancedLowPassFilterConfig data) {
-    msclPINVOKE.InertialNode_setAdvancedLowPassFilterSettings(swigCPtr, AdvancedLowPassFilterConfig.getCPtr(data));
+  public void setLowPassFilterSettings(LowPassFilterConfig data) {
+    msclPINVOKE.InertialNode_setLowPassFilterSettings(swigCPtr, LowPassFilterConfig.getCPtr(data));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public AdvancedLowPassFilterConfig getAdvancedLowPassFilterSettings(MipChannelFields dataDescriptors) {
-    AdvancedLowPassFilterConfig ret = new AdvancedLowPassFilterConfig(msclPINVOKE.InertialNode_getAdvancedLowPassFilterSettings(swigCPtr, MipChannelFields.getCPtr(dataDescriptors)), true);
+  public LowPassFilterConfig getLowPassFilterSettings(MipChannelFields dataDescriptors) {
+    LowPassFilterConfig ret = new LowPassFilterConfig(msclPINVOKE.InertialNode_getLowPassFilterSettings(swigCPtr, MipChannelFields.getCPtr(dataDescriptors)), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -961,6 +989,17 @@ public class InertialNode : MipNode {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public PositionOffset getLeverArmReferenceOffset() {
+    PositionOffset ret = new PositionOffset(msclPINVOKE.InertialNode_getLeverArmReferenceOffset(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setLeverArmReferenceOffset(PositionOffset offset) {
+    msclPINVOKE.InertialNode_setLeverArmReferenceOffset(swigCPtr, PositionOffset.getCPtr(offset));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public void sendExternalSpeedMeasurementUpdate(float tow, float speed, float unc) {
     msclPINVOKE.InertialNode_sendExternalSpeedMeasurementUpdate(swigCPtr, tow, speed, unc);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -1021,6 +1060,17 @@ public class InertialNode : MipNode {
     EventActionStatus ret = new EventActionStatus(msclPINVOKE.InertialNode_getEventActionStatus__SWIG_1(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
+  }
+
+  public NmeaMessageFormats getNmeaMessageFormat() {
+    NmeaMessageFormats ret = new NmeaMessageFormats(msclPINVOKE.InertialNode_getNmeaMessageFormat(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setNmeaMessageFormat(NmeaMessageFormats nmeaFormats) {
+    msclPINVOKE.InertialNode_setNmeaMessageFormat(swigCPtr, NmeaMessageFormats.getCPtr(nmeaFormats));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
 }

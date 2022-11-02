@@ -156,6 +156,7 @@
 #include "../MicroStrain/MIP/Packets/MipDataPacket.h"
 #include "../Communication/RawBytePacket.h"
 #include "../MicroStrain/MIP/MipDataPoint.h"
+#include "../MicroStrain/MIP/MipBuiltInTest.h"
 #include "../MicroStrain/MIP/Packets/MipSharedDataFields.h"
 #include "../MicroStrain/MIP/MipNodeFeatures.h"
 #include "../MicroStrain/MIP/MipNode.h"
@@ -163,6 +164,7 @@
 #include "../MicroStrain/Displacement/DisplacementNode.h"
 #include "../MicroStrain/RTK/RTKNode.h"
 #include "../MicroStrain/MIP/Packets/MipPacket.h"
+#include "../MicroStrain/MIP/NMEA/NmeaPacket.h"
 %}
 
 // Need to tell SWIG that the following classes are not abstract (thinks they are by default and doesn't generate constructors)
@@ -242,8 +244,10 @@
 %include "../MicroStrain/MIP/MipDataField.h"
 %include "../MicroStrain/MIP/Packets/MipPacket.h"
 %include "../MicroStrain/MIP/MipDataPoint.h"
+%include "../MicroStrain/MIP/MipBuiltInTest.h"
 %include "../MicroStrain/MIP/Packets/MipSharedDataFields.h"
 %include "../MicroStrain/MIP/Packets/MipDataPacket.h"
+%include "../MicroStrain/MIP/NMEA/NmeaPacket.h"
 %include "../Communication/RawBytePacket.h"
 %include "../MicroStrain/MIP/MipNodeFeatures.h"
 %include "../MicroStrain/MIP/MipNode.h"
@@ -262,6 +266,7 @@ namespace std
     %template(DataSweeps)                       vector<mscl::DataSweep>;
     %template(LoggedDataSweeps)                 vector<mscl::LoggedDataSweep>;
     %template(MipDataPackets)                   vector<mscl::MipDataPacket>;
+    %template(NmeaPackets)                      vector<mscl::NmeaPacket>;
     %template(RawBytePackets)                   vector<mscl::RawBytePacket>;
     %template(MipChannels)                      vector<mscl::MipChannel>;
     %template(DataCollectionMethods)            vector<mscl::WirelessTypes::DataCollectionMethod>;
@@ -322,10 +327,13 @@ namespace std
     %template(StatusSelectors)                  vector<mscl::DeviceStatusData::StatusSelector>;
     %template(VehicleModeTypes)                 vector<mscl::InertialTypes::VehicleModeType>;
     %template(AdaptiveFilterLevels)             vector<mscl::InertialTypes::AutoAdaptiveFilteringLevel>;
-    %template(AdvancedLowPassFilterConfig)      vector<mscl::AdvancedLowPassFilterData>;
+    %template(LowPassFilterConfig)              vector<mscl::LowPassFilterData>;
     %template(AidingMeasurementSourceOptions)   vector<mscl::InertialTypes::AidingMeasurementSource>;
     %template(PpsSourceOptions)                 vector<mscl::InertialTypes::PpsSource>;
     %template(GeographicSources)                vector<mscl::InertialTypes::GeographicSourceOption>;
+    %template(GnssSources)                      vector<mscl::InertialTypes::GNSS_Source>;
+    %template(GnssSignalConfigOptions)          map<mscl::MipChannelIdentifier::GnssConstellationIds, std::vector<uint8_t>>;
+    %template(NmeaMessageFormats)               vector<mscl::NmeaMessageFormat>;
     %template(GpioPinModeOptions)               vector<mscl::GpioConfiguration::PinModes>;
     %template(GpioBehaviorModes)                map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>;
     %template(GpioFeatureBehaviors)             map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>;

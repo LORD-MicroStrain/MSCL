@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -72,8 +72,6 @@
     <Compile Include="mscl\AdaptiveFilterLevels.cs" />
     <Compile Include="mscl\AdaptiveMeasurementData.cs" />
     <Compile Include="mscl\AdaptiveMeasurementModes.cs" />
-    <Compile Include="mscl\AdvancedLowPassFilterConfig.cs" />
-    <Compile Include="mscl\AdvancedLowPassFilterData.cs" />
     <Compile Include="mscl\AidingMeasurementSourceOptions.cs" />
     <Compile Include="mscl\AntennaLeverArmCalConfiguration.cs" />
     <Compile Include="mscl\ArmedDataloggingNetwork.cs" />
@@ -118,6 +116,16 @@
     <Compile Include="mscl\Constellation.cs" />
     <Compile Include="mscl\Constellations.cs" />
     <Compile Include="mscl\ConstellationSettingsData.cs" />
+    <Compile Include="mscl\ContinuousBIT.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_Filter.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_Filter_General.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_IMU.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_IMU_General.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_IMU_Sensors.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_System.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_System_General.cs" />
+    <Compile Include="mscl\CV7ContinuousBIT_System_Process.cs" />
     <Compile Include="mscl\DamageAngles.cs" />
     <Compile Include="mscl\DataCollectionMethods.cs" />
     <Compile Include="mscl\DataFormats.cs" />
@@ -180,7 +188,9 @@
     <Compile Include="mscl\GnssAidingStatus.cs" />
     <Compile Include="mscl\GnssReceiverInfo.cs" />
     <Compile Include="mscl\GnssReceivers.cs" />
+    <Compile Include="mscl\GnssSignalConfigOptions.cs" />
     <Compile Include="mscl\GnssSignalConfiguration.cs" />
+    <Compile Include="mscl\GnssSources.cs" />
     <Compile Include="mscl\GpioBehaviorModes.cs" />
     <Compile Include="mscl\GpioConfiguration.cs" />
     <Compile Include="mscl\GpioFeatureBehaviors.cs" />
@@ -201,6 +211,8 @@
     <Compile Include="mscl\LinearEquation.cs" />
     <Compile Include="mscl\LoggedDataSweep.cs" />
     <Compile Include="mscl\LoggedDataSweeps.cs" />
+    <Compile Include="mscl\LowPassFilterConfig.cs" />
+    <Compile Include="mscl\LowPassFilterData.cs" />
     <Compile Include="mscl\Matrix.cs" />
     <Compile Include="mscl\Matrix_3x3.cs" />
     <Compile Include="mscl\Matrix_3x3s.cs" />
@@ -230,6 +242,10 @@
     <Compile Include="mscl\msclPINVOKE.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="mscl\NmeaMessageFormat.cs" />
+    <Compile Include="mscl\NmeaMessageFormats.cs" />
+    <Compile Include="mscl\NmeaPacket.cs" />
+    <Compile Include="mscl\NmeaPackets.cs" />
     <Compile Include="mscl\NodeDiscoveries.cs" />
     <Compile Include="mscl\NodeDiscovery.cs" />
     <Compile Include="mscl\NodeFeatures.cs" />

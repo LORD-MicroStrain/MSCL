@@ -379,17 +379,19 @@ BOOST_AUTO_TEST_CASE(Utils_GetSystemTime)
 {
     uint64 time1 = Utils::getCurrentSystemTime();
     Utils::threadSleep(200);
+    uint64 sleepNano = 200000000;
     uint64 time2 = Utils::getCurrentSystemTime();
 
     //check that time 2 comes after time 1
     BOOST_CHECK( time1 < time2 );
 
-    const uint64 TIME_2012 = 1349207816000000000;    // 10-02-2012
-    const uint64 TIME_2022 = 1664742971000000000;    // 10-02-2022
+    uint64 diff = time2 - time1;
 
-    //check that the time is between a certain range of time
-    BOOST_CHECK(time1 > TIME_2012);
-    BOOST_CHECK(time1 < TIME_2022);        //this will break on October 2nd, 2022. If you are fixing this in 2022...Hello future Software Engineer! This is Ricky from 10 years ago. How are the flying cars?
+    // check reported difference at least length of sleep time
+    BOOST_CHECK(diff >= sleepNano);
+
+    // check diff within 10% of sleep time
+    BOOST_CHECK(diff < (sleepNano * 1.10));
 }
 
 BOOST_AUTO_TEST_CASE(Utils_valueTypeSize)

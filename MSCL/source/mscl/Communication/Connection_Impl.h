@@ -51,6 +51,13 @@ namespace mscl
         //    A description of the connection
         virtual std::string description() = 0;
 
+        //Function: port
+        //    Gets a name of the connection port if it exists
+        //
+        //Returns:
+        //    The port name of the connection if it exists
+        virtual std::string port() const = 0;
+
         //Function: type
         //  Gets the <Connection::ConnectionType>.
         virtual Connection::ConnectionType type() = 0;
@@ -294,7 +301,14 @@ namespace mscl
         //
         //Returns:
         //    A description of the connection.
-        virtual std::string description() = 0;
+        std::string description() override = 0;
+
+        //Function: port
+        //    Gets a name of the connection port if it exists.
+        //
+        //Returns:
+        //    The port name of the connection if it exists.
+        std::string port() const override { return ""; }
 
         //Function: type
         //  Gets the <Connection::ConnectionType>.
@@ -451,7 +465,7 @@ namespace mscl
     Connection_Impl<Comm_Object>::Connection_Impl():
         m_established(false),
         m_parseFunction(nullptr),
-        m_rawByteBuffer(1024 * 1000),
+        m_rawByteBuffer(CONNECTION_BUFFER_SIZE),
         m_debugDataBuffer(5000),
         m_connectionError(false),
         m_errorCode(0),
