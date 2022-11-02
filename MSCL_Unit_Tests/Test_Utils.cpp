@@ -390,8 +390,8 @@ BOOST_AUTO_TEST_CASE(Utils_GetSystemTime)
     // check reported difference at least length of sleep time
     BOOST_CHECK(diff >= sleepNano);
 
-    // check diff within 10% of sleep time
-    BOOST_CHECK(diff < (sleepNano * 1.10));
+    // check diff within 5% of sleep time
+    BOOST_CHECK(diff < (sleepNano * 1.05));
 }
 
 BOOST_AUTO_TEST_CASE(Utils_valueTypeSize)

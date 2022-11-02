@@ -128,14 +128,12 @@ namespace mscl
 
         //=====================================================================================================
         //Enums: MIP Packet Information
-        //  MIP_MIN_PACKET_SIZE             - 261      - The maximum number of bytes to make a valid MIP packet
         //  MIP_MIN_PACKET_SIZE             - 8        - The minimum number of bytes to make a valid MIP packet (0x75, 0x65, Descriptor Set, Payload Len, Payload, Checksum)
         //  MIP_NUM_BYTES_BEFORE_PAYLOAD    - 4        - The number of bytes in the MIP packets before the payload
         //  MIP_NUM_BYTES_AFTER_PAYLOAD     - 2        - The number of bytes in the MIP packets after the payload
         //=====================================================================================================
         enum
         {
-            MIP_MAX_PACKET_SIZE             = 261,
             MIP_MIN_PACKET_SIZE             = 8,
             MIP_NUM_BYTES_BEFORE_PAYLOAD    = 4,
             MIP_NUM_BYTES_AFTER_PAYLOAD     = 2,

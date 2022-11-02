@@ -62,34 +62,6 @@ public class InertialNode : MipNode {
     return ret;
   }
 
-  public NmeaPackets getNmeaPackets(uint timeout, uint maxPackets) {
-    NmeaPackets ret = new NmeaPackets(msclPINVOKE.InertialNode_getNmeaPackets__SWIG_0(swigCPtr, timeout, maxPackets), true);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public NmeaPackets getNmeaPackets(uint timeout) {
-    NmeaPackets ret = new NmeaPackets(msclPINVOKE.InertialNode_getNmeaPackets__SWIG_1(swigCPtr, timeout), true);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public NmeaPackets getNmeaPackets() {
-    NmeaPackets ret = new NmeaPackets(msclPINVOKE.InertialNode_getNmeaPackets__SWIG_2(swigCPtr), true);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public void enableNmeaParsing(bool enable) {
-    msclPINVOKE.InertialNode_enableNmeaParsing__SWIG_0(swigCPtr, enable);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void enableNmeaParsing() {
-    msclPINVOKE.InertialNode_enableNmeaParsing__SWIG_1(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
   public void pollData(MipTypes.DataClass dataClass, MipChannelFields fields) {
     msclPINVOKE.InertialNode_pollData__SWIG_0(swigCPtr, (int)dataClass, MipChannelFields.getCPtr(fields));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

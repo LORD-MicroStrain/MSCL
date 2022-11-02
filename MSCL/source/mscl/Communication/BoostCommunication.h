@@ -190,7 +190,7 @@ namespace mscl
     BoostCommunication<IO_Object>::BoostCommunication(std::unique_ptr<boost::asio::io_context> ioContext, std::unique_ptr<IO_Object> ioObj):
         m_ioObject(std::move(ioObj)),
         m_ioContext(std::move(ioContext)),
-        m_readBuffer(CONNECTION_BUFFER_SIZE),
+        m_readBuffer(1024 * 1000),
         m_bufferWriter(m_readBuffer.getBufferWriter()),
         m_parseDataFunction(nullptr),
         m_debugDataFunction(nullptr)
