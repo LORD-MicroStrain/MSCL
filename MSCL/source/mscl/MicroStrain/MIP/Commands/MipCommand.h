@@ -20,8 +20,7 @@ public:
     MipCommand(MipTypes::Command cmdId, MipTypes::FunctionSelector fn) :
         m_commandId(cmdId),
         m_functionSelector(fn),
-        m_responseExpected(fn == MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS),
-        m_ackNackExpected(fn != MipTypes::FunctionSelector::USE_NEW_SETTINGS_NO_ACKNACK)
+        m_responseExpected(fn == MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS)
     {};
 
     //Constructor: MipCommand
@@ -30,23 +29,20 @@ public:
         m_commandId(cmdId),
         m_functionSelector(fn),
         m_data(vals),
-        m_responseExpected(fn == MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS),
-        m_ackNackExpected(fn != MipTypes::FunctionSelector::USE_NEW_SETTINGS_NO_ACKNACK)
+        m_responseExpected(fn == MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS)
     {};
 
-    MipCommand(MipTypes::Command cmdId, bool resExpected = false, bool ackNackExpected = true) :
+    MipCommand(MipTypes::Command cmdId, bool resExpected = false) :
         m_commandId(cmdId),
         m_functionSelector(MipTypes::FunctionSelector(0)),
-        m_responseExpected(resExpected),
-        m_ackNackExpected(ackNackExpected)
+        m_responseExpected(resExpected)
     {};
 
-    MipCommand(MipTypes::Command cmdId, MipFieldValues vals, bool resExpected = false, bool ackNackExpected = true) :
+    MipCommand(MipTypes::Command cmdId, MipFieldValues vals, bool resExpected = false) :
         m_commandId(cmdId),
         m_functionSelector(MipTypes::FunctionSelector(0)),
         m_data(vals),
-        m_responseExpected(resExpected),
-        m_ackNackExpected(ackNackExpected)
+        m_responseExpected(resExpected)
     {};
 
     //Function: createResponse
@@ -120,8 +116,6 @@ private:
     MipFieldValues m_data;
 
     bool m_responseExpected;
-
-    bool m_ackNackExpected;
 
     //Function: isKnownCommand
     //  checks whether the command name is defined to determine if this command is defined in MSCL

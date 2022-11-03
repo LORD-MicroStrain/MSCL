@@ -2067,14 +2067,13 @@ namespace mscl
         //
         //Parameter:
         //    cmdId - the <MipTypes::Command> to send.
-        //    ackNackExpected - default true - bool indicating whether to expect the device to send back an ACK/NACK response
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void run(MipTypes::Command cmdId, bool ackNackExpected = true) const;
+        void run(MipTypes::Command cmdId) const;
 
         //API Function: run
         //    Runs the specified command with the provided specifier values and no function selector. No data response expected.
@@ -2082,14 +2081,13 @@ namespace mscl
         //Parameter:
         //    cmdId - the <MipTypes::Command> to send.
         //    specifier - <MipFieldValues> containing any additional specifier values to send with the command.
-        //    ackNackExpected - default true - bool indicating whether to expect the device to send back an ACK/NACK response
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        void run(MipTypes::Command cmdId, MipFieldValues specifier, bool ackNackExpected = true) const;
+        void run(MipTypes::Command cmdId, MipFieldValues specifier) const;
 
 private:
        //Function: SendCommand

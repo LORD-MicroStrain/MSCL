@@ -16,7 +16,7 @@ namespace mscl
     std::shared_ptr<GenericMipCommand::Response> MipCommand::createResponse(std::weak_ptr<ResponseCollector> collector)
     {
         std::shared_ptr<GenericMipCommand::Response> responseToSend(new GenericMipCommand::Response(commandType(),
-            collector, m_ackNackExpected, responseExpected(), commandName(), buildMatchData(), fieldDataByte()));
+            collector, true, responseExpected(), commandName(), buildMatchData(), fieldDataByte()));
         return responseToSend;
     }
 
