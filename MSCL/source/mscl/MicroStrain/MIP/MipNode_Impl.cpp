@@ -497,6 +497,11 @@ namespace mscl
 
     GnssReceivers MipNode_Impl::getGnssReceiverInfo() const
     {
+        if (!features().supportsCommand(MipTypes::Command::CMD_GNSS_RECEIVER_INFO))
+        {
+            return GnssReceivers();
+        }
+
         MipFieldValues ret = get(MipTypes::Command::CMD_GNSS_RECEIVER_INFO);
 
         uint8 count = ret[0].as_uint8();
@@ -2443,11 +2448,17 @@ namespace mscl
 
     EventSupportInfo MipNode_Impl::getEventInfo(const EventSupportInfo::Query query) const
     {
+        EventSupportInfo info;
+
+        if (!features().supportsCommand(MipTypes::Command::CMD_EVENT_SUPPORT))
+        {
+            info.query = query;
+            return info;
+        }
+
         const MipFieldValues response = get(MipTypes::Command::CMD_EVENT_SUPPORT,
                     { Value::UINT8(static_cast<uint8>(query)) }
         );
-
-        EventSupportInfo info{};
 
         info.query = static_cast<EventSupportInfo::Query>(response[0].as_uint8());
         info.maxInstances = response[1].as_uint8();
