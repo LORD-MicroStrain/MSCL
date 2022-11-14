@@ -292,6 +292,7 @@ namespace std
     %template(ConfigIssues)                     vector<mscl::ConfigIssue>;
     %template(MipChannelFields)                 vector<enum mscl::MipTypes::ChannelField>;
     %template(MipCommands)                      vector<mscl::MipTypes::Command>;
+    %template(MipDataClasses)                   vector<enum mscl::MipTypes::DataClass>;
     %template(MipChannelIdentifiers)            vector<mscl::MipChannelIdentifier>;
     %template(MipCommandSet)                    vector<mscl::MipCommandBytes>;
     %template(MipFieldValues)                   vector<mscl::Value>;

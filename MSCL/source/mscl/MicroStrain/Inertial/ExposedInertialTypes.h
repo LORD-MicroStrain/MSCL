@@ -801,6 +801,10 @@ namespace mscl
     class NmeaMessageFormat
     {
     public:
+        //API Constant: MAX_MESSAGES
+        //  Maximum number of configurable NMEA messages
+        static constexpr uint8 MAX_MESSAGES = 40;
+
         //API Enum: SentenceType
         //  NMEA sentence type options
         //
@@ -924,7 +928,7 @@ namespace mscl
         MipTypes::DataClass sourceDataClass() const { return m_sourceDescSet; }
 
         //API Function: sampleRate
-        //  Sets the output sample rate. If baseRate is not specified, please use a <SampleRate> with RateType of decimation (SampleRate::Decimation(rateDecimation)) otherwise it will cannot be properly interpretted.
+        //  Sets the output sample rate. If baseRate is not specified, please use a <SampleRate> with RateType of decimation (SampleRate::Decimation(rateDecimation)) otherwise it will cannot be properly interpreted.
         //
         //  Note: the sample rate is limited to either the data class base rate or MAX_FREQUENCY (10 Hz), whichever is lower. If input is too high, it will be automatically reduced to the max value.
         //  Sample rate can only be validated if base rate is specified.
@@ -954,12 +958,10 @@ namespace mscl
         //API Function: dataClassSupported
         //  [static] Checks whether the specified <MipTypes::DataClass> is supported for the specified <SentenceType> type.
         static bool dataClassSupported(MipTypes::DataClass dataClass, SentenceType sentenceType);
-
-    private:
-        //Function: supportedDataClasses
-        // [static] Returns a list of supported <MipTypes::DataClass> values for the specified <SentenceType> type.
-        // Note: this is private because there's currently no DataClass vector type in the public interface.
-        static std::vector<MipTypes::DataClass> supportedDataClasses(SentenceType sentenceType);
+        
+        //API Function: supportedDataClasses
+        //  [static] Returns a list of supported <MipTypes::DataClass> values for the specified <SentenceType> type.
+        static MipTypes::MipDataClasses supportedDataClasses(SentenceType sentenceType);
 
     private:
         friend class InertialNode;

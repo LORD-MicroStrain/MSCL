@@ -123,6 +123,12 @@ public class NmeaMessageFormat : global::System.IDisposable {
     return ret;
   }
 
+  public static MipDataClasses supportedDataClasses(NmeaMessageFormat.SentenceType sentenceType) {
+    MipDataClasses ret = new MipDataClasses(msclPINVOKE.NmeaMessageFormat_supportedDataClasses((int)sentenceType), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public static MipFieldValues toCommandParameters(NmeaMessageFormats nmeaFormats) {
     MipFieldValues ret = new MipFieldValues(msclPINVOKE.NmeaMessageFormat_toCommandParameters(NmeaMessageFormats.getCPtr(nmeaFormats)), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
