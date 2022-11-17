@@ -16,6 +16,10 @@ REMOVED - A function/class has been removed.
 
 Forthcoming
 - Wireless
+- Inertial
+
+65.0.0 - 2022-11-18
+- Wireless
     - Added Taiwan region code for wireless devices
 - Inertial
     - RENAMED InertialTypes::GNSS_Source::INTERNAL_GNSS -> INTERNAL_GNSS_ALL
@@ -23,13 +27,15 @@ Forthcoming
         - AdvancedLowPassFilterData -> LowPassFilterData
         - AdvancedLowPassFilterConfig -> LowPassFilterConfig
         - CHANGED data type AdvancedLowPassFilterData::cutoffFrequency uint16 -> float (truncates decimal when cast to uint16 for legacy command)
-    - Added MipNodeFeatures::supportedGnssSources() to lookup supported GNSS Aiding Source options
-    - Added MipNodeFeatures::supportedLowPassFilterChannelFields() to lookup supported channels to which low-pass filter settings can be applied
-    - Added MipNodeFeatures::supportedGnssSignalConfigurations() to lookup supported GNSS Signal configuration combinations
     - Updated GnssReceiverInfo to read new receiver fw information from description field
     - Updated GPS Ionospheric Corrections alpha and beta value types to Vector
     - Automatically detect and add required parameters for save as startup, load startup, and default settings command functions
     - Fix device info not fully cleared on InertialNode::clearDeviceInfo()
+    - MipNodeFeatures changes:
+        - Added supportedGnssSources() to lookup supported GNSS Aiding Source options
+        - Added supportedLowPassFilterChannelFields() to lookup supported channels to which low-pass filter settings can be applied
+        - Added supportedGnssSignalConfigurations() to lookup supported GNSS Signal configuration combinations
+        - Add command supported checks on getGnssReceiverInfo(), getEventInfo() so these are safe to check regardless of model (empty lists returned if unsupported)
     - Added support for MIP data:
         - Continuous Built-In Test (0xA0, 0x01)
         - SBAS Status (0x81,0x12) (0x91-95,0x12)
