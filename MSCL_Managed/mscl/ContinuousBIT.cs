@@ -37,7 +37,7 @@ public class ContinuousBIT : global::System.IDisposable {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_ContinuousBIT(swigCPtr);
+          throw new global::System.MethodAccessException("C++ destructor does not have public access");
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
@@ -52,6 +52,12 @@ public class ContinuousBIT : global::System.IDisposable {
 
   public static MipDataPoints getMipDataPoints(MipModels.NodeModel model, Bytes data) {
     MipDataPoints ret = new MipDataPoints(msclPINVOKE.ContinuousBIT_getMipDataPoints((int)model, Bytes.getCPtr(data)), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public Bytes data() {
+    Bytes ret = new Bytes(msclPINVOKE.ContinuousBIT_data(swigCPtr), false);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

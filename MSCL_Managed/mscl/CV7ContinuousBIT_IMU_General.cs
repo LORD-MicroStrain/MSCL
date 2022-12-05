@@ -10,7 +10,7 @@
 
 namespace mscl {
 
-public class CV7ContinuousBIT_IMU_General : Bitfield {
+public class CV7ContinuousBIT_IMU_General : ContinuousBIT_IMU_General {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
 
   internal CV7ContinuousBIT_IMU_General(global::System.IntPtr cPtr, bool cMemoryOwn) : base(msclPINVOKE.CV7ContinuousBIT_IMU_General_SWIGUpcast(cPtr), cMemoryOwn) {
@@ -42,54 +42,6 @@ public class CV7ContinuousBIT_IMU_General : Bitfield {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public byte flags() {
-    byte ret = msclPINVOKE.CV7ContinuousBIT_IMU_General_flags(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public bool clockFault() {
-    bool ret = msclPINVOKE.CV7ContinuousBIT_IMU_General_clockFault(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public bool communicationFault() {
-    bool ret = msclPINVOKE.CV7ContinuousBIT_IMU_General_communicationFault(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public bool timingOverrun() {
-    bool ret = msclPINVOKE.CV7ContinuousBIT_IMU_General_timingOverrun(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public bool calibrationErrorAccel() {
-    bool ret = msclPINVOKE.CV7ContinuousBIT_IMU_General_calibrationErrorAccel(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public bool calibrationErrorGyro() {
-    bool ret = msclPINVOKE.CV7ContinuousBIT_IMU_General_calibrationErrorGyro(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public bool calibrationErrorMag() {
-    bool ret = msclPINVOKE.CV7ContinuousBIT_IMU_General_calibrationErrorMag(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public static readonly byte CLOCK_FAULT = msclPINVOKE.CV7ContinuousBIT_IMU_General_CLOCK_FAULT_get();
-  public static readonly byte COMMUNICATION_FAULT = msclPINVOKE.CV7ContinuousBIT_IMU_General_COMMUNICATION_FAULT_get();
-  public static readonly byte TIMING_OVERRUN = msclPINVOKE.CV7ContinuousBIT_IMU_General_TIMING_OVERRUN_get();
-  public static readonly byte CALIBRATION_ERROR_ACCEL = msclPINVOKE.CV7ContinuousBIT_IMU_General_CALIBRATION_ERROR_ACCEL_get();
-  public static readonly byte CALIBRATION_ERROR_GYRO = msclPINVOKE.CV7ContinuousBIT_IMU_General_CALIBRATION_ERROR_GYRO_get();
-  public static readonly byte CALIBRATION_ERROR_MAG = msclPINVOKE.CV7ContinuousBIT_IMU_General_CALIBRATION_ERROR_MAG_get();
 }
 
 }

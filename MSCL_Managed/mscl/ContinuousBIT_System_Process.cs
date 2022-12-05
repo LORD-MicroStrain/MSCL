@@ -10,14 +10,14 @@
 
 namespace mscl {
 
-public class CV7ContinuousBIT_System_General : ContinuousBIT_System_General {
+public class ContinuousBIT_System_Process : Bitfield {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
 
-  internal CV7ContinuousBIT_System_General(global::System.IntPtr cPtr, bool cMemoryOwn) : base(msclPINVOKE.CV7ContinuousBIT_System_General_SWIGUpcast(cPtr), cMemoryOwn) {
+  internal ContinuousBIT_System_Process(global::System.IntPtr cPtr, bool cMemoryOwn) : base(msclPINVOKE.ContinuousBIT_System_Process_SWIGUpcast(cPtr), cMemoryOwn) {
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(CV7ContinuousBIT_System_General obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(ContinuousBIT_System_Process obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
@@ -26,7 +26,7 @@ public class CV7ContinuousBIT_System_General : ContinuousBIT_System_General {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_CV7ContinuousBIT_System_General(swigCPtr);
+          msclPINVOKE.delete_ContinuousBIT_System_Process(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
@@ -34,12 +34,10 @@ public class CV7ContinuousBIT_System_General : ContinuousBIT_System_General {
     }
   }
 
-  public CV7ContinuousBIT_System_General() : this(msclPINVOKE.new_CV7ContinuousBIT_System_General__SWIG_0(), true) {
+  public ushort flags() {
+    ushort ret = msclPINVOKE.ContinuousBIT_System_Process_flags(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public CV7ContinuousBIT_System_General(byte bits) : this(msclPINVOKE.new_CV7ContinuousBIT_System_General__SWIG_1(bits), true) {
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
   }
 
 }

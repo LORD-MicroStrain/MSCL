@@ -34,11 +34,7 @@ public class CV7ContinuousBIT : ContinuousBIT {
     }
   }
 
-  public CV7ContinuousBIT() : this(msclPINVOKE.new_CV7ContinuousBIT__SWIG_0(), true) {
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public CV7ContinuousBIT(Bytes bytes) : this(msclPINVOKE.new_CV7ContinuousBIT__SWIG_1(Bytes.getCPtr(bytes)), true) {
+  public CV7ContinuousBIT(Bytes bytes) : this(msclPINVOKE.new_CV7ContinuousBIT(Bytes.getCPtr(bytes)), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -56,12 +52,6 @@ public class CV7ContinuousBIT : ContinuousBIT {
 
   public CV7ContinuousBIT_Filter filter() {
     CV7ContinuousBIT_Filter ret = new CV7ContinuousBIT_Filter(msclPINVOKE.CV7ContinuousBIT_filter(swigCPtr), true);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public Bytes data() {
-    Bytes ret = new Bytes(msclPINVOKE.CV7ContinuousBIT_data(swigCPtr), false);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

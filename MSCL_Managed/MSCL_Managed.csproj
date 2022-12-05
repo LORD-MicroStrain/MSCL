@@ -117,6 +117,14 @@
     <Compile Include="mscl\Constellations.cs" />
     <Compile Include="mscl\ConstellationSettingsData.cs" />
     <Compile Include="mscl\ContinuousBIT.cs" />
+    <Compile Include="mscl\ContinuousBIT_Filter.cs" />
+    <Compile Include="mscl\ContinuousBIT_Filter_General.cs" />
+    <Compile Include="mscl\ContinuousBIT_IMU.cs" />
+    <Compile Include="mscl\ContinuousBIT_IMU_General.cs" />
+    <Compile Include="mscl\ContinuousBIT_IMU_Sensors.cs" />
+    <Compile Include="mscl\ContinuousBIT_System.cs" />
+    <Compile Include="mscl\ContinuousBIT_System_General.cs" />
+    <Compile Include="mscl\ContinuousBIT_System_Process.cs" />
     <Compile Include="mscl\CV7ContinuousBIT.cs" />
     <Compile Include="mscl\CV7ContinuousBIT_Filter.cs" />
     <Compile Include="mscl\CV7ContinuousBIT_Filter_General.cs" />

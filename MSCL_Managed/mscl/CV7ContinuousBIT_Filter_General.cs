@@ -10,7 +10,7 @@
 
 namespace mscl {
 
-public class CV7ContinuousBIT_Filter_General : Bitfield {
+public class CV7ContinuousBIT_Filter_General : ContinuousBIT_Filter_General {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
 
   internal CV7ContinuousBIT_Filter_General(global::System.IntPtr cPtr, bool cMemoryOwn) : base(msclPINVOKE.CV7ContinuousBIT_Filter_General_SWIGUpcast(cPtr), cMemoryOwn) {
@@ -42,33 +42,13 @@ public class CV7ContinuousBIT_Filter_General : Bitfield {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public byte flags() {
-    byte ret = msclPINVOKE.CV7ContinuousBIT_Filter_General_flags(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
   public bool fault() {
     bool ret = msclPINVOKE.CV7ContinuousBIT_Filter_General_fault(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public bool timingOverrun() {
-    bool ret = msclPINVOKE.CV7ContinuousBIT_Filter_General_timingOverrun(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public bool timingUnderrun() {
-    bool ret = msclPINVOKE.CV7ContinuousBIT_Filter_General_timingUnderrun(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
   public static readonly byte FAULT = msclPINVOKE.CV7ContinuousBIT_Filter_General_FAULT_get();
-  public static readonly byte TIMING_OVERRUN = msclPINVOKE.CV7ContinuousBIT_Filter_General_TIMING_OVERRUN_get();
-  public static readonly byte TIMING_UNDERRUN = msclPINVOKE.CV7ContinuousBIT_Filter_General_TIMING_UNDERRUN_get();
 }
 
 }
