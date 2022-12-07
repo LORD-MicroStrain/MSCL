@@ -605,7 +605,7 @@ namespace mscl
         //  Bitmasks for system process information flags
         //
         //Note:
-        //  These masks are shifted 16 bits to the right from the original 128 bitmask to have a 0 index at bit 31
+        //  These masks are shifted 16 bits to the right from the original 128 bitmask to have a 0 index at bit 16
         //
         //  IMU_PROCESS_FAULT    - 0x8000 - The IMU subsystem is unresponsive or not operating normally
         //  IMU_RATE_MISMATCH    - 0x4000 - Faster/slower than expected base rate
@@ -626,28 +626,28 @@ namespace mscl
         static constexpr uint16 FILTER_STUCK         = 0x0100; // No filter data received in 1 second
 
         //API Function: imuProcessFault
-        //  Gets the value of the Imu Process Fault bit
+        //  Gets the value of the IMU Process Fault bit
         //
         //Returns:
         //  bool - true: The IMU subsystem is unresponsive or not operating normally
         bool imuProcessFault() const;
 
         //API Function: imuDataRateMismatch
-        //  Gets the value of the Imu Data Rate Mismatch bit
+        //  Gets the value of the IMU Data Rate Mismatch bit
         //
         //Returns:
         //  bool - true: Faster/slower than expected base rate
         bool imuRateMismatch() const;
 
         //API Function: imuDroppedData
-        //  Gets the value of the Imu Overrun Dropped Data bit
+        //  Gets the value of the IMU Overrun Dropped Data bit
         //
         //Returns:
         //  bool - true: At least 1 dropped frame / overrun
         bool imuDroppedData() const;
 
         //API Function: imuStuck
-        //  Gets the value of the Imu Stuck bit
+        //  Gets the value of the IMU Stuck bit
         //
         //Returns:
         //  bool - true: No IMU data received in 1 second
@@ -923,5 +923,788 @@ namespace mscl
         //Variable: m_filter
         //  <CV7ContinuousBIT_Filter> information for filter flags (bits 64-95)
         CV7ContinuousBIT_Filter m_filter;
+    };
+
+
+    /************************************************
+    ****                   GQ7                   ****
+    ****     Structures for parsing GQ7 BIT      ****
+    ************************************************/
+
+    //API Struct: GQ7ContinuousBIT_System_General
+    //  Continuous Built-In Test flags for general system information
+    //
+    //  Bits 0-7 of the original 128 bit Continuous Built-In Test flags
+    struct GQ7ContinuousBIT_System_General : ContinuousBIT_System_General
+    {
+        //API Constructor: GQ7ContinuousBIT_System_General
+        GQ7ContinuousBIT_System_General() = default;
+
+        //API Constructor: GQ7ContinuousBIT_System_General
+        //
+        //Parameters:
+        //  bits - Bits 0-7 of the original 128 bit Continuous Built-In Test flags
+        explicit GQ7ContinuousBIT_System_General(const uint8 bits) : ContinuousBIT_System_General(bits) {}
+    };
+
+    //API Struct: GQ7ContinuousBIT_System_Process
+    //  Continuous Built-In Test flags for system process information
+    //
+    //  Bits 16-31 of the original 128 bit Continuous Built-In Test flags
+    struct GQ7ContinuousBIT_System_Process : ContinuousBIT_System_Process
+    {
+        //API Constructor: GQ7ContinuousBIT_System_Process
+        GQ7ContinuousBIT_System_Process() : ContinuousBIT_System_Process() {}
+
+        //API Constructor: GQ7ContinuousBIT_System_Process
+        //
+        //Parameters:
+        //  bits - Bits 16-31 of the original 128 bit Continuous Built-In Test flags
+        explicit GQ7ContinuousBIT_System_Process(const uint16 bits) : ContinuousBIT_System_Process(bits) {}
+
+        //API Constants: Bitmasks
+        //  Bitmasks for system process information flags
+        //
+        //Note:
+        //  These masks are shifted 16 bits to the right from the original 128 bitmask to have a 0 index at bit 16
+        //
+        //  IMU_CONTROL_LINE_FAULT        - 0x0100 - The IMU control line is not behaving as expected
+        //  IMU_COMMAND_RESPONSE_FAULT    - 0x0200 - The IMU is not responsive to commands
+        //  IMU_SPI_TRANSFER_FAULT        - 0x0400 - Misaligned/failed IMU SPI transfers
+        //  IMU_DATA_FRAME_FAULT          - 0x0800 - Missing IMU data frame(s)
+        //  FILTER_CONTROL_LINE_FAULT     - 0x1000 - The filter control line is not behaving as expected
+        //  FILTER_COMMAND_RESPONSE_FAULT - 0x2000 - The filter is not responsive to commands
+        //  FILTER_SPI_TRANSFER_FAULT     - 0x4000 - Misaligned/failed filter SPI transfers
+        //  FILTER_DATA_FRAME_FAULT       - 0x8000 - Missing filter data frame(s)
+        //  GNSS_CONTROL_LINE_FAULT       - 0x0001 - The GNSS control line is not behaving as expected
+        //  GNSS_COMMAND_RESPONSE_FAULT   - 0x0002 - The GNSS is not responsive to commands
+        //  GNSS_SPI_TRANSFER_FAULT       - 0x0004 - Misaligned/failed GNSS SPI transfers
+        //  GNSS_DATA_FRAME_FAULT         - 0x0008 - Missing GNSS data frame(s)
+        static constexpr uint16 IMU_CONTROL_LINE_FAULT        = 0x0100; // The IMU control line is not behaving as expected
+        static constexpr uint16 IMU_COMMAND_RESPONSE_FAULT    = 0x0200; // The IMU is not responsive to commands
+        static constexpr uint16 IMU_SPI_TRANSFER_FAULT        = 0x0400; // Misaligned/failed IMU SPI transfers
+        static constexpr uint16 IMU_DATA_FRAME_FAULT          = 0x0800; // Missing IMU data frame(s)
+        
+        static constexpr uint16 FILTER_CONTROL_LINE_FAULT     = 0x1000; // The filter control line is not behaving as expected
+        static constexpr uint16 FILTER_COMMAND_RESPONSE_FAULT = 0x2000; // The filter is not responsive to commands
+        static constexpr uint16 FILTER_SPI_TRANSFER_FAULT     = 0x4000; // Misaligned/failed filter SPI transfers
+        static constexpr uint16 FILTER_DATA_FRAME_FAULT       = 0x8000; // Missing filter data frame(s)
+        
+        static constexpr uint16 GNSS_CONTROL_LINE_FAULT       = 0x0001; // The GNSS control line is not behaving as expected
+        static constexpr uint16 GNSS_COMMAND_RESPONSE_FAULT   = 0x0002; // The GNSS is not responsive to commands
+        static constexpr uint16 GNSS_SPI_TRANSFER_FAULT       = 0x0004; // Misaligned/failed GNSS SPI transfers
+        static constexpr uint16 GNSS_DATA_FRAME_FAULT         = 0x0008; // Missing GNSS data frame(s)
+
+        //API Function: imuIpcFault
+        //  Gets the value of the IMU IPC fault flags (bits 16-19)
+        //
+        //Note:
+        //  Bits 0-3 of this value correspond to bits 16-19
+        //
+        //Returns:
+        //  uint8 - Value of the IMU IPC fault flags
+        uint8 imuIpcFault() const;
+
+        //API Function: imuControlLineFault
+        //  Gets the value of the IMU Control Line Fault bit
+        //
+        //Returns:
+        //  bool - true: The IMU control line is not behaving as expected
+        bool imuControlLineFault() const;
+
+        //API Function: imuCommandResponseFault
+        //  Gets the value of the IMU Command Response Fault bit
+        //
+        //Returns:
+        //  bool - true: The IMU is not responsive to commands
+        bool imuCommandResponseFault() const;
+
+        //API Function: imuSpiTransferFault
+        //  Gets the value of the IMU SPI Transfer Fault bit
+        //
+        //Returns:
+        //  bool - true: Misaligned/failed IMU SPI transfers
+        bool imuSpiTransferFault() const;
+
+        //API Function: imuDataFrameFault
+        //  Gets the value of the IMU Data Frame Fault bit
+        //
+        //Returns:
+        //  bool - true: Missing IMU data frame(s)
+        bool imuDataFrameFault() const;
+
+        //API Function: filterIpcFault
+        //  Gets the value of the Filter IPC fault flags (bits 20-23)
+        //
+        //Note:
+        //  Bits 0-3 of this value correspond to bits 20-23
+        //
+        //Returns:
+        //  uint8 - Value of the filter IPC fault flags
+        uint8 filterIpcFault() const;
+
+        //API Function: filterControlLineFault
+        //  Gets the value of the Filter Control Line Fault bit
+        //
+        //Returns:
+        //  bool - true: The filter control line is not behaving as expected
+        bool filterControlLineFault() const;
+
+        //API Function: filterCommandResponseFault
+        //  Gets the value of the Filter Command Response Fault bit
+        //
+        //Returns:
+        //  bool - true: The filter is not responsive to commands
+        bool filterCommandResponseFault() const;
+
+        //API Function: filterSpiTransferFault
+        //  Gets the value of the Filter SPI Transfer Fault bit
+        //
+        //Returns:
+        //  bool - true: Misaligned/failed filter SPI transfers
+        bool filterSpiTransferFault() const;
+
+        //API Function: filterDataFrameFault
+        //  Gets the value of the Filter Data Frame Fault bit
+        //
+        //Returns:
+        //  bool - true: Missing filter data frame(s)
+        bool filterDataFrameFault() const;
+
+        //API Function: gnssIpcFault
+        //  Gets the value of the GNSS IPC fault flags (bits 24-27)
+        //
+        //Note:
+        //  Bits 0-3 of this value correspond to bits 24-27
+        //
+        //Returns:
+        //  uint8 - Value of the GNSS IPC fault flags
+        uint8 gnssIpcFault() const;
+
+        //API Function: gnssControlLineFault
+        //  Gets the value of the GNSS Control Line Fault bit
+        //
+        //Returns:
+        //  bool - true: The GNSS control line is not behaving as expected
+        bool gnssControlLineFault() const;
+
+        //API Function: gnssCommandResponseFault
+        //  Gets the value of the GNSS Command Response Fault bit
+        //
+        //Returns:
+        //  bool - true: The GNSS is not responsive to commands
+        bool gnssCommandResponseFault() const;
+
+        //API Function: gnssSpiTransferFault
+        //  Gets the value of the GNSS SPI Transfer Fault bit
+        //
+        //Returns:
+        //  bool - true: Misaligned/failed GNSS SPI transfers
+        bool gnssSpiTransferFault() const;
+
+        //API Function: gnssDataFrameFault
+        //  Gets the value of the GNSS Data Frame Fault bit
+        //
+        //Returns:
+        //  bool - true: Missing GNSS data frame(s)
+        bool gnssDataFrameFault() const;
+    };
+
+    //API Struct: GQ7ContinuousBIT_System
+    //  Continuous Built-In Test flags for system information
+    //
+    //  Bits 0-31 of the original 128 bit Continuous Built-In Test flags
+    struct GQ7ContinuousBIT_System : ContinuousBIT_System
+    {
+        //API Constructor: GQ7ContinuousBIT_System
+        GQ7ContinuousBIT_System() = default;
+
+        //API Constructor: GQ7ContinuousBIT_System
+        //
+        //Parameters:
+        //  bits - Value of bits 0-31 of the original 128 bit Continuous Built-In Test flags
+        explicit GQ7ContinuousBIT_System(uint32 bits);
+
+        //API Function: general
+        //  Gets information for general system flags (bits 0-7)
+        //
+        //Returns:
+        //  <GQ7ContinuousBIT_System_General> - Information for general system flags
+        GQ7ContinuousBIT_System_General general() const;
+
+        //API Function: process
+        //  Gets information for system process flags (bits 16-31)
+        //
+        //Returns:
+        //  <GQ7ContinuousBIT_System_Process> - Information for system process flags
+        GQ7ContinuousBIT_System_Process process() const;
+
+    private:
+        //Variable: m_general
+        //  <ContinuousBIT_System_General> information for general system flags (bits 0-7)
+        GQ7ContinuousBIT_System_General m_general;
+
+        //Variable: m_process
+        //  <ContinuousBIT_System_Process> information for system process flags (bits 16-31)
+        GQ7ContinuousBIT_System_Process m_process;
+    };
+
+    //API Struct: GQ7ContinuousBIT_IMU_General
+    //  Continuous Built-In Test flags for general IMU information
+    //
+    //  Bits 32-39 of the original 128 bit Continuous Built-In Test flags
+    struct GQ7ContinuousBIT_IMU_General : ContinuousBIT_IMU_General
+    {
+        //API Constructor: GQ7ContinuousBIT_IMU_General
+        GQ7ContinuousBIT_IMU_General() = default;
+
+        //API Constructor: GQ7ContinuousBIT_IMU_General
+        //
+        //Parameters:
+        //  bits - Bits 32-39 of the original 128 bit Continuous Built-In Test flags
+        explicit GQ7ContinuousBIT_IMU_General(const uint8 bits) : ContinuousBIT_IMU_General(bits) {}
+    };
+
+    //API Struct: GQ7ContinuousBIT_IMU_Sensors
+    //  Continuous Built-In Test flags for IMU sensors information
+    //
+    //  Bits 40-55 of the original 128 bit Continuous Built-In Test flags
+    struct GQ7ContinuousBIT_IMU_Sensors : ContinuousBIT_IMU_Sensors
+    {
+        //API Constructor: GQ7ContinuousBIT_IMU_Sensors
+        GQ7ContinuousBIT_IMU_Sensors() = default;
+
+        //API Constructor: GQ7ContinuousBIT_IMU_Sensors
+        //
+        //Parameters:
+        //  bits - Bits 40-55 of the original 128 bit Continuous Built-In Test flags
+        explicit GQ7ContinuousBIT_IMU_Sensors(const uint16 bits) : ContinuousBIT_IMU_Sensors(bits) {}
+    };
+
+    //API Struct: GQ7ContinuousBIT_IMU
+    //  Continuous Built-In Test flags for IMU information
+    //
+    //  Bits 32-63 of the original 128 bit Continuous Built-In Test flags
+    struct GQ7ContinuousBIT_IMU : ContinuousBIT_IMU
+    {
+        //API Constructor: GQ7ContinuousBIT_IMU
+        GQ7ContinuousBIT_IMU() = default;
+
+        //API Constructor: GQ7ContinuousBIT_IMU
+        //
+        //Parameters:
+        //  bits - Value of bits 32-63 of the original 128 bit Continuous Built-In Test flags
+        explicit GQ7ContinuousBIT_IMU(uint32 bits);
+
+        //API Function: general
+        //  Gets information for general IMU flags (bits 32-39)
+        //
+        //Returns:
+        //  <GQ7ContinuousBIT_IMU_General> - Information for general IMU flags
+        GQ7ContinuousBIT_IMU_General general() const;
+
+        //API Function: sensors
+        //  Gets information for IMU sensors flags (bits 40-55)
+        //
+        //Returns:
+        //  <GQ7ContinuousBIT_IMU_Sensors> - Information for IMU sensors flags
+        GQ7ContinuousBIT_IMU_Sensors sensors() const;
+
+    private:
+        //Variable: m_general
+        //  <GQ7ContinuousBIT_IMU_General> information for general IMU flags (bits 32-39)
+        GQ7ContinuousBIT_IMU_General m_general;
+
+        //Variable: m_sensors;
+        //  <GQ7ContinuousBIT_IMU_Sensors> information for IMU sensors flags (bits 40-55)
+        GQ7ContinuousBIT_IMU_Sensors m_sensors;
+    };
+
+    //API Struct: GQ7ContinuousBIT_Filter_General
+    //  Continuous Built-In Test flags for general filter information
+    //
+    //  Bits 64-71 of the original 128 bit Continuous Built-In Test flags
+    struct GQ7ContinuousBIT_Filter_General : ContinuousBIT_Filter_General
+    {
+        //API Constructor: GQ7ContinuousBIT_Filter_General
+        GQ7ContinuousBIT_Filter_General() = default;
+
+        //API Constructor: GQ7ContinuousBIT_Filter_General
+        //
+        //Parameters:
+        //  bits - Bits 64-71 of the original 128 bit Continuous Built-In Test flags
+        explicit GQ7ContinuousBIT_Filter_General(const uint8 bits) : ContinuousBIT_Filter_General(bits) {}
+
+        //API Constants: Bitmasks
+        //  Bitmasks for general filter flags
+        //
+        //Note:
+        //  These masks are shifted 64 bits to the right from the original 128 bitmask to have a 0 index at bit 64
+        //
+        //  CLOCK_FAULT                    - 0x01 - The filter subsystem is not running off the system clock
+        //  HARDWARE_FAULT                 - 0x02 - Filter hardware initialization error
+        //  IMU_SPI_COMMUNICATION_ERROR    - 0x10 - No communication on the IMU SPI port
+        //  GNSS_SPI_COMMUNICATION_ERROR   - 0x20 - No communication on the GNSS SPI port
+        //  COMMS_SPI_COMMUNICATION_ERROR  - 0x40 - No communication on the COMMS SPI port
+        //  COMMS_UART_COMMUNICATION_ERROR - 0x80 - No communication on the COMMS UART port
+        static constexpr uint8 CLOCK_FAULT                    = 0x01; // The filter subsystem is not running off the system clock
+        static constexpr uint8 HARDWARE_FAULT                 = 0x02; // Filter hardware initialization error
+
+        static constexpr uint8 COMMUNICATION_ERROR_IMU_SPI    = 0x10; // No communication on the IMU SPI port
+        static constexpr uint8 COMMUNICATION_ERROR_GNSS_SPI   = 0x20; // No communication on the GNSS SPI port
+        static constexpr uint8 COMMUNICATION_ERROR_COMMS_SPI  = 0x40; // No communication on the COMMS SPI port
+        static constexpr uint8 COMMUNICATION_ERROR_COMMS_UART = 0x80; // No communication on the COMMS UART port
+
+        //API Function: clockFault
+        //  Gets the value of the Clock Fault bit
+        //
+        //Returns:
+        //  bool - true: The filter subsystem is not running off the system clock
+        bool clockFault() const;
+
+        //API Function: hardwareFault
+        //  Gets the value of the Hardware Fault bit
+        //
+        //Returns:
+        //  bool - true: Filter hardware initialization error
+        bool hardwareFault() const;
+
+        //API Function: communicationError
+        //  Gets the value of the Communication Error flags (bits 68-71)
+        //
+        //Note:
+        //  Bits 0-3 of this value correspond to bits 68-71
+        //
+        //Returns:
+        //  uint8 - Value of the Communication Error flags
+        uint8 communicationError() const;
+
+        //API Function: communicationErrorImuSpi
+        //  Gets the value of the Communication Error IMU SPI bit
+        //
+        //Returns:
+        //  bool - true: No communication on the IMU SPI port
+        bool communicationErrorImuSpi() const;
+
+        //API Function: communicationErrorGnssSpi
+        //  Gets the value of the Communication Error GNSS SPI bit
+        //
+        //Returns:
+        //  bool - true: No communication on the GNSS SPI port
+        bool communicationErrorGnssSpi() const;
+
+        //API Function: communicationErrorCommsSpi
+        //  Gets the value of the Communication Error COMMS SPI bit
+        //
+        //Returns:
+        //  bool - true: No communication on the COMMS SPI port
+        bool communicationErrorCommsSpi() const;
+
+        //API Function: communicationErrorCommsUart
+        //  Gets the value of the Communication Error COMMS UART bit
+        //
+        //Returns:
+        //  bool - true: No communication on the COMMS UART port
+        bool communicationErrorCommsUart() const;
+    };
+
+    //API Struct: GQ7ContinuousBIT_Filter
+    //  Continuous Built-In Test flags for filter information
+    //
+    //  Bits 64-95 of the original 128 bit Continuous Built-In Test flags
+    struct GQ7ContinuousBIT_Filter : ContinuousBIT_Filter
+    {
+        //API Constructor: GQ7ContinuousBIT_Filter
+        GQ7ContinuousBIT_Filter() = default;
+
+        //API Constructor: GQ7ContinuousBIT_Filter
+        //
+        //Parameters:
+        //  bits - Value of bits 64-95 of the original 128 bit Continuous Built-In Test flags
+        explicit GQ7ContinuousBIT_Filter(uint32 bits);
+
+        //API Function: general
+        //  Gets information for general filter flags (bits 64-71)
+        //
+        //Returns:
+        //  <GQ7ContinuousBIT_Filter_General> - Information for general filter flags
+        GQ7ContinuousBIT_Filter_General general() const;
+
+    private:
+        //Variable: m_general
+        //  <GQ7ContinuousBIT_Filter_General> information for general filter flags (bits 64-71)
+        GQ7ContinuousBIT_Filter_General m_general;
+    };
+
+    //API Struct: GQ7ContinuousBIT_GNSS_General
+    //  Continuous Built-In Test flags for general GNSS information
+    //
+    //  Bits 96-103 of the original 128 bit Continuous Built-In Test flags
+    struct GQ7ContinuousBIT_GNSS_General : Bitfield
+    {
+        //API Constructor: GQ7ContinuousBIT_GNSS_General
+        GQ7ContinuousBIT_GNSS_General() = default;
+
+        //API Constructor: GQ7ContinuousBIT_GNSS_General
+        //
+        //Parameters:
+        //  bits - Bits 96-103 of the original 128 bit Continuous Built-In Test flags
+        explicit GQ7ContinuousBIT_GNSS_General(const uint8 bits) : Bitfield(static_cast<uint64>(bits)) {}
+
+        //API Constants: Bitmasks
+        //  Bitmasks for general GNSS flags
+        //
+        //Note:
+        //  These masks are shifted 96 bits to the right from the original 128 bitmask to have a 0 index at bit 96
+        //
+        //  CLOCK_FAULT                      - 0x01 - The GNSS subsystem is not running off the system clock
+        //  HARDWARE_FAULT                   - 0x02 - GNSS hardware initialization error
+        //  COMMUNICATION_ERROR_COMMS_SERIAL - 0x04 - No communication on the COMMS Serial port
+        //  COMMUNICATION_ERROR_COMMS_SPI    - 0x08 - No communication on the COMMS SPI port
+        //  COMMUNICATION_ERROR_NAV_SPI      - 0x10 - No communication on the NAV SPI port
+        //  GPS_TIME_FAULT                   - 0x20 - System GPS time is invalid
+        //  TIMING_OVERRUN                   - 0x40 - GNSS processes are taking longer than their allotted time
+        static constexpr uint8 CLOCK_FAULT                      = 0x01; // The GNSS subsystem is not running off the system clock
+        static constexpr uint8 HARDWARE_FAULT                   = 0x02; // GNSS hardware initialization error
+
+        static constexpr uint8 COMMUNICATION_ERROR_COMMS_SERIAL = 0x04; // No communication on the COMMS Serial port
+        static constexpr uint8 COMMUNICATION_ERROR_COMMS_SPI    = 0x08; // No communication on the COMMS SPI port
+        static constexpr uint8 COMMUNICATION_ERROR_NAV_SPI      = 0x10; // No communication on the NAV SPI port
+
+        static constexpr uint8 GPS_TIME_FAULT                   = 0x20; // System GPS time is invalid
+        static constexpr uint8 TIMING_OVERRUN                   = 0x40; // GNSS processes are taking longer than their allotted time
+
+        //API Function: flags
+        //  Gets the value of the general GNSS flags (bits 96-103)
+        //
+        //Returns:
+        //  uint8 - Value of the general GNSS flags
+        uint8 flags() const;
+
+        //API Function: clockFault
+        //  Gets the value of the Clock Fault bit
+        //
+        //Returns:
+        //  bool - true: The GNSS subsystem is not running off the system clock
+        bool clockFault() const;
+
+        //API Function: hardwareFault
+        //  Gets the value of the Hardware Fault bit
+        //
+        //Returns:
+        //  bool - true: GNSS hardware initialization error
+        bool hardwareFault() const;
+
+        //API Function: communicationError
+        //  Gets the value of the Communication Error flags (bits 98-100)
+        //
+        //Note:
+        //  Bits 0-2 of this value correspond to bits 98-100
+        //
+        //Returns:
+        //  uint8 - Value of the Communication Error flags
+        uint8 communicationError() const;
+
+        //API Function: communicationErrorCommsSerial
+        //  Gets the value of the Communication Error COMMS Serial bit
+        //
+        //Returns:
+        //  bool - true: No communication on the COMMS Serial port
+        bool communicationErrorCommsSerial() const;
+
+        //API Function: communicationErrorCommsSpi
+        //  Gets the value of the Communication Error COMMS SPI bit
+        //
+        //Returns:
+        //  bool - true: No communication on the COMMS SPI port
+        bool communicationErrorCommsSpi() const;
+
+        //API Function: communicationErrorNavSpi
+        //  Gets the value of the Communication Error NAV SPI bit
+        //
+        //Returns:
+        //  bool - true: No communication on the NAV SPI port
+        bool communicationErrorNavSpi() const;
+
+        //API Function: gpsTimeFault
+        //  Gets the value of the GPS Time Fault bit
+        //
+        //Returns:
+        //  bool - true: System GPS time is invalid
+        bool gpsTimeFault() const;
+
+        //API Function: timingOverrun
+        //  Gets the value of the Timing Overrun bit
+        //
+        //Returns:
+        //  bool - true: GNSS processes are taking longer than their allotted time
+        bool timingOverrun() const;
+    };
+
+    //API Struct: GQ7ContinuousBIT_GNSS_Receivers
+    //  Continuous Built-In Test flags for GNSS receivers information
+    //
+    //  Bits 104-119 of the original 128 bit Continuous Built-In Test flags
+    struct GQ7ContinuousBIT_GNSS_Receivers : Bitfield
+    {
+        //API Constructor: GQ7ContinuousBIT_GNSS_Receivers
+        GQ7ContinuousBIT_GNSS_Receivers() = default;
+
+        //API Constructor: GQ7ContinuousBIT_GNSS_Receivers
+        //
+        //Parameters:
+        //  bits - Bits 104-119 of the original 128 bit Continuous Built-In Test flags
+        explicit GQ7ContinuousBIT_GNSS_Receivers(const uint16 bits) : Bitfield(static_cast<uint64>(bits)) {}
+
+        //API Constants: Bitmasks
+        //  Bitmasks for GNSS receivers flags
+        //
+        //Note:
+        //  These masks are shifted 104 bits to the right from the original 128 bitmask to have a 0 index at bit 104
+        //
+        //  POWER_FAULT_RECEIVER_1    - 0x0100 - Receiver 1 internal power fault
+        //  FAULT_RECEIVER_1          - 0x0200 - Receiver 1 is inoperable
+        //  SHORTED_ANTENNA_1         - 0x0400 - Antenna 1 is shorted to ground
+        //  OPEN_ANTENNA_1            - 0x0800 - Antenna 1 is open-circuit (or DC block is installed)
+        //  SOLUTION_FAULT_RECEIVER_1 - 0x1000 - Receiver 1 solution is invalid
+        //  POWER_FAULT_RECEIVER_2    - 0x2000 - Receiver 2 internal power fault
+        //  FAULT_RECEIVER_2          - 0x4000 - Receiver 2 is inoperable
+        //  SHORTED_ANTENNA_2         - 0x8000 - Antenna 2 is shorted to ground
+        //  OPEN_ANTENNA_2            - 0x0001 - Antenna 2 is open-circuit (or DC block is installed)
+        //  SOLUTION_FAULT_RECEIVER_2 - 0x0002 - Receiver 2 solution is invalid
+        //  RTCM_COMMUNICATION_FAULT  - 0x0004 - RTCM data was being received previously, but it not currently being received
+        //  RTK_DONGLE_FAULT          - 0x0008 - A problem has been detected with the RTK dongle. Query directly for more detail
+        static constexpr uint16 POWER_FAULT_RECEIVER_1    = 0x0100; // Receiver 1 internal power fault
+        static constexpr uint16 FAULT_RECEIVER_1          = 0x0200; // Receiver 1 is inoperable
+        static constexpr uint16 SHORTED_ANTENNA_1         = 0x0400; // Antenna 1 is shorted to ground
+        static constexpr uint16 OPEN_ANTENNA_1            = 0x0800; // Antenna 1 is open-circuit (or DC block is installed)
+        static constexpr uint16 SOLUTION_FAULT_RECEIVER_1 = 0x1000; // Receiver 1 solution is invalid
+        
+        static constexpr uint16 POWER_FAULT_RECEIVER_2    = 0x2000; // Receiver 2 internal power fault
+        static constexpr uint16 FAULT_RECEIVER_2          = 0x4000; // Receiver 2 is inoperable
+        static constexpr uint16 SHORTED_ANTENNA_2         = 0x8000; // Antenna 2 is shorted to ground
+        static constexpr uint16 OPEN_ANTENNA_2            = 0x0001; // Antenna 2 is open-circuit (or DC block is installed)
+        static constexpr uint16 SOLUTION_FAULT_RECEIVER_2 = 0x0002; // Receiver 2 solution is invalid
+
+        static constexpr uint16 RTCM_COMMUNICATION_FAULT  = 0x0004; // RTCM data was being received previously, but it not currently being received
+        static constexpr uint16 RTK_DONGLE_FAULT          = 0x0008; // A problem has been detected with the RTK dongle. Query directly for more detail
+
+        //API Function: flags
+        //  Gets the value of the GNSS receivers flags (bits 104-119)
+        //
+        //Returns:
+        //  uint16 - Value of the GNSS receivers flags
+        uint16 flags() const;
+
+        //API Function: powerFaultReceiver1
+        //  Gets the value of the Power Fault Receiver 1 bit
+        //
+        //Returns:
+        //  bool - true: Receiver 1 internal power fault
+        bool powerFaultReceiver1() const;
+
+        //API Function: faultReceiver1
+        //  Gets the value of the Fault Receiver 1 bit
+        //
+        //Returns:
+        //  bool - true: Receiver 1 is inoperable
+        bool faultReceiver1() const;
+
+        //API Function: shortedAntenna1
+        //  Gets the value of the Shorted Antenna 1 bit
+        //
+        //Returns:
+        //  bool - true: Antenna 1 is shorted to ground
+        bool shortedAntenna1() const;
+
+        //API Function: openAntenna1
+        //  Gets the value of the Open Antenna 1 bit
+        //
+        //Returns:
+        //  bool - true: Antenna 1 is open-circuit (or DC block is installed)
+        bool openAntenna1() const;
+
+        //API Function: solutionFaultReceiver1
+        //  Gets the value of the Solution Fault Receiver 1 bit
+        //
+        //Returns:
+        //  bool - true: Receiver 1 solution is invalid
+        bool solutionFaultReceiver1() const;
+
+        //API Function: powerFaultReceiver2
+        //  Gets the value of the Power Fault Receiver 2 bit
+        //
+        //Returns:
+        //  bool - true: Receiver 2 internal power fault
+        bool powerFaultReceiver2() const;
+
+        //API Function: faultReceiver2
+        //  Gets the value of the Fault Receiver 2 bit
+        //
+        //Returns:
+        //  bool - true: Receiver 2 is inoperable
+        bool faultReceiver2() const;
+
+        //API Function: shortedAntenna2
+        //  Gets the value of the Shorted Antenna 2 bit
+        //
+        //Returns:
+        //  bool - true: Antenna 2 is shorted to ground
+        bool shortedAntenna2() const;
+
+        //API Function: openAntenna2
+        //  Gets the value of the Open Antenna 2 bit
+        //
+        //Returns:
+        //  bool - true: Antenna 2 is open-circuit (or DC block is installed)
+        bool openAntenna2() const;
+
+        //API Function: solutionFaultReceiver2
+        //  Gets the value of the Solution Fault Receiver 2 bit
+        //
+        //Returns:
+        //  bool - true: Receiver 2 solution is invalid
+        bool solutionFaultReceiver2() const;
+
+        //API Function: rtcmCommunicationFault
+        //  Gets the value of the RTCM Communication Fault bit
+        //
+        //Returns:
+        //  bool - true: RTCM data was being received previously, but it not currently being received
+        bool rtcmCommunicationFault() const;
+
+        //API Function: rtkDongleFault
+        //  Gets the value of the RTK Dongle Fault bit
+        //
+        //Returns:
+        //  bool - true: A problem has been detected with the RTK dongle. Query directly for more detail
+        bool rtkDongleFault() const;
+    };
+
+    //API Struct: GQ7ContinuousBIT_GNSS
+    //  Continuous Built-In Test flags for GNSS information
+    //
+    //  Bits 96-127 of the original 128 bit Continuous Built-In Test flags
+    struct GQ7ContinuousBIT_GNSS : Bitfield
+    {
+        //API Constructor: GQ7ContinuousBIT_GNSS
+        GQ7ContinuousBIT_GNSS() = default;
+
+        //API Constructor: GQ7ContinuousBIT_GNSS
+        //
+        //Parameters:
+        //  bits - Value of bits 96-127 of the original 128 bit Continuous Built-In Test flags
+        explicit GQ7ContinuousBIT_GNSS(uint32 bits);
+
+        //API Constant: RESPONSE_OFFSET
+        //  The offset of the 0 position of the value represented by this object in the overall BIT response
+        //  Value: 96 bits
+        static constexpr uint8_t RESPONSE_OFFSET = 96;
+
+        //API Constants: Bitmasks
+        //  GENERAL_FLAGS   - 0xFF000000 - Bitmask for general GNSS flags (bits 96-103)
+        //  RECEIVERS_FLAGS - 0x00FFFF00 - Bitmask for GNSS receivers flags (bits 104-119)
+        static constexpr uint32 GENERAL_FLAGS   = 0xFF000000; // Bitmask for general GNSS flags (bits 96-103)
+        static constexpr uint32 RECEIVERS_FLAGS = 0x00FFFF00; // Bitmask for GNSS receivers flags (bits 104-119)
+
+        //API Function: flags
+        //  Gets the value of the GNSS flags (bits 96-127)
+        //
+        //Returns:
+        //  uint32 - Value of the GNSS flags
+        uint32 flags() const;
+
+        //API Function: general
+        //  Gets information for general GNSS flags (bits 96-103)
+        //
+        //Returns:
+        //  <GQ7ContinuousBIT_GNSS_General> - Information for general GNSS flags
+        GQ7ContinuousBIT_GNSS_General general() const;
+
+        //API Function: receivers
+        //  Gets information for GNSS receivers flags (bits 104-119)
+        //
+        //Returns:
+        //  <GQ7ContinuousBIT_GNSS_Receivers> - Information for GNSS receivers flags
+        GQ7ContinuousBIT_GNSS_Receivers receivers() const;
+
+    private:
+        //Variable: m_general
+        //  <GQ7ContinuousBIT_GNSS_General> information for general GNSS flags (bits 96-103)
+        GQ7ContinuousBIT_GNSS_General m_general;
+
+        //Variable: m_receivers;
+        //  <GQ7ContinuousBIT_GNSS_Receivers> information for GNSS receivers flags (bits 104-119)
+        GQ7ContinuousBIT_GNSS_Receivers m_receivers;
+    };
+
+    //API Class: GQ7ContinuousBIT
+    //  Continuous Built-In Test flag data
+    //
+    //  See the GQ7 <Built-in Test: https://s3.amazonaws.com/files.microstrain.com/GQ7+User+Manual/user_manual_content/additional_features/Built-in%20Test.htm>
+    //  documentation for more information
+    class GQ7ContinuousBIT : public ContinuousBIT
+    {
+    public:
+        //API Constructor: GQ7ContinuousBIT
+        GQ7ContinuousBIT() = delete;
+
+        //API Constructor: GQ7ContinuousBIT
+        //
+        //Parameters:
+        //  bytes - Flag values from Continuous Built-In Test
+        explicit GQ7ContinuousBIT(Bytes bytes);
+
+        //API Function: system
+        //  Gets information for system flags (bits 0-31)
+        //
+        //Returns:
+        //  <GQ7ContinuousBIT_System> - Information for system flags
+        GQ7ContinuousBIT_System system() const;
+
+        //API Function: imu
+        //  Gets information for IMU flags (bits 32-63)
+        //
+        //Returns:
+        //  <GQ7ContinuousBIT_IMU> - Information for IMU flags
+        GQ7ContinuousBIT_IMU imu() const;
+
+        //API Function: filter
+        //  Gets information for filter flags (bits 64-95)
+        //
+        //Returns:
+        //  <GQ7ContinuousBIT_Filter> - Information for filter flags
+        GQ7ContinuousBIT_Filter filter() const;
+
+        //API Function: gnss
+        //  Gets information for GNSS flags (bits 96-127)
+        //
+        //Returns:
+        //  <GQ7ContinuousBIT_GNSS> - Information for GNSS flags
+        GQ7ContinuousBIT_GNSS gnss() const;
+
+        //API Function: as_MipDataPoints
+        //  Gets the data formatted as <MipDataPoint> objects.
+        //
+        //Returns:
+        //  <MipDataPoints> - data in DataPoint format
+        MipDataPoints as_MipDataPoints() const override;
+
+    private:
+        //Variable: m_system
+        //  <GQ7ContinuousBIT_System> information for system flags (bits 0-31)
+        GQ7ContinuousBIT_System m_system;
+
+        //Variable: m_imu
+        //  <GQ7ContinuousBIT_IMU> information for IMU flags (bits 32-63)
+        GQ7ContinuousBIT_IMU m_imu;
+
+        //Variable: m_filter
+        //  <GQ7ContinuousBIT_Filter> information for filter flags (bits 64-95)
+        GQ7ContinuousBIT_Filter m_filter;
+
+        //Variable: m_gnss
+        //  <GQ7ContinuousBIT_GNSS> information for GNSS flags (bits 96-127)
+        GQ7ContinuousBIT_GNSS m_gnss;
     };
 } // namespace mscl

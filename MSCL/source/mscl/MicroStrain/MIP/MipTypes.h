@@ -1146,14 +1146,17 @@ namespace mscl
         //    CH_IONOSPHERIC_CORRECTION     - 117 - Ionospheric Correction
         //    CH_JAMMING_STATE              - 118 - Jamming State
         //    CH_SPOOFING_STATE             - 119 - Spoofing State
-        //    CH_BIT_SYSTEM_GENERAL         - 120 - Built In Test System General
-        //    CH_BIT_SYSTEM_PROCESS         - 121 - Built In Test System Process
-        //    CH_BIT_IMU_GENERAL            - 122 - Built In Test IMU General
-        //    CH_BIT_IMU_SENSORS            - 123 - Built In Test IMU Sensors
-        //    CH_BIT_IMU_FACTORY_BITS       - 124 - Built in Test IMU Factory Bits Valid
-        //    CH_BIT_FILTER_GENERAL         - 125 - Built In Test Est Filter General
-        //    CH_SYSTEM_ID                  - 126 - System ID (GNSS, SBAS, etc.)
-        //    CH_SATELLITE_ID               - 127 - Satellite ID (GNSS, SBAS, etc.)
+        //    CH_SYSTEM_ID                  - 120 - System ID (GNSS, SBAS, etc.)
+        //    CH_SATELLITE_ID               - 121 - Satellite ID (GNSS, SBAS, etc.)
+        //
+        //    CH_BIT_SYSTEM_GENERAL         - 248 - Built In Test System General
+        //    CH_BIT_SYSTEM_PROCESS         - 249 - Built In Test System Process
+        //    CH_BIT_IMU_GENERAL            - 250 - Built In Test IMU General
+        //    CH_BIT_IMU_SENSORS            - 251 - Built In Test IMU Sensors
+        //    CH_BIT_IMU_FACTORY_BITS       - 252 - Built in Test IMU Factory Bits Valid
+        //    CH_BIT_FILTER_GENERAL         - 253 - Built In Test Est Filter General
+        //    CH_BIT_GNSS_GENERAL           - 254 - Built In Test GNSS General
+        //    CH_BIT_GNSS_RECEIVERS         - 255 - Built In Test GNSS Receivers
         //====================================================================================================
         enum ChannelQualifier
         {
@@ -1275,14 +1278,18 @@ namespace mscl
             CH_IONOSPHERIC_CORRECTION       = 117,
             CH_JAMMING_STATE                = 118,
             CH_SPOOFING_STATE               = 119,
-            CH_BIT_SYSTEM_GENERAL           = 120,
-            CH_BIT_SYSTEM_PROCESS           = 121,
-            CH_BIT_IMU_GENERAL              = 122,
-            CH_BIT_IMU_SENSORS              = 123,
-            CH_BIT_IMU_FACTORY_BITS         = 124,
-            CH_BIT_FILTER_GENERAL           = 125,
-            CH_SYSTEM_ID                    = 126,
-            CH_SATELLITE_ID                 = 127
+            CH_SYSTEM_ID                    = 120,
+            CH_SATELLITE_ID                 = 121,
+
+            // Keep BIT channels at end of list
+            CH_BIT_SYSTEM_GENERAL           = 248,
+            CH_BIT_SYSTEM_PROCESS           = 249,
+            CH_BIT_IMU_GENERAL              = 250,
+            CH_BIT_IMU_SENSORS              = 251,
+            CH_BIT_IMU_FACTORY_BITS         = 252,
+            CH_BIT_FILTER_GENERAL           = 253,
+            CH_BIT_GNSS_GENERAL             = 254,
+            CH_BIT_GNSS_RECEIVERS           = 255
         };
 
         //API Typedefs:
