@@ -23,6 +23,11 @@ namespace mscl
             const CV7ContinuousBIT bit(data);
             return bit.as_MipDataPoints();
         }
+        case MipModels::node_3dm_gq7:
+        {
+            const GQ7ContinuousBIT bit(data);
+            return bit.as_MipDataPoints();
+        }            
         default:
             return{};
         }
