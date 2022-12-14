@@ -135,6 +135,7 @@ public class NmeaMessageFormat : global::System.IDisposable {
     return ret;
   }
 
+  public static readonly byte MAX_MESSAGES = msclPINVOKE.NmeaMessageFormat_MAX_MESSAGES_get();
   public enum SentenceType {
     GGA = 0x01,
     GLL = 0x02,

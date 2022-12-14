@@ -3933,6 +3933,9 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_InertialTypes")]
   public static extern void delete_InertialTypes(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NmeaMessageFormat_MAX_MESSAGES_get")]
+  public static extern byte NmeaMessageFormat_MAX_MESSAGES_get();
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_NmeaMessageFormat_MAX_FREQUENCY_get")]
   public static extern global::System.IntPtr NmeaMessageFormat_MAX_FREQUENCY_get();
 
