@@ -226,6 +226,7 @@
     <Compile Include="mscl\MipCommandParamPair.cs" />
     <Compile Include="mscl\MipCommands.cs" />
     <Compile Include="mscl\MipCommandSet.cs" />
+    <Compile Include="mscl\MipDataClasses.cs" />
     <Compile Include="mscl\MipDataPacket.cs" />
     <Compile Include="mscl\MipDataPackets.cs" />
     <Compile Include="mscl\MipDataPoint.cs" />
