@@ -11,6 +11,7 @@
 #include <iomanip>
 #include <string>
 #include "Types.h"
+#include <regex>
 
 namespace mscl
 {
@@ -374,6 +375,41 @@ namespace mscl
         //    src - The string to trim whitespace from. This will be changed to hold the result.
         void strTrim(std::string& src);
 
+        //Function: regexFindAll
+        //    Finds all instances of the pattern.
+        //    Pattern R"([^,]+)" is a comma delimiter
+        //
+        //Note:
+        //    Delimitation will not work for sequential multi-character strings.
+        //    I.E. R"([^ns]+)" will delimit "sensing"" into "e" "i" "g"
+        //    Use <tokenize> to delimit by sequential multi-character strings
+        //
+        //Parameters:
+        //    basicString - The string to search.
+        //    pattern     - The pattern to match.
+        //
+        //Returns:
+        //    Vector of each sequential string within basicString matching the pattern.
+        // 
+        std::vector<std::string> regexFindAll(const std::string& basicString, const std::regex& pattern = std::regex(R"([^,]+)"));
+
+        //Function: tokenize
+        //    Tokenize a string by some delimiter.
+        //
+        //Note:
+        //    Sequential multi-character delimiters will work.
+        //    I.E. ",:" will delimit ",testing1,:testing2:" into ",testing1" and "testing2:"
+        //    Use <regexFindAll> to delimit by list of single characters
+        //
+        //Parameters:
+        //    basicString   - The string to tokenize.
+        //    delimiter     - default "," - The delimiter to split by.
+        //    includeEmpty  - default true - Whether to include empty strings in result list.
+        //
+        //Returns:
+        //    Vector of strings.
+        std::vector<std::string> tokenize(const std::string& basicString, const std::string& delimiter = ",", bool includeEmpty = true);
+
         //Function: filterSensorcloudName
         //    Replaces characters that are not supported by SensorCloud with a '-' character.
         //
@@ -448,7 +484,7 @@ namespace mscl
         template<typename T>
         void checkBounds_min(T& value, T min)
         {
-            if(value < min)
+            if (value < min)
             {
                 value = min;
             }
@@ -463,7 +499,7 @@ namespace mscl
         template<typename T>
         void checkBounds_max(T& value, T max)
         {
-            if(value > max)
+            if (value > max)
             {
                 value = max;
             }
@@ -504,7 +540,7 @@ namespace mscl
             std::ostringstream s;
             s.precision(precision);
 
-            if(fixed)
+            if (fixed)
             {
                 s << std::fixed;
             }
@@ -517,33 +553,33 @@ namespace mscl
         class Lazy
         {
         public:
-          template<typename LoadFn>
-          Lazy(LoadFn loadFn) :
-            m_loadFn(loadFn),
-            m_loaded(false)
-          {}
+            template<typename LoadFn>
+            Lazy(LoadFn loadFn) :
+                m_loadFn(loadFn),
+                m_loaded(false)
+            {}
 
-          Lazy(T value):
-            m_loadFn(nullptr),
-            m_value(value),
-            m_loaded(true)
-          {
-          }
-
-          const T& operator*() const
-          {
-            if(!m_loaded)
+            Lazy(T value) :
+                m_loadFn(nullptr),
+                m_value(value),
+                m_loaded(true)
             {
-                m_value = m_loadFn();
             }
-            m_loaded = true;
-            return m_value;
-          }
+
+            const T& operator*() const
+            {
+                if (!m_loaded)
+                {
+                    m_value = m_loadFn();
+                }
+                m_loaded = true;
+                return m_value;
+            }
 
         private:
-          std::function<T()> m_loadFn;
-          mutable T m_value;
-          mutable bool m_loaded;
+            std::function<T()> m_loadFn;
+            mutable T m_value;
+            mutable bool m_loaded;
         };
     }
 #endif

@@ -60,6 +60,13 @@ namespace mscl
         //    A description of the connection
         virtual std::string description();
 
+        //Function: port
+        //    Gets a name of the connection port
+        //
+        //Returns:
+        //    The port name of the connection
+        std::string port() const override;
+
         //API Function: updateBaudRate
         //  Updates the serial connection baud rate.
         //  Important: The connection to the port will be closed and re-opened at the new baud rate.

@@ -11,6 +11,7 @@
 #include <vector>
 #include <map>
 #include "mscl/Value.h"
+#include "mscl/Version.h"
 
 namespace mscl
 {
@@ -116,6 +117,7 @@ namespace mscl
         //  CMD_SENSOR_MESSAGE_FORMAT                   - 0x0C08    - Sensor Data Message Format
         //  CMD_GNSS_MESSAGE_FORMAT                     - 0x0C09    - GNSS Message Format
         //  CMD_EF_MESSAGE_FORMAT                       - 0x0C0A    - Estimation Filter Message Format
+        //  CMD_NMEA_MESSAGE_FORMAT                     - 0x0C0C    - NMEA Message Format
         //  CMD_POLL                                    - 0x0C0D    - Generic Poll Data
         //  CMD_GET_BASE_RATE                           - 0x0C0E    - Generic Get Data Base Rate
         //  CMD_MESSAGE_FORMAT                          - 0x0C0F    - Generic Message Format
@@ -152,10 +154,11 @@ namespace mscl
         //  CMD_GPIO_CONFIGURATION                      - 0x0C41    - Configure GPIO Pins
         //  CMD_GPIO_STATE                              - 0x0C42    - Check GPIO Pin State
         //  CMD_ODOMETER_SETTINGS                       - 0x0C43    - Configure Odometer Settings
-        //  CMD_LOWPASS_FILTER_SETTINGS                 - 0x0C50    - Advanced Low-Pass Filter Settings
+        //  CMD_LOWPASS_FILTER_SETTINGS                 - 0x0C50    - Legacy Low-Pass Filter Settings
         //  CMD_COMPLEMENTARY_FILTER_SETTINGS           - 0x0C51    - Complementary Filter Settings
         //  CMD_SENSOR_RANGE                            - 0x0C52    - Configure Sensor Range
         //  CMD_SUPPORTED_SENSOR_RANGES                 - 0x0C53    - Read Device-Supported Sensor Ranges
+        //  CMD_LOWPASS_ANTIALIASING_FILTER             - 0x0C54    - Low-Pass Anti-Aliasing Filter Settings
         //  CMD_DATA_STREAM_FORMAT                      - 0x0C60    - Device Data Stream Format
         //  CMD_POWER_STATES                            - 0x0C61    - Device Power States
         //  CMD_GPS_STARTUP_SETTINGS                    - 0x0C62    - Save/Restore Advanced GPS Startup Settings
@@ -209,6 +212,7 @@ namespace mscl
         //  CMD_EF_ADAPTIVE_FILTER_OPTIONS              - 0x0D53    - Estimation Filter - Adaptive Filter Options
         //  CMD_EF_MULTI_ANTENNA_OFFSET                 - 0x0D54    - Estimation Filter - Multi Antenna Offset
         //  CMD_EF_RELATIVE_POSITION_REF                - 0x0D55    - Estimation Filter - Reference Location for Relative Position Outputs
+        //  CMD_EF_LEVER_ARM_OFFSET_REF                 - 0x0D56    - Estimation Filter - Lever Arm Reference Offset
         //  CMD_EF_EXTERN_SPEED_UPDATE                  - 0x0D60    - Estimation Filter - External Speed Measurement Update (Input Speed Measurement)
         //  CMD_EF_SPEED_MEASUREMENT_OFFSET             - 0x0D61    - Estimation Filter - Speed Measurement Lever Arm Offset
         //  CMD_EF_VERTICAL_GYRO_CONSTRAINT             - 0x0D62    - Estimation Filter - Vertical Gyro Constraint Enable/Disable
@@ -245,6 +249,7 @@ namespace mscl
             CMD_SENSOR_MESSAGE_FORMAT               = 0x0C08,
             CMD_GNSS_MESSAGE_FORMAT                 = 0x0C09,
             CMD_EF_MESSAGE_FORMAT                   = 0x0C0A,
+            CMD_NMEA_MESSAGE_FORMAT                 = 0x0C0C,
             CMD_POLL                                = 0x0C0D,
             CMD_GET_BASE_RATE                       = 0x0C0E,
             CMD_MESSAGE_FORMAT                      = 0x0C0F,
@@ -285,6 +290,7 @@ namespace mscl
             CMD_COMPLEMENTARY_FILTER_SETTINGS       = 0x0C51,
             CMD_SENSOR_RANGE                        = 0x0C52,
             CMD_SUPPORTED_SENSOR_RANGES             = 0x0C53,
+            CMD_LOWPASS_ANTIALIASING_FILTER         = 0x0C54,
             CMD_DATA_STREAM_FORMAT                  = 0x0C60,
             CMD_POWER_STATES                        = 0x0C61,
             CMD_GPS_STARTUP_SETTINGS                = 0x0C62,
@@ -338,6 +344,7 @@ namespace mscl
             CMD_EF_ADAPTIVE_FILTER_OPTIONS          = 0x0D53,
             CMD_EF_MULTI_ANTENNA_OFFSET             = 0x0D54,
             CMD_EF_RELATIVE_POSITION_REF            = 0x0D55,
+            CMD_EF_LEVER_ARM_OFFSET_REF             = 0x0D56,
             CMD_EF_EXTERN_SPEED_UPDATE              = 0x0D60,
             CMD_EF_SPEED_MEASUREMENT_OFFSET         = 0x0D61,
             CMD_EF_VERTICAL_GYRO_CONSTRAINT         = 0x0D62,
@@ -405,6 +412,9 @@ namespace mscl
         //  CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS                      - 0x810F    - Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_CLOCK_INFO_2                              - 0x8110    - GNSS Clock Info 2
         //  CH_FIELD_GNSS_GPS_LEAP_SECONDS                          - 0x8111    - GNSS GPS Leap Seconds
+        //  CH_FIELD_GNSS_SBAS_INFO                                 - 0x8112    - GNSS SBAS Info
+        //  CH_FIELD_GNSS_SBAS_CORRECTION                           - 0x8113    - GNSS SBAS Correction
+        //  CH_FIELD_GNSS_RF_ERROR_DETECTION                        - 0x8114    - GNSS RF Error Detection
         //  CH_FIELD_GNSS_SATELLITE_STATUS                          - 0x8120    - GNSS Satellite Status
         //  CH_FIELD_GNSS_RAW_OBSERVATION                           - 0x8122    - GNSS Raw Observation data
         //  CH_FIELD_GNSS_STATION_INFO                              - 0x8130    - GNSS Base Station Info
@@ -503,6 +513,9 @@ namespace mscl
         //  CH_FIELD_GNSS_1_DGNSS_CHANNEL_STATUS                    - 0x910F    - GNSS 1 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_1_CLOCK_INFO_2                            - 0x9110    - GNSS 1 Clock Info 2
         //  CH_FIELD_GNSS_1_GPS_LEAP_SECONDS                        - 0x9111    - GNSS 1 GPS Leap Seconds
+        //  CH_FIELD_GNSS_1_SBAS_INFO                               - 0x9112    - GNSS 1 SBAS Info
+        //  CH_FIELD_GNSS_1_SBAS_CORRECTION                         - 0x9113    - GNSS 1 SBAS Correction
+        //  CH_FIELD_GNSS_1_RF_ERROR_DETECTION                      - 0x9114    - GNSS 1 RF Error Detection
         //  CH_FIELD_GNSS_1_SATELLITE_STATUS                        - 0x9120    - GNSS 1 Satellite Status
         //  CH_FIELD_GNSS_1_RAW_OBSERVATION                         - 0x9122    - GNSS 1 Raw Observation data
         //  CH_FIELD_GNSS_1_STATION_INFO                            - 0x9130    - GNSS 1 Base Station Info
@@ -536,6 +549,9 @@ namespace mscl
         //  CH_FIELD_GNSS_2_DGNSS_CHANNEL_STATUS                    - 0x920F    - GNSS 2 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_2_CLOCK_INFO_2                            - 0x9210    - GNSS 2 Clock Info 2
         //  CH_FIELD_GNSS_2_GPS_LEAP_SECONDS                        - 0x9211    - GNSS 2 GPS Leap Seconds
+        //  CH_FIELD_GNSS_2_SBAS_INFO                               - 0x9212    - GNSS 2 SBAS Info
+        //  CH_FIELD_GNSS_2_SBAS_CORRECTION                         - 0x9213    - GNSS 2 SBAS Correction
+        //  CH_FIELD_GNSS_2_RF_ERROR_DETECTION                      - 0x9214    - GNSS 2 RF Error Detection
         //  CH_FIELD_GNSS_2_SATELLITE_STATUS                        - 0x9220    - GNSS 2 Satellite Status
         //  CH_FIELD_GNSS_2_RAW_OBSERVATION                         - 0x9222    - GNSS 2 Raw Observation data
         //  CH_FIELD_GNSS_2_STATION_INFO                            - 0x9230    - GNSS 2 Base Station Info
@@ -569,6 +585,9 @@ namespace mscl
         //  CH_FIELD_GNSS_3_DGNSS_CHANNEL_STATUS                    - 0x930F    - GNSS 3 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_3_CLOCK_INFO_2                            - 0x9310    - GNSS 3 Clock Info 2
         //  CH_FIELD_GNSS_3_GPS_LEAP_SECONDS                        - 0x9311    - GNSS 3 GPS Leap Seconds
+        //  CH_FIELD_GNSS_3_SBAS_INFO                               - 0x9312    - GNSS 3 SBAS Info
+        //  CH_FIELD_GNSS_3_SBAS_CORRECTION                         - 0x9313    - GNSS 3 SBAS Correction
+        //  CH_FIELD_GNSS_3_RF_ERROR_DETECTION                      - 0x9314    - GNSS 3 RF Error Detection
         //  CH_FIELD_GNSS_3_SATELLITE_STATUS                        - 0x9320    - GNSS 3 Satellite Status
         //  CH_FIELD_GNSS_3_RAW_OBSERVATION                         - 0x9322    - GNSS 3 Raw Observation data
         //  CH_FIELD_GNSS_3_STATION_INFO                            - 0x9330    - GNSS 3 Base Station Info
@@ -602,6 +621,9 @@ namespace mscl
         //  CH_FIELD_GNSS_4_DGNSS_CHANNEL_STATUS                    - 0x940F    - GNSS 4 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_4_CLOCK_INFO_2                            - 0x9410    - GNSS 4 Clock Info 2
         //  CH_FIELD_GNSS_4_GPS_LEAP_SECONDS                        - 0x9411    - GNSS 4 GPS Leap Seconds
+        //  CH_FIELD_GNSS_4_SBAS_INFO                               - 0x9412    - GNSS 4 SBAS Info
+        //  CH_FIELD_GNSS_4_SBAS_CORRECTION                         - 0x9413    - GNSS 4 SBAS Correction
+        //  CH_FIELD_GNSS_4_RF_ERROR_DETECTION                      - 0x9414    - GNSS 4 RF Error Detection
         //  CH_FIELD_GNSS_4_SATELLITE_STATUS                        - 0x9420    - GNSS 4 Satellite Status
         //  CH_FIELD_GNSS_4_RAW_OBSERVATION                         - 0x9422    - GNSS 4 Raw Observation data
         //  CH_FIELD_GNSS_4_STATION_INFO                            - 0x9430    - GNSS 4 Base Station Info
@@ -635,6 +657,9 @@ namespace mscl
         //  CH_FIELD_GNSS_5_DGNSS_CHANNEL_STATUS                    - 0x950F    - GNSS 5 Individual DGNSS Channel Status Entry
         //  CH_FIELD_GNSS_5_CLOCK_INFO_2                            - 0x9510    - GNSS 5 Clock Info 2
         //  CH_FIELD_GNSS_5_GPS_LEAP_SECONDS                        - 0x9511    - GNSS 5 GPS Leap Seconds
+        //  CH_FIELD_GNSS_5_SBAS_INFO                               - 0x9512    - GNSS 5 SBAS Info
+        //  CH_FIELD_GNSS_5_SBAS_CORRECTION                         - 0x9513    - GNSS 5 SBAS Correction
+        //  CH_FIELD_GNSS_5_RF_ERROR_DETECTION                      - 0x9514    - GNSS 5 RF Error Detection
         //  CH_FIELD_GNSS_5_SATELLITE_STATUS                        - 0x9520    - GNSS 5 Satellite Status
         //  CH_FIELD_GNSS_5_RAW_OBSERVATION                         - 0x9522    - GNSS 5 Raw Observation data
         //  CH_FIELD_GNSS_5_STATION_INFO                            - 0x9530    - GNSS 5 Base Station Info
@@ -653,6 +678,7 @@ namespace mscl
         //  CH_FIELD_GNSS_5_SHARED_DELTA_REFERENCE_TIME             - 0x95D6    - Delta Internal Reference Time
         //  CH_FIELD_GNSS_5_SHARED_EXTERNAL_TIMESTAMP               - 0x95D7    - External Timestamp
         //  CH_FIELD_GNSS_5_SHARED_DELTA_EXTERNAL_TIME              - 0x95D8    - Delta External Time
+        //  CH_FIELD_SYSTEM_BUILT_IN_TEST                           - 0xA001    - Built-In Test (BIT)
         //  CH_FIELD_SYSTEM_TIME_SYNC_STATUS                        - 0xA002    - Time Sync Status
         //  CH_FIELD_SYSTEM_GPIO_STATE                              - 0xA003    - GPIO State
         //  CH_FIELD_SYSTEM_SHARED_EVENT_SOURCE                     - 0xA0D0    - Event Source
@@ -687,7 +713,7 @@ namespace mscl
             CH_FIELD_SENSOR_TEMPERATURE_STATISTICS                  = 0x8014,
             CH_FIELD_SENSOR_RAW_AMBIENT_PRESSURE                    = 0x8016,
             CH_FIELD_SENSOR_SCALED_AMBIENT_PRESSURE                 = 0x8017,
-            CH_FIELD_SENSOR_OVERRANGE_STATUS                       = 0x8018,
+            CH_FIELD_SENSOR_OVERRANGE_STATUS                        = 0x8018,
             CH_FIELD_SENSOR_ODOMETER_DATA                           = 0x8040,
             CH_FIELD_SENSOR_SHARED_EVENT_SOURCE                     = 0x80D0,
             CH_FIELD_SENSOR_SHARED_TICKS                            = 0x80D1,
@@ -713,6 +739,9 @@ namespace mscl
             CH_FIELD_GNSS_DGNSS_CHANNEL_STATUS                      = 0x810F,
             CH_FIELD_GNSS_CLOCK_INFO_2                              = 0x8110,
             CH_FIELD_GNSS_GPS_LEAP_SECONDS                          = 0x8111,
+            CH_FIELD_GNSS_SBAS_INFO                                 = 0x8112,
+            CH_FIELD_GNSS_SBAS_CORRECTION                           = 0x8113,
+            CH_FIELD_GNSS_RF_ERROR_DETECTION                        = 0x8114,
             CH_FIELD_GNSS_SATELLITE_STATUS                          = 0x8120,
             CH_FIELD_GNSS_RAW_OBSERVATION                           = 0x8122,
             CH_FIELD_GNSS_STATION_INFO                              = 0x8130,
@@ -811,6 +840,9 @@ namespace mscl
             CH_FIELD_GNSS_1_DGNSS_CHANNEL_STATUS                    = 0x910F,
             CH_FIELD_GNSS_1_CLOCK_INFO_2                            = 0x9110,
             CH_FIELD_GNSS_1_GPS_LEAP_SECONDS                        = 0x9111,
+            CH_FIELD_GNSS_1_SBAS_INFO                               = 0x9112,
+            CH_FIELD_GNSS_1_SBAS_CORRECTION                         = 0x9113,
+            CH_FIELD_GNSS_1_RF_ERROR_DETECTION                      = 0x9114,
             CH_FIELD_GNSS_1_SATELLITE_STATUS                        = 0x9120,
             CH_FIELD_GNSS_1_RAW_OBSERVATION                         = 0x9122,
             CH_FIELD_GNSS_1_STATION_INFO                            = 0x9130,
@@ -844,6 +876,9 @@ namespace mscl
             CH_FIELD_GNSS_2_DGNSS_CHANNEL_STATUS                    = 0x920F,
             CH_FIELD_GNSS_2_CLOCK_INFO_2                            = 0x9210,
             CH_FIELD_GNSS_2_GPS_LEAP_SECONDS                        = 0x9211,
+            CH_FIELD_GNSS_2_SBAS_INFO                               = 0x9212,
+            CH_FIELD_GNSS_2_SBAS_CORRECTION                         = 0x9213,
+            CH_FIELD_GNSS_2_RF_ERROR_DETECTION                      = 0x9214,
             CH_FIELD_GNSS_2_SATELLITE_STATUS                        = 0x9220,
             CH_FIELD_GNSS_2_RAW_OBSERVATION                         = 0x9222,
             CH_FIELD_GNSS_2_STATION_INFO                            = 0x9230,
@@ -877,6 +912,9 @@ namespace mscl
             CH_FIELD_GNSS_3_DGNSS_CHANNEL_STATUS                    = 0x930F,
             CH_FIELD_GNSS_3_CLOCK_INFO_2                            = 0x9310,
             CH_FIELD_GNSS_3_GPS_LEAP_SECONDS                        = 0x9311,
+            CH_FIELD_GNSS_3_SBAS_INFO                               = 0x9312,
+            CH_FIELD_GNSS_3_SBAS_CORRECTION                         = 0x9313,
+            CH_FIELD_GNSS_3_RF_ERROR_DETECTION                      = 0x9314,
             CH_FIELD_GNSS_3_SATELLITE_STATUS                        = 0x9320,
             CH_FIELD_GNSS_3_RAW_OBSERVATION                         = 0x9322,
             CH_FIELD_GNSS_3_STATION_INFO                            = 0x9330,
@@ -910,6 +948,9 @@ namespace mscl
             CH_FIELD_GNSS_4_DGNSS_CHANNEL_STATUS                    = 0x940F,
             CH_FIELD_GNSS_4_CLOCK_INFO_2                            = 0x9410,
             CH_FIELD_GNSS_4_GPS_LEAP_SECONDS                        = 0x9411,
+            CH_FIELD_GNSS_4_SBAS_INFO                               = 0x9412,
+            CH_FIELD_GNSS_4_SBAS_CORRECTION                         = 0x9413,
+            CH_FIELD_GNSS_4_RF_ERROR_DETECTION                      = 0x9414,
             CH_FIELD_GNSS_4_SATELLITE_STATUS                        = 0x9420,
             CH_FIELD_GNSS_4_RAW_OBSERVATION                         = 0x9422,
             CH_FIELD_GNSS_4_STATION_INFO                            = 0x9430,
@@ -943,6 +984,9 @@ namespace mscl
             CH_FIELD_GNSS_5_DGNSS_CHANNEL_STATUS                    = 0x950F,
             CH_FIELD_GNSS_5_CLOCK_INFO_2                            = 0x9510,
             CH_FIELD_GNSS_5_GPS_LEAP_SECONDS                        = 0x9511,
+            CH_FIELD_GNSS_5_SBAS_INFO                               = 0x9512,
+            CH_FIELD_GNSS_5_SBAS_CORRECTION                         = 0x9513,
+            CH_FIELD_GNSS_5_RF_ERROR_DETECTION                      = 0x9514,
             CH_FIELD_GNSS_5_SATELLITE_STATUS                        = 0x9520,
             CH_FIELD_GNSS_5_RAW_OBSERVATION                         = 0x9522,
             CH_FIELD_GNSS_5_STATION_INFO                            = 0x9530,
@@ -961,6 +1005,7 @@ namespace mscl
             CH_FIELD_GNSS_5_SHARED_DELTA_REFERENCE_TIME             = 0x95D6,
             CH_FIELD_GNSS_5_SHARED_EXTERNAL_TIMESTAMP               = 0x95D7,
             CH_FIELD_GNSS_5_SHARED_DELTA_EXTERNAL_TIME              = 0x95D8,
+            CH_FIELD_SYSTEM_BUILT_IN_TEST                           = 0xA001,
             CH_FIELD_SYSTEM_TIME_SYNC_STATUS                        = 0xA002,
             CH_FIELD_SYSTEM_GPIO_STATE                              = 0xA003,
             CH_FIELD_SYSTEM_SHARED_EVENT_SOURCE                     = 0xA0D0,
@@ -1096,129 +1141,161 @@ namespace mscl
         //    CH_VALID_FLAGS                - 112 - Valid Flags
         //    CH_PPS_VALID                  - 113 - PPS Valid
         //    CH_LAST_PPS                   - 114 - Last PPS Received
+        //    CH_UDREI                      - 115 - User Differential Range Error Index
+        //    CH_PSEUDORANGE_CORRECTION     - 116 - Pseudorange Correction
+        //    CH_IONOSPHERIC_CORRECTION     - 117 - Ionospheric Correction
+        //    CH_JAMMING_STATE              - 118 - Jamming State
+        //    CH_SPOOFING_STATE             - 119 - Spoofing State
+        //    CH_BIT_SYSTEM_GENERAL         - 120 - Built In Test System General
+        //    CH_BIT_SYSTEM_PROCESS         - 121 - Built In Test System Process
+        //    CH_BIT_IMU_GENERAL            - 122 - Built In Test IMU General
+        //    CH_BIT_IMU_SENSORS            - 123 - Built In Test IMU Sensors
+        //    CH_BIT_IMU_FACTORY_BITS       - 124 - Built in Test IMU Factory Bits Valid
+        //    CH_BIT_FILTER_GENERAL         - 125 - Built In Test Est Filter General
+        //    CH_SYSTEM_ID                  - 126 - System ID (GNSS, SBAS, etc.)
+        //    CH_SATELLITE_ID               - 127 - Satellite ID (GNSS, SBAS, etc.)
         //====================================================================================================
         enum ChannelQualifier
         {
-            CH_UNKNOWN                    = 0,
-            CH_X                          = 1,
-            CH_Y                          = 2,
-            CH_Z                          = 3,
-            CH_MATRIX                     = 4,
-            CH_QUATERNION                 = 5,
-            CH_ROLL                       = 6,
-            CH_PITCH                      = 7,
-            CH_YAW                        = 8,
-            CH_TICK                       = 9,
-            CH_TIMESTAMP                  = 10,
-            CH_STATUS                     = 11,
-            CH_TIME_OF_WEEK               = 12,
-            CH_WEEK_NUMBER                = 13,
-            CH_LATITUDE                   = 14,
-            CH_LONGITUDE                  = 15,
-            CH_HEIGHT_ABOVE_ELLIPSOID     = 16,
-            CH_HEIGHT_ABOVE_MSL           = 17,
-            CH_HORIZONTAL_ACCURACY        = 18,
-            CH_VERTICAL_ACCURACY          = 19,
-            CH_POSITION_ACCURACY          = 20,
-            CH_NORTH                      = 21,
-            CH_EAST                       = 22,
-            CH_DOWN                       = 23,
-            CH_SPEED                      = 24,
-            CH_GROUND_SPEED               = 25,
-            CH_HEADING                    = 26,
-            CH_SPEED_ACCURACY             = 27,
-            CH_HEADING_ACCURACY           = 28,
-            CH_VELOCITY_ACCURACY          = 29,
-            CH_GEOMETRIC_DOP              = 30,
-            CH_POSITION_DOP               = 31,
-            CH_HORIZONTAL_DOP             = 32,
-            CH_VERTICAL_DOP               = 33,
-            CH_TIME_DOP                   = 34,
-            CH_NORTHING_DOP               = 35,
-            CH_EASTING_DOP                = 36,
-            CH_FLAGS                      = 37,
-            CH_BIAS                       = 38,
-            CH_DRIFT                      = 39,
-            CH_ACCURACY_ESTIMATE          = 40,
-            CH_FIX_TYPE                   = 41,
-            CH_SV_COUNT                   = 42,
-            CH_CHANNEL                    = 43,
-            CH_ID                         = 44,
-            CH_CARRIER_TO_NOISE_RATIO     = 45,
-            CH_AZIMUTH                    = 46,
-            CH_ELEVATION                  = 47,
-            CH_SENSOR_STATE               = 48,
-            CH_ANTENNA_STATE              = 49,
-            CH_ANTENNA_POWER              = 50,
-            CH_FILTER_STATE               = 51,
-            CH_DYNAMICS_MODE              = 52,
-            CH_MAGNITUDE                  = 53,
-            CH_HEADING_UNCERTAINTY        = 54,
-            CH_SOURCE                     = 55,
-            CH_INCLINATION                = 56,
-            CH_DECLINATION                = 57,
-            CH_PRESSURE                   = 58,
-            CH_AGE                        = 59,
-            CH_NUM_CHANNELS               = 60,
-            CH_CORRECTION                 = 61,
-            CH_RATE_CORRECTION            = 62,
-            CH_GEOMETRIC_ALTITUDE         = 63,
-            CH_GEOPOTENTIAL_ALTITUDE      = 64,
-            CH_TEMPERATURE                = 65,
-            CH_DENSITY                    = 66,
-            CH_ALTITUDE                   = 67,
-            CH_DISPLACEMENT               = 68,
-            CH_MAX_TEMP                   = 69,
-            CH_MIN_TEMP                   = 70,
-            CH_MEAN_TEMP                  = 71,
-            CH_BIAS_ACCURACY_ESTIMATE     = 72,
-            CH_DRIFT_ACCURACY_ESTIMATE    = 73,
-            CH_SECONDS                    = 74,
-            CH_NUM_PACKETS                = 76,
-            CH_GPS_CORRECTION_LATENCY     = 77,
-            CH_GLONASS_CORRECTION_LATENCY = 78,
-            CH_GALILEO_CORRECTION_LATENCY = 79,
-            CH_BEIDOU_CORRECTION_LATENCY  = 80,
-            CH_HEIGHT                     = 81,
-            CH_HEALTH                     = 82,
-            CH_INDEX                      = 83,
-            CH_COUNT                      = 84,
-            CH_SIGNAL_STRENGTH            = 85,
-            CH_SIGNAL_QUALITY             = 86,
-            CH_RANGE                      = 87,
-            CH_RANGE_UNC                  = 88,
-            CH_ALPHA                      = 90,
-            CH_BETA                       = 91,
-            CH_DISTURBANCE_FLAGS          = 92,
-            CH_CARRIER_PHASE              = 93,
-            CH_CARRIER_PHASE_UNC          = 94,
-            CH_DOPPLER                    = 95,
-            CH_DOPPLER_UNC                = 96,
-            CH_DELTA_TIME                 = 97,
-            CH_DELTA_TICK                 = 98,
-            CH_ERROR                      = 99,
-            CH_ERROR_UNC                  = 100,
-            CH_W                          = 101,
-            CH_M0                         = 102,
-            CH_M1                         = 103,
-            CH_M2                         = 104,
-            CH_M3                         = 105,
-            CH_M4                         = 106,
-            CH_M5                         = 107,
-            CH_M6                         = 108,
-            CH_M7                         = 109,
-            CH_M8                         = 110,
-            CH_NANOSECONDS                = 111,
-            CH_VALID_FLAGS                = 112,
-            CH_PPS_VALID                  = 113,
-            CH_LAST_PPS                   = 114
+            CH_UNKNOWN                      = 0,
+            CH_X                            = 1,
+            CH_Y                            = 2,
+            CH_Z                            = 3,
+            CH_MATRIX                       = 4,
+            CH_QUATERNION                   = 5,
+            CH_ROLL                         = 6,
+            CH_PITCH                        = 7,
+            CH_YAW                          = 8,
+            CH_TICK                         = 9,
+            CH_TIMESTAMP                    = 10,
+            CH_STATUS                       = 11,
+            CH_TIME_OF_WEEK                 = 12,
+            CH_WEEK_NUMBER                  = 13,
+            CH_LATITUDE                     = 14,
+            CH_LONGITUDE                    = 15,
+            CH_HEIGHT_ABOVE_ELLIPSOID       = 16,
+            CH_HEIGHT_ABOVE_MSL             = 17,
+            CH_HORIZONTAL_ACCURACY          = 18,
+            CH_VERTICAL_ACCURACY            = 19,
+            CH_POSITION_ACCURACY            = 20,
+            CH_NORTH                        = 21,
+            CH_EAST                         = 22,
+            CH_DOWN                         = 23,
+            CH_SPEED                        = 24,
+            CH_GROUND_SPEED                 = 25,
+            CH_HEADING                      = 26,
+            CH_SPEED_ACCURACY               = 27,
+            CH_HEADING_ACCURACY             = 28,
+            CH_VELOCITY_ACCURACY            = 29,
+            CH_GEOMETRIC_DOP                = 30,
+            CH_POSITION_DOP                 = 31,
+            CH_HORIZONTAL_DOP               = 32,
+            CH_VERTICAL_DOP                 = 33,
+            CH_TIME_DOP                     = 34,
+            CH_NORTHING_DOP                 = 35,
+            CH_EASTING_DOP                  = 36,
+            CH_FLAGS                        = 37,
+            CH_BIAS                         = 38,
+            CH_DRIFT                        = 39,
+            CH_ACCURACY_ESTIMATE            = 40,
+            CH_FIX_TYPE                     = 41,
+            CH_SV_COUNT                     = 42,
+            CH_CHANNEL                      = 43,
+            CH_ID                           = 44,
+            CH_CARRIER_TO_NOISE_RATIO       = 45,
+            CH_AZIMUTH                      = 46,
+            CH_ELEVATION                    = 47,
+            CH_SENSOR_STATE                 = 48,
+            CH_ANTENNA_STATE                = 49,
+            CH_ANTENNA_POWER                = 50,
+            CH_FILTER_STATE                 = 51,
+            CH_DYNAMICS_MODE                = 52,
+            CH_MAGNITUDE                    = 53,
+            CH_HEADING_UNCERTAINTY          = 54,
+            CH_SOURCE                       = 55,
+            CH_INCLINATION                  = 56,
+            CH_DECLINATION                  = 57,
+            CH_PRESSURE                     = 58,
+            CH_AGE                          = 59,
+            CH_NUM_CHANNELS                 = 60,
+            CH_CORRECTION                   = 61,
+            CH_RATE_CORRECTION              = 62,
+            CH_GEOMETRIC_ALTITUDE           = 63,
+            CH_GEOPOTENTIAL_ALTITUDE        = 64,
+            CH_TEMPERATURE                  = 65,
+            CH_DENSITY                      = 66,
+            CH_ALTITUDE                     = 67,
+            CH_DISPLACEMENT                 = 68,
+            CH_MAX_TEMP                     = 69,
+            CH_MIN_TEMP                     = 70,
+            CH_MEAN_TEMP                    = 71,
+            CH_BIAS_ACCURACY_ESTIMATE       = 72,
+            CH_DRIFT_ACCURACY_ESTIMATE      = 73,
+            CH_SECONDS                      = 74,
+            CH_NUM_PACKETS                  = 76,
+            CH_GPS_CORRECTION_LATENCY       = 77,
+            CH_GLONASS_CORRECTION_LATENCY   = 78,
+            CH_GALILEO_CORRECTION_LATENCY   = 79,
+            CH_BEIDOU_CORRECTION_LATENCY    = 80,
+            CH_HEIGHT                       = 81,
+            CH_HEALTH                       = 82,
+            CH_INDEX                        = 83,
+            CH_COUNT                        = 84,
+            CH_SIGNAL_STRENGTH              = 85,
+            CH_SIGNAL_QUALITY               = 86,
+            CH_RANGE                        = 87,
+            CH_RANGE_UNC                    = 88,
+            CH_ALPHA                        = 90,
+            CH_BETA                         = 91,
+            CH_DISTURBANCE_FLAGS            = 92,
+            CH_CARRIER_PHASE                = 93,
+            CH_CARRIER_PHASE_UNC            = 94,
+            CH_DOPPLER                      = 95,
+            CH_DOPPLER_UNC                  = 96,
+            CH_DELTA_TIME                   = 97,
+            CH_DELTA_TICK                   = 98,
+            CH_ERROR                        = 99,
+            CH_ERROR_UNC                    = 100,
+            CH_W                            = 101,
+            CH_M0                           = 102,
+            CH_M1                           = 103,
+            CH_M2                           = 104,
+            CH_M3                           = 105,
+            CH_M4                           = 106,
+            CH_M5                           = 107,
+            CH_M6                           = 108,
+            CH_M7                           = 109,
+            CH_M8                           = 110,
+            CH_NANOSECONDS                  = 111,
+            CH_VALID_FLAGS                  = 112,
+            CH_PPS_VALID                    = 113,
+            CH_LAST_PPS                     = 114,
+            CH_UDREI                        = 115,
+            CH_PSEUDORANGE_CORRECTION       = 116,
+            CH_IONOSPHERIC_CORRECTION       = 117,
+            CH_JAMMING_STATE                = 118,
+            CH_SPOOFING_STATE               = 119,
+            CH_BIT_SYSTEM_GENERAL           = 120,
+            CH_BIT_SYSTEM_PROCESS           = 121,
+            CH_BIT_IMU_GENERAL              = 122,
+            CH_BIT_IMU_SENSORS              = 123,
+            CH_BIT_IMU_FACTORY_BITS         = 124,
+            CH_BIT_FILTER_GENERAL           = 125,
+            CH_SYSTEM_ID                    = 126,
+            CH_SATELLITE_ID                 = 127
         };
-
-        //API Typedefs:
-        //  MipChannelFields    - A vector of <ChannelField> enums.
-        //  MipCommands         - A vector of <Command> enums.
+        
+        //API Typedef: MipChannelFields
+        //    A vector of <ChannelField> enums.
         typedef std::vector<ChannelField> MipChannelFields;
+
+        //API Typedef: MipCommands
+        //    A vector of <Command> enums.
         typedef std::vector<Command> MipCommands;
+
+        //API Typedef: MipDataClasses
+        //    A vector of <DataClass> enums.
+        typedef std::vector<DataClass> MipDataClasses;
 
         //API Typedef: ChannelIndex
         //    A <ChannelQualifier>, int pair indicating the index value of the qualifier in a channel field.
@@ -1404,13 +1481,15 @@ namespace mscl
     {
     public:
         //API Enum: Type
-        //  Identifier type options - indicates what the <MipChannelIdentifier::id> value represents.
+        //  Identifier type options, indicates what the <MipChannelIdentifier::id> value represents.
+        //
         //      GNSS_RECEIVER_ID        - GNSS Receiver ID
-        //      GNSS_BASE_STATION_ID   - Differential GNSS Base Station ID
+        //      GNSS_BASE_STATION_ID    - Differential GNSS Base Station ID
         //      GNSS_CONSTELLATION      - GNSS Constellation ID
         //      GNSS_SATELLITE_ID       - GNSS Satellite ID
         //      GNSS_SIGNAL_ID          - GNSS Signal ID
         //      AIDING_MEASUREMENT_TYPE - Filter Aiding Measurement Type
+        //      GNSS_RF_BAND            - GNSS RF Band
         enum Type
         {
             // when adding to this list, be sure to add name string to TYPE_NAMES map
@@ -1420,29 +1499,32 @@ namespace mscl
             GNSS_CONSTELLATION,
             GNSS_SATELLITE_ID,
             GNSS_SIGNAL_ID,
-            AIDING_MEASUREMENT_TYPE
+            AIDING_MEASUREMENT_TYPE,
+            GNSS_RF_BAND
         };
 
         //API Enum: AidingMeasurementTypes
-        //  ID definitions when Type is <MipChannelIdentifier::Type::AIDING_MEASUREMENT_TYPE>
-        //      GNSS            - 0x01 - GNSS
-        //      DUAL_ANTENNA    - 0x02 - Dual Antenna
-        //      HEADING         - 0x03 - Heading
-        //      PRESSURE        - 0x04 - Pressure
-        //      MAGNETOMETER    - 0x05 - Magnetometer
-        //      SPEED           - 0x06 - Speed
+        //  ID definitions when Type is <MipChannelIdentifier::AIDING_MEASUREMENT_TYPE>
+        //
+        //      GNSS         - 0x01 - GNSS
+        //      DUAL_ANTENNA - 0x02 - Dual Antenna
+        //      HEADING      - 0x03 - Heading
+        //      PRESSURE     - 0x04 - Pressure
+        //      MAGNETOMETER - 0x05 - Magnetometer
+        //      SPEED        - 0x06 - Speed
         enum AidingMeasurementTypes
         {
-            GNSS            = 0x01,
-            DUAL_ANTENNA    = 0x02,
-            HEADING         = 0x03,
-            PRESSURE        = 0x04,
-            MAGNETOMETER    = 0x05,
-            SPEED           = 0x06
+            GNSS         = 0x01,
+            DUAL_ANTENNA = 0x02,
+            HEADING      = 0x03,
+            PRESSURE     = 0x04,
+            MAGNETOMETER = 0x05,
+            SPEED        = 0x06
         };
 
         //API Enum: GnssConstellationIds
-        //  ID definitions when Type is <MipChannelIdentifier::Type::GNSS_CONSTELLATION>
+        //  ID definitions when Type is <MipChannelIdentifier::GNSS_CONSTELLATION>
+        //
         //      UNKNOWN_CONSTELLATION - 0 - Unknown
         //      GPS                   - 1 - GPS
         //      GLONASS               - 2 - GLONASS
@@ -1458,139 +1540,155 @@ namespace mscl
         };
 
         //API Enum: GnssSignalIds
-        //  ID definitions when Type is <MipChannelIdentifier::Type::GNSS_SIGNAL_ID>
-        //      UNKNOWN         - 0
-        //      GPS_L1CA        - 1
-        //      GPS_L1P         - 2
-        //      GPS_L1Z         - 3
-        //      GPS_L2CA        - 4
-        //      GPS_L2P         - 5
-        //      GPS_L2Z         - 6
-        //      GPS_L2CL        - 7
-        //      GPS_L2CM        - 8
-        //      GPS_L2CML       - 9
-        //      GPS_L5I         - 10
-        //      GPS_L5Q         - 11
-        //      GPS_L5IQ        - 12
-        //      GPS_L1CD        - 13
-        //      GPS_L1CP        - 14
-        //      GPS_L1CDP       - 15
-        //      GLONASS_G1CA    - 32
-        //      GLONASS_G1P     - 33
-        //      GLONASS_G2C     - 34
-        //      GLONASS_G2P     - 35
-        //      GALILEO_E1C     - 64
-        //      GALILEO_E1A     - 65
-        //      GALILEO_E1B     - 66
-        //      GALILEO_E1BC    - 67
-        //      GALILEO_E1ABC   - 68
-        //      GALILEO_E6C     - 69
-        //      GALILEO_E6A     - 70
-        //      GALILEO_E6B     - 71
-        //      GALILEO_E6BC    - 72
-        //      GALILEO_E6ABC   - 73
-        //      GALILEO_E5BI    - 74
-        //      GALILEO_E5BQ    - 75
-        //      GALILEO_E5BIQ   - 76
-        //      GALILEO_E5ABI   - 77
-        //      GALILEO_E5ABQ   - 78
-        //      GALILEO_E5ABIQ  - 79
-        //      GALILEO_E5AI    - 80
-        //      GALILEO_E5AQ    - 81
-        //      GALILEO_E5AIQ   - 82
-        //      SBAS_L1CA       - 96
-        //      SBAS_L5I        - 97
-        //      SBAS_L5Q        - 98
-        //      SBAS_L5IQ       - 99
-        //      QZSS_L1CA       - 128
-        //      QZSS_LEXS       - 129
-        //      QZSS_LEXL       - 130
-        //      QZSS_LEXSL      - 131
-        //      QZSS_L2CM       - 132
-        //      QZSS_L2CL       - 133
-        //      QZSS_L2CML      - 134
-        //      QZSS_L5I        - 135
-        //      QZSS_L5Q        - 136
-        //      QZSS_L5IQ       - 137
-        //      QZSS_L1CD       - 138
-        //      QZSS_L1CP       - 139
-        //      QZSS_L1CDP      - 140
-        //      BEIDOU_B1I      - 160
-        //      BEIDOU_B1Q      - 161
-        //      BEIDOU_B1IQ     - 162
-        //      BEIDOU_B3I      - 163
-        //      BEIDOU_B3Q      - 164
-        //      BEIDOU_B3IQ     - 165
-        //      BEIDOU_B2I      - 166
-        //      BEIDOU_B2Q      - 167
-        //      BEIDOU_B2IQ     - 168
+        //  ID definitions when Type is <MipChannelIdentifier::GNSS_SIGNAL_ID>
+        //
+        //      UNKNOWN        - 0
+        //      GPS_L1CA       - 1
+        //      GPS_L1P        - 2
+        //      GPS_L1Z        - 3
+        //      GPS_L2CA       - 4
+        //      GPS_L2P        - 5
+        //      GPS_L2Z        - 6
+        //      GPS_L2CL       - 7
+        //      GPS_L2CM       - 8
+        //      GPS_L2CML      - 9
+        //      GPS_L5I        - 10
+        //      GPS_L5Q        - 11
+        //      GPS_L5IQ       - 12
+        //      GPS_L1CD       - 13
+        //      GPS_L1CP       - 14
+        //      GPS_L1CDP      - 15
+        //      GLONASS_G1CA   - 32
+        //      GLONASS_G1P    - 33
+        //      GLONASS_G2C    - 34
+        //      GLONASS_G2P    - 35
+        //      GALILEO_E1C    - 64
+        //      GALILEO_E1A    - 65
+        //      GALILEO_E1B    - 66
+        //      GALILEO_E1BC   - 67
+        //      GALILEO_E1ABC  - 68
+        //      GALILEO_E6C    - 69
+        //      GALILEO_E6A    - 70
+        //      GALILEO_E6B    - 71
+        //      GALILEO_E6BC   - 72
+        //      GALILEO_E6ABC  - 73
+        //      GALILEO_E5BI   - 74
+        //      GALILEO_E5BQ   - 75
+        //      GALILEO_E5BIQ  - 76
+        //      GALILEO_E5ABI  - 77
+        //      GALILEO_E5ABQ  - 78
+        //      GALILEO_E5ABIQ - 79
+        //      GALILEO_E5AI   - 80
+        //      GALILEO_E5AQ   - 81
+        //      GALILEO_E5AIQ  - 82
+        //      SBAS_L1CA      - 96
+        //      SBAS_L5I       - 97
+        //      SBAS_L5Q       - 98
+        //      SBAS_L5IQ      - 99
+        //      QZSS_L1CA      - 128
+        //      QZSS_LEXS      - 129
+        //      QZSS_LEXL      - 130
+        //      QZSS_LEXSL     - 131
+        //      QZSS_L2CM      - 132
+        //      QZSS_L2CL      - 133
+        //      QZSS_L2CML     - 134
+        //      QZSS_L5I       - 135
+        //      QZSS_L5Q       - 136
+        //      QZSS_L5IQ      - 137
+        //      QZSS_L1CD      - 138
+        //      QZSS_L1CP      - 139
+        //      QZSS_L1CDP     - 140
+        //      BEIDOU_B1I     - 160
+        //      BEIDOU_B1Q     - 161
+        //      BEIDOU_B1IQ    - 162
+        //      BEIDOU_B3I     - 163
+        //      BEIDOU_B3Q     - 164
+        //      BEIDOU_B3IQ    - 165
+        //      BEIDOU_B2I     - 166
+        //      BEIDOU_B2Q     - 167
+        //      BEIDOU_B2IQ    - 168
         enum GnssSignalIds
         {
-            UNKNOWN_SIGNAL  = 0,
-            GPS_L1CA        = 1,
-            GPS_L1P         = 2,
-            GPS_L1Z         = 3,
-            GPS_L2CA        = 4,
-            GPS_L2P         = 5,
-            GPS_L2Z         = 6,
-            GPS_L2CL        = 7,
-            GPS_L2CM        = 8,
-            GPS_L2CML       = 9,
-            GPS_L5I         = 10,
-            GPS_L5Q         = 11,
-            GPS_L5IQ        = 12,
-            GPS_L1CD        = 13,
-            GPS_L1CP        = 14,
-            GPS_L1CDP       = 15,
-            GLONASS_G1CA    = 32,
-            GLONASS_G1P     = 33,
-            GLONASS_G2C     = 34,
-            GLONASS_G2P     = 35,
-            GALILEO_E1C     = 64,
-            GALILEO_E1A     = 65,
-            GALILEO_E1B     = 66,
-            GALILEO_E1BC    = 67,
-            GALILEO_E1ABC   = 68,
-            GALILEO_E6C     = 69,
-            GALILEO_E6A     = 70,
-            GALILEO_E6B     = 71,
-            GALILEO_E6BC    = 72,
-            GALILEO_E6ABC   = 73,
-            GALILEO_E5BI    = 74,
-            GALILEO_E5BQ    = 75,
-            GALILEO_E5BIQ   = 76,
-            GALILEO_E5ABI   = 77,
-            GALILEO_E5ABQ   = 78,
-            GALILEO_E5ABIQ  = 79,
-            GALILEO_E5AI    = 80,
-            GALILEO_E5AQ    = 81,
-            GALILEO_E5AIQ   = 82,
-            SBAS_L1CA       = 96,
-            SBAS_L5I        = 97,
-            SBAS_L5Q        = 98,
-            SBAS_L5IQ       = 99,
-            QZSS_L1CA       = 128,
-            QZSS_LEXS       = 129,
-            QZSS_LEXL       = 130,
-            QZSS_LEXSL      = 131,
-            QZSS_L2CM       = 132,
-            QZSS_L2CL       = 133,
-            QZSS_L2CML      = 134,
-            QZSS_L5I        = 135,
-            QZSS_L5Q        = 136,
-            QZSS_L5IQ       = 137,
-            QZSS_L1CD       = 138,
-            QZSS_L1CP       = 139,
-            QZSS_L1CDP      = 140,
-            BEIDOU_B1I      = 160,
-            BEIDOU_B1Q      = 161,
-            BEIDOU_B1IQ     = 162,
-            BEIDOU_B3I      = 163,
-            BEIDOU_B3Q      = 164,
-            BEIDOU_B3IQ     = 165,
-            BEIDOU_B2I      = 166,
-            BEIDOU_B2Q      = 167,
-            BEIDOU_B2IQ     = 168,
+            UNKNOWN_SIGNAL = 0,
+            GPS_L1CA       = 1,
+            GPS_L1P        = 2,
+            GPS_L1Z        = 3,
+            GPS_L2CA       = 4,
+            GPS_L2P        = 5,
+            GPS_L2Z        = 6,
+            GPS_L2CL       = 7,
+            GPS_L2CM       = 8,
+            GPS_L2CML      = 9,
+            GPS_L5I        = 10,
+            GPS_L5Q        = 11,
+            GPS_L5IQ       = 12,
+            GPS_L1CD       = 13,
+            GPS_L1CP       = 14,
+            GPS_L1CDP      = 15,
+            GLONASS_G1CA   = 32,
+            GLONASS_G1P    = 33,
+            GLONASS_G2C    = 34,
+            GLONASS_G2P    = 35,
+            GALILEO_E1C    = 64,
+            GALILEO_E1A    = 65,
+            GALILEO_E1B    = 66,
+            GALILEO_E1BC   = 67,
+            GALILEO_E1ABC  = 68,
+            GALILEO_E6C    = 69,
+            GALILEO_E6A    = 70,
+            GALILEO_E6B    = 71,
+            GALILEO_E6BC   = 72,
+            GALILEO_E6ABC  = 73,
+            GALILEO_E5BI   = 74,
+            GALILEO_E5BQ   = 75,
+            GALILEO_E5BIQ  = 76,
+            GALILEO_E5ABI  = 77,
+            GALILEO_E5ABQ  = 78,
+            GALILEO_E5ABIQ = 79,
+            GALILEO_E5AI   = 80,
+            GALILEO_E5AQ   = 81,
+            GALILEO_E5AIQ  = 82,
+            SBAS_L1CA      = 96,
+            SBAS_L5I       = 97,
+            SBAS_L5Q       = 98,
+            SBAS_L5IQ      = 99,
+            QZSS_L1CA      = 128,
+            QZSS_LEXS      = 129,
+            QZSS_LEXL      = 130,
+            QZSS_LEXSL     = 131,
+            QZSS_L2CM      = 132,
+            QZSS_L2CL      = 133,
+            QZSS_L2CML     = 134,
+            QZSS_L5I       = 135,
+            QZSS_L5Q       = 136,
+            QZSS_L5IQ      = 137,
+            QZSS_L1CD      = 138,
+            QZSS_L1CP      = 139,
+            QZSS_L1CDP     = 140,
+            BEIDOU_B1I     = 160,
+            BEIDOU_B1Q     = 161,
+            BEIDOU_B1IQ    = 162,
+            BEIDOU_B3I     = 163,
+            BEIDOU_B3Q     = 164,
+            BEIDOU_B3IQ    = 165,
+            BEIDOU_B2I     = 166,
+            BEIDOU_B2Q     = 167,
+            BEIDOU_B2IQ    = 168,
+        };
+
+        //API Enum: GnssRfBands
+        //  ID definitions when Type is <MipChannelIdentifier::GNSS_RF_BAND>
+        //
+        //      UNKNOWN_RF_BAND - 0 - Unknown
+        //      RF_BAND_L1      - 1 - L1
+        //      RF_BAND_L2      - 2 - L2
+        //      RF_BAND_L5      - 5 - L5
+        enum GnssRfBands
+        {
+            UNKNOWN_RF_BAND = 0,
+            RF_BAND_L1      = 1,
+            RF_BAND_L2      = 2,
+            RF_BAND_L5      = 5
         };
 
 #ifndef SWIG
@@ -1624,21 +1722,21 @@ namespace mscl
         //  Construct MipChannelIdentifier object with specified <MipChannelIdentifier::Type> and ID values.
         //
         //Parameters:
-        //  identifierType - <MipChannelIdentifer::Type> specifies the type of identifier this represents
+        //  identifierType - specifies the type of identifier this represents
         //  id - the identifier value
-        MipChannelIdentifier(Type identiferType, uint32 id) :
-            m_type(identiferType),
+        MipChannelIdentifier(Type identifierType, uint32 id) :
+            m_type(identifierType),
             m_id(id) {}
 
         //API Constructor: MipChannelIdentifier
         //  Construct MipChannelIdentifier object with specified <MipChannelIdentifier::Type> and ID values.
         //
         //Parameters:
-        //  identifierType - <MipChannelIdentifer::Type> specifies the type of identifier this represents
+        //  identifierType - specifies the type of identifier this represents
         //  id - the identifier value
         //  specifier - the optional additional specifier
-        MipChannelIdentifier(Type identiferType, uint32 id, uint32 specifier) :
-            m_type(identiferType),
+        MipChannelIdentifier(Type identifierType, uint32 id, uint32 specifier) :
+            m_type(identifierType),
             m_id(id),
             m_specifier(specifier) {}
 
@@ -1659,7 +1757,9 @@ namespace mscl
 
         //API Function: specifier
         //  Returns the optional additional specifier value.
-        //  Note: this is only valid and applicable if hasSpecifier returns true - value may be non-zero regardless.
+        //
+        //Note:
+        //  This is only valid and applicable if hasSpecifier returns true. Value may be non-zero regardless.
         uint32 specifier() const { return m_specifier; }
 
         //API Function: name
@@ -1667,7 +1767,9 @@ namespace mscl
         //
         //Parameters:
         //  standardizedFormat - specify whether the format should be left consistent for all identifier types or consolidated where relevant
-        //      Ex: <GNSS_CONSTELLATION, 2> - if true: "gnssConstellation_2", if false: "glonass"
+        //
+        //Example:
+        //  <GNSS_CONSTELLATION, 2>: true = "gnssConstellation_2", false = "glonass"
         std::string name(bool standardizedFormat = true) const;
 
     private:
@@ -1811,17 +1913,19 @@ namespace mscl
     //  Maps GNSS Receiver ID to the <MipTypes::DataClass> it outputs to
     struct GnssReceiverInfo
     {
+        //API Constant: INFO_NOT_FOUND
+        //  String value assigned when the target value was unable to be found in the full description field.
+        //
+        //  INFO_NOT_FOUND - "Not Found"
+        static const std::string INFO_NOT_FOUND;
+
         //API Constructor: GnssReceiverInfo
         //  Constructs GnssReceiverInfo object with default values
-        GnssReceiverInfo() {};
+        GnssReceiverInfo();
 
         //API Constructor: GnssReceiverInfo
         //  Constructs GnssReceiverInfo object with specified values
-        GnssReceiverInfo(uint8 recId, MipTypes::DataClass target, std::string desc) :
-            id(recId),
-            targetDataClass(target),
-            description(desc)
-        {}
+        GnssReceiverInfo(uint8 recId, MipTypes::DataClass target, std::string desc);
 
         //API Variable: id
         //  Receiver ID
@@ -1834,6 +1938,18 @@ namespace mscl
         //API Variable: description
         //  ASCII description of receiver
         std::string description;
+
+        //API Variable: module
+        //  ASCII name of the receiver module
+        std::string module;
+
+        //API Variable: fwId
+        //  ASCII name of the receiver firmware identifier
+        std::string fwId;
+
+        //API Variable: fwVersion
+        //  Firmware version of the receiver module
+        Version fwVersion;
     };
 
     //API Typedef: GnssReceivers

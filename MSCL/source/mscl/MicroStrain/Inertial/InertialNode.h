@@ -1012,8 +1012,8 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         bool getConingAndScullingEnable();
 
-        //API Function: setAdvancedLowPassFilterSettings
-        //    Sets the advanced low-pass filter settings.
+        //API Function: setLowPassFilterSettings
+        //    Sets the low-pass filter settings.
         //
         //Parameters:
         //    data - the new settings to set.
@@ -1023,23 +1023,23 @@ namespace mscl
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.ConstellationSettingsData
-        void setAdvancedLowPassFilterSettings(const AdvancedLowPassFilterConfig& data);
+        void setLowPassFilterSettings(const LowPassFilterConfig& data) const;
 
-        //API Function: getAdvancedLowPassFilterSettings
-        //    Gets the current advanced low-pass filter settings for the given data descriptors
+        //API Function: getLowPassFilterSettings
+        //    Gets the current low-pass filter settings for the given data descriptors
         //
         //Parameter:
-        //    dataDescriptors - the <MipType::ChannelField> data descriptors for which to return the current advanced low-pass filter settings.
+        //    dataDescriptors - the <MipType::ChannelField> data descriptors for which to return the current low-pass filter settings.
         //
         //Return:
-        //    <AdvancedLowPassFilterData> settings.
+        //    <LowPassFilterData> settings.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
         //    - <Error_Communication>: There was no response to the command. The command timed out.
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
-        AdvancedLowPassFilterConfig getAdvancedLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors);
+        LowPassFilterConfig getLowPassFilterSettings(const MipTypes::MipChannelFields& dataDescriptors) const;
 
         //API Function: setComplementaryFilterSettings
         //    Sets the complementary filter settings.
@@ -2224,6 +2224,32 @@ namespace mscl
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setRelativePositionReference(PositionReferenceConfiguration ref);
 
+        //API Function: getLeverArmReferenceOffset
+        //    Gets the currently configured lever arm reference point offset.
+        //
+        //Return:
+        //    <PositionOffset> - The current reference offset configuration.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        PositionOffset getLeverArmReferenceOffset() const;
+
+        //API Function: setLeverArmReferenceOffset
+        //    Set the lever arm offset for the reference point.
+        //
+        //Parameter:
+        //    offset - the <PositionOffset> to apply.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setLeverArmReferenceOffset(PositionOffset offset) const;
+
         //API Function: sendExternalSpeedMeasurementUpdate
         //    Sends an external speed measurement update to be used as a filter input.
         //
@@ -2354,5 +2380,31 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         EventActionStatus getEventActionStatus(std::vector<uint8> instances = std::vector<uint8>()) const;
+
+        //API Function: getNmeaMessageFormat
+        //    Gets the NMEA message formats currently configured to output on the device.
+        //
+        //Return:
+        //    <NmeaMessageFormats> - vector of <NmeaMessageFormat> objects.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        NmeaMessageFormats getNmeaMessageFormat() const;
+
+        //API Function: setNmeaMessageFormat
+        //    Sets the NMEA message formats to output on the device.
+        //
+        //Parameters:
+        //    nmeaFormats- vector of <NmeaMessageFormat> objects to configure.
+        //
+        //Exceptions:
+        //    - <Error_NotSupported>: The command is not supported by this Node.
+        //    - <Error_Communication>: There was no response to the command. The command timed out.
+        //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
+        //    - <Error_Connection>: A connection error has occurred with the InertialNode.
+        void setNmeaMessageFormat(NmeaMessageFormats nmeaFormats) const;
     };
 }
