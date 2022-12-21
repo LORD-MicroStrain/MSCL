@@ -16,6 +16,7 @@ REMOVED - A function/class has been removed.
 
 Forthcoming
 - Wireless
+    - Updated China transmit power limit to 10dBm
 - Inertial
     - NmeaMessageFormat changes:
         - Added max configurations count
