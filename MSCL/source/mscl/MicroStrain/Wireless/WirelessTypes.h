@@ -654,7 +654,7 @@ namespace mscl
             tc_N                = 8,
             tc_customPolynomial = 9
         };
-        
+
         //=====================================================================================================
         //API Enums: RtdType
         //    Represents the RTD types supported by some Wireless Nodes.
@@ -720,7 +720,7 @@ namespace mscl
         //API Enums: WirelessSampleRate
         //    The possible sample rates that are available for Wireless Nodes.
         //
-        //    sampleRate_104170Hz        - 60    - 104170 Hz 
+        //    sampleRate_104170Hz        - 60    - 104170 Hz
         //    sampleRate_78125Hz         - 58    - 78125 Hz
         //    sampleRate_62500Hz         - 57    - 62500 Hz
         //    sampleRate_25000Hz         - 56    - 25000 Hz
@@ -739,7 +739,7 @@ namespace mscl
         //    sampleRate_6kHz            - 67    - 6 kHz
         //    sampleRate_7kHz            - 68    - 7 kHz
         //    sampleRate_8kHz            - 69    - 8 kHz
-        //    sampleRate_9kHz            - 70    - 9 kHz    
+        //    sampleRate_9kHz            - 70    - 9 kHz
         //    sampleRate_10kHz           - 71    - 10 kHz
         //    sampleRate_20kHz           - 72    - 20 kHz
         //    sampleRate_30kHz           - 73    - 30 kHz
@@ -931,7 +931,7 @@ namespace mscl
         //    autobalance_targetOutOfRange       - 4      - The target balance value is out of range for the channel.
         //    autobalance_failed                 - 5      - The AutoBalance has failed. No values have been applied.
         //    autobalance_legacyNone             - 998    - The legacy AutoBalance command was used, so no info was returned.
-        //    autobalance_notComplete            - 999    - AutoBalance has not yet completed. 
+        //    autobalance_notComplete            - 999    - AutoBalance has not yet completed.
         enum AutoBalanceErrorFlag
         {
             autobalance_success                = 0,
@@ -1667,7 +1667,7 @@ namespace mscl
         //    dataFormat - The <DataFormat> to get the number of bytes for
         //
         //Returns:
-        //    The number of bytes for the <DataFormat> 
+        //    The number of bytes for the <DataFormat>
         static uint8 dataFormatSize(DataFormat dataFormat);
 
         static bool isCalApplied(DataType dataType);
