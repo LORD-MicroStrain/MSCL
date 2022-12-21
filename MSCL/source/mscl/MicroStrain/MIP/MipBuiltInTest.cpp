@@ -27,7 +27,7 @@ namespace mscl
         {
             const GQ7ContinuousBIT bit(data);
             return bit.as_MipDataPoints();
-        }            
+        }
         default:
             return{};
         }
@@ -307,19 +307,209 @@ namespace mscl
         m_filter = CV7ContinuousBIT_Filter(buffer.read_uint32());
     }
 
+
+    /**************************
+    ****  CV7 System Bits  ****
+    **************************/
+
     CV7ContinuousBIT_System CV7ContinuousBIT::system() const
     {
         return m_system;
     }
+
+    bool CV7ContinuousBIT::systemClockFailure() const
+    {
+        return m_system.general().systemClockFailure();
+    }
+
+    bool CV7ContinuousBIT::powerFault() const
+    {
+        return m_system.general().powerFault();
+    }
+
+    bool CV7ContinuousBIT::firmwareFault() const
+    {
+        return m_system.general().firmwareFault();
+    }
+
+    bool CV7ContinuousBIT::timingOverload() const
+    {
+        return m_system.general().timingOverload();
+    }
+
+    bool CV7ContinuousBIT::bufferOverrun() const
+    {
+        return m_system.general().bufferOverrun();
+    }
+
+    bool CV7ContinuousBIT::imuProcessFault() const
+    {
+        return m_system.process().imuProcessFault();
+    }
+
+    bool CV7ContinuousBIT::imuRateMismatch() const
+    {
+        return m_system.process().imuRateMismatch();
+    }
+
+    bool CV7ContinuousBIT::imuDroppedData() const
+    {
+        return m_system.process().imuDroppedData();
+    }
+
+    bool CV7ContinuousBIT::imuStuck() const
+    {
+        return m_system.process().imuStuck();
+    }
+
+    bool CV7ContinuousBIT::filterProcessFault() const
+    {
+        return m_system.process().filterProcessFault();
+    }
+
+    bool CV7ContinuousBIT::filterDroppedData() const
+    {
+        return m_system.process().filterDroppedData();
+    }
+
+    bool CV7ContinuousBIT::filterRateMismatch() const
+    {
+        return m_system.process().filterRateMismatch();
+    }
+
+    bool CV7ContinuousBIT::filterStuck() const
+    {
+        return m_system.process().filterStuck();
+    }
+
+
+    /***********************
+    ****  CV7 IMU Bits  ****
+    ***********************/
 
     CV7ContinuousBIT_IMU CV7ContinuousBIT::imu() const
     {
         return m_imu;
     }
 
+    bool CV7ContinuousBIT::imuClockFault() const
+    {
+        return m_imu.general().clockFault();
+    }
+
+    bool CV7ContinuousBIT::imuCommunicationFault() const
+    {
+        return m_imu.general().communicationFault();
+    }
+
+    bool CV7ContinuousBIT::imuTimingOverrun() const
+    {
+        return m_imu.general().timingOverrun();
+    }
+
+    bool CV7ContinuousBIT::imuCalibrationErrorAccel() const
+    {
+        return m_imu.general().calibrationErrorAccel();
+    }
+
+    bool CV7ContinuousBIT::imuCalibrationErrorGyro() const
+    {
+        return m_imu.general().calibrationErrorGyro();
+    }
+
+    bool CV7ContinuousBIT::imuCalibrationErrorMag() const
+    {
+        return m_imu.general().calibrationErrorMag();
+    }
+
+    bool CV7ContinuousBIT::accelGeneralFault() const
+    {
+        return m_imu.sensors().accelGeneralFault();
+    }
+
+    bool CV7ContinuousBIT::accelOverrange() const
+    {
+        return m_imu.sensors().accelOverrange();
+    }
+
+    bool CV7ContinuousBIT::accelSelfTestFail() const
+    {
+        return m_imu.sensors().accelSelfTestFail();
+    }
+
+    bool CV7ContinuousBIT::gyroGeneralFault() const
+    {
+        return m_imu.sensors().gyroGeneralFault();
+    }
+
+    bool CV7ContinuousBIT::gyroOverrange() const
+    {
+        return m_imu.sensors().gyroOverrange();
+    }
+
+    bool CV7ContinuousBIT::gyroSelfTestFail() const
+    {
+        return m_imu.sensors().gyroSelfTestFail();
+    }
+
+    bool CV7ContinuousBIT::magGeneralFault() const
+    {
+        return m_imu.sensors().magGeneralFault();
+    }
+
+    bool CV7ContinuousBIT::magOverrange() const
+    {
+        return m_imu.sensors().magOverrange();
+    }
+
+    bool CV7ContinuousBIT::magSelfTestFail() const
+    {
+        return m_imu.sensors().magSelfTestFail();
+    }
+
+    bool CV7ContinuousBIT::pressureGeneralFault() const
+    {
+        return m_imu.sensors().pressureGeneralFault();
+    }
+
+    bool CV7ContinuousBIT::pressureOverrange() const
+    {
+        return m_imu.sensors().pressureOverrange();
+    }
+
+    bool CV7ContinuousBIT::pressureSelfTestFail() const
+    {
+        return m_imu.sensors().pressureSelfTestFail();
+    }
+
+    bool CV7ContinuousBIT::factoryBitsInvalid() const
+    {
+        return m_imu.factoryBitsInvalid();
+    }
+
+
+    /**************************
+    ****  CV7 Filter Bits  ****
+    **************************/
+
     CV7ContinuousBIT_Filter CV7ContinuousBIT::filter() const
     {
         return m_filter;
+    }
+
+    bool CV7ContinuousBIT::filterFault() const
+    {
+        return m_filter.general().fault();
+    }
+
+    bool CV7ContinuousBIT::filterTimingOverrun() const
+    {
+        return m_filter.general().timingOverrun();
+    }
+
+    bool CV7ContinuousBIT::filterTimingUnderrun() const
+    {
+        return m_filter.general().timingUnderrun();
     }
 
     MipDataPoints CV7ContinuousBIT::as_MipDataPoints() const
@@ -679,24 +869,379 @@ namespace mscl
         m_gnss   = GQ7ContinuousBIT_GNSS(buffer.read_uint32());
     }
 
+
+    /**************************
+    ****  GQ7 System Bits  ****
+    **************************/
+
     GQ7ContinuousBIT_System GQ7ContinuousBIT::system() const
     {
         return m_system;
     }
+
+    bool GQ7ContinuousBIT::systemClockFailure() const
+    {
+        return m_system.general().systemClockFailure();
+    }
+
+    bool GQ7ContinuousBIT::powerFault() const
+    {
+        return m_system.general().powerFault();
+    }
+
+    bool GQ7ContinuousBIT::firmwareFault() const
+    {
+        return m_system.general().firmwareFault();
+    }
+
+    bool GQ7ContinuousBIT::timingOverload() const
+    {
+        return m_system.general().timingOverload();
+    }
+
+    bool GQ7ContinuousBIT::bufferOverrun() const
+    {
+        return m_system.general().bufferOverrun();
+    }
+
+    uint8 GQ7ContinuousBIT::imuIpcFault() const
+    {
+        return m_system.process().imuIpcFault();
+    }
+
+    bool GQ7ContinuousBIT::imuControlLineFault() const
+    {
+        return m_system.process().imuControlLineFault();
+    }
+
+    bool GQ7ContinuousBIT::imuCommandResponseFault() const
+    {
+        return m_system.process().imuCommandResponseFault();
+    }
+
+    bool GQ7ContinuousBIT::imuSpiTransferFault() const
+    {
+        return m_system.process().imuSpiTransferFault();
+    }
+
+    bool GQ7ContinuousBIT::imuDataFrameFault() const
+    {
+        return m_system.process().imuDataFrameFault();
+    }
+
+    uint8 GQ7ContinuousBIT::filterIpcFault() const
+    {
+        return m_system.process().filterIpcFault();
+    }
+
+    bool GQ7ContinuousBIT::filterControlLineFault() const
+    {
+        return m_system.process().filterControlLineFault();
+    }
+
+    bool GQ7ContinuousBIT::filterCommandResponseFault() const
+    {
+        return m_system.process().filterCommandResponseFault();
+    }
+
+    bool GQ7ContinuousBIT::filterSpiTransferFault() const
+    {
+        return m_system.process().filterSpiTransferFault();
+    }
+
+    bool GQ7ContinuousBIT::filterDataFrameFault() const
+    {
+        return m_system.process().filterDataFrameFault();
+    }
+
+    uint8 GQ7ContinuousBIT::gnssIpcFault() const
+    {
+        return m_system.process().gnssIpcFault();
+    }
+
+    bool GQ7ContinuousBIT::gnssControlLineFault() const
+    {
+        return m_system.process().gnssControlLineFault();
+    }
+
+    bool GQ7ContinuousBIT::gnssCommandResponseFault() const
+    {
+        return m_system.process().gnssCommandResponseFault();
+    }
+
+    bool GQ7ContinuousBIT::gnssSpiTransferFault() const
+    {
+        return m_system.process().gnssSpiTransferFault();
+    }
+
+    bool GQ7ContinuousBIT::gnssDataFrameFault() const
+    {
+        return m_system.process().gnssDataFrameFault();
+    }
+
+
+    /*******************
+    ****  IMU Bits  ****
+    *******************/
 
     GQ7ContinuousBIT_IMU GQ7ContinuousBIT::imu() const
     {
         return m_imu;
     }
 
+    bool GQ7ContinuousBIT::imuClockFault() const
+    {
+        return m_imu.general().clockFault();
+    }
+
+    bool GQ7ContinuousBIT::imuCommunicationFault() const
+    {
+        return m_imu.general().communicationFault();
+    }
+
+    bool GQ7ContinuousBIT::imuTimingOverrun() const
+    {
+        return m_imu.general().timingOverrun();
+    }
+
+    bool GQ7ContinuousBIT::imuCalibrationErrorAccel() const
+    {
+        return m_imu.general().calibrationErrorAccel();
+    }
+
+    bool GQ7ContinuousBIT::imuCalibrationErrorGyro() const
+    {
+        return m_imu.general().calibrationErrorGyro();
+    }
+
+    bool GQ7ContinuousBIT::imuCalibrationErrorMag() const
+    {
+        return m_imu.general().calibrationErrorMag();
+    }
+
+    bool GQ7ContinuousBIT::accelGeneralFault() const
+    {
+        return m_imu.sensors().accelGeneralFault();
+    }
+
+    bool GQ7ContinuousBIT::accelOverrange() const
+    {
+        return m_imu.sensors().accelOverrange();
+    }
+
+    bool GQ7ContinuousBIT::accelSelfTestFail() const
+    {
+        return m_imu.sensors().accelSelfTestFail();
+    }
+
+    bool GQ7ContinuousBIT::gyroGeneralFault() const
+    {
+        return m_imu.sensors().gyroGeneralFault();
+    }
+
+    bool GQ7ContinuousBIT::gyroOverrange() const
+    {
+        return m_imu.sensors().gyroOverrange();
+    }
+
+    bool GQ7ContinuousBIT::gyroSelfTestFail() const
+    {
+        return m_imu.sensors().gyroSelfTestFail();
+    }
+
+    bool GQ7ContinuousBIT::magGeneralFault() const
+    {
+        return m_imu.sensors().magGeneralFault();
+    }
+
+    bool GQ7ContinuousBIT::magOverrange() const
+    {
+        return m_imu.sensors().magOverrange();
+    }
+
+    bool GQ7ContinuousBIT::magSelfTestFail() const
+    {
+        return m_imu.sensors().magSelfTestFail();
+    }
+
+    bool GQ7ContinuousBIT::pressureGeneralFault() const
+    {
+        return m_imu.sensors().pressureGeneralFault();
+    }
+
+    bool GQ7ContinuousBIT::pressureOverrange() const
+    {
+        return m_imu.sensors().pressureOverrange();
+    }
+
+    bool GQ7ContinuousBIT::pressureSelfTestFail() const
+    {
+        return m_imu.sensors().pressureSelfTestFail();
+    }
+
+
+    /**************************
+    ****  GQ7 Filter Bits  ****
+    **************************/
+
     GQ7ContinuousBIT_Filter GQ7ContinuousBIT::filter() const
     {
         return m_filter;
     }
 
+    bool GQ7ContinuousBIT::filterClockFault() const
+    {
+        return m_filter.general().clockFault();
+    }
+
+    bool GQ7ContinuousBIT::filterHardwareFault() const
+    {
+        return m_filter.general().hardwareFault();
+    }
+
+    bool GQ7ContinuousBIT::filterTimingOverrun() const
+    {
+        return m_filter.general().timingOverrun();
+    }
+
+    bool GQ7ContinuousBIT::filterTimingUnderrun() const
+    {
+        return m_filter.general().timingUnderrun();
+    }
+
+    uint8 GQ7ContinuousBIT::filterCommunicationError() const
+    {
+        return m_filter.general().communicationError();
+    }
+
+    bool GQ7ContinuousBIT::filterCommunicationErrorImuSpi() const
+    {
+        return m_filter.general().communicationErrorImuSpi();
+    }
+
+    bool GQ7ContinuousBIT::filterCommunicationErrorGnssSpi() const
+    {
+        return m_filter.general().communicationErrorGnssSpi();
+    }
+
+    bool GQ7ContinuousBIT::filterCommunicationErrorCommsSpi() const
+    {
+        return m_filter.general().communicationErrorCommsSpi();
+    }
+
+    bool GQ7ContinuousBIT::filterCommunicationErrorCommsUart() const
+    {
+        return m_filter.general().communicationErrorCommsUart();
+    }
+
+
+    /************************
+    ****  GQ7 GNSS Bits  ****
+    ************************/
+
     GQ7ContinuousBIT_GNSS GQ7ContinuousBIT::gnss() const
     {
         return m_gnss;
+    }
+
+    bool GQ7ContinuousBIT::gnssClockFault() const
+    {
+        return m_gnss.general().clockFault();
+    }
+
+    bool GQ7ContinuousBIT::gnssHardwareFault() const
+    {
+        return m_gnss.general().hardwareFault();
+    }
+
+    uint8 GQ7ContinuousBIT::gnssCommunicationError() const
+    {
+        return m_gnss.general().communicationError();
+    }
+
+    bool GQ7ContinuousBIT::gnssCommunicationErrorCommsSerial() const
+    {
+        return m_gnss.general().communicationErrorCommsSerial();
+    }
+
+    bool GQ7ContinuousBIT::gnssCommunicationErrorCommsSpi() const
+    {
+        return m_gnss.general().communicationErrorCommsSpi();
+    }
+
+    bool GQ7ContinuousBIT::gnssCommunicationErrorNavSpi() const
+    {
+        return m_gnss.general().communicationErrorNavSpi();
+    }
+
+    bool GQ7ContinuousBIT::gpsTimeFault() const
+    {
+        return m_gnss.general().gpsTimeFault();
+    }
+
+    bool GQ7ContinuousBIT::gnssTimingOverrun() const
+    {
+        return m_gnss.general().timingOverrun();
+    }
+
+    bool GQ7ContinuousBIT::gnssPowerFaultReceiver1() const
+    {
+        return m_gnss.receivers().powerFaultReceiver1();
+    }
+
+    bool GQ7ContinuousBIT::gnssFaultReceiver1() const
+    {
+        return m_gnss.receivers().faultReceiver1();
+    }
+
+    bool GQ7ContinuousBIT::gnssShortedAntenna1() const
+    {
+        return m_gnss.receivers().shortedAntenna1();
+    }
+
+    bool GQ7ContinuousBIT::gnssOpenAntenna1() const
+    {
+        return m_gnss.receivers().openAntenna1();
+    }
+
+    bool GQ7ContinuousBIT::gnssSolutionFaultReceiver1() const
+    {
+        return m_gnss.receivers().solutionFaultReceiver1();
+    }
+
+    bool GQ7ContinuousBIT::gnssPowerFaultReceiver2() const
+    {
+        return m_gnss.receivers().powerFaultReceiver2();
+    }
+
+    bool GQ7ContinuousBIT::gnssFaultReceiver2() const
+    {
+        return m_gnss.receivers().faultReceiver2();
+    }
+
+    bool GQ7ContinuousBIT::gnssShortedAntenna2() const
+    {
+        return m_gnss.receivers().shortedAntenna2();
+    }
+
+    bool GQ7ContinuousBIT::gnssOpenAntenna2() const
+    {
+        return m_gnss.receivers().openAntenna2();
+    }
+
+    bool GQ7ContinuousBIT::gnssSolutionFaultReceiver2() const
+    {
+        return m_gnss.receivers().solutionFaultReceiver2();
+    }
+
+    bool GQ7ContinuousBIT::rtcmCommunicationFault() const
+    {
+        return m_gnss.receivers().rtcmCommunicationFault();
+    }
+
+    bool GQ7ContinuousBIT::rtkDongleFault() const
+    {
+        return m_gnss.receivers().rtkDongleFault();
     }
 
     MipDataPoints GQ7ContinuousBIT::as_MipDataPoints() const

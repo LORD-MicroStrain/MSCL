@@ -44,14 +44,224 @@ public class CV7ContinuousBIT : ContinuousBIT {
     return ret;
   }
 
+  public override bool systemClockFailure() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_systemClockFailure(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool powerFault() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_powerFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool firmwareFault() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_firmwareFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool timingOverload() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_timingOverload(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool bufferOverrun() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_bufferOverrun(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool imuProcessFault() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_imuProcessFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool imuRateMismatch() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_imuRateMismatch(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool imuDroppedData() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_imuDroppedData(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool imuStuck() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_imuStuck(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool filterProcessFault() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_filterProcessFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool filterDroppedData() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_filterDroppedData(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool filterRateMismatch() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_filterRateMismatch(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool filterStuck() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_filterStuck(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public CV7ContinuousBIT_IMU imu() {
     CV7ContinuousBIT_IMU ret = new CV7ContinuousBIT_IMU(msclPINVOKE.CV7ContinuousBIT_imu(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  public override bool imuClockFault() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_imuClockFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool imuCommunicationFault() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_imuCommunicationFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool imuTimingOverrun() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_imuTimingOverrun(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool imuCalibrationErrorAccel() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_imuCalibrationErrorAccel(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool imuCalibrationErrorGyro() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_imuCalibrationErrorGyro(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool imuCalibrationErrorMag() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_imuCalibrationErrorMag(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool accelGeneralFault() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_accelGeneralFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool accelOverrange() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_accelOverrange(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool accelSelfTestFail() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_accelSelfTestFail(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool gyroGeneralFault() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_gyroGeneralFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool gyroOverrange() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_gyroOverrange(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool gyroSelfTestFail() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_gyroSelfTestFail(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool magGeneralFault() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_magGeneralFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool magOverrange() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_magOverrange(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool magSelfTestFail() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_magSelfTestFail(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool pressureGeneralFault() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_pressureGeneralFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool pressureOverrange() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_pressureOverrange(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool pressureSelfTestFail() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_pressureSelfTestFail(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool factoryBitsInvalid() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_factoryBitsInvalid(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public CV7ContinuousBIT_Filter filter() {
     CV7ContinuousBIT_Filter ret = new CV7ContinuousBIT_Filter(msclPINVOKE.CV7ContinuousBIT_filter(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public bool filterFault() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_filterFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool filterTimingOverrun() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_filterTimingOverrun(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public override bool filterTimingUnderrun() {
+    bool ret = msclPINVOKE.CV7ContinuousBIT_filterTimingUnderrun(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

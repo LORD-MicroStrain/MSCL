@@ -62,6 +62,156 @@ public class ContinuousBIT : global::System.IDisposable {
     return ret;
   }
 
+  public virtual bool systemClockFailure() {
+    bool ret = msclPINVOKE.ContinuousBIT_systemClockFailure(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool powerFault() {
+    bool ret = msclPINVOKE.ContinuousBIT_powerFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool firmwareFault() {
+    bool ret = msclPINVOKE.ContinuousBIT_firmwareFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool timingOverload() {
+    bool ret = msclPINVOKE.ContinuousBIT_timingOverload(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool bufferOverrun() {
+    bool ret = msclPINVOKE.ContinuousBIT_bufferOverrun(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool imuClockFault() {
+    bool ret = msclPINVOKE.ContinuousBIT_imuClockFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool imuCommunicationFault() {
+    bool ret = msclPINVOKE.ContinuousBIT_imuCommunicationFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool imuTimingOverrun() {
+    bool ret = msclPINVOKE.ContinuousBIT_imuTimingOverrun(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool imuCalibrationErrorAccel() {
+    bool ret = msclPINVOKE.ContinuousBIT_imuCalibrationErrorAccel(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool imuCalibrationErrorGyro() {
+    bool ret = msclPINVOKE.ContinuousBIT_imuCalibrationErrorGyro(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool imuCalibrationErrorMag() {
+    bool ret = msclPINVOKE.ContinuousBIT_imuCalibrationErrorMag(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool accelGeneralFault() {
+    bool ret = msclPINVOKE.ContinuousBIT_accelGeneralFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool accelOverrange() {
+    bool ret = msclPINVOKE.ContinuousBIT_accelOverrange(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool accelSelfTestFail() {
+    bool ret = msclPINVOKE.ContinuousBIT_accelSelfTestFail(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool gyroGeneralFault() {
+    bool ret = msclPINVOKE.ContinuousBIT_gyroGeneralFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool gyroOverrange() {
+    bool ret = msclPINVOKE.ContinuousBIT_gyroOverrange(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool gyroSelfTestFail() {
+    bool ret = msclPINVOKE.ContinuousBIT_gyroSelfTestFail(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool magGeneralFault() {
+    bool ret = msclPINVOKE.ContinuousBIT_magGeneralFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool magOverrange() {
+    bool ret = msclPINVOKE.ContinuousBIT_magOverrange(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool magSelfTestFail() {
+    bool ret = msclPINVOKE.ContinuousBIT_magSelfTestFail(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool pressureGeneralFault() {
+    bool ret = msclPINVOKE.ContinuousBIT_pressureGeneralFault(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool pressureOverrange() {
+    bool ret = msclPINVOKE.ContinuousBIT_pressureOverrange(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool pressureSelfTestFail() {
+    bool ret = msclPINVOKE.ContinuousBIT_pressureSelfTestFail(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool filterTimingOverrun() {
+    bool ret = msclPINVOKE.ContinuousBIT_filterTimingOverrun(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public virtual bool filterTimingUnderrun() {
+    bool ret = msclPINVOKE.ContinuousBIT_filterTimingUnderrun(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }
 
 }
