@@ -1291,12 +1291,18 @@ namespace mscl
             CH_BIT_GNSS_GENERAL             = 254,
             CH_BIT_GNSS_RECEIVERS           = 255
         };
-
-        //API Typedefs:
-        //  MipChannelFields    - A vector of <ChannelField> enums.
-        //  MipCommands         - A vector of <Command> enums.
+        
+        //API Typedef: MipChannelFields
+        //    A vector of <ChannelField> enums.
         typedef std::vector<ChannelField> MipChannelFields;
+
+        //API Typedef: MipCommands
+        //    A vector of <Command> enums.
         typedef std::vector<Command> MipCommands;
+
+        //API Typedef: MipDataClasses
+        //    A vector of <DataClass> enums.
+        typedef std::vector<DataClass> MipDataClasses;
 
         //API Typedef: ChannelIndex
         //    A <ChannelQualifier>, int pair indicating the index value of the qualifier in a channel field.
