@@ -267,7 +267,7 @@ namespace mscl
         MipModel model(nodeInfo().deviceInfo().modelNumber);
         switch (model.baseModel().nodeModel())
         {
-        
+
         case MipModels::node_3dm_gx3_45:
             return{
                 InertialTypes::VehicleModeType::PORTABLE_VEHICLE,
@@ -530,7 +530,7 @@ namespace mscl
             case MipModels::node_3dm_dh3:
                 return {
                     InertialTypes::AdaptiveMeasurementMode::ADAPTIVE_MEASUREMENT_DISABLE,
-                    InertialTypes::AdaptiveMeasurementMode::ADAPTIVE_MEASUREMENT_ENABLE_FIXED 
+                    InertialTypes::AdaptiveMeasurementMode::ADAPTIVE_MEASUREMENT_ENABLE_FIXED
                 };
 
             case MipModels::node_3dm_gx5_45:
@@ -547,7 +547,7 @@ namespace mscl
             default:
                 return {
                     InertialTypes::AdaptiveMeasurementMode::ADAPTIVE_MEASUREMENT_DISABLE,
-                    InertialTypes::AdaptiveMeasurementMode::ADAPTIVE_MEASUREMENT_ENABLE_FIXED, 
+                    InertialTypes::AdaptiveMeasurementMode::ADAPTIVE_MEASUREMENT_ENABLE_FIXED,
                     InertialTypes::AdaptiveMeasurementMode::ADAPTIVE_MEASUREMENT_ENABLE_AUTO
                 };
         }
@@ -573,6 +573,8 @@ namespace mscl
         case MipModels::node_3dm_gq7:
         case MipModels::node_3dm_cv7_ahrs:
         case MipModels::node_3dm_cv7_ar:
+        case MipModels::node_3dm_gv7_ahrs:
+        case MipModels::node_3dm_gv7_ar:
         default:
             return{
                 InertialTypes::AutoAdaptiveFilteringLevel::FILTERING_OFF,
@@ -595,12 +597,14 @@ namespace mscl
         switch(model.baseModel().nodeModel())
         {
             case MipModels::node_3dm_cv7_ahrs:
+            case MipModels::node_3dm_gv7_ahrs:
                 return{
                     InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
                     InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
                 };
 
             case MipModels::node_3dm_cv7_ar:
+            case MipModels::node_3dm_gv7_ar:
                 return {
                     InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
                 };
@@ -629,6 +633,8 @@ namespace mscl
         {
         case MipModels::node_3dm_cv7_ahrs:
         case MipModels::node_3dm_cv7_ar:
+        case MipModels::node_3dm_gv7_ahrs:
+        case MipModels::node_3dm_gv7_ar:
             return{
                 InertialTypes::PpsSource::PPS_DISABLED,
                 InertialTypes::PpsSource::PPS_GPIO,
@@ -733,7 +739,7 @@ namespace mscl
         }
 
         GpioPinOptions options = supportedGpioConfigurations();
-        
+
         if (options.find(pin) == options.end())
         {
             return{};
@@ -759,6 +765,28 @@ namespace mscl
             { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
         };
 
+        const MipModel model(nodeInfo().deviceInfo().modelNumber);
+        const MipModels::NodeModel nodeModel = model.baseModel().nodeModel();
+
+        switch (nodeModel)
+        {
+        case MipModels::node_3dm_gv7_ahrs:
+        case MipModels::node_3dm_gv7_ar:
+            pin1Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
+            pin2Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
+
+            pin1Features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
+            pin2Features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
+
+            return {
+                { 1, pin1Features },
+                { 2, pin2Features }
+            };
+
+        default:
+            break;
+        }
+
         GpioFeatureBehaviors pin3Features = {
             { GpioConfiguration::Feature::UNUSED_FEATURE, {} },
             { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
@@ -769,8 +797,7 @@ namespace mscl
             { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
         };
 
-        MipModel model(nodeInfo().deviceInfo().modelNumber);
-        switch (model.baseModel().nodeModel())
+        switch (nodeModel)
         {
         case MipModels::node_3dm_cv7_ahrs:
         case MipModels::node_3dm_cv7_ar:
@@ -797,7 +824,7 @@ namespace mscl
             break;
         }
 
-        return{
+        return {
             { 1, pin1Features },
             { 2, pin2Features },
             { 3, pin3Features },
@@ -865,6 +892,8 @@ namespace mscl
         {
         case MipModels::node_3dm_cv7_ahrs:
         case MipModels::node_3dm_cv7_ar:
+        case MipModels::node_3dm_gv7_ahrs:
+        case MipModels::node_3dm_gv7_ar:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
                 InertialTypes::GeographicSourceOption::MANUAL
@@ -892,6 +921,8 @@ namespace mscl
         {
         case MipModels::node_3dm_cv7_ahrs:
         case MipModels::node_3dm_cv7_ar:
+        case MipModels::node_3dm_gv7_ahrs:
+        case MipModels::node_3dm_gv7_ar:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
                 InertialTypes::GeographicSourceOption::MANUAL
@@ -919,6 +950,8 @@ namespace mscl
         {
         case MipModels::node_3dm_cv7_ahrs:
         case MipModels::node_3dm_cv7_ar:
+        case MipModels::node_3dm_gv7_ahrs:
+        case MipModels::node_3dm_gv7_ar:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
                 InertialTypes::GeographicSourceOption::MANUAL
@@ -954,6 +987,8 @@ namespace mscl
         {
         case MipModels::node_3dm_cv7_ahrs:
         case MipModels::node_3dm_cv7_ar:
+        case MipModels::node_3dm_gv7_ahrs:
+        case MipModels::node_3dm_gv7_ar:
         default:
             possibleFields = {
                 // 0x80: Sensor Data
@@ -1071,6 +1106,7 @@ namespace mscl
         case MipModels::node_3dm_cl5_15:
 
         case MipModels::node_3dm_cv7_ar:
+        case MipModels::node_3dm_gv7_ar:
             return false;
 
         default:
