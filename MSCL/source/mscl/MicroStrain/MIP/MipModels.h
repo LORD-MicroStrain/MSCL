@@ -90,7 +90,7 @@ namespace mscl
             node_3dm_gq7       = 6284, // 3DM-GQ7
             node_3dm_rtk       = 6285, // 3DM-RTK
             node_3dm_cv7_ahrs  = 6286, // 3DM-CV7-AHRS
-            node_3dm_cv7_ar    = 6287,  // 3DM-CV7-AR
+            node_3dm_cv7_ar    = 6287, // 3DM-CV7-AR
             node_3dm_gv7_ahrs  = 6288, // 3DM-GV7-AHRS
             node_3dm_gv7_ar    = 6289  // 3DM-GV7-AR
         };

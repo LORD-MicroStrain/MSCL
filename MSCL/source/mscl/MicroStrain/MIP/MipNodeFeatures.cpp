@@ -755,81 +755,82 @@ namespace mscl
             return{};
         }
 
-        GpioFeatureBehaviors pin1Features = {
-            { GpioConfiguration::Feature::UNUSED_FEATURE, {} },
-            { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
-        };
-
-        GpioFeatureBehaviors pin2Features = {
-            { GpioConfiguration::Feature::UNUSED_FEATURE, {} },
-            { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
-        };
-
         const MipModel model(nodeInfo().deviceInfo().modelNumber);
         const MipModels::NodeModel nodeModel = model.baseModel().nodeModel();
 
+        // get supported pin IDs
+        std::vector<uint8> supportedPins;
         switch (nodeModel)
         {
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
-            pin1Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
-            pin2Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
+            supportedPins = { 1, 2 };
+            break;
 
-            pin1Features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
-            pin2Features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
+        // gq7, cv7
+        default:
+            supportedPins = { 1, 2, 3, 4 };
+            break;
+        }
 
-            return {
-                { 1, pin1Features },
-                { 2, pin2Features }
+        // get all available to avoid re-calling supportedGpioBehaviors() for a behavior type
+        const GpioFeatureBehaviors availableBehaviors = {
+                { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
+                { GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE) },
+                { GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE) },
+                { GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE) }
+        };
+        
+        // build pin options
+        GpioPinOptions pinOptions;
+        for (uint8 pinId : supportedPins)
+        {
+            // add features shared for all pins across all devices
+            GpioFeatureBehaviors features = {
+                { GpioConfiguration::Feature::UNUSED_FEATURE,{} },
+                { GpioConfiguration::Feature::GPIO_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::GPIO_FEATURE) }
             };
 
-        default:
-            break;
+            // add device- and pin-specific features
+            switch (nodeModel)
+            {
+            case MipModels::node_3dm_cv7_ahrs:
+            case MipModels::node_3dm_cv7_ar:
+            case MipModels::node_3dm_gv7_ahrs:
+            case MipModels::node_3dm_gv7_ar:
+                // CV7 and GV7 all pins support the same features (PPS, Event Timestamp)
+                features.emplace(GpioConfiguration::Feature::PPS_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::PPS_FEATURE));
+                features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
+                break;
+
+            case MipModels::node_3dm_gq7:
+                // GQ7 feature support varies across pins
+                switch (pinId)
+                {
+                case 1:
+                    features.emplace(GpioConfiguration::Feature::PPS_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::PPS_FEATURE));
+                    features.emplace(GpioConfiguration::Feature::ENCODER_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::ENCODER_FEATURE));
+                    break;
+                case 2:
+                    features.emplace(GpioConfiguration::Feature::ENCODER_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::ENCODER_FEATURE));
+                    break;
+                case 3:
+                    features.emplace(GpioConfiguration::Feature::PPS_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::PPS_FEATURE));
+                    break;
+                default:
+                    break;
+                }
+                break;
+
+            default:
+                break;
+            }
+            
+            // add features for target id to pin options
+            pinOptions.emplace(pinId, features);
         }
 
-        GpioFeatureBehaviors pin3Features = {
-            { GpioConfiguration::Feature::UNUSED_FEATURE, {} },
-            { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
-        };
-
-        GpioFeatureBehaviors pin4Features = {
-            { GpioConfiguration::Feature::UNUSED_FEATURE, {} },
-            { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
-        };
-
-        switch (nodeModel)
-        {
-        case MipModels::node_3dm_cv7_ahrs:
-        case MipModels::node_3dm_cv7_ar:
-            pin1Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
-            pin2Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
-            pin3Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
-            pin4Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
-
-            pin1Features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
-            pin2Features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
-            pin3Features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
-            pin4Features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
-            break;
-
-        case MipModels::node_3dm_gq7:
-            pin1Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
-            pin3Features.emplace(GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE));
-
-            pin1Features.emplace(GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE));
-            pin2Features.emplace(GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE));
-            break;
-
-        default:
-            break;
-        }
-
-        return {
-            { 1, pin1Features },
-            { 2, pin2Features },
-            { 3, pin3Features },
-            { 4, pin4Features }
-        };
+        return pinOptions;
     }
 
     GnssSignalConfigOptions MipNodeFeatures::supportedGnssSignalConfigurations() const
