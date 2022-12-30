@@ -18,6 +18,7 @@ Forthcoming
 - Wireless
     - Updated China transmit power limit to 10dBm
 - Inertial
+    - Added base GV7-AR, -AHRS support
     - NmeaMessageFormat changes:
         - Added max configurations count
         - Made supportedDataClasses() public

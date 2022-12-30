@@ -54,41 +54,45 @@ namespace mscl
         //  node_3dm_rtk        - 6285 - 3DM-RTK
         //  node_3dm_cv7_ahrs   - 6286 - 3DM-CV7-AHRS
         //  node_3dm_cv7_ar     - 6287 - 3DM-CV7-AR
+        //  node_3dm_gv7_ahrs   - 6288 - 3DM-GV7-AHRS
+        //  node_3dm_gv7_ar     - 6289 - 3DM-GV7-AR
         //=========================================================================
         enum NodeModel
         {
-            node_3dm_dh3 = 6219,     //3DM-DH3
-            node_3dm_gx3_15 = 6227,     //3DM-GX3-15
-            node_3dm_gx3_25 = 6223,     //3DM-GX3-25
-            node_3dm_gx3_35 = 6225,     //3DM-GX3-35
-            node_3dm_gx3_45 = 6228,     //3DM-GX3-45
-            node_3dm_rq1_45_lt = 6232,     //3DM-RQ1-45-LT
-            node_3dm_gx4_15 = 6233,     //3DM-GX4-15
-            node_3dm_gx4_25 = 6234,     //3DM-GX4-25
-            node_3dm_gx4_45 = 6236,     //3DM-GX4-45
-            node_3dm_rq1_45_st = 6239,     //3DM-RQ1-45-ST
-            node_mv5_ar = 6243,     //MV5-AR
-            node_3dm_gx5_10 = 6255,     //3DM-GX5-10
-            node_3dm_gx5_15 = 6254,     //3DM-GX5-15
-            node_3dm_gx5_25 = 6253,     //3DM-GX5-25
-            node_3dm_gx5_35 = 6252,     //3DM-GX5-35
-            node_3dm_gx5_45 = 6251,     //3DM-GX5-45
-            node_3dm_cv5_10 = 6259,     //3DM-CV5-10
-            node_3dm_cv5_15 = 6258,     //3DM-CV5-15
-            node_3dm_cv5_25 = 6257,     //3DM-CV5-25
-            node_3dm_cv5_45 = 6256,     //3DM-CV5-45
-            node_3dm_gq4_45 = 6250,     //3DM-GQ4-45
-            node_3dm_cx5_45 = 6271,     //3DM-CX5-45
-            node_3dm_cx5_35 = 6272,     //3DM-CX5-35
-            node_3dm_cx5_25 = 6273,     //3DM-CX5-25
-            node_3dm_cx5_15 = 6274,     //3DM-CX5-15
-            node_3dm_cx5_10 = 6275,     //3DM-CX5-10
-            node_3dm_cl5_15 = 6280,     //3DM-CL5-15
-            node_3dm_cl5_25 = 6281,     //3DM-CL5-25
-            node_3dm_gq7 = 6284,     //3DM-GQ7
-            node_3dm_rtk = 6285,     //3DM-RTK
-            node_3dm_cv7_ahrs = 6286, //3DM-CV7-AHRS
-            node_3dm_cv7_ar   = 6287  //3DM-CV7-AR
+            node_3dm_dh3       = 6219, // 3DM-DH3
+            node_3dm_gx3_15    = 6227, // 3DM-GX3-15
+            node_3dm_gx3_25    = 6223, // 3DM-GX3-25
+            node_3dm_gx3_35    = 6225, // 3DM-GX3-35
+            node_3dm_gx3_45    = 6228, // 3DM-GX3-45
+            node_3dm_rq1_45_lt = 6232, // 3DM-RQ1-45-LT
+            node_3dm_gx4_15    = 6233, // 3DM-GX4-15
+            node_3dm_gx4_25    = 6234, // 3DM-GX4-25
+            node_3dm_gx4_45    = 6236, // 3DM-GX4-45
+            node_3dm_rq1_45_st = 6239, // 3DM-RQ1-45-ST
+            node_mv5_ar        = 6243, // MV5-AR
+            node_3dm_gx5_10    = 6255, // 3DM-GX5-10
+            node_3dm_gx5_15    = 6254, // 3DM-GX5-15
+            node_3dm_gx5_25    = 6253, // 3DM-GX5-25
+            node_3dm_gx5_35    = 6252, // 3DM-GX5-35
+            node_3dm_gx5_45    = 6251, // 3DM-GX5-45
+            node_3dm_cv5_10    = 6259, // 3DM-CV5-10
+            node_3dm_cv5_15    = 6258, // 3DM-CV5-15
+            node_3dm_cv5_25    = 6257, // 3DM-CV5-25
+            node_3dm_cv5_45    = 6256, // 3DM-CV5-45
+            node_3dm_gq4_45    = 6250, // 3DM-GQ4-45
+            node_3dm_cx5_45    = 6271, // 3DM-CX5-45
+            node_3dm_cx5_35    = 6272, // 3DM-CX5-35
+            node_3dm_cx5_25    = 6273, // 3DM-CX5-25
+            node_3dm_cx5_15    = 6274, // 3DM-CX5-15
+            node_3dm_cx5_10    = 6275, // 3DM-CX5-10
+            node_3dm_cl5_15    = 6280, // 3DM-CL5-15
+            node_3dm_cl5_25    = 6281, // 3DM-CL5-25
+            node_3dm_gq7       = 6284, // 3DM-GQ7
+            node_3dm_rtk       = 6285, // 3DM-RTK
+            node_3dm_cv7_ahrs  = 6286, // 3DM-CV7-AHRS
+            node_3dm_cv7_ar    = 6287, // 3DM-CV7-AR
+            node_3dm_gv7_ahrs  = 6288, // 3DM-GV7-AHRS
+            node_3dm_gv7_ar    = 6289  // 3DM-GV7-AR
         };
 
         //=========================================================================
@@ -118,75 +122,79 @@ namespace mscl
         //  Most models have 9999 placeholder modifier values because there is no significant interface difference between the different versions of the same base model.
         //  This placeholder value will match to any modifier value read from the device when comparing <MipModel> objects.
         //
-        //  model_3dm_dh3        - 62199999 - 3DM-DH3
-        //  model_3dm_gx3_15     - 62279999 - 3DM-GX3-15
-        //  model_3dm_gx3_25     - 62239999 - 3DM-GX3-25
-        //  model_3dm_gx3_35     - 62259999 - 3DM-GX3-35
-        //  model_3dm_gx3_45     - 62289999 - 3DM-GX3-45
-        //  model_3dm_rq1_45_lt  - 62329999 - 3DM-RQ1-45-LT
-        //  model_3dm_gx4_15     - 62339999 - 3DM-GX4-15
-        //  model_3dm_gx4_25     - 62349999 - 3DM-GX4-25
-        //  model_3dm_gx4_45     - 62369999 - 3DM-GX4-45
-        //  model_3dm_rq1_45_st  - 62399999 - 3DM-RQ1-45-ST
-        //  model_mv5_ar         - 62439999 - MV5-AR
-        //  model_3dm_gx5_10     - 62559999 - 3DM-GX5-10
-        //  model_3dm_gx5_15     - 62549999 - 3DM-GX5-15
-        //  model_3dm_gx5_25     - 62539999 - 3DM-GX5-25
-        //  model_3dm_gx5_35     - 62529999 - 3DM-GX5-35
-        //  model_3dm_gx5_45     - 62519999 - 3DM-GX5-45
-        //  model_3dm_cv5_10     - 62599999 - 3DM-CV5-10
-        //  model_3dm_cv5_15     - 62589999 - 3DM-CV5-15
-        //  model_3dm_cv5_25     - 62579999 - 3DM-CV5-25
-        //  model_3dm_cv5_45     - 62569999 - 3DM-CV5-45
-        //  model_3dm_gq4_45     - 62509999 - 3DM-GQ4-45
-        //  model_3dm_cx5_45     - 62719999 - 3DM-CX5-45
-        //  model_3dm_cx5_35     - 62729999 - 3DM-CX5-35
-        //  model_3dm_cx5_25     - 62739999 - 3DM-CX5-25
-        //  model_3dm_cx5_15     - 62749999 - 3DM-CX5-15
-        //  model_3dm_cx5_10     - 62759999 - 3DM-CX5-10
-        //  model_3dm_cl5_15     - 62809999 - 3DM-CL5-15
-        //  model_3dm_cl5_25     - 62819999 - 3DM-CL5-25
-        //  model_3dm_gq7        - 62849999 - 3DM-GQ7
-        //  model_3dm_rtk_v1     - 62850000 - 3DM-RTK v1
-        //  model_3dm_rtk        - 62850100 - 3DM-RTK
-        //  model_3dm_cv7_ahrs   - 62869999 - 3DM-CV7-AHRS
-        //  model_3dm_cv7_ar     - 62879999 - 3DM-CV7-AR
+        //  model_3dm_dh3       - 62199999 - 3DM-DH3
+        //  model_3dm_gx3_15    - 62279999 - 3DM-GX3-15
+        //  model_3dm_gx3_25    - 62239999 - 3DM-GX3-25
+        //  model_3dm_gx3_35    - 62259999 - 3DM-GX3-35
+        //  model_3dm_gx3_45    - 62289999 - 3DM-GX3-45
+        //  model_3dm_rq1_45_lt - 62329999 - 3DM-RQ1-45-LT
+        //  model_3dm_gx4_15    - 62339999 - 3DM-GX4-15
+        //  model_3dm_gx4_25    - 62349999 - 3DM-GX4-25
+        //  model_3dm_gx4_45    - 62369999 - 3DM-GX4-45
+        //  model_3dm_rq1_45_st - 62399999 - 3DM-RQ1-45-ST
+        //  model_mv5_ar        - 62439999 - MV5-AR
+        //  model_3dm_gx5_10    - 62559999 - 3DM-GX5-10
+        //  model_3dm_gx5_15    - 62549999 - 3DM-GX5-15
+        //  model_3dm_gx5_25    - 62539999 - 3DM-GX5-25
+        //  model_3dm_gx5_35    - 62529999 - 3DM-GX5-35
+        //  model_3dm_gx5_45    - 62519999 - 3DM-GX5-45
+        //  model_3dm_cv5_10    - 62599999 - 3DM-CV5-10
+        //  model_3dm_cv5_15    - 62589999 - 3DM-CV5-15
+        //  model_3dm_cv5_25    - 62579999 - 3DM-CV5-25
+        //  model_3dm_cv5_45    - 62569999 - 3DM-CV5-45
+        //  model_3dm_gq4_45    - 62509999 - 3DM-GQ4-45
+        //  model_3dm_cx5_45    - 62719999 - 3DM-CX5-45
+        //  model_3dm_cx5_35    - 62729999 - 3DM-CX5-35
+        //  model_3dm_cx5_25    - 62739999 - 3DM-CX5-25
+        //  model_3dm_cx5_15    - 62749999 - 3DM-CX5-15
+        //  model_3dm_cx5_10    - 62759999 - 3DM-CX5-10
+        //  model_3dm_cl5_15    - 62809999 - 3DM-CL5-15
+        //  model_3dm_cl5_25    - 62819999 - 3DM-CL5-25
+        //  model_3dm_gq7       - 62849999 - 3DM-GQ7
+        //  model_3dm_rtk_v1    - 62850000 - 3DM-RTK v1
+        //  model_3dm_rtk       - 62850100 - 3DM-RTK
+        //  model_3dm_cv7_ahrs  - 62869999 - 3DM-CV7-AHRS
+        //  model_3dm_cv7_ar    - 62879999 - 3DM-CV7-AR
+        //  model_3dm_gv7_ahrs  - 62889999 - 3DM-GV7-AHRS
+        //  model_3dm_gv7_ar    - 62899999 - 3DM-GV7-AR
         //=========================================================================
         enum ModelNumber
         {
-            model_3dm_dh3        = 62199999, // 3DM-DH3
-            model_3dm_gx3_15     = 62279999, // 3DM-GX3-15
-            model_3dm_gx3_25     = 62239999, // 3DM-GX3-25
-            model_3dm_gx3_35     = 62259999, // 3DM-GX3-35
-            model_3dm_gx3_45     = 62289999, // 3DM-GX3-45
-            model_3dm_rq1_45_lt  = 62329999, // 3DM-RQ1-45-LT
-            model_3dm_gx4_15     = 62339999, // 3DM-GX4-15
-            model_3dm_gx4_25     = 62349999, // 3DM-GX4-25
-            model_3dm_gx4_45     = 62369999, // 3DM-GX4-45
-            model_3dm_rq1_45_st  = 62399999, // 3DM-RQ1-45-ST
-            model_mv5_ar         = 62439999, // MV5-AR
-            model_3dm_gx5_10     = 62559999, // 3DM-GX5-10
-            model_3dm_gx5_15     = 62549999, // 3DM-GX5-15
-            model_3dm_gx5_25     = 62539999, // 3DM-GX5-25
-            model_3dm_gx5_35     = 62529999, // 3DM-GX5-35
-            model_3dm_gx5_45     = 62519999, // 3DM-GX5-45
-            model_3dm_cv5_10     = 62599999, // 3DM-CV5-10
-            model_3dm_cv5_15     = 62589999, // 3DM-CV5-15
-            model_3dm_cv5_25     = 62579999, // 3DM-CV5-25
-            model_3dm_cv5_45     = 62569999, // 3DM-CV5-45
-            model_3dm_gq4_45     = 62509999, // 3DM-GQ4-45
-            model_3dm_cx5_45     = 62719999, // 3DM-CX5-45
-            model_3dm_cx5_35     = 62729999, // 3DM-CX5-35
-            model_3dm_cx5_25     = 62739999, // 3DM-CX5-25
-            model_3dm_cx5_15     = 62749999, // 3DM-CX5-15
-            model_3dm_cx5_10     = 62759999, // 3DM-CX5-10
-            model_3dm_cl5_15     = 62809999, // 3DM-CL5-15
-            model_3dm_cl5_25     = 62819999, // 3DM-CL5-25
-            model_3dm_gq7        = 62849999, // 3DM-GQ7
-            model_3dm_rtk_v1     = 62850000, // 3DM-RTK v1
-            model_3dm_rtk        = 62850100, // 3DM-RTK
-            model_3dm_cv7_ahrs   = 62869999, // 3DM-CV7-AHRS
-            model_3dm_cv7_ar     = 62879999, // 3DM-CV7-AR
+            model_3dm_dh3       = 62199999, // 3DM-DH3
+            model_3dm_gx3_15    = 62279999, // 3DM-GX3-15
+            model_3dm_gx3_25    = 62239999, // 3DM-GX3-25
+            model_3dm_gx3_35    = 62259999, // 3DM-GX3-35
+            model_3dm_gx3_45    = 62289999, // 3DM-GX3-45
+            model_3dm_rq1_45_lt = 62329999, // 3DM-RQ1-45-LT
+            model_3dm_gx4_15    = 62339999, // 3DM-GX4-15
+            model_3dm_gx4_25    = 62349999, // 3DM-GX4-25
+            model_3dm_gx4_45    = 62369999, // 3DM-GX4-45
+            model_3dm_rq1_45_st = 62399999, // 3DM-RQ1-45-ST
+            model_mv5_ar        = 62439999, // MV5-AR
+            model_3dm_gx5_10    = 62559999, // 3DM-GX5-10
+            model_3dm_gx5_15    = 62549999, // 3DM-GX5-15
+            model_3dm_gx5_25    = 62539999, // 3DM-GX5-25
+            model_3dm_gx5_35    = 62529999, // 3DM-GX5-35
+            model_3dm_gx5_45    = 62519999, // 3DM-GX5-45
+            model_3dm_cv5_10    = 62599999, // 3DM-CV5-10
+            model_3dm_cv5_15    = 62589999, // 3DM-CV5-15
+            model_3dm_cv5_25    = 62579999, // 3DM-CV5-25
+            model_3dm_cv5_45    = 62569999, // 3DM-CV5-45
+            model_3dm_gq4_45    = 62509999, // 3DM-GQ4-45
+            model_3dm_cx5_45    = 62719999, // 3DM-CX5-45
+            model_3dm_cx5_35    = 62729999, // 3DM-CX5-35
+            model_3dm_cx5_25    = 62739999, // 3DM-CX5-25
+            model_3dm_cx5_15    = 62749999, // 3DM-CX5-15
+            model_3dm_cx5_10    = 62759999, // 3DM-CX5-10
+            model_3dm_cl5_15    = 62809999, // 3DM-CL5-15
+            model_3dm_cl5_25    = 62819999, // 3DM-CL5-25
+            model_3dm_gq7       = 62849999, // 3DM-GQ7
+            model_3dm_rtk_v1    = 62850000, // 3DM-RTK v1
+            model_3dm_rtk       = 62850100, // 3DM-RTK
+            model_3dm_cv7_ahrs  = 62869999, // 3DM-CV7-AHRS
+            model_3dm_cv7_ar    = 62879999, // 3DM-CV7-AR
+            model_3dm_gv7_ahrs  = 62889999, // 3DM-GV7-AHRS
+            model_3dm_gv7_ar    = 62899999  // 3DM-GV7-AR
         };
 
         //API Function: modelNumberEqual
@@ -293,75 +301,79 @@ namespace mscl
         //  Most models have 9999 placeholder modifier values because there is no significant interface difference between the different versions of the same base model.
         //  This placeholder value will match to any modifier value read from the device when comparing <MipModel> objects.
         //
-        //  mip_model_none           - 00000000 - undefined placeholder
-        //  mip_model_3dm_dh3        - 62199999 - 3DM-DH3
-        //  mip_model_3dm_gx3_15     - 62279999 - 3DM-GX3-15
-        //  mip_model_3dm_gx3_25     - 62239999 - 3DM-GX3-25
-        //  mip_model_3dm_gx3_35     - 62259999 - 3DM-GX3-35
-        //  mip_model_3dm_gx3_45     - 62289999 - 3DM-GX3-45
-        //  mip_model_3dm_rq1_45_lt  - 62329999 - 3DM-RQ1-45-LT
-        //  mip_model_3dm_gx4_15     - 62339999 - 3DM-GX4-15
-        //  mip_model_3dm_gx4_25     - 62349999 - 3DM-GX4-25
-        //  mip_model_3dm_gx4_45     - 62369999 - 3DM-GX4-45
-        //  mip_model_3dm_rq1_45_st  - 62399999 - 3DM-RQ1-45-ST
-        //  mip_model_mv5_ar         - 62439999 - MV5-AR
-        //  mip_model_3dm_gx5_10     - 62559999 - 3DM-GX5-10
-        //  mip_model_3dm_gx5_15     - 62549999 - 3DM-GX5-15
-        //  mip_model_3dm_gx5_25     - 62539999 - 3DM-GX5-25
-        //  mip_model_3dm_gx5_35     - 62529999 - 3DM-GX5-35
-        //  mip_model_3dm_gx5_45     - 62519999 - 3DM-GX5-45
-        //  mip_model_3dm_cv5_10     - 62599999 - 3DM-CV5-10
-        //  mip_model_3dm_cv5_15     - 62589999 - 3DM-CV5-15
-        //  mip_model_3dm_cv5_25     - 62579999 - 3DM-CV5-25
-        //  mip_model_3dm_cv5_45     - 62569999 - 3DM-CV5-45
-        //  mip_model_3dm_gq4_45     - 62509999 - 3DM-GQ4-45
-        //  mip_model_3dm_cx5_45     - 62719999 - 3DM-CX5-45
-        //  mip_model_3dm_cx5_35     - 62729999 - 3DM-CX5-35
-        //  mip_model_3dm_cx5_25     - 62739999 - 3DM-CX5-25
-        //  mip_model_3dm_cx5_15     - 62749999 - 3DM-CX5-15
-        //  mip_model_3dm_cx5_10     - 62759999 - 3DM-CX5-10
-        //  mip_model_3dm_cl5_15     - 62809999 - 3DM-CL5-15
-        //  mip_model_3dm_cl5_25     - 62819999 - 3DM-CL5-25
-        //  mip_model_3dm_gq7        - 62849999 - 3DM-GQ7
-        //  mip_model_3dm_rtk_v1     - 62850000 - 3DM-RTK v1
-        //  mip_model_3dm_rtk        - 62850100 - 3DM-RTK
-        //  mip_model_3dm_cv7_ahrs   - 62869999 - 3DM-CV7-AHRS
-        //  mip_model_3dm_cv7_ar     - 62879999 - 3DM-CV7-AR
+        //  mip_model_none          - 00000000 - undefined placeholder
+        //  mip_model_3dm_dh3       - 62199999 - 3DM-DH3
+        //  mip_model_3dm_gx3_15    - 62279999 - 3DM-GX3-15
+        //  mip_model_3dm_gx3_25    - 62239999 - 3DM-GX3-25
+        //  mip_model_3dm_gx3_35    - 62259999 - 3DM-GX3-35
+        //  mip_model_3dm_gx3_45    - 62289999 - 3DM-GX3-45
+        //  mip_model_3dm_rq1_45_lt - 62329999 - 3DM-RQ1-45-LT
+        //  mip_model_3dm_gx4_15    - 62339999 - 3DM-GX4-15
+        //  mip_model_3dm_gx4_25    - 62349999 - 3DM-GX4-25
+        //  mip_model_3dm_gx4_45    - 62369999 - 3DM-GX4-45
+        //  mip_model_3dm_rq1_45_st - 62399999 - 3DM-RQ1-45-ST
+        //  mip_model_mv5_ar        - 62439999 - MV5-AR
+        //  mip_model_3dm_gx5_10    - 62559999 - 3DM-GX5-10
+        //  mip_model_3dm_gx5_15    - 62549999 - 3DM-GX5-15
+        //  mip_model_3dm_gx5_25    - 62539999 - 3DM-GX5-25
+        //  mip_model_3dm_gx5_35    - 62529999 - 3DM-GX5-35
+        //  mip_model_3dm_gx5_45    - 62519999 - 3DM-GX5-45
+        //  mip_model_3dm_cv5_10    - 62599999 - 3DM-CV5-10
+        //  mip_model_3dm_cv5_15    - 62589999 - 3DM-CV5-15
+        //  mip_model_3dm_cv5_25    - 62579999 - 3DM-CV5-25
+        //  mip_model_3dm_cv5_45    - 62569999 - 3DM-CV5-45
+        //  mip_model_3dm_gq4_45    - 62509999 - 3DM-GQ4-45
+        //  mip_model_3dm_cx5_45    - 62719999 - 3DM-CX5-45
+        //  mip_model_3dm_cx5_35    - 62729999 - 3DM-CX5-35
+        //  mip_model_3dm_cx5_25    - 62739999 - 3DM-CX5-25
+        //  mip_model_3dm_cx5_15    - 62749999 - 3DM-CX5-15
+        //  mip_model_3dm_cx5_10    - 62759999 - 3DM-CX5-10
+        //  mip_model_3dm_cl5_15    - 62809999 - 3DM-CL5-15
+        //  mip_model_3dm_cl5_25    - 62819999 - 3DM-CL5-25
+        //  mip_model_3dm_gq7       - 62849999 - 3DM-GQ7
+        //  mip_model_3dm_rtk_v1    - 62850000 - 3DM-RTK v1
+        //  mip_model_3dm_rtk       - 62850100 - 3DM-RTK
+        //  mip_model_3dm_cv7_ahrs  - 62869999 - 3DM-CV7-AHRS
+        //  mip_model_3dm_cv7_ar    - 62879999 - 3DM-CV7-AR
+        //  mip_model_3dm_gv7_ahrs  - 62889999 - 3DM-GV7-AHRS
+        //  mip_model_3dm_gv7_ar    - 62899999 - 3DM-GV7-AR
         //=========================================================================
-        static const MipModel mip_model_none;           //undefined
-        static const MipModel mip_model_3dm_dh3;        //3DM-DH3
-        static const MipModel mip_model_3dm_gx3_15;     //3DM-GX3-15
-        static const MipModel mip_model_3dm_gx3_25;     //3DM-GX3-25
-        static const MipModel mip_model_3dm_gx3_35;     //3DM-GX3-35
-        static const MipModel mip_model_3dm_gx3_45;     //3DM-GX3-45
-        static const MipModel mip_model_3dm_rq1_45_lt;  //3DM-RQ1-45-LT
-        static const MipModel mip_model_3dm_rq1_45_st;  //3DM-RQ1-45-ST
-        static const MipModel mip_model_3dm_gx4_15;     //3DM-GX4-15
-        static const MipModel mip_model_3dm_gx4_25;     //3DM-GX4-25
-        static const MipModel mip_model_3dm_gx4_45;     //3DM-GX4-45
-        static const MipModel mip_model_mv5_ar;         //MV5-AR
-        static const MipModel mip_model_3dm_gx5_10;     //3DM-GX5-10
-        static const MipModel mip_model_3dm_gx5_15;     //3DM-GX5-15
-        static const MipModel mip_model_3dm_gx5_25;     //3DM-GX5-25
-        static const MipModel mip_model_3dm_gx5_35;     //3DM-GX5-35
-        static const MipModel mip_model_3dm_gx5_45;     //3DM-GX5-45
-        static const MipModel mip_model_3dm_cv5_10;     //3DM-CV5-10
-        static const MipModel mip_model_3dm_cv5_15;     //3DM-CV5-15
-        static const MipModel mip_model_3dm_cv5_25;     //3DM-CV5-25
-        static const MipModel mip_model_3dm_cv5_45;     //3DM-CV5-45
-        static const MipModel mip_model_3dm_gq4_45;     //3DM-GQ4-45
-        static const MipModel mip_model_3dm_cx5_45;     //3DM-CX5-45
-        static const MipModel mip_model_3dm_cx5_35;     //3DM-CX5-35
-        static const MipModel mip_model_3dm_cx5_25;     //3DM-CX5-25
-        static const MipModel mip_model_3dm_cx5_15;     //3DM-CX5-15
-        static const MipModel mip_model_3dm_cx5_10;     //3DM-CX5-10
-        static const MipModel mip_model_3dm_cl5_15;     //3DM-CL5-15
-        static const MipModel mip_model_3dm_cl5_25;     //3DM-CL5-25
-        static const MipModel mip_model_3dm_gq7;        //3DM-GQ7
-        static const MipModel mip_model_3dm_rtk_v1;     //3DM-RTK v1
-        static const MipModel mip_model_3dm_rtk;        //3DM-RTK
-        static const MipModel mip_model_3dm_cv7_ahrs;   //3DM-CV7-AHRS
-        static const MipModel mip_model_3dm_cv7_ar;     //3DM-CV7-AR
+        static const MipModel mip_model_none;          // undefined
+        static const MipModel mip_model_3dm_dh3;       // 3DM-DH3
+        static const MipModel mip_model_3dm_gx3_15;    // 3DM-GX3-15
+        static const MipModel mip_model_3dm_gx3_25;    // 3DM-GX3-25
+        static const MipModel mip_model_3dm_gx3_35;    // 3DM-GX3-35
+        static const MipModel mip_model_3dm_gx3_45;    // 3DM-GX3-45
+        static const MipModel mip_model_3dm_rq1_45_lt; // 3DM-RQ1-45-LT
+        static const MipModel mip_model_3dm_rq1_45_st; // 3DM-RQ1-45-ST
+        static const MipModel mip_model_3dm_gx4_15;    // 3DM-GX4-15
+        static const MipModel mip_model_3dm_gx4_25;    // 3DM-GX4-25
+        static const MipModel mip_model_3dm_gx4_45;    // 3DM-GX4-45
+        static const MipModel mip_model_mv5_ar;        // MV5-AR
+        static const MipModel mip_model_3dm_gx5_10;    // 3DM-GX5-10
+        static const MipModel mip_model_3dm_gx5_15;    // 3DM-GX5-15
+        static const MipModel mip_model_3dm_gx5_25;    // 3DM-GX5-25
+        static const MipModel mip_model_3dm_gx5_35;    // 3DM-GX5-35
+        static const MipModel mip_model_3dm_gx5_45;    // 3DM-GX5-45
+        static const MipModel mip_model_3dm_cv5_10;    // 3DM-CV5-10
+        static const MipModel mip_model_3dm_cv5_15;    // 3DM-CV5-15
+        static const MipModel mip_model_3dm_cv5_25;    // 3DM-CV5-25
+        static const MipModel mip_model_3dm_cv5_45;    // 3DM-CV5-45
+        static const MipModel mip_model_3dm_gq4_45;    // 3DM-GQ4-45
+        static const MipModel mip_model_3dm_cx5_45;    // 3DM-CX5-45
+        static const MipModel mip_model_3dm_cx5_35;    // 3DM-CX5-35
+        static const MipModel mip_model_3dm_cx5_25;    // 3DM-CX5-25
+        static const MipModel mip_model_3dm_cx5_15;    // 3DM-CX5-15
+        static const MipModel mip_model_3dm_cx5_10;    // 3DM-CX5-10
+        static const MipModel mip_model_3dm_cl5_15;    // 3DM-CL5-15
+        static const MipModel mip_model_3dm_cl5_25;    // 3DM-CL5-25
+        static const MipModel mip_model_3dm_gq7;       // 3DM-GQ7
+        static const MipModel mip_model_3dm_rtk_v1;    // 3DM-RTK v1
+        static const MipModel mip_model_3dm_rtk;       // 3DM-RTK
+        static const MipModel mip_model_3dm_cv7_ahrs;  // 3DM-CV7-AHRS
+        static const MipModel mip_model_3dm_cv7_ar;    // 3DM-CV7-AR
+        static const MipModel mip_model_3dm_gv7_ahrs;  // 3DM-GV7-AHRS
+        static const MipModel mip_model_3dm_gv7_ar;    // 3DM-GV7-AR
 
     private:
         MipModel(); // hide default constructor

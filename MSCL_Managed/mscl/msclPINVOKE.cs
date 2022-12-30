@@ -3636,6 +3636,12 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_cv7_ar_get")]
   public static extern global::System.IntPtr MipModel_mip_model_3dm_cv7_ar_get();
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_gv7_ahrs_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_gv7_ahrs_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModel_mip_model_3dm_gv7_ar_get")]
+  public static extern global::System.IntPtr MipModel_mip_model_3dm_gv7_ar_get();
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_MipModel__SWIG_0")]
   public static extern global::System.IntPtr new_MipModel__SWIG_0(string jarg1);
 
