@@ -13,16 +13,16 @@ namespace mscl
     const WirelessTypes::TransmitPowers AvailableTransmitPowers::get(const NodeInfo& info, WirelessTypes::CommProtocol commProtocol)
     {
         //special cases for Japan
-        if(info.regionCode() == WirelessTypes::region_japan)
+        if (info.regionCode() == WirelessTypes::region_japan)
         {
             //NOTE: only adding special cases for older nodes here.
             //      see the ::get200series() function below for the 200-series nodes
-            switch(info.model())
+            switch (info.model())
             {
                 case WirelessModels::node_shmLink2_cust1_oldNumber:
                 case WirelessModels::node_shmLink2_cust1:
                 {
-                    return{
+                    return {
                         WirelessTypes::power_16dBm,
                         WirelessTypes::power_10dBm
                     };
@@ -30,7 +30,7 @@ namespace mscl
 
                 //the rest of the Nodes, in Japan
                 default:
-                    return{
+                    return {
                         WirelessTypes::power_10dBm,
                         WirelessTypes::power_5dBm
                     };
@@ -38,15 +38,16 @@ namespace mscl
         }
 
         //standard transmit powers shared among devices
-        switch(info.regionCode())
+        switch (info.regionCode())
         {
             //case WirelessTypes::region_japan:   // japan handled separately above
 
             case WirelessTypes::region_europeanUnion:
+            case WirelessTypes::region_china:
             case WirelessTypes::region_australia_newzealand:
             case WirelessTypes::region_singapore:
             case WirelessTypes::region_other:
-                return{
+                return {
                     WirelessTypes::power_10dBm,
                     WirelessTypes::power_5dBm,
                     WirelessTypes::power_0dBm
@@ -55,11 +56,10 @@ namespace mscl
             case WirelessTypes::region_usa:
             case WirelessTypes::region_canada:
             case WirelessTypes::region_brazil:
-            case WirelessTypes::region_china:
             case WirelessTypes::region_southAfrica:
             default:
             {
-                return{
+                return {
                     WirelessTypes::power_16dBm,
                     WirelessTypes::power_10dBm,
                     WirelessTypes::power_5dBm,
@@ -73,11 +73,11 @@ namespace mscl
     const WirelessTypes::TransmitPowers AvailableTransmitPowers::get200series(const NodeInfo& info, WirelessTypes::CommProtocol commProtocol)
     {
         //special cases for Japan
-        if(info.regionCode() == WirelessTypes::region_japan)
+        if (info.regionCode() == WirelessTypes::region_japan)
         {
             //NOTE: only adding special cases for 200-series nodes here.
             //      see the ::get() function above for the older nodes
-            switch(info.model())
+            switch (info.model())
             {
                 case WirelessModels::node_shmLink201:
                 case WirelessModels::node_shmLink201_qbridge_1K:
@@ -85,7 +85,7 @@ namespace mscl
                 case WirelessModels::node_shmLink201_hbridge_1K:
                 case WirelessModels::node_shmLink201_hbridge_348:
                 case WirelessModels::node_shmLink201_fullbridge:
-                    return{
+                    return {
                         WirelessTypes::power_10dBm,
                         WirelessTypes::power_5dBm
                     };
@@ -97,9 +97,9 @@ namespace mscl
                 case WirelessModels::node_gLink_200_8g_oem_u_fl:
                 case WirelessModels::node_gLink_200_40g_oem_u_fl:
                 {
-                    if(commProtocol == WirelessTypes::commProtocol_lxrs)
+                    if (commProtocol == WirelessTypes::commProtocol_lxrs)
                     {
-                        return{
+                        return {
                             WirelessTypes::power_16dBm,
                             WirelessTypes::power_10dBm,
                             WirelessTypes::power_5dBm
@@ -107,7 +107,7 @@ namespace mscl
                     }
                     else
                     {
-                        return{
+                        return {
                             WirelessTypes::power_11dBm,
                             WirelessTypes::power_5dBm,
                             WirelessTypes::power_1dBm,
@@ -145,9 +145,9 @@ namespace mscl
                 case WirelessModels::node_tcLink200_oem:
                 case WirelessModels::node_tcLink200_oem_ufl:
                 {
-                    if(commProtocol == WirelessTypes::commProtocol_lxrs)
+                    if (commProtocol == WirelessTypes::commProtocol_lxrs)
                     {
-                        return{
+                        return {
                             WirelessTypes::power_15dBm,
                             WirelessTypes::power_10dBm,
                             WirelessTypes::power_5dBm
@@ -155,7 +155,7 @@ namespace mscl
                     }
                     else
                     {
-                        return{
+                        return {
                             WirelessTypes::power_11dBm,
                             WirelessTypes::power_5dBm,
                             WirelessTypes::power_0dBm,
@@ -170,19 +170,19 @@ namespace mscl
         }
 
         //special cases for some model/region/protocol combinations
-        switch(info.model())
+        switch (info.model())
         {
             case WirelessModels::node_rtdLink200:
             case WirelessModels::node_tcLink200:
             {
-                if(info.regionCode() == WirelessTypes::region_europeanUnion ||
+                if (info.regionCode() == WirelessTypes::region_europeanUnion ||
                    info.regionCode() == WirelessTypes::region_singapore ||
                    info.regionCode() == WirelessTypes::region_australia_newzealand ||
                    info.regionCode() == WirelessTypes::region_other)
                 {
-                    if(commProtocol == WirelessTypes::commProtocol_lxrs)
+                    if (commProtocol == WirelessTypes::commProtocol_lxrs)
                     {
-                        return{
+                        return {
                             WirelessTypes::power_11dBm,
                             WirelessTypes::power_10dBm,
                             WirelessTypes::power_5dBm,
@@ -190,13 +190,13 @@ namespace mscl
                         };
                     }
                 }
-                else if(info.regionCode() == WirelessTypes::region_usa ||
+                else if (info.regionCode() == WirelessTypes::region_usa ||
                         info.regionCode() == WirelessTypes::region_southAfrica ||
                         info.regionCode() == WirelessTypes::region_canada)
                 {
-                    if(commProtocol == WirelessTypes::commProtocol_lxrsPlus)
+                    if (commProtocol == WirelessTypes::commProtocol_lxrsPlus)
                     {
-                        return{
+                        return {
                             WirelessTypes::power_16dBm,
                             WirelessTypes::power_10dBm,
                             WirelessTypes::power_5dBm,
@@ -214,13 +214,13 @@ namespace mscl
         }
 
         //standard transmit powers shared among devices
-        switch(info.regionCode())
+        switch (info.regionCode())
         {
             case WirelessTypes::region_japan:
             {
-                if(commProtocol == WirelessTypes::commProtocol_lxrs)
+                if (commProtocol == WirelessTypes::commProtocol_lxrs)
                 {
-                    return{
+                    return {
                         WirelessTypes::power_16dBm,
                         WirelessTypes::power_10dBm,
                         WirelessTypes::power_5dBm
@@ -228,7 +228,7 @@ namespace mscl
                 }
                 else
                 {
-                    return{
+                    return {
                         WirelessTypes::power_12dBm,
                         WirelessTypes::power_5dBm,
                         WirelessTypes::power_1dBm,
@@ -237,10 +237,11 @@ namespace mscl
             }
 
             case WirelessTypes::region_europeanUnion:
+            case WirelessTypes::region_china:
             case WirelessTypes::region_australia_newzealand:
             case WirelessTypes::region_singapore:
             case WirelessTypes::region_other:
-                return{
+                return {
                     WirelessTypes::power_10dBm,
                     WirelessTypes::power_5dBm,
                     WirelessTypes::power_0dBm
@@ -249,16 +250,15 @@ namespace mscl
             case WirelessTypes::region_usa:
             case WirelessTypes::region_canada:
             case WirelessTypes::region_brazil:
-            case WirelessTypes::region_china:
             case WirelessTypes::region_southAfrica:
             case WirelessTypes::region_indonesia:
             case WirelessTypes::region_taiwan:
             default:
             {
                 //if firmware supports 20dBm
-                if(info.firmwareVersion() >= Version(10, 0))
+                if (info.firmwareVersion() >= Version(10, 0))
                 {
-                    return{
+                    return {
                         WirelessTypes::power_20dBm,
                         WirelessTypes::power_16dBm,
                         WirelessTypes::power_10dBm,
@@ -268,7 +268,7 @@ namespace mscl
                 }
                 else
                 {
-                    return{
+                    return {
                         WirelessTypes::power_16dBm,
                         WirelessTypes::power_10dBm,
                         WirelessTypes::power_5dBm,
@@ -283,9 +283,9 @@ namespace mscl
     const WirelessTypes::TransmitPowers AvailableTransmitPowers::get(WirelessTypes::RegionCode region, WirelessModels::BaseModel model, const Version& fwVersion, WirelessTypes::CommProtocol commProtocol)
     {
         //special cases for Japan
-        if(region == WirelessTypes::region_japan)
+        if (region == WirelessTypes::region_japan)
         {
-            switch(model)
+            switch (model)
             {
                 case WirelessModels::base_wsdaBase_200_legacy:
                 case WirelessModels::base_wsdaBase_200:
@@ -293,9 +293,9 @@ namespace mscl
                 case WirelessModels::base_wsi_104:
                 case WirelessModels::base_wsda_2000:
                 {
-                    if(commProtocol == WirelessTypes::commProtocol_lxrs)
+                    if (commProtocol == WirelessTypes::commProtocol_lxrs)
                     {
-                        return{
+                        return {
                             WirelessTypes::power_16dBm,
                             WirelessTypes::power_11dBm,
                             WirelessTypes::power_5dBm
@@ -303,7 +303,7 @@ namespace mscl
                     }
                     else
                     {
-                        return{
+                        return {
                             WirelessTypes::power_11dBm,
                             WirelessTypes::power_5dBm,
                             WirelessTypes::power_0dBm,
@@ -313,7 +313,7 @@ namespace mscl
 
                 //the rest of the BaseStations, in Japan
                 default:
-                    return{
+                    return {
                         WirelessTypes::power_10dBm,
                         WirelessTypes::power_5dBm
                     };
@@ -321,15 +321,16 @@ namespace mscl
         }
 
         //standard transmit powers shared among devices
-        switch(region)
+        switch (region)
         {
             //case WirelessTypes::region_japan: //japan handled separately above
 
             case WirelessTypes::region_europeanUnion:
+            case WirelessTypes::region_china:
             case WirelessTypes::region_australia_newzealand:
             case WirelessTypes::region_singapore:
             case WirelessTypes::region_other:
-                return{
+                return {
                     WirelessTypes::power_10dBm,
                     WirelessTypes::power_5dBm,
                     WirelessTypes::power_0dBm
@@ -338,16 +339,15 @@ namespace mscl
             case WirelessTypes::region_usa:
             case WirelessTypes::region_canada:
             case WirelessTypes::region_brazil:
-            case WirelessTypes::region_china:
             case WirelessTypes::region_southAfrica:
             case WirelessTypes::region_indonesia:
             case WirelessTypes::region_taiwan:
             default:
             {
                 //if firmware supports 20dBm
-                if(fwVersion >= Version(4, 0))
+                if (fwVersion >= Version(4, 0))
                 {
-                    return{
+                    return {
                         WirelessTypes::power_20dBm,
                         WirelessTypes::power_16dBm,
                         WirelessTypes::power_10dBm,
@@ -357,7 +357,7 @@ namespace mscl
                 }
                 else
                 {
-                    return{
+                    return {
                         WirelessTypes::power_16dBm,
                         WirelessTypes::power_10dBm,
                         WirelessTypes::power_5dBm,
