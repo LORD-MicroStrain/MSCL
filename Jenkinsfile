@@ -14,35 +14,53 @@ pipeline {
             archiveArtifacts artifacts: 'Output/*.zip'
           }
         }
-        stage('DEB ARM64') {
-          agent { label 'linux-arm64' }
+        stage('DEB AMD64') {
+          agent { label 'aws-amd64' }
           options { skipDefaultCheckout() }
           steps {
             cleanWs()
             checkout scm
-            sh "cp /usr/local/share/ca-certificates/* .devcontainer/extra_cas/"
+            sh ".devcontainer/docker_build_debs.sh --arch amd64"
+            archiveArtifacts artifacts: 'build_ubuntu_amd64/*.deb'
+          }
+        }
+        stage('RPM AMD64') {
+          agent { label 'aws-amd64' }
+          options { skipDefaultCheckout() }
+          steps {
+            cleanWs()
+            checkout scm
+            sh ".devcontainer/docker_build_rpms.sh --arch amd64"
+            archiveArtifacts artifacts: 'build_centos_amd64/*.rpm'
+          }
+        }
+        stage('DEB ARM64') {
+          agent { label 'aws-arm64' }
+          options { skipDefaultCheckout() }
+          steps {
+            cleanWs()
+            checkout scm
             sh ".devcontainer/docker_build_debs.sh --arch arm64v8"
             archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
           }
         }
         stage('DEB ARM32') {
-          agent { label 'linux-arm' }
+          agent { label 'aws-arm64' }
           options { skipDefaultCheckout() }
           steps {
             cleanWs()
             checkout scm
-            sh "cp /usr/local/share/ca-certificates/* .devcontainer/extra_cas/"
+            sh "docker run --rm --privileged multiarch/qemu-user-static --reset -p yes"
             sh ".devcontainer/docker_build_debs.sh --arch arm32v7"
             archiveArtifacts artifacts: 'build_ubuntu_arm32v7/*.deb'
           }
         }
         stage('RPM ARM64') {
-          agent { label 'linux-arm64' }
+          agent { label 'aws-arm64' }
           options { skipDefaultCheckout() }
           steps {
             cleanWs()
             checkout scm
-            sh "cp /usr/local/share/ca-certificates/* .devcontainer/extra_cas/"
             sh ".devcontainer/docker_build_rpms.sh --arch arm64v8"
             archiveArtifacts artifacts: 'build_centos_arm64v8/*.rpm'
           }
