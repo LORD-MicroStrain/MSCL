@@ -7,7 +7,7 @@
 set -e
 
 # Update this variable to change the python versions to build against
-python3_versions="3.5.10 3.6.15 3.7.13 3.8.13 3.9.12 3.10.4"
+python3_versions="3.7.16 3.8.16 3.9.16 3.10.9 3.11.1"
 
 # Get some arguments from the user
 arch="amd64"
@@ -15,6 +15,11 @@ while [[ $# -gt 0 ]]; do
   case $1 in
     --arch)
       arch="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    --python3Versions)
+      python3_versions="$2"
       shift # past argument
       shift # past value
       ;;

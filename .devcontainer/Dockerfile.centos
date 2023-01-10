@@ -2,6 +2,9 @@ ARG ARCH="amd64"
 ARG CENTOS_VERSION="7"
 FROM ${ARCH}/centos:${CENTOS_VERSION}
 
+# Run all commands with bash
+SHELL ["/bin/bash", "-c", "-l"]
+
 # Add some CA certificates
 COPY .devcontainer/extra_cas /etc/pki/ca-trust/source/anchors
 RUN set -ex && update-ca-trust
@@ -26,6 +29,14 @@ RUN set -ex \
 
 # Add some python dependencies
 RUN set -ex && yum -y install python2-devel || yum -y install python-devel
+
+# Install an updated version of gcc and then configure us to use it from now on
+RUN set -ex \
+    && yum -y install \
+        centos-release-scl \
+    && yum -y install \
+        devtoolset-7 \
+    && echo '. /opt/rh/devtoolset-7/enable' >> ~/.bashrc
 
 # We need CMake 3 for MSCL, so install that here
 ARG CMAKE_VERSION="3.23.0"
@@ -107,7 +118,8 @@ RUN set -ex \
         -G "dialout" \
         -s "/bin/bash" \
         microstrain \
-    && echo 'microstrain ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+    && echo 'microstrain ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
+    && echo '. /opt/rh/devtoolset-7/enable' >> /home/microstrain/.bashrc
 
 # Append /usr/lib to LD_LIBRARY_PATH? Feels like we shouldn't need to do this
 ENV LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:/usr/lib"

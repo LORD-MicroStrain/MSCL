@@ -5,11 +5,9 @@
 # Get arguments from the user
 param (
   [String]$windows_image,
-  [String]$windows_version
+  [String]$windows_version,
+  [String]$python3_versions = "3.7.0 3.8.0 3.9.0 3.10.0 3.11.0"
 )
-
-# Update this variable to change the python versions to build MSCL with
-$python3_versions = "3.5.0 3.6.0 3.7.0 3.8.0 3.9.0 3.10.0"
 
 # Determine some information about windows an the PC so we can run the right docker image
 if (-not ${windows_image}) {
