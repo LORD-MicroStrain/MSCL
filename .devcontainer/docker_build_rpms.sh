@@ -68,8 +68,6 @@ docker run \
   --user="microstrain" \
   "${image_name}" -c -l " \
     git fetch origin --tags; \
-    export CC=\$(which gcc); \
-    export CXX=\$(which g++); \
     ./BuildScripts/build_linux.sh \
       ${python3_dirs_flag} \
       --python2Dir /usr/lib/python2.7 \
