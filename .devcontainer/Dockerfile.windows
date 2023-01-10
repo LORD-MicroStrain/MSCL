@@ -159,7 +159,7 @@ ARG SWIG_VERSION="4.0.2"
 RUN echo Installing SWIG `
     `
     # Download the zip file
-    && curl -SL --output %DOCKER_TEMP_DIR%\swigwin-%SWIG_VERSION%.zip https://iweb.dl.sourceforge.net/project/swig/swigwin/swigwin-%SWIG_VERSION%/swigwin-%SWIG_VERSION%.zip `
+    && curl -SL --output %DOCKER_TEMP_DIR%\swigwin-%SWIG_VERSION%.zip https://sourceforge.net/projects/swig/files/swigwin/swigwin-%SWIG_VERSION%/swigwin-%SWIG_VERSION%.zip/download `
     `
     # Extract to the library path
     && 7z x %DOCKER_TEMP_DIR%\swigwin-%SWIG_VERSION%.zip "-o%LIB_PATH%" `
