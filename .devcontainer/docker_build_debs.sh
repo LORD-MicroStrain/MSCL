@@ -6,15 +6,19 @@
 ################################################################################################################################################
 set -e
 
-# Update this variable to change the python versions to build against
-python3_versions="3.7.16 3.8.16 3.9.16 3.10.9 3.11.1"
-
 # Get some arguments from the user
 arch="amd64"
+ubuntu_version="20.04"
+python3_versions="3.7.16 3.8.16 3.9.16 3.10.9 3.11.1"
 while [[ $# -gt 0 ]]; do
   case $1 in
     --arch)
       arch="$2"
+      shift # past argument
+      shift # past value
+      ;;
+    --ubuntuVersion)
+      ubuntu_version="$2"
       shift # past argument
       shift # past value
       ;;
@@ -37,10 +41,14 @@ build_dir_name="build_ubuntu_${arch}"
 
 image_name="microstrain/mscl_ubnutu_builder:${arch}"
 
+# Pull the base image
+docker pull "${arch}/ubuntu:${ubuntu_version}"
+
 # Build the docker image
 docker build \
   -t "${image_name}" \
   --build-arg ARCH="${arch}" \
+  --build-arg UBUNTU_VERSION="${ubuntu_version}" \
   --build-arg PYTHON3_VERSIONS="${python3_versions}" \
   --build-arg USER_ID="$(id -u)" \
   --build-arg GROUP_ID="$(id -g)" \

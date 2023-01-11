@@ -44,6 +44,9 @@ foreach ($python3_version in ${python3_versions}.split(" ")) {
 $python3_x86_build_script_flags = $python3_x86_build_script_flags.TrimEnd(',')
 $python3_x64_build_script_flags = $python3_x64_build_script_flags.TrimEnd(',')
 
+# Make sure we have the most recent image (okay if this fails)
+docker pull "${windows_image}:${windows_version}"
+
 # Build the image
 docker build `
   -t "${image_name}" `
