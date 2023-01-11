@@ -68,7 +68,6 @@ pipeline {
           steps {
             cleanWs()
             checkout scm
-            sh "docker run --rm --privileged multiarch/qemu-user-static --reset -p yes"
             sh '.devcontainer/docker_build_debs.sh --arch arm32v7 --python3Versions "' + python3Versions() + '"'
             archiveArtifacts artifacts: 'build_ubuntu_arm32v7/*.deb'
           }

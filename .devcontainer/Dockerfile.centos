@@ -96,12 +96,20 @@ RUN set -ex \
     && tar -C /usr/local -xzf /tmp/turtle-${TURTLE_VERSION}.tar.gz include \
     && rm -rf /tmp/turtle-${TURTLE_VERSION}*
 
-# Install swig
+# Install swig 4
+ARG SWIG_VERSION=4.1.1
 RUN set -ex \
     && yum -y remove \
         swig \
     && yum -y install \
-        swig3
+        pcre2-devel \
+    && curl -fsSLo /tmp/swig-${SWIG_VERSION}.tar.gz https://prdownloads.sourceforge.net/swig/swig-${SWIG_VERSION}.tar.gz \
+    && tar -C /tmp/ -xzf /tmp/swig-${SWIG_VERSION}.tar.gz \
+    && cd /tmp/swig-${SWIG_VERSION} \
+    && ./configure \
+        --prefix="/usr" \
+    && make -j $(nproc) \
+    && make install
 
 # Add a user that will be used when shelling into this container and allow them to use devices
 ARG USER_ID=1000
