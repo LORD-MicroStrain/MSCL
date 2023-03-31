@@ -5871,47 +5871,311 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_getMipDataPoints")]
   public static extern global::System.IntPtr ContinuousBIT_getMipDataPoints(int jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_ContinuousBIT")]
-  public static extern void delete_ContinuousBIT(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_data")]
+  public static extern global::System.IntPtr ContinuousBIT_data(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_systemClockFailure")]
+  public static extern bool ContinuousBIT_systemClockFailure(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_powerFault")]
+  public static extern bool ContinuousBIT_powerFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_firmwareFault")]
+  public static extern bool ContinuousBIT_firmwareFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_timingOverload")]
+  public static extern bool ContinuousBIT_timingOverload(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_bufferOverrun")]
+  public static extern bool ContinuousBIT_bufferOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_imuClockFault")]
+  public static extern bool ContinuousBIT_imuClockFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_imuCommunicationFault")]
+  public static extern bool ContinuousBIT_imuCommunicationFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_imuTimingOverrun")]
+  public static extern bool ContinuousBIT_imuTimingOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_imuCalibrationErrorAccel")]
+  public static extern bool ContinuousBIT_imuCalibrationErrorAccel(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_imuCalibrationErrorGyro")]
+  public static extern bool ContinuousBIT_imuCalibrationErrorGyro(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_imuCalibrationErrorMag")]
+  public static extern bool ContinuousBIT_imuCalibrationErrorMag(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_accelGeneralFault")]
+  public static extern bool ContinuousBIT_accelGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_accelOverrange")]
+  public static extern bool ContinuousBIT_accelOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_accelSelfTestFail")]
+  public static extern bool ContinuousBIT_accelSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_gyroGeneralFault")]
+  public static extern bool ContinuousBIT_gyroGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_gyroOverrange")]
+  public static extern bool ContinuousBIT_gyroOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_gyroSelfTestFail")]
+  public static extern bool ContinuousBIT_gyroSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_magGeneralFault")]
+  public static extern bool ContinuousBIT_magGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_magOverrange")]
+  public static extern bool ContinuousBIT_magOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_magSelfTestFail")]
+  public static extern bool ContinuousBIT_magSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_pressureGeneralFault")]
+  public static extern bool ContinuousBIT_pressureGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_pressureOverrange")]
+  public static extern bool ContinuousBIT_pressureOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_pressureSelfTestFail")]
+  public static extern bool ContinuousBIT_pressureSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_filterTimingOverrun")]
+  public static extern bool ContinuousBIT_filterTimingOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_filterTimingUnderrun")]
+  public static extern bool ContinuousBIT_filterTimingUnderrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_General_SYSTEM_CLOCK_FAILURE_get")]
+  public static extern byte ContinuousBIT_System_General_SYSTEM_CLOCK_FAILURE_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_General_POWER_FAULT_get")]
+  public static extern byte ContinuousBIT_System_General_POWER_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_General_FIRMWARE_FAULT_get")]
+  public static extern byte ContinuousBIT_System_General_FIRMWARE_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_General_TIMING_OVERLOAD_get")]
+  public static extern byte ContinuousBIT_System_General_TIMING_OVERLOAD_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_General_BUFFER_OVERRUN_get")]
+  public static extern byte ContinuousBIT_System_General_BUFFER_OVERRUN_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_General_flags")]
+  public static extern byte ContinuousBIT_System_General_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_General_systemClockFailure")]
+  public static extern bool ContinuousBIT_System_General_systemClockFailure(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_General_powerFault")]
+  public static extern bool ContinuousBIT_System_General_powerFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_General_firmwareFault")]
+  public static extern bool ContinuousBIT_System_General_firmwareFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_General_timingOverload")]
+  public static extern bool ContinuousBIT_System_General_timingOverload(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_General_bufferOverrun")]
+  public static extern bool ContinuousBIT_System_General_bufferOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_ContinuousBIT_System_General")]
+  public static extern void delete_ContinuousBIT_System_General(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_Process_flags")]
+  public static extern ushort ContinuousBIT_System_Process_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_ContinuousBIT_System_Process")]
+  public static extern void delete_ContinuousBIT_System_Process(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_RESPONSE_OFFSET_get")]
+  public static extern byte ContinuousBIT_System_RESPONSE_OFFSET_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_GENERAL_FLAGS_get")]
+  public static extern uint ContinuousBIT_System_GENERAL_FLAGS_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_PROCESS_FLAGS_get")]
+  public static extern uint ContinuousBIT_System_PROCESS_FLAGS_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_flags")]
+  public static extern uint ContinuousBIT_System_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_ContinuousBIT_System")]
+  public static extern void delete_ContinuousBIT_System(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_General_CLOCK_FAULT_get")]
+  public static extern byte ContinuousBIT_IMU_General_CLOCK_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_General_COMMUNICATION_FAULT_get")]
+  public static extern byte ContinuousBIT_IMU_General_COMMUNICATION_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_General_TIMING_OVERRUN_get")]
+  public static extern byte ContinuousBIT_IMU_General_TIMING_OVERRUN_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_General_CALIBRATION_ERROR_ACCEL_get")]
+  public static extern byte ContinuousBIT_IMU_General_CALIBRATION_ERROR_ACCEL_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_General_CALIBRATION_ERROR_GYRO_get")]
+  public static extern byte ContinuousBIT_IMU_General_CALIBRATION_ERROR_GYRO_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_General_CALIBRATION_ERROR_MAG_get")]
+  public static extern byte ContinuousBIT_IMU_General_CALIBRATION_ERROR_MAG_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_General_flags")]
+  public static extern byte ContinuousBIT_IMU_General_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_General_clockFault")]
+  public static extern bool ContinuousBIT_IMU_General_clockFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_General_communicationFault")]
+  public static extern bool ContinuousBIT_IMU_General_communicationFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_General_timingOverrun")]
+  public static extern bool ContinuousBIT_IMU_General_timingOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_General_calibrationErrorAccel")]
+  public static extern bool ContinuousBIT_IMU_General_calibrationErrorAccel(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_General_calibrationErrorGyro")]
+  public static extern bool ContinuousBIT_IMU_General_calibrationErrorGyro(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_General_calibrationErrorMag")]
+  public static extern bool ContinuousBIT_IMU_General_calibrationErrorMag(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_ContinuousBIT_IMU_General")]
+  public static extern void delete_ContinuousBIT_IMU_General(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_ACCEL_GENERAL_FAULT_get")]
+  public static extern ushort ContinuousBIT_IMU_Sensors_ACCEL_GENERAL_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_ACCEL_OVERRANGE_get")]
+  public static extern ushort ContinuousBIT_IMU_Sensors_ACCEL_OVERRANGE_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_ACCEL_SELF_TEST_FAIL_get")]
+  public static extern ushort ContinuousBIT_IMU_Sensors_ACCEL_SELF_TEST_FAIL_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_GYRO_GENERAL_FAULT_get")]
+  public static extern ushort ContinuousBIT_IMU_Sensors_GYRO_GENERAL_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_GYRO_OVERRANGE_get")]
+  public static extern ushort ContinuousBIT_IMU_Sensors_GYRO_OVERRANGE_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_GYRO_SELF_TEST_FAIL_get")]
+  public static extern ushort ContinuousBIT_IMU_Sensors_GYRO_SELF_TEST_FAIL_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_MAG_GENERAL_FAULT_get")]
+  public static extern ushort ContinuousBIT_IMU_Sensors_MAG_GENERAL_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_MAG_OVERRANGE_get")]
+  public static extern ushort ContinuousBIT_IMU_Sensors_MAG_OVERRANGE_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_MAG_SELF_TEST_FAIL_get")]
+  public static extern ushort ContinuousBIT_IMU_Sensors_MAG_SELF_TEST_FAIL_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_PRESSURE_GENERAL_FAULT_get")]
+  public static extern ushort ContinuousBIT_IMU_Sensors_PRESSURE_GENERAL_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_PRESSURE_OVERRANGE_get")]
+  public static extern ushort ContinuousBIT_IMU_Sensors_PRESSURE_OVERRANGE_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_PRESSURE_SELF_TEST_FAIL_get")]
+  public static extern ushort ContinuousBIT_IMU_Sensors_PRESSURE_SELF_TEST_FAIL_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_flags")]
+  public static extern ushort ContinuousBIT_IMU_Sensors_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_accelGeneralFault")]
+  public static extern bool ContinuousBIT_IMU_Sensors_accelGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_accelOverrange")]
+  public static extern bool ContinuousBIT_IMU_Sensors_accelOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_accelSelfTestFail")]
+  public static extern bool ContinuousBIT_IMU_Sensors_accelSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_gyroGeneralFault")]
+  public static extern bool ContinuousBIT_IMU_Sensors_gyroGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_gyroOverrange")]
+  public static extern bool ContinuousBIT_IMU_Sensors_gyroOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_gyroSelfTestFail")]
+  public static extern bool ContinuousBIT_IMU_Sensors_gyroSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_magGeneralFault")]
+  public static extern bool ContinuousBIT_IMU_Sensors_magGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_magOverrange")]
+  public static extern bool ContinuousBIT_IMU_Sensors_magOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_magSelfTestFail")]
+  public static extern bool ContinuousBIT_IMU_Sensors_magSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_pressureGeneralFault")]
+  public static extern bool ContinuousBIT_IMU_Sensors_pressureGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_pressureOverrange")]
+  public static extern bool ContinuousBIT_IMU_Sensors_pressureOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_pressureSelfTestFail")]
+  public static extern bool ContinuousBIT_IMU_Sensors_pressureSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_ContinuousBIT_IMU_Sensors")]
+  public static extern void delete_ContinuousBIT_IMU_Sensors(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_RESPONSE_OFFSET_get")]
+  public static extern byte ContinuousBIT_IMU_RESPONSE_OFFSET_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_GENERAL_FLAGS_get")]
+  public static extern uint ContinuousBIT_IMU_GENERAL_FLAGS_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_SENSORS_FLAGS_get")]
+  public static extern uint ContinuousBIT_IMU_SENSORS_FLAGS_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_flags")]
+  public static extern uint ContinuousBIT_IMU_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_ContinuousBIT_IMU")]
+  public static extern void delete_ContinuousBIT_IMU(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_Filter_General_TIMING_OVERRUN_get")]
+  public static extern byte ContinuousBIT_Filter_General_TIMING_OVERRUN_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_Filter_General_TIMING_UNDERRUN_get")]
+  public static extern byte ContinuousBIT_Filter_General_TIMING_UNDERRUN_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_Filter_General_flags")]
+  public static extern byte ContinuousBIT_Filter_General_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_Filter_General_timingOverrun")]
+  public static extern bool ContinuousBIT_Filter_General_timingOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_Filter_General_timingUnderrun")]
+  public static extern bool ContinuousBIT_Filter_General_timingUnderrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_ContinuousBIT_Filter_General")]
+  public static extern void delete_ContinuousBIT_Filter_General(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_Filter_RESPONSE_OFFSET_get")]
+  public static extern byte ContinuousBIT_Filter_RESPONSE_OFFSET_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_Filter_GENERAL_FLAGS_get")]
+  public static extern uint ContinuousBIT_Filter_GENERAL_FLAGS_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_Filter_flags")]
+  public static extern uint ContinuousBIT_Filter_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_ContinuousBIT_Filter")]
+  public static extern void delete_ContinuousBIT_Filter(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_CV7ContinuousBIT_System_General__SWIG_0")]
   public static extern global::System.IntPtr new_CV7ContinuousBIT_System_General__SWIG_0();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_CV7ContinuousBIT_System_General__SWIG_1")]
   public static extern global::System.IntPtr new_CV7ContinuousBIT_System_General__SWIG_1(byte jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_General_SYSTEM_CLOCK_FAILURE_get")]
-  public static extern byte CV7ContinuousBIT_System_General_SYSTEM_CLOCK_FAILURE_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_General_POWER_FAULT_get")]
-  public static extern byte CV7ContinuousBIT_System_General_POWER_FAULT_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_General_FIRMWARE_FAULT_get")]
-  public static extern byte CV7ContinuousBIT_System_General_FIRMWARE_FAULT_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_General_TIMING_OVERLOAD_get")]
-  public static extern byte CV7ContinuousBIT_System_General_TIMING_OVERLOAD_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_General_BUFFER_OVERRUN_get")]
-  public static extern byte CV7ContinuousBIT_System_General_BUFFER_OVERRUN_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_General_flags")]
-  public static extern byte CV7ContinuousBIT_System_General_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_General_systemClockFailure")]
-  public static extern bool CV7ContinuousBIT_System_General_systemClockFailure(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_General_powerFault")]
-  public static extern bool CV7ContinuousBIT_System_General_powerFault(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_General_firmwareFault")]
-  public static extern bool CV7ContinuousBIT_System_General_firmwareFault(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_General_timingOverload")]
-  public static extern bool CV7ContinuousBIT_System_General_timingOverload(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_General_bufferOverrun")]
-  public static extern bool CV7ContinuousBIT_System_General_bufferOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_CV7ContinuousBIT_System_General")]
   public static extern void delete_CV7ContinuousBIT_System_General(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -5920,34 +6184,31 @@ class msclPINVOKE {
   public static extern global::System.IntPtr new_CV7ContinuousBIT_System_Process__SWIG_0();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_CV7ContinuousBIT_System_Process__SWIG_1")]
-  public static extern global::System.IntPtr new_CV7ContinuousBIT_System_Process__SWIG_1(byte jarg1);
+  public static extern global::System.IntPtr new_CV7ContinuousBIT_System_Process__SWIG_1(ushort jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_Process_IMU_PROCESS_FAULT_get")]
-  public static extern byte CV7ContinuousBIT_System_Process_IMU_PROCESS_FAULT_get();
+  public static extern ushort CV7ContinuousBIT_System_Process_IMU_PROCESS_FAULT_get();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_Process_IMU_RATE_MISMATCH_get")]
-  public static extern byte CV7ContinuousBIT_System_Process_IMU_RATE_MISMATCH_get();
+  public static extern ushort CV7ContinuousBIT_System_Process_IMU_RATE_MISMATCH_get();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_Process_IMU_DROPPED_DATA_get")]
-  public static extern byte CV7ContinuousBIT_System_Process_IMU_DROPPED_DATA_get();
+  public static extern ushort CV7ContinuousBIT_System_Process_IMU_DROPPED_DATA_get();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_Process_IMU_STUCK_get")]
-  public static extern byte CV7ContinuousBIT_System_Process_IMU_STUCK_get();
+  public static extern ushort CV7ContinuousBIT_System_Process_IMU_STUCK_get();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_Process_FILTER_PROCESS_FAULT_get")]
-  public static extern byte CV7ContinuousBIT_System_Process_FILTER_PROCESS_FAULT_get();
+  public static extern ushort CV7ContinuousBIT_System_Process_FILTER_PROCESS_FAULT_get();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_Process_FILTER_DROPPED_DATA_get")]
-  public static extern byte CV7ContinuousBIT_System_Process_FILTER_DROPPED_DATA_get();
+  public static extern ushort CV7ContinuousBIT_System_Process_FILTER_DROPPED_DATA_get();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_Process_FILTER_RATE_MISMATCH_get")]
-  public static extern byte CV7ContinuousBIT_System_Process_FILTER_RATE_MISMATCH_get();
+  public static extern ushort CV7ContinuousBIT_System_Process_FILTER_RATE_MISMATCH_get();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_Process_FILTER_STUCK_get")]
-  public static extern byte CV7ContinuousBIT_System_Process_FILTER_STUCK_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_Process_flags")]
-  public static extern byte CV7ContinuousBIT_System_Process_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern ushort CV7ContinuousBIT_System_Process_FILTER_STUCK_get();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_Process_imuProcessFault")]
   public static extern bool CV7ContinuousBIT_System_Process_imuProcessFault(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -5982,18 +6243,6 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_CV7ContinuousBIT_System__SWIG_1")]
   public static extern global::System.IntPtr new_CV7ContinuousBIT_System__SWIG_1(uint jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_RESPONSE_OFFSET_get")]
-  public static extern byte CV7ContinuousBIT_System_RESPONSE_OFFSET_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_GENERAL_FLAGS_get")]
-  public static extern uint CV7ContinuousBIT_System_GENERAL_FLAGS_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_PROCESS_FLAGS_get")]
-  public static extern uint CV7ContinuousBIT_System_PROCESS_FLAGS_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_flags")]
-  public static extern uint CV7ContinuousBIT_System_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
-
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_general")]
   public static extern global::System.IntPtr CV7ContinuousBIT_System_general(global::System.Runtime.InteropServices.HandleRef jarg1);
 
@@ -6009,45 +6258,6 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_CV7ContinuousBIT_IMU_General__SWIG_1")]
   public static extern global::System.IntPtr new_CV7ContinuousBIT_IMU_General__SWIG_1(byte jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_General_CLOCK_FAULT_get")]
-  public static extern byte CV7ContinuousBIT_IMU_General_CLOCK_FAULT_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_General_COMMUNICATION_FAULT_get")]
-  public static extern byte CV7ContinuousBIT_IMU_General_COMMUNICATION_FAULT_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_General_TIMING_OVERRUN_get")]
-  public static extern byte CV7ContinuousBIT_IMU_General_TIMING_OVERRUN_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_General_CALIBRATION_ERROR_ACCEL_get")]
-  public static extern byte CV7ContinuousBIT_IMU_General_CALIBRATION_ERROR_ACCEL_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_General_CALIBRATION_ERROR_GYRO_get")]
-  public static extern byte CV7ContinuousBIT_IMU_General_CALIBRATION_ERROR_GYRO_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_General_CALIBRATION_ERROR_MAG_get")]
-  public static extern byte CV7ContinuousBIT_IMU_General_CALIBRATION_ERROR_MAG_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_General_flags")]
-  public static extern byte CV7ContinuousBIT_IMU_General_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_General_clockFault")]
-  public static extern bool CV7ContinuousBIT_IMU_General_clockFault(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_General_communicationFault")]
-  public static extern bool CV7ContinuousBIT_IMU_General_communicationFault(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_General_timingOverrun")]
-  public static extern bool CV7ContinuousBIT_IMU_General_timingOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_General_calibrationErrorAccel")]
-  public static extern bool CV7ContinuousBIT_IMU_General_calibrationErrorAccel(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_General_calibrationErrorGyro")]
-  public static extern bool CV7ContinuousBIT_IMU_General_calibrationErrorGyro(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_General_calibrationErrorMag")]
-  public static extern bool CV7ContinuousBIT_IMU_General_calibrationErrorMag(global::System.Runtime.InteropServices.HandleRef jarg1);
-
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_CV7ContinuousBIT_IMU_General")]
   public static extern void delete_CV7ContinuousBIT_IMU_General(global::System.Runtime.InteropServices.HandleRef jarg1);
 
@@ -6056,81 +6266,6 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_CV7ContinuousBIT_IMU_Sensors__SWIG_1")]
   public static extern global::System.IntPtr new_CV7ContinuousBIT_IMU_Sensors__SWIG_1(ushort jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_ACCEL_GENERAL_FAULT_get")]
-  public static extern ushort CV7ContinuousBIT_IMU_Sensors_ACCEL_GENERAL_FAULT_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_ACCEL_OVERRANGE_get")]
-  public static extern ushort CV7ContinuousBIT_IMU_Sensors_ACCEL_OVERRANGE_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_ACCEL_SELF_TEST_FAIL_get")]
-  public static extern ushort CV7ContinuousBIT_IMU_Sensors_ACCEL_SELF_TEST_FAIL_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_GYRO_GENERAL_FAULT_get")]
-  public static extern ushort CV7ContinuousBIT_IMU_Sensors_GYRO_GENERAL_FAULT_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_GYRO_OVERRANGE_get")]
-  public static extern ushort CV7ContinuousBIT_IMU_Sensors_GYRO_OVERRANGE_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_GYRO_SELF_TEST_FAIL_get")]
-  public static extern ushort CV7ContinuousBIT_IMU_Sensors_GYRO_SELF_TEST_FAIL_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_MAG_GENERAL_FAULT_get")]
-  public static extern ushort CV7ContinuousBIT_IMU_Sensors_MAG_GENERAL_FAULT_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_MAG_OVERRANGE_get")]
-  public static extern ushort CV7ContinuousBIT_IMU_Sensors_MAG_OVERRANGE_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_MAG_SELF_TEST_FAIL_get")]
-  public static extern ushort CV7ContinuousBIT_IMU_Sensors_MAG_SELF_TEST_FAIL_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_PRESSURE_GENERAL_FAULT_get")]
-  public static extern ushort CV7ContinuousBIT_IMU_Sensors_PRESSURE_GENERAL_FAULT_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_PRESSURE_OVERRANGE_get")]
-  public static extern ushort CV7ContinuousBIT_IMU_Sensors_PRESSURE_OVERRANGE_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_PRESSURE_SELF_TEST_FAIL_get")]
-  public static extern ushort CV7ContinuousBIT_IMU_Sensors_PRESSURE_SELF_TEST_FAIL_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_flags")]
-  public static extern ushort CV7ContinuousBIT_IMU_Sensors_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_accelGeneralFault")]
-  public static extern bool CV7ContinuousBIT_IMU_Sensors_accelGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_accelOverrange")]
-  public static extern bool CV7ContinuousBIT_IMU_Sensors_accelOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_accelSelfTestFail")]
-  public static extern bool CV7ContinuousBIT_IMU_Sensors_accelSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_gyroGeneralFault")]
-  public static extern bool CV7ContinuousBIT_IMU_Sensors_gyroGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_gyroOverrange")]
-  public static extern bool CV7ContinuousBIT_IMU_Sensors_gyroOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_gyroSelfTestFail")]
-  public static extern bool CV7ContinuousBIT_IMU_Sensors_gyroSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_magGeneralFault")]
-  public static extern bool CV7ContinuousBIT_IMU_Sensors_magGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_magOverrange")]
-  public static extern bool CV7ContinuousBIT_IMU_Sensors_magOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_magSelfTestFail")]
-  public static extern bool CV7ContinuousBIT_IMU_Sensors_magSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_pressureGeneralFault")]
-  public static extern bool CV7ContinuousBIT_IMU_Sensors_pressureGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_pressureOverrange")]
-  public static extern bool CV7ContinuousBIT_IMU_Sensors_pressureOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_Sensors_pressureSelfTestFail")]
-  public static extern bool CV7ContinuousBIT_IMU_Sensors_pressureSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_CV7ContinuousBIT_IMU_Sensors")]
   public static extern void delete_CV7ContinuousBIT_IMU_Sensors(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -6141,20 +6276,8 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_CV7ContinuousBIT_IMU__SWIG_1")]
   public static extern global::System.IntPtr new_CV7ContinuousBIT_IMU__SWIG_1(uint jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_RESPONSE_OFFSET_get")]
-  public static extern byte CV7ContinuousBIT_IMU_RESPONSE_OFFSET_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_GENERAL_FLAGS_get")]
-  public static extern uint CV7ContinuousBIT_IMU_GENERAL_FLAGS_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_SENSORS_FLAGS_get")]
-  public static extern uint CV7ContinuousBIT_IMU_SENSORS_FLAGS_get();
-
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_FACTORY_BITS_INVALID_get")]
   public static extern uint CV7ContinuousBIT_IMU_FACTORY_BITS_INVALID_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_flags")]
-  public static extern uint CV7ContinuousBIT_IMU_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_IMU_general")]
   public static extern global::System.IntPtr CV7ContinuousBIT_IMU_general(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -6177,23 +6300,8 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_Filter_General_FAULT_get")]
   public static extern byte CV7ContinuousBIT_Filter_General_FAULT_get();
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_Filter_General_TIMING_OVERRUN_get")]
-  public static extern byte CV7ContinuousBIT_Filter_General_TIMING_OVERRUN_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_Filter_General_TIMING_UNDERRUN_get")]
-  public static extern byte CV7ContinuousBIT_Filter_General_TIMING_UNDERRUN_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_Filter_General_flags")]
-  public static extern byte CV7ContinuousBIT_Filter_General_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
-
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_Filter_General_fault")]
   public static extern bool CV7ContinuousBIT_Filter_General_fault(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_Filter_General_timingOverrun")]
-  public static extern bool CV7ContinuousBIT_Filter_General_timingOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_Filter_General_timingUnderrun")]
-  public static extern bool CV7ContinuousBIT_Filter_General_timingUnderrun(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_CV7ContinuousBIT_Filter_General")]
   public static extern void delete_CV7ContinuousBIT_Filter_General(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -6204,44 +6312,731 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_CV7ContinuousBIT_Filter__SWIG_1")]
   public static extern global::System.IntPtr new_CV7ContinuousBIT_Filter__SWIG_1(uint jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_Filter_RESPONSE_OFFSET_get")]
-  public static extern byte CV7ContinuousBIT_Filter_RESPONSE_OFFSET_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_Filter_GENERAL_FLAGS_get")]
-  public static extern uint CV7ContinuousBIT_Filter_GENERAL_FLAGS_get();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_Filter_flags")]
-  public static extern uint CV7ContinuousBIT_Filter_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
-
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_Filter_general")]
   public static extern global::System.IntPtr CV7ContinuousBIT_Filter_general(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_CV7ContinuousBIT_Filter")]
   public static extern void delete_CV7ContinuousBIT_Filter(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_CV7ContinuousBIT__SWIG_0")]
-  public static extern global::System.IntPtr new_CV7ContinuousBIT__SWIG_0();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_CV7ContinuousBIT__SWIG_1")]
-  public static extern global::System.IntPtr new_CV7ContinuousBIT__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_CV7ContinuousBIT")]
+  public static extern global::System.IntPtr new_CV7ContinuousBIT(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_system")]
   public static extern global::System.IntPtr CV7ContinuousBIT_system(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_systemClockFailure")]
+  public static extern bool CV7ContinuousBIT_systemClockFailure(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_powerFault")]
+  public static extern bool CV7ContinuousBIT_powerFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_firmwareFault")]
+  public static extern bool CV7ContinuousBIT_firmwareFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_timingOverload")]
+  public static extern bool CV7ContinuousBIT_timingOverload(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_bufferOverrun")]
+  public static extern bool CV7ContinuousBIT_bufferOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_imuProcessFault")]
+  public static extern bool CV7ContinuousBIT_imuProcessFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_imuRateMismatch")]
+  public static extern bool CV7ContinuousBIT_imuRateMismatch(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_imuDroppedData")]
+  public static extern bool CV7ContinuousBIT_imuDroppedData(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_imuStuck")]
+  public static extern bool CV7ContinuousBIT_imuStuck(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_filterProcessFault")]
+  public static extern bool CV7ContinuousBIT_filterProcessFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_filterDroppedData")]
+  public static extern bool CV7ContinuousBIT_filterDroppedData(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_filterRateMismatch")]
+  public static extern bool CV7ContinuousBIT_filterRateMismatch(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_filterStuck")]
+  public static extern bool CV7ContinuousBIT_filterStuck(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_imu")]
   public static extern global::System.IntPtr CV7ContinuousBIT_imu(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_imuClockFault")]
+  public static extern bool CV7ContinuousBIT_imuClockFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_imuCommunicationFault")]
+  public static extern bool CV7ContinuousBIT_imuCommunicationFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_imuTimingOverrun")]
+  public static extern bool CV7ContinuousBIT_imuTimingOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_imuCalibrationErrorAccel")]
+  public static extern bool CV7ContinuousBIT_imuCalibrationErrorAccel(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_imuCalibrationErrorGyro")]
+  public static extern bool CV7ContinuousBIT_imuCalibrationErrorGyro(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_imuCalibrationErrorMag")]
+  public static extern bool CV7ContinuousBIT_imuCalibrationErrorMag(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_accelGeneralFault")]
+  public static extern bool CV7ContinuousBIT_accelGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_accelOverrange")]
+  public static extern bool CV7ContinuousBIT_accelOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_accelSelfTestFail")]
+  public static extern bool CV7ContinuousBIT_accelSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_gyroGeneralFault")]
+  public static extern bool CV7ContinuousBIT_gyroGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_gyroOverrange")]
+  public static extern bool CV7ContinuousBIT_gyroOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_gyroSelfTestFail")]
+  public static extern bool CV7ContinuousBIT_gyroSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_magGeneralFault")]
+  public static extern bool CV7ContinuousBIT_magGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_magOverrange")]
+  public static extern bool CV7ContinuousBIT_magOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_magSelfTestFail")]
+  public static extern bool CV7ContinuousBIT_magSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_pressureGeneralFault")]
+  public static extern bool CV7ContinuousBIT_pressureGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_pressureOverrange")]
+  public static extern bool CV7ContinuousBIT_pressureOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_pressureSelfTestFail")]
+  public static extern bool CV7ContinuousBIT_pressureSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_factoryBitsInvalid")]
+  public static extern bool CV7ContinuousBIT_factoryBitsInvalid(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_filter")]
   public static extern global::System.IntPtr CV7ContinuousBIT_filter(global::System.Runtime.InteropServices.HandleRef jarg1);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_data")]
-  public static extern global::System.IntPtr CV7ContinuousBIT_data(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_filterFault")]
+  public static extern bool CV7ContinuousBIT_filterFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_filterTimingOverrun")]
+  public static extern bool CV7ContinuousBIT_filterTimingOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_filterTimingUnderrun")]
+  public static extern bool CV7ContinuousBIT_filterTimingUnderrun(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_as_MipDataPoints")]
   public static extern global::System.IntPtr CV7ContinuousBIT_as_MipDataPoints(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_CV7ContinuousBIT")]
   public static extern void delete_CV7ContinuousBIT(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_System_General__SWIG_0")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_System_General__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_System_General__SWIG_1")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_System_General__SWIG_1(byte jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GQ7ContinuousBIT_System_General")]
+  public static extern void delete_GQ7ContinuousBIT_System_General(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_System_Process__SWIG_0")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_System_Process__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_System_Process__SWIG_1")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_System_Process__SWIG_1(ushort jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_IMU_CONTROL_LINE_FAULT_get")]
+  public static extern ushort GQ7ContinuousBIT_System_Process_IMU_CONTROL_LINE_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_IMU_COMMAND_RESPONSE_FAULT_get")]
+  public static extern ushort GQ7ContinuousBIT_System_Process_IMU_COMMAND_RESPONSE_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_IMU_SPI_TRANSFER_FAULT_get")]
+  public static extern ushort GQ7ContinuousBIT_System_Process_IMU_SPI_TRANSFER_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_IMU_DATA_FRAME_FAULT_get")]
+  public static extern ushort GQ7ContinuousBIT_System_Process_IMU_DATA_FRAME_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_FILTER_CONTROL_LINE_FAULT_get")]
+  public static extern ushort GQ7ContinuousBIT_System_Process_FILTER_CONTROL_LINE_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_FILTER_COMMAND_RESPONSE_FAULT_get")]
+  public static extern ushort GQ7ContinuousBIT_System_Process_FILTER_COMMAND_RESPONSE_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_FILTER_SPI_TRANSFER_FAULT_get")]
+  public static extern ushort GQ7ContinuousBIT_System_Process_FILTER_SPI_TRANSFER_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_FILTER_DATA_FRAME_FAULT_get")]
+  public static extern ushort GQ7ContinuousBIT_System_Process_FILTER_DATA_FRAME_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_GNSS_CONTROL_LINE_FAULT_get")]
+  public static extern ushort GQ7ContinuousBIT_System_Process_GNSS_CONTROL_LINE_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_GNSS_COMMAND_RESPONSE_FAULT_get")]
+  public static extern ushort GQ7ContinuousBIT_System_Process_GNSS_COMMAND_RESPONSE_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_GNSS_SPI_TRANSFER_FAULT_get")]
+  public static extern ushort GQ7ContinuousBIT_System_Process_GNSS_SPI_TRANSFER_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_GNSS_DATA_FRAME_FAULT_get")]
+  public static extern ushort GQ7ContinuousBIT_System_Process_GNSS_DATA_FRAME_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_imuIpcFault")]
+  public static extern byte GQ7ContinuousBIT_System_Process_imuIpcFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_imuControlLineFault")]
+  public static extern bool GQ7ContinuousBIT_System_Process_imuControlLineFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_imuCommandResponseFault")]
+  public static extern bool GQ7ContinuousBIT_System_Process_imuCommandResponseFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_imuSpiTransferFault")]
+  public static extern bool GQ7ContinuousBIT_System_Process_imuSpiTransferFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_imuDataFrameFault")]
+  public static extern bool GQ7ContinuousBIT_System_Process_imuDataFrameFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_filterIpcFault")]
+  public static extern byte GQ7ContinuousBIT_System_Process_filterIpcFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_filterControlLineFault")]
+  public static extern bool GQ7ContinuousBIT_System_Process_filterControlLineFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_filterCommandResponseFault")]
+  public static extern bool GQ7ContinuousBIT_System_Process_filterCommandResponseFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_filterSpiTransferFault")]
+  public static extern bool GQ7ContinuousBIT_System_Process_filterSpiTransferFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_filterDataFrameFault")]
+  public static extern bool GQ7ContinuousBIT_System_Process_filterDataFrameFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_gnssIpcFault")]
+  public static extern byte GQ7ContinuousBIT_System_Process_gnssIpcFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_gnssControlLineFault")]
+  public static extern bool GQ7ContinuousBIT_System_Process_gnssControlLineFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_gnssCommandResponseFault")]
+  public static extern bool GQ7ContinuousBIT_System_Process_gnssCommandResponseFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_gnssSpiTransferFault")]
+  public static extern bool GQ7ContinuousBIT_System_Process_gnssSpiTransferFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_gnssDataFrameFault")]
+  public static extern bool GQ7ContinuousBIT_System_Process_gnssDataFrameFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GQ7ContinuousBIT_System_Process")]
+  public static extern void delete_GQ7ContinuousBIT_System_Process(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_System__SWIG_0")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_System__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_System__SWIG_1")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_System__SWIG_1(uint jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_general")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_System_general(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_process")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_System_process(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GQ7ContinuousBIT_System")]
+  public static extern void delete_GQ7ContinuousBIT_System(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_IMU_General__SWIG_0")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_IMU_General__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_IMU_General__SWIG_1")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_IMU_General__SWIG_1(byte jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GQ7ContinuousBIT_IMU_General")]
+  public static extern void delete_GQ7ContinuousBIT_IMU_General(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_IMU_Sensors__SWIG_0")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_IMU_Sensors__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_IMU_Sensors__SWIG_1")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_IMU_Sensors__SWIG_1(ushort jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GQ7ContinuousBIT_IMU_Sensors")]
+  public static extern void delete_GQ7ContinuousBIT_IMU_Sensors(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_IMU__SWIG_0")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_IMU__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_IMU__SWIG_1")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_IMU__SWIG_1(uint jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_IMU_general")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_IMU_general(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_IMU_sensors")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_IMU_sensors(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GQ7ContinuousBIT_IMU")]
+  public static extern void delete_GQ7ContinuousBIT_IMU(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_Filter_General__SWIG_0")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_Filter_General__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_Filter_General__SWIG_1")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_Filter_General__SWIG_1(byte jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_Filter_General_CLOCK_FAULT_get")]
+  public static extern byte GQ7ContinuousBIT_Filter_General_CLOCK_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_Filter_General_HARDWARE_FAULT_get")]
+  public static extern byte GQ7ContinuousBIT_Filter_General_HARDWARE_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_Filter_General_COMMUNICATION_ERROR_IMU_SPI_get")]
+  public static extern byte GQ7ContinuousBIT_Filter_General_COMMUNICATION_ERROR_IMU_SPI_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_Filter_General_COMMUNICATION_ERROR_GNSS_SPI_get")]
+  public static extern byte GQ7ContinuousBIT_Filter_General_COMMUNICATION_ERROR_GNSS_SPI_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_Filter_General_COMMUNICATION_ERROR_COMMS_SPI_get")]
+  public static extern byte GQ7ContinuousBIT_Filter_General_COMMUNICATION_ERROR_COMMS_SPI_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_Filter_General_COMMUNICATION_ERROR_COMMS_UART_get")]
+  public static extern byte GQ7ContinuousBIT_Filter_General_COMMUNICATION_ERROR_COMMS_UART_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_Filter_General_clockFault")]
+  public static extern bool GQ7ContinuousBIT_Filter_General_clockFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_Filter_General_hardwareFault")]
+  public static extern bool GQ7ContinuousBIT_Filter_General_hardwareFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_Filter_General_communicationError")]
+  public static extern byte GQ7ContinuousBIT_Filter_General_communicationError(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_Filter_General_communicationErrorImuSpi")]
+  public static extern bool GQ7ContinuousBIT_Filter_General_communicationErrorImuSpi(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_Filter_General_communicationErrorGnssSpi")]
+  public static extern bool GQ7ContinuousBIT_Filter_General_communicationErrorGnssSpi(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_Filter_General_communicationErrorCommsSpi")]
+  public static extern bool GQ7ContinuousBIT_Filter_General_communicationErrorCommsSpi(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_Filter_General_communicationErrorCommsUart")]
+  public static extern bool GQ7ContinuousBIT_Filter_General_communicationErrorCommsUart(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GQ7ContinuousBIT_Filter_General")]
+  public static extern void delete_GQ7ContinuousBIT_Filter_General(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_Filter__SWIG_0")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_Filter__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_Filter__SWIG_1")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_Filter__SWIG_1(uint jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_Filter_general")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_Filter_general(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GQ7ContinuousBIT_Filter")]
+  public static extern void delete_GQ7ContinuousBIT_Filter(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_GNSS_General__SWIG_0")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_GNSS_General__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_GNSS_General__SWIG_1")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_GNSS_General__SWIG_1(byte jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_CLOCK_FAULT_get")]
+  public static extern byte GQ7ContinuousBIT_GNSS_General_CLOCK_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_HARDWARE_FAULT_get")]
+  public static extern byte GQ7ContinuousBIT_GNSS_General_HARDWARE_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_COMMUNICATION_ERROR_COMMS_SERIAL_get")]
+  public static extern byte GQ7ContinuousBIT_GNSS_General_COMMUNICATION_ERROR_COMMS_SERIAL_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_COMMUNICATION_ERROR_COMMS_SPI_get")]
+  public static extern byte GQ7ContinuousBIT_GNSS_General_COMMUNICATION_ERROR_COMMS_SPI_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_COMMUNICATION_ERROR_NAV_SPI_get")]
+  public static extern byte GQ7ContinuousBIT_GNSS_General_COMMUNICATION_ERROR_NAV_SPI_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_GPS_TIME_FAULT_get")]
+  public static extern byte GQ7ContinuousBIT_GNSS_General_GPS_TIME_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_TIMING_OVERRUN_get")]
+  public static extern byte GQ7ContinuousBIT_GNSS_General_TIMING_OVERRUN_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_flags")]
+  public static extern byte GQ7ContinuousBIT_GNSS_General_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_clockFault")]
+  public static extern bool GQ7ContinuousBIT_GNSS_General_clockFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_hardwareFault")]
+  public static extern bool GQ7ContinuousBIT_GNSS_General_hardwareFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_communicationError")]
+  public static extern byte GQ7ContinuousBIT_GNSS_General_communicationError(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_communicationErrorCommsSerial")]
+  public static extern bool GQ7ContinuousBIT_GNSS_General_communicationErrorCommsSerial(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_communicationErrorCommsSpi")]
+  public static extern bool GQ7ContinuousBIT_GNSS_General_communicationErrorCommsSpi(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_communicationErrorNavSpi")]
+  public static extern bool GQ7ContinuousBIT_GNSS_General_communicationErrorNavSpi(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_gpsTimeFault")]
+  public static extern bool GQ7ContinuousBIT_GNSS_General_gpsTimeFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_timingOverrun")]
+  public static extern bool GQ7ContinuousBIT_GNSS_General_timingOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GQ7ContinuousBIT_GNSS_General")]
+  public static extern void delete_GQ7ContinuousBIT_GNSS_General(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_GNSS_Receivers__SWIG_0")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_GNSS_Receivers__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_GNSS_Receivers__SWIG_1")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_GNSS_Receivers__SWIG_1(ushort jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_POWER_FAULT_RECEIVER_1_get")]
+  public static extern ushort GQ7ContinuousBIT_GNSS_Receivers_POWER_FAULT_RECEIVER_1_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_FAULT_RECEIVER_1_get")]
+  public static extern ushort GQ7ContinuousBIT_GNSS_Receivers_FAULT_RECEIVER_1_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_SHORTED_ANTENNA_1_get")]
+  public static extern ushort GQ7ContinuousBIT_GNSS_Receivers_SHORTED_ANTENNA_1_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_OPEN_ANTENNA_1_get")]
+  public static extern ushort GQ7ContinuousBIT_GNSS_Receivers_OPEN_ANTENNA_1_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_SOLUTION_FAULT_RECEIVER_1_get")]
+  public static extern ushort GQ7ContinuousBIT_GNSS_Receivers_SOLUTION_FAULT_RECEIVER_1_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_POWER_FAULT_RECEIVER_2_get")]
+  public static extern ushort GQ7ContinuousBIT_GNSS_Receivers_POWER_FAULT_RECEIVER_2_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_FAULT_RECEIVER_2_get")]
+  public static extern ushort GQ7ContinuousBIT_GNSS_Receivers_FAULT_RECEIVER_2_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_SHORTED_ANTENNA_2_get")]
+  public static extern ushort GQ7ContinuousBIT_GNSS_Receivers_SHORTED_ANTENNA_2_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_OPEN_ANTENNA_2_get")]
+  public static extern ushort GQ7ContinuousBIT_GNSS_Receivers_OPEN_ANTENNA_2_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_SOLUTION_FAULT_RECEIVER_2_get")]
+  public static extern ushort GQ7ContinuousBIT_GNSS_Receivers_SOLUTION_FAULT_RECEIVER_2_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_RTCM_COMMUNICATION_FAULT_get")]
+  public static extern ushort GQ7ContinuousBIT_GNSS_Receivers_RTCM_COMMUNICATION_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_RTK_DONGLE_FAULT_get")]
+  public static extern ushort GQ7ContinuousBIT_GNSS_Receivers_RTK_DONGLE_FAULT_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_flags")]
+  public static extern ushort GQ7ContinuousBIT_GNSS_Receivers_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_powerFaultReceiver1")]
+  public static extern bool GQ7ContinuousBIT_GNSS_Receivers_powerFaultReceiver1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_faultReceiver1")]
+  public static extern bool GQ7ContinuousBIT_GNSS_Receivers_faultReceiver1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_shortedAntenna1")]
+  public static extern bool GQ7ContinuousBIT_GNSS_Receivers_shortedAntenna1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_openAntenna1")]
+  public static extern bool GQ7ContinuousBIT_GNSS_Receivers_openAntenna1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_solutionFaultReceiver1")]
+  public static extern bool GQ7ContinuousBIT_GNSS_Receivers_solutionFaultReceiver1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_powerFaultReceiver2")]
+  public static extern bool GQ7ContinuousBIT_GNSS_Receivers_powerFaultReceiver2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_faultReceiver2")]
+  public static extern bool GQ7ContinuousBIT_GNSS_Receivers_faultReceiver2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_shortedAntenna2")]
+  public static extern bool GQ7ContinuousBIT_GNSS_Receivers_shortedAntenna2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_openAntenna2")]
+  public static extern bool GQ7ContinuousBIT_GNSS_Receivers_openAntenna2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_solutionFaultReceiver2")]
+  public static extern bool GQ7ContinuousBIT_GNSS_Receivers_solutionFaultReceiver2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_rtcmCommunicationFault")]
+  public static extern bool GQ7ContinuousBIT_GNSS_Receivers_rtcmCommunicationFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_rtkDongleFault")]
+  public static extern bool GQ7ContinuousBIT_GNSS_Receivers_rtkDongleFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GQ7ContinuousBIT_GNSS_Receivers")]
+  public static extern void delete_GQ7ContinuousBIT_GNSS_Receivers(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_GNSS__SWIG_0")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_GNSS__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT_GNSS__SWIG_1")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT_GNSS__SWIG_1(uint jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_RESPONSE_OFFSET_get")]
+  public static extern byte GQ7ContinuousBIT_GNSS_RESPONSE_OFFSET_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_GENERAL_FLAGS_get")]
+  public static extern uint GQ7ContinuousBIT_GNSS_GENERAL_FLAGS_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_RECEIVERS_FLAGS_get")]
+  public static extern uint GQ7ContinuousBIT_GNSS_RECEIVERS_FLAGS_get();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_flags")]
+  public static extern uint GQ7ContinuousBIT_GNSS_flags(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_general")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_GNSS_general(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_receivers")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_GNSS_receivers(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GQ7ContinuousBIT_GNSS")]
+  public static extern void delete_GQ7ContinuousBIT_GNSS(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GQ7ContinuousBIT")]
+  public static extern global::System.IntPtr new_GQ7ContinuousBIT(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_system")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_system(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_systemClockFailure")]
+  public static extern bool GQ7ContinuousBIT_systemClockFailure(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_powerFault")]
+  public static extern bool GQ7ContinuousBIT_powerFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_firmwareFault")]
+  public static extern bool GQ7ContinuousBIT_firmwareFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_timingOverload")]
+  public static extern bool GQ7ContinuousBIT_timingOverload(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_bufferOverrun")]
+  public static extern bool GQ7ContinuousBIT_bufferOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_imuIpcFault")]
+  public static extern byte GQ7ContinuousBIT_imuIpcFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_imuControlLineFault")]
+  public static extern bool GQ7ContinuousBIT_imuControlLineFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_imuCommandResponseFault")]
+  public static extern bool GQ7ContinuousBIT_imuCommandResponseFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_imuSpiTransferFault")]
+  public static extern bool GQ7ContinuousBIT_imuSpiTransferFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_imuDataFrameFault")]
+  public static extern bool GQ7ContinuousBIT_imuDataFrameFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_filterIpcFault")]
+  public static extern byte GQ7ContinuousBIT_filterIpcFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_filterControlLineFault")]
+  public static extern bool GQ7ContinuousBIT_filterControlLineFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_filterCommandResponseFault")]
+  public static extern bool GQ7ContinuousBIT_filterCommandResponseFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_filterSpiTransferFault")]
+  public static extern bool GQ7ContinuousBIT_filterSpiTransferFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_filterDataFrameFault")]
+  public static extern bool GQ7ContinuousBIT_filterDataFrameFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssIpcFault")]
+  public static extern byte GQ7ContinuousBIT_gnssIpcFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssControlLineFault")]
+  public static extern bool GQ7ContinuousBIT_gnssControlLineFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssCommandResponseFault")]
+  public static extern bool GQ7ContinuousBIT_gnssCommandResponseFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssSpiTransferFault")]
+  public static extern bool GQ7ContinuousBIT_gnssSpiTransferFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssDataFrameFault")]
+  public static extern bool GQ7ContinuousBIT_gnssDataFrameFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_imu")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_imu(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_imuClockFault")]
+  public static extern bool GQ7ContinuousBIT_imuClockFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_imuCommunicationFault")]
+  public static extern bool GQ7ContinuousBIT_imuCommunicationFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_imuTimingOverrun")]
+  public static extern bool GQ7ContinuousBIT_imuTimingOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_imuCalibrationErrorAccel")]
+  public static extern bool GQ7ContinuousBIT_imuCalibrationErrorAccel(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_imuCalibrationErrorGyro")]
+  public static extern bool GQ7ContinuousBIT_imuCalibrationErrorGyro(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_imuCalibrationErrorMag")]
+  public static extern bool GQ7ContinuousBIT_imuCalibrationErrorMag(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_accelGeneralFault")]
+  public static extern bool GQ7ContinuousBIT_accelGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_accelOverrange")]
+  public static extern bool GQ7ContinuousBIT_accelOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_accelSelfTestFail")]
+  public static extern bool GQ7ContinuousBIT_accelSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gyroGeneralFault")]
+  public static extern bool GQ7ContinuousBIT_gyroGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gyroOverrange")]
+  public static extern bool GQ7ContinuousBIT_gyroOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gyroSelfTestFail")]
+  public static extern bool GQ7ContinuousBIT_gyroSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_magGeneralFault")]
+  public static extern bool GQ7ContinuousBIT_magGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_magOverrange")]
+  public static extern bool GQ7ContinuousBIT_magOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_magSelfTestFail")]
+  public static extern bool GQ7ContinuousBIT_magSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_pressureGeneralFault")]
+  public static extern bool GQ7ContinuousBIT_pressureGeneralFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_pressureOverrange")]
+  public static extern bool GQ7ContinuousBIT_pressureOverrange(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_pressureSelfTestFail")]
+  public static extern bool GQ7ContinuousBIT_pressureSelfTestFail(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_filter")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_filter(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_filterClockFault")]
+  public static extern bool GQ7ContinuousBIT_filterClockFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_filterHardwareFault")]
+  public static extern bool GQ7ContinuousBIT_filterHardwareFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_filterTimingOverrun")]
+  public static extern bool GQ7ContinuousBIT_filterTimingOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_filterTimingUnderrun")]
+  public static extern bool GQ7ContinuousBIT_filterTimingUnderrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_filterCommunicationError")]
+  public static extern byte GQ7ContinuousBIT_filterCommunicationError(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_filterCommunicationErrorImuSpi")]
+  public static extern bool GQ7ContinuousBIT_filterCommunicationErrorImuSpi(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_filterCommunicationErrorGnssSpi")]
+  public static extern bool GQ7ContinuousBIT_filterCommunicationErrorGnssSpi(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_filterCommunicationErrorCommsSpi")]
+  public static extern bool GQ7ContinuousBIT_filterCommunicationErrorCommsSpi(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_filterCommunicationErrorCommsUart")]
+  public static extern bool GQ7ContinuousBIT_filterCommunicationErrorCommsUart(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnss")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_gnss(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssClockFault")]
+  public static extern bool GQ7ContinuousBIT_gnssClockFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssHardwareFault")]
+  public static extern bool GQ7ContinuousBIT_gnssHardwareFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssCommunicationError")]
+  public static extern byte GQ7ContinuousBIT_gnssCommunicationError(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssCommunicationErrorCommsSerial")]
+  public static extern bool GQ7ContinuousBIT_gnssCommunicationErrorCommsSerial(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssCommunicationErrorCommsSpi")]
+  public static extern bool GQ7ContinuousBIT_gnssCommunicationErrorCommsSpi(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssCommunicationErrorNavSpi")]
+  public static extern bool GQ7ContinuousBIT_gnssCommunicationErrorNavSpi(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gpsTimeFault")]
+  public static extern bool GQ7ContinuousBIT_gpsTimeFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssTimingOverrun")]
+  public static extern bool GQ7ContinuousBIT_gnssTimingOverrun(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssPowerFaultReceiver1")]
+  public static extern bool GQ7ContinuousBIT_gnssPowerFaultReceiver1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssFaultReceiver1")]
+  public static extern bool GQ7ContinuousBIT_gnssFaultReceiver1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssShortedAntenna1")]
+  public static extern bool GQ7ContinuousBIT_gnssShortedAntenna1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssOpenAntenna1")]
+  public static extern bool GQ7ContinuousBIT_gnssOpenAntenna1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssSolutionFaultReceiver1")]
+  public static extern bool GQ7ContinuousBIT_gnssSolutionFaultReceiver1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssPowerFaultReceiver2")]
+  public static extern bool GQ7ContinuousBIT_gnssPowerFaultReceiver2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssFaultReceiver2")]
+  public static extern bool GQ7ContinuousBIT_gnssFaultReceiver2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssShortedAntenna2")]
+  public static extern bool GQ7ContinuousBIT_gnssShortedAntenna2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssOpenAntenna2")]
+  public static extern bool GQ7ContinuousBIT_gnssOpenAntenna2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_gnssSolutionFaultReceiver2")]
+  public static extern bool GQ7ContinuousBIT_gnssSolutionFaultReceiver2(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_rtcmCommunicationFault")]
+  public static extern bool GQ7ContinuousBIT_rtcmCommunicationFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_rtkDongleFault")]
+  public static extern bool GQ7ContinuousBIT_rtkDongleFault(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_as_MipDataPoints")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_as_MipDataPoints(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GQ7ContinuousBIT")]
+  public static extern void delete_GQ7ContinuousBIT(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_MipSharedDataFields")]
   public static extern global::System.IntPtr new_MipSharedDataFields();
@@ -12414,6 +13209,30 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPoint_SWIGUpcast")]
   public static extern global::System.IntPtr MipDataPoint_SWIGUpcast(global::System.IntPtr jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_General_SWIGUpcast")]
+  public static extern global::System.IntPtr ContinuousBIT_System_General_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_Process_SWIGUpcast")]
+  public static extern global::System.IntPtr ContinuousBIT_System_Process_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_System_SWIGUpcast")]
+  public static extern global::System.IntPtr ContinuousBIT_System_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_General_SWIGUpcast")]
+  public static extern global::System.IntPtr ContinuousBIT_IMU_General_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_Sensors_SWIGUpcast")]
+  public static extern global::System.IntPtr ContinuousBIT_IMU_Sensors_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_IMU_SWIGUpcast")]
+  public static extern global::System.IntPtr ContinuousBIT_IMU_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_Filter_General_SWIGUpcast")]
+  public static extern global::System.IntPtr ContinuousBIT_Filter_General_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_ContinuousBIT_Filter_SWIGUpcast")]
+  public static extern global::System.IntPtr ContinuousBIT_Filter_SWIGUpcast(global::System.IntPtr jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_System_General_SWIGUpcast")]
   public static extern global::System.IntPtr CV7ContinuousBIT_System_General_SWIGUpcast(global::System.IntPtr jarg1);
 
@@ -12440,6 +13259,42 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_CV7ContinuousBIT_SWIGUpcast")]
   public static extern global::System.IntPtr CV7ContinuousBIT_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_General_SWIGUpcast")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_System_General_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_Process_SWIGUpcast")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_System_Process_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_System_SWIGUpcast")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_System_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_IMU_General_SWIGUpcast")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_IMU_General_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_IMU_Sensors_SWIGUpcast")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_IMU_Sensors_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_IMU_SWIGUpcast")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_IMU_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_Filter_General_SWIGUpcast")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_Filter_General_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_Filter_SWIGUpcast")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_Filter_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_General_SWIGUpcast")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_GNSS_General_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_Receivers_SWIGUpcast")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_GNSS_Receivers_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_GNSS_SWIGUpcast")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_GNSS_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GQ7ContinuousBIT_SWIGUpcast")]
+  public static extern global::System.IntPtr GQ7ContinuousBIT_SWIGUpcast(global::System.IntPtr jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipDataPacket_SWIGUpcast")]
   public static extern global::System.IntPtr MipDataPacket_SWIGUpcast(global::System.IntPtr jarg1);

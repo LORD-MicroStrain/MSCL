@@ -10,7 +10,7 @@
 
 namespace mscl {
 
-public class CV7ContinuousBIT_Filter : Bitfield {
+public class CV7ContinuousBIT_Filter : ContinuousBIT_Filter {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
 
   internal CV7ContinuousBIT_Filter(global::System.IntPtr cPtr, bool cMemoryOwn) : base(msclPINVOKE.CV7ContinuousBIT_Filter_SWIGUpcast(cPtr), cMemoryOwn) {
@@ -42,20 +42,12 @@ public class CV7ContinuousBIT_Filter : Bitfield {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public uint flags() {
-    uint ret = msclPINVOKE.CV7ContinuousBIT_Filter_flags(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
   public CV7ContinuousBIT_Filter_General general() {
     CV7ContinuousBIT_Filter_General ret = new CV7ContinuousBIT_Filter_General(msclPINVOKE.CV7ContinuousBIT_Filter_general(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public static readonly byte RESPONSE_OFFSET = msclPINVOKE.CV7ContinuousBIT_Filter_RESPONSE_OFFSET_get();
-  public static readonly uint GENERAL_FLAGS = msclPINVOKE.CV7ContinuousBIT_Filter_GENERAL_FLAGS_get();
 }
 
 }

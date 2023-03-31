@@ -10,7 +10,7 @@
 
 namespace mscl {
 
-public class CV7ContinuousBIT_IMU : Bitfield {
+public class CV7ContinuousBIT_IMU : ContinuousBIT_IMU {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
 
   internal CV7ContinuousBIT_IMU(global::System.IntPtr cPtr, bool cMemoryOwn) : base(msclPINVOKE.CV7ContinuousBIT_IMU_SWIGUpcast(cPtr), cMemoryOwn) {
@@ -42,12 +42,6 @@ public class CV7ContinuousBIT_IMU : Bitfield {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public uint flags() {
-    uint ret = msclPINVOKE.CV7ContinuousBIT_IMU_flags(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
   public CV7ContinuousBIT_IMU_General general() {
     CV7ContinuousBIT_IMU_General ret = new CV7ContinuousBIT_IMU_General(msclPINVOKE.CV7ContinuousBIT_IMU_general(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
@@ -66,9 +60,6 @@ public class CV7ContinuousBIT_IMU : Bitfield {
     return ret;
   }
 
-  public static readonly byte RESPONSE_OFFSET = msclPINVOKE.CV7ContinuousBIT_IMU_RESPONSE_OFFSET_get();
-  public static readonly uint GENERAL_FLAGS = msclPINVOKE.CV7ContinuousBIT_IMU_GENERAL_FLAGS_get();
-  public static readonly uint SENSORS_FLAGS = msclPINVOKE.CV7ContinuousBIT_IMU_SENSORS_FLAGS_get();
   public static readonly uint FACTORY_BITS_INVALID = msclPINVOKE.CV7ContinuousBIT_IMU_FACTORY_BITS_INVALID_get();
 }
 

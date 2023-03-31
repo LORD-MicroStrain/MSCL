@@ -10,14 +10,14 @@
 
 namespace mscl {
 
-public class CV7ContinuousBIT_System : ContinuousBIT_System {
+public class GQ7ContinuousBIT_GNSS : Bitfield {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
 
-  internal CV7ContinuousBIT_System(global::System.IntPtr cPtr, bool cMemoryOwn) : base(msclPINVOKE.CV7ContinuousBIT_System_SWIGUpcast(cPtr), cMemoryOwn) {
+  internal GQ7ContinuousBIT_GNSS(global::System.IntPtr cPtr, bool cMemoryOwn) : base(msclPINVOKE.GQ7ContinuousBIT_GNSS_SWIGUpcast(cPtr), cMemoryOwn) {
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
-  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(CV7ContinuousBIT_System obj) {
+  internal static global::System.Runtime.InteropServices.HandleRef getCPtr(GQ7ContinuousBIT_GNSS obj) {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
@@ -26,7 +26,7 @@ public class CV7ContinuousBIT_System : ContinuousBIT_System {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_CV7ContinuousBIT_System(swigCPtr);
+          msclPINVOKE.delete_GQ7ContinuousBIT_GNSS(swigCPtr);
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
@@ -34,26 +34,35 @@ public class CV7ContinuousBIT_System : ContinuousBIT_System {
     }
   }
 
-  public CV7ContinuousBIT_System() : this(msclPINVOKE.new_CV7ContinuousBIT_System__SWIG_0(), true) {
+  public GQ7ContinuousBIT_GNSS() : this(msclPINVOKE.new_GQ7ContinuousBIT_GNSS__SWIG_0(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public CV7ContinuousBIT_System(uint bits) : this(msclPINVOKE.new_CV7ContinuousBIT_System__SWIG_1(bits), true) {
+  public GQ7ContinuousBIT_GNSS(uint bits) : this(msclPINVOKE.new_GQ7ContinuousBIT_GNSS__SWIG_1(bits), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public CV7ContinuousBIT_System_General general() {
-    CV7ContinuousBIT_System_General ret = new CV7ContinuousBIT_System_General(msclPINVOKE.CV7ContinuousBIT_System_general(swigCPtr), true);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public CV7ContinuousBIT_System_Process process() {
-    CV7ContinuousBIT_System_Process ret = new CV7ContinuousBIT_System_Process(msclPINVOKE.CV7ContinuousBIT_System_process(swigCPtr), true);
+  public uint flags() {
+    uint ret = msclPINVOKE.GQ7ContinuousBIT_GNSS_flags(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
+  public GQ7ContinuousBIT_GNSS_General general() {
+    GQ7ContinuousBIT_GNSS_General ret = new GQ7ContinuousBIT_GNSS_General(msclPINVOKE.GQ7ContinuousBIT_GNSS_general(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public GQ7ContinuousBIT_GNSS_Receivers receivers() {
+    GQ7ContinuousBIT_GNSS_Receivers ret = new GQ7ContinuousBIT_GNSS_Receivers(msclPINVOKE.GQ7ContinuousBIT_GNSS_receivers(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public static readonly byte RESPONSE_OFFSET = msclPINVOKE.GQ7ContinuousBIT_GNSS_RESPONSE_OFFSET_get();
+  public static readonly uint GENERAL_FLAGS = msclPINVOKE.GQ7ContinuousBIT_GNSS_GENERAL_FLAGS_get();
+  public static readonly uint RECEIVERS_FLAGS = msclPINVOKE.GQ7ContinuousBIT_GNSS_RECEIVERS_FLAGS_get();
 }
 
 }
