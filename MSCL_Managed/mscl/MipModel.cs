@@ -368,6 +368,24 @@ public class MipModel : global::System.IDisposable {
     } 
   }
 
+  public static MipModel mip_model_3dm_gv7_ins {
+    get {
+      global::System.IntPtr cPtr = msclPINVOKE.MipModel_mip_model_3dm_gv7_ins_get();
+      MipModel ret = (cPtr == global::System.IntPtr.Zero) ? null : new MipModel(cPtr, false);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
+  public static MipModel mip_model_3dm_cv7_ins {
+    get {
+      global::System.IntPtr cPtr = msclPINVOKE.MipModel_mip_model_3dm_cv7_ins_get();
+      MipModel ret = (cPtr == global::System.IntPtr.Zero) ? null : new MipModel(cPtr, false);
+      if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+      return ret;
+    } 
+  }
+
   public MipModel(string modelNumberStr) : this(msclPINVOKE.new_MipModel__SWIG_0(modelNumberStr), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
