@@ -575,6 +575,8 @@ namespace mscl
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
         default:
             return{
                 InertialTypes::AutoAdaptiveFilteringLevel::FILTERING_OFF,
@@ -598,6 +600,8 @@ namespace mscl
         {
             case MipModels::node_3dm_cv7_ahrs:
             case MipModels::node_3dm_gv7_ahrs:
+            case MipModels::node_3dm_gv7_ins:
+            case MipModels::node_3dm_cv7_ins:
                 return{
                     InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
                     InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
@@ -635,6 +639,8 @@ namespace mscl
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
             return{
                 InertialTypes::PpsSource::PPS_DISABLED,
                 InertialTypes::PpsSource::PPS_GPIO,
@@ -798,6 +804,8 @@ namespace mscl
             case MipModels::node_3dm_cv7_ar:
             case MipModels::node_3dm_gv7_ahrs:
             case MipModels::node_3dm_gv7_ar:
+            case MipModels::node_3dm_gv7_ins:
+            case MipModels::node_3dm_cv7_ins:
                 // CV7 and GV7 all pins support the same features (PPS, Event Timestamp)
                 features.emplace(GpioConfiguration::Feature::PPS_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::PPS_FEATURE));
                 features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
@@ -895,6 +903,8 @@ namespace mscl
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
                 InertialTypes::GeographicSourceOption::MANUAL
@@ -924,6 +934,8 @@ namespace mscl
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
                 InertialTypes::GeographicSourceOption::MANUAL
@@ -953,6 +965,8 @@ namespace mscl
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
                 InertialTypes::GeographicSourceOption::MANUAL
@@ -990,6 +1004,8 @@ namespace mscl
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
         default:
             possibleFields = {
                 // 0x80: Sensor Data
