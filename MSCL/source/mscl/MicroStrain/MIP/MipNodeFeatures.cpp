@@ -770,6 +770,7 @@ namespace mscl
         {
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
+        case MipModels::node_3dm_gv7_ins:
             supportedPins = { 1, 2 };
             break;
 
