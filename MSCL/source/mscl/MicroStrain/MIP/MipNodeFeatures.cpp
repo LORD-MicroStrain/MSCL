@@ -679,9 +679,9 @@ namespace mscl
             && (behavior == GpioConfiguration::GpioBehavior::GPIO_OUTPUT_LOW_BEHAVIOR || behavior == GpioConfiguration::GpioBehavior::GPIO_OUTPUT_HIGH_BEHAVIOR))
         {
             return{
-            GpioConfiguration::PinModes(0),
-            GpioConfiguration::PinModes::OPEN_DRAIN,
-            GpioConfiguration::PinModes(GpioConfiguration::PinModes::OPEN_DRAIN | GpioConfiguration::PinModes::PULLUP)
+                GpioConfiguration::PinModes(0),
+                GpioConfiguration::PinModes::OPEN_DRAIN,
+                GpioConfiguration::PinModes(GpioConfiguration::PinModes::OPEN_DRAIN | GpioConfiguration::PinModes::PULLUP)
             };
         }
 
@@ -692,6 +692,29 @@ namespace mscl
                 GpioConfiguration::PinModes::PULLUP,
                 GpioConfiguration::PinModes::PULLDOWN
             };
+        }
+
+        if (feature == GpioConfiguration::UART_FEATURE)
+        {
+            switch (behavior)
+            {
+            case GpioConfiguration::UartBehavior::UART_TRANSMIT:
+                return{
+                    GpioConfiguration::PinModes(0),
+                    GpioConfiguration::PinModes::OPEN_DRAIN,
+                    GpioConfiguration::PinModes(GpioConfiguration::PinModes::OPEN_DRAIN | GpioConfiguration::PinModes::PULLUP)
+                };
+
+            case GpioConfiguration::UartBehavior::UART_RECEIVE:
+                return{
+                    GpioConfiguration::PinModes(0),
+                    GpioConfiguration::PinModes::PULLUP,
+                    GpioConfiguration::PinModes::PULLDOWN
+                };
+
+            default:
+                break;
+            }
         }
 
         return{ GpioPinModeOptions(0) };
@@ -708,9 +731,9 @@ namespace mscl
         {
         case GpioConfiguration::Feature::GPIO_FEATURE:
             return{
-            { GpioConfiguration::GpioBehavior::GPIO_INPUT_BEHAVIOR, supportedGpioPinModes(GpioConfiguration::GPIO_FEATURE, GpioConfiguration::GpioBehavior::GPIO_INPUT_BEHAVIOR) },
-            { GpioConfiguration::GpioBehavior::GPIO_OUTPUT_LOW_BEHAVIOR, supportedGpioPinModes(GpioConfiguration::GPIO_FEATURE, GpioConfiguration::GpioBehavior::GPIO_OUTPUT_LOW_BEHAVIOR) },
-            { GpioConfiguration::GpioBehavior::GPIO_OUTPUT_HIGH_BEHAVIOR, supportedGpioPinModes(GpioConfiguration::GPIO_FEATURE, GpioConfiguration::GpioBehavior::GPIO_OUTPUT_HIGH_BEHAVIOR) }
+            { GpioConfiguration::GpioBehavior::GPIO_INPUT_BEHAVIOR, supportedGpioPinModes(feature, GpioConfiguration::GpioBehavior::GPIO_INPUT_BEHAVIOR) },
+            { GpioConfiguration::GpioBehavior::GPIO_OUTPUT_LOW_BEHAVIOR, supportedGpioPinModes(feature, GpioConfiguration::GpioBehavior::GPIO_OUTPUT_LOW_BEHAVIOR) },
+            { GpioConfiguration::GpioBehavior::GPIO_OUTPUT_HIGH_BEHAVIOR, supportedGpioPinModes(feature, GpioConfiguration::GpioBehavior::GPIO_OUTPUT_HIGH_BEHAVIOR) }
             };
 
         case GpioConfiguration::Feature::PPS_FEATURE:
@@ -721,16 +744,36 @@ namespace mscl
 
         case GpioConfiguration::Feature::ENCODER_FEATURE:
             return{
-                { GpioConfiguration::EncoderBehavior::ENCODER_A, supportedGpioPinModes(GpioConfiguration::ENCODER_FEATURE, GpioConfiguration::EncoderBehavior::ENCODER_A) },
-                { GpioConfiguration::EncoderBehavior::ENCODER_B, supportedGpioPinModes(GpioConfiguration::ENCODER_FEATURE, GpioConfiguration::EncoderBehavior::ENCODER_A) }
+                { GpioConfiguration::EncoderBehavior::ENCODER_A, supportedGpioPinModes(feature, GpioConfiguration::EncoderBehavior::ENCODER_A) },
+                { GpioConfiguration::EncoderBehavior::ENCODER_B, supportedGpioPinModes(feature, GpioConfiguration::EncoderBehavior::ENCODER_A) }
             };
 
         case GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE:
             return{
-                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_RISING, supportedGpioPinModes(GpioConfiguration::EVENT_TIMESTAMP_FEATURE, 0) },
-                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_FALLING, supportedGpioPinModes(GpioConfiguration::EVENT_TIMESTAMP_FEATURE, 0) },
-                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_EDGE, supportedGpioPinModes(GpioConfiguration::EVENT_TIMESTAMP_FEATURE, 0) }
+                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_RISING, supportedGpioPinModes(feature, 0) },
+                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_FALLING, supportedGpioPinModes(feature, 0) },
+                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_EDGE, supportedGpioPinModes(feature, 0) }
             };
+
+        case GpioConfiguration::Feature::UART_FEATURE:
+        {
+            MipModel model(nodeInfo().deviceInfo().modelNumber);
+            switch (model.baseModel().nodeModel())
+            {
+            case MipModels::node_3dm_gv7_ins:
+            case MipModels::node_3dm_cv7_ins:
+                // technically Transmit is also supported, but the device won't actually output anything so no reason to configure it
+                return{
+                    { GpioConfiguration::UartBehavior::UART_RECEIVE, supportedGpioPinModes(feature, GpioConfiguration::UartBehavior::UART_RECEIVE) }
+                };
+
+            default:
+                return{
+                    { GpioConfiguration::UartBehavior::UART_TRANSMIT, supportedGpioPinModes(feature, GpioConfiguration::UartBehavior::UART_TRANSMIT) },
+                    { GpioConfiguration::UartBehavior::UART_RECEIVE, supportedGpioPinModes(feature, GpioConfiguration::UartBehavior::UART_RECEIVE) }
+                };
+            }
+        }
 
         default:
             return{};
@@ -785,7 +828,8 @@ namespace mscl
                 { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
                 { GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE) },
                 { GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE) },
-                { GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE) }
+                { GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE) },
+                { GpioConfiguration::Feature::UART_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::UART_FEATURE) }
         };
         
         // build pin options
@@ -810,6 +854,7 @@ namespace mscl
                 // CV7 and GV7 all pins support the same features (PPS, Event Timestamp)
                 features.emplace(GpioConfiguration::Feature::PPS_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::PPS_FEATURE));
                 features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
+                features.emplace(GpioConfiguration::Feature::UART_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::UART_FEATURE));
                 break;
 
             case MipModels::node_3dm_gq7:
