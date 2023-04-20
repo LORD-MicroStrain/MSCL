@@ -113,7 +113,8 @@ public class GpioConfiguration : global::System.IDisposable {
     GPIO_FEATURE = 0x01,
     PPS_FEATURE = 0x02,
     ENCODER_FEATURE = 0x03,
-    EVENT_TIMESTAMP_FEATURE = 0x04
+    EVENT_TIMESTAMP_FEATURE = 0x04,
+    UART_FEATURE = 0x05
   }
 
   public enum GpioBehavior {
@@ -140,6 +141,11 @@ public class GpioConfiguration : global::System.IDisposable {
     EVENT_TIMESTAMP_RISING = 0x01,
     EVENT_TIMESTAMP_FALLING = 0x02,
     EVENT_TIMESTAMP_EDGE = 0x03
+  }
+
+  public enum UartBehavior {
+    UART_TRANSMIT = 0x01,
+    UART_RECEIVE = 0x02
   }
 
   public enum PinModes {

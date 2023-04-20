@@ -3040,13 +3040,15 @@ namespace mscl
         //      PPS_FEATURE             - 0x02 - Single pulse input; one direction only
         //      ENCODER_FEATURE         - 0x03 - Quadrature encoder mode
         //      EVENT_TIMESTAMP_FEATURE - 0x04 - Precision event timestamping
+        //      UART_FEATURE            - 0x05 - UART data or control lines
         enum Feature
         {
             UNUSED_FEATURE = 0x00,
             GPIO_FEATURE = 0x01,
             PPS_FEATURE = 0x02,
             ENCODER_FEATURE = 0x03,
-            EVENT_TIMESTAMP_FEATURE = 0x04
+            EVENT_TIMESTAMP_FEATURE = 0x04,
+            UART_FEATURE = 0x05
         };
 
         //API Enum: GpioBehavior
@@ -3105,6 +3107,18 @@ namespace mscl
             EVENT_TIMESTAMP_EDGE      = 0x03,
         };
 
+        //API Enum: UartBehavior
+        //  UART Pin behavior
+        //  Note: only one Transmit and one Receive pin can be configured per port pair (see documentation)
+        //
+        //      UART_TRANSMIT    - 0x01 - UART transmit line
+        //      UART_RECEIVE     - 0x02 - UART receive line
+        enum UartBehavior
+        {
+            UART_TRANSMIT = 0x01, // UART transmit line
+            UART_RECEIVE  = 0x02  // UART receive line
+        };
+
         //API Enum: PinModes
         //
         //  PinModes for the pinMode Bitfield
@@ -3129,7 +3143,18 @@ namespace mscl
         //API Function: pinModeValue
         //  Gets or sets the underlying value for the pin mode bitfield
         void pinModeValue(uint8 val) { pinMode.value(val); };
-        uint8 pinModeValue() { return static_cast<uint8>(pinMode.value()); };
+        uint8 pinModeValue() const { return static_cast<uint8>(pinMode.value()); };
+    
+    private:
+        friend class InertialNode;
+
+        //Function: fromCommandResponse
+        //  [static] Build a <GpioConfiguration> object from the read command response <MipFieldValues>.
+        //
+        //Parameters:
+        //  responseValues - <MipFieldValues> to populate the <GpioConfiguration> object
+        //  startIndex - default 0 - indicates the index at which to start reading from the responseValues. This should not need to be changed from the default value (0).
+        static GpioConfiguration fromCommandResponse(const MipFieldValues& responseValues, uint8 startIndex = 0);
     };
 
     //API Typedef: PinModes

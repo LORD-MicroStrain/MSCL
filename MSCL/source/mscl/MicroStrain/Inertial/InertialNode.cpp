@@ -891,12 +891,7 @@ namespace mscl
     {
         MipFieldValues data = m_impl->get(MipTypes::CMD_GPIO_CONFIGURATION, {
             Value::UINT8(pin) });
-        GpioConfiguration config;
-        config.pin = data[0].as_uint8();
-        config.feature = static_cast<GpioConfiguration::Feature>(data[1].as_uint8());
-        config.behavior = data[2].as_uint8();
-        config.pinModeValue(data[3].as_uint8());
-        return config;
+        return GpioConfiguration::fromCommandResponse(data);
     }
 
     void InertialNode::setGpioConfig(GpioConfiguration config)
