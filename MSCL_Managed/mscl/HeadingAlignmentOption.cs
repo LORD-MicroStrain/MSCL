@@ -13,7 +13,8 @@ namespace mscl {
 public enum HeadingAlignmentOption {
   GNSS_DualAntenna = 0x01,
   GNSS_Kinematic = 0x02,
-  Magnetometer = 0x04
+  Magnetometer = 0x04,
+  External = 0x08
 }
 
 }

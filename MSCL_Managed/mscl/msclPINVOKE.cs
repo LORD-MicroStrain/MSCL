@@ -7227,6 +7227,9 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedHeadingUpdateOptions")]
   public static extern global::System.IntPtr MipNodeFeatures_supportedHeadingUpdateOptions(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedHeadingAlignmentMethods")]
+  public static extern global::System.IntPtr MipNodeFeatures_supportedHeadingAlignmentMethods(global::System.Runtime.InteropServices.HandleRef jarg1);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipNodeFeatures_supportedStatusSelectors")]
   public static extern global::System.IntPtr MipNodeFeatures_supportedStatusSelectors(global::System.Runtime.InteropServices.HandleRef jarg1);
 

@@ -442,6 +442,29 @@ namespace mscl
 
     }
 
+    const HeadingAlignmentMethod MipNodeFeatures::supportedHeadingAlignmentMethods() const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_INITIALIZATION_CONFIG))
+        {
+            return HeadingAlignmentMethod(0);
+        }
+        
+        MipModel model(nodeInfo().deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ins:
+        case MipModels::node_3dm_gv7_ins:
+            return HeadingAlignmentMethod(
+                HeadingAlignmentOption::GNSS_Kinematic
+                | HeadingAlignmentOption::Magnetometer
+                | HeadingAlignmentOption::External
+            );
+
+        default:
+            return HeadingAlignmentMethod(0xFF);
+        }
+    }
+
     const EstimationControlOptions MipNodeFeatures::supportedEstimationControlOptions() const
     {
         if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_BIAS_EST_CTRL))
@@ -600,8 +623,6 @@ namespace mscl
         {
             case MipModels::node_3dm_cv7_ahrs:
             case MipModels::node_3dm_gv7_ahrs:
-            case MipModels::node_3dm_gv7_ins:
-            case MipModels::node_3dm_cv7_ins:
                 return{
                     InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
                     InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
@@ -610,6 +631,15 @@ namespace mscl
             case MipModels::node_3dm_cv7_ar:
             case MipModels::node_3dm_gv7_ar:
                 return {
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
+                };
+
+            case MipModels::node_3dm_gv7_ins:
+            case MipModels::node_3dm_cv7_ins:
+                return{
+                    InertialTypes::AidingMeasurementSource::GNSS_POS_VEL_AIDING,
+                    InertialTypes::AidingMeasurementSource::ALTIMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
                     InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
                 };
 

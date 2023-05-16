@@ -146,6 +146,12 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public HeadingAlignmentMethod supportedHeadingAlignmentMethods() {
+    HeadingAlignmentMethod ret = new HeadingAlignmentMethod(msclPINVOKE.MipNodeFeatures_supportedHeadingAlignmentMethods(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
   public StatusSelectors supportedStatusSelectors() {
     StatusSelectors ret = new StatusSelectors(msclPINVOKE.MipNodeFeatures_supportedStatusSelectors(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

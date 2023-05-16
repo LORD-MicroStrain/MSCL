@@ -2120,11 +2120,13 @@ namespace mscl
     //  GNSS_DualAntenna    - 0x01  - Dual-antenna GNSS alignment
     //  GNSS_Kinematic      - 0x02  - GNSS kinematic alignment (GNSS velocity determines initial heading)
     //  Magnetometer        - 0x04  - Magnetometer heading alignment
+    //  External            - 0x08  - External heading source
     enum HeadingAlignmentOption
     {
         GNSS_DualAntenna = 0x01,
         GNSS_Kinematic = 0x02,
-        Magnetometer = 0x04
+        Magnetometer = 0x04,
+        External = 0x08
     };
 
     //API Struct: HeadingAlignmentMethod
