@@ -460,6 +460,13 @@ namespace mscl
                 | HeadingAlignmentOption::External
             );
 
+        case MipModels::node_3dm_gq7:
+            return HeadingAlignmentMethod(
+                HeadingAlignmentOption::GNSS_DualAntenna
+                | HeadingAlignmentOption::GNSS_Kinematic
+                | HeadingAlignmentOption::Magnetometer
+            );
+
         default:
             return HeadingAlignmentMethod(0xFF);
         }
