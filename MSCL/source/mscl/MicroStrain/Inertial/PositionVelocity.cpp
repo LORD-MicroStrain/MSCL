@@ -6,36 +6,24 @@
 
 #include "stdafx.h"
 
-#include "PositionOffset.h"
+#include "PositionVelocity.h"
 
 namespace mscl
 {
-    PositionOffset::PositionOffset():
-        m_x(0.0f),
-        m_y(0.0f),
-        m_z(0.0f)
-    {
-    }
+    GeometricVector::GeometricVector(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref) :
+        vec_0(x_init),
+        vec_1(y_init),
+        vec_2(z_init),
+        referenceFrame(ref)
+    { }
 
-    PositionOffset::PositionOffset(float x, float y, float z):
-        m_x(x),
-        m_y(y),
-        m_z(z)
-    {
-    }
+    GeometricVector::GeometricVector() :
+        vec_0(0),
+        vec_1(0),
+        vec_2(0),
+        referenceFrame(PositionVelocityReferenceFrame::ECEF)
+    { }
 
-    float PositionOffset::x() const
-    {
-        return m_x;
-    }
-
-    float PositionOffset::y() const
-    {
-        return m_y;
-    }
-
-    float PositionOffset::z() const
-    {
-        return m_z;
-    }
+    GeometricVector::~GeometricVector()
+    { }
 }

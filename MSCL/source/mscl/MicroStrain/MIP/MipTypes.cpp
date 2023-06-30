@@ -1131,6 +1131,133 @@ namespace mscl
         return sensorcloudFilteredName;
     }
 
+    AidingMeasurementInput::AidingMeasurementInput(const MipFieldValues& values)
+    {
+        parseMipFieldValues(values);
+    }
+
+    MipFieldValues AidingMeasurementInput::toMipFieldValues() const
+    {
+        MipFieldValues values;
+
+        values.push_back(Value::UINT8(static_cast<uint8>(m_timestamp.storedEpoch())));
+        values.push_back(Value::UINT8(0x01)); // reserved
+        values.push_back(Value::UINT64(m_timestamp.nanoseconds()));
+
+        values.push_back(Value::UINT8(m_sensorId));
+
+        appendMipFieldValues(values);
+
+        values.push_back(Value::UINT16(static_cast<uint16>(m_validFlags.value())));
+
+        return values;
+    }
+
+    void AidingMeasurementInput::parseMipFieldValues(const MipFieldValues& values)
+    {
+        m_timestamp = Timestamp(values[2].as_uint64(), static_cast<Timestamp::Epoch>(values[0].as_uint8()));
+        m_sensorId = values[3].as_uint8();
+
+        m_validFlags = Bitfield(values[values.size() - 1].as_uint16());
+    }
+
+    AidingMeasurementPosition::AidingMeasurementPosition(PositionVelocityReferenceFrame referenceFrame, const MipFieldValues& values) :
+        AidingMeasurementInput()
+    {
+        m_position.referenceFrame = referenceFrame;
+        parseMipFieldValues(values);
+    }
+
+    void AidingMeasurementPosition::parseMipFieldValues(const MipFieldValues& values)
+    {
+        // parse out base values (timestamp, sensor id, valid flags)
+        AidingMeasurementInput::parseMipFieldValues(values);
+
+        m_position = Position(
+            values[4].as_double(),
+            values[5].as_double(),
+            values[6].as_double(),
+            m_position.referenceFrame
+        );
+
+        m_unc = GeometricUncertainty(
+            values[7].as_float(),
+            values[8].as_float(),
+            values[9].as_float(),
+            m_position.referenceFrame
+        );
+    }
+
+    void AidingMeasurementPosition::appendMipFieldValues(MipFieldValues& values) const
+    {
+        values.push_back(Value::DOUBLE(m_position.x()));
+        values.push_back(Value::DOUBLE(m_position.y()));
+        values.push_back(Value::DOUBLE(m_position.z()));
+
+        values.push_back(Value::FLOAT(m_unc.x()));
+        values.push_back(Value::FLOAT(m_unc.y()));
+        values.push_back(Value::FLOAT(m_unc.z()));
+    }
+
+    AidingMeasurementVelocity::AidingMeasurementVelocity(PositionVelocityReferenceFrame referenceFrame, const MipFieldValues& values) :
+        AidingMeasurementInput()
+    {
+        m_velocity.referenceFrame = referenceFrame;
+        parseMipFieldValues(values);
+    }
+
+    void AidingMeasurementVelocity::parseMipFieldValues(const MipFieldValues& values)
+    {
+        // parse out base values (timestamp, sensor id, valid flags)
+        AidingMeasurementInput::parseMipFieldValues(values);
+
+        m_velocity = Velocity(
+            values[4].as_float(),
+            values[5].as_float(),
+            values[6].as_float(),
+            m_velocity.referenceFrame
+        );
+
+        m_unc = GeometricUncertainty(
+            values[7].as_float(),
+            values[8].as_float(),
+            values[9].as_float(),
+            m_velocity.referenceFrame
+        );
+    }
+
+    void AidingMeasurementVelocity::appendMipFieldValues(MipFieldValues& values) const
+    {
+        values.push_back(Value::FLOAT(m_velocity.x()));
+        values.push_back(Value::FLOAT(m_velocity.y()));
+        values.push_back(Value::FLOAT(m_velocity.z()));
+
+        values.push_back(Value::FLOAT(m_unc.x()));
+        values.push_back(Value::FLOAT(m_unc.y()));
+        values.push_back(Value::FLOAT(m_unc.z()));
+    }
+
+    AidingMeasurementHeading::AidingMeasurementHeading(const MipFieldValues& values) :
+        AidingMeasurementInput()
+    {
+        parseMipFieldValues(values);
+    }
+
+    void AidingMeasurementHeading::parseMipFieldValues(const MipFieldValues& values)
+    {
+        // parse out base values (timestamp, sensor id, valid flags)
+        AidingMeasurementInput::parseMipFieldValues(values);
+
+        m_heading = values[4].as_float();
+        m_unc = values[5].as_float();
+    }
+
+    void AidingMeasurementHeading::appendMipFieldValues(MipFieldValues& values) const
+    {
+        values.push_back(Value::FLOAT(m_heading));
+        values.push_back(Value::FLOAT(m_unc));
+    }
+
     const std::string GnssReceiverInfo::INFO_NOT_FOUND = "Not Found";
 
     GnssReceiverInfo::GnssReceiverInfo() :

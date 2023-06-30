@@ -12,6 +12,11 @@
 #include <map>
 #include "mscl/Value.h"
 #include "mscl/Version.h"
+#include "mscl/Timestamp.h"
+
+#include "mscl/MicroStrain/Bitfield.h"
+
+#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
 
 namespace mscl
 {
@@ -228,6 +233,22 @@ namespace mscl
         //  CMD_DISPLACEMENT_DEVICE_TIME                - 0x1104    - Displacement Device Time
         //  CMD_RTK_DEVICE_STATUS_FLAGS                 - 0x0F01    - Get RTK Device Status Flags
         //  CMD_RTK_ACTIVATION_CODE                     - 0x0F07    - Get RTK Activation Code
+        //  CMD_AIDING_FRAME_CONFIG                     - 0x1301    - Configure Aiding Measurement Reference Frames
+        //  CMD_AIDING_SENSOR_FRAME_MAP                 - 0x1302    - Map Reference Frames to Sensor Inputs
+        //  CMD_AIDING_ECHO_CONTROL                     - 0x131F    - Enable/Disable Aiding Measurement Echo in Response
+        //  CMD_AIDING_POS_LOCAL                        - 0x1320    - ECEF Position Input
+        //  CMD_AIDING_POS_ECEF                         - 0x1321    - LLH Position Input
+        //  CMD_AIDING_POS_LLH                          - 0x1322    - Local Position Input
+        //  CMD_AIDING_HEIGHT_ABS                       - 0x1323    - Absolute Height Input
+        //  CMD_AIDING_HEIGHT_REL                       - 0x1324    - Relative Height Input
+        //  CMD_AIDING_VEL_ECEF                         - 0x1328    - ECEF Velocity Input
+        //  CMD_AIDING_VEL_NED                          - 0x1329    - NED Velocity Input
+        //  CMD_AIDING_VEL_ODOM                         - 0x132A    - Velocity Input (Relative to the Vehicle Frame)
+        //  CMD_AIDING_WHEELSPEED                       - 0x132B    - Wheel Speed Input
+        //  CMD_AIDING_HEADING_TRUE                     - 0x1331    - True Heading Input
+        //  CMD_AIDING_DELTA_POSITION                   - 0x1338    - Delta Position Input
+        //  CMD_AIDING_DELTA_ATTITUDE                   - 0x1339    - Delta Attitude Input
+        //  CMD_AIDING_ANGULAR_RATE_LOCAL               - 0x133A    - Local Angular Rate Input
         enum Command
         {
             CMD_PING                                = 0x0101,
@@ -359,7 +380,23 @@ namespace mscl
             CMD_DISPLACEMENT_OUTPUT_RATE            = 0x1102,
             CMD_DISPLACEMENT_DEVICE_TIME            = 0x1104,
             CMD_RTK_DEVICE_STATUS_FLAGS             = 0x0F01,
-            CMD_RTK_ACTIVATION_CODE                 = 0x0F07
+            CMD_RTK_ACTIVATION_CODE                 = 0x0F07,
+            CMD_AIDING_FRAME_CONFIG                 = 0x1301,
+            CMD_AIDING_SENSOR_FRAME_MAP             = 0x1302,
+            CMD_AIDING_ECHO_CONTROL                 = 0x131F,
+            CMD_AIDING_POS_LOCAL                    = 0x1320,
+            CMD_AIDING_POS_ECEF                     = 0x1321,
+            CMD_AIDING_POS_LLH                      = 0x1322,
+            CMD_AIDING_HEIGHT_ABS                   = 0x1323,
+            CMD_AIDING_HEIGHT_REL                   = 0x1324,
+            CMD_AIDING_VEL_ECEF                     = 0x1328,
+            CMD_AIDING_VEL_NED                      = 0x1329,
+            CMD_AIDING_VEL_ODOM                     = 0x132A,
+            CMD_AIDING_WHEELSPEED                   = 0x132B,
+            CMD_AIDING_HEADING_TRUE                 = 0x1331,
+            CMD_AIDING_DELTA_POSITION               = 0x1338,
+            CMD_AIDING_DELTA_ATTITUDE               = 0x1339,
+            CMD_AIDING_ANGULAR_RATE_LOCAL           = 0x133A,
         };
 
         //====================================================================================================
@@ -1915,6 +1952,164 @@ namespace mscl
     //API Typedef: MipResponseMatchValues
     //      A map of locations and values to match in a MIP response to determine success
     typedef std::map<size_t, Value> MipResponseMatchValues;
+
+    class AidingMeasurementInput
+    {
+    protected:
+        Timestamp m_timestamp;
+        uint8 m_sensorId;
+        Bitfield m_validFlags;
+
+    public:
+        AidingMeasurementInput() :
+            m_timestamp(0),
+            m_sensorId(0),
+            m_validFlags(0)
+        {}
+
+        AidingMeasurementInput(const MipFieldValues& values);
+
+        ~AidingMeasurementInput() {}
+
+    public:
+        MipFieldValues toMipFieldValues() const;
+
+    protected:
+        virtual void parseMipFieldValues(const MipFieldValues& values);
+
+        virtual void appendMipFieldValues(MipFieldValues& values) const = 0;
+
+    public:
+        Timestamp timestamp() const { return m_timestamp; }
+        void timestamp(Timestamp ts) { m_timestamp = ts; }
+
+        Timestamp::Epoch timebase() const { return m_timestamp.storedEpoch(); }
+
+        uint8 sensorId() const { return m_sensorId; }
+        void sensorId(uint8 id) { m_sensorId = id; }
+
+        Bitfield validFlags() const { return m_validFlags; }
+        void validFlags(Bitfield flags) { m_validFlags = flags; }
+    };
+
+    class AidingMeasurementPosition : public AidingMeasurementInput
+    {
+    public:
+        enum ValidFlags
+        {
+            X = 1,
+            LATITUDE = 1,
+
+            Y = 2,
+            LONGITUDE = 2,
+
+            Z = 4,
+            HEIGHT = 4
+        };
+        
+    protected:
+        Position m_position;
+        GeometricUncertainty m_unc;
+
+    public:
+        AidingMeasurementPosition() : AidingMeasurementInput() {}
+
+        AidingMeasurementPosition(PositionVelocityReferenceFrame referenceFrame, const MipFieldValues& values);
+
+        ~AidingMeasurementPosition() {}
+
+    protected:
+        virtual void parseMipFieldValues(const MipFieldValues& values) override;
+
+        virtual void appendMipFieldValues(MipFieldValues& values) const override;
+
+    public:
+        Position position() const { return m_position; }
+        void position(Position pos, uint16 validFlags = X | Y | Z) { m_position = pos; m_validFlags.value(validFlags); }
+
+        GeometricUncertainty uncertainty() const { return m_unc; }
+        void uncertainty(GeometricUncertainty uncertainty) { m_unc = uncertainty; }
+
+        PositionVelocityReferenceFrame referenceFrame() const { return m_position.referenceFrame; }
+        void referenceFrame(PositionVelocityReferenceFrame frame) { m_position.referenceFrame = m_unc.referenceFrame = frame; }
+
+        bool valid(ValidFlags val) const { return m_validFlags.checkBit(static_cast<uint8>(val)); }
+        void valid(ValidFlags val, bool valid) { m_validFlags.set(val, valid ? 1 : 0); }
+    };
+
+    class AidingMeasurementVelocity : public AidingMeasurementInput
+    {
+    public:
+        enum ValidFlags
+        {
+            X = 1,
+            NORTH = 1,
+
+            Y = 2,
+            EAST = 2,
+
+            Z = 4,
+            DOWN = 4
+        };
+
+    protected:
+        Velocity m_velocity;
+        GeometricUncertainty m_unc;
+
+    public:
+        AidingMeasurementVelocity() : AidingMeasurementInput() {}
+
+        AidingMeasurementVelocity(PositionVelocityReferenceFrame referenceFrame, const MipFieldValues& values);
+
+        ~AidingMeasurementVelocity() {}
+
+    protected:
+        virtual void parseMipFieldValues(const MipFieldValues& values) override;
+
+        virtual void appendMipFieldValues(MipFieldValues& values) const override;
+
+    public:
+        Velocity velocity() const { return m_velocity; }
+        void position(Velocity vel, uint16 validFlags = X | Y | Z) { m_velocity = vel; m_validFlags.value(validFlags); }
+
+        GeometricUncertainty uncertainty() const { return m_unc; }
+        void uncertainty(GeometricUncertainty uncertainty) { m_unc = uncertainty; }
+
+        PositionVelocityReferenceFrame referenceFrame() const { return m_velocity.referenceFrame; }
+        void referenceFrame(PositionVelocityReferenceFrame frame) { m_velocity.referenceFrame = m_unc.referenceFrame = frame; }
+
+        bool valid(ValidFlags val) const { return m_validFlags.checkBit(static_cast<uint8>(val)); }
+        void valid(ValidFlags val, bool valid) { m_validFlags.set(val, valid ? 1 : 0); }
+    };
+
+    class AidingMeasurementHeading : public AidingMeasurementInput
+    {
+    protected:
+        float m_heading;
+        float m_unc;
+
+    public:
+        AidingMeasurementHeading() : AidingMeasurementInput() {}
+
+        AidingMeasurementHeading(const MipFieldValues& values);
+
+        ~AidingMeasurementHeading() {}
+
+    protected:
+        virtual void parseMipFieldValues(const MipFieldValues& values) override;
+
+        virtual void appendMipFieldValues(MipFieldValues& values) const override;
+
+    public:
+        float heading() const { return m_heading; }
+        void heading(float heading, bool valid) { m_heading = heading; m_validFlags.value(valid ? 1 : 0); }
+
+        float uncertainty() const { return m_unc; }
+        void uncertainty(float uncertainty) { m_unc = uncertainty; }
+
+        bool valid() const { return m_validFlags.value() > 0; }
+        void valid(bool valid) { m_validFlags.value(valid ? 1 : 0); }
+    };
 
     //API Struct: GnssReceiverInfo
     //  Maps GNSS Receiver ID to the <MipTypes::DataClass> it outputs to

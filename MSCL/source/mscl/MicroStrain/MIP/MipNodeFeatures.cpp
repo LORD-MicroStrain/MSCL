@@ -986,8 +986,6 @@ namespace mscl
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
-        case MipModels::node_3dm_gv7_ins:
-        case MipModels::node_3dm_cv7_ins:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
                 InertialTypes::GeographicSourceOption::MANUAL
@@ -999,6 +997,8 @@ namespace mscl
                 InertialTypes::GeographicSourceOption::MANUAL
             };
 
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
         default:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
@@ -1017,8 +1017,6 @@ namespace mscl
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
-        case MipModels::node_3dm_gv7_ins:
-        case MipModels::node_3dm_cv7_ins:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
                 InertialTypes::GeographicSourceOption::MANUAL
@@ -1030,6 +1028,8 @@ namespace mscl
                 InertialTypes::GeographicSourceOption::MANUAL
             };
 
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
         default:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
@@ -1048,8 +1048,6 @@ namespace mscl
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
-        case MipModels::node_3dm_gv7_ins:
-        case MipModels::node_3dm_cv7_ins:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
                 InertialTypes::GeographicSourceOption::MANUAL
@@ -1061,6 +1059,8 @@ namespace mscl
                 InertialTypes::GeographicSourceOption::MANUAL
             };
 
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
         default:
             return{
                 InertialTypes::GeographicSourceOption::NONE,

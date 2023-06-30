@@ -7,7 +7,7 @@
 #pragma once
 
 #include "mscl/MicroStrain/MIP/MipNode.h"
-#include "mscl/MicroStrain/Inertial/PositionOffset.h"
+#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
 
 namespace mscl

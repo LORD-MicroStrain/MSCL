@@ -102,6 +102,20 @@ namespace mscl
         case MipTypes::CMD_EF_EXTERN_SPEED_UPDATE:
         // Ox0E
         case MipTypes::CMD_GNSS_RECEIVER_INFO:
+        // 0x13
+        case MipTypes::CMD_AIDING_POS_ECEF:
+        case MipTypes::CMD_AIDING_POS_LLH:
+        case MipTypes::CMD_AIDING_POS_LOCAL:
+        case MipTypes::CMD_AIDING_HEIGHT_ABS:
+        case MipTypes::CMD_AIDING_HEIGHT_REL:
+        case MipTypes::CMD_AIDING_VEL_ECEF:
+        case MipTypes::CMD_AIDING_VEL_NED:
+        case MipTypes::CMD_AIDING_VEL_ODOM:
+        case MipTypes::CMD_AIDING_WHEELSPEED:
+        case MipTypes::CMD_AIDING_HEADING_TRUE:
+        case MipTypes::CMD_AIDING_DELTA_POSITION:
+        case MipTypes::CMD_AIDING_DELTA_ATTITUDE:
+        case MipTypes::CMD_AIDING_ANGULAR_RATE_LOCAL:
             return {};
 
         /****   Read, Write     ****/
@@ -145,6 +159,10 @@ namespace mscl
         // 0x0E
         case MipTypes::CMD_GNSS_SIGNAL_CONFIG:
         case MipTypes::CMD_GNSS_RTK_CONFIG:
+        // 0x13
+        case MipTypes::CMD_AIDING_FRAME_CONFIG:
+        case MipTypes::CMD_AIDING_SENSOR_FRAME_MAP:
+        case MipTypes::CMD_AIDING_ECHO_CONTROL:
             return {
                 MipTypes::FunctionSelector::USE_NEW_SETTINGS,
                 MipTypes::FunctionSelector::READ_BACK_CURRENT_SETTINGS,
@@ -198,8 +216,29 @@ namespace mscl
         case MipTypes::CMD_LOWPASS_ANTIALIASING_FILTER:
             // 0x0D
         case MipTypes::CMD_EF_LEVER_ARM_OFFSET_REF:
+            //0x13
+        case MipTypes::CMD_AIDING_FRAME_CONFIG:
+        case MipTypes::CMD_AIDING_SENSOR_FRAME_MAP:
             // check that the identifier is echoed back in the response
             matchData.emplace(0, m_data[0]);
+            break;
+            
+            // 0x13
+        case MipTypes::CMD_AIDING_POS_ECEF:
+        case MipTypes::CMD_AIDING_POS_LLH:
+        case MipTypes::CMD_AIDING_POS_LOCAL:
+        case MipTypes::CMD_AIDING_HEIGHT_ABS:
+        case MipTypes::CMD_AIDING_HEIGHT_REL:
+        case MipTypes::CMD_AIDING_VEL_ECEF:
+        case MipTypes::CMD_AIDING_VEL_NED:
+        case MipTypes::CMD_AIDING_VEL_ODOM:
+        case MipTypes::CMD_AIDING_WHEELSPEED:
+        case MipTypes::CMD_AIDING_HEADING_TRUE:
+        case MipTypes::CMD_AIDING_DELTA_POSITION:
+        case MipTypes::CMD_AIDING_DELTA_ATTITUDE:
+        case MipTypes::CMD_AIDING_ANGULAR_RATE_LOCAL:
+            // check that the sensor id is echoed back in the response
+            matchData.emplace(3, m_data[3]);
             break;
 
         default:
@@ -295,6 +334,40 @@ namespace mscl
             return "GnssSignalConfiguration";
         case MipTypes::CMD_GNSS_RTK_CONFIG:
             return "GnssRtkConfiguration";
+        // 0x13
+        case MipTypes::CMD_AIDING_FRAME_CONFIG:
+            return "AidingMeasurementReferenceFrameConfig";
+        case MipTypes::CMD_AIDING_SENSOR_FRAME_MAP:
+            return "AidingMeasurementSensorFrameMap";
+        case MipTypes::CMD_AIDING_ECHO_CONTROL:
+            return "AidingMeasurementEchoControl";
+        case MipTypes::CMD_AIDING_POS_ECEF:
+            return "AidingMeasurementEcefPosition";
+        case MipTypes::CMD_AIDING_POS_LLH:
+            return "AidingMeasurementLlhPosition";
+        case MipTypes::CMD_AIDING_POS_LOCAL:
+            return "AidingMeasurementLocalPosition";
+        case MipTypes::CMD_AIDING_HEIGHT_ABS:
+            return "AidingMeasurementAbsoluteHeight";
+        case MipTypes::CMD_AIDING_HEIGHT_REL:
+            return "AidingMeasurementRelativeHeight";
+        case MipTypes::CMD_AIDING_VEL_ECEF:
+            return "AidingMeasurementEcefVelocity";
+        case MipTypes::CMD_AIDING_VEL_NED:
+            return "AidingMeasurementNedVelocity";
+        case MipTypes::CMD_AIDING_VEL_ODOM:
+            return "AidingMeasurementOdomVelocity";
+        case MipTypes::CMD_AIDING_WHEELSPEED:
+            return "AidingMeasurementWheelspeed";
+        case MipTypes::CMD_AIDING_HEADING_TRUE:
+            return "AidingMeasurementTrueHeading";
+        case MipTypes::CMD_AIDING_DELTA_POSITION:
+            return "AidingMeasurementDeltaPosition";
+        case MipTypes::CMD_AIDING_DELTA_ATTITUDE:
+            return "AidingMeasurementDeltaAttitude";
+        case MipTypes::CMD_AIDING_ANGULAR_RATE_LOCAL:
+            return "AidingMeasurementLocalAngularRate";
+
         default:
             return "";
         }
@@ -356,6 +429,7 @@ namespace mscl
         case MipTypes::CMD_GNSS_RECEIVER_INFO: //0x81
         case MipTypes::CMD_GNSS_SIGNAL_CONFIG: //0x82
         case MipTypes::CMD_GNSS_RTK_CONFIG: //0x90
+        // 0x13 - all fields follow pattern
         default:
         {
             // this pattern is not true for all commands - may result in communication failures
@@ -550,6 +624,86 @@ namespace mscl
                 ValueType::valueType_uint8,
                 ValueType::valueType_uint8
             };
+
+        // 0x13
+        case MipTypes::CMD_AIDING_FRAME_CONFIG:
+            return{
+                ValueType::valueType_uint8, // frame id
+                ValueType::valueType_uint8, // format
+                ValueType::valueType_float, // translation
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+                ValueType::valueType_float, // rotation
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+            };
+        case MipTypes::CMD_AIDING_SENSOR_FRAME_MAP:
+            return{
+                ValueType::valueType_uint8, // sensor id
+                ValueType::valueType_uint8  // frame id
+            };
+        case MipTypes::CMD_AIDING_ECHO_CONTROL:
+            return{
+                ValueType::valueType_uint8
+            };
+        //case MipTypes::CMD_AIDING_POS_LOCAL: return{};
+        case MipTypes::CMD_AIDING_POS_ECEF:
+        case MipTypes::CMD_AIDING_POS_LLH:
+            return{
+                ValueType::valueType_uint8,     // timebase
+                ValueType::valueType_uint8,     // reserved
+                ValueType::valueType_uint64,    // nanoseconds since timebase epoch
+
+                ValueType::valueType_uint8,     // sensor id
+
+                ValueType::valueType_double,    // pos
+                ValueType::valueType_double,
+                ValueType::valueType_double,
+                ValueType::valueType_float,     // unc
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+
+                ValueType::valueType_uint16,    // valid flags
+            };
+        //case MipTypes::CMD_AIDING_HEIGHT_ABS: return{};
+        //case MipTypes::CMD_AIDING_HEIGHT_REL: return{};
+        case MipTypes::CMD_AIDING_VEL_ECEF:
+        case MipTypes::CMD_AIDING_VEL_NED:
+        case MipTypes::CMD_AIDING_VEL_ODOM:
+            return{
+                ValueType::valueType_uint8,     // timebase
+                ValueType::valueType_uint8,     // reserved
+                ValueType::valueType_uint64,    // nanoseconds since timebase epoch
+
+                ValueType::valueType_uint8,     // sensor id
+
+                ValueType::valueType_float,     // vel
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+                ValueType::valueType_float,     // unc
+                ValueType::valueType_float,
+                ValueType::valueType_float,
+
+                ValueType::valueType_uint16,    // valid flags
+            };
+        //case MipTypes::CMD_AIDING_WHEELSPEED: return{};
+        case MipTypes::CMD_AIDING_HEADING_TRUE:
+            return{
+                ValueType::valueType_uint8,     // timebase
+                ValueType::valueType_uint8,     // reserved
+                ValueType::valueType_uint64,    // nanoseconds since timebase epoch
+
+                ValueType::valueType_uint8,     // sensor id
+
+                ValueType::valueType_float,     // heading
+                ValueType::valueType_float,     // unc
+
+                ValueType::valueType_uint16,    // valid flags
+            };
+        //case MipTypes::CMD_AIDING_DELTA_POSITION: return{};
+        //case MipTypes::CMD_AIDING_DELTA_ATTITUDE: return{};
+        //case MipTypes::CMD_AIDING_ANGULAR_RATE_LOCAL: return{};
 
         
         // Single Bool
