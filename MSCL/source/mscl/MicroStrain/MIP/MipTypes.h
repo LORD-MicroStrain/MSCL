@@ -1955,6 +1955,14 @@ namespace mscl
 
     class AidingMeasurementInput
     {
+    public:
+        enum ResponseMode
+        {
+            NO_RESPONSE = 0x00,
+            ACK_NACK = 0x01,
+            ECHO_INPUT = 0x02 // also includes ACK/NACK
+        };
+
     protected:
         Timestamp m_timestamp;
         uint8 m_sensorId;

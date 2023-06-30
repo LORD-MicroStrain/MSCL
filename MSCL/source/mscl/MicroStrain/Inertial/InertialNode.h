@@ -2406,5 +2406,12 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setNmeaMessageFormat(NmeaMessageFormats nmeaFormats) const;
+
+        void setAidingMeasurementResponseMode(AidingMeasurementInput::ResponseMode mode) const;
+        AidingMeasurementInput::ResponseMode getAidingMeasurementResponseMode() const;
+
+        void sendAidingMeasurement(AidingMeasurementPosition positionUpdate) const;
+        void sendAidingMeasurement(AidingMeasurementVelocity velocityUpdate) const;
+        void sendAidingMeasurement(AidingMeasurementHeading headingUpdate) const;
     };
 }
