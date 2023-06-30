@@ -131,6 +131,25 @@ namespace mscl
         Velocity() : GeometricVector() {}
 
         ~Velocity() {}
+
+    public:
+        //API Function: ECEF
+        //    Creates a Velocity vectory with the reference frame set to Earth-Centered, Earth-Fixed
+        //
+        //Parameters:
+        //    x_init - initial x coordinate
+        //    y_init - initial y coordinate
+        //    z_init - initial z coordinate
+        static Velocity ECEF(float x_init, float y_init, float z_init) { return Velocity(x_init, y_init, z_init); }
+
+        //API Function: NED
+        //    Creates a Velocity vector with the reference frame set to North-East-Down
+        //
+        //Parameters:
+        //    north - initial x coordinate
+        //    east - initial y coordinate
+        //    down - initial z coordinate
+        static Velocity NED(float north, float east, float down) { return Velocity(north, east, down, PositionVelocityReferenceFrame::LLH_NED); }
     };
 
     //API Typedef: GeometricVectors
@@ -144,23 +163,23 @@ namespace mscl
     class Position
     {
     public:
-        //API Constructor: PositionLLH
+        //API Function: LLH
         //    Creates a Position object with the reference frame set to LLH
         //
         //Parameters:
         //    lat_init - initial latitude
         //    long_init - initial longitude
         //    alt_init - initial altitude
-        static Position PositionLLH(double lat_init, double long_init, double alt_init) { return Position(lat_init, long_init, alt_init, PositionVelocityReferenceFrame::LLH_NED); }
+        static Position LLH(double lat_init, double long_init, double alt_init) { return Position(lat_init, long_init, alt_init, PositionVelocityReferenceFrame::LLH_NED); }
 
-        //API Constructor: Position
+        //API Function: ECEF
         //    Creates a Position object with the reference frame set to ECEF
         //
         //Parameters:
         //    x_init - initial x
         //    y_init - initial y
         //    z_init - initial z
-        static Position PositionECEF(double x_init, double y_init, double z_init) { return Position(x_init, y_init, z_init, PositionVelocityReferenceFrame::ECEF); }
+        static Position ECEF(double x_init, double y_init, double z_init) { return Position(x_init, y_init, z_init, PositionVelocityReferenceFrame::ECEF); }
 
         //API Constructor: Position
         //    Creates a Position object.
