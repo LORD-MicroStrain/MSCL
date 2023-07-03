@@ -48,13 +48,8 @@ public class AidingMeasurementPosition : AidingMeasurementInput {
     return ret;
   }
 
-  public void position(Position pos, ushort validFlags) {
-    msclPINVOKE.AidingMeasurementPosition_position__SWIG_1(swigCPtr, Position.getCPtr(pos), validFlags);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
   public void position(Position pos) {
-    msclPINVOKE.AidingMeasurementPosition_position__SWIG_2(swigCPtr, Position.getCPtr(pos));
+    msclPINVOKE.AidingMeasurementPosition_position__SWIG_1(swigCPtr, Position.getCPtr(pos));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -97,7 +92,8 @@ public class AidingMeasurementPosition : AidingMeasurementInput {
     Y = 2,
     LONGITUDE = 2,
     Z = 4,
-    HEIGHT = 4
+    HEIGHT = 4,
+    ALTITUDE = 4
   }
 
 }

@@ -1400,4 +1400,55 @@ namespace mscl
     {
         m_impl->run(MipTypes::CMD_AIDING_HEADING_TRUE, headingUpdate.toMipFieldValues());
     }
+
+    AidingMeasurementPosition InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementPosition positionUpdate) const
+    {
+        MipFieldValues vals;
+        switch (positionUpdate.referenceFrame())
+        {
+        case PositionVelocityReferenceFrame::ECEF:
+            vals = m_impl->get(MipTypes::CMD_AIDING_POS_ECEF, positionUpdate.toMipFieldValues());
+            break;
+
+        case PositionVelocityReferenceFrame::LLH_NED:
+            vals = m_impl->get(MipTypes::CMD_AIDING_POS_LLH, positionUpdate.toMipFieldValues());
+            break;
+
+        default:
+            throw Error_NotSupported("The specified reference frame is not supported");
+        }
+
+        return AidingMeasurementPosition(positionUpdate.referenceFrame(), vals);
+    }
+
+    AidingMeasurementVelocity InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementVelocity velocityUpdate) const
+    {
+        MipFieldValues vals;
+
+        switch (velocityUpdate.referenceFrame())
+        {
+        case PositionVelocityReferenceFrame::ECEF:
+            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_ECEF, velocityUpdate.toMipFieldValues());
+            break;
+
+        case PositionVelocityReferenceFrame::LLH_NED:
+            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_NED, velocityUpdate.toMipFieldValues());
+            break;
+
+        case PositionVelocityReferenceFrame::LOCAL:
+            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_ODOM, velocityUpdate.toMipFieldValues());
+            break;
+
+        default:
+            throw Error_NotSupported("The specified reference frame is not supported");
+        }
+
+        return AidingMeasurementVelocity(velocityUpdate.referenceFrame(), vals);
+    }
+
+    AidingMeasurementHeading InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementHeading headingUpdate) const
+    {
+        MipFieldValues vals = m_impl->get(MipTypes::CMD_AIDING_HEADING_TRUE, headingUpdate.toMipFieldValues());
+        return AidingMeasurementHeading(vals);
+    }
 }

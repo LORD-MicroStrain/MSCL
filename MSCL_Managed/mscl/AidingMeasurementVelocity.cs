@@ -43,18 +43,13 @@ public class AidingMeasurementVelocity : AidingMeasurementInput {
   }
 
   public Velocity velocity() {
-    Velocity ret = new Velocity(msclPINVOKE.AidingMeasurementVelocity_velocity(swigCPtr), true);
+    Velocity ret = new Velocity(msclPINVOKE.AidingMeasurementVelocity_velocity__SWIG_0(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void position(Velocity vel, ushort validFlags) {
-    msclPINVOKE.AidingMeasurementVelocity_position__SWIG_0(swigCPtr, Velocity.getCPtr(vel), validFlags);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-  }
-
-  public void position(Velocity vel) {
-    msclPINVOKE.AidingMeasurementVelocity_position__SWIG_1(swigCPtr, Velocity.getCPtr(vel));
+  public void velocity(Velocity vel) {
+    msclPINVOKE.AidingMeasurementVelocity_velocity__SWIG_1(swigCPtr, Velocity.getCPtr(vel));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

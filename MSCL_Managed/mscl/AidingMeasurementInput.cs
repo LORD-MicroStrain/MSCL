@@ -37,7 +37,7 @@ public class AidingMeasurementInput : global::System.IDisposable {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
           swigCMemOwn = false;
-          msclPINVOKE.delete_AidingMeasurementInput(swigCPtr);
+          throw new global::System.MethodAccessException("C++ destructor does not have public access");
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
@@ -90,7 +90,6 @@ public class AidingMeasurementInput : global::System.IDisposable {
   }
 
   public enum ResponseMode {
-    NO_RESPONSE = 0x00,
     ACK_NACK = 0x01,
     ECHO_INPUT = 0x02
   }

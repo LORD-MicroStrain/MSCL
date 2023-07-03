@@ -48,8 +48,8 @@ public class AidingMeasurementHeading : AidingMeasurementInput {
     return ret;
   }
 
-  public void heading(float heading, bool valid) {
-    msclPINVOKE.AidingMeasurementHeading_heading__SWIG_1(swigCPtr, heading, valid);
+  public void heading(float heading) {
+    msclPINVOKE.AidingMeasurementHeading_heading__SWIG_1(swigCPtr, heading);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
