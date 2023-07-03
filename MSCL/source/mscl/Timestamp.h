@@ -21,10 +21,11 @@ namespace mscl
         //  Epoch indicator: Unix, GPS.
         //  Timestamp class uses Unix epoch by default.
         //
-        //      UNIX        - 0x01
-        //      GPS         - 0x02
-        //      INTERNAL    - 0x03 - No conversion
-        //      EXTERNAL    - 0x04 - No conversion
+        //      INTERNAL    - 0x01 - No conversion
+        //      EXTERNAL    - 0x02 - No conversion
+        //      GPS         - 0x03
+        //      UNIX        - 0x04
+        //      UTC         - 0x04
         enum Epoch
         {
             INTERNAL    = 0x01,
