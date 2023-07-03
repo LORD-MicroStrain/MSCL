@@ -60,26 +60,26 @@ public class Timestamp : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public ulong nanoseconds(Timestamp.Epoch epoch) {
-    ulong ret = msclPINVOKE.Timestamp_nanoseconds__SWIG_0(swigCPtr, (int)epoch);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
   public ulong nanoseconds() {
-    ulong ret = msclPINVOKE.Timestamp_nanoseconds__SWIG_1(swigCPtr);
+    ulong ret = msclPINVOKE.Timestamp_nanoseconds__SWIG_0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public ulong seconds(Timestamp.Epoch epoch) {
-    ulong ret = msclPINVOKE.Timestamp_seconds__SWIG_0(swigCPtr, (int)epoch);
+  public ulong nanoseconds(Timestamp.Epoch epoch) {
+    ulong ret = msclPINVOKE.Timestamp_nanoseconds__SWIG_1(swigCPtr, (int)epoch);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
   public ulong seconds() {
-    ulong ret = msclPINVOKE.Timestamp_seconds__SWIG_1(swigCPtr);
+    ulong ret = msclPINVOKE.Timestamp_seconds__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public ulong seconds(Timestamp.Epoch epoch) {
+    ulong ret = msclPINVOKE.Timestamp_seconds__SWIG_1(swigCPtr, (int)epoch);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -147,8 +147,11 @@ public class Timestamp : global::System.IDisposable {
   }
 
   public enum Epoch {
-    UNIX = 0x01,
-    GPS = 0x02
+    INTERNAL = 0x01,
+    EXTERNAL = 0x02,
+    GPS = 0x03,
+    UNIX = 0x04,
+    UTC = 0x04
   }
 
 }

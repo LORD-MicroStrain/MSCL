@@ -10,12 +10,10 @@
 
 namespace mscl {
 
-public class PositionOffset : global::System.IDisposable {
+public class PositionOffset : GeometricVector {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
-  protected bool swigCMemOwn;
 
-  internal PositionOffset(global::System.IntPtr cPtr, bool cMemoryOwn) {
-    swigCMemOwn = cMemoryOwn;
+  internal PositionOffset(global::System.IntPtr cPtr, bool cMemoryOwn) : base(msclPINVOKE.PositionOffset_SWIGUpcast(cPtr), cMemoryOwn) {
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
@@ -23,16 +21,7 @@ public class PositionOffset : global::System.IDisposable {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  ~PositionOffset() {
-    Dispose(false);
-  }
-
-  public void Dispose() {
-    Dispose(true);
-    global::System.GC.SuppressFinalize(this);
-  }
-
-  protected virtual void Dispose(bool disposing) {
+  protected override void Dispose(bool disposing) {
     lock(this) {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
@@ -41,33 +30,20 @@ public class PositionOffset : global::System.IDisposable {
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
+      base.Dispose(disposing);
     }
   }
 
-  public PositionOffset() : this(msclPINVOKE.new_PositionOffset__SWIG_0(), true) {
+  public PositionOffset(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref_) : this(msclPINVOKE.new_PositionOffset__SWIG_0(x_init, y_init, z_init, (int)ref_), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public PositionOffset(float x, float y, float z) : this(msclPINVOKE.new_PositionOffset__SWIG_1(x, y, z), true) {
+  public PositionOffset(float x_init, float y_init, float z_init) : this(msclPINVOKE.new_PositionOffset__SWIG_1(x_init, y_init, z_init), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public float x() {
-    float ret = msclPINVOKE.PositionOffset_x(swigCPtr);
+  public PositionOffset() : this(msclPINVOKE.new_PositionOffset__SWIG_2(), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public float y() {
-    float ret = msclPINVOKE.PositionOffset_y(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
-  }
-
-  public float z() {
-    float ret = msclPINVOKE.PositionOffset_z(swigCPtr);
-    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
-    return ret;
   }
 
 }
