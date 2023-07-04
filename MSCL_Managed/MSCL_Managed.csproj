@@ -72,7 +72,11 @@
     <Compile Include="mscl\AdaptiveFilterLevels.cs" />
     <Compile Include="mscl\AdaptiveMeasurementData.cs" />
     <Compile Include="mscl\AdaptiveMeasurementModes.cs" />
+    <Compile Include="mscl\AidingMeasurementHeading.cs" />
+    <Compile Include="mscl\AidingMeasurementInput.cs" />
+    <Compile Include="mscl\AidingMeasurementPosition.cs" />
     <Compile Include="mscl\AidingMeasurementSourceOptions.cs" />
+    <Compile Include="mscl\AidingMeasurementVelocity.cs" />
     <Compile Include="mscl\AntennaLeverArmCalConfiguration.cs" />
     <Compile Include="mscl\ArmedDataloggingNetwork.cs" />
     <Compile Include="mscl\AutoAdaptiveFilterOptions.cs" />
@@ -191,6 +195,7 @@
     <Compile Include="mscl\FixedReferencePositionData.cs" />
     <Compile Include="mscl\GeographicSourceOptions.cs" />
     <Compile Include="mscl\GeographicSources.cs" />
+    <Compile Include="mscl\GeometricUncertainty.cs" />
     <Compile Include="mscl\GeometricVector.cs" />
     <Compile Include="mscl\GeometricVectors.cs" />
     <Compile Include="mscl\GnssAidingStatus.cs" />
@@ -321,6 +326,7 @@
     <Compile Include="mscl\ValueType.cs" />
     <Compile Include="mscl\Vector.cs" />
     <Compile Include="mscl\VehicleModeTypes.cs" />
+    <Compile Include="mscl\Velocity.cs" />
     <Compile Include="mscl\Version.cs" />
     <Compile Include="mscl\Voltages.cs" />
     <Compile Include="mscl\WirelessChannel.cs" />

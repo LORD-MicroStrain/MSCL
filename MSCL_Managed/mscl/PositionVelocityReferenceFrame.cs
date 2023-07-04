@@ -12,7 +12,8 @@ namespace mscl {
 
 public enum PositionVelocityReferenceFrame {
   ECEF = 0x01,
-  LLH_NED = 0x02
+  LLH_NED = 0x02,
+  LOCAL = 0x03
 }
 
 }

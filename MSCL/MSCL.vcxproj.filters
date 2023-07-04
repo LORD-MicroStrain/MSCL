@@ -524,9 +524,6 @@
     <ClInclude Include="source\mscl\MicroStrain\Inertial\EulerAngles.h">
       <Filter>MicroStrain\Inertial</Filter>
     </ClInclude>
-    <ClInclude Include="source\mscl\MicroStrain\Inertial\PositionOffset.h">
-      <Filter>MicroStrain\Inertial</Filter>
-    </ClInclude>
     <ClInclude Include="source\mscl\MicroStrain\Wireless\Configuration\ActivitySense.h">
       <Filter>MicroStrain\Wireless\Configuration</Filter>
     </ClInclude>
@@ -1025,6 +1022,9 @@
     <ClInclude Include="source\mscl\MicroStrain\MIP\MipBuiltInTest.h">
       <Filter>MicroStrain\MIP</Filter>
     </ClInclude>
+    <ClInclude Include="source\mscl\MicroStrain\Inertial\PositionVelocity.h">
+      <Filter>MicroStrain\Inertial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\mscl\MicroStrain\ByteStream.cpp">
@@ -1448,9 +1448,6 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Inertial\EulerAngles.cpp">
-      <Filter>MicroStrain\Inertial</Filter>
-    </ClCompile>
-    <ClCompile Include="source\mscl\MicroStrain\Inertial\PositionOffset.cpp">
       <Filter>MicroStrain\Inertial</Filter>
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\Wireless\Configuration\ActivitySense.cpp">
@@ -1940,6 +1937,9 @@
     </ClCompile>
     <ClCompile Include="source\mscl\MicroStrain\MIP\MipBuiltInTest.cpp">
       <Filter>MicroStrain\MIP</Filter>
+    </ClCompile>
+    <ClCompile Include="source\mscl\MicroStrain\Inertial\PositionVelocity.cpp">
+      <Filter>MicroStrain\Inertial</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

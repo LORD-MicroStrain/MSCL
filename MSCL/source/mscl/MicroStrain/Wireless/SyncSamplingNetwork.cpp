@@ -386,7 +386,7 @@ namespace mscl
         sendStartToAllNodes();
         
         //enable the beacon on the master base station, with the user specified time
-        m_networkBase.enableBeacon(static_cast<uint32>(startTime.seconds()));
+        m_networkBase.enableBeacon(static_cast<uint32>(startTime.seconds(Timestamp::UNIX)));
     }
 
     void SyncSamplingNetwork::startSampling_noBeacon()

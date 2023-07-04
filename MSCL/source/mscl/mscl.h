@@ -40,7 +40,7 @@
 #include "MicroStrain/RTK/RTKNode.h"
 
 #include "MicroStrain/Inertial/EulerAngles.h"
-#include "MicroStrain/Inertial/PositionOffset.h"
+#include "MicroStrain/Inertial/PositionVelocity.h"
 #include "MicroStrain/Inertial/ExposedInertialTypes.h"
 #include "MicroStrain/Inertial/InertialNode.h"
 

@@ -10,7 +10,7 @@
 #include "mscl/Utils.h"
 #include "mscl/Exceptions.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
-#include "mscl/MicroStrain/Inertial/PositionOffset.h"
+#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
 
 namespace mscl
 {

@@ -7,7 +7,7 @@
 #pragma once
 
 #include "mscl/MicroStrain/MIP/MipNode.h"
-#include "mscl/MicroStrain/Inertial/PositionOffset.h"
+#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
 
 namespace mscl
@@ -2406,5 +2406,41 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setNmeaMessageFormat(NmeaMessageFormats nmeaFormats) const;
+
+        //API Function: setAidingMeasurementResponseMode
+        //  Set the response mode for commanded aiding measurement inputs on the device (command set 0x13, sendAidingMeasurement function).
+        //
+        //Parameters:
+        //  mode - the <AidingMeasurementInput::ResponseMode> for this device
+        void setAidingMeasurementResponseMode(AidingMeasurementInput::ResponseMode mode) const;
+
+        //API Function: getAidingMeasurementResponseMode
+        //  Get the response mode for commanded aiding measurement inputs configured on the device (command set 0x13, sendAidingMeasurements function).
+        //
+        //Returns:
+        //  <AidingMeasurementInput::ResponseMode> - configured response mode
+        AidingMeasurementInput::ResponseMode getAidingMeasurementResponseMode() const;
+
+        //API Function: sendAidingMeasurement
+        //  Send a commanded aiding measurement to the device (command set 0x13).
+        //
+        //Parameters:
+        //  measurement - <AidingMeasurementPosition>, <AidingMeasurementVelocity>, or <AidingMeasurementHeading> to send to the device.
+        void sendAidingMeasurement(AidingMeasurementPosition measurement) const;
+        void sendAidingMeasurement(AidingMeasurementVelocity measurement) const;
+        void sendAidingMeasurement(AidingMeasurementHeading measurement) const;
+
+        //API Function: sendAidingMeasurement_readEcho
+        //  Send a commanded aiding measurement to the device (command set 0x13) and read out the echoed measurement.
+        //  Important: only use this function if the Aiding Measurement Response Mode is set to <AidingMeasurementInput::ResponseMode::ECHO_INPUT> - otherwise use sendAidingMeasurement().
+        //
+        //Parameters:
+        //  measurement - <AidingMeasurementPosition>, <AidingMeasurementVelocity>, or <AidingMeasurementHeading> to send to the device.
+        //
+        //Returns:
+        //  The aiding measurement echo read from the device response (<AidingMeasurementPosition>, <AidingMeasurementVelocity>, or <AidingMeasurementHeading>)
+        AidingMeasurementPosition sendAidingMeasurement_readEcho(AidingMeasurementPosition positionUpdate) const;
+        AidingMeasurementVelocity sendAidingMeasurement_readEcho(AidingMeasurementVelocity velocityUpdate) const;
+        AidingMeasurementHeading sendAidingMeasurement_readEcho(AidingMeasurementHeading headingUpdate) const;
     };
 }

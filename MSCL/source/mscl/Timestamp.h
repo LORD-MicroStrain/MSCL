@@ -21,12 +21,19 @@ namespace mscl
         //  Epoch indicator: Unix, GPS.
         //  Timestamp class uses Unix epoch by default.
         //
-        //      UNIX    - 0x01
-        //      GPS     - 0x02
+        //      INTERNAL    - 0x01 - No conversion
+        //      EXTERNAL    - 0x02 - No conversion
+        //      GPS         - 0x03
+        //      UNIX        - 0x04
+        //      UTC         - 0x04
         enum Epoch
         {
-            UNIX = 0x01,
-            GPS = 0x02
+            INTERNAL    = 0x01,
+            EXTERNAL    = 0x02,
+            GPS         = 0x03,
+
+            UNIX        = 0x04,
+            UTC         = 0x04,
         };
 
     public:
@@ -34,8 +41,9 @@ namespace mscl
         //    Creates a Timestamp object based on the nanoseconds parameter
         //
         //Parameters:
-        //    nanoseconds - The number of nanoseconds since unix epoch (default of 0)
-        explicit Timestamp(uint64 nanoseconds=0, Epoch epoch = Epoch::UNIX);
+        //    nanoseconds - The number of nanoseconds since specified epoch (default of 0)
+        //    epoch - The epoch of the timestamp (default Unix)
+        explicit Timestamp(uint64 nanoseconds = 0, Epoch epoch = Epoch::UNIX);
 
         //API Constructor: Timestamp
         //    Creates a Timestamp object from the given year, month, day, hour, minute, second, millisecond parameters
@@ -51,6 +59,9 @@ namespace mscl
         Timestamp(uint16 year, uint16 month, uint16 day, uint16 hour, uint16 minute, uint16 second, uint32 milli);
 
         virtual ~Timestamp() {};
+
+    private:
+        static bool canConvertEpoch(Epoch epoch);
 
     private:
         //Variable: m_nanoseconds
@@ -105,21 +116,23 @@ namespace mscl
         //    Gets the number of nanoseconds since the specified epoch
         //
         //Parameters:
-        //    epoch - the epoch for this value (default Unix)
+        //    epoch - the epoch for this value (default stored epoch)
         //
         //Returns:
         //    The number of nanoseconds since the specified epoch
-        uint64 nanoseconds(Epoch epoch = Epoch::UNIX) const;
+        uint64 nanoseconds() const;
+        uint64 nanoseconds(Epoch epoch) const;
 
         //API Function: seconds
         //    Gets the number of seconds since the specified epoch
         //
         //Parameters:
-        //    epoch - the epoch for this value (default Unix)
+        //    epoch - the epoch for this value (default stored epoch)
         //
         //Returns:
         //    The number of nanoseconds since the specified epoch
-        uint64 seconds(Epoch epoch = Epoch::UNIX) const;
+        uint64 seconds() const;
+        uint64 seconds(Epoch epoch) const;
 
         //API Function: storedEpoch
         //    Gets the epoch the source value is stored in. Regardless of stored epoch, the value can be read out in both Unix and GPS.

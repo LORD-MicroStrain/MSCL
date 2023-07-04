@@ -44,14 +44,14 @@ public class Position : global::System.IDisposable {
     }
   }
 
-  public static Position PositionLLH(double lat_init, double long_init, double alt_init) {
-    Position ret = new Position(msclPINVOKE.Position_PositionLLH(lat_init, long_init, alt_init), true);
+  public static Position LLH(double lat_init, double long_init, double alt_init) {
+    Position ret = new Position(msclPINVOKE.Position_LLH(lat_init, long_init, alt_init), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public static Position PositionECEF(double x_init, double y_init, double z_init) {
-    Position ret = new Position(msclPINVOKE.Position_PositionECEF(x_init, y_init, z_init), true);
+  public static Position ECEF(double x_init, double y_init, double z_init) {
+    Position ret = new Position(msclPINVOKE.Position_ECEF(x_init, y_init, z_init), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
@@ -110,6 +110,17 @@ public class Position : global::System.IDisposable {
 
   public void altitude(double altitude) {
     msclPINVOKE.Position_altitude__SWIG_1(swigCPtr, altitude);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public double height() {
+    double ret = msclPINVOKE.Position_height__SWIG_0(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void height(double height) {
+    msclPINVOKE.Position_height__SWIG_1(swigCPtr, height);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 

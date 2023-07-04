@@ -1341,4 +1341,114 @@ namespace mscl
         const MipFieldValues params = NmeaMessageFormat::toCommandParameters(nmeaFormats);
         m_impl->set(MipTypes::CMD_NMEA_MESSAGE_FORMAT, params);
     }
+
+    AidingMeasurementInput::ResponseMode InertialNode::getAidingMeasurementResponseMode() const
+    {
+        const MipFieldValues resData = m_impl->get(MipTypes::CMD_AIDING_ECHO_CONTROL);
+        return static_cast<AidingMeasurementInput::ResponseMode>(resData[0].as_uint8());
+    }
+
+    void InertialNode::setAidingMeasurementResponseMode(AidingMeasurementInput::ResponseMode mode) const
+    {
+        const MipFieldValues params = { Value::UINT8(static_cast<uint8>(mode)) };
+        m_impl->set(MipTypes::CMD_AIDING_ECHO_CONTROL, params);
+    }
+
+    void InertialNode::sendAidingMeasurement(AidingMeasurementPosition positionUpdate) const
+    {
+        switch (positionUpdate.referenceFrame())
+        {
+        case PositionVelocityReferenceFrame::ECEF:
+            m_impl->run(MipTypes::CMD_AIDING_POS_ECEF, positionUpdate.toMipFieldValues());
+            return;
+
+        case PositionVelocityReferenceFrame::LLH_NED:
+            m_impl->run(MipTypes::CMD_AIDING_POS_LLH, positionUpdate.toMipFieldValues());
+            return;
+
+        default:
+            break;
+        }
+
+        throw Error_NotSupported("The specified reference frame is not supported");
+    }
+
+    void InertialNode::sendAidingMeasurement(AidingMeasurementVelocity velocityUpdate) const
+    {
+        switch (velocityUpdate.referenceFrame())
+        {
+        case PositionVelocityReferenceFrame::ECEF:
+            m_impl->run(MipTypes::CMD_AIDING_VEL_ECEF, velocityUpdate.toMipFieldValues());
+            return;
+
+        case PositionVelocityReferenceFrame::LLH_NED:
+            m_impl->run(MipTypes::CMD_AIDING_VEL_NED, velocityUpdate.toMipFieldValues());
+            return;
+
+        case PositionVelocityReferenceFrame::LOCAL:
+            m_impl->run(MipTypes::CMD_AIDING_VEL_ODOM, velocityUpdate.toMipFieldValues());
+            return;
+
+        default:
+            break;
+        }
+
+        throw Error_NotSupported("The specified reference frame is not supported");
+    }
+
+    void InertialNode::sendAidingMeasurement(AidingMeasurementHeading headingUpdate) const
+    {
+        m_impl->run(MipTypes::CMD_AIDING_HEADING_TRUE, headingUpdate.toMipFieldValues());
+    }
+
+    AidingMeasurementPosition InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementPosition positionUpdate) const
+    {
+        MipFieldValues vals;
+        switch (positionUpdate.referenceFrame())
+        {
+        case PositionVelocityReferenceFrame::ECEF:
+            vals = m_impl->get(MipTypes::CMD_AIDING_POS_ECEF, positionUpdate.toMipFieldValues());
+            break;
+
+        case PositionVelocityReferenceFrame::LLH_NED:
+            vals = m_impl->get(MipTypes::CMD_AIDING_POS_LLH, positionUpdate.toMipFieldValues());
+            break;
+
+        default:
+            throw Error_NotSupported("The specified reference frame is not supported");
+        }
+
+        return AidingMeasurementPosition(positionUpdate.referenceFrame(), vals);
+    }
+
+    AidingMeasurementVelocity InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementVelocity velocityUpdate) const
+    {
+        MipFieldValues vals;
+
+        switch (velocityUpdate.referenceFrame())
+        {
+        case PositionVelocityReferenceFrame::ECEF:
+            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_ECEF, velocityUpdate.toMipFieldValues());
+            break;
+
+        case PositionVelocityReferenceFrame::LLH_NED:
+            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_NED, velocityUpdate.toMipFieldValues());
+            break;
+
+        case PositionVelocityReferenceFrame::LOCAL:
+            vals = m_impl->get(MipTypes::CMD_AIDING_VEL_ODOM, velocityUpdate.toMipFieldValues());
+            break;
+
+        default:
+            throw Error_NotSupported("The specified reference frame is not supported");
+        }
+
+        return AidingMeasurementVelocity(velocityUpdate.referenceFrame(), vals);
+    }
+
+    AidingMeasurementHeading InertialNode::sendAidingMeasurement_readEcho(AidingMeasurementHeading headingUpdate) const
+    {
+        MipFieldValues vals = m_impl->get(MipTypes::CMD_AIDING_HEADING_TRUE, headingUpdate.toMipFieldValues());
+        return AidingMeasurementHeading(vals);
+    }
 }

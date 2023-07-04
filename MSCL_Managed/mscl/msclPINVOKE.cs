@@ -742,16 +742,16 @@ class msclPINVOKE {
   public static extern void delete_Timestamp(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_nanoseconds__SWIG_0")]
-  public static extern ulong Timestamp_nanoseconds__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern ulong Timestamp_nanoseconds__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_nanoseconds__SWIG_1")]
-  public static extern ulong Timestamp_nanoseconds__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern ulong Timestamp_nanoseconds__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_seconds__SWIG_0")]
-  public static extern ulong Timestamp_seconds__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+  public static extern ulong Timestamp_seconds__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_seconds__SWIG_1")]
-  public static extern ulong Timestamp_seconds__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+  public static extern ulong Timestamp_seconds__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Timestamp_storedEpoch")]
   public static extern int Timestamp_storedEpoch(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -3486,23 +3486,179 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_EulerAngles")]
   public static extern void delete_EulerAngles(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_VectorECEF")]
+  public static extern global::System.IntPtr GeometricVector_VectorECEF(float jarg1, float jarg2, float jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_VectorNED")]
+  public static extern global::System.IntPtr GeometricVector_VectorNED(float jarg1, float jarg2, float jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GeometricVector__SWIG_0")]
+  public static extern global::System.IntPtr new_GeometricVector__SWIG_0(float jarg1, float jarg2, float jarg3, int jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GeometricVector__SWIG_1")]
+  public static extern global::System.IntPtr new_GeometricVector__SWIG_1(float jarg1, float jarg2, float jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GeometricVector__SWIG_2")]
+  public static extern global::System.IntPtr new_GeometricVector__SWIG_2();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GeometricVector")]
+  public static extern void delete_GeometricVector(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_referenceFrame_set")]
+  public static extern void GeometricVector_referenceFrame_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_referenceFrame_get")]
+  public static extern int GeometricVector_referenceFrame_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_x__SWIG_0")]
+  public static extern float GeometricVector_x__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_x__SWIG_1")]
+  public static extern void GeometricVector_x__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, float jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_y__SWIG_0")]
+  public static extern float GeometricVector_y__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_y__SWIG_1")]
+  public static extern void GeometricVector_y__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, float jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_z__SWIG_0")]
+  public static extern float GeometricVector_z__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_z__SWIG_1")]
+  public static extern void GeometricVector_z__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, float jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_north__SWIG_0")]
+  public static extern float GeometricVector_north__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_north__SWIG_1")]
+  public static extern void GeometricVector_north__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, float jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_east__SWIG_0")]
+  public static extern float GeometricVector_east__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_east__SWIG_1")]
+  public static extern void GeometricVector_east__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, float jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_down__SWIG_0")]
+  public static extern float GeometricVector_down__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_down__SWIG_1")]
+  public static extern void GeometricVector_down__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, float jarg2);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_PositionOffset__SWIG_0")]
-  public static extern global::System.IntPtr new_PositionOffset__SWIG_0();
+  public static extern global::System.IntPtr new_PositionOffset__SWIG_0(float jarg1, float jarg2, float jarg3, int jarg4);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_PositionOffset__SWIG_1")]
   public static extern global::System.IntPtr new_PositionOffset__SWIG_1(float jarg1, float jarg2, float jarg3);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_PositionOffset_x")]
-  public static extern float PositionOffset_x(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_PositionOffset_y")]
-  public static extern float PositionOffset_y(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_PositionOffset_z")]
-  public static extern float PositionOffset_z(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_PositionOffset__SWIG_2")]
+  public static extern global::System.IntPtr new_PositionOffset__SWIG_2();
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_PositionOffset")]
   public static extern void delete_PositionOffset(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_Velocity__SWIG_0")]
+  public static extern global::System.IntPtr new_Velocity__SWIG_0(float jarg1, float jarg2, float jarg3, int jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_Velocity__SWIG_1")]
+  public static extern global::System.IntPtr new_Velocity__SWIG_1(float jarg1, float jarg2, float jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_Velocity__SWIG_2")]
+  public static extern global::System.IntPtr new_Velocity__SWIG_2();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_Velocity")]
+  public static extern void delete_Velocity(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Velocity_ECEF")]
+  public static extern global::System.IntPtr Velocity_ECEF(float jarg1, float jarg2, float jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Velocity_NED")]
+  public static extern global::System.IntPtr Velocity_NED(float jarg1, float jarg2, float jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_LLH")]
+  public static extern global::System.IntPtr Position_LLH(double jarg1, double jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_ECEF")]
+  public static extern global::System.IntPtr Position_ECEF(double jarg1, double jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_Position__SWIG_0")]
+  public static extern global::System.IntPtr new_Position__SWIG_0(double jarg1, double jarg2, double jarg3, int jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_Position__SWIG_1")]
+  public static extern global::System.IntPtr new_Position__SWIG_1(double jarg1, double jarg2, double jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_Position__SWIG_2")]
+  public static extern global::System.IntPtr new_Position__SWIG_2();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_Position")]
+  public static extern void delete_Position(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_referenceFrame_set")]
+  public static extern void Position_referenceFrame_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_referenceFrame_get")]
+  public static extern int Position_referenceFrame_get(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_latitude__SWIG_0")]
+  public static extern double Position_latitude__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_latitude__SWIG_1")]
+  public static extern void Position_latitude__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_longitude__SWIG_0")]
+  public static extern double Position_longitude__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_longitude__SWIG_1")]
+  public static extern void Position_longitude__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_altitude__SWIG_0")]
+  public static extern double Position_altitude__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_altitude__SWIG_1")]
+  public static extern void Position_altitude__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_height__SWIG_0")]
+  public static extern double Position_height__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_height__SWIG_1")]
+  public static extern void Position_height__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_x__SWIG_0")]
+  public static extern double Position_x__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_x__SWIG_1")]
+  public static extern void Position_x__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_y__SWIG_0")]
+  public static extern double Position_y__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_y__SWIG_1")]
+  public static extern void Position_y__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_z__SWIG_0")]
+  public static extern double Position_z__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_z__SWIG_1")]
+  public static extern void Position_z__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GeometricUncertainty__SWIG_0")]
+  public static extern global::System.IntPtr new_GeometricUncertainty__SWIG_0(float jarg1, float jarg2, float jarg3, global::System.Runtime.InteropServices.HandleRef jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GeometricUncertainty__SWIG_1")]
+  public static extern global::System.IntPtr new_GeometricUncertainty__SWIG_1(float jarg1, float jarg2, float jarg3, global::System.Runtime.InteropServices.HandleRef jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GeometricUncertainty__SWIG_2")]
+  public static extern global::System.IntPtr new_GeometricUncertainty__SWIG_2(float jarg1, float jarg2, float jarg3, int jarg4);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GeometricUncertainty__SWIG_3")]
+  public static extern global::System.IntPtr new_GeometricUncertainty__SWIG_3(float jarg1, float jarg2, float jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GeometricUncertainty__SWIG_4")]
+  public static extern global::System.IntPtr new_GeometricUncertainty__SWIG_4();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GeometricUncertainty")]
+  public static extern void delete_GeometricUncertainty(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_MipModels_modelNumbersEqual")]
   public static extern bool MipModels_modelNumbersEqual(int jarg1, int jarg2);
@@ -3798,6 +3954,123 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_MipCommandBytes")]
   public static extern void delete_MipCommandBytes(global::System.Runtime.InteropServices.HandleRef jarg1);
 
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementInput_toMipFieldValues")]
+  public static extern global::System.IntPtr AidingMeasurementInput_toMipFieldValues(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementInput_timestamp__SWIG_0")]
+  public static extern global::System.IntPtr AidingMeasurementInput_timestamp__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementInput_timestamp__SWIG_1")]
+  public static extern void AidingMeasurementInput_timestamp__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementInput_timebase")]
+  public static extern int AidingMeasurementInput_timebase(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementInput_sensorId__SWIG_0")]
+  public static extern byte AidingMeasurementInput_sensorId__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementInput_sensorId__SWIG_1")]
+  public static extern void AidingMeasurementInput_sensorId__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementInput_validFlags__SWIG_0")]
+  public static extern global::System.IntPtr AidingMeasurementInput_validFlags__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementInput_validFlags__SWIG_1")]
+  public static extern void AidingMeasurementInput_validFlags__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_AidingMeasurementPosition__SWIG_0")]
+  public static extern global::System.IntPtr new_AidingMeasurementPosition__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_AidingMeasurementPosition__SWIG_1")]
+  public static extern global::System.IntPtr new_AidingMeasurementPosition__SWIG_1(int jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_AidingMeasurementPosition")]
+  public static extern void delete_AidingMeasurementPosition(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementPosition_position__SWIG_0")]
+  public static extern global::System.IntPtr AidingMeasurementPosition_position__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementPosition_position__SWIG_1")]
+  public static extern void AidingMeasurementPosition_position__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementPosition_uncertainty__SWIG_0")]
+  public static extern global::System.IntPtr AidingMeasurementPosition_uncertainty__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementPosition_uncertainty__SWIG_1")]
+  public static extern void AidingMeasurementPosition_uncertainty__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementPosition_referenceFrame__SWIG_0")]
+  public static extern int AidingMeasurementPosition_referenceFrame__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementPosition_referenceFrame__SWIG_1")]
+  public static extern void AidingMeasurementPosition_referenceFrame__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementPosition_valid__SWIG_0")]
+  public static extern bool AidingMeasurementPosition_valid__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementPosition_valid__SWIG_1")]
+  public static extern void AidingMeasurementPosition_valid__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, bool jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_AidingMeasurementVelocity__SWIG_0")]
+  public static extern global::System.IntPtr new_AidingMeasurementVelocity__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_AidingMeasurementVelocity__SWIG_1")]
+  public static extern global::System.IntPtr new_AidingMeasurementVelocity__SWIG_1(int jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_AidingMeasurementVelocity")]
+  public static extern void delete_AidingMeasurementVelocity(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementVelocity_velocity__SWIG_0")]
+  public static extern global::System.IntPtr AidingMeasurementVelocity_velocity__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementVelocity_velocity__SWIG_1")]
+  public static extern void AidingMeasurementVelocity_velocity__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementVelocity_uncertainty__SWIG_0")]
+  public static extern global::System.IntPtr AidingMeasurementVelocity_uncertainty__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementVelocity_uncertainty__SWIG_1")]
+  public static extern void AidingMeasurementVelocity_uncertainty__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementVelocity_referenceFrame__SWIG_0")]
+  public static extern int AidingMeasurementVelocity_referenceFrame__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementVelocity_referenceFrame__SWIG_1")]
+  public static extern void AidingMeasurementVelocity_referenceFrame__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementVelocity_valid__SWIG_0")]
+  public static extern bool AidingMeasurementVelocity_valid__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementVelocity_valid__SWIG_1")]
+  public static extern void AidingMeasurementVelocity_valid__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2, bool jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_AidingMeasurementHeading__SWIG_0")]
+  public static extern global::System.IntPtr new_AidingMeasurementHeading__SWIG_0();
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_AidingMeasurementHeading__SWIG_1")]
+  public static extern global::System.IntPtr new_AidingMeasurementHeading__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_AidingMeasurementHeading")]
+  public static extern void delete_AidingMeasurementHeading(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementHeading_heading__SWIG_0")]
+  public static extern float AidingMeasurementHeading_heading__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementHeading_heading__SWIG_1")]
+  public static extern void AidingMeasurementHeading_heading__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, float jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementHeading_uncertainty__SWIG_0")]
+  public static extern float AidingMeasurementHeading_uncertainty__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementHeading_uncertainty__SWIG_1")]
+  public static extern void AidingMeasurementHeading_uncertainty__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, float jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementHeading_valid__SWIG_0")]
+  public static extern bool AidingMeasurementHeading_valid__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementHeading_valid__SWIG_1")]
+  public static extern void AidingMeasurementHeading_valid__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, bool jarg2);
+
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GnssReceiverInfo_INFO_NOT_FOUND_get")]
   public static extern string GnssReceiverInfo_INFO_NOT_FOUND_get();
 
@@ -4046,126 +4319,6 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_Quaternion")]
   public static extern void delete_Quaternion(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_VectorECEF")]
-  public static extern global::System.IntPtr GeometricVector_VectorECEF(float jarg1, float jarg2, float jarg3);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_VectorNED")]
-  public static extern global::System.IntPtr GeometricVector_VectorNED(float jarg1, float jarg2, float jarg3);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GeometricVector__SWIG_0")]
-  public static extern global::System.IntPtr new_GeometricVector__SWIG_0(float jarg1, float jarg2, float jarg3, int jarg4);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GeometricVector__SWIG_1")]
-  public static extern global::System.IntPtr new_GeometricVector__SWIG_1(float jarg1, float jarg2, float jarg3);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_GeometricVector__SWIG_2")]
-  public static extern global::System.IntPtr new_GeometricVector__SWIG_2();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_GeometricVector")]
-  public static extern void delete_GeometricVector(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_referenceFrame_set")]
-  public static extern void GeometricVector_referenceFrame_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_referenceFrame_get")]
-  public static extern int GeometricVector_referenceFrame_get(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_x__SWIG_0")]
-  public static extern float GeometricVector_x__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_x__SWIG_1")]
-  public static extern void GeometricVector_x__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, float jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_y__SWIG_0")]
-  public static extern float GeometricVector_y__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_y__SWIG_1")]
-  public static extern void GeometricVector_y__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, float jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_z__SWIG_0")]
-  public static extern float GeometricVector_z__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_z__SWIG_1")]
-  public static extern void GeometricVector_z__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, float jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_north__SWIG_0")]
-  public static extern float GeometricVector_north__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_north__SWIG_1")]
-  public static extern void GeometricVector_north__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, float jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_east__SWIG_0")]
-  public static extern float GeometricVector_east__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_east__SWIG_1")]
-  public static extern void GeometricVector_east__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, float jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_down__SWIG_0")]
-  public static extern float GeometricVector_down__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricVector_down__SWIG_1")]
-  public static extern void GeometricVector_down__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, float jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_PositionLLH")]
-  public static extern global::System.IntPtr Position_PositionLLH(double jarg1, double jarg2, double jarg3);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_PositionECEF")]
-  public static extern global::System.IntPtr Position_PositionECEF(double jarg1, double jarg2, double jarg3);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_Position__SWIG_0")]
-  public static extern global::System.IntPtr new_Position__SWIG_0(double jarg1, double jarg2, double jarg3, int jarg4);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_Position__SWIG_1")]
-  public static extern global::System.IntPtr new_Position__SWIG_1(double jarg1, double jarg2, double jarg3);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_Position__SWIG_2")]
-  public static extern global::System.IntPtr new_Position__SWIG_2();
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_delete_Position")]
-  public static extern void delete_Position(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_referenceFrame_set")]
-  public static extern void Position_referenceFrame_set(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_referenceFrame_get")]
-  public static extern int Position_referenceFrame_get(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_latitude__SWIG_0")]
-  public static extern double Position_latitude__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_latitude__SWIG_1")]
-  public static extern void Position_latitude__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_longitude__SWIG_0")]
-  public static extern double Position_longitude__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_longitude__SWIG_1")]
-  public static extern void Position_longitude__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_altitude__SWIG_0")]
-  public static extern double Position_altitude__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_altitude__SWIG_1")]
-  public static extern void Position_altitude__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_x__SWIG_0")]
-  public static extern double Position_x__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_x__SWIG_1")]
-  public static extern void Position_x__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_y__SWIG_0")]
-  public static extern double Position_y__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_y__SWIG_1")]
-  public static extern void Position_y__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_z__SWIG_0")]
-  public static extern double Position_z__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1);
-
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Position_z__SWIG_1")]
-  public static extern void Position_z__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, double jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_TimeUpdate__SWIG_0")]
   public static extern global::System.IntPtr new_TimeUpdate__SWIG_0(double jarg1, ushort jarg2, float jarg3);
@@ -7985,6 +8138,30 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_setNmeaMessageFormat")]
   public static extern void InertialNode_setNmeaMessageFormat(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_setAidingMeasurementResponseMode")]
+  public static extern void InertialNode_setAidingMeasurementResponseMode(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_getAidingMeasurementResponseMode")]
+  public static extern int InertialNode_getAidingMeasurementResponseMode(global::System.Runtime.InteropServices.HandleRef jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_sendAidingMeasurement__SWIG_0")]
+  public static extern void InertialNode_sendAidingMeasurement__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_sendAidingMeasurement__SWIG_1")]
+  public static extern void InertialNode_sendAidingMeasurement__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_sendAidingMeasurement__SWIG_2")]
+  public static extern void InertialNode_sendAidingMeasurement__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_sendAidingMeasurement_readEcho__SWIG_0")]
+  public static extern global::System.IntPtr InertialNode_sendAidingMeasurement_readEcho__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_sendAidingMeasurement_readEcho__SWIG_1")]
+  public static extern global::System.IntPtr InertialNode_sendAidingMeasurement_readEcho__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_sendAidingMeasurement_readEcho__SWIG_2")]
+  public static extern global::System.IntPtr InertialNode_sendAidingMeasurement_readEcho__SWIG_2(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_new_DisplacementNode")]
   public static extern global::System.IntPtr new_DisplacementNode(global::System.Runtime.InteropServices.HandleRef jarg1);
@@ -13205,6 +13382,24 @@ class msclPINVOKE {
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AutoShuntCalResult_SWIGUpcast")]
   public static extern global::System.IntPtr AutoShuntCalResult_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_PositionOffset_SWIGUpcast")]
+  public static extern global::System.IntPtr PositionOffset_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Velocity_SWIGUpcast")]
+  public static extern global::System.IntPtr Velocity_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_GeometricUncertainty_SWIGUpcast")]
+  public static extern global::System.IntPtr GeometricUncertainty_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementPosition_SWIGUpcast")]
+  public static extern global::System.IntPtr AidingMeasurementPosition_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementVelocity_SWIGUpcast")]
+  public static extern global::System.IntPtr AidingMeasurementVelocity_SWIGUpcast(global::System.IntPtr jarg1);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_AidingMeasurementHeading_SWIGUpcast")]
+  public static extern global::System.IntPtr AidingMeasurementHeading_SWIGUpcast(global::System.IntPtr jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_Quaternion_SWIGUpcast")]
   public static extern global::System.IntPtr Quaternion_SWIGUpcast(global::System.IntPtr jarg1);

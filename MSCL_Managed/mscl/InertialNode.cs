@@ -1045,6 +1045,50 @@ public class InertialNode : MipNode {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public void setAidingMeasurementResponseMode(AidingMeasurementInput.ResponseMode mode) {
+    msclPINVOKE.InertialNode_setAidingMeasurementResponseMode(swigCPtr, (int)mode);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public AidingMeasurementInput.ResponseMode getAidingMeasurementResponseMode() {
+    AidingMeasurementInput.ResponseMode ret = (AidingMeasurementInput.ResponseMode)msclPINVOKE.InertialNode_getAidingMeasurementResponseMode(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void sendAidingMeasurement(AidingMeasurementPosition measurement) {
+    msclPINVOKE.InertialNode_sendAidingMeasurement__SWIG_0(swigCPtr, AidingMeasurementPosition.getCPtr(measurement));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void sendAidingMeasurement(AidingMeasurementVelocity measurement) {
+    msclPINVOKE.InertialNode_sendAidingMeasurement__SWIG_1(swigCPtr, AidingMeasurementVelocity.getCPtr(measurement));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void sendAidingMeasurement(AidingMeasurementHeading measurement) {
+    msclPINVOKE.InertialNode_sendAidingMeasurement__SWIG_2(swigCPtr, AidingMeasurementHeading.getCPtr(measurement));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public AidingMeasurementPosition sendAidingMeasurement_readEcho(AidingMeasurementPosition positionUpdate) {
+    AidingMeasurementPosition ret = new AidingMeasurementPosition(msclPINVOKE.InertialNode_sendAidingMeasurement_readEcho__SWIG_0(swigCPtr, AidingMeasurementPosition.getCPtr(positionUpdate)), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public AidingMeasurementVelocity sendAidingMeasurement_readEcho(AidingMeasurementVelocity velocityUpdate) {
+    AidingMeasurementVelocity ret = new AidingMeasurementVelocity(msclPINVOKE.InertialNode_sendAidingMeasurement_readEcho__SWIG_1(swigCPtr, AidingMeasurementVelocity.getCPtr(velocityUpdate)), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public AidingMeasurementHeading sendAidingMeasurement_readEcho(AidingMeasurementHeading headingUpdate) {
+    AidingMeasurementHeading ret = new AidingMeasurementHeading(msclPINVOKE.InertialNode_sendAidingMeasurement_readEcho__SWIG_2(swigCPtr, AidingMeasurementHeading.getCPtr(headingUpdate)), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }
 
 }
