@@ -15,6 +15,11 @@ REMOVED - A function/class has been removed.
 ======================================================================================================
 
 Forthcoming
+- CHANGED Timestamp functions seconds() and nanoseconds() no longer default UNIX epoch - default epoch is now the storedEpoch() of the object
+- CHANGED Timestamp::Epoch enum values changed:
+    - UNIX is now 0x04
+    - GPS is now 0x03
+    - Added INTERNAL (0x01) and EXTERNAL (0x02) and UTC (0x04, same as UNIX)
 - Wireless
     - Updated China transmit power limit to 10dBm
 - Inertial
@@ -25,6 +30,11 @@ Forthcoming
         - Made supportedDataClasses() public
     - Added MipDataClasses as a typedef for a vector of MipTypes::DataClass
     - Added UART feature for GPIO configuration
+    - Added Aiding Measurements command set (0x13)
+        - InertialNode::sendAidingMeasurement()
+            - Types: AidingMeasurementPosition, AidingMeasurementVelocity, AidingMeasurementHeading
+        - InertialNode::get/setAidingMeasurementResponseMode()
+    - Moved GeometricVector, Position, PositionOffset classes to PositionVelocity.h
     - MIP Data:
         - parsing for GQ7 Continuous Built-In Test (0xA0, 0x01)
 
