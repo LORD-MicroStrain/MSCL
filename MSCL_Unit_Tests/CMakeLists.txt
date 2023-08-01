@@ -39,5 +39,16 @@ target_compile_options(${PROJECT_NAME} PRIVATE $<$<CXX_COMPILER_ID:MSVC>:$<$<CON
 # Ignore some annoying linker warnings
 target_link_options(${PROJECT_NAME} PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/ignore:4099>)
 
+if (MSVC)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
+endif(MSVC)
+
+add_custom_command(
+  TARGET MSCL_Unit_Tests
+  COMMENT "*****RUNNING MSCL UNIT TESTS*****"
+  POST_BUILD
+  COMMAND "$(TargetPath)" --log_level=test_suite --report_level=no
+)
+
 # Mark the tests to run when the test target is run
 add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME})

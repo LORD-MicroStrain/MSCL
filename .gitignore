@@ -5,6 +5,7 @@ GettingStartedGuide
 sample_mscl_cpp/
 *MSCL_Wrap.cpp
 /build
+/build_*
 /build_ubuntu_*
 /build_centos_*
 /mscl_ubuntu_*.tar.bz2
