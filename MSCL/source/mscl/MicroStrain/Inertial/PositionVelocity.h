@@ -10,6 +10,8 @@
 
 namespace mscl
 {
+    class MipFieldValues;
+
     //API Enum: PositionVelocityReferenceFrame
     //    Enum representing position and velocity reference frame options.
     //
@@ -64,6 +66,12 @@ namespace mscl
         //    Destroys a TimeUpdate object.
         ~GeometricVector();
 
+    public:
+        void fromMipFieldValues(const MipFieldValues& data, uint8 offset = 0, bool includesFrame = false);
+        MipFieldValues asMipFieldValues(bool includeFrame = false) const;
+        void appendMipFieldValues(MipFieldValues& appendTo, bool includeFrame = false) const;
+
+    public:
         //API Variable: referenceFrame
         //    The <PositionVelocityReferenceFrame> of this vector.
         //    Default: ECEF

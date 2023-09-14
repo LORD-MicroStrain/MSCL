@@ -1059,46 +1059,6 @@ namespace mscl
     //  A vector of <Matrix_3x3> objects
     typedef std::vector<Matrix_3x3> Matrix_3x3s;
 
-    //API Class: Quaternion
-    //  A four-element implementation of <Matrix>
-    class Quaternion : public Matrix
-    {
-    public:
-        //API Constructor: Quaternion
-        //  Creates a zero-filled Quaternion object
-        Quaternion();
-
-        //API Constructor: Quaternion
-        //  Creates a Quaternion object with the specified elements
-        //
-        //Parameters:
-        //  four floats representing the quaternion elements
-        Quaternion(float q0, float q1, float q2, float q3);
-
-        //API Constructor: Quaternion
-        //  Creates a Quaternion object based on specified <MipFieldValues> data
-        //
-        //Parameters:
-        //  <MipFieldValues> - format must be 4 floats
-        Quaternion(MipFieldValues data);
-
-        //API Function: at
-        // get the float element at the specified index
-        float at(uint8 index) const;
-
-        //API Function: set
-        // set the float element at the specified index
-        void set(uint8 index, float val);
-
-        //API Function: normalize
-        // normalize the quaternion value
-        void normalize();
-
-        //API Function: asMipFieldValues
-        //  Gets the current quaternion values formatted as a <MipFieldValues> object
-        MipFieldValues asMipFieldValues() const;
-    };
-
     ///////////////  TimeUpdate  ///////////////
 
     //API Class: TimeUpdate
@@ -3378,4 +3338,64 @@ namespace mscl
     //API Typedef: EventActionStatus
     //  A vector of <EventActionInfo>
     typedef std::vector<EventActionInfo> EventActionStatus;
+
+    class MeasurementReferenceFrame
+    {
+    public:
+        MeasurementReferenceFrame() {}
+
+        MeasurementReferenceFrame(const PositionOffset& translation, const Rotation& rotation) :
+            m_translation(translation),
+            m_rotation(rotation)
+        {}
+
+        MeasurementReferenceFrame(const MipFieldValues& data, uint8 offset = 0)
+        {
+            Rotation::Format format = static_cast<Rotation::Format>(data[offset].as_uint8());
+            uint8 index = offset + 1;
+
+            m_translation.fromMipFieldValues(data, index);
+            index += 3;
+
+            if (format == Rotation::EULER_ANGLES)
+            {
+                EulerAngles a(data, index);
+                m_rotation = Rotation::FromEulerAngles(a);
+            }
+            else
+            {
+                Quaternion q(data, index);
+                m_rotation = Rotation::FromQuaternion(q);
+            }
+        }
+
+    public:
+        MipFieldValues toMipFieldValues() const
+        {
+            MipFieldValues m;
+            appendMipFieldValues(m);
+            return m;
+        }
+
+        void appendMipFieldValues(MipFieldValues& appendTo) const
+        {
+            appendTo.push_back(Value::UINT8(static_cast<uint8>(m_rotation.format())));
+            
+            m_translation.appendMipFieldValues(appendTo);
+            m_rotation.appendMipFieldValues(appendTo, false);
+        }
+
+    private:
+        PositionOffset m_translation;
+        Rotation m_rotation;
+
+    public:
+        PositionOffset translation() const { return m_translation; }
+        void translation(const PositionOffset& translation) { m_translation = translation; }
+
+        Rotation rotation() const { return m_rotation; }
+        void rotation(const Rotation& rotation) { m_rotation = rotation; }
+    };
+
+    typedef std::map<uint8, MeasurementReferenceFrame> MeasurementReferenceFrames;
 }
