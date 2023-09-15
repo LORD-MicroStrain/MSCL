@@ -28,7 +28,7 @@ namespace mscl
         Vector(ValueType::valueType_float, ByteStream())
     {
         m_numColumns = 3;
-        for (int i = offset; i < m_numColumns; i++)
+        for (int i = offset; i < m_numColumns + offset; i++)
         {
             m_data.append_float(data[i].as_float());
         }
@@ -96,7 +96,7 @@ namespace mscl
         Vector(ValueType::valueType_float, ByteStream())
     {
         m_numColumns = 4;
-        for (int i = offset; i < m_numColumns; i++)
+        for (int i = offset; i < m_numColumns + offset; i++)
         {
             m_data.append_float(data[i].as_float());
         }
@@ -188,11 +188,10 @@ namespace mscl
         Vector(ValueType::valueType_float, ByteStream()),
         m_format(Rotation::Format::EULER_ANGLES)
     {
-        m_numColumns = 4;
+        m_numColumns = 3;
         m_data.append_float(angles.roll());
         m_data.append_float(angles.pitch());
         m_data.append_float(angles.yaw());
-        m_data.append_float(0.0f);
     }
 
     Rotation::Rotation(const Quaternion& quat) :
@@ -211,8 +210,8 @@ namespace mscl
     {
         m_format = static_cast<Format>(data[offset].as_uint8());
 
-        m_numColumns = 4;
-        for (int i = offset + 1; i < m_numColumns; i++)
+        m_numColumns = m_format == EULER_ANGLES ? 3 : 4;
+        for (int i = offset + 1; i < m_numColumns + offset; i++)
         {
             m_data.append_float(data[i].as_float());
         }
@@ -265,9 +264,14 @@ namespace mscl
             appendTo.push_back(Value::UINT8(static_cast<uint8>(m_format)));
         }
 
-        for (uint8 i = 0; i < 4; i++)
+        for (uint8 i = 0; i < m_numColumns; i++)
         {
             appendTo.push_back(Value::FLOAT(as_floatAt(i)));
+        }
+
+        if (m_format == EULER_ANGLES)
+        {
+            appendTo.push_back(Value::FLOAT(0.0f));
         }
     }
 }

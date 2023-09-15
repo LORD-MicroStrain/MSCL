@@ -1349,7 +1349,11 @@ namespace mscl
         uint8 maxFrameId = features().maxMeasurementReferenceFrameId();
         for (uint8 id = 1; id <= maxFrameId; id++)
         {
-            ret.emplace(id, getAidingMeasurementReferenceFrame(id));
+            try
+            {
+                ret.emplace(id, getAidingMeasurementReferenceFrame(id));
+            }
+            catch (const Error_MipCmdFailed&) { /*ignore*/ }
         }
 
         return ret;
@@ -1368,7 +1372,11 @@ namespace mscl
             }
             else if (clearExcludedIds)
             {
-                setAidingMeasurementReferenceFrame(id, clearFrame);
+                try
+                {
+                    setAidingMeasurementReferenceFrame(id, clearFrame);
+                }
+                catch (const Error_MipCmdFailed&) { /*ignore*/ }
             }
         }
     }
