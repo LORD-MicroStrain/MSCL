@@ -10,7 +10,7 @@
 
 namespace mscl
 {
-    class MipFieldValues;
+    typedef std::vector<Value> MipFieldValues;
 
     //API Enum: PositionVelocityReferenceFrame
     //    Enum representing position and velocity reference frame options.

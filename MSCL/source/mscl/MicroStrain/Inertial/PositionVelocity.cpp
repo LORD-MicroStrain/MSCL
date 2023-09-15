@@ -7,7 +7,6 @@
 #include "stdafx.h"
 
 #include "PositionVelocity.h"
-#include "mscl/MicroStrain/MIP/MipTypes.h"
 
 namespace mscl
 {
@@ -28,7 +27,7 @@ namespace mscl
     GeometricVector::~GeometricVector()
     { }
 
-    void GeometricVector::fromMipFieldValues(const MipFieldValues& data, uint8 offset = 0, bool includesFrame = false)
+    void GeometricVector::fromMipFieldValues(const MipFieldValues& data, uint8 offset, bool includesFrame)
     {
         uint8 index = offset;
         if (includesFrame)

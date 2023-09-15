@@ -147,6 +147,8 @@ namespace mscl
         };
 
     public:
+
+        Rotation() : Rotation(EulerAngles(0, 0, 0)) {}
         Rotation(const EulerAngles& angles);
         Rotation(const Quaternion& quat);
 
@@ -156,9 +158,6 @@ namespace mscl
         //Parameters:
         //  <MipFieldValues> - format must be a u8 format id and 3 or 4 floats
         Rotation(const MipFieldValues& data, uint8 offset = 0);
-
-    private:
-        Rotation();
 
     public:
         static Rotation FromEulerAngles(const EulerAngles& angles) { return Rotation(angles); }
