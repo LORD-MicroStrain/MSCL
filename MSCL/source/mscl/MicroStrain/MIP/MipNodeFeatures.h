@@ -407,5 +407,12 @@ namespace mscl
         //Returns:
         //    <MipTypes::MipChannelFields> - list of supported <MipTypes::ChannelFields>.
         MipTypes::MipChannelFields supportedLowPassFilterChannelFields() const;
+
+        //API Function: maxMeasurementReferenceFrameId
+        //    Gets the maximum Measurement Reference Frame ID supported by this device. Supported ids are 1 through max ID.
+        //
+        //Returns:
+        //    uint8 - the maximum supported reference frame ID
+        uint8 maxMeasurementReferenceFrameId() const;
     };
 }

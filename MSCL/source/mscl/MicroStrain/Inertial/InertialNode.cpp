@@ -1342,6 +1342,52 @@ namespace mscl
         m_impl->set(MipTypes::CMD_NMEA_MESSAGE_FORMAT, params);
     }
 
+    MeasurementReferenceFrames InertialNode::getAidingMeasurementReferenceFrames() const
+    {
+        MeasurementReferenceFrames ret;
+
+        uint8 maxFrameId = features().maxMeasurementReferenceFrameId();
+        for (uint8 id = 1; id <= maxFrameId; id++)
+        {
+            ret.emplace(id, getAidingMeasurementReferenceFrame(id));
+        }
+
+        return ret;
+    }
+
+    void InertialNode::setAidingMeasurementRefrenceFrames(const MeasurementReferenceFrames& frames, bool clearExcludedIds) const
+    {
+        MeasurementReferenceFrame clearFrame;
+
+        uint8 maxFrameId = features().maxMeasurementReferenceFrameId();
+        for (uint8 id = 1; id <= maxFrameId; id++)
+        {
+            if (frames.find(id) != frames.end())
+            {
+                setAidingMeasurementReferenceFrame(id, frames.at(id));
+            }
+            else if (clearExcludedIds)
+            {
+                setAidingMeasurementReferenceFrame(id, clearFrame);
+            }
+        }
+    }
+
+    MeasurementReferenceFrame InertialNode::getAidingMeasurementReferenceFrame(uint8 id) const
+    {
+        MipFieldValues data = m_impl->get(MipTypes::CMD_AIDING_FRAME_CONFIG, { Value::UINT8(id) });
+
+        return MeasurementReferenceFrame(data, 1);
+    }
+
+    void InertialNode::setAidingMeasurementReferenceFrame(uint8 id, const MeasurementReferenceFrame& frame) const
+    {
+        MipFieldValues params = { Value::UINT8(id) };
+        frame.appendMipFieldValues(params);
+
+        m_impl->set(MipTypes::CMD_AIDING_FRAME_CONFIG, params);
+    }
+
     AidingMeasurementInput::ResponseMode InertialNode::getAidingMeasurementResponseMode() const
     {
         const MipFieldValues resData = m_impl->get(MipTypes::CMD_AIDING_ECHO_CONTROL);

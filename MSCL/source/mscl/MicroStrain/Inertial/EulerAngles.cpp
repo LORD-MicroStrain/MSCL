@@ -232,11 +232,21 @@ namespace mscl
 
     EulerAngles Rotation::asEulerAngles() const
     {
+        if (m_format != EULER_ANGLES)
+        {
+            throw Error_BadDataType();
+        }
+
         return EulerAngles(as_floatAt(0), as_floatAt(1), as_floatAt(2));
     }
 
     Quaternion Rotation::asQuaternion() const
     {
+        if (m_format != QUATERNION)
+        {
+            throw Error_BadDataType();
+        }
+
         return Quaternion(as_floatAt(0), as_floatAt(1), as_floatAt(2), as_floatAt(3));
     }
 

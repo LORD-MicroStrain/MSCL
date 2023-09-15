@@ -2398,7 +2398,7 @@ namespace mscl
         //    Sets the NMEA message formats to output on the device.
         //
         //Parameters:
-        //    nmeaFormats- vector of <NmeaMessageFormat> objects to configure.
+        //    nmeaFormats - vector of <NmeaMessageFormat> objects to configure.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
@@ -2406,6 +2406,39 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setNmeaMessageFormat(NmeaMessageFormats nmeaFormats) const;
+
+        //API Function: getAidingMeasurementReferenceFrames
+        //  Get all aiding measurement reference frames configured on the device.
+        //
+        //Returns:
+        //  <MeasurementReferenceFrames> - map of reference frames for each frame ID supported by the device
+        MeasurementReferenceFrames getAidingMeasurementReferenceFrames() const;
+
+        //API Function: setAidingMeasurementReferenceFrames
+        //  Set the aiding measurement reference frames on the device.
+        //
+        //Parameters:
+        //  frames - <MeasurementReferenceFrames> map of reference frames for each frame ID to be set
+        //  clearExcludedIds - bool, default: false - if true, clears reference frame information for IDs not included in the frames map otherwise only overwrites included IDs
+        void setAidingMeasurementRefrenceFrames(const MeasurementReferenceFrames& frames, bool clearExcludedIds = false) const;
+
+        //API Function: getAidingMeasurementReferenceFrame
+        //  Get the aiding measurement reference frame for the specified frame ID configured on the device.
+        //
+        //Parameters:
+        //  id - frame ID of the reference frame to read
+        //
+        //Returns:
+        //  <MeasurementReferenceFrame> - the reference frame information for the specified frame ID
+        MeasurementReferenceFrame getAidingMeasurementReferenceFrame(uint8 id) const;
+
+        //API Function: setAidingMeasurementReferenceFrame
+        //  Set the aiding measurement reference frame for the specified frame ID on the device.
+        //
+        //Parameters:
+        //  id - frame ID of the reference frame to set
+        //  frame - <MeasurementReferenceFrame> information to set for the specified frame ID
+        void setAidingMeasurementReferenceFrame(uint8 id, const MeasurementReferenceFrame& frame) const;
 
         //API Function: setAidingMeasurementResponseMode
         //  Set the response mode for commanded aiding measurement inputs on the device (command set 0x13, sendAidingMeasurement function).
