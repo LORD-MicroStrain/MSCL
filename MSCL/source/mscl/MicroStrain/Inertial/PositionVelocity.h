@@ -17,11 +17,14 @@ namespace mscl
     //
     //  ECEF    - 0x01  -   Earth-Centered, Earth-Fixed
     //  LLH_NED - 0x02  -   Position: Lat/Long/Height, Velocity: North/East/Down
+    //  LOCAL   - 0x03  -   Position and Velocity in the local reference frame
+    //  VEHICLE - 0x04  -   Position and Velocity in the vehicle reference frame
     enum PositionVelocityReferenceFrame
     {
         ECEF = 0x01,
         LLH_NED = 0x02,
-        LOCAL = 0x03
+        LOCAL = 0x03,
+        VEHICLE = 0x04,
     };
 
     //API Class: GeometricVector

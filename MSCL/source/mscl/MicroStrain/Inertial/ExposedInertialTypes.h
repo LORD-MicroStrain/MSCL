@@ -3339,22 +3339,44 @@ namespace mscl
     //  A vector of <EventActionInfo>
     typedef std::vector<EventActionInfo> EventActionStatus;
 
+    //API Class: MeasurementReferenceFrame
+    //  Represents a configurable Aiding Measurement reference frame (0x13,0x01)
     class MeasurementReferenceFrame
     {
     public:
-        MeasurementReferenceFrame() {}
+        //API Constructor: MeasurementReferenceFrame
+        //  Constructs a MeasurementReferenceFrame object with default values
+        MeasurementReferenceFrame()
+        {
+            m_translation.referenceFrame = PositionVelocityReferenceFrame::VEHICLE;
+        }
 
+        //API Constructor: MeasurementReferenceFrame
+        //  Constructs a MeasurementReferenceFrame object with the specified translation and rotation values
+        //
+        //Parameters:
+        //  translation - <PositionOffset> of the aiding measurement in the vehicle frame
+        //  rotation - <Rotation> of the aiding measurement in the vehicle frame
         MeasurementReferenceFrame(const PositionOffset& translation, const Rotation& rotation) :
             m_translation(translation),
             m_rotation(rotation)
-        {}
+        {
+            m_translation.referenceFrame = PositionVelocityReferenceFrame::VEHICLE;
+        }
 
+        //API Constructor: MeasurementReferenceFrame
+        //  Creates a MeasurementReferenceFrame object based on specified <MipFieldValues> data
+        //
+        //Parameters:
+        //  <MipFieldValues> - format must be a u8 rotation format id and 6 or 7 floats
+        //  offset - default: 0 - uint8 index offset to start reading from
         MeasurementReferenceFrame(const MipFieldValues& data, uint8 offset = 0)
         {
             Rotation::Format format = static_cast<Rotation::Format>(data[offset].as_uint8());
             uint8 index = offset + 1;
 
             m_translation.fromMipFieldValues(data, index);
+            m_translation.referenceFrame = PositionVelocityReferenceFrame::VEHICLE;
             index += 3;
 
             if (format == Rotation::EULER_ANGLES)
@@ -3370,13 +3392,23 @@ namespace mscl
         }
 
     public:
-        MipFieldValues toMipFieldValues() const
+        //API Function: asMipFieldValues
+        //  Gets the current reference frame values formatted as a <MipFieldValues> object
+        //
+        //Returns:
+        //  <MipFieldValues> - collection of values that represents this object.
+        MipFieldValues asMipFieldValues() const
         {
             MipFieldValues m;
             appendMipFieldValues(m);
             return m;
         }
 
+        //API Function: appendMipFieldValues
+        //  Adds the properly formatted <MipFieldValues> that represent this object to the specified collection.
+        //
+        //Parameters:
+        //  appendTo - (reference) the <MipFieldValues> collection to append to
         void appendMipFieldValues(MipFieldValues& appendTo) const
         {
             appendTo.push_back(Value::UINT8(static_cast<uint8>(m_rotation.format())));
@@ -3386,16 +3418,45 @@ namespace mscl
         }
 
     private:
+        //Variable: m_translation
+        //  The <PositionOffset> of this reference frame.
         PositionOffset m_translation;
+
+        //Variable: m_rotation
+        //  The <Rotation> of this reference frame.
         Rotation m_rotation;
 
     public:
+        //API Function: translation
+        //  Get the <PositionOffset> translation of this reference frame.
+        //
+        //Returns:
+        //  <PositionOffset> - the translation value
         PositionOffset translation() const { return m_translation; }
+
+        //API Function: translation
+        //  Set the <PositionOffset> translation of this reference frame.
+        //
+        //Parameters:
+        //  translation - the <PositionOffset> to set
         void translation(const PositionOffset& translation) { m_translation = translation; }
 
+        //API Function: rotation
+        //  Get the <Rotation> of this reference frame
+        //
+        //Returns:
+        //  <Rotation> - the rotation value
         Rotation rotation() const { return m_rotation; }
+
+        //API Function: rotation
+        //  Set the <Rotation> of this reference frame.
+        //
+        //Parameters:
+        //  rotation - the <Rotation> to set
         void rotation(const Rotation& rotation) { m_rotation = rotation; }
     };
 
+    //API Typedef: MeasurementReferenceFrames
+    //  A map of reference frame IDs with their associated <MeasurementReferenceFrame> values.
     typedef std::map<uint8, MeasurementReferenceFrame> MeasurementReferenceFrames;
 }

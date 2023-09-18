@@ -338,6 +338,7 @@ namespace std
     %template(GpioPinOptions)                   map<uint8_t, map<enum mscl::GpioConfiguration::Feature, map<uint8_t, vector<mscl::GpioConfiguration::PinModes>>>>;
     %template(EventInputTriggers)               array<uint8_t, mscl::EventTriggerCombinationParameter::MAX_INPUT_TRIGGERS>;
     %template(EventTypes)                       vector<mscl::EventTypeInfo>;
+    %template(MeasurementReferenceFrames)       map<uint8_t, mscl::MeasurementReferenceFrame>;
 
 
 #ifndef UNIX_BUILD
