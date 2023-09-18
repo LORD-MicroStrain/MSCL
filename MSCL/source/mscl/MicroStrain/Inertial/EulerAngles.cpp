@@ -82,14 +82,14 @@ namespace mscl
     {
     }
 
-    Quaternion::Quaternion(float x, float y, float z, float w) :
+    Quaternion::Quaternion(float q0, float q1, float q2, float q3) :
         Vector(ValueType::valueType_float, ByteStream())
     {
         m_numColumns = 4;
-        m_data.append_float(x);
-        m_data.append_float(y);
-        m_data.append_float(z);
-        m_data.append_float(w);
+        m_data.append_float(q0);
+        m_data.append_float(q1);
+        m_data.append_float(q2);
+        m_data.append_float(q3);
     }
 
     Quaternion::Quaternion(const MipFieldValues& data, uint8 offset) :
@@ -151,22 +151,22 @@ namespace mscl
         m_data = b;
     }
 
-    float Quaternion::x() const
+    float Quaternion::q0() const
     {
         return as_floatAt(0);
     }
 
-    float Quaternion::y() const
+    float Quaternion::q1() const
     {
         return as_floatAt(1);
     }
 
-    float Quaternion::z() const
+    float Quaternion::q2() const
     {
         return as_floatAt(2);
     }
 
-    float Quaternion::w() const
+    float Quaternion::q3() const
     {
         return as_floatAt(3);
     }
@@ -199,10 +199,10 @@ namespace mscl
         m_format(Rotation::Format::QUATERNION)
     {
         m_numColumns = 4;
-        m_data.append_float(quat.x());
-        m_data.append_float(quat.y());
-        m_data.append_float(quat.z());
-        m_data.append_float(quat.w());
+        m_data.append_float(quat.q0());
+        m_data.append_float(quat.q1());
+        m_data.append_float(quat.q2());
+        m_data.append_float(quat.q3());
     }
 
     Rotation::Rotation(const MipFieldValues& data, uint8 offset) :

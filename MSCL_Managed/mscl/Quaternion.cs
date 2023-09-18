@@ -38,7 +38,7 @@ public class Quaternion : Vector {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public Quaternion(float x, float y, float z, float w) : this(msclPINVOKE.new_Quaternion__SWIG_1(x, y, z, w), true) {
+  public Quaternion(float q0, float q1, float q2, float q3) : this(msclPINVOKE.new_Quaternion__SWIG_1(q0, q1, q2, q3), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -66,26 +66,26 @@ public class Quaternion : Vector {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public float x() {
-    float ret = msclPINVOKE.Quaternion_x(swigCPtr);
+  public float q0() {
+    float ret = msclPINVOKE.Quaternion_q0(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public float y() {
-    float ret = msclPINVOKE.Quaternion_y(swigCPtr);
+  public float q1() {
+    float ret = msclPINVOKE.Quaternion_q1(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public float z() {
-    float ret = msclPINVOKE.Quaternion_z(swigCPtr);
+  public float q2() {
+    float ret = msclPINVOKE.Quaternion_q2(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public float w() {
-    float ret = msclPINVOKE.Quaternion_w(swigCPtr);
+  public float q3() {
+    float ret = msclPINVOKE.Quaternion_q3(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

@@ -86,7 +86,7 @@ namespace mscl
     };
 
     //API Class: Quaternion
-    //    Represents generic Quaternion (x, y, z, w).
+    //    Represents generic Quaternion (q0-3, usually w, x, y, z - refer to protocol documentation).
     class Quaternion : public Vector
     {
     public:
@@ -94,7 +94,7 @@ namespace mscl
 
         //API Constructor: Quaternion
         //    Creates an Quaternion object.
-        Quaternion(float x, float y, float z, float w);
+        Quaternion(float q0, float q1, float q2, float q3);
 
         //API Constructor: Quaternion
         //  Creates a Quaternion object based on specified <MipFieldValues> data
@@ -106,7 +106,7 @@ namespace mscl
 
 #ifndef SWIG
         //API Function: operator Rotation() (cast)
-        //    Creates a <Rotation> object with this object's x, y, z, w values
+        //    Creates a <Rotation> object with this object's values
         operator Rotation() const;
 #endif //SWIG
         
@@ -130,33 +130,33 @@ namespace mscl
         void normalize();
 
     public:
-        //API Function: x
-        //    Gets the x value.
+        //API Function: q0
+        //    Gets the 0-index value (usually w).
         //
         //Returns:
-        //    The x value.
-        float x() const;
+        //    The 0-index value.
+        float q0() const;
 
-        //API Function: y
-        //    Gets the y value.
+        //API Function: q1
+        //    Gets the 1-index value (usually x).
         //
         //Returns:
-        //    The y value.
-        float y() const;
+        //    The 1-index value.
+        float q1() const;
 
-        //API Function: z
-        //    Gets the z value.
+        //API Function: q2
+        //    Gets the 2-index value (usually y).
         //
         //Returns:
-        //    The z value.
-        float z() const;
+        //    The 2-index value.
+        float q2() const;
 
-        //API Function: w
-        //    Gets the w value.
+        //API Function: q3
+        //    Gets the 3-index value (usually z).
         //
         //Returns:
-        //    The w value.
-        float w() const;
+        //    The 3-index value.
+        float q3() const;
 
     private:
         void set(uint8 index, float val);
