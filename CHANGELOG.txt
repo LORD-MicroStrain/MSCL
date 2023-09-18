@@ -34,7 +34,9 @@ Forthcoming
         - InertialNode::sendAidingMeasurement()
             - Types: AidingMeasurementPosition, AidingMeasurementVelocity, AidingMeasurementHeading
         - InertialNode::get/setAidingMeasurementResponseMode()
+        - InertialNode::get/setAidingMeasurementReferenceFrames()
     - Moved GeometricVector, Position, PositionOffset classes to PositionVelocity.h
+    - Moved Quaternion class to EulerAngles.h, added Rotation class to represent either a Quaternion or EulerAngles object
     - MIP Data:
         - parsing for GQ7 Continuous Built-In Test (0xA0, 0x01)
 
