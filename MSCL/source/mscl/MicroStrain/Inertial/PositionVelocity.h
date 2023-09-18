@@ -10,16 +10,21 @@
 
 namespace mscl
 {
+    typedef std::vector<Value> MipFieldValues;
+
     //API Enum: PositionVelocityReferenceFrame
     //    Enum representing position and velocity reference frame options.
     //
     //  ECEF    - 0x01  -   Earth-Centered, Earth-Fixed
     //  LLH_NED - 0x02  -   Position: Lat/Long/Height, Velocity: North/East/Down
+    //  LOCAL   - 0x03  -   Position and Velocity in the local reference frame
+    //  VEHICLE - 0x04  -   Position and Velocity in the vehicle reference frame
     enum PositionVelocityReferenceFrame
     {
         ECEF = 0x01,
         LLH_NED = 0x02,
-        LOCAL = 0x03
+        LOCAL = 0x03,
+        VEHICLE = 0x04,
     };
 
     //API Class: GeometricVector
@@ -64,6 +69,12 @@ namespace mscl
         //    Destroys a TimeUpdate object.
         ~GeometricVector();
 
+    public:
+        void fromMipFieldValues(const MipFieldValues& data, uint8 offset = 0, bool includesFrame = false);
+        MipFieldValues asMipFieldValues(bool includeFrame = false) const;
+        void appendMipFieldValues(MipFieldValues& appendTo, bool includeFrame = false) const;
+
+    public:
         //API Variable: referenceFrame
         //    The <PositionVelocityReferenceFrame> of this vector.
         //    Default: ECEF

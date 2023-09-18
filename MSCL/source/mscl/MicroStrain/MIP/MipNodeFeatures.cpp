@@ -1243,4 +1243,14 @@ namespace mscl
 
         return chs;
     }
+
+    uint8 MipNodeFeatures::maxMeasurementReferenceFrameId() const
+    {
+        if (!supportsCommand(MipTypes::CMD_AIDING_FRAME_CONFIG))
+        {
+            return 0;
+        }
+
+        return 6;
+    }
 }

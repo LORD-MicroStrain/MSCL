@@ -26,4 +26,38 @@ namespace mscl
 
     GeometricVector::~GeometricVector()
     { }
+
+    void GeometricVector::fromMipFieldValues(const MipFieldValues& data, uint8 offset, bool includesFrame)
+    {
+        uint8 index = offset;
+        if (includesFrame)
+        {
+            referenceFrame = static_cast<PositionVelocityReferenceFrame>(data[index].as_uint8());
+            index++;
+        }
+
+        vec_0 = data[index].as_float();
+        vec_1 = data[++index].as_float();
+        vec_2 = data[++index].as_float();
+    }
+
+    MipFieldValues GeometricVector::asMipFieldValues(bool includeFrame) const
+    {
+        MipFieldValues m;
+        appendMipFieldValues(m, includeFrame);
+
+        return m;
+    }
+
+    void GeometricVector::appendMipFieldValues(MipFieldValues& appendTo, bool includeFrame) const
+    {
+        if (includeFrame)
+        {
+            appendTo.push_back(Value::UINT8(static_cast<uint8>(referenceFrame)));
+        }
+
+        appendTo.push_back(Value::FLOAT(vec_0));
+        appendTo.push_back(Value::FLOAT(vec_1));
+        appendTo.push_back(Value::FLOAT(vec_2));
+    }
 }

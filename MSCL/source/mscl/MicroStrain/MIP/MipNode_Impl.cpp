@@ -834,6 +834,21 @@ namespace mscl
                 }
                 break;
             }
+            case MipTypes::CMD_AIDING_FRAME_CONFIG:
+            {
+                if (allParam)
+                {
+                    params.push_back({ cmd,{ Value::UINT8(0) } });
+                    break;
+                }
+
+                uint8 maxId = features().maxMeasurementReferenceFrameId();
+                for (uint8_t id = 1; id <= maxId; id++)
+                {
+                    params.push_back({ cmd,{ Value::UINT8(id) } });
+                }
+                break;
+            }
             default:
                 params.push_back({ cmd, {} });
                 break;

@@ -10,7 +10,7 @@
 
 namespace mscl {
 
-public class Quaternion : Matrix {
+public class Quaternion : Vector {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
 
   internal Quaternion(global::System.IntPtr cPtr, bool cMemoryOwn) : base(msclPINVOKE.Quaternion_SWIGUpcast(cPtr), cMemoryOwn) {
@@ -38,22 +38,26 @@ public class Quaternion : Matrix {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public Quaternion(float q0, float q1, float q2, float q3) : this(msclPINVOKE.new_Quaternion__SWIG_1(q0, q1, q2, q3), true) {
+  public Quaternion(float x, float y, float z, float w) : this(msclPINVOKE.new_Quaternion__SWIG_1(x, y, z, w), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public Quaternion(MipFieldValues data) : this(msclPINVOKE.new_Quaternion__SWIG_2(MipFieldValues.getCPtr(data)), true) {
+  public Quaternion(MipFieldValues data, byte offset) : this(msclPINVOKE.new_Quaternion__SWIG_2(MipFieldValues.getCPtr(data), offset), true) {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public float at(byte index) {
-    float ret = msclPINVOKE.Quaternion_at(swigCPtr, index);
+  public Quaternion(MipFieldValues data) : this(msclPINVOKE.new_Quaternion__SWIG_3(MipFieldValues.getCPtr(data)), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public MipFieldValues asMipFieldValues() {
+    MipFieldValues ret = new MipFieldValues(msclPINVOKE.Quaternion_asMipFieldValues(swigCPtr), true);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }
 
-  public void set(byte index, float val) {
-    msclPINVOKE.Quaternion_set(swigCPtr, index, val);
+  public void appendMipFieldValues(MipFieldValues appendTo) {
+    msclPINVOKE.Quaternion_appendMipFieldValues(swigCPtr, MipFieldValues.getCPtr(appendTo));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
@@ -62,8 +66,26 @@ public class Quaternion : Matrix {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
-  public MipFieldValues asMipFieldValues() {
-    MipFieldValues ret = new MipFieldValues(msclPINVOKE.Quaternion_asMipFieldValues(swigCPtr), true);
+  public float x() {
+    float ret = msclPINVOKE.Quaternion_x(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public float y() {
+    float ret = msclPINVOKE.Quaternion_y(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public float z() {
+    float ret = msclPINVOKE.Quaternion_z(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public float w() {
+    float ret = msclPINVOKE.Quaternion_w(swigCPtr);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
     return ret;
   }

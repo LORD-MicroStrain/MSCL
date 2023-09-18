@@ -272,6 +272,12 @@ public class MipNodeFeatures : global::System.IDisposable {
     return ret;
   }
 
+  public byte maxMeasurementReferenceFrameId() {
+    byte ret = msclPINVOKE.MipNodeFeatures_maxMeasurementReferenceFrameId(swigCPtr);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
 }
 
 }
