@@ -241,6 +241,8 @@
     <Compile Include="mscl\Matrix.cs" />
     <Compile Include="mscl\Matrix_3x3.cs" />
     <Compile Include="mscl\Matrix_3x3s.cs" />
+    <Compile Include="mscl\MeasurementReferenceFrame.cs" />
+    <Compile Include="mscl\MeasurementReferenceFrames.cs" />
     <Compile Include="mscl\MipChannel.cs" />
     <Compile Include="mscl\MipChannelFields.cs" />
     <Compile Include="mscl\MipChannelIdentifier.cs" />
@@ -288,6 +290,7 @@
     <Compile Include="mscl\RawBytePacket.cs" />
     <Compile Include="mscl\RawBytePackets.cs" />
     <Compile Include="mscl\RfSweep.cs" />
+    <Compile Include="mscl\Rotation.cs" />
     <Compile Include="mscl\RTKDeviceStatusFlags.cs" />
     <Compile Include="mscl\RTKDeviceStatusFlags_v1.cs" />
     <Compile Include="mscl\RTKNode.cs" />

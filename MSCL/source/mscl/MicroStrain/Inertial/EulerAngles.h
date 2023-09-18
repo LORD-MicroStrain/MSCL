@@ -11,6 +11,7 @@
 namespace mscl
 {
     class Rotation;
+    typedef std::vector<Value> MipFieldValues;
 
     //API Class: EulerAngles
     //    Represents generic Euler Angles (roll, pitch, yaw).

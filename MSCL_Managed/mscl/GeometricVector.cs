@@ -68,6 +68,43 @@ public class GeometricVector : global::System.IDisposable {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public void fromMipFieldValues(MipFieldValues data, byte offset, bool includesFrame) {
+    msclPINVOKE.GeometricVector_fromMipFieldValues__SWIG_0(swigCPtr, MipFieldValues.getCPtr(data), offset, includesFrame);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void fromMipFieldValues(MipFieldValues data, byte offset) {
+    msclPINVOKE.GeometricVector_fromMipFieldValues__SWIG_1(swigCPtr, MipFieldValues.getCPtr(data), offset);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void fromMipFieldValues(MipFieldValues data) {
+    msclPINVOKE.GeometricVector_fromMipFieldValues__SWIG_2(swigCPtr, MipFieldValues.getCPtr(data));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public MipFieldValues asMipFieldValues(bool includeFrame) {
+    MipFieldValues ret = new MipFieldValues(msclPINVOKE.GeometricVector_asMipFieldValues__SWIG_0(swigCPtr, includeFrame), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public MipFieldValues asMipFieldValues() {
+    MipFieldValues ret = new MipFieldValues(msclPINVOKE.GeometricVector_asMipFieldValues__SWIG_1(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void appendMipFieldValues(MipFieldValues appendTo, bool includeFrame) {
+    msclPINVOKE.GeometricVector_appendMipFieldValues__SWIG_0(swigCPtr, MipFieldValues.getCPtr(appendTo), includeFrame);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void appendMipFieldValues(MipFieldValues appendTo) {
+    msclPINVOKE.GeometricVector_appendMipFieldValues__SWIG_1(swigCPtr, MipFieldValues.getCPtr(appendTo));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public PositionVelocityReferenceFrame referenceFrame {
     set {
       msclPINVOKE.GeometricVector_referenceFrame_set(swigCPtr, (int)value);

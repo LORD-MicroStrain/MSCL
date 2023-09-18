@@ -1045,6 +1045,33 @@ public class InertialNode : MipNode {
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
+  public MeasurementReferenceFrames getAidingMeasurementReferenceFrames() {
+    MeasurementReferenceFrames ret = new MeasurementReferenceFrames(msclPINVOKE.InertialNode_getAidingMeasurementReferenceFrames(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setAidingMeasurementRefrenceFrames(MeasurementReferenceFrames frames, bool clearExcludedIds) {
+    msclPINVOKE.InertialNode_setAidingMeasurementRefrenceFrames__SWIG_0(swigCPtr, MeasurementReferenceFrames.getCPtr(frames), clearExcludedIds);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public void setAidingMeasurementRefrenceFrames(MeasurementReferenceFrames frames) {
+    msclPINVOKE.InertialNode_setAidingMeasurementRefrenceFrames__SWIG_1(swigCPtr, MeasurementReferenceFrames.getCPtr(frames));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public MeasurementReferenceFrame getAidingMeasurementReferenceFrame(byte id) {
+    MeasurementReferenceFrame ret = new MeasurementReferenceFrame(msclPINVOKE.InertialNode_getAidingMeasurementReferenceFrame(swigCPtr, id), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void setAidingMeasurementReferenceFrame(byte id, MeasurementReferenceFrame frame) {
+    msclPINVOKE.InertialNode_setAidingMeasurementReferenceFrame(swigCPtr, id, MeasurementReferenceFrame.getCPtr(frame));
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
   public void setAidingMeasurementResponseMode(AidingMeasurementInput.ResponseMode mode) {
     msclPINVOKE.InertialNode_setAidingMeasurementResponseMode(swigCPtr, (int)mode);
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();

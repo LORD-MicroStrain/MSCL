@@ -10,12 +10,10 @@
 
 namespace mscl {
 
-public class EulerAngles : global::System.IDisposable {
+public class EulerAngles : Vector {
   private global::System.Runtime.InteropServices.HandleRef swigCPtr;
-  protected bool swigCMemOwn;
 
-  internal EulerAngles(global::System.IntPtr cPtr, bool cMemoryOwn) {
-    swigCMemOwn = cMemoryOwn;
+  internal EulerAngles(global::System.IntPtr cPtr, bool cMemoryOwn) : base(msclPINVOKE.EulerAngles_SWIGUpcast(cPtr), cMemoryOwn) {
     swigCPtr = new global::System.Runtime.InteropServices.HandleRef(this, cPtr);
   }
 
@@ -23,16 +21,7 @@ public class EulerAngles : global::System.IDisposable {
     return (obj == null) ? new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero) : obj.swigCPtr;
   }
 
-  ~EulerAngles() {
-    Dispose(false);
-  }
-
-  public void Dispose() {
-    Dispose(true);
-    global::System.GC.SuppressFinalize(this);
-  }
-
-  protected virtual void Dispose(bool disposing) {
+  protected override void Dispose(bool disposing) {
     lock(this) {
       if (swigCPtr.Handle != global::System.IntPtr.Zero) {
         if (swigCMemOwn) {
@@ -41,6 +30,7 @@ public class EulerAngles : global::System.IDisposable {
         }
         swigCPtr = new global::System.Runtime.InteropServices.HandleRef(null, global::System.IntPtr.Zero);
       }
+      base.Dispose(disposing);
     }
   }
 
@@ -49,6 +39,25 @@ public class EulerAngles : global::System.IDisposable {
   }
 
   public EulerAngles(float roll, float pitch, float yaw) : this(msclPINVOKE.new_EulerAngles__SWIG_1(roll, pitch, yaw), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public EulerAngles(MipFieldValues data, byte offset) : this(msclPINVOKE.new_EulerAngles__SWIG_2(MipFieldValues.getCPtr(data), offset), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public EulerAngles(MipFieldValues data) : this(msclPINVOKE.new_EulerAngles__SWIG_3(MipFieldValues.getCPtr(data)), true) {
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+  }
+
+  public MipFieldValues asMipFieldValues() {
+    MipFieldValues ret = new MipFieldValues(msclPINVOKE.EulerAngles_asMipFieldValues(swigCPtr), true);
+    if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
+    return ret;
+  }
+
+  public void appendMipFieldValues(MipFieldValues appendTo) {
+    msclPINVOKE.EulerAngles_appendMipFieldValues(swigCPtr, MipFieldValues.getCPtr(appendTo));
     if (msclPINVOKE.SWIGPendingException.Pending) throw msclPINVOKE.SWIGPendingException.Retrieve();
   }
 
