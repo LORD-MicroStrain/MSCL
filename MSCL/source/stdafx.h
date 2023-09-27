@@ -13,10 +13,10 @@
 #include <boost/circular_buffer.hpp>                               //for boost circular buffer
 #include <boost/date_time.hpp>                                     //for boost::posix_time::from_time_t
 #include <boost/date_time/posix_time/posix_time_duration.hpp>      //for boost::posix_time::nanosec
-#include <boost/date_time/posix_time/ptime.hpp>                    //for boost ptime    
-#include <boost/detail/endian.hpp>                                 //for endianess
+#include <boost/date_time/posix_time/ptime.hpp>                    //for boost ptime
 #include <boost/numeric/conversion/cast.hpp>                       //for boost::numeric_cast
 #include <boost/optional.hpp>                                      //for boost::optional
+#include <boost/predef/other/endian.h>                             //for endianess
 #include <boost/utility/binary.hpp>                                //for BOOST_BINARY
 
 #include <algorithm>                                               //for std::min, std::replace

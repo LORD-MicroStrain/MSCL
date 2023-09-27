@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <boost/detail/endian.hpp>
+#include <boost/predef/other/endian.h>
 #include <algorithm>
 
 namespace mscl
@@ -82,7 +82,7 @@ template<typename StaticType>
 inline StaticType SystemEndian_To_LittleEndian(StaticType val);
 
 
-#ifdef BOOST_LITTLE_ENDIAN
+#if BOOST_ENDIAN_LITTLE_BYTE
 // Little endian system
 
 template<typename StaticType>
