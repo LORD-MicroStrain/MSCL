@@ -8265,8 +8265,11 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_setNmeaMessageFormat")]
   public static extern void InertialNode_setNmeaMessageFormat(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_getAidingMeasurementReferenceFrames")]
-  public static extern global::System.IntPtr InertialNode_getAidingMeasurementReferenceFrames(global::System.Runtime.InteropServices.HandleRef jarg1);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_getAidingMeasurementReferenceFrames__SWIG_0")]
+  public static extern global::System.IntPtr InertialNode_getAidingMeasurementReferenceFrames__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, int jarg2);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_getAidingMeasurementReferenceFrames__SWIG_1")]
+  public static extern global::System.IntPtr InertialNode_getAidingMeasurementReferenceFrames__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_setAidingMeasurementRefrenceFrames__SWIG_0")]
   public static extern void InertialNode_setAidingMeasurementRefrenceFrames__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2, bool jarg3);
@@ -8274,8 +8277,11 @@ class msclPINVOKE {
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_setAidingMeasurementRefrenceFrames__SWIG_1")]
   public static extern void InertialNode_setAidingMeasurementRefrenceFrames__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, global::System.Runtime.InteropServices.HandleRef jarg2);
 
-  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_getAidingMeasurementReferenceFrame")]
-  public static extern global::System.IntPtr InertialNode_getAidingMeasurementReferenceFrame(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_getAidingMeasurementReferenceFrame__SWIG_0")]
+  public static extern global::System.IntPtr InertialNode_getAidingMeasurementReferenceFrame__SWIG_0(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2, int jarg3);
+
+  [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_getAidingMeasurementReferenceFrame__SWIG_1")]
+  public static extern global::System.IntPtr InertialNode_getAidingMeasurementReferenceFrame__SWIG_1(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2);
 
   [global::System.Runtime.InteropServices.DllImport("mscl", EntryPoint="CSharp_mscl_InertialNode_setAidingMeasurementReferenceFrame")]
   public static extern void InertialNode_setAidingMeasurementReferenceFrame(global::System.Runtime.InteropServices.HandleRef jarg1, byte jarg2, global::System.Runtime.InteropServices.HandleRef jarg3);

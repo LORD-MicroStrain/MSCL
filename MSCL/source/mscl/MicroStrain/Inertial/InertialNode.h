@@ -2410,9 +2410,12 @@ namespace mscl
         //API Function: getAidingMeasurementReferenceFrames
         //  Get all aiding measurement reference frames configured on the device.
         //
+        //Parameters:
+        //  rotationFormat - default EULER_ANGLES - the rotation format to read from the device (Euler angles or quaternion). Returned rotation values are mathematically equivalent regardless of indicated format.
+        //
         //Returns:
         //  <MeasurementReferenceFrames> - map of reference frames for each frame ID supported by the device
-        MeasurementReferenceFrames getAidingMeasurementReferenceFrames() const;
+        MeasurementReferenceFrames getAidingMeasurementReferenceFrames(Rotation::Format rotationFormat = Rotation::Format::EULER_ANGLES) const;
 
         //API Function: setAidingMeasurementReferenceFrames
         //  Set the aiding measurement reference frames on the device.
@@ -2427,10 +2430,11 @@ namespace mscl
         //
         //Parameters:
         //  id - frame ID of the reference frame to read
+        //  rotationFormat - default EULER_ANGLES - the rotation format to read from the device (Euler angles or quaternion). Returned rotation values are mathematically equivalent regardless of indicated format.
         //
         //Returns:
         //  <MeasurementReferenceFrame> - the reference frame information for the specified frame ID
-        MeasurementReferenceFrame getAidingMeasurementReferenceFrame(uint8 id) const;
+        MeasurementReferenceFrame getAidingMeasurementReferenceFrame(uint8 id, Rotation::Format rotationFormat = Rotation::Format::EULER_ANGLES) const;
 
         //API Function: setAidingMeasurementReferenceFrame
         //  Set the aiding measurement reference frame for the specified frame ID on the device.

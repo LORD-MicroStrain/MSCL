@@ -1342,7 +1342,7 @@ namespace mscl
         m_impl->set(MipTypes::CMD_NMEA_MESSAGE_FORMAT, params);
     }
 
-    MeasurementReferenceFrames InertialNode::getAidingMeasurementReferenceFrames() const
+    MeasurementReferenceFrames InertialNode::getAidingMeasurementReferenceFrames(Rotation::Format rotationFormat) const
     {
         MeasurementReferenceFrames ret;
 
@@ -1351,7 +1351,7 @@ namespace mscl
         {
             try
             {
-                ret.emplace(id, getAidingMeasurementReferenceFrame(id));
+                ret.emplace(id, getAidingMeasurementReferenceFrame(id, rotationFormat));
             }
             catch (const Error_MipCmdFailed&) { /*ignore*/ }
         }
@@ -1381,9 +1381,9 @@ namespace mscl
         }
     }
 
-    MeasurementReferenceFrame InertialNode::getAidingMeasurementReferenceFrame(uint8 id) const
+    MeasurementReferenceFrame InertialNode::getAidingMeasurementReferenceFrame(uint8 id, Rotation::Format rotationFormat) const
     {
-        MipFieldValues data = m_impl->get(MipTypes::CMD_AIDING_FRAME_CONFIG, { Value::UINT8(id) });
+        MipFieldValues data = m_impl->get(MipTypes::CMD_AIDING_FRAME_CONFIG, { Value::UINT8(id), Value::UINT8(static_cast<uint8>(rotationFormat)) });
 
         return MeasurementReferenceFrame(data, 1);
     }

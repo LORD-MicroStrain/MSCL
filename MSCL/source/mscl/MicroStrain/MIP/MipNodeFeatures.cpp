@@ -1251,6 +1251,6 @@ namespace mscl
             return 0;
         }
 
-        return 6;
+        return 4;
     }
 }

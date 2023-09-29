@@ -633,10 +633,7 @@ namespace mscl
                 ValueType::valueType_float, // translation
                 ValueType::valueType_float,
                 ValueType::valueType_float,
-                ValueType::valueType_float, // rotation
-                ValueType::valueType_float,
-                ValueType::valueType_float,
-                ValueType::valueType_float,
+                ValueType::valueType_Vector, // rotation (ve3 for euler, vec4 for quat)
             };
         case MipTypes::CMD_AIDING_SENSOR_FRAME_MAP:
             return{
@@ -813,6 +810,11 @@ namespace mscl
                 ValueType::valueType_uint8,
                 ValueType::valueType_float
             };
+            
+        case MipTypes::CMD_AIDING_FRAME_CONFIG:
+            return{
+                ValueType::valueType_float
+            };
 
         default:
             // no defined format, read out vector of uint8
@@ -883,13 +885,18 @@ namespace mscl
             case valueType_Vector:
             {
                 MipFieldFormat vectorFormat = MipCommand::getResponseVectorPartFormat(id, vectorNestedLevel, vectorSequenceCount);
-                size_t count = 0;
+                int count = -1;
                 if (outData.size() > 0)
                 {
-                    // assume previous value is count if exists, cast to uint32 to be safe
-                    count = outData.back().as_uint32();
+                    // assume previous value is count if exists and is uint8
+                    Value last = outData.back();
+                    if (last.storedAs() == valueType_uint8)
+                    {
+                        count = last.as_uint8();
+                    }
                 }
-                else
+
+                if(count == -1)
                 {
                     // no count - read element format until end of buffer
                     size_t elementSize = 0;
@@ -898,7 +905,8 @@ namespace mscl
                         elementSize += Utils::valueTypeSize(t);
                     }
 
-                    count = buffer.size() / elementSize;
+                    size_t remainingBytes = buffer.size() - buffer.readPosition();
+                    count = (int)(remainingBytes / elementSize);
                 }
 
                 for (size_t i = 0; i < count; i++)

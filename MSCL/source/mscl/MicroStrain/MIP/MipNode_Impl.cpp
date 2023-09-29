@@ -845,7 +845,7 @@ namespace mscl
                 uint8 maxId = features().maxMeasurementReferenceFrameId();
                 for (uint8_t id = 1; id <= maxId; id++)
                 {
-                    params.push_back({ cmd,{ Value::UINT8(id) } });
+                    params.push_back({ cmd,{ Value::UINT8(id), Value::UINT8(static_cast<uint8>(Rotation::Format::QUATERNION)) } });
                 }
                 break;
             }
