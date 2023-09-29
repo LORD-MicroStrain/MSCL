@@ -885,7 +885,8 @@ namespace mscl
             case valueType_Vector:
             {
                 MipFieldFormat vectorFormat = MipCommand::getResponseVectorPartFormat(id, vectorNestedLevel, vectorSequenceCount);
-                int count = -1;
+                size_t count = 0;
+                bool hasCount = false;
                 if (outData.size() > 0)
                 {
                     // assume previous value is count if exists and is uint8
@@ -893,10 +894,11 @@ namespace mscl
                     if (last.storedAs() == valueType_uint8)
                     {
                         count = last.as_uint8();
+                        hasCount = true;
                     }
                 }
 
-                if(count == -1)
+                if(count == 0 && !hasCount)
                 {
                     // no count - read element format until end of buffer
                     size_t elementSize = 0;
@@ -906,7 +908,7 @@ namespace mscl
                     }
 
                     size_t remainingBytes = buffer.size() - buffer.readPosition();
-                    count = (int)(remainingBytes / elementSize);
+                    count = remainingBytes / elementSize;
                 }
 
                 for (size_t i = 0; i < count; i++)
