@@ -1439,7 +1439,7 @@ namespace mscl
             m_impl->run(MipTypes::CMD_AIDING_VEL_NED, velocityUpdate.toMipFieldValues());
             return;
 
-        case PositionVelocityReferenceFrame::LOCAL:
+        case PositionVelocityReferenceFrame::VEHICLE:
             m_impl->run(MipTypes::CMD_AIDING_VEL_ODOM, velocityUpdate.toMipFieldValues());
             return;
 
@@ -1489,7 +1489,7 @@ namespace mscl
             vals = m_impl->get(MipTypes::CMD_AIDING_VEL_NED, velocityUpdate.toMipFieldValues());
             break;
 
-        case PositionVelocityReferenceFrame::LOCAL:
+        case PositionVelocityReferenceFrame::VEHICLE:
             vals = m_impl->get(MipTypes::CMD_AIDING_VEL_ODOM, velocityUpdate.toMipFieldValues());
             break;
 

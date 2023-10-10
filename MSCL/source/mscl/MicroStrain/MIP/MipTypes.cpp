@@ -463,6 +463,18 @@ namespace mscl
         { ChannelId(CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS, CH_FIX_TYPE), "estDualAntennaStatus_fixType" },
         { ChannelId(CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS, CH_STATUS), "estDualAntennaStatus_status" },
 
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR, CH_X), "aidingFrameConfigError_translation_x" },
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR, CH_Y), "aidingFrameConfigError_translation_y" },
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR, CH_Z), "aidingFrameConfigError_translation_z" },
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR, CH_QUATERNION), "aidingFrameConfigError_rotation" },
+
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR_UNCERT, CH_X), "aidingFrameConfigError_translation_uncert_x" },
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR_UNCERT, CH_Y), "aidingFrameConfigError_translation_uncert_y" },
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR_UNCERT, CH_Z), "aidingFrameConfigError_translation_uncert_z" },
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR_UNCERT, CH_ROLL), "aidingFrameConfigError_rotation_uncert_roll" },
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR_UNCERT, CH_PITCH), "aidingFrameConfigError_rotation_uncert_pitch" },
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR_UNCERT, CH_YAW), "aidingFrameConfigError_rotation_uncert_yaw" },
+
         { ChannelId(CH_FIELD_DISP_DISPLACEMENT_RAW, CH_DISPLACEMENT), "rawDisplacement" },
         { ChannelId(CH_FIELD_DISP_DISPLACEMENT_MM, CH_DISPLACEMENT), "displacementMillimeters" },
 
@@ -968,13 +980,14 @@ namespace mscl
 
     const std::unordered_map<MipChannelIdentifier::Type, std::string, MipChannelIdentifier::TypeHash> MipChannelIdentifier::TYPE_NAMES(
     {
-        { GNSS_RECEIVER_ID,        "rec" },
-        { GNSS_BASE_STATION_ID,    "gnssBase" },
-        { GNSS_CONSTELLATION,      "gnssId" },
-        { GNSS_SATELLITE_ID,       "sat" },
-        { GNSS_SIGNAL_ID,          "sig" },
-        { AIDING_MEASUREMENT_TYPE, "aidType" },
-        { GNSS_RF_BAND,            "rfBand" }
+        { GNSS_RECEIVER_ID,             "rec" },
+        { GNSS_BASE_STATION_ID,         "gnssBase" },
+        { GNSS_CONSTELLATION,           "gnssId" },
+        { GNSS_SATELLITE_ID,            "sat" },
+        { GNSS_SIGNAL_ID,               "sig" },
+        { AIDING_MEASUREMENT_TYPE,      "aidType" },
+        { GNSS_RF_BAND,                 "rfBand" },
+        { AIDING_MEASUREMENT_FRAME_ID,  "aidFrameId"}
     });
 
     const std::unordered_map<MipChannelIdentifier::TypeId, std::string, MipChannelIdentifier::TypeIdHash> MipChannelIdentifier::TRANSLATED_TYPE_NAMES(

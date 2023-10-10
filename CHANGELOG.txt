@@ -39,6 +39,8 @@ Forthcoming
     - Moved Quaternion class to EulerAngles.h, added Rotation class to represent either a Quaternion or EulerAngles object
     - MIP Data:
         - parsing for GQ7 Continuous Built-In Test (0xA0, 0x01)
+        - Aiding Frame Configuration Error (0x82,0x50)
+        - Aiding Frame Configuration Error Uncertainty(0x82,0x51)
 
 65.0.0 - 2022-11-18
 - Wireless

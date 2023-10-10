@@ -149,9 +149,10 @@ public class Timestamp : global::System.IDisposable {
   public enum Epoch {
     INTERNAL = 0x01,
     EXTERNAL = 0x02,
-    GPS = 0x03,
-    UNIX = 0x04,
-    UTC = 0x04
+    TIME_OF_ARRIVAL = 0x03,
+    GPS = 0x04,
+    UNIX = 0x05,
+    UTC = 0x05
   }
 
 }

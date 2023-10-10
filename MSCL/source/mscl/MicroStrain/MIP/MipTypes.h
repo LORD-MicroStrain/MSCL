@@ -523,6 +523,8 @@ namespace mscl
         //  CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR          - 0x8247    - Odometer Scale Factor Error
         //  CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR_UNCERT   - 0X8248    - Odometer Scale Factor Error Uncertainty
         //  CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS             - 0x8249    - GNSS Dual Antenna Status
+        //  CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR                   - 0X8250    - Filter Frame Config Error
+        //  CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR_UNCERT            - 0x8251    - Filter Frame Config Error Uncertainty
         //  CH_FIELD_ESTFILTER_SHARED_EVENT_SOURCE                  - 0x82D0    - Event Source
         //  CH_FIELD_ESTFILTER_SHARED_TICKS                         - 0x82D1    - Ticks
         //  CH_FIELD_ESTFILTER_SHARED_DELTA_TICKS                   - 0x82D2    - Delta Ticks
@@ -850,6 +852,8 @@ namespace mscl
             CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR          = 0x8247,
             CH_FIELD_ESTFILTER_ODOMETER_SCALE_FACTOR_ERROR_UNCERT   = 0X8248,
             CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS             = 0x8249,
+            CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR                   = 0X8250,
+            CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR_UNCERT            = 0x8251,
             CH_FIELD_ESTFILTER_SHARED_EVENT_SOURCE                  = 0x82D0,
             CH_FIELD_ESTFILTER_SHARED_TICKS                         = 0x82D1,
             CH_FIELD_ESTFILTER_SHARED_DELTA_TICKS                   = 0x82D2,
@@ -1527,13 +1531,14 @@ namespace mscl
         //API Enum: Type
         //  Identifier type options, indicates what the <MipChannelIdentifier::id> value represents.
         //
-        //      GNSS_RECEIVER_ID        - GNSS Receiver ID
-        //      GNSS_BASE_STATION_ID    - Differential GNSS Base Station ID
-        //      GNSS_CONSTELLATION      - GNSS Constellation ID
-        //      GNSS_SATELLITE_ID       - GNSS Satellite ID
-        //      GNSS_SIGNAL_ID          - GNSS Signal ID
-        //      AIDING_MEASUREMENT_TYPE - Filter Aiding Measurement Type
-        //      GNSS_RF_BAND            - GNSS RF Band
+        //      GNSS_RECEIVER_ID            - GNSS Receiver ID
+        //      GNSS_BASE_STATION_ID        - Differential GNSS Base Station ID
+        //      GNSS_CONSTELLATION          - GNSS Constellation ID
+        //      GNSS_SATELLITE_ID           - GNSS Satellite ID
+        //      GNSS_SIGNAL_ID              - GNSS Signal ID
+        //      AIDING_MEASUREMENT_TYPE     - Filter Aiding Measurement Type
+        //      GNSS_RF_BAND                - GNSS RF Band
+        //      AIDING_MEASUREMENT_FRAME_ID - Aiding Measurement Frame ID
         enum Type
         {
             // when adding to this list, be sure to add name string to TYPE_NAMES map
@@ -1544,7 +1549,8 @@ namespace mscl
             GNSS_SATELLITE_ID,
             GNSS_SIGNAL_ID,
             AIDING_MEASUREMENT_TYPE,
-            GNSS_RF_BAND
+            GNSS_RF_BAND,
+            AIDING_MEASUREMENT_FRAME_ID
         };
 
         //API Enum: AidingMeasurementTypes

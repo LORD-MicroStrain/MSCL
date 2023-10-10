@@ -99,7 +99,8 @@ public class MipChannelIdentifier : global::System.IDisposable {
     GNSS_SATELLITE_ID,
     GNSS_SIGNAL_ID,
     AIDING_MEASUREMENT_TYPE,
-    GNSS_RF_BAND
+    GNSS_RF_BAND,
+    AIDING_MEASUREMENT_FRAME_ID
   }
 
   public enum AidingMeasurementTypes {
