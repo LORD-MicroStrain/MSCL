@@ -999,6 +999,13 @@ namespace mscl
         { TypeId(AIDING_MEASUREMENT_TYPE, MAGNETOMETER), "mag" },
         { TypeId(AIDING_MEASUREMENT_TYPE, SPEED),        "speed" },
 
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_POS_ECEF    ), "posEcef" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_POS_LLH     ), "posLlh" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_VEL_ECEF    ), "velEcef" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_VEL_NED     ), "velNed" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_VEL_ODOM    ), "velOdom" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_HEADING_TRUE), "headingTrue" },
+
         { TypeId(GNSS_CONSTELLATION, GPS),     "gps" },
         { TypeId(GNSS_CONSTELLATION, GLONASS), "glonass" },
         { TypeId(GNSS_CONSTELLATION, GALILEO), "galileo" },

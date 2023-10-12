@@ -109,7 +109,13 @@ public class MipChannelIdentifier : global::System.IDisposable {
     HEADING = 0x03,
     PRESSURE = 0x04,
     MAGNETOMETER = 0x05,
-    SPEED = 0x06
+    SPEED = 0x06,
+    AIDING_POS_ECEF = 0x21,
+    AIDING_POS_LLH = 0x22,
+    AIDING_VEL_ECEF = 0x28,
+    AIDING_VEL_NED = 0x29,
+    AIDING_VEL_ODOM = 0x2A,
+    AIDING_HEADING_TRUE = 0x31
   }
 
   public enum GnssConstellationIds {

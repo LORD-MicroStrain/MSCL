@@ -1556,12 +1556,18 @@ namespace mscl
         //API Enum: AidingMeasurementTypes
         //  ID definitions when Type is <MipChannelIdentifier::AIDING_MEASUREMENT_TYPE>
         //
-        //      GNSS         - 0x01 - GNSS
-        //      DUAL_ANTENNA - 0x02 - Dual Antenna
-        //      HEADING      - 0x03 - Heading
-        //      PRESSURE     - 0x04 - Pressure
-        //      MAGNETOMETER - 0x05 - Magnetometer
-        //      SPEED        - 0x06 - Speed
+        //      GNSS                    - 0x01 - GNSS
+        //      DUAL_ANTENNA            - 0x02 - Dual Antenna
+        //      HEADING                 - 0x03 - Heading
+        //      PRESSURE                - 0x04 - Pressure
+        //      MAGNETOMETER            - 0x05 - Magnetometer
+        //      SPEED                   - 0x06 - Speed
+        //      AIDING_POS_ECEF         - 0x21 - <MipTypes::Command::CMD_AIDING_POS_ECEF>
+        //      AIDING_POS_LLH          - 0x22 - <MipTypes::Command::CMD_AIDING_POS_LLH>
+        //      AIDING_VEL_ECEF         - 0x28 - <MipTypes::Command::CMD_AIDING_VEL_ECEF>
+        //      AIDING_VEL_NED          - 0x29 - <MipTypes::Command::CMD_AIDING_VEL_NED>
+        //      AIDING_VEL_ODOM         - 0x2A - <MipTypes::Command::CMD_AIDING_VEL_ODOM>
+        //      AIDING_HEADING_TRUE     - 0x31 - <MipTypes::Command::CMD_AIDING_HEADING_TRUE>
         enum AidingMeasurementTypes
         {
             GNSS         = 0x01,
@@ -1569,7 +1575,14 @@ namespace mscl
             HEADING      = 0x03,
             PRESSURE     = 0x04,
             MAGNETOMETER = 0x05,
-            SPEED        = 0x06
+            SPEED        = 0x06,
+            
+            AIDING_POS_ECEF     = 0x21,
+            AIDING_POS_LLH      = 0x22,
+            AIDING_VEL_ECEF     = 0x28,
+            AIDING_VEL_NED      = 0x29,
+            AIDING_VEL_ODOM     = 0x2A,
+            AIDING_HEADING_TRUE = 0x31,
         };
 
         //API Enum: GnssConstellationIds
