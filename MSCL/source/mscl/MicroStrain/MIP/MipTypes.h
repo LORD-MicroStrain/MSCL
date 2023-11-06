@@ -2488,10 +2488,12 @@ namespace mscl
         //  Available comm port type definitions
         //      PRIMARY - 0
         //      AUX     - 1
+        //      GPIO    - 2
         enum Type
         {
             PRIMARY = 0,
-            AUX     = 1
+            AUX     = 1, 
+            GPIO    = 2
         };
 
         //API Constructor: DeviceCommPort

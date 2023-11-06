@@ -250,6 +250,13 @@ namespace mscl
                 DeviceCommPort(DeviceCommPort::Type::AUX, 2)
             };
 
+        case MipModels::node_3dm_cv7_ins:
+        case MipModels::node_3dm_gv7_ins:
+            return{
+                DeviceCommPort(DeviceCommPort::Type::PRIMARY, 1),
+                DeviceCommPort(DeviceCommPort::Type::GPIO, 2)
+            };
+
         default:
             return{
                 DeviceCommPort(DeviceCommPort::Type::PRIMARY, 1)
