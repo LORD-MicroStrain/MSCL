@@ -47,7 +47,7 @@ add_custom_command(
   TARGET MSCL_Unit_Tests
   COMMENT "*****RUNNING MSCL UNIT TESTS*****"
   POST_BUILD
-  COMMAND "$(TargetPath)" --log_level=test_suite --report_level=no
+  COMMAND $(TargetPath) --log_level=test_suite --report_level=no
 )
 
 # Mark the tests to run when the test target is run
