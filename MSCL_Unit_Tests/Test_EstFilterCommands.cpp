@@ -8,7 +8,7 @@
 #include "mscl/MicroStrain/MIP/MipDataField.h"
 #include "mscl/MicroStrain/ResponseCollector.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
-#include "mscl/MicroStrain/Inertial/PositionOffset.h"
+#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
 
 #include <boost/test/unit_test.hpp>
 using namespace mscl;

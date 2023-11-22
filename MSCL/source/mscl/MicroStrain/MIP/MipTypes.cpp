@@ -463,18 +463,31 @@ namespace mscl
         { ChannelId(CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS, CH_FIX_TYPE), "estDualAntennaStatus_fixType" },
         { ChannelId(CH_FIELD_ESTFILTER_GNSS_DUAL_ANTENNA_STATUS, CH_STATUS), "estDualAntennaStatus_status" },
 
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR, CH_X), "aidingFrameConfigError_translation_x" },
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR, CH_Y), "aidingFrameConfigError_translation_y" },
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR, CH_Z), "aidingFrameConfigError_translation_z" },
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR, CH_QUATERNION), "aidingFrameConfigError_rotation" },
+
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR_UNCERT, CH_X), "aidingFrameConfigError_translation_uncert_x" },
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR_UNCERT, CH_Y), "aidingFrameConfigError_translation_uncert_y" },
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR_UNCERT, CH_Z), "aidingFrameConfigError_translation_uncert_z" },
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR_UNCERT, CH_ROLL), "aidingFrameConfigError_rotation_uncert_roll" },
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR_UNCERT, CH_PITCH), "aidingFrameConfigError_rotation_uncert_pitch" },
+        { ChannelId(CH_FIELD_ESTFILTER_FRAME_CONFIG_ERROR_UNCERT, CH_YAW), "aidingFrameConfigError_rotation_uncert_yaw" },
+
         { ChannelId(CH_FIELD_DISP_DISPLACEMENT_RAW, CH_DISPLACEMENT), "rawDisplacement" },
         { ChannelId(CH_FIELD_DISP_DISPLACEMENT_MM, CH_DISPLACEMENT), "displacementMillimeters" },
 
         // System Data
-        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_STATUS), "builtInTest" },
-
-        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_SYSTEM_GENERAL), "builtInTest_system_bitGeneral" },
-        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_SYSTEM_PROCESS), "builtInTest_system_bitProcess" },
-        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_IMU_GENERAL   ), "builtInTest_imu_bitGeneral" },
-        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_IMU_SENSORS   ), "builtInTest_imu_bitSensors" },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_STATUS              ), "builtInTest"                    },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_SYSTEM_GENERAL  ), "builtInTest_system_bitGeneral"  },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_SYSTEM_PROCESS  ), "builtInTest_system_bitProcess"  },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_IMU_GENERAL     ), "builtInTest_imu_bitGeneral"     },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_IMU_SENSORS     ), "builtInTest_imu_bitSensors"     },
         { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_IMU_FACTORY_BITS), "builtInTest_imu_bitFactoryBits" },
-        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_FILTER_GENERAL), "builtInTest_filter_bitGeneral" },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_FILTER_GENERAL  ), "builtInTest_filter_bitGeneral"  },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_GNSS_GENERAL    ), "builtInTest_gnss_bitGeneral"    },
+        { ChannelId(CH_FIELD_SYSTEM_BUILT_IN_TEST, CH_BIT_GNSS_RECEIVERS  ), "builtInTest_gnss_bitReceivers"  },
 
         { ChannelId(CH_FIELD_SYSTEM_TIME_SYNC_STATUS, CH_PPS_VALID), "timeSync_ppsValid" },
         { ChannelId(CH_FIELD_SYSTEM_TIME_SYNC_STATUS, CH_LAST_PPS), "timeSync_lastPps" },
@@ -967,13 +980,14 @@ namespace mscl
 
     const std::unordered_map<MipChannelIdentifier::Type, std::string, MipChannelIdentifier::TypeHash> MipChannelIdentifier::TYPE_NAMES(
     {
-        { GNSS_RECEIVER_ID,        "rec" },
-        { GNSS_BASE_STATION_ID,    "gnssBase" },
-        { GNSS_CONSTELLATION,      "gnssId" },
-        { GNSS_SATELLITE_ID,       "sat" },
-        { GNSS_SIGNAL_ID,          "sig" },
-        { AIDING_MEASUREMENT_TYPE, "aidType" },
-        { GNSS_RF_BAND,            "rfBand" }
+        { GNSS_RECEIVER_ID,             "rec" },
+        { GNSS_BASE_STATION_ID,         "gnssBase" },
+        { GNSS_CONSTELLATION,           "gnssId" },
+        { GNSS_SATELLITE_ID,            "sat" },
+        { GNSS_SIGNAL_ID,               "sig" },
+        { AIDING_MEASUREMENT_TYPE,      "aidType" },
+        { GNSS_RF_BAND,                 "rfBand" },
+        { AIDING_MEASUREMENT_FRAME_ID,  "aidFrameId"}
     });
 
     const std::unordered_map<MipChannelIdentifier::TypeId, std::string, MipChannelIdentifier::TypeIdHash> MipChannelIdentifier::TRANSLATED_TYPE_NAMES(
@@ -984,6 +998,13 @@ namespace mscl
         { TypeId(AIDING_MEASUREMENT_TYPE, PRESSURE),     "pressure" },
         { TypeId(AIDING_MEASUREMENT_TYPE, MAGNETOMETER), "mag" },
         { TypeId(AIDING_MEASUREMENT_TYPE, SPEED),        "speed" },
+
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_POS_ECEF    ), "posEcef" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_POS_LLH     ), "posLlh" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_VEL_ECEF    ), "velEcef" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_VEL_NED     ), "velNed" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_VEL_ODOM    ), "velOdom" },
+        { TypeId(AIDING_MEASUREMENT_TYPE, AIDING_HEADING_TRUE), "headingTrue" },
 
         { TypeId(GNSS_CONSTELLATION, GPS),     "gps" },
         { TypeId(GNSS_CONSTELLATION, GLONASS), "glonass" },
@@ -1128,6 +1149,133 @@ namespace mscl
 
         //found the channel, return the name
         return sensorcloudFilteredName;
+    }
+
+    AidingMeasurementInput::AidingMeasurementInput(const MipFieldValues& values)
+    {
+        parseMipFieldValues(values);
+    }
+
+    MipFieldValues AidingMeasurementInput::toMipFieldValues() const
+    {
+        MipFieldValues values;
+
+        values.push_back(Value::UINT8(static_cast<uint8>(m_timestamp.storedEpoch())));
+        values.push_back(Value::UINT8(0x01)); // reserved
+        values.push_back(Value::UINT64(m_timestamp.nanoseconds()));
+
+        values.push_back(Value::UINT8(m_sensorId));
+
+        appendMipFieldValues(values);
+
+        values.push_back(Value::UINT16(static_cast<uint16>(m_validFlags.value())));
+
+        return values;
+    }
+
+    void AidingMeasurementInput::parseMipFieldValues(const MipFieldValues& values)
+    {
+        m_timestamp = Timestamp(values[2].as_uint64(), static_cast<Timestamp::Epoch>(values[0].as_uint8()));
+        m_sensorId = values[3].as_uint8();
+
+        m_validFlags = Bitfield(values[values.size() - 1].as_uint16());
+    }
+
+    AidingMeasurementPosition::AidingMeasurementPosition(PositionVelocityReferenceFrame referenceFrame, const MipFieldValues& values) :
+        AidingMeasurementInput()
+    {
+        m_position.referenceFrame = referenceFrame;
+        parseMipFieldValues(values);
+    }
+
+    void AidingMeasurementPosition::parseMipFieldValues(const MipFieldValues& values)
+    {
+        // parse out base values (timestamp, sensor id, valid flags)
+        AidingMeasurementInput::parseMipFieldValues(values);
+
+        m_position = Position(
+            values[4].as_double(),
+            values[5].as_double(),
+            values[6].as_double(),
+            m_position.referenceFrame
+        );
+
+        m_unc = GeometricUncertainty(
+            values[7].as_float(),
+            values[8].as_float(),
+            values[9].as_float(),
+            m_position.referenceFrame
+        );
+    }
+
+    void AidingMeasurementPosition::appendMipFieldValues(MipFieldValues& values) const
+    {
+        values.push_back(Value::DOUBLE(m_position.x()));
+        values.push_back(Value::DOUBLE(m_position.y()));
+        values.push_back(Value::DOUBLE(m_position.z()));
+
+        values.push_back(Value::FLOAT(m_unc.x()));
+        values.push_back(Value::FLOAT(m_unc.y()));
+        values.push_back(Value::FLOAT(m_unc.z()));
+    }
+
+    AidingMeasurementVelocity::AidingMeasurementVelocity(PositionVelocityReferenceFrame referenceFrame, const MipFieldValues& values) :
+        AidingMeasurementInput()
+    {
+        m_velocity.referenceFrame = referenceFrame;
+        parseMipFieldValues(values);
+    }
+
+    void AidingMeasurementVelocity::parseMipFieldValues(const MipFieldValues& values)
+    {
+        // parse out base values (timestamp, sensor id, valid flags)
+        AidingMeasurementInput::parseMipFieldValues(values);
+
+        m_velocity = Velocity(
+            values[4].as_float(),
+            values[5].as_float(),
+            values[6].as_float(),
+            m_velocity.referenceFrame
+        );
+
+        m_unc = GeometricUncertainty(
+            values[7].as_float(),
+            values[8].as_float(),
+            values[9].as_float(),
+            m_velocity.referenceFrame
+        );
+    }
+
+    void AidingMeasurementVelocity::appendMipFieldValues(MipFieldValues& values) const
+    {
+        values.push_back(Value::FLOAT(m_velocity.x()));
+        values.push_back(Value::FLOAT(m_velocity.y()));
+        values.push_back(Value::FLOAT(m_velocity.z()));
+
+        values.push_back(Value::FLOAT(m_unc.x()));
+        values.push_back(Value::FLOAT(m_unc.y()));
+        values.push_back(Value::FLOAT(m_unc.z()));
+    }
+
+    AidingMeasurementHeading::AidingMeasurementHeading(const MipFieldValues& values) :
+        AidingMeasurementInput()
+    {
+        parseMipFieldValues(values);
+    }
+
+    void AidingMeasurementHeading::parseMipFieldValues(const MipFieldValues& values)
+    {
+        // parse out base values (timestamp, sensor id, valid flags)
+        AidingMeasurementInput::parseMipFieldValues(values);
+
+        m_heading = values[4].as_float();
+        m_unc = values[5].as_float();
+    }
+
+    void AidingMeasurementHeading::appendMipFieldValues(MipFieldValues& values) const
+    {
+        values.push_back(Value::FLOAT(m_heading));
+        values.push_back(Value::FLOAT(m_unc));
     }
 
     const std::string GnssReceiverInfo::INFO_NOT_FOUND = "Not Found";

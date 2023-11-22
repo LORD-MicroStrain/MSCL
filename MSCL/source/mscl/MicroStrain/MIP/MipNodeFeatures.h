@@ -242,10 +242,19 @@ namespace mscl
 
         //API Function: supportedHeadingUpdateOptions
         //    Gets a list of the supported heading update control options for this node.
+        //    Command: Heading Aiding Source Control (0x0D,0x18)
         //
         //Returns:
         //    A <HeadingUpdateOptionsList> containing all the supported heading update control options for this node.
         const HeadingUpdateOptionsList supportedHeadingUpdateOptions() const;
+
+        //API Function: supportedHeadingAlignmentMethods
+        //    Gets a list of the supported heading alignment methods for this node.
+        //    Command: Navigation Filter Initialization (0x0D,0x52)
+        //
+        //Returns:
+        //    A <HeadingAlignmentMethod bitfield that represents all the valid <HeadingAlignmentOption> values.
+        const HeadingAlignmentMethod supportedHeadingAlignmentMethods() const;
 
         //API Function: supportedStatusSelectors
         //    Gets a list of the supported device data status selectors for this node.
@@ -398,5 +407,12 @@ namespace mscl
         //Returns:
         //    <MipTypes::MipChannelFields> - list of supported <MipTypes::ChannelFields>.
         MipTypes::MipChannelFields supportedLowPassFilterChannelFields() const;
+
+        //API Function: maxMeasurementReferenceFrameId
+        //    Gets the maximum Measurement Reference Frame ID supported by this device. Supported ids are 1 through max ID.
+        //
+        //Returns:
+        //    uint8 - the maximum supported reference frame ID
+        uint8 maxMeasurementReferenceFrameId() const;
     };
 }

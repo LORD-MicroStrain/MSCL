@@ -10,7 +10,7 @@
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
 #include "mscl/MicroStrain/MIP/MipChannel.h"
 #include "mscl/MicroStrain/MIP/MipTypes.h"
-#include "mscl/MicroStrain/Inertial/PositionOffset.h"
+#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
 #include "GetDeviceInfo.h"
 #include "mscl/MicroStrain/Inertial/ExposedInertialTypes.h"
 

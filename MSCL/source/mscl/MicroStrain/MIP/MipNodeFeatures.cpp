@@ -250,6 +250,13 @@ namespace mscl
                 DeviceCommPort(DeviceCommPort::Type::AUX, 2)
             };
 
+        case MipModels::node_3dm_cv7_ins:
+        case MipModels::node_3dm_gv7_ins:
+            return{
+                DeviceCommPort(DeviceCommPort::Type::PRIMARY, 1),
+                DeviceCommPort(DeviceCommPort::Type::GPIO, 2)
+            };
+
         default:
             return{
                 DeviceCommPort(DeviceCommPort::Type::PRIMARY, 1)
@@ -442,6 +449,36 @@ namespace mscl
 
     }
 
+    const HeadingAlignmentMethod MipNodeFeatures::supportedHeadingAlignmentMethods() const
+    {
+        if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_INITIALIZATION_CONFIG))
+        {
+            return HeadingAlignmentMethod(0);
+        }
+        
+        MipModel model(nodeInfo().deviceInfo().modelNumber);
+        switch (model.baseModel().nodeModel())
+        {
+        case MipModels::node_3dm_cv7_ins:
+        case MipModels::node_3dm_gv7_ins:
+            return HeadingAlignmentMethod(
+                HeadingAlignmentOption::GNSS_Kinematic
+                | HeadingAlignmentOption::Magnetometer
+                | HeadingAlignmentOption::External
+            );
+
+        case MipModels::node_3dm_gq7:
+            return HeadingAlignmentMethod(
+                HeadingAlignmentOption::GNSS_DualAntenna
+                | HeadingAlignmentOption::GNSS_Kinematic
+                | HeadingAlignmentOption::Magnetometer
+            );
+
+        default:
+            return HeadingAlignmentMethod(0xFF);
+        }
+    }
+
     const EstimationControlOptions MipNodeFeatures::supportedEstimationControlOptions() const
     {
         if (!supportsCommand(mscl::MipTypes::Command::CMD_EF_BIAS_EST_CTRL))
@@ -575,6 +612,8 @@ namespace mscl
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
         default:
             return{
                 InertialTypes::AutoAdaptiveFilteringLevel::FILTERING_OFF,
@@ -609,6 +648,15 @@ namespace mscl
                     InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
                 };
 
+            case MipModels::node_3dm_gv7_ins:
+            case MipModels::node_3dm_cv7_ins:
+                return{
+                    InertialTypes::AidingMeasurementSource::GNSS_POS_VEL_AIDING,
+                    InertialTypes::AidingMeasurementSource::ALTIMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::MAGNETOMETER_AIDING,
+                    InertialTypes::AidingMeasurementSource::EXTERNAL_HEADING_AIDING
+                };
+
             default:
                 return {
                     InertialTypes::AidingMeasurementSource::GNSS_POS_VEL_AIDING,
@@ -635,6 +683,8 @@ namespace mscl
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
             return{
                 InertialTypes::PpsSource::PPS_DISABLED,
                 InertialTypes::PpsSource::PPS_GPIO,
@@ -673,9 +723,9 @@ namespace mscl
             && (behavior == GpioConfiguration::GpioBehavior::GPIO_OUTPUT_LOW_BEHAVIOR || behavior == GpioConfiguration::GpioBehavior::GPIO_OUTPUT_HIGH_BEHAVIOR))
         {
             return{
-            GpioConfiguration::PinModes(0),
-            GpioConfiguration::PinModes::OPEN_DRAIN,
-            GpioConfiguration::PinModes(GpioConfiguration::PinModes::OPEN_DRAIN | GpioConfiguration::PinModes::PULLUP)
+                GpioConfiguration::PinModes(0),
+                GpioConfiguration::PinModes::OPEN_DRAIN,
+                GpioConfiguration::PinModes(GpioConfiguration::PinModes::OPEN_DRAIN | GpioConfiguration::PinModes::PULLUP)
             };
         }
 
@@ -686,6 +736,29 @@ namespace mscl
                 GpioConfiguration::PinModes::PULLUP,
                 GpioConfiguration::PinModes::PULLDOWN
             };
+        }
+
+        if (feature == GpioConfiguration::UART_FEATURE)
+        {
+            switch (behavior)
+            {
+            case GpioConfiguration::UartBehavior::UART_TRANSMIT:
+                return{
+                    GpioConfiguration::PinModes(0),
+                    GpioConfiguration::PinModes::OPEN_DRAIN,
+                    GpioConfiguration::PinModes(GpioConfiguration::PinModes::OPEN_DRAIN | GpioConfiguration::PinModes::PULLUP)
+                };
+
+            case GpioConfiguration::UartBehavior::UART_RECEIVE:
+                return{
+                    GpioConfiguration::PinModes(0),
+                    GpioConfiguration::PinModes::PULLUP,
+                    GpioConfiguration::PinModes::PULLDOWN
+                };
+
+            default:
+                break;
+            }
         }
 
         return{ GpioPinModeOptions(0) };
@@ -702,9 +775,9 @@ namespace mscl
         {
         case GpioConfiguration::Feature::GPIO_FEATURE:
             return{
-            { GpioConfiguration::GpioBehavior::GPIO_INPUT_BEHAVIOR, supportedGpioPinModes(GpioConfiguration::GPIO_FEATURE, GpioConfiguration::GpioBehavior::GPIO_INPUT_BEHAVIOR) },
-            { GpioConfiguration::GpioBehavior::GPIO_OUTPUT_LOW_BEHAVIOR, supportedGpioPinModes(GpioConfiguration::GPIO_FEATURE, GpioConfiguration::GpioBehavior::GPIO_OUTPUT_LOW_BEHAVIOR) },
-            { GpioConfiguration::GpioBehavior::GPIO_OUTPUT_HIGH_BEHAVIOR, supportedGpioPinModes(GpioConfiguration::GPIO_FEATURE, GpioConfiguration::GpioBehavior::GPIO_OUTPUT_HIGH_BEHAVIOR) }
+            { GpioConfiguration::GpioBehavior::GPIO_INPUT_BEHAVIOR, supportedGpioPinModes(feature, GpioConfiguration::GpioBehavior::GPIO_INPUT_BEHAVIOR) },
+            { GpioConfiguration::GpioBehavior::GPIO_OUTPUT_LOW_BEHAVIOR, supportedGpioPinModes(feature, GpioConfiguration::GpioBehavior::GPIO_OUTPUT_LOW_BEHAVIOR) },
+            { GpioConfiguration::GpioBehavior::GPIO_OUTPUT_HIGH_BEHAVIOR, supportedGpioPinModes(feature, GpioConfiguration::GpioBehavior::GPIO_OUTPUT_HIGH_BEHAVIOR) }
             };
 
         case GpioConfiguration::Feature::PPS_FEATURE:
@@ -715,16 +788,36 @@ namespace mscl
 
         case GpioConfiguration::Feature::ENCODER_FEATURE:
             return{
-                { GpioConfiguration::EncoderBehavior::ENCODER_A, supportedGpioPinModes(GpioConfiguration::ENCODER_FEATURE, GpioConfiguration::EncoderBehavior::ENCODER_A) },
-                { GpioConfiguration::EncoderBehavior::ENCODER_B, supportedGpioPinModes(GpioConfiguration::ENCODER_FEATURE, GpioConfiguration::EncoderBehavior::ENCODER_A) }
+                { GpioConfiguration::EncoderBehavior::ENCODER_A, supportedGpioPinModes(feature, GpioConfiguration::EncoderBehavior::ENCODER_A) },
+                { GpioConfiguration::EncoderBehavior::ENCODER_B, supportedGpioPinModes(feature, GpioConfiguration::EncoderBehavior::ENCODER_A) }
             };
 
         case GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE:
             return{
-                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_RISING, supportedGpioPinModes(GpioConfiguration::EVENT_TIMESTAMP_FEATURE, 0) },
-                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_FALLING, supportedGpioPinModes(GpioConfiguration::EVENT_TIMESTAMP_FEATURE, 0) },
-                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_EDGE, supportedGpioPinModes(GpioConfiguration::EVENT_TIMESTAMP_FEATURE, 0) }
+                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_RISING, supportedGpioPinModes(feature, 0) },
+                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_FALLING, supportedGpioPinModes(feature, 0) },
+                { GpioConfiguration::EventTimestampBehavior::EVENT_TIMESTAMP_EDGE, supportedGpioPinModes(feature, 0) }
             };
+
+        case GpioConfiguration::Feature::UART_FEATURE:
+        {
+            MipModel model(nodeInfo().deviceInfo().modelNumber);
+            switch (model.baseModel().nodeModel())
+            {
+            case MipModels::node_3dm_gv7_ins:
+            case MipModels::node_3dm_cv7_ins:
+                // technically Transmit is also supported, but the device won't actually output anything so no reason to configure it
+                return{
+                    { GpioConfiguration::UartBehavior::UART_RECEIVE, supportedGpioPinModes(feature, GpioConfiguration::UartBehavior::UART_RECEIVE) }
+                };
+
+            default:
+                return{
+                    { GpioConfiguration::UartBehavior::UART_TRANSMIT, supportedGpioPinModes(feature, GpioConfiguration::UartBehavior::UART_TRANSMIT) },
+                    { GpioConfiguration::UartBehavior::UART_RECEIVE, supportedGpioPinModes(feature, GpioConfiguration::UartBehavior::UART_RECEIVE) }
+                };
+            }
+        }
 
         default:
             return{};
@@ -764,6 +857,7 @@ namespace mscl
         {
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
+        case MipModels::node_3dm_gv7_ins:
             supportedPins = { 1, 2 };
             break;
 
@@ -778,7 +872,8 @@ namespace mscl
                 { GpioConfiguration::Feature::GPIO_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::GPIO_FEATURE) },
                 { GpioConfiguration::Feature::PPS_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::PPS_FEATURE) },
                 { GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE) },
-                { GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE) }
+                { GpioConfiguration::Feature::ENCODER_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::ENCODER_FEATURE) },
+                { GpioConfiguration::Feature::UART_FEATURE, supportedGpioBehaviors(GpioConfiguration::Feature::UART_FEATURE) }
         };
         
         // build pin options
@@ -798,9 +893,12 @@ namespace mscl
             case MipModels::node_3dm_cv7_ar:
             case MipModels::node_3dm_gv7_ahrs:
             case MipModels::node_3dm_gv7_ar:
+            case MipModels::node_3dm_gv7_ins:
+            case MipModels::node_3dm_cv7_ins:
                 // CV7 and GV7 all pins support the same features (PPS, Event Timestamp)
                 features.emplace(GpioConfiguration::Feature::PPS_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::PPS_FEATURE));
                 features.emplace(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::EVENT_TIMESTAMP_FEATURE));
+                features.emplace(GpioConfiguration::Feature::UART_FEATURE, availableBehaviors.at(GpioConfiguration::Feature::UART_FEATURE));
                 break;
 
             case MipModels::node_3dm_gq7:
@@ -906,6 +1004,8 @@ namespace mscl
                 InertialTypes::GeographicSourceOption::MANUAL
             };
 
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
         default:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
@@ -935,6 +1035,8 @@ namespace mscl
                 InertialTypes::GeographicSourceOption::MANUAL
             };
 
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
         default:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
@@ -964,6 +1066,8 @@ namespace mscl
                 InertialTypes::GeographicSourceOption::MANUAL
             };
 
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
         default:
             return{
                 InertialTypes::GeographicSourceOption::NONE,
@@ -990,6 +1094,8 @@ namespace mscl
         case MipModels::node_3dm_cv7_ar:
         case MipModels::node_3dm_gv7_ahrs:
         case MipModels::node_3dm_gv7_ar:
+        case MipModels::node_3dm_gv7_ins:
+        case MipModels::node_3dm_cv7_ins:
         default:
             possibleFields = {
                 // 0x80: Sensor Data
@@ -1143,5 +1249,15 @@ namespace mscl
         }
 
         return chs;
+    }
+
+    uint8 MipNodeFeatures::maxMeasurementReferenceFrameId() const
+    {
+        if (!supportsCommand(MipTypes::CMD_AIDING_FRAME_CONFIG))
+        {
+            return 0;
+        }
+
+        return 4;
     }
 }

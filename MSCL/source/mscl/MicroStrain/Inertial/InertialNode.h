@@ -7,7 +7,7 @@
 #pragma once
 
 #include "mscl/MicroStrain/MIP/MipNode.h"
-#include "mscl/MicroStrain/Inertial/PositionOffset.h"
+#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
 
 namespace mscl
@@ -2398,7 +2398,7 @@ namespace mscl
         //    Sets the NMEA message formats to output on the device.
         //
         //Parameters:
-        //    nmeaFormats- vector of <NmeaMessageFormat> objects to configure.
+        //    nmeaFormats - vector of <NmeaMessageFormat> objects to configure.
         //
         //Exceptions:
         //    - <Error_NotSupported>: The command is not supported by this Node.
@@ -2406,5 +2406,78 @@ namespace mscl
         //    - <Error_MipCmdFailed>: The command has failed. Check the error code for more details.
         //    - <Error_Connection>: A connection error has occurred with the InertialNode.
         void setNmeaMessageFormat(NmeaMessageFormats nmeaFormats) const;
+
+        //API Function: getAidingMeasurementReferenceFrames
+        //  Get all aiding measurement reference frames configured on the device.
+        //
+        //Parameters:
+        //  rotationFormat - default EULER_ANGLES - the rotation format to read from the device (Euler angles or quaternion). Returned rotation values are mathematically equivalent regardless of indicated format.
+        //
+        //Returns:
+        //  <MeasurementReferenceFrames> - map of reference frames for each frame ID supported by the device
+        MeasurementReferenceFrames getAidingMeasurementReferenceFrames(Rotation::Format rotationFormat = Rotation::Format::EULER_ANGLES) const;
+
+        //API Function: setAidingMeasurementReferenceFrames
+        //  Set the aiding measurement reference frames on the device.
+        //
+        //Parameters:
+        //  frames - <MeasurementReferenceFrames> map of reference frames for each frame ID to be set
+        //  clearExcludedIds - bool, default: false - if true, clears reference frame information for IDs not included in the frames map otherwise only overwrites included IDs
+        void setAidingMeasurementRefrenceFrames(const MeasurementReferenceFrames& frames, bool clearExcludedIds = false) const;
+
+        //API Function: getAidingMeasurementReferenceFrame
+        //  Get the aiding measurement reference frame for the specified frame ID configured on the device.
+        //
+        //Parameters:
+        //  id - frame ID of the reference frame to read
+        //  rotationFormat - default EULER_ANGLES - the rotation format to read from the device (Euler angles or quaternion). Returned rotation values are mathematically equivalent regardless of indicated format.
+        //
+        //Returns:
+        //  <MeasurementReferenceFrame> - the reference frame information for the specified frame ID
+        MeasurementReferenceFrame getAidingMeasurementReferenceFrame(uint8 id, Rotation::Format rotationFormat = Rotation::Format::EULER_ANGLES) const;
+
+        //API Function: setAidingMeasurementReferenceFrame
+        //  Set the aiding measurement reference frame for the specified frame ID on the device.
+        //
+        //Parameters:
+        //  id - frame ID of the reference frame to set
+        //  frame - <MeasurementReferenceFrame> information to set for the specified frame ID
+        void setAidingMeasurementReferenceFrame(uint8 id, const MeasurementReferenceFrame& frame) const;
+
+        //API Function: setAidingMeasurementResponseMode
+        //  Set the response mode for commanded aiding measurement inputs on the device (command set 0x13, sendAidingMeasurement function).
+        //
+        //Parameters:
+        //  mode - the <AidingMeasurementInput::ResponseMode> for this device
+        void setAidingMeasurementResponseMode(AidingMeasurementInput::ResponseMode mode) const;
+
+        //API Function: getAidingMeasurementResponseMode
+        //  Get the response mode for commanded aiding measurement inputs configured on the device (command set 0x13, sendAidingMeasurements function).
+        //
+        //Returns:
+        //  <AidingMeasurementInput::ResponseMode> - configured response mode
+        AidingMeasurementInput::ResponseMode getAidingMeasurementResponseMode() const;
+
+        //API Function: sendAidingMeasurement
+        //  Send a commanded aiding measurement to the device (command set 0x13).
+        //
+        //Parameters:
+        //  measurement - <AidingMeasurementPosition>, <AidingMeasurementVelocity>, or <AidingMeasurementHeading> to send to the device.
+        void sendAidingMeasurement(AidingMeasurementPosition measurement) const;
+        void sendAidingMeasurement(AidingMeasurementVelocity measurement) const;
+        void sendAidingMeasurement(AidingMeasurementHeading measurement) const;
+
+        //API Function: sendAidingMeasurement_readEcho
+        //  Send a commanded aiding measurement to the device (command set 0x13) and read out the echoed measurement.
+        //  Important: only use this function if the Aiding Measurement Response Mode is set to <AidingMeasurementInput::ResponseMode::ECHO_INPUT> - otherwise use sendAidingMeasurement().
+        //
+        //Parameters:
+        //  measurement - <AidingMeasurementPosition>, <AidingMeasurementVelocity>, or <AidingMeasurementHeading> to send to the device.
+        //
+        //Returns:
+        //  The aiding measurement echo read from the device response (<AidingMeasurementPosition>, <AidingMeasurementVelocity>, or <AidingMeasurementHeading>)
+        AidingMeasurementPosition sendAidingMeasurement_readEcho(AidingMeasurementPosition positionUpdate) const;
+        AidingMeasurementVelocity sendAidingMeasurement_readEcho(AidingMeasurementVelocity velocityUpdate) const;
+        AidingMeasurementHeading sendAidingMeasurement_readEcho(AidingMeasurementHeading headingUpdate) const;
     };
 }

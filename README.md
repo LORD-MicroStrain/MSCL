@@ -15,6 +15,7 @@ Windows:
 [C++](https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/mscl_65.0.0_Windows_C++.zip) | 
 [Python 2.7](https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/mscl_65.0.0_Windows_Python2.7.zip) |
 [Python 3.6](https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/mscl_65.0.0_Windows_Python3.6.zip) |
+[Python 3.11](https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/mscl_65.0.0_Windows_Python3.11.zip) |
 [.NET](https://github.com/LORD-MicroStrain/MSCL/releases/latest/download/mscl_65.0.0_Windows_DotNet.zip)
 
 Debian:

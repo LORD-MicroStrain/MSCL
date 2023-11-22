@@ -12,6 +12,7 @@
 #include "mscl/MicroStrain/SampleRate.h"
 #include "mscl/MicroStrain/MIP/MipTypes.h"
 #include "mscl/MicroStrain/Inertial/EulerAngles.h"
+#include "mscl/MicroStrain/Inertial/PositionVelocity.h"
 #include <array>
 #include <boost/optional.hpp>
 #include "mscl/Exceptions.h"
@@ -1058,239 +1059,6 @@ namespace mscl
     //  A vector of <Matrix_3x3> objects
     typedef std::vector<Matrix_3x3> Matrix_3x3s;
 
-    //API Class: Quaternion
-    //  A four-element implementation of <Matrix>
-    class Quaternion : public Matrix
-    {
-    public:
-        //API Constructor: Quaternion
-        //  Creates a zero-filled Quaternion object
-        Quaternion();
-
-        //API Constructor: Quaternion
-        //  Creates a Quaternion object with the specified elements
-        //
-        //Parameters:
-        //  four floats representing the quaternion elements
-        Quaternion(float q0, float q1, float q2, float q3);
-
-        //API Constructor: Quaternion
-        //  Creates a Quaternion object based on specified <MipFieldValues> data
-        //
-        //Parameters:
-        //  <MipFieldValues> - format must be 4 floats
-        Quaternion(MipFieldValues data);
-
-        //API Function: at
-        // get the float element at the specified index
-        float at(uint8 index) const;
-
-        //API Function: set
-        // set the float element at the specified index
-        void set(uint8 index, float val);
-
-        //API Function: normalize
-        // normalize the quaternion value
-        void normalize();
-
-        //API Function: asMipFieldValues
-        //  Gets the current quaternion values formatted as a <MipFieldValues> object
-        MipFieldValues asMipFieldValues() const;
-    };
-
-    //API Enum: PositionVelocityReferenceFrame
-    //    Enum representing position and velocity reference frame options.
-    //
-    //  ECEF    - 0x01  -   Earth-Centered, Earth-Fixed
-    //  LLH_NED - 0x02  -   Position: Lat/Long/Height, Velocity: North/East/Down
-    enum PositionVelocityReferenceFrame
-    {
-        ECEF    = 0x01,
-        LLH_NED = 0x02
-    };
-
-    ///////////////  GeometricVector  ///////////////
-
-    //API Class: GeometricVector
-    //    Defines a 3 dimensional, spatial vector.
-    class GeometricVector
-    {
-    public:
-        //API Function: VectorECEF
-        //    Initializes and returns a new vector with the reference frame set to Earth-Centered, Earth-Fixed
-        //
-        //Parameters:
-        //    x_init - initial x coordinate
-        //    y_init - initial y coordinate
-        //    z_init - initial z coordinate
-        static GeometricVector VectorECEF(float x_init, float y_init, float z_init) { return GeometricVector(x_init, y_init, z_init); }
-
-        //API Function: VectorNED
-        //    Initializes and returns a new vector with the reference frame set to North-East-Down
-        //
-        //Parameters:
-        //    north - initial x coordinate
-        //    east - initial y coordinate
-        //    down - initial z coordinate
-        static GeometricVector VectorNED(float north, float east, float down) { return GeometricVector(north, east, down, PositionVelocityReferenceFrame::LLH_NED); }
-
-        //API Constructor: GeometricVector
-        //    Creates a GeometricVector object.
-        //
-        //Parameters:
-        //    x_init - initial x coordinate
-        //    y_init - initial y coordinate
-        //    z_init - initial z coordinate
-        //    ref - reference frame (default: ECEF)
-        GeometricVector(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref = PositionVelocityReferenceFrame::ECEF);
-
-        //API Constructor: GeometricVector
-        //    Creates a zero-filled GeometricVector object.
-        //    Default reference frame: ECEF
-        GeometricVector();
-
-        //API Destructor: ~GeometricVector
-        //    Destroys a TimeUpdate object.
-        ~GeometricVector();
-
-        //API Variable: referenceFrame
-        //    The <PositionVelocityReferenceFrame> of this vector.
-        //    Default: ECEF
-        PositionVelocityReferenceFrame referenceFrame;
-
-        //API Function: x
-        // Only valid if referenceFrame is ECEF
-        float x() const { return vec_0; }
-        void x(float x) { vec_0 = x; };
-
-        //API Function: y
-        // Only valid if referenceFrame is ECEF
-        float y() const { return vec_1; }
-        void y(float y) { vec_1 = y; };
-
-        //API Function: z
-        // Only valid if referenceFrame is ECEF
-        float z() const { return vec_2; }
-        void z(float z) { vec_2 = z; };
-
-        //API Function: north
-        // Only valid if referenceFrame is LLH_NED
-        float north() const { return vec_0; }
-        void north(float north) { vec_0 = north; }
-
-        //API Function: east
-        // Only valid if referenceFrame is LLH_NED
-        float east() const { return vec_1; }
-        void east(float east) { vec_1 = east; }
-
-        //API Function: down
-        // Only valid if referenceFrame is LLH_NED
-        float down() const { return vec_2; }
-        void down(float down) { vec_2 = down; }
-
-    private:
-        //API Variable: vec_0, _1, _2
-        //  The vector values.
-        float vec_0, vec_1, vec_2;
-    };
-
-    //API Typedef: GeometricVectors
-    //  A vector of <GeometricVector> objects
-    typedef std::vector<GeometricVector> GeometricVectors;
-
-    ///////////////  Position  ///////////////
-
-    //API Struct: Position
-    //    Defines a geographic position.
-    class Position
-    {
-    public:
-        //API Constructor: PositionLLH
-        //    Creates a Position object with the reference frame set to LLH
-        //
-        //Parameters:
-        //    lat_init - initial latitude
-        //    long_init - initial longitude
-        //    alt_init - initial altitude
-        static Position PositionLLH(double lat_init, double long_init, double alt_init) { return Position(lat_init, long_init, alt_init, PositionVelocityReferenceFrame::LLH_NED); }
-
-        //API Constructor: Position
-        //    Creates a Position object with the reference frame set to ECEF
-        //
-        //Parameters:
-        //    x_init - initial x
-        //    y_init - initial y
-        //    z_init - initial z
-        static Position PositionECEF(double x_init, double y_init, double z_init) { return Position(x_init, y_init, z_init, PositionVelocityReferenceFrame::ECEF); }
-
-        //API Constructor: Position
-        //    Creates a Position object.
-        //
-        //Parameters:
-        //    lat_init - initial latitude
-        //    long_init - initial longitude
-        //    alt_init - initial altitude
-        //    ref - reference frame (default: LLH)
-        Position(double lat_init, double long_init, double alt_init, PositionVelocityReferenceFrame ref = PositionVelocityReferenceFrame::LLH_NED) :
-            position_0(lat_init),
-            position_1(long_init),
-            position_2(alt_init),
-            referenceFrame(ref) {}
-
-        //API Constructor: Position
-        //    Creates a zero-filled Position object.
-        //    Default reference frame: LLH
-        Position() :
-            position_0(0),
-            position_1(0),
-            position_2(0),
-            referenceFrame(PositionVelocityReferenceFrame::LLH_NED) {}
-
-        //API Destructor: ~Position
-        //    Destroys a TimeUpdate object.
-        ~Position() {}
-
-        //API Variable: referenceFrame
-        //    The <PositionVelocityReferenceFrame> of this position.
-        //    Default: LLH
-        PositionVelocityReferenceFrame referenceFrame;
-
-        //API Function: latitude
-        // Only valid if referenceFrame is LLH_NED
-        double latitude() const { return position_0; }
-        void latitude(double latitude) { position_0 = latitude; }
-
-        //API Function: longitude
-        // Only valid if referenceFrame is LLH_NED
-        double longitude() const { return position_1; }
-        void longitude(double longitude) { position_1 = longitude; }
-
-        //API Function: altitude
-        // Only valid if referenceFrame is LLH_NED
-        double altitude() const { return position_2; }
-        void altitude(double altitude) { position_2 = altitude; }
-
-        //API Function: x
-        // Only valid if referenceFrame is ECEF
-        double x() const { return position_0; }
-        void x(double x) { position_0 = x; }
-
-        //API Function: y
-        // Only valid if referenceFrame is ECEF
-        double y() const { return position_1; }
-        void y(double y) { position_1 = y; }
-
-        //API Function: z
-        // Only valid if referenceFrame is ECEF
-        double z() const { return position_2; }
-        void z(double z) { position_2 = z; }
-
-    private:
-        //API Variable: position_0, _1, _2
-        // The position values
-        double position_0, position_1, position_2;
-    };
-
     ///////////////  TimeUpdate  ///////////////
 
     //API Class: TimeUpdate
@@ -2120,11 +1888,13 @@ namespace mscl
     //  GNSS_DualAntenna    - 0x01  - Dual-antenna GNSS alignment
     //  GNSS_Kinematic      - 0x02  - GNSS kinematic alignment (GNSS velocity determines initial heading)
     //  Magnetometer        - 0x04  - Magnetometer heading alignment
+    //  External            - 0x08  - External heading source
     enum HeadingAlignmentOption
     {
         GNSS_DualAntenna = 0x01,
         GNSS_Kinematic = 0x02,
-        Magnetometer = 0x04
+        Magnetometer = 0x04,
+        External = 0x08
     };
 
     //API Struct: HeadingAlignmentMethod
@@ -3040,13 +2810,15 @@ namespace mscl
         //      PPS_FEATURE             - 0x02 - Single pulse input; one direction only
         //      ENCODER_FEATURE         - 0x03 - Quadrature encoder mode
         //      EVENT_TIMESTAMP_FEATURE - 0x04 - Precision event timestamping
+        //      UART_FEATURE            - 0x05 - UART data or control lines
         enum Feature
         {
             UNUSED_FEATURE = 0x00,
             GPIO_FEATURE = 0x01,
             PPS_FEATURE = 0x02,
             ENCODER_FEATURE = 0x03,
-            EVENT_TIMESTAMP_FEATURE = 0x04
+            EVENT_TIMESTAMP_FEATURE = 0x04,
+            UART_FEATURE = 0x05
         };
 
         //API Enum: GpioBehavior
@@ -3105,6 +2877,18 @@ namespace mscl
             EVENT_TIMESTAMP_EDGE      = 0x03,
         };
 
+        //API Enum: UartBehavior
+        //  UART Pin behavior
+        //  Note: only one Transmit and one Receive pin can be configured per port pair (see documentation)
+        //
+        //      UART_TRANSMIT    - 0x01 - UART transmit line
+        //      UART_RECEIVE     - 0x02 - UART receive line
+        enum UartBehavior
+        {
+            UART_TRANSMIT = 0x01, // UART transmit line
+            UART_RECEIVE  = 0x02  // UART receive line
+        };
+
         //API Enum: PinModes
         //
         //  PinModes for the pinMode Bitfield
@@ -3129,7 +2913,18 @@ namespace mscl
         //API Function: pinModeValue
         //  Gets or sets the underlying value for the pin mode bitfield
         void pinModeValue(uint8 val) { pinMode.value(val); };
-        uint8 pinModeValue() { return static_cast<uint8>(pinMode.value()); };
+        uint8 pinModeValue() const { return static_cast<uint8>(pinMode.value()); };
+    
+    private:
+        friend class InertialNode;
+
+        //Function: fromCommandResponse
+        //  [static] Build a <GpioConfiguration> object from the read command response <MipFieldValues>.
+        //
+        //Parameters:
+        //  responseValues - <MipFieldValues> to populate the <GpioConfiguration> object
+        //  startIndex - default 0 - indicates the index at which to start reading from the responseValues. This should not need to be changed from the default value (0).
+        static GpioConfiguration fromCommandResponse(const MipFieldValues& responseValues, uint8 startIndex = 0);
     };
 
     //API Typedef: PinModes
@@ -3543,4 +3338,125 @@ namespace mscl
     //API Typedef: EventActionStatus
     //  A vector of <EventActionInfo>
     typedef std::vector<EventActionInfo> EventActionStatus;
+
+    //API Class: MeasurementReferenceFrame
+    //  Represents a configurable Aiding Measurement reference frame (0x13,0x01)
+    class MeasurementReferenceFrame
+    {
+    public:
+        //API Constructor: MeasurementReferenceFrame
+        //  Constructs a MeasurementReferenceFrame object with default values
+        MeasurementReferenceFrame()
+        {
+            m_translation.referenceFrame = PositionVelocityReferenceFrame::VEHICLE;
+        }
+
+        //API Constructor: MeasurementReferenceFrame
+        //  Constructs a MeasurementReferenceFrame object with the specified translation and rotation values
+        //
+        //Parameters:
+        //  translation - <PositionOffset> of the aiding measurement in the vehicle frame
+        //  rotation - <Rotation> of the aiding measurement in the vehicle frame
+        MeasurementReferenceFrame(const PositionOffset& translation, const Rotation& rotation) :
+            m_translation(translation),
+            m_rotation(rotation)
+        {
+            m_translation.referenceFrame = PositionVelocityReferenceFrame::VEHICLE;
+        }
+
+        //API Constructor: MeasurementReferenceFrame
+        //  Creates a MeasurementReferenceFrame object based on specified <MipFieldValues> data
+        //
+        //Parameters:
+        //  <MipFieldValues> - format must be a u8 rotation format id and 6 or 7 floats
+        //  offset - default: 0 - uint8 index offset to start reading from
+        MeasurementReferenceFrame(const MipFieldValues& data, uint8 offset = 0)
+        {
+            Rotation::Format format = static_cast<Rotation::Format>(data[offset].as_uint8());
+            uint8 index = offset + 1;
+
+            m_translation.fromMipFieldValues(data, index);
+            m_translation.referenceFrame = PositionVelocityReferenceFrame::VEHICLE;
+            index += 3;
+
+            if (format == Rotation::EULER_ANGLES)
+            {
+                EulerAngles a(data, index);
+                m_rotation = Rotation::FromEulerAngles(a);
+            }
+            else
+            {
+                Quaternion q(data, index);
+                m_rotation = Rotation::FromQuaternion(q);
+            }
+        }
+
+    public:
+        //API Function: asMipFieldValues
+        //  Gets the current reference frame values formatted as a <MipFieldValues> object
+        //
+        //Returns:
+        //  <MipFieldValues> - collection of values that represents this object.
+        MipFieldValues asMipFieldValues() const
+        {
+            MipFieldValues m;
+            appendMipFieldValues(m);
+            return m;
+        }
+
+        //API Function: appendMipFieldValues
+        //  Adds the properly formatted <MipFieldValues> that represent this object to the specified collection.
+        //
+        //Parameters:
+        //  appendTo - (reference) the <MipFieldValues> collection to append to
+        void appendMipFieldValues(MipFieldValues& appendTo) const
+        {
+            appendTo.push_back(Value::UINT8(static_cast<uint8>(m_rotation.format())));
+            
+            m_translation.appendMipFieldValues(appendTo);
+            m_rotation.appendMipFieldValues(appendTo, false);
+        }
+
+    private:
+        //Variable: m_translation
+        //  The <PositionOffset> of this reference frame.
+        PositionOffset m_translation;
+
+        //Variable: m_rotation
+        //  The <Rotation> of this reference frame.
+        Rotation m_rotation;
+
+    public:
+        //API Function: translation
+        //  Get the <PositionOffset> translation of this reference frame.
+        //
+        //Returns:
+        //  <PositionOffset> - the translation value
+        PositionOffset translation() const { return m_translation; }
+
+        //API Function: translation
+        //  Set the <PositionOffset> translation of this reference frame.
+        //
+        //Parameters:
+        //  translation - the <PositionOffset> to set
+        void translation(const PositionOffset& translation) { m_translation = translation; }
+
+        //API Function: rotation
+        //  Get the <Rotation> of this reference frame
+        //
+        //Returns:
+        //  <Rotation> - the rotation value
+        Rotation rotation() const { return m_rotation; }
+
+        //API Function: rotation
+        //  Set the <Rotation> of this reference frame.
+        //
+        //Parameters:
+        //  rotation - the <Rotation> to set
+        void rotation(const Rotation& rotation) { m_rotation = rotation; }
+    };
+
+    //API Typedef: MeasurementReferenceFrames
+    //  A map of reference frame IDs with their associated <MeasurementReferenceFrame> values.
+    typedef std::map<uint8, MeasurementReferenceFrame> MeasurementReferenceFrames;
 }

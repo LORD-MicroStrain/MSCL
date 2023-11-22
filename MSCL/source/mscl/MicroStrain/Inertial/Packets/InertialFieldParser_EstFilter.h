@@ -1099,4 +1099,36 @@ namespace mscl
         static const MipTypes::ChannelField FIELD_TYPE;
         static const bool REGISTERED;
     };
+
+    //Class: FieldParser_FrameConfigError
+    //    The field parser for the filter Aiding Frame Config Error data
+    class FieldParser_FrameConfigError : public MipFieldParser
+    {
+    private:
+        FieldParser_FrameConfigError() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const MipTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
+
+    //Class: FieldParser_FrameConfigErrorUnc
+    //    The field parser for the filter Aiding Frame Config Error Uncertainty data
+    class FieldParser_FrameConfigErrorUnc : public MipFieldParser
+    {
+    private:
+        FieldParser_FrameConfigErrorUnc() {};        //default constructor disabled
+
+    public:
+        virtual void parse(const MipDataField& field, MipDataPoints& result) const override;
+        static bool registerParser();
+
+    public:
+        static const MipTypes::ChannelField FIELD_TYPE;
+        static const bool REGISTERED;
+    };
 }

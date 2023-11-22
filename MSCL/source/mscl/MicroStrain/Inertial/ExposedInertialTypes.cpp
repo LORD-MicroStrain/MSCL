@@ -268,110 +268,7 @@ namespace mscl
 
         return m;
     }
-
-    //////////  Quaternion  //////////
-    Quaternion::Quaternion() :
-        Matrix(1, 4, ValueType::valueType_float, ByteStream())
-    {
-        m_data.append_float(0);
-        m_data.append_float(0);
-        m_data.append_float(0);
-        m_data.append_float(0);
-    }
-
-    Quaternion::Quaternion(float q0, float q1, float q2, float q3) :
-        Matrix(1, 4, ValueType::valueType_float, ByteStream())
-    {
-        m_data.append_float(q0);
-        m_data.append_float(q1);
-        m_data.append_float(q2);
-        m_data.append_float(q3);
-    }
-
-    Quaternion::Quaternion(MipFieldValues data) :
-        Matrix(1, 4, ValueType::valueType_float, ByteStream())
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            m_data.append_float(data[i].as_float());
-        }
-    }
-
-    float Quaternion::at(uint8 index) const
-    {
-        return as_floatAt(0, index);
-    }
-
-    void Quaternion::set(uint8 index, float val)
-    {
-        uint32 pos = getBytePos(0, index);
-        ByteStream valB;
-        valB.append_float(val);
-
-        for (uint32 i = 0; i < 4; i++)
-        {
-            uint32 replaceIndex = pos + i;
-            m_data.data()[replaceIndex] = valB[i];
-        }
-    }
-
-    void Quaternion::normalize()
-    {
-        float magnitude = 0.0f;
-        for (uint8 i = 0; i < 4; i++)
-        {
-            float val = at(i);
-            magnitude += val * val;
-        }
-
-        magnitude = sqrt(magnitude);
-
-        if (magnitude == 0)
-        {
-            return;
-        }
-
-        ByteStream b;
-        for (uint8 i = 0; i < 4; i++)
-        {
-            float val = at(i);
-            b.append_float(val / magnitude);
-        }
-
-        m_data = b;
-    }
-
-    MipFieldValues Quaternion::asMipFieldValues() const
-    {
-        MipFieldValues m;
-        for (uint8 i = 0; i < 4; i++)
-        {
-            m.push_back(Value::FLOAT(at(i)));
-        }
-
-        return m;
-    }
-
-    //////////  GeometricVector  //////////
-
-    GeometricVector::GeometricVector(float x_init, float y_init, float z_init, PositionVelocityReferenceFrame ref) :
-        vec_0(x_init),
-        vec_1(y_init),
-        vec_2(z_init),
-        referenceFrame(ref)
-    { }
-
-    GeometricVector::GeometricVector() :
-        vec_0(0),
-        vec_1(0),
-        vec_2(0),
-        referenceFrame(PositionVelocityReferenceFrame::ECEF)
-    { }
-
-    GeometricVector::~GeometricVector()
-    { }
-
-
+    
 
     //////////  TimeUpdate  //////////
 
@@ -1132,6 +1029,28 @@ namespace mscl
 
         float mPerRev = radius * 2 * boost::math::constants::pi<float>();
         m_scaling = resolution / mPerRev;
+    }
+
+    GpioConfiguration GpioConfiguration::fromCommandResponse(const MipFieldValues& responseValues, uint8 startIndex)
+    {
+        GpioConfiguration config;
+        config.pin = responseValues[startIndex].as_uint8();
+        config.feature = static_cast<GpioConfiguration::Feature>(responseValues[startIndex + 1].as_uint8());
+        config.behavior = responseValues[startIndex + 2].as_uint8();
+        config.pinModeValue(responseValues[startIndex + 3].as_uint8());
+
+        // for UART feature the behavior is formatted:
+        //  - first four bits is port # (0 can be used when setting to indicate default)
+        //  - second four bits is behavior
+        // so 0x21 is transmit over port 2
+        // current devices only support one port per pin so we don't need to worry about the port number
+        // strip it from the value for simplicity
+        if (config.feature == UART_FEATURE)
+        {
+            config.behavior = config.behavior & 0x0F;
+        }
+
+        return config;
     }
 
     void EventTriggerThresholdParameter::channel(const MipTypes::ChannelField channelField,

@@ -31,7 +31,7 @@ namespace mscl
         //    data - The <ByteStream> that hold the values to be stored in the Matrix
         Matrix(uint16 rows, uint16 columns, ValueType storedAs, const ByteStream& data);
 #endif
-    private:
+    protected:
         //Variable: m_numRows
         //    The number of rows in the Matrix
         uint16 m_numRows;
