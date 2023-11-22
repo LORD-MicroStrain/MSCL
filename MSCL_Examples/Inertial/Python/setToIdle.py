@@ -4,7 +4,6 @@ sys.path.append("../../dependencies/Python")
 import mscl
 
 #TODO: change these constants to match your setup
-COM_PORT = "COM4"
 
 try:
     #create a Serial Connection with the specified COM Port, default baud rate of 921600
@@ -12,6 +11,11 @@ try:
 
     #create an InertialNode with the connection
     node = mscl.InertialNode(connection)
+
+    print node.modelName()
+    print node.modelNumber()
+    print node.serialNumber()
+    print node.firmwareVersion()
 
     node.setToIdle()
 
