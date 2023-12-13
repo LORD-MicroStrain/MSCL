@@ -28,7 +28,7 @@ pipeline {
           steps {
             cleanWs()
             checkout scm
-            powershell '.devcontainer/docker_build_win.ps1 -windows_version 1809 -python3_versions "' + python3Versions() + '"'
+            powershell '.devcontainer/docker_build_win.ps1 -python3_versions "' + python3Versions() + '"'
             archiveArtifacts artifacts: 'Output/*.zip'
           }
         }
