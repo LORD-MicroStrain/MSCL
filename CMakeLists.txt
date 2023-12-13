@@ -21,6 +21,9 @@ elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
   set(MSCL_ARCH_NAME "x86")
 endif()
 
+# This will make windows create a .lib file with all the symbols of the .dll files exported
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+
 # Parse some flags
 # These are all ON/OFF flags. For example, -DBUILD_SHARED_LIBS="ON"
 option(BUILD_SHARED_LIBS "Whether or not to build the shared version of the library." OFF)

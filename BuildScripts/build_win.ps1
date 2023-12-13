@@ -3,6 +3,7 @@ param (
   [Parameter(Mandatory=$true,HelpMessage='The Directory to build MSCL in. Should be different than the MSCL source directory')][string]$buildDir,
   [String]$arch = "Win32",
   [String]$generator = "Visual Studio 15 2017",
+  [String]$toolset = "v140",
   [String[]]$python3Dirs,
   [String[]]$python2Dirs
 )
@@ -18,7 +19,7 @@ $configs = "Debug", "Release"
 New-Item "${buildDir}" -ItemType Directory -Force
 
 # Configure MSCL to build with everything except python2 and python3
-cmake -S "${project_dir}" -B "${buildDir}" -G "${generator}" -A "${arch}" `
+cmake -S "${project_dir}" -B "${buildDir}" -G "${generator}" -A "${arch}" -T "${toolset}" `
   -DBUILD_SHARED_LIBS="ON" `
   -DBUILD_PYTHON2="OFF" `
   -DBUILD_PYTHON3="OFF" `
@@ -45,7 +46,7 @@ foreach ($config in ${configs}) {
 # Build python3
 if(${python3Dirs}) {
   foreach ($python3Dir in ${python3Dirs}.split(",")) {
-    cmake -S "${project_dir}" -B "${buildDir}" -G "${generator}" -A "${arch}"`
+    cmake -S "${project_dir}" -B "${buildDir}" -G "${generator}" -A "${arch}" -T "${toolset}" `
       -DBUILD_SHARED_LIBS="OFF" `
       -DBUILD_PYTHON2="OFF" `
       -DBUILD_PYTHON3="ON" `
@@ -72,7 +73,7 @@ if(${python3Dirs}) {
 # Build python2 for each arch
 if(${python2Dirs}) {
   foreach ($python2Dir in ${python2Dirs}.split(",")) {
-    cmake -S "${project_dir}" -B "${buildDir}" -G "${generator}" -A "${arch}"`
+    cmake -S "${project_dir}" -B "${buildDir}" -G "${generator}" -A "${arch}" -T "${toolset}" `
       -DBUILD_SHARED_LIBS="OFF" `
       -DBUILD_PYTHON2="ON" `
       -DBUILD_PYTHON3="OFf" `

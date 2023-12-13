@@ -19,8 +19,10 @@ if (-not ${windows_image}) {
   }
 }
 if (-not ${windows_version}) {
-  $windows_version = (Get-ComputerInfo).WindowsVersion
+  $windows_version = $PSVersionTable.BuildVersion
 }
+
+Write-Host "${windows_version_table}"
 
 # Determine how much resources we can provide the docker container
 $num_cpus = (Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors

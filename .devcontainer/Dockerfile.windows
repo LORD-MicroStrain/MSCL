@@ -46,7 +46,7 @@ RUN `
 # Install Boost
 ARG BOOST_VERSION=1.68.0
 ARG BOOST_VERSION_UNDERSCORE=1_68_0
-ARG BOOST_MSVC_VERSION=14.1
+ARG BOOST_MSVC_VERSION=14.0
 RUN echo Installing Boost `
     # Download the boost installer
     && curl -SL --output %DOCKER_TEMP_DIR%\boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-32.exe https://boostorg.jfrog.io/artifactory/main/release/%BOOST_VERSION%/binaries/boost_%BOOST_VERSION_UNDERSCORE%-msvc-%BOOST_MSVC_VERSION%-32.exe `
@@ -92,7 +92,7 @@ RUN echo Installing 7zip `
 
 # Install OpenSSL
 ARG OPENSSL_VERSION=1.1.0f
-ARG OPENSSL_MSVC_VERSION=2017
+ARG OPENSSL_MSVC_VERSION=2015
 RUN echo Installing OpenSSL `
     # Download the zip file
     && curl -SL --output %DOCKER_TEMP_DIR%\openssl-%OPENSSL_VERSION%-vs%OPENSSL_MSVC_VERSION%.7z https://www.npcglib.org/~stathis/downloads/openssl-%OPENSSL_VERSION%-vs%OPENSSL_MSVC_VERSION%.7z `
