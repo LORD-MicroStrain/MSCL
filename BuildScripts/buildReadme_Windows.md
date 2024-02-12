@@ -11,11 +11,11 @@ Ok, if you are making changes to MSCL's source code, or need to build MSCL from 
 #### Dependencies
 
 - \>= Visual Studio 2015 (msvc-14.0) or MSBuild equivalent
-- \>= [Boost 1.68](http://www.boost.org/)
+- \>= [Boost 1.68](https://www.boost.org/)
 - \>= [OpenSSL 1.1.0](https://www.npcglib.org/~stathis/blog/precompiled-openssl/) (optional, see below)
-- = [SWIG 4.0.0](http://swig.org/download.html) (for .NET and Python builds)
+- = [SWIG 4.0.0](https://swig.org/download.html) (for .NET and Python builds)
 - \>= [Python 2.7 or 3.6](https://www.python.org/downloads/) (for Python build)
-- [Boost.Build](http://www.boost.org/build/) (for Python build)
+- [Boost.Build](https://www.boost.org/build/) (for Python build)
 
 Create an environment variable, `LIB_PATH`, that points to a folder containing the following dependencies like so:
   - `%LIB_PATH%\boost\boost_1_68_0`
@@ -33,11 +33,11 @@ OpenSSL and Beast are optional and are used for creating secure WebSocket connec
 
 SourceForge hosts some [Pre-Built Boost binaries for Windows](https://sourceforge.net/projects/boost/files/boost-binaries/1.68.0/). Simply installing these for your specific compiler will make it so you do not need to build Boost yourself, which can be time consuming. 
 
-If you want to install Boost yourself, you can follow the instructions on [Boost's Getting Started page](http://www.boost.org/doc/libs/1_68_0/more/getting_started/windows.html). 
+If you want to install Boost yourself, you can follow the instructions on [Boost's Getting Started page](https://www.boost.org/doc/libs/1_68_0/more/getting_started/windows.html). 
 
-Boost.Build is required for building MSCL for Python. Instructions on how to install it can be found [here](http://www.boost.org/build/doc/html/bbv2/installation.html). 
+Boost.Build is required for building MSCL for Python. Instructions on how to install it can be found [here](https://www.boost.org/build/doc/html/bbv2/installation.html). 
 
-**Note**: Unfortunately, it seems there might be an issue in newer versions of bjam that come with Boost 1.61+ when using msvc ([see this Stack Overflow](http://stackoverflow.com/questions/29450634/compile-boost-python-tutorial-with-vs-2015-ctp-5-and-python-3-5a-on-windows-10-t)). From our internal build, it seems this fixes the issue:
+**Note**: Unfortunately, it seems there might be an issue in newer versions of bjam that come with Boost 1.61+ when using msvc ([see this Stack Overflow](https://stackoverflow.com/questions/29450634/compile-boost-python-tutorial-with-vs-2015-ctp-5-and-python-3-5a-on-windows-10-t)). From our internal build, it seems this fixes the issue:
 
 1. Edit the file `D:\boost\boost_1_61_0\tools\build\src\tools\msvc.jam`
 2. Change this (lines 1358-1363) from: 

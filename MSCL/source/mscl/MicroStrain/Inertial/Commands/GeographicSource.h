@@ -1,8 +1,9 @@
-/*******************************************************************************
-Copyright(c) 2015-2018 LORD Corporation. All rights reserved.
+/*****************************************************************************************
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
+**                                                                                      **
+**    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
+*****************************************************************************************/
 
-MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.
-*******************************************************************************/
 #pragma once
 
 #include "mscl/MicroStrain/MIP/Commands/GenericMipCommand.h"

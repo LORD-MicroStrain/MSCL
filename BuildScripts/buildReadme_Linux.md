@@ -8,11 +8,11 @@ Pre-built versions are available for download. To get it, head over to the [MSCL
 #### Dependencies
 
 - \>= gcc 4.9.1-5
-- \>= [Boost 1.68](http://www.boost.org/)
+- \>= [Boost 1.68](https://www.boost.org/)
 - \>= libssl1.0.0 (OpenSSL is optional, see below)
 - \>= libssl-dev (OpenSSL is optional, see below)
 - \>= libcrypto (OpenSSL is optional, see below)
-- = [SWIG 4.0.0](http://swig.org/download.html) (for Python build)
+- = [SWIG 4.0.0](https://swig.org/download.html) (for Python build)
 - \>= python2.7 (for Python build)
 - \>= python2.7-dev (for Python build)
 

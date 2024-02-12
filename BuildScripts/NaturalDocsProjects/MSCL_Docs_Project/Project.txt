@@ -11,7 +11,7 @@
 Title: MSCL Full Documentation
 Subtitle: MicroStrain Communication Library
 
-Copyright: © 2022 Parker Hannifin Corporation. All Rights Reserved.
+Copyright: © 2024 MicroStrain by HBK. All Rights Reserved.
 
 Timestamp: Updated mm/dd/yyyy
 #    m     - Single digit month, when possible.  January is "1".
@@ -118,5 +118,3 @@ HTML Output Folder: ..\..\..\Output\Documentation\MSCL_Docs
 #
 # Auto Group: [yes|no]
 #    Whether groups should automatically apply to you code.  Defaults to yes.
-
-

@@ -1,5 +1,5 @@
 /*****************************************************************************************
-**          Copyright(c) 2015-2022 Parker Hannifin Corp. All rights reserved.           **
+**          Copyright(c) 2015-2024 MicroStrain by HBK. All rights reserved.             **
 **                                                                                      **
 **    MIT Licensed. See the included LICENSE.txt for a copy of the full MIT License.    **
 *****************************************************************************************/
@@ -8,8 +8,8 @@
 
 //This is a custom Error Policy needed so that Turtle doesn't output to standard out
 //which was causing errors in the output xml file
-//http://sourceforge.net/apps/mediawiki/turtle/index.php?title=Turtle#Error_policy
- 
+//https://sourceforge.net/apps/mediawiki/turtle/index.php?title=Turtle#Error_policy
+
 /*
 template< typename Result >
 struct custom_policy
@@ -53,4 +53,3 @@ struct custom_policy
 
 #define MOCK_ERROR_POLICY custom_policy
 */
-
