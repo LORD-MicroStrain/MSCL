@@ -46,7 +46,7 @@
 #include "mscl/TimeSpan.h"
 #include "mscl/Timestamp.h"
 #include "mscl/Types.h"
-#include "mscl/Version.h"
+// #include "mscl/Version.h"
 #include "mscl/Communication/BoostCommunication.h"
 #include "mscl/Communication/Connection.h"
 #include "mscl/Communication/OperatingSystemErrorCodes.h"

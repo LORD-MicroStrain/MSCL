@@ -89,22 +89,28 @@ pipeline {
     failure {
       script {
         if (BRANCH_NAME && (BRANCH_NAME == 'main' || BRANCH_NAME == 'master')) {
-          mail to: "melissa.gill@parker.com,rob.fisher@parker.com",
-            subject: "Build Failed in Jenkins: ${env.JOB_NAME}",
-            body: "See: ${env.BUILD_URL}",
-            charset: 'UTF-8',
-            mimeType: 'text/html';
+          withCredentials([string(credentialsId: 'MSCL_Notification_Emails', variable: 'NOTIFICATION_EMAILS')]) {
+            echo "Emails: '${NOTIFICATION_EMAILS}'"
+            mail to: "'${NOTIFICATION_EMAILS}'",
+              subject: "Build Failed in Jenkins: ${env.JOB_NAME}",
+              body: "See: ${env.BUILD_URL}",
+              charset: 'UTF-8',
+              mimeType: 'text/html';
+          }
         }
       }
     }
     changed {
       script {
         if (BRANCH_NAME && (BRANCH_NAME == 'main' || BRANCH_NAME == 'master') && currentBuild.currentResult == 'SUCCESS') { // Other values: FAILURE, UNSTABLE
-          mail to: "melissa.gill@parker.com,rob.fisher@parker.com",
+          withCredentials([string(credentialsId: 'MSCL_Notification_Emails', variable: 'NOTIFICATION_EMAILS')]) {
+            echo "Emails: '${NOTIFICATION_EMAILS}'"
+            mail to: "'${NOTIFICATION_EMAILS}'",
             subject: "Jenkins build is back to normal: ${env.JOB_NAME}",
             body: "See: ${env.BUILD_URL}",
             charset: 'UTF-8',
             mimeType: 'text/html';
+          }
         }
       }
     }
