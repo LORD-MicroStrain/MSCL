@@ -32,63 +32,63 @@ pipeline {
             archiveArtifacts artifacts: 'Output/*.zip'
           }
         }
-        stage('DEB AMD64') {
-          agent { label 'aws-amd64' }
-          options { skipDefaultCheckout() }
-          steps {
-            cleanWs()
-            checkout scm
-            sh '.devcontainer/docker_build_debs.sh --arch amd64 --python3Versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'build_ubuntu_amd64/*.deb'
-          }
-        }
-        stage('RPM AMD64') {
-          agent { label 'aws-amd64' }
-          options { skipDefaultCheckout() }
-          steps {
-            cleanWs()
-            checkout scm
-            sh '.devcontainer/docker_build_rpms.sh --arch amd64 --python3Versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'build_centos_amd64/*.rpm'
-          }
-        }
-        stage('DEB ARM64') {
-          agent { label 'aws-arm64' }
-          options { skipDefaultCheckout() }
-          steps {
-            cleanWs()
-            checkout scm
-            sh '.devcontainer/docker_build_debs.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
-          }
-        }
-        stage('DEB ARM32') {
-          agent { label 'aws-arm64' }
-          options { skipDefaultCheckout() }
-          steps {
-            cleanWs()
-            checkout scm
-            sh '.devcontainer/docker_build_debs.sh --arch arm32v7 --python3Versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'build_ubuntu_arm32v7/*.deb'
-          }
-        }
-        stage('RPM ARM64') {
-          agent { label 'aws-arm64' }
-          options { skipDefaultCheckout() }
-          steps {
-            cleanWs()
-            checkout scm
-            sh '.devcontainer/docker_build_rpms.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'build_centos_arm64v8/*.rpm'
-          }
-        }
+//         stage('DEB AMD64') {
+//           agent { label 'aws-amd64' }
+//           options { skipDefaultCheckout() }
+//           steps {
+//             cleanWs()
+//             checkout scm
+//             sh '.devcontainer/docker_build_debs.sh --arch amd64 --python3Versions "' + python3Versions() + '"'
+//             archiveArtifacts artifacts: 'build_ubuntu_amd64/*.deb'
+//           }
+//         }
+//         stage('RPM AMD64') {
+//           agent { label 'aws-amd64' }
+//           options { skipDefaultCheckout() }
+//           steps {
+//             cleanWs()
+//             checkout scm
+//             sh '.devcontainer/docker_build_rpms.sh --arch amd64 --python3Versions "' + python3Versions() + '"'
+//             archiveArtifacts artifacts: 'build_centos_amd64/*.rpm'
+//           }
+//         }
+//         stage('DEB ARM64') {
+//           agent { label 'aws-arm64' }
+//           options { skipDefaultCheckout() }
+//           steps {
+//             cleanWs()
+//             checkout scm
+//             sh '.devcontainer/docker_build_debs.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
+//             archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
+//           }
+//         }
+//         stage('DEB ARM32') {
+//           agent { label 'aws-arm64' }
+//           options { skipDefaultCheckout() }
+//           steps {
+//             cleanWs()
+//             checkout scm
+//             sh '.devcontainer/docker_build_debs.sh --arch arm32v7 --python3Versions "' + python3Versions() + '"'
+//             archiveArtifacts artifacts: 'build_ubuntu_arm32v7/*.deb'
+//           }
+//         }
+//         stage('RPM ARM64') {
+//           agent { label 'aws-arm64' }
+//           options { skipDefaultCheckout() }
+//           steps {
+//             cleanWs()
+//             checkout scm
+//             sh '.devcontainer/docker_build_rpms.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
+//             archiveArtifacts artifacts: 'build_centos_arm64v8/*.rpm'
+//           }
+//         }
       }
     }
   }
   post {
     failure {
       script {
-        if (BRANCH_NAME && (BRANCH_NAME == 'main' || BRANCH_NAME == 'master')) {
+//         if (BRANCH_NAME && (BRANCH_NAME == 'main' || BRANCH_NAME == 'master')) {
           withCredentials([string(credentialsId: 'MSCL_Notification_Emails', variable: 'NOTIFICATION_EMAILS')]) {
             echo "Emails: '${NOTIFICATION_EMAILS}'"
             mail to: "'${NOTIFICATION_EMAILS}'",
@@ -97,12 +97,12 @@ pipeline {
               charset: 'UTF-8',
               mimeType: 'text/html';
           }
-        }
+//         }
       }
     }
     changed {
       script {
-        if (BRANCH_NAME && (BRANCH_NAME == 'main' || BRANCH_NAME == 'master') && currentBuild.currentResult == 'SUCCESS') { // Other values: FAILURE, UNSTABLE
+        if (/*BRANCH_NAME && (BRANCH_NAME == 'main' || BRANCH_NAME == 'master') && */currentBuild.currentResult == 'SUCCESS') { // Other values: FAILURE, UNSTABLE
           withCredentials([string(credentialsId: 'MSCL_Notification_Emails', variable: 'NOTIFICATION_EMAILS')]) {
             echo "Emails: '${NOTIFICATION_EMAILS}'"
             mail to: "'${NOTIFICATION_EMAILS}'",
