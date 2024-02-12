@@ -24,7 +24,7 @@ namespace mscl
     {
         uint32 valueTypeSize(ValueType type)
         {
-            switch (type)
+            switch (type)dgf
             {
             case valueType_double:
             case valueType_uint64:
@@ -511,7 +511,7 @@ namespace mscl
 
                 // Get the substring between the previous and current delimiter
                 const std::string substring = basicString.substr(previousPosition, found - previousPosition);
-                
+
                 // Delimiter at the beginning/end of the string will get an empty substring
                 if (includeEmpty || !substring.empty())
                 {
