@@ -24,7 +24,7 @@ namespace mscl
     {
         uint32 valueTypeSize(ValueType type)
         {
-            switch (type)dgf
+            switch (type)
             {
             case valueType_double:
             case valueType_uint64:
