@@ -231,13 +231,6 @@ endif()
 
 # Optionally generate the language bindings using swig
 if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
-  # Make sure we can find swig
-  cmake_policy(SET CMP0078 NEW)
-  cmake_policy(SET CMP0086 NEW)
-  if(BUILD_CSHARP AND WIN32)
-    cmake_policy(SET CMP0122 NEW)
-  endif()
-  find_package(SWIG REQUIRED)
   include(UseSWIG)
   include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/mscl_python_swig.cmake)
 
@@ -395,8 +388,8 @@ endif()
 if(BUILD_PACKAGE)
   # NOTE: CPack requires all these variables to be set before importing the module. Do not move them after the include(CPack) line
   set(CPACK_GENERATOR "${FOUND_CPACK_GENERATORS}")
-  set(CPACK_PACKAGE_VENDOR "Parker Lord MicroStrain")
-  set(CPACK_PACKAGE_CONTACT "Rob Fisher <rob.fisher@parker.com>")
+  set(CPACK_PACKAGE_VENDOR "MicroStrain by HBK")
+  set(CPACK_PACKAGE_CONTACT "Rob Fisher <rob.fisher@hbkworld.com>")
   set(CPACK_COMPONENTS_ALL "static")
   if(BUILD_SHARED_LIBS)
     list(APPEND CPACK_COMPONENTS_ALL shared)
