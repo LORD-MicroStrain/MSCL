@@ -29,7 +29,7 @@ pipeline {
             cleanWs()
             checkout scm
             powershell '.devcontainer/docker_build_win.ps1 -python3_versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'Output/*.zip'
+//             archiveArtifacts artifacts: 'Output/*.zip'
           }
         }
 //         stage('DEB AMD64') {
@@ -89,28 +89,26 @@ pipeline {
     failure {
       script {
 //         if (BRANCH_NAME && (BRANCH_NAME == 'main' || BRANCH_NAME == 'master')) {
-          withCredentials([string(credentialsId: 'MSCL_Notification_Emails', variable: 'NOTIFICATION_EMAILS')]) {
-            echo "Emails: '${NOTIFICATION_EMAILS}'"
-            mail to: "'${NOTIFICATION_EMAILS}'",
+            echo "Emails1: $Notification_Emails_MSCL";
+            echo "Emails2: ${Notification_Emails_MSCL}";
+            echo "Emails3: ${env.Notification_Emails_MSCL}";
+            mail to: "$Notification_Emails_MSCL",
               subject: "Build Failed in Jenkins: ${env.JOB_NAME}",
               body: "See: ${env.BUILD_URL}",
               charset: 'UTF-8',
               mimeType: 'text/html';
-          }
 //         }
       }
     }
     changed {
       script {
         if (/*BRANCH_NAME && (BRANCH_NAME == 'main' || BRANCH_NAME == 'master') && */currentBuild.currentResult == 'SUCCESS') { // Other values: FAILURE, UNSTABLE
-          withCredentials([string(credentialsId: 'MSCL_Notification_Emails', variable: 'NOTIFICATION_EMAILS')]) {
-            echo "Emails: '${NOTIFICATION_EMAILS}'"
-            mail to: "'${NOTIFICATION_EMAILS}'",
-            subject: "Jenkins build is back to normal: ${env.JOB_NAME}",
-            body: "See: ${env.BUILD_URL}",
-            charset: 'UTF-8',
-            mimeType: 'text/html';
-          }
+          echo "Emails: $Notification_Emails_MSCL";
+          mail to: "$Notification_Emails_MSCL",
+          subject: "Jenkins build is back to normal: ${env.JOB_NAME}",
+          body: "See: ${env.BUILD_URL}",
+          charset: 'UTF-8',
+          mimeType: 'text/html';
         }
       }
     }

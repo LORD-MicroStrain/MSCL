@@ -80,6 +80,7 @@ docker run `
     git config --global --add safe.directory C:/projects/mscl; `
     git fetch origin --tags; `
     & 'C:\Projects\MSCL\BuildScripts\build_win.ps1' -arch Win32 -buildDir C:\projects\mscl\docker_build\Win32 ${python2_x86_build_script_flags} ${python3_x86_build_script_flags}; `
+    & if (-not $?) {exit $?}; `
     & 'C:\Projects\MSCL\BuildScripts\build_win.ps1' -arch x64 -buildDir C:\projects\mscl\docker_build\x64 ${python2_x64_build_script_flags} ${python3_x64_build_script_flags}; `
     & 'C:\Projects\MSCL\BuildScripts\zip_win.ps1'; `
   "
