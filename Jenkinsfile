@@ -89,9 +89,6 @@ pipeline {
     failure {
       script {
 //         if (BRANCH_NAME && (BRANCH_NAME == 'main' || BRANCH_NAME == 'master')) {
-            echo "Emails1: $Notification_Emails_MSCL";
-            echo "Emails2: ${Notification_Emails_MSCL}";
-            echo "Emails3: ${env.Notification_Emails_MSCL}";
             mail to: "$Notification_Emails_MSCL",
               subject: "Build Failed in Jenkins: ${env.JOB_NAME}",
               body: "See: ${env.BUILD_URL}",
@@ -103,7 +100,6 @@ pipeline {
     changed {
       script {
         if (/*BRANCH_NAME && (BRANCH_NAME == 'main' || BRANCH_NAME == 'master') && */currentBuild.currentResult == 'SUCCESS') { // Other values: FAILURE, UNSTABLE
-          echo "Emails: $Notification_Emails_MSCL";
           mail to: "$Notification_Emails_MSCL",
           subject: "Jenkins build is back to normal: ${env.JOB_NAME}",
           body: "See: ${env.BUILD_URL}",
