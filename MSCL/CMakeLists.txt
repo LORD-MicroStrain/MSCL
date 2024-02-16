@@ -19,7 +19,7 @@ foreach(FILE ${SRC_FILES})
   string(REPLACE "/" "\\" GROUP "${GROUP}")
 
   # Group into "Source Files" and "Header Files"
-  if ("${FILE}" MATCHES ".*\\.cpp")
+  if("${FILE}" MATCHES ".*\\.cpp")
     set(GROUP "Source Files${GROUP}")
   elseif("${FILE}" MATCHES ".*\\.h")
     set(GROUP "Header Files${GROUP}")
@@ -210,11 +210,11 @@ target_compile_definitions(${LIB_NAME_STATIC} PRIVATE ${LIB_DEFINES})
 target_include_directories(${LIB_NAME_STATIC} PRIVATE ${LIB_INCLUDE_DIRS})
 target_compile_options(${LIB_NAME_STATIC} PRIVATE
   $<$<CXX_COMPILER_ID:GNU>:-fPIC>  # Normally static libraries aren't compiled with this flag, but we need it to compile our bindings properly
-  $<$<CXX_COMPILER_ID:MSVC>:$<$<CONFIG:Debug>:/MTd> $<$<CONFIG:Release>:/MT>>
+  $<$<CXX_COMPILER_ID:MSVC>:/MT$<$<CONFIG:Debug>:d>>
 )
 if(BUILD_SHARED_LIBS)
   target_compile_options(${LIB_NAME_SHARED} PRIVATE
-    $<$<CXX_COMPILER_ID:MSVC>:$<$<CONFIG:Debug>:/MDd> $<$<CONFIG:Release>:/MD>>
+    $<$<CXX_COMPILER_ID:MSVC>:/MD$<$<CONFIG:Debug>:d>>
   )
   target_compile_definitions(${LIB_NAME_SHARED} PRIVATE ${LIB_DEFINES})
   target_include_directories(${LIB_NAME_SHARED} PRIVATE ${LIB_INCLUDE_DIRS})
@@ -241,7 +241,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
   set_property(SOURCE ${SWIG_SOURCE_FILES} PROPERTY CPLUSPLUS ON)
 
   # Different compile flags depending on the platform
-  set(PYTHON_COMPILE_OPTIONS $<$<CXX_COMPILER_ID:MSVC>:/bigobj $<$<CONFIG:Debug>:/MTd> $<$<CONFIG:Release>:/MT>>)
+  set(PYTHON_COMPILE_OPTIONS $<$<CXX_COMPILER_ID:MSVC>:/bigobj /MT$<$<CONFIG:Debug>:d>>)
   set(PYTHON_LINK_OPTIONS $<$<CXX_COMPILER_ID:GNU>:-Wl,--no-as-needed>)
   set(PYTHON_LINK_LIBRARIES ${LIB_NAME_STATIC})
   if((UNIX AND LINK_STATIC_DEPS) OR WIN32)
@@ -304,10 +304,10 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
   if(BUILD_CSHARP)
     set(CSHARP_MODULE_NAME MSCL_CSharp)
 
-    # Hack of all hacks, but we need to generate the source seperately so we can determine the source files at configure time
+    # Hack of all hacks, but we need to generate the source separately so we can determine the source files at configure time
     set(CSHARP_MODULE_DIR ${CMAKE_CURRENT_BINARY_DIR}/${CSHARP_MODULE_NAME})
     set(CSHARP_MODULE_CPP_FILE ${CSHARP_MODULE_DIR}/MSCL_Main_InterfaceCSHARP_wrap.cxx)
-    make_directory(${CSHARP_MODULE_DIR})
+    file(MAKE_DIRECTORY ${CSHARP_MODULE_DIR})
     message(STATUS "Generating CSharp binding source")
     execute_process(
       COMMAND ${CMAKE_COMMAND} -E env SWIG_LIB=${SWIG_DIR} "${SWIG_EXECUTABLE}" -csharp -namespace mscl -outdir "${CSHARP_MODULE_DIR}" -c++ -dllimport MSCL -o "${CSHARP_MODULE_CPP_FILE}" "${SWIG_SOURCE_FILES}"
@@ -321,7 +321,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
     add_library(${CSHARP_MODULE_NAME} SHARED ${CSHARP_MODULE_CPP_FILE})
     target_compile_options(${CSHARP_MODULE_NAME} PRIVATE
       /bigobj
-      $<$<CONFIG:Debug>:/MTd> $<$<CONFIG:Release>:/MT>
+      /MT$<$<CONFIG:Debug>:d>
     )
     target_compile_definitions(${CSHARP_MODULE_NAME} PRIVATE
       ${LIB_DEFINES}
@@ -352,16 +352,16 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
       ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl/Wrapper/CSharp/mscl/Exceptions.cs
       ${MSCL_GENERATED_CSHARP_SOURCE}
     )
-    set(MSCL_MANAGED_NAME MSCL_Managed)
-    add_library(${MSCL_MANAGED_NAME} SHARED ${MSCL_CSHARP_SOURCE})
-    target_link_libraries(${MSCL_MANAGED_NAME} ${CSHARP_MODULE_NAME})
+    set(MSCL_Managed_NAME MSCL_Managed)
+    add_library(${MSCL_Managed_NAME} SHARED ${MSCL_CSHARP_SOURCE})
+    target_link_libraries(${MSCL_Managed_NAME} ${CSHARP_MODULE_NAME})
 
     # Copy the library to an Output directory
-    set(MSCL_MANAGED_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/DotNet/${MSCL_ARCH_NAME}/$<CONFIG>/${MSCL_MANAGED_NAME})
-    add_custom_command(TARGET ${MSCL_MANAGED_NAME} POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E remove_directory ${MSCL_MANAGED_OUTPUT_DIR}
-      COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:${MSCL_MANAGED_NAME}> ${MSCL_MANAGED_OUTPUT_DIR}
-      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${CSHARP_MODULE_NAME}> ${MSCL_MANAGED_OUTPUT_DIR}
+    set(MSCL_Managed_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/DotNet/${MSCL_ARCH_NAME}/$<CONFIG>/${MSCL_Managed_NAME})
+    add_custom_command(TARGET ${MSCL_Managed_NAME} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E remove_directory ${MSCL_Managed_OUTPUT_DIR}
+      COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:${MSCL_Managed_NAME}> ${MSCL_Managed_OUTPUT_DIR}
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${CSHARP_MODULE_NAME}> ${MSCL_Managed_OUTPUT_DIR}
     )
   endif()
 
@@ -373,12 +373,12 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
       ALL
       DEPENDS ${SRC_FILES}
       COMMAND ${CMAKE_COMMAND} -E remove_directory "${MSCL_OUTPUT_DIR}/Documentation"
-      COMMAND ${CMAKE_COMMAND} -E make_directory ${MSCL_DOCS_OUTPUT_DIR}
+      COMMAND ${CMAKE_COMMAND} -E make_directory "${MSCL_DOCS_OUTPUT_DIR}"
       COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_Docs_Project/Working Data"
-      COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" -o FramedHTML ${MSCL_DOCS_OUTPUT_DIR} -p ${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_Docs_Project -s msclDocsStyle
-      COMMAND ${CMAKE_COMMAND} -E make_directory ${MSCL_API_DOCS_OUTPUT_DIR}
+      COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" -o FramedHTML "${MSCL_DOCS_OUTPUT_DIR}" -p "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_Docs_Project" -s msclDocsStyle
+      COMMAND ${CMAKE_COMMAND} -E make_directory "${MSCL_API_DOCS_OUTPUT_DIR}"
       COMMAND ${CMAKE_COMMAND} -E remove_directory "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_API_Docs_Project/Working Data"
-      COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" -o FramedHTML ${MSCL_API_DOCS_OUTPUT_DIR} -p ${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_API_Docs_Project -s msclDocsStyle
+      COMMAND ${CMAKE_COMMAND} -E env ${NaturalDocs_EXECUTABLE} -i "${CMAKE_CURRENT_SOURCE_DIR}/source/mscl" -o FramedHTML "${MSCL_API_DOCS_OUTPUT_DIR}" -p "${CMAKE_CURRENT_SOURCE_DIR}/../BuildScripts/NaturalDocsProjects/MSCL_API_Docs_Project" -s msclDocsStyle
     )
   endif()
 endif()

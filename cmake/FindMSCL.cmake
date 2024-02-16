@@ -47,7 +47,7 @@ if(NOT DEFINED MSCL_ROOT_DIR)
 endif()
 
 # The following directories are the common additional places to search for MSCL
-set(_MSCL_ROOT_DIRS 
+set(_MSCL_ROOT_DIRS
   ${CMAKE_CURRENT_LIST_DIR}/..
   ${MSCL_ROOT_DIR}
 )
@@ -69,13 +69,13 @@ find_library(MSCL_LIBRARY
 # Also find the dependencies for MSCL
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_STATIC_RUNTIME ON)
-find_package(Boost 1.68.0 REQUIRED COMPONENTS system filesystem)
+find_package(Boost 1.68.0 EXACT REQUIRED COMPONENTS system filesystem)
 
 # We also need to find OpenSSL
 set(OPENSSL_USE_STATIC_LIBS TRUE)
 set(OPENSSL_MSVC_STATIC_RT TRUE)
 find_package(OpenSSL REQUIRED)
-set(MSCL_OPENSSL_LIBRARIES ${OPENSSL_SSL_LIBRARY} ${OPENSSL_CRYPTO_LIBRARY})
+set(MSCL_OPENSSL_LIBRARIES ${OPENSSL_LIBRARIES})
 
 # If linking on Windows, we will also need the windows crypto library
 if(WIN32)

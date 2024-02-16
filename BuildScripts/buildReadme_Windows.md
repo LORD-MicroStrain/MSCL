@@ -18,12 +18,12 @@ For more information on how to configure the build to use, or not use the option
 
 ##### Required
 - \>= Visual Studio 2015 (msvc-14.0) or MSBuild equivalent
-- \>= cmake 3.12
-- \>= [Boost 1.68](http://www.boost.org/)
+- \>= cmake 3.16
+- &nbsp;&nbsp;\= [Boost 1.68](https://www.boost.org/users/download/)
 
 ##### Optional
 - \>= [OpenSSL 1.1.0](https://www.npcglib.org/~stathis/blog/precompiled-openssl/)
-- = [SWIG 4.0.0](http://swig.org/download.html)
+- \>= [SWIG 4.0.0](https://swig.org/download.html) (for Python2, Python3 or C# builds)
 - \>= [Python 2.7](https://www.python.org/downloads/)
 - \>= [Python 3.6](https://www.python.org/downloads/)
 - \>= [NaturalDocs 2.0](https://www.naturaldocs.org/)
@@ -44,7 +44,7 @@ SourceForge hosts some [Pre-Built Boost binaries for Windows](https://sourceforg
 Simply installing these for your specific compiler will make it so you do not need to build Boost yourself, which can be time consuming. 
 
 If you want to install Boost yourself, you can follow the instructions on
-[Boost's Getting Started page](http://www.boost.org/doc/libs/1_68_0/more/getting_started/windows.html). 
+[Boost's Getting Started page](https://www.boost.org/doc/libs/1_68_0/more/getting_started/windows.html). 
 
 ## Building MSCL for C++
 

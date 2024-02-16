@@ -34,7 +34,7 @@ target_link_libraries(${PROJECT_NAME}
 target_compile_definitions(${PROJECT_NAME} PRIVATE BOOST_ALL_NO_LIB)
 
 # On windows, we need to set the runtime library to the same as MSCL
-target_compile_options(${PROJECT_NAME} PRIVATE $<$<CXX_COMPILER_ID:MSVC>:$<$<CONFIG:Debug>:/MTd> $<$<CONFIG:Release>:/MT>>)
+target_compile_options(${PROJECT_NAME} PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/MT$<$<CONFIG:Debug>:d>>)
 
 # Ignore some annoying linker warnings
 target_link_options(${PROJECT_NAME} PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/ignore:4099>)

@@ -18,19 +18,19 @@ For more information on how to configure the build to use, or not use the option
 
 ##### Required
 - \>= gcc 4.9.1-5
-- \>= cmake 3.12
-- \>= [Boost 1.68](http://www.boost.org/)
+- \>= cmake 3.16
+- &nbsp;&nbsp;\= [Boost 1.68](https://www.boost.org/users/download/)
 
 ##### Optional
 - \>= libssl1.0.0
 - \>= libssl-dev
 - \>= libcrypto
-- = [SWIG 4.0.0](http://swig.org/download.html) (for Python2 or Python3 build)
+- \>= [SWIG 4.0.0](https://swig.org/download.html) (for Python2 or Python3)
 - \>= python2.7
 - \>= python2.7-dev
 - \>= python3
 - \>= python3-dev
-- \>= [turtle 1.3.1](http://turtle.sourceforge.net/)
+- \>= [turtle 1.3.1](https://turtle.sourceforge.net/)
 
 #### Note
 On some systems, you may get a virtual memory error when compiling MSCL
