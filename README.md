@@ -72,11 +72,11 @@ Instructions can be found here:
 
 #### Included Libraries
 
-OpenSSL - This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) - see the `License_OpenSSL.txt` file in the source distribution.
+OpenSSL - This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/) - see the [License_OpenSSL.txt](License_OpenSSL.txt) file in the source distribution.
 
-Boost - see the `License_Boost.txt` file in the source distribution.
+Boost - see the [License_Boost.txt](License_Boost.txt) file in the source distribution.
 
 #### License
-MSCL is released under the MIT License - see the `LICENSE` file in the source distribution.
+MSCL is released under the MIT License - see the [LICENSE](LICENSE) file in the source distribution.
 
 Copyright (C) 2015-2022 Parker Hannifin Corp. All Rights Reserved.
