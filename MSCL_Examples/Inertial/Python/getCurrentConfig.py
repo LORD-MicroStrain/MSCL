@@ -1,9 +1,15 @@
-#import the mscl library
+# Updated: 2/21/2024
+
 import sys
-sys.path.append("../../dependencies/Python")
+
+# TODO: change this path to match your setup
+# import the mscl library.
+arch = sys.maxsize > 2**32 and "x64" or "x32"
+sys.path.append("../../../Output/Python{sys.version_info.major}.{sys.version_info.minor}/{arch}/Release")
+
 import mscl
 
-#TODO: change these constants to match your setup
+# TODO: change these constants to match your setup
 COM_PORT = "COM4"
 
 try:
@@ -21,40 +27,40 @@ try:
         #get a list of the AHRS/IMU channels currently active on the Node
         ahrsImuActiveChs = node.getActiveChannelFields(mscl.MipTypes.CLASS_AHRS_IMU)
 
-        print "AHRS/IMU Channels"
-        print "-----------------"
+        print("AHRS/IMU Channels")
+        print("-----------------")
         for ch in ahrsImuActiveChs:
-            print "Channel Field:", ch.channelField()
-            print "Sample Rate:", ch.sampleRate().prettyStr()
+            print("Channel Field:", ch.channelField())
+            print("Sample Rate:", ch.sampleRate().prettyStr())
 
     #if the node supports Estimation Filter
     if node.features().supportsCategory(mscl.MipTypes.CLASS_ESTFILTER):
         #get a list of the Estimation Filter channels currently active on the Node
         estFilterActiveChs = node.getActiveChannelFields(mscl.MipTypes.CLASS_ESTFILTER)
 
-        print "Estimation Filter Channels"
-        print "--------------------------"
+        print("Estimation Filter Channels")
+        print("--------------------------")
         for ch in estFilterActiveChs:
-            print "Channel Field:", ch.channelField()
-            print "Sample Rate:", ch.sampleRate().prettyStr()
+            print("Channel Field:", ch.channelField())
+            print("Sample Rate:", ch.sampleRate().prettyStr())
 
     #if the node supports GNSS
     if node.features().supportsCategory(mscl.MipTypes.CLASS_GNSS):
         #get a list of the GNSS channels currently active on the Node
         gnssActiveChs = node.getActiveChannelFields(mscl.MipTypes.CLASS_GNSS)
 
-        print "GNSS Channels"
-        print "--------------------------"
+        print("GNSS Channels")
+        print("--------------------------")
         for ch in gnssActiveChs:
-            print "Channel Field:", ch.channelField()
-            print "Sample Rate:", ch.sampleRate().prettyStr()
+            print("Channel Field:", ch.channelField())
+            print("Sample Rate:", ch.sampleRate().prettyStr())
 
-    print "Altitude Aiding enabled?:", node.getAltitudeAid()
+    print("Altitude Aiding enabled?:", node.getAltitudeAid())
 
     offset = node.getAntennaOffset()
-    print "Antenna Offset: x=", offset.x(), " y=", offset.y(), " z=", offset.z()
+    print("Antenna Offset: x=", offset.x(), " y=", offset.y(), " z=", offset.z())
 
-    print "Pitch/Roll Aiding enabled?:", node.getPitchRollAid()
-    
-except mscl.Error, e:
-    print "Error:", e
+    print("Pitch/Roll Aiding enabled?:", node.getPitchRollAid())
+
+except mscl.Error as e:
+    print("Error:", e)

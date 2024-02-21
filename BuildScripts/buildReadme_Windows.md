@@ -17,13 +17,13 @@ here are the steps to build for Windows:
 For more information on how to configure the build to use, or not use the optional dependencies see [this section](#configuring-the-build)
 
 ##### Required
-- \>= Visual Studio 2015 (msvc-14.0) or MSBuild equivalent
-- \>= cmake 3.16
+- \>= [Visual Studio 2015](https://visualstudio.microsoft.com/downloads/) (msvc-14.0) or MSBuild equivalent
+- \>= [cmake 3.16](https://cmake.org/download/)
 - &nbsp;&nbsp;\= [Boost 1.68](https://www.boost.org/users/download/)
 
 ##### Optional
 - \>= [OpenSSL 1.1.0](https://www.npcglib.org/~stathis/blog/precompiled-openssl/)
-- \>= [SWIG 4.0.0](https://swig.org/download.html) (for Python2, Python3 or C# builds)
+- \>= [SWIG 4.0.0](https://swig.org/download.html) (for Python2, Python3, or .NET builds)
 - \>= [Python 2.7](https://www.python.org/downloads/)
 - \>= [Python 3.6](https://www.python.org/downloads/)
 - \>= [NaturalDocs 2.0](https://www.naturaldocs.org/)
@@ -32,19 +32,19 @@ Since Windows has no standard path for libraries to be installed in,
 we will refer to `LIB_PATH` as the location that you will install dependencies.
 Each of these paths can be configured at build time, but for reference,
 this is what a common `LIB_PATH` directory will look like:
-  - `LIB_PATH\boost\boost_1_68_0`
-  - `LIB_PATH\openssl`
-  - `LIB_PATH\swig\swigwin-4.0.0` (for .NET and Python builds)
-  - `LIB_PATH\NaturalDocs`
+  - `LIB_PATH/boost/boost_1_68_0`
+  - `LIB_PATH/openssl`
+  - `LIB_PATH/swig/swigwin-4.0.0` (for .NET and Python builds)
+  - `LIB_PATH/NaturalDocs`
 
 
 #### Installing Boost
 
 SourceForge hosts some [Pre-Built Boost binaries for Windows](https://sourceforge.net/projects/boost/files/boost-binaries/1.68.0/).
-Simply installing these for your specific compiler will make it so you do not need to build Boost yourself, which can be time consuming. 
+Simply installing these for your specific compiler will make it so you do not need to build Boost yourself, which can be time-consuming.
 
 If you want to install Boost yourself, you can follow the instructions on
-[Boost's Getting Started page](https://www.boost.org/doc/libs/1_68_0/more/getting_started/windows.html). 
+[Boost's Getting Started page](https://www.boost.org/doc/libs/1_68_0/more/getting_started/windows.html).
 
 ## Building MSCL for C++
 

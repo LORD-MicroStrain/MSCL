@@ -18,7 +18,7 @@ For more information on how to configure the build to use, or not use the option
 
 ##### Required
 - \>= gcc 4.9.1-5
-- \>= cmake 3.16
+- \>= [cmake 3.16](https://cmake.org/download/)
 - &nbsp;&nbsp;\= [Boost 1.68](https://www.boost.org/users/download/)
 
 ##### Optional
@@ -40,7 +40,7 @@ For an example, see [this post](https://www.bitpi.co/2015/02/11/how-to-change-ra
 explaining this for the Raspberry Pi. Keep in mind that you may want to change back to the original swapfile size
 when you are done compiling MSCL (especially if using an SD card), as it can cause a lot of unnecessary writes to your disk.
 
-## Building MSCL
+## Building MSCL for C++
 
 1. Clone or download the [MSCL repo](https://github.com/LORD-MicroStrain/MSCL).
 The location of MSCL will be referred to as `<Project Root>` for the rest of this guide.

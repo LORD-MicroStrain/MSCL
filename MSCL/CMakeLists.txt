@@ -128,16 +128,19 @@ target_precompile_headers(${LIB_NAME_STATIC} PRIVATE
 
 # In order to copy the headers, create a cmake script that will do the copying
 set(MSCL_STATIC_HEADER_CP_SCRIPT ${CMAKE_BINARY_DIR}/${LIB_NAME_STATIC}_$<CONFIG>_header_cp.cmake)
-set(MSCL_STATIC_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/C++/Static/${MSCL_ARCH_NAME}/$<CONFIG>/${LIB_NAME})
+set(MSCL_STATIC_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/C++/Static/${LIB_NAME})
+set(MSCL_STATIC_OUTPUT_INCLUDE_DIR ${MSCL_STATIC_OUTPUT_DIR}/include)
+set(MSCL_STATIC_OUTPUT_LIB_DIR ${MSCL_STATIC_OUTPUT_DIR}/lib/${MSCL_ARCH_NAME}/$<CONFIG>)
 file(GENERATE
   OUTPUT ${MSCL_STATIC_HEADER_CP_SCRIPT}
-  CONTENT "file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl DESTINATION ${MSCL_STATIC_OUTPUT_DIR}/include FILES_MATCHING PATTERN *.h PATTERN Wrapper EXCLUDE)\n"
+  CONTENT "file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl DESTINATION ${MSCL_STATIC_OUTPUT_INCLUDE_DIR} FILES_MATCHING PATTERN *.h PATTERN Wrapper EXCLUDE)\n"
 )
 
 # Copy the artifacts to an Output directory to make it easier for users to navigate the artifacts
 add_custom_command(TARGET ${LIB_NAME_STATIC} POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E remove_directory ${MSCL_STATIC_OUTPUT_DIR}
-  COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:${LIB_NAME_STATIC}> ${MSCL_STATIC_OUTPUT_DIR}/lib
+  COMMAND ${CMAKE_COMMAND} -E remove_directory ${MSCL_STATIC_OUTPUT_INCLUDE_DIR}
+  COMMAND ${CMAKE_COMMAND} -E remove_directory ${MSCL_STATIC_OUTPUT_LIB_DIR}
+  COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:${LIB_NAME_STATIC}> ${MSCL_STATIC_OUTPUT_LIB_DIR}
   COMMAND ${CMAKE_COMMAND} -P ${MSCL_STATIC_HEADER_CP_SCRIPT}
 )
 
@@ -176,16 +179,19 @@ if(BUILD_SHARED_LIBS)
 
   # In order to copy the headers, create a cmake script that will do the copying
   set(MSCL_SHARED_HEADER_CP_SCRIPT ${CMAKE_BINARY_DIR}/${LIB_NAME_SHARED}_$<CONFIG>_header_cp.cmake)
-  set(MSCL_SHARED_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/C++/Shared/${MSCL_ARCH_NAME}/$<CONFIG>/${LIB_NAME})
+  set(MSCL_SHARED_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/C++/Shared/${LIB_NAME})
+  set(MSCL_SHARED_OUTPUT_INCLUDE_DIR ${MSCL_SHARED_OUTPUT_DIR}/include)
+  set(MSCL_SHARED_OUTPUT_LIB_DIR ${MSCL_SHARED_OUTPUT_DIR}/lib/${MSCL_ARCH_NAME}/$<CONFIG>)
   file(GENERATE
     OUTPUT ${MSCL_SHARED_HEADER_CP_SCRIPT}
-    CONTENT "file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl DESTINATION ${MSCL_SHARED_OUTPUT_DIR}/include FILES_MATCHING PATTERN *.h PATTERN Wrapper EXCLUDE)\n"
+    CONTENT "file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/source/mscl DESTINATION ${MSCL_SHARED_OUTPUT_INCLUDE_DIR} FILES_MATCHING PATTERN *.h PATTERN Wrapper EXCLUDE)\n"
   )
 
   # Copy the artifacts to an Output directory to make it easier for users to navigate the artifacts
   add_custom_command(TARGET ${LIB_NAME_SHARED} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E remove_directory ${MSCL_SHARED_OUTPUT_DIR}
-    COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:${LIB_NAME_SHARED}> ${MSCL_SHARED_OUTPUT_DIR}/lib
+    COMMAND ${CMAKE_COMMAND} -E remove_directory ${MSCL_SHARED_OUTPUT_INCLUDE_DIR}
+    COMMAND ${CMAKE_COMMAND} -E remove_directory ${MSCL_SHARED_OUTPUT_LIB_DIR}
+    COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:${LIB_NAME_SHARED}> ${MSCL_SHARED_OUTPUT_LIB_DIR}
     COMMAND ${CMAKE_COMMAND} -P ${MSCL_SHARED_HEADER_CP_SCRIPT}
   )
 
@@ -233,6 +239,12 @@ endif()
 if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
   include(UseSWIG)
   include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/mscl_python_swig.cmake)
+
+  if(MSVC)
+    # Linking through the MSCL cmake interface causes linker error 4197. This is related to swig and can be ignored
+    #TODO: Figure out how to fix this linker error
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /ignore:4197")
+  endif()
 
   # Set up our source
   set(SWIG_SOURCE_FILES
@@ -357,7 +369,7 @@ if(BUILD_PYTHON2 OR BUILD_PYTHON3 OR BUILD_CSHARP)
     target_link_libraries(${MSCL_Managed_NAME} ${CSHARP_MODULE_NAME})
 
     # Copy the library to an Output directory
-    set(MSCL_Managed_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/DotNet/${MSCL_ARCH_NAME}/$<CONFIG>/${MSCL_Managed_NAME})
+    set(MSCL_Managed_OUTPUT_DIR ${MSCL_OUTPUT_DIR}/DotNet/${MSCL_ARCH_NAME}/$<CONFIG>)
     add_custom_command(TARGET ${MSCL_Managed_NAME} POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E remove_directory ${MSCL_Managed_OUTPUT_DIR}
       COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:${MSCL_Managed_NAME}> ${MSCL_Managed_OUTPUT_DIR}
