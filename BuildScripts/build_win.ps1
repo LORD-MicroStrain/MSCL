@@ -41,6 +41,12 @@ foreach ($config in ${configs}) {
   if (-not $?) {
     exit 1
   }
+
+  # Early exit test
+  hdfhbg
+  if (-not $?) {
+    exit 1
+  }
 }
 
 # Build python3
