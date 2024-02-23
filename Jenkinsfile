@@ -18,70 +18,92 @@ def python3Versions() {
 
 pipeline {
   agent none
+  options {
+    // Set a timeout for the whole pipeline. The timer starts when the project is queued
+    timeout(time: 3, unit: 'HOURS')
+  }
   stages {
     stage('Build') {
       // Run the windows and linux builds in parallel
       parallel {
         stage('Windows') {
           agent { label 'windows10' }
-          options { skipDefaultCheckout() }
+          options {
+            skipDefaultCheckout()
+            timeout(time: 20, activity: true, unit: 'MINUTES')
+          }
           steps {
             cleanWs()
             checkout scm
             powershell '.devcontainer/docker_build_win.ps1 -python3_versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'Output/*.zip'
+            archiveArtifacts artifacts: 'build_windows/*.zip'
           }
         }
-        stage('DEB AMD64') {
-          agent { label 'aws-amd64' }
-          options { skipDefaultCheckout() }
-          steps {
-            cleanWs()
-            checkout scm
-            sh '.devcontainer/docker_build_debs.sh --arch amd64 --python3Versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'build_ubuntu_amd64/*.deb'
-          }
-        }
-        stage('RPM AMD64') {
-          agent { label 'aws-amd64' }
-          options { skipDefaultCheckout() }
-          steps {
-            cleanWs()
-            checkout scm
-            sh '.devcontainer/docker_build_rpms.sh --arch amd64 --python3Versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'build_centos_amd64/*.rpm'
-          }
-        }
-        stage('DEB ARM64') {
-          agent { label 'aws-arm64' }
-          options { skipDefaultCheckout() }
-          steps {
-            cleanWs()
-            checkout scm
-            sh '.devcontainer/docker_build_debs.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
-          }
-        }
-        stage('DEB ARM32') {
-          agent { label 'aws-arm64' }
-          options { skipDefaultCheckout() }
-          steps {
-            cleanWs()
-            checkout scm
-            sh '.devcontainer/docker_build_debs.sh --arch arm32v7 --python3Versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'build_ubuntu_arm32v7/*.deb'
-          }
-        }
-        stage('RPM ARM64') {
-          agent { label 'aws-arm64' }
-          options { skipDefaultCheckout() }
-          steps {
-            cleanWs()
-            checkout scm
-            sh '.devcontainer/docker_build_rpms.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
-            archiveArtifacts artifacts: 'build_centos_arm64v8/*.rpm'
-          }
-        }
+//         stage('DEB AMD64') {
+//           agent { label 'aws-amd64' }
+//           options {
+//             skipDefaultCheckout()
+//             timeout(time: 20, activity: true, unit: 'MINUTES')
+//           }
+//           steps {
+//             cleanWs()
+//             checkout scm
+//             sh '.devcontainer/docker_build_debs.sh --arch amd64 --python3Versions "' + python3Versions() + '"'
+//             archiveArtifacts artifacts: 'build_ubuntu_amd64/*.deb'
+//           }
+//         }
+//         stage('RPM AMD64') {
+//           agent { label 'aws-amd64' }
+//           options {
+//             skipDefaultCheckout()
+//             timeout(time: 20, activity: true, unit: 'MINUTES')
+//           }
+//           steps {
+//             cleanWs()
+//             checkout scm
+//             sh '.devcontainer/docker_build_rpms.sh --arch amd64 --python3Versions "' + python3Versions() + '"'
+//             archiveArtifacts artifacts: 'build_centos_amd64/*.rpm'
+//           }
+//         }
+//         stage('DEB ARM64') {
+//           agent { label 'aws-arm64' }
+//           options {
+//             skipDefaultCheckout()
+//             timeout(time: 20, activity: true, unit: 'MINUTES')
+//           }
+//           steps {
+//             cleanWs()
+//             checkout scm
+//             sh '.devcontainer/docker_build_debs.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
+//             archiveArtifacts artifacts: 'build_ubuntu_arm64v8/*.deb'
+//           }
+//         }
+//         stage('DEB ARM32') {
+//           agent { label 'aws-arm64' }
+//           options {
+//             skipDefaultCheckout()
+//             timeout(time: 20, activity: true, unit: 'MINUTES')
+//           }
+//           steps {
+//             cleanWs()
+//             checkout scm
+//             sh '.devcontainer/docker_build_debs.sh --arch arm32v7 --python3Versions "' + python3Versions() + '"'
+//             archiveArtifacts artifacts: 'build_ubuntu_arm32v7/*.deb'
+//           }
+//         }
+//         stage('RPM ARM64') {
+//           agent { label 'aws-arm64' }
+//           options {
+//             skipDefaultCheckout()
+//             timeout(time: 20, activity: true, unit: 'MINUTES')
+//           }
+//           steps {
+//             cleanWs()
+//             checkout scm
+//             sh '.devcontainer/docker_build_rpms.sh --arch arm64v8 --python3Versions "' + python3Versions() + '"'
+//             archiveArtifacts artifacts: 'build_centos_arm64v8/*.rpm'
+//           }
+//         }
       }
     }
   }

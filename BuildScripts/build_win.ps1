@@ -28,18 +28,18 @@ cmake -S "${project_dir}" -B "${buildDir}" -G "${generator}" -A "${arch}" -T "${
   -DBUILD_EXAMPLES="ON" `
   -DBUILD_DOCUMENTATION="ON"
 if (-not $?) {
-  exit $?
+  exit 1
 }
 
 # Build multiple configurations
 foreach ($config in ${configs}) {
   cmake --build "${buildDir}" --config "${config}"
   if (-not $?) {
-    exit $?
+    exit 1
   }
   cmake --build "${buildDir}" --config "${config}" --target "RUN_TESTS"
   if (-not $?) {
-    exit $?
+    exit 1
   }
 }
 
@@ -64,7 +64,7 @@ if(${python3Dirs}) {
     foreach ($config in ${configs}) {
       cmake --build "${buildDir}" --config "${config}"
       if (-not $?) {
-        exit $?
+        exit 1
       }
     }
   }
@@ -91,7 +91,7 @@ if(${python2Dirs}) {
     foreach ($config in ${configs}) {
       cmake --build "${buildDir}" --config "${config}"
       if (-not $?) {
-        exit $?
+        exit 1
       }
     }
   }

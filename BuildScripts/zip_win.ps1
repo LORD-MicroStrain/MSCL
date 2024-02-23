@@ -5,6 +5,7 @@
 # Find the script directory and set some constants
 $script_dir = $PSScriptRoot
 $project_dir = "${script_dir}/.."
+$build_output_dir = "${project_dir}/build_windows"
 $output_dir = "${project_dir}/Output"
 $cpp_output_dir = "${output_dir}/C++"
 $static_output_dir = "${cpp_output_dir}/Static"
@@ -20,35 +21,35 @@ $mscl_git_version = (git describe --tags)
 popd
 
 # Zip up the Static library
-$static_zip_file = "${output_dir}/mscl_${mscl_git_version}_Windows_Static_C++.zip"
+$static_zip_file = "${build_output_dir}/mscl_${mscl_git_version}_Windows_Static_C++.zip"
 pushd "${static_output_dir}"
 echo "Compressing ${pwd} to ${static_zip_file}"
 Compress-Archive -Force -Path ./* -DestinationPath "${static_zip_file}"
 popd
 
 # Zip up the Shared library
-$shared_zip_file = "${output_dir}/mscl_${mscl_git_version}_Windows_Shared_C++.zip"
+$shared_zip_file = "${build_output_dir}/mscl_${mscl_git_version}_Windows_Shared_C++.zip"
 pushd "${shared_output_dir}"
 echo "Compressing ${pwd} to ${shared_zip_file}"
 Compress-Archive -Force -Path ./* -DestinationPath "${shared_zip_file}"
 popd
 
 # Zip up the C# library
-$dotnet_zip_file = "${output_dir}/mscl_${mscl_git_version}_Windows_DotNet.zip"
+$dotnet_zip_file = "${build_output_dir}/mscl_${mscl_git_version}_Windows_DotNet.zip"
 pushd "${dotnet_output_dir}"
 echo "Compressing ${pwd} to ${dotnet_zip_file}"
 Compress-Archive -Force -Path ./* -DestinationPath "${dotnet_zip_file}"
 popd
 
 # Zip up the documentation
-$documentation_zip_file = "${output_dir}/mscl_${mscl_git_version}_Documentation.zip"
+$documentation_zip_file = "${build_output_dir}/mscl_${mscl_git_version}_Documentation.zip"
 pushd "${documentation_output_dir}"
 echo "Compressing ${pwd} to ${documentation_zip_file}"
 Compress-Archive -Force -Path . -DestinationPath "${documentation_zip_file}"
 popd
 
 # Zip up the examples
-$examples_zip_file = "${output_dir}/mscl_${mscl_git_version}_Examples.zip"
+$examples_zip_file = "${build_output_dir}/mscl_${mscl_git_version}_Examples.zip"
 pushd "${examples_output_dir}"
 echo "Compressing ${pwd} to ${examples_zip_file}"
 Compress-Archive -Force -Path . -DestinationPath "${examples_zip_file}"
@@ -58,7 +59,7 @@ popd
 Get-ChildItem "${python_output_dir}" -Directory | ForEach-Object {
   $python_version = ${_}.Name
   $python_version_output_dir = ${_}.FullName
-  $python_zip_file = "${output_dir}/mscl_${mscl_git_version}_Python${python_version}.zip"
+  $python_zip_file = "${build_output_dir}/mscl_${mscl_git_version}_Python${python_version}.zip"
   pushd "${python_version_output_dir}"
   echo "Compressing ${pwd} to ${python_zip_file}"
   Compress-Archive -Force -Path ./* -DestinationPath "${python_zip_file}"

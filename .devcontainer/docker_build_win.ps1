@@ -58,7 +58,7 @@ docker build `
   --build-arg PYTHON3_VERSIONS="${python3_versions}" `
   "${project_dir}"
 if (-not $?) {
-  exit $?
+  exit 1
 }
 
 if ("${env:ISHUDSONBUILD}" -eq "True") {
@@ -84,5 +84,5 @@ docker run `
     & 'C:\Projects\MSCL\BuildScripts\zip_win.ps1'; `
   "
 if (-not $?) {
-  exit $?
+  exit 1
 }
