@@ -4,6 +4,7 @@ name: MicroStrain Copyright Update
 on:
   # Triggers the workflow on January 1, 00:00 UTC
   schedule:
+    # - cron: '0 0 1 1 *'
     - cron: '45 16 * * *'
 jobs:
   update_readme:
@@ -30,7 +31,7 @@ jobs:
       - name: Add all updated files
         run: git add --all
       - name: Commit changes
-        run: git commit -m "Updated copyright year"
+        run: git commit -m "Updated copyright year $(CURRENT_YEAR)"
       - name: Fetch master
         # run: git fetch origin master
         run: git fetch origin feature/updateCopyright2024
