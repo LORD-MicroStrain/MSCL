@@ -1,0 +1,39 @@
+# This is a basic workflow to update the Copyright year in all the files
+
+name: MicroStrain Copyright Update
+on:
+  # Triggers the workflow on January 1, 00:00 UTC
+  schedule:
+    - cron: '45 16 * * *'
+jobs:
+  update_readme:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      # Grab the current year i.e. 2024
+      - name: Get the current year
+        run: echo "CURRENT_YEAR=$(date +%Y)" >> $GITHUB_ENV
+      # Increment the current year for a test
+      - name: Get the current year
+        run: echo "CURRENT_YEAR=$((CURRENT_YEAR+1))" >> $GITHUB_ENV
+      # Grab the current year i.e. 2024
+      - name: Get the previous year
+        run: echo "PREVIOUS_YEAR=$((CURRENT_YEAR-1))" >> $GITHUB_ENV
+      # Modifies the copyright year for MicroStrain in all the files
+      - name: Modify all files
+        run: find ./ -type f -not -path "./.git/*" -exec sed -b -i -r "s/${PREVIOUS_YEAR} MicroStrain/${CURRENT_YEAR} MicroStrain/gI" {} \;
+      - name: Update author name
+        run: git config --global user.name "github-actions[bot]"
+      - name: Update author email
+        run: git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Add all updated files
+        run: git add --all
+      - name: Commit changes
+        run: git commit -m "Updated copyright year"
+      - name: Fetch master
+        # run: git fetch origin master
+        run: git fetch origin feature/updateCopyright2024
+      - name: Push changes
+        # run: git push origin HEAD:master
+        run: git push origin HEAD:feature/updateCopyright2024
