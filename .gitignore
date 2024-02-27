@@ -4,13 +4,14 @@ BuildScripts/NaturalDocsProjects/*/Working Data/
 GettingStartedGuide
 sample_mscl_cpp/
 *MSCL_Wrap.cpp
-/build
-/build_*
-/build_ubuntu_*
-/build_centos_*
+/[Bb]uild
+/[Bb]uild_*
+/[Bb]uild_ubuntu_*
+/[Bb]uild_centos_*
+/[Bb]uild_windows_*
 /mscl_ubuntu_*.tar.bz2
 /mscl_centos_*.tar.bz2
-/Output
+/[Oo]utput
 
 ## Ignore JetBrains files
 *.idea

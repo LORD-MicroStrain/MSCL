@@ -56,6 +56,7 @@ endif()
 # These flags can be passed string values. For example, -DOPENSSL_ROOT_DIR="/usr/lib"
 # Different default search paths for windows
 set(Boost_REQUESTED_VERSION "1.68.0" CACHE INTERNAL "Required version of boost")
+
 if(WIN32)
   string(REPLACE "." "_" Boost_REQUESTED_VERSION_UNDERSCORE ${Boost_REQUESTED_VERSION})
   set(DEFAULT_BOOST_ROOT "${MICROSTRAIN_LIB_DIR}/boost")
@@ -66,10 +67,14 @@ if(WIN32)
   endif()
   set(DEFAULT_SWIG_ROOT "${MICROSTRAIN_LIB_DIR}/swig/swigwin-4.0.0")
 endif()
+
 set(TURTLE_INCLUDE_DIR "${MICROSTRAIN_LIB_DIR}/turtle/include" CACHE STRING "Location to search for the turtle include files. Only used when building tests")
 set(NATURAL_DOCS_ROOT "${MICROSTRAIN_LIB_DIR}/NaturalDocs" CACHE STRING "Location of NaturalDocs used to generate the doucmentation")
-set(DPKG_ROOT "" CACHE STRING "Location of the dpkg executable")
-set(RPMBUILD_ROOT "" CACHE STRING "Location of the rpmbuild executable")
+
+if(UNIX AND NOT APPLE)
+  set(DPKG_ROOT "" CACHE STRING "Location of the dpkg executable")
+  set(RPMBUILD_ROOT "" CACHE STRING "Location of the rpmbuild executable")
+endif()
 
 # Use Git to find the version of this repo
 find_package(Git)
@@ -174,6 +179,7 @@ if(${WITH_SSL})
 
   # For some reason, FindOpenSSL does not look for the libraries again, so unset the variables to force it to search again
   unset(OPENSSL_SSL_LIBRARY CACHE)
+  unset(OPENSSL_LIBRARIES CACHE)
   unset(OPENSSL_CRYPTO_LIBRARY CACHE)
   unset(LIB_EAY_DEBUG CACHE)
   unset(LIB_EAY_RELEASE CACHE)
@@ -185,11 +191,12 @@ if(${WITH_SSL})
     set(OPENSSL_USE_STATIC_LIBS FALSE)
     set(OPENSSL_MSVC_STATIC_RT FALSE)
     find_package(OpenSSL REQUIRED)
-    set(OPENSSL_SHARED_LIBRARIES ${OPENSSL_SSL_LIBRARY} ${OPENSSL_CRYPTO_LIBRARY})
+    set(OPENSSL_SHARED_LIBRARIES ${OPENSSL_LIBRARIES})
   endif()
 
   # For some reason, FindOpenSSL does not look for the libraries again, so unset the variables to force it to search again
   unset(OPENSSL_SSL_LIBRARY CACHE)
+  unset(OPENSSL_LIBRARIES CACHE)
   unset(OPENSSL_CRYPTO_LIBRARY CACHE)
   unset(LIB_EAY_DEBUG CACHE)
   unset(LIB_EAY_RELEASE CACHE)
@@ -200,7 +207,7 @@ if(${WITH_SSL})
   set(OPENSSL_USE_STATIC_LIBS TRUE)
   set(OPENSSL_MSVC_STATIC_RT TRUE)
   find_package(OpenSSL REQUIRED)
-  set(OPENSSL_STATIC_LIBRARIES ${OPENSSL_SSL_LIBRARY} ${OPENSSL_CRYPTO_LIBRARY})
+  set(OPENSSL_STATIC_LIBRARIES ${OPENSSL_LIBRARIES})
 
   # If linking on Windows, we will also need the windows crypto library
   if(WIN32)
@@ -260,7 +267,7 @@ if(BUILD_DOCUMENTATION)
 endif()
 
 # If we were asked to package, find the generators we can use
-if(BUILD_PACKAGE)
+if(BUILD_PACKAGE AND UNIX AND NOT APPLE)
   set(FOUND_CPACK_GENERATORS "")
   find_program(DPKG_EXECUTABLE
     NAMES dpkg
