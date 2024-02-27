@@ -398,6 +398,42 @@ endif()
 
 # If we were asked to build packages, include CPack and set up packaging
 if(BUILD_PACKAGE)
+  # Try to determine what architecture we are building for based on the compiler output
+  if(MSVC)
+    # Detect if this is a x64 or x86 build
+    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+      set(MSCL_ARCH "x64")
+    elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+      set(MSCL_ARCH "x86")
+    endif()
+  elseif(UNIX)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+      # The dumpmachine command from gcc should contain information on the architecture
+      execute_process(
+        COMMAND ${CMAKE_COMMAND} -E env /bin/bash -c "${CMAKE_CXX_COMPILER} -dumpmachine"
+        OUTPUT_VARIABLE GCC_ARCHITECTURE_OUT
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        ERROR_VARIABLE GCC_ARCHITECTURE_ERR
+        RESULT_VARIABLE GCC_ARCHITECTURE_RET
+      )
+
+      # Convert the GCC architecture to the format that we use
+      if("${GCC_ARCHITECTURE_OUT}" MATCHES ".*x86_64.*")
+        set(MSCL_ARCH "amd64")
+      elseif("${GCC_ARCHITECTURE_OUT}" MATCHES ".*aarch64.*")
+        set(MSCL_ARCH "arm64")
+      elseif("${GCC_ARCHITECTURE_OUT}" MATCHES ".*arm.*")
+        set(MSCL_ARCH "armhf")
+      else()
+        message(STATUS "Unrecognized GCC architecture ${GCC_ARCHITECTURE_OUT}. Using CMAKE_SYSTEM_PROCESSOR for architecture")
+      endif()
+    endif()
+  endif()
+  if(NOT DEFINED MSCL_ARCH)
+    message(STATUS "Defaulting MSCL_ARCH to ${CMAKE_SYSTEM_PROCESSOR}")
+    set(MSCL_ARCH ${CMAKE_SYSTEM_PROCESSOR})
+  endif()
+
   # NOTE: CPack requires all these variables to be set before importing the module. Do not move them after the include(CPack) line
   set(CPACK_GENERATOR "${FOUND_CPACK_GENERATORS}")
   set(CPACK_PACKAGE_VENDOR "MicroStrain by HBK")
@@ -417,7 +453,12 @@ if(BUILD_PACKAGE)
   string(REGEX REPLACE "^v([0-9]+)\\.([0-9]+)\\.([0-9]+).*" "\\1.\\2.\\3" MSCL_GIT_VERSION_CPACK ${MSCL_GIT_VERSION})
   set(CPACK_PACKAGE_VERSION ${MSCL_GIT_VERSION_CPACK})
 
-  set(MSCL_FILE_NAME_PREFIX "MSCL_${MSCL_GIT_VERSION}_${CMAKE_SYSTEM_PROCESSOR}_${CMAKE_SYSTEM_NAME}")
+  if(WIN32)
+    set(MSCL_FILE_NAME_PREFIX "MSCL_${MSCL_GIT_VERSION}_${MSCL_ARCH}_WINDOWS")
+  else()
+    set(MSCL_FILE_NAME_PREFIX "MSCL_${MSCL_GIT_VERSION}_${MSCL_ARCH}")
+  endif()
+
   set(MSCL_FILE_NAME_SHARED "${MSCL_FILE_NAME_PREFIX}_Shared_C++")
   set(MSCL_FILE_NAME_STATIC "${MSCL_FILE_NAME_PREFIX}_Static_C++")
   set(MSCL_FILE_NAME_PYTHON2 "${MSCL_FILE_NAME_PREFIX}_Python${MSCL_PYTHON2_VERSION}")
@@ -484,10 +525,8 @@ if(BUILD_PACKAGE)
 
   if(MSVC)
     set(CPACK_ARCHIVE_FILE_NAME "${MSCL_FILE_NAME_PREFIX}_MSVC_v${MSVC_TOOLSET_VERSION}")
-  elseif(UNIX AND NOT APPLE)
-    set(CPACK_ARCHIVE_FILE_NAME "${MSCL_FILE_NAME_PREFIX}_Linux")
   else()
-    set(CPACK_ARCHIVE_FILE_NAME "${MSCL_FILE_NAME_PREFIX}")
+    set(CPACK_ARCHIVE_FILE_NAME "${MSCL_FILE_NAME_PREFIX}_${CMAKE_SYSTEM_NAME}")
   endif()
   set(CPACK_ARCHIVE_COMPONENT_INSTALL ON)
 
