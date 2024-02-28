@@ -2,7 +2,7 @@
 
 ## Drivers
 
-Make sure you have the Windows/Linux drivers for our products installed. If you have installed our desktop software, [SensorConnect](https://www.microstrain.com/software/sensorconnect) on Windows, then the drivers were installed with it. If you want to install the drivers seperately, please visit our [drivers page](https://github.com/LORD-MicroStrain/Drivers).
+Make sure you have the Windows/Linux drivers for our products installed. If you have installed our desktop software, [SensorConnect](https://www.microstrain.com/software/sensorconnect) on Windows, then the drivers were installed with it. If you want to install the drivers separately, please visit our [drivers page](https://github.com/LORD-MicroStrain/Drivers).
 
 ## Windows
 
@@ -10,9 +10,9 @@ Download the [pre-built Windows binaries](https://github.com/LORD-MicroStrain/MS
 
 ### Python
 
-You can copy the `mscl.py` and `_mscl.pyd` files into a path where python searches for modules. If you do this, you can simply use mscl from anywhere by adding `import mscl` to the top of your python files. To find where Python looks searches for modules on your system, print `sys.path` in your python environment.
+You can copy the `mscl.py` and `_mscl.pyd` files into a path where python searches for modules. If you do this, you can simply use MSCL from anywhere by adding `import mscl` to the top of your python files. To find where Python looks searches for modules on your system, print `sys.path` in your python environment.
 
-Alternatively, you can import mscl by adding the full mscl path to sys.path:
+Alternatively, you can import MSCL by adding the full MSCL path to sys.path:
 ```py
 import sys
 sys.path.append('<pathToMsclPythonFiles>')
@@ -31,9 +31,11 @@ Set your Platform Target to either `x86` or `x64`
 
 *Note:* The C++ MSCL library depends on Boost 1.68. You can download and install the [pre-built Boost libraries](https://sourceforge.net/projects/boost/files/boost-binaries/) (recommended), or build boost from source.
 
+Modify these directories/names depending on your desired configuration. For demonstration purposes, we will configure this for `x64 Release`
+
 Point your compiler to the MSCL headers and lib files:
-* Include directory: `C++/include`
-* Link directory: `C++/lib/x64/Release`
+* Include directory: `MSCL/include`
+* Link directory: `MSCL/lib/x64/Release`
 * Link to: `MSCL.lib`
 
 Point your compiler to the Boost headers and lib files:
@@ -78,9 +80,9 @@ Inside this folder, there will be two files:
 * `mscl.py`
 * `_mscl.so`
 
-If you copy these files into a path where python searches for modules, you can simply use mscl from anywhere by adding `import mscl` to the top of your python files. To find where Python looks searches for modules on your system, print `sys.path` in your python environment.
+If you copy these files into a path where python searches for modules, you can simply use MSCL from anywhere by adding `import mscl` to the top of your python files. To find where Python looks searches for modules on your system, print `sys.path` in your python environment.
 
-Alternatively, you can import mscl by adding the full mscl path to sys.path:
+Alternatively, you can import MSCL by adding the full MSCL path to sys.path:
 ```py
 import sys
 sys.path.append('/usr/share/<PYTHON_MSCL_FOLDER_NAME>/')

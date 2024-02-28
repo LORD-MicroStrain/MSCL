@@ -511,7 +511,7 @@ namespace mscl
 
                 // Get the substring between the previous and current delimiter
                 const std::string substring = basicString.substr(previousPosition, found - previousPosition);
-                
+
                 // Delimiter at the beginning/end of the string will get an empty substring
                 if (includeEmpty || !substring.empty())
                 {

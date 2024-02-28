@@ -3,11 +3,15 @@
 #   This example does not start a Node sampling. To receive data, a Node
 #   must be put into a sampling mode (Sync Sampling, Low Duty Cycle, etc.)
 #
-# Updated: 11/02/2015
+# Updated: 2/21/2024
 
-# import the mscl library
 import sys
-sys.path.append("../../dependencies/Python")
+
+# TODO: change this path to match your setup
+# import the mscl library.
+arch = sys.maxsize > 2**32 and "x64" or "x32"
+sys.path.append("../../../Output/Python{sys.version_info.major}.{sys.version_info.minor}/{arch}/Release")
+
 import mscl
 
 # TODO: change these constants to match your setup
@@ -23,31 +27,31 @@ try:
     # endless loop of reading in data
     while True:
 
-        # get all of the data sweeps that have been collected by the BaseStation, with a timeout of 500 milliseconds
+        # get all the data sweeps that have been collected by the BaseStation, with a timeout of 500 milliseconds
         sweeps = baseStation.getData(500)
 
         for sweep in sweeps:
             # print out information about the sweep
-            print "Packet Received",
-            print "Node", sweep.nodeAddress(),
-            print "Timestamp", sweep.timestamp(),
-            print "Tick", sweep.tick(),
-            print "Sample Rate", sweep.sampleRate().prettyStr(),
-            print "Base RSSI: ", sweep.baseRssi(),
-            print "Node RSSI: ", sweep.nodeRssi(),
+            print("Packet Received",)
+            print("Node", sweep.nodeAddress(),)
+            print("Timestamp", sweep.timestamp(),)
+            print("Tick", sweep.tick(),)
+            print("Sample Rate", sweep.sampleRate().prettyStr(),)
+            print("Base RSSI: ", sweep.baseRssi(),)
+            print("Node RSSI: ", sweep.nodeRssi(),)
 
-            print "DATA: ",
+            print("DATA: ",)
             # iterate over each point in the sweep
             for dataPoint in sweep.data():
-                
+
                 #print out the channel data
-                #Note: The as_string() function is being used here for simplicity. 
+                #Note: The as_string() function is being used here for simplicity.
                 #      Other methods (ie. as_float, as_uint16, as_Vector) are also available.
                 #      To determine the format that a dataPoint is stored in, use dataPoint.storedAs().
-                print dataPoint.channelName(), ":", dataPoint.as_string(),
+                print(dataPoint.channelName(), ":", dataPoint.as_string(),)
 
-            print ""
-            
+            print("")
 
-except Exception, e:
-    print "Error:", e
+
+except Exception as e:
+    print("Error:", e)
